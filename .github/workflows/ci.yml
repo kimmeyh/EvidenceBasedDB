@@ -1,0 +1,53 @@
+# Minimal CI (Sprint 1 Task A). Adapted from hsbc-quantum-fraud-2026's
+# ci.yml, whose dirty-tree gate is a repo-agnostic pattern worth carrying;
+# its dependency and path assumptions (experiments/requirements.txt,
+# experiments/src, scripts) are hsbc-specific and are NOT carried, since
+# this repository has no equivalent paths and inventing them would be
+# exactly the process leakage Sprint 1 Task H exists to remove.
+#
+# Runs the five inherited guards (tests/test_hook_registration.py,
+# test_guard_discipline.py, test_no_em_dashes.py, test_changelog_currency.py,
+# test_sprint_documents.py) plus anything else under tests/. No datasets, no
+# hardware, no external credentials -- everything here is documentation and
+# process discipline until Sprint 1 Tasks B/C add the store itself.
+name: CI
+
+on:
+  pull_request:
+    branches: [develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+
+      - name: Tests
+        run: pytest -q
+
+      # If the suite modified any tracked file, the build fails and names
+      # the files. A test that writes to the repository is a defect even
+      # when its assertions pass.
+      - name: Test run must leave the tree clean
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::The test run modified tracked files. A test that"
+            echo "::error::writes to the repository is a defect even when its"
+            echo "::error::assertions pass. Files changed:"
+            git status --porcelain
+            git diff --stat
+            exit 1
+          fi
+          echo "Working tree clean after the test run."
