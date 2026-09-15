@@ -26,8 +26,22 @@ published papers are not redistributable and several in the seed set are vendor
 or conference material. The `access` field points at a DOI, an arXiv id, or a
 local path outside version control.
 
-The seed PDFs live at `D:\Data\Harold\EvidenceBasedDB\Papers` and are
-deliberately outside this repository. Read them; do not commit them.
+### The two directories, and which is which
+
+| Path | What it is |
+|---|---|
+| `D:\Data\Harold\github\EvidenceBasedDB\` | **This repository.** Everything here is version-controlled |
+| `D:\Data\Harold\EvidenceBasedDB\` | **Not a repository.** Material connected to the solution that does not belong in git |
+
+The second holds `Papers` (46), `Books` (38), `GitHubRepos` (8) and
+`References`. Read from it freely; **never copy its contents into this
+repository.** The `access` field on a paper record points there, or at a DOI or
+arXiv id.
+
+Every repository on this machine lives under `D:\Data\Harold\github\`. The
+first attempt at seeding this one put the git repository inside the non-repo
+directory, which conflated the two; corrected 2026-09-14 by cloning to the right
+place and removing the misplaced copy.
 
 ## Early innovation: expect revision
 
