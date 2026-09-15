@@ -10,6 +10,7 @@ import sqlite3
 from pathlib import Path
 
 SCHEMA_PATH = Path(__file__).parent / "schema.sql"
+SEED_CONTEXTS_PATH = Path(__file__).parent / "seed_contexts.sql"
 
 
 def connect(db_path: str | Path) -> sqlite3.Connection:
@@ -39,5 +40,6 @@ def create_store(db_path: str | Path) -> sqlite3.Connection:
         )
     conn = connect(db_path)
     conn.executescript(SCHEMA_PATH.read_text(encoding="utf-8"))
+    conn.executescript(SEED_CONTEXTS_PATH.read_text(encoding="utf-8"))
     conn.commit()
     return conn

@@ -53,9 +53,19 @@ def test_create_store_builds_all_tables(db):
     assert expected <= tables
 
 
-def test_pilot_contexts_are_seeded(db):
+def test_pilot_and_domain_scale_contexts_are_seeded(db):
+    """create_store seeds schema.sql's three pilot contexts (hsbc-2026,
+    world, method) AND seed_contexts.sql's domain-scale additions (Sprint 1
+    Task D, team lead 2026-09-15: the domain-scale set confirmed needed by
+    end of Sprint 1). See tests/test_contexts.py for the full domain-scale
+    context test suite; this test only guards that create_store applies
+    both scripts."""
     ids = {row["id"] for row in db.execute("SELECT id FROM contexts")}
-    assert ids == {"hsbc-2026", "world", "method"}
+    assert ids == {
+        "hsbc-2026", "world", "method",
+        "ml", "qc", "qml",
+        "platform:dirac-3", "platform:braket", "platform:classiq",
+    }
 
 
 def test_create_store_refuses_to_overwrite_existing_file(tmp_path):

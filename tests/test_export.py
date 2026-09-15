@@ -111,11 +111,18 @@ def test_a_data_change_produces_a_localized_diff_not_a_reorder(db):
     )
 
 
-def test_contexts_export_matches_the_three_pilot_contexts(db):
+def test_contexts_export_matches_the_seeded_contexts(db):
+    """create_store seeds the three pilot contexts plus Task D's
+    domain-scale additions; see tests/test_contexts.py for the dedicated
+    domain-scale context test suite."""
     with tempfile.TemporaryDirectory() as out:
         regenerate(db, out)
         contexts = json.loads((Path(out) / "contexts.json").read_text(encoding="utf-8"))
-    assert {c["id"] for c in contexts} == {"hsbc-2026", "world", "method"}
+    assert {c["id"] for c in contexts} == {
+        "hsbc-2026", "world", "method",
+        "ml", "qc", "qml",
+        "platform:dirac-3", "platform:braket", "platform:classiq",
+    }
 
 
 def test_paper_export_carries_yields_to_its_assertions(db):
