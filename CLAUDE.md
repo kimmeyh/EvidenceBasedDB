@@ -116,6 +116,22 @@ once for exactly that reason.
   `docs/SPRINT_STOPPING_CRITERIA.md`. If genuinely uncertain whether an
   upcoming task fits, do the task first; a failure for that reason is itself
   the stopping signal, not a guess made in advance.
+- **Don't claim a guard works because the suite is green. Prove it FAILS.** A
+  test that cannot fail is worse than no test, because it buys false confidence.
+  Break the thing it guards, watch it go red, then restore. This is not
+  hypothetical here: `tests/test_guard_discipline.py` shipped INTO this
+  repository resolving its path one directory above the repo root, so it
+  reported a file that exists as absent and skipped. It was fixed 2026-09-14 by
+  removing the skip branch entirely, and verified by hiding the document and
+  watching the test go red. The Inherited section below records this class as
+  history; this entry is the rule.
+
+- **Don't stage a commit without reading what you are staging.** Run
+  `git status --short` first and account for every entry. `git add -A` is fine
+  once you have. It happened here: a review-findings commit swept in an
+  unrelated, uncommitted PowerShell-to-Python hook conversion whose message
+  described none of it. The commit was unwound and split.
+
 - **Don't act on a recalled memory without checking it against current repo
   state first.** Compare its date and claims against git log, sprint status,
   and the docs it references before trusting its "next steps" -- a memory
