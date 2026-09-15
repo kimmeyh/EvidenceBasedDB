@@ -33,6 +33,26 @@
 - Long jobs run in the background with output files; per-trial/per-fit persistence so interruption loses one unit, not the run.
 - `--no-verify` is banned; hooks are part of the quality system.
 
+**AMENDMENT, 2026-09-14: Claude Code hooks in `.claude/hooks/` are Python, not
+PowerShell.** The PowerShell-native rule above was written for automation that
+runs ONLY on this machine, where cross-OS portability buys nothing and
+wrapping across shells has cost real defects (ADR-0017). `.claude/hooks/`
+scripts are different: Claude Code invokes them as plain commands over a
+documented stdin/stdout/exit-code contract, so the language is not tied to
+this host at all, and this repository's origin (`kimmeyharold`) may be cloned
+onto a non-Windows machine even though today it only runs here. The five
+hooks seeded from hsbc-quantum-fraud-2026 (`block_carry_forward_stash.py`,
+`block_branch_from_develop.py`, `block_unraw_escape.py`,
+`block_shell_metachar_expansion.py`, `verify_closeout_complete.py`) were
+converted from `.ps1` to `.py` this date. Converting also let their command
+strings in `.claude/settings.json` use forward slashes instead of Windows
+backslashes, which removes the doubled-backslash JSON-escape hazard that
+`test_hook_registration.py` exists to catch (F68) -- the hazard is gone by
+construction rather than guarded against, though the test itself is
+unchanged and still passes. This amendment covers `.claude/hooks/` only; the
+PowerShell-native rule stands unchanged for everything else, including
+`scripts/` and any future automation outside the hooks directory.
+
 ## Testing standards (summary; full doc lands with the F1 sprint, disposition item 15)
 
 - pytest green before any commit touching `experiments/src/`.

@@ -25,10 +25,20 @@ Verified by injection: reverting one registration to the single-backslash form
 fails `test_every_registered_hook_path_resolves` with the offending name, and
 `test_no_hook_command_contains_a_control_character` names the control character.
 Restoring the doubled backslash passes both.
+
+CONVERTED TO PYTHON, 2026-09-14. The hooks themselves moved from PowerShell to
+Python (QUALITY_STANDARDS.md amendment, same date) and their command strings
+now use forward slashes, which sidesteps the doubled-backslash JSON escape
+that caused F68 -- forward slashes need no escaping either as a Windows path or
+as a JSON string. The two guard tests below are UNCHANGED and still pass: they
+assert on whatever separator style is actually present, not on backslashes
+specifically, so they keep guarding the defect class even though this
+repository no longer needs the doubling they were written to check.
 """
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -53,13 +63,18 @@ def _hook_commands() -> list[tuple[str, str]]:
 
 
 def _script_path(command: str) -> Path | None:
-    """The -File argument of a hook command, resolved against the repo root.
+    """The script argument of a hook command, resolved against the repo root.
 
-    Separators are NORMALISED to forward slashes after substitution. The hook
-    commands are PowerShell invocations and carry Windows backslashes, which a
-    POSIX filesystem reads as literal filename characters rather than
-    separators -- so `Path(tail).exists()` is unconditionally False on Linux and
-    macOS.
+    Separators are NORMALISED to forward slashes after substitution, which
+    matters even now that hook commands are `python "path/with/forward/
+    slashes.py"` (converted 2026-09-14 from PowerShell `-File` invocations):
+    a POSIX filesystem reads a backslash as a literal filename character
+    rather than a separator, so `Path(tail).exists()` is unconditionally
+    False on Linux and macOS for any command that still carries one.
+
+    Recognises both forms so a future PowerShell hook (or one not yet
+    converted) is still checked: the PowerShell `-File <path>` marker, and a
+    bare `python "<path>"` / `python3 "<path>"` invocation.
 
     Found by Copilot on PR #94. CI runs ubuntu-latest, so the first version of
     this guard would have turned CI red for exactly the fresh-clone audience the
@@ -67,9 +82,13 @@ def _script_path(command: str) -> Path | None:
     because it could not resolve them itself.
     """
     marker = "-File "
-    if marker not in command:
-        return None
-    tail = command.split(marker, 1)[1].strip().strip('"')
+    if marker in command:
+        tail = command.split(marker, 1)[1].strip().strip('"')
+    else:
+        m = re.match(r'^\s*python[0-9.]*(?:\.exe)?\s+"([^"]+)"', command)
+        if not m:
+            return None
+        tail = m.group(1)
     tail = tail.replace("${CLAUDE_PROJECT_DIR}", str(ROOT))
     return Path(tail.replace("\\", "/"))
 
@@ -132,10 +151,14 @@ def test_the_guards_this_repository_depends_on_are_registered():
 
     When this repository gains its own frozen artifacts (a published export, a
     release tag), add them here rather than assuming the list is complete.
+
+    Filenames updated 2026-09-14: the hooks converted from PowerShell to
+    Python (QUALITY_STANDARDS.md amendment, same date), so the names this
+    test looks for changed from `.ps1` to `.py` alongside them.
     """
     commands = " ".join(c for _, c in _hook_commands())
-    for required in ("block-unraw-escape.ps1",
-                     "block-shell-metachar-expansion.ps1"):
+    for required in ("block_unraw_escape.py",
+                     "block_shell_metachar_expansion.py"):
         assert required in commands, (
             f"{required} is not registered in .claude/settings.json. It guards "
             "the silent-corruption class: an escape consumed by a shell or a "

@@ -37,10 +37,23 @@ PowerShell 7+ is the primary shell. Bash (Git Bash POSIX sh) is available for PO
 
 | Source hook | Purpose there | Applicability here | Plan |
 |---|---|---|---|
-| block-carry-forward-stash.ps1 | Hard-block `git stash` (carry-forward protection) | Direct: stash is banned here too | Port in F1 sprint |
-| verify-closeout-complete.ps1 | Stop hook blocking completion claims contradicted by artifacts | High value once sprint cadence is steady | Port in F1 sprint (adapted to our checklist paths) |
+| block-carry-forward-stash.ps1 | Hard-block `git stash` (carry-forward protection) | Direct: stash is banned here too | Ported in F1 sprint as `block_carry_forward_stash.py` |
+| verify-closeout-complete.ps1 | Stop hook blocking completion claims contradicted by artifacts | High value once sprint cadence is steady | Ported in F1 sprint as `verify_closeout_complete.py` (adapted to our checklist paths) |
 | require-sprint-cards.ps1 | Blocks task work before cards exist | Concept adopted in workflow 3.4; hook port optional | Backlog |
 | sprint-auto-advance.ps1 | Enforces the auto-advance window bounds | Tied to spamfilter's status schema; ours differs | Backlog, revisit Phase 2 |
+
+**AMENDMENT, 2026-09-14**: the two ported hooks above, plus
+`block-branch-from-develop.ps1`, `block-unraw-escape.ps1` and
+`block-shell-metachar-expansion.ps1` (seeded here directly, not from this
+table), were converted from PowerShell to Python. See the QUALITY_STANDARDS.md
+"Automation standards" amendment of the same date for why: hooks are invoked
+by Claude Code over a documented, language-agnostic contract, so the
+PowerShell-native rule that governs this repository's OTHER automation does
+not apply to `.claude/hooks/` specifically. The `.ps1` names in this table are
+left as originally written, describing the source repository's files at the
+time of the Sprint 2 assessment; the files that actually exist in THIS
+repository's `.claude/hooks/` now carry a `.py` extension and underscores
+rather than hyphens.
 
 The pre-commit confidentiality hook (this repo's own, `.git/hooks/pre-commit`) remains active and verified.
 

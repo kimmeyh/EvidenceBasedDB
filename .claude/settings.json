@@ -1,5 +1,5 @@
 {
-  "_comment": "Project settings for EvidenceBasedDB. Hooks seeded 2026-09-14 from hsbc-quantum-fraud-2026. The three hooks guarding that project's frozen submission artifacts were deliberately NOT carried; they guard files that do not exist here. NOTE: path separators must be DOUBLED backslashes in this file. A single backslash before a letter is a JSON escape -- \\b is U+0008 -- and Claude Code skips a hook whose file is missing WITHOUT ERROR. Two hooks were dead that way for their whole life in the source repository. test_hook_registration.py guards it.",
+  "_comment": "Project settings for EvidenceBasedDB. Hooks seeded 2026-09-14 from hsbc-quantum-fraud-2026, then converted from PowerShell to Python 2026-09-14 (QUALITY_STANDARDS.md amendment, same date) so they run unmodified on any OS. Command strings use FORWARD slashes only -- both python and ${CLAUDE_PROJECT_DIR} accept them on Windows, which removes the doubled-backslash JSON-escape hazard test_hook_registration.py was written to catch; that test still runs against whatever separator style is present. The three hooks guarding hsbc's frozen submission artifacts were deliberately NOT carried; they guard files that do not exist here.",
   "hooks": {
     "PreToolUse": [
       {
@@ -7,22 +7,22 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PROJECT_DIR}\\\\.claude\\\\hooks\\\\block-carry-forward-stash.ps1\"",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/block_carry_forward_stash.py\"",
             "timeout": 15
           },
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PROJECT_DIR}\\\\.claude\\\\hooks\\\\block-branch-from-develop.ps1\"",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/block_branch_from_develop.py\"",
             "timeout": 15
           },
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PROJECT_DIR}\\\\.claude\\\\hooks\\\\block-unraw-escape.ps1\"",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/block_unraw_escape.py\"",
             "timeout": 15
           },
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PROJECT_DIR}\\\\.claude\\\\hooks\\\\block-shell-metachar-expansion.ps1\"",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/block_shell_metachar_expansion.py\"",
             "timeout": 15
           }
         ]
@@ -34,7 +34,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PROJECT_DIR}\\\\.claude\\\\hooks\\\\verify-closeout-complete.ps1\"",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/verify_closeout_complete.py\"",
             "timeout": 20
           }
         ]
