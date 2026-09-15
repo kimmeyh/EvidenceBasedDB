@@ -53,6 +53,15 @@ unchanged and still passes. This amendment covers `.claude/hooks/` only; the
 PowerShell-native rule stands unchanged for everything else, including
 `scripts/` and any future automation outside the hooks directory.
 
+**AMENDMENT, 2026-09-15: a sixth hook, `block_sibling_repo_writes.py`, guards
+against writing into `spamfilter-multi` or `hsbc-quantum-fraud-2026`.** Team
+lead: "from here on out, the activities in this repo should not
+write/update files in either spamfilter-multi or hsbc repo... It is OK to
+read from them upon request, but not write to them." Registered on both the
+`Bash|PowerShell` and `Write|Edit|NotebookEdit` PreToolUse matchers, since
+either tool shape can target a file outside this repository. See CLAUDE.md
+"Standing rules" for the full statement of the rule this hook enforces.
+
 ## Testing standards (summary; full doc lands with the F1 sprint, disposition item 15)
 
 - pytest green before any commit touching `experiments/src/`.

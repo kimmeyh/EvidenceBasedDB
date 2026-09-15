@@ -67,6 +67,16 @@ it was wrong.
 - Reading level escalates ONE grade at a time from 8 toward a PhD ceiling, and
   the level achieved is recorded. Grades 13 to 16 are acceptable; a CLUSTER at
   17 or above is a finding about the source document, not about the glossary.
+- **This repository's sessions may READ `spamfilter-multi` and
+  `hsbc-quantum-fraud-2026` (their repos and their Claude Code memory
+  directories) but must never WRITE to either.** Team lead, 2026-09-15:
+  research into those repositories -- porting a convention, checking a
+  backlog item, reading a memory file -- is expected and stays fine; writing,
+  editing, or running a write-shaped command against either from an
+  EvidenceBasedDB session is not, and needs a session already working in
+  that repository instead. Hook-enforced:
+  `.claude/hooks/block_sibling_repo_writes.py`, on both the `Bash|PowerShell`
+  and `Write|Edit|NotebookEdit` PreToolUse matchers.
 
 ## Things Claude Should NOT Do
 

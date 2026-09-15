@@ -35,6 +35,7 @@ Surface with the template phrasing; wait.
 - Repo-root `CHECKLIST-Phase2-pre.md` is the submission deliverable ledger, reconciled at every sprint close; ALL_SPRINTS_MASTER_PLAN.md is the sprint-scoping view.
 - Every reported number originates in results.json with an evidence tag.
 - Team-lead `0*` working files at repo root: commit neutrally, never read.
+- **`spamfilter-multi` and `hsbc-quantum-fraud-2026` are READ-ONLY from this repository** (team lead, 2026-09-15): research freely, never write. Hook-enforced by `block_sibling_repo_writes.py`.
 
 ## Sprint calendar (Phase 1 of the challenge)
 

@@ -155,10 +155,16 @@ def test_the_guards_this_repository_depends_on_are_registered():
     Filenames updated 2026-09-14: the hooks converted from PowerShell to
     Python (QUALITY_STANDARDS.md amendment, same date), so the names this
     test looks for changed from `.ps1` to `.py` alongside them.
+
+    block_sibling_repo_writes.py added 2026-09-15 (team lead: this session
+    must not write into spamfilter-multi or hsbc-quantum-fraud-2026, read
+    access only). Registered on both PreToolUse matchers, which is why this
+    test's scan over every hook group (not a single matcher) matters here.
     """
     commands = " ".join(c for _, c in _hook_commands())
     for required in ("block_unraw_escape.py",
-                     "block_shell_metachar_expansion.py"):
+                     "block_shell_metachar_expansion.py",
+                     "block_sibling_repo_writes.py"):
         assert required in commands, (
             f"{required} is not registered in .claude/settings.json. It guards "
             "the silent-corruption class: an escape consumed by a shell or a "
