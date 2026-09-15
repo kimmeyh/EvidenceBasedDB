@@ -34,7 +34,7 @@ EM_DASH = chr(8212)
 # Directories whose markdown is "formal" in the sense QUALITY_STANDARDS means.
 COVERED_DIRS = (
     ROOT / "docs" / "adr",
-    ROOT / "docs" / "adr",
+    ROOT / "docs" / "research",
 )
 
 # Individual formal documents outside those directories.

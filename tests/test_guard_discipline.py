@@ -81,9 +81,15 @@ def test_the_injection_standard_is_documented():
     exists, and the next person to hit it will delete the test rather than
     follow the practice.
     """
-    doc = (SRC.parents[1] / "docs" / "TESTING_STRATEGY.md")
-    if not doc.exists():
-        pytest.skip("testing strategy doc absent")
+    doc = SRC.parent / "docs" / "TESTING_STRATEGY.md"
+    # No skip branch. SRC is tests/, so this used to read SRC.parents[1] and resolve
+    # OUTSIDE the repository; the document existed and the guard skipped anyway. A
+    # guard that reports "absent" for a file that is present is a guard that cannot
+    # fail, which is the exact defect class this file exists to prevent.
+    assert doc.exists(), (
+        f"{doc} not found. This is the repository's testing strategy and the rule "
+        "this test enforces is documented there. If it moved, update this path; do "
+        "not make the guard skip.")
     body = doc.read_text(encoding="utf-8").lower()
     assert "injection" in body, (
         "TESTING_STRATEGY.md no longer documents the injection-verification "
