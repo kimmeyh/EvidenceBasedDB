@@ -68,6 +68,59 @@ it was wrong.
   the level achieved is recorded. Grades 13 to 16 are acceptable; a CLUSTER at
   17 or above is a finding about the source document, not about the glossary.
 
+## Things Claude Should NOT Do
+
+Added 2026-09-15. These carry forward preferences Harold has stated
+repeatedly in other repositories (spamfilter-multi) that never made it into
+hsbc-quantum-fraud-2026's own `CLAUDE.md` and so could not have carried
+further into this one at seeding. Also recorded as memory files (see
+`feedback_*.md` in this repository's memory index) -- kept in both places
+deliberately: `CLAUDE.md` is read in full every session, memory is recalled
+selectively, and a rule that lives only in memory has already been missed
+once for exactly that reason.
+
+- **Don't ask a decision question except as a PLAIN NUMBERED LIST Harold can
+  answer by typing a digit.** Not the AskUserQuestion tool's multiple-choice
+  UI, and not prose. The test is mechanical: if Harold cannot answer by
+  typing `1`, it is formatted wrong. Applies to yes/no ("1. Yes  2. No"),
+  option comparisons, and path selection, inside or outside any auto-advance
+  window -- only the FORMAT is at issue, not whether asking is allowed.
+- **Don't phrase a decision question so "yes" could mean two different
+  things.** Each question needs one unambiguous answer form: yes/no, or
+  select 1/2/3/.../all. A compound question carrying two decisions ("approve
+  the text? And where should it be hosted?") is two numbered questions, not
+  one.
+- **Don't point Harold back to something he would have to scroll for.**
+  "The plan from earlier," "as listed above," "per my previous message" all
+  point at content that may be many screens back, behind tool output and
+  test runs. Re-present the full instructions in every message that asks him
+  to act -- validation steps, manual steps, unanswered questions with their
+  options intact. This binds hardest at Phase 5.3 Manual Validation, handed
+  over once and then followed by hours of review and fixes before he
+  actually validates: re-present the full validation plan every time, not a
+  reference to it.
+- **Don't touch more than one file/surface on a request without echoing the
+  requirement back first.** One sentence: "I understand you want X to happen
+  on Y, with Z behavior. Correct?" Wait for confirmation, then proceed
+  without asking again for the same task. Skip this for trivial one-line
+  fixes and doc-only edits with no scope ambiguity.
+- **Don't use grid/ASCII tables for terminal task summaries or manual
+  validation checklists.** Use bullet lists. Markdown tables inside committed
+  doc files are fine; this is about terminal output readability only.
+- **Don't report a batch of completed tasks mid-sprint as though it were a
+  stopping point.** Before ending any turn: is every approved task DONE, or
+  does a specifically named `docs/SPRINT_STOPPING_CRITERIA.md` criterion
+  apply to EACH remaining one? If no, continue with the next task.
+- **Don't invent "context window running low" as a stopping reason.** The
+  only valid stopping reasons are the named criteria in
+  `docs/SPRINT_STOPPING_CRITERIA.md`. If genuinely uncertain whether an
+  upcoming task fits, do the task first; a failure for that reason is itself
+  the stopping signal, not a guess made in advance.
+- **Don't act on a recalled memory without checking it against current repo
+  state first.** Compare its date and claims against git log, sprint status,
+  and the docs it references before trusting its "next steps" -- a memory
+  that was true when written can be stale by the time it is recalled.
+
 ## Inherited from the consumer repository, and why
 
 The sprint methodology, the hooks and several tests were copied from
