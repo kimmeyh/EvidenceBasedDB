@@ -1,0 +1,44 @@
+{
+  "_comment": "Project settings for EvidenceBasedDB. Hooks seeded 2026-09-14 from hsbc-quantum-fraud-2026. The three hooks guarding that project's frozen submission artifacts were deliberately NOT carried; they guard files that do not exist here. NOTE: path separators must be DOUBLED backslashes in this file. A single backslash before a letter is a JSON escape -- \\b is U+0008 -- and Claude Code skips a hook whose file is missing WITHOUT ERROR. Two hooks were dead that way for their whole life in the source repository. test_hook_registration.py guards it.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PROJECT_DIR}\\\\.claude\\\\hooks\\\\block-carry-forward-stash.ps1\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PROJECT_DIR}\\\\.claude\\\\hooks\\\\block-branch-from-develop.ps1\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PROJECT_DIR}\\\\.claude\\\\hooks\\\\block-unraw-escape.ps1\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PROJECT_DIR}\\\\.claude\\\\hooks\\\\block-shell-metachar-expansion.ps1\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PROJECT_DIR}\\\\.claude\\\\hooks\\\\verify-closeout-complete.ps1\"",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  }
+}
