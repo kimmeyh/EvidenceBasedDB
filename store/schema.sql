@@ -1,0 +1,185 @@
+-- Evidence Based DB schema (Sprint 1 Task B).
+--
+-- Implements the spine and class-specific fields from ADR-0004 section 3
+-- (as amended: certainty/certainty_reasons per A2, class gains `paper` per
+-- A3) and the paper-record fields from ADR-0005 section 2. This file is the
+-- store of record; store/export.py regenerates the committed text export
+-- from it (Task C). Nothing here is hand-edited after the store is queried
+-- through it -- SCHEMA changes land here, DATA changes land through the
+-- ingestion path built in Task E/F.
+--
+-- Foreign keys are OFF by default in SQLite and must be enabled per
+-- connection (`PRAGMA foreign_keys = ON`); the store module does this on
+-- every connect.
+
+PRAGMA foreign_keys = ON;
+
+-- ---------------------------------------------------------------------
+-- Contexts (ADR-0004 section 3b): the partitioning mechanism, never tags.
+-- Seeded with the three pilot contexts from ADR-0005 section 2b; more are
+-- added only when assertions genuinely share an assumption none of the
+-- existing contexts already hold (ADR-0004 section 3b "Rule for adding a
+-- context").
+-- ---------------------------------------------------------------------
+
+CREATE TABLE contexts (
+    id          TEXT PRIMARY KEY,
+    description TEXT NOT NULL
+);
+
+INSERT INTO contexts (id, description) VALUES
+    ('hsbc-2026', 'Assertions specific to the HSBC quantum fraud submission: amendment counts, campaign totals, measured results'),
+    ('world',     'True independent of any project: mathematics, physics, standard acronym expansions'),
+    ('method',    'How this library and its consumers build and reason, including about the library itself');
+
+-- ---------------------------------------------------------------------
+-- Records: the common spine (ADR-0004 section 3), carried by every class.
+-- `class` is constrained to the four values ADR-0004 amendment A3 settles:
+-- assertion, acronym, term, paper.
+--
+-- `certainty` replaces the percentage `confidence` field per ADR-0004
+-- amendment A2 and ADR-0005 section 2e (GRADE-style: four levels, derived,
+-- never chosen directly). `certainty_reasons` is required whenever
+-- certainty is not the class's starting level -- enforced at the
+-- application layer, not by a CHECK constraint, since "the starting level"
+-- depends on the evidence_tag and is not expressible as a column-only rule.
+-- ---------------------------------------------------------------------
+
+CREATE TABLE records (
+    id                TEXT PRIMARY KEY,
+    class             TEXT NOT NULL CHECK (class IN ('assertion', 'acronym', 'term', 'paper')),
+    value             TEXT NOT NULL,
+    provenance        TEXT NOT NULL,
+    evidence_tag      TEXT NOT NULL CHECK (evidence_tag IN ('HW', 'SIM', 'PROJ', 'N/A')),
+    certainty         TEXT CHECK (certainty IN ('high', 'moderate', 'low', 'very-low')),
+    certainty_reasons TEXT,
+    fidelity          TEXT CHECK (fidelity IN ('exact', 'scoped', 'consequence')),
+    reading_level     INTEGER CHECK (reading_level IS NULL OR (reading_level BETWEEN 8 AND 20)),
+    updated           TEXT NOT NULL,
+    updated_reason    TEXT NOT NULL
+);
+
+-- Records claim contexts many-to-many (a term can belong to `qml`, which is
+-- not the union of `ml` and `qc` per ADR-0004 section 3b -- a record may
+-- need to be filed under an intersection context explicitly).
+CREATE TABLE record_contexts (
+    record_id  TEXT NOT NULL REFERENCES records(id) ON DELETE CASCADE,
+    context_id TEXT NOT NULL REFERENCES contexts(id),
+    PRIMARY KEY (record_id, context_id)
+);
+
+-- Prerequisites: ids of records a reader needs first (ADR-0004 section 5).
+-- Self-referencing, many-to-many, because the escalation ladder's rungs are
+-- a DAG (checked, not merely trusted -- see store/checks.py in a later
+-- task if a cycle-detection query is needed).
+CREATE TABLE prerequisites (
+    record_id       TEXT NOT NULL REFERENCES records(id) ON DELETE CASCADE,
+    prerequisite_id TEXT NOT NULL REFERENCES records(id),
+    PRIMARY KEY (record_id, prerequisite_id),
+    CHECK (record_id != prerequisite_id)
+);
+
+-- ---------------------------------------------------------------------
+-- Class-specific fields (ADR-0004 section 3, plus ADR-0005 section 2 for
+-- the paper class). One table per class rather than a wide, mostly-NULL
+-- `records` table -- ADR-0004 section 2b names exactly this divergence as
+-- the trigger for a document store, and a class-specific table is the
+-- relational answer that avoids needing one.
+-- ---------------------------------------------------------------------
+
+CREATE TABLE assertion_fields (
+    record_id TEXT PRIMARY KEY REFERENCES records(id) ON DELETE CASCADE,
+    units     TEXT,
+    rounding  TEXT
+);
+
+-- Documents that cite an assertion (ADR-0004 section 3: "the `documents`
+-- that cite it"). Many-to-many since one assertion can be cited by several
+-- documents and the field is a list on the assertion record.
+CREATE TABLE assertion_documents (
+    record_id TEXT NOT NULL REFERENCES assertion_fields(record_id) ON DELETE CASCADE,
+    document  TEXT NOT NULL,
+    PRIMARY KEY (record_id, document)
+);
+
+CREATE TABLE acronym_fields (
+    record_id       TEXT PRIMARY KEY REFERENCES records(id) ON DELETE CASCADE,
+    expansion       TEXT NOT NULL,
+    plain_definition TEXT NOT NULL,
+    visual          TEXT
+);
+
+CREATE TABLE term_fields (
+    record_id        TEXT PRIMARY KEY REFERENCES records(id) ON DELETE CASCADE,
+    plain_definition TEXT NOT NULL,
+    visual           TEXT
+);
+
+-- `see_also` is a list on the term record (ADR-0004 section 3); modelled as
+-- a join to other records rather than a delimited text column so it stays
+-- queryable and referentially valid.
+CREATE TABLE term_see_also (
+    record_id     TEXT NOT NULL REFERENCES term_fields(record_id) ON DELETE CASCADE,
+    see_also_id   TEXT NOT NULL REFERENCES records(id),
+    PRIMARY KEY (record_id, see_also_id)
+);
+
+-- Paper fields (ADR-0005 section 2). A paper record is PROVENANCE plus
+-- screening state; the claims themselves live in the assertion class and
+-- are linked in via paper_yields (ADR-0005 section 2b2).
+CREATE TABLE paper_fields (
+    record_id               TEXT PRIMARY KEY REFERENCES records(id) ON DELETE CASCADE,
+    tier                    TEXT NOT NULL CHECK (tier IN ('seen', 'screened', 'read')),
+    citation                TEXT NOT NULL,
+    access                  TEXT NOT NULL,
+    disposition             TEXT NOT NULL,
+    evidence                TEXT,
+    mined_by                TEXT,
+    -- REQUIRED at tier 'read' (ADR-0005 section 2, enforced at the
+    -- application layer since a tier-conditional NOT NULL is not
+    -- expressible as a single CHECK across columns in SQLite without a
+    -- trigger). The literal string 'never' is a valid, meaningful value --
+    -- distinct from NULL, which means "not yet tiered to require it."
+    checked_against_source  TEXT
+);
+
+-- `applicability`: context ids the paper bears on, per ADR-0005 section 2d
+-- ("points at contexts; it is not its own vocabulary"). Many-to-many,
+-- reusing the same contexts table records themselves claim.
+CREATE TABLE paper_applicability (
+    record_id  TEXT NOT NULL REFERENCES paper_fields(record_id) ON DELETE CASCADE,
+    context_id TEXT NOT NULL REFERENCES contexts(id),
+    rationale  TEXT NOT NULL,
+    PRIMARY KEY (record_id, context_id)
+);
+
+-- `yields`: the assertion ids extracted from this paper (ADR-0005 section
+-- 2, 2b2). The field that makes a paper a source rather than a summary.
+CREATE TABLE paper_yields (
+    paper_id     TEXT NOT NULL REFERENCES paper_fields(record_id) ON DELETE CASCADE,
+    assertion_id TEXT NOT NULL REFERENCES records(id),
+    PRIMARY KEY (paper_id, assertion_id)
+);
+
+-- ---------------------------------------------------------------------
+-- Relations between assertions (ADR-0005 section 2f): `supports` and
+-- `contradicts`, with papers as provenance via paper_yields above rather
+-- than stored again here.
+-- ---------------------------------------------------------------------
+
+CREATE TABLE assertion_relations (
+    from_assertion_id TEXT NOT NULL REFERENCES records(id) ON DELETE CASCADE,
+    to_assertion_id   TEXT NOT NULL REFERENCES records(id) ON DELETE CASCADE,
+    relation          TEXT NOT NULL CHECK (relation IN ('supports', 'contradicts')),
+    PRIMARY KEY (from_assertion_id, to_assertion_id, relation),
+    CHECK (from_assertion_id != to_assertion_id)
+);
+
+-- ---------------------------------------------------------------------
+-- Indexes for the queries the export and the store's own tooling will run
+-- most often: by class, by context, and by paper tier.
+-- ---------------------------------------------------------------------
+
+CREATE INDEX idx_records_class ON records(class);
+CREATE INDEX idx_record_contexts_context ON record_contexts(context_id);
+CREATE INDEX idx_paper_fields_tier ON paper_fields(tier);
