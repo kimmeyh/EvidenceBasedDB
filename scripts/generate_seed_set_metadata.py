@@ -156,10 +156,10 @@ ENTRIES = [
     },
     {
         "id": "loke-2026-cvqboosting-fraud-detection-smu",
-        "citation": 'Loke, B.H.T., Sahoo, N., Guan, B., Xu, M., Verma, D., et al. (Singapore Management University), "Improving credit card transaction fraud detection using CVQBoosting," SMU Institutional Knowledge, Research Collection School of Computing and Information Systems, 2026-03',
+        "citation": 'Loke, B.H.T., Sahoo, N., Guan, B., Xu, M., Verma, D., Griffin, P.R. (Singapore Management University), "Improving credit card transaction fraud detection using CVQBoosting," SMU Institutional Knowledge, Research Collection School of Computing and Information Systems, 2026-03. CORRECTED 2026-09-16: the full author list (page 2 of the PDF, "Author" byline) is Bethel Hui Ting Loke, Nirvik Sahoo, Bingyan Guan, Minrui Xu, Dev Verma, and Paul R. Griffin -- the initial extraction pass read only page 1\'s "See next page for additional authors" and recorded "et al.", missing Griffin entirely even though the seed filename itself named him',
         "access": "local file, no DOI/arXiv id (SMU institutional repository; a formal handle likely exists at ink.library.smu.edu.sg but was not fully visible on page 1)",
         "context": "platform:dirac-3",
-        "disposition": "DIRECTLY RELEVANT to the HSBC consumer project: same CVQBoost/Dirac-3 fraud-detection subject, and the SAME Loke et al. author group ADR-0005 already cites for the 0.8108 AUPRC figure. High priority; a strong candidate to cross-reference against the consumer repository's own existing assertions when this is mined further",
+        "disposition": "DIRECTLY RELEVANT to the HSBC consumer project: same CVQBoost/Dirac-3 fraud-detection subject, and the SAME Loke et al. author group ADR-0005 already cites for the 0.8108 AUPRC figure. High priority; a strong candidate to cross-reference against the consumer repository's own existing assertions when this is mined further. All six authors are SMU-affiliated per the title page; none is established here as QCi-affiliated -- F5's QCi-author identification must verify affiliation from body text/acknowledgments, not assume it from appearing on a Dirac-3-adjacent paper",
         "promote": True,
     },
     {
