@@ -44,7 +44,7 @@ Consult this line at the START and END of every phase; state which steps were do
 6. **Decision-Class Checkpoint Protocol**: sprint-plan approval is NOT authorization for (Class 1) design-decision changes -- anything amending an ACCEPTED ADR's spine (record classes, contexts, certainty model); (Class 2) evidence-claim changes -- asserting a certainty level or fidelity higher than a record's provenance supports; (Class 3) scope changes -- de-scoping or deferring approved work. STOP, surface with the template phrasing ("This would change ...: [what]. Should I proceed?"), WAIT. Anti-pattern signals: "it is just a small change", "I will mention it in the retrospective", "we are running out of time, I will defer Z".
 7. **VERIFY BEFORE AMENDING.** A review finding -- internal or external, from a person or a model -- is NOT actionable until independently verified against the code or the artifact it describes. Corrections to an ACCEPTED ADR are recorded as dated amendments at the bottom, never as edits in place (CLAUDE.md "Early innovation: expect revision").
    - Corollary: **correcting a document does not correct its generator.** When an amendment corrects a claim, check the code that produces that claim's evidence, not only the prose stating it.
-10. **If Phase 1 was skipped for a sprint, STOP and return to it** before any Phase 4 work.
+8. **If Phase 1 was skipped for a sprint, STOP and return to it** before any Phase 4 work.
 
 ## Phase detail (adaptations from the source; consult spamfilter's doc for rationale history)
 
