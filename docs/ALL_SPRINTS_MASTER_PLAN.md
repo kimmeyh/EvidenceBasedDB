@@ -174,6 +174,69 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   whether the D-Wave ebook should be reclassified to match
 - Depends on: F77 (Sprint 1, complete)
 
+**F5. Deep-dive QCi: identify authors, find their other papers, scrape QCi's own documentation (~large, no-history) Priority 10**
+- Phase: Sourcing / research. Tentatively assigned Sprint 2 (team lead, 2026-09-16)
+- Platform: N/A for this repository's own tracked content -- output lands
+  entirely under `D:\Data\Harold\EvidenceBasedDB\` (NOT this git repository;
+  ADR-0005 section 3 is explicit that raw material stays outside version
+  control, the `access` field points at it)
+- **Three sub-parts, team lead 2026-09-16**:
+  1. **Identify every QCi-affiliated person who authored or co-authored a
+     paper already in this repository's store or seed set.** Search the DB
+     export and the 44 seed-set papers' own citation/affiliation lines
+     (already extracted once during Task F -- re-derive from the actual
+     PDF content, not from memory of that extraction). Get FULL names, not
+     initials, verified against the paper itself. `emami-2025-financial-
+     fraud-entropy-computing-qci` already names six QCi-affiliated authors
+     on its own arXiv title page (Emami, Dyk, Haycraft, Spear, Nguyen,
+     Chancellor) as a confirmed starting point; the SMU/Loke CVQBoosting
+     paper's "et al." need expanding from the actual PDF before assuming
+     who among its author list, if anyone, is QCi-affiliated rather than
+     SMU-affiliated.
+  2. **For each identified person, determine a reliable way to search for
+     papers they co-authored on ANY topic** (not just QCi/Dirac-3 work),
+     and download all of them. **Search priority, team lead 2026-09-16:
+     arXiv first, then DOI resolution (Crossref/publisher), then Google
+     Scholar.** A name alone is not a unique search key (common-name
+     collisions are a real risk); the card's own acceptance criteria should
+     require disambiguating each hit against the person's known
+     affiliation/co-author network before downloading, not accepting every
+     name match.
+  3. **Separately, scrape `quantumcomputinginc.com` itself** for: key docs
+     on Dirac-3 and `eqc_models`; training/onboarding documentation; and
+     anything covering QML methods the company publishes on (QBoost,
+     CVQBoost, QSVM, and related). This is independent of sub-part 2 --
+     official vendor documentation, not third-party authored papers.
+  4. **Also pull the `eqc_models` package itself from PyPI** (team lead,
+     2026-09-16) -- the released distribution, not only web documentation
+     about it. Source and any bundled docs/examples both count as reference
+     material under this card's scope.
+- **Storage, team lead 2026-09-16 (clarified)**: everything lands in
+  `D:\Data\Harold\EvidenceBasedDB\References\`, which the team lead
+  confirmed is meant to hold exactly this kind of material -- non-technical
+  articles, QCi's own training/website documentation, and downloaded
+  packages like `eqc_models` from PyPI -- alongside the technical papers
+  `Papers` already holds. Proposed sub-structure for review at carding:
+  `References/QCi-authors/<person>/` for sub-part 2's per-author downloads,
+  `References/QCi-site/` for sub-part 3's scrape, and
+  `References/eqc_models/` for sub-part 4's PyPI pull -- team lead's call
+  on exact naming at carding, this is a proposal.
+- **Standing constraint, same as every paper record in this store**: the
+  PDFs/scraped pages themselves are never committed into this git
+  repository (ADR-0005 section 3, `.gitignore` already blocks `*.pdf`). If
+  any of this material becomes a real DB record (not just staged material),
+  it follows the same `seen`-tier paper-record path Task F already built,
+  with its own `access` field pointing at the local path.
+- **Not yet scoped, flag at carding**: whether a scraped/downloaded item
+  becomes a full paper record immediately, or stays purely staged material
+  ("might be used later," per the team lead's own framing) until a future
+  sprint decides to ingest it. Recommend the latter, since ingesting
+  unreviewed scraped content at `seen` tier without adjudication is exactly
+  the "volume without judgement" risk ADR-0005 section 2c warns is MORE
+  dangerous than fewer, reviewed records.
+- Depends on: nothing technical. Read-only web access and the existing
+  seed-set metadata are both already available.
+
 **F75. Action the 20-paper ADR checkpoint (~2h) Priority 7**
 - Phase: Evidence Based DB / process (carried from the consumer repository's
   Sprint 14 retrospective improvement 5, 2026-09-14)
