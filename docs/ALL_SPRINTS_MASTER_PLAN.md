@@ -237,6 +237,51 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
 - Depends on: nothing technical. Read-only web access and the existing
   seed-set metadata are both already available.
 
+**F6. Address the six remaining PR #1 code-review findings (~unknown, no-history) Priority 9**
+- Phase: Tooling / robustness. Surfaced by the Claude code-review agent on
+  PR #1, 2026-09-16; the two most contained findings and both Copilot
+  findings were fixed directly on the PR (commit 7d7f6c1). These six are
+  each a moderate-scope design or refactor question, not a quick fix
+- **1. Redundant citation storage**: `insert_paper()` writes the same
+  citation string into both `records.provenance` and `paper_fields.
+  citation`. CLAUDE.md's own standing rule warns against exactly this
+  ("determinate facts are COMPUTED, never stored... one value restated in
+  five documents drifted in three of them"). Needs a decision on which
+  field is canonical and whether the other should be a resolver
+- **2. Tier/checked_against_source not enforced**: `store/schema.sql`'s own
+  comment documents that `checked_against_source` is REQUIRED at
+  tier='read', enforced "at the application layer" -- but no application-
+  layer check exists. `insert_paper()` accepts any tier/checked_against_
+  source combination unchecked. Needs a `validate_paper()` or equivalent
+- **3. No per-record transaction boundaries during bulk ingestion**: both
+  ingestion scripts commit once after their whole loop. A mid-loop FK
+  violation aborts the run with an unhandled traceback naming no offending
+  record. Needs per-record savepoints or at least per-record error context
+- **4. Export N+1 queries**: `store/export.py` issues 2-5 additional
+  SELECTs per record instead of batching one query per related table
+  across the whole class. Real, but explicitly a performance concern at a
+  scale (hundreds of records) this repository has not reached yet (45
+  records currently) -- lowest priority of the six, premature to fix now
+- **5. Duplicated path-resolution boilerplate**: `ROOT`/`DB_PATH`/
+  `EXPORT_DIR` resolution, the `DB_PATH.exists()` precondition, and the
+  record-existence check are copy-pasted near-identically across
+  `ingest_seed_set.py`, `ingest_lenat_marcus.py`, and `regenerate_
+  export.py`. A fourth ingestion script (F5's QCi deep-dive is already on
+  the backlog) will paste this a fourth time without a shared helper
+- **6. Duplicated export-function shape**: `_export_assertion`,
+  `_export_acronym`, `_export_term`, `_export_paper` in `store/export.py`
+  each repeat the same "query one row, copy non-null columns one by one,
+  query 0-3 child tables, attach if non-empty" shape. A small `_copy_
+  nonnull()`/`_child_list()` helper would collapse the duplication
+- **Also flagged but likely skip, not a card**: `.claude/hooks/block_
+  branch_from_develop.py` and its three siblings each define an identical
+  `_read_command()` helper verbatim. Real duplication, but these are
+  security-relevant hook files; a shared-helper refactor there should wait
+  for F2's spamfilter-multi hook research rather than be rushed alone
+- Depends on: nothing technical. Findings 1 and 5 likely belong together
+  (both touch every ingestion call site); triage order at Sprint 2
+  refinement
+
 **F75. Action the 20-paper ADR checkpoint (~2h) Priority 7**
 - Phase: Evidence Based DB / process (carried from the consumer repository's
   Sprint 14 retrospective improvement 5, 2026-09-14)
