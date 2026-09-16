@@ -124,3 +124,17 @@ similar.
 above): if a figure or count reaches a sprint document, the code or query
 that produced it is committed in the same change, not computed inline and
 only its output recorded.
+
+**AMENDMENT, 2026-09-16 (Sprint 1 retrospective improvement 1): hook and
+script smoke tests use `subprocess.run()` with a programmatically built
+JSON payload, never a shell pipe (`echo '...' | python hook.py`).** Sprint
+1 hit three false negatives from this exact pattern -- `block_unraw_
+escape.py`, `block_sibling_repo_writes.py`, and (worst) `test_ingest_
+seed_set.py`'s first version, whose bash-quoted synthetic payload masked
+a real bug and, separately, whose un-isolated `EXPORT_DIR` silently
+overwrote the committed `export/` directory. In every case the CODE under
+test was correct; the SHELL was mangling the test's own input before the
+code ever saw it. `tests/test_sibling_repo_write_guard.py` is the worked
+example of the fix: every case calls `subprocess.run([sys.executable,
+str(HOOK)], input=json.dumps(payload), ...)` with a real Python dict, so
+the JSON is never hand-quoted through a shell at all.
