@@ -62,7 +62,7 @@ def _spine(conn: sqlite3.Connection, row: sqlite3.Row) -> dict:
 def _export_assertion(conn: sqlite3.Connection, row: sqlite3.Row) -> dict:
     record = _spine(conn, row)
     fields = conn.execute(
-        "SELECT units, rounding FROM assertion_fields WHERE record_id = ?",
+        "SELECT units, rounding, citation_context FROM assertion_fields WHERE record_id = ?",
         (row["id"],),
     ).fetchone()
     if fields is not None:
@@ -70,6 +70,8 @@ def _export_assertion(conn: sqlite3.Connection, row: sqlite3.Row) -> dict:
             record["units"] = fields["units"]
         if fields["rounding"] is not None:
             record["rounding"] = fields["rounding"]
+        if fields["citation_context"] is not None:
+            record["citation_context"] = fields["citation_context"]
     documents = [
         r["document"]
         for r in conn.execute(

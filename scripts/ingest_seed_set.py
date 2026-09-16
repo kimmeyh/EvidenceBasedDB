@@ -12,6 +12,14 @@ variety-chosen subset of ~20 is a separate, later step (this script's
 --promote flag), not automatic, so the variety selection is a deliberate
 choice rather than "however this script happened to order the list."
 
+Idempotent and safe to run as two separate passes -- `python scripts/
+ingest_seed_set.py` today, `python scripts/ingest_seed_set.py --promote`
+later -- an already-present row that is flagged for promotion is
+promoted in place rather than skipped (fixed 2026-09-16, Claude PR #1
+review: promotion previously only happened on the SAME run that inserted
+the row, so a later `--promote` run against an already-seeded store
+promoted nothing).
+
 Usage:
     python scripts/ingest_seed_set.py              # load all at seen
     python scripts/ingest_seed_set.py --promote     # also promote the
@@ -53,12 +61,28 @@ def main() -> int:
     entries = json.loads(METADATA_PATH.read_text(encoding="utf-8"))
     conn = connect(DB_PATH)
 
-    inserted, skipped = 0, 0
+    inserted, skipped, promoted = 0, 0, 0
     for entry in entries:
         record_id = entry["id"]
-        existing = conn.execute("SELECT id FROM records WHERE id = ?", (record_id,)).fetchone()
+        existing = conn.execute(
+            "SELECT p.tier FROM records r JOIN paper_fields p ON p.record_id = r.id WHERE r.id = ?",
+            (record_id,),
+        ).fetchone()
         if existing:
             skipped += 1
+            # Promotion must still run on an already-present row (fixed
+            # 2026-09-16, Claude PR #1 review finding 2): the original
+            # code skipped promotion entirely whenever a row already
+            # existed, so `ingest_seed_set.py` then `ingest_seed_set.py
+            # --promote` -- the exact two-run sequence this script's own
+            # docstring describes -- could never promote anything, since
+            # every row was already present by the second run.
+            if promote and entry.get("promote") and existing["tier"] == "seen":
+                conn.execute(
+                    "UPDATE paper_fields SET tier = 'screened' WHERE record_id = ?",
+                    (record_id,),
+                )
+                promoted += 1
             continue
 
         tier = "screened" if (promote and entry.get("promote")) else "seen"
@@ -81,7 +105,10 @@ def main() -> int:
     regenerate(conn, EXPORT_DIR)
     conn.close()
 
-    print(f"Inserted {inserted} paper records ({skipped} already present, skipped).")
+    print(
+        f"Inserted {inserted} paper records ({skipped} already present, "
+        f"{promoted} of those promoted to screened)."
+    )
     return 0
 
 

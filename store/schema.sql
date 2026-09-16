@@ -88,16 +88,30 @@ CREATE TABLE prerequisites (
 -- ---------------------------------------------------------------------
 
 CREATE TABLE assertion_fields (
-    record_id TEXT PRIMARY KEY REFERENCES records(id) ON DELETE CASCADE,
-    units     TEXT,
-    rounding  TEXT
+    record_id        TEXT PRIMARY KEY REFERENCES records(id) ON DELETE CASCADE,
+    units            TEXT,
+    rounding         TEXT,
+    -- The sentence in the source making the claim (ADR-0005 section 2,
+    -- worked example: "citation_context: the sentence making the claim").
+    -- Added 2026-09-16 (Copilot PR #1 review): AssertionRecord.citation_
+    -- context was accepted by the ingestion dataclass and populated by
+    -- scripts/ingest_lenat_marcus.py with real quoted source text, but had
+    -- no column anywhere and was silently dropped on every ingest.
+    citation_context TEXT
 );
 
 -- Documents that cite an assertion (ADR-0004 section 3: "the `documents`
 -- that cite it"). Many-to-many since one assertion can be cited by several
 -- documents and the field is a list on the assertion record.
+--
+-- REFERENCES records(id), not assertion_fields(record_id) (fixed 2026-09-16,
+-- Copilot PR #1 review). `units`/`rounding` (assertion_fields) and
+-- `documents` are unrelated concerns per ADR-0004 section 3's own field
+-- list; the original FK forced an assertion_fields row to exist before any
+-- document citation could be attached, so an assertion with no units/
+-- rounding (most assertions) could never record a citing document.
 CREATE TABLE assertion_documents (
-    record_id TEXT NOT NULL REFERENCES assertion_fields(record_id) ON DELETE CASCADE,
+    record_id TEXT NOT NULL REFERENCES records(id) ON DELETE CASCADE,
     document  TEXT NOT NULL,
     PRIMARY KEY (record_id, document)
 );

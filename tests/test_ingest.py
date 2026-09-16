@@ -97,6 +97,61 @@ def test_insert_assertion_without_a_yielding_paper_still_works(db):
     assert record["class"] == "assertion"
 
 
+def test_insert_assertion_writes_units_rounding_and_citation_context(db):
+    """Regression test for Copilot PR #1 review finding 2: citation_context
+    was accepted by the dataclass and populated by a real ingestion script
+    but had no column anywhere and was silently dropped."""
+    assertion = AssertionRecord(
+        id="a1", value="a claim", provenance="source", evidence_tag="N/A",
+        context="world", units="AUPRC", rounding="4 decimal places",
+        citation_context='"the exact sentence making the claim"',
+        updated="2026-09-15", updated_reason="test",
+    )
+    insert_assertion(db, assertion)
+    db.commit()
+
+    fields = db.execute(
+        "SELECT units, rounding, citation_context FROM assertion_fields WHERE record_id = 'a1'"
+    ).fetchone()
+    assert fields["units"] == "AUPRC"
+    assert fields["rounding"] == "4 decimal places"
+    assert fields["citation_context"] == '"the exact sentence making the claim"'
+
+
+def test_insert_assertion_does_not_write_assertion_fields_when_all_optional_fields_are_none(db):
+    """An assertion with no units/rounding/citation_context gets no
+    assertion_fields row at all -- there is no reason to carry an
+    all-NULL row for the common case."""
+    assertion = AssertionRecord(
+        id="a1", value="a claim", provenance="source", evidence_tag="N/A",
+        context="world", updated="2026-09-15", updated_reason="test",
+    )
+    insert_assertion(db, assertion)
+    db.commit()
+
+    row = db.execute("SELECT * FROM assertion_fields WHERE record_id = 'a1'").fetchone()
+    assert row is None
+
+
+def test_insert_assertion_writes_documents_without_requiring_assertion_fields(db):
+    """Regression test for Copilot PR #1 review finding 1:
+    assertion_documents previously referenced assertion_fields(record_id),
+    forcing an assertion_fields row (units/rounding) to exist before any
+    document citation could be attached. An assertion with ONLY a document
+    and no units/rounding/citation_context must still be able to record it."""
+    assertion = AssertionRecord(
+        id="a1", value="a claim", provenance="source", evidence_tag="N/A",
+        context="world", documents=["docs/paper/appendix.md"],
+        updated="2026-09-15", updated_reason="test",
+    )
+    insert_assertion(db, assertion)
+    db.commit()
+
+    assert db.execute("SELECT * FROM assertion_fields WHERE record_id = 'a1'").fetchone() is None
+    documents = [r["document"] for r in db.execute("SELECT document FROM assertion_documents WHERE record_id = 'a1'")]
+    assert documents == ["docs/paper/appendix.md"]
+
+
 def test_insert_assertion_writes_supports_and_contradicts(db):
     for rid in ("a1", "a2", "a3"):
         insert_assertion(

@@ -169,3 +169,28 @@ def test_paper_checked_against_source_never_is_preserved_not_omitted(db):
         papers = json.loads((Path(out) / "papers.json").read_text(encoding="utf-8"))
 
     assert papers[0]["checked_against_source"] == "never"
+
+
+def test_assertion_export_carries_citation_context_and_documents(db):
+    """Regression test for Copilot PR #1 review finding 2: citation_context
+    was accepted by the ingestion dataclass, populated by a real ingestion
+    script, but had no schema column and no export path -- silently
+    dropped between the store and the committed artifact."""
+    db.execute(
+        "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
+        "VALUES ('a1', 'assertion', 'a claim', 'a source', 'N/A', '2026-09-15', 'created')"
+    )
+    db.execute(
+        "INSERT INTO assertion_fields (record_id, units, rounding, citation_context) "
+        "VALUES ('a1', 'AUPRC', '4 decimal places', '\"the exact sentence making the claim\"')"
+    )
+    db.execute("INSERT INTO assertion_documents (record_id, document) VALUES ('a1', 'docs/paper/appendix.md')")
+    db.commit()
+
+    with tempfile.TemporaryDirectory() as out:
+        regenerate(db, out)
+        assertions = json.loads((Path(out) / "assertions.json").read_text(encoding="utf-8"))
+
+    assert assertions[0]["citation_context"] == '"the exact sentence making the claim"'
+    assert assertions[0]["units"] == "AUPRC"
+    assert assertions[0]["documents"] == ["docs/paper/appendix.md"]

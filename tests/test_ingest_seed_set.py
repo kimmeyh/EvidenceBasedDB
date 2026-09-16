@@ -128,6 +128,47 @@ def test_running_twice_does_not_duplicate(store_and_metadata):
     assert count == 2
 
 
+def test_promote_run_after_a_seen_only_run_still_promotes(store_and_metadata):
+    """Regression test for Claude PR #1 review finding 2: the original
+    existing-record check skipped promotion whenever a row already
+    existed, so running the script once at seen tier and then again with
+    --promote (the exact two-pass workflow this script's own docstring
+    describes) could never promote anything -- every row was already
+    present by the second run."""
+    db_path, metadata_path, export_dir = store_and_metadata
+
+    first = _run_script(db_path, metadata_path, export_dir)
+    assert first.returncode == 0, first.stderr
+
+    second = _run_script(db_path, metadata_path, export_dir, ["--promote"])
+    assert second.returncode == 0, second.stderr
+    assert "1 of those promoted" in second.stdout, second.stdout
+
+    import store as store_module
+    conn = store_module.connect(db_path)
+    tiers = {
+        row["record_id"]: row["tier"]
+        for row in conn.execute("SELECT record_id, tier FROM paper_fields")
+    }
+    conn.close()
+    assert tiers == {
+        "griffin-2026-cvqboosting-fraud": "screened",
+        "recruit-2026-case-story": "seen",
+    }
+
+
+def test_promote_run_does_not_duplicate_records(store_and_metadata):
+    db_path, metadata_path, export_dir = store_and_metadata
+    _run_script(db_path, metadata_path, export_dir)
+    _run_script(db_path, metadata_path, export_dir, ["--promote"])
+
+    import store as store_module
+    conn = store_module.connect(db_path)
+    count = conn.execute("SELECT COUNT(*) FROM records WHERE class = 'paper'").fetchone()[0]
+    conn.close()
+    assert count == 2
+
+
 def test_a_non_paper_entry_still_gets_a_record_with_an_honest_disposition(store_and_metadata):
     """ADR-0005 section 2: a rejected/mismatched paper is still a record."""
     db_path, metadata_path, export_dir = store_and_metadata

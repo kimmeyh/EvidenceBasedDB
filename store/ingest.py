@@ -37,6 +37,9 @@ class AssertionRecord:
     evidence_tag: str
     context: str
     citation_context: str | None = None
+    units: str | None = None
+    rounding: str | None = None
+    documents: list[str] = field(default_factory=list)
     certainty: str | None = None
     certainty_reasons: str | None = None
     fidelity: str | None = None
@@ -84,6 +87,23 @@ def insert_assertion(conn: sqlite3.Connection, assertion: AssertionRecord, yield
         "INSERT INTO record_contexts (record_id, context_id) VALUES (?, ?)",
         (assertion.id, assertion.context),
     )
+    # assertion_fields is written whenever ANY of its optional fields is
+    # set, not unconditionally -- an assertion with no units/rounding/
+    # citation_context has no reason to carry an all-NULL row. Fixed
+    # 2026-09-16 (Copilot PR #1 review): this row previously was never
+    # written at all, which meant assertion_documents (originally keyed to
+    # assertion_fields, now to records directly) had no row to key against
+    # even when it didn't need one, and citation_context had nowhere to go.
+    if assertion.units is not None or assertion.rounding is not None or assertion.citation_context is not None:
+        conn.execute(
+            "INSERT INTO assertion_fields (record_id, units, rounding, citation_context) VALUES (?, ?, ?, ?)",
+            (assertion.id, assertion.units, assertion.rounding, assertion.citation_context),
+        )
+    for document in assertion.documents:
+        conn.execute(
+            "INSERT INTO assertion_documents (record_id, document) VALUES (?, ?)",
+            (assertion.id, document),
+        )
     if yielded_by is not None:
         conn.execute(
             "INSERT INTO paper_yields (paper_id, assertion_id) VALUES (?, ?)",
