@@ -1,6 +1,6 @@
 # Sprint Retrospective Guide
 
-Adapted 2026-08-30 from spamfilter-multi's SPRINT_RETROSPECTIVE.md. The source's 14-category x 4-role structure and 7-step protocol are preserved in shape and EXTENDED to 16 categories (15 and 16 are team-lead additions from Sprint 2); examples are adapted to this project.
+Adapted 2026-08-30 from spamfilter-multi's SPRINT_RETROSPECTIVE.md via hsbc-quantum-fraud-2026. The source's 14-category x 4-role structure and 7-step protocol are preserved in shape and EXTENDED to 16 categories; examples are adapted to this repository (Sprint 1 Task H, F1, 2026-09-16).
 
 ## Rules
 
@@ -21,7 +21,7 @@ Adapted 2026-08-30 from spamfilter-multi's SPRINT_RETROSPECTIVE.md. The source's
 ## The 16 Mandatory Categories
 
 1. **Effective while as Efficient as Reasonably Possible** -- right outcome, least reasonable effort, workflow followed, rework counted.
-2. **Testing Approach** -- did automated tests catch problems before validation; coverage adequate for the scope (for this project: known-answer statistical tests, leakage positive controls, loader validations).
+2. **Testing Approach** -- did automated tests catch problems before validation; coverage adequate for the scope (for this project: schema CHECK-constraint tests proven to fail by injection, export-determinism tests, ingestion-path tests).
 3. **Effort Accuracy** -- estimates vs actuals per task; variance patterns.
 4. **Planning Quality** -- task clarity, acceptance-criteria sufficiency, dependencies, scope fit.
 5. **Model Assignments** -- were subagent/model choices right (reviews, research agents, main-loop work); escalations needed.
@@ -29,9 +29,9 @@ Adapted 2026-08-30 from spamfilter-multi's SPRINT_RETROSPECTIVE.md. The source's
 7. **Requirements Clarity** -- ambiguity encountered; hidden requirements surfaced mid-sprint.
 8. **Documentation** -- docs updated with the work; prereg amendments recorded properly; reference docs current.
 9. **Process Issues** -- errors, blockers, tooling friction, anything that belongs in a troubleshooting note or hook.
-10. **Risk Management** -- risks identified vs materialized (hardware budget, leakage, deadline, grant timing); mitigation effectiveness.
+10. **Risk Management** -- risks identified vs materialized (schema/provenance correctness, team-lead adjudication cost per record, context/session continuity); mitigation effectiveness.
 11. **Next Sprint Readiness** -- blockers for next sprint; master plan current.
-12. **Architecture Maintenance** -- for this project: protocol integrity (does anything in code diverge from the frozen preregistration; are amendments logged), pipeline structure, results.json schema adherence.
+12. **Architecture Maintenance** -- for this project: ADR integrity (does anything in the schema or export diverge from an ACCEPTED ADR's spine; are amendments logged), export-determinism adherence.
 13. **Minor Function Updates for the Next Sprint Plan** -- sub-hour items to fold inline into Sprint N+1. Format: `[ROLE] <one-line> -- target: Sprint N+1 plan, est: <Xm>`.
 14. **Function Updates for the Future Backlog** -- larger items for ALL_SPRINTS_MASTER_PLAN.md "Next Sprint Candidates" with a new F#. Format: `[ROLE] <title> -- estimated: <X>, priority: <N>, depends on: <list>`.
 15. **Assigned Coding Agents Quality** (team lead addition, Sprint 2) -- quality of delegated subagent/background-agent output: first-pass correctness, spec adherence, rework required.
@@ -102,4 +102,10 @@ Adapted 2026-08-30 from spamfilter-multi's SPRINT_RETROSPECTIVE.md. The source's
 
 ## Transition note
 
-Sprint 1 (2026-08-30) closed under the earlier lightweight three-question retro before this guide was adopted; its retrospective doc records that explicitly. The full protocol applies from Sprint 2 onward.
+**REWORKED 2026-09-16 (Sprint 1 Task H, F1).** This note originally
+described the consumer repository's OWN Sprint 1 (closed 2026-08-30 under
+an earlier lightweight retro before this guide was adopted there) --
+misleading here, since this repository's own Sprint 1 has not yet closed
+and never ran under that earlier lightweight form. The full 16-category
+protocol applies to this repository's Sprint 1 and every sprint after it,
+with no transition exception.
