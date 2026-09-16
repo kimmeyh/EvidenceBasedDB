@@ -108,17 +108,36 @@ this project makes.
 
 **What would disprove it**: if adjudication runs long enough that the seed set
 alone consumes the sprint, the design is too heavy for its purpose and the
-schema should shrink before it grows. **Measured in task E, before task F
-commits to forty-six.**
+schema should shrink before it grows. **Originally: measured in task E, before
+task F commits to forty-six.**
 
-**The check cannot merely confirm**: E is a single record with a real clock on
-it, and its result can send F back to the drawing board.
+**AMENDED 2026-09-16 (team lead).** A team-lead review of the ingested record
+began (approximately 7 minutes against the paper record and its assertions,
+timed) and was then deliberately stopped: "I would like to remove the review
+and leave everything up to your best, informed (search and use AI as needed).
+We will get back to validating the DB contents at a future step in a future
+backlog item." Task E therefore ships proving the ingestion path works end to
+end, using best-informed judgment rather than a completed team-lead review,
+and WITHOUT the adjudication-time number this falsifier was designed to
+produce.
+
+**Consequence for this falsifier and for Task F**: the falsifier cannot fire
+as originally scoped, because its precondition (a completed, timed
+adjudication) did not happen by design, not by failure. Task F proceeds
+without that gate. The deferred measurement moves to **F75** (the 20-paper
+ADR checkpoint, `docs/ALL_SPRINTS_MASTER_PLAN.md`), which must now produce
+against ~20 real records the number this falsifier would have produced
+against one -- a larger sample, at a later point, rather than a lost one.
+
+**The check cannot merely confirm**: E is a single record, and had its review
+run to completion, the result could have sent F back to the drawing board.
+That check is now F75's to make instead.
 
 ## Risks
 
 | Risk | Mitigation |
 |---|---|
-| **Adjudication cost sinks the ambition** | Task E measures it on one record before task F scales to 46 |
+| **Adjudication cost sinks the ambition** | ORIGINALLY: Task E measures it on one record before task F scales to 46. AMENDED 2026-09-16: that measurement was deliberately deferred (see Premise falsifier above); the mitigation now runs at F75 against ~20 records instead of at Task E against one |
 | Schema wrong in a way 46 records entrench | E first; the 20-paper checkpoint exists for the rest |
 | `Books` and `GitHubRepos` do not fit the paper class | Out of scope this sprint by team-lead decision. Papers only |
 | Cross-repository vocabulary drift | Known and carded as F76 in the consumer repo. Not this sprint |
@@ -133,7 +152,8 @@ it, and its result can send F back to the drawing board.
   deterministically from the store
 - One paper is ingested end to end with its assertions separated
 - The 46-paper seed set is at `seen`; ~20 chosen for VARIETY are at `screened`
-- **Adjudication time is recorded per record**, and the sprint reports the median
+- **AMENDED 2026-09-16**: adjudication time per record is NOT measured this
+  sprint (team-lead decision, see Premise falsifier above). Deferred to F75.
 - Determinate facts resolve rather than being stored
 - Task H's acceptance criteria (above) are all met, with the classification
   reviewed before editing and a regression test committed

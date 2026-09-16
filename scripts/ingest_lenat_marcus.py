@@ -7,6 +7,13 @@ record content below is copied verbatim from ADR-0005 section 2b, "The
 first record, as it would be written" -- it is not re-drafted here, since
 re-deriving it would measure drafting time, not adjudication time.
 
+Team-lead review, 2026-09-16, found one gap: cyc-general-prover-disabled's
+`supports` link names heuristics-over-general-reasoning, which is not one
+of the ADR's five listed `yields`. Drafted here from the paper's own
+architecture description (p13-14, via docs/research/cyc-knowledge-
+representation.md's prior mining of the primary source) rather than left
+as a placeholder.
+
 Usage: python scripts/ingest_lenat_marcus.py
 """
 from __future__ import annotations
@@ -69,6 +76,46 @@ def main() -> int:
     insert_paper(conn, paper)
 
     yields = [
+        # Inserted FIRST: cyc-general-prover-disabled's `supports` link
+        # below references this id, and the foreign key requires the
+        # target row to exist before it is referenced.
+        AssertionRecord(
+            id="heuristics-over-general-reasoning",
+            value=(
+                "Cyc separates the epistemological problem (what the system "
+                "knows, expressed in one expressive higher-order logic, CycL) "
+                "from the heuristic problem (how to reason efficiently), and "
+                "solves the second with many redundant, specialized "
+                "Heuristic-Level reasoners rather than one general theorem "
+                "prover operating on CycL directly -- 20 such reasoners in "
+                "1989, over 1,100 by 2023"
+            ),
+            provenance="lenat-marcus-2023-trustworthy-ai, p13-14",
+            evidence_tag="N/A",
+            context="method",
+            citation_context=(
+                "\"Cyc also allows multiple redundant representations for "
+                "each assertion, and in practice it uses multiple redundant, "
+                "specialized reasoners -- Heuristic Level (HL) modules -- "
+                "each of which is much faster than general theorem-proving "
+                "when it applies.\""
+            ),
+            certainty="low",
+            certainty_reasons=(
+                "Started LOW -- position paper, first-author description of "
+                "the author's own system's architecture, no independent "
+                "verification possible. NOT upgraded: unlike footnote 9 "
+                "(cyc-general-prover-disabled), this is the system working as "
+                "intended and reported favourably, so the admission-against-"
+                "interest upgrade does not apply. The reasoner COUNT (20 to "
+                "1,100+) is the same self-reported, undefined-unit figure as "
+                "cyc-hl-module-count and inherits its caveat"
+            ),
+            fidelity="exact",
+            reading_level=11,
+            updated=UPDATED,
+            updated_reason=UPDATED_REASON,
+        ),
         AssertionRecord(
             id="cyc-general-prover-disabled",
             value=(
@@ -144,22 +191,6 @@ def main() -> int:
         ),
     ]
 
-    # heuristics-over-general-reasoning is cited by cyc-general-prover-disabled's
-    # `supports` above but is not itself one of the five yields ADR-0005 names.
-    # Insert it as a minimal placeholder so the foreign key resolves, flagged
-    # for real drafting later -- this is exactly the kind of gap Task E exists
-    # to surface before Task F scales to 46 papers.
-    conn.execute(
-        "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
-        "VALUES ('heuristics-over-general-reasoning', 'assertion', "
-        "'PLACEHOLDER: Cyc favours many narrow heuristic-level reasoners over one general prover -- not fully drafted, surfaced by Task E', "
-        "'lenat-marcus-2023-trustworthy-ai', 'N/A', ?, ?)",
-        (UPDATED, "Task E placeholder: referenced by cyc-general-prover-disabled's supports link but not itself one of ADR-0005's five named yields"),
-    )
-    conn.execute(
-        "INSERT INTO record_contexts (record_id, context_id) VALUES ('heuristics-over-general-reasoning', 'method')"
-    )
-
     for assertion in yields:
         insert_assertion(conn, assertion, yielded_by=paper.id)
 
@@ -167,7 +198,7 @@ def main() -> int:
     regenerate(conn, EXPORT_DIR)
     conn.close()
 
-    print(f"Ingested {paper.id} plus {len(yields)} assertions (and one placeholder). Export regenerated.")
+    print(f"Ingested {paper.id} plus {len(yields)} assertions. Export regenerated.")
     return 0
 
 

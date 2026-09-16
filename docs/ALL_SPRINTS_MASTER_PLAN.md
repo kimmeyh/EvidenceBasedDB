@@ -105,6 +105,20 @@ one item native to this repository (F1, added this date).
   adjudication takes per paper. At five minutes, 2,000 papers is 160 hours and
   the design needs rethinking; at thirty seconds the ambition is safe.
   Everything else in the checkpoint is schema tuning
+- **CARRIES Sprint 1 Task E's deferred measurement (team lead, 2026-09-16).**
+  Task E's premise-falsifier design called for timing a team-lead review of
+  one ingested record BEFORE Task F scaled to 46 papers. A partial review ran
+  (~7 minutes against the paper record and its assertions) and was then
+  deliberately stopped: "I would like to remove the review and leave
+  everything up to your best, informed (search and use AI as needed). We
+  will get back to validating the DB contents at a future step in a future
+  backlog item." Task E therefore shipped WITHOUT a completed
+  adjudication-time measurement -- the schema and ingestion path are proven
+  to work end to end, but the actual number ADR-0004 calls "the number the
+  whole design is constrained by" is not yet known. F75 is that future step:
+  it must produce the measurement Task E's falsifier logic was designed to
+  produce, now against ~20 real records rather than one, since that
+  opportunity was deliberately deferred rather than lost
 - Revisions are recorded as dated amendments at the bottom of each ADR, never
   as edits in place
 - Depends on: this repository's own F77 work (Sprint 1) and ~20 papers loaded
