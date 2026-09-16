@@ -12,7 +12,7 @@ early-innovation status and prescribe amendments.
 |---|---|---|---|
 | [0001](0001-branch-and-carry-forward-model.md) | Branch model and carry-forward discipline | Accepted | 2026-09-14 (seeded) |
 | [0002](0002-secrets-and-credential-handling.md) | Secrets and credential handling | Accepted | 2026-09-14 (seeded) |
-| [0003](0003-store-and-schema-discipline.md) | Store and schema discipline | Accepted | 2026-09-14 (seeded) |
+| [0003](0003-store-and-schema-discipline.md) | Store and schema discipline (rewritten 2026-09-16 from the consumer repository's results.json-specific content; see its Amendments) | Accepted | 2026-09-14 (seeded) |
 | [0004](0004-evidence-based-db.md) | Evidence Based DB: SQLite plus committed export, record classes, contexts, escalating reading level | **Accepted** (early innovation) | 2026-09-13 |
 | [0005](0005-reference-library.md) | Reference library: papers are SOURCES OF ASSERTIONS; records not PDFs; GRADE-derived certainty | **Accepted** (early innovation) | 2026-09-14 |
 

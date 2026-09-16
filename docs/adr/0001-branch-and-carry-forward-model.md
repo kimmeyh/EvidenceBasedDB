@@ -1,4 +1,4 @@
-# ADR-0004: Branch and carry-forward model for sprint work
+# ADR-0001: Branch and carry-forward model for sprint work
 
 ## Status
 
@@ -18,7 +18,7 @@ The project runs the sprint process adapted from spamfilter-multi, across many A
 - One DRAFT PR per sprint, created when the plan is drafted, kept draft through the retrospective, marked ready at exactly one point (workflow Phase 7.7). Draft status suppresses per-commit Copilot review noise.
 - Carry-forward: on PR-merge notification, the next sprint branch is created FROM the just-merged branch's head, never from develop; post-merge work commits there. Stash is banned; recovery is cherry-pick.
 - Sprint branches are never deleted.
-- The frozen `experiments/src/` files change only with a preregistration amendment line, on any branch (ADR-0001).
+- An ACCEPTED ADR's spine changes only with a dated amendment at the bottom of the ADR, never a silent edit, on any branch (CLAUDE.md "Early innovation: expect revision").
 - Scope is DEFINED, never additive: the team lead's selection list is the complete sprint scope (SPRINT_PLANNING.md defined-scope rule, 2026-08-30).
 - Team-lead-owned tasks blocked at sprint close carry per stopping Criterion 2 without holding the sprint.
 
@@ -36,12 +36,25 @@ The project runs the sprint process adapted from spamfilter-multi, across many A
 ### Negative
 - Solo-project ceremony overhead, accepted deliberately for auditability.
 ### Neutral
-- The public reproducibility repo is published separately at Stage 7, so branch history here can stay private.
+- This repository stays private while ADR-0005's citation constraint applies, so branch history here does not need to satisfy a public audience.
 
-## Preregistration touchpoints
+## Related design documents
 
-None directly; section 12's freeze procedure interacts via ADR-0001. The preregistration governs methodology; this ADR records engineering decisions only.
+None directly. ADR-0004 (Evidence Based DB) and ADR-0005 (reference library) govern the schema and record classes this repository stores; this ADR records the branch/process model only, independent of the schema.
 
 ## References
 
 `docs/SPRINT_PROCESS.md`; `docs/SPRINT_EXECUTION_WORKFLOW.md` 3.3.1 and 6.6; `docs/SPRINT_PLANNING.md` defined-scope rule; spamfilter-multi ADR-0015.
+
+## Amendments
+
+**2026-09-16 (A1): Removed hsbc-quantum-fraud-2026 process leakage
+(Sprint 1 Task H, F1).** This ADR's title heading read "ADR-0004" (its
+number in some earlier draft or the consumer repository's own sequence)
+while the filename and this repository's ADR README both call it ADR-0001
+-- corrected to match. The "Preregistration touchpoints" section, which
+referenced a frozen preregistration this repository does not have, is
+replaced with "Related design documents" naming this repository's own
+ADR-0004 and ADR-0005. The `experiments/src/` reference in the Decision
+section is replaced with the general ACCEPTED-ADR-amendment rule
+CLAUDE.md already states.
