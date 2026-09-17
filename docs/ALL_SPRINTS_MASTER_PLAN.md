@@ -293,6 +293,105 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   (both touch every ingestion call site); triage order at Sprint 2
   refinement
 
+**F7. Adversarial record-adjudication review by Haiku (~unknown, no-history) Priority 11**
+- Phase: Research / adjudication substitution. Surfaced Sprint 2 mid-Task F
+  (team lead, 2026-09-17): replace team-lead adjudication timing with
+  model-based adversarial review confirmations, one card per model tier,
+  each designed for that specific model rather than a generic template
+  with a name swapped
+- **What this reviewer is FOR**: Haiku is this project's own documented
+  "Developer" tier (SPRINT_PLANNING.md) -- fast, cheap, used today for
+  bulk/mechanical subagent work. As an adjudication reviewer, its
+  distinguishing risk is NOT missing subtle context, it is being too
+  agreeable/fast and confirming a record without actually re-deriving
+  the claim from the source. Its review protocol must therefore force
+  verification rather than reward speed: require it to quote the exact
+  source sentence supporting each field it confirms (not paraphrase),
+  and reject a "looks right" confirmation with no quoted anchor
+- **Review task**: given one paper/assertion record and its cited source
+  (PDF path or provenance pointer), confirm or reject: citation accuracy
+  (author/title/venue), the primary context, and (if present) each
+  applicability entry's rationale -- EACH confirmation must be
+  accompanied by a directly quoted source fragment, not a summary
+  judgement
+- **What would make this reviewer's output untrustworthy, name it now**:
+  a review that confirms every field with no quoted evidence, or that
+  quotes the SAME generic sentence for multiple different fields
+  (a sign of pattern-matching rather than reading)
+- Depends on: the ~18-20 screened-tier records Task F was going to review
+  manually; this card's output is compared against F8-F10's for
+  inter-model agreement, not accepted alone
+
+**F8. Adversarial record-adjudication review by Sonnet (~unknown, no-history) Priority 12**
+- Phase: Research / adjudication substitution. Same origin as F7
+- **What this reviewer is FOR**: Sonnet is this project's own documented
+  "Senior Developer" tier -- the workhorse model actually doing most of
+  this sprint's own implementation work. As a reviewer, its risk is
+  neither Haiku's over-agreeableness nor Fable/Opus's expected rigor: it
+  is MOST likely to correctly flag genuine errors but under-flag subtle
+  scope/certainty misjudgments (e.g. a `certainty: high` that a stricter
+  reviewer would downgrade for a reason the schema's own `certainty_
+  reasons` field should have named but didn't)
+- **Review task**: same fields as F7 (citation, context, applicability),
+  PLUS certainty/certainty_reasons/fidelity where present -- explicitly
+  check whether the STATED reasons actually justify the level chosen
+  (ADR-0004 section 3's GRADE-style model), not just whether a reasons
+  field is non-empty
+- **What would make this reviewer's output untrustworthy, name it now**:
+  agreeing with every existing certainty level without ever proposing a
+  different one -- a reviewer that never disagrees is not reviewing
+- Depends on: same record set as F7; designed to run independently, not
+  sequentially after F7 (so neither anchors the other's judgement)
+
+**F9. Adversarial record-adjudication review by Opus (~unknown, no-history) Priority 13**
+- Phase: Research / adjudication substitution. Same origin as F7
+- **What this reviewer is FOR**: Opus is this project's own documented
+  top tier (alongside Fable), mandatory today for ADR-spine decisions,
+  retrospectives, and security-sensitive review. As an adjudication
+  reviewer its expected strength is catching cross-record inconsistency
+  (a context or certainty level that is locally defensible but
+  contradicts how a similar record elsewhere was adjudicated) rather
+  than single-record correctness, which F7/F8 already cover
+- **Review task**: given the FULL set of records under review (not one
+  at a time), find pairs or groups where the SAME kind of judgement call
+  was made differently -- two papers with structurally similar
+  applicability that got different certainty treatment, two assertions
+  from comparable sources with different fidelity levels -- and state
+  the inconsistency explicitly, citing both record ids
+- **What would make this reviewer's output untrustworthy, name it now**:
+  finding zero inconsistencies across ~20 records adjudicated by
+  different processes (Task F/A/B/C ran at different times, by
+  different means) -- zero found here reads as not having actually
+  cross-compared, not as the records being perfectly consistent
+- Depends on: F7 and F8's findings should be available as input (Opus
+  reviews the SET, informed by what per-record review already surfaced),
+  making this the last of the three peer reviews to run, before F10
+
+**F10. Adversarial record-adjudication review by Fable (~unknown, no-history) Priority 14**
+- Phase: Research / adjudication substitution. Same origin as F7
+- **What this reviewer is FOR**: Fable is this project's own documented
+  preferred top tier / Lead Developer role. As the final reviewer in the
+  sequence, its distinguishing job is not first-pass review (F7/F8
+  already did that) or cross-record consistency (F9 already did that) --
+  it is adjudicating DISAGREEMENTS the other three produced, the actual
+  decision a team lead would have to make when reviewers disagree
+- **Review task**: given F7, F8, and F9's findings together, for every
+  point where two or more reviewers disagreed (a confirmed field one
+  flagged and another didn't; an inconsistency F9 found that F7/F8's
+  per-record review missed or contradicted), make the actual call --
+  which reviewer was right, and why, citing the source directly rather
+  than deferring to reviewer consensus alone
+- **What would make this reviewer's output untrustworthy, name it now**:
+  resolving every disagreement in favour of whichever reviewer flagged
+  MORE issues (favouring strictness as a proxy for correctness) rather
+  than checking each disagreement against the actual source
+- Depends on: F7, F8, F9 all complete. This is the last of the four
+  cards to run and is this backlog item's own measure of whether model-
+  based review can substitute for team-lead adjudication AT ALL --
+  compare Fable's final call rate and time cost against what Task F's
+  original team-lead-timed measurement would have cost, once both
+  numbers exist
+
 **F75. Action the 20-paper ADR checkpoint (~2h) Priority 7**
 - Phase: Evidence Based DB / process (carried from the consumer repository's
   Sprint 14 retrospective improvement 5, 2026-09-14)
