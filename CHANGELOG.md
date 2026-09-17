@@ -33,3 +33,48 @@ this project keeps having to replace with a step.
   than by hand, and every registered path verified to resolve at write time. Two
   hooks in the consumer repository were dead for their entire life because a
   single backslash before `block-` is a JSON escape
+- **chore**: corrected a seeding mistake -- the first attempt put the git
+  repository inside `D:\Data\Harold\EvidenceBasedDB\` (the non-repo staging
+  directory), conflating the two. Reseeded to the correct
+  `D:\Data\Harold\github\EvidenceBasedDB\` and removed the misplaced copy,
+  verified to hold no uncommitted changes or unpushed commits first.
+  `README.md` and `CLAUDE.md` now record the two-directory layout as a table
+
+### 2026-09-15 to 2026-09-17 (Sprint 1, PR #1)
+
+Sprint 1 built the store end to end: Tasks A-H per
+`docs/sprints/SPRINT_1_PLAN.md`, plus the sibling-repo write guard and F2-F6
+backlog items surfaced at Manual Validation and PR review. Full detail:
+`docs/sprints/SPRINT_1_SUMMARY.md` (created during Sprint 2 planning, per
+the three-doc rule), `docs/sprints/SPRINT_1_RETROSPECTIVE.md`, and the PR
+#1 commit history. This entry summarizes rather than restates those
+numbers, per this project's own "a number must be traceable to a committed
+generator" standard -- run the suite, don't copy a count.
+
+- **chore**: the five inherited PowerShell hooks converted to Python
+  (Task A pre-kickoff), removing the doubled-backslash JSON-escape hazard
+  by construction rather than by continued vigilance
+- **feat**: SQLite schema for the four record classes (Task B), a
+  deterministic JSON export as the committed artifact (Task C), and
+  domain-scale contexts seeded per ADR-0004 section 3b (Task D)
+- **feat**: one paper (Lenat/Marcus) ingested end to end (Task E); the
+  44-paper seed set loaded at `seen`, 17 promoted to `screened` for variety
+  (Task F); a determinate-fact resolver for the consumer repository's
+  amendment count, computed live rather than stored (Task G)
+- **docs**: removed hsbc-quantum-fraud-2026 process content (Dirac-3
+  hardware rules, `experiments/src`, `results.json`, a submission calendar)
+  presented as this repository's own live rules across 11 files (Task H,
+  F1), with a regression test verified by injection
+- **chore**: added a hook blocking writes into `spamfilter-multi` or
+  `hsbc-quantum-fraud-2026` from this repository's sessions (read access
+  stays unrestricted)
+- **fix**: PR #1 review (Copilot + Claude) found `assertion_documents` FK
+  coupling that blocked citing a document on an assertion with no
+  units/rounding, a silently-dropped `citation_context` field, and a
+  `--promote` ordering bug that no-opped promotion on an already-seeded
+  store. All three fixed with regression tests before merge
+- **process**: Sprint 1 retrospective run (16 categories x 4 roles, all
+  "Very Good"); F2 (spamfilter-multi deep-dive), F3 (CLI DB viewer), F4
+  (accuracy validation against the HSBC submission and the source papers),
+  F5 (QCi author/documentation deep-dive), and F6 (remaining PR review
+  findings) added to the backlog for Sprint 2 selection
