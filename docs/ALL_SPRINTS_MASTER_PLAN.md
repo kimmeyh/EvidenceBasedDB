@@ -36,22 +36,33 @@ repository exists. No other F# from either source repository applies here.
 
 | Sprint | Summary doc | Status | Duration |
 |---|---|---|---|
-
-None yet. Sprint 1 is in flight; its row is added here once
-`docs/sprints/SPRINT_1_SUMMARY.md` exists (created during Sprint 2 planning,
-per the three-doc rule).
+| 1 | docs/sprints/SPRINT_1_SUMMARY.md | [OK] Complete | 2026-09-15 to 2026-09-17 |
 
 ## Last Completed Sprint
 
-None. This repository has completed zero sprints.
+**Sprint 1: Build the Store** (PR #1 to develop, PR #10 to main, both merged
+2026-09-17). Delivered Tasks A-H per `docs/sprints/SPRINT_1_PLAN.md`: the
+SQLite schema and deterministic export (ADR-0004/0005), domain-scale
+contexts, the Lenat/Marcus paper ingested end to end, the 44-paper seed
+set loaded (17 promoted to `screened`), a determinate-fact resolver for
+the consumer repository's amendment count, and removal of
+hsbc-quantum-fraud-2026 process leakage across 11 governing docs (Task H,
+F1). Also delivered mid-sprint: the sibling-repo write guard, seven ported
+memory files, and PR #1 review fixes (Copilot + Claude). Full detail:
+`docs/sprints/SPRINT_1_SUMMARY.md`; retrospective:
+`docs/sprints/SPRINT_1_RETROSPECTIVE.md` (16 categories x 4 roles, all
+"Very Good"). Zero metered spend; this repository has none.
+
+**The measurement Sprint 1 did NOT produce**: team-lead adjudication time
+per record, ADR-0004's own named design constraint. Deliberately deferred
+by team-lead decision mid-sprint rather than measured on one record as
+originally planned; now F75's job against ~20 real records.
 
 ## Current sprint
 
-**Sprint 1: Build the Store** (from 2026-09-14, no deadline). Scope defined by
-the team lead 2026-09-14, tracked in the consumer repository as **F77**: turn
-ADR-0004 and ADR-0005 into a working store, load the 46-paper seed set, and
-measure record-adjudication time per record before scaling past one record.
-Full detail: `docs/sprints/SPRINT_1_PLAN.md`.
+None. Sprint 2 has not yet been scoped -- this section is populated at
+Phase 3 Kickoff once the team lead's selection from the candidates below
+is recorded.
 
 ## Next Sprint Candidates
 
@@ -343,4 +354,5 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   authorise implementation on its own
 - Both carry a six-question review due after roughly 20 papers are loaded.
   Revisions land as dated amendments at the bottom of each ADR, never as
-  silent edits.
+  silent edits. **The threshold is crossed**: 44 papers loaded (Sprint 1
+  Task F), so this checkpoint (F75) is now actionable rather than pending.
