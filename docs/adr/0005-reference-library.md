@@ -695,3 +695,33 @@ None. This is tooling outside the frozen methodology and requires no amendment.
   distribution, and GRADE's derived-certainty model. It is the source for sections
   2c, 2e and 2f, and for the falsifier above
 - `docs/references.md`, `docs/research-baselines-best-practices.md`
+
+## Amendments
+
+Recorded rather than edited in place, because this ADR is Accepted. Each entry
+names what changed and what observation forced it.
+
+**2026-09-17 (A1): The 20-paper checkpoint (46 papers loaded), walked
+against the real store.** Sprint 2 Task E. See ADR-0004's own A4 amendment
+for the full evidence walk against all six named questions -- both ADRs
+share the same checkpoint and the same six questions, so the answers are
+recorded once there rather than duplicated here (the exact drift this
+project's own standing rule against restating a value in multiple
+documents exists to prevent).
+
+The section 2 fields this ADR specifically owns: `checked_against_source`
+is set (non-`never`) for 1 of 46 papers (the Lenat/Marcus paper, tier
+`read`); every other paper is `seen` or `screened` and correctly has no
+value yet, since the field is required only at tier `read` (section 2).
+`applicability` is populated for 45 of 46 papers (added Sprint 2 Task A;
+the one without is the empty seed file, 0 bytes, with no content to
+derive anything from). `yields` is populated for exactly 1 paper (Lenat/Marcus,
+6 assertions) -- the other 45 papers are at `seen`/`screened` and have not
+yet had assertions extracted from them, which is expected at their tier
+and not a gap this checkpoint should flag.
+
+**Consequence**: no schema field changes. The `checked_against_source`
+gate (section on "Is checked_against_source a hard gate for verdict:
+use?") has not yet chafed in practice -- with only one paper at `read`,
+there is no evidence yet on whether the gate produces a perfunctory date
+just to clear it. Revisit once more papers reach `read` tier.
