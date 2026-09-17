@@ -24,6 +24,16 @@ that "a rejected paper is still a record."
 to cover a genuine range: arXiv preprints, IEEE/Nature/ACM peer review,
 vendor papers, an institutional report, and the two papers most directly
 relevant to the HSBC consumer project's own CVQBoost/Dirac-3 work.
+
+**The seed directory is not a fixed snapshot** (team lead, 2026-09-17):
+additions to Papers/Books/GitHubRepos/References happen over time and
+should be EXPECTED, not treated as drift requiring investigation each
+time a new file appears. Sprint 2 Task C found one such addition (the
+seminal QBoost paper, Neven/Denchev/Rose/Macready 2012) already sitting
+in the directory, confirmed intentional and added here. New entries land
+by appending to ENTRIES below and re-running this generator, then
+`scripts/ingest_seed_set.py --promote` and (if the new paper's
+applicability needs recording) `scripts/apply_paper_applicability.py`.
 """
 from __future__ import annotations
 
@@ -34,6 +44,14 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "scripts" / "seed_set_metadata.json"
 
 ENTRIES = [
+    {
+        "id": "neven-2012-qboost-adiabatic-quantum-optimization",
+        "citation": 'Neven, H. (Google Inc.), Denchev, V.S. (Purdue University), Rose, G., Macready, W.G. (D-Wave Systems Inc.), "QBoost: Large Scale Classifier Training with Adiabatic Quantum Optimization," JMLR: Workshop and Conference Proceedings 25:333-348, Asian Conference on Machine Learning (ACML), 2012',
+        "access": "https://proceedings.mlr.press/v25/neven12/ (PMLR); also stored at D:\\Data\\Harold\\EvidenceBasedDB\\Papers, no arXiv id found on the title page",
+        "context": "qml",
+        "disposition": "SEMINAL: introduces QBoost, the adiabatic-quantum-optimization boosting algorithm that CVQBoost (the algorithm this project's HSBC consumer work measures on Dirac-3) directly descends from. Added 2026-09-17 (Sprint 2 Task C spot-check) -- the seed directory changed since Sprint 1's snapshot; the team lead confirmed this addition was intentional and directly needed (F5's backlog scope already names QBoost explicitly). Directly relevant, high priority",
+        "promote": True,
+    },
     {
         "id": "kawchak-2023-coding-tips-cirq-qiskit-pennylane",
         "citation": 'Kawchak, K. (ChemicalQDevice), "100 QML Code Tips for Cirq, Qiskit, or PennyLane: a Special Event," Discussion #100, 2023-09-14',

@@ -35,6 +35,10 @@ EXPORT_DIR = ROOT / "export"
 # PDF content (2026-09-17). Every context claimed here has a real
 # rationale grounded in that reading, not padding for coverage.
 APPLICABILITY: dict[str, list[tuple[str, str]]] = {
+    "neven-2012-qboost-adiabatic-quantum-optimization": [
+        ("qml", "Introduces QBoost, the adiabatic-quantum-optimization boosting algorithm that CVQBoost directly descends from"),
+        ("qc", "Uses adiabatic quantum optimization (D-Wave hardware) as the discrete-optimization substrate for classifier training"),
+    ],
     "kawchak-2023-coding-tips-cirq-qiskit-pennylane": [
         ("qml", "Coding-tips deck for QML frameworks (Cirq, Qiskit, PennyLane)"),
         ("method", "Tooling/coding-practice reference for QML development, not a research claim"),
