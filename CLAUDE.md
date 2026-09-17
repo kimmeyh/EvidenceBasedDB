@@ -95,6 +95,14 @@ once for exactly that reason.
   typing `1`, it is formatted wrong. Applies to yes/no ("1. Yes  2. No"),
   option comparisons, and path selection, inside or outside any auto-advance
   window -- only the FORMAT is at issue, not whether asking is allowed.
+  **Treat AskUserQuestion as a banned tool call in this project, full stop
+  -- do not evaluate whether a given question "fits" it.** Violated in this
+  repository in Sprint 2 (2026-09-17) immediately after already being
+  corrected for the same thing earlier in the SAME session, with this rule
+  present the whole time: "This is not how to ask question, please
+  research, update as needed to prevent in the future." Checking that the
+  rule exists is not the same as stopping to apply it before the tool
+  call -- there is no case where the tool call is the right move here.
 - **Don't phrase a decision question so "yes" could mean two different
   things.** Each question needs one unambiguous answer form: yes/no, or
   select 1/2/3/.../all. A compound question carrying two decisions ("approve
