@@ -28,17 +28,17 @@ Every item carries a real registered ID: **F#** for features/process/tech-debt i
 ```markdown
 ## Candidates at a glance
 
-- **F3. IEEE-CIS reduced Deotte recipe (~4h) Priority 10**
-- **F5. QFE phase arms with JOINT twins (~3h) Priority 12**
+- **F75. Action the 20-paper ADR checkpoint (~2h) Priority 6**
+- **F76. Guard the shared vocabulary between ADR-0004 and ADR-0005 (~1h) Priority 7**
 - ...
-- F9. Phase 2 Braket hardware validation (~unknown) Priority HOLD
+- F13. Phase 2 planning (~unknown) Priority HOLD
 ```
 
 **Item format** (verbatim):
 ```markdown
 **<ID>. <Title> (~<effort>) Priority <N>**
 - Phase: <phase/stage name>
-- Platform: <ULB | IEEE-CIS | SPECTRA | Dirac-3 | Braket | docs | N/A>
+- Platform: <N/A, or the specific tool/service the item touches>
 - <description bullet>
 - <description bullet>
 - Depends on: <dependencies if any>
@@ -46,7 +46,7 @@ Every item carries a real registered ID: **F#** for features/process/tech-debt i
 
 **Rules**:
 - Priorities are NUMERIC, increments of 10; items that should sprint together use increments of 2. Never ad-hoc groupings.
-- Group items under `### <Phase Name>` section headers matching the master timeline (Experiments, Paper, Finalize, QCi/External, Phase 2).
+- Group items under `### <Phase Name>` section headers matching this repository's own sprint sequence (e.g. Foundation, Process, Tooling) -- never a fixed set copied from another project's timeline.
 - HOLD items use `Priority HOLD` in a `### HOLD Items (<reason>)` section at the bottom, with full detail bullets there.
 - Bugs and tech debt interleave by priority within their phase group; no separate sections.
 - Completed items are REMOVED (history lives in sprint docs and git).

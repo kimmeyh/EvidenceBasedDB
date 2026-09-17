@@ -10,7 +10,7 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 ## Phase 2: Pre-Kickoff
 - [ ] Previous PR merged; previous sprint issues CLOSED (manual close; feature->develop does not auto-close)
 - [ ] Working tree clean; develop pulled current; sprint branches never deleted
-- [ ] `pytest experiments/src -q` green; dependency scan noted
+- [ ] `pytest -q` green; dependency scan noted
 
 ## Phase 3: Kickoff & Planning
 - [ ] Previous sprint SUMMARY doc created and linked in master plan (three-doc rule: PLAN + RETROSPECTIVE + SUMMARY, no exceptions)
@@ -23,11 +23,10 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 ## Phase 4: Execution (auto-advance window: no permission-asking)
 - [ ] Tasks in plan order; tests after each change; commits reference issue #N
 - [ ] `git status --short` before every staging; every entry accounted for; 0* files committed neutrally, never read
-- [ ] Results only via frozen protocol; every metric -> results.json with evidence tag
-- [ ] HARDWARE: any metered run stops for approval (Criterion H), always
+- [ ] Provenance discipline: every record's `provenance` field set before commit
 
 ## Phase 5: Review & Validation
-- [ ] Full suite green; no unamended drift from prereg-freeze in analysis code
+- [ ] Full suite green; committed export matches a fresh regeneration from the store (`tests/test_export_currency.py`)
 - [ ] Plan acceptance criteria walked line by line WITH EVIDENCE
 - [ ] Handed to team lead for manual validation (questions correct from here)
 
@@ -44,5 +43,5 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 ## Phase 8: Delivery Cycle (after develop merge)
 - [ ] Team lead merges develop->main (parallel; do not block on it)
 - [ ] Refinement Pass 1 completeness sweep (issues, docs triad, master plan, pruning) -- corrections only
-- [ ] Submission-artifact refresh if due (QCi letter numbers, requirements matrix, paper vs results.json)
+- [ ] Design-document currency check: ADR-0004/0005 still match the actual schema and export
 - [ ] Refinement Pass 2 scope selection -> Phase 3
