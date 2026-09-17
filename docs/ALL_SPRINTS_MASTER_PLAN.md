@@ -421,6 +421,49 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   last item in the F7-F11 sequence and closes out what Sprint 2's
   original Task F was scoped to produce
 
+**F12. Design and implement a paper/reference intake workflow (~unknown, no-history) Priority 16**
+- Phase: Process / tooling. Added 2026-09-17 (team lead), mid-Sprint-2, on
+  finding three new items to add (an example non-arXiv reference, an arXiv
+  paper, and a GitHub repository): "Will need a way to easily add papers
+  and references as I find them." Example set given: a LinkedIn-hosted
+  reference link, `arxiv.org/abs/2602.11092`, and
+  `github.com/merlinquantum/merlin`.
+- **This is a two-phase item, and the first phase is design, not
+  implementation** (same shape as F2). Phase 1 (this card): determine the
+  best process for turning a found item (a link, a citation, a repo) into
+  the correct repository update(s). Phase 2: build whatever Phase 1
+  concludes is needed (a script, a template, a checklist) and use it going
+  forward.
+- **Open questions this card exists to answer, not to pre-decide**:
+  - What does the PAPER repository (`D:\Data\Harold\EvidenceBasedDB\Papers`,
+    non-git per `CLAUDE.md`'s two-directories table) need per new paper
+    beyond the PDF itself -- is a companion `.md` sidecar warranted, or does
+    `store/evidence.db` + `export/papers.json` already carry everything a
+    sidecar would duplicate (this repository's own "determinate facts are
+    computed, never stored" rule argues against a sidecar that just
+    restates fields the store already has)?
+  - What does the REFERENCES repository need per new reference, given
+    references are NOT always papers -- non-technical articles, vendor
+    training documents, software packages (the `eqc_models` PyPI package
+    named at Sprint 1 close-out is exactly this case)? At minimum: what
+    filename convention, what content must be preserved locally (the
+    source may not stay live -- a LinkedIn link is not archival), and what
+    links (source URL, DOI/arXiv id, PyPI/GitHub url) must be recorded and
+    where.
+  - Is one intake process enough for all three source types in the given
+    example (a non-technical link, an arXiv paper, a GitHub repository), or
+    does each need its own path converging on the same store update step?
+  - How does this interact with F5's QCi deep-dive (bulk paper discovery)
+    and F4/Task C's finding that the seed directories are NOT a fixed
+    snapshot -- additions are continuous and expected. This card's output
+    should be the standing process Task C's finding already implies is
+    needed, not a one-off script for the three example items alone.
+- **Not this card's job**: ingesting the three example items themselves.
+  Those are illustrative inputs for designing the process, not a to-do
+  list to clear by hand; Phase 2 (or a follow-on card) applies the
+  resulting process to them along with everything else found since.
+- Depends on: nothing technical. Can run independent of F7-F11 and F5.
+
 **F75. Action the 20-paper ADR checkpoint (~2h) Priority 7**
 - Phase: Evidence Based DB / process (carried from the consumer repository's
   Sprint 14 retrospective improvement 5, 2026-09-14)
