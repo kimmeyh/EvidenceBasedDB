@@ -392,6 +392,35 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   original team-lead-timed measurement would have cost, once both
   numbers exist
 
+**F11. Team-lead adjudication timing, run AFTER F7-F10 (~unknown, no-history) Priority 15**
+- Phase: Measurement. Team lead, 2026-09-17: "yes backlog, yes replacing
+  task f. We are going to move it after completion of backlog items
+  F7-10 as F11?" -- confirmed
+- **This is Sprint 2 Task F's original measurement, not a new idea.**
+  ADR-0004 names it "the number the whole design is constrained by":
+  minutes of team-lead adjudication per accepted record. Sprint 1
+  deferred it once already; this sprint's own Task F was going to
+  produce it directly against ~20 screened-tier records, and is now
+  REPLACED by F7-F10's model-based review instead of running standalone
+- **Why AFTER F7-F10, not instead of them**: F10's own card already
+  names the comparison this measurement exists to make -- "compare
+  Fable's final call rate and time cost against what Task F's original
+  team-lead-timed measurement would have cost." Running F11 after F7-F10
+  complete means the team lead times adjudication on the SAME record
+  set the four model reviewers already processed, so the comparison is
+  apples-to-apples (same records, same starting review state) rather
+  than a cold, unassisted timing run
+- **What this measures that F7-F10 cannot**: F7-F10 measure whether
+  MODEL review agrees with itself and catches real issues. Only F11
+  measures the actual number ADR-0004 names -- team-lead minutes per
+  record -- and only F11 can answer whether reviewing model OUTPUT
+  (confirm/reject F10's resolved calls) costs less team-lead time than
+  adjudicating a record cold, which is the real question this whole
+  substitution is testing
+- Depends on: F7, F8, F9, F10 all complete, in that order. This is the
+  last item in the F7-F11 sequence and closes out what Sprint 2's
+  original Task F was scoped to produce
+
 **F75. Action the 20-paper ADR checkpoint (~2h) Priority 7**
 - Phase: Evidence Based DB / process (carried from the consumer repository's
   Sprint 14 retrospective improvement 5, 2026-09-14)

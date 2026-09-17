@@ -53,8 +53,28 @@ would have used.
 | C | F4 part 3: spot-check the store's content against the 44 source PDFs directly, not against Task F's own extraction notes; resolve the two flagged judgment calls (dwave-2023-operational-excellence-ebook vs. the Freericks book classification) | 150m | Claude + **team lead** |
 | D | F76: write the test guarding ADR-0004/ADR-0005 vocabulary agreement (a record naming an undefined context; the ADRs' stated context lists diverging from the database's) | 60m | Claude |
 | E | F75: walk both ADRs' six named questions against what Sprint 1 actually built and found; record findings as dated amendments, never edits in place | 90m | Claude + **team lead** |
-| F | F75: **the measurement itself** -- time team-lead adjudication across ~20 real records, sourced from the `screened`-tier subset Task F already promoted for variety | [unbounded; team-lead-paced] | **team lead** + Claude |
+| ~~F~~ | ~~F75: the measurement itself -- time team-lead adjudication~~ **REPLACED, see below** | -- | -- |
 | G | F3: build `scripts/view.py` (contexts / paper / assertion modes, plain-text and `--json`, no server) against the store AFTER Task A's applicability fix lands | 120m | Claude |
+
+**AMENDED 2026-09-17, mid-sprint (Class 3 scope change, team-lead
+decision).** Task F, as originally planned (team lead times adjudication
+across ~20 real records directly), is REPLACED by F7-F11
+(`docs/ALL_SPRINTS_MASTER_PLAN.md`): four model-based adversarial review
+cards (Haiku F7, Sonnet F8, Opus F9, Fable F10, each reviewing the record
+set with review instructions designed for that model's own
+characteristics), followed by F11 -- the actual team-lead-timed
+adjudication measurement, run AFTER F7-F10 complete, against the SAME
+record set the four model reviewers already processed. Team lead,
+2026-09-17: "yes backlog, yes replacing task f. We are going to move it
+after completion of backlog items F7-10 as F11?" -- confirmed.
+
+**Why this is Class 3 (scope change) rather than a quiet task swap**: it
+changes what this sprint's Definition of Done can claim -- the
+adjudication-time number is no longer produced IN Sprint 2 at all (F7-F11
+are backlog items, sequenced for a later sprint), so Sprint 2 closes
+without the one measurement its own "measurement that outranks the code"
+section names. Recorded here rather than silently absorbed, per this
+project's own Decision-Class Checkpoint Protocol.
 
 **Sequence**: A first -- it is the one correction every other task either
 depends on (G) or would otherwise re-derive by hand (B, C). B and C run in
@@ -62,17 +82,16 @@ either order once A is done, since both are independent spot-checks against
 different ground truths; running them together lets one team-lead review
 session cover both. D can run any time after A, since it only needs the
 corrected schema/data shape to test against, not the review itself. E
-should run before F, since walking the six named questions is what
-surfaces which ~20 records are worth timing (not merely the first 20 by
-id). G runs last, after A, so it is never built against the exact
-undercount it exists to display correctly.
+should run any time after A (it no longer needs to precede a Task F this
+sprint, since Task F moved to the backlog as F7-F11). G runs last, after
+A, so it is never built against the exact undercount it exists to display
+correctly.
 
-**Total ~720 minutes of Claude-side work** (12 hours) plus Task F's
-team-lead-paced measurement, which is intentionally not estimated in
-Claude-minutes since it is the team lead's own serial attention being
-measured, plus the standing 30% findings allowance given this sprint is
-dominated by verification (SPRINT_PLANNING.md: "a verification sprint
-GENERATES work").
+**Total ~720 minutes of Claude-side work** (12 hours), plus the standing
+30% findings allowance given this sprint is dominated by verification
+(SPRINT_PLANNING.md: "a verification sprint GENERATES work"). The
+team-lead-paced adjudication-timing estimate is REMOVED from this
+sprint's own total -- it moved to F11's own future card.
 
 ## Premise falsifier
 
@@ -103,7 +122,8 @@ Sprint 3's backlog) back to the drawing board.
 | Tasks B/C surface findings large enough to need their own sprint cards | Named explicitly in the premise falsifier; a systematic-inaccuracy finding is a STOP-and-report per SPRINT_STOPPING_CRITERIA.md Criterion 7 (fundamental design failure), not silently absorbed |
 | F75's six-question walk finds the schema itself needs to change | Recorded as a dated ADR amendment (ADR-0004/0005's own "early innovation: expect revision" framing), never a silent edit; a spine-level change is Class 1 and needs explicit approval regardless of sprint-plan approval |
 | F3 built before Task A's fix lands, baking in the undercount | Sequenced explicitly last in the task order; G's own row states the dependency |
-| Task F (the adjudication timing) has no calibrated estimate | Deliberately left `[unbounded; team-lead-paced]` rather than guessed -- this is exactly the number this sprint exists to produce, not one it can assume in advance |
+| ~~Task F (the adjudication timing) has no calibrated estimate~~ | **RESOLVED by removal, 2026-09-17**: Task F itself is replaced by F7-F11 (backlog), which is not this sprint's own risk to carry any more |
+| **NEW, 2026-09-17**: this sprint closes without the one number ADR-0004 names as the design's own constraint | Named explicitly in the amendment above rather than silently absorbed; F7-F11 are carded, ordered, and ready for a future sprint's selection -- the measurement is deferred a second time, not dropped |
 
 ## Definition of Done
 
@@ -120,9 +140,10 @@ Sprint 3's backlog) back to the drawing board.
   guard-discipline standard
 - Both ADRs' six-question checkpoints are walked and answered, with
   findings recorded as dated amendments at the bottom of each ADR
-- **Team-lead adjudication time per record is measured against ~20 real
-  records and reported**, with its provenance stated (measured, not
-  extrapolated or assumed)
+- ~~Team-lead adjudication time per record is measured against ~20 real
+  records and reported~~ **REMOVED, 2026-09-17**: this measurement moved
+  to F11 (backlog), sequenced after F7-F10's model-based review completes.
+  Sprint 2 does NOT produce this number
 - `scripts/view.py` exists with working `contexts`, `paper`, and
   `assertion` modes, built against the corrected applicability data, with
   tests
@@ -131,9 +152,10 @@ Sprint 3's backlog) back to the drawing board.
 
 F2 (spamfilter-multi deep-dive) and F5 (QCi author/documentation
 deep-dive) -- both explicitly deferred by team-lead decision at Sprint 1's
-close-out refinement, since running them alongside this sprint's
-adjudication-cost measurement would dilute the one question Sprint 2 most
-needs to answer. F6 (the six remaining PR #1 code-review findings) --
-real but no dependency forces it into this sprint. Any change to the
-consumer repository. Ingesting new papers beyond the existing 44 (that is
-Sprint 3-or-later scope, gated on this sprint's own accuracy findings).
+close-out refinement. F6 (the six remaining PR #1 code-review findings) --
+real but no dependency forces it into this sprint. **F7-F11 (added
+2026-09-17, replacing Task F)** -- carded and ordered, but explicitly
+backlog items for a future sprint's own selection, not executed inside
+Sprint 2. Any change to the consumer repository. Ingesting new papers
+beyond the seed set plus the one Task C addition (that is Sprint 3-or-
+later scope, gated on this sprint's own accuracy findings).
