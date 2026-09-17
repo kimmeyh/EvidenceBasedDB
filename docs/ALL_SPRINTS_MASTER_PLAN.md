@@ -464,6 +464,50 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   resulting process to them along with everything else found since.
 - Depends on: nothing technical. Can run independent of F7-F11 and F5.
 
+**F13. Guard US English spelling in this repository's own process/design docs (~small, no-history) Priority 17**
+- Phase: Process / tooling. Added 2026-09-17 (team lead), found while reviewing
+  Sprint 2's docs: "this is a US English based repository (looked like we
+  were unsure previously)." `CLAUDE.md` now states the policy explicitly
+  (2026-09-17); this card builds the enforcement.
+- Platform: this repository's own `.md` files -- ADRs, sprint plans,
+  `CLAUDE.md`, `docs/*.md`. NOT `store/`, `export/`, or anything under
+  `D:\Data\Harold\EvidenceBasedDB\` (papers, books -- out of this
+  repository entirely).
+- **Model, don't design from scratch**: `hsbc-quantum-fraud-2026` (read-only
+  from this repository) built exactly this pair 2026-09-16/17:
+  `scripts/us_english_fix.py` (a British-to-US converter over tracked
+  markdown) and `experiments/src/test_us_english.py` (the guarding test,
+  parametrized per file). Both are well-shaped for porting: a word-pair list
+  (behaviour/behavior, organise/organize, licence/license, ~90 pairs),
+  case-preserving substitution, a `PROTECTED` list of exact spans that must
+  never be rewritten (proper nouns, direct quotations), and a test that
+  fails the whole suite loudly (not silently skips) if the tracked-file
+  count collapses to near-zero -- guards against the exact vacuous-guard
+  failure this repository's own `test_guard_discipline.py` already
+  documents as a recurring class here.
+- **The one adaptation that is NOT a copy-paste**: the sibling repo excludes
+  whole files/directories (`docs/paper/`, `docs/submission/`,
+  `PREREGISTRATION.md`) because those are a FROZEN, already-submitted
+  filing -- editing them after the fact would falsify a document of record.
+  This repository has no equivalent frozen filing. Team lead, 2026-09-17:
+  the exemption here is narrower and different in kind -- text quoted or
+  cited VERBATIM from a paper or book keeps that source's own spelling (a
+  `citation` field, a direct quotation in an ADR amendment, a paper title
+  in `docs/ALL_SPRINTS_MASTER_PLAN.md`), but nothing else in this
+  repository's own prose is exempt just because it lives in the same file.
+  This means the port needs SPAN-level protection (quotation-aware, e.g.
+  skip text inside `"..."` that is attributed to a source, or an explicit
+  per-file list of protected spans as the sibling repo already does for its
+  licence quotation) rather than whole-file exclusion as the primary
+  mechanism.
+- **Also needs a decision this card should make explicit, not assume**:
+  whether `citation`-shaped fields inside committed JSON/markdown exports
+  (`export/papers.json` citation strings, `store/*.sql` seed data) are in
+  scope at all, given ADR-0004's own "the export is generated, never
+  hand-edited" rule -- a guard that fires on generated output the source
+  data itself controls would be testing the wrong layer.
+- Depends on: nothing technical. Independent of F7-F12.
+
 **F75. Action the 20-paper ADR checkpoint (~2h) Priority 7**
 - Phase: Evidence Based DB / process (carried from the consumer repository's
   Sprint 14 retrospective improvement 5, 2026-09-14)

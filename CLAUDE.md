@@ -6,6 +6,14 @@ authoritative design is `docs/adr/0004-evidence-based-db.md` and
 `docs/adr/0005-reference-library.md`, both ACCEPTED with early-innovation
 status.
 
+**This repository is written in US English.** Team lead, 2026-09-17: this was
+left ambiguous before (unlike `hsbc-quantum-fraud-2026`, which states it
+explicitly, since HSBC is UK-based and the team lead is not). Applies to this
+repository's own process and design docs -- ADRs, sprint plans,
+`CLAUDE.md`, `docs/*.md` -- not to text quoted or cited verbatim from a paper
+or book, which keeps whatever spelling its source used. See F13
+(`docs/ALL_SPRINTS_MASTER_PLAN.md`) for the guard that will enforce this.
+
 ## What this repository is
 
 The **Evidence Based DB**: a store of assertions, acronyms, technical terms and
