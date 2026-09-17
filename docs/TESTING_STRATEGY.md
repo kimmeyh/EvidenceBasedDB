@@ -1,77 +1,80 @@
 # Testing Strategy
 
-**Purpose**: What gets tested, how, and why, for the experiment pipeline.
-**Audience**: Claude Code sessions; reviewers auditing the statistics.
-**Last Updated**: 2026-09-02
+**Purpose**: What gets tested, how, and why, for the Evidence Based DB.
+**Audience**: Claude Code sessions; the team lead.
+**Last Updated**: 2026-09-16 (Sprint 1 Task H, F1 -- reworked from the version inherited at seeding)
 
-Adapted 2026-09-02 from spamfilter-multi's TESTING_STRATEGY.md to a research-code
-context: the product here is EVIDENCE, so tests exist to make numbers trustworthy,
-not to cover UI surface.
+**REWORKED 2026-09-16.** The version inherited from hsbc-quantum-fraud-2026
+at seeding was written for that repository's statistical/ML evidence
+pipeline: BCa bootstrap vs `scipy.stats.bootstrap`, FISTA QP vs
+`scipy.optimize`, the IEEE-CIS leakage control, `results.json`. None of that
+exists in this repository, which tests a schema, an export pipeline, and
+ingestion paths, not a statistical model. The PRINCIPLES this project's
+testing culture has already proven (known-answer testing, injection-verified
+guards, testing the shipped artifact rather than the code that produced it)
+are real and generalize; this rewrite keeps them and replaces every
+illustration with this repository's own equivalent.
 
 ## The known-answer principle
 
-Every statistical or numerical routine is tested against an INDEPENDENT reference,
-never against itself:
+Every schema constraint or export transformation is tested against a KNOWN
+expected output, never merely against "the code ran without error":
 
-- BCa bootstrap vs `scipy.stats.bootstrap`; Wilson vs `statsmodels` (test_metrics.py, 11 tests).
-- FISTA simplex QP vs `scipy.optimize` SLSQP on the identical Hamiltonian; simplex
-  projection against hand-computable cases (test_qubo_proxy.py, 4 tests).
-- Pool sizes vs the A2 closed-form (`data.qubo_vars`), which itself was verified
-  against eqc-models source AND measured hardware runs (105/560 @ n=15).
-
-A new metric or solver enters metrics.py/qubo_proxy.py only WITH its known-answer
-test (ADR-0009; amendment-gated for frozen files).
+- A CHECK constraint is tested for both the value it must accept AND the
+  value it must reject (`tests/test_schema.py`) -- accepting alone proves
+  nothing about whether the constraint is actually enforced.
+- A deterministic transformation (the export) is tested against its exact
+  expected bytes, not just "produced valid JSON" (`tests/test_export.py`'s
+  byte-identical-re-export tests).
+- A resolver that computes a value live is tested by injection: change the
+  source, confirm the resolved value changes by exactly the expected amount
+  (`tests/test_resolvers.py`).
 
 ## Guards as tests
 
-Failure modes found in research (F18) become raising guards with tests: the n<4
-schedule guard, the constructed-attribute round-trip assert (silent-kwarg-drop),
-the {-1,+1} label contract. A guard that cannot fire in a test does not exist.
+A guard exists only if a test can make it fire. `tests/test_hook_
+registration.py` and `tests/test_sibling_repo_write_guard.py` are the
+worked examples here: every hook is exercised directly against a
+subprocess with a controlled payload proving both the block case and the
+allow case, not just that the hook file exists and parses.
 
 ## Injection verification: prove the guard fails
 
-**Mandatory for any test whose purpose is to fail** (Sprint 12 improvement 2).
-Write the guard, then BREAK the thing it guards and confirm it goes red. Restore,
-confirm green. Record in the test's docstring that it was verified by injection.
+**Mandatory for any test whose purpose is to fail.** Write the guard, then
+BREAK the thing it guards and confirm it goes red. Restore, confirm green.
+Record in the test's docstring (or the commit that added it) that it was
+verified by injection.
 
-This is not ceremony. Three guards were written in Sprint 12 and injection-tested;
-ONE of them passed vacuously on first write. `test_the_withdrawn_claim_does_not_return`
-searched for a marker phrase that the markdown wraps across a line break, so the
-literal substring never matched and the assertion could not fail. It would have
-shipped as false assurance -- a green line asserting nothing, on a claim the
-submission had just withdrawn.
+This is not ceremony. During Sprint 1 Task B, weakening the
+`assertion_relations` CHECK constraint to accept a third relation value was
+used to confirm `test_assertion_relations_rejects_a_relation_outside_the_two_named`
+actually goes red on that exact defect, not merely that it happens to pass
+today. A guard that has never been seen to fail is a guard nobody has
+tested.
 
-The other two caught real defects when injected: the B3 pool-row guard failed on
-the exact comparability defect that reached the documents, and the dispersion
-grouping guard failed on the collapsed single-group artifact.
+## Every script that writes a committed artifact needs a test that reads its shipped output
 
-A guard that has never been seen to fail is a guard nobody has tested. The cost
-is two minutes per guard; the alternative is a suite that is green for reasons
-nobody has checked.
-
-## Smoke before scale
-
-Every campaign entry point has a `--smoke` mode (minutes, small stratified sample,
-reduced trials/seeds) run BEFORE the full launch in the same session -- the
-capability pre-flight rule from SPRINT_PLANNING.md applied to our own code.
-Smoke artifacts are deleted before real runs (they share the checkpoint files).
-
-## Leakage controls as executable tests
-
-The shuffled-label positive control (prereg 5.6) runs with the IEEE-CIS campaign
-(F3): test AUPRC must collapse to the base rate, else the pipeline leaks. Loader
-row/label asserts (data.py) run on every import path. Dedupe-before-split counts
-are recorded in results.json meta and checked at gate review.
+Guarding the CODE that produces an artifact is not the same as guarding the
+ARTIFACT. `tests/test_export_currency.py` is the worked example: it
+regenerates the export from the real store into a temp directory and diffs
+against the real committed `export/`, rather than trusting that a prior
+regeneration is still current. A test that only calls `export_class()` and
+checks its return value would not catch a stale committed file.
 
 ## What is deliberately not tested
 
-One-shot documents, sprint tooling scripts (verified by use), and plots. The
-results.json store is validated by schema-shaped construction (ADR-0008) plus the
-STATISTICAL_REVIEW_CHECKLIST walk at gate review, not by a test double.
+One-shot scripts (verified by use, e.g. `scripts/generate_seed_set_metadata.py`,
+whose real output was reviewed directly rather than covered by a test suite),
+and sprint/process documentation. The store's schema is validated by its own
+CHECK constraints plus `tests/test_schema.py`'s injection-verified tests,
+not by a test double.
 
 ## Running
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest experiments/src -q     # full suite (~15 tests)
-.\.venv\Scripts\python.exe experiments\src\run_classical.py --smoke
+.\.venv\Scripts\python.exe -m pytest -q     # full suite
+```
+
+```bash
+python -m pytest -q     # full suite (POSIX)
 ```

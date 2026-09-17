@@ -27,7 +27,7 @@ are independent, and ADR-0014 is both Accepted and early-innovation. Leaving
 gap this project keeps finding -- a practice that is settled and a record that
 says otherwise.
 
-Depends on **[ADR-0014](0014-fact-database.md)** (Evidence Based Database) for its storage decision. If
+Depends on **[ADR-0004](0004-evidence-based-db.md)** (Evidence Based Database) for its storage decision. If
 0014's storage changes, this ADR changes with it.
 
 ### What remains genuinely open

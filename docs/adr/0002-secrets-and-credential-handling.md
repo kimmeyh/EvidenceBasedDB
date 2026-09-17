@@ -1,4 +1,4 @@
-# ADR-0011: Secrets and credential handling
+# ADR-0002: Secrets and credential handling
 
 ## Status
 
@@ -6,19 +6,36 @@ Accepted
 
 ## Date
 
-2026-08-30 (records practice established Aug 29-30)
+2026-08-30 (records practice established Aug 29-30; content reworked 2026-09-16, Sprint 1 Task H, F1 -- see Amendments)
 
 ## Context
 
-The project touches multiple credentialed services: QCi Dirac-3 (metered API key), Kaggle (OAuth), GitHub (gh CLI), and eventually the challenge portal. The repository becomes a public reproducibility package at Stage 7, and a leaked key is both a security and a budget incident (Dirac seconds are money). The employer-confidentiality constraint adds strings that must never appear in any commit. Numbering note: ADRs 0005-0010 are reserved for the F1-sprint candidates approved in the 2026-08-30 disposition; this ADR takes the next free number.
+This repository touches at least one credentialed service directly (GitHub,
+`gh` CLI) and may touch others as record-ingestion tooling grows (a paper
+database API, an arXiv/DOI resolution service). A leaked credential in a
+repository whose visibility may change (CLAUDE.md: private while ADR-0005's
+citation constraint applies, revisit if it ever goes public) is a real
+exposure even while private, since git history persists past a visibility
+change.
 
 ## Decision
 
-- Credentials NEVER live in the repository. Locations of record: OS user environment or OAuth caches in the user profile (Kaggle `~/.kaggle/credentials.json`, gh keyring); project `.env` (gitignored) only for run-scoped variables, loaded via python-dotenv, following the established ForrierWall pattern for `QCI_API_KEY`.
-- `.gitignore` pins the credential file names (`.env`, `kaggle.json`, `credentials.json`); the pre-commit hook hard-blocks staged `.env` files and content matching `.secrets-patterns.txt` (itself gitignored so patterns never enter history). The hook is verified working (blocked a live test secret and a real false positive, both 2026-08-30).
-- Credential VALUES are never pasted into chat, logs, commit messages, or results files; scripts log key NAMES and presence booleans only.
-- One credential system per service: legacy and new-style credentials must not coexist (the Kaggle env-var-shadowing incident, where legacy `KAGGLE_USERNAME`/`KAGGLE_KEY` silently overrode the working OAuth cache, cost two failed download cycles; the legacy pair was removed).
-- The Stage 7 confidentiality scan re-verifies all of this repo-wide before anything goes public.
+- Credentials NEVER live in the repository. Locations of record: OS user
+  environment or OAuth caches in the user profile (`gh` keyring); project
+  `.env` (gitignored) only for run-scoped variables, loaded via
+  python-dotenv, if a future ingestion script needs one.
+- `.gitignore` pins the credential file names (`.env`, `credentials.json`);
+  a pre-commit hook hard-blocks staged `.env` files and content matching a
+  gitignored secrets-pattern file, so patterns never enter history.
+- Credential VALUES are never pasted into chat, logs, commit messages, or
+  committed records; scripts log key NAMES and presence booleans only.
+- One credential system per service: legacy and new-style credentials must
+  not coexist for the same service, since a silently-overriding legacy
+  credential is a defect class that costs real debugging time to diagnose
+  (an incident of this exact shape cost the consumer repository two failed
+  download cycles before the legacy pair was found and removed).
+- Before this repository's visibility could ever change from private to
+  public, a confidentiality scan re-verifies all of this repo-wide first.
 
 ## Alternatives Considered
 
@@ -36,10 +53,23 @@ The project touches multiple credentialed services: QCi Dirac-3 (metered API key
 ### Neutral
 - The hook's text patterns need occasional curation (one false positive already handled by moving filename guards to .gitignore).
 
-## Preregistration touchpoints
-
-None; pure engineering. The preregistration governs methodology; this ADR records engineering decisions only.
-
 ## References
 
-`.gitignore`; `.git/hooks/pre-commit`; spamfilter-multi ADR-0008 and ADR-0027; the Dirac-3 usage constraint (hardware approvals); CHECKLIST Stage 7 confidentiality scan item.
+`.gitignore`; `.git/hooks/pre-commit`.
+
+## Amendments
+
+**2026-09-16 (A1): Removed hsbc-quantum-fraud-2026 process leakage
+(Sprint 1 Task H, F1).** This ADR's title heading read "ADR-0011" (its
+number in the consumer repository) while the filename and this
+repository's ADR README both call it ADR-0002 -- corrected to match. The
+Context and Decision sections named QCi Dirac-3, Kaggle, "the challenge
+portal," and a reserved-numbering note for consumer-repository sprint
+candidates, none of which exist or apply here; rewritten to describe this
+repository's own credential surface (currently just GitHub/`gh`) and the
+GENERALIZABLE discipline (no credentials in-repo, one credential system
+per service, a pre-commit secret scan) without the consumer-specific
+service names. "Stage 7 confidentiality scan" and "Preregistration
+touchpoints" -- both referring to that repository's own submission
+timeline -- are replaced with this repository's own private-to-public
+visibility-change trigger (CLAUDE.md, ADR-0005's citation constraint).

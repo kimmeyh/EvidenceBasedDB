@@ -61,9 +61,15 @@ constrained by, and it is unknown.
 several in the seed set are vendor or conference material. The `access` field
 points at a DOI, an arXiv id, or a local path.
 
-The seed set lives at `D:\\Data\\Harold\\EvidenceBasedDB\\Papers` (46 items),
-alongside `Books` (38) and `GitHubRepos` (8), deliberately outside version
-control.
+**Two directories, deliberately distinct:**
+
+| Path | What it is |
+|---|---|
+| `D:\Data\Harold\github\EvidenceBasedDB\` | This repository. Version-controlled |
+| `D:\Data\Harold\EvidenceBasedDB\` | Not a repository. Material connected to the solution that never gets committed |
+
+The second holds `Papers` (46), `Books` (38), `GitHubRepos` (8) and
+`References`. Read from it; never copy into here.
 
 ## Layout
 

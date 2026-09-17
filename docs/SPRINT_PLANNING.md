@@ -1,6 +1,12 @@
 # Sprint Planning
 
-Adapted 2026-08-30 from spamfilter-multi's SPRINT_PLANNING.md. Governs how sprints are scoped, staffed, estimated, and carded. Execution mechanics live in SPRINT_EXECUTION_WORKFLOW.md.
+Adapted 2026-08-30 from spamfilter-multi's SPRINT_PLANNING.md via hsbc-quantum-fraud-2026. Governs how sprints are scoped, staffed, estimated, and carded. Execution mechanics live in SPRINT_EXECUTION_WORKFLOW.md.
+
+**REWORKED 2026-09-16 (Sprint 1 Task H, F1).** References to the consumer
+repository's frozen preregistration, its Dirac-3/Braket/Kaggle tool
+dependencies, its `results.json` schema, and its submission deadline have
+been replaced with this repository's own equivalents where one exists, and
+removed where none does.
 
 ## Team roles
 
@@ -14,11 +20,11 @@ Adapted 2026-08-30 from spamfilter-multi's SPRINT_PLANNING.md. Governs how sprin
 
 ## Activities requiring the top tier (Fable/Opus) -- MANDATORY
 
-Sprint planning; retrospectives; backlog refinement; architecture/protocol deep dives; ADR authoring; best-practices research; security-sensitive review; adversarial review passes on the paper; any statistical-methodology decision touching the frozen preregistration. Implementation tasks (loaders, scripted runs, doc edits) may be delegated to Sonnet/Haiku subagents. Before starting a top-tier activity, confirm the active model is top tier; escalate if not.
+Sprint planning; retrospectives; backlog refinement; architecture/schema deep dives; ADR authoring; best-practices research; security-sensitive review; any decision touching an ACCEPTED ADR's spine (record classes, contexts, certainty model). Implementation tasks (loaders, scripted runs, doc edits) may be delegated to Sonnet/Haiku subagents. Before starting a top-tier activity, confirm the active model is top tier; escalate if not.
 
 ## ADR-first approach
 
-Architectural or protocol-shaping changes get an ADR designed and team-lead-approved BEFORE implementation. For this project, the frozen preregistration is the master ADR for methodology; ADRs in docs/adr/ record engineering decisions around it (pipeline structure, data handling, tooling). Amendments to the frozen protocol are ADR-class decisions with their own dated log.
+Architectural or schema-shaping changes get an ADR designed and team-lead-approved BEFORE implementation. ADR-0004 and ADR-0005 are this repository's own architecture: the store's schema, contexts, and certainty model. Amendments to an ACCEPTED ADR's spine are ADR-class decisions, recorded as a dated amendment at the bottom of the ADR, never a silent edit.
 
 ## Audience-first rule for deliverables (Sprint 4 retro improvement 3)
 
@@ -30,7 +36,7 @@ A frozen or tuned configuration carried from one dataset to another is a HYPOTHE
 
 ## Capability pre-flight (mandatory for tool-dependent items)
 
-Any item that depends on an external capability (a Dirac-3/eqc-models feature, a Braket simulator behavior, a Kaggle endpoint, a library API) gets a ~5-minute spike proving the single primitive it depends on BEFORE the item is estimated or built. If the spike fails, the item is re-scoped first. Also applies to environment preconditions in validation steps: confirm the environment actually works now, do not assume.
+Any item that depends on an external capability (a GitHub API behavior, a library's SQLite feature, a PDF/text-extraction tool) gets a ~5-minute spike proving the single primitive it depends on BEFORE the item is estimated or built. If the spike fails, the item is re-scoped first. Also applies to environment preconditions in validation steps: confirm the environment actually works now, do not assume.
 
 **The pre-flight inventories CODE, not only documents (Sprint 10 improvement 6).** Grep the source tree for whatever the item is about to change, not just the docs that mention it. F40's card listed four documents referencing the path being moved and was verified against exactly those four. It missed `data.py`, which hardcoded the ULB dataset location -- so the repository that Appendix C promises "regenerates every figure" would have worked on no machine but the author's. The card was right about every document and silent about the one line that mattered.
 
@@ -45,7 +51,7 @@ Inputs: sprint goal (1-2 sentences), refined candidates (BACKLOG_REFINEMENT.md f
 ## Card standards
 
 - **Definition of Ready** (one line): scope clear, acceptance criteria quantifiable, estimate assigned, no unresolved blockers, priority set, owner named.
-- **Task-level Definition of Done** (referenced, not copy-pasted): acceptance criteria met with evidence; tests green; results in results.json with evidence tags where applicable; docs updated in the same commit; committed with the issue number.
+- **Task-level Definition of Done** (referenced, not copy-pasted): acceptance criteria met with evidence; tests green; every touched record's provenance and evidence_tag set; docs updated in the same commit; committed with the issue number.
 - Every card carries: Sprint number, Category, Priority, What/Why, Acceptance Criteria, Model Assignment + Complexity, Owner (team lead or Claude).
 - Team-lead-owned cards (portal actions, external sends, approvals) are tracked like any other card; Claude verifies and records completion evidence but never executes them.
 
@@ -125,4 +131,4 @@ sprint finishes early, which is the good outcome and should be recorded as such.
 
 ## Risk assessment per sprint plan
 
-Each plan lists its top risks with mitigation: for this project always consider hardware budget (Criterion H), leakage, deadline (submission-ready Sep 8), grant timing, and context/session continuity.
+Each plan lists its top risks with mitigation: for this project always consider schema/provenance correctness, team-lead adjudication cost per record (the number ADR-0004 names as the design's own constraint), and context/session continuity.
