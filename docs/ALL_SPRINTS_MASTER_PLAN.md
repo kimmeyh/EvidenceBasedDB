@@ -514,6 +514,36 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   data itself controls would be testing the wrong layer.
 - Depends on: nothing technical. Independent of F7-F12.
 
+**F14. Harden the one-off data-correction scripts against silent partial failure (~small, no-history) Priority 18**
+- Phase: Code quality / tooling. Added 2026-09-18, backlogged from PR #11's
+  Claude code-review pass rather than fixed inline (both scripts had
+  already been run against the live store; a behavior change alone would
+  not affect data already applied, so this is about the NEXT time a
+  similar one-off script is written, not a live defect in this store's
+  current content).
+- Platform: `scripts/apply_paper_applicability.py` (and the pattern it
+  sets for any future one-off data-correction script of this shape).
+- **Finding 1**: `apply_paper_applicability.py` prints a `warning:` to
+  stderr and continues (exit 0 regardless) when a `paper_id` key in its
+  hand-authored `APPLICABILITY` dict does not match any real record --
+  the count is collected (`skipped_no_paper`) but never affects control
+  flow. Since the script's own stated purpose is "apply to all 44
+  seed-set papers," a single typo'd key means that paper is silently left
+  with the exact empty-applicability defect the script exists to fix, and
+  nothing forces anyone to notice a stderr line buried in normal output.
+- **Finding 2**: the same script skips a paper entirely if it already has
+  ANY row in `paper_applicability`, without checking whether the existing
+  rows match the dict's intended context set -- a paper left
+  half-populated by an interrupted prior run would be silently skipped
+  and never completed on a re-run.
+- **Proposed fix, for review at carding**: make `skipped_no_paper > 0`
+  produce a non-zero exit code (or assert the applied+skipped count
+  equals `len(APPLICABILITY)` before declaring success), and make the
+  "already set" check compare the existing context-id set against the
+  dict's intended set rather than trusting any non-zero count.
+- Depends on: nothing technical. Low priority since it hardens a
+  one-off script pattern rather than fixing a live defect.
+
 **F75. Action the 20-paper ADR checkpoint (~2h) Priority 7**
 - Phase: Evidence Based DB / process (carried from the consumer repository's
   Sprint 14 retrospective improvement 5, 2026-09-14)
