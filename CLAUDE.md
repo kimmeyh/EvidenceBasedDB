@@ -62,6 +62,16 @@ Revisions are recorded as **dated amendments at the bottom of the ADR**, never
 as edits in place. A document that silently becomes correct teaches nobody why
 it was wrong.
 
+**An amendment that reports counts against the live store states, up front,
+that every count is a snapshot as of its own date.** Team lead, 2026-09-18: a
+bare number in a document with restrictions on in-place edits reads as a
+durable fact unless explicitly scoped to a point in time, and this store's
+own content grows continuously (papers and assertions are added over time by
+design). Sprint 2's ADR-0004 A4 and ADR-0005 A1 amendments were retrofitted
+with this qualifier after the fact; add it from the start on any future
+amendment that reports a measurement (a count, a percentage, a distribution)
+rather than a qualitative decision.
+
 ## Standing rules (see docs/SPRINT_EXECUTION_WORKFLOW.md for the full set)
 
 - All PR merges are the team lead's action, at every level. Claude never merges.
