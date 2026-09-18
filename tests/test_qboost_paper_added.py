@@ -38,11 +38,19 @@ def test_qboost_paper_has_applicability_in_qml_and_qc():
     assert contexts == {"qml", "qc"}
 
 
-def test_seed_set_now_holds_46_distinct_papers():
+def test_seed_set_now_holds_at_least_46_distinct_papers():
     """Sprint 1 Task F loaded 44 distinct records (46 original seed files
     minus 2 exact duplicates). Sprint 2 Task C added one more (the
     QBoost paper), for 45 distinct SEED-SET records. The Lenat/Marcus
     paper (Task E's dry run, not part of the seed set) makes 46 paper
-    records in the store overall."""
+    records in the store overall.
+
+    LOWER BOUND, not an exact count (code review finding, 2026-09-18): the
+    seed directory is not a fixed snapshot -- CLAUDE.md and Task C's own
+    finding both state additions happen over time and are expected. An
+    exact `== 46` assertion would fail CI on the very next expected
+    addition, which is the opposite of what this regression test should
+    guard: the QBoost addition staying present, not the total staying
+    frozen."""
     papers = _papers()
-    assert len(papers) == 46
+    assert len(papers) >= 46

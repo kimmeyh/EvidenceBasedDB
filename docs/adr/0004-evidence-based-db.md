@@ -636,26 +636,27 @@ questions answered.** Sprint 2 Task E, walked against the real store rather
 than recollection.
 
 - **Which fields were never filled?** `units` and `rounding`
-  (`assertion_fields`) -- 0 of 6 assertions. `assertion_documents` -- 0 rows,
+  (`assertion_fields`) -- 0 of 8 assertions. `assertion_documents` -- 0 rows,
   despite the field existing since Task B. Neither has an assertion yet
   whose claim genuinely needs a unit, a rounding note, or a citing document
   beyond its own provenance; both stay in the schema rather than being
-  removed, since the sample (6 assertions, one paper's worth) is too small
-  to conclude the fields are dead weight rather than simply not yet needed.
+  removed, since the sample (8 assertions, from two papers -- Lenat/Marcus
+  and the HSBC preregistration) is too small to conclude the fields are
+  dead weight rather than simply not yet needed.
 - **Which fields were filled with the same value every time?** `evidence_tag`
-  -- 53 of 54 records carry `N/A`; only the one HSBC-derived assertion
-  (Sprint 2 Task B) carries `PROJ`. This is the field the ADR's own bad-
+  -- 53 of 54 records carry `N/A`; only the two HSBC-derived assertions
+  (Sprint 2 Task B) carry `PROJ`. This is the field the ADR's own bad-
   answer criterion names directly: "not carrying information; probably
   belongs in the context." At 54 records, mostly from ONE methodology
-  paper (Lenat/Marcus) plus 45 paper-tier records that do not themselves
+  paper (Lenat/Marcus) plus 46 paper-tier records that do not themselves
   carry evidence tags, this reads as premature rather than settled --
   revisit once assertions are extracted from a wider mix of papers,
   including ones with genuine [HW]/[SIM] figures to tag.
 - **What did we want to record and have nowhere to put?** Nothing found.
-  `paper_applicability` (added Sprint 2 Task A, 59 rows across 44 papers)
-  and `assertion_documents`/`citation_context` (added Sprint 2, PR #1
-  review) both closed real gaps found in practice rather than exposing a
-  new one.
+  `paper_applicability` (added Sprint 2 Task A, 59 rows across 45 of 46
+  papers) and `assertion_documents`/`citation_context` (added Sprint 2, PR
+  #1 review) both closed real gaps found in practice rather than exposing
+  a new one.
 - **Did the tiers land where predicted?** Yes: 27 `seen`, 18 `screened`, 1
   `read`, out of 46 papers. Not "everything is read" -- the ADR's own
   named failure mode did not happen.

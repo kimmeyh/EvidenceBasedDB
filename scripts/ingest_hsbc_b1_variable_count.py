@@ -56,6 +56,13 @@ def main() -> int:
 
     conn = connect(DB_PATH)
 
+    # This guard only covers the all-or-nothing case: a full prior run, or
+    # none at all. It does NOT detect a partially-corrupted state (e.g. the
+    # 'wrong' record manually deleted but this one left behind) -- a re-run
+    # from that state hits a primary-key IntegrityError on the 'wrong'
+    # insert below, which is the correct (loud) failure, not a silent one,
+    # but "already ingested; nothing to do" would be a misleading message
+    # to have printed on the way to it. Code review finding, 2026-09-18.
     if conn.execute("SELECT id FROM records WHERE id = 'hsbc-b1-variable-count'").fetchone():
         print("hsbc-b1-variable-count already ingested; nothing to do.")
         conn.close()

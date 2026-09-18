@@ -113,13 +113,45 @@ def test_adr_0005_points_at_adr_0004s_context_list_rather_than_its_own():
     someone adding a second, independent context list to ADR-0005 in a
     future edit -- exactly the duplication that produced the consumer
     repository's B1 variable-count drift (78 in three documents, 91 in
-    two)."""
+    two).
+
+    CORRECTED (code review finding, 2026-09-18): the original version of
+    this test only checked that the substring "ADR-0004" appeared
+    somewhere in the file, which is true of routine cross-references and
+    proved nothing about whether a second context table existed.
+    Confirmed vacuous by injection: adding a full independent context
+    table to ADR-0005 still left the substring present, so the test could
+    not have failed on the exact defect its own docstring names.
+
+    This version looks for the SAME two-column domain-scale header ADR-0004
+    uses (`| Context | Holds |`), not the generic table-row pattern -- a
+    first attempt at this fix matched ANY backtick-quoted table cell
+    anywhere in the file, which false-failed against ADR-0005's own
+    legitimate three-column "initial contexts" history table
+    (`| Context | Holds | Example |`, its own pre-domain-scale record, kept
+    deliberately per this repository's "revisions are recorded as dated
+    amendments, never edits in place"). The two-column header is the
+    specific shape a duplicated domain-scale enumeration would use, since
+    that is what ADR-0004's own table looks like.
+    """
     text = ADR_0005.read_text(encoding="utf-8")
-    assert "ADR-0014's list" in text or "ADR-0004" in text, (
-        "ADR-0005 no longer appears to reference ADR-0004/0014's context "
-        "list by name -- check whether it has grown its own independent "
-        "context enumeration, which is the exact defect this test guards "
-        "against"
+    # Exact LINE match, not substring containment: the two-column header
+    # "| Context | Holds |" is a textual prefix of the three-column header
+    # "| Context | Holds | Example |", so `in` on the raw text would
+    # false-positive on ADR-0005's own legitimate three-column history
+    # table (see the docstring above).
+    lines = {line.strip() for line in text.splitlines()}
+    assert _DOMAIN_SCALE_TABLE_HEADER not in lines, (
+        f"ADR-0005 contains a table with ADR-0004's own domain-scale header "
+        f"({_DOMAIN_SCALE_TABLE_HEADER!r}). Section 2d's own decision is that "
+        "applicability names context ids from ADR-0004's list, not a "
+        "separate enumeration -- a second list here is exactly the "
+        "duplication that produced the consumer repository's B1 "
+        "variable-count drift."
+    )
+    assert "ADR-0004" in text, (
+        "ADR-0005 no longer references ADR-0004 by name at all; the "
+        "cross-reference this ADR's design depends on is missing."
     )
 
 

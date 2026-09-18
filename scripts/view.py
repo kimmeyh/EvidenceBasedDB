@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sqlite3
 import sys
 from pathlib import Path
 
@@ -271,31 +272,37 @@ def main() -> int:
     parser.add_argument("--json", action="store_true", dest="as_json", help="output machine-readable JSON")
     args = parser.parse_args()
 
+    if args.mode in ("paper", "assertion") and args.id is None:
+        print(f"error: '{args.mode}' mode requires an id", file=sys.stderr)
+        return 1
+
     if not DB_PATH.exists():
         print(f"error: {DB_PATH} does not exist.", file=sys.stderr)
         return 1
 
-    conn = connect(DB_PATH)
-
-    if args.mode == "contexts" and args.id is None:
-        data, text_mode = cmd_contexts_list(conn), "contexts_list"
-    elif args.mode == "contexts":
-        data, text_mode = cmd_contexts_detail(conn, args.id), "contexts_detail"
-    elif args.mode == "paper":
-        if args.id is None:
-            print("error: 'paper' mode requires an id", file=sys.stderr)
-            return 1
-        data, text_mode = cmd_paper(conn, args.id), "paper"
-    elif args.mode == "assertion":
-        if args.id is None:
-            print("error: 'assertion' mode requires an id", file=sys.stderr)
-            return 1
-        data, text_mode = cmd_assertion(conn, args.id), "assertion"
-    else:
-        parser.error(f"unknown mode: {args.mode}")
+    try:
+        conn = connect(DB_PATH)
+    except sqlite3.Error as e:
+        print(f"error: could not open {DB_PATH}: {e}", file=sys.stderr)
         return 1
 
-    conn.close()
+    try:
+        if args.mode == "contexts" and args.id is None:
+            data, text_mode = cmd_contexts_list(conn), "contexts_list"
+        elif args.mode == "contexts":
+            data, text_mode = cmd_contexts_detail(conn, args.id), "contexts_detail"
+        elif args.mode == "paper":
+            data, text_mode = cmd_paper(conn, args.id), "paper"
+        elif args.mode == "assertion":
+            data, text_mode = cmd_assertion(conn, args.id), "assertion"
+        else:
+            parser.error(f"unknown mode: {args.mode}")
+            return 1
+    except sqlite3.Error as e:
+        print(f"error: could not read {DB_PATH}: {e}", file=sys.stderr)
+        return 1
+    finally:
+        conn.close()
 
     if args.as_json:
         print(json.dumps(data, indent=2, ensure_ascii=False))
