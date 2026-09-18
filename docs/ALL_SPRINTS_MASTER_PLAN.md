@@ -515,6 +515,172 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
 - Depends on: nothing technical. Low priority since it hardens a
   one-off script pattern rather than fixing a live defect.
 
+## F2 Phase 1 output: drafted cards from the spamfilter-multi survey
+
+Produced 2026-09-18 (Sprint 3 Task A). Six cards, each from a genuinely
+NEW artifact found in `spamfilter-multi` (read-only) -- most of that
+repository's process content is already present here in adapted form,
+since this repository's own methodology was seeded via
+`hsbc-quantum-fraud-2026`, which itself derived from spamfilter-multi.
+Ordered by dependency below. Per F2's own card, this is Phase 1's
+output only; adopt/reject and execution are the team lead's Phase 2
+decision, not decided here.
+
+**F15. Hook-enforce the sprint auto-advance window (~medium, no-history) Priority 19**
+- Phase: Process / tooling. Modeled on `spamfilter-multi`'s
+  `.claude/hooks/sprint-auto-advance.ps1` (read-only source, 2026-09-18
+  survey), rewritten in Python for this repository per its own
+  Python-hooks convention
+- Platform: `.claude/hooks/`, a new `block_procedural_question_stop.py`
+  (or similar), registered on the `Stop` event
+- **The gap this closes**: this repository's own auto-advance window
+  ("between Phase 3.7 approval and Manual Validation, do not ask
+  permission at task/phase boundaries") is currently stated only in
+  prose (`SPRINT_EXECUTION_WORKFLOW.md`'s "Auto-advance window" line).
+  This repository has already lived the exact failure class this hook
+  exists to prevent: the AskUserQuestion ban was ALSO prose-only and was
+  violated twice in one Sprint 2 session before being hook-enforced
+  (`.claude/hooks/block_ask_user_question.py`). The spamfilter-multi
+  source names the identical origin story: "Opus 4.7 was observed
+  violating the Phase Auto-Advance Rule even though the rule lives in
+  CLAUDE.md... documentation-only controls proved insufficient."
+- **What it should do, adapted from the source**: on the `Stop` event,
+  if the branch is a sprint feature branch AND a `SPRINT_N_PLAN.md`
+  exists AND `plan_approved: true` AND the sprint has not yet reached
+  Manual Validation, block a stop whose last message ends in a
+  procedural question with no named `SPRINT_STOPPING_CRITERIA.md`
+  criterion cited. Allow outside that window (pre-approval, or at/after
+  Manual Validation) -- asking is CORRECT there
+- **Adaptation needed, not a copy-paste**: the source hook's question-
+  detection logic (gerunds, "want me to", bare "next:", hortative "let
+  me") is tuned against ~24 real violation/allow fixture pairs
+  accumulated over many sprints in that repository. This repository has
+  no equivalent fixture history yet; the initial version will need a
+  smaller, EvidenceBasedDB-specific fixture set built from this
+  project's own actual near-violations (the AskUserQuestion incidents
+  are two ready examples of the shape to detect, even though they were
+  a tool call, not a stop-message question)
+- Depends on: nothing technical. Independent of every other F# card.
+
+**F16. Hook-enforce Phase 3.3.1's two deliverables before task commits (~small, no-history) Priority 21**
+- Phase: Process / tooling. Modeled on `spamfilter-multi`'s
+  `require-sprint-cards.ps1` (read-only source, 2026-09-18 survey)
+- Platform: `.claude/hooks/`, a new `block_missing_sprint_cards.py`,
+  registered on `PreToolUse` for `Bash|PowerShell`
+- **What it should do**: block a `git commit` when
+  `sprint_status.json`'s `plan_approved` is true but `github_issues` is
+  empty or `pr` is null -- Phase 3.3.1 produces both together, and nothing
+  currently stops a task commit from landing before either exists. This
+  repository has not yet had the specific failure the source hook
+  guards (six task commits landing with no cards, discovered at Phase 7)
+  but the mechanism is cheap and the failure mode is structurally
+  possible here the same way
+- **Adaptation needed**: the source hook reads its own repository's
+  `sprint_status.json` shape (`current_sprint.pr_number`); this
+  repository's own file uses `pr` (see `.claude/sprint_status.json`,
+  e.g. Sprint 3's `"pr": 20`) -- field name differs, logic is identical
+- Depends on: nothing technical. Pairs naturally with F15 (both are
+  Phase-boundary enforcement hooks) but neither blocks the other.
+
+**F17. Port the mutation-lock pair for guard-discipline injection tests (~small, no-history) Priority 23**
+- Phase: Process / tooling. Modeled on `spamfilter-multi`'s
+  `mutation-lock.ps1` + `block-commit-during-mutation.ps1` (read-only
+  source, 2026-09-18 survey)
+- Platform: `.claude/hooks/`, a new lock-file mechanism plus a
+  `PreToolUse` hook blocking `git commit` while a lock is held
+- **The gap this closes**: this repository's own guard-discipline
+  standard (CLAUDE.md: "prove it FAILS... break the thing it guards,
+  watch it go red, then restore") is followed by convention every
+  sprint (Sprint 2's `block_ask_user_question.py` test, the ADR
+  vocabulary guard fix, the `view.py` relation-resolution fix were all
+  verified this way) but nothing stops a commit from landing mid-
+  mutation, between the deliberate break and the restore. The source
+  repository hit this twice in one sprint: once sweeping up a live
+  mutation probe, once committing a mutated (false) Play Store
+  declaration -- "vigilance was not the missing ingredient; a structural
+  gate was"
+- **Adaptation needed**: the source's own trigger (a Google Play
+  declaration table) does not exist here; the mechanism (advisory lock
+  file in a gitignored directory, checked by a commit-time hook, with
+  staleness handling so a crashed session can't deadlock future
+  commits) is fully generic and needs no EvidenceBasedDB-specific
+  rework beyond the file paths
+- Depends on: nothing technical. Independent of F15/F16.
+
+**F18. Build a data-driven model-assignment heuristics file (~medium, no-history) Priority 60**
+- Phase: Process / tooling. Modeled on `spamfilter-multi`'s
+  `.claude/model_assignment_heuristics.json` (read-only source,
+  2026-09-18 survey)
+- Platform: a new `.claude/model_assignment_heuristics.json` (or
+  equivalent), referenced from `docs/SPRINT_PLANNING.md`'s existing
+  static role table
+- **What the source has that this repository doesn't**: task patterns
+  with keywords mapped to a recommended model tier, each carrying a
+  `success_rate` and `sample_size` from actual outcomes; explicit
+  escalation triggers (e.g. "test failure after 2 Haiku attempts ->
+  escalate to Sonnet"); a numeric scoring rubric (file impact +
+  cognitive load + risk factors -> model threshold); and a `learning_log`
+  of real assignment outcomes updated per retrospective. This
+  repository's own `SPRINT_PLANNING.md` role table is static and
+  qualitative -- Haiku/Sonnet/Opus/Fable roles are named, but nothing
+  tracks whether an assignment actually worked
+- **Directly seeded by this sprint's own F7-F10 (and future F11)**: once
+  the four independent model-tier reviews run, their outcomes (which
+  tier caught what, at what apparent cost) are exactly the kind of data
+  point the source's `learning_log` accumulates. This card should not
+  be built before F7-F11 produce at least one real data point, or it
+  launches empty the same way the source's own file states it was
+  "seeded from Phase 3.1-3.3 work, will refine over 3-5 sprints"
+- Depends on: F7, F8, F9, F10 (and ideally F11) producing at least one
+  round of real outcome data to seed the `learning_log` with -- building
+  this card before then would ship an empty heuristics file with
+  nothing to recommend from.
+
+**F19. Build a SPRINT_RESUME_GUIDE.md and a startup-check skill (~medium, no-history) Priority 25**
+- Phase: Process / tooling. Modeled on `spamfilter-multi`'s
+  `docs/SPRINT_RESUME_GUIDE.md` (163 lines) and its `startup-check`
+  skill (read-only source, 2026-09-18 survey)
+- Platform: a new `docs/SPRINT_RESUME_GUIDE.md`, a new
+  `.claude/skills/startup-check/SKILL.md`
+- **The gap this closes**: this repository has no single durable,
+  low-token reference doc for "what phase are we in, what does that
+  mean, what happens next" -- that content is currently scattered
+  across `SPRINT_EXECUTION_WORKFLOW.md`, `SPRINT_STOPPING_CRITERIA.md`,
+  and memory files, each read in full rather than referenced. The
+  source's `startup-check` skill reads `sprint_status.json`, cross-
+  checks it against actual git/branch state via four explicit staleness
+  checks (does the branch match? does the sprint number match? did
+  commits land after the file's last-updated timestamp? does CHANGELOG
+  already show this sprint as complete?), and refuses to present stale
+  `next_actions` as current -- directly the same discipline this
+  repository's own CLAUDE.md already states as a standing rule ("don't
+  act on a recalled memory without checking it against current repo
+  state first") but currently unenforced by any single mechanized step
+- **Adaptation needed**: the source's own resume-string generator
+  (`memory-save` skill) assumes a `/compact`-style slash command this
+  repository may not use the same way; port the STAGE-detection logic
+  (BETWEEN-SPRINTS / REFINEMENT / PLANNING / EXECUTION / RETRO) and the
+  staleness-check discipline, not the compaction-specific output format
+- Depends on: nothing technical. Independent of every other F# card.
+
+**F20. Wrap `docs/BACKLOG_REFINEMENT.md` as an invokable skill (~small, no-history) Priority 27**
+- Phase: Process / tooling. Modeled on `spamfilter-multi`'s
+  `backlog-refinement` SKILL.md (read-only source, 2026-09-18 survey)
+- Platform: a new `.claude/skills/backlog-refinement/SKILL.md`
+- **What this closes**: `docs/BACKLOG_REFINEMENT.md`'s presentation
+  format is already current and matches the source's own template
+  almost exactly (both clearly share the same lineage) -- there is no
+  content gap. The gap is procedural: the source wraps its doc as an
+  invokable skill with an explicit first step ("read the format doc IN
+  THIS TURN, a read from an earlier turn does not count") and a named
+  hard rule that skipping that step is a process violation. This
+  repository has committed exactly this violation's cousin before
+  (checking a memory/CLAUDE.md rule exists is not the same as applying
+  it) -- wrapping the doc as a skill makes "read it fresh, every time"
+  the invocation contract rather than a habit
+- Depends on: nothing technical. Lowest-effort of the six; could be
+  done alongside F19 since both touch the skills directory.
+
 ### Out of scope, not yet candidates
 
 - Inference, the graph store, and embeddings (explicitly out of scope per
