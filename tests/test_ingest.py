@@ -14,7 +14,13 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from store import create_store  # noqa: E402
-from store.ingest import AssertionRecord, PaperRecord, insert_assertion, insert_paper  # noqa: E402
+from store.ingest import (  # noqa: E402
+    AssertionRecord,
+    PaperRecord,
+    insert_assertion,
+    insert_paper,
+    validate_paper,
+)
 
 
 @pytest.fixture
@@ -66,6 +72,7 @@ def test_insert_assertion_links_to_its_yielding_paper(db):
     paper = PaperRecord(
         id="p1", tier="read", citation="Cite", access="arXiv:1", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
+        checked_against_source="2026-09-15, test fixture",
     )
     insert_paper(db, paper)
 
@@ -179,3 +186,49 @@ def test_insert_assertion_writes_supports_and_contradicts(db):
         for r in db.execute("SELECT to_assertion_id, relation FROM assertion_relations WHERE from_assertion_id = 'a4'")
     }
     assert relations == {("a1", "supports"), ("a2", "contradicts")}
+
+
+def test_validate_paper_rejects_read_tier_with_no_checked_against_source():
+    """F6 finding 2 (PR #1 review): schema.sql's own comment documents
+    checked_against_source as REQUIRED at tier='read', "enforced at the
+    application layer" -- but no such enforcement existed. insert_paper()
+    accepted any tier/checked_against_source combination unchecked."""
+    paper = PaperRecord(
+        id="p1", tier="read", citation="Cite", access="arXiv:1", disposition="why",
+        context="method", value="a paper", updated="2026-09-15", updated_reason="test",
+    )
+    with pytest.raises(ValueError, match="checked_against_source"):
+        validate_paper(paper)
+
+
+def test_validate_paper_accepts_read_tier_with_literal_never():
+    """'never' is a valid, meaningful value distinct from None -- a
+    statement someone made, not an unpopulated field (ADR-0005 section 2)."""
+    paper = PaperRecord(
+        id="p1", tier="read", citation="Cite", access="arXiv:1", disposition="why",
+        context="method", value="a paper", updated="2026-09-15", updated_reason="test",
+        checked_against_source="never",
+    )
+    validate_paper(paper)  # must not raise
+
+
+def test_validate_paper_does_not_require_checked_against_source_below_read():
+    """seen/screened tiers correctly have no value yet -- only 'read'
+    requires it (ADR-0005 section 2)."""
+    for tier in ("seen", "screened"):
+        paper = PaperRecord(
+            id="p1", tier=tier, citation="Cite", access="arXiv:1", disposition="why",
+            context="method", value="a paper", updated="2026-09-15", updated_reason="test",
+        )
+        validate_paper(paper)  # must not raise
+
+
+def test_insert_paper_calls_validate_paper(db):
+    """The validator must actually run at the real insert path, not just
+    exist as a standalone function nothing calls."""
+    paper = PaperRecord(
+        id="p1", tier="read", citation="Cite", access="arXiv:1", disposition="why",
+        context="method", value="a paper", updated="2026-09-15", updated_reason="test",
+    )
+    with pytest.raises(ValueError, match="checked_against_source"):
+        insert_paper(db, paper)

@@ -21,14 +21,12 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import connect  # noqa: E402
+from store import connect, script_paths  # noqa: E402
 from store.export import regenerate  # noqa: E402
 
-DB_PATH = ROOT / "store" / "evidence.db"
-EXPORT_DIR = ROOT / "export"
+ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 
 # (paper_id, [(context_id, rationale), ...])
 # Sourced from a background research pass that read each paper's actual

@@ -23,10 +23,9 @@ import sqlite3
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import connect  # noqa: E402
+from store import connect, script_paths  # noqa: E402
 
 # Windows consoles commonly default to cp1252, which cannot encode most
 # citation text (accents, math symbols). Reconfigure stdout to UTF-8 so
@@ -34,7 +33,7 @@ from store import connect  # noqa: E402
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-DB_PATH = ROOT / "store" / "evidence.db"
+_, DB_PATH, _ = script_paths(__file__)
 
 
 def _record_title(conn, record_id: str) -> str:
@@ -135,7 +134,10 @@ def cmd_paper(conn, paper_id: str) -> dict:
         "value": paper["value"],
         "provenance": paper["provenance"],
         "tier": fields["tier"] if fields else None,
-        "citation": fields["citation"] if fields else None,
+        # citation == provenance for a paper record (F6 finding 1); read
+        # from provenance, never paper_fields.citation, so this tool does
+        # not become a second place the redundancy could silently drift.
+        "citation": paper["provenance"],
         "access": fields["access"] if fields else None,
         "disposition": fields["disposition"] if fields else None,
         "checked_against_source": fields["checked_against_source"] if fields else None,

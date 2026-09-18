@@ -33,15 +33,13 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import connect  # noqa: E402
+from store import connect, script_paths  # noqa: E402
 from store.export import regenerate  # noqa: E402
 from store.ingest import PaperRecord, insert_paper  # noqa: E402
 
-DB_PATH = ROOT / "store" / "evidence.db"
-EXPORT_DIR = ROOT / "export"
+ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 METADATA_PATH = ROOT / "scripts" / "seed_set_metadata.json"
 
 UPDATED = "2026-09-16"
@@ -62,44 +60,69 @@ def main() -> int:
     conn = connect(DB_PATH)
 
     inserted, skipped, promoted = 0, 0, 0
-    for entry in entries:
+    for position, entry in enumerate(entries):
         record_id = entry["id"]
-        existing = conn.execute(
-            "SELECT p.tier FROM records r JOIN paper_fields p ON p.record_id = r.id WHERE r.id = ?",
-            (record_id,),
-        ).fetchone()
-        if existing:
-            skipped += 1
-            # Promotion must still run on an already-present row (fixed
-            # 2026-09-16, Claude PR #1 review finding 2): the original
-            # code skipped promotion entirely whenever a row already
-            # existed, so `ingest_seed_set.py` then `ingest_seed_set.py
-            # --promote` -- the exact two-run sequence this script's own
-            # docstring describes -- could never promote anything, since
-            # every row was already present by the second run.
-            if promote and entry.get("promote") and existing["tier"] == "seen":
-                conn.execute(
-                    "UPDATE paper_fields SET tier = 'screened' WHERE record_id = ?",
-                    (record_id,),
+        # Per-entry SAVEPOINT (F6 finding 3, PR #1 review): the whole loop
+        # previously shared one commit at the end, so a mid-loop FK
+        # violation aborted the run with an unhandled traceback naming no
+        # offending record -- a bad entry at position 30 of 46 gave no clue
+        # which entry, without editing the script to add a print. A
+        # savepoint per entry both isolates a bad entry's partial writes
+        # (RELEASE only on success) and lets the error message name the
+        # entry that failed, without needing a full COMMIT per row (SQLite
+        # savepoints are cheap; a real commit per row here would be 46x the
+        # fsync cost for no correctness benefit at this scale).
+        #
+        # The savepoint name uses the loop POSITION, not inserted/skipped
+        # counters -- an earlier version used `inserted + skipped`, which
+        # is read again at RELEASE time after `inserted` may have just
+        # been incremented inside the try block, so SAVEPOINT and RELEASE
+        # named two DIFFERENT savepoints and RELEASE failed with "no such
+        # savepoint". A stable per-iteration value avoids that class of
+        # bug entirely.
+        savepoint = f"entry_{position}"
+        conn.execute(f"SAVEPOINT {savepoint}")
+        try:
+            existing = conn.execute(
+                "SELECT p.tier FROM records r JOIN paper_fields p ON p.record_id = r.id WHERE r.id = ?",
+                (record_id,),
+            ).fetchone()
+            if existing:
+                skipped += 1
+                # Promotion must still run on an already-present row (fixed
+                # 2026-09-16, Claude PR #1 review finding 2): the original
+                # code skipped promotion entirely whenever a row already
+                # existed, so `ingest_seed_set.py` then `ingest_seed_set.py
+                # --promote` -- the exact two-run sequence this script's own
+                # docstring describes -- could never promote anything, since
+                # every row was already present by the second run.
+                if promote and entry.get("promote") and existing["tier"] == "seen":
+                    conn.execute(
+                        "UPDATE paper_fields SET tier = 'screened' WHERE record_id = ?",
+                        (record_id,),
+                    )
+                    promoted += 1
+            else:
+                tier = "screened" if (promote and entry.get("promote")) else "seen"
+                paper = PaperRecord(
+                    id=record_id,
+                    tier=tier,
+                    citation=entry["citation"],
+                    access=entry["access"],
+                    disposition=entry["disposition"],
+                    context=entry["context"],
+                    value=entry["citation"],
+                    evidence_tag="N/A",
+                    updated=UPDATED,
+                    updated_reason=UPDATED_REASON,
                 )
-                promoted += 1
-            continue
-
-        tier = "screened" if (promote and entry.get("promote")) else "seen"
-        paper = PaperRecord(
-            id=record_id,
-            tier=tier,
-            citation=entry["citation"],
-            access=entry["access"],
-            disposition=entry["disposition"],
-            context=entry["context"],
-            value=entry["citation"],
-            evidence_tag="N/A",
-            updated=UPDATED,
-            updated_reason=UPDATED_REASON,
-        )
-        insert_paper(conn, paper)
-        inserted += 1
+                insert_paper(conn, paper)
+                inserted += 1
+        except Exception as e:
+            conn.execute(f"ROLLBACK TO SAVEPOINT {savepoint}")
+            raise RuntimeError(f"failed on seed-set entry {record_id!r} (position {position}): {e}") from e
+        else:
+            conn.execute(f"RELEASE SAVEPOINT {savepoint}")
 
     conn.commit()
     regenerate(conn, EXPORT_DIR)

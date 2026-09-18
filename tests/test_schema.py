@@ -16,7 +16,7 @@ import pytest
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from store import connect, create_store  # noqa: E402
+from store import connect, create_store, script_paths  # noqa: E402
 
 
 @pytest.fixture
@@ -251,3 +251,30 @@ def test_paper_fields_checked_against_source_accepts_the_literal_never(db):
         "SELECT checked_against_source FROM paper_fields WHERE record_id = 'p1'"
     ).fetchone()
     assert row["checked_against_source"] == "never"
+
+
+def test_script_paths_derives_db_and_export_paths_from_repo_root():
+    """F6 finding 5 (PR #1 review): ROOT/DB_PATH/EXPORT_DIR resolution was
+    copy-pasted near-identically across every ingestion/correction script.
+    A fake script path two directories under a synthetic repo root proves
+    the function resolves relative to ITS ARGUMENT, not to this test
+    file's own location, which is the exact bug a hardcoded parents[N]
+    depth could introduce silently."""
+    fake_script = Path("/some/repo/scripts/whatever_ingest.py")
+    root, db_path, export_dir = script_paths(str(fake_script))
+    # .resolve() prefixes the current drive on Windows, so compare parts
+    # rather than full equality against a rootless POSIX-style path.
+    assert root.parts[-2:] == ("some", "repo")
+    assert db_path.parts[-3:] == ("repo", "store", "evidence.db")
+    assert export_dir.parts[-2:] == ("repo", "export")
+
+
+def test_script_paths_matches_this_repositorys_own_real_layout():
+    """The real store/evidence.db and export/ directories must actually
+    exist at the paths this function derives for a script under THIS
+    repository's scripts/ directory -- not just at some synthetic path."""
+    real_script = Path(__file__).resolve().parents[1] / "scripts" / "view.py"
+    root, db_path, export_dir = script_paths(str(real_script))
+    assert (root / "CLAUDE.md").exists()
+    assert db_path.parent.name == "store"
+    assert export_dir.name == "export"

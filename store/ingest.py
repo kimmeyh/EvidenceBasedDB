@@ -50,7 +50,29 @@ class AssertionRecord:
     updated_reason: str = ""
 
 
+def validate_paper(paper: PaperRecord) -> None:
+    """Enforce the tier/checked_against_source rule schema.sql's own
+    comment documents but cannot express as a CHECK constraint (SQLite
+    has no tier-conditional NOT NULL without a trigger): ADR-0005 section
+    2 requires checked_against_source to be set at tier 'read'. Fixed
+    2026-09-18 (F6 finding 2, PR #1 review): the comment existed, the
+    application-layer check it promised did not -- insert_paper() accepted
+    any tier/checked_against_source combination unchecked.
+
+    'never' is a valid, meaningful value (a statement someone made) and
+    satisfies this check same as any other non-None string; only None
+    (never populated at all) fails it.
+    """
+    if paper.tier == "read" and paper.checked_against_source is None:
+        raise ValueError(
+            f"paper {paper.id!r} is tier='read' but checked_against_source is not set. "
+            "ADR-0005 section 2 requires it at this tier -- use the literal string "
+            "'never' if that is genuinely the intended value, not None."
+        )
+
+
 def insert_paper(conn: sqlite3.Connection, paper: PaperRecord) -> None:
+    validate_paper(paper)
     conn.execute(
         "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
         "VALUES (?, 'paper', ?, ?, ?, ?, ?)",

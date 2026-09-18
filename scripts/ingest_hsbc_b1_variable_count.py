@@ -23,15 +23,13 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import connect  # noqa: E402
+from store import connect, script_paths  # noqa: E402
 from store.export import regenerate  # noqa: E402
 from store.ingest import AssertionRecord, insert_assertion  # noqa: E402
 
-DB_PATH = ROOT / "store" / "evidence.db"
-EXPORT_DIR = ROOT / "export"
+ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 
 UPDATED = "2026-09-17"
 UPDATED_REASON = "Sprint 2 Task B: ingest a real HSBC-submission assertion so Task B has something to spot-check"

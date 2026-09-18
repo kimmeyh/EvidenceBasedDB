@@ -181,3 +181,49 @@ def test_a_non_paper_entry_still_gets_a_record_with_an_honest_disposition(store_
     ).fetchone()
     conn.close()
     assert "not a paper" in row["disposition"].lower() or "vendor" in row["disposition"].lower()
+
+
+def test_a_bad_entry_names_itself_and_does_not_corrupt_earlier_inserts(store_and_metadata):
+    """F6 finding 3 (PR #1 review): per-entry SAVEPOINT isolation. Before
+    this fix, a mid-loop FK violation aborted the whole run with a bare
+    sqlite3 traceback naming no offending record, and a real re-run from
+    scratch would be needed since the single end-of-loop commit meant
+    nothing else had actually landed either (or everything had, atomically
+    -- but with no way to tell which without inspecting the DB by hand).
+
+    This test puts a bad entry (an undefined context, which schema.sql's
+    own FK on record_contexts.context_id rejects) SECOND in a three-entry
+    list and asserts: (1) the error message names the failing entry's id,
+    (2) the entry BEFORE it in the loop is still present -- the savepoint
+    isolates the bad entry's own partial write, not the whole run."""
+    db_path, metadata_path, export_dir = store_and_metadata
+    entries = [
+        SAMPLE_ENTRIES[0],
+        {
+            "id": "bad-entry-undefined-context",
+            "citation": "Nobody, N., \"A Paper With a Bad Context\", 2026",
+            "access": "local file",
+            "context": "platform:not-a-real-platform",
+            "disposition": "deliberately invalid for this test",
+            "promote": False,
+        },
+        SAMPLE_ENTRIES[1],
+    ]
+    metadata_path.write_text(json.dumps(entries), encoding="utf-8")
+
+    proc = _run_script(db_path, metadata_path, export_dir)
+    assert proc.returncode != 0
+    assert "bad-entry-undefined-context" in proc.stderr
+    assert "position 1" in proc.stderr
+
+    import store as store_module
+    conn = store_module.connect(db_path)
+    survived = conn.execute(
+        "SELECT id FROM records WHERE id = 'griffin-2026-cvqboosting-fraud'"
+    ).fetchone()
+    bad = conn.execute(
+        "SELECT id FROM records WHERE id = 'bad-entry-undefined-context'"
+    ).fetchone()
+    conn.close()
+    assert survived is not None, "the entry BEFORE the bad one should survive the savepoint rollback"
+    assert bad is None, "the bad entry itself must not be partially committed"
