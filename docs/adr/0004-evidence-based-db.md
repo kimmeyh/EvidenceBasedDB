@@ -635,6 +635,15 @@ against the schema.
 questions answered.** Sprint 2 Task E, walked against the real store rather
 than recollection.
 
+**Every count below is a snapshot as of 2026-09-17, against the store as
+it existed that day.** They are expected to change as more papers and
+assertions are added (CLAUDE.md: additions to the seed directories happen
+over time and are expected) -- none of these numbers should be read as a
+current fact at any later date without re-querying the store. Raised by
+the team lead (2026-09-18) after a code review found two of these counts
+had already drifted from the store's actual state by the time this
+amendment was drafted.
+
 - **Which fields were never filled?** `units` and `rounding`
   (`assertion_fields`) -- 0 of 8 assertions. `assertion_documents` -- 0 rows,
   despite the field existing since Task B. Neither has an assertion yet

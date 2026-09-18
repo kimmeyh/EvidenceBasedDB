@@ -709,6 +709,11 @@ recorded once there rather than duplicated here (the exact drift this
 project's own standing rule against restating a value in multiple
 documents exists to prevent).
 
+**Every count below is a snapshot as of 2026-09-17, against the store as
+it existed that day**, same caveat as ADR-0004's A4: these numbers change
+as more papers/assertions are added and should not be read as current at
+any later date without re-querying the store.
+
 The section 2 fields this ADR specifically owns: `checked_against_source`
 is set (non-`never`) for 1 of 46 papers (the Lenat/Marcus paper, tier
 `read`); every other paper is `seen` or `screened` and correctly has no
