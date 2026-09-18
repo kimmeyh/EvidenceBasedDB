@@ -681,6 +681,104 @@ decision, not decided here.
 - Depends on: nothing technical. Lowest-effort of the six; could be
   done alongside F19 since both touch the skills directory.
 
+**F21. Fix the value/provenance/citation triplication at the store-write layer (~small, no-history) Priority 22**
+- Phase: Code quality. Surfaced by F10's Sprint 3 review
+  (`docs/sprints/SPRINT_3_F7-F10_REVIEW_RESULTS.md`), 2026-09-18
+- Platform: `store/ingest.py` (`insert_paper`)
+- Sprint 3 Task B (F6 finding 1) fixed this at the EXPORT layer: `store/
+  export.py`'s `_export_paper` now reads `citation` from `provenance`
+  rather than from `paper_fields.citation` independently. F10's review
+  found the underlying defect is still live at the STORE layer:
+  `insert_paper()` still writes the same string into both
+  `records.provenance` and `paper_fields.citation` at insert time
+  (verified: `citation` == `provenance` on 46/46 papers, `citation` ==
+  `value` on 45/46). CLAUDE.md's own standing rule -- "one value
+  restated in five documents drifted in three of them" -- is reproduced
+  inside a single row
+- Needs a decision: either drop `paper_fields.citation` as a stored
+  column (a schema migration, more invasive) or make `insert_paper()`
+  derive it from `provenance` rather than accepting it as independent
+  input, closing the write-time duplication the export-layer fix could
+  not reach
+- Depends on: nothing technical. Independent of other F21-F24 items.
+
+**F22. Settle the `screened`-tier definition as a dated ADR amendment (~small, no-history) Priority 24**
+- Phase: Architecture / documentation. Surfaced by F10's Sprint 3 review,
+  2026-09-18
+- Platform: `docs/adr/0005-reference-library.md`
+- ADR-0005 section 2c defines `screened` as "an agent extracted the
+  claim and proposed a verdict." All 18 papers reviewed in Sprint 3
+  Tasks E-H carry tier `screened` with zero `paper_yields` rows -- no
+  assertion has been extracted from any of them. ADR-0005's own
+  Amendment A1 (2026-09-17) states this is "expected at their tier,"
+  which F10's review argues contradicts rather than reconciles with the
+  tier's own stated definition
+- Two options to resolve, a decision for the team lead: (a) demote all
+  18 (and any other screened-with-zero-yields papers) to `seen`, the
+  honest claim ("we know it exists, we wrote a disposition"); or (b)
+  amend ADR-0005 section 2c to define what `screened` actually means in
+  practice -- e.g. "dispositioned and applicability-derived, but not yet
+  mined" -- as a dated amendment, never a silent edit
+- Depends on: nothing technical. Should probably resolve before or
+  alongside F23 (the vocabulary re-filing pass), since both touch how
+  papers are described.
+
+**F23. Deliberate world/method/ml re-filing pass across all 46 papers (~medium, no-history) Priority 26**
+- Phase: Data quality. Surfaced independently by BOTH F9 and F10's
+  Sprint 3 reviews, 2026-09-18 (see review results doc for full detail)
+  -- convergent findings from zero-cross-visibility reviewers is itself
+  a signal this is a real gap, not one reviewer's idiosyncratic read
+- Platform: `scripts/apply_paper_applicability.py`-style one-off
+  correction script, or a new one, plus `store/evidence.db` and
+  `export/papers.json`
+- Three convergent findings: (1) `world` is being applied on two
+  incompatible tests within the same correction pass -- "platform-
+  independent" (which let a contested empirical claim and a
+  jurisdiction-bound policy report through) vs. "physics/mathematics
+  ground truth" (ADR-0004's actual definition, which the one genuine
+  mathematical theorem in the reviewed set, zajac, did NOT receive); (2)
+  `method` is drifting toward "anything technical" on some records
+  (mandra) while being correctly reserved for "how this library
+  evaluates claims" on others (lubinski) -- the same "tag wearing a
+  costume" failure ADR-0004 section 3b explicitly warns against, from
+  the opposite direction; (3) the `ml` context has ZERO users across all
+  46 papers despite multiple records (wang, huynh, neven, per F9/F10)
+  carrying substantial classical-ML content that does not depend on a
+  quantum substrate
+- Depends on: F22 (tier decision) ideally settled first, since both
+  touch how a paper's applicability/disposition gets re-derived; not a
+  hard technical dependency
+- Not this card's job: extracting assertions from newly-`read`-tier
+  papers (that's the natural follow-on once F22/F23 land, and overlaps
+  with F10's own recommended promotion of loke/emami/qci-2024/mancilla)
+
+**F24. Mechanize citation refresh against arXiv/Crossref/DataCite APIs (~medium, no-history) Priority 28**
+- Phase: Tooling / data quality. Surfaced by F10's Sprint 3 review,
+  2026-09-18
+- Platform: a new `scripts/refresh_citations.py`, `store/evidence.db`
+- ADR-0005 section 2 states citations must be "pulled from an API,
+  never hand-typed." F10's source-verification pass (arXiv abstract
+  pages, publisher pages, four local PDFs) found this rule was not
+  followed for at least 4 of the 18 reviewed papers, each a real,
+  independently-confirmable defect: `dupont-2023`'s recorded title is
+  wrong; `kordzanganeh-2022` is missing a named author (Basil
+  Kyriacou); `rand-2023-...`'s citation carries no year at all and its
+  own record id asserts the wrong one (2023 vs. the source's actual
+  2022); `mancilla-2026` asserts two seed files are "identically-
+  content" when hashing shows they are not. Additionally at least 6
+  reviewed papers cite a preprint version superseded by a peer-reviewed
+  publication the record does not reference
+- Proposed shape (for review at carding): a script that takes each
+  paper's `access` field (arXiv id, DOI) and queries the corresponding
+  API (arXiv, Crossref, or DataCite) to re-derive and diff the citation
+  string against what is currently stored, flagging mismatches for
+  human review rather than auto-applying (an automatic overwrite risks
+  clobbering a deliberately-corrected record like `loke-2026`, whose
+  citation carries real, valuable correction history)
+- Depends on: nothing technical, though this is naturally sequenced
+  after F21 (fixing where citation lives) so the refresh writes to the
+  right place once, not twice
+
 ### Out of scope, not yet candidates
 
 - Inference, the graph store, and embeddings (explicitly out of scope per
