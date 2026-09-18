@@ -59,6 +59,10 @@ Inputs: sprint goal (1-2 sentences), refined candidates (BACKLOG_REFINEMENT.md f
 
 Minutes, from recorded actuals of comparable step-types; `[no-history]` + timebox where uncalibrated. Re-estimate after plan-to-branch-state verification findings (workflow 3.2.2.1/3.2.2.2). Record actuals at task completion; recompute at retro Category 3.
 
+### Data-precondition check for "validate/check X against Y" items (Sprint 2 retrospective improvement 3)
+
+Before estimating a card phrased as "validate," "check," "spot-check," or "compare" X against Y, confirm X actually exists to be checked -- do not assume it because the card's own name implies it. Sprint 2's Task B ("spot-check the store's assertions against the HSBC submission's own determinations") was estimated assuming matching assertions already existed in the store; none did, which turned a spot-check into an extraction-then-check task and expanded scope mid-sprint (a real, correct expansion, but one the estimate should have anticipated). This is the same failure mode the Capability pre-flight above guards for tool/environment preconditions, applied to data preconditions instead: a 5-minute check (does at least one record of the class being validated exist?) before the item is estimated, not after work starts.
+
 ### Runtime is estimated SEPARATELY from implementation (Sprint 8 improvement 1)
 
 Any task that produces results by running over a dataset carries TWO numbers in

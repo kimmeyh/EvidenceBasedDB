@@ -630,3 +630,60 @@ review.
 widening. ADR-0015 section 1 adds papers as a fourth class. The claim was wrong
 within a day, which is the argument for the 20-paper checkpoint rather than
 against the schema.
+
+**2026-09-17 (A4): The 20-paper checkpoint (46 papers loaded), five of six
+questions answered.** Sprint 2 Task E, walked against the real store rather
+than recollection.
+
+**Every count below is a snapshot as of 2026-09-17, against the store as
+it existed that day.** They are expected to change as more papers and
+assertions are added (CLAUDE.md: additions to the seed directories happen
+over time and are expected) -- none of these numbers should be read as a
+current fact at any later date without re-querying the store. Raised by
+the team lead (2026-09-18) after a code review found two of these counts
+had already drifted from the store's actual state by the time this
+amendment was drafted.
+
+- **Which fields were never filled?** `units` and `rounding`
+  (`assertion_fields`) -- 0 of 8 assertions. `assertion_documents` -- 0 rows,
+  despite the field existing since Task B. Neither has an assertion yet
+  whose claim genuinely needs a unit, a rounding note, or a citing document
+  beyond its own provenance; both stay in the schema rather than being
+  removed, since the sample (8 assertions, from two papers -- Lenat/Marcus
+  and the HSBC preregistration) is too small to conclude the fields are
+  dead weight rather than simply not yet needed.
+- **Which fields were filled with the same value every time?** `evidence_tag`
+  -- 53 of 54 records carry `N/A`; only the two HSBC-derived assertions
+  (Sprint 2 Task B) carry `PROJ`. This is the field the ADR's own bad-
+  answer criterion names directly: "not carrying information; probably
+  belongs in the context." At 54 records, mostly from ONE methodology
+  paper (Lenat/Marcus) plus 46 paper-tier records that do not themselves
+  carry evidence tags, this reads as premature rather than settled --
+  revisit once assertions are extracted from a wider mix of papers,
+  including ones with genuine [HW]/[SIM] figures to tag.
+- **What did we want to record and have nowhere to put?** Nothing found.
+  `paper_applicability` (added Sprint 2 Task A, 59 rows across 45 of 46
+  papers) and `assertion_documents`/`citation_context` (added Sprint 2, PR
+  #1 review) both closed real gaps found in practice rather than exposing
+  a new one.
+- **Did the tiers land where predicted?** Yes: 27 `seen`, 18 `screened`, 1
+  `read`, out of 46 papers. Not "everything is read" -- the ADR's own
+  named failure mode did not happen.
+- **Did any `supports` or `contradicts` link get used?** Yes, once each (2
+  relations total, both from the Lenat/Marcus paper's own worked example).
+  Consistent with scite's cited 0.8% contrasting-citation baseline; per the
+  ADR's own framing, uninformative at this sample size, not yet a finding.
+- **How long did team-lead adjudication take per paper?** NOT YET ANSWERED.
+  This is Sprint 2 Task F's own job, running separately from this
+  amendment, against a ~20-record sample from the `screened` tier. Task E
+  (this amendment) intentionally does not answer it, since answering it
+  well needs its own dedicated, timed pass rather than a number estimated
+  alongside five other questions.
+
+**Consequence**: no schema field is removed or added by this amendment.
+The evidence at 46 papers does not yet meet the bar either bad-answer
+criterion sets (a field that is definitively dead weight, or a context
+that is definitively missing information) -- it meets the bar for
+"watch, do not conclude yet." Revisit `units`/`rounding`/`evidence_tag`
+at a wider, more diverse sample (F5's QCi-author papers and F2's broader
+ingestion would both help) rather than at a fixed paper count.

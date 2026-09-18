@@ -37,30 +37,36 @@ repository exists. No other F# from either source repository applies here.
 | Sprint | Summary doc | Status | Duration |
 |---|---|---|---|
 | 1 | docs/sprints/SPRINT_1_SUMMARY.md | [OK] Complete | 2026-09-15 to 2026-09-17 |
+| 2 | docs/sprints/SPRINT_2_SUMMARY.md | [OK] Complete | 2026-09-17 to 2026-09-18 |
 
 ## Last Completed Sprint
 
-**Sprint 1: Build the Store** (PR #1 to develop, PR #10 to main, both merged
-2026-09-17). Delivered Tasks A-H per `docs/sprints/SPRINT_1_PLAN.md`: the
-SQLite schema and deterministic export (ADR-0004/0005), domain-scale
-contexts, the Lenat/Marcus paper ingested end to end, the 44-paper seed
-set loaded (17 promoted to `screened`), a determinate-fact resolver for
-the consumer repository's amendment count, and removal of
-hsbc-quantum-fraud-2026 process leakage across 11 governing docs (Task H,
-F1). Also delivered mid-sprint: the sibling-repo write guard, seven ported
-memory files, and PR #1 review fixes (Copilot + Claude). Full detail:
-`docs/sprints/SPRINT_1_SUMMARY.md`; retrospective:
-`docs/sprints/SPRINT_1_RETROSPECTIVE.md` (16 categories x 4 roles, all
-"Very Good"). Zero metered spend; this repository has none.
+**Sprint 2: Validate, Guard, and View the Store** (PR #11, open, awaiting
+merge). Delivered Tasks A-E, G per `docs/sprints/SPRINT_2_PLAN.md`:
+re-derived real paper applicability (Task A, corrected a Sprint 1
+undercount), extracted and validated a real HSBC-submission assertion
+(Task B), spot-checked store content against the 44 source PDFs and added
+the QBoost paper (Task C), a vocabulary guard between ADR-0004/0005 (Task
+D, F76), both ADRs' 20-paper checkpoints walked and recorded as dated
+amendments (Task E, F75), and `scripts/view.py` (Task G, F3). Task F
+(team-lead adjudication timing) was REPLACED mid-sprint by F7-F11 (Class 3
+scope change, backlog). Also delivered: F12 and F13 added to the backlog,
+`CLAUDE.md`'s explicit US-English statement, and three retrospective
+improvements applied as commits (mechanical GitHub-issue-state check in
+Phase 5, the `block_ask_user_question.py` hook, a data-precondition check
+in `SPRINT_PLANNING.md`). Full detail: `docs/sprints/SPRINT_2_SUMMARY.md`;
+retrospective: `docs/sprints/SPRINT_2_RETROSPECTIVE.md` (16 categories x 4
+roles, all "Very Good"). Zero metered spend; this repository has none.
 
-**The measurement Sprint 1 did NOT produce**: team-lead adjudication time
-per record, ADR-0004's own named design constraint. Deliberately deferred
-by team-lead decision mid-sprint rather than measured on one record as
-originally planned; now F75's job against ~20 real records.
+**The measurement Sprint 2 did NOT produce**: team-lead adjudication time
+per record, ADR-0004's own named design constraint, deferred a second
+time. Sprint 1 deferred it by team-lead decision; Sprint 2's own Task F
+was scoped to produce it and was replaced instead by F7-F11 (backlog),
+sequenced so F11 runs after F7-F10 complete in a future sprint.
 
 ## Current sprint
 
-None. Sprint 2 has not yet been scoped -- this section is populated at
+None. Sprint 3 has not yet been scoped -- this section is populated at
 Phase 3 Kickoff once the team lead's selection from the candidates below
 is recorded.
 
@@ -292,6 +298,251 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
 - Depends on: nothing technical. Findings 1 and 5 likely belong together
   (both touch every ingestion call site); triage order at Sprint 2
   refinement
+
+**F7. Adversarial record-adjudication review by Haiku (~unknown, no-history) Priority 11**
+- Phase: Research / adjudication substitution. Surfaced Sprint 2 mid-Task F
+  (team lead, 2026-09-17): replace team-lead adjudication timing with
+  model-based adversarial review confirmations, one card per model tier,
+  each designed for that specific model rather than a generic template
+  with a name swapped
+- **What this reviewer is FOR**: Haiku is this project's own documented
+  "Developer" tier (SPRINT_PLANNING.md) -- fast, cheap, used today for
+  bulk/mechanical subagent work. As an adjudication reviewer, its
+  distinguishing risk is NOT missing subtle context, it is being too
+  agreeable/fast and confirming a record without actually re-deriving
+  the claim from the source. Its review protocol must therefore force
+  verification rather than reward speed: require it to quote the exact
+  source sentence supporting each field it confirms (not paraphrase),
+  and reject a "looks right" confirmation with no quoted anchor
+- **Review task**: given one paper/assertion record and its cited source
+  (PDF path or provenance pointer), confirm or reject: citation accuracy
+  (author/title/venue), the primary context, and (if present) each
+  applicability entry's rationale -- EACH confirmation must be
+  accompanied by a directly quoted source fragment, not a summary
+  judgement
+- **What would make this reviewer's output untrustworthy, name it now**:
+  a review that confirms every field with no quoted evidence, or that
+  quotes the SAME generic sentence for multiple different fields
+  (a sign of pattern-matching rather than reading)
+- Depends on: the ~18-20 screened-tier records Task F was going to review
+  manually; this card's output is compared against F8-F10's for
+  inter-model agreement, not accepted alone
+
+**F8. Adversarial record-adjudication review by Sonnet (~unknown, no-history) Priority 12**
+- Phase: Research / adjudication substitution. Same origin as F7
+- **What this reviewer is FOR**: Sonnet is this project's own documented
+  "Senior Developer" tier -- the workhorse model actually doing most of
+  this sprint's own implementation work. As a reviewer, its risk is
+  neither Haiku's over-agreeableness nor Fable/Opus's expected rigor: it
+  is MOST likely to correctly flag genuine errors but under-flag subtle
+  scope/certainty misjudgments (e.g. a `certainty: high` that a stricter
+  reviewer would downgrade for a reason the schema's own `certainty_
+  reasons` field should have named but didn't)
+- **Review task**: same fields as F7 (citation, context, applicability),
+  PLUS certainty/certainty_reasons/fidelity where present -- explicitly
+  check whether the STATED reasons actually justify the level chosen
+  (ADR-0004 section 3's GRADE-style model), not just whether a reasons
+  field is non-empty
+- **What would make this reviewer's output untrustworthy, name it now**:
+  agreeing with every existing certainty level without ever proposing a
+  different one -- a reviewer that never disagrees is not reviewing
+- Depends on: same record set as F7; designed to run independently, not
+  sequentially after F7 (so neither anchors the other's judgement)
+
+**F9. Adversarial record-adjudication review by Opus (~unknown, no-history) Priority 13**
+- Phase: Research / adjudication substitution. Same origin as F7
+- **What this reviewer is FOR**: Opus is this project's own documented
+  top tier (alongside Fable), mandatory today for ADR-spine decisions,
+  retrospectives, and security-sensitive review. As an adjudication
+  reviewer its expected strength is catching cross-record inconsistency
+  (a context or certainty level that is locally defensible but
+  contradicts how a similar record elsewhere was adjudicated) rather
+  than single-record correctness, which F7/F8 already cover
+- **Review task**: given the FULL set of records under review (not one
+  at a time), find pairs or groups where the SAME kind of judgement call
+  was made differently -- two papers with structurally similar
+  applicability that got different certainty treatment, two assertions
+  from comparable sources with different fidelity levels -- and state
+  the inconsistency explicitly, citing both record ids
+- **What would make this reviewer's output untrustworthy, name it now**:
+  finding zero inconsistencies across ~20 records adjudicated by
+  different processes (Task F/A/B/C ran at different times, by
+  different means) -- zero found here reads as not having actually
+  cross-compared, not as the records being perfectly consistent
+- Depends on: F7 and F8's findings should be available as input (Opus
+  reviews the SET, informed by what per-record review already surfaced),
+  making this the last of the three peer reviews to run, before F10
+
+**F10. Adversarial record-adjudication review by Fable (~unknown, no-history) Priority 14**
+- Phase: Research / adjudication substitution. Same origin as F7
+- **What this reviewer is FOR**: Fable is this project's own documented
+  preferred top tier / Lead Developer role. As the final reviewer in the
+  sequence, its distinguishing job is not first-pass review (F7/F8
+  already did that) or cross-record consistency (F9 already did that) --
+  it is adjudicating DISAGREEMENTS the other three produced, the actual
+  decision a team lead would have to make when reviewers disagree
+- **Review task**: given F7, F8, and F9's findings together, for every
+  point where two or more reviewers disagreed (a confirmed field one
+  flagged and another didn't; an inconsistency F9 found that F7/F8's
+  per-record review missed or contradicted), make the actual call --
+  which reviewer was right, and why, citing the source directly rather
+  than deferring to reviewer consensus alone
+- **What would make this reviewer's output untrustworthy, name it now**:
+  resolving every disagreement in favour of whichever reviewer flagged
+  MORE issues (favouring strictness as a proxy for correctness) rather
+  than checking each disagreement against the actual source
+- Depends on: F7, F8, F9 all complete. This is the last of the four
+  cards to run and is this backlog item's own measure of whether model-
+  based review can substitute for team-lead adjudication AT ALL --
+  compare Fable's final call rate and time cost against what Task F's
+  original team-lead-timed measurement would have cost, once both
+  numbers exist
+
+**F11. Team-lead adjudication timing, run AFTER F7-F10 (~unknown, no-history) Priority 15**
+- Phase: Measurement. Team lead, 2026-09-17: "yes backlog, yes replacing
+  task f. We are going to move it after completion of backlog items
+  F7-10 as F11?" -- confirmed
+- **This is Sprint 2 Task F's original measurement, not a new idea.**
+  ADR-0004 names it "the number the whole design is constrained by":
+  minutes of team-lead adjudication per accepted record. Sprint 1
+  deferred it once already; this sprint's own Task F was going to
+  produce it directly against ~20 screened-tier records, and is now
+  REPLACED by F7-F10's model-based review instead of running standalone
+- **Why AFTER F7-F10, not instead of them**: F10's own card already
+  names the comparison this measurement exists to make -- "compare
+  Fable's final call rate and time cost against what Task F's original
+  team-lead-timed measurement would have cost." Running F11 after F7-F10
+  complete means the team lead times adjudication on the SAME record
+  set the four model reviewers already processed, so the comparison is
+  apples-to-apples (same records, same starting review state) rather
+  than a cold, unassisted timing run
+- **What this measures that F7-F10 cannot**: F7-F10 measure whether
+  MODEL review agrees with itself and catches real issues. Only F11
+  measures the actual number ADR-0004 names -- team-lead minutes per
+  record -- and only F11 can answer whether reviewing model OUTPUT
+  (confirm/reject F10's resolved calls) costs less team-lead time than
+  adjudicating a record cold, which is the real question this whole
+  substitution is testing
+- Depends on: F7, F8, F9, F10 all complete, in that order. This is the
+  last item in the F7-F11 sequence and closes out what Sprint 2's
+  original Task F was scoped to produce
+
+**F12. Design and implement a paper/reference intake workflow (~unknown, no-history) Priority 16**
+- Phase: Process / tooling. Added 2026-09-17 (team lead), mid-Sprint-2, on
+  finding three new items to add (an example non-arXiv reference, an arXiv
+  paper, and a GitHub repository): "Will need a way to easily add papers
+  and references as I find them." Example set given: a LinkedIn-hosted
+  reference link, `arxiv.org/abs/2602.11092`, and
+  `github.com/merlinquantum/merlin`.
+- **This is a two-phase item, and the first phase is design, not
+  implementation** (same shape as F2). Phase 1 (this card): determine the
+  best process for turning a found item (a link, a citation, a repo) into
+  the correct repository update(s). Phase 2: build whatever Phase 1
+  concludes is needed (a script, a template, a checklist) and use it going
+  forward.
+- **Open questions this card exists to answer, not to pre-decide**:
+  - What does the PAPER repository (`D:\Data\Harold\EvidenceBasedDB\Papers`,
+    non-git per `CLAUDE.md`'s two-directories table) need per new paper
+    beyond the PDF itself -- is a companion `.md` sidecar warranted, or does
+    `store/evidence.db` + `export/papers.json` already carry everything a
+    sidecar would duplicate (this repository's own "determinate facts are
+    computed, never stored" rule argues against a sidecar that just
+    restates fields the store already has)?
+  - What does the REFERENCES repository need per new reference, given
+    references are NOT always papers -- non-technical articles, vendor
+    training documents, software packages (the `eqc_models` PyPI package
+    named at Sprint 1 close-out is exactly this case)? At minimum: what
+    filename convention, what content must be preserved locally (the
+    source may not stay live -- a LinkedIn link is not archival), and what
+    links (source URL, DOI/arXiv id, PyPI/GitHub url) must be recorded and
+    where.
+  - Is one intake process enough for all three source types in the given
+    example (a non-technical link, an arXiv paper, a GitHub repository), or
+    does each need its own path converging on the same store update step?
+  - How does this interact with F5's QCi deep-dive (bulk paper discovery)
+    and F4/Task C's finding that the seed directories are NOT a fixed
+    snapshot -- additions are continuous and expected. This card's output
+    should be the standing process Task C's finding already implies is
+    needed, not a one-off script for the three example items alone.
+- **Not this card's job**: ingesting the three example items themselves.
+  Those are illustrative inputs for designing the process, not a to-do
+  list to clear by hand; Phase 2 (or a follow-on card) applies the
+  resulting process to them along with everything else found since.
+- Depends on: nothing technical. Can run independent of F7-F11 and F5.
+
+**F13. Guard US English spelling in this repository's own process/design docs (~small, no-history) Priority 17**
+- Phase: Process / tooling. Added 2026-09-17 (team lead), found while reviewing
+  Sprint 2's docs: "this is a US English based repository (looked like we
+  were unsure previously)." `CLAUDE.md` now states the policy explicitly
+  (2026-09-17); this card builds the enforcement.
+- Platform: this repository's own `.md` files -- ADRs, sprint plans,
+  `CLAUDE.md`, `docs/*.md`. NOT `store/`, `export/`, or anything under
+  `D:\Data\Harold\EvidenceBasedDB\` (papers, books -- out of this
+  repository entirely).
+- **Model, don't design from scratch**: `hsbc-quantum-fraud-2026` (read-only
+  from this repository) built exactly this pair 2026-09-16/17:
+  `scripts/us_english_fix.py` (a British-to-US converter over tracked
+  markdown) and `experiments/src/test_us_english.py` (the guarding test,
+  parametrized per file). Both are well-shaped for porting: a word-pair list
+  (behaviour/behavior, organise/organize, licence/license, ~90 pairs),
+  case-preserving substitution, a `PROTECTED` list of exact spans that must
+  never be rewritten (proper nouns, direct quotations), and a test that
+  fails the whole suite loudly (not silently skips) if the tracked-file
+  count collapses to near-zero -- guards against the exact vacuous-guard
+  failure this repository's own `test_guard_discipline.py` already
+  documents as a recurring class here.
+- **The one adaptation that is NOT a copy-paste**: the sibling repo excludes
+  whole files/directories (`docs/paper/`, `docs/submission/`,
+  `PREREGISTRATION.md`) because those are a FROZEN, already-submitted
+  filing -- editing them after the fact would falsify a document of record.
+  This repository has no equivalent frozen filing. Team lead, 2026-09-17:
+  the exemption here is narrower and different in kind -- text quoted or
+  cited VERBATIM from a paper or book keeps that source's own spelling (a
+  `citation` field, a direct quotation in an ADR amendment, a paper title
+  in `docs/ALL_SPRINTS_MASTER_PLAN.md`), but nothing else in this
+  repository's own prose is exempt just because it lives in the same file.
+  This means the port needs SPAN-level protection (quotation-aware, e.g.
+  skip text inside `"..."` that is attributed to a source, or an explicit
+  per-file list of protected spans as the sibling repo already does for its
+  licence quotation) rather than whole-file exclusion as the primary
+  mechanism.
+- **Also needs a decision this card should make explicit, not assume**:
+  whether `citation`-shaped fields inside committed JSON/markdown exports
+  (`export/papers.json` citation strings, `store/*.sql` seed data) are in
+  scope at all, given ADR-0004's own "the export is generated, never
+  hand-edited" rule -- a guard that fires on generated output the source
+  data itself controls would be testing the wrong layer.
+- Depends on: nothing technical. Independent of F7-F12.
+
+**F14. Harden the one-off data-correction scripts against silent partial failure (~small, no-history) Priority 18**
+- Phase: Code quality / tooling. Added 2026-09-18, backlogged from PR #11's
+  Claude code-review pass rather than fixed inline (both scripts had
+  already been run against the live store; a behavior change alone would
+  not affect data already applied, so this is about the NEXT time a
+  similar one-off script is written, not a live defect in this store's
+  current content).
+- Platform: `scripts/apply_paper_applicability.py` (and the pattern it
+  sets for any future one-off data-correction script of this shape).
+- **Finding 1**: `apply_paper_applicability.py` prints a `warning:` to
+  stderr and continues (exit 0 regardless) when a `paper_id` key in its
+  hand-authored `APPLICABILITY` dict does not match any real record --
+  the count is collected (`skipped_no_paper`) but never affects control
+  flow. Since the script's own stated purpose is "apply to all 44
+  seed-set papers," a single typo'd key means that paper is silently left
+  with the exact empty-applicability defect the script exists to fix, and
+  nothing forces anyone to notice a stderr line buried in normal output.
+- **Finding 2**: the same script skips a paper entirely if it already has
+  ANY row in `paper_applicability`, without checking whether the existing
+  rows match the dict's intended context set -- a paper left
+  half-populated by an interrupted prior run would be silently skipped
+  and never completed on a re-run.
+- **Proposed fix, for review at carding**: make `skipped_no_paper > 0`
+  produce a non-zero exit code (or assert the applied+skipped count
+  equals `len(APPLICABILITY)` before declaring success), and make the
+  "already set" check compare the existing context-id set against the
+  dict's intended set rather than trusting any non-zero count.
+- Depends on: nothing technical. Low priority since it hardens a
+  one-off script pattern rather than fixing a live defect.
 
 **F75. Action the 20-paper ADR checkpoint (~2h) Priority 7**
 - Phase: Evidence Based DB / process (carried from the consumer repository's
