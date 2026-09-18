@@ -41,22 +41,32 @@ repository exists. No other F# from either source repository applies here.
 
 ## Last Completed Sprint
 
-**Sprint 2: Validate, Guard, and View the Store** (PR #11, open, awaiting
-merge). Delivered Tasks A-E, G per `docs/sprints/SPRINT_2_PLAN.md`:
-re-derived real paper applicability (Task A, corrected a Sprint 1
-undercount), extracted and validated a real HSBC-submission assertion
-(Task B), spot-checked store content against the 44 source PDFs and added
-the QBoost paper (Task C), a vocabulary guard between ADR-0004/0005 (Task
-D, F76), both ADRs' 20-paper checkpoints walked and recorded as dated
-amendments (Task E, F75), and `scripts/view.py` (Task G, F3). Task F
-(team-lead adjudication timing) was REPLACED mid-sprint by F7-F11 (Class 3
-scope change, backlog). Also delivered: F12 and F13 added to the backlog,
-`CLAUDE.md`'s explicit US-English statement, and three retrospective
-improvements applied as commits (mechanical GitHub-issue-state check in
-Phase 5, the `block_ask_user_question.py` hook, a data-precondition check
-in `SPRINT_PLANNING.md`). Full detail: `docs/sprints/SPRINT_2_SUMMARY.md`;
-retrospective: `docs/sprints/SPRINT_2_RETROSPECTIVE.md` (16 categories x 4
-roles, all "Very Good"). Zero metered spend; this repository has none.
+**Sprint 2: Validate, Guard, and View the Store** (PR #11 merged to
+develop, then develop merged to main via PR #19). Delivered Tasks A-E, G
+per `docs/sprints/SPRINT_2_PLAN.md`: re-derived real paper applicability
+(Task A, corrected a Sprint 1 undercount), extracted and validated a real
+HSBC-submission assertion (Task B), spot-checked store content against
+the 44 source PDFs and added the QBoost paper (Task C), a vocabulary
+guard between ADR-0004/0005 (Task D, F76), both ADRs' 20-paper
+checkpoints walked and recorded as dated amendments (Task E, F75), and
+`scripts/view.py` (Task G, F3). Task F (team-lead adjudication timing)
+was REPLACED mid-sprint by F7-F11 (Class 3 scope change, backlog). Also
+delivered: F12 and F13 added to the backlog, `CLAUDE.md`'s explicit
+US-English statement, three retrospective improvements applied as
+commits (mechanical GitHub-issue-state check in Phase 5, the
+`block_ask_user_question.py` hook, a data-precondition check in
+`SPRINT_PLANNING.md`), and PR #11 review fixes (Copilot + Claude): a
+genuinely vacuous guard test corrected and verified by injection, two
+internally-inconsistent counts in ADR-0004's Amendment A4 fixed before
+merge, `scripts/view.py`'s connection-close/error-handling hardened, and
+both ADR amendments given explicit point-in-time qualifiers after the
+team lead flagged that a bare count in a document with edit
+restrictions reads as a durable fact rather than a snapshot -- now a
+standing `CLAUDE.md` rule for future measurement-style amendments. F14
+added to the backlog from the review's remaining findings. Full detail:
+`docs/sprints/SPRINT_2_SUMMARY.md`; retrospective:
+`docs/sprints/SPRINT_2_RETROSPECTIVE.md` (16 categories x 4 roles, all
+"Very Good"). Zero metered spend; this repository has none.
 
 **The measurement Sprint 2 did NOT produce**: team-lead adjudication time
 per record, ADR-0004's own named design constraint, deferred a second
@@ -129,67 +139,6 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   That is Phase 1's OUTPUT, reviewed by the team lead before Phase 2 starts.
 - Depends on: nothing technical. Read access to spamfilter-multi already
   exists and is hook-enforced read-only (2026-09-15 standing rule).
-
-**F3. Easy CLI-startable way to view DB content (~unknown, no-history) Priority 20**
-- Phase: Tooling. Tentatively assigned Sprint 2 (team lead, 2026-09-16)
-- Platform: this repository, `store/` and a new `scripts/` or `view/` entry point
-- Team lead: view by context (title of every item in that context); view by
-  paper (all data related to that paper); view by assertion (all applicable
-  data). "Propose a viewing method, but needs to be easy and startable from
-  CLI."
-- **Proposed method** (for review at carding, not yet built): a single
-  `python scripts/view.py <mode> [id]` entry point reading directly from
-  `store/evidence.db` (read-only connection), three modes:
-  - `view.py contexts` -- lists every context with a COUNT of records
-    claiming it; `view.py contexts <context-id>` -- lists every record's id
-    and one-line value/title filed under that context (via `record_contexts`
-    plus, for papers, `paper_applicability`, per the F# item below about
-    single-context papers undercounting true applicability)
-  - `view.py paper <paper-id>` -- the full paper record plus every assertion
-    it yields (via `paper_yields`), each with ITS full fields, not just ids
-  - `view.py assertion <assertion-id>` -- the full assertion record plus its
-    `supports`/`contradicts` relations resolved to the other assertion's
-    value (not just the bare id), and which paper (if any) yields it
-  - No server, no web UI: this is a `sqlite3`-backed read tool, output as
-    plain text or `--json` for scripting, matching this repository's own
-    "no speculative abstraction" standard (QUALITY_STANDARDS.md) -- a
-    dashboard is not warranted at 45 records
-- Depends on: the F# item below (single-context-per-paper undercounting) is
-  a real gap this tool would otherwise silently inherit; resolve or at
-  least document it before or alongside this card, not after, since a
-  browsing tool that repeats the undercount is worse than no tool, per
-  QUALITY_STANDARDS.md "verify the artifact you ship, not a proxy for it"
-
-**F4. Validate the store against the HSBC submission and against the 44 source papers (~unknown, no-history) Priority 6**
-- Phase: Validation. Tentatively assigned Sprint 2 (team lead, 2026-09-16)
-- Platform: this repository's store/export, cross-referenced against
-  `hsbc-quantum-fraud-2026` (read-only) and the seed-set PDFs
-  (`D:\Data\Harold\EvidenceBasedDB\Papers`, read-only, never copied in)
-- **Two related but distinct deep-dives, team lead 2026-09-16**: (1) does
-  what this store holds match what the HSBC submission itself determined
-  -- the assertions, figures, and claims the consumer repository's own
-  documents already settled; (2) does the store's content of the 44 loaded
-  papers accurately represent what those papers actually say, checked
-  against the source PDFs directly, not against a prior extraction pass's
-  own notes
-- **Known gap this card should examine and correct, surfaced at Sprint 1
-  Manual Validation**: every paper record in the current export has exactly
-  ONE `context`, even though ADR-0005 section 2 defines `context` (seen-tier,
-  singular) and `applicability` (screened-tier, PLURAL, "context ids it
-  bears on") as deliberately separate fields, and `paper_applicability`
-  exists in the schema as a many-to-many table that Task F never populated
-  for any of the 44 seed-set papers. A paper genuinely spanning two contexts
-  (e.g. the SMU CVQBoosting paper, `qml` and `platform:dirac-3` both) is
-  findable under only whichever single context was chosen, undercounting
-  every cross-context query. Fix as part of this card's accuracy pass, not
-  as a separate item, since correcting it requires re-reading each paper
-  against its actual content anyway
-- **Second known judgment call to revisit**: `dwave-2023-operational-
-  excellence-ebook` was recorded as a normal (low-priority) paper record;
-  `freericks-2026-...-book` was excluded as a class mismatch. Both are
-  book-shaped vendor/academic content; confirm during this deep-dive
-  whether the D-Wave ebook should be reclassified to match
-- Depends on: F77 (Sprint 1, complete)
 
 **F5. Deep-dive QCi: identify authors, find their other papers, scrape QCi's own documentation (~large, no-history) Priority 10**
 - Phase: Sourcing / research. Tentatively assigned Sprint 2 (team lead, 2026-09-16)
@@ -544,50 +493,6 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
 - Depends on: nothing technical. Low priority since it hardens a
   one-off script pattern rather than fixing a live defect.
 
-**F75. Action the 20-paper ADR checkpoint (~2h) Priority 7**
-- Phase: Evidence Based DB / process (carried from the consumer repository's
-  Sprint 14 retrospective improvement 5, 2026-09-14)
-- Platform: `docs/adr/0004-evidence-based-db.md`, `0005-reference-library.md`
-- Both ADRs promise a review at approximately 20 imported papers, with six
-  named questions and the bad answer stated for each. A promise in a document
-  is exactly what this project keeps having to replace with a mechanism, and
-  an unactioned checkpoint is a note nobody reads
-- The question that matters most is the measured one: how long team-lead
-  adjudication takes per paper. At five minutes, 2,000 papers is 160 hours and
-  the design needs rethinking; at thirty seconds the ambition is safe.
-  Everything else in the checkpoint is schema tuning
-- **CARRIES Sprint 1 Task E's deferred measurement (team lead, 2026-09-16).**
-  Task E's premise-falsifier design called for timing a team-lead review of
-  one ingested record BEFORE Task F scaled to 46 papers. A partial review ran
-  (~7 minutes against the paper record and its assertions) and was then
-  deliberately stopped: "I would like to remove the review and leave
-  everything up to your best, informed (search and use AI as needed). We
-  will get back to validating the DB contents at a future step in a future
-  backlog item." Task E therefore shipped WITHOUT a completed
-  adjudication-time measurement -- the schema and ingestion path are proven
-  to work end to end, but the actual number ADR-0004 calls "the number the
-  whole design is constrained by" is not yet known. F75 is that future step:
-  it must produce the measurement Task E's falsifier logic was designed to
-  produce, now against ~20 real records rather than one, since that
-  opportunity was deliberately deferred rather than lost
-- Revisions are recorded as dated amendments at the bottom of each ADR, never
-  as edits in place
-- Depends on: this repository's own F77 work (Sprint 1) and ~20 papers loaded
-  (Sprint 1 Task F)
-
-**F76. Guard the shared vocabulary between ADR-0004 and ADR-0005 (~1h) Priority 8**
-- Phase: Evidence Based DB / tooling (carried from the consumer repository's
-  Sprint 14 retrospective improvement 6, 2026-09-14)
-- Platform: this repository
-- ADR-0005's `applicability` field points at ADR-0004's context list rather
-  than carrying its own enumeration. That was the right call -- two lists
-  naming the same things is how the consumer repository's B1 variable count
-  came to read differently across documents -- but nothing enforces that they
-  agree
-- Needs a test that fails when a record names a context the schema does not
-  define, and when the ADRs' stated context lists diverge from the database's
-- Depends on: this repository's own F77 work (Sprint 1)
-
 ### Out of scope, not yet candidates
 
 - Inference, the graph store, and embeddings (explicitly out of scope per
@@ -605,5 +510,8 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   authorise implementation on its own
 - Both carry a six-question review due after roughly 20 papers are loaded.
   Revisions land as dated amendments at the bottom of each ADR, never as
-  silent edits. **The threshold is crossed**: 44 papers loaded (Sprint 1
-  Task F), so this checkpoint (F75) is now actionable rather than pending.
+  silent edits. **The checkpoint is DONE**: walked against the real store
+  at 46 papers (Sprint 2 Task E, F75, shipped) -- ADR-0004 Amendment A4,
+  ADR-0005 Amendment A1. Both amendments carry an explicit point-in-time
+  qualifier (2026-09-18) since their counts are a snapshot, not a durable
+  fact, in a document that does not permit edits in place.

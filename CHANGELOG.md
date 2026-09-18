@@ -78,3 +78,50 @@ generator" standard -- run the suite, don't copy a count.
   (accuracy validation against the HSBC submission and the source papers),
   F5 (QCi author/documentation deep-dive), and F6 (remaining PR review
   findings) added to the backlog for Sprint 2 selection
+
+### 2026-09-17 to 2026-09-18 (Sprint 2, PR #11)
+
+Sprint 2 validated the store against both ground truths, guarded its
+shared vocabulary, and made it viewable from the CLI: Tasks A-E, G per
+`docs/sprints/SPRINT_2_PLAN.md` (Task F replaced mid-sprint, see below).
+Full detail: `docs/sprints/SPRINT_2_SUMMARY.md`,
+`docs/sprints/SPRINT_2_RETROSPECTIVE.md`, and the PR #11 commit history.
+This entry summarizes rather than restates those numbers.
+
+- **fix**: re-derived every seed-set paper's real applicability from its
+  actual PDF content (Task A), correcting a Sprint 1 undercount where
+  most papers carried only their single primary context despite
+  ADR-0005 defining applicability as a separate plural field
+- **feat**: extracted and validated the first real HSBC-submission
+  assertions (Task B) -- the B1 variable-count case from the consumer
+  repository's own preregistration amendments, with a `contradicts`
+  relation between the corrected and the documented-wrong value
+- **fix**: spot-checked store content against the 44 source PDFs
+  directly (Task C); resolved seed-directory drift (a book relocated to
+  the non-repo Books directory, the QBoost paper added, both confirmed
+  intentional) and added the QBoost paper with a real citation
+- **test**: guard for ADR-0004/ADR-0005 vocabulary agreement (Task D,
+  F76), verified by injection
+- **docs**: both ADRs' 20-paper checkpoints walked against the real
+  store and recorded as dated amendments (Task E, F75; ADR-0004
+  Amendment A4, ADR-0005 Amendment A1), later corrected for two
+  internally-inconsistent counts found by code review and given
+  explicit point-in-time qualifiers so a snapshot count is not read as
+  a durable fact in a document that does not permit edits in place
+- **feat**: `scripts/view.py` (Task G, F3) -- contexts / paper /
+  assertion modes, plain text or `--json`, no server. Found and fixed a
+  Windows console encoding defect (cp1252 crash on non-ASCII `--json`
+  output) during build, verified by injection
+- **process**: Task F (team-lead adjudication timing) REPLACED by F7-F11
+  (Class 3 scope change) -- four model-tier adversarial review cards
+  (Haiku, Sonnet, Opus, Fable) plus F11, the original measurement,
+  sequenced to run after F7-F10 against the same record set
+- **chore**: hook enforcing the AskUserQuestion ban
+  (`.claude/hooks/block_ask_user_question.py`), added after the rule
+  was violated twice in one session despite being fully documented
+  beforehand; a mechanical `gh issue list` check added to Phase 5
+  after two issues stayed open despite `Closes #N` commit messages on
+  a feature branch; a data-precondition check added to
+  `SPRINT_PLANNING.md`'s estimation guidance
+- **process**: Sprint 2 retrospective run (16 categories x 4 roles, all
+  "Very Good"); F7-F14 added to the backlog for future sprint selection
