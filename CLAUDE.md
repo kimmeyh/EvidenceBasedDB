@@ -6,6 +6,14 @@ authoritative design is `docs/adr/0004-evidence-based-db.md` and
 `docs/adr/0005-reference-library.md`, both ACCEPTED with early-innovation
 status.
 
+**This repository is written in US English.** Team lead, 2026-09-17: this was
+left ambiguous before (unlike `hsbc-quantum-fraud-2026`, which states it
+explicitly, since HSBC is UK-based and the team lead is not). Applies to this
+repository's own process and design docs -- ADRs, sprint plans,
+`CLAUDE.md`, `docs/*.md` -- not to text quoted or cited verbatim from a paper
+or book, which keeps whatever spelling its source used. See F13
+(`docs/ALL_SPRINTS_MASTER_PLAN.md`) for the guard that will enforce this.
+
 ## What this repository is
 
 The **Evidence Based DB**: a store of assertions, acronyms, technical terms and
@@ -54,6 +62,16 @@ Revisions are recorded as **dated amendments at the bottom of the ADR**, never
 as edits in place. A document that silently becomes correct teaches nobody why
 it was wrong.
 
+**An amendment that reports counts against the live store states, up front,
+that every count is a snapshot as of its own date.** Team lead, 2026-09-18: a
+bare number in a document with restrictions on in-place edits reads as a
+durable fact unless explicitly scoped to a point in time, and this store's
+own content grows continuously (papers and assertions are added over time by
+design). Sprint 2's ADR-0004 A4 and ADR-0005 A1 amendments were retrofitted
+with this qualifier after the fact; add it from the start on any future
+amendment that reports a measurement (a count, a percentage, a distribution)
+rather than a qualitative decision.
+
 ## Standing rules (see docs/SPRINT_EXECUTION_WORKFLOW.md for the full set)
 
 - All PR merges are the team lead's action, at every level. Claude never merges.
@@ -95,6 +113,14 @@ once for exactly that reason.
   typing `1`, it is formatted wrong. Applies to yes/no ("1. Yes  2. No"),
   option comparisons, and path selection, inside or outside any auto-advance
   window -- only the FORMAT is at issue, not whether asking is allowed.
+  **Treat AskUserQuestion as a banned tool call in this project, full stop
+  -- do not evaluate whether a given question "fits" it.** Violated in this
+  repository in Sprint 2 (2026-09-17) immediately after already being
+  corrected for the same thing earlier in the SAME session, with this rule
+  present the whole time: "This is not how to ask question, please
+  research, update as needed to prevent in the future." Checking that the
+  rule exists is not the same as stopping to apply it before the tool
+  call -- there is no case where the tool call is the right move here.
 - **Don't phrase a decision question so "yes" could mean two different
   things.** Each question needs one unambiguous answer form: yes/no, or
   select 1/2/3/.../all. A compound question carrying two decisions ("approve

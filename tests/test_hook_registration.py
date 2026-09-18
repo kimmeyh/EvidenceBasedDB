@@ -164,9 +164,34 @@ def test_the_guards_this_repository_depends_on_are_registered():
     commands = " ".join(c for _, c in _hook_commands())
     for required in ("block_unraw_escape.py",
                      "block_shell_metachar_expansion.py",
-                     "block_sibling_repo_writes.py"):
+                     "block_sibling_repo_writes.py",
+                     "block_ask_user_question.py"):
         assert required in commands, (
             f"{required} is not registered in .claude/settings.json. It guards "
             "the silent-corruption class: an escape consumed by a shell or a "
             "JSON parser, which produces a plausible wrong result rather than "
             "an error.")
+
+
+@pytest.mark.skipif(not SETTINGS.exists(), reason="no .claude/settings.json")
+def test_ask_user_question_hook_is_on_its_own_matcher():
+    """block_ask_user_question.py must fire on the AskUserQuestion tool
+    itself, not merely exist somewhere in the file.
+
+    Added 2026-09-17 (Sprint 2 retrospective improvement 2), after the
+    AskUserQuestion ban lived only in CLAUDE.md and memory and was violated
+    twice in one session anyway -- a rule present in a document decayed the
+    moment it needed to be applied, which is this repository's own named
+    pattern for every hook in the Inherited section of CLAUDE.md.
+    """
+    cfg = json.loads(SETTINGS.read_text(encoding="utf-8"))
+    matchers = [
+        group.get("matcher", "")
+        for group in cfg.get("hooks", {}).get("PreToolUse", [])
+        for hook in group.get("hooks", [])
+        if "block_ask_user_question.py" in (hook.get("command") or "")
+    ]
+    assert any("AskUserQuestion" in m for m in matchers), (
+        f"block_ask_user_question.py is registered but not on an "
+        f"AskUserQuestion matcher (found matchers: {matchers}), so it would "
+        "never actually fire when the tool is called.")
