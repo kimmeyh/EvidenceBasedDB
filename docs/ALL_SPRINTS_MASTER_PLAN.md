@@ -37,30 +37,36 @@ repository exists. No other F# from either source repository applies here.
 | Sprint | Summary doc | Status | Duration |
 |---|---|---|---|
 | 1 | docs/sprints/SPRINT_1_SUMMARY.md | [OK] Complete | 2026-09-15 to 2026-09-17 |
+| 2 | docs/sprints/SPRINT_2_SUMMARY.md | [OK] Complete | 2026-09-17 to 2026-09-18 |
 
 ## Last Completed Sprint
 
-**Sprint 1: Build the Store** (PR #1 to develop, PR #10 to main, both merged
-2026-09-17). Delivered Tasks A-H per `docs/sprints/SPRINT_1_PLAN.md`: the
-SQLite schema and deterministic export (ADR-0004/0005), domain-scale
-contexts, the Lenat/Marcus paper ingested end to end, the 44-paper seed
-set loaded (17 promoted to `screened`), a determinate-fact resolver for
-the consumer repository's amendment count, and removal of
-hsbc-quantum-fraud-2026 process leakage across 11 governing docs (Task H,
-F1). Also delivered mid-sprint: the sibling-repo write guard, seven ported
-memory files, and PR #1 review fixes (Copilot + Claude). Full detail:
-`docs/sprints/SPRINT_1_SUMMARY.md`; retrospective:
-`docs/sprints/SPRINT_1_RETROSPECTIVE.md` (16 categories x 4 roles, all
-"Very Good"). Zero metered spend; this repository has none.
+**Sprint 2: Validate, Guard, and View the Store** (PR #11, open, awaiting
+merge). Delivered Tasks A-E, G per `docs/sprints/SPRINT_2_PLAN.md`:
+re-derived real paper applicability (Task A, corrected a Sprint 1
+undercount), extracted and validated a real HSBC-submission assertion
+(Task B), spot-checked store content against the 44 source PDFs and added
+the QBoost paper (Task C), a vocabulary guard between ADR-0004/0005 (Task
+D, F76), both ADRs' 20-paper checkpoints walked and recorded as dated
+amendments (Task E, F75), and `scripts/view.py` (Task G, F3). Task F
+(team-lead adjudication timing) was REPLACED mid-sprint by F7-F11 (Class 3
+scope change, backlog). Also delivered: F12 and F13 added to the backlog,
+`CLAUDE.md`'s explicit US-English statement, and three retrospective
+improvements applied as commits (mechanical GitHub-issue-state check in
+Phase 5, the `block_ask_user_question.py` hook, a data-precondition check
+in `SPRINT_PLANNING.md`). Full detail: `docs/sprints/SPRINT_2_SUMMARY.md`;
+retrospective: `docs/sprints/SPRINT_2_RETROSPECTIVE.md` (16 categories x 4
+roles, all "Very Good"). Zero metered spend; this repository has none.
 
-**The measurement Sprint 1 did NOT produce**: team-lead adjudication time
-per record, ADR-0004's own named design constraint. Deliberately deferred
-by team-lead decision mid-sprint rather than measured on one record as
-originally planned; now F75's job against ~20 real records.
+**The measurement Sprint 2 did NOT produce**: team-lead adjudication time
+per record, ADR-0004's own named design constraint, deferred a second
+time. Sprint 1 deferred it by team-lead decision; Sprint 2's own Task F
+was scoped to produce it and was replaced instead by F7-F11 (backlog),
+sequenced so F11 runs after F7-F10 complete in a future sprint.
 
 ## Current sprint
 
-None. Sprint 2 has not yet been scoped -- this section is populated at
+None. Sprint 3 has not yet been scoped -- this section is populated at
 Phase 3 Kickoff once the team lead's selection from the candidates below
 is recorded.
 
