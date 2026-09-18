@@ -318,34 +318,50 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   different processes (Task F/A/B/C ran at different times, by
   different means) -- zero found here reads as not having actually
   cross-compared, not as the records being perfectly consistent
-- Depends on: F7 and F8's findings should be available as input (Opus
-  reviews the SET, informed by what per-record review already surfaced),
-  making this the last of the three peer reviews to run, before F10
+- **CORRECTED (team lead, 2026-09-18): runs INDEPENDENTLY of F7/F8, not
+  after them.** F7-F10 are four separate measurements of how each model
+  tier reviews the SAME cold record set on its own -- "they should not
+  be designed to depend on each other. They are independent reviews to
+  see how each of them will do the review and what they will find." This
+  card's own review task (finding cross-record inconsistencies in the
+  ORIGINAL record set) does not require F7/F8's output to execute; it
+  only needs the record set itself, same as F7 and F8 do
+- Depends on: the same ~18-20 screened-tier record set as F7/F8, reviewed
+  in parallel with them, not sequenced after their findings
 
 **F10. Adversarial record-adjudication review by Fable (~unknown, no-history) Priority 14**
 - Phase: Research / adjudication substitution. Same origin as F7
 - **What this reviewer is FOR**: Fable is this project's own documented
-  preferred top tier / Lead Developer role. As the final reviewer in the
-  sequence, its distinguishing job is not first-pass review (F7/F8
-  already did that) or cross-record consistency (F9 already did that) --
-  it is adjudicating DISAGREEMENTS the other three produced, the actual
-  decision a team lead would have to make when reviewers disagree
-- **Review task**: given F7, F8, and F9's findings together, for every
-  point where two or more reviewers disagreed (a confirmed field one
-  flagged and another didn't; an inconsistency F9 found that F7/F8's
-  per-record review missed or contradicted), make the actual call --
-  which reviewer was right, and why, citing the source directly rather
-  than deferring to reviewer consensus alone
+  preferred top tier / Lead Developer role -- the tier this project
+  treats as closest to team-lead-level judgement. As an independent
+  fourth reviewer, its distinguishing job is the full adjudication a
+  team lead would actually perform: not just confirming fields (F7) or
+  checking certainty reasoning (F8) or cross-record consistency (F9)
+  alone, but making the complete accept/reject/revise call on each
+  record AS IF it were the final decision-maker, with no visibility
+  into what the other three tiers found
+- **REDESIGNED (team lead, 2026-09-18): runs INDEPENDENTLY, not as a
+  disagreement-adjudicator over F7/F8/F9's output.** The original design
+  had F10 reading the other three reviews and resolving their
+  disagreements, which is incompatible with "these are independent
+  reviews to see how each of them will do the review and what they will
+  find" -- an adjudicator that reads prior verdicts cannot also be an
+  independent measurement of its own tier's judgement. F11 (below) is
+  where the four independent outputs actually get compared; F10 itself
+  produces only its own independent review, same shape as F7/F8/F9
+- **Review task**: given the same cold record set as F7/F8/F9, for each
+  record make the full accept/reject/revise call across every field
+  (citation, context, applicability, certainty/certainty_reasons/
+  fidelity), citing the source directly for each call -- effectively a
+  complete adjudication pass, not a narrower per-field check
 - **What would make this reviewer's output untrustworthy, name it now**:
-  resolving every disagreement in favour of whichever reviewer flagged
-  MORE issues (favouring strictness as a proxy for correctness) rather
-  than checking each disagreement against the actual source
-- Depends on: F7, F8, F9 all complete. This is the last of the four
-  cards to run and is this backlog item's own measure of whether model-
-  based review can substitute for team-lead adjudication AT ALL --
-  compare Fable's final call rate and time cost against what Task F's
-  original team-lead-timed measurement would have cost, once both
-  numbers exist
+  a review that reaches the same verdict on every record with no
+  variation in reasoning depth or citation specificity, which would
+  read as a templated pass rather than genuine per-record adjudication
+- Depends on: the same ~18-20 screened-tier record set as F7/F8/F9,
+  reviewed independently and in parallel with them. F11 (not this card)
+  is where all four tiers' findings are actually compared against each
+  other and against team-lead timing
 
 **F11. Team-lead adjudication timing, run AFTER F7-F10 (~unknown, no-history) Priority 15**
 - Phase: Measurement. Team lead, 2026-09-17: "yes backlog, yes replacing
