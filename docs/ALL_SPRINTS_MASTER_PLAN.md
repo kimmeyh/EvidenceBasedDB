@@ -204,7 +204,7 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   ("might be used later," per the team lead's own framing) until a future
   sprint decides to ingest it. Recommend the latter, since ingesting
   unreviewed scraped content at `seen` tier without adjudication is exactly
-  the "volume without judgement" risk ADR-0005 section 2c warns is MORE
+  the "volume without judgment" risk ADR-0005 section 2c warns is MORE
   dangerous than fewer, reviewed records.
 - Depends on: nothing technical. Read-only web access and the existing
   seed-set metadata are both already available.
@@ -274,7 +274,7 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   (author/title/venue), the primary context, and (if present) each
   applicability entry's rationale -- EACH confirmation must be
   accompanied by a directly quoted source fragment, not a summary
-  judgement
+  judgment
 - **What would make this reviewer's output untrustworthy, name it now**:
   a review that confirms every field with no quoted evidence, or that
   quotes the SAME generic sentence for multiple different fields
@@ -302,7 +302,7 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   agreeing with every existing certainty level without ever proposing a
   different one -- a reviewer that never disagrees is not reviewing
 - Depends on: same record set as F7; designed to run independently, not
-  sequentially after F7 (so neither anchors the other's judgement)
+  sequentially after F7 (so neither anchors the other's judgment)
 
 **F9. Adversarial record-adjudication review by Opus (~unknown, no-history) Priority 13**
 - Phase: Research / adjudication substitution. Same origin as F7
@@ -314,7 +314,7 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   contradicts how a similar record elsewhere was adjudicated) rather
   than single-record correctness, which F7/F8 already cover
 - **Review task**: given the FULL set of records under review (not one
-  at a time), find pairs or groups where the SAME kind of judgement call
+  at a time), find pairs or groups where the SAME kind of judgment call
   was made differently -- two papers with structurally similar
   applicability that got different certainty treatment, two assertions
   from comparable sources with different fidelity levels -- and state
@@ -339,7 +339,7 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
 - Phase: Research / adjudication substitution. Same origin as F7
 - **What this reviewer is FOR**: Fable is this project's own documented
   preferred top tier / Lead Developer role -- the tier this project
-  treats as closest to team-lead-level judgement. As an independent
+  treats as closest to team-lead-level judgment. As an independent
   fourth reviewer, its distinguishing job is the full adjudication a
   team lead would actually perform: not just confirming fields (F7) or
   checking certainty reasoning (F8) or cross-record consistency (F9)
@@ -352,7 +352,7 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   disagreements, which is incompatible with "these are independent
   reviews to see how each of them will do the review and what they will
   find" -- an adjudicator that reads prior verdicts cannot also be an
-  independent measurement of its own tier's judgement. F11 (below) is
+  independent measurement of its own tier's judgment. F11 (below) is
   where the four independent outputs actually get compared; F10 itself
   produces only its own independent review, same shape as F7/F8/F9
 - **Review task**: given the same cold record set as F7/F8/F9, for each
@@ -455,7 +455,7 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   `scripts/us_english_fix.py` (a British-to-US converter over tracked
   markdown) and `experiments/src/test_us_english.py` (the guarding test,
   parametrized per file). Both are well-shaped for porting: a word-pair list
-  (behaviour/behavior, organise/organize, licence/license, ~90 pairs),
+  (behavior/behavior, organize/organize, license/license, ~90 pairs),
   case-preserving substitution, a `PROTECTED` list of exact spans that must
   never be rewritten (proper nouns, direct quotations), and a test that
   fails the whole suite loudly (not silently skips) if the tracked-file
@@ -475,7 +475,7 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   This means the port needs SPAN-level protection (quotation-aware, e.g.
   skip text inside `"..."` that is attributed to a source, or an explicit
   per-file list of protected spans as the sibling repo already does for its
-  licence quotation) rather than whole-file exclusion as the primary
+  license quotation) rather than whole-file exclusion as the primary
   mechanism.
 - **Also needs a decision this card should make explicit, not assume**:
   whether `citation`-shaped fields inside committed JSON/markdown exports

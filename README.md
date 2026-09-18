@@ -91,6 +91,6 @@ records what Cyc actually does, from primary sources, and **corrects two things
 this project had previously recorded as fact**. The finding that most shaped the
 design is Lenat's own footnote: Cyc's general theorem prover timed out on over a
 million consecutive queries and was switched off a decade ago. Everything Cyc
-does is done by 1,100 specialised shortcuts.
+does is done by 1,100 specialized shortcuts.
 
 That is the standing argument against building a general reasoner here.
