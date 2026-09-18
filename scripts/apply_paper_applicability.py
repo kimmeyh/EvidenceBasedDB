@@ -205,7 +205,9 @@ def main() -> int:
         return 1
 
     conn = connect(DB_PATH)
-    applied, skipped_no_paper, skipped_already_set = 0, 0, 0
+    applied, skipped_no_paper, skipped_already_set, mismatched = 0, 0, 0, 0
+    missing_papers: list[str] = []
+    mismatched_papers: list[str] = []
 
     for paper_id, applicability in APPLICABILITY.items():
         exists = conn.execute(
@@ -214,13 +216,35 @@ def main() -> int:
         if not exists:
             print(f"warning: {paper_id} not found in paper_fields, skipping", file=sys.stderr)
             skipped_no_paper += 1
+            missing_papers.append(paper_id)
             continue
 
-        already = conn.execute(
-            "SELECT COUNT(*) FROM paper_applicability WHERE record_id = ?", (paper_id,)
-        ).fetchone()[0]
-        if already:
-            skipped_already_set += 1
+        # F14 finding 2 (PR #11 review): a paper already holding ANY row
+        # was previously skipped unconditionally, which masks a partial
+        # prior run (e.g. interrupted after inserting one of two intended
+        # context rows). Compare the existing context-id SET against the
+        # intended one instead of trusting a non-zero count -- a mismatch
+        # is reported, not silently accepted as "already done".
+        existing_contexts = {
+            row["context_id"]
+            for row in conn.execute(
+                "SELECT context_id FROM paper_applicability WHERE record_id = ?", (paper_id,)
+            )
+        }
+        if existing_contexts:
+            intended_contexts = {context_id for context_id, _ in applicability}
+            if existing_contexts != intended_contexts:
+                print(
+                    f"warning: {paper_id} has applicability {sorted(existing_contexts)} "
+                    f"but APPLICABILITY intends {sorted(intended_contexts)} -- mismatch, "
+                    "not touching (a partial prior run or a changed intent needs a human "
+                    "decision, not an automatic overwrite)",
+                    file=sys.stderr,
+                )
+                mismatched += 1
+                mismatched_papers.append(paper_id)
+            else:
+                skipped_already_set += 1
             continue
 
         for context_id, rationale in applicability:
@@ -236,8 +260,25 @@ def main() -> int:
 
     print(
         f"Applied applicability to {applied} papers "
-        f"({skipped_no_paper} not found, {skipped_already_set} already had applicability set)."
+        f"({skipped_no_paper} not found, {skipped_already_set} already had matching "
+        f"applicability set, {mismatched} had a MISMATCHED set)."
     )
+
+    # F14 finding 1 (PR #11 review): this script's own stated purpose is
+    # "apply to all 44 seed-set papers" -- a typo'd key in APPLICABILITY
+    # previously produced a stderr warning and exit 0 regardless, which a
+    # human skimming stdout could easily read as success. Since the
+    # script is meant to be run once, a paper it could not find or
+    # reconcile is a reason to fail the run, not just log a line.
+    if missing_papers or mismatched_papers:
+        print(
+            f"error: {len(missing_papers)} paper(s) not found, "
+            f"{len(mismatched_papers)} paper(s) had a mismatched applicability set. "
+            "This script's purpose is to apply applicability to every paper named in "
+            "APPLICABILITY; a partial result needs a human decision, not a green exit.",
+            file=sys.stderr,
+        )
+        return 1
     return 0
 
 
