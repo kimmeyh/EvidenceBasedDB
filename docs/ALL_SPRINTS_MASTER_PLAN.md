@@ -76,9 +76,15 @@ sequenced so F11 runs after F7-F10 complete in a future sprint.
 
 ## Current sprint
 
-None. Sprint 3 has not yet been scoped -- this section is populated at
-Phase 3 Kickoff once the team lead's selection from the candidates below
-is recorded.
+**Sprint 3: Correct the Foundations, Then Measure Adjudication** (branch
+`feature/20260918_Sprint_3`, plan drafted 2026-09-18, awaiting Phase 3.7
+approval). Scope (team lead, 2026-09-18): F2 (spamfilter-multi deep-dive,
+Phase 1 only), F6 (six remaining PR #1 code-review findings), F13 (US
+English spelling guard), F14 (data-correction script hardening) -- run
+first, in that order -- then F7, F8, F9, F10 (adversarial
+record-adjudication review, one card per model tier) run second,
+independently and in parallel with each other. F11 explicitly out of
+scope this sprint. Full detail: `docs/sprints/SPRINT_3_PLAN.md`.
 
 ## Next Sprint Candidates
 
