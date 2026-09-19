@@ -38,53 +38,43 @@ repository exists. No other F# from either source repository applies here.
 |---|---|---|---|
 | 1 | docs/sprints/SPRINT_1_SUMMARY.md | [OK] Complete | 2026-09-15 to 2026-09-17 |
 | 2 | docs/sprints/SPRINT_2_SUMMARY.md | [OK] Complete | 2026-09-17 to 2026-09-18 |
+| 3 | docs/sprints/SPRINT_3_SUMMARY.md | [OK] Complete | 2026-09-18 to 2026-09-19 |
 
 ## Last Completed Sprint
 
-**Sprint 2: Validate, Guard, and View the Store** (PR #11 merged to
-develop, then develop merged to main via PR #19). Delivered Tasks A-E, G
-per `docs/sprints/SPRINT_2_PLAN.md`: re-derived real paper applicability
-(Task A, corrected a Sprint 1 undercount), extracted and validated a real
-HSBC-submission assertion (Task B), spot-checked store content against
-the 44 source PDFs and added the QBoost paper (Task C), a vocabulary
-guard between ADR-0004/0005 (Task D, F76), both ADRs' 20-paper
-checkpoints walked and recorded as dated amendments (Task E, F75), and
-`scripts/view.py` (Task G, F3). Task F (team-lead adjudication timing)
-was REPLACED mid-sprint by F7-F11 (Class 3 scope change, backlog). Also
-delivered: F12 and F13 added to the backlog, `CLAUDE.md`'s explicit
-US-English statement, three retrospective improvements applied as
-commits (mechanical GitHub-issue-state check in Phase 5, the
-`block_ask_user_question.py` hook, a data-precondition check in
-`SPRINT_PLANNING.md`), and PR #11 review fixes (Copilot + Claude): a
-genuinely vacuous guard test corrected and verified by injection, two
-internally-inconsistent counts in ADR-0004's Amendment A4 fixed before
-merge, `scripts/view.py`'s connection-close/error-handling hardened, and
-both ADR amendments given explicit point-in-time qualifiers after the
-team lead flagged that a bare count in a document with edit
-restrictions reads as a durable fact rather than a snapshot -- now a
-standing `CLAUDE.md` rule for future measurement-style amendments. F14
-added to the backlog from the review's remaining findings. Full detail:
-`docs/sprints/SPRINT_2_SUMMARY.md`; retrospective:
-`docs/sprints/SPRINT_2_RETROSPECTIVE.md` (16 categories x 4 roles, all
-"Very Good"). Zero metered spend; this repository has none.
+**Sprint 3: Correct the Foundations, Then Measure Adjudication** (PR #20,
+draft, review in progress). Delivered Tasks A-H per
+`docs/sprints/SPRINT_3_PLAN.md`: the spamfilter-multi survey with six new
+process cards F15-F20 (Task A, F2 Phase 1); five PR #1 code-review
+findings fixed at the store/export layer with `validate_paper()`,
+per-entry savepoints and shared helpers (Task B, F6); the US English
+guard over living process docs, with frozen ADRs and sprint docs excluded
+(Task C, F13); `apply_paper_applicability.py` hardened against silent
+partial failure (Task D, F14); and four INDEPENDENT model-tier
+adjudication reviews of the same 18 screened papers with zero
+cross-visibility (Tasks E-H, F7-F10), whose findings -- 4 real citation
+defects, 7 cross-record inconsistencies, an unearned `screened` tier and
+the value/provenance/citation triplication at the store-write layer --
+were consolidated with F12 into F25 at the team lead's direction during
+Manual Validation. Four retrospective improvements applied as commits:
+dry-run-by-default for write-shaped scripts, an `## Actuals` section in
+every sprint summary, delegated-report verification against repo state,
+and review-protocol depth recorded as a first-class input to F11/F18.
+Full detail: `docs/sprints/SPRINT_3_SUMMARY.md`; results:
+`docs/sprints/SPRINT_3_F7-F10_REVIEW_RESULTS.md`; retrospective:
+`docs/sprints/SPRINT_3_RETROSPECTIVE.md` (16 categories x 4 roles; team
+lead all "Very Good", Development Team five "Good"). Zero metered spend.
 
-**The measurement Sprint 2 did NOT produce**: team-lead adjudication time
-per record, ADR-0004's own named design constraint, deferred a second
-time. Sprint 1 deferred it by team-lead decision; Sprint 2's own Task F
-was scoped to produce it and was replaced instead by F7-F11 (backlog),
-sequenced so F11 runs after F7-F10 complete in a future sprint.
+**The measurement Sprint 3 did NOT produce**: team-lead adjudication
+minutes per record (F11), by design -- this sprint produced the four
+independent reviews F11 compares against. F11 is now sequenced after
+F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 3: Correct the Foundations, Then Measure Adjudication** (branch
-`feature/20260918_Sprint_3`, plan drafted 2026-09-18, awaiting Phase 3.7
-approval). Scope (team lead, 2026-09-18): F2 (spamfilter-multi deep-dive,
-Phase 1 only), F6 (six remaining PR #1 code-review findings), F13 (US
-English spelling guard), F14 (data-correction script hardening) -- run
-first, in that order -- then F7, F8, F9, F10 (adversarial
-record-adjudication review, one card per model tier) run second,
-independently and in parallel with each other. F11 explicitly out of
-scope this sprint. Full detail: `docs/sprints/SPRINT_3_PLAN.md`.
+None. Sprint 4 has not yet been scoped -- this section is populated at
+Phase 3 Kickoff once the team lead's selection from the candidates below
+is recorded.
 
 ## Next Sprint Candidates
 
@@ -394,9 +384,28 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   (confirm/reject F10's resolved calls) costs less team-lead time than
   adjudicating a record cold, which is the real question this whole
   substitution is testing
-- Depends on: F7, F8, F9, F10 all complete, in that order. This is the
-  last item in the F7-F11 sequence and closes out what Sprint 2's
-  original Task F was scoped to produce
+- **Design input from Sprint 3's own results (retrospective improvement
+  4, 2026-09-19)**: on the identical 18 records, the two reviews whose
+  PROTOCOL required cross-record comparison and primary-source
+  verification (F9, F10) found 7 inconsistencies and 4 real citation
+  defects; the two whose protocol was per-record internal consistency
+  (F7, F8) confirmed 18/18. Review depth is a protocol property at least
+  as much as a tier property. F11 must therefore (a) give the team lead
+  the SAME primary-source access the F10 protocol used (the local PDFs,
+  the arXiv/publisher pages), or the timing measures a shallower task
+  than F10 performed; and (b) record which protocol the team lead
+  actually followed per record, so the eventual minutes-per-record
+  number is comparable to F10's 599 seconds / 150k tokens for the set,
+  not to F7's 182 seconds
+- **Sequencing against F25 (recorded there too)**: run after F25 steps
+  D1-D3 land, so the team lead adjudicates API-verified citations and a
+  tier that means what the ADR says -- otherwise F11 measures the cost
+  of re-finding defects F10 already found
+- Depends on: F7, F8, F9, F10 -- all complete as of 2026-09-18, run in
+  parallel with zero cross-visibility (not "in that order"; the
+  sequential design was removed on 2026-09-18 at the team lead's
+  direction). Results: `docs/sprints/SPRINT_3_F7-F10_REVIEW_RESULTS.md`.
+  Also depends on F25 D1-D3 per the sequencing note above
 
 **F12. Design and implement a paper/reference intake workflow -- SUPERSEDED by F25 (2026-09-19)**
 - Absorbed into F25 Part C (team lead, 2026-09-19: one place for "a new
@@ -597,10 +606,24 @@ decision, not decided here.
   be built before F7-F11 produce at least one real data point, or it
   launches empty the same way the source's own file states it was
   "seeded from Phase 3.1-3.3 work, will refine over 3-5 sprints"
-- Depends on: F7, F8, F9, F10 (and ideally F11) producing at least one
-  round of real outcome data to seed the `learning_log` with -- building
-  this card before then would ship an empty heuristics file with
-  nothing to recommend from.
+- **First `learning_log` entry, available now (Sprint 3 retrospective
+  improvement 4, 2026-09-19)**: same 18 records, four tiers, zero
+  cross-visibility. Haiku (per-record, quoted-anchor protocol): 18/18
+  confirm, 0 defects found, 82,586 tokens, 182 s. Sonnet (per-record +
+  certainty check): 18/18 confirm, correctly declared the certainty
+  step not applicable, 70,021 tokens, 155 s. Opus (set-level cross-
+  record protocol): 7 inconsistencies, 75,802 tokens, 208 s. Fable-tier
+  Opus (full adjudication + primary-source verification): 4 real
+  citation defects + 2 structural findings, 150,290 tokens, 599 s. The
+  heuristic this seeds is NOT "use the top tier" -- it is that the
+  protocol (cross-record comparison, primary-source verification)
+  produced the findings, and any review card must require that
+  protocol explicitly regardless of the tier assigned. Encode protocol
+  as a first-class field beside tier in the heuristics file
+- Depends on: F7, F8, F9, F10 complete (they are, 2026-09-18) and
+  ideally F11, for the team-lead baseline the `learning_log` should be
+  scored against. Build after F11 if F11 is near; otherwise seed from
+  the entry above and add F11's row when it lands.
 
 **F19. Build a SPRINT_RESUME_GUIDE.md and a startup-check skill (~medium, no-history) Priority 25**
 - Phase: Process / tooling. Modeled on `spamfilter-multi`'s

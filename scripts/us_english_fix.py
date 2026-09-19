@@ -46,6 +46,7 @@ from __future__ import annotations
 
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -192,9 +193,17 @@ def tracked_markdown() -> list[Path]:
     return files
 
 
-def main() -> None:
-    total = 0
-    touched = []
+def sweep(apply: bool) -> list[tuple[str, int]]:
+    """Compute every replacement; write files only when `apply` is True.
+
+    Dry-run is the DEFAULT (Sprint 3 retrospective improvement 1). The
+    first run of this script, 2026-09-18, wrote straight to the live tree
+    and rewrote frozen ADR amendments and sprint docs before the exclusion
+    list existed; it was caught only because nothing was staged yet. A
+    write-shaped one-off script shows its diff first and writes on an
+    explicit flag -- docs/QUALITY_STANDARDS.md records the convention.
+    """
+    touched: list[tuple[str, int]] = []
     for path in tracked_markdown():
         text = path.read_text(encoding="utf-8")
         original = text
@@ -221,15 +230,24 @@ def main() -> None:
             text = text.replace(token, span)
 
         if text != original:
-            path.write_text(text, encoding="utf-8")
-            rel = path.relative_to(ROOT)
-            touched.append((str(rel), count))
-            total += count
+            if apply:
+                path.write_text(text, encoding="utf-8")
+            touched.append((str(path.relative_to(ROOT)), count))
+    return touched
 
+
+def main(argv: list[str] | None = None) -> int:
+    args = sys.argv[1:] if argv is None else argv
+    apply = "--apply" in args
+    touched = sweep(apply)
+    total = sum(n for _, n in touched)
     for rel, n in sorted(touched, key=lambda x: -x[1]):
         print(f"{n:4d}  {rel}")
-    print(f"\n{total} replacements across {len(touched)} files")
+    verb = "applied" if apply else "PLANNED (dry run; re-run with --apply to write)"
+    print(f"\n{total} replacements across {len(touched)} files -- {verb}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    sys.exit(main())

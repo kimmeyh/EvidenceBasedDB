@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -170,4 +171,53 @@ def test_no_british_spellings(path: Path):
         f"{path.relative_to(ROOT)} uses British spellings; this repository "
         "writes US English (CLAUDE.md, 2026-09-17):\n"
         + "\n".join(offenders[:10])
-        + "\n\nRun scripts/us_english_fix.py to convert.")
+        + "\n\nRun scripts/us_english_fix.py --apply to convert.")
+
+
+def _run_fixer_in_temp_repo(tmp_path: Path, args: list[str]) -> tuple[subprocess.CompletedProcess, Path]:
+    """Run the REAL scripts/us_english_fix.py against a throwaway git repo
+    holding one tracked markdown file with a British spelling, by
+    monkeypatching the loaded module's ROOT (same wrapper pattern as
+    tests/test_ingest_seed_set.py). Never runs against this repository's
+    own tree -- the first version of the fixer did exactly that and
+    rewrote frozen documents."""
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "user.email", "t@example.com"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "user.name", "t"], cwd=repo, check=True)
+    target = repo / "NOTES.md"
+    target.write_text("The colour of the behaviour.\n", encoding="utf-8")
+    subprocess.run(["git", "add", "NOTES.md"], cwd=repo, check=True)
+    subprocess.run(["git", "commit", "-q", "-m", "seed"], cwd=repo, check=True)
+    script = ROOT / "scripts" / "us_english_fix.py"
+    wrapper = (
+        "import sys, importlib.util\n"
+        "from pathlib import Path\n"
+        f"spec = importlib.util.spec_from_file_location('usfix', {str(script)!r})\n"
+        "mod = importlib.util.module_from_spec(spec)\n"
+        "spec.loader.exec_module(mod)\n"
+        f"mod.ROOT = Path({str(repo)!r})\n"
+        f"raise SystemExit(mod.main({args!r}))\n"
+    )
+    proc = subprocess.run([sys.executable, "-c", wrapper], capture_output=True, text=True)
+    return proc, target
+
+
+def test_fixer_is_dry_run_by_default(tmp_path):
+    """Sprint 3 retrospective improvement 1: a write-shaped one-off script
+    shows its plan and writes nothing unless told to. The fixer's first
+    run (2026-09-18) had no such mode and rewrote frozen ADR amendments
+    before the exclusion list existed."""
+    proc, target = _run_fixer_in_temp_repo(tmp_path, [])
+    assert proc.returncode == 0, proc.stderr
+    assert "2 replacements across 1 files" in proc.stdout
+    assert "dry run" in proc.stdout
+    assert target.read_text(encoding="utf-8") == "The colour of the behaviour.\n"
+
+
+def test_fixer_writes_only_with_apply(tmp_path):
+    proc, target = _run_fixer_in_temp_repo(tmp_path, ["--apply"])
+    assert proc.returncode == 0, proc.stderr
+    assert "applied" in proc.stdout
+    assert target.read_text(encoding="utf-8") == "The color of the behavior.\n"
