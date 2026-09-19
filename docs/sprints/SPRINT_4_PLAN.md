@@ -109,6 +109,12 @@ These are F25's four D1 decisions plus one raised by the incoming books.
 They shape Tasks B, C and G, so they are answered with the plan rather
 than mid-sprint.
 
+**DECIDED 2026-09-19 (team lead: "Sprint plan approved as recommended")**:
+Q1 = 2 (amend ADR-0005 2c), Q2 = 1 (drop `paper_fields.citation`, CHECK in
+the same migration), Q3 = 1 (source-anchor convention, regex-guarded),
+Q4 = 1 (rename to `rand-2022-...`), Q5 = 1 (Task G designs the book
+path, nothing ingested).
+
 - **Q1. The `screened` tier**: (1) demote every screened-with-zero-yields
   paper to `seen`; (2) amend ADR-0005 section 2c to define `screened` as
   "dispositioned and applicability-derived, not yet mined", with
