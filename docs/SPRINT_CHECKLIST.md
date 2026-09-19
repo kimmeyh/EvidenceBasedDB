@@ -2,10 +2,13 @@
 
 Consult at EVERY phase boundary (open this file in the same turn; walk lines with DONE/N-A/NOT-DONE + evidence). Full detail: SPRINT_EXECUTION_WORKFLOW.md.
 
-## Phase 1: Backlog Refinement (mandatory, every sprint)
-- [ ] Read ALL_SPRINTS_MASTER_PLAN.md + repo CHECKLIST-Phase2-pre.md
-- [ ] Read BACKLOG_REFINEMENT.md "Backlog Presentation Format" THIS TURN, then present candidates (Summary Index first, F# IDs, numeric priorities, HOLD one-liners)
-- [ ] Record team-lead selection; update master plan; commit
+## Phase 1: Backlog Refinement (Sprint N's first phase, on Sprint N's branch -- re-homed from prior-sprint Phase 8, 2026-09-19)
+- [ ] sprint_status.json advanced to N at the carry-forward cut (`phase_1_refinement`, `plan_doc: null`); status line says Sprint N
+- [ ] 1.1 CHANGELOG reconciled for Sprint N-1 (from git history, never memory)
+- [ ] 1.2 Pass 1 sweep for N-1: issues closed, docs triad incl. SUMMARY (+ `## Actuals`), master plan rolled, shipped cards pruned BY HAND
+- [ ] 1.3 Design-document currency: ADR-0004/0005 still match schema and export; `pytest -q` green
+- [ ] 1.4 Read ALL_SPRINTS_MASTER_PLAN.md + repo CHECKLIST-Phase2-pre.md; read BACKLOG_REFINEMENT.md "Backlog Presentation Format" THIS TURN; present "Sprint N Candidates at a glance" (Summary Index first, F# IDs, numeric priorities, HOLD one-liners)
+- [ ] 1.5 Record team-lead selection; update master plan; commit
 
 ## Phase 2: Pre-Kickoff
 - [ ] Previous PR merged; previous sprint issues CLOSED (manual close; feature->develop does not auto-close)
@@ -40,8 +43,7 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 - [ ] Completion updates: master plan Last Completed Sprint; CHECKLIST-Phase2-pre.md reconciled; sprint_status updated
 - [ ] `gh pr ready` (ONLY here); final gate; team lead notified for approval
 
-## Phase 8: Delivery Cycle (after develop merge)
-- [ ] Team lead merges develop->main (parallel; do not block on it)
-- [ ] Refinement Pass 1 completeness sweep (issues, docs triad, master plan, pruning) -- corrections only
-- [ ] Design-document currency check: ADR-0004/0005 still match the actual schema and export
-- [ ] Refinement Pass 2 scope selection -> Phase 3
+## Phase 8: Delivery hand-off (the finishing sprint's last phase)
+- [ ] Team lead merges feature->develop, then develop->main (Claude never merges)
+- [ ] 6.6 carry-forward cut of Sprint N+1's branch FROM the current feature branch; sprint_status advanced to N+1 in the same turn
+- [ ] From here the session is Sprint N+1 Phase 1 -- go to the top of this checklist

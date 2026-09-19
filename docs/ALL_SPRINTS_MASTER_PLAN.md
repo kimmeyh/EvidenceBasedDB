@@ -13,13 +13,13 @@ repository exists. No other F# from either source repository applies here.
 
 ## Maintenance Guide
 
-- **After each sprint (Phase 7.7 / 8.2)**: update "Last Completed Sprint"; add
-  the sprint's row to "Past Sprint Summary" once its SUMMARY doc exists; prune
-  shipped items from "Next Sprint Candidates"; add retro Category-14 items
-  with new F#s.
-- **During Sprint N+1 planning (Phase 3.2.1)**: create
-  `docs/sprints/SPRINT_N_SUMMARY.md` for the just-finished sprint and link it
-  here.
+- **At each sprint's Phase 7.7, then in Sprint N+1's Phase 1.2 sweep**
+  (re-homed 2026-09-19 from "Phase 8.2"): update "Last Completed Sprint";
+  add the sprint's row to "Past Sprint Summary" once its SUMMARY doc
+  exists; prune shipped items from "Next Sprint Candidates"; add retro
+  Category-14 items with new F#s.
+- **`docs/sprints/SPRINT_N_SUMMARY.md`** is created at Sprint N's Phase 7 or
+  at the latest in Sprint N+1's Phase 1.2, and linked here.
 - **IDs**: F# for all features/process/tech-debt items native to this
   repository, starting at F1; next available number; never reuse. A number
   quoted from the consumer repository (F77 and any future cross-reference)
