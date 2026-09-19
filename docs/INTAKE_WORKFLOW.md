@@ -210,7 +210,44 @@ stated rule; these are the rules.
 - **`hsbc-2026`** is never claimed by a paper: relevance to the project is
   not membership in its context (F8's observation, kept as policy).
 
-## 9. Decisions this design leaves to the team lead (Class 1)
+## 9. Observed 2026-09-19 (evening): the bulk set has arrived
+
+Recorded the day this design was written, after section 6 was drafted
+from the planning estimate of "about 1,200 papers and 6 books".
+`D:\Data\Harold\EvidenceBasedDB\QMLPapers\` now holds 1,618 files: year
+folders `2007-2017` through `2026` (about 1,410 PDFs named
+`<Authors>_<Year>_<Title>__<arXiv id>.pdf`), each year folder carrying a
+`manifest.tsv` with columns `file, arxiv_id, url, title` (about 1,450
+rows in all), a `failed-downloads.txt` and a `needs-manual-download.txt`
+(24 lines in all); plus `Repos/` (137 `_repo.md` notes, each named for
+the paper and arXiv id it belongs to), `Reviews/` (33), `Workforce/`
+(28), `NonArxiv/` (7 PDFs without an arXiv id) and `Books/` (2).
+
+What this means for section 6, stated now so the bulk sprint does not
+re-derive it:
+
+- The intake manifest is GENERATED from the year `manifest.tsv` files, not
+  authored by hand: `arxiv_id` gives api-origin access for about 1,410
+  records; `title` is discarded (the door derives it from the API); the
+  year folder gives nothing the API does not. Counts are a snapshot as of
+  this date.
+- The judgment fields still need a human or an agent per record. For the
+  bulk `seen` load the honest defaults are `context: qml` (the collection
+  is named for it, and the disposition says that is why) and a
+  disposition of the form "Bulk intake 2026-MM from QMLPapers/<year>/
+  manifest.tsv (a QML literature collection); not yet screened".
+  Screening happens later, one cluster at a time, with anchored
+  applicability from the abstract.
+- `NonArxiv/`, `Reviews/`, `Workforce/` and `Books/` take the paper path
+  when a DOI resolves and the hand path (section 4) otherwise; `Repos/`
+  notes point at repositories that take the GitHub path (section 2), the
+  note itself being local evidence, not the record.
+- `failed-downloads.txt` and `needs-manual-download.txt` are the first
+  entries of the bulk run's exception list, not intake candidates.
+- At one arXiv request per 3 seconds the api-origin part of this set is
+  about 70 minutes of wall clock; DataCite carries any id arXiv refuses.
+
+## 10. Decisions this design leaves to the team lead (Class 1)
 
 1. **`paper_fields.kind` column** (`paper | book | reference | repo`) as
    the next ADR-0005 amendment, replacing the disposition-prefix
