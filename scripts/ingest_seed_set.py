@@ -33,15 +33,13 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import connect  # noqa: E402
+from store import connect, script_paths  # noqa: E402
 from store.export import regenerate  # noqa: E402
-from store.ingest import PaperRecord, insert_paper  # noqa: E402
+from store.ingest import PaperRecord, insert_paper, set_tier  # noqa: E402
 
-DB_PATH = ROOT / "store" / "evidence.db"
-EXPORT_DIR = ROOT / "export"
+ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 METADATA_PATH = ROOT / "scripts" / "seed_set_metadata.json"
 
 UPDATED = "2026-09-16"
@@ -61,45 +59,72 @@ def main() -> int:
     entries = json.loads(METADATA_PATH.read_text(encoding="utf-8"))
     conn = connect(DB_PATH)
 
+    # ALL-OR-NOTHING (PR #20 review, 2026-09-19, superseding the Sprint 3
+    # Task B savepoint design). The savepoint version claimed to isolate a
+    # bad entry "without needing a full COMMIT per row" -- but Python's
+    # sqlite3 in its default legacy transaction mode opens an implicit
+    # transaction only before INSERT/UPDATE/DELETE, never before SAVEPOINT,
+    # so each entry's savepoint opened its OWN transaction and RELEASE of
+    # that outermost savepoint was a commit. Proven by the reviewer with a
+    # second connection seeing the row before any commit() call. The real
+    # consequence: on a bad entry at position N, entries 0..N-1 were already
+    # durable and regenerate() never ran, so store and export/ silently
+    # diverged -- the exact "stale export" defect class Phase 5 of the
+    # workflow names.
+    #
+    # The contract is now: one transaction, opened implicitly by the first
+    # write; any failure rolls back EVERY entry, names the failing entry and
+    # position, and leaves both store and export/ exactly as they were. The
+    # durable write (commit, then regenerate) happens only after the last
+    # decision that could fail -- QUALITY_STANDARDS.md "decide, then write".
     inserted, skipped, promoted = 0, 0, 0
-    for entry in entries:
-        record_id = entry["id"]
-        existing = conn.execute(
-            "SELECT p.tier FROM records r JOIN paper_fields p ON p.record_id = r.id WHERE r.id = ?",
-            (record_id,),
-        ).fetchone()
-        if existing:
-            skipped += 1
-            # Promotion must still run on an already-present row (fixed
-            # 2026-09-16, Claude PR #1 review finding 2): the original
-            # code skipped promotion entirely whenever a row already
-            # existed, so `ingest_seed_set.py` then `ingest_seed_set.py
-            # --promote` -- the exact two-run sequence this script's own
-            # docstring describes -- could never promote anything, since
-            # every row was already present by the second run.
-            if promote and entry.get("promote") and existing["tier"] == "seen":
-                conn.execute(
-                    "UPDATE paper_fields SET tier = 'screened' WHERE record_id = ?",
-                    (record_id,),
+    position = -1
+    record_id = "<no id>"
+    try:
+        for position, entry in enumerate(entries):
+            record_id = entry.get("id", "<no id>")
+            if "id" not in entry:
+                raise KeyError("entry has no 'id' field")
+            existing = conn.execute(
+                "SELECT p.tier FROM records r JOIN paper_fields p ON p.record_id = r.id WHERE r.id = ?",
+                (record_id,),
+            ).fetchone()
+            if existing:
+                skipped += 1
+                # Promotion must still run on an already-present row (fixed
+                # 2026-09-16, Claude PR #1 review finding 2): the original
+                # code skipped promotion entirely whenever a row already
+                # existed, so `ingest_seed_set.py` then `ingest_seed_set.py
+                # --promote` -- the exact two-run sequence this script's own
+                # docstring describes -- could never promote anything, since
+                # every row was already present by the second run.
+                if promote and entry.get("promote") and existing["tier"] == "seen":
+                    set_tier(conn, record_id, "screened")
+                    promoted += 1
+            else:
+                tier = "screened" if (promote and entry.get("promote")) else "seen"
+                paper = PaperRecord(
+                    id=record_id,
+                    tier=tier,
+                    citation=entry["citation"],
+                    access=entry["access"],
+                    disposition=entry["disposition"],
+                    context=entry["context"],
+                    value=entry["citation"],
+                    evidence_tag="N/A",
+                    updated=UPDATED,
+                    updated_reason=UPDATED_REASON,
                 )
-                promoted += 1
-            continue
-
-        tier = "screened" if (promote and entry.get("promote")) else "seen"
-        paper = PaperRecord(
-            id=record_id,
-            tier=tier,
-            citation=entry["citation"],
-            access=entry["access"],
-            disposition=entry["disposition"],
-            context=entry["context"],
-            value=entry["citation"],
-            evidence_tag="N/A",
-            updated=UPDATED,
-            updated_reason=UPDATED_REASON,
-        )
-        insert_paper(conn, paper)
-        inserted += 1
+                insert_paper(conn, paper)
+                inserted += 1
+    except Exception as e:
+        conn.rollback()
+        conn.close()
+        raise RuntimeError(
+            f"failed on seed-set entry {record_id!r} (position {position}): {e}. "
+            "Nothing was written: every entry in this run was rolled back and "
+            "export/ was not regenerated."
+        ) from e
 
     conn.commit()
     regenerate(conn, EXPORT_DIR)

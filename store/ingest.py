@@ -50,7 +50,82 @@ class AssertionRecord:
     updated_reason: str = ""
 
 
+def validate_paper(paper: PaperRecord) -> None:
+    """Enforce ADR-0005 section 2's rule that checked_against_source is
+    set at tier 'read'. Fixed 2026-09-18 (F6 finding 2, PR #1 review):
+    schema.sql's comment promised an application-layer check that did not
+    exist -- insert_paper() accepted any tier/checked_against_source
+    combination unchecked.
+
+    Why here and not in the schema: the rule IS expressible as a table-
+    level CHECK in SQLite (`CHECK (tier != 'read' OR checked_against_source
+    IS NOT NULL)` -- corrected 2026-09-19, Copilot PR #20 review; an earlier
+    version of this docstring and of schema.sql's comment wrongly said a
+    trigger was needed). It stays at the application layer for now because
+    adding a CHECK to a live table is a table rebuild (F25 B4's migration
+    is the natural place), and because a CHECK cannot reject a blank
+    string or explain what to do instead. When the migration lands, add
+    the CHECK too; belt and braces is correct for the field ADR-0005 calls
+    the read-tier gate.
+
+    'never' is a valid, meaningful value (a statement someone made) and
+    satisfies this check. None AND blank/whitespace-only both fail it
+    (Copilot PR #20 review, 2026-09-19: an empty string previously passed,
+    letting the required field be effectively missing).
+    """
+    value = paper.checked_against_source
+    if paper.tier == "read" and (value is None or not value.strip()):
+        raise ValueError(
+            f"paper {paper.id!r} is tier='read' but checked_against_source is "
+            f"{'not set' if value is None else 'blank'}. ADR-0005 section 2 requires "
+            "it at this tier -- use the literal string 'never' if that is genuinely "
+            "the intended value, not None or an empty string."
+        )
+
+
+def set_tier(
+    conn: sqlite3.Connection,
+    record_id: str,
+    tier: str,
+    checked_against_source: str | None = None,
+) -> None:
+    """The ONLY sanctioned way to change a paper's tier after insert.
+
+    PR #20 review (2026-09-19): validate_paper() ran on insert only, and the
+    one other tier writer in the repository (ingest_seed_set.py's promotion
+    UPDATE) bypassed it entirely. Harmless today because that UPDATE only
+    ever sets 'screened', but the next promotion to 'read' would have
+    reintroduced exactly the gap F6 finding 2 closed, with no test to catch
+    it. Route every tier change through here so the read-tier rule holds
+    at the column, not at one call site; the schema-level CHECK lands with
+    F25 B4's table rebuild.
+
+    If `checked_against_source` is given it is written alongside the tier;
+    otherwise the row's existing value is what the rule is checked against.
+    """
+    row = conn.execute(
+        "SELECT checked_against_source FROM paper_fields WHERE record_id = ?", (record_id,)
+    ).fetchone()
+    if row is None:
+        raise ValueError(f"paper {record_id!r} has no paper_fields row")
+    effective = checked_against_source if checked_against_source is not None else row["checked_against_source"]
+    if tier == "read" and (effective is None or not effective.strip()):
+        raise ValueError(
+            f"cannot set paper {record_id!r} to tier='read': checked_against_source is "
+            f"{'not set' if effective is None else 'blank'}. ADR-0005 section 2 requires it "
+            "at this tier -- pass checked_against_source (the literal 'never' is valid)."
+        )
+    if checked_against_source is not None:
+        conn.execute(
+            "UPDATE paper_fields SET tier = ?, checked_against_source = ? WHERE record_id = ?",
+            (tier, checked_against_source, record_id),
+        )
+    else:
+        conn.execute("UPDATE paper_fields SET tier = ? WHERE record_id = ?", (tier, record_id))
+
+
 def insert_paper(conn: sqlite3.Connection, paper: PaperRecord) -> None:
+    validate_paper(paper)
     conn.execute(
         "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
         "VALUES (?, 'paper', ?, ?, ?, ?, ?)",

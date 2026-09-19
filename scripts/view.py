@@ -23,10 +23,9 @@ import sqlite3
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import connect  # noqa: E402
+from store import connect, script_paths  # noqa: E402
 
 # Windows consoles commonly default to cp1252, which cannot encode most
 # citation text (accents, math symbols). Reconfigure stdout to UTF-8 so
@@ -34,7 +33,7 @@ from store import connect  # noqa: E402
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-DB_PATH = ROOT / "store" / "evidence.db"
+_, DB_PATH, _ = script_paths(__file__)
 
 
 def _record_title(conn, record_id: str) -> str:
@@ -116,6 +115,11 @@ def cmd_paper(conn, paper_id: str) -> dict:
     if not paper:
         return {"error": f"no paper record: {paper_id!r}"}
     fields = conn.execute("SELECT * FROM paper_fields WHERE record_id = ?", (paper_id,)).fetchone()
+    if fields is None:
+        # A paper record with no paper_fields row is a broken schema
+        # invariant, not a paper with unknown tier -- report it rather than
+        # render tier/access/disposition as None (PR #20 review, 2026-09-19).
+        return {"error": f"paper record {paper_id!r} has no paper_fields row (schema invariant broken)"}
 
     applicability = conn.execute(
         "SELECT context_id, rationale FROM paper_applicability WHERE record_id = ? ORDER BY context_id",
@@ -135,7 +139,10 @@ def cmd_paper(conn, paper_id: str) -> dict:
         "value": paper["value"],
         "provenance": paper["provenance"],
         "tier": fields["tier"] if fields else None,
-        "citation": fields["citation"] if fields else None,
+        # citation == provenance for a paper record (F6 finding 1); read
+        # from provenance, never paper_fields.citation, so this tool does
+        # not become a second place the redundancy could silently drift.
+        "citation": paper["provenance"],
         "access": fields["access"] if fields else None,
         "disposition": fields["disposition"] if fields else None,
         "checked_against_source": fields["checked_against_source"] if fields else None,
@@ -309,7 +316,11 @@ def main() -> int:
     else:
         _print_text(data, text_mode)
 
-    return 1 if "error" in data else 0
+    # A paper whose yielded assertion cannot be resolved carries the error
+    # nested under "yields"; that is still a failed lookup and must not exit
+    # 0 under --json (PR #20 review, 2026-09-19).
+    nested_errors = any("error" in y for y in data.get("yields", []))
+    return 1 if ("error" in data or nested_errors) else 0
 
 
 if __name__ == "__main__":

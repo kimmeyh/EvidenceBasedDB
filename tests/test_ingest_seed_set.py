@@ -181,3 +181,58 @@ def test_a_non_paper_entry_still_gets_a_record_with_an_honest_disposition(store_
     ).fetchone()
     conn.close()
     assert "not a paper" in row["disposition"].lower() or "vendor" in row["disposition"].lower()
+
+
+def test_a_bad_entry_names_itself_and_the_run_writes_nothing(store_and_metadata):
+    """F6 finding 3 (PR #1 review) as CORRECTED by the PR #20 review
+    (2026-09-19). The Sprint 3 Task B version used a SAVEPOINT per entry and
+    this test asserted the entry BEFORE the bad one "survived" -- which it
+    did, because under Python's legacy sqlite3 transaction mode each
+    entry's RELEASE was a real commit. So a mid-loop failure left earlier
+    entries durable and export/ never regenerated: store and export
+    silently diverged. The reviewer proved it with a second connection.
+
+    Contract now: a bad entry (an undefined context, rejected by the FK on
+    record_contexts.context_id) SECOND in a three-entry list must (1) be
+    named with its position in the error, (2) roll back the ENTIRE run --
+    the entry before it is absent too -- and (3) leave export/ unwritten.
+    This assertion was flipped deliberately, for the reason above; it was
+    not loosened."""
+    db_path, metadata_path, export_dir = store_and_metadata
+    entries = [
+        SAMPLE_ENTRIES[0],
+        {
+            "id": "bad-entry-undefined-context",
+            "citation": "Nobody, N., \"A Paper With a Bad Context\", 2026",
+            "access": "local file",
+            "context": "platform:not-a-real-platform",
+            "disposition": "deliberately invalid for this test",
+            "promote": False,
+        },
+        SAMPLE_ENTRIES[1],
+    ]
+    metadata_path.write_text(json.dumps(entries), encoding="utf-8")
+
+    proc = _run_script(db_path, metadata_path, export_dir)
+    assert proc.returncode != 0
+    assert "bad-entry-undefined-context" in proc.stderr
+    assert "position 1" in proc.stderr
+    assert "Nothing was written" in proc.stderr
+
+    import store as store_module
+    conn = store_module.connect(db_path)
+    count = conn.execute("SELECT COUNT(*) FROM records WHERE class = 'paper'").fetchone()[0]
+    conn.close()
+    assert count == 0, "a failing run must roll back every entry, including the ones before the bad one"
+    assert not export_dir.exists(), "export/ must not be regenerated on a failing run"
+
+
+def test_an_entry_without_an_id_is_named_by_position(store_and_metadata):
+    """PR #20 review (2026-09-19): entry["id"] was read outside the guarded
+    block, so a malformed entry died with a bare KeyError naming nothing."""
+    db_path, metadata_path, export_dir = store_and_metadata
+    entries = [SAMPLE_ENTRIES[0], {"citation": "no id here", "access": "x", "context": "qc", "disposition": "d"}]
+    metadata_path.write_text(json.dumps(entries), encoding="utf-8")
+    proc = _run_script(db_path, metadata_path, export_dir)
+    assert proc.returncode != 0
+    assert "position 1" in proc.stderr and "no 'id'" in proc.stderr
