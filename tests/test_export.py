@@ -169,7 +169,7 @@ def test_copy_nonnull_omits_none_but_copies_a_real_value(db):
     assert record == {"rounding": "nearest integer"}
 
 
-def test_child_list_returns_values_in_the_querys_own_order(db):
+def test_child_list_returns_values_in_query_order(db):
     """F6 finding 6: the "query one column, list-comprehend the rows"
     shape repeated for contexts, prerequisites, documents, see_also, and
     yields, extracted here."""

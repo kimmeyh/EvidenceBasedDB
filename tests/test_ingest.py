@@ -201,6 +201,20 @@ def test_validate_paper_rejects_read_tier_with_no_checked_against_source():
         validate_paper(paper)
 
 
+def test_validate_paper_rejects_read_tier_with_blank_checked_against_source():
+    """Copilot PR #20 review (2026-09-19): an empty or whitespace-only
+    string previously satisfied the read-tier rule, letting the required
+    field be effectively missing while passing validation."""
+    for blank in ("", "   ", "\t\n"):
+        paper = PaperRecord(
+            id="p1", tier="read", citation="Cite", access="arXiv:1", disposition="why",
+            context="method", value="a paper", updated="2026-09-15", updated_reason="test",
+            checked_against_source=blank,
+        )
+        with pytest.raises(ValueError, match="blank"):
+            validate_paper(paper)
+
+
 def test_validate_paper_accepts_read_tier_with_literal_never():
     """'never' is a valid, meaningful value distinct from None -- a
     statement someone made, not an unpopulated field (ADR-0005 section 2)."""

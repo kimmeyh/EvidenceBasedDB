@@ -51,23 +51,35 @@ class AssertionRecord:
 
 
 def validate_paper(paper: PaperRecord) -> None:
-    """Enforce the tier/checked_against_source rule schema.sql's own
-    comment documents but cannot express as a CHECK constraint (SQLite
-    has no tier-conditional NOT NULL without a trigger): ADR-0005 section
-    2 requires checked_against_source to be set at tier 'read'. Fixed
-    2026-09-18 (F6 finding 2, PR #1 review): the comment existed, the
-    application-layer check it promised did not -- insert_paper() accepted
-    any tier/checked_against_source combination unchecked.
+    """Enforce ADR-0005 section 2's rule that checked_against_source is
+    set at tier 'read'. Fixed 2026-09-18 (F6 finding 2, PR #1 review):
+    schema.sql's comment promised an application-layer check that did not
+    exist -- insert_paper() accepted any tier/checked_against_source
+    combination unchecked.
+
+    Why here and not in the schema: the rule IS expressible as a table-
+    level CHECK in SQLite (`CHECK (tier != 'read' OR checked_against_source
+    IS NOT NULL)` -- corrected 2026-09-19, Copilot PR #20 review; an earlier
+    version of this docstring and of schema.sql's comment wrongly said a
+    trigger was needed). It stays at the application layer for now because
+    adding a CHECK to a live table is a table rebuild (F25 B4's migration
+    is the natural place), and because a CHECK cannot reject a blank
+    string or explain what to do instead. When the migration lands, add
+    the CHECK too; belt and braces is correct for the field ADR-0005 calls
+    the read-tier gate.
 
     'never' is a valid, meaningful value (a statement someone made) and
-    satisfies this check same as any other non-None string; only None
-    (never populated at all) fails it.
+    satisfies this check. None AND blank/whitespace-only both fail it
+    (Copilot PR #20 review, 2026-09-19: an empty string previously passed,
+    letting the required field be effectively missing).
     """
-    if paper.tier == "read" and paper.checked_against_source is None:
+    value = paper.checked_against_source
+    if paper.tier == "read" and (value is None or not value.strip()):
         raise ValueError(
-            f"paper {paper.id!r} is tier='read' but checked_against_source is not set. "
-            "ADR-0005 section 2 requires it at this tier -- use the literal string "
-            "'never' if that is genuinely the intended value, not None."
+            f"paper {paper.id!r} is tier='read' but checked_against_source is "
+            f"{'not set' if value is None else 'blank'}. ADR-0005 section 2 requires "
+            "it at this tier -- use the literal string 'never' if that is genuinely "
+            "the intended value, not None or an empty string."
         )
 
 

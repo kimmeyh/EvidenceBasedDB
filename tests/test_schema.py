@@ -269,7 +269,7 @@ def test_script_paths_derives_db_and_export_paths_from_repo_root():
     assert export_dir.parts[-2:] == ("repo", "export")
 
 
-def test_script_paths_matches_this_repositorys_own_real_layout():
+def test_script_paths_matches_this_repository_layout():
     """The real store/evidence.db and export/ directories must actually
     exist at the paths this function derives for a script under THIS
     repository's scripts/ directory -- not just at some synthetic path."""

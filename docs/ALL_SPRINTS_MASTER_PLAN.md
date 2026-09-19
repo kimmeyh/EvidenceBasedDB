@@ -430,7 +430,11 @@ F2-F5 added 2026-09-16 at Sprint 1's Manual Validation.
   `scripts/us_english_fix.py` (a British-to-US converter over tracked
   markdown) and `experiments/src/test_us_english.py` (the guarding test,
   parametrized per file). Both are well-shaped for porting: a word-pair list
-  (behavior/behavior, organize/organize, license/license, ~90 pairs),
+  (~90 British-to-US pairs across the -our/-or, -ise/-ize, -ence/-ense
+  and doubled-consonant families; the literal examples that used to sit
+  here were rewritten into US/US pairs by this very script's first
+  sweep -- caught by Copilot on PR #20 -- which is exactly why the
+  script's PROTECTED-span mechanism exists),
   case-preserving substitution, a `PROTECTED` list of exact spans that must
   never be rewritten (proper nouns, direct quotations), and a test that
   fails the whole suite loudly (not silently skips) if the tracked-file
