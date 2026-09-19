@@ -18,6 +18,16 @@ removed where none does.
 | Senior Developers | Claude Code Sonnet (subagents) |
 | Developers | Claude Code Haiku (subagents) |
 
+**Data-driven complement (Sprint 4 Task K, F18, 2026-09-19)**: the table
+above is static. `.claude/model_assignment_heuristics.json` records task
+patterns with a recommended tier AND a required review protocol,
+escalation triggers, a scoring rubric, and a `learning_log` of real
+outcomes (first row: Sprint 3's F7-F10, where the protocol rather than
+the tier produced the findings; second row: F11's team-lead timing, filled
+in when it lands, never estimated). Consult it when assigning a card;
+update it at every retrospective (Category 5). Guarded by
+`tests/test_model_assignment_heuristics.py`.
+
 ## Activities requiring the top tier (Fable/Opus) -- MANDATORY
 
 Sprint planning; retrospectives; backlog refinement; architecture/schema deep dives; ADR authoring; best-practices research; security-sensitive review; any decision touching an ACCEPTED ADR's spine (record classes, contexts, certainty model). Implementation tasks (loaders, scripted runs, doc edits) may be delegated to Sonnet/Haiku subagents. Before starting a top-tier activity, confirm the active model is top tier; escalate if not.
