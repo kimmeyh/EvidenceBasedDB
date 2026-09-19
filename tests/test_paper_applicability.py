@@ -55,7 +55,11 @@ def test_loke_paper_spans_qml_and_platform_dirac_3():
     papers = _papers()
     loke = next(p for p in papers if p["id"] == "loke-2026-cvqboosting-fraud-detection-smu")
     contexts = {e["context"] for e in loke["applicability"]}
-    assert contexts == {"platform:dirac-3", "qml"}
+    # Sprint 4 Task F (F25 D4, 2026-09-19): `ml` added deliberately, not
+    # loosened -- the paper names its classical weak classifiers (KNN, LDA,
+    # logistic regression, XGBoost) and its classical baseline on p.3; the
+    # `ml` context test in docs/INTAKE_WORKFLOW.md section 8 passes it.
+    assert contexts == {"platform:dirac-3", "qml", "ml"}
 
 
 def test_emami_paper_confirms_qci_affiliation_in_its_rationale():
