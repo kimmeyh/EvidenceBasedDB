@@ -410,7 +410,29 @@ ENTRIES = [
 def main() -> int:
     ids = [e["id"] for e in ENTRIES]
     assert len(ids) == len(set(ids)), "duplicate id in ENTRIES"
-    OUTPUT.write_text(json.dumps(ENTRIES, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    # Sprint 4 Task B (F25 C1): the metadata file no longer carries a
+    # `citation` for any entry whose access resolves to an arXiv id or DOI --
+    # insert_paper() derives those from the source of record, and a
+    # hand-typed copy here would be the exact defect F10 found four times.
+    # The ENTRIES dicts above keep their strings as the historical Sprint 1
+    # transcription record (Task C's refresh diff reads them), but they do
+    # not reach the file. Entries with no resolvable id keep `citation` and
+    # are marked hand-transcribed.
+    import sys as _sys
+    from pathlib import Path as _Path
+    _sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+    from store.citations import parse_access  # noqa: E402
+
+    emitted = []
+    for e in ENTRIES:
+        row = dict(e)
+        if parse_access(row.get("access", "")):
+            row.pop("citation", None)
+            row["citation_origin"] = "api"
+        else:
+            row["citation_origin"] = "hand"
+        emitted.append(row)
+    OUTPUT.write_text(json.dumps(emitted, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     promoted = sum(1 for e in ENTRIES if e.get("promote"))
     print(f"Wrote {len(ENTRIES)} entries to {OUTPUT} ({promoted} flagged for promotion to screened).")
     return 0

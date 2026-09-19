@@ -35,7 +35,7 @@ def db():
 
 def test_insert_paper_creates_the_record_and_its_paper_fields(db):
     paper = PaperRecord(
-        id="p1", tier="seen", citation="Cite, 2026", access="arXiv:0000.00000",
+        id="p1", tier="seen", citation_origin="api", citation="Cite, 2026", access="arXiv:0000.00000",
         disposition="why it matters", context="method", value="a paper",
         updated="2026-09-15", updated_reason="test",
     )
@@ -45,9 +45,10 @@ def test_insert_paper_creates_the_record_and_its_paper_fields(db):
     record = db.execute("SELECT class FROM records WHERE id = 'p1'").fetchone()
     assert record["class"] == "paper"
 
-    fields = db.execute("SELECT tier, citation FROM paper_fields WHERE record_id = 'p1'").fetchone()
+    fields = db.execute("SELECT tier FROM paper_fields WHERE record_id = 'p1'").fetchone()
     assert fields["tier"] == "seen"
-    assert fields["citation"] == "Cite, 2026"
+    # The citation lives once, in the spine (Sprint 4 Task B, F25 B4).
+    assert db.execute("SELECT provenance FROM records WHERE id = 'p1'").fetchone()["provenance"] == "Cite, 2026"
 
     contexts = {r["context_id"] for r in db.execute("SELECT context_id FROM record_contexts WHERE record_id = 'p1'")}
     assert contexts == {"method"}
@@ -55,9 +56,9 @@ def test_insert_paper_creates_the_record_and_its_paper_fields(db):
 
 def test_insert_paper_writes_applicability_rows(db):
     paper = PaperRecord(
-        id="p1", tier="screened", citation="Cite", access="arXiv:1", disposition="why",
+        id="p1", tier="screened", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
-        applicability=[("qc", "bears on quantum computing"), ("method", "also methodology")],
+        applicability=[("qc", "bears on quantum computing -- fixture"), ("method", "also methodology -- fixture")],
     )
     insert_paper(db, paper)
     db.commit()
@@ -66,12 +67,12 @@ def test_insert_paper_writes_applicability_rows(db):
         (r["context_id"], r["rationale"])
         for r in db.execute("SELECT context_id, rationale FROM paper_applicability WHERE record_id = 'p1'")
     }
-    assert rows == {("qc", "bears on quantum computing"), ("method", "also methodology")}
+    assert rows == {("qc", "bears on quantum computing -- fixture"), ("method", "also methodology -- fixture")}
 
 
 def test_insert_assertion_links_to_its_yielding_paper(db):
     paper = PaperRecord(
-        id="p1", tier="read", citation="Cite", access="arXiv:1", disposition="why",
+        id="p1", tier="read", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
         checked_against_source="2026-09-15, test fixture",
     )
@@ -195,7 +196,7 @@ def test_validate_paper_rejects_read_tier_with_no_checked_against_source():
     application layer" -- but no such enforcement existed. insert_paper()
     accepted any tier/checked_against_source combination unchecked."""
     paper = PaperRecord(
-        id="p1", tier="read", citation="Cite", access="arXiv:1", disposition="why",
+        id="p1", tier="read", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
     )
     with pytest.raises(ValueError, match="checked_against_source"):
@@ -208,7 +209,7 @@ def test_validate_paper_rejects_read_tier_with_blank_checked_against_source():
     field be effectively missing while passing validation."""
     for blank in ("", "   ", "\t\n"):
         paper = PaperRecord(
-            id="p1", tier="read", citation="Cite", access="arXiv:1", disposition="why",
+            id="p1", tier="read", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
             context="method", value="a paper", updated="2026-09-15", updated_reason="test",
             checked_against_source=blank,
         )
@@ -221,7 +222,7 @@ def test_set_tier_refuses_read_without_checked_against_source(db):
     raw UPDATE to tier='read' bypassed it. set_tier() is the one sanctioned
     tier writer and applies the same rule against the row's existing value."""
     insert_paper(db, PaperRecord(
-        id="p1", tier="seen", citation="Cite", access="arXiv:1", disposition="why",
+        id="p1", tier="seen", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
     ))
     with pytest.raises(ValueError, match="checked_against_source"):
@@ -232,7 +233,7 @@ def test_set_tier_refuses_read_without_checked_against_source(db):
 
 def test_set_tier_promotes_to_read_when_checked_against_source_is_supplied(db):
     insert_paper(db, PaperRecord(
-        id="p1", tier="screened", citation="Cite", access="arXiv:1", disposition="why",
+        id="p1", tier="screened", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
     ))
     set_tier(db, "p1", "read", checked_against_source="2026-09-19, test, read in full")
@@ -242,18 +243,98 @@ def test_set_tier_promotes_to_read_when_checked_against_source_is_supplied(db):
 
 def test_set_tier_to_screened_needs_nothing_extra(db):
     insert_paper(db, PaperRecord(
-        id="p1", tier="seen", citation="Cite", access="arXiv:1", disposition="why",
+        id="p1", tier="seen", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
     ))
     set_tier(db, "p1", "screened")
     assert db.execute("SELECT tier FROM paper_fields WHERE record_id = 'p1'").fetchone()["tier"] == "screened"
 
 
+def _api_paper(**over) -> PaperRecord:
+    base = dict(id="p1", tier="seen", access="arXiv:0000.00001", disposition="why",
+                context="method", value="a paper", citation="Cite", citation_origin="api",
+                updated="2026-09-15", updated_reason="test")
+    base.update(over)
+    return PaperRecord(**base)
+
+
+def test_door_refuses_an_undeclared_citation_origin():
+    with pytest.raises(ValueError, match="citation_origin must be declared"):
+        validate_paper(_api_paper(citation_origin=""))
+
+
+def test_door_refuses_api_origin_without_a_resolvable_id():
+    with pytest.raises(ValueError, match="no arXiv id or DOI"):
+        validate_paper(_api_paper(access="local file, no DOI/arXiv id"))
+
+
+def test_door_refuses_hand_typing_when_the_id_resolves(tmp_path):
+    """The F10 defect class, refused at the door: a citation typed by hand
+    for a paper whose arXiv id would have given the true one."""
+    with pytest.raises(ValueError, match="hand-typing a citation for it"):
+        validate_paper(_api_paper(citation_origin="hand", hand_transcribed_from="cover",
+                                  citation="Cite (hand-transcribed from cover)"))
+
+
+def test_door_hand_origin_requires_page_marker_and_real_path(tmp_path):
+    pdf = tmp_path / "vendor.pdf"
+    pdf.write_bytes(b"%PDF")
+    good = _api_paper(citation_origin="hand", access=str(pdf), hand_transcribed_from="cover",
+                      citation='Vendor, "Doc" (hand-transcribed from cover)')
+    validate_paper(good)  # must not raise
+    with pytest.raises(ValueError, match="requires hand_transcribed_from"):
+        validate_paper(_api_paper(citation_origin="hand", access=str(pdf), citation="x (hand-transcribed from cover)"))
+    with pytest.raises(ValueError, match="say so visibly"):
+        validate_paper(_api_paper(citation_origin="hand", access=str(pdf), hand_transcribed_from="cover", citation="Vendor, Doc"))
+    with pytest.raises(ValueError, match="not an existing local path"):
+        validate_paper(_api_paper(citation_origin="hand", access="local file, no DOI/arXiv id",
+                                  hand_transcribed_from="cover", citation="x (hand-transcribed from cover)"))
+
+
+@pytest.mark.parametrize("marker", ["CORRECTED 2026-09-16: ...", "NOTE: the seed filename truncates", "verified against the PDF", "recorded once", "Two identically-content files"])
+def test_door_refuses_audit_trail_inside_the_citation(marker):
+    with pytest.raises(ValueError, match="audit-trail"):
+        validate_paper(_api_paper(citation=f"Cite, 2026. {marker}"))
+
+
+def test_door_refuses_multiline_disposition_and_a_tier_named_in_prose():
+    with pytest.raises(ValueError, match="one line"):
+        validate_paper(_api_paper(disposition="line one\nline two"))
+    with pytest.raises(ValueError, match="names a tier"):
+        validate_paper(_api_paper(disposition="Recorded as seen tier with this disposition"))
+
+
+def test_door_requires_a_source_anchor_on_every_applicability_rationale():
+    with pytest.raises(ValueError, match="no source anchor"):
+        validate_paper(_api_paper(applicability=[("qc", "bears on quantum computing")]))
+    validate_paper(_api_paper(applicability=[("qc", "bears on quantum computing -- p.1 abstract")]))
+
+
+def test_door_requires_a_title():
+    with pytest.raises(ValueError, match="title"):
+        validate_paper(_api_paper(value="   "))
+
+
+def test_insert_paper_derives_citation_and_title_from_the_source_of_record(db):
+    """The whole point of the door: an api-origin paper arrives with an id
+    and nothing else; the citation and title come from the API (here a
+    fixture fetcher), and the store's provenance is the rendered string."""
+    from tests.test_citations import fake_fetcher  # noqa: PLC0415
+    paper = PaperRecord(id="dupont", tier="seen", access="arXiv:2303.05509", disposition="why",
+                        context="qc", citation_origin="api", updated="2026-09-19", updated_reason="test")
+    written = insert_paper(db, paper, fetcher=fake_fetcher)
+    db.commit()
+    row = db.execute("SELECT value, provenance FROM records WHERE id='dupont'").fetchone()
+    assert row["value"] == "Quantum-Enhanced Greedy Combinatorial Optimization Solver"
+    assert row["provenance"].startswith('Dupont, M., Evert, B., "Quantum-Enhanced')
+    assert written.citation == row["provenance"] and written.value == row["value"]
+
+
 def test_validate_paper_accepts_read_tier_with_literal_never():
     """'never' is a valid, meaningful value distinct from None -- a
     statement someone made, not an unpopulated field (ADR-0005 section 2)."""
     paper = PaperRecord(
-        id="p1", tier="read", citation="Cite", access="arXiv:1", disposition="why",
+        id="p1", tier="read", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
         checked_against_source="never",
     )
@@ -265,8 +346,8 @@ def test_validate_paper_does_not_require_checked_against_source_below_read():
     requires it (ADR-0005 section 2)."""
     for tier in ("seen", "screened"):
         paper = PaperRecord(
-            id="p1", tier=tier, citation="Cite", access="arXiv:1", disposition="why",
-            context="method", value="a paper", updated="2026-09-15", updated_reason="test",
+            id="p1", tier=tier, citation="Cite", citation_origin="api", access="arXiv:0000.00001",
+            disposition="why", context="method", value="a paper", updated="2026-09-15", updated_reason="test",
         )
         validate_paper(paper)  # must not raise
 
@@ -275,7 +356,7 @@ def test_insert_paper_calls_validate_paper(db):
     """The validator must actually run at the real insert path, not just
     exist as a standalone function nothing calls."""
     paper = PaperRecord(
-        id="p1", tier="read", citation="Cite", access="arXiv:1", disposition="why",
+        id="p1", tier="read", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
     )
     with pytest.raises(ValueError, match="checked_against_source"):

@@ -51,6 +51,12 @@ def main() -> int:
     paper = PaperRecord(
         id="lenat-marcus-2023-trustworthy-ai",
         tier="read",
+        # Sprint 4 Task B: declared api-origin (arXiv:2308.04445 resolves); the
+        # pre-rendered string below is the Sprint 1 transcription, kept so this
+        # historical one-off stays reproducible offline. refresh_citations.py
+        # is what verifies it against the API. This script early-returns on the
+        # live store, where the record already exists.
+        citation_origin="api",
         citation=(
             "Lenat, D. and Marcus, G., \"Getting from Generative AI to "
             "Trustworthy AI: What LLMs might learn from Cyc\", "

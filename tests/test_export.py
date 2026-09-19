@@ -133,8 +133,8 @@ def test_paper_export_carries_yields_to_its_assertions(db):
         "VALUES ('paper-1', 'paper', 'a paper', 'itself', 'N/A', '2026-09-15', 'created')"
     )
     db.execute(
-        "INSERT INTO paper_fields (record_id, tier, citation, access, disposition, checked_against_source) "
-        "VALUES ('paper-1', 'read', 'Cite, 2026', 'arXiv:0000.00000', 'why it matters', '2026-09-15, Claude, read in full')"
+        "INSERT INTO paper_fields (record_id, tier, access, disposition, checked_against_source) "
+        "VALUES ('paper-1', 'read', 'arXiv:0000.00000', 'why it matters', '2026-09-15, Claude, read in full')"
     )
     db.execute(
         "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
@@ -189,22 +189,20 @@ def test_child_list_returns_values_in_query_order(db):
     assert result == ["aaa-doc", "zzz-doc"]
 
 
-def test_paper_export_citation_follows_provenance_not_paper_fields(db):
-    """F6 finding 1 (PR #1 review): insert_paper() writes the same string
-    into records.provenance and paper_fields.citation, which is exactly
-    the "one value restated" pattern CLAUDE.md's standing rule warns
-    against. The export must read `citation` from `provenance` (the
-    spine's canonical field), never from paper_fields.citation
-    independently -- proven here by inserting a record where the two
-    columns deliberately DIFFER and asserting the export follows
-    provenance, not the (deliberately stale) paper_fields value."""
+def test_paper_export_citation_is_the_records_provenance(db):
+    """F6 finding 1 (PR #1 review) then F25 B4 (Sprint 4 Task B): the
+    citation lives once, in records.provenance. paper_fields.citation --
+    a byte-identical copy on 46/46 papers -- no longer exists, so the
+    export's `citation` key can only come from the spine. This test used
+    to insert deliberately divergent values in the two columns; now it
+    simply pins the one source."""
     db.execute(
         "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
         "VALUES ('paper-1', 'paper', 'a paper', 'the REAL provenance', 'N/A', '2026-09-18', 'created')"
     )
     db.execute(
-        "INSERT INTO paper_fields (record_id, tier, citation, access, disposition) "
-        "VALUES ('paper-1', 'seen', 'a STALE citation nobody updated', 'arXiv:0000.00000', 'test fixture')"
+        "INSERT INTO paper_fields (record_id, tier, access, disposition) "
+        "VALUES ('paper-1', 'seen', 'arXiv:0000.00000', 'test fixture')"
     )
     db.commit()
 
@@ -213,7 +211,6 @@ def test_paper_export_citation_follows_provenance_not_paper_fields(db):
         papers = json.loads((Path(out) / "papers.json").read_text(encoding="utf-8"))
 
     assert papers[0]["citation"] == "the REAL provenance"
-    assert papers[0]["citation"] != "a STALE citation nobody updated"
 
 
 def test_paper_checked_against_source_never_is_preserved_not_omitted(db):
@@ -224,8 +221,8 @@ def test_paper_checked_against_source_never_is_preserved_not_omitted(db):
         "VALUES ('paper-1', 'paper', 'a paper', 'itself', 'N/A', '2026-09-15', 'created')"
     )
     db.execute(
-        "INSERT INTO paper_fields (record_id, tier, citation, access, disposition, checked_against_source) "
-        "VALUES ('paper-1', 'seen', 'Cite, 2026', 'arXiv:0000.00000', 'not yet screened', 'never')"
+        "INSERT INTO paper_fields (record_id, tier, access, disposition, checked_against_source) "
+        "VALUES ('paper-1', 'seen', 'arXiv:0000.00000', 'not yet screened', 'never')"
     )
     db.commit()
 

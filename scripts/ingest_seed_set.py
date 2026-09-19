@@ -36,10 +36,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
+from store.citations import PacedFetcher, parse_access  # noqa: E402
 from store.export import regenerate  # noqa: E402
 from store.ingest import PaperRecord, insert_paper, set_tier  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
+
+# Network for api-origin entries; tests inject a fake. Paced for arXiv.
+FETCHER = PacedFetcher()
 METADATA_PATH = ROOT / "scripts" / "seed_set_metadata.json"
 
 UPDATED = "2026-09-16"
@@ -103,19 +107,28 @@ def main() -> int:
                     promoted += 1
             else:
                 tier = "screened" if (promote and entry.get("promote")) else "seen"
+                # Sprint 4 Task B (F25 C1): the metadata file no longer supplies
+                # citations. An entry whose access carries an arXiv id or DOI is
+                # api-origin and its citation and title come from the source of
+                # record at insert time; anything else must declare itself
+                # hand-transcribed with the page it was read from and a real
+                # local path. insert_paper() refuses everything in between.
+                origin = "api" if parse_access(entry["access"]) else "hand"
                 paper = PaperRecord(
                     id=record_id,
                     tier=tier,
-                    citation=entry["citation"],
                     access=entry["access"],
                     disposition=entry["disposition"],
                     context=entry["context"],
-                    value=entry["citation"],
+                    value=entry.get("title", ""),
+                    citation=None if origin == "api" else entry.get("citation"),
+                    citation_origin=origin,
+                    hand_transcribed_from=entry.get("transcribed_from"),
                     evidence_tag="N/A",
                     updated=UPDATED,
                     updated_reason=UPDATED_REASON,
                 )
-                insert_paper(conn, paper)
+                insert_paper(conn, paper, fetcher=FETCHER)
                 inserted += 1
     except Exception as e:
         conn.rollback()
