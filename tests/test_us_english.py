@@ -30,62 +30,44 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = ROOT / "scripts" / "us_english_fix.py"
 
-EXCLUDE_PREFIXES = ("docs/sprints/",)
-EXCLUDE_FILES = tuple(
-    f"docs/adr/{n:04d}-{name}.md"
-    for n, name in [
-        (1, "branch-and-carry-forward-model"),
-        (2, "secrets-and-credential-handling"),
-        (3, "store-and-schema-discipline"),
-        (4, "evidence-based-db"),
-        (5, "reference-library"),
-    ]
+
+def _load_fixer():
+    """The word list, the exclusions and the protected spans are imported
+    FROM the script, not restated here (PR #20 review, 2026-09-19). An
+    earlier version of this file carried its own copies of all four; the
+    reviewer emptied the script's exclusion lists and the suite stayed
+    green while a dry run planned 18 rewrites inside frozen ADRs -- the
+    exact 2026-09-18 incident the exclusions exist to prevent, silent
+    because the test was checking its own copy. One source of truth, and
+    the tests below exercise the script's own values."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("us_english_fix", SCRIPT)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+_FIXER = _load_fixer()
+EXCLUDE_PREFIXES = _FIXER.EXCLUDE_PREFIXES
+EXCLUDE_FILES = _FIXER.EXCLUDE_FILES
+BRITISH = tuple(brit for brit, _ in _FIXER.PAIRS)
+PROTECTED = _FIXER.PROTECTED
+
+# The five ADRs and the sprints directory, HARDCODED here as the expected
+# exclusion set. Checking the script's exclusion lists against themselves
+# cannot fail; checking them against this independent statement of what
+# must be frozen can.
+FROZEN_ADRS = (
+    "docs/adr/0001-branch-and-carry-forward-model.md",
+    "docs/adr/0002-secrets-and-credential-handling.md",
+    "docs/adr/0003-store-and-schema-discipline.md",
+    "docs/adr/0004-evidence-based-db.md",
+    "docs/adr/0005-reference-library.md",
 )
-
-# Same list as scripts/us_english_fix.py; kept in sync manually since the
-# two files' shared PAIRS list would otherwise be a THIRD place this exact
-# word list is restated (CLAUDE.md's own "determinate facts are computed,
-# never stored" caution against restating one value more than once).
-BRITISH = (
-    "behaviour", "behaviours", "colour", "colours", "favour", "favours",
-    "favoured", "favourable", "favourite", "labour", "neighbour", "neighbours",
-    "honour", "honoured", "rumour", "organise", "organised", "organising",
-    "organisation", "organisations", "recognise", "recognised", "recognising",
-    "realise", "realised", "minimise", "minimised", "maximise", "maximised",
-    "optimise", "optimised", "optimising", "optimisation", "optimiser",
-    "emphasise", "emphasised", "prioritise", "prioritised", "prioritising",
-    "summarise", "summarised", "categorise", "categorised", "apologise",
-    "analyse", "analysed", "analysing", "paralyse", "centre", "centres",
-    "centred", "metre", "metres", "theatre", "licence", "licences",
-    "defence", "offence", "pretence", "travelling", "travelled",
-    "modelling", "modelled", "labelling", "labelled", "cancelled",
-    "cancelling", "signalling", "signalled", "totalled", "levelled",
-    "fuelled", "marvelled", "fulfil", "fulfilment", "enrol", "skilful",
-    "wilful", "grey", "aluminium", "programme", "programmes", "whilst",
-    "amongst", "towards", "learnt", "spelt", "burnt", "dreamt",
-    "judgement", "judgements", "acknowledgement", "acknowledgements",
-    "ageing", "cheque", "storey", "tyre", "kerb", "plough", "draught",
-    "sceptical", "sceptic", "sceptics", "scepticism", "manoeuvre",
-    "artefact", "artefacts", "generalise", "generalised", "generalising",
-    "specialise", "specialised", "specialising", "normalise", "normalised",
-    "normalising", "utilise", "utilised", "utilising", "penalise",
-    "penalised", "penalising", "characterise", "characterised",
-    "characterising", "criticise", "criticised", "criticising",
-    "memorise", "memorised", "memorising", "randomise", "randomised",
-    "randomising", "standardise", "standardised", "standardising",
-    "visualise", "visualised", "visualising", "practise", "practised",
-    "practising", "flavour", "flavours", "rigour", "vigour", "endeavour",
-    "saviour", "sizeable", "moustache", "mould", "smoulder",
-)
-
-# Spans that legitimately carry a non-US spelling because they are quoted
-# or cited VERBATIM from a paper or book. Extend as real quotations are
-# found -- deliberately empty today since none has been found yet, and an
-# empty tuple is not the same defect as an unmaintained one: it means "no
-# exemption has been NEEDED", checked by the parametrized test below
-# actually running against every tracked file.
-PROTECTED: tuple[str, ...] = ()
+FROZEN_PREFIX = "docs/sprints/"
 
 PATTERN = re.compile(r"\b(" + "|".join(BRITISH) + r")\b", re.IGNORECASE)
 
@@ -139,10 +121,10 @@ def test_the_frozen_documents_are_actually_excluded():
     out = subprocess.run(["git", "ls-files", "*.md"], cwd=ROOT, capture_output=True, text=True)
     all_tracked = set(out.stdout.splitlines())
     rels = {str(p.relative_to(ROOT)).replace("\\", "/") for p in FILES}
-    for excluded in EXCLUDE_FILES:
-        assert excluded in all_tracked, f"{excluded} no longer exists -- update EXCLUDE_FILES"
+    for excluded in FROZEN_ADRS:
+        assert excluded in all_tracked, f"{excluded} no longer exists -- update FROZEN_ADRS and the script"
         assert excluded not in rels, f"{excluded} is in scope but must be excluded (frozen ADR)"
-    leaked = [r for r in rels if r.startswith("docs/sprints/")]
+    leaked = [r for r in rels if r.startswith(FROZEN_PREFIX)]
     assert not leaked, f"sprint docs are in scope but must be excluded (frozen record): {leaked}"
 
 
@@ -174,34 +156,40 @@ def test_no_british_spellings(path: Path):
         + "\n\nRun scripts/us_english_fix.py --apply to convert.")
 
 
-def _run_fixer_in_temp_repo(tmp_path: Path, args: list[str]) -> tuple[subprocess.CompletedProcess, Path]:
+BRITISH_LINE = "The colour of the behaviour.\n"
+
+
+def _run_fixer_in_temp_repo(
+    tmp_path: Path, args: list[str], files: dict[str, str] | None = None
+) -> tuple[subprocess.CompletedProcess, Path]:
     """Run the REAL scripts/us_english_fix.py against a throwaway git repo
-    holding one tracked markdown file with a British spelling, by
-    monkeypatching the loaded module's ROOT (same wrapper pattern as
-    tests/test_ingest_seed_set.py). Never runs against this repository's
-    own tree -- the first version of the fixer did exactly that and
-    rewrote frozen documents."""
+    holding the given tracked markdown files (default: one NOTES.md with a
+    British spelling), by monkeypatching the loaded module's ROOT (same
+    wrapper pattern as tests/test_ingest_seed_set.py). Never runs against
+    this repository's own tree -- the first version of the fixer did
+    exactly that and rewrote frozen documents. Returns (process, repo)."""
     repo = tmp_path / "repo"
     repo.mkdir()
     subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
     subprocess.run(["git", "config", "user.email", "t@example.com"], cwd=repo, check=True)
     subprocess.run(["git", "config", "user.name", "t"], cwd=repo, check=True)
-    target = repo / "NOTES.md"
-    target.write_text("The colour of the behaviour.\n", encoding="utf-8")
-    subprocess.run(["git", "add", "NOTES.md"], cwd=repo, check=True)
+    for rel, text in (files or {"NOTES.md": BRITISH_LINE}).items():
+        path = repo / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+    subprocess.run(["git", "add", "-A"], cwd=repo, check=True)
     subprocess.run(["git", "commit", "-q", "-m", "seed"], cwd=repo, check=True)
-    script = ROOT / "scripts" / "us_english_fix.py"
     wrapper = (
         "import sys, importlib.util\n"
         "from pathlib import Path\n"
-        f"spec = importlib.util.spec_from_file_location('usfix', {str(script)!r})\n"
+        f"spec = importlib.util.spec_from_file_location('usfix', {str(SCRIPT)!r})\n"
         "mod = importlib.util.module_from_spec(spec)\n"
         "spec.loader.exec_module(mod)\n"
         f"mod.ROOT = Path({str(repo)!r})\n"
         f"raise SystemExit(mod.main({args!r}))\n"
     )
     proc = subprocess.run([sys.executable, "-c", wrapper], capture_output=True, text=True)
-    return proc, target
+    return proc, repo
 
 
 def test_fixer_is_dry_run_by_default(tmp_path):
@@ -209,15 +197,36 @@ def test_fixer_is_dry_run_by_default(tmp_path):
     shows its plan and writes nothing unless told to. The fixer's first
     run (2026-09-18) had no such mode and rewrote frozen ADR amendments
     before the exclusion list existed."""
-    proc, target = _run_fixer_in_temp_repo(tmp_path, [])
+    proc, repo = _run_fixer_in_temp_repo(tmp_path, [])
     assert proc.returncode == 0, proc.stderr
     assert "2 replacements across 1 files" in proc.stdout
     assert "dry run" in proc.stdout
-    assert target.read_text(encoding="utf-8") == "The colour of the behaviour.\n"
+    assert (repo / "NOTES.md").read_text(encoding="utf-8") == BRITISH_LINE
 
 
 def test_fixer_writes_only_with_apply(tmp_path):
-    proc, target = _run_fixer_in_temp_repo(tmp_path, ["--apply"])
+    proc, repo = _run_fixer_in_temp_repo(tmp_path, ["--apply"])
     assert proc.returncode == 0, proc.stderr
     assert "applied" in proc.stdout
-    assert target.read_text(encoding="utf-8") == "The color of the behavior.\n"
+    assert (repo / "NOTES.md").read_text(encoding="utf-8") == "The color of the behavior.\n"
+
+
+def test_fixer_never_rewrites_frozen_documents_even_with_apply(tmp_path):
+    """PR #20 review (2026-09-19): the SCRIPT's own exclusion lists were
+    untested -- emptying them left the suite green. This runs the real
+    script with --apply against a repo holding a British spelling in a
+    frozen ADR, a sprint doc, and a living README, and asserts only the
+    README changed. Proven by injection: with EXCLUDE_FILES and
+    EXCLUDE_PREFIXES emptied in the script, all three files change and
+    this test fails."""
+    files = {
+        "docs/adr/0004-evidence-based-db.md": BRITISH_LINE,
+        "docs/sprints/SPRINT_9_PLAN.md": BRITISH_LINE,
+        "README.md": BRITISH_LINE,
+    }
+    proc, repo = _run_fixer_in_temp_repo(tmp_path, ["--apply"], files)
+    assert proc.returncode == 0, proc.stderr
+    assert (repo / "docs/adr/0004-evidence-based-db.md").read_text(encoding="utf-8") == BRITISH_LINE
+    assert (repo / "docs/sprints/SPRINT_9_PLAN.md").read_text(encoding="utf-8") == BRITISH_LINE
+    assert (repo / "README.md").read_text(encoding="utf-8") == "The color of the behavior.\n"
+    assert "2 replacements across 1 files" in proc.stdout

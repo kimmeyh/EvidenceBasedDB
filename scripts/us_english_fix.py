@@ -170,6 +170,14 @@ PAIRS = [
 # case this list exists for.
 PROTECTED: tuple[str, ...] = ()
 
+# An empty string in PROTECTED would silently disable the whole sweep:
+# `"" in text` is always True, `text.replace("", token)` inserts a token
+# between every character, every `\b` match dies, and unmasking restores
+# the input byte-for-byte -- exit 0, nothing rewritten, no error (PR #20
+# review, 2026-09-19). Fail at import instead.
+if not all(PROTECTED):
+    raise SystemExit("PROTECTED contains an empty span, which would disable every replacement")
+
 
 def match_case(src: str, repl: str) -> str:
     if src.isupper():
@@ -245,6 +253,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"{n:4d}  {rel}")
     verb = "applied" if apply else "PLANNED (dry run; re-run with --apply to write)"
     print(f"\n{total} replacements across {len(touched)} files -- {verb}")
+    # Exit 0 even when a dry run has pending replacements: this script is a
+    # converter, not the check. tests/test_us_english.py is the check, and
+    # it is what fails CI when a British spelling lands in a living doc.
     return 0
 
 

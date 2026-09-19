@@ -106,6 +106,63 @@ def test_a_typod_paper_id_fails_the_run_not_just_warns(store_and_export):
     assert "not found" in proc.stderr
 
 
+def _applicability_rows(db_path: Path, paper_id: str) -> set:
+    import store as store_module
+    conn = store_module.connect(db_path)
+    rows = {
+        (r["context_id"], r["rationale"])
+        for r in conn.execute("SELECT context_id, rationale FROM paper_applicability WHERE record_id = ?", (paper_id,))
+    }
+    conn.close()
+    return rows
+
+
+def test_a_failing_run_writes_nothing_not_even_the_valid_papers(store_and_export):
+    """PR #20 review (2026-09-19): the F14 version committed the papers it
+    COULD apply and regenerated export/ before returning exit 1, so a
+    non-zero exit did not mean "nothing written". Now validation runs to
+    completion first; any problem exits 1 with store and export untouched."""
+    db_path, export_dir = store_and_export
+    applicability = {
+        "paper-one": [("qml", "primary topic")],
+        "does-not-exist": [("qc", "typo'd key")],
+    }
+    proc = _run_script(db_path, export_dir, applicability)
+    assert proc.returncode != 0
+    assert "NOTHING was written" in proc.stderr
+    assert _applicability_rows(db_path, "paper-one") == set(), "the valid paper must not be applied on a failing run"
+    assert not export_dir.exists(), "export/ must not be regenerated on a failing run"
+
+
+def test_a_changed_rationale_is_a_mismatch_not_a_clean_noop(store_and_export):
+    """PR #20 review (2026-09-19): comparing context ids alone accepted a
+    changed rationale as "already matching". ADR-0005 section 2d makes the
+    rationale part of the record, so it is compared too."""
+    db_path, export_dir = store_and_export
+    first = _run_script(db_path, export_dir, {"paper-one": [("qml", "ORIGINAL rationale")]})
+    assert first.returncode == 0
+    second = _run_script(db_path, export_dir, {"paper-one": [("qml", "CHANGED rationale")]})
+    assert second.returncode != 0
+    assert "mismatch" in second.stderr
+    assert _applicability_rows(db_path, "paper-one") == {("qml", "ORIGINAL rationale")}
+
+
+def test_a_constraint_failure_names_the_paper_and_context_and_writes_nothing(store_and_export):
+    """PR #20 review (2026-09-19): the F6 finding 3 class, previously not
+    ported here -- an FK violation inside the insert loop was a bare
+    sqlite3 traceback naming no paper."""
+    db_path, export_dir = store_and_export
+    applicability = {
+        "paper-one": [("qml", "fine")],
+        "paper-two": [("platform:not-a-real-platform", "undefined context")],
+    }
+    proc = _run_script(db_path, export_dir, applicability)
+    assert proc.returncode != 0
+    assert "paper-two" in proc.stderr and "platform:not-a-real-platform" in proc.stderr
+    assert _applicability_rows(db_path, "paper-one") == set(), "the whole run rolls back on a constraint failure"
+    assert not export_dir.exists()
+
+
 def test_a_matching_already_set_paper_is_a_clean_noop(store_and_export):
     db_path, export_dir = store_and_export
     applicability = {"paper-one": [("qml", "primary topic")]}

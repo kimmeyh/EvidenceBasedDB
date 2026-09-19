@@ -37,7 +37,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
 from store.export import regenerate  # noqa: E402
-from store.ingest import PaperRecord, insert_paper  # noqa: E402
+from store.ingest import PaperRecord, insert_paper, set_tier  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 METADATA_PATH = ROOT / "scripts" / "seed_set_metadata.json"
@@ -59,30 +59,32 @@ def main() -> int:
     entries = json.loads(METADATA_PATH.read_text(encoding="utf-8"))
     conn = connect(DB_PATH)
 
+    # ALL-OR-NOTHING (PR #20 review, 2026-09-19, superseding the Sprint 3
+    # Task B savepoint design). The savepoint version claimed to isolate a
+    # bad entry "without needing a full COMMIT per row" -- but Python's
+    # sqlite3 in its default legacy transaction mode opens an implicit
+    # transaction only before INSERT/UPDATE/DELETE, never before SAVEPOINT,
+    # so each entry's savepoint opened its OWN transaction and RELEASE of
+    # that outermost savepoint was a commit. Proven by the reviewer with a
+    # second connection seeing the row before any commit() call. The real
+    # consequence: on a bad entry at position N, entries 0..N-1 were already
+    # durable and regenerate() never ran, so store and export/ silently
+    # diverged -- the exact "stale export" defect class Phase 5 of the
+    # workflow names.
+    #
+    # The contract is now: one transaction, opened implicitly by the first
+    # write; any failure rolls back EVERY entry, names the failing entry and
+    # position, and leaves both store and export/ exactly as they were. The
+    # durable write (commit, then regenerate) happens only after the last
+    # decision that could fail -- QUALITY_STANDARDS.md "decide, then write".
     inserted, skipped, promoted = 0, 0, 0
-    for position, entry in enumerate(entries):
-        record_id = entry["id"]
-        # Per-entry SAVEPOINT (F6 finding 3, PR #1 review): the whole loop
-        # previously shared one commit at the end, so a mid-loop FK
-        # violation aborted the run with an unhandled traceback naming no
-        # offending record -- a bad entry at position 30 of 46 gave no clue
-        # which entry, without editing the script to add a print. A
-        # savepoint per entry both isolates a bad entry's partial writes
-        # (RELEASE only on success) and lets the error message name the
-        # entry that failed, without needing a full COMMIT per row (SQLite
-        # savepoints are cheap; a real commit per row here would be 46x the
-        # fsync cost for no correctness benefit at this scale).
-        #
-        # The savepoint name uses the loop POSITION, not inserted/skipped
-        # counters -- an earlier version used `inserted + skipped`, which
-        # is read again at RELEASE time after `inserted` may have just
-        # been incremented inside the try block, so SAVEPOINT and RELEASE
-        # named two DIFFERENT savepoints and RELEASE failed with "no such
-        # savepoint". A stable per-iteration value avoids that class of
-        # bug entirely.
-        savepoint = f"entry_{position}"
-        conn.execute(f"SAVEPOINT {savepoint}")
-        try:
+    position = -1
+    record_id = "<no id>"
+    try:
+        for position, entry in enumerate(entries):
+            record_id = entry.get("id", "<no id>")
+            if "id" not in entry:
+                raise KeyError("entry has no 'id' field")
             existing = conn.execute(
                 "SELECT p.tier FROM records r JOIN paper_fields p ON p.record_id = r.id WHERE r.id = ?",
                 (record_id,),
@@ -97,10 +99,7 @@ def main() -> int:
                 # docstring describes -- could never promote anything, since
                 # every row was already present by the second run.
                 if promote and entry.get("promote") and existing["tier"] == "seen":
-                    conn.execute(
-                        "UPDATE paper_fields SET tier = 'screened' WHERE record_id = ?",
-                        (record_id,),
-                    )
+                    set_tier(conn, record_id, "screened")
                     promoted += 1
             else:
                 tier = "screened" if (promote and entry.get("promote")) else "seen"
@@ -118,11 +117,14 @@ def main() -> int:
                 )
                 insert_paper(conn, paper)
                 inserted += 1
-        except Exception as e:
-            conn.execute(f"ROLLBACK TO SAVEPOINT {savepoint}")
-            raise RuntimeError(f"failed on seed-set entry {record_id!r} (position {position}): {e}") from e
-        else:
-            conn.execute(f"RELEASE SAVEPOINT {savepoint}")
+    except Exception as e:
+        conn.rollback()
+        conn.close()
+        raise RuntimeError(
+            f"failed on seed-set entry {record_id!r} (position {position}): {e}. "
+            "Nothing was written: every entry in this run was rolled back and "
+            "export/ was not regenerated."
+        ) from e
 
     conn.commit()
     regenerate(conn, EXPORT_DIR)

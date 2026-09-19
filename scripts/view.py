@@ -115,6 +115,11 @@ def cmd_paper(conn, paper_id: str) -> dict:
     if not paper:
         return {"error": f"no paper record: {paper_id!r}"}
     fields = conn.execute("SELECT * FROM paper_fields WHERE record_id = ?", (paper_id,)).fetchone()
+    if fields is None:
+        # A paper record with no paper_fields row is a broken schema
+        # invariant, not a paper with unknown tier -- report it rather than
+        # render tier/access/disposition as None (PR #20 review, 2026-09-19).
+        return {"error": f"paper record {paper_id!r} has no paper_fields row (schema invariant broken)"}
 
     applicability = conn.execute(
         "SELECT context_id, rationale FROM paper_applicability WHERE record_id = ? ORDER BY context_id",
@@ -311,7 +316,11 @@ def main() -> int:
     else:
         _print_text(data, text_mode)
 
-    return 1 if "error" in data else 0
+    # A paper whose yielded assertion cannot be resolved carries the error
+    # nested under "yields"; that is still a failed lookup and must not exit
+    # 0 under --json (PR #20 review, 2026-09-19).
+    nested_errors = any("error" in y for y in data.get("yields", []))
+    return 1 if ("error" in data or nested_errors) else 0
 
 
 if __name__ == "__main__":

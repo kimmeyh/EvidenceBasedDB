@@ -19,6 +19,7 @@ from store.ingest import (  # noqa: E402
     PaperRecord,
     insert_assertion,
     insert_paper,
+    set_tier,
     validate_paper,
 )
 
@@ -213,6 +214,39 @@ def test_validate_paper_rejects_read_tier_with_blank_checked_against_source():
         )
         with pytest.raises(ValueError, match="blank"):
             validate_paper(paper)
+
+
+def test_set_tier_refuses_read_without_checked_against_source(db):
+    """PR #20 review (2026-09-19): validate_paper() ran on insert only; a
+    raw UPDATE to tier='read' bypassed it. set_tier() is the one sanctioned
+    tier writer and applies the same rule against the row's existing value."""
+    insert_paper(db, PaperRecord(
+        id="p1", tier="seen", citation="Cite", access="arXiv:1", disposition="why",
+        context="method", value="a paper", updated="2026-09-15", updated_reason="test",
+    ))
+    with pytest.raises(ValueError, match="checked_against_source"):
+        set_tier(db, "p1", "read")
+    tier = db.execute("SELECT tier FROM paper_fields WHERE record_id = 'p1'").fetchone()["tier"]
+    assert tier == "seen", "a refused promotion must leave the row unchanged"
+
+
+def test_set_tier_promotes_to_read_when_checked_against_source_is_supplied(db):
+    insert_paper(db, PaperRecord(
+        id="p1", tier="screened", citation="Cite", access="arXiv:1", disposition="why",
+        context="method", value="a paper", updated="2026-09-15", updated_reason="test",
+    ))
+    set_tier(db, "p1", "read", checked_against_source="2026-09-19, test, read in full")
+    row = db.execute("SELECT tier, checked_against_source FROM paper_fields WHERE record_id = 'p1'").fetchone()
+    assert (row["tier"], row["checked_against_source"]) == ("read", "2026-09-19, test, read in full")
+
+
+def test_set_tier_to_screened_needs_nothing_extra(db):
+    insert_paper(db, PaperRecord(
+        id="p1", tier="seen", citation="Cite", access="arXiv:1", disposition="why",
+        context="method", value="a paper", updated="2026-09-15", updated_reason="test",
+    ))
+    set_tier(db, "p1", "screened")
+    assert db.execute("SELECT tier FROM paper_fields WHERE record_id = 'p1'").fetchone()["tier"] == "screened"
 
 
 def test_validate_paper_accepts_read_tier_with_literal_never():

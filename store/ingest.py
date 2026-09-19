@@ -83,6 +83,47 @@ def validate_paper(paper: PaperRecord) -> None:
         )
 
 
+def set_tier(
+    conn: sqlite3.Connection,
+    record_id: str,
+    tier: str,
+    checked_against_source: str | None = None,
+) -> None:
+    """The ONLY sanctioned way to change a paper's tier after insert.
+
+    PR #20 review (2026-09-19): validate_paper() ran on insert only, and the
+    one other tier writer in the repository (ingest_seed_set.py's promotion
+    UPDATE) bypassed it entirely. Harmless today because that UPDATE only
+    ever sets 'screened', but the next promotion to 'read' would have
+    reintroduced exactly the gap F6 finding 2 closed, with no test to catch
+    it. Route every tier change through here so the read-tier rule holds
+    at the column, not at one call site; the schema-level CHECK lands with
+    F25 B4's table rebuild.
+
+    If `checked_against_source` is given it is written alongside the tier;
+    otherwise the row's existing value is what the rule is checked against.
+    """
+    row = conn.execute(
+        "SELECT checked_against_source FROM paper_fields WHERE record_id = ?", (record_id,)
+    ).fetchone()
+    if row is None:
+        raise ValueError(f"paper {record_id!r} has no paper_fields row")
+    effective = checked_against_source if checked_against_source is not None else row["checked_against_source"]
+    if tier == "read" and (effective is None or not effective.strip()):
+        raise ValueError(
+            f"cannot set paper {record_id!r} to tier='read': checked_against_source is "
+            f"{'not set' if effective is None else 'blank'}. ADR-0005 section 2 requires it "
+            "at this tier -- pass checked_against_source (the literal 'never' is valid)."
+        )
+    if checked_against_source is not None:
+        conn.execute(
+            "UPDATE paper_fields SET tier = ?, checked_against_source = ? WHERE record_id = ?",
+            (tier, checked_against_source, record_id),
+        )
+    else:
+        conn.execute("UPDATE paper_fields SET tier = ? WHERE record_id = ?", (tier, record_id))
+
+
 def insert_paper(conn: sqlite3.Connection, paper: PaperRecord) -> None:
     validate_paper(paper)
     conn.execute(
