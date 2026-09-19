@@ -17,20 +17,44 @@ import sqlite3
 from pathlib import Path
 
 
+def _copy_nonnull(record: dict, row: sqlite3.Row, *columns: str) -> None:
+    """Copy each named column from `row` into `record` under the same key,
+    but only if the value is not NULL (F6 finding 6, PR #1 review: every
+    `_export_*` function repeated this "if not None: record[k] = row[k]"
+    shape once per optional field). A NULL column means "not yet filled,"
+    which the export omits entirely rather than emitting `null` -- distinct
+    from a field like `paper_fields.checked_against_source = 'never'`,
+    which IS a real value and is copied like any other non-NULL one."""
+    for column in columns:
+        if row[column] is not None:
+            record[column] = row[column]
+
+
+def _child_list(conn: sqlite3.Connection, query: str, params: tuple, key: str) -> list[str]:
+    """Run a one-column child-table query, ordered by the caller's own SQL,
+    and return the flat list of values. F6 finding 6: `_record_contexts`,
+    `_record_prerequisites`, and the documents/see_also/yields queries in
+    the `_export_*` functions below all repeated this exact "query one
+    column, list-comprehend the rows" shape."""
+    return [r[key] for r in conn.execute(query, params)]
+
+
 def _record_contexts(conn: sqlite3.Connection, record_id: str) -> list[str]:
-    rows = conn.execute(
+    return _child_list(
+        conn,
         "SELECT context_id FROM record_contexts WHERE record_id = ? ORDER BY context_id",
         (record_id,),
+        "context_id",
     )
-    return [r["context_id"] for r in rows]
 
 
 def _record_prerequisites(conn: sqlite3.Connection, record_id: str) -> list[str]:
-    rows = conn.execute(
+    return _child_list(
+        conn,
         "SELECT prerequisite_id FROM prerequisites WHERE record_id = ? ORDER BY prerequisite_id",
         (record_id,),
+        "prerequisite_id",
     )
-    return [r["prerequisite_id"] for r in rows]
 
 
 def _spine(conn: sqlite3.Connection, row: sqlite3.Row) -> dict:
@@ -66,21 +90,17 @@ def _export_assertion(conn: sqlite3.Connection, row: sqlite3.Row) -> dict:
         (row["id"],),
     ).fetchone()
     if fields is not None:
-        if fields["units"] is not None:
-            record["units"] = fields["units"]
-        if fields["rounding"] is not None:
-            record["rounding"] = fields["rounding"]
-        if fields["citation_context"] is not None:
-            record["citation_context"] = fields["citation_context"]
-    documents = [
-        r["document"]
-        for r in conn.execute(
-            "SELECT document FROM assertion_documents WHERE record_id = ? ORDER BY document",
-            (row["id"],),
-        )
-    ]
+        _copy_nonnull(record, fields, "units", "rounding", "citation_context")
+
+    documents = _child_list(
+        conn,
+        "SELECT document FROM assertion_documents WHERE record_id = ? ORDER BY document",
+        (row["id"],),
+        "document",
+    )
     if documents:
         record["documents"] = documents
+
     relations = conn.execute(
         "SELECT to_assertion_id, relation FROM assertion_relations "
         "WHERE from_assertion_id = ? ORDER BY relation, to_assertion_id",
@@ -105,8 +125,7 @@ def _export_acronym(conn: sqlite3.Connection, row: sqlite3.Row) -> dict:
     if fields is not None:
         record["expansion"] = fields["expansion"]
         record["plain_definition"] = fields["plain_definition"]
-        if fields["visual"] is not None:
-            record["visual"] = fields["visual"]
+        _copy_nonnull(record, fields, "visual")
     return record
 
 
@@ -118,15 +137,14 @@ def _export_term(conn: sqlite3.Connection, row: sqlite3.Row) -> dict:
     ).fetchone()
     if fields is not None:
         record["plain_definition"] = fields["plain_definition"]
-        if fields["visual"] is not None:
-            record["visual"] = fields["visual"]
-    see_also = [
-        r["see_also_id"]
-        for r in conn.execute(
-            "SELECT see_also_id FROM term_see_also WHERE record_id = ? ORDER BY see_also_id",
-            (row["id"],),
-        )
-    ]
+        _copy_nonnull(record, fields, "visual")
+
+    see_also = _child_list(
+        conn,
+        "SELECT see_also_id FROM term_see_also WHERE record_id = ? ORDER BY see_also_id",
+        (row["id"],),
+        "see_also_id",
+    )
     if see_also:
         record["see_also"] = see_also
     return record
@@ -135,37 +153,42 @@ def _export_term(conn: sqlite3.Connection, row: sqlite3.Row) -> dict:
 def _export_paper(conn: sqlite3.Connection, row: sqlite3.Row) -> dict:
     record = _spine(conn, row)
     fields = conn.execute(
-        "SELECT tier, citation, access, disposition, evidence, mined_by, checked_against_source "
+        "SELECT tier, access, disposition, evidence, mined_by, checked_against_source "
         "FROM paper_fields WHERE record_id = ?",
         (row["id"],),
     ).fetchone()
     if fields is not None:
         record["tier"] = fields["tier"]
-        record["citation"] = fields["citation"]
+        # `citation` is `records.provenance` (already in the spine above),
+        # never `paper_fields.citation` -- PR #1 review (F6 finding 1): a
+        # paper's citation and its provenance are the SAME string,
+        # insert_paper() writes it into both columns, and CLAUDE.md's own
+        # standing rule against restating one value in more than one place
+        # applies exactly here. `paper_fields.citation` stays a NOT NULL
+        # schema column (dropping it is a table rebuild, out of this
+        # sprint's scope) but the export no longer reads it as a second
+        # source of truth.
+        record["citation"] = record["provenance"]
         record["access"] = fields["access"]
         record["disposition"] = fields["disposition"]
-        if fields["evidence"] is not None:
-            record["evidence"] = fields["evidence"]
-        if fields["mined_by"] is not None:
-            record["mined_by"] = fields["mined_by"]
-        if fields["checked_against_source"] is not None:
-            record["checked_against_source"] = fields["checked_against_source"]
-    applicability = conn.execute(
-        "SELECT context_id, rationale FROM paper_applicability WHERE record_id = ? ORDER BY context_id",
-        (row["id"],),
-    )
+        _copy_nonnull(record, fields, "evidence", "mined_by", "checked_against_source")
+
     applicability_rows = [
-        {"context": r["context_id"], "rationale": r["rationale"]} for r in applicability
-    ]
-    if applicability_rows:
-        record["applicability"] = applicability_rows
-    yields_ = [
-        r["assertion_id"]
+        {"context": r["context_id"], "rationale": r["rationale"]}
         for r in conn.execute(
-            "SELECT assertion_id FROM paper_yields WHERE paper_id = ? ORDER BY assertion_id",
+            "SELECT context_id, rationale FROM paper_applicability WHERE record_id = ? ORDER BY context_id",
             (row["id"],),
         )
     ]
+    if applicability_rows:
+        record["applicability"] = applicability_rows
+
+    yields_ = _child_list(
+        conn,
+        "SELECT assertion_id FROM paper_yields WHERE paper_id = ? ORDER BY assertion_id",
+        (row["id"],),
+        "assertion_id",
+    )
     if yields_:
         record["yields"] = yields_
     return record

@@ -149,11 +149,17 @@ CREATE TABLE paper_fields (
     disposition             TEXT NOT NULL,
     evidence                TEXT,
     mined_by                TEXT,
-    -- REQUIRED at tier 'read' (ADR-0005 section 2, enforced at the
-    -- application layer since a tier-conditional NOT NULL is not
+    -- REQUIRED at tier 'read' (ADR-0005 section 2), enforced by
+    -- store/ingest.py validate_paper(). CORRECTED 2026-09-19 (Copilot PR
+    -- #20 review): this comment previously claimed the rule was "not
     -- expressible as a single CHECK across columns in SQLite without a
-    -- trigger). The literal string 'never' is a valid, meaningful value --
-    -- distinct from NULL, which means "not yet tiered to require it."
+    -- trigger" -- it is: CHECK (tier != 'read' OR checked_against_source
+    -- IS NOT NULL) is a valid table-level constraint. It is not added
+    -- here yet because altering a live table is a rebuild (F25 B4's
+    -- migration); add it there. The literal string 'never' is a valid,
+    -- meaningful value -- distinct from NULL, which means "not yet
+    -- tiered to require it," and distinct from blank, which the validator
+    -- rejects.
     checked_against_source  TEXT
 );
 

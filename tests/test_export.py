@@ -17,7 +17,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from store import create_store  # noqa: E402
-from store.export import export_class, regenerate  # noqa: E402
+from store.export import _child_list, _copy_nonnull, export_class, regenerate  # noqa: E402
 
 
 @pytest.fixture
@@ -149,6 +149,71 @@ def test_paper_export_carries_yields_to_its_assertions(db):
 
     assert papers[0]["yields"] == ["assertion-1"]
     assert papers[0]["checked_against_source"] == "2026-09-15, Claude, read in full"
+
+
+def test_copy_nonnull_omits_none_but_copies_a_real_value(db):
+    """F6 finding 6 (PR #1 review): the "if not None: record[k] = row[k]"
+    shape repeated across every _export_* function, extracted here."""
+    db.execute(
+        "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
+        "VALUES ('a1', 'assertion', 'a claim', 'source', 'N/A', '2026-09-18', 'created')"
+    )
+    db.execute(
+        "INSERT INTO assertion_fields (record_id, units, rounding, citation_context) "
+        "VALUES ('a1', NULL, 'nearest integer', NULL)"
+    )
+    db.commit()
+    row = db.execute("SELECT * FROM assertion_fields WHERE record_id = 'a1'").fetchone()
+    record: dict = {}
+    _copy_nonnull(record, row, "units", "rounding", "citation_context")
+    assert record == {"rounding": "nearest integer"}
+
+
+def test_child_list_returns_values_in_query_order(db):
+    """F6 finding 6: the "query one column, list-comprehend the rows"
+    shape repeated for contexts, prerequisites, documents, see_also, and
+    yields, extracted here."""
+    db.execute(
+        "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
+        "VALUES ('a1', 'assertion', 'a claim', 'source', 'N/A', '2026-09-18', 'created')"
+    )
+    db.execute("INSERT INTO assertion_documents (record_id, document) VALUES ('a1', 'zzz-doc')")
+    db.execute("INSERT INTO assertion_documents (record_id, document) VALUES ('a1', 'aaa-doc')")
+    db.commit()
+    result = _child_list(
+        db,
+        "SELECT document FROM assertion_documents WHERE record_id = ? ORDER BY document",
+        ("a1",),
+        "document",
+    )
+    assert result == ["aaa-doc", "zzz-doc"]
+
+
+def test_paper_export_citation_follows_provenance_not_paper_fields(db):
+    """F6 finding 1 (PR #1 review): insert_paper() writes the same string
+    into records.provenance and paper_fields.citation, which is exactly
+    the "one value restated" pattern CLAUDE.md's standing rule warns
+    against. The export must read `citation` from `provenance` (the
+    spine's canonical field), never from paper_fields.citation
+    independently -- proven here by inserting a record where the two
+    columns deliberately DIFFER and asserting the export follows
+    provenance, not the (deliberately stale) paper_fields value."""
+    db.execute(
+        "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
+        "VALUES ('paper-1', 'paper', 'a paper', 'the REAL provenance', 'N/A', '2026-09-18', 'created')"
+    )
+    db.execute(
+        "INSERT INTO paper_fields (record_id, tier, citation, access, disposition) "
+        "VALUES ('paper-1', 'seen', 'a STALE citation nobody updated', 'arXiv:0000.00000', 'test fixture')"
+    )
+    db.commit()
+
+    with tempfile.TemporaryDirectory() as out:
+        regenerate(db, out)
+        papers = json.loads((Path(out) / "papers.json").read_text(encoding="utf-8"))
+
+    assert papers[0]["citation"] == "the REAL provenance"
+    assert papers[0]["citation"] != "a STALE citation nobody updated"
 
 
 def test_paper_checked_against_source_never_is_preserved_not_omitted(db):

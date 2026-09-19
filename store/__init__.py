@@ -13,6 +13,29 @@ SCHEMA_PATH = Path(__file__).parent / "schema.sql"
 SEED_CONTEXTS_PATH = Path(__file__).parent / "seed_contexts.sql"
 
 
+def script_paths(script_file: str) -> tuple[Path, Path, Path]:
+    """(ROOT, DB_PATH, EXPORT_DIR) for a script under scripts/, given its
+    own __file__.
+
+    F6 finding 5 (PR #1 review): `ROOT = Path(__file__).resolve().parents[1]`,
+    `DB_PATH = ROOT / "store" / "evidence.db"`, and `EXPORT_DIR = ROOT /
+    "export"` were copy-pasted near-identically across every ingestion/
+    correction script. This collapses that computation to one place.
+
+    Callers still assign the results to their OWN module-level ROOT/
+    DB_PATH/EXPORT_DIR names (not import this function's return value by
+    reference) -- several tests monkeypatch a loaded script module's
+    `mod.DB_PATH`/`mod.EXPORT_DIR` attributes directly, which only works
+    if each script still owns its own reassignable module-level name.
+    `sys.path.insert(0, str(ROOT))` and the `from store import ...` lines
+    stay in each script too: they must run BEFORE this function (part of
+    `store`) can be imported at all, so folding them in here would be
+    circular.
+    """
+    root = Path(script_file).resolve().parents[1]
+    return root, root / "store" / "evidence.db", root / "export"
+
+
 def connect(db_path: str | Path) -> sqlite3.Connection:
     """Open a connection with foreign keys enabled.
 

@@ -18,17 +18,16 @@ Usage: python scripts/apply_paper_applicability.py
 """
 from __future__ import annotations
 
+import sqlite3
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import connect  # noqa: E402
+from store import connect, script_paths  # noqa: E402
 from store.export import regenerate  # noqa: E402
 
-DB_PATH = ROOT / "store" / "evidence.db"
-EXPORT_DIR = ROOT / "export"
+ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 
 # (paper_id, [(context_id, rationale), ...])
 # Sourced from a background research pass that read each paper's actual
@@ -207,38 +206,102 @@ def main() -> int:
         return 1
 
     conn = connect(DB_PATH)
-    applied, skipped_no_paper, skipped_already_set = 0, 0, 0
+
+    # TWO PASSES: decide everything, THEN write (PR #20 review, 2026-09-19).
+    # The F14 version returned exit 1 on a missing or mismatched paper, but
+    # only AFTER committing the papers it could apply and regenerating the
+    # export -- so "exit 1" did not mean "nothing was written", and a
+    # human fixing the typo and re-running then hit the mismatch path for
+    # every paper that had landed on pass one. Now pass 1 checks every key
+    # against the store with no writes; any problem exits 1 with the store
+    # and export/ untouched, so a non-zero exit means exactly "no change".
+    missing_papers: list[str] = []
+    mismatched_papers: list[str] = []
+    to_apply: list[tuple[str, list[tuple[str, str]]]] = []
+    already_set = 0
 
     for paper_id, applicability in APPLICABILITY.items():
         exists = conn.execute(
             "SELECT record_id FROM paper_fields WHERE record_id = ?", (paper_id,)
         ).fetchone()
         if not exists:
-            print(f"warning: {paper_id} not found in paper_fields, skipping", file=sys.stderr)
-            skipped_no_paper += 1
+            print(f"error: {paper_id} not found in paper_fields", file=sys.stderr)
+            missing_papers.append(paper_id)
             continue
 
-        already = conn.execute(
-            "SELECT COUNT(*) FROM paper_applicability WHERE record_id = ?", (paper_id,)
-        ).fetchone()[0]
-        if already:
-            skipped_already_set += 1
-            continue
-
-        for context_id, rationale in applicability:
-            conn.execute(
-                "INSERT INTO paper_applicability (record_id, context_id, rationale) VALUES (?, ?, ?)",
-                (paper_id, context_id, rationale),
+        # F14 finding 2 (PR #11 review): a paper already holding ANY row
+        # was previously skipped unconditionally, which masks a partial
+        # prior run. Compare the existing (context, rationale) PAIRS
+        # against the intended ones -- not just the context ids (PR #20
+        # review: a changed rationale was silently accepted as "already
+        # matching", and ADR-0005 section 2d makes the rationale part of
+        # the record). A mismatch is reported, never auto-overwritten.
+        existing_pairs = {
+            (row["context_id"], row["rationale"])
+            for row in conn.execute(
+                "SELECT context_id, rationale FROM paper_applicability WHERE record_id = ?",
+                (paper_id,),
             )
-        applied += 1
+        }
+        if existing_pairs:
+            intended_pairs = set(applicability)
+            if existing_pairs != intended_pairs:
+                only_existing = sorted(c for c, _ in existing_pairs - intended_pairs)
+                only_intended = sorted(c for c, _ in intended_pairs - existing_pairs)
+                print(
+                    f"error: {paper_id} applicability differs from APPLICABILITY "
+                    f"(contexts or rationales; store-only: {only_existing}, "
+                    f"intent-only: {only_intended}) -- mismatch, not touching. A partial "
+                    "prior run or a changed intent needs a human decision, not an "
+                    "automatic overwrite.",
+                    file=sys.stderr,
+                )
+                mismatched_papers.append(paper_id)
+            else:
+                already_set += 1
+            continue
+
+        to_apply.append((paper_id, applicability))
+
+    if missing_papers or mismatched_papers:
+        conn.close()
+        print(
+            f"error: {len(missing_papers)} paper(s) not found, "
+            f"{len(mismatched_papers)} paper(s) had a mismatched applicability set. "
+            f"NOTHING was written ({len(to_apply)} paper(s) that could have been applied "
+            "were not); store/evidence.db and export/ are unchanged. Fix APPLICABILITY "
+            "and re-run.",
+            file=sys.stderr,
+        )
+        return 1
+
+    # Pass 2: write. A constraint failure here names the paper and context
+    # (PR #20 review: the F6 finding 3 class, previously unported here) and
+    # rolls back the whole run, so store and export/ stay consistent.
+    try:
+        for paper_id, applicability in to_apply:
+            for context_id, rationale in applicability:
+                try:
+                    conn.execute(
+                        "INSERT INTO paper_applicability (record_id, context_id, rationale) VALUES (?, ?, ?)",
+                        (paper_id, context_id, rationale),
+                    )
+                except sqlite3.Error as e:
+                    raise RuntimeError(
+                        f"failed applying context {context_id!r} to {paper_id!r}: {e}"
+                    ) from e
+    except RuntimeError:
+        conn.rollback()
+        conn.close()
+        raise
 
     conn.commit()
     regenerate(conn, EXPORT_DIR)
     conn.close()
 
     print(
-        f"Applied applicability to {applied} papers "
-        f"({skipped_no_paper} not found, {skipped_already_set} already had applicability set)."
+        f"Applied applicability to {len(to_apply)} papers "
+        f"({already_set} already had matching applicability set)."
     )
     return 0
 

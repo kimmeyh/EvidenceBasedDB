@@ -65,7 +65,7 @@ def test_write_to_this_repository_is_allowed():
     assert _run(payload).returncode == 0
 
 
-def test_write_to_this_repositorys_own_memory_directory_is_allowed():
+def test_write_to_this_repository_memory_directory_is_allowed():
     payload = {
         "tool_name": "Write",
         "tool_input": {

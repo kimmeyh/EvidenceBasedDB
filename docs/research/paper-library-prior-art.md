@@ -43,7 +43,7 @@ was wrong for exactly that reason.
 - a library nobody reaches for is useless however cheaply it was built, and
   reaches uselessness FASTER at agent speed;
 - maintenance decay does not care who wrote the record;
-- **volume without judgement gets WORSE**: 2,000 confident-sounding
+- **volume without judgment gets WORSE**: 2,000 confident-sounding
   unadjudicated records look authoritative and scale the error.
 
 The surviving scarce resource is **team-lead adjudication**, not drafting. Read
@@ -137,12 +137,12 @@ GRADE is how clinical medicine grades a body of evidence, and its structure is
 better than a bare confidence number.
 
 - Four levels: **high, moderate, low, very low**.
-- **Different starting points by study type**: randomised trials start HIGH,
+- **Different starting points by study type**: randomized trials start HIGH,
   observational studies start LOW.
 - **Five named downgrade reasons**: risk of bias, inconsistency, indirectness,
   imprecision, publication bias. One level for serious concerns, two for very
   serious.
-- **Three named upgrade reasons** for non-randomised work: large effect,
+- **Three named upgrade reasons** for non-randomized work: large effect,
   dose-response, opposing plausible confounding.
 - A floor: "regardless of how many reasons there are to downgrade, the certainty
   of the evidence cannot fall below very low".
