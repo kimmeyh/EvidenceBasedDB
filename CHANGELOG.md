@@ -125,3 +125,46 @@ This entry summarizes rather than restates those numbers.
   `SPRINT_PLANNING.md`'s estimation guidance
 - **process**: Sprint 2 retrospective run (16 categories x 4 roles, all
   "Very Good"); F7-F14 added to the backlog for future sprint selection
+
+### 2026-09-18 to 2026-09-19 (Sprint 3, PR #20)
+
+Sprint 3 corrected the foundations, then measured adjudication: Tasks A-H
+per `docs/sprints/SPRINT_3_PLAN.md`. Full detail:
+`docs/sprints/SPRINT_3_SUMMARY.md` (with the first recorded Actuals),
+`docs/sprints/SPRINT_3_F7-F10_REVIEW_RESULTS.md`,
+`docs/sprints/SPRINT_3_RETROSPECTIVE.md`, and the PR #20 commit history.
+This entry summarizes rather than restates those numbers.
+
+- **process**: spamfilter-multi surveyed read-only across ten named areas
+  (Task A, F2 Phase 1); six genuinely new process assets carded as
+  F15-F20; everything else was already here in adapted form
+- **fix**: five PR #1 code-review findings closed (Task B, F6) --
+  `validate_paper()`, `store.script_paths()`, `_copy_nonnull()`/
+  `_child_list()`, citation read from provenance at export; Finding 4
+  (N+1 queries) stays deferred as premature
+- **test**: US English guard over living process docs (Task C, F13), with
+  every ADR and everything under `docs/sprints/` excluded as frozen
+  records after the fixer's first run rewrote them and was caught before
+  commit; nineteen real corrections applied
+- **fix**: `apply_paper_applicability.py` fails loudly on a typo'd paper
+  id or a mismatched applicability set (Task D, F14)
+- **process**: four INDEPENDENT model-tier adjudication reviews of the same
+  18 screened papers, zero cross-visibility (Tasks E-H, F7-F10): Haiku and
+  Sonnet 18/18 confirm; Opus 7 cross-record inconsistencies; Fable-tier
+  Opus 4 source-verified citation defects plus an unearned `screened` tier
+  and the value/provenance/citation triplication at the store-write layer.
+  Findings consolidated with F12 into F25 at the team lead's direction
+- **process**: Sprint 3 retrospective (team lead all "Very Good";
+  Development Team five "Good", one theme: its own first attempts needed
+  the guards). Four improvements applied: write-shaped scripts dry-run by
+  default, `## Actuals` in every summary, delegated reports verified
+  against repo state, review-protocol depth recorded on F11/F18
+- **fix**: PR #20 review (Copilot 5, Claude code-reviewer 4, silent-
+  failure-hunter 11) -- the Task B savepoint design had committed per
+  entry under Python's legacy sqlite3 mode and the Task D script wrote
+  before deciding; both now all-or-nothing ("decide, then write" added to
+  QUALITY_STANDARDS.md); `set_tier()` closes the validator bypass; blank
+  `checked_against_source` rejected; the US English test imports the
+  script's own exclusion lists instead of restating them
+- **chore**: end-of-turn status line and the memory rule that its time
+  comes from a shell call, never an estimate (team lead, 2026-09-19)
