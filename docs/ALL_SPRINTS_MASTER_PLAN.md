@@ -844,7 +844,15 @@ ran cold with zero visibility into the others)
   mention from `kordzanganeh`'s. Every rationale that survives must name
   where it was read from (page, section, byline), on the `loke`/`emami`
   model -- a rationale that cannot say where its value came from is the
-  defect this whole system exists against.
+  defect this whole system exists against. **Existing tests pin some of
+  what this pass changes**: `tests/test_paper_applicability.py` and
+  `tests/test_qboost_paper_added.py` assert specific applicability sets
+  (e.g. `neven` == {qml, qc}, which B2 may extend with `ml`). Each such
+  test is updated in the SAME commit as the re-filing that changes it,
+  with the reason in the commit message, and never loosened to a
+  superset or a count to make it pass -- a pinned expectation that
+  moved for a stated reason is a record; one that was relaxed is a
+  guard that stopped guarding.
 - **B3. Settle the `screened` tier** (from A1; a dated ADR-0005
   amendment, never a silent edit). **Decision for the team lead**: (a)
   demote every screened-with-zero-yields paper to `seen` (18 today), the
@@ -869,7 +877,14 @@ ran cold with zero visibility into the others)
   `provenance` as "pointer to what establishes it" -- for a paper that
   is arguably the artifact (local path / API response / retrieval
   date), not the citation; decide whether to take that further step
-  now or record it as the next amendment.
+  now or record it as the next amendment. **`value` is the third copy
+  and must be fixed in the same pass**: `ingest_seed_set.py` sets
+  `value=entry["citation"]`, which is why `value` == `citation` on
+  45/46 papers, while `PaperRecord`'s own comment defines `value` as
+  "a one-line description of the paper." Make `value` the paper's
+  title (or a one-line description), so the three fields carry three
+  different things: what it is (`value`), how to cite it (`citation`,
+  API-derived), and what establishes the record (`provenance`).
 - **B5. Extract the contradiction** (from A1/A2, convergent; the natural
   end state, last in sequence). Promote `loke`, `emami`, `qci-2024-
   profiling`, `mancilla`, `zajac` to `read` (each then owes
@@ -880,7 +895,21 @@ ran cold with zero visibility into the others)
   written by the authors), and wire `assertion_relations` `contradicts`
   between them. Also confirm which Neven paper CVQBoost's lineage
   actually rests on (QCi cites "Neven et al. 2009", the store holds
-  2012) before any assertion cites `neven-2012`.
+  2012) before any assertion cites `neven-2012`. Three smaller F10
+  findings land here as `evidence`-tier notes and candidate `supports`
+  relations, so they are not lost between now and extraction: (i)
+  `emami`'s "all six authors are QCi employees" is correct on the
+  byline but Nicholas Chancellor holds a concurrent Durham University
+  affiliation -- the vendor-independence inference is thinner than it
+  looks, and belongs in `evidence` when the record reaches `read`; (ii)
+  `rehman`'s confidence-thresholded quantum fallback and `mancilla`'s
+  "deploy the certified model as a specialist alongside the production
+  system" are the same deployment pattern reached independently -- a
+  `supports` relation once both yield assertions; (iii) `tung`'s
+  meta-learned encoding selection "without requiring quantum evaluation
+  during inference" and `mancilla`'s simulator-free SPECTRA screen are
+  both cheap pre-screens for whether quantum is worth attempting --
+  the same relation, and a theme the library should be able to query.
 
 **Part C -- Make the next paper right on the first try** (guards, not a
 checklist; each proven to fail by injection per this repository's
@@ -902,7 +931,21 @@ guard-discipline standard)
   `access` must carry the actual local path. Run the refresh on a
   schedule (each delivery cycle, Phase 8.3 design-doc currency check is
   the natural slot) so a preprint that gets published is caught, not
-  discovered by a reviewer a year later.
+  discovered by a reviewer a year later. **Retire the hand-typed source
+  explicitly**: today every citation originates in
+  `scripts/seed_set_metadata.json`, generated from hand-authored dicts
+  in `scripts/generate_seed_set_metadata.py`, and `ingest_seed_set.py`
+  reads it verbatim. Either that file becomes an OUTPUT of the refresh
+  script (ids in, API-derived citations out) or it stops carrying
+  `citation` at all and carries only `access` ids plus the human-
+  authored fields (`disposition`, `context`, `promote`). Leaving it as
+  is means the next bulk load reintroduces hand-typed citations through
+  the old door while the new one stands guarded beside it. The first
+  deliverable of C1 is the refresh script run in diff mode against all
+  46 papers -- which also independently verifies F10's primary-source
+  claims (the corrected `dupont` title, the six published versions)
+  rather than taking a reviewer's finding on trust; a finding is itself
+  a claim that needs provenance.
 - **C2. `validate_paper()` grows teeth.** Sprint 3 Task B added it with
   one rule (tier `read` requires `checked_against_source`). Extend it,
   each rule with a failing test: tier semantics per the B3 decision
@@ -981,9 +1024,16 @@ guard-discipline standard)
   it exists); F18 (model-assignment heuristics), even though Part A's
   reviewer comparison is its natural seed data.
 - Depends on: nothing technical. Supersedes F12, F21, F22, F23, F24.
-  Sequenced before F11 is run so the comparison happens against a
-  corrected record set, or explicitly after, so it measures the
-  uncorrected one -- a decision for the sprint that selects either.
+- **Sequencing against F11 (recommendation, recorded here so the next
+  refinement does not re-derive it)**: run F25 steps D1-D3 (the
+  decisions, the guarded ingestion path, the ADR amendment, the citation
+  and access corrections) BEFORE F11, so the team lead times
+  adjudication of records whose citations are API-verified and whose
+  tier means what the ADR says -- otherwise F11 measures the cost of
+  re-finding defects F10 already found, not the cost of adjudicating.
+  D4-D6 (re-filing, intake design, extraction) can follow F11; the
+  re-filing in particular benefits from the team lead's own
+  adjudication pass having just happened on the same records.
 
 ### Out of scope, not yet candidates
 
