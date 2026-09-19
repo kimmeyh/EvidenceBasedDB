@@ -28,7 +28,11 @@ When done, hand the timing sheet back (edited in place or pasted). Claude record
 the minutes-per-record number and the protocol in `.claude/model_assignment_heuristics.json`
 (`learning_log`, the pending Sprint 4 row) and in the Sprint 4 summary.
 
-## The 18 `screened` records (snapshot as of 2026-09-19)
+## The 18 `screened` records F10 reviewed (snapshot as of 2026-09-19)
+
+Screened records added since F10 ran, **not part of the timed comparison** (adjudicate
+them afterwards if you wish; they went through the Task B door, so they are also a
+test of the door): `notton-2026-merlin-discovery-engine-photonic-hybrid`.
 
 ### 1. `arute-2019-quantum-supremacy-google-nature`
 

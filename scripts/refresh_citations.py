@@ -83,7 +83,7 @@ def review(conn, ids: list[str] | None = None, fetcher=None) -> list[dict]:
             out.append(entry)
             continue
         rendered = citations.render_citation(md)
-        provider = md.extra.get("provider") or ("arXiv" if kind == "arxiv" else "Crossref/DataCite")
+        provider = md.extra.get("provider") or {"arxiv": "arXiv", "github": "GitHub"}.get(kind, "Crossref/DataCite")
         if kind == "arxiv" and provider != "arXiv":
             provider = f"{provider} (arXiv API refused)"
         entry.update(kind=kind, ident=ident, fetched_citation=rendered, fetched_title=md.title, provider=provider,

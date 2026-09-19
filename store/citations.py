@@ -53,6 +53,8 @@ MAX_AUTHORS = 10  # rendered before "et al."; see render_citation
 
 _ARXIV_ID = re.compile(r"(?<![\d.])(\d{4}\.\d{4,5})(v\d+)?")
 _DOI = re.compile(r"\b(10\.\d{4,9}/[^\s\"'<>,;)]+)")
+_GITHUB = re.compile(r"github\.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+?)(?:\.git)?(?=[/\s|#?]|$)")
+GITHUB_API = "https://api.github.com/repos/"
 _ATOM = {"a": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/atom"}
 
 Fetcher = Callable[[str, str], bytes]  # (url, accept) -> body
@@ -89,6 +91,9 @@ def parse_access(access: str) -> tuple[str, str] | None:
     m = _ARXIV_ID.search(access)
     if m and ("arxiv" in access.lower() or "/abs/" in access):
         return ("arxiv", m.group(1))
+    m = _GITHUB.search(access)
+    if m:
+        return ("github", f"{m.group(1)}/{m.group(2)}")  # Sprint 4 Task G: a repository is a source of record too
     return None
 
 
@@ -330,6 +335,32 @@ def doi_is_registered(doi: str, fetcher: Fetcher | None = None) -> bool:
     return body.get("responseCode") != 100
 
 
+def parse_github(body: bytes) -> Metadata:
+    """GitHub's repository record, shaped for the house style (Sprint 4 Task
+    G, F25 C4: `github.com/merlinquantum/merlin` was one of the three F12
+    example inputs). The citation is built from fields that change only
+    when the repository's identity changes -- owner/name, description,
+    license, creation date, URL -- never from the moving HEAD, so the
+    refresh diff stays quiet across ordinary pushes. The HEAD commit and
+    retrieval date belong in `checked_against_source` when a record is
+    read against a specific revision."""
+    g = json.loads(body)
+    full = g.get("full_name") or ""
+    desc = " ".join((g.get("description") or "").split())
+    lic = (g.get("license") or {}).get("spdx_id") or ""
+    created = (g.get("created_at") or "")[:10]
+    return Metadata(kind="github", ident=full, title=desc or full, authors=[full.split("/")[0]] if full else [],
+                    year=created[:4], date=created, venue="GitHub repository",
+                    source_url=g.get("html_url") or f"https://github.com/{full}",
+                    extra={"license": lic, "default_branch": g.get("default_branch") or "", "homepage": g.get("homepage") or "",
+                           "topics": g.get("topics") or [], "archived": bool(g.get("archived"))})
+
+
+def fetch_github(owner_repo: str, fetcher: Fetcher | None = None) -> Metadata:
+    fetcher = fetcher or default_fetcher
+    return parse_github(fetcher(GITHUB_API + owner_repo, "application/vnd.github+json"))
+
+
 def fetch(kind: str, ident: str, fetcher: Fetcher | None = None) -> Metadata:
     if kind == "arxiv":
         got = fetch_arxiv_batch([ident], fetcher)
@@ -338,6 +369,8 @@ def fetch(kind: str, ident: str, fetcher: Fetcher | None = None) -> Metadata:
         return got[ident]
     if kind == "doi":
         return fetch_doi(ident, fetcher)
+    if kind == "github":
+        return fetch_github(ident, fetcher)
     raise ValueError(f"unknown identifier kind {kind!r}")
 
 
@@ -361,6 +394,15 @@ def render_citation(md: Metadata) -> str:
     # title is joined to what follows with a space, not the ", " separator.
     head = f'{authors}, "{md.title},"'
     parts: list[str] = []
+    if md.kind == "github":
+        # `merlinquantum, "MerLin enables ...," GitHub repository merlinquantum/merlin, MIT license, created 2025-06-06, https://github.com/merlinquantum/merlin`
+        parts.append(f"{md.venue} {md.ident}")
+        if md.extra.get("license"):
+            parts.append(f"{md.extra['license']} license")
+        if md.date:
+            parts.append(f"created {md.date}")
+        parts.append(md.source_url)
+        return f"{head} {', '.join(parts)}"
     if md.kind == "arxiv":
         parts.append(f"arXiv:{md.ident}{md.version}")
         if md.journal_ref:

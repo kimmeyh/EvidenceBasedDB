@@ -44,13 +44,26 @@ def store():
 
 
 def test_packet_lists_only_screened_records_with_source_links_and_timing_rows(store):
-    text = _load().render(store)
+    mod = _load()
+    mod.F10_FINDINGS = {"a-screened": "finding a", "c-screened": "finding c"}  # the timed set is the F10 set
+    text = mod.render(store)
     assert "### 1. `a-screened`" in text and "### 2. `c-screened`" in text
     assert "b-seen" not in text, "seen-tier records are not in the F11 set"
     assert "https://arxiv.org/abs/2303.05509" in text
     assert r"D:\x\y.pdf | https://example.org/page" in text
     assert "| 1 | `a-screened` |" in text and "| 2 | `c-screened` |" in text
     assert "`qc`: why -- p.1" in text
+
+
+def test_screened_records_added_after_f10_are_listed_apart_not_timed(store):
+    """The comparison is apples to apples: the 18 F10 reviewed. A screened
+    record added later (Task G's MerLin paper) is named but not numbered."""
+    mod = _load()
+    mod.F10_FINDINGS = {"a-screened": "finding a"}
+    text = mod.render(store)
+    assert "### 1. `a-screened`" in text and "### 2." not in text
+    assert "not part of the timed comparison" in text and "`c-screened`" in text
+    assert "| 1 | `a-screened` |" in text and "`c-screened` |" not in text.split("## Timing sheet")[1]
 
 
 def test_committed_packet_is_current_against_the_live_store():

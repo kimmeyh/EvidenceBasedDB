@@ -77,6 +77,49 @@ def test_parse_access_recognises_only_resolvable_ids(access, expected):
     assert citations.parse_access(access) == expected
 
 
+GITHUB_JSON = json.dumps({
+    "full_name": "merlinquantum/merlin",
+    "description": "MerLin enables researchers to build, train, and benchmark photonic quantum machine learning models using familiar ML tools.",
+    "html_url": "https://github.com/merlinquantum/merlin", "homepage": "https://merlinquantum.ai/",
+    "license": {"spdx_id": "MIT"}, "created_at": "2025-06-06T12:21:57Z", "pushed_at": "2026-09-10T08:37:40Z",
+    "default_branch": "main", "topics": ["qml", "photonic-quantum-computing"], "archived": False,
+}).encode()
+
+
+@pytest.mark.parametrize("access,expected", [
+    ("https://github.com/merlinquantum/merlin", ("github", "merlinquantum/merlin")),
+    ("github.com/merlinquantum/merlin/tree/main/docs", ("github", "merlinquantum/merlin")),
+    ("https://github.com/merlinquantum/merlin.git | D:\\Data\\Harold\\github\\merlin", ("github", "merlinquantum/merlin")),
+    ("https://github.com/kimmeyh", None),
+])
+def test_parse_access_recognises_a_github_repository(access, expected):
+    assert citations.parse_access(access) == expected
+
+
+def test_render_github_repository_is_stable_across_pushes():
+    """Sprint 4 Task G: built from identity fields only (owner/name,
+    description, license, created, URL), never HEAD, so the refresh diff
+    stays quiet across ordinary commits."""
+    md = citations.parse_github(GITHUB_JSON)
+    assert md.kind == "github" and md.ident == "merlinquantum/merlin" and md.year == "2025"
+    assert citations.render_citation(md) == (
+        'merlinquantum, "MerLin enables researchers to build, train, and benchmark photonic quantum machine learning models '
+        'using familiar ML tools.," GitHub repository merlinquantum/merlin, MIT license, created 2025-06-06, https://github.com/merlinquantum/merlin')
+    changed = json.loads(GITHUB_JSON); changed["pushed_at"] = "2027-01-01T00:00:00Z"; changed["stargazers_count"] = 999
+    assert citations.render_citation(citations.parse_github(json.dumps(changed).encode())) == citations.render_citation(md)
+
+
+def test_resolve_routes_a_github_url_to_the_github_api():
+    seen = []
+
+    def fetcher(url, accept):
+        seen.append(url)
+        return GITHUB_JSON
+    md, rendered = citations.resolve("https://github.com/merlinquantum/merlin", fetcher=fetcher)
+    assert seen == ["https://api.github.com/repos/merlinquantum/merlin"] and md.kind == "github"
+    assert rendered.startswith("merlinquantum, ")
+
+
 def test_parse_arxiv_atom_normalises_title_authors_version_and_journal_ref():
     (md,) = citations.parse_arxiv_atom(ARXIV_ATOM)
     assert md.ident == "2303.05509" and md.version == "v2"

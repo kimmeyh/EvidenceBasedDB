@@ -881,6 +881,10 @@ guard-discipline standard)
   authorise implementation on its own
 - `docs/adr/0005-reference-library.md` -- ACCEPTED, early-innovation, does NOT
   authorise implementation on its own
+- `docs/INTAKE_WORKFLOW.md` -- how a source enters the store (Sprint 4 Task
+  G, F25 C4/C5): one door for papers, repositories, references and books,
+  `scripts/intake.py`, the bulk-manifest path, and the first-try check.
+  Amended by dated section, never silently, once a choice has shipped records
 - Both carry a six-question review due after roughly 20 papers are loaded.
   Revisions land as dated amendments at the bottom of each ADR, never as
   silent edits. **The checkpoint is DONE**: walked against the real store
