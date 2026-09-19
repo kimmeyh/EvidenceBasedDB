@@ -212,3 +212,12 @@ immediately. This document preserves that record. The findings above are
 NOT actioned in Sprint 3; they are backlog input for a future sprint's
 own selection (see `docs/ALL_SPRINTS_MASTER_PLAN.md` for the resulting
 candidate items).
+
+**2026-09-19 update**: the four candidate items first drafted from these
+findings (F21-F24) were consolidated, together with F12 (paper/reference
+intake workflow), into a single card, **F25**, at the team lead's
+direction -- findings ordered Fable, Opus, Sonnet, Haiku; work ordered by
+dependency; covering both correction of the existing records and the
+ingestion guards that make the next paper right on the first try. F21-F24
+and F12 remain in the master plan as one-line "superseded" stubs so
+references here still resolve.
