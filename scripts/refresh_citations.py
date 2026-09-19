@@ -83,8 +83,10 @@ def review(conn, ids: list[str] | None = None, fetcher=None) -> list[dict]:
             out.append(entry)
             continue
         rendered = citations.render_citation(md)
-        entry.update(kind=kind, ident=ident, fetched_citation=rendered, fetched_title=md.title,
-                     provider=("arXiv" if kind == "arxiv" else "Crossref/DataCite"),
+        provider = md.extra.get("provider") or ("arXiv" if kind == "arxiv" else "Crossref/DataCite")
+        if kind == "arxiv" and provider != "arXiv":
+            provider = f"{provider} (arXiv API refused)"
+        entry.update(kind=kind, ident=ident, fetched_citation=rendered, fetched_title=md.title, provider=provider,
                      status="SAME" if rendered == r["provenance"] and md.title == r["value"] else "DIFFERS")
         out.append(entry)
     return out
@@ -97,8 +99,13 @@ def apply(conn, report: list[dict], today: str | None = None) -> int:
         if e["status"] != "DIFFERS" or not e.get("fetched_title"):
             continue
         reason = (f"{today}: citation and title re-derived from {e['kind']}:{e['ident']} via {e['provider']} "
-                  f"(scripts/refresh_citations.py, Sprint 4 Task C / F25 B1); previous citation: "
-                  f"{e['stored_citation'][:160]}")
+                  f"(scripts/refresh_citations.py); previous citation: {e['stored_citation'][:160]}")
+        # A same-day reason already on the row (another correction pass ran
+        # first) is kept, not erased: updated_reason answers "why does this
+        # row look the way it does today", and two answers are both true.
+        existing = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (e["id"],)).fetchone()[0] or ""
+        if existing.startswith(today):
+            reason = f"{existing} | {reason}"
         conn.execute(
             "UPDATE records SET provenance = ?, value = ?, updated = ?, updated_reason = ? WHERE id = ?",
             (e["fetched_citation"], e["fetched_title"], today, reason, e["id"]),

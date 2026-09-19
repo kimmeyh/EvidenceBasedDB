@@ -282,6 +282,13 @@ def test_door_hand_origin_requires_page_marker_and_real_path(tmp_path):
     good = _api_paper(citation_origin="hand", access=str(pdf), hand_transcribed_from="cover",
                       citation='Vendor, "Doc" (hand-transcribed from cover)')
     validate_paper(good)  # must not raise
+    # "<path> | <url>" keeps an id-less web page (PMLR, an institutional
+    # repository) beside the file; the path still has to exist.
+    validate_paper(_api_paper(citation_origin="hand", access=f"{pdf} | https://proceedings.mlr.press/v25/neven12/",
+                              hand_transcribed_from="cover", citation='Vendor, "Doc" (hand-transcribed from cover)'))
+    with pytest.raises(ValueError, match="not an existing local path"):
+        validate_paper(_api_paper(citation_origin="hand", access=f"{tmp_path / 'missing.pdf'} | https://example.org/",
+                                  hand_transcribed_from="cover", citation='Vendor, "Doc" (hand-transcribed from cover)'))
     with pytest.raises(ValueError, match="requires hand_transcribed_from"):
         validate_paper(_api_paper(citation_origin="hand", access=str(pdf), citation="x (hand-transcribed from cover)"))
     with pytest.raises(ValueError, match="say so visibly"):
@@ -302,6 +309,11 @@ def test_door_refuses_multiline_disposition_and_a_tier_named_in_prose():
         validate_paper(_api_paper(disposition="line one\nline two"))
     with pytest.raises(ValueError, match="names a tier"):
         validate_paper(_api_paper(disposition="Recorded as seen tier with this disposition"))
+    # The Sprint 1 phrasing on 8 of 46 live dispositions (Task C measurement):
+    for phrase in ("genuine screened candidate", "Solid screened/read candidate", "near-certain read-tier candidate"):
+        with pytest.raises(ValueError, match="names a tier"):
+            validate_paper(_api_paper(disposition=f"Real paper; {phrase} at the checkpoint"))
+    validate_paper(_api_paper(disposition="Read in full for ADR-0004; the candidate algorithm is QBoost"))  # plain words stay legal
 
 
 def test_door_requires_a_source_anchor_on_every_applicability_rationale():

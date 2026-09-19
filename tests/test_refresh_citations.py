@@ -85,6 +85,23 @@ def test_apply_rewrites_citation_and_title_with_a_dated_reason_and_regenerates(s
     assert next(p for p in papers if p["id"] == "dupont")["citation"] == FRESH
 
 
+def test_apply_keeps_a_same_day_reason_written_by_an_earlier_pass(store):
+    """Task C runs two correction passes on one day; the second must not
+    erase the first's explanation."""
+    db_path, export_dir = store
+    from datetime import date
+    today = date.today().isoformat()
+    conn = connect(db_path)
+    conn.execute("UPDATE records SET updated_reason = ? WHERE id = 'dupont'", (f"{today}: access field corrected (earlier pass)",))
+    conn.commit(); conn.close()
+    proc = _run(db_path, export_dir, ["--apply"])
+    assert proc.returncode == 0, proc.stderr
+    conn = connect(db_path)
+    reason = conn.execute("SELECT updated_reason FROM records WHERE id='dupont'").fetchone()[0]
+    conn.close()
+    assert reason.startswith(f"{today}: access field corrected (earlier pass) | {today}: citation and title re-derived")
+
+
 def test_json_report_is_written(store, tmp_path):
     db_path, export_dir = store
     out = tmp_path / "report.json"

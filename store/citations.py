@@ -12,12 +12,21 @@ store: an `access` id (arXiv or DOI) goes in, a canonical citation string
 and a title come out.
 
 Providers: arXiv (Atom API), Crossref (DOI), DataCite (DOI, tried when
-Crossref does not know the DOI). Pre-flight at Sprint 4 planning
-(2026-09-19): all three reachable; **arXiv returns HTTP 406 to
-browser-style User-Agents and to ones carrying a `(mailto:...)` block,
-regardless of Accept**, and 200 to a plain one -- hence USER_AGENT below.
-arXiv asks for 3 seconds between requests; `fetch_arxiv_batch` uses the
-API's own `id_list` to fetch many ids per request instead.
+Crossref does not know the DOI; and arXiv's own `10.48550/arXiv.<id>`
+DOIs, the fallback when the arXiv API refuses). Pre-flight at Sprint 4
+planning (2026-09-19): all three reachable; arXiv returned HTTP 406 to
+browser-style User-Agents and to ones carrying a `(mailto:...)` block, and
+200 to a plain one -- hence USER_AGENT below.
+
+**Measured in Sprint 4 Task C (2026-09-19), against export.arxiv.org from
+this client (Python urllib):** a single-id request gets 200; the very next
+multi-id `id_list=a,b,...` request gets 406, after which EVERY urllib
+request, single ids included, gets 406 for several minutes; curl sends the
+same multi-id URL at the same moment and gets 200. Retries do not help
+inside the block. So `fetch_arxiv_batch` sends ONE id per request, paced
+ARXIV_MIN_INTERVAL_S apart (arXiv's own published rate), and falls back to
+DataCite per id when arXiv still refuses. A full 1,200-paper pass is about
+an hour, which the sprint plan already budgeted.
 
 Network is injected (`fetcher`) so every caller and test can run without
 it; `default_fetcher` is the only function here that touches a socket.
@@ -27,6 +36,7 @@ from __future__ import annotations
 import json
 import re
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -37,7 +47,9 @@ USER_AGENT = "curl/8.0"  # see module docstring: arXiv 406s on anything fancier
 ARXIV_API = "https://export.arxiv.org/api/query"
 CROSSREF_API = "https://api.crossref.org/works/"
 DATACITE_API = "https://api.datacite.org/dois/"
+DOI_HANDLE_API = "https://doi.org/api/handles/"  # the registry itself; responseCode 100 = no such handle
 ARXIV_MIN_INTERVAL_S = 3.0
+MAX_AUTHORS = 10  # rendered before "et al."; see render_citation
 
 _ARXIV_ID = re.compile(r"(?<![\d.])(\d{4}\.\d{4,5})(v\d+)?")
 _DOI = re.compile(r"\b(10\.\d{4,9}/[^\s\"'<>,;)]+)")
@@ -80,10 +92,32 @@ def parse_access(access: str) -> tuple[str, str] | None:
     return None
 
 
-def default_fetcher(url: str, accept: str) -> bytes:
+RETRY_CODES = (406, 429, 500, 502, 503, 504)
+RETRY_SLEEPS_S = (3.0, 6.0)  # two retries: 3 attempts in all
+_sleep = time.sleep  # module attribute so tests can stub the wait
+
+
+def default_fetcher(url: str, accept: str, _open=None) -> bytes:
+    """GET with the plain User-Agent, retrying on transient refusals.
+
+    Sprint 4 Task C (2026-09-19), measured against export.arxiv.org: six
+    requests fired back-to-back all returned HTTP 406; the same six paced
+    3 s apart all returned 200, with identical headers. So 406 from arXiv
+    is intermittent and load-shaped, not (only) a header problem, and one
+    attempt is the wrong number. Three attempts with 3 s / 6 s backoff;
+    any other failure propagates at once.
+    """
+    _open = _open or urllib.request.urlopen
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": accept})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return resp.read()
+    for attempt, wait in enumerate((*RETRY_SLEEPS_S, None)):
+        try:
+            with _open(req, timeout=30) as resp:
+                return resp.read()
+        except urllib.error.HTTPError as err:
+            if err.code not in RETRY_CODES or wait is None:
+                raise
+            _sleep(wait)
+    raise AssertionError("unreachable")  # pragma: no cover
 
 
 def _initials(given: str) -> str:
@@ -152,13 +186,61 @@ def parse_arxiv_atom(body: bytes) -> list[Metadata]:
     return out
 
 
+ARXIV_DOI_PREFIX = "10.48550/arXiv."
+
+
+def parse_datacite_arxiv(body: bytes, ident: str) -> Metadata:
+    """DataCite's record for arXiv's own DOI, shaped like an arXiv record so
+    the render is the same house style. Differences from the Atom API,
+    stated so a later refresh's DIFFERS is understood: no journal_ref (the
+    published version's DOI comes through as IsVersionOf), and the date is
+    the latest version's SUBMISSION date, which is what arXiv's Atom
+    `updated` carries; DataCite's own "Updated" dates include metadata
+    touches and would drift the render."""
+    attrs = json.loads(body)["data"]["attributes"]
+    md = parse_datacite(body)
+    version = str(attrs.get("version") or "").strip()
+    by_type: dict[str, list[str]] = {}
+    for d in attrs.get("dates", []):
+        if len(str(d.get("date", ""))) >= 10:
+            by_type.setdefault(d.get("dateType", ""), []).append(str(d["date"])[:10])
+    dates = by_type.get("Submitted") or by_type.get("Updated") or []
+    date = max(dates) if dates else (md.date or md.year)
+    doi = next((r["relatedIdentifier"] for r in attrs.get("relatedIdentifiers", [])
+                if r.get("relationType") == "IsVersionOf" and r.get("relatedIdentifierType") == "DOI"), "")
+    return Metadata(kind="arxiv", ident=ident, title=md.title, authors=md.authors, year=date[:4], date=date,
+                    version=f"v{version}" if version and not version.startswith("v") else version,
+                    doi=doi, source_url=f"https://arxiv.org/abs/{ident}", extra={"provider": "DataCite"})
+
+
 def fetch_arxiv_batch(ids: list[str], fetcher: Fetcher | None = None) -> dict[str, Metadata]:
-    """One request for many ids (arXiv's id_list), keyed by id without version."""
-    if not ids:
-        return {}
+    """Metadata for many arXiv ids, keyed by id without version.
+
+    ONE request per id, paced ARXIV_MIN_INTERVAL_S apart (see the module
+    docstring for why not `id_list`). When arXiv still refuses an id after
+    default_fetcher's retries, DataCite's record for arXiv's own DOI is
+    used and the Metadata says so in extra["provider"]; ids neither source
+    can give are simply absent from the result, and the caller reports
+    them.
+    """
     fetcher = fetcher or default_fetcher
-    url = f"{ARXIV_API}?id_list={','.join(ids)}&max_results={len(ids)}"
-    return {md.ident: md for md in parse_arxiv_atom(fetcher(url, "application/atom+xml"))}
+    out: dict[str, Metadata] = {}
+    for i, ident in enumerate(ids):
+        if i:
+            _sleep(ARXIV_MIN_INTERVAL_S)
+        try:
+            for md in parse_arxiv_atom(fetcher(f"{ARXIV_API}?id_list={ident}", "application/atom+xml")):
+                out[md.ident] = md
+            if ident in out:
+                continue
+        except urllib.error.HTTPError as err:
+            if err.code not in RETRY_CODES:
+                raise
+        out[ident] = parse_datacite_arxiv(
+            fetcher(DATACITE_API + urllib.parse.quote(ARXIV_DOI_PREFIX + ident, safe="/."), "application/vnd.api+json"),
+            ident,
+        )
+    return out
 
 
 def _date_parts(msg: dict) -> str:
@@ -177,6 +259,9 @@ def _date_parts(msg: dict) -> str:
 def parse_crossref(body: bytes) -> Metadata:
     msg = json.loads(body)["message"]
     title = " ".join((msg.get("title") or [""])[0].split())
+    subtitle = " ".join(((msg.get("subtitle") or [""])[0] or "").split())
+    if subtitle and subtitle.lower() not in title.lower():
+        title = f"{title}: {subtitle}"  # Crossref keeps a book's subtitle apart (freericks-2026, Task C)
     authors = [_render_author(a.get("family", ""), a.get("given", "")) for a in msg.get("author", []) if a.get("family") or a.get("name")]
     date = _date_parts(msg)
     venue = (msg.get("container-title") or [""])[0]
@@ -216,7 +301,33 @@ def fetch_doi(doi: str, fetcher: Fetcher | None = None) -> Metadata:
         try:
             return parse_datacite(fetcher(DATACITE_API + quoted, "application/vnd.api+json"))
         except Exception as datacite_err:  # noqa: BLE001
+            if not doi_is_registered(doi, fetcher):
+                # Sprint 4 Task C: udaru-2025's printed DOI (10.63278/...) is
+                # unknown to Crossref AND DataCite because it is not in the
+                # DOI system at all. Say that, rather than "two 404s".
+                raise LookupError(
+                    f"DOI {doi} is not registered at doi.org (handle lookup: no such handle). "
+                    "A printed DOI that does not resolve is not an access path: record the paper "
+                    "as hand-transcribed with a real local path and note the printed DOI in evidence."
+                ) from datacite_err
             raise LookupError(f"DOI {doi}: Crossref ({crossref_err}); DataCite ({datacite_err})") from datacite_err
+
+
+def doi_is_registered(doi: str, fetcher: Fetcher | None = None) -> bool:
+    """Ask the DOI registry itself. responseCode 1 = found, 100 = no such
+    handle. Any transport failure counts as 'unknown' and returns True so
+    the caller reports the provider errors instead of a false negative."""
+    fetcher = fetcher or default_fetcher
+    try:
+        body = json.loads(fetcher(DOI_HANDLE_API + urllib.parse.quote(doi, safe="/"), "application/json"))
+    except urllib.error.HTTPError as err:
+        # doi.org sends responseCode 100 WITH an HTTP 404 (observed
+        # 2026-09-19 for 10.63278/ijcrcr.v8i.3419), so a 404 here is the
+        # registry's own "no such handle", not a transport failure.
+        return err.code != 404
+    except Exception:  # noqa: BLE001
+        return True
+    return body.get("responseCode") != 100
 
 
 def fetch(kind: str, ident: str, fetcher: Fetcher | None = None) -> Metadata:
@@ -236,7 +347,16 @@ def render_citation(md: Metadata) -> str:
     record; `..., "Title," arXiv:ID[vN][, journal ref], YYYY-MM-DD` for an
     arXiv record. No commentary, no audit trail -- those belong in
     `updated_reason`/`evidence` (validate_paper enforces it)."""
-    authors = ", ".join(md.authors) if md.authors else "Unattributed"
+    # Corporate author when the registry record names no people: Crossref's
+    # record for RAND's RRA1367-6 (Sprint 4 Task C) carries a publisher and
+    # no contributors, and "RAND Corporation, ..." is standard citation
+    # practice for that case; "Unattributed" is only for a record that names
+    # neither.
+    # At most MAX_AUTHORS names, then "et al.": arute-2019 has 77 authors
+    # and the full list is one API call away (determinate facts are
+    # computed, never stored). Deterministic, so the refresh diff is stable.
+    names = md.authors[:MAX_AUTHORS] + (["et al."] if len(md.authors) > MAX_AUTHORS else [])
+    authors = ", ".join(names) if names else (md.extra.get("publisher") or md.venue or "Unattributed")
     # House style puts the comma inside the title's closing quote, so the
     # title is joined to what follows with a space, not the ", " separator.
     head = f'{authors}, "{md.title},"'
@@ -248,8 +368,11 @@ def render_citation(md: Metadata) -> str:
         if md.doi:
             parts.append(f"DOI:{md.doi}")
     else:
+        publisher_used_as_author = not md.authors and bool(md.extra.get("publisher"))
         if md.venue:
             parts.append(md.venue)
+        elif md.extra.get("publisher") and not publisher_used_as_author:
+            parts.append(md.extra["publisher"])  # a book/report has a publisher where an article has a journal
         vol = md.extra.get("volume")
         issue = md.extra.get("issue")
         page = md.extra.get("page") or md.extra.get("article-number")

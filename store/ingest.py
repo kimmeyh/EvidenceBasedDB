@@ -21,7 +21,13 @@ HAND_MARKER = "hand-transcribed from"
 # kordzanganeh arXiv-id note, two duplicate-file notes all lived in
 # `citation`, which is why the field could not be machine-validated).
 _AUDIT_MARKERS = ("CORRECTED", "NOTE:", "verified against", "recorded once", "identically-content")
-_TIER_IN_TEXT = re.compile(r"\b(seen|screened|read)[- ]tier\b|\btier\s*[:=]?\s*'?(seen|screened|read)\b", re.IGNORECASE)
+_TIER_IN_TEXT = re.compile(
+    r"\b(seen|screened|read)[- ]tier\b"                       # "seen tier", "read-tier"
+    r"|\btier\s*[:=]?\s*'?(seen|screened|read)\b"              # "tier: screened"
+    r"|\b(seen|screened|read)(/(seen|screened|read))?[- ]candidate\b",  # "screened/read candidate"
+    re.IGNORECASE,
+)
+_ACCESS_URL_SEP = " | "  # hand-origin access: "<existing local path> | <https URL>"
 _ANCHOR = re.compile(r"\s--\s\S")
 
 
@@ -147,11 +153,17 @@ def validate_paper(paper: PaperRecord) -> None:
                 f"paper {pid!r}: a hand-transcribed citation must say so visibly -- include "
                 f"'{HAND_MARKER} <page>' in the citation string."
             )
-        if not Path(paper.access).exists():
+        # "<path> | <url>" keeps a resolvable-but-id-less page (PMLR, an
+        # institutional repository) beside the file; the path comes first
+        # and must exist. A URL that carried a DOI or arXiv id would have
+        # been caught by the resolvable-id rule above.
+        local = paper.access.split(_ACCESS_URL_SEP, 1)[0]
+        if not Path(local).exists():
             raise ValueError(
                 f"paper {pid!r}: access {paper.access!r} is not an existing local path. "
                 "ADR-0005 section 3: access is a DOI, an arXiv id, or a local path outside "
-                "version control -- never the bare words 'local file'."
+                "version control -- never the bare words 'local file'. An id-less web page "
+                f"may follow the path as '<path>{_ACCESS_URL_SEP}<url>'."
             )
     if paper.citation and any(marker.lower() in paper.citation.lower() for marker in _AUDIT_MARKERS):
         raise ValueError(
