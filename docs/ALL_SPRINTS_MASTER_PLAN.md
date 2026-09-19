@@ -165,6 +165,31 @@ assigned Sprint 2" language below (F5) predates this refinement.
 - Depends on: nothing technical. Trigger: export regeneration noticeably
   slow, or record count past ~500.
 
+**F27. Reconcile the close-out Stop hook with the sprint_status guard test at the between-sprints moment (~small, no-history) Priority 36**
+- Phase: Process / tooling. Found 2026-09-19 at Sprint 3's close-out, when
+  `.claude/hooks/verify_closeout_complete.py` blocked the final message.
+- Platform: `.claude/hooks/verify_closeout_complete.py`,
+  `tests/test_sprint_documents.py`, `.claude/sprint_status.json`
+- Two guards contradict each other for the one turn between Phase 6.6
+  (carry-forward branch `Sprint_N+1` exists) and Phase 3 (a real
+  `SPRINT_N+1_PLAN.md` exists): the Stop hook requires
+  `current_sprint.number` to equal the branch's sprint number, while
+  `test_sprint_status_points_at_a_real_sprint` requires it to name a
+  sprint whose plan doc exists. Both are right about the failure they
+  guard (a stale status file; a status file pointing at a sprint that
+  is not real). Sprints 1, 2 and 3 all closed out in the state the test
+  demands, with the reason written in the `note` field; Sprint 3 is the
+  first where the hook noticed, because its final message contained a
+  completion claim
+- Fix, for review at carding: teach the hook the documented between-
+  sprints state -- accept `number == N` on a `Sprint_N+1` branch when
+  `current_sprint.branch` names the current branch AND
+  `last_completed_sprint.number == N` AND `status` is a Phase 8 value;
+  add a test for the hook itself (it has none beyond registration),
+  proven by injection in both directions. Do NOT relax the plan-doc test:
+  a status file naming a sprint with no plan is the worse failure
+- Depends on: nothing technical. Pairs with F15/F16 (same hook family).
+
 **F11. Team-lead adjudication timing, run AFTER F7-F10 (~unknown, no-history) Priority 15**
 - Phase: Measurement. Team lead, 2026-09-17: "yes backlog, yes replacing
   task f. We are going to move it after completion of backlog items
