@@ -79,9 +79,14 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-None. Sprint 4 has not yet been scoped -- this section is populated at
-Phase 3 Kickoff once the team lead's selection from the candidates below
-is recorded.
+**Sprint 4: Fix the Path, Fix the Records, Measure the Cost** (branch
+`feature/20260919_Sprint_4`, plan drafted 2026-09-19, awaiting Phase 3.7
+approval). Scope (team lead, 2026-09-19), in the team lead's priority
+order: a new first task re-homing the Phase 8.* delivery-cycle activities
+into Sprint N+1 Phase 1/2 so a sprint is called by its branch number from
+Backlog Refinement onward (closes F27); F15, F16, F17; all of F25; F11
+after F25 D3; F20; F18; F26. F28 carded for Sprint 5. Full detail:
+`docs/sprints/SPRINT_4_PLAN.md`.
 
 ## Next Sprint Candidates
 
@@ -163,7 +168,14 @@ assigned Sprint 2" language below (F5) predates this refinement.
   Carded so the deferral is a record, not a memory.
 - Platform: `store/export.py`
 - Depends on: nothing technical. Trigger: export regeneration noticeably
-  slow, or record count past ~500.
+  slow, or record count past ~500. **Trigger imminent (team lead,
+  2026-09-19)**: about 1,200 additional papers and 6 books are about to
+  arrive (Books/ already grew from 38 to 44 files; Papers/ still holds
+  the 46-file seed set at this writing), taking the store well past 500.
+  Measured 2026-09-19 at 54 records: one `regenerate()` is 276 SQL
+  statements in 8.8 ms; at ~1,300 records that is ~6,500 statements and
+  still well under a second, so the fix is about staying ahead of the
+  bulk load rather than a felt problem today. Selected for Sprint 4.
 
 **F27. Reconcile the close-out Stop hook with the sprint_status guard test at the between-sprints moment (~small, no-history) Priority 36**
 - Phase: Process / tooling. Found 2026-09-19 at Sprint 3's close-out, when
@@ -189,6 +201,45 @@ assigned Sprint 2" language below (F5) predates this refinement.
   proven by injection in both directions. Do NOT relax the plan-doc test:
   a status file naming a sprint with no plan is the worse failure
 - Depends on: nothing technical. Pairs with F15/F16 (same hook family).
+
+**F28. Learn from the papers: what QML and ML each teach about improving predictions (~large, no-history) Priority 44**
+- Phase: Knowledge synthesis. Added 2026-09-19 (team lead, at Sprint 4
+  scoping, for the sprint AFTER Sprint 4): "Start to devise a way to
+  learn from the papers -- key learnings about QML, how QML might be able
+  to improve predictions (tools, techniques, algorithms...), key learnings
+  about ML, how we might be able to improve ML predictions (tools,
+  techniques, algorithms...)."
+- Platform: the store (assertion class, contexts `qml`/`ml`/`method`,
+  `assertion_relations`), `scripts/`, a new synthesis output whose form
+  this card must decide
+- **This is design first** (same shape as F2 and the old F12): the store
+  already has the primitives -- assertions with provenance and GRADE-style
+  certainty, `supports`/`contradicts` relations, contexts as partitions.
+  What does not exist is (a) extraction at scale (F25 B5 extracts from
+  five papers by hand; ~1,300 papers need a repeatable, guarded path
+  through F25's door), and (b) a synthesis layer that turns many
+  assertions into "what we now believe about X, at what certainty, and
+  why" without restating any of them (CLAUDE.md: determinate facts are
+  computed, never stored -- a synthesis is a QUERY over assertions, not
+  a second copy)
+- **Open questions this card exists to answer, not to pre-decide**: what a
+  "key learning" is as a record (an assertion at context `qml`/`ml` with
+  a `method`-context relation? a new class? ADR-0004 section 3 names the
+  add-a-class trigger); how a learning about "how to improve predictions"
+  carries its evidence (the `emami`/`loke`/`qci` vs `mancilla`/`zajac`
+  `contradicts` pair F25 B5 wires is the first worked example); whether
+  synthesis is `view.py`-style (computed on demand from the store) or a
+  regenerated export per context; which model tier extracts and which
+  adjudicates, given Sprint 3's finding that protocol depth, not tier,
+  produced the findings (F18); and how the 1,200 incoming papers are
+  triaged for extraction (all at `seen`, promote by relevance -- ADR-0005
+  tiers as adjudication depth)
+- **Not this card's job**: ingesting the 1,200 papers (that is F25's door
+  plus F5's discovery), or extracting from all of them (tiering decides
+  which reach `read`)
+- Depends on: F25 (the door and the corrected records), F11 (the
+  adjudication cost per record, which bounds how many papers can reach
+  `read` at all). Sequenced for Sprint 5.
 
 **F11. Team-lead adjudication timing, run AFTER F7-F10 (~unknown, no-history) Priority 15**
 - Phase: Measurement. Team lead, 2026-09-17: "yes backlog, yes replacing
