@@ -45,14 +45,23 @@ CHANGELOG = ROOT / "CHANGELOG.md"
 # docstring.
 MAX_LAG_DAYS = 5
 
-_DATE = re.compile(r"^### (\d{4})-(\d{2})-(\d{2})\s*$", re.M)
+# A section header is "### 2026-09-14" or a range with a label,
+# "### 2026-09-18 to 2026-09-19 (Sprint 3, PR #20)". Every date on the
+# header line counts; the newest wins. Fixed 2026-09-20: the previous
+# pattern anchored on end-of-line and matched only the bare form, so the
+# guard had read 2026-09-14 as the newest entry through three sprints of
+# range-dated sections and passed on its own defect until the calendar
+# moved five days past the seed date.
+_HEADER = re.compile(r"^### (.*)$", re.M)
+_DATE = re.compile(r"(\d{4})-(\d{2})-(\d{2})")
 
 
 def _newest_entry() -> date | None:
     if not CHANGELOG.exists():
         return None
     found = [date(int(y), int(m), int(d))
-             for y, m, d in _DATE.findall(CHANGELOG.read_text(encoding="utf-8"))]
+             for header in _HEADER.findall(CHANGELOG.read_text(encoding="utf-8"))
+             for y, m, d in _DATE.findall(header)]
     return max(found) if found else None
 
 
@@ -97,8 +106,17 @@ def test_changelog_entries_are_in_newest_first_order():
     A date inserted in the wrong place reads as present while sitting where
     nobody looks, which is how a missing day survives a skim.
     """
+    # One date per section: the newest on its header line. Body text may
+    # cite any date (a fix dated to the day a defect was found), so only
+    # headers are ordered. Fixed 2026-09-20 with the header pattern above;
+    # until then this test saw one date and skipped, while the file sat
+    # oldest-first from Sprint 1 to Sprint 3 against its own stated policy.
     text = CHANGELOG.read_text(encoding="utf-8")
-    dates = [date(int(y), int(m), int(d)) for y, m, d in _DATE.findall(text)]
+    dates = []
+    for header in _HEADER.findall(text):
+        found = [date(int(y), int(m), int(d)) for y, m, d in _DATE.findall(header)]
+        if found:
+            dates.append(max(found))
     if len(dates) < 2:
         pytest.skip("fewer than two dated entries")
     out_of_order = [(a, b) for a, b in zip(dates, dates[1:]) if a < b]
