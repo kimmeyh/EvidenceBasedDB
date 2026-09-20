@@ -687,3 +687,27 @@ that is definitively missing information) -- it meets the bar for
 "watch, do not conclude yet." Revisit `units`/`rounding`/`evidence_tag`
 at a wider, more diverse sample (F5's QCi-author papers and F2's broader
 ingestion would both help) rather than at a fixed paper count.
+
+**2026-09-19 (A5): the context tests.** Sprint 4 Task F (F25 part D4)
+re-filed every paper against four written tests after Sprint 3's reviews
+(F9, F10) found the section 4 definitions applied inconsistently across the
+18 `screened` records. The tests refine the table above, they do not replace
+it: `world` is passed by a theorem, a proof, a physical law or a measurement
+of nature that would be true if this project did not exist, and failed by an
+engineering demonstration, a policy report or an architecture paper, however
+platform-independent; `method` is passed by a source about how claims are
+benchmarked, evaluated, certified, simulated for evaluation or named, and by
+practitioner tooling for building the experiments this library reads; `ml`
+is passed when classical ML content is the object of study or a named
+comparator; `qml` is claimed via workload: the model itself is quantum ML,
+or an ML model is what a quantum optimizer trains or compresses; `qc` is not
+claimed beside a `platform:*` context that already carries the quantum
+content; `hsbc-2026` is never claimed by a paper. The full statement, with
+the records each test passed and failed, is `docs/INTAKE_WORKFLOW.md`
+section 8.
+
+**Every count below is a snapshot as of the end of 2026-09-19**, after the
+pass: `method` 16 applicability rows (was 8), `ml` 15 (was 0), `world` 4
+(unchanged in number; moved off `arute` and `rand`, onto `zajac` and
+`kerger`), `platform:braket` 1 (was 0). 26 of 48 records changed context
+set; every rationale now ends with the anchor naming where it was read.

@@ -822,3 +822,46 @@ the files themselves remain outside version control.
 path cannot make (then the hand path needs its own review cadence), and
 when bulk intake (F26, Sprint 4 Task G) first runs at the 1,200-paper
 scale under arXiv's 3-second pacing.
+
+**2026-09-19 (A3): three conventions the intake door introduced after A2,
+and A2's pending items closed.** Sprint 4 Tasks F, G and H (F25 parts D4 to
+D6). **Every count below is a snapshot as of the end of 2026-09-19.**
+
+*(a) Section 3, `access`.* A GitHub repository URL
+(`github.com/<owner>/<name>`) is a resolvable identifier beside a DOI and
+an arXiv id. Its citation is derived from the GitHub API from identity
+fields only (owner/name, description, license, creation date, URL), never
+from the moving HEAD, so the periodic refresh stays quiet across ordinary
+pushes; the revision a record was read against belongs in
+`checked_against_source`. As of this date: 24 api-origin records (17 arXiv,
+6 DOI, 1 GitHub) and 24 hand-origin.
+
+*(b) Section 2, non-paper sources.* A book, a reference (article, post,
+vendor or training document) or a code repository is recorded in the paper
+class, not a new class, with its kind named first in the disposition
+(`Book:`, `Reference:`, `Code repository:`) and enforced by
+`scripts/intake.py`. This is an interim convention: a `paper_fields.kind`
+column is the next candidate amendment, a Class 1 decision recorded in
+`docs/INTAKE_WORKFLOW.md` section 10, to be taken before the first bulk
+book load. A reference keeps a verbatim local copy under `References/`
+because its source may not stay live, and `access` is
+`<local copy> | <url>`.
+
+*(c) Section 2, `id`.* For api-origin records the id is derived from the
+source of record, `<first author family>-<year>-<five title words>`
+(repositories: `<owner>-<name>-github-repo`), and a second load of the same
+source is skipped as present. Hand-origin records still receive a
+human-chosen id.
+
+*(d) A2's pending items.* The source-anchor convention was applied to every
+applicability rationale on this date (87 of 87 rows anchored) against the
+context tests recorded in `docs/INTAKE_WORKFLOW.md` section 8 and in
+ADR-0004 A5. Five papers reached `read` through the door's own path
+(`set_tier` with `checked_against_source` naming the pages read); the first
+`contradicts` (3) and `supports` (2) relations of section 2f now exist
+between their yielded assertions. Tiers as of this date: 6 `read`, 14
+`screened`, 28 `seen`; 13 assertions, 12 `yields` rows.
+
+*(e) Governing design.* `docs/INTAKE_WORKFLOW.md` is the design document
+for how a source enters the store; this ADR owns what a record IS, that
+document owns how one arrives, and both are amended by dated section.
