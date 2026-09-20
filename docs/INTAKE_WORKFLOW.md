@@ -88,9 +88,14 @@ article and a vendor training document as the named cases.
   publisher, date as printed, then `(hand-transcribed from <page>)`.
 - **Say what it is in the disposition's first words**: `Reference: ...`.
 
-The LinkedIn example from F12 is not in the store: its URL was never
-recorded in the backlog card, so it is a question for the team lead at
-Manual Validation, and it goes through this path when the URL is known.
+The LinkedIn example from F12 went through this path on 2026-09-19 once the
+team lead supplied the URL at Manual Validation (`https://lnkd.in/p/es-nvegJ`,
+a post by Javier Mancilla Montero reading the MerLin paper): the post body
+was saved verbatim under `References/`, the record is
+`mancilla-2026-linkedin-merlin-reproduces-18-qml-papers` (hand-origin,
+"Reference:" disposition, one anchored applicability row), and `--verify`
+passed 7/7. The three F12 examples turned out to be one thread: the post,
+the paper it reads (arXiv:2602.11092) and the code it links.
 
 ## 5. Books (decision Q5: designed, nothing ingested)
 
