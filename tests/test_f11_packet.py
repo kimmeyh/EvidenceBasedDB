@@ -48,7 +48,10 @@ def test_packet_lists_only_screened_records_with_source_links_and_timing_rows(st
     mod.F10_FINDINGS = {"a-screened": "finding a", "c-screened": "finding c"}  # the timed set is the F10 set
     text = mod.render(store)
     assert "### 1. `a-screened`" in text and "### 2. `c-screened`" in text
-    assert "b-seen" not in text, "seen-tier records are not in the F11 set"
+    assert "b-seen" not in text, "a record outside the F10 set is not in the F11 set"
+    # A record F10 reviewed stays in the timed set after a tier change (Task H promoted five to read).
+    store.execute("UPDATE paper_fields SET tier = 'read', checked_against_source = 'never' WHERE record_id = 'a-screened'")
+    assert "### 1. `a-screened`" in mod.render(store) and "**Tier**: read" in mod.render(store)
     assert "https://arxiv.org/abs/2303.05509" in text
     assert r"D:\x\y.pdf | https://example.org/page" in text
     assert "| 1 | `a-screened` |" in text and "| 2 | `c-screened` |" in text

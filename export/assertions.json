@@ -1,5 +1,57 @@
 [
   {
+    "id": "cvqboost-knn-aucpr-0-8108-kaggle-fraud",
+    "class": "assertion",
+    "value": "On the MLG-ULB Kaggle credit-card fraud dataset, CVQBoost run on Dirac-3 with KNN weak classifiers reached a mean AUC-PR of 0.8108 and AUC-ROC of 0.9821 over 10 runs, against 0.7423 and 0.9734 for the best published classical model (CAD, Gao et al. 2025): an absolute AUC-PR gain of 0.0685, about 9.2% relative",
+    "provenance": "loke-2026-cvqboosting-fraud-detection-smu, p.6 Table 3 and p.7 section 4.1",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "qml"
+    ],
+    "certainty": "low",
+    "certainty_reasons": "Started LOW: a single empirical study on one benchmark dataset, with in-kind vendor support (QCi, p.8). NOT upgraded for the 10-run averaging: the comparator's figure is taken from another paper under a different protocol ('under our evaluation protocol', p.5), no re-run of CAD in the same lineup, no confidence interval on the 0.0685 gap; mancilla-2026 (p.12) would read a bar without an order-matched twin as untested. NOT downgraded further: the test fold was kept free of synthetic samples and the split was resampled (p.5)",
+    "fidelity": "exact",
+    "reading_level": 13,
+    "updated": "2026-09-19",
+    "updated_reason": "2026-09-19 (Sprint 4 Task H, F25 D6): promoted to read after a direct read; assertions extracted; see paper_yields",
+    "citation_context": "\"In comparison, our Dirac-3 CVQBoost with KNN weak classifiers reached 0.8108 AUC-PR, an absolute improvement of 0.0685 over CAD, corresponding to a relative improvement of approximately 9.2%.\" (p.7)"
+  },
+  {
+    "id": "cvqboost-vs-xgboost-auc-under-balancing",
+    "class": "assertion",
+    "value": "With class balancing applied to the training data, CVQBoost's AUC on the Kaggle fraud dataset is below XGBoost's in 23 of the 24 reported strategy-and-ratio rows and above it in one (ADASYN at ratio 1.0: 0.8855 vs 0.8826); at minimal balancing (ratio 0.01) XGBoost leads by about 0.19 AUC (0.9003 vs 0.7105)",
+    "provenance": "emami-2025-financial-fraud-entropy-computing-qci, p.14 Table 1; identical table in qci-2024-profiling-cvqboost, p.11 Table 3",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "qml"
+    ],
+    "certainty": "moderate",
+    "certainty_reasons": "Started LOW: vendor self-benchmark (see the runtime assertion). UPGRADED one level for admission against interest: the authors' own table shows the comparator ahead in 23 of 24 rows, which is costly to publish and therefore credible; the assertion is read off that table, not off the prose that summarizes it favorably. NOT upgraded further: one dataset, and qci-2024-profiling is the same table, not a second measurement",
+    "fidelity": "exact",
+    "reading_level": 13,
+    "updated": "2026-09-19",
+    "updated_reason": "2026-09-19 (Sprint 4 Task H, F25 D6): promoted to read after a direct read; assertions extracted; see paper_yields",
+    "citation_context": "\"The results show that comparable accuracy with traditional boosting methods (XGBoost) when balancing techniques have been applied. In particular, we found that CVQBoost can even exceed the performance of XGBoost when the ADASYN balancing strategy is used.\" (p.11)"
+  },
+  {
+    "id": "cvqboost-vs-xgboost-training-time-dirac3",
+    "class": "assertion",
+    "value": "Training CVQBoost on Dirac-3 took 2.2 +/- 0.5 s at 150,000 training samples with 38 features, against 117.4 +/- 4.0 s for XGBoost on up to 48 CPUs and four NVIDIA L4 GPUs; XGBoost is faster below about 20,000 samples and slower above",
+    "provenance": "emami-2025-financial-fraud-entropy-computing-qci, p.14 Table 2 and p.6 section 3.2.1",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "platform:dirac-3"
+    ],
+    "certainty": "low",
+    "certainty_reasons": "Started LOW: vendor self-benchmark, all authors 'completely supported by Quantum Computing Inc.' (p.12), the textbook GRADE downgrade case for conflict of interest. NOT upgraded for the 10-run bars: the XGBoost configuration is not shown to be tuned for speed parity, and 'train time' bundles classical pre-processing with device time (Table 2 lists dirac3 time separately). Code is public (p.12), which makes replication possible but has not happened",
+    "fidelity": "exact",
+    "reading_level": 13,
+    "updated": "2026-09-19",
+    "updated_reason": "2026-09-19 (Sprint 4 Task H, F25 D6): promoted to read after a direct read; assertions extracted; see paper_yields",
+    "units": "seconds (mean +/- 2 standard deviations over 10 runs)",
+    "citation_context": "\"We also find that CVQBoost can be trained much faster, even when compared to state-of-the-art implementations on GPU's and multicore systems.\" (p.11)"
+  },
+  {
     "id": "cyc-context-count",
     "class": "assertion",
     "value": "Cyc has approximately 10,000 named contexts, kept down by computing contexts (IntersectContexts) rather than reifying every combination",
@@ -70,6 +122,27 @@
     "updated_reason": "Sprint 1 Task E: premise-falsifier dry run, one paper ingested end to end"
   },
   {
+    "id": "fourier-wall-public-tabular-refuses-qml",
+    "class": "assertion",
+    "value": "On public tabular benchmarks a tuned classical model reaches every target whose spectrum is low-order, on-grid, slow, correlated or enumerable, which is where public exports land, so QML losses there are a property of the datasets; on a real smart-meter peak-load target a gradient-boosted tree reached held-out ROC-AUC 0.999 against 0.910 for the QNN and the SPECTRA certificate refused the target",
+    "provenance": "mancilla-2026-fourier-wall-spectra, p.13 Conclusion and p.6 section 6.1",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "qml"
+    ],
+    "certainty": "low",
+    "certainty_reasons": "Started LOW: preprint v1 from one two-person company, one industrial dataset, the authors' own certificate, no independent replication. NOT downgraded: the classical bar is complete by construction (order-matched twin and exact simulator included, p.12) and the refusal on the real target is a measurement, not an argument. NOT upgraded: the general 'structural property' claim rests on the Fourier-series view of angle-encoded QNNs and does not by itself cover other quantum models",
+    "fidelity": "scoped",
+    "reading_level": 14,
+    "updated": "2026-09-19",
+    "updated_reason": "2026-09-19 (Sprint 4 Task H, F25 D6): promoted to read after a direct read; assertions extracted; see paper_yields",
+    "citation_context": "\"Some tuned classical model reaches every target whose spectrum is low-order, on-grid, slow, correlated, or sparse enough to enumerate, and public tabular exports essentially always land inside that reach. The negative benchmark literature is therefore evidence about datasets, not about quantum models.\" (p.13)",
+    "contradicts": [
+      "cvqboost-knn-aucpr-0-8108-kaggle-fraud",
+      "cvqboost-vs-xgboost-auc-under-balancing"
+    ]
+  },
+  {
     "id": "heuristics-over-general-reasoning",
     "class": "assertion",
     "value": "Cyc separates the epistemological problem (what the system knows, expressed in one expressive higher-order logic, CycL) from the heuristic problem (how to reason efficiently), and solves the second with many redundant, specialized Heuristic-Level reasoners rather than one general theorem prover operating on CycL directly -- 20 such reasoners in 1989, over 1,100 by 2023",
@@ -119,5 +192,25 @@
     "certainty_reasons": "Started at whatever level a submitted figure would carry, then DOWNGRADED to very-low: the consumer repository's own amendment log (A25 finding 1) states this number is wrong and names the exact mechanism -- a number imported from one context (IEEE-CIS sequential build) into another (B1/B2 comparison) -- 'the same defect class as A15'",
     "updated": "2026-09-17",
     "updated_reason": "Sprint 2 Task B: ingest a real HSBC-submission assertion so Task B has something to spot-check"
+  },
+  {
+    "id": "real-amplitude-encoding-pqc-is-classical-kernel",
+    "class": "assertion",
+    "value": "Any parameterized quantum circuit built on a real-valued amplitude encoding of the data (including probability loading), with a data-independent ansatz and any observable, computes a function of the form c(x)^T A c(x) with A a real symmetric matrix: the reproducing kernel Hilbert space of the kernel (c(x)^T c(x'))^2, which a classical kernel machine computes in O(N^2) time; such models offer no quantum advantage of that kind",
+    "provenance": "zajac-2026-inverse-born-rule-equivalence, p.5 Theorem 1 and Corollary 1",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "qml"
+    ],
+    "certainty": "high",
+    "certainty_reasons": "Started HIGH: a mathematical theorem with a short proof whose central step (a real state vector makes the expectation a real quadratic form, so only Re(M) contributes; c^T Im(M) c = 0 for antisymmetric Im(M)) the reader verified independently on p.5. NOT downgraded for preprint status: the result depends on the proof, not on review. Scope is the authors' (p.15): data-independent ansatz only; complex-valued encodings escape the bound; nothing is said about trainability or noise",
+    "fidelity": "exact",
+    "reading_level": 16,
+    "updated": "2026-09-19",
+    "updated_reason": "2026-09-19 (Sprint 4 Task H, F25 D6): promoted to read after a direct read; assertions extracted; see paper_yields",
+    "citation_context": "\"The hypothesis class of any real-valued amplitude encoding PQC therefore provides no Type B quantum advantage: a classical kernel machine with the same data access computes the same functions.\" (p.5)",
+    "supports": [
+      "fourier-wall-public-tabular-refuses-qml"
+    ]
   }
 ]

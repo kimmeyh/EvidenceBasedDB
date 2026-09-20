@@ -86,14 +86,15 @@ def _source_link(access: str) -> str:
 
 
 def render(conn) -> str:
-    screened = conn.execute(
+    papers = conn.execute(
         "SELECT r.id, r.value, r.provenance, r.updated, r.updated_reason, p.tier, p.access, p.disposition, p.evidence "
-        "FROM records r JOIN paper_fields p ON p.record_id = r.id WHERE p.tier = 'screened' ORDER BY r.id"
+        "FROM records r JOIN paper_fields p ON p.record_id = r.id ORDER BY r.id"
     ).fetchall()
-    # The timed set is the 18 records F10 reviewed (the comparison is
+    # The timed set is the 18 records F10 reviewed, whatever tier they now
+    # carry (Task H promoted five of them to read; the comparison stays
     # apples to apples); screened records added since are listed apart.
-    rows = [r for r in screened if r["id"] in F10_FINDINGS]
-    added_since = [r for r in screened if r["id"] not in F10_FINDINGS]
+    rows = [r for r in papers if r["id"] in F10_FINDINGS]
+    added_since = [r for r in papers if r["id"] not in F10_FINDINGS and r["tier"] == "screened"]
     out: list[str] = []
     w = out.append
     w("# Sprint 4 Task E: F11 Adjudication Packet for the Team Lead")
@@ -126,7 +127,7 @@ def render(conn) -> str:
     w("the minutes-per-record number and the protocol in `.claude/model_assignment_heuristics.json`")
     w("(`learning_log`, the pending Sprint 4 row) and in the Sprint 4 summary.")
     w("")
-    w(f"## The {len(rows)} `screened` records F10 reviewed (snapshot as of {GENERATED_ON})")
+    w(f"## The {len(rows)} records F10 reviewed (snapshot as of {GENERATED_ON}; tier shown per record)")
     w("")
     if added_since:
         w("Screened records added since F10 ran, **not part of the timed comparison** (adjudicate")
