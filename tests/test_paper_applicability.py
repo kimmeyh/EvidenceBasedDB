@@ -22,16 +22,18 @@ def _papers() -> list[dict]:
     return json.loads(PAPERS_EXPORT.read_text(encoding="utf-8"))
 
 
-def test_almost_every_paper_has_real_applicability():
-    """Only the one genuinely empty seed file (0 bytes, no content to
-    derive applicability from) may lack applicability. Every other paper
-    must have at least one real context claimed."""
+def test_every_paper_has_real_applicability():
+    """Every paper must have at least one real context claimed. Until
+    2026-09-19 one exception was pinned here: pere-qml-github-repo-empty,
+    the placeholder for a 0-byte seed file. The team lead removed the file
+    and the record at Sprint 4 Manual Validation (the related papers now
+    sit under QMLPapers/ for a future sprint), so the exception is gone
+    and the assertion tightened, not loosened."""
     papers = _papers()
     without = [p["id"] for p in papers if not p.get("applicability")]
-    assert without == ["pere-qml-github-repo-empty"], (
-        f"papers with no applicability: {without}. Only the empty seed "
-        "file should lack it -- if a real paper shows up here, its "
-        "applicability regressed."
+    assert without == [], (
+        f"papers with no applicability: {without}. If a real paper shows up "
+        "here, its applicability regressed."
     )
 
 
