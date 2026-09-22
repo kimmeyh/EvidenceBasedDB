@@ -35,7 +35,8 @@ def db():
 
 def test_insert_paper_creates_the_record_and_its_paper_fields(db):
     paper = PaperRecord(
-        id="p1", tier="seen", citation_origin="api", citation="Cite, 2026", access="arXiv:0000.00000",
+        id="p1", tier="seen", citation_origin="api", citation="Cite, 2026", citation_source="replay",
+        access="arXiv:0000.00000",
         disposition="why it matters", context="method", value="a paper",
         updated="2026-09-15", updated_reason="test",
     )
@@ -56,7 +57,7 @@ def test_insert_paper_creates_the_record_and_its_paper_fields(db):
 
 def test_insert_paper_writes_applicability_rows(db):
     paper = PaperRecord(
-        id="p1", tier="screened", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
+        id="p1", tier="screened", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
         applicability=[("qc", "bears on quantum computing -- fixture"), ("method", "also methodology -- fixture")],
     )
@@ -72,7 +73,7 @@ def test_insert_paper_writes_applicability_rows(db):
 
 def test_insert_assertion_links_to_its_yielding_paper(db):
     paper = PaperRecord(
-        id="p1", tier="read", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
+        id="p1", tier="read", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
         checked_against_source="2026-09-15, test fixture",
     )
@@ -196,7 +197,7 @@ def test_validate_paper_rejects_read_tier_with_no_checked_against_source():
     application layer" -- but no such enforcement existed. insert_paper()
     accepted any tier/checked_against_source combination unchecked."""
     paper = PaperRecord(
-        id="p1", tier="read", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
+        id="p1", tier="read", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
     )
     with pytest.raises(ValueError, match="checked_against_source"):
@@ -209,7 +210,7 @@ def test_validate_paper_rejects_read_tier_with_blank_checked_against_source():
     field be effectively missing while passing validation."""
     for blank in ("", "   ", "\t\n"):
         paper = PaperRecord(
-            id="p1", tier="read", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
+            id="p1", tier="read", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
             context="method", value="a paper", updated="2026-09-15", updated_reason="test",
             checked_against_source=blank,
         )
@@ -222,7 +223,7 @@ def test_set_tier_refuses_read_without_checked_against_source(db):
     raw UPDATE to tier='read' bypassed it. set_tier() is the one sanctioned
     tier writer and applies the same rule against the row's existing value."""
     insert_paper(db, PaperRecord(
-        id="p1", tier="seen", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
+        id="p1", tier="seen", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
     ))
     with pytest.raises(ValueError, match="checked_against_source"):
@@ -233,7 +234,7 @@ def test_set_tier_refuses_read_without_checked_against_source(db):
 
 def test_set_tier_promotes_to_read_when_checked_against_source_is_supplied(db):
     insert_paper(db, PaperRecord(
-        id="p1", tier="screened", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
+        id="p1", tier="screened", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
     ))
     set_tier(db, "p1", "read", checked_against_source="2026-09-19, test, read in full")
@@ -243,7 +244,7 @@ def test_set_tier_promotes_to_read_when_checked_against_source_is_supplied(db):
 
 def test_set_tier_to_screened_needs_nothing_extra(db):
     insert_paper(db, PaperRecord(
-        id="p1", tier="seen", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
+        id="p1", tier="seen", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
     ))
     set_tier(db, "p1", "screened")
@@ -253,6 +254,9 @@ def test_set_tier_to_screened_needs_nothing_extra(db):
 def _api_paper(**over) -> PaperRecord:
     base = dict(id="p1", tier="seen", access="arXiv:0000.00001", disposition="why",
                 context="method", value="a paper", citation="Cite", citation_origin="api",
+                # A fixture replays a rendered citation instead of calling the API;
+                # the door requires that exception to be declared (PR #30 review).
+                citation_source="replay",
                 updated="2026-09-15", updated_reason="test")
     base.update(over)
     return PaperRecord(**base)
@@ -346,7 +350,7 @@ def test_validate_paper_accepts_read_tier_with_literal_never():
     """'never' is a valid, meaningful value distinct from None -- a
     statement someone made, not an unpopulated field (ADR-0005 section 2)."""
     paper = PaperRecord(
-        id="p1", tier="read", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
+        id="p1", tier="read", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
         checked_against_source="never",
     )
@@ -358,7 +362,7 @@ def test_validate_paper_does_not_require_checked_against_source_below_read():
     requires it (ADR-0005 section 2)."""
     for tier in ("seen", "screened"):
         paper = PaperRecord(
-            id="p1", tier=tier, citation="Cite", citation_origin="api", access="arXiv:0000.00001",
+            id="p1", tier=tier, citation="Cite", citation_origin="api", citation_source="replay", access="arXiv:0000.00001",
             disposition="why", context="method", value="a paper", updated="2026-09-15", updated_reason="test",
         )
         validate_paper(paper)  # must not raise
@@ -368,8 +372,48 @@ def test_insert_paper_calls_validate_paper(db):
     """The validator must actually run at the real insert path, not just
     exist as a standalone function nothing calls."""
     paper = PaperRecord(
-        id="p1", tier="read", citation_origin="api", citation="Cite", access="arXiv:0000.00001", disposition="why",
+        id="p1", tier="read", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
     )
     with pytest.raises(ValueError, match="checked_against_source"):
         insert_paper(db, paper)
+
+
+def test_door_refuses_an_api_citation_the_caller_supplied_without_declaring_a_replay():
+    """The escape hatch, closed (PR #30 review, 2026-09-22).
+
+    Until this rule, an api-origin record with a resolvable access could
+    carry ANY citation and title, accepted with no network call and no
+    complaint -- exactly the dupont/kordzanganeh defect class the whole
+    door exists to stop. A fixture or a historical replay is still allowed,
+    but it must say so, so the exception is visible in the record and in
+    the diff rather than indistinguishable from a derived citation.
+    """
+    with pytest.raises(ValueError, match="supplied by the caller"):
+        validate_paper(PaperRecord(
+            id="fake", tier="seen", access="arXiv:2303.05509", disposition="why",
+            context="qml", value="A Totally Invented Title",
+            citation='Nobody, N., "A Totally Invented Title," arXiv:9999.99999, 1999-01-01',
+            citation_origin="api", updated="2026-09-22", updated_reason="probe"))
+
+
+def test_the_door_marks_what_it_derived_so_a_replay_is_distinguishable(db):
+    """derive_citation stamps citation_source='api' on what it fetched. That
+    is what lets the rule above tell the door's own output from a caller's
+    input without blocking the legitimate path."""
+    from tests.test_citations import fake_fetcher  # noqa: PLC0415
+    from store.ingest import derive_citation
+    paper = PaperRecord(id="dupont", tier="seen", access="arXiv:2303.05509", disposition="why",
+                        context="qml", citation_origin="api", updated="2026-09-22", updated_reason="test")
+    derived = derive_citation(paper, fetcher=fake_fetcher)
+    assert derived.citation_source == "api"
+    assert derived.citation.startswith('Dupont, M., Evert, B.,')
+    validate_paper(derived)  # must not raise
+
+
+def test_a_declared_replay_is_accepted():
+    validate_paper(PaperRecord(
+        id="lenat", tier="seen", access="arXiv:2308.04445", disposition="why",
+        context="method", value="A Title", citation="A hand-kept Sprint 1 transcription",
+        citation_origin="api", citation_source="replay",
+        updated="2026-09-22", updated_reason="historical one-off"))

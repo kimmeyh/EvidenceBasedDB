@@ -37,7 +37,7 @@ def store_and_export():
                 value="A Test Paper",
                 tier="seen",
                 citation="Tester, T., 2026",
-                citation_origin="api",
+                citation_origin="api", citation_source="replay",  # fixture replays a rendered citation
                 access="arXiv:0000.00011",
                 disposition="fixture",
                 context="qml",
@@ -50,7 +50,7 @@ def store_and_export():
                 value="Another Test Paper",
                 tier="seen",
                 citation="Tester, T. 2, 2026",
-                citation_origin="api",
+                citation_origin="api", citation_source="replay",  # fixture replays a rendered citation
                 access="arXiv:0000.00012",
                 disposition="fixture",
                 context="qc",

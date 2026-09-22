@@ -72,6 +72,14 @@ def fake_fetcher(url: str, accept: str) -> bytes:
     ("https://proceedings.mlr.press/v25/neven12/ (PMLR); also stored at D:\\Papers, no arXiv id found", None),
     ("local file, no DOI/arXiv id", None),
     ("", None),
+    # A DOI-shaped folder in a LOCAL PATH is not a DOI (PR #30 review,
+    # 2026-09-22). Reading one silently reclassified a hand-origin paper
+    # as api and fetched a DIFFERENT paper's metadata under that spurious
+    # DOI -- the one path found where a wrong citation attaches with no error.
+    ("C:/Users/x/10.5555/12345678.pdf", None),
+    (r"C:\Users\x\10.5555\12345678.pdf", None),
+    # ... but a real DOI beside a path still resolves, because it says "doi".
+    ("D:/Papers/paper.pdf | https://doi.org/10.1145/3007651", ("doi", "10.1145/3007651")),
 ])
 def test_parse_access_recognises_only_resolvable_ids(access, expected):
     assert citations.parse_access(access) == expected
@@ -347,3 +355,37 @@ def test_user_agent_is_the_plain_one_arxiv_accepts():
     browser-style and mailto-bearing User-Agents and 200 to a plain one.
     Pinned so nobody 'improves' the header back into a 406."""
     assert citations.USER_AGENT == "curl/8.0"
+
+
+def test_doi_is_registered_says_unknown_when_the_registry_cannot_be_reached():
+    """A DNS blip against doi.org must NOT become the confident, wrong
+    message "DOI X is not registered", which tells the operator to re-record
+    a perfectly good paper as hand-transcribed. Transport failure means
+    unknown, and unknown must surface the PROVIDER errors instead.
+
+    PR #30 review, 2026-09-22: inverting the `except Exception: return True`
+    default left all 45 citation/refresh/intake tests green.
+    """
+    import socket
+
+    def fetcher(url, accept):
+        if "doi.org/api/handles" in url:
+            raise socket.timeout("timed out")
+        raise RuntimeError("HTTP Error 404: Not Found")
+
+    with pytest.raises(LookupError) as excinfo:
+        citations.fetch_doi("10.1000/real-but-unreachable", fetcher=fetcher)
+    message = str(excinfo.value)
+    assert "Crossref" in message and "DataCite" in message
+    assert "not registered" not in message, (
+        "an unreachable registry must not be reported as a negative answer")
+
+
+def test_doi_is_registered_returns_true_on_transport_failure():
+    """The same rule at the unit level: unknown biases toward True."""
+    import socket
+
+    def unreachable(url, accept):
+        raise socket.timeout("timed out")
+
+    assert citations.doi_is_registered("10.1000/x", fetcher=unreachable) is True

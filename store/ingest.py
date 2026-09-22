@@ -40,10 +40,17 @@ class PaperRecord:
 
     - "api": `access` carries an arXiv id or DOI; leave `citation` None and
       `insert_paper()` derives the citation AND the title (`value`) from
-      the source of record via store.citations. A pre-rendered citation
-      may be supplied (fixtures, replays) and is trusted as api-origin;
-      scripts/refresh_citations.py is the periodic check that it still
-      matches the API.
+      the source of record via store.citations.
+
+      A pre-rendered citation may be supplied ONLY with
+      `citation_source="replay"` naming why (a fixture, a historical
+      one-off whose API response is not being re-fetched). PR #30 review,
+      2026-09-22: until then any api-origin record could carry an
+      arbitrary citation and title with no network call and no complaint,
+      which reinstates the exact defect class the door exists to stop --
+      a fabricated citation on a paper whose id would have given the true
+      one. The field makes the exception visible in the record and in the
+      diff instead of silent.
     - "hand": `access` carries NO resolvable id (a vendor PDF, a report).
       Then `hand_transcribed_from` names where the eye read it ("cover",
       "p.1 byline"), `citation` must say so visibly (HAND_MARKER), and
@@ -61,6 +68,12 @@ class PaperRecord:
     value: str = ""  # title; filled from the resolver when citation_origin == "api"
     citation: str | None = None
     citation_origin: str = ""  # "api" | "hand" -- must be declared explicitly
+    # How an api-origin record came to carry a rendered citation. "api" is
+    # set BY derive_citation when the door fetched it; "replay" is the
+    # caller declaring a deliberate exception (a fixture, a historical
+    # one-off). Any other value, including the default, means a caller
+    # supplied a citation it should not have. See the class docstring.
+    citation_source: str = ""
     hand_transcribed_from: str | None = None
     evidence_tag: str = "N/A"
     evidence: str | None = None
@@ -170,6 +183,20 @@ def validate_paper(paper: PaperRecord) -> None:
             f"paper {pid!r}: citation carries audit-trail text ({', '.join(m for m in _AUDIT_MARKERS if m.lower() in paper.citation.lower())}). "
             "Corrections and notes belong in updated_reason or evidence, not in the citation."
         )
+    # An api-origin record must let the door derive its citation, unless it
+    # explicitly declares itself a replay. Without this, a fabricated
+    # citation and title on a resolvable id passed unchallenged and without
+    # a network call -- the dupont/kordzanganeh defect class, reinstated
+    # (PR #30 review, 2026-09-22).
+    if (paper.citation_origin == "api" and paper.citation is not None
+            and paper.citation_source not in ("api", "replay")):
+        raise ValueError(
+            f"paper {pid!r}: citation_origin='api' with a citation supplied by the caller. Leave "
+            "citation=None and the door derives it from the source of record (derive_citation marks "
+            "what it filled with citation_source='api'). If this is a fixture or a historical one-off "
+            "whose API response is deliberately not re-fetched, declare citation_source='replay' so "
+            "the exception is visible in the record and in the diff."
+        )
     # The title is the record's value. An api-origin paper whose citation is
     # still None gets both from the API in derive_citation(); every other
     # shape must arrive with the title already filled in.
@@ -244,7 +271,10 @@ def derive_citation(paper: PaperRecord, fetcher: citations.Fetcher | None = None
     if paper.citation_origin != "api" or paper.citation is not None:
         return paper
     md, rendered = citations.resolve(paper.access, fetcher=fetcher)
-    return replace(paper, citation=rendered, value=paper.value or md.title)
+    # `citation_source="api"` records that the DOOR filled this in, which is
+    # what lets validate_paper tell a derived citation from one a caller
+    # supplied (PR #30 review, 2026-09-22).
+    return replace(paper, citation=rendered, value=paper.value or md.title, citation_source="api")
 
 
 def insert_paper(

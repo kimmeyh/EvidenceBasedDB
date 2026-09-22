@@ -154,3 +154,84 @@ def test_verify_runs_the_first_try_checks_and_catches_a_drifted_citation(store):
     assert drifted.returncode == 1 and "FAIL  citation matches the source of record  (DIFFERS" in drifted.stdout
     missing = _run(db_path, export_dir, ["--verify", "nobody"])
     assert missing.returncode == 1 and "FAIL  record exists" in missing.stdout
+
+
+def test_verify_checks_the_read_tier_obligations(store):
+    """The read tier is what ADR-0005 treats as load-bearing: the source was
+    opened (`checked_against_source`) AND claims were extracted (`yields`).
+    `--verify` is the mechanized F10 protocol, so this is the branch that
+    matters most, and it was untested until the PR #30 review."""
+    db_path, export_dir, _ = store
+    assert _run(db_path, export_dir, ARXIV_ARGS + ["--apply"]).returncode == 0
+    conn = connect(db_path)
+    # Promote WITHOUT the obligations: checked_against_source set, no yields.
+    conn.execute("UPDATE paper_fields SET tier = 'read', checked_against_source = '2026-09-22, read pp.1-8' "
+                 "WHERE record_id = ?", (DUPONT_ID,))
+    conn.commit(); conn.close()
+    proc = _run(db_path, export_dir, ["--verify", DUPONT_ID])
+    assert proc.returncode == 1
+    assert "FAIL  read tier" in proc.stdout and "yields=0" in proc.stdout
+
+    # Now give it a yielded assertion: the same record passes.
+    conn = connect(db_path)
+    conn.execute("INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
+                 "VALUES ('a1', 'assertion', 'a claim', 'src', 'N/A', '2026-09-22', 'test')")
+    conn.execute("INSERT INTO record_contexts (record_id, context_id) VALUES ('a1', 'qc')")
+    conn.execute("INSERT INTO paper_yields (paper_id, assertion_id) VALUES (?, 'a1')", (DUPONT_ID,))
+    conn.commit(); conn.close()
+    ok = _run(db_path, export_dir, ["--verify", DUPONT_ID])
+    assert ok.returncode == 0, ok.stdout
+    assert "PASS  read tier" in ok.stdout
+
+
+def test_verify_checks_the_hand_origin_marker_and_that_the_file_still_exists(store, tmp_path):
+    """A hand-origin record's whole claim to provenance is the visible
+    marker plus a real local file. Both branches were untested."""
+    db_path, export_dir, tmp = store
+    pdf = tmp / "post.pdf"
+    pdf.write_bytes(b"%PDF")
+    args = [f"{pdf} | https://example.org/post", "--kind", "reference", "--context", "qml",
+            "--id", "author-2026-a-post", "--title", "A Post",
+            "--hand-citation", 'Author, A., "A Post," Example, 2026-09-01 (hand-transcribed from p.1)',
+            "--transcribed-from", "p.1", "--disposition", "Reference: a post", "--apply"]
+    assert _run(db_path, export_dir, args).returncode == 0
+    ok = _run(db_path, export_dir, ["--verify", "author-2026-a-post"])
+    assert ok.returncode == 0, ok.stdout
+    assert "PASS  hand-transcribed marker present" in ok.stdout
+    assert "PASS  access is an existing local path" in ok.stdout
+
+    # The file moves away: the record can no longer show its source.
+    pdf.unlink()
+    gone = _run(db_path, export_dir, ["--verify", "author-2026-a-post"])
+    assert gone.returncode == 1
+    assert "FAIL  access is an existing local path" in gone.stdout
+
+    # The marker is edited out: the citation no longer admits it was typed.
+    pdf.write_bytes(b"%PDF")
+    conn = connect(db_path)
+    conn.execute("UPDATE records SET provenance = 'Author, A., \"A Post,\" Example, 2026-09-01' "
+                 "WHERE id = 'author-2026-a-post'")
+    conn.commit(); conn.close()
+    unmarked = _run(db_path, export_dir, ["--verify", "author-2026-a-post"])
+    assert unmarked.returncode == 1
+    assert "FAIL  hand-transcribed marker present" in unmarked.stdout
+
+
+def test_verify_reports_a_source_it_cannot_reach_rather_than_passing(store):
+    """An api-origin record whose provider is unreachable must FAIL the
+    citation check, not skip it: 'could not check' is not 'checked'."""
+    db_path, export_dir, _ = store
+    assert _run(db_path, export_dir, ARXIV_ARGS + ["--apply"]).returncode == 0
+    wrapper = (
+        "import sys, importlib.util\nfrom pathlib import Path\n"
+        f"sys.path.insert(0, {str(ROOT)!r})\n"
+        f"spec = importlib.util.spec_from_file_location('intake', {str(SCRIPT)!r})\n"
+        "mod = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(mod)\n"
+        f"mod.DB_PATH = Path({str(db_path)!r}); mod.EXPORT_DIR = Path({str(export_dir)!r})\n"
+        "mod.FETCHER = lambda url, accept: (_ for _ in ()).throw(RuntimeError('network down'))\n"
+        f"raise SystemExit(mod.main(['--verify', {DUPONT_ID!r}]))\n"
+    )
+    proc = subprocess.run([sys.executable, "-c", wrapper], capture_output=True, text=True, encoding="utf-8")
+    assert proc.returncode == 1
+    assert "FAIL  citation matches the source of record" in proc.stdout
+    assert "could not resolve" in proc.stdout

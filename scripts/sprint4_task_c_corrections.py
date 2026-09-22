@@ -296,7 +296,16 @@ def _append_reason(conn, pid: str, note: str) -> None:
     existing = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (pid,)).fetchone()[0] or ""
     if TAG in existing and note in existing:
         return
-    joined = f"{TAG}: {note}" if not existing.startswith(TODAY) else f"{existing} | {TAG}: {note}"
+    # ALWAYS append; never replace. The ternary here was inverted until
+    # 2026-09-22 (PR #30 review): it kept prior text only when the row had
+    # already been touched the SAME DAY, and discarded it in the normal case
+    # of older history. That ran, and erased "Sprint 1 Task F: 46-paper seed
+    # set loaded at seen tier" from 43 records and the Task E premise-falsifier
+    # note from a 44th. updated_reason is the row's own account of why it looks
+    # the way it does; a record that cannot say where its value came from is
+    # the defect this whole system exists against (CLAUDE.md). Guarded by
+    # tests/test_updated_reason_is_append_only.py.
+    joined = f"{existing} | {TAG}: {note}" if existing else f"{TAG}: {note}"
     conn.execute("UPDATE records SET updated = ?, updated_reason = ? WHERE id = ?", (TODAY, joined, pid))
 
 
@@ -341,7 +350,26 @@ _MARKER_RE = re.compile(re.escape(HAND_MARKER) + r"\s+([^)]+)\)")
 
 
 def gate(conn) -> list[str]:
-    """Every paper row back through the door (applicability excluded, see module docstring)."""
+    """Every paper row back through the door.
+
+    WHAT THIS DOES AND DOES NOT VERIFY (PR #30 review, 2026-09-22). The
+    origin below is DERIVED from `parse_access`, which makes validate_paper's
+    two origin-versus-access rules tautologies: an api row is api because its
+    access resolves, so "api without a resolvable id" can never fire here.
+    That is unavoidable while the store has no `citation_origin` column --
+    the declared origin is not persisted, only inferable -- and it is stated
+    rather than left implied, because the printed "0 refusal(s)" otherwise
+    reads as a stronger claim than it is.
+
+    What the gate DOES check on every row: audit-trail text in the citation,
+    a non-empty title, a one-line disposition naming no tier, the read-tier
+    obligation, and for hand-origin rows the visible marker, the
+    transcribed-from field and that the local path exists.
+
+    What it does NOT check: whether an api row's citation matches the API.
+    That is `scripts/refresh_citations.py`'s job, which this script's own
+    run order puts FIRST for exactly that reason (see the module docstring).
+    """
     refusals = []
     rows = conn.execute(
         "SELECT r.id, r.value, r.provenance, r.updated, r.updated_reason, p.tier, p.access, p.disposition, "
@@ -413,7 +441,8 @@ def main(argv: list[str] | None = None) -> int:
         for row in fk:
             print("  FK PROBLEM", tuple(row))
         print(f"\n{len(log)} change(s); foreign_key_check: {len(fk)} problem(s); door gate: {len(refusals)} refusal(s) "
-              "(applicability rationales excluded -- Task F)")
+              "(shape rules only: applicability rationales are Task F's, and an api row's citation is NOT "
+              "compared against the API here -- that is refresh_citations.py, run first; see gate() docstring)")
         for r in refusals:
             print("  REFUSED", r[:220])
         if fk or refusals or not do_apply:

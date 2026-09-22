@@ -206,7 +206,8 @@ def apply_changes(conn) -> list[str]:
         conn.execute("UPDATE paper_fields SET mined_by = ?, evidence = ? WHERE record_id = ?", (mined, evidence, pid))
         existing = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (pid,)).fetchone()[0] or ""
         if TAG not in existing:
-            joined = f"{existing} | {REASON}" if existing.startswith(TODAY) else REASON
+            # ALWAYS append; never replace (PR #30 review, 2026-09-22).
+            joined = f"{existing} | {REASON}" if existing else REASON
             conn.execute("UPDATE records SET updated = ?, updated_reason = ? WHERE id = ?", (TODAY, joined, pid))
         log.append(f"read   {pid}")
     for assertion, yielded_by in ASSERTIONS:
@@ -223,8 +224,9 @@ def apply_changes(conn) -> list[str]:
         log.append(f"assert {assertion.id} <- {yielded_by} [{assertion.certainty}]{rel}")
     existing = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (NEVEN,)).fetchone()[0] or ""
     if TAG not in existing:
+        # ALWAYS append; never replace (PR #30 review, 2026-09-22).
         conn.execute("UPDATE records SET updated = ?, updated_reason = ? WHERE id = ?",
-                     (TODAY, f"{existing} | {NEVEN_NOTE}" if existing.startswith(TODAY) else NEVEN_NOTE, NEVEN))
+                     (TODAY, f"{existing} | {NEVEN_NOTE}" if existing else NEVEN_NOTE, NEVEN))
         log.append(f"note   {NEVEN}")
     return log
 

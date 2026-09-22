@@ -57,6 +57,10 @@ def main() -> int:
         # is what verifies it against the API. This script early-returns on the
         # live store, where the record already exists.
         citation_origin="api",
+        # A Sprint 1 transcription kept verbatim so this historical one-off
+        # stays reproducible offline; refresh_citations.py is what checks it
+        # against the API. Declared rather than silently trusted (PR #30 review).
+        citation_source="replay",
         citation=(
             "Lenat, D. and Marcus, G., \"Getting from Generative AI to "
             "Trustworthy AI: What LLMs might learn from Cyc\", "

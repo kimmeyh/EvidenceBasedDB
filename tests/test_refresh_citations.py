@@ -109,3 +109,114 @@ def test_json_report_is_written(store, tmp_path):
     assert proc.returncode == 0, proc.stderr
     report = json.loads(out.read_text(encoding="utf-8"))
     assert {e["id"]: e["status"] for e in report} == {"dupont": "DIFFERS", "vendor": "NO-ID"}
+
+
+EMPTY_TITLE_CROSSREF = json.dumps({"message": {
+    "DOI": "10.5555/notitle", "title": [], "author": [{"family": "Z", "given": "Q"}],
+    "issued": {"date-parts": [[2020]]}}}).encode()
+
+
+def _run_with(db_path, export_dir, args, fetcher_src):
+    """Same as _run, but the caller supplies the fetcher line."""
+    wrapper = (
+        "import sys, importlib.util\nfrom pathlib import Path\n"
+        f"sys.path.insert(0, {str(ROOT)!r})\n"
+        f"spec = importlib.util.spec_from_file_location('refresh', {str(SCRIPT)!r})\n"
+        "mod = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(mod)\n"
+        f"mod.DB_PATH = Path({str(db_path)!r}); mod.EXPORT_DIR = Path({str(export_dir)!r})\n"
+        f"MARKED = {MARKED_TITLE_CROSSREF!r}\n"
+        f"{fetcher_src}\n"
+        f"raise SystemExit(mod.main({args!r}))\n"
+    )
+    return subprocess.run([sys.executable, "-c", wrapper], capture_output=True, text=True, encoding="utf-8")
+
+
+def test_a_provider_record_with_no_title_is_an_error_not_a_silent_skip(store):
+    """PR #30 review: apply() skipped DIFFERS rows whose fetched title was
+    empty and main() still printed success, so a paper kept its stale
+    citation and nothing named it. An empty provider title is an ERROR --
+    the run could not answer the question it was asked."""
+    db_path, export_dir = store
+    conn = connect(db_path)
+    conn.execute("UPDATE paper_fields SET access = 'DOI:10.5555/notitle' WHERE record_id = 'dupont'")
+    conn.commit(); conn.close()
+    src = f"mod.FETCHER = lambda url, accept: {EMPTY_TITLE_CROSSREF!r}"
+    proc = _run_with(db_path, export_dir, ["--apply"], src)
+    assert "ERROR   dupont" in proc.stdout
+    assert "no title" in proc.stdout
+    assert proc.returncode == 1, "a run that could not resolve a paper must not report success"
+    conn = connect(db_path)
+    kept = conn.execute("SELECT provenance FROM records WHERE id='dupont'").fetchone()["provenance"]
+    conn.close()
+    assert kept == STALE, "the stale citation must be left alone, not blanked"
+
+
+def test_ids_limits_the_run_to_the_papers_named(store):
+    """The subset filter is the safety rail for a targeted re-run; a defect
+    here rewrites every paper instead of the ones asked for."""
+    db_path, export_dir = store
+    proc = _run(db_path, export_dir, ["--ids", "vendor"])
+    assert proc.returncode == 0, proc.stderr
+    assert "vendor" in proc.stdout
+    assert "dupont" not in proc.stdout, "--ids must exclude every paper not named"
+    assert "1 paper(s)" in proc.stdout
+
+
+def test_an_unresolvable_paper_is_reported_and_the_run_says_so(store):
+    """The ERROR path: the provider raises, the paper is named, and the exit
+    code reflects that the run did not do what was asked."""
+    db_path, export_dir = store
+    src = "mod.FETCHER = lambda url, accept: (_ for _ in ()).throw(RuntimeError('HTTP Error 503'))"
+    proc = _run_with(db_path, export_dir, ["--apply"], src)
+    assert "ERROR   dupont" in proc.stdout and "503" in proc.stdout
+    assert proc.returncode == 1
+
+
+MARKED_TITLE_CROSSREF = '{"message": {"DOI": "10.5555/marked", "title": ["Benchmarks NOTE: superseded by the 2024 revision"], "author": [{"family": "Z", "given": "Q"}], "issued": {"date-parts": [[2020]]}}}'.encode()
+
+
+def test_every_row_is_validated_before_any_row_is_written(store):
+    """DECIDE, THEN WRITE. apply() ran no validation at all until the PR #30
+    review: it issued a direct UPDATE on `records` and skipped every
+    validate_paper rule. A provider title carrying an audit marker
+    ("NOTE:", "recorded once" -- ordinary English) would then write a
+    citation the door refuses on the next pass, leaving a row no script
+    could fix."""
+    db_path, export_dir = store
+    conn = connect(db_path)
+    conn.execute("UPDATE paper_fields SET access = 'DOI:10.5555/marked' WHERE record_id = 'dupont'")
+    conn.commit(); conn.close()
+    proc = _run_with(db_path, export_dir, ["--apply"],
+                     "mod.FETCHER = lambda url, accept: MARKED")
+    assert proc.returncode != 0, "a citation the door would refuse must not be written"
+    assert "audit-trail" in (proc.stdout + proc.stderr)
+    conn = connect(db_path)
+    kept = conn.execute("SELECT provenance FROM records WHERE id='dupont'").fetchone()["provenance"]
+    conn.close()
+    assert kept == STALE, "nothing is written when validation refuses"
+
+
+def test_a_github_backed_record_is_refreshed_not_reported_as_a_broken_doi(store):
+    """Copilot review of PR #30, 2026-09-22. review() routed every
+    non-arXiv kind to fetch_doi(), so the repository record Task G added
+    reported ERROR -- "DOI merlinquantum/merlin is not registered at
+    doi.org ... record the paper as hand-transcribed" -- which is both
+    wrong and actively misleading advice. Route by kind.
+    """
+    db_path, export_dir = store
+    conn = connect(db_path)
+    conn.execute("INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
+                 "VALUES ('repo', 'paper', 'A repository', 'stale citation', 'N/A', '2026-09-20', 'seeded')")
+    conn.execute("INSERT INTO paper_fields (record_id, tier, access, disposition) "
+                 "VALUES ('repo', 'seen', 'https://github.com/merlinquantum/merlin', 'Code repository: MerLin')")
+    conn.commit(); conn.close()
+
+    src = ("from tests.test_citations import GITHUB_JSON\n"
+           "mod.FETCHER = lambda url, accept: GITHUB_JSON")
+    proc = _run_with(db_path, export_dir, ["--ids", "repo"], src)
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert "ERROR" not in proc.stdout, proc.stdout
+    assert "DIFFERS repo" in proc.stdout, "the stale citation should be reported as differing"
+    assert "merlinquantum, " in proc.stdout, "the fetched citation comes from the GitHub API"
+    assert "not registered at doi.org" not in proc.stdout, (
+        "a repository must never be reported as an unregistered DOI")

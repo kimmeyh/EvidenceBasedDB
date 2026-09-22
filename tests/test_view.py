@@ -86,7 +86,7 @@ def _seed_store(db_path: Path):
             value="A Test Paper About QML",
             tier="read",
             citation="Tester, T., \"A Test Paper About QML\", 2026",
-            citation_origin="api",
+            citation_origin="api", citation_source="replay",  # fixture replays a rendered citation
             access="arXiv:0000.00002",
             disposition="fixture",
             context="qml",

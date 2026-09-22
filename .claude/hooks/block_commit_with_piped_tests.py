@@ -83,22 +83,22 @@ def _strip_literals(cmd: str) -> str:
     return cmd
 
 
-def _piped_test_segments(cmd: str) -> list[str]:
-    """Segments where a test run is piped into something else.
+def _piped_test_segments(cmd: str) -> list[tuple[int, str]]:
+    """(offset, segment) for each segment where a test run is piped onward.
 
     Split on the operators that START a new command with its own exit
     status (&&, ||, ;, newline). Within one segment, a `|` after a test
-    runner means the segment's status is the pipeline's last command.
+    runner means the segment's status is the pipeline's last command. The
+    offset is the segment's position in the original string, so the caller
+    can tell whether the piped run comes BEFORE the commit it would gate.
     """
-    segments = re.split(r"&&|\|\||;|\n", cmd)
     out = []
-    for seg in segments:
+    pos = 0
+    for seg in re.split(r"&&|\|\||;|\n", cmd):
         m = TEST_RUN.search(seg)
-        if not m:
-            continue
-        rest = seg[m.end():]
-        if EATS_EXIT_CODE.search(rest):
-            out.append(seg.strip())
+        if m and EATS_EXIT_CODE.search(seg[m.end():]):
+            out.append((pos, seg.strip()))
+        pos += len(seg) + 2  # approximate; only relative order is used
     return out
 
 
@@ -113,14 +113,21 @@ def main() -> int:
         return 0
 
     stripped = _strip_literals(cmd)
-    if not GIT_COMMIT.search(stripped):
+    commit = GIT_COMMIT.search(stripped)
+    if not commit:
         return 0
 
-    piped = _piped_test_segments(stripped)
+    # ORDER MATTERS: only a piped test run BEFORE the commit can pretend to
+    # gate it. `git commit -m x && pytest -q | tail` is an ordinary workflow
+    # -- commit, then run the suite and read the tail -- and the commit's
+    # status cannot depend on a pipeline downstream of it. Blocking that was
+    # a false positive (PR #30 review, 2026-09-22), the same over-match class
+    # this sprint had just fixed in block_unraw_escape.py.
+    piped = [(off, seg) for off, seg in _piped_test_segments(stripped) if off < commit.start()]
     if not piped:
         return 0
 
-    sample = "\n    ".join(s[:100] for s in piped[:2])
+    sample = "\n    ".join(seg[:100] for _, seg in piped[:2])
     print(
         "[BLOCKED] `git commit` gated on a test run whose exit code a pipe discarded\n"
         "(Sprint 4 retrospective improvement 1).\n"

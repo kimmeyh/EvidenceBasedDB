@@ -114,7 +114,7 @@ def build_record(entry: dict, fetcher=None, today: str = "") -> PaperRecord:
     if citations.parse_access(access):
         md, rendered = citations.resolve(access, fetcher=fetcher or FETCHER or citations.PacedFetcher())
         paper = PaperRecord(id=entry.get("id") or make_id(md), value=entry.get("title") or md.title,
-                            citation=rendered, citation_origin="api", **common)
+                            citation=rendered, citation_origin="api", citation_source="api", **common)
     else:
         if not entry.get("id"):
             raise ValueError("a hand-origin record needs --id (nothing to derive it from)")

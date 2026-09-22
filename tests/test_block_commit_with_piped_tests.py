@@ -92,3 +92,17 @@ def test_malformed_payload_fails_open():
     proc = subprocess.run([sys.executable, str(HOOK)], input="not json",
                           capture_output=True, text=True, encoding="utf-8")
     assert proc.returncode == 0
+
+
+@pytest.mark.parametrize("command", [
+    "git add -A && git commit -m x && pytest -q | tail -3",
+    "git commit -m msg && pytest -q | tail -1",
+])
+def test_allows_a_commit_that_precedes_the_piped_test_run(command):
+    """ORDER MATTERS. A commit already made cannot be gated on a pipeline
+    that runs after it: "commit, then run the suite and read the tail" is an
+    ordinary workflow. Blocking it was a false positive (Copilot/Claude
+    review of PR #30, 2026-09-22) of exactly the over-match class this
+    sprint had just fixed in block_unraw_escape.py."""
+    proc = run(command)
+    assert proc.returncode == 0, proc.stderr

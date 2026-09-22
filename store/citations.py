@@ -85,8 +85,16 @@ def parse_access(access: str) -> tuple[str, str] | None:
     """
     if not access:
         return None
+    # A local path is a path, not a DOI carrier. `C:/x/10.5555/12345678.pdf`
+    # matched the DOI regex and silently reclassified a hand-origin paper as
+    # api, which then fetched a DIFFERENT paper's metadata under a spurious
+    # DOI (PR #30 review, 2026-09-22). Latent at 48 papers; likely at the
+    # 1,618-file bulk scale. A DOI in a path-shaped string must announce
+    # itself with the `doi:` / `DOI:` / `doi.org/` prefix.
+    local = access.split(" | ", 1)[0]
+    path_shaped = bool(re.match(r"^[A-Za-z]:[\\/]|^[\\/]{1,2}[^\\/]", local))
     m = _DOI.search(access)
-    if m:
+    if m and (not path_shaped or re.search(r"(?i)doi[:.]|doi\.org/", access)):
         return ("doi", m.group(1).rstrip("."))
     m = _ARXIV_ID.search(access)
     if m and ("arxiv" in access.lower() or "/abs/" in access):
@@ -99,7 +107,8 @@ def parse_access(access: str) -> tuple[str, str] | None:
 
 RETRY_CODES = (406, 429, 500, 502, 503, 504)
 RETRY_SLEEPS_S = (3.0, 6.0)  # two retries: 3 attempts in all
-_sleep = time.sleep  # module attribute so tests can stub the wait
+_sleep = time.sleep          # module attributes so tests can stub the wait
+_monotonic = time.monotonic  # and the clock PacedFetcher measures against
 
 
 def default_fetcher(url: str, accept: str, _open=None) -> bytes:
@@ -452,8 +461,10 @@ class PacedFetcher:
 
     def __call__(self, url: str, accept: str) -> bytes:
         if "export.arxiv.org" in url:
-            wait = self.interval_s - (time.monotonic() - self._last_arxiv)
+            wait = self.interval_s - (_monotonic() - self._last_arxiv)
             if wait > 0:
-                time.sleep(wait)
-            self._last_arxiv = time.monotonic()
+                # Module attribute, not time.sleep directly, so tests can stub
+                # the wait like the rest of this file does (PR #30 review).
+                _sleep(wait)
+            self._last_arxiv = _monotonic()
         return self.inner(url, accept)
