@@ -125,6 +125,7 @@ def _run_with(db_path, export_dir, args, fetcher_src):
         "mod = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(mod)\n"
         f"mod.DB_PATH = Path({str(db_path)!r}); mod.EXPORT_DIR = Path({str(export_dir)!r})\n"
         f"MARKED = {MARKED_TITLE_CROSSREF!r}\n"
+        f"DATACITE = {DATACITE_ARXIV_NO_JOURNAL_REF.encode()!r}\n"
         f"{fetcher_src}\n"
         f"raise SystemExit(mod.main({args!r}))\n"
     )
@@ -220,3 +221,54 @@ def test_a_github_backed_record_is_refreshed_not_reported_as_a_broken_doi(store)
     assert "merlinquantum, " in proc.stdout, "the fetched citation comes from the GitHub API"
     assert "not registered at doi.org" not in proc.stdout, (
         "a repository must never be reported as an unregistered DOI")
+
+
+DATACITE_ARXIV_NO_JOURNAL_REF = json.dumps({"data": {"attributes": {
+    "doi": "10.48550/arxiv.2303.05509",
+    "titles": [{"title": "Quantum-Enhanced Greedy Combinatorial Optimization Solver"}],
+    "creators": [{"familyName": "Dupont", "givenName": "Maxime"},
+                 {"familyName": "Evert", "givenName": "Bram"}],
+    "publicationYear": 2023, "publisher": "arXiv", "version": "2",
+    "dates": [{"date": "2023-11-17T01:28:51Z", "dateType": "Submitted"}],
+    "relatedIdentifiers": [{"relationType": "IsVersionOf", "relatedIdentifierType": "DOI",
+                            "relatedIdentifier": "10.1126/sciadv.adi0487"}],
+    "url": "https://arxiv.org/abs/2303.05509",
+}}})
+
+
+def test_a_fallback_that_returns_less_is_reported_as_poorer_not_differs(store):
+    """When arXiv refuses, DataCite answers -- but its record for an arXiv
+    DOI carries no journal reference, so the re-render DROPS the published
+    venue that an earlier arXiv-sourced run had captured.
+
+    Proposing that as a change would quietly trade a richer citation for a
+    poorer one every time arXiv rate-limits, and `--apply` would then write
+    it. The run reports POORER and leaves the row alone (PR #30 review
+    round, 2026-09-22; found by re-running the live refresh after the
+    other fixes, not by a reviewer).
+    """
+    db_path, export_dir = store
+    richer = ('Dupont, M., Evert, B., "Quantum-Enhanced Greedy Combinatorial Optimization Solver," '
+              'arXiv:2303.05509v2, Science Advances 9, 45 (2023), DOI:10.1126/sciadv.adi0487, 2023-11-17')
+    conn = connect(db_path)
+    conn.execute("UPDATE records SET provenance = ?, value = ? WHERE id = 'dupont'",
+                 (richer, "Quantum-Enhanced Greedy Combinatorial Optimization Solver"))
+    conn.commit(); conn.close()
+
+    src = ("import urllib.error\n"
+           "def fetcher(url, accept):\n"
+           "    if 'export.arxiv.org' in url:\n"
+           "        raise urllib.error.HTTPError(url, 406, 'refused', {}, None)\n"
+           "    return DATACITE\n"
+           "mod.FETCHER = fetcher\n"
+           "mod.citations._sleep = lambda s: None")
+    proc = _run_with(db_path, export_dir, ["--apply"], src)
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert "POORER  dupont" in proc.stdout, proc.stdout
+    assert "returned less than the stored citation carries" in proc.stdout
+
+    conn = connect(db_path)
+    kept = conn.execute("SELECT provenance FROM records WHERE id='dupont'").fetchone()["provenance"]
+    conn.close()
+    assert kept == richer, "the richer citation must survive an --apply run"
+    assert "Science Advances" in kept

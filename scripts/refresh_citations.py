@@ -105,10 +105,32 @@ def review(conn, ids: list[str] | None = None, fetcher=None) -> list[dict]:
                                 "refusing to write a citation with an empty title"))
             out.append(entry)
             continue
+        status = "SAME" if rendered == r["provenance"] and md.title == r["value"] else "DIFFERS"
+        # A FALLBACK provider can carry LESS than the primary one: DataCite's
+        # record for an arXiv DOI has no journal reference, so when arXiv
+        # refuses, the re-render drops "Science Advances 9, 45 (2023)" that a
+        # previous arXiv-sourced run had captured. Proposing that as a change
+        # would quietly trade a richer citation for a poorer one, every time
+        # arXiv rate-limits. Report it as POORER and leave the row alone
+        # (PR #30 review round, 2026-09-22).
+        if status == "DIFFERS" and md.extra.get("provider") == "DataCite" and kind == "arxiv":
+            stored_wo = (r["provenance"] or "").replace(md.journal_ref, "") if md.journal_ref else r["provenance"]
+            if rendered != stored_wo and _is_subset_of(rendered, r["provenance"]):
+                status = "POORER"
+                entry["note"] = (f"the fallback provider ({provider}) returned less than the stored citation "
+                                 "carries; the store keeps the richer one")
         entry.update(kind=kind, ident=ident, fetched_citation=rendered, fetched_title=md.title, provider=provider,
-                     status="SAME" if rendered == r["provenance"] and md.title == r["value"] else "DIFFERS")
+                     status=status)
         out.append(entry)
     return out
+
+
+def _is_subset_of(fetched: str, stored: str) -> bool:
+    """Every comma-separated element of the fetched citation also appears in
+    the stored one: the fetched string says nothing new, only less."""
+    if not stored:
+        return False
+    return all(part.strip() in stored for part in fetched.split(", ") if part.strip())
 
 
 def _validated(conn, e: dict, citation: str, title: str) -> None:
@@ -185,10 +207,12 @@ def main(argv: list[str] | None = None) -> int:
         for e in report:
             counts[e["status"]] = counts.get(e["status"], 0) + 1
             line = f"{e['status']:7s} {e['id']}"
-            if e["status"] == "DIFFERS":
+            if e["status"] in ("DIFFERS", "POORER"):
                 line += f"\n         stored : {e['stored_citation'][:140]}\n         fetched: {e['fetched_citation'][:140]}"
                 if e["fetched_title"] != e["stored_value"]:
                     line += f"\n         title  : {e['fetched_title'][:140]}"
+                if e.get("note"):
+                    line += f"\n         note   : {e['note']}"
             elif e["status"] == "ERROR":
                 line += f"  ({e['error']})"
             print(line)
