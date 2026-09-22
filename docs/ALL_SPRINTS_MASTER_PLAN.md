@@ -241,6 +241,38 @@ assigned Sprint 2" language below (F5) predates this refinement.
   adjudication cost per record, which bounds how many papers can reach
   `read` at all). Sequenced for Sprint 5.
 
+**F29. Cold-mode adjudication timing: the number F11 did not measure (~small, no-history) Priority 22**
+- Phase: Measurement. Added 2026-09-22 (Sprint 4 retrospective improvement
+  6), from the F11 run's own result.
+- **What F11 measured, and what it did not.** On 2026-09-21 the team lead
+  adjudicated the 18 F10-reviewed records in 19.4 minutes, 1.08 per record,
+  accepting all 18 (log: `docs/sprints/SPRINT_4_F11_TIMING_LOG.json`). That
+  is CONFIRM MODE: the records had already been corrected by Tasks C, F and
+  H, and each was shown with F10's own finding printed beneath it. It is a
+  real and useful number -- it is the cost of a human pass over
+  model-corrected records -- but it is not the number F10's 599 seconds
+  compares against, and this repository's own escalation trigger says a
+  review that confirms everything with zero rejections is evidence about
+  the protocol as much as about the records.
+- **What this card measures**: the same protocol COLD. The source is opened
+  before the corrected record is shown; F10's findings are not displayed;
+  the record is adjudicated field by field against the source. Run on a
+  sample (5 to 8 records is enough to bound it), not all 18, because the
+  point is the ratio to confirm mode, not a second full pass.
+- Platform: `scripts/adjudication_timing.py --mode cold` (built in Sprint 4
+  improvement 6; it already records the mode in its log), a packet variant
+  that omits the findings block, `.claude/model_assignment_heuristics.json`
+  `learning_log`.
+- **Why it matters for scale**: ADR-0004 says adjudication cost is the
+  constraint on the whole design. With about 1,300 papers arriving, the
+  planning question is how many can ever reach `read`. Confirm mode says
+  about a minute each given a correct pipeline; cold mode says what it
+  costs when the pipeline is not trusted, and the gap between them is the
+  value of the pipeline, stated in minutes.
+- Depends on: nothing technical. The tool and the packet generator both
+  exist. Do NOT re-run on the same 18 records in confirm mode: that
+  measurement is done.
+
 **F11. Team-lead adjudication timing, run AFTER F7-F10 (~unknown, no-history) Priority 15**
 - Phase: Measurement. Team lead, 2026-09-17: "yes backlog, yes replacing
   task f. We are going to move it after completion of backlog items

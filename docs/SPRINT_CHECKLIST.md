@@ -32,6 +32,8 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 - [ ] Full suite green; committed export matches a fresh regeneration from the store (`tests/test_export_currency.py`)
 - [ ] Plan acceptance criteria walked line by line WITH EVIDENCE
 - [ ] Handed to team lead for manual validation (questions correct from here)
+- [ ] Manual Validation list contains ONLY end-user functionality and team-lead decisions; no test run, dry run, byte-identity check or data spot-check appears in it (those are done before hand-over; state in one line that they passed)
+- [ ] Every amendment to an existing ADR presented as `ADR-<n> <adr-name>`, then What changed and Why, then the specific language quoted for review; ADR reviews first, functional steps after
 
 ## Phase 6: Push & Finalize PR
 - [ ] Branch pushed; existing draft PR body updated (still DRAFT); interim status given, not "ready"
