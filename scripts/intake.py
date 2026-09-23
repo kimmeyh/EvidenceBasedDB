@@ -51,7 +51,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
 from store.export import regenerate  # noqa: E402
-from store.ingest import HAND_MARKER, PaperRecord, _ANCHOR, _TIER_IN_TEXT, insert_paper, validate_paper  # noqa: E402
+from store.ingest import (  # noqa: E402
+    DERIVED_BY_DOOR, HAND_MARKER, PaperRecord, _ANCHOR, _TIER_IN_TEXT, insert_paper, validate_paper,
+)  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 FETCHER = None  # tests inject; the real run paces arXiv
@@ -114,7 +116,10 @@ def build_record(entry: dict, fetcher=None, today: str = "") -> PaperRecord:
     if citations.parse_access(access):
         md, rendered = citations.resolve(access, fetcher=fetcher or FETCHER or citations.PacedFetcher())
         paper = PaperRecord(id=entry.get("id") or make_id(md), value=entry.get("title") or md.title,
-                            citation=rendered, citation_origin="api", citation_source="api", **common)
+                            citation=rendered, citation_origin="api",
+                            # This citation came from citations.resolve() one line above,
+                            # so it carries the door's own marker, not a self-declaration.
+                            citation_source=DERIVED_BY_DOOR, **common)
     else:
         if not entry.get("id"):
             raise ValueError("a hand-origin record needs --id (nothing to derive it from)")

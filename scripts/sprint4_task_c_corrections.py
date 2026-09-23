@@ -66,7 +66,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
 from store.export import regenerate  # noqa: E402
-from store.ingest import HAND_MARKER, PaperRecord, validate_paper  # noqa: E402
+from store.ingest import HAND_MARKER, PaperRecord, append_updated_reason, validate_paper  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 METADATA_PATH = ROOT / "scripts" / "seed_set_metadata.json"
@@ -293,20 +293,16 @@ def _fk_columns(conn) -> list[tuple[str, str]]:
 
 
 def _append_reason(conn, pid: str, note: str) -> None:
+    """Thin wrapper over the ONE append-only implementation in store.ingest.
+
+    This function used to spell the join itself, with an inverted ternary
+    that destroyed 44 records' history. It now delegates, so there is one
+    behavior and one behavioral test (PR #30 round-2 audit, 2026-09-23).
+    """
     existing = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (pid,)).fetchone()[0] or ""
     if TAG in existing and note in existing:
         return
-    # ALWAYS append; never replace. The ternary here was inverted until
-    # 2026-09-22 (PR #30 review): it kept prior text only when the row had
-    # already been touched the SAME DAY, and discarded it in the normal case
-    # of older history. That ran, and erased "Sprint 1 Task F: 46-paper seed
-    # set loaded at seen tier" from 43 records and the Task E premise-falsifier
-    # note from a 44th. updated_reason is the row's own account of why it looks
-    # the way it does; a record that cannot say where its value came from is
-    # the defect this whole system exists against (CLAUDE.md). Guarded by
-    # tests/test_updated_reason_is_append_only.py.
-    joined = f"{existing} | {TAG}: {note}" if existing else f"{TAG}: {note}"
-    conn.execute("UPDATE records SET updated = ?, updated_reason = ? WHERE id = ?", (TODAY, joined, pid))
+    append_updated_reason(conn, pid, f"{TAG}: {note}", TODAY)
 
 
 def apply_changes(conn) -> list[str]:

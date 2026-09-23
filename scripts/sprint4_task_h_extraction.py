@@ -42,7 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
 from store.export import regenerate  # noqa: E402
-from store.ingest import AssertionRecord, insert_assertion, set_tier  # noqa: E402
+from store.ingest import AssertionRecord, append_updated_reason, insert_assertion, set_tier  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 TODAY = "2026-09-19"
@@ -206,9 +206,8 @@ def apply_changes(conn) -> list[str]:
         conn.execute("UPDATE paper_fields SET mined_by = ?, evidence = ? WHERE record_id = ?", (mined, evidence, pid))
         existing = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (pid,)).fetchone()[0] or ""
         if TAG not in existing:
-            # ALWAYS append; never replace (PR #30 review, 2026-09-22).
-            joined = f"{existing} | {REASON}" if existing else REASON
-            conn.execute("UPDATE records SET updated = ?, updated_reason = ? WHERE id = ?", (TODAY, joined, pid))
+            # ONE append-only implementation (PR #30 round-2 audit).
+            append_updated_reason(conn, pid, REASON, TODAY)
         log.append(f"read   {pid}")
     for assertion, yielded_by in ASSERTIONS:
         if conn.execute("SELECT 1 FROM records WHERE id = ?", (assertion.id,)).fetchone():
@@ -224,9 +223,8 @@ def apply_changes(conn) -> list[str]:
         log.append(f"assert {assertion.id} <- {yielded_by} [{assertion.certainty}]{rel}")
     existing = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (NEVEN,)).fetchone()[0] or ""
     if TAG not in existing:
-        # ALWAYS append; never replace (PR #30 review, 2026-09-22).
-        conn.execute("UPDATE records SET updated = ?, updated_reason = ? WHERE id = ?",
-                     (TODAY, f"{existing} | {NEVEN_NOTE}" if existing else NEVEN_NOTE, NEVEN))
+        # ONE append-only implementation (PR #30 round-2 audit).
+        append_updated_reason(conn, NEVEN, NEVEN_NOTE, TODAY)
         log.append(f"note   {NEVEN}")
     return log
 

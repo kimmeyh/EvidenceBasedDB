@@ -80,6 +80,18 @@ def fake_fetcher(url: str, accept: str) -> bytes:
     (r"C:\Users\x\10.5555\12345678.pdf", None),
     # ... but a real DOI beside a path still resolves, because it says "doi".
     ("D:/Papers/paper.pdf | https://doi.org/10.1145/3007651", ("doi", "10.1145/3007651")),
+    # The POSIX and UNC branch of the path check, untested until the
+    # round-2 audit: deleting that alternative left the whole suite green
+    # while a share path resolved as a DOI.
+    ("/mnt/papers/10.5555/12345678.pdf", None),
+    ("//server/share/10.5555/12345678.pdf", None),
+    # A RELATIVE path, which the first version of the fix missed entirely.
+    ("papers/10.5555/12345678.pdf", None),
+    ("../papers/10.5555/12345678.pdf", None),
+    # A path with NO document extension: only the rooted-path signal can
+    # catch these, so both signals stay independently load-bearing.
+    ("/mnt/archive/10.5555/12345678", None),
+    ("//server/share/10.5555/12345678", None),
 ])
 def test_parse_access_recognises_only_resolvable_ids(access, expected):
     assert citations.parse_access(access) == expected

@@ -92,13 +92,29 @@ def _piped_test_segments(cmd: str) -> list[tuple[int, str]]:
     offset is the segment's position in the original string, so the caller
     can tell whether the piped run comes BEFORE the commit it would gate.
     """
+    # TRUE offsets, from a capturing split that hands back the separators.
+    #
+    # The first version estimated with `pos += len(seg) + 2`, correct for
+    # `&&` and `||` but one too many for `;` and a newline. The drift
+    # accumulated, and once it exceeded the distance from the piped test to
+    # the commit, the ordering comparison inverted and the hook ALLOWED the
+    # exact mistake it exists to stop. Measured 2026-09-23 (PR #30 round-2
+    # audit): blocked at 19 preceding newline-separated lines, allowed at
+    # 20. A 20-line Bash block is an ordinary command here, so this was live.
+    #
+    # A false negative in a guard is worse than the false positive it
+    # replaced: the false positive was visible and arguable, this was
+    # silent. "Only relative order is used" was the flawed premise --
+    # relative order was derived from an absolute offset that drifted.
     out = []
+    parts = re.split(r"(&&|\|\||;|\n)", cmd)
     pos = 0
-    for seg in re.split(r"&&|\|\||;|\n", cmd):
+    for i in range(0, len(parts), 2):
+        seg = parts[i]
         m = TEST_RUN.search(seg)
         if m and EATS_EXIT_CODE.search(seg[m.end():]):
             out.append((pos, seg.strip()))
-        pos += len(seg) + 2  # approximate; only relative order is used
+        pos += len(seg) + (len(parts[i + 1]) if i + 1 < len(parts) else 0)
     return out
 
 

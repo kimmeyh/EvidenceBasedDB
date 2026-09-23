@@ -59,6 +59,11 @@ _ATOM = {"a": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/
 
 Fetcher = Callable[[str, str], bytes]  # (url, accept) -> body
 
+_ACCESS_SEP = " | "  # `<local path> | <identifier or url>`
+_ROOTED_PATH = re.compile(r"^[A-Za-z]:[\\/]|^[\\/]{1,2}[^\\/]")
+_DOCUMENT_FILE = re.compile(r"[\\/][^\\/]*\.(?:pdf|epub|djvu|txt|md|html?|docx?)$", re.IGNORECASE)
+_DOI_ANNOUNCED = re.compile(r"(?i)doi[:.]|doi\.org/")
+
 
 @dataclass
 class Metadata:
@@ -80,26 +85,42 @@ class Metadata:
 def parse_access(access: str) -> tuple[str, str] | None:
     """Recognise a resolvable identifier inside an `access` field.
 
-    Returns ("arxiv", "2303.05509") or ("doi", "10.1145/3007651"), or None
-    when the field names only a local file, a bare URL, or nothing.
+    Returns ("arxiv", "2303.05509"), ("doi", "10.1145/3007651") or
+    ("github", "owner/name"), or None when the field names only a local
+    file or nothing.
+
+    A LOCAL PATH IS NOT AN IDENTIFIER CARRIER. `papers/10.5555/x.pdf` has a
+    DOI-shaped folder in it, and reading that as a DOI silently reclassifies
+    a hand-origin paper as api and fetches a DIFFERENT paper's metadata --
+    the one route found where a wrong citation attaches with no error
+    (PR #30 review, 2026-09-22; extended to relative paths 2026-09-23).
+
+    The access convention is `<local path> | <identifier>`, so path
+    detection is PER SEGMENT: a path segment is skipped, and the rest of
+    the string is searched normally. Judging the whole string by its first
+    segment dropped a legitimate bare DOI after the separator, which the
+    round-2 review predicted and a probe confirmed.
     """
     if not access:
         return None
-    # A local path is a path, not a DOI carrier. `C:/x/10.5555/12345678.pdf`
-    # matched the DOI regex and silently reclassified a hand-origin paper as
-    # api, which then fetched a DIFFERENT paper's metadata under a spurious
-    # DOI (PR #30 review, 2026-09-22). Latent at 48 papers; likely at the
-    # 1,618-file bulk scale. A DOI in a path-shaped string must announce
-    # itself with the `doi:` / `DOI:` / `doi.org/` prefix.
-    local = access.split(" | ", 1)[0]
-    path_shaped = bool(re.match(r"^[A-Za-z]:[\\/]|^[\\/]{1,2}[^\\/]", local))
-    m = _DOI.search(access)
-    if m and (not path_shaped or re.search(r"(?i)doi[:.]|doi\.org/", access)):
+
+    segments = [seg.strip() for seg in access.split(_ACCESS_SEP)]
+    # A segment is path-shaped when it is rooted (drive letter or leading
+    # slash) OR ends in a document filename -- the second signal is what
+    # catches a relative path like `papers/10.5555/x.pdf`.
+    searchable = " ".join(
+        seg for seg in segments
+        if not (_ROOTED_PATH.match(seg) or _DOCUMENT_FILE.search(seg))
+        or _DOI_ANNOUNCED.search(seg)  # "...doi:10.x/y" inside a path still counts
+    )
+
+    m = _DOI.search(searchable)
+    if m:
         return ("doi", m.group(1).rstrip("."))
-    m = _ARXIV_ID.search(access)
-    if m and ("arxiv" in access.lower() or "/abs/" in access):
+    m = _ARXIV_ID.search(searchable)
+    if m and ("arxiv" in searchable.lower() or "/abs/" in searchable):
         return ("arxiv", m.group(1))
-    m = _GITHUB.search(access)
+    m = _GITHUB.search(searchable)
     if m:
         return ("github", f"{m.group(1)}/{m.group(2)}")  # Sprint 4 Task G: a repository is a source of record too
     return None

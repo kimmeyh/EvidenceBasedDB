@@ -33,7 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
 from store.export import regenerate  # noqa: E402
-from store.ingest import PaperRecord, validate_paper  # noqa: E402
+from store.ingest import PaperRecord, append_updated_reason, validate_paper  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 TODAY = "2026-09-19"
@@ -294,11 +294,10 @@ def apply_changes(conn) -> list[str]:
                                      "disposition rewritten" if pid in DISPOSITIONS else ""] if x)
         existing = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (pid,)).fetchone()[0] or ""
         if TAG not in existing:
-            # ALWAYS append; never replace (PR #30 review, 2026-09-22 -- the
-            # same inverted ternary as Task C, which erased 44 records' Sprint 1
-            # provenance). Guarded by tests/test_updated_reason_is_append_only.py.
-            joined = f"{existing} | {TAG}: {note}" if existing else f"{TAG}: {note}"
-            conn.execute("UPDATE records SET updated = ?, updated_reason = ? WHERE id = ?", (TODAY, joined, pid))
+            # ONE append-only implementation, in store.ingest, executed by a
+            # behavioral test. This site used to spell the join itself
+            # (PR #30 round-2 audit, 2026-09-23).
+            append_updated_reason(conn, pid, f"{TAG}: {note}", TODAY)
         log.append(f"{pid}: {diff or 'same set'}" + (" (disposition)" if pid in DISPOSITIONS else ""))
     return log
 

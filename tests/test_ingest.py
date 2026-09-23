@@ -406,7 +406,10 @@ def test_the_door_marks_what_it_derived_so_a_replay_is_distinguishable(db):
     paper = PaperRecord(id="dupont", tier="seen", access="arXiv:2303.05509", disposition="why",
                         context="qml", citation_origin="api", updated="2026-09-22", updated_reason="test")
     derived = derive_citation(paper, fetcher=fake_fetcher)
-    assert derived.citation_source == "api"
+    from store.ingest import DERIVED_BY_DOOR
+    # Identity, not equality: the marker is a sentinel object precisely so a
+    # caller cannot produce one (PR #30 round-2 review, 2026-09-23).
+    assert derived.citation_source is DERIVED_BY_DOOR
     assert derived.citation.startswith('Dupont, M., Evert, B.,')
     validate_paper(derived)  # must not raise
 
@@ -417,3 +420,25 @@ def test_a_declared_replay_is_accepted():
         context="method", value="A Title", citation="A hand-kept Sprint 1 transcription",
         citation_origin="api", citation_source="replay",
         updated="2026-09-22", updated_reason="historical one-off"))
+
+
+@pytest.mark.parametrize("declared", ["api", "trusted", "derived", "verified", "ok"])
+def test_only_the_doors_marker_or_a_declared_replay_is_accepted(declared):
+    """The allowed set is CLOSED, and "api" is not in it.
+
+    Round-2 review, 2026-09-23: when the marker was the string "api", a
+    caller could type it and the door accepted a fabricated citation with no
+    network call -- the rule refused an omission but not a fabrication. The
+    door's own marker is now a sentinel object a caller cannot write, and
+    every plausible-sounding self-declaration is refused.
+    """
+    from store.ingest import DERIVED_BY_DOOR, REPLAY
+    base = dict(id="fake", tier="seen", access="arXiv:2303.05509", disposition="why",
+                context="qml", value="A Fabricated Title",
+                citation='Nobody, N., "A Fabricated Title," arXiv:9999.99999, 1999',
+                citation_origin="api", updated="2026-09-23", updated_reason="probe")
+    with pytest.raises(ValueError, match="supplied by the caller"):
+        validate_paper(PaperRecord(**base, citation_source=declared))
+    # The two legitimate values still pass.
+    validate_paper(PaperRecord(**base, citation_source=DERIVED_BY_DOOR))
+    validate_paper(PaperRecord(**base, citation_source=REPLAY))

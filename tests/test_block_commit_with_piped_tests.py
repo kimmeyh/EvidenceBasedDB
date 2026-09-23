@@ -106,3 +106,32 @@ def test_allows_a_commit_that_precedes_the_piped_test_run(command):
     sprint had just fixed in block_unraw_escape.py."""
     proc = run(command)
     assert proc.returncode == 0, proc.stderr
+
+
+@pytest.mark.parametrize("n", [5, 19, 20, 25, 40, 100])
+def test_a_long_command_does_not_escape_the_gate(n):
+    """Offset drift: the first version estimated each segment's position with
+    `len(seg) + 2`, correct for `&&` but one too many for `;` and a newline.
+    The error accumulated until the ordering comparison inverted and the hook
+    ALLOWED the exact mistake it exists to stop -- measured 2026-09-23, blocked
+    at 19 preceding lines and allowed at 20. A 20-line Bash block is an
+    ordinary command here, so this was live.
+
+    A false negative in a guard is worse than the false positive it replaced:
+    the false positive was visible and arguable; this was silent.
+    """
+    command = "\n".join(["git status --short"] * n + ["pytest -q | tail -5", "git commit -m x"])
+    assert run(command).returncode == 2, f"escaped the gate with {n} preceding lines"
+
+
+@pytest.mark.parametrize("n", [25, 60])
+def test_many_semicolons_do_not_escape_the_gate(n):
+    command = " ; ".join(["echo a"] * n) + " ; pytest -q | tail && git commit -m x"
+    assert run(command).returncode == 2
+
+
+@pytest.mark.parametrize("n", [5, 30])
+def test_a_long_command_that_commits_first_is_still_allowed(n):
+    """The fix must not reintroduce the false positive at length."""
+    command = "\n".join(["git status --short"] * n + ["git commit -m x", "pytest -q | tail -5"])
+    assert run(command).returncode == 0

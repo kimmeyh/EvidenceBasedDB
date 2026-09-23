@@ -37,7 +37,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
 from store.export import regenerate  # noqa: E402
-from store.ingest import PaperRecord, validate_paper  # noqa: E402
+from store.ingest import DERIVED_BY_DOOR, PaperRecord, validate_paper  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 
@@ -151,8 +151,10 @@ def _validated(conn, e: dict, citation: str, title: str) -> None:
     validate_paper(PaperRecord(
         id=e["id"], tier=row["tier"], access=row["access"], disposition=row["disposition"],
         context=row["context"] or "", value=title, citation=citation, citation_origin="api",
-        # The citation being validated came from the API moments ago in review().
-        citation_source="api",
+        # The citation being validated came from the API moments ago in
+        # review(), so it carries the door's marker rather than a string a
+        # caller could have typed (PR #30 round-2 review).
+        citation_source=DERIVED_BY_DOOR,
         evidence=row["evidence"], mined_by=row["mined_by"],
         checked_against_source=row["checked_against_source"],
         updated=date.today().isoformat(), updated_reason="validation probe",

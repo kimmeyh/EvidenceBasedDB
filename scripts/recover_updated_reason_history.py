@@ -105,12 +105,23 @@ def main(argv: list[str] | None = None) -> int:
         for pid, old_reason, current in todo:
             conn.execute("UPDATE records SET updated_reason = ? WHERE id = ?",
                          (f"{old_reason} | {current}" if current else old_reason, pid))
-        # Verify inside the transaction, before committing: every recovered
-        # row must now contain BOTH the old text and what it had before.
+        # Verify inside the transaction, before committing.
+        #
+        # This block used to assert `old in f"{old} | {current}"`, which is
+        # true by construction and could not fail -- a verification step that
+        # cannot discriminate, which is the "a test that cannot fail is worse
+        # than no test" rule applied outside a test file (PR #30 round-2
+        # review, 2026-09-23). It now re-reads each row and checks two things
+        # the write could actually get wrong: that the row CHANGED at all
+        # (an UPDATE matching nothing is silent), and that the stored value
+        # is exactly what was intended for THAT id -- catching a mismatched
+        # pairing, which substring containment would not.
         bad = []
         for pid, old_reason, current in todo:
-            got = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (pid,)).fetchone()[0] or ""
-            if old_reason not in got or (current and current not in got):
+            row = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (pid,)).fetchone()
+            got = (row[0] if row else None) or ""
+            expected = f"{old_reason} | {current}" if current else old_reason
+            if got != expected or got == current:
                 bad.append(pid)
         if bad:
             conn.execute("ROLLBACK")
