@@ -272,3 +272,22 @@ def test_commit_during_mutation_gate_is_on_the_bash_matcher():
     assert any("Bash" in m and "PowerShell" in m for m in matchers), (
         f"block_commit_during_mutation.py is not on a PreToolUse Bash|PowerShell "
         f"matcher (found: {matchers}), so it would never see a git commit.")
+
+
+def test_every_registered_hook_is_time_bounded():
+    """A hook with no timeout can hang tool execution indefinitely.
+
+    Copilot review of PR #30, 2026-09-23: block_commit_with_piped_tests.py
+    was registered without one while all nine other hooks had timeout=15.
+    The gap was invisible because nothing compared the entries to each
+    other.
+    """
+    settings = json.loads(SETTINGS.read_text(encoding="utf-8"))
+    missing = []
+    for event, matchers in settings.get("hooks", {}).items():
+        for entry in matchers:
+            for hook in entry.get("hooks", []):
+                if "timeout" not in hook:
+                    name = hook.get("command", "")[-60:]
+                    missing.append(f"{event}: {name}")
+    assert not missing, f"hooks registered with no timeout: {missing}"
