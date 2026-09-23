@@ -273,6 +273,82 @@ assigned Sprint 2" language below (F5) predates this refinement.
   exist. Do NOT re-run on the same 18 records in confirm mode: that
   measurement is done.
 
+**F30. Store durability: systematic backups, a real restore, and the missing rebuild-from-export (~medium, no-history) Priority 12**
+- Phase: Operational safety. Added 2026-09-23 (team lead, at Sprint 4
+  close-out): "There is a database backup and the database is not kept in
+  the repository, right? Backups need to be done systematically and only
+  preserved for a max of N days (propose 32) and min of M sprints
+  (propose 5)."
+- **The premise check, done 2026-09-23, because half of it was wrong.**
+  The database is correctly NOT in the repository: no `.db` file is
+  tracked, `.gitignore` excludes the store with a stated reason, and
+  `store/evidence.db` (252 KB on that date) exists only on the team
+  lead's machine. But **there was no backup.** No `.bak`, no dated copy,
+  nothing anywhere in the tree. The only thing between the store and
+  total loss was the committed `export/*.json`.
+- **The real gap is the restore, not the backup.** ADR-0004 section 2
+  calls the store a build output and the committed export the artifact,
+  so the DATA is recoverable in principle -- the Sprint 4 remote session
+  rebuilt the store from `export/` byte-identically. But it did so BY
+  HAND, in a session that no longer exists, and `scripts/` has
+  `regenerate_export.py` (store -> export) with nothing going the other
+  way. A recovery path that exists in principle and has no script is the
+  same defect class as a guard that has never been run.
+- **SQLite gives us the mechanism; use it, not a file copy** (team lead,
+  2026-09-23: "if it is [sqlite], then backups and restores are part of
+  the sqlite package" -- correct, and it overturned this card's first
+  draft). Measured on the live store that day: `sqlite3.Connection.backup()`
+  (Python stdlib, present on 3.12.10 / SQLite 3.49.1) took **15 ms**,
+  produced `PRAGMA integrity_check = ok` with all 48 papers, and is safe
+  against a concurrent writer. A `shutil.copy2` of a live database takes
+  0 ms and can capture a torn write that looks fine until it does not.
+  Note the backup is **not byte-identical** to the source -- the API
+  writes a freshly-packed database -- so a restore is verified by content
+  (integrity check plus a regenerated export matching the committed one),
+  never by comparing file bytes.
+- Platform: `store/` (a shared backup helper), `scripts/` (a restore
+  script and a `rebuild_store_from_export.py`), `.gitignore`,
+  `docs/QUALITY_STANDARDS.md`, `tests/`.
+- **Three pieces, in dependency order:**
+  1. **`scripts/rebuild_store_from_export.py`** -- the missing recovery
+     path. Reads the committed `export/*.json` into a fresh store through
+     the real ingestion path, then regenerates and asserts the export is
+     byte-identical to what it read. This is the piece that makes every
+     other durability question secondary, and it is first for that reason.
+  2. **Backup on write, not on a clock.** At 15 ms the backup is not a
+     scheduled chore; it belongs inside `--apply`, before the
+     transaction, in the helper every write-shaped script already shares.
+     No cron, no drift, and each backup is aligned with a real change.
+     **Every backup is verified at creation** (open it, `integrity_check`,
+     count the records) and the run FAILS if it does not check out -- an
+     unverified backup is the guard-never-run class again.
+  3. **`scripts/restore_store.py`** -- restore is a script with a test,
+     not a documented gesture. The test restores into a temp store and
+     proves the regenerated export matches.
+- **Retention (team lead's decision 2026-09-23, option 2a), three
+  independent rules, ALL of which must allow a deletion:**
+  - keep every backup for **32 days** (the team lead's number; at 252 KB
+    a year of them is under 100 MB, so space is not the constraint --
+    avoiding a stale second source of truth is);
+  - never delete the **newest backup of each of the last 5 sprints**,
+    regardless of age (the team lead's "min 5 sprints", expressed as what
+    it protects: the state at each recent sprint boundary). Note sprints
+    here run 1 to 3 days, so 5 sprints is about a week and sits INSIDE
+    the 32 days rather than under it -- the two bounds are independent,
+    not a range;
+  - never delete a backup whose contents are **not yet in a committed
+    `export/`**. This is the clause that actually matters: until the
+    export is committed, the backup is the only copy.
+- `backups/` is gitignored, for the same reason the store is.
+- **Not this card's job**: off-machine or cloud backup (the store is
+  rebuildable from a git-committed export, so the repository IS the
+  off-machine copy); backing up `D:\Data\Harold\EvidenceBasedDB\`
+  (Papers, Books, QMLPapers -- that is a separate question about material
+  this repository deliberately does not own).
+- Depends on: nothing technical. Sequenced for Sprint 5; the trigger is
+  the 1,618-file bulk load, after which a lost store costs an hour of
+  arXiv-paced re-fetching rather than a rebuild.
+
 **F11. Team-lead adjudication timing, run AFTER F7-F10 (~unknown, no-history) Priority 15**
 - Phase: Measurement. Team lead, 2026-09-17: "yes backlog, yes replacing
   task f. We are going to move it after completion of backlog items
