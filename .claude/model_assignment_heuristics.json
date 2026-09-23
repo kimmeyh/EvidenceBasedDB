@@ -1,0 +1,322 @@
+{
+  "_comment": "Model-assignment heuristics for this repository (Sprint 4 Task K, F18, 2026-09-19). Data-driven complement to the static role table in docs/SPRINT_PLANNING.md: which model tier AND which review protocol a task pattern gets, with the outcomes that justify it. Modeled on spamfilter-multi's .claude/model_assignment_heuristics.json (read-only survey, Sprint 3 Task A), rewritten for this repository. Every number in learning_log names its source document; a success_rate is null until sample_size is at least 1 real outcome, never estimated. Update at every retrospective (Category 5, Model Assignments) and whenever a delegated task's report is verified against repository state. Guarded by tests/test_model_assignment_heuristics.py.",
+  "version": 1,
+  "updated": "2026-09-22",
+  "tiers": {
+    "haiku": {
+      "role": "Developers (subagents)",
+      "source": "docs/SPRINT_PLANNING.md team roles"
+    },
+    "sonnet": {
+      "role": "Senior Developers (subagents)",
+      "source": "docs/SPRINT_PLANNING.md team roles"
+    },
+    "opus": {
+      "role": "Lead Developer when Fable is unavailable",
+      "source": "docs/SPRINT_PLANNING.md team roles"
+    },
+    "fable": {
+      "role": "Lead Developer, top tier (mandatory for planning, retrospectives, refinement, ADR authoring, schema and context decisions, security-sensitive review)",
+      "source": "docs/SPRINT_PLANNING.md 'Activities requiring the top tier'"
+    },
+    "team_lead": {
+      "role": "Adjudication of record verdicts; merges at every level; every Class 1/2/3 decision",
+      "source": "docs/SPRINT_PROCESS.md; ADR-0005 section 2c (read tier: 'Team lead, real')"
+    }
+  },
+  "protocols": {
+    "_comment": "Protocol is a first-class field beside tier. Sprint 3's F7-F10 result on the identical 18 records: the two protocols that required cross-record comparison or primary-source verification found the defects; the two per-record internal-consistency protocols confirmed 18/18. Review depth tracked the protocol at least as much as the tier (SPRINT_3_RETROSPECTIVE.md improvement 4). A review card names its protocol explicitly regardless of the tier assigned.",
+    "per-record-internal-consistency": {
+      "description": "Confirm or reject each record against its own fields, quoting an exact anchor per confirmation. Detects internal contradictions; does not detect a citation that is wrong on the source.",
+      "primary_source_access": false,
+      "cross_record": false
+    },
+    "per-record-with-certainty-check": {
+      "description": "per-record-internal-consistency plus a check that certainty_reasons justify the assigned certainty on any yielded assertion; declares the step not applicable when there are no yields.",
+      "primary_source_access": false,
+      "cross_record": false
+    },
+    "set-level-cross-record": {
+      "description": "Review the records as a SET: find the same judgment made differently across records with no stated reason (pairwise comparisons within thematic clusters plus whole-set sweeps).",
+      "primary_source_access": false,
+      "cross_record": true
+    },
+    "full-adjudication-primary-source": {
+      "description": "ACCEPT/REJECT/REVISE every field on every record, verified against primary sources (arXiv abstract pages, publisher pages, local PDFs read directly).",
+      "primary_source_access": true,
+      "cross_record": true
+    },
+    "team-lead-adjudication": {
+      "description": "The team lead adjudicates the corrected records with the same primary-source access the full-adjudication protocol used, recording minutes per record and the protocol actually followed per record (F11).",
+      "primary_source_access": true,
+      "cross_record": true
+    },
+    "read-only-evidence-gathering": {
+      "description": "Collect VERBATIM source material with an anchor per item (page, section, abstract) into one structured output file, and make no judgment calls. The coordinator re-reads the specific pages any judgment will rest on before using them. Read-only: the agent writes nothing but its own output file.",
+      "primary_source_access": true,
+      "cross_record": false
+    },
+    "delegated-implementation-with-injection-proof": {
+      "description": "A build task carried out by another session or subagent, returning code plus tests where every guard was broken, watched go red, and restored, with the injection named. The report is verified against repository state (git log, the files, the issue) before it is trusted or dismissed.",
+      "primary_source_access": false,
+      "cross_record": false
+    }
+  },
+  "task_patterns": [
+    {
+      "pattern": "record adjudication review",
+      "keywords": [
+        "adjudicate",
+        "review records",
+        "confirm",
+        "reject",
+        "applicability",
+        "citation accuracy"
+      ],
+      "recommended_tier": "fable",
+      "required_protocol": "full-adjudication-primary-source",
+      "rationale": "On 18 identical records the protocol, not the tier alone, produced the findings; a card that assigns a lower tier must still require cross-record comparison and primary-source verification.",
+      "success_rate": null,
+      "sample_size": 1,
+      "source": "learning_log[0]"
+    },
+    {
+      "pattern": "hook or guard implementation with subprocess tests",
+      "keywords": [
+        "hook",
+        "PreToolUse",
+        "Stop event",
+        "guard",
+        "injection",
+        "settings.json"
+      ],
+      "recommended_tier": "sonnet",
+      "required_protocol": "delegated-implementation-with-injection-proof",
+      "rationale": "docs/SPRINT_PLANNING.md: implementation tasks may be delegated; docs/TESTING_STRATEGY.md: every guard proven to fail. Fable review of the delegated report against repository state before it is trusted.",
+      "success_rate": 1.0,
+      "sample_size": 1,
+      "source": "learning_log[2]: Sprint 4 Task I (F15-F17) delegated to a remote session, three hooks registered on their own matchers with subprocess tests, each proven by injection; report verified against repository state (commit 904bda7, issue #39) before it was trusted"
+    },
+    {
+      "pattern": "process design, ADR amendment, schema or context decision",
+      "keywords": [
+        "ADR",
+        "amendment",
+        "schema",
+        "context",
+        "re-home",
+        "workflow",
+        "plan"
+      ],
+      "recommended_tier": "fable",
+      "required_protocol": "verify before amending; dated amendment, never an edit in place; Class 1 surfaced to the team lead",
+      "rationale": "Mandatory top tier per docs/SPRINT_PLANNING.md; touches an ACCEPTED ADR's spine.",
+      "success_rate": null,
+      "sample_size": 0,
+      "source": "docs/SPRINT_PLANNING.md 'Activities requiring the top tier'"
+    },
+    {
+      "pattern": "read-only survey of a sibling repository",
+      "keywords": [
+        "survey",
+        "spamfilter-multi",
+        "hsbc-quantum-fraud-2026",
+        "port",
+        "read-only"
+      ],
+      "recommended_tier": "sonnet",
+      "required_protocol": "read-only (hook-enforced by block_sibling_repo_writes.py); report verified against repository state before trusted or dismissed",
+      "rationale": "Sprint 3 Task A: a fork carried the reading (266 s, 433,817 tokens) and its accurate report was briefly distrusted after a context compaction; the fix was git show, not a judgment about the messenger (SPRINT_3_RETROSPECTIVE.md improvement 3).",
+      "success_rate": null,
+      "sample_size": 1,
+      "source": "docs/sprints/SPRINT_3_SUMMARY.md Actuals"
+    },
+    {
+      "pattern": "documentation-only edit with no scope ambiguity",
+      "keywords": [
+        "docs",
+        "skill",
+        "SKILL.md",
+        "wrapper",
+        "typo"
+      ],
+      "recommended_tier": "haiku",
+      "required_protocol": "run tests/test_no_em_dashes.py and tests/test_us_english.py before commit",
+      "rationale": "Lowest-effort pattern; the two prose guards catch the two failure modes this repository has actually paid for.",
+      "success_rate": 1.0,
+      "sample_size": 1,
+      "source": "learning_log[2]: Sprint 4 Task J (F20, the BACKLOG_REFINEMENT skill wrapper), commit 6e7406e, issue #40; verified against repository state"
+    },
+    {
+      "pattern": "read-only evidence gathering from primary sources for a judgment task",
+      "keywords": [
+        "gather",
+        "extract quotes",
+        "verbatim",
+        "page numbers",
+        "abstracts",
+        "evidence"
+      ],
+      "recommended_tier": "sonnet",
+      "required_protocol": "read-only-evidence-gathering",
+      "rationale": "Sprint 4 Tasks F and H: two Sonnet agents gathered source evidence for 46 papers and 5 papers respectively while the coordinator wrote the scripts, and both returned the exact shape requested with anchors. The judgment (context tests, certainty levels) stayed with the top tier; the READING parallelised cleanly. Both reports were spot-checked against the PDFs before use, and one contained a self-flagged gap (it could not reach two reference-list pages), which the coordinator then read directly.",
+      "success_rate": 1.0,
+      "sample_size": 2,
+      "source": "learning_log[2]"
+    }
+  ],
+  "escalation_triggers": [
+    {
+      "trigger": "a delegated task's report claims a commit, a file, or a closed issue that repository state does not show",
+      "action": "do not re-delegate; verify with git show and the file, then escalate one tier only if the discrepancy is in the work rather than in the report",
+      "source": "SPRINT_EXECUTION_WORKFLOW.md Phase 4, Sprint 3 retrospective improvement 3"
+    },
+    {
+      "trigger": "a review card at any tier confirms every record with zero rejections",
+      "action": "treat as evidence the protocol lacked primary-source access, not as evidence the records are correct; re-run with full-adjudication-primary-source before acting on the confirmation",
+      "source": "learning_log[0]"
+    },
+    {
+      "trigger": "a guard test passes on first write without an injection",
+      "action": "break the guarded thing before trusting it (CLAUDE.md); a subagent that reports green without naming what it broke is asked for the injection, not believed",
+      "source": "tests/test_guard_discipline.py"
+    },
+    {
+      "trigger": "a task's true size reaches 2x its estimate",
+      "action": "Criterion 3 stop: present original vs new estimate; never defer approved work unilaterally",
+      "source": "docs/SPRINT_STOPPING_CRITERIA.md"
+    },
+    {
+      "trigger": "the decision touches an ACCEPTED ADR's spine, a certainty level, or approved scope",
+      "action": "Class 1/2/3: stop and surface to the team lead as a plain numbered list",
+      "source": "docs/SPRINT_PROCESS.md decision classes"
+    }
+  ],
+  "scoring_rubric": {
+    "_comment": "Additive score, then a tier threshold. Deliberately coarse until sample sizes exist; the protocol field above, not this score, is what the F7-F10 evidence actually supports.",
+    "factors": {
+      "files_touched": {
+        "1": 0,
+        "2-4": 1,
+        "5+": 2
+      },
+      "judgment_load": {
+        "mechanical": 0,
+        "local judgment": 1,
+        "cross-record or cross-document judgment": 2,
+        "ADR or evidence claim": 3
+      },
+      "risk": {
+        "reversible, tested": 0,
+        "changes an exported record value": 2,
+        "amends an ACCEPTED ADR or a record's certainty": 3
+      }
+    },
+    "thresholds": {
+      "haiku": "0-1",
+      "sonnet": "2-3",
+      "fable": "4+ or any ADR/evidence factor at 3",
+      "team_lead": "any record verdict, every merge, every Class 1/2/3 decision"
+    }
+  },
+  "learning_log": [
+    {
+      "date": "2026-09-18",
+      "sprint": 3,
+      "task": "F7-F10 independent adjudication review of the same 18 screened-tier paper records, zero cross-visibility",
+      "records": 18,
+      "source": "docs/sprints/SPRINT_3_F7-F10_REVIEW_RESULTS.md; docs/sprints/SPRINT_3_SUMMARY.md Actuals; docs/sprints/SPRINT_3_RETROSPECTIVE.md improvement 4",
+      "outcomes": [
+        {
+          "tier": "haiku",
+          "protocol": "per-record-internal-consistency",
+          "findings": "18/18 confirm, 0 defects found",
+          "tokens": 82586,
+          "seconds": 182
+        },
+        {
+          "tier": "sonnet",
+          "protocol": "per-record-with-certainty-check",
+          "findings": "18/18 confirm; correctly declared the certainty step not applicable (zero yields)",
+          "tokens": 70021,
+          "seconds": 155
+        },
+        {
+          "tier": "opus",
+          "protocol": "set-level-cross-record",
+          "findings": "7 cross-record inconsistencies",
+          "tokens": 75802,
+          "seconds": 208
+        },
+        {
+          "tier": "fable",
+          "protocol": "full-adjudication-primary-source",
+          "findings": "93 field calls: 38 accept / 43 revise / 12 reject; 4 source-verified citation defects; 2 structural findings",
+          "tokens": 150290,
+          "seconds": 599
+        }
+      ],
+      "lesson": "The heuristic this seeds is NOT 'use the top tier': the protocol (cross-record comparison, primary-source verification) produced the findings, and any review card must require that protocol explicitly regardless of the tier assigned. Every defect the Fable-tier review found sits inside records the Haiku-tier review confirmed."
+    },
+    {
+      "date": "2026-09-21",
+      "sprint": 4,
+      "task": "F11 team-lead adjudication timing on the 18 records as corrected by Sprint 4 Task C, F10 protocol, same primary-source access",
+      "records": 18,
+      "source": "SPRINT_4_PLAN.md Task E; packet delivered 2026-09-19 as docs/sprints/SPRINT_4_F11_ADJUDICATION_PACKET.md (generated by scripts/render_f11_packet.py); the row is filled in when the team lead's timing lands, never estimated",
+      "outcomes": [
+        {
+          "tier": "team_lead",
+          "protocol": "team-lead-adjudication",
+          "findings": "18/18 accept, 0 revise, 0 reject on the records as corrected by Tasks C, F and H",
+          "minutes_per_record": 1.08,
+          "minutes_total": 19.4,
+          "median_minutes": 1.0,
+          "range_minutes": [
+            0.6,
+            1.8
+          ],
+          "protocol_followed_per_record": "full (team lead's answer on each of 18; the interval per record ran from the moment the record was shown to the moment the answer arrived, so it includes reading the packet entry and opening the source link, and about 20-40 s of Claude's presentation latency per record)",
+          "seconds_total": 1164,
+          "run": "interactive, one record per turn, 2026-09-21 22:33 to 22:52 local; log docs/sprints/SPRINT_4_F11_TIMING_LOG.json"
+        }
+      ],
+      "lesson": "The number ADR-0004 is constrained by, first measurement: about 1.1 team-lead minutes per record (19.4 min for 18) to adjudicate records that a model pipeline had already corrected (API-derived citations, anchored rationales, F10's finding printed under each). Against F10's 599 s of model time for the same 18 (33 s per record), the team lead spent about twice the wall clock and confirmed everything. Two readings, both recorded: (1) the corrections held on a second, human pass; (2) by this file's own escalation trigger, a run that confirms every record with zero rejections is evidence about the protocol's depth as much as about the records -- the team lead answered 'full' per record, but the protocol here was confirm-mode over pre-corrected records with the finding in view, not the cold primary-source adjudication F10 ran. The cost that matters for scale is therefore: confirm-mode team-lead review of model-corrected records is about a minute per record; cold adjudication was not measured and remains the open number.",
+      "status": "recorded 2026-09-21; #35 closed"
+    },
+    {
+      "date": "2026-09-19",
+      "sprint": 4,
+      "task": "Delegation outcomes across Sprint 4 (two read-only evidence agents, four tasks in a parallel remote session)",
+      "records": null,
+      "source": "agent completion notifications; commits cf82289, 6e7406e, aba1310, 904bda7, 72cdbf8, 847ddd6; docs/sprints/SPRINT_4_SUMMARY.md Actuals",
+      "outcomes": [
+        {
+          "tier": "sonnet",
+          "protocol": "read-only-evidence-gathering",
+          "findings": "46/46 sources obtained, 0 failures; verbatim excerpts with anchors; three records flagged where the evidence contradicted the existing disposition, all three confirmed by the coordinator",
+          "tokens": 199780,
+          "seconds": 472,
+          "scope": "46 papers: abstracts via DataCite/Crossref plus PDF pages"
+        },
+        {
+          "tier": "sonnet",
+          "protocol": "read-only-evidence-gathering",
+          "findings": "5/5 read; verbatim quotes with page numbers; self-flagged the two reference-list pages it could not reach, which the coordinator then read directly to settle the Neven 2009-vs-2012 lineage question",
+          "tokens": 133883,
+          "seconds": 183,
+          "scope": "5 papers read in full for assertion extraction"
+        },
+        {
+          "tier": "fable",
+          "protocol": "delegated-implementation-with-injection-proof",
+          "findings": "four tasks complete with tests and injection proofs; one task correctly stopped under Criterion 2 (egress policy blocked the citation APIs) and documented on its issue rather than worked around",
+          "tokens": null,
+          "seconds": null,
+          "scope": "Tasks D, I, J, K in a parallel session on the same branch"
+        }
+      ],
+      "lesson": "Reading parallelises; judgment does not. Both evidence agents returned usable, anchored source material for a fraction of the coordinator's wall clock, and neither was asked to decide anything -- the context tests, the certainty levels and the contradiction wiring stayed with the top tier. The second lesson is about the parallel session: its Criterion 2 stop was correct and well documented, but the local session discovered the whole parallel effort only when its push was rejected. A branch worked by two sessions needs the status note read at every task start, not after a collision (Sprint 4 retrospective improvement 4)."
+    }
+  ]
+}

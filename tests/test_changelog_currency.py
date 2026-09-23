@@ -26,6 +26,21 @@ sprint rhythm, and narrower than the eight-day lapse that motivated the test.
 
 Verified by injection: removing 2026-09-05 through 09-12 fails with the measured
 gap; restoring them passes.
+
+A SECOND VACUOUS-GUARD FAILURE, 2026-09-20, and the rule it produced. The date
+pattern matched only a bare `### YYYY-MM-DD` heading. This file has used
+`### D1 to D2 (Sprint N, PR #M)` since Sprint 1, so from Sprint 1 to Sprint 4
+the guard read the single seed-date heading as the newest entry and measured
+against that, and its sibling order test saw one date and skipped. Both passed
+for three sprints while asserting nothing about anything written in them; the
+currency guard only started failing when the calendar moved five days past the
+seed date, which is luck, not detection.
+
+The parsing now reads every date on a section heading. The general rule this
+produced, and the reason for test_every_section_heading_carries_a_parsable_date
+below: a guard that parses a file must FAIL when it parses nothing, because
+"found no entries" and "found no problems" are indistinguishable to a green
+test. Sprint 4 retrospective improvement 2.
 """
 from __future__ import annotations
 
@@ -45,14 +60,23 @@ CHANGELOG = ROOT / "CHANGELOG.md"
 # docstring.
 MAX_LAG_DAYS = 5
 
-_DATE = re.compile(r"^### (\d{4})-(\d{2})-(\d{2})\s*$", re.M)
+# A section header is "### 2026-09-14" or a range with a label,
+# "### 2026-09-18 to 2026-09-19 (Sprint 3, PR #20)". Every date on the
+# header line counts; the newest wins. Fixed 2026-09-20: the previous
+# pattern anchored on end-of-line and matched only the bare form, so the
+# guard had read 2026-09-14 as the newest entry through three sprints of
+# range-dated sections and passed on its own defect until the calendar
+# moved five days past the seed date.
+_HEADER = re.compile(r"^### (.*)$", re.M)
+_DATE = re.compile(r"(\d{4})-(\d{2})-(\d{2})")
 
 
 def _newest_entry() -> date | None:
     if not CHANGELOG.exists():
         return None
     found = [date(int(y), int(m), int(d))
-             for y, m, d in _DATE.findall(CHANGELOG.read_text(encoding="utf-8"))]
+             for header in _HEADER.findall(CHANGELOG.read_text(encoding="utf-8"))
+             for y, m, d in _DATE.findall(header)]
     return max(found) if found else None
 
 
@@ -97,10 +121,46 @@ def test_changelog_entries_are_in_newest_first_order():
     A date inserted in the wrong place reads as present while sitting where
     nobody looks, which is how a missing day survives a skim.
     """
+    # One date per section: the newest on its header line. Body text may
+    # cite any date (a fix dated to the day a defect was found), so only
+    # headers are ordered. Fixed 2026-09-20 with the header pattern above;
+    # until then this test saw one date and skipped, while the file sat
+    # oldest-first from Sprint 1 to Sprint 3 against its own stated policy.
     text = CHANGELOG.read_text(encoding="utf-8")
-    dates = [date(int(y), int(m), int(d)) for y, m, d in _DATE.findall(text)]
+    dates = []
+    for header in _HEADER.findall(text):
+        found = [date(int(y), int(m), int(d)) for y, m, d in _DATE.findall(header)]
+        if found:
+            dates.append(max(found))
     if len(dates) < 2:
         pytest.skip("fewer than two dated entries")
     out_of_order = [(a, b) for a, b in zip(dates, dates[1:]) if a < b]
     assert not out_of_order, (
         f"CHANGELOG entries are not newest-first: {out_of_order}")
+
+
+@pytest.mark.skipif(not CHANGELOG.exists(), reason="no CHANGELOG.md")
+def test_every_section_heading_carries_a_parsable_date():
+    """A guard that parses nothing must fail, not pass quietly.
+
+    Sprint 4 retrospective improvement 2. Both guards above parse this file
+    for dates. From Sprint 1 to Sprint 4 they parsed exactly one heading of
+    five, because the pattern did not match the range form this file
+    actually uses, and a green result meant "found nothing to check" rather
+    than "checked and found nothing wrong". The two states are
+    indistinguishable from the outside, so this test makes the parse itself
+    the assertion: every `###` heading must yield a date, and there must be
+    at least one.
+
+    Injection-verified 2026-09-22: renaming one heading to `### Sprint 4`
+    fails here naming that heading, while both guards above stay green --
+    which is precisely the silence this test exists to break.
+    """
+    text = CHANGELOG.read_text(encoding="utf-8")
+    headings = _HEADER.findall(text)
+    assert headings, "CHANGELOG has no '### ' section headings at all"
+    undated = [h for h in headings if not _DATE.search(h)]
+    assert not undated, (
+        f"CHANGELOG section headings with no parsable date: {undated}. The currency "
+        "and ordering guards read dates from these headings; a heading they cannot "
+        "parse is a section they silently do not check.")

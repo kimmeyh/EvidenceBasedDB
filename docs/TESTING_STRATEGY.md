@@ -63,8 +63,9 @@ checks its return value would not catch a stale committed file.
 
 ## What is deliberately not tested
 
-One-shot scripts (verified by use, e.g. `scripts/generate_seed_set_metadata.py`,
-whose real output was reviewed directly rather than covered by a test suite),
+One-shot scripts (verified by use, e.g. `scripts/sprint4_task_c_corrections.py`,
+whose dry-run plan and door-gate result were reviewed directly rather than
+covered by a test suite),
 and sprint/process documentation. The store's schema is validated by its own
 CHECK constraints plus `tests/test_schema.py`'s injection-verified tests,
 not by a test double.

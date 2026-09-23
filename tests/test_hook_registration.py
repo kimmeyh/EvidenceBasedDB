@@ -48,18 +48,38 @@ SETTINGS = ROOT / ".claude" / "settings.json"
 
 
 def _hook_commands() -> list[tuple[str, str]]:
-    """(matcher, command) for every registered PreToolUse hook."""
+    """(matcher, command) for every registered hook, on EVERY event.
+
+    Until 2026-09-19 (Sprint 4 Task I) this walked PreToolUse only, so the
+    Stop hooks were never checked for a resolvable path or a control
+    character -- the exact silent-skip class this file exists to catch,
+    unguarded on the event verify_closeout_complete.py lives on. Now walks
+    every event group so a Stop hook registered against a missing file is
+    named the same way a PreToolUse one is.
+    """
     if not SETTINGS.exists():
         return []
     cfg = json.loads(SETTINGS.read_text(encoding="utf-8"))
     out: list[tuple[str, str]] = []
-    for group in cfg.get("hooks", {}).get("PreToolUse", []):
-        matcher = group.get("matcher", "<none>")
-        for hook in group.get("hooks", []):
-            cmd = hook.get("command")
-            if cmd:
-                out.append((matcher, cmd))
+    for event_groups in cfg.get("hooks", {}).values():
+        for group in event_groups:
+            matcher = group.get("matcher", "<none>")
+            for hook in group.get("hooks", []):
+                cmd = hook.get("command")
+                if cmd:
+                    out.append((matcher, cmd))
     return out
+
+
+def _matchers_for(event: str, filename: str) -> list[str]:
+    """The matcher of every group under `event` that registers `filename`."""
+    cfg = json.loads(SETTINGS.read_text(encoding="utf-8"))
+    return [
+        group.get("matcher", "")
+        for group in cfg.get("hooks", {}).get(event, [])
+        for hook in group.get("hooks", [])
+        if filename in (hook.get("command") or "")
+    ]
 
 
 def _script_path(command: str) -> Path | None:
@@ -160,12 +180,20 @@ def test_the_guards_this_repository_depends_on_are_registered():
     must not write into spamfilter-multi or hsbc-quantum-fraud-2026, read
     access only). Registered on both PreToolUse matchers, which is why this
     test's scan over every hook group (not a single matcher) matters here.
+
+    The F15/F16/F17 hooks added 2026-09-19 (Sprint 4 Task I): the
+    auto-advance-window Stop hook, the Phase 3.3.1 deliverables commit
+    gate, and the mutation-lock commit gate. Each is a rule that lived only
+    in prose before, which is this repository's named decay pattern.
     """
     commands = " ".join(c for _, c in _hook_commands())
     for required in ("block_unraw_escape.py",
                      "block_shell_metachar_expansion.py",
                      "block_sibling_repo_writes.py",
-                     "block_ask_user_question.py"):
+                     "block_ask_user_question.py",
+                     "block_procedural_question_stop.py",
+                     "block_missing_sprint_cards.py",
+                     "block_commit_during_mutation.py"):
         assert required in commands, (
             f"{required} is not registered in .claude/settings.json. It guards "
             "the silent-corruption class: an escape consumed by a shell or a "
@@ -195,3 +223,71 @@ def test_ask_user_question_hook_is_on_its_own_matcher():
         f"block_ask_user_question.py is registered but not on an "
         f"AskUserQuestion matcher (found matchers: {matchers}), so it would "
         "never actually fire when the tool is called.")
+
+
+@pytest.mark.skipif(not SETTINGS.exists(), reason="no .claude/settings.json")
+def test_procedural_question_stop_hook_is_on_the_stop_event():
+    """block_procedural_question_stop.py (F15) reads the last assistant
+    message, which only a Stop payload carries; registered anywhere else it
+    would fire on tool calls with no message to inspect and allow every one.
+
+    Verified by injection, 2026-09-19: moving its registration from the
+    Stop group to the PreToolUse Bash|PowerShell group fails this test
+    naming the empty matcher list, while the two path tests above stay
+    green (the file still exists); restoring it passes.
+    """
+    matchers = _matchers_for("Stop", "block_procedural_question_stop.py")
+    assert matchers, (
+        "block_procedural_question_stop.py is not registered under the Stop "
+        "event, so it would never see a last_assistant_message and never fire.")
+
+
+@pytest.mark.skipif(not SETTINGS.exists(), reason="no .claude/settings.json")
+def test_missing_sprint_cards_hook_is_on_the_bash_matcher():
+    """block_missing_sprint_cards.py (F16) inspects tool_input.command for a
+    git commit, so it must sit on the PreToolUse Bash|PowerShell matcher.
+
+    Verified by injection, 2026-09-19: removing its entry from the
+    Bash|PowerShell group fails this test and
+    test_the_guards_this_repository_depends_on_are_registered; restoring it
+    passes both.
+    """
+    matchers = _matchers_for("PreToolUse", "block_missing_sprint_cards.py")
+    assert any("Bash" in m and "PowerShell" in m for m in matchers), (
+        f"block_missing_sprint_cards.py is not on a PreToolUse Bash|PowerShell "
+        f"matcher (found: {matchers}), so it would never see a git commit.")
+
+
+@pytest.mark.skipif(not SETTINGS.exists(), reason="no .claude/settings.json")
+def test_commit_during_mutation_gate_is_on_the_bash_matcher():
+    """block_commit_during_mutation.py (F17) inspects tool_input.command for
+    a git commit, so it must sit on the PreToolUse Bash|PowerShell matcher.
+
+    Verified by injection, 2026-09-19: removing its entry from the
+    Bash|PowerShell group fails this test and
+    test_the_guards_this_repository_depends_on_are_registered; restoring it
+    passes both.
+    """
+    matchers = _matchers_for("PreToolUse", "block_commit_during_mutation.py")
+    assert any("Bash" in m and "PowerShell" in m for m in matchers), (
+        f"block_commit_during_mutation.py is not on a PreToolUse Bash|PowerShell "
+        f"matcher (found: {matchers}), so it would never see a git commit.")
+
+
+def test_every_registered_hook_is_time_bounded():
+    """A hook with no timeout can hang tool execution indefinitely.
+
+    Copilot review of PR #30, 2026-09-23: block_commit_with_piped_tests.py
+    was registered without one while all nine other hooks had timeout=15.
+    The gap was invisible because nothing compared the entries to each
+    other.
+    """
+    settings = json.loads(SETTINGS.read_text(encoding="utf-8"))
+    missing = []
+    for event, matchers in settings.get("hooks", {}).items():
+        for entry in matchers:
+            for hook in entry.get("hooks", []):
+                if "timeout" not in hook:
+                    name = hook.get("command", "")[-60:]
+                    missing.append(f"{event}: {name}")
+    assert not missing, f"hooks registered with no timeout: {missing}"

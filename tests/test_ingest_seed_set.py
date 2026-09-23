@@ -21,24 +21,48 @@ from store import create_store  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "ingest_seed_set.py"
 
+# Hand-transcribed entries (no arXiv id / DOI), the shape Sprint 4 Task B's
+# door requires of anything it cannot resolve from an API: a visible
+# hand-transcribed marker, the page it was read from, a title, and a REAL
+# local path for access (the fixture points these at files it creates).
 SAMPLE_ENTRIES = [
     {
         "id": "griffin-2026-cvqboosting-fraud",
-        "citation": "Griffin, P., \"Improving credit card transaction fraud detection using CVQBoosting\", QCi Dirac-3 working paper, 2026-03",
-        "access": "local file, no DOI/arXiv id",
+        "title": "Improving credit card transaction fraud detection using CVQBoosting",
+        "citation": "Griffin, P., \"Improving credit card transaction fraud detection using CVQBoosting\", QCi Dirac-3 working paper, 2026-03 (hand-transcribed from cover)",
+        "citation_origin": "hand",
+        "transcribed_from": "cover",
+        "access": "<tmp>/griffin.pdf",
         "context": "platform:dirac-3",
         "disposition": "Directly relevant: CVQBoost fraud-detection application on Dirac-3, the same platform this project measures",
         "promote": True,
     },
     {
         "id": "recruit-2026-case-story",
-        "citation": "Vendor case study, \"Recruit Case Story\", v5, publisher and date not stated in the document",
-        "access": "local file, no DOI/arXiv id",
+        "title": "Recruit Case Story",
+        "citation": "Vendor case study, \"Recruit Case Story\", v5, publisher and date not stated in the document (hand-transcribed from cover)",
+        "citation_origin": "hand",
+        "transcribed_from": "cover",
+        "access": "<tmp>/recruit.pdf",
         "context": "qc",
-        "disposition": "Vendor marketing material, not a paper. Recorded as seen with this disposition rather than forced into a paper citation shape",
+        "disposition": "Vendor marketing material, not a paper. Recorded with this disposition rather than forced into a paper citation shape",
         "promote": False,
     },
 ]
+
+
+def _materialise(entries: list[dict], tmp: Path) -> list[dict]:
+    """Point each entry's access at a real file under tmp (the validator
+    requires an existing local path for hand-transcribed papers)."""
+    out = []
+    for e in entries:
+        e = dict(e)
+        if e.get("access", "").startswith("<tmp>/"):
+            path = tmp / e["access"][len("<tmp>/"):]
+            path.write_bytes(b"%PDF-1.4 fixture")
+            e["access"] = str(path)
+        out.append(e)
+    return out
 
 
 @pytest.fixture
@@ -48,7 +72,7 @@ def store_and_metadata():
         metadata_path = Path(tmp) / "seed_set_metadata.json"
         export_dir = Path(tmp) / "export"
         create_store(db_path).close()
-        metadata_path.write_text(json.dumps(SAMPLE_ENTRIES), encoding="utf-8")
+        metadata_path.write_text(json.dumps(_materialise(SAMPLE_ENTRIES, Path(tmp))), encoding="utf-8")
         yield db_path, metadata_path, export_dir
 
 
@@ -203,15 +227,18 @@ def test_a_bad_entry_names_itself_and_the_run_writes_nothing(store_and_metadata)
         SAMPLE_ENTRIES[0],
         {
             "id": "bad-entry-undefined-context",
-            "citation": "Nobody, N., \"A Paper With a Bad Context\", 2026",
-            "access": "local file",
+            "title": "A Paper With a Bad Context",
+            "citation": "Nobody, N., \"A Paper With a Bad Context\", 2026 (hand-transcribed from cover)",
+            "citation_origin": "hand",
+            "transcribed_from": "cover",
+            "access": "<tmp>/bad.pdf",
             "context": "platform:not-a-real-platform",
             "disposition": "deliberately invalid for this test",
             "promote": False,
         },
         SAMPLE_ENTRIES[1],
     ]
-    metadata_path.write_text(json.dumps(entries), encoding="utf-8")
+    metadata_path.write_text(json.dumps(_materialise(entries, metadata_path.parent)), encoding="utf-8")
 
     proc = _run_script(db_path, metadata_path, export_dir)
     assert proc.returncode != 0
@@ -232,7 +259,7 @@ def test_an_entry_without_an_id_is_named_by_position(store_and_metadata):
     block, so a malformed entry died with a bare KeyError naming nothing."""
     db_path, metadata_path, export_dir = store_and_metadata
     entries = [SAMPLE_ENTRIES[0], {"citation": "no id here", "access": "x", "context": "qc", "disposition": "d"}]
-    metadata_path.write_text(json.dumps(entries), encoding="utf-8")
+    metadata_path.write_text(json.dumps(_materialise(entries, metadata_path.parent)), encoding="utf-8")
     proc = _run_script(db_path, metadata_path, export_dir)
     assert proc.returncode != 0
     assert "position 1" in proc.stderr and "no 'id'" in proc.stderr

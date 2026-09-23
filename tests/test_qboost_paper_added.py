@@ -35,7 +35,12 @@ def test_qboost_paper_has_applicability_in_qml_and_qc():
     papers = _papers()
     qboost = next(p for p in papers if p["id"] == "neven-2012-qboost-adiabatic-quantum-optimization")
     contexts = {e["context"] for e in qboost["applicability"]}
-    assert contexts == {"qml", "qc"}
+    # Sprint 4 Task F (F25 D4, 2026-09-19): `ml` added deliberately, not
+    # loosened -- QBoost is a boosting framework for large-scale binary
+    # classifiers (p.1 abstract; keywords "machine learning, supervised
+    # learning, boosting"); `qc` kept because no platform context exists
+    # for D-Wave (qc-subsumption rule, docs/INTAKE_WORKFLOW.md section 8).
+    assert contexts == {"qml", "qc", "ml"}
 
 
 def test_seed_set_now_holds_at_least_46_distinct_papers():

@@ -14,6 +14,13 @@ false-positive lesson).
 
 Exit 0 = allow stop. Exit 2 = block with guidance.
 Bypass: branch name containing allow_stop_hook_bypass.
+
+Since 2026-09-19 (Sprint 4 Task A, F27): Backlog Refinement is Sprint N's
+Phase 1 on Sprint N's branch, and sprint_status.json advances to N at the
+6.6 carry-forward cut. The "number == branch" rule below therefore holds at
+every moment of a sprint, including the between-sprints turns where it used
+to contradict tests/test_sprint_documents.py. Behavioral tests:
+tests/test_verify_closeout_hook.py.
 """
 from __future__ import annotations
 

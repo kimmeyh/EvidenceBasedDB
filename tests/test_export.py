@@ -133,8 +133,8 @@ def test_paper_export_carries_yields_to_its_assertions(db):
         "VALUES ('paper-1', 'paper', 'a paper', 'itself', 'N/A', '2026-09-15', 'created')"
     )
     db.execute(
-        "INSERT INTO paper_fields (record_id, tier, citation, access, disposition, checked_against_source) "
-        "VALUES ('paper-1', 'read', 'Cite, 2026', 'arXiv:0000.00000', 'why it matters', '2026-09-15, Claude, read in full')"
+        "INSERT INTO paper_fields (record_id, tier, access, disposition, checked_against_source) "
+        "VALUES ('paper-1', 'read', 'arXiv:0000.00000', 'why it matters', '2026-09-15, Claude, read in full')"
     )
     db.execute(
         "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
@@ -189,22 +189,20 @@ def test_child_list_returns_values_in_query_order(db):
     assert result == ["aaa-doc", "zzz-doc"]
 
 
-def test_paper_export_citation_follows_provenance_not_paper_fields(db):
-    """F6 finding 1 (PR #1 review): insert_paper() writes the same string
-    into records.provenance and paper_fields.citation, which is exactly
-    the "one value restated" pattern CLAUDE.md's standing rule warns
-    against. The export must read `citation` from `provenance` (the
-    spine's canonical field), never from paper_fields.citation
-    independently -- proven here by inserting a record where the two
-    columns deliberately DIFFER and asserting the export follows
-    provenance, not the (deliberately stale) paper_fields value."""
+def test_paper_export_citation_is_the_records_provenance(db):
+    """F6 finding 1 (PR #1 review) then F25 B4 (Sprint 4 Task B): the
+    citation lives once, in records.provenance. paper_fields.citation --
+    a byte-identical copy on 46/46 papers -- no longer exists, so the
+    export's `citation` key can only come from the spine. This test used
+    to insert deliberately divergent values in the two columns; now it
+    simply pins the one source."""
     db.execute(
         "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
         "VALUES ('paper-1', 'paper', 'a paper', 'the REAL provenance', 'N/A', '2026-09-18', 'created')"
     )
     db.execute(
-        "INSERT INTO paper_fields (record_id, tier, citation, access, disposition) "
-        "VALUES ('paper-1', 'seen', 'a STALE citation nobody updated', 'arXiv:0000.00000', 'test fixture')"
+        "INSERT INTO paper_fields (record_id, tier, access, disposition) "
+        "VALUES ('paper-1', 'seen', 'arXiv:0000.00000', 'test fixture')"
     )
     db.commit()
 
@@ -213,7 +211,6 @@ def test_paper_export_citation_follows_provenance_not_paper_fields(db):
         papers = json.loads((Path(out) / "papers.json").read_text(encoding="utf-8"))
 
     assert papers[0]["citation"] == "the REAL provenance"
-    assert papers[0]["citation"] != "a STALE citation nobody updated"
 
 
 def test_paper_checked_against_source_never_is_preserved_not_omitted(db):
@@ -224,8 +221,8 @@ def test_paper_checked_against_source_never_is_preserved_not_omitted(db):
         "VALUES ('paper-1', 'paper', 'a paper', 'itself', 'N/A', '2026-09-15', 'created')"
     )
     db.execute(
-        "INSERT INTO paper_fields (record_id, tier, citation, access, disposition, checked_against_source) "
-        "VALUES ('paper-1', 'seen', 'Cite, 2026', 'arXiv:0000.00000', 'not yet screened', 'never')"
+        "INSERT INTO paper_fields (record_id, tier, access, disposition, checked_against_source) "
+        "VALUES ('paper-1', 'seen', 'arXiv:0000.00000', 'not yet screened', 'never')"
     )
     db.commit()
 
@@ -259,3 +256,108 @@ def test_assertion_export_carries_citation_context_and_documents(db):
     assert assertions[0]["citation_context"] == '"the exact sentence making the claim"'
     assert assertions[0]["units"] == "AUPRC"
     assert assertions[0]["documents"] == ["docs/paper/appendix.md"]
+
+
+def _insert_paper_with_children(conn, record_id: str, contexts: list[str]) -> None:
+    """A paper with contexts, applicability rows and one yielded assertion,
+    inserted with the child rows in REVERSE sorted order so a batched query
+    that lost its per-record ORDER BY would show it."""
+    conn.execute(
+        "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
+        "VALUES (?, 'paper', 'a paper', 'itself', 'N/A', '2026-09-19', 'created')",
+        (record_id,),
+    )
+    conn.execute(
+        "INSERT INTO paper_fields (record_id, tier, access, disposition) VALUES (?, 'seen', 'arXiv:0000.00000', 'd')",
+        (record_id,),
+    )
+    for ctx in sorted(contexts, reverse=True):
+        conn.execute("INSERT INTO record_contexts (record_id, context_id) VALUES (?, ?)", (record_id, ctx))
+        conn.execute(
+            "INSERT INTO paper_applicability (record_id, context_id, rationale) VALUES (?, ?, 'r -- p.1')",
+            (record_id, ctx),
+        )
+    a_id = f"{record_id}-claim"
+    conn.execute(
+        "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
+        "VALUES (?, 'assertion', 'a claim', ?, 'PROJ', '2026-09-19', 'created')",
+        (a_id, record_id),
+    )
+    conn.execute("INSERT INTO record_contexts (record_id, context_id) VALUES (?, 'qc')", (a_id,))
+    conn.execute("INSERT INTO paper_yields (paper_id, assertion_id) VALUES (?, ?)", (record_id, a_id))
+    conn.commit()
+
+
+def _statements_per_regenerate(conn) -> int:
+    count = 0
+
+    def _trace(_stmt: str) -> None:
+        nonlocal count
+        count += 1
+
+    conn.set_trace_callback(_trace)
+    try:
+        with tempfile.TemporaryDirectory() as out:
+            regenerate(conn, out)
+    finally:
+        conn.set_trace_callback(None)
+    return count
+
+
+def test_export_statement_count_does_not_grow_with_record_count(db):
+    """F26 (Sprint 4 Task D): one query per related table per class, so the
+    number of SQL statements a regenerate() issues is a constant of the
+    schema, not of the record count. Measured on the live store the day
+    this landed: 275 statements at 54 records before, 22 after.
+
+    Verified by injection: restoring the pre-F26 store/export.py (one
+    SELECT per child table per record) fails this test with 25 statements
+    at two papers against 205 at twenty; the batched module passes with
+    22 at both sizes.
+
+    What this would NOT catch: a batched query that is slow for a reason
+    other than statement count (a missing index on a JOIN column), or a
+    per-record query hidden behind a cache that happens to be warm.
+    """
+    _insert_paper_with_children(db, "paper-a", ["qc", "qml"])
+    _insert_paper_with_children(db, "paper-b", ["ml", "world"])
+    small = _statements_per_regenerate(db)
+    for i in range(18):
+        _insert_paper_with_children(db, f"paper-{i:02d}", ["qc", "method", "world"])
+    large = _statements_per_regenerate(db)
+    assert small == large, (
+        f"regenerate() issued {small} statements at 2 papers and {large} at 20: the "
+        "export is querying per record again (F26 regression)."
+    )
+
+
+def test_batched_children_keep_per_record_order(db):
+    """The determinism property F26 put at risk: children of every record
+    must still come out in the per-record order the export promises
+    (contexts, applicability and yields sorted by id), even though they now
+    arrive from one query for the whole class. Rows are inserted in reverse
+    order so insertion order cannot pass this by accident.
+
+    Verified by injection: reversing the applicability per-record sort
+    (`a.context_id DESC`) in _export_papers() fails this test on paper-a's
+    applicability (['qml', 'qc', 'method'] instead of ['method', 'qc',
+    'qml']). Merely DROPPING the trailing ORDER BY key does NOT fail it,
+    because SQLite happens to walk the (record_id, context_id) primary-key
+    index in key order -- which is exactly why the explicit ORDER BY stays:
+    index walk order is an implementation detail, not a promise.
+
+    What this would NOT catch: a regression confined to a child table this
+    fixture leaves empty (assertion_documents, term_see_also,
+    prerequisites, assertion_relations), or an ordering defect that only
+    appears once the query planner stops using the primary-key index.
+    """
+    _insert_paper_with_children(db, "paper-b", ["ml", "world"])
+    _insert_paper_with_children(db, "paper-a", ["qc", "qml", "method"])
+    with tempfile.TemporaryDirectory() as out:
+        regenerate(db, out)
+        papers = json.loads((Path(out) / "papers.json").read_text(encoding="utf-8"))
+    assert [p["id"] for p in papers] == ["paper-a", "paper-b"]
+    assert papers[0]["contexts"] == ["method", "qc", "qml"]
+    assert [a["context"] for a in papers[0]["applicability"]] == ["method", "qc", "qml"]
+    assert papers[1]["contexts"] == ["ml", "world"]
+    assert papers[1]["yields"] == ["paper-b-claim"]

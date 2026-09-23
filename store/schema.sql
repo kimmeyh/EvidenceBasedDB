@@ -141,26 +141,30 @@ CREATE TABLE term_see_also (
 -- Paper fields (ADR-0005 section 2). A paper record is PROVENANCE plus
 -- screening state; the claims themselves live in the assertion class and
 -- are linked in via paper_yields (ADR-0005 section 2b2).
+-- `citation` is NOT a column here (dropped 2026-09-19, Sprint 4 Task B,
+-- F25 B4 / decision Q2). It was a byte-identical copy of records.provenance
+-- on 46/46 papers -- this project's founding defect ("one value restated in
+-- five documents drifted in three") reproduced inside every row. The
+-- citation lives once, in records.provenance; store/export.py renders it
+-- from there. The live store was migrated by
+-- scripts/migrate_paper_fields_drop_citation.py (table rebuild).
 CREATE TABLE paper_fields (
     record_id               TEXT PRIMARY KEY REFERENCES records(id) ON DELETE CASCADE,
     tier                    TEXT NOT NULL CHECK (tier IN ('seen', 'screened', 'read')),
-    citation                TEXT NOT NULL,
     access                  TEXT NOT NULL,
     disposition             TEXT NOT NULL,
     evidence                TEXT,
     mined_by                TEXT,
-    -- REQUIRED at tier 'read' (ADR-0005 section 2), enforced by
-    -- store/ingest.py validate_paper(). CORRECTED 2026-09-19 (Copilot PR
-    -- #20 review): this comment previously claimed the rule was "not
-    -- expressible as a single CHECK across columns in SQLite without a
-    -- trigger" -- it is: CHECK (tier != 'read' OR checked_against_source
-    -- IS NOT NULL) is a valid table-level constraint. It is not added
-    -- here yet because altering a live table is a rebuild (F25 B4's
-    -- migration); add it there. The literal string 'never' is a valid,
-    -- meaningful value -- distinct from NULL, which means "not yet
-    -- tiered to require it," and distinct from blank, which the validator
-    -- rejects.
-    checked_against_source  TEXT
+    -- REQUIRED at tier 'read' (ADR-0005 section 2), enforced BOTH by
+    -- store/ingest.py validate_paper()/set_tier() (which also reject a blank
+    -- string and explain what to do) AND by the table-level CHECK below
+    -- (added 2026-09-19 with the same migration, after the Copilot PR #20
+    -- review corrected this comment's earlier claim that SQLite could not
+    -- express the rule without a trigger). The literal string 'never' is a
+    -- valid, meaningful value -- distinct from NULL, which means "not yet
+    -- tiered to require it."
+    checked_against_source  TEXT,
+    CHECK (tier <> 'read' OR checked_against_source IS NOT NULL)
 );
 
 -- `applicability`: context ids the paper bears on, per ADR-0005 section 2d

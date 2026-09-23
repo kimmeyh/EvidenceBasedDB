@@ -730,3 +730,138 @@ gate (section on "Is checked_against_source a hard gate for verdict:
 use?") has not yet chafed in practice -- with only one paper at `read`,
 there is no evidence yet on whether the gate produces a perfunctory date
 just to clear it. Revisit once more papers reach `read` tier.
+
+**2026-09-19 (A2): `screened` defined as practiced; the citation rule
+enforced; three field changes.** Sprint 4 Tasks B and C (backlog item F25,
+parts D2 and D3), taking decisions Q1 to Q4 approved at Sprint 4 planning.
+Forced by the four adversarial reviews of the 18 `screened` records in
+Sprint 3 (F7 to F10, record in `docs/sprints/SPRINT_3_F7-F10_REVIEW_RESULTS.md`).
+
+**Every count below is a snapshot as of 2026-09-19, against the store as
+it existed after Task C's corrections that day.** The store grows by
+design; re-query it rather than reading these numbers as current later.
+
+*What the reviews found that this ADR had allowed.* Section 2 says a
+citation is "pulled from an API, never hand-typed"; nothing enforced it,
+and every one of the 46 citations had been typed by hand from a PDF. The
+primary-source review found a wrong title (`dupont`), a dropped third
+author (`kordzanganeh`), a citation with no year whose id carried the
+wrong one (`rand`), a duplicate-file claim that hashing disproved
+(`mancilla`), and six preprints superseded by published versions the
+records never mentioned. Section 2c defines `screened` as "an agent
+extracted the claim and proposed a verdict"; all 18 `screened` records
+had zero extracted claims, and Amendment A1 had explained that away
+rather than reconciled it. And `value`, `provenance` and
+`paper_fields.citation` were byte-identical on 45 of 46 papers -- the
+one-value-in-three-places drift this project exists against, one layer
+below where Sprint 3 had fixed it in the export.
+
+*(a) Section 2c, the `screened` tier (decision Q1, option b).* The tier
+table now reads:
+
+| Tier | What it asserts | Whose cost |
+|---|---|---|
+| `seen` | An agent recorded that the source exists and why it was or was not pursued | Agent, negligible |
+| `screened` | An agent recorded a one-line disposition and derived `applicability` from the source itself; **no claims extracted yet** | Agent, small |
+| `read` | The source was opened and adjudicated: `checked_against_source` is set (now a schema CHECK), and claims were extracted (`yields`) | Team lead, real |
+
+`yields` is therefore a `read`-tier obligation, not a `screened` one.
+The alternative (option a, demote the 18 to `seen`) was rejected because a
+real disposition and re-derived applicability are information the 27
+`seen` records do not carry. As of this date: 1 `read`, 18 `screened`,
+27 `seen`; the 18 have 0 `paper_yields` rows, which the amended
+definition now states rather than excuses.
+
+*(b) Section 2, the citation rule, now enforced at the door.* Every
+paper declares `citation_origin`: `api` when `access` carries an arXiv id
+or a DOI -- the citation and the title are derived by `store/citations.py`
+from arXiv, Crossref or DataCite and rendered in one house style;
+`hand` only when no resolvable id exists, in which case the citation
+ends with a visible "(hand-transcribed from <page>)" marker and `access`
+is the real local path outside version control, optionally followed by
+" | <url>" for an id-less web page (PMLR, an institutional repository).
+A hand-typed citation for an id that would resolve is refused (the F10
+defect class); so is a citation carrying audit-trail text, a disposition
+that names a tier, and a multi-line disposition. A DOI printed on a paper
+but not registered in the DOI system (`udaru`, checked 2026-09-19) is not
+an access path; that record is hand-origin with the printed DOI in
+`evidence`. `scripts/refresh_citations.py` re-derives every api-origin
+citation and reports SAME / DIFFERS / NO-ID; it runs each delivery cycle
+(Phase 1.3, design-document currency) so a preprint that gets published
+is caught then. Measured this date: 22 api-origin papers, 24 hand-origin.
+
+*(c) Three field changes (decisions Q2 and Q3).* `paper_fields.citation`
+is dropped; the citation lives once, in `records.provenance`, and the
+export reads it from there. `records.value` is the paper's TITLE (ADR-0004
+section 3, "what it is"), no longer a third copy of the citation; 0 of 46
+papers now have `value` equal to `provenance`. The read-tier rule
+(`checked_against_source` set) is a schema CHECK as well as an
+application-layer check, added in the same table rebuild. And every
+`paper_applicability` rationale must end with a source anchor by
+convention (" -- p.1 keywords", " -- arXiv affiliation block"), regex-
+guarded at insert; the convention is applied to the 59 existing
+rationales by F25 part D4 (Sprint 4 Task F), which had not run at this
+amendment's date. ADR-0004 section 3's reading of `provenance` as "the
+artifact that establishes the record" (a local path, an API response and
+retrieval date) rather than the citation string is noted as the next
+candidate amendment, not taken now.
+
+*(d) Record identifiers (decision Q4).* `rand-2023-...` and its appendix
+were renamed `rand-2022-...` after the report's own page ii ("This
+research was published in 2022"). A record id that bakes in a fact can
+bake in a wrong one; the rename cascaded through 4 child rows while
+nothing yet cites the record. Future ids should carry the year only when
+it is read from the source, which the door's api path now makes the
+default.
+
+*Consequence for section 3 (records, never PDFs).* Unchanged. Hand-origin
+records now name the exact local file rather than the words "local file";
+the files themselves remain outside version control.
+
+*Revisit when* the first hand-origin record needs a correction the refresh
+path cannot make (then the hand path needs its own review cadence), and
+when bulk intake (F26, Sprint 4 Task G) first runs at the 1,200-paper
+scale under arXiv's 3-second pacing.
+
+**2026-09-19 (A3): three conventions the intake door introduced after A2,
+and A2's pending items closed.** Sprint 4 Tasks F, G and H (F25 parts D4 to
+D6). **Every count below is a snapshot as of the end of 2026-09-19.**
+
+*(a) Section 3, `access`.* A GitHub repository URL
+(`github.com/<owner>/<name>`) is a resolvable identifier beside a DOI and
+an arXiv id. Its citation is derived from the GitHub API from identity
+fields only (owner/name, description, license, creation date, URL), never
+from the moving HEAD, so the periodic refresh stays quiet across ordinary
+pushes; the revision a record was read against belongs in
+`checked_against_source`. As of this date: 24 api-origin records (17 arXiv,
+6 DOI, 1 GitHub) and 24 hand-origin.
+
+*(b) Section 2, non-paper sources.* A book, a reference (article, post,
+vendor or training document) or a code repository is recorded in the paper
+class, not a new class, with its kind named first in the disposition
+(`Book:`, `Reference:`, `Code repository:`) and enforced by
+`scripts/intake.py`. This is an interim convention: a `paper_fields.kind`
+column is the next candidate amendment, a Class 1 decision recorded in
+`docs/INTAKE_WORKFLOW.md` section 10, to be taken before the first bulk
+book load. A reference keeps a verbatim local copy under `References/`
+because its source may not stay live, and `access` is
+`<local copy> | <url>`.
+
+*(c) Section 2, `id`.* For api-origin records the id is derived from the
+source of record, `<first author family>-<year>-<five title words>`
+(repositories: `<owner>-<name>-github-repo`), and a second load of the same
+source is skipped as present. Hand-origin records still receive a
+human-chosen id.
+
+*(d) A2's pending items.* The source-anchor convention was applied to every
+applicability rationale on this date (87 of 87 rows anchored) against the
+context tests recorded in `docs/INTAKE_WORKFLOW.md` section 8 and in
+ADR-0004 A5. Five papers reached `read` through the door's own path
+(`set_tier` with `checked_against_source` naming the pages read); the first
+`contradicts` (3) and `supports` (2) relations of section 2f now exist
+between their yielded assertions. Tiers as of this date: 6 `read`, 14
+`screened`, 28 `seen`; 13 assertions, 12 `yields` rows.
+
+*(e) Governing design.* `docs/INTAKE_WORKFLOW.md` is the design document
+for how a source enters the store; this ADR owns what a record IS, that
+document owns how one arrives, and both are amended by dated section.
