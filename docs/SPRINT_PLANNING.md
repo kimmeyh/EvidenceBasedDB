@@ -18,6 +18,16 @@ removed where none does.
 | Senior Developers | Claude Code Sonnet (subagents) |
 | Developers | Claude Code Haiku (subagents) |
 
+**Data-driven complement (Sprint 4 Task K, F18, 2026-09-19)**: the table
+above is static. `.claude/model_assignment_heuristics.json` records task
+patterns with a recommended tier AND a required review protocol,
+escalation triggers, a scoring rubric, and a `learning_log` of real
+outcomes (first row: Sprint 3's F7-F10, where the protocol rather than
+the tier produced the findings; second row: F11's team-lead timing, filled
+in when it lands, never estimated). Consult it when assigning a card;
+update it at every retrospective (Category 5). Guarded by
+`tests/test_model_assignment_heuristics.py`.
+
 ## Activities requiring the top tier (Fable/Opus) -- MANDATORY
 
 Sprint planning; retrospectives; backlog refinement; architecture/schema deep dives; ADR authoring; best-practices research; security-sensitive review; any decision touching an ACCEPTED ADR's spine (record classes, contexts, certainty model). Implementation tasks (loaders, scripted runs, doc edits) may be delegated to Sonnet/Haiku subagents. Before starting a top-tier activity, confirm the active model is top tier; escalate if not.
@@ -37,6 +47,8 @@ A frozen or tuned configuration carried from one dataset to another is a HYPOTHE
 ## Capability pre-flight (mandatory for tool-dependent items)
 
 Any item that depends on an external capability (a GitHub API behavior, a library's SQLite feature, a PDF/text-extraction tool) gets a ~5-minute spike proving the single primitive it depends on BEFORE the item is estimated or built. If the spike fails, the item is re-scoped first. Also applies to environment preconditions in validation steps: confirm the environment actually works now, do not assume.
+
+**The pre-flight tests the request shape the CODE will send, not a simpler one (Sprint 4 improvement 3).** Probe the exact call, with the same batching, headers and pacing the implementation will use. Sprint 4's arXiv pre-flight fetched one id, found the User-Agent that works, and passed; the implementation then used the API's own `id_list` to batch many ids per request, which arXiv answers with HTTP 406 and follows with a multi-minute refusal of every further request from that client, single ids included. That cost about 90 minutes mid-sprint to diagnose, and the diagnosis was slowed by probing in bursts, which extended the block being measured. A pre-flight that differs from production in batching, concurrency or headers has tested a different request. When a probe does hit a rate limit or a refusal, pace the follow-up probes at the documented interval rather than retrying immediately: the retry is then part of the measurement, not a second cause.
 
 **The pre-flight inventories CODE, not only documents (Sprint 10 improvement 6).** Grep the source tree for whatever the item is about to change, not just the docs that mention it. F40's card listed four documents referencing the path being moved and was verified against exactly those four. It missed `data.py`, which hardcoded the ULB dataset location -- so the repository that Appendix C promises "regenerates every figure" would have worked on no machine but the author's. The card was right about every document and silent about the one line that mattered.
 

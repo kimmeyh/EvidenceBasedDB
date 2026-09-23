@@ -34,9 +34,8 @@ generated, never hand-edited" -- a guard that rewrites generated output
 would be immediately overwritten by the next `regenerate()` call and
 would be testing the wrong layer. If a citation string in the export
 carries a British spelling, that spelling came from the SOURCE data
-(scripts/seed_set_metadata.json, the hand-authored dicts in
-scripts/generate_seed_set_metadata.py and scripts/apply_paper_
-applicability.py) -- but those sources hold citation TEXT copied verbatim
+(scripts/seed_set_metadata.json and the hand-authored dicts in
+scripts/apply_paper_applicability.py) -- but those sources hold citation TEXT copied verbatim
 from real paper titles and author-written abstracts, which is exactly the
 "verbatim quotation" case this script must NOT rewrite. Swept: this
 repository's own LIVING tracked markdown only -- process docs, README,

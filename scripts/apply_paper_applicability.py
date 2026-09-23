@@ -75,11 +75,11 @@ APPLICABILITY: dict[str, list[tuple[str, str]]] = {
     "britt-humble-2017-hpc-with-qpus-acm": [
         ("qc", "ACM paper on integrating QPUs into HPC system architectures"),
     ],
-    "rand-2023-pqc-critical-infrastructure-assessment": [
+    "rand-2022-pqc-critical-infrastructure-assessment": [
         ("qc", "Assesses quantum computing's cryptographic threat to critical infrastructure (post-quantum crypto)"),
         ("world", "Policy/national-security framing independent of any specific platform or project"),
     ],
-    "rand-2023-pqc-critical-infrastructure-assessment-appendix-b": [
+    "rand-2022-pqc-critical-infrastructure-assessment-appendix-b": [
         ("qc", "Companion appendix to the RAND PQC assessment, same subject matter"),
     ],
     "mandra-2021-hybridq-simulator-nasa": [

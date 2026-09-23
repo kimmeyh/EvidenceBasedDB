@@ -4,10 +4,10 @@ Adapted 2026-08-30 from spamfilter-multi's BACKLOG_REFINEMENT.md. The presentati
 
 ## When refinement runs
 
-Refinement is MANDATORY and runs TWICE per cycle as part of Phase 8:
+Refinement is MANDATORY and runs TWICE per cycle, as **Sprint N's Phase 1 on Sprint N's branch** (re-homed 2026-09-19, Sprint 4 Task A; it was "prior sprint Phase 8", which made a session report Sprint N-1 while working on Sprint N's branch):
 
-- **Pass 1 -- Completeness Sweep (Phase 8.2)**: immediately after the sprint PR merges to develop, in parallel with the team lead's main merge. Purpose: confirm every close-out step actually happened (issues closed, docs triad present, master plan rolled, shipped items pruned). Corrections only; NEVER selects scope.
-- **Pass 2 -- Scope Selection (Phase 8.4)**: after the delivery-cycle artifacts are current. Presents the slate; the team lead selects; feeds Phase 3. The ONLY pass that selects scope.
+- **Pass 1 -- Completeness Sweep (Phase 1.2)**: immediately after the 6.6 carry-forward cut, in parallel with the team lead's main merge. Purpose: confirm every close-out step of Sprint N-1 actually happened (issues closed, docs triad present, master plan rolled, shipped items pruned, sprint_status advanced to N). Corrections only; NEVER selects scope.
+- **Pass 2 -- Scope Selection (Phase 1.4)**: after the delivery-cycle artifacts are current. Presents the slate titled for the sprint being planned -- "Sprint N Candidates at a glance"; the team lead selects; feeds Phase 2 and 3. The ONLY pass that selects scope.
 
 A pass can be SHORT when little needs correcting or selecting; short is not skipped.
 
@@ -23,10 +23,10 @@ Every item carries a real registered ID: **F#** for features/process/tech-debt i
 
 ## Backlog Presentation Format (AUTHORITATIVE)
 
-**Summary Index first** -- every item's header line only, in presentation order, HOLD items one line each in the same full shape (never a bare ID list):
+**Summary Index first** -- every item's header line only, in presentation order, HOLD items one line each in the same full shape (never a bare ID list). The heading names the sprint being planned, which is the branch's sprint number:
 
 ```markdown
-## Candidates at a glance
+## Sprint <N> Candidates at a glance
 
 - **F75. Action the 20-paper ADR checkpoint (~2h) Priority 6**
 - **F76. Guard the shared vocabulary between ADR-0004 and ADR-0005 (~1h) Priority 7**

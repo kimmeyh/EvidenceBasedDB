@@ -1,11 +1,22 @@
 #!/usr/bin/env python3
 """Sprint 1 Task F: load the 46-paper seed set at `seen`.
 
-Reads paper metadata from scripts/seed_set_metadata.json (generated
-separately by extracting real bibliographic data from each PDF's own
-content -- ADR-0004's standing rule is that every assertion originates in
-a source with provenance, and a citation guessed from a filename would be
-exactly the defect class this system exists against).
+Reads paper metadata from scripts/seed_set_metadata.json, the hand-authored
+seed file. Since Sprint 4 Tasks B/C (F25 C1, 2026-09-19) that file carries
+only what the door accepts: for an entry whose `access` is an arXiv id or
+DOI, `citation_origin: "api"` and NO citation -- insert_paper() derives the
+citation and the title from the source of record; for an entry with no
+resolvable id, `citation_origin: "hand"`, a `title`, a `citation` ending
+in "(hand-transcribed from <page>)", `transcribed_from`, and an `access`
+that is the real local path (optionally " | <url>"). tests/
+test_seed_set_metadata.py guards that shape. The original generator
+(scripts/generate_seed_set_metadata.py, hand-authored Python dicts
+transcribed from each PDF in Sprint 1) was retired in Task C: it was the
+"old door" through which hand-typed citations would have re-entered.
+To add a paper, append an entry here and run this script; the door checks
+it. ADR-0004's standing rule is that every assertion originates in a
+source with provenance, and a citation guessed from a filename would be
+exactly the defect class this system exists against.
 
 Loads every entry at `seen` tier. Promotion to `screened` for a
 variety-chosen subset of ~20 is a separate, later step (this script's
@@ -36,10 +47,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
+from store.citations import PacedFetcher, parse_access  # noqa: E402
 from store.export import regenerate  # noqa: E402
 from store.ingest import PaperRecord, insert_paper, set_tier  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
+
+# Network for api-origin entries; tests inject a fake. Paced for arXiv.
+FETCHER = PacedFetcher()
 METADATA_PATH = ROOT / "scripts" / "seed_set_metadata.json"
 
 UPDATED = "2026-09-16"
@@ -53,7 +68,7 @@ def main() -> int:
         print(f"error: {DB_PATH} does not exist.", file=sys.stderr)
         return 1
     if not METADATA_PATH.exists():
-        print(f"error: {METADATA_PATH} does not exist. Generate it first.", file=sys.stderr)
+        print(f"error: {METADATA_PATH} does not exist.", file=sys.stderr)
         return 1
 
     entries = json.loads(METADATA_PATH.read_text(encoding="utf-8"))
@@ -103,19 +118,28 @@ def main() -> int:
                     promoted += 1
             else:
                 tier = "screened" if (promote and entry.get("promote")) else "seen"
+                # Sprint 4 Task B (F25 C1): the metadata file no longer supplies
+                # citations. An entry whose access carries an arXiv id or DOI is
+                # api-origin and its citation and title come from the source of
+                # record at insert time; anything else must declare itself
+                # hand-transcribed with the page it was read from and a real
+                # local path. insert_paper() refuses everything in between.
+                origin = "api" if parse_access(entry["access"]) else "hand"
                 paper = PaperRecord(
                     id=record_id,
                     tier=tier,
-                    citation=entry["citation"],
                     access=entry["access"],
                     disposition=entry["disposition"],
                     context=entry["context"],
-                    value=entry["citation"],
+                    value=entry.get("title", ""),
+                    citation=None if origin == "api" else entry.get("citation"),
+                    citation_origin=origin,
+                    hand_transcribed_from=entry.get("transcribed_from"),
                     evidence_tag="N/A",
                     updated=UPDATED,
                     updated_reason=UPDATED_REASON,
                 )
-                insert_paper(conn, paper)
+                insert_paper(conn, paper, fetcher=FETCHER)
                 inserted += 1
     except Exception as e:
         conn.rollback()

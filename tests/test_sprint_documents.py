@@ -36,15 +36,47 @@ SPRINTS = ROOT / "docs" / "sprints"
 STATUS = ROOT / ".claude" / "sprint_status.json"
 
 
-def _current_sprint() -> int | None:
-    """The sprint still in flight, which owes no summary yet."""
+# Underscore-terminated on purpose: a bare "phase_1" prefix would also match
+# a hypothetical "phase_10_..." (caught by this module's own edge-case test
+# before the rule ever ran against a real file).
+PRE_PLANNING_PHASES = ("phase_1_", "phase_2_")
+
+
+def _current_status() -> dict | None:
     if not STATUS.exists():
         return None
     try:
-        return int(json.loads(STATUS.read_text(encoding="utf-8"))
-                   ["current_sprint"]["number"])
+        return json.loads(STATUS.read_text(encoding="utf-8"))["current_sprint"]
     except Exception:                                   # noqa: BLE001
         return None
+
+
+def _current_sprint() -> int | None:
+    """The sprint still in flight, which owes no summary yet."""
+    st = _current_status()
+    try:
+        return int(st["number"]) if st else None
+    except Exception:                                   # noqa: BLE001
+        return None
+
+
+def status_requires_plan_doc(current_sprint: dict) -> bool:
+    """A sprint owes SPRINT_N_PLAN.md from Phase 3 on -- not during Phase 1
+    (Backlog Refinement) or Phase 2 (Pre-Kickoff), which happen on Sprint
+    N's branch BEFORE its plan exists (workflow re-homing, 2026-09-19,
+    Sprint 4 Task A). Before that change, sprint_status kept the finished
+    sprint's number through refinement to satisfy this test, and the
+    close-out Stop hook -- which requires number == branch -- blocked the
+    close-out message (F27). One rule now: the number follows the branch;
+    the plan is owed from Phase 3."""
+    status = str(current_sprint.get("status", ""))
+    return not status.startswith(PRE_PLANNING_PHASES)
+
+
+def previous_summary_may_wait(current_sprint: dict) -> bool:
+    """Sprint N-1's SUMMARY is written at N-1's Phase 7 or in N's Phase 1.2
+    sweep; during N's Phase 1/2 it may not exist yet. Owed from Phase 3."""
+    return not status_requires_plan_doc(current_sprint)
 
 
 def _sprint_numbers() -> list[int]:
@@ -69,6 +101,9 @@ def test_every_completed_sprint_has_all_three_documents():
             # Demanding either mid-sprint fails the moment a plan is written,
             # which is how this guard first fired against Sprint 13's own plan.
             if n == current and kind in ("SUMMARY", "RETROSPECTIVE"):
+                continue
+            st = _current_status()
+            if st and n == (current or 0) - 1 and kind == "SUMMARY" and previous_summary_may_wait(st):
                 continue
             f = SPRINTS / f"SPRINT_{n}_{kind}.md"
             if not f.exists():
@@ -108,8 +143,32 @@ def test_sprint_status_points_at_a_real_sprint():
     """
     st = json.loads(STATUS.read_text(encoding="utf-8"))["current_sprint"]
     n = int(st["number"])
-    assert (SPRINTS / f"SPRINT_{n}_PLAN.md").exists(), (
-        f"sprint_status.json names sprint {n}, which has no plan document")
-    plan = st.get("plan_doc")
-    if plan:
-        assert (ROOT / plan).exists(), f"plan_doc {plan} does not exist"
+    if status_requires_plan_doc(st):
+        assert (SPRINTS / f"SPRINT_{n}_PLAN.md").exists(), (
+            f"sprint_status.json names sprint {n} at {st.get('status')!r}, which has no plan document")
+        plan = st.get("plan_doc")
+        if plan:
+            assert (ROOT / plan).exists(), f"plan_doc {plan} does not exist"
+    else:
+        # Phase 1/2 on Sprint N's branch, before its plan exists: the number
+        # must still be a REAL next sprint (N-1 has a plan) and plan_doc must
+        # be null rather than pointing at the previous sprint's plan.
+        assert (SPRINTS / f"SPRINT_{n - 1}_PLAN.md").exists(), (
+            f"sprint_status.json names sprint {n} in a pre-planning phase, but sprint {n - 1} "
+            "has no plan document -- the number skipped a sprint")
+        assert st.get("plan_doc") in (None, ""), (
+            f"pre-planning status {st.get('status')!r} must carry plan_doc null, not {st.get('plan_doc')!r}")
+
+
+def test_status_requires_plan_doc_only_from_phase_3():
+    """Pure-function check of the rule, plus its edges, so the exemption
+    cannot silently widen: phase_1/phase_2 exempt, everything else owes
+    the plan, an empty or missing status owes it too."""
+    assert not status_requires_plan_doc({"status": "phase_1_refinement"})
+    assert not status_requires_plan_doc({"status": "phase_2_pre_kickoff"})
+    assert status_requires_plan_doc({"status": "phase_3_plan_drafted"})
+    assert status_requires_plan_doc({"status": "phase_4_execution"})
+    assert status_requires_plan_doc({"status": "phase_8_delivery_cycle"})
+    assert status_requires_plan_doc({"status": ""})
+    assert status_requires_plan_doc({})
+    assert status_requires_plan_doc({"status": "phase_10_made_up"})  # startswith("phase_1") must not match

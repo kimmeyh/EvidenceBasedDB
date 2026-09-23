@@ -47,7 +47,21 @@ PYTHON_INVOCATION = re.compile(r"(?:^|[\s;&|(])python[0-9.]*(?:\.exe)?(?:\s|$)")
 # ptr'...' -- silence the block.
 VALID_PREFIX = re.compile(r"(?i)^(?:r|rb|br|rf|fr)$")
 QUOTED_LITERAL = re.compile(r"(?P<prefix>[A-Za-z]*)(?P<q>['\"])(?P<body>[^'\"]*)(?P=q)")
-DRIVE_PATH = re.compile(r"[A-Za-z]:\\[A-Za-z]")
+
+# A REAL drive-letter path: a SINGLE letter, a colon, a backslash, a letter.
+# The leading letter must not be part of a longer word.
+#
+# Sprint 4 retrospective improvement 5. The previous pattern was
+# `[A-Za-z]:\\[A-Za-z]`, which matches any letter-colon-backslash-letter, so
+# ordinary prose ending in a colon before an escape matched on its last
+# letter: "CITATION.cff:\n" matched as `f:\n`, "        if found:\n" as
+# `d:\n`. Two legitimate commands carrying no Windows path at all were
+# blocked that way in Sprint 4, and the block is mechanical, so there was no
+# way past it except the bypass token. Diagnosed 2026-09-22 by printing the
+# literal the hook flagged in each case, after two wrong guesses about the
+# cause (a quote-boundary bug, then a segment-scoping bug); the evidence is
+# what narrowed it, not the reasoning about it.
+DRIVE_PATH = re.compile(r"(?<![A-Za-z0-9_])[A-Za-z]:\\[A-Za-z]")
 
 
 def _read_command() -> str:

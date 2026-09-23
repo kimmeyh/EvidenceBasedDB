@@ -221,19 +221,22 @@ def test_paper_fields_rejects_a_tier_outside_the_three_named(db):
     db.commit()
     with pytest.raises(sqlite3.IntegrityError):
         db.execute(
-            "INSERT INTO paper_fields (record_id, tier, citation, access, disposition) "
-            "VALUES ('p1', 'skimmed', 'cite', 'access', 'why')"
+            "INSERT INTO paper_fields (record_id, tier, access, disposition) "
+            "VALUES ('p1', 'skimmed', 'access', 'why')"
         )
 
 
 def test_paper_fields_accepts_the_three_named_tiers(db):
+    """'read' carries checked_against_source because the Sprint 4 Task B
+    CHECK (decision Q2) refuses a read-tier row without it; the tier
+    itself is what this test is about."""
     for i, tier in enumerate(["seen", "screened", "read"]):
         rid = f"p{i}"
         _insert_minimal_record(db, record_id=rid, record_class="paper")
         db.execute(
-            "INSERT INTO paper_fields (record_id, tier, citation, access, disposition) "
-            "VALUES (?, ?, 'cite', 'access', 'why')",
-            (rid, tier),
+            "INSERT INTO paper_fields (record_id, tier, access, disposition, checked_against_source) "
+            "VALUES (?, ?, 'access', 'why', ?)",
+            (rid, tier, "never" if tier == "read" else None),
         )
     db.commit()
 
@@ -243,14 +246,40 @@ def test_paper_fields_checked_against_source_accepts_the_literal_never(db):
     from NULL -- it is a statement someone made, not an absence."""
     _insert_minimal_record(db, record_id="p1", record_class="paper")
     db.execute(
-        "INSERT INTO paper_fields (record_id, tier, citation, access, disposition, checked_against_source) "
-        "VALUES ('p1', 'seen', 'cite', 'access', 'why', 'never')"
+        "INSERT INTO paper_fields (record_id, tier, access, disposition, checked_against_source) "
+        "VALUES ('p1', 'seen', 'access', 'why', 'never')"
     )
     db.commit()
     row = db.execute(
         "SELECT checked_against_source FROM paper_fields WHERE record_id = 'p1'"
     ).fetchone()
     assert row["checked_against_source"] == "never"
+
+
+def test_paper_fields_has_no_citation_column(db):
+    """Sprint 4 Task B (F25 B4, Q2 = drop): the citation lives once, in
+    records.provenance."""
+    cols = [r["name"] for r in db.execute("PRAGMA table_info(paper_fields)")]
+    assert "citation" not in cols
+    assert cols == ["record_id", "tier", "access", "disposition", "evidence", "mined_by", "checked_against_source"]
+
+
+def test_paper_fields_check_rejects_read_tier_without_checked_against_source(db):
+    """The read-tier rule now holds at the column, not only in
+    validate_paper()/set_tier(): a raw INSERT or UPDATE cannot make a
+    'read' row with NULL checked_against_source (Copilot PR #20 review,
+    landed with the Sprint 4 Task B rebuild)."""
+    _insert_minimal_record(db, record_id="p1", record_class="paper")
+    with pytest.raises(sqlite3.IntegrityError):
+        db.execute(
+            "INSERT INTO paper_fields (record_id, tier, access, disposition) VALUES ('p1', 'read', 'access', 'why')"
+        )
+    db.execute("INSERT INTO paper_fields (record_id, tier, access, disposition) VALUES ('p1', 'seen', 'access', 'why')")
+    db.commit()
+    with pytest.raises(sqlite3.IntegrityError):
+        db.execute("UPDATE paper_fields SET tier = 'read' WHERE record_id = 'p1'")
+    db.execute("UPDATE paper_fields SET tier = 'read', checked_against_source = 'never' WHERE record_id = 'p1'")
+    db.commit()
 
 
 def test_script_paths_derives_db_and_export_paths_from_repo_root():
