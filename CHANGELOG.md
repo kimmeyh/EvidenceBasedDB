@@ -13,7 +13,7 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-09-19 to 2026-09-20 (Sprint 4, PR #30)
+### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 
 Sprint 4 fixed the path, fixed the records, and prepared the cost
 measurement: Tasks A-K per `docs/sprints/SPRINT_4_PLAN.md`, run across a
@@ -73,6 +73,36 @@ written, `docs/sprints/SPRINT_4_SUMMARY.md`. This entry summarizes.
 - **test**: the CHANGELOG currency guard now reads the range-dated section
   headers this file uses; it had read 2026-09-14 as the newest entry for
   three sprints and passed on its own defect until the calendar moved
+- **process**: F11 measured 2026-09-21 -- the team lead adjudicated the 18
+  corrected records in 19.4 minutes, 1.08 per record, 18/18 accept. Recorded
+  with its caveat: this is CONFIRM mode over model-corrected records with
+  F10's findings in view, not the cold adjudication F10's 599 s compares
+  against. F29 cards the cold measurement
+- **fix**: PR #30 review round 1 (Copilot plus three Claude reviewers)
+  found five defects, one merge-blocking and already shipped: an inverted
+  ternary had destroyed `updated_reason` on 44 of 48 paper records, 43 of
+  them losing the Sprint 1 seed-load note. Recovered from git by
+  `scripts/recover_updated_reason_history.py`. Also: an api-origin record
+  could carry any fabricated citation with no network call; an empty
+  provider title was skipped while the run reported success; `apply()`
+  wrote to `records` without passing the door; a DOI-shaped folder in a
+  local path was read as a DOI; and Copilot alone caught GitHub-backed
+  records being routed to `fetch_doi` and reported as broken DOIs
+- **fix**: PR #30 review round 2, run against round 1's own fixes, found
+  that three of those guards did not guard. The append-only test scanned
+  SOURCE TEXT, so three rewrites destroyed history with the full suite
+  green; the citation marker was a string a caller could type, refusing an
+  omission but not a fabrication; and the new commit hook drifted its
+  offsets, blocking at 19 preceding lines and ALLOWING at 20. Fixed
+  structurally: one `append_updated_reason` implementation that all four
+  sites call and the tests EXECUTE, a sentinel object compared by identity,
+  and exact offsets. Copilot also found CI red on every fresh checkout (a
+  test failed rather than skipped when the gitignored store was absent) and
+  one hook registered without a timeout
+- **chore**: F30 carded for Sprint 5 after the team lead asked about
+  database backups -- the premise check found there were none, and the
+  deeper gap is that no script rebuilds the store from the committed
+  export, the recovery path ADR-0004's design implies
 
 ### 2026-09-18 to 2026-09-19 (Sprint 3, PR #20)
 
