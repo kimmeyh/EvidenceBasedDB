@@ -13,6 +13,21 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
+### 2026-09-23 onward (Sprint 5, PR #43)
+
+- **docs**: Sprint 5 scope (F31, F30, F28, F5), F19 and F29 closed without
+  implementation, F32-F35 carded for Sprint 6, plan approved with decisions
+  Q1-Q6 (PR #43)
+- **feat**: store durability (Task A, F30, Issue #44) --
+  `scripts/rebuild_store_from_export.py` rebuilds the store from the
+  committed export through the real door and proves the regenerated export
+  byte-identical (it is, first run); `store/backup.py` takes a SQLite-API
+  backup before every live `--apply`, verified at creation, with three-rule
+  retention (32 days; newest of the last 5 sprints; never before its content
+  is committed); `scripts/restore_store.py` restores and verifies;
+  `validate_paper(check_local_paths=False)` is the one explicit exception the
+  rebuild needs to run on CI; 14 tests, each guard carrying its own injection
+
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 
 Sprint 4 fixed the path, fixed the records, and prepared the cost

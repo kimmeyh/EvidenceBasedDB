@@ -50,6 +50,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
+from store.backup import backup_before_write  # noqa: E402
 from store.export import regenerate  # noqa: E402
 from store.ingest import (  # noqa: E402
     DERIVED_BY_DOOR, HAND_MARKER, PaperRecord, _ANCHOR, _TIER_IN_TEXT, insert_paper, validate_paper,
@@ -226,6 +227,8 @@ def main(argv: list[str] | None = None) -> int:
 
     verify_id = opt("--verify")
     manifest = opt("--manifest")
+    if apply and not verify_id:
+        backup_before_write(DB_PATH, "intake --apply")  # F30: verified backup, or no write at all
     conn = connect(DB_PATH)
     try:
         if verify_id:

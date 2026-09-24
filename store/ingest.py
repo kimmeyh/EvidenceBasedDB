@@ -173,7 +173,7 @@ def append_updated_reason(conn, record_id: str, note: str, today: str) -> str:
     return joined
 
 
-def validate_paper(paper: PaperRecord) -> None:
+def validate_paper(paper: PaperRecord, check_local_paths: bool = True) -> None:
     """Enforce ADR-0005 section 2's rule that checked_against_source is
     set at tier 'read'. Fixed 2026-09-18 (F6 finding 2, PR #1 review):
     schema.sql's comment promised an application-layer check that did not
@@ -195,6 +195,13 @@ def validate_paper(paper: PaperRecord) -> None:
     satisfies this check. None AND blank/whitespace-only both fail it
     (Copilot PR #20 review, 2026-09-19: an empty string previously passed,
     letting the required field be effectively missing).
+
+    `check_local_paths=False` skips ONE rule: that a hand-origin record's
+    local file exists on THIS machine. Every other rule still runs. It is
+    a property of the machine, not of the record, and exists for
+    store/rebuild.py (Sprint 5 Task A, F30): rebuilding the store from the
+    committed export must work on a CI runner that has no
+    D:/Data/Harold/EvidenceBasedDB. Intake never passes it.
     """
     value = paper.checked_against_source
     if paper.tier == "read" and (value is None or not value.strip()):
@@ -239,7 +246,7 @@ def validate_paper(paper: PaperRecord) -> None:
         # and must exist. A URL that carried a DOI or arXiv id would have
         # been caught by the resolvable-id rule above.
         local = paper.access.split(_ACCESS_URL_SEP, 1)[0]
-        if not Path(local).exists():
+        if check_local_paths and not Path(local).exists():
             raise ValueError(
                 f"paper {pid!r}: access {paper.access!r} is not an existing local path. "
                 "ADR-0005 section 3: access is a DOI, an arXiv id, or a local path outside "
@@ -352,6 +359,7 @@ def insert_paper(
     conn: sqlite3.Connection,
     paper: PaperRecord,
     fetcher: citations.Fetcher | None = None,
+    check_local_paths: bool = True,
 ) -> PaperRecord:
     """The ONLY way a paper enters the store. Derives the citation from the
     source of record for api-origin papers (unless one was supplied), then
@@ -360,7 +368,7 @@ def insert_paper(
     the citation lives once, in records.provenance, and the export reads it
     from there."""
     paper = derive_citation(paper, fetcher)
-    validate_paper(paper)
+    validate_paper(paper, check_local_paths=check_local_paths)
     conn.execute(
         "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
         "VALUES (?, 'paper', ?, ?, ?, ?, ?)",
