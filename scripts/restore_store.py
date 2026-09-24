@@ -21,8 +21,10 @@ Usage:
 """
 from __future__ import annotations
 
+import shutil
 import sqlite3
 import sys
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,7 +32,8 @@ sys.path.insert(0, str(ROOT))
 
 from store import script_paths  # noqa: E402
 from store.backup import (  # noqa: E402
-    _class_counts, backup_before_write, default_backups_dir, parse_name, verify_backup,
+    BackupVerificationError, _class_counts, backup_before_write, current_sprint, default_backups_dir, parse_name,
+    verify_backup,
 )
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
@@ -77,14 +80,31 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     target = _counts(backup)
     verify_backup(backup, target)
-    current = _counts(DB_PATH) if DB_PATH.exists() else {}
+    try:
+        current = _counts(DB_PATH) if DB_PATH.exists() else {}
+    except sqlite3.DatabaseError as ex:
+        current = f"UNREADABLE ({ex})"
     print(f"backup  : {backup.name}  {target}  (integrity ok)")
     print(f"current : {DB_PATH.name}  {current}")
     if "--apply" not in args:
         print("PLANNED (dry run; nothing written). Re-run with --apply to restore.")
         return 0
     if DB_PATH.exists():
-        backup_before_write(DB_PATH, "before restore")
+        # The backup being restored is protected from this call's own prune
+        # (fresh-eyes review, 2026-09-24: an old backup could be deleted by
+        # the prune inside backup_before_write before restore() opened it).
+        try:
+            backup_before_write(DB_PATH, "before restore", protect=(backup,))
+        except (BackupVerificationError, sqlite3.DatabaseError) as ex:
+            # A corrupt live store is the main reason to restore, and it
+            # cannot pass verification (same review). Keep it, byte for
+            # byte and named as unverified, then restore into a fresh file.
+            aside = default_backups_dir(DB_PATH) / (
+                f"evidence-{datetime.now().strftime('%Y%m%dT%H%M%S%f')}-sprint{current_sprint()}-"
+                "unverified-live-store-before-restore.db")
+            aside.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(DB_PATH), aside)
+            print(f"live store failed verification ({ex}); moved aside UNVERIFIED to {aside}")
     restore(backup, DB_PATH)
     print(f"RESTORED {DB_PATH} from {backup.name}; verified. Regenerate and diff the export before committing.")
     return 0

@@ -64,3 +64,13 @@ def test_every_learning_names_why_and_has_evidence(conn):
         item = m.learning(conn, lid)
         assert item["certainty"] and item["certainty_reasons"], lid
         assert item["evidence"], f"{lid} has no supporting or contradicting assertion"
+
+
+def test_learnings_does_not_create_a_missing_store(tmp_path, monkeypatch):
+    """sqlite3.connect creates the file; an empty evidence.db then blocks
+    rebuild_store_from_export.py --apply (fresh-eyes review, 2026-09-24)."""
+    m = _mod()
+    missing = tmp_path / "evidence.db"
+    monkeypatch.setattr(m, "DB_PATH", missing)
+    assert m.main([]) == 1
+    assert not missing.exists()

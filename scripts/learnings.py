@@ -99,6 +99,12 @@ def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
     as_json = "--json" in args
     ids = [a for a in args if not a.startswith("--")]
+    if not DB_PATH.exists():
+        # sqlite3.connect would CREATE an empty file here, which then blocks
+        # rebuild_store_from_export.py --apply (fresh-eyes review, 2026-09-24).
+        print(f"error: {DB_PATH} does not exist; rebuild it with scripts/rebuild_store_from_export.py --apply",
+              file=sys.stderr)
+        return 1
     conn = connect(DB_PATH)
     try:
         items = [learning(conn, i) for i in (ids or learning_ids(conn))]

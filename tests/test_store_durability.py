@@ -9,6 +9,7 @@ door's local-path rule is switched off explicitly for them.
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import sqlite3
 import sys
@@ -168,24 +169,31 @@ HISTORICAL_ONE_OFFS = {
     "sprint4_task_f_refiling.py": "Sprint 4 Task F one-off, applied",
     "sprint4_task_h_extraction.py": "Sprint 4 Task H one-off, applied",
     "us_english_fix.py": "Sprint 3 doc fixer; does not open the store",
-    # Opens the store READ-ONLY (which arXiv ids are already records); its
-    # --apply writes downloads to D:/Data/Harold/EvidenceBasedDB, never the
-    # store. Caught by this test on 2026-09-24 and listed deliberately.
-    "sprint5_bibliography.py": "reads the store only; --apply downloads outside the repository",
 }
 
 
+_OPENS_STORE = re.compile(r"connect\((?:\w+\.)?DB_PATH\)")
+_WRITES_STORE = re.compile(r"insert_paper\(|insert_assertion\(|set_tier\(|append_updated_reason\(|INSERT INTO|"
+                           r"UPDATE \w+ SET|DELETE FROM|[^_]intake\(conn")
+
+
 def test_every_live_write_script_backs_up_before_apply():
-    """Coverage, not behavior: every script under scripts/ that accepts
-    --apply and opens the store either calls backup_before_write or is a
-    named historical one-off. The behavior itself is executed by
-    test_a_failed_backup_blocks_the_intake_write. Proven to fail by
-    reverting the refresh_citations.py call during development (it was
-    reported as missing)."""
+    """Coverage, not behavior: every script under scripts/ that opens the
+    store AND calls a write primitive either calls backup_before_write or
+    is a named historical one-off. The behavior itself is executed by
+    test_a_failed_backup_blocks_the_intake_write.
+
+    First version matched the TEXT "--apply" plus "connect(DB_PATH)"; the
+    fresh-eyes review (2026-09-24) called that loose, and it proved so the
+    same day, flagging read-only learnings.py for an error message that
+    mentions --apply while a writer using `connect(bib.DB_PATH)` would have
+    slipped past. It now asks what it means: does the script write?
+    Proven to fail by reverting the refresh_citations.py call (reported as
+    missing) and, for this version, by the same revert re-run."""
     missing = []
     for f in sorted((ROOT / "scripts").glob("*.py")):
         text = f.read_text(encoding="utf-8")
-        if "--apply" in text and "connect(DB_PATH)" in text and f.name not in HISTORICAL_ONE_OFFS:
+        if _OPENS_STORE.search(text) and _WRITES_STORE.search(text) and f.name not in HISTORICAL_ONE_OFFS:
             if "backup_before_write(" not in text:
                 missing.append(f.name)
     assert missing == [], f"write scripts with no verified backup before --apply: {missing}"
@@ -292,3 +300,74 @@ def test_restore_brings_back_the_backed_up_content(tmp_path):
     finally:
         conn.close()
     assert compare_exports(EXPORT_DIR, tmp_path / "restored") == []
+
+
+# ------------------------------------------- fresh-eyes review fixes (2026-09-24)
+
+def _restore_mod():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("restore_mod2", ROOT / "scripts" / "restore_store.py")
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m
+
+
+def test_restore_recovers_a_deliberately_corrupted_live_store(tmp_path, monkeypatch):
+    """The main reason to restore. Injection: garbage over the live store's
+    pages; the first version raised BackupVerificationError from the
+    pre-restore backup and never restored. The corrupt file is kept aside,
+    never deleted."""
+    m = _restore_mod()
+    db = _store(tmp_path)
+    saved = backup_mod.backup_store(db, tmp_path / "backups", "good state", 5)
+    data = bytearray(db.read_bytes())
+    for i in range(4096, min(len(data), 4096 * 8)):
+        data[i] = 0xCD
+    db.write_bytes(bytes(data))
+    monkeypatch.setattr(m, "DB_PATH", db)
+    assert m.main([str(saved), "--apply"]) == 0
+    assert list((tmp_path / "backups").glob("*unverified-live-store-before-restore.db")), "corrupt store kept aside"
+    conn = connect(db)
+    try:
+        regenerate(conn, tmp_path / "restored")
+    finally:
+        conn.close()
+    assert compare_exports(EXPORT_DIR, tmp_path / "restored") == []
+
+
+def test_prune_never_deletes_a_protected_backup(tmp_path, monkeypatch):
+    """restore_store.py protects the backup it restores from the prune in
+    its own pre-restore backup. Injection: an old, committed,
+    unprotected-by-sprint backup IS deleted without `protect`."""
+    db = _store(tmp_path)
+    d = tmp_path / "backups"
+    now = datetime(2026, 12, 1)
+    old = _fake_backup(db, d, now - timedelta(days=60), 1)
+    _fake_backup(db, d, now - timedelta(days=59), 1)   # newer, so `old` is not its sprint's newest
+    monkeypatch.setattr(backup_mod, "committed_export_blobs", lambda repo: {"x"})
+    monkeypatch.setattr(backup_mod, "content_is_committed", lambda p, blobs, repo=None: True)
+    deleted, _ = backup_mod.prune(d, repo=tmp_path, now=now, sprint=12, apply=False, protect=(old,))
+    assert old not in deleted
+    deleted, _ = backup_mod.prune(d, repo=tmp_path, now=now, sprint=12, apply=False)
+    assert old in deleted
+
+
+def test_superseded_backup_is_not_kept_forever(tmp_path, monkeypatch):
+    """Rule 3's second clause. A backup of an intermediate state never
+    matches a committed export; the first version kept it forever. It is
+    deletable once an export commit landed AFTER it, and still kept when
+    the last export commit is OLDER than it (then it may be the only copy)."""
+    db = _store(tmp_path)
+    d = tmp_path / "backups"
+    now = datetime(2026, 12, 1)
+    stamp = now - timedelta(days=60)
+    p = _fake_backup(db, d, stamp, 1)
+    _fake_backup(db, d, now - timedelta(days=59), 1)
+    monkeypatch.setattr(backup_mod, "committed_export_blobs", lambda repo: {"x"})
+    monkeypatch.setattr(backup_mod, "content_is_committed", lambda p, blobs, repo=None: False)
+    monkeypatch.setattr(backup_mod, "last_export_commit", lambda repo: stamp + timedelta(hours=1))
+    deleted, _ = backup_mod.prune(d, repo=tmp_path, now=now, sprint=12, apply=False)
+    assert p in deleted
+    monkeypatch.setattr(backup_mod, "last_export_commit", lambda repo: stamp - timedelta(hours=1))
+    deleted, kept = backup_mod.prune(d, repo=tmp_path, now=now, sprint=12, apply=False)
+    assert p not in deleted and dict((k.name, v) for k, v in kept)[p.name].startswith("content not yet")

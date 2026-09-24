@@ -81,6 +81,15 @@ this project keeps having to replace with a step.
   acceptances, 121 new papers, 39 arXiv PDFs to `QCiAuthorsPapers/`. The
   rule leaves most of Miri's, Chancellor's and Sam Wu's earlier papers
   unresolved: reported per person, not downloaded, for a team-lead decision
+- **fix**: four defects in the Task A durability code, found by the Phase 5
+  fresh-eyes review -- `restore_store.py` could not restore a corrupt live
+  store (it now moves the unverifiable file aside and restores into a fresh
+  one) and could prune the very backup it was restoring (now protected);
+  retention rule 3 kept any backup of an intermediate state forever (now
+  also met when an export commit landed after the backup); `learnings.py`
+  created an empty store when none existed. The write-script coverage guard
+  now asks whether a script writes, not whether its text mentions --apply.
+  Each fix has a test built on the failing case
 
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 
