@@ -55,6 +55,13 @@ this project keeps having to replace with a step.
   elements of the bibliography a paper record cannot hold, each classed as
   computed (a resolver) or stored, a dry-run back-fill for existing papers,
   and "decide together with F34"; reading notes deliberately NOT a field
+- **feat**: QCi's own documentation and package pulled (Task G, F5 sub-parts
+  3-4, Issue #50) -- `scripts/sprint5_qci_site.py`: of the sitemap's 2,755
+  URLs, 1,660 older package versions and 170 duplicate mounts skipped per
+  Q3 = 1; 544 pages saved under `References/QCi-site/`, 1 reused from Task
+  B, 25 dead sitemap links (HTTP 404) listed; `eqc-models` 0.21.0 sdist and
+  wheel saved, sha256-verified against PyPI. The plan estimated about 300
+  pages; the latest package docs alone are 462
 
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 
