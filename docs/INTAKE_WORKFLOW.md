@@ -355,10 +355,12 @@ points at is its documentation landing page, or for `eqc-models` the
 released sdist). Contexts by section 8's tests:
 
 - **application notes** (`learn/applications/...`, "... on Dirac-3") ->
-  `platform:dirac-3`; the four that run on EmuCore, QCi's reservoir
+  `platform:dirac-3`; the three that run on EmuCore, QCi's reservoir
   computing device (`classification-on-emucore`,
-  `image-classification-using-emucore`, `narma10-on-emucore`,
-  `reservoir-computing`), -> `qc`;
+  `image-classification-using-emucore`, `narma10-on-emucore`), -> `qc`.
+  (Corrected 2026-09-24, same day, after the load: this line first
+  listed `reservoir-computing` as a fourth, but that page is a section
+  landing page and was not entered; 11 Dirac-3 and 3 EmuCore notes were.)
 - **lessons** (vendor teaching material on optimization, light, photonic
   and quantum computing) -> `qc`: they explain the field, not the device;
 - **research and publications** pages (topic overviews citing QCi papers)
