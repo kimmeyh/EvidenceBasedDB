@@ -35,6 +35,11 @@ this project keeps having to replace with a step.
   manual-download list with reasons. A saved page with fewer than 50 visible
   words is treated as a failure, after four publisher bot-challenge pages, a
   JavaScript-only page and a redirect stub were first saved as "copies"
+- **docs**: QCi-affiliated people identified from the papers themselves
+  (Task E, F5 sub-part 1, Issue #48) --
+  `docs/research/2026-09-24_F5_qci_affiliated_people.md`: 18 people, each
+  verified on a named page; none of the SMU/Loke authors is QCi-affiliated;
+  Task F's disambiguation rule written before any search hit was read
 
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 
