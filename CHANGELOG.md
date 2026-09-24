@@ -62,6 +62,17 @@ this project keeps having to replace with a step.
   B, 25 dead sitemap links (HTTP 404) listed; `eqc-models` 0.21.0 sdist and
   wheel saved, sha256-verified against PyPI. The plan estimated about 300
   pages; the latest package docs alone are 462
+- **feat**: learning from the papers, designed and piloted (Task I, F28,
+  Issue #52) -- `docs/LEARNING_SYNTHESIS.md`: a key learning is an
+  assertion with "synthesis of" provenance, its evidence wired by
+  `supports`/`contradicts`, its certainty derived by named reasons;
+  `scripts/learnings.py` computes the evidence table, storing nothing.
+  Pilot: six papers to `read`, seven assertions, three learnings (QML on
+  tabular data MODERATE; resampling for strong trees LOW; metric and power
+  checks MODERATE). Existing primitives sufficed; three gaps proposed, not
+  applied. Two defects found and fixed on the way: the query double-counted
+  an assertion with two sources, and the promotion skipped `screened`'s
+  applicability (caught by the aligned guard)
 
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 
