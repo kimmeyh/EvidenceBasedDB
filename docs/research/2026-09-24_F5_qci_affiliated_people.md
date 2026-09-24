@@ -100,3 +100,49 @@ manual Scholar check instead.
 or whose unresolved count dwarfs the accepted count is one for whom name
 plus network does NOT disambiguate; the result says so per person rather
 than downloading the name's hits.
+
+## Task F result (2026-09-24; counts are a snapshot as of this date)
+
+`scripts/sprint5_qci_authors.py`. arXiv's API refused every author query
+(HTTP 406) as it had refused metadata requests all sprint; DataCite's
+index of arXiv DOIs answered with full author lists, and Crossref added
+journal papers. The first run capped the family-name query at 5,000
+records, which truncated the three common families; the rerun adds a
+full-name query for them (Yu-Ping Huang: 115 hits against 48).
+
+| Person | Hits | Accepted (seed / network) | Unresolved |
+|---|---|---|---|
+| Babak Emami | 17 | 3 (3 / 0) | 14 |
+| Wesley Dyk | 6 | 4 (4 / 0) | 2 |
+| David Haycraft | 5 | 5 (5 / 0) | 0 |
+| Carrie Spear | 5 | 3 (3 / 0) | 2 |
+| Lac Nguyen | 14 | 6 (6 / 0) | 8 |
+| Nicholas Chancellor | 74 | 6 (6 / 0) | 68 |
+| Mohammad-Ali Miri | 144 | 5 (5 / 0) | 139 |
+| Uchenna Chukwu | 14 | 4 (4 / 0) | 10 |
+| Yu-Ping Huang | 115 | 44 (26 / 18) | 71 |
+| R. Joseph Rupert | 3 | 2 (2 / 0) | 1 |
+| Sam Wu | 27 | 1 (1 / 0) | 26 |
+| Nick Vrahoretis | 5 | 5 (5 / 0) | 0 |
+| Irwin Huang | 10 | 6 (6 / 0) | 4 |
+| Milan Begliarbekov | 20 | 4 (3 / 1) | 16 |
+| Pranav Mahamuni | 6 | 5 (5 / 0) | 1 |
+| Cesar Martinez-Delgado | 1 | 1 (1 / 0) | 0 |
+| Joel Russell Huffman | 12 | 1 (1 / 0) | 11 |
+| Yong Meng Sua | 102 | 86 (86 / 0) | 16 |
+
+191 acceptances, 124 distinct papers, 3 already records, **121 entered**
+(39 arXiv, downloaded to `QCiAuthorsPapers/<person>/`; 82 journal DOIs,
+recorded through the DOI and not downloaded). Sua's 86 seeds are his
+long collaboration with Yu-Ping Huang at Stevens, each verified by a
+full-name match; the network rule added 19 papers, 18 of them Huang's.
+
+**Premise (c) falsified for several people, as the plan said it might
+be.** The network rule can only reach outward from QCi collaborators, so
+a prolific person's pre-QCi career, which shares no co-authors with the
+QCi papers, stays unresolved: Miri 139 of 144, Chancellor 68 of 74, Sam
+Wu 26 of 27, Emami 14 of 17. Those papers were NOT downloaded or entered.
+Whether to accept them needs a looser rule, and choosing one is the team
+lead's decision (Manual Validation). The names most likely to be single
+people (Miri, Chancellor, Begliarbekov, Vrahoretis) are the strongest
+candidates for an exact-full-name rule; Sam Wu is the weakest.

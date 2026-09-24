@@ -73,6 +73,14 @@ this project keeps having to replace with a step.
   applied. Two defects found and fixed on the way: the query double-counted
   an assertion with two sources, and the promotion skipped `screened`'s
   applicability (caught by the aligned guard)
+- **feat**: every paper the 18 QCi people co-authored, where a written rule
+  can tell (Task F, F5 sub-part 2, Issue #49) -- `scripts/sprint5_qci_authors.py`:
+  seed (another of the 18 co-authors) then a two-shared-co-author network,
+  written before the search; strict name matching for common families
+  (`tests/test_qci_author_matching.py`, proven by injection); 191
+  acceptances, 121 new papers, 39 arXiv PDFs to `QCiAuthorsPapers/`. The
+  rule leaves most of Miri's, Chancellor's and Sam Wu's earlier papers
+  unresolved: reported per person, not downloaded, for a team-lead decision
 
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 
