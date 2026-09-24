@@ -128,8 +128,25 @@ F25 D1-D3 so it measures adjudication of corrected records.
 ## Current sprint
 
 **Sprint 5** (branch `feature/20260923_Sprint_5`, cut 2026-09-23 at the
-Sprint 4 carry-forward). Phase 1 Backlog Refinement complete; scope not yet
-selected. The slate is below.
+Sprint 4 carry-forward). Phase 1 Backlog Refinement complete.
+
+**Scope selected 2026-09-23 (team lead, DEFINED)**: **F31** (new: download
+and process the HSBC Phase 2 bibliography, then propose the fields it
+shows the store is missing), **F30** (store durability), **F28** (learn
+from the papers), **F5** (QCi deep-dive, with every find added to the
+store through the existing intake path). Plan:
+`docs/sprints/SPRINT_5_PLAN.md`.
+
+**Closed 2026-09-23 without implementation (team lead):**
+- **F19** (SPRINT_RESUME_GUIDE.md and a startup-check skill): "This is not
+  necessary if the sprint execution docs are kept up-to-date. In other
+  repositories using the same Sprint framework Coding Agents pick up where
+  everything is left off very quickly by looking at github and reading a
+  couple of documents. This can be closed."
+- **F29** (cold-mode adjudication timing): "This is not needed and can be
+  closed." F11's confirm-mode number (1.08 team-lead minutes per record)
+  stands as the store's only adjudication measurement; the cold-mode
+  number stays unmeasured by decision, not by omission.
 
 ## Next Sprint Candidates
 
@@ -138,7 +155,156 @@ pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint 2); F2
 Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25, F26,
 F27 (Sprint 4). The superseded stubs F12 and F21-F24 are removed now
 that F25 has shipped -- their history lives in the Sprint 3 and 4 docs
-and in git. Remaining items below, newly added ones marked.
+and in git. Remaining items below, newly added ones marked. F19 and F29
+were closed at Sprint 5 scope selection (see "Current sprint" above).
+
+**F31. Download and process the HSBC Phase 2 bibliography, then propose the fields it shows the store is missing (~large, no-history) Priority 8** (NEW 2026-09-23)
+- Phase: Sourcing / intake. Added 2026-09-23 by the team lead at Sprint 5
+  scope selection and assigned to Sprint 5.
+- Platform: `D:\Data\Harold\EvidenceBasedDB\` (the downloads; never this
+  repository), `scripts/intake.py` (the one door), `store/`, `export/`.
+- **The source**: `BIBLIOGRAPHY.md`, written 2026-09-22/23 by a Claude
+  research session for the consumer repository's Phase 2, in a claude.ai
+  scratch workspace
+  (`...\scratch-workspaces\...\scratch-2026-09-22-02b60b\BIBLIOGRAPHY.md`).
+  A scratch workspace is not durable, so the file is preserved beside the
+  downloads before anything else happens. Snapshot as of 2026-09-23: 120
+  tagged entries in 15 topic sections; 75 distinct arXiv ids; 2 already in
+  the store (`[FW-1]`, `[QC-5]`); 9 more already on disk under
+  `QMLPapers/` but not in the store; the rest are DOIs, journal pages,
+  GitHub repositories, vendor documentation, news and web pages.
+- **Three parts, team lead 2026-09-23:**
+  1. **Download** every reference into the right place under
+     `D:\Data\Harold\EvidenceBasedDB\`. "There are likely duplicates - no
+     need to download twice": a file already on disk is pointed at, not
+     fetched again.
+  2. **Process the downloads into the store** through the normal intake
+     path (`docs/INTAKE_WORKFLOW.md`).
+  3. **Then propose the missing fields.** "Note any additional fields or
+     content you think we should keep for all references based on the
+     content of BIBLIOGRAPHY.md and add if anything, add an item to the
+     backlog to add these fields and content. Also include a way
+     re-process existing papers to fill in the new fields and content."
+     The output of part 3 is a NEW backlog card, not a schema change in
+     this sprint (a new field on a record class is Class 1, ADR-first).
+- Depends on: F30 part 2 (backup on write) before the bulk `--apply`.
+
+### Bulk intake: targeted for Sprint 6 (team lead, 2026-09-23)
+
+Added 2026-09-23 during Sprint 5 Phase 3 at the team lead's request, "Add
+to backlog and target for next sprint". Card text is the team lead's;
+lines marked **Planning note** are Claude's checks against the disk the
+same day, and every count in them is a snapshot as of 2026-09-23.
+
+**F32. Generate the bulk intake manifest from the QMLPapers manifest.tsv files (~90m) Priority 14**
+- Phase: Sourcing / bulk intake
+- Platform: N/A for tracked content -- reads `D:\Data\Harold\EvidenceBasedDB\QMLPapers\`
+  (NOT this repository; ADR-0005 section 3), writes a manifest JSON under `export/`
+- INTAKE_WORKFLOW section 9 already specifies this: the manifest is GENERATED
+  from the twelve year `manifest.tsv` files, never authored by hand. Their
+  columns are `file, arxiv_id, url, title` (about 1,450 rows). `arxiv_id`
+  gives api-origin `access`; `title` is discarded because the door derives it
+  from the API.
+- Emits `context: qml` and the section 9 disposition wording verbatim:
+  "Bulk intake 2026-MM from QMLPapers/<year>/manifest.tsv (a QML literature
+  collection); not yet screened".
+- Excludes the ids listed in F33 (withdrawn/retracted), so they are not
+  loaded as ordinary sources.
+- Acceptance: a dry run prints every derived record and exits non-zero on any
+  row whose `arxiv_id` is absent or malformed; the generated manifest loads
+  under `intake.py --manifest` without hand editing; row count reconciles
+  against the twelve TSVs.
+- This enables the ~1,410-record bulk load with no hand authoring.
+- **Planning note (counts)**: 13 `manifest.tsv` files exist. Twelve carry
+  `file, arxiv_id, url, title`: the 10 year folders (1,381 rows) plus
+  `Reviews` (30) and `Workforce` (25), 1,436 rows in all. The thirteenth,
+  `NonArxiv/manifest.tsv`, has `file, source_url, pdf_url, title` and 4
+  rows; it has no `arxiv_id`, so a generator that reads every TSV must
+  route it to the DOI or hand path (section 9) rather than fail on it.
+  The 9 files Sprint 5 Task C ingests (F31, Q2) are already present by
+  then and are skipped by derived id.
+- **Planning note (output location)**: `export/` is the store's committed
+  artifact (ADR-0004 section 2). `tests/test_export_currency.py` checks
+  only its five named files, so a manifest there breaks no test, but it
+  would place an intake INPUT among the store's OUTPUTS. A separate path
+  (for example `manifests/`) keeps the two apart. Team lead's call at
+  carding.
+
+**F33. Ingest withdrawn and retracted status as first-class facts (~2h) Priority 16**
+- Phase: Sourcing / bulk intake
+- Platform: arXiv API `<arxiv:comment>` field; Springer article page for the retraction
+- Seven papers in the bulk set changed status after publication and the store
+  has nowhere to say so. A store whose purpose is provenance and derived
+  certainty must not ingest a retracted source as an ordinary one.
+- Six author-withdrawn, verified 2026-09-18 by `/abs` returning 200 while
+  `/pdf` returns 404, reason read from `<arxiv:comment>`: `2308.08167`
+  (superseded by `2405.13351`), `2304.05672` (duplicate upload, published as
+  `2210.14450`), `2409.10932`, `2403.17444`, `2410.03853`, `2503.23408`.
+- One retracted: Valdez & Melin 2022, `10.1007/s00500-022-07037-4`, retraction
+  notice dated 10 March 2026 on the publisher page. No arXiv record exists,
+  so the arXiv path cannot discover it.
+- Two of the withdrawn name a superseding paper; the store should be able to
+  carry that relation rather than lose it.
+- Depends on: F34 (the ADR must say how status is represented before
+  records are written)
+- Acceptance: each of the seven carries its status, its source of truth, and
+  its stated reason; a query can list them; the two superseding ids are linked.
+- This prevents a retracted paper being cited as evidence without warning.
+- **Planning note (order)**: this card is Priority 16 and depends on F34 at
+  Priority 18, so priority order and dependency order disagree. Either F34
+  moves ahead of it, or the sprint plan sequences F34 first regardless of
+  priority.
+
+**F34. ADR amendment: how the store represents a withdrawn or retracted source (~1h) Priority 18**
+- Phase: Design / ADR
+- Platform: N/A
+- ADR-0004 and ADR-0005 define provenance and derived certainty but say
+  nothing about a source whose status changed after publication. F33 cannot
+  be written correctly until this is decided.
+- Questions for the team lead (Class 1): is status a field on the record, a
+  context, or a derived-certainty input? Does a retraction force certainty to
+  a floor, or is it a named reason a human weighs? How is "superseded by
+  <id>" represented -- an assertion relation, or a field?
+- Note the asymmetry: arXiv withdrawal is discoverable from the API, journal
+  retraction is not. The design should not assume the API can find it.
+- Acceptance: the chosen representation is written into the ADR with its
+  reasoning, and F33's acceptance criteria are restated against it.
+- This enables the withdrawn/retracted ingest and prevents the same question
+  being re-litigated per record.
+- **Planning note**: Sprint 5 Task D proposes new per-reference fields from
+  the HSBC bibliography (peer-review status, access status and similar) as
+  card F36. Publication status is the same family of fact, so F34 and F36
+  should be decided together in one amendment, not two.
+
+**F35. Map the 135 verified repository notes to the GitHub intake path (~2h) Priority 20**
+- Phase: Sourcing / bulk intake
+- Platform: GitHub API (`store/citations.py` already carries `GITHUB_API` and
+  a `_GITHUB` matcher)
+- `QMLPapers\Repos\` holds 135 `_repo.md` notes, one per paper whose authors
+  released code. Each names the repository, the owning paper's arXiv id, and
+  quotes the sentence in the paper that announces the release.
+- INTAKE_WORKFLOW section 9 is explicit that the note is local evidence, not
+  the record: the repository takes the section 2 GitHub path and the note
+  supplies the provenance for why it is attached to that paper.
+- `REVIEW.md` holds 218 further candidates the extractor would not accept
+  automatically. 78 score >= 0 and are a real work queue; 140 score < 0 and
+  are mostly third-party dependencies (Qiskit, PennyLane) correctly held back.
+  This item covers the 135 only; the 78 are a later screening pass.
+- The extraction is heuristic and produced three rounds of corrected defects.
+  Each note quotes its evidence sentence precisely so a wrong attachment is
+  visible; spot-check before trusting the set.
+- Depends on: F32 (the papers must exist as records before repositories
+  attach)
+- Acceptance: each of the 135 resolves to a live repository or is reported;
+  every attachment carries the quoted evidence sentence; a wrong attachment
+  is removable without touching the paper record.
+- This enables "which papers ship runnable code" to be answered from the store.
+- **Planning note (counts)**: 135 `_repo.md` notes confirmed on disk;
+  `INTAKE_WORKFLOW.md` section 9 recorded 137 on 2026-09-19, so two were
+  removed in between. `REVIEW.md` exists both at `QMLPapers\REVIEW.md` and
+  `QMLPapers\Repos\REVIEW.md`; the card should name which one is the queue.
+  GitHub's unauthenticated API allows 60 requests per hour, so 135
+  lookups take over two hours unless the run authenticates.
 
 **F5. Deep-dive QCi: identify authors, find their other papers, scrape QCi's own documentation (~large, no-history) Priority 10**
 - Phase: Sourcing / research. Tentatively assigned Sprint 2 (team lead, 2026-09-16)
@@ -193,13 +359,13 @@ and in git. Remaining items below, newly added ones marked.
   any of this material becomes a real DB record (not just staged material),
   it follows the same `seen`-tier paper-record path Task F already built,
   with its own `access` field pointing at the local path.
-- **Not yet scoped, flag at carding**: whether a scraped/downloaded item
-  becomes a full paper record immediately, or stays purely staged material
-  ("might be used later," per the team lead's own framing) until a future
-  sprint decides to ingest it. Recommend the latter, since ingesting
-  unreviewed scraped content at `seen` tier without adjudication is exactly
-  the "volume without judgment" risk ADR-0005 section 2c warns is MORE
-  dangerous than fewer, reviewed records.
+- **Decided 2026-09-23 (team lead, at Sprint 5 scope selection)**: found
+  material is ingested, not only staged: "After finding, add them to the
+  db using the existing process." The existing process is
+  `docs/INTAKE_WORKFLOW.md` (`scripts/intake.py`, `seen` as the bulk tier
+  with an honest disposition). This supersedes the earlier recommendation
+  to stage only; the "volume without judgment" risk (ADR-0005 section 2c)
+  is carried by the tier, which records that nothing was screened.
 - Depends on: nothing technical. Read-only web access and the existing
   seed-set metadata are both already available.
 
@@ -241,38 +407,6 @@ and in git. Remaining items below, newly added ones marked.
 - Depends on: F25 (the door and the corrected records), F11 (the
   adjudication cost per record, which bounds how many papers can reach
   `read` at all). Sequenced for Sprint 5.
-
-**F29. Cold-mode adjudication timing: the number F11 did not measure (~small, no-history) Priority 22**
-- Phase: Measurement. Added 2026-09-22 (Sprint 4 retrospective improvement
-  6), from the F11 run's own result.
-- **What F11 measured, and what it did not.** On 2026-09-21 the team lead
-  adjudicated the 18 F10-reviewed records in 19.4 minutes, 1.08 per record,
-  accepting all 18 (log: `docs/sprints/SPRINT_4_F11_TIMING_LOG.json`). That
-  is CONFIRM MODE: the records had already been corrected by Tasks C, F and
-  H, and each was shown with F10's own finding printed beneath it. It is a
-  real and useful number -- it is the cost of a human pass over
-  model-corrected records -- but it is not the number F10's 599 seconds
-  compares against, and this repository's own escalation trigger says a
-  review that confirms everything with zero rejections is evidence about
-  the protocol as much as about the records.
-- **What this card measures**: the same protocol COLD. The source is opened
-  before the corrected record is shown; F10's findings are not displayed;
-  the record is adjudicated field by field against the source. Run on a
-  sample (5 to 8 records is enough to bound it), not all 18, because the
-  point is the ratio to confirm mode, not a second full pass.
-- Platform: `scripts/adjudication_timing.py --mode cold` (built in Sprint 4
-  improvement 6; it already records the mode in its log), a packet variant
-  that omits the findings block, `.claude/model_assignment_heuristics.json`
-  `learning_log`.
-- **Why it matters for scale**: ADR-0004 says adjudication cost is the
-  constraint on the whole design. With about 1,300 papers arriving, the
-  planning question is how many can ever reach `read`. Confirm mode says
-  about a minute each given a correct pipeline; cold mode says what it
-  costs when the pipeline is not trusted, and the gap between them is the
-  value of the pipeline, stated in minutes.
-- Depends on: nothing technical. The tool and the packet generator both
-  exist. Do NOT re-run on the same 18 records in confirm mode: that
-  measurement is done.
 
 **F30. Store durability: systematic backups, a real restore, and the missing rebuild-from-export (~medium, no-history) Priority 12**
 - Phase: Operational safety. Added 2026-09-23 (team lead, at Sprint 4
@@ -349,33 +483,6 @@ and in git. Remaining items below, newly added ones marked.
 - Depends on: nothing technical. Sequenced for Sprint 5; the trigger is
   the 1,618-file bulk load, after which a lost store costs an hour of
   arXiv-paced re-fetching rather than a rebuild.
-
-**F19. Build a SPRINT_RESUME_GUIDE.md and a startup-check skill (~medium, no-history) Priority 25**
-- Phase: Process / tooling. Modeled on `spamfilter-multi`'s
-  `docs/SPRINT_RESUME_GUIDE.md` (163 lines) and its `startup-check`
-  skill (read-only source, 2026-09-18 survey)
-- Platform: a new `docs/SPRINT_RESUME_GUIDE.md`, a new
-  `.claude/skills/startup-check/SKILL.md`
-- **The gap this closes**: this repository has no single durable,
-  low-token reference doc for "what phase are we in, what does that
-  mean, what happens next" -- that content is currently scattered
-  across `SPRINT_EXECUTION_WORKFLOW.md`, `SPRINT_STOPPING_CRITERIA.md`,
-  and memory files, each read in full rather than referenced. The
-  source's `startup-check` skill reads `sprint_status.json`, cross-
-  checks it against actual git/branch state via four explicit staleness
-  checks (does the branch match? does the sprint number match? did
-  commits land after the file's last-updated timestamp? does CHANGELOG
-  already show this sprint as complete?), and refuses to present stale
-  `next_actions` as current -- directly the same discipline this
-  repository's own CLAUDE.md already states as a standing rule ("don't
-  act on a recalled memory without checking it against current repo
-  state first") but currently unenforced by any single mechanized step
-- **Adaptation needed**: the source's own resume-string generator
-  (`memory-save` skill) assumes a `/compact`-style slash command this
-  repository may not use the same way; port the STAGE-detection logic
-  (BETWEEN-SPRINTS / REFINEMENT / PLANNING / EXECUTION / RETRO) and the
-  staleness-check discipline, not the compaction-specific output format
-- Depends on: nothing technical. Independent of every other F# card.
 
 ## Design documents governing this repository
 
