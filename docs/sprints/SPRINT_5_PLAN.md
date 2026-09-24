@@ -134,6 +134,25 @@ made unilaterally.
 
 ## Decisions for the team lead at approval (numbered; answer with digits)
 
+**DECIDED 2026-09-24 (team lead: "Sprint plan approved as amended (with
+any comments I provided), proceed with execution")**: Q1 = 2 (merge into
+the existing folders), Q2 = 1, Q3 = 1, Q4 = 1, Q5 = 2, Q6 = author papers
+under `D:\Data\Harold\EvidenceBasedDB\QCiAuthorsPapers\<person>\`
+(the team lead's own path). Q6 named one folder; the site scrape and the
+package keep the proposed `References\QCi-site\` and
+`References\eqc_models\` (Claude's assumption, stated at approval).
+**Q1 = 2 in practice**: QML and quantum sections (FW, DQ, EX, EN, IN, DS,
+QC, IC, QF, TN, and `[GP-4]`) go to `QMLPapers\<year>\` under that
+folder's filename convention; classical ML sections (CL, CE) go to
+`Papers\`; web, vendor, news and challenge pages go to `References\`.
+The existing `manifest.tsv` files are NOT edited: they are the record of
+the collection's own download run, and F32 reads them; files added here
+are already in the store by the time F32 runs, and its derived ids skip
+them. `BIBLIOGRAPHY.md` is preserved under `References\`.
+Team lead's two questions at approval, answered: Task A uses SQLite's own
+backup API (`sqlite3.Connection.backup()`), not a file copy; Task B's 64
+downloads are what remains AFTER removing the 11 already on disk.
+
 These shape Tasks B, C, F, G, H and I, so they are answered with the plan
 rather than mid-sprint (the auto-advance window forbids asking later).
 
