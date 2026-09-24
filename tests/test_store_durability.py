@@ -168,6 +168,10 @@ HISTORICAL_ONE_OFFS = {
     "sprint4_task_f_refiling.py": "Sprint 4 Task F one-off, applied",
     "sprint4_task_h_extraction.py": "Sprint 4 Task H one-off, applied",
     "us_english_fix.py": "Sprint 3 doc fixer; does not open the store",
+    # Opens the store READ-ONLY (which arXiv ids are already records); its
+    # --apply writes downloads to D:/Data/Harold/EvidenceBasedDB, never the
+    # store. Caught by this test on 2026-09-24 and listed deliberately.
+    "sprint5_bibliography.py": "reads the store only; --apply downloads outside the repository",
 }
 
 

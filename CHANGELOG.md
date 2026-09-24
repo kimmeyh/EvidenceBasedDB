@@ -27,6 +27,14 @@ this project keeps having to replace with a step.
   is committed); `scripts/restore_store.py` restores and verifies;
   `validate_paper(check_local_paths=False)` is the one explicit exception the
   rebuild needs to run on CI; 14 tests, each guard carrying its own injection
+- **feat**: HSBC Phase 2 bibliography downloaded (Task B, F31 part 1, Issue
+  #45) -- `scripts/sprint5_bibliography.py`: 120 entries, 64 arXiv PDFs plus
+  web, vendor and challenge copies saved under the existing material folders
+  (Q1 = 2), 9 found already on disk and 3 already in the store, none fetched
+  twice; `BIBLIOGRAPHY.md` preserved under `References/`; 14 items on a
+  manual-download list with reasons. A saved page with fewer than 50 visible
+  words is treated as a failure, after four publisher bot-challenge pages, a
+  JavaScript-only page and a redirect stub were first saved as "copies"
 
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 
