@@ -25,7 +25,7 @@ co-authored).
   author list and p.3 address block: Bethel Hui Ting Loke, Nirvik Sahoo,
   Bingyan Guan, Minrui Xu, Dev Verma, Paul R. Griffin, all at Singapore
   Management University or NTU. **None is QCi-affiliated**; QCi appears
-  only as the maker of Dirac-3 and, in the acknowledgements, as an
+  only as the maker of Dirac-3 and, in the acknowledgments, as an
   in-kind contributor. This confirms the Sprint 3 note already in
   `scripts/apply_paper_applicability.py`.
 - `qci-2024-profiling-cvqboost`, `qci-2024-unconventional-computing-medium`,

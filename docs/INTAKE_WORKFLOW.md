@@ -264,3 +264,116 @@ re-derive it:
    whether `provenance` for a source should become the retrieval record
    (API response and date) rather than the citation string. Recorded in
    ADR-0005 A2 as the next candidate amendment; not needed for intake.
+
+## 11. Applied 2026-09-24: the HSBC Phase 2 bibliography (Sprint 5 Task C, F31)
+
+Written BEFORE the manifest was generated, as the plan requires, applying
+section 8's tests to each of the bibliography's 15 sections. Every record
+gets ONE primary context at `seen`; applicability is not derived at load
+(section 6). Where a section mixes kinds, the exception is named.
+
+- **1. Fourier Wall / SPECTRA** -> `qml` (quantum-versus-classical ML on
+  tabular data is the subject). `[FW-3]` (the SPECTRA datasets) ->
+  `method`: benchmark datasets are how claims are evaluated.
+- **2. Dequantization** -> `qml`.
+- **3. The exponential-advantage claim** -> `qml`, including the blog,
+  the critique, the news item and the code repository about it.
+- **4. Entanglement in QML** -> `qml`. `[EN-6]` (many-body localization
+  for variational quantum SIMULATION) -> `qc`: no ML workload.
+- **5. Interference, magic, resource theory** -> `world`: each is a
+  theorem about quantum information that would hold if this project did
+  not exist (the `zajac` precedent).
+- **6. Dissipation and noise** -> `qml` where the object is a learning
+  model (`[DS-1]` reservoir computing, `[DS-2]` barren plateaus in
+  variational training, `[DS-3]`, `[DS-4]`); `[DS-5]` (a framework for
+  quantum algorithms generally) -> `qc`.
+- **7 and 8. QCi primary sources and independent critiques** ->
+  `platform:dirac-3` (section 8's subsumption rule: Dirac-3 through and
+  through, no `qc`). `[QC-3]` (a proposal for FUTURE all-optical hardware,
+  "Not Dirac-3" in the bibliography's own words) -> `qc`.
+- **9. QML on fraud** -> `qml`.
+- **10. Tensor networks** -> `ml`: quantum-INSPIRED models run classically
+  are not a quantum workload (the qml test). `[TN-4]` (tensor networks FOR
+  quantum computing) -> `qc`.
+- **11. Classical SOTA for fraud** -> `ml`.
+- **12. Ceiling estimation / Bayes error** -> `ml`, except the two pure
+  information-theory results, `[CE-22]` (a guide to Fano's inequality) and
+  `[CE-23]` (Han and Verdu, generalizing Fano) -> `world`.
+- **13. Gate-based platforms** -> `platform:braket` for the AWS pages
+  (`[GP-1]`-`[GP-3]`), `platform:classiq` for `[GP-5]`-`[GP-7]`, `qc` for
+  `[GP-4]` (the Aquila device paper) and `[GP-8]` (cross-vendor pricing).
+- **14. Challenge documents** and **15. Related entries in the same
+  track** -> `hsbc-2026`. Section 8's "never claimed by a paper" is about
+  PAPERS whose relevance to the project is not membership; these are the
+  challenge's own documents and its entries, which ARE specific to the
+  submission by the context's own definition.
+
+**Disposition**, one line, no tier word: `Bulk intake 2026-09 from the HSBC
+Phase 2 bibliography [<TAG>] (<section name>); not yet screened`, prefixed
+`Reference: ` or `Code repository: ` for those kinds (section 2).
+
+**Not re-entered**: `[FW-1]` and `[QC-5]` (already records), `[QC-9]`
+(the Neven QBoost paper, already `neven-2012-qboost-adiabatic-quantum-optimization`).
+Counts in this section are a snapshot as of 2026-09-24.
+
+## 12. Applied 2026-09-24: papers found by F5's QCi author search (Sprint 5 Task H)
+
+Written BEFORE the search ran. An author's other papers span every topic,
+so the reason a paper was found (a QCi-affiliated author) says nothing
+about what it is about, and no single default context is honest. The
+primary context is therefore taken from the arXiv subject categories the
+registry itself records (DataCite `subjects`, scheme `arXiv`), mapped by
+section 8's tests:
+
+- a quantum category (`quant-ph`) AND a machine-learning category
+  (`cs.LG`, `stat.ML`, `cs.AI`, `cs.NE`) -> `qml` (the intersection, not
+  the union);
+- a quantum category alone -> `qc`;
+- a machine-learning category alone -> `ml`;
+- anything else (optics, condensed matter, mathematics, other computer
+  science) -> `world`, the context for results about nature and
+  mathematics independent of this project. A later screening pass may
+  refine it; `seen` promises nothing more.
+
+A journal-only hit (a Crossref DOI with no arXiv record) carries no arXiv
+categories and takes `qc`, the field every one of the 18 people was found
+through, with the disposition saying the context was not derived.
+
+**Disposition**: `Bulk intake 2026-09 from F5's QCi author search
+(<person>, <rule>); not yet screened`, where `<rule>` is `seed` or
+`network` from the disambiguation rule in
+`docs/research/2026-09-24_F5_qci_affiliated_people.md`.
+
+## 13. Applied 2026-09-24: QCi's own site and packages (Sprint 5 Task H, F5 sub-parts 3 and 4)
+
+Written BEFORE the manifest was generated. Scope of what becomes a record
+is the team lead's Q4 = 1: one `Reference:` record per lesson, application
+note and research page, one per software package; the package
+documentation pages, training modules, product and technology pages stay
+staged under `References/QCi-site/` (the local copy each package record
+points at is its documentation landing page, or for `eqc-models` the
+released sdist). Contexts by section 8's tests:
+
+- **application notes** (`learn/applications/...`, "... on Dirac-3") ->
+  `platform:dirac-3`; the four that run on EmuCore, QCi's reservoir
+  computing device (`classification-on-emucore`,
+  `image-classification-using-emucore`, `narma10-on-emucore`,
+  `reservoir-computing`), -> `qc`;
+- **lessons** (vendor teaching material on optimization, light, photonic
+  and quantum computing) -> `qc`: they explain the field, not the device;
+- **research and publications** pages (topic overviews citing QCi papers)
+  -> `qc`; the papers they cite enter through F5's author search, not
+  through the page;
+- **packages**: `eqc-models`, `eqc-direct`, `qci-client` (the Dirac-3
+  software stack) -> `platform:dirac-3`; `emucore-direct` (reservoir
+  computing device) and `uqrng-direct` (random number generator) -> `qc`.
+
+Already records, not re-entered: the Dirac-3 User Guide (`[QC-2]`) and
+the fraud-detection application note (`[QC-6]`), both from Task C, and
+`profiling-of-cvqboost-algorithm-fraud-detection`, the web version of the
+white paper held since Sprint 1 as `qci-2024-profiling-cvqboost`. Section
+landing pages (`applications`, `entropy-quantum-optimization`, `lessons`,
+`research-and-publications`) are navigation, not sources.
+Citation: `Quantum Computing Inc., "<page title>," quantumcomputinginc.com,
+<date if the page prints one, else n.d.> (hand-transcribed from the saved
+page's title bar)`.

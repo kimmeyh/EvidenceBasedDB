@@ -40,6 +40,17 @@ this project keeps having to replace with a step.
   `docs/research/2026-09-24_F5_qci_affiliated_people.md`: 18 people, each
   verified on a named page; none of the SMU/Loke authors is QCi-affiliated;
   Task F's disambiguation rule written before any search hit was read
+- **feat**: HSBC Phase 2 bibliography processed into the store (Task C, F31
+  part 2, Issue #46) -- `scripts/sprint5_bibliography_manifest.py` generated
+  121 entries under context rules written first (`INTAKE_WORKFLOW.md`
+  section 11); `intake.py` wrote 121, refused 0 (73 arXiv, 16 DOI, 10
+  repositories, 22 hand-origin); `--verify` 7/7 on a sample of every source
+  type. DOIs used only when written, derived-and-confirmed, or found by
+  exact title plus year, first author and venue (an exact-title match first
+  picked a 2015 conference abstract for a 2014 Nature paper). `intake.py`
+  now records when DataCite, not arXiv, supplied the metadata (68 records).
+  `test_every_paper_has_real_applicability` aligned to ADR-0005 A2: the
+  obligation is `screened`'s, not `seen`'s, with an injection test
 
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 

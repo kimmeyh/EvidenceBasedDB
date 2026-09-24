@@ -237,7 +237,18 @@ def test_rule_three_recognizes_committed_content_and_rejects_a_deliberately_chan
     export IS committed content; the same store with one record changed is
     NOT (injection). Hashes through git so CRLF/LF normalization matches a
     commit (autocrlf: the working copy and the blob differ)."""
-    db = _store(tmp_path)
+    # Build from the export AS COMMITTED at HEAD, not the working tree: with
+    # an uncommitted export (mid-task) the working tree's content is
+    # correctly "not yet committed", which is rule 3 working, not failing.
+    import subprocess
+    head_export = tmp_path / "head_export"
+    head_export.mkdir()
+    for name in EXPORT_FILES:
+        data = subprocess.run(["git", "-C", str(ROOT), "show", f"HEAD:export/{name}"],
+                              capture_output=True, check=True).stdout
+        (head_export / name).write_bytes(data)
+    db = tmp_path / "evidence.db"
+    rebuild(head_export, db, check_local_paths=False).close()
     blobs = backup_mod.committed_export_blobs(ROOT)
     assert blobs, "git history under export/ must be readable here"
     assert backup_mod.content_is_committed(db, blobs, ROOT) is True

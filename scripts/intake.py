@@ -116,6 +116,12 @@ def build_record(entry: dict, fetcher=None, today: str = "") -> PaperRecord:
     )
     if citations.parse_access(access):
         md, rendered = citations.resolve(access, fetcher=fetcher or FETCHER or citations.PacedFetcher())
+        provider = md.extra.get("provider")
+        if provider and not entry.get("updated_reason"):
+            # Sprint 5 Task C: arXiv refused 73 of 75 paced requests and DataCite
+            # answered; the render differs slightly by provider (no journal_ref),
+            # so which source of record answered is part of the provenance.
+            common["updated_reason"] += f"; metadata from {provider} (arXiv API did not answer)"
         paper = PaperRecord(id=entry.get("id") or make_id(md), value=entry.get("title") or md.title,
                             citation=rendered, citation_origin="api",
                             # This citation came from citations.resolve() one line above,
