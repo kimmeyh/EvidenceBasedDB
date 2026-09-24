@@ -90,6 +90,13 @@ this project keeps having to replace with a step.
   created an empty store when none existed. The write-script coverage guard
   now asks whether a script writes, not whether its text mentions --apply.
   Each fix has a test built on the failing case
+- **feat**: the QCi authors' papers into the store (Task H part 2, F5,
+  Issue #51) -- 121 accepted papers through the door under
+  `INTAKE_WORKFLOW.md` section 12's category rule: 108 written, 13 skipped
+  as other versions (preprint, journal, conference) of works written
+  earlier in the same run, 0 refused; `--verify` 7/7 on samples. `[QC-8]`
+  (Emami et al., Scientific Reports 2026), unobtainable from the
+  bibliography alone, arrived through the author search. Store: 329 papers
 
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 
