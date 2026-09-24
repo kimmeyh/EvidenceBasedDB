@@ -306,6 +306,107 @@ same day, and every count in them is a snapshot as of 2026-09-23.
   GitHub's unauthenticated API allows 60 requests per hour, so 135
   lookups take over two hours unless the run authenticates.
 
+### Proposed by Sprint 5 Task D (F31 part 3), 2026-09-24
+
+**F36. Reference fields the HSBC Phase 2 bibliography shows the store is missing, and a back-fill for existing papers (~large, no-history) Priority 22**
+- Phase: Design / ADR, then back-fill. Proposed 2026-09-24 by Sprint 5 Task D
+  at the team lead's request ("note any additional fields or content you
+  think we should keep for all references based on the content of
+  BIBLIOGRAPHY.md ... Also include a way re-process existing papers to fill
+  in the new fields and content"). **Decide together with F34**: publication
+  status (withdrawn, retracted, superseded) is the same family of fact as
+  field 3 below, and one ADR amendment should settle both.
+- Platform: `store/schema.sql`, ADR-0005 section 2 (paper record fields) as
+  a dated amendment, `store/ingest.py` (the door validates the new fields),
+  `store/export.py`, a new back-fill script.
+- **Method**: every per-entry element of `BIBLIOGRAPHY.md` (120 entries,
+  preserved at `References/2026-09_HSBC-Phase2-research_BIBLIOGRAPHY.md`)
+  was compared with what a paper record can hold today (`records` spine
+  plus `paper_fields`, `paper_applicability`, `paper_yields`). Nine
+  elements have no home. Each is classed by CLAUDE.md's rule --
+  determinate facts are COMPUTED (a resolver), never stored -- because
+  four of the nine are determinate and must not become stored copies.
+- **The nine, with a recommendation each:**
+  1. **How it was found** (`found_via`): the collection and locator, e.g.
+     "HSBC Phase 2 bibliography [DQ-5]", "F5 author search (Nicholas
+     Chancellor, network)", "QMLPapers/2024/manifest.tsv". Today it lives
+     only in disposition prose, so "everything from collection X" is a text
+     search. STORED (a fact about our process, not about the paper), as a
+     child table so one paper can be found by two routes.
+  2. **How much of it the reader read** (`read_extent`): the bibliography
+     marks "Read in full (16pp)", "Abstract only", "read via arXiv HTML",
+     "Appendices not extracted -- theorem statements read from HTML render".
+     `checked_against_source` says WHO checked, at `read` only; nothing says
+     how much. A claim read from an abstract and one read from Table 3 are
+     not the same evidence. STORED, per reader and date: `full | partial:
+     <what> | abstract | html-render | summary`.
+  3. **Publication and review status** (`publication_status`): preprint,
+     peer-reviewed at a venue, not peer reviewed (`[EX-4]` Zenodo), vendor
+     document, blog, news, conference abstract (the `[IN-3]` ISMVL item).
+     Plus F34's withdrawn, retracted, superseded. MOSTLY COMPUTED: arXiv
+     `journal_ref`, DataCite `IsVersionOf`, Crossref `type` answer it for
+     api-origin records; stored only for hand-origin ones, with an anchor.
+  4. **Version of record** (`version_of`): the bibliography pairs arXiv ids
+     with journal DOIs (`[EN-2]` Nature Communications, `[DS-2]` npj QI,
+     `[DS-3]` APL Computational Physics, `[CL-5]` Mathematics, `[QC-1]`
+     Communications Physics). COMPUTED from the registries (DataCite
+     `IsVersionOf`, arXiv `doi`); never typed.
+  5. **Access status** (`access_status`): paywalled (`[QF-10]`), HTTP 403
+     to automation (`[EN-3]`, `[EN-4]`, `[QF-9]`), bot-challenge pages
+     (Springer, Nature, Kaggle), a CDN link that "may rotate" (`[QC-2]`).
+     COMPUTED by a probe, stored only as the probe's last result and date,
+     so it can be re-run rather than trusted.
+  6. **Links to code and data** (`source_links`): "Code:", "Software:",
+     datasets (`[FW-3]`'s UCI ids, `[CL-20]`'s BAF suite). Sprint 5 Task C
+     entered 10 repositories as their own records with nothing tying them to
+     their papers; F35 needs exactly this link for 135 more. STORED as a
+     typed relation between SOURCE records (`code-of`, `dataset-of`,
+     `version-of`, `superseded-by`, `responds-to`), carrying the evidence
+     sentence. Evidential support and contradiction stay between
+     ASSERTIONS (ADR-0005 section 2b2); a critique (`[IC-1]` on `[QC-1]`)
+     is recorded as `responds-to`, and what it refutes is extracted as
+     assertions with `contradicts`.
+  7. **Affiliation and conflict of interest** (`coi`): "All six authors at
+     QCi", "Disclosed QCi shares/options" (`[QC-8]`), "HSBC-affiliated
+     author" (`[QF-4]`), "Genuinely independent" (`[IC-2]`), vendor in-kind
+     support (loke-2026). GRADE's risk-of-bias domain needs it, and today a
+     certainty reason can only restate it in prose. Affiliations are
+     COMPUTED where the registry carries them; a disclosed interest is
+     STORED with its anchor (page, section).
+  8. **How the source was cited** (`cited_as`): the bibliography cites 6
+     entries differently from their registry -- `[IN-2]` and `[CL-21]` give
+     titles of OTHER papers for their ids, `[EX-4]` a paraphrase, `[CE-20]`
+     and `[QF-6]` a different year, `[IC-1]` a wrong initial. That is this
+     store's founding defect class caught in a collection's own citations.
+     STORED on the `found_via` row (how THAT route cited it), so a later
+     comparison against the registry is a query, not a re-read.
+  9. **Reading notes** (the `>` lines: "0 of 29 comparisons reached
+     alpha=0.05", "Overclaim", "Does not transfer"): NOT a field. They are
+     claims, and a claim enters as an assertion with provenance through
+     extraction. Recommended: the extraction pass (F28's pilot shows the
+     path) reads the preserved bibliography as a pointer to where to look,
+     and each note becomes an assertion only once checked against the paper.
+- **Not recommended**: a topic field from the bibliography's 15 section
+  names. Contexts already partition; a free topic list is "a tag wearing a
+  costume" (ADR-0004 section 3b).
+- **Re-processing existing papers** (`scripts/backfill_reference_fields.py`,
+  dry run by default, one verified backup before `--apply` per F30):
+  - COMPUTED fields (3, 4, 5, and affiliations in 7) are resolvers, so
+    "back-fill" means running them once over every record and storing
+    nothing but the probe dates -- the first run over the 48 seed papers
+    doubles as their test;
+  - `found_via` (1) is derived for every existing record from text the
+    store already holds: the Sprint 1 seed-load note, the "Bulk intake ...
+    [TAG]" dispositions, F5's "(<person>, <rule>)" dispositions;
+  - `cited_as` (8) is filled for bibliography records from the preserved
+    file, and for the seed set from `scripts/seed_set_metadata.json`'s
+    history in git;
+  - `read_extent` (2) and disclosed `coi` (7) are human-or-agent judgments;
+    the script QUEUES them for the next screening pass and never guesses;
+  - every write appends to `updated_reason`, never replaces it.
+- Depends on: F34 (decide together), then this card's ADR-0005 amendment
+  before any schema change (Class 1, ADR-first).
+
 **F5. Deep-dive QCi: identify authors, find their other papers, scrape QCi's own documentation (~large, no-history) Priority 10**
 - Phase: Sourcing / research. Tentatively assigned Sprint 2 (team lead, 2026-09-16)
 - Platform: N/A for this repository's own tracked content -- output lands

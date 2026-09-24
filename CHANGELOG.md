@@ -51,6 +51,10 @@ this project keeps having to replace with a step.
   now records when DataCite, not arXiv, supplied the metadata (68 records).
   `test_every_paper_has_real_applicability` aligned to ADR-0005 A2: the
   obligation is `screened`'s, not `seen`'s, with an injection test
+- **docs**: F36 carded (Task D, F31 part 3, Issue #47) -- the nine per-entry
+  elements of the bibliography a paper record cannot hold, each classed as
+  computed (a resolver) or stored, a dry-run back-fill for existing papers,
+  and "decide together with F34"; reading notes deliberately NOT a field
 
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 
