@@ -514,3 +514,16 @@ def test_hollow_saved_page_is_refused_at_the_door_regression(tmp_path):
     validate_paper(rec(real))
     validate_paper(rec(pdf))
     validate_paper(rec(stub), check_local_paths=False)
+
+
+def test_visible_words_keeps_text_between_scripts():
+    """Copilot PR #43 review (2026-09-25) read the script-stripping pattern
+    as greedy, spanning from the first <script> to the last </script> and
+    removing the body text between them. It is lazy (`.*?`) and stops at
+    the first closing tag; this pins the two-script case so the claim is
+    checked, not argued. Proven to fail by injection: changing `.*?` to
+    `.*` in visible_words() drops the count to 30."""
+    from store.ingest import visible_words
+    html = (b"<html><script>var a=1;</script><p>" + b" ".join([b"visible"] * 30)
+            + b"</p><script>var b=2;</script><p>" + b" ".join([b"more"] * 30) + b"</p></html>")
+    assert visible_words(html) == 60
