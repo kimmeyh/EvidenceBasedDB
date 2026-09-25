@@ -22,6 +22,7 @@ Read-only. Usage:
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -81,6 +82,21 @@ def learning(conn, learning_id: str) -> dict:
     return {**dict(r), "evidence": ev, "balance": balance, "evidence_contexts": evidence_contexts}
 
 
+def _quote(text: str, limit: int = 300) -> str:
+    """The stored sentence, quoted once. Sprint 4's citation_context values
+    carry their own quote marks and a trailing page note; wrapping them
+    again printed ""..."". A cut is made at a word and marked, never
+    mid-word (team lead's Manual Validation run, 2026-09-25)."""
+    t = text.strip()
+    tail = ""
+    m = re.match(r'^"(.*)"\s*(\(p\.[^)]*\))?\s*$', t, re.S)
+    if m:
+        t, tail = m.group(1), (" " + m.group(2) if m.group(2) else "")
+    if len(t) > limit:
+        t = t[:limit].rsplit(" ", 1)[0] + " [...]"
+    return f'"{t}"{tail}'
+
+
 def render(item: dict) -> str:
     lines = [f"LEARNING {item['id']}  [{item['contexts']}]  certainty: {item['certainty']}",
              f"  {item['value']}",
@@ -91,7 +107,7 @@ def render(item: dict) -> str:
         src = e["sources"] or "no source paper"
         lines.append(f"  {e['relation'].upper():11s} {e['certainty'] or 'unrated':9s} {e['id']}  <- {src}")
         if e["citation_context"]:
-            lines.append(f"      \"{e['citation_context'][:220]}\"")
+            lines.append(f"      {_quote(e['citation_context'])}")
     return "\n".join(lines)
 
 
