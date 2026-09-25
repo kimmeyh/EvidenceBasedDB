@@ -155,7 +155,9 @@ store through the existing intake path). Plan:
   effect (can you screen the abstracts to determine)"): no looser name
   rule, but the unresolved hits were screened on their abstracts; 21 of
   392 entered, marked "authorship not confirmed" (research doc, "Q1
-  revised").
+  revised"). Q8 = 2: the three weakest on authorship then removed; 18
+  remain.
+- Q9 = 1: Manual Validation complete; proceed to Phase 7.
 - Q2 = 1: retention rule 3's "superseded" clause (a backup is covered once
   an export commit landed after it) accepted.
 - Q3 = 1: the six pilot papers' `read` promotions on Claude's reading

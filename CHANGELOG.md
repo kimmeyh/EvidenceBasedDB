@@ -108,7 +108,8 @@ this project keeps having to replace with a step.
   QML, ML or the Zeno effect (`scripts/sprint5_qci_topic_screen.py`, rule
   written first): 392 unresolved, 25 matched, 4 rejected on reading, 21
   entered at `seen` with "authorship not confirmed" in the disposition;
-  15 PDFs downloaded. Store: 350 papers
+  15 PDFs downloaded. Store: 350 papers. Q8: the three weakest on
+  authorship removed at the team lead's decision; 347 papers
 
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 

@@ -197,3 +197,8 @@ passes but whose authorship is least likely to be the QCi person --
 (dental deep learning) under "Yu-Ping Huang", and `arXiv:2603.15546`
 (human-motion generation) under "Sam Wu". The Zeno-blockade papers are
 Yu-Ping Huang's own line of work and are not in doubt.
+
+**Decided 2026-09-25 (team lead, Q8 = 2)**: those three removed
+(`scripts/sprint5_remove_weak_identity.py`, verified backup first; ids
+never reused; listed in the screen's `REJECTED` so a re-run keeps them
+out). 18 topic-screened papers remain.

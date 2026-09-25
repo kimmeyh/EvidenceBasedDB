@@ -54,6 +54,10 @@ REJECTED: dict[str, str] = {
     "arXiv:2112.03301": "radio-transient survey; 'clustering' is astronomical, not data clustering",
     "arXiv:2603.13205": "cosmic-ray radio detector; 'classification' of radio events in an instrument paper",
     "DOI:10.1364/ol.537295": "journal version of arXiv:2411.00953 (same title and abstract); the arXiv version is kept",
+    # Team lead, Manual Validation Q8 (2026-09-25): topic passes, authorship least likely the QCi person.
+    "arXiv:2405.02958": "removed by the team lead (Q8): MRI reconstruction, authorship doubtful under a common name",
+    "DOI:10.1101/2021.05.04.21256502": "removed by the team lead (Q8): dental deep learning, authorship doubtful",
+    "arXiv:2603.15546": "removed by the team lead (Q8): human-motion generation, authorship doubtful ('Sam Wu')",
 }
 
 
