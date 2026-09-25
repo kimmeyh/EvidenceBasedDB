@@ -347,7 +347,8 @@ same day, and every count in them is a snapshot as of 2026-09-23.
   preserved at `References/2026-09_HSBC-Phase2-research_BIBLIOGRAPHY.md`)
   was compared with what a paper record can hold today (`records` spine
   plus `paper_fields`, `paper_applicability`, `paper_yields`). Nine
-  elements have no home. Each is classed by CLAUDE.md's rule --
+  elements have no home (a tenth, the metadata provider, was added at the
+  Sprint 5 retrospective). Each is classed by CLAUDE.md's rule --
   determinate facts are COMPUTED (a resolver), never stored -- because
   four of the nine are determinate and must not become stored copies.
 - **The nine, with a recommendation each:**
@@ -410,6 +411,14 @@ same day, and every count in them is a snapshot as of 2026-09-23.
      extraction. Recommended: the extraction pass (F28's pilot shows the
      path) reads the preserved bibliography as a pointer to where to look,
      and each note becomes an assertion only once checked against the paper.
+  10. **Which registry answered** (`metadata_provider`; added 2026-09-25,
+     Sprint 5 retrospective improvement 8): arXiv refused 73 of 75 paced
+     requests in Sprint 5 and DataCite answered, and the rendered citation
+     differs slightly by provider (no journal_ref from DataCite). Today the
+     provider is a phrase appended to `updated_reason` on 68 records
+     ("metadata from DataCite"). STORED as a field, set by the door from
+     `Metadata.extra["provider"]`, so a refresh can explain a DIFFERS; the
+     back-fill reads the existing phrase.
 - **Not recommended**: a topic field from the bibliography's 15 section
   names. Contexts already partition; a free topic list is "a tag wearing a
   costume" (ADR-0004 section 3b).

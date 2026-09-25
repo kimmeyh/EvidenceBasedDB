@@ -1,7 +1,7 @@
 {
   "_comment": "Model-assignment heuristics for this repository (Sprint 4 Task K, F18, 2026-09-19). Data-driven complement to the static role table in docs/SPRINT_PLANNING.md: which model tier AND which review protocol a task pattern gets, with the outcomes that justify it. Modeled on spamfilter-multi's .claude/model_assignment_heuristics.json (read-only survey, Sprint 3 Task A), rewritten for this repository. Every number in learning_log names its source document; a success_rate is null until sample_size is at least 1 real outcome, never estimated. Update at every retrospective (Category 5, Model Assignments) and whenever a delegated task's report is verified against repository state. Guarded by tests/test_model_assignment_heuristics.py.",
   "version": 1,
-  "updated": "2026-09-22",
+  "updated": "2026-09-25",
   "tiers": {
     "haiku": {
       "role": "Developers (subagents)",
@@ -60,7 +60,8 @@
       "description": "A build task carried out by another session or subagent, returning code plus tests where every guard was broken, watched go red, and restored, with the injection named. The report is verified against repository state (git log, the files, the issue) before it is trusted or dismissed.",
       "primary_source_access": false,
       "cross_record": false
-    }
+    },
+    "fresh-eyes-code-review": "A reviewer with no task context reads the raw diff of a structural change with an open prompt (describe it; list correctness, data-loss and silent-failure risks with file:line, a concrete failure scenario and a confidence), read-only. Added 2026-09-25 from Sprint 5, where it found four defects the author's own tests had not."
   },
   "task_patterns": [
     {
@@ -317,6 +318,40 @@
         }
       ],
       "lesson": "Reading parallelises; judgment does not. Both evidence agents returned usable, anchored source material for a fraction of the coordinator's wall clock, and neither was asked to decide anything -- the context tests, the certainty levels and the contradiction wiring stayed with the top tier. The second lesson is about the parallel session: its Criterion 2 stop was correct and well documented, but the local session discovered the whole parallel effort only when its push was rejected. A branch worked by two sessions needs the status note read at every task start, not after a collision (Sprint 4 retrospective improvement 4)."
+    },
+    {
+      "date": "2026-09-24",
+      "sprint": 5,
+      "task": "Delegation outcomes across Sprint 5 (two read-only evidence agents for the F28 pilot; one fresh-eyes code reviewer)",
+      "records": null,
+      "source": "agent completion notifications; commits 0de4a48 (pilot), d2da51d (review fixes); docs/sprints/SPRINT_5_SUMMARY.md Actuals",
+      "outcomes": [
+        {
+          "tier": "sonnet",
+          "protocol": "read-only-evidence-gathering",
+          "findings": "3 QML papers read in full; 13 verbatim quotes used, all 13 found on the page named; flagged scope limits unprompted (theory-only, image not tabular) and disclosed an accidental temp file it deleted",
+          "tokens": 105183,
+          "seconds": 287,
+          "scope": "3 papers for the F28 pilot"
+        },
+        {
+          "tier": "sonnet",
+          "protocol": "read-only-evidence-gathering",
+          "findings": "3 ML papers read; 10 quotes checked, 9 on the page named and 1 on the next page (the Spearman result is p.8, reported as p.9); stated where it had not read the appendix",
+          "tokens": 133613,
+          "seconds": 505,
+          "scope": "3 papers for the F28 pilot"
+        },
+        {
+          "tier": "opus",
+          "protocol": "fresh-eyes-code-review",
+          "findings": "4 real defects in the durability code, all verified and fixed with tests (restore could not restore a corrupt store; restore could prune its own backup; retention rule 3 kept intermediate-state backups forever; a read-only script created an empty store); reproduced one finding on scratch copies, never the live store. Tier inherited from the parent session (no model override)",
+          "tokens": 85446,
+          "seconds": 187,
+          "scope": "store/backup.py, store/rebuild.py, restore and rebuild scripts, 2 test files"
+        }
+      ],
+      "lesson": "Same finding as Sprint 3 and 4, from a new direction: protocol, not tier, produced the value. Sonnet evidence agents were exact on 22 of 23 quotes because the protocol required a page per quote and the coordinator checked each. The code reviewer found what the author's own injection-proven tests could not, because the tests were written by the same mind that wrote the defects. Launch it at the task's commit, not at Phase 5 (Sprint 5 retrospective improvement 5)."
     }
   ]
 }

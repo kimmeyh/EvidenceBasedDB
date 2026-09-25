@@ -75,6 +75,24 @@ Minutes, from recorded actuals of comparable step-types; `[no-history]` + timebo
 
 Before estimating a card phrased as "validate," "check," "spot-check," or "compare" X against Y, confirm X actually exists to be checked -- do not assume it because the card's own name implies it. Sprint 2's Task B ("spot-check the store's assertions against the HSBC submission's own determinations") was estimated assuming matching assertions already existed in the store; none did, which turned a spot-check into an extraction-then-check task and expanded scope mid-sprint (a real, correct expansion, but one the estimate should have anticipated). This is the same failure mode the Capability pre-flight above guards for tool/environment preconditions, applied to data preconditions instead: a 5-minute check (does at least one record of the class being validated exist?) before the item is estimated, not after work starts.
 
+### Calibration from recorded actuals (Sprint 5 retrospective improvement 7, 2026-09-25)
+
+Two sprints now carry `## Actuals`, and they point the same way. Sprint 4
+estimated 785 Claude-side minutes; Sprint 5 estimated 780 and executed in
+about 108 minutes of coordinator wall clock (plan approval 08:19 to the last
+task commit 10:07, 2026-09-24), with about 126 more for Manual Validation
+fixes. Coordinator-minute estimates overstated the work 4 to 7 times
+wherever agents or background runs carried it, and ran OVER only where an
+external API refused requests (Sprint 4 Task C, 1.7x).
+
+So: estimate the coordinator's time as the judgment steps only (rules
+written, dry runs read, quotes checked, reviews answered), and put the rest
+in the **Runtime** column with its dominant term. The Sprint 5 runtime
+numbers, sized that way, were the accurate ones (arXiv at 13 s per id under
+refusal matched the planning pre-flight). Plan one review-and-fix cycle per
+structural task (see the Phase 4 fresh-eyes rule), because that is where
+Sprint 5's unplanned time went.
+
 ### Runtime is estimated SEPARATELY from implementation (Sprint 8 improvement 1)
 
 Any task that produces results by running over a dataset carries TWO numbers in

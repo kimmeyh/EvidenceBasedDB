@@ -23,6 +23,10 @@ strongest supporting assertion and moves DOWN for indirectness and for
 contradiction at equal or higher certainty (docs/LEARNING_SYNTHESIS.md
 section 3); its provenance begins "synthesis of".
 
+Since Sprint 5 retrospective improvement 1 (2026-09-25) set_tier() refuses
+these promotions: the papers had no applicability. Re-running this script
+would need scripts/sprint5_task_i_applicability.py applied FIRST.
+
 One-off, kept as the record. DRY RUN BY DEFAULT: applies inside one
 transaction, prints, rolls back. `--apply` takes a verified backup (F30),
 commits, and regenerates export/.

@@ -225,6 +225,7 @@ def test_set_tier_refuses_read_without_checked_against_source(db):
     insert_paper(db, PaperRecord(
         id="p1", tier="seen", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
+        applicability=[("method", "fixture rationale -- test")],
     ))
     with pytest.raises(ValueError, match="checked_against_source"):
         set_tier(db, "p1", "read")
@@ -236,17 +237,30 @@ def test_set_tier_promotes_to_read_when_checked_against_source_is_supplied(db):
     insert_paper(db, PaperRecord(
         id="p1", tier="screened", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
+        applicability=[("method", "fixture rationale -- test")],
     ))
     set_tier(db, "p1", "read", checked_against_source="2026-09-19, test, read in full")
     row = db.execute("SELECT tier, checked_against_source FROM paper_fields WHERE record_id = 'p1'").fetchone()
     assert (row["tier"], row["checked_against_source"]) == ("read", "2026-09-19, test, read in full")
 
 
-def test_set_tier_to_screened_needs_nothing_extra(db):
+def test_set_tier_to_screened_requires_applicability_regression(db):
+    """Sprint 5 retrospective improvement 1 (2026-09-25). This test was
+    `test_set_tier_to_screened_needs_nothing_extra` and pinned the old
+    contract; ADR-0005 Amendment A2 makes applicability `screened`'s
+    obligation and the F28 pilot promoted six papers without it. Proven to
+    fail by injection: removing the new check in set_tier() lets the first
+    promotion through and this goes red. A refused promotion leaves the row
+    unchanged; with a row written, the same promotion succeeds."""
     insert_paper(db, PaperRecord(
         id="p1", tier="seen", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
     ))
+    for tier in ("screened", "read"):
+        with pytest.raises(ValueError, match="no applicability"):
+            set_tier(db, "p1", tier, checked_against_source="x" if tier == "read" else None)
+    assert db.execute("SELECT tier FROM paper_fields WHERE record_id = 'p1'").fetchone()["tier"] == "seen"
+    db.execute("INSERT INTO paper_applicability (record_id, context_id, rationale) VALUES ('p1', 'method', 'why -- test')")
     set_tier(db, "p1", "screened")
     assert db.execute("SELECT tier FROM paper_fields WHERE record_id = 'p1'").fetchone()["tier"] == "screened"
 
@@ -462,6 +476,8 @@ def test_promotion_removes_not_yet_screened_regression(tmp_path):
             disposition="Bulk intake 2026-09 from a test" + NOT_YET_SCREENED,
             citation="X, \"T,\" 2026 (hand-transcribed from cover)", citation_origin="hand",
             hand_transcribed_from="cover", updated="2026-09-25", updated_reason="t"))
+    conn.execute("INSERT INTO paper_applicability (record_id, context_id, rationale) VALUES "
+                 "('p-promoted', 'method', 'fixture -- test')")
     set_tier(conn, "p-promoted", "screened")
     set_tier(conn, "p-stays", "seen")
     disp = dict(conn.execute("SELECT record_id, disposition FROM paper_fields"))
@@ -470,3 +486,31 @@ def test_promotion_removes_not_yet_screened_regression(tmp_path):
     reason = conn.execute("SELECT updated_reason FROM records WHERE id = 'p-promoted'").fetchone()[0]
     assert reason.startswith("t | ") and "not yet screened" in reason, "append-only, and says what changed"
     conn.close()
+
+
+def test_hollow_saved_page_is_refused_at_the_door_regression(tmp_path):
+    """Sprint 5 retrospective improvement 4 (2026-09-25): a hand-origin
+    record whose saved .html copy is a shell (bot challenge, JavaScript
+    app, redirect stub) is refused. Proven to fail by injection: the exact
+    Sprint 5 redirect stub, and a bare page of 8 words, are refused; a page
+    with real text passes; a PDF is not word-counted; the rebuild's
+    check_local_paths=False skips it with the path check."""
+    def rec(path):
+        return PaperRecord(id="h1", tier="seen", access=f"{path} | https://example.org/p", context="method",
+                           value="T", disposition="Reference: t", citation="X, \"T,\" 2026 (hand-transcribed from page)",
+                           citation_origin="hand", hand_transcribed_from="page", updated="2026-09-25", updated_reason="t")
+    stub = tmp_path / "stub.html"
+    stub.write_text('<meta http-equiv="Refresh" content="0; url=Foreword.html" />', encoding="utf-8")
+    shell = tmp_path / "shell.html"
+    shell.write_text("<html><script>" + "x" * 5000 + "</script><body>1st Place Solution Part 2 Kaggle loading</body></html>",
+                     encoding="utf-8")
+    real = tmp_path / "real.html"
+    real.write_text("<html><body><p>" + " ".join(["word"] * 60) + "</p></body></html>", encoding="utf-8")
+    pdf = tmp_path / "doc.pdf"
+    pdf.write_bytes(b"%PDF-1.4 tiny")
+    for hollow in (stub, shell):
+        with pytest.raises(ValueError, match="visible words"):
+            validate_paper(rec(hollow))
+    validate_paper(rec(real))
+    validate_paper(rec(pdf))
+    validate_paper(rec(stub), check_local_paths=False)

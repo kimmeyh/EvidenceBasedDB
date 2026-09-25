@@ -257,13 +257,9 @@ def _get(url: str, accept: str = "*/*") -> bytes:
         return resp.read()
 
 
-MIN_VISIBLE_WORDS = 50  # below this a saved page is a shell, not the content
-
-
-def visible_words(data: bytes) -> int:
-    text = data.decode("utf-8", errors="replace")
-    text = re.sub(r"<script.*?</script>|<style.*?</style>", " ", text, flags=re.S | re.I)
-    return len(re.sub(r"<[^>]+>", " ", text).split())
+# The hollow-page check lives at the door since Sprint 5 retrospective
+# improvement 4; this script uses the one implementation.
+from store.ingest import MIN_VISIBLE_WORDS, visible_words  # noqa: E402,F401
 
 
 def _meta_refresh(data: bytes, base: str) -> str | None:

@@ -110,6 +110,17 @@ this project keeps having to replace with a step.
   entered at `seen` with "authorship not confirmed" in the disposition;
   15 PDFs downloaded. Store: 350 papers. Q8: the three weakest on
   authorship removed at the team lead's decision; 347 papers
+- **process**: Sprint 5 retrospective improvements 1-8, all applied now
+  (team lead: "do all now"), each extending an existing control --
+  `set_tier()` refuses `screened`/`read` without applicability (1); the
+  unraw-escape hook also blocks Python rewriting a `.py` file from a shell
+  command (2); the guard-discipline test fails on `or True` / `assert True`
+  (3); the door refuses a hand-origin record whose saved `.html` copy has
+  fewer than 50 visible words (4); fresh-eyes review at the structural
+  task's commit (5); computed numbers and reported caps (6); estimation
+  calibration and the Sprint 5 model-assignment log rows (7); F36 gains the
+  metadata provider as its tenth field (8). Every mechanical one proven by
+  injection
 
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 

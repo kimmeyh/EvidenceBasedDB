@@ -164,6 +164,18 @@ def test_promote_run_after_a_seen_only_run_still_promotes(store_and_metadata):
     first = _run_script(db_path, metadata_path, export_dir)
     assert first.returncode == 0, first.stderr
 
+    # Since Sprint 5 retrospective improvement 1 (2026-09-25), set_tier()
+    # refuses `screened` without applicability (ADR-0005 A2). This retired
+    # loader writes none, so the fixture supplies the row the promotion
+    # owes; what this test pins -- an existing row still promotes -- is
+    # unchanged.
+    import store as store_module
+    conn = store_module.connect(db_path)
+    conn.execute("INSERT INTO paper_applicability (record_id, context_id, rationale) VALUES "
+                 "('griffin-2026-cvqboosting-fraud', 'qml', 'fixture row -- test')")
+    conn.commit()
+    conn.close()
+
     second = _run_script(db_path, metadata_path, export_dir, ["--promote"])
     assert second.returncode == 0, second.stderr
     assert "1 of those promoted" in second.stdout, second.stdout

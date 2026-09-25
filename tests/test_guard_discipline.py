@@ -94,3 +94,42 @@ def test_the_injection_standard_is_documented():
     assert "injection" in body, (
         "TESTING_STRATEGY.md no longer documents the injection-verification "
         "standard that this test enforces")
+
+
+def _tautologies(tree: ast.AST) -> list[int]:
+    """Line numbers of assert statements that cannot fail: `assert True`
+    or an `or` whose operands include the constant True."""
+    lines = []
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Assert):
+            continue
+        t = node.test
+        if isinstance(t, ast.Constant) and t.value is True:
+            lines.append(node.lineno)
+        elif isinstance(t, ast.BoolOp) and isinstance(t.op, ast.Or) and any(
+                isinstance(v, ast.Constant) and v.value is True for v in t.values):
+            lines.append(node.lineno)
+    return lines
+
+
+def test_no_assertion_is_a_tautology():
+    """Sprint 5 retrospective improvement 3 (2026-09-25). Sprint 5 Task A
+    shipped `assert ... == 48 or True` into tests/test_store_durability.py
+    and it was caught only on a later reread: an `or True` assertion passes
+    whatever the store holds. This extends the file's own discipline -- a
+    guard that cannot fail -- from docstrings to the assertions themselves."""
+    found = []
+    for f in sorted(SRC.glob("test_*.py")):
+        try:
+            tree = ast.parse(f.read_text(encoding="utf-8"))
+        except SyntaxError:                              # noqa: PERF203
+            continue
+        found += [f"{f.name}:{n}" for n in _tautologies(tree)]
+    assert not found, f"assertions that cannot fail: {found}"
+
+
+def test_tautology_detector_catches_the_sprint_5_case_regression():
+    """Proven to fail by injection: the exact Sprint 5 line, and a bare
+    `assert True`, are both reported; a real comparison is not."""
+    bad = ast.parse("def t():\n    assert x == 48 or True\n    assert True\n    assert x == 48\n")
+    assert _tautologies(bad) == [2, 3]
