@@ -125,4 +125,17 @@ message opened: "Manual Validation complete".
 
 ## Improvement Decisions
 
-Pending the team lead's disposition (protocol step 6).
+Team lead, 2026-09-25, verbatim: "do all now". All eight applied in commit
+5be2402, each extending an existing control; every mechanical one proven by
+injection.
+
+| # | Title | Source | Type | Effort | Decision (now/backlog/skip) |
+|---|---|---|---|---|---|
+| 1 | A promotion owes the lower tiers' obligations: set_tier() refuses screened/read without applicability | Dev 2, 4 | Code guard (extends set_tier's read-tier check) | 20m | now |
+| 2 | Code files change through Edit/Write, never a python-in-shell rewrite of a .py file | Dev 1, 9 | Hook (extends block_unraw_escape.py) | 45m | now |
+| 3 | A tautological assertion fails the suite | Dev 2 | Test (extends test_guard_discipline.py) | 20m | now |
+| 4 | A saved local copy must carry content (visible-word check at the door) | Dev 9 | Code guard (extends validate_paper) | 30m | now |
+| 5 | Fresh-eyes review at the structural task's commit, not Phase 5 | Dev 5, 10 | Workflow doc (extends the fresh-eyes rule) | 10m | now |
+| 6 | Numbers in prose computed in the same turn; caps reported | Dev 6, 10 | Standard (extends "computed, never stored") | 10m | now |
+| 7 | Estimation calibration from Sprint 4-5 actuals; Sprint 5 learning_log rows | Dev 3, 5 | Planning doc + heuristics file | 15m | now |
+| 8 | Metadata provider as a field | Dev 14 | Backlog (extends F36 as item 10) | 5m | now |

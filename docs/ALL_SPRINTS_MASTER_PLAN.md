@@ -40,10 +40,30 @@ repository exists. No other F# from either source repository applies here.
 | 2 | docs/sprints/SPRINT_2_SUMMARY.md | [OK] Complete | 2026-09-17 to 2026-09-18 |
 | 3 | docs/sprints/SPRINT_3_SUMMARY.md | [OK] Complete | 2026-09-18 to 2026-09-19 |
 | 4 | docs/sprints/SPRINT_4_SUMMARY.md | [OK] Complete | 2026-09-19 to 2026-09-23 |
+| 5 | docs/sprints/SPRINT_5_SUMMARY.md | [OK] Complete, PR #43 awaiting merge | 2026-09-23 to 2026-09-25 |
 
 ## Last Completed Sprint
 
-Sprint 4 is below; Sprint 3 follows it for continuity.
+Sprint 5 is below; Sprint 4 follows it for continuity.
+
+### Sprint 5: Make the Store Durable, Then Fill It (2026-09-23 to 2026-09-25, PR #43)
+
+Nine tasks, nine issues (#44-#52), all closed. **Durable first** (F30): the
+store rebuilds byte-identically from the committed export, takes a verified
+SQLite-API backup before every write, and restores by script. **Then
+filled**: the HSBC Phase 2 bibliography (F31, 121 records, 0 refused, F36
+carded), QCi's authors, site and package (F5: 108 co-authorship papers, 52
+site references, 18 topic-screened papers), and the first computed
+synthesis (F28: three learnings over existing primitives, F37 carded). Store
+48 -> 347 papers; suite 458 -> 505; zero metered spend. F19 and F29 closed
+without implementation. Retrospective: team lead all "Very Good"; eight
+improvements applied now, each extending an existing control. Full detail:
+`docs/sprints/SPRINT_5_SUMMARY.md`, `docs/sprints/SPRINT_5_RETROSPECTIVE.md`.
+
+**The lesson worth carrying**: the author's own injection-proven tests did
+not find the four defects a fresh-eyes reviewer found in the same code; a
+review launched at the task's commit is now the rule.
+
 
 ### Sprint 4: Fix the Path, Fix the Records, Measure the Cost (2026-09-19 to 2026-09-23, PR #30, merged to main via PR #42)
 
@@ -181,37 +201,8 @@ F27 (Sprint 4). The superseded stubs F12 and F21-F24 are removed now
 that F25 has shipped -- their history lives in the Sprint 3 and 4 docs
 and in git. Remaining items below, newly added ones marked. F19 and F29
 were closed at Sprint 5 scope selection (see "Current sprint" above).
-
-**F31. Download and process the HSBC Phase 2 bibliography, then propose the fields it shows the store is missing (~large, no-history) Priority 8** (NEW 2026-09-23)
-- Phase: Sourcing / intake. Added 2026-09-23 by the team lead at Sprint 5
-  scope selection and assigned to Sprint 5.
-- Platform: `D:\Data\Harold\EvidenceBasedDB\` (the downloads; never this
-  repository), `scripts/intake.py` (the one door), `store/`, `export/`.
-- **The source**: `BIBLIOGRAPHY.md`, written 2026-09-22/23 by a Claude
-  research session for the consumer repository's Phase 2, in a claude.ai
-  scratch workspace
-  (`...\scratch-workspaces\...\scratch-2026-09-22-02b60b\BIBLIOGRAPHY.md`).
-  A scratch workspace is not durable, so the file is preserved beside the
-  downloads before anything else happens. Snapshot as of 2026-09-23: 120
-  tagged entries in 15 topic sections; 75 distinct arXiv ids; 2 already in
-  the store (`[FW-1]`, `[QC-5]`); 9 more already on disk under
-  `QMLPapers/` but not in the store; the rest are DOIs, journal pages,
-  GitHub repositories, vendor documentation, news and web pages.
-- **Three parts, team lead 2026-09-23:**
-  1. **Download** every reference into the right place under
-     `D:\Data\Harold\EvidenceBasedDB\`. "There are likely duplicates - no
-     need to download twice": a file already on disk is pointed at, not
-     fetched again.
-  2. **Process the downloads into the store** through the normal intake
-     path (`docs/INTAKE_WORKFLOW.md`).
-  3. **Then propose the missing fields.** "Note any additional fields or
-     content you think we should keep for all references based on the
-     content of BIBLIOGRAPHY.md and add if anything, add an item to the
-     backlog to add these fields and content. Also include a way
-     re-process existing papers to fill in the new fields and content."
-     The output of part 3 is a NEW backlog card, not a schema change in
-     this sprint (a new field on a record class is Class 1, ADR-first).
-- Depends on: F30 part 2 (backup on write) before the bulk `--apply`.
+F5, F28, F30 and F31 shipped in Sprint 5 and are pruned (history in the
+Sprint 5 docs and git).
 
 ### Bulk intake: targeted for Sprint 6 (team lead, 2026-09-23)
 
@@ -453,183 +444,15 @@ same day, and every count in them is a snapshot as of 2026-09-23.
 - Depends on: decide in the same ADR amendment as F34 and F36, so the
   assertion and paper fields change once.
 
-**F5. Deep-dive QCi: identify authors, find their other papers, scrape QCi's own documentation (~large, no-history) Priority 10**
-- Phase: Sourcing / research. Tentatively assigned Sprint 2 (team lead, 2026-09-16)
-- Platform: N/A for this repository's own tracked content -- output lands
-  entirely under `D:\Data\Harold\EvidenceBasedDB\` (NOT this git repository;
-  ADR-0005 section 3 is explicit that raw material stays outside version
-  control, the `access` field points at it)
-- **Three sub-parts, team lead 2026-09-16**:
-  1. **Identify every QCi-affiliated person who authored or co-authored a
-     paper already in this repository's store or seed set.** Search the DB
-     export and the 44 seed-set papers' own citation/affiliation lines
-     (already extracted once during Task F -- re-derive from the actual
-     PDF content, not from memory of that extraction). Get FULL names, not
-     initials, verified against the paper itself. `emami-2025-financial-
-     fraud-entropy-computing-qci` already names six QCi-affiliated authors
-     on its own arXiv title page (Emami, Dyk, Haycraft, Spear, Nguyen,
-     Chancellor) as a confirmed starting point; the SMU/Loke CVQBoosting
-     paper's "et al." need expanding from the actual PDF before assuming
-     who among its author list, if anyone, is QCi-affiliated rather than
-     SMU-affiliated.
-  2. **For each identified person, determine a reliable way to search for
-     papers they co-authored on ANY topic** (not just QCi/Dirac-3 work),
-     and download all of them. **Search priority, team lead 2026-09-16:
-     arXiv first, then DOI resolution (Crossref/publisher), then Google
-     Scholar.** A name alone is not a unique search key (common-name
-     collisions are a real risk); the card's own acceptance criteria should
-     require disambiguating each hit against the person's known
-     affiliation/co-author network before downloading, not accepting every
-     name match.
-  3. **Separately, scrape `quantumcomputinginc.com` itself** for: key docs
-     on Dirac-3 and `eqc_models`; training/onboarding documentation; and
-     anything covering QML methods the company publishes on (QBoost,
-     CVQBoost, QSVM, and related). This is independent of sub-part 2 --
-     official vendor documentation, not third-party authored papers.
-  4. **Also pull the `eqc_models` package itself from PyPI** (team lead,
-     2026-09-16) -- the released distribution, not only web documentation
-     about it. Source and any bundled docs/examples both count as reference
-     material under this card's scope.
-- **Storage, team lead 2026-09-16 (clarified)**: everything lands in
-  `D:\Data\Harold\EvidenceBasedDB\References\`, which the team lead
-  confirmed is meant to hold exactly this kind of material -- non-technical
-  articles, QCi's own training/website documentation, and downloaded
-  packages like `eqc_models` from PyPI -- alongside the technical papers
-  `Papers` already holds. Proposed sub-structure for review at carding:
-  `References/QCi-authors/<person>/` for sub-part 2's per-author downloads,
-  `References/QCi-site/` for sub-part 3's scrape, and
-  `References/eqc_models/` for sub-part 4's PyPI pull -- team lead's call
-  on exact naming at carding, this is a proposal.
-- **Standing constraint, same as every paper record in this store**: the
-  PDFs/scraped pages themselves are never committed into this git
-  repository (ADR-0005 section 3, `.gitignore` already blocks `*.pdf`). If
-  any of this material becomes a real DB record (not just staged material),
-  it follows the same `seen`-tier paper-record path Task F already built,
-  with its own `access` field pointing at the local path.
-- **Decided 2026-09-23 (team lead, at Sprint 5 scope selection)**: found
-  material is ingested, not only staged: "After finding, add them to the
-  db using the existing process." The existing process is
-  `docs/INTAKE_WORKFLOW.md` (`scripts/intake.py`, `seen` as the bulk tier
-  with an honest disposition). This supersedes the earlier recommendation
-  to stage only; the "volume without judgment" risk (ADR-0005 section 2c)
-  is carried by the tier, which records that nothing was screened.
-- Depends on: nothing technical. Read-only web access and the existing
-  seed-set metadata are both already available.
-
-**F28. Learn from the papers: what QML and ML each teach about improving predictions (~large, no-history) Priority 44**
-- Phase: Knowledge synthesis. Added 2026-09-19 (team lead, at Sprint 4
-  scoping, for the sprint AFTER Sprint 4): "Start to devise a way to
-  learn from the papers -- key learnings about QML, how QML might be able
-  to improve predictions (tools, techniques, algorithms...), key learnings
-  about ML, how we might be able to improve ML predictions (tools,
-  techniques, algorithms...)."
-- Platform: the store (assertion class, contexts `qml`/`ml`/`method`,
-  `assertion_relations`), `scripts/`, a new synthesis output whose form
-  this card must decide
-- **This is design first** (same shape as F2 and the old F12): the store
-  already has the primitives -- assertions with provenance and GRADE-style
-  certainty, `supports`/`contradicts` relations, contexts as partitions.
-  What does not exist is (a) extraction at scale (F25 B5 extracts from
-  five papers by hand; ~1,300 papers need a repeatable, guarded path
-  through F25's door), and (b) a synthesis layer that turns many
-  assertions into "what we now believe about X, at what certainty, and
-  why" without restating any of them (CLAUDE.md: determinate facts are
-  computed, never stored -- a synthesis is a QUERY over assertions, not
-  a second copy)
-- **Open questions this card exists to answer, not to pre-decide**: what a
-  "key learning" is as a record (an assertion at context `qml`/`ml` with
-  a `method`-context relation? a new class? ADR-0004 section 3 names the
-  add-a-class trigger); how a learning about "how to improve predictions"
-  carries its evidence (the `emami`/`loke`/`qci` vs `mancilla`/`zajac`
-  `contradicts` pair F25 B5 wires is the first worked example); whether
-  synthesis is `view.py`-style (computed on demand from the store) or a
-  regenerated export per context; which model tier extracts and which
-  adjudicates, given Sprint 3's finding that protocol depth, not tier,
-  produced the findings (F18); and how the 1,200 incoming papers are
-  triaged for extraction (all at `seen`, promote by relevance -- ADR-0005
-  tiers as adjudication depth)
-- **Not this card's job**: ingesting the 1,200 papers (that is F25's door
-  plus F5's discovery), or extracting from all of them (tiering decides
-  which reach `read`)
-- Depends on: F25 (the door and the corrected records), F11 (the
-  adjudication cost per record, which bounds how many papers can reach
-  `read` at all). Sequenced for Sprint 5.
-
-**F30. Store durability: systematic backups, a real restore, and the missing rebuild-from-export (~medium, no-history) Priority 12**
-- Phase: Operational safety. Added 2026-09-23 (team lead, at Sprint 4
-  close-out): "There is a database backup and the database is not kept in
-  the repository, right? Backups need to be done systematically and only
-  preserved for a max of N days (propose 32) and min of M sprints
-  (propose 5)."
-- **The premise check, done 2026-09-23, because half of it was wrong.**
-  The database is correctly NOT in the repository: no `.db` file is
-  tracked, `.gitignore` excludes the store with a stated reason, and
-  `store/evidence.db` (252 KB on that date) exists only on the team
-  lead's machine. But **there was no backup.** No `.bak`, no dated copy,
-  nothing anywhere in the tree. The only thing between the store and
-  total loss was the committed `export/*.json`.
-- **The real gap is the restore, not the backup.** ADR-0004 section 2
-  calls the store a build output and the committed export the artifact,
-  so the DATA is recoverable in principle -- the Sprint 4 remote session
-  rebuilt the store from `export/` byte-identically. But it did so BY
-  HAND, in a session that no longer exists, and `scripts/` has
-  `regenerate_export.py` (store -> export) with nothing going the other
-  way. A recovery path that exists in principle and has no script is the
-  same defect class as a guard that has never been run.
-- **SQLite gives us the mechanism; use it, not a file copy** (team lead,
-  2026-09-23: "if it is [sqlite], then backups and restores are part of
-  the sqlite package" -- correct, and it overturned this card's first
-  draft). Measured on the live store that day: `sqlite3.Connection.backup()`
-  (Python stdlib, present on 3.12.10 / SQLite 3.49.1) took **15 ms**,
-  produced `PRAGMA integrity_check = ok` with all 48 papers, and is safe
-  against a concurrent writer. A `shutil.copy2` of a live database takes
-  0 ms and can capture a torn write that looks fine until it does not.
-  Note the backup is **not byte-identical** to the source -- the API
-  writes a freshly-packed database -- so a restore is verified by content
-  (integrity check plus a regenerated export matching the committed one),
-  never by comparing file bytes.
-- Platform: `store/` (a shared backup helper), `scripts/` (a restore
-  script and a `rebuild_store_from_export.py`), `.gitignore`,
-  `docs/QUALITY_STANDARDS.md`, `tests/`.
-- **Three pieces, in dependency order:**
-  1. **`scripts/rebuild_store_from_export.py`** -- the missing recovery
-     path. Reads the committed `export/*.json` into a fresh store through
-     the real ingestion path, then regenerates and asserts the export is
-     byte-identical to what it read. This is the piece that makes every
-     other durability question secondary, and it is first for that reason.
-  2. **Backup on write, not on a clock.** At 15 ms the backup is not a
-     scheduled chore; it belongs inside `--apply`, before the
-     transaction, in the helper every write-shaped script already shares.
-     No cron, no drift, and each backup is aligned with a real change.
-     **Every backup is verified at creation** (open it, `integrity_check`,
-     count the records) and the run FAILS if it does not check out -- an
-     unverified backup is the guard-never-run class again.
-  3. **`scripts/restore_store.py`** -- restore is a script with a test,
-     not a documented gesture. The test restores into a temp store and
-     proves the regenerated export matches.
-- **Retention (team lead's decision 2026-09-23, option 2a), three
-  independent rules, ALL of which must allow a deletion:**
-  - keep every backup for **32 days** (the team lead's number; at 252 KB
-    a year of them is under 100 MB, so space is not the constraint --
-    avoiding a stale second source of truth is);
-  - never delete the **newest backup of each of the last 5 sprints**,
-    regardless of age (the team lead's "min 5 sprints", expressed as what
-    it protects: the state at each recent sprint boundary). Note sprints
-    here run 1 to 3 days, so 5 sprints is about a week and sits INSIDE
-    the 32 days rather than under it -- the two bounds are independent,
-    not a range;
-  - never delete a backup whose contents are **not yet in a committed
-    `export/`**. This is the clause that actually matters: until the
-    export is committed, the backup is the only copy.
-- `backups/` is gitignored, for the same reason the store is.
-- **Not this card's job**: off-machine or cloud backup (the store is
-  rebuildable from a git-committed export, so the repository IS the
-  off-machine copy); backing up `D:\Data\Harold\EvidenceBasedDB\`
-  (Papers, Books, QMLPapers -- that is a separate question about material
-  this repository deliberately does not own).
-- Depends on: nothing technical. Sequenced for Sprint 5; the trigger is
-  the 1,618-file bulk load, after which a lost store costs an hour of
-  arXiv-paced re-fetching rather than a rebuild.
+**F38. Back-fill CHECKLIST-Phase2-pre.md for Sprints 1 to 4, with evidence per row (~small, no-history) Priority 12** (NEW 2026-09-25)
+- Phase: Process. Found at Sprint 5's Phase 7 reconciliation: the Sprint 1
+  rows were never checked off and Sprints 2 to 4 have no section, although
+  each sprint closed with its docs triad. The file's own rule is "nothing
+  here may be marked done without evidence", so the back-fill cites the
+  commit or document for every row rather than recollection.
+- Platform: `CHECKLIST-Phase2-pre.md`; the Sprint 1-4 PLAN and SUMMARY docs.
+- Target: Sprint 6 Phase 1.2 (completeness sweep), where the reconciliation
+  belongs.
 
 ## Design documents governing this repository
 
