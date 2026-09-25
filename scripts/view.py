@@ -94,9 +94,14 @@ def cmd_contexts_detail(conn, context_id: str) -> dict:
         FROM paper_applicability pa
         JOIN records r ON r.id = pa.record_id
         WHERE pa.context_id = ?
+          AND pa.record_id NOT IN (SELECT record_id FROM record_contexts WHERE context_id = ?)
         ORDER BY r.id
         """,
-        (context_id,),
+        # Exclude papers already listed directly: the section is "beyond its
+        # single primary one" and printed "(not primary context)", but listed
+        # primary-context papers a second time (team lead's Manual Validation
+        # run, 2026-09-25).
+        (context_id, context_id),
     ).fetchall()
 
     return {
