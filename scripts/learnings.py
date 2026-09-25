@@ -82,7 +82,7 @@ def learning(conn, learning_id: str) -> dict:
     return {**dict(r), "evidence": ev, "balance": balance, "evidence_contexts": evidence_contexts}
 
 
-def _quote(text: str, limit: int = 300) -> str:
+def _quote(text: str, limit: int = 600) -> str:
     """The stored sentence, quoted once. Sprint 4's citation_context values
     carry their own quote marks and a trailing page note; wrapping them
     again printed ""..."". A cut is made at a word and marked, never
@@ -92,6 +92,10 @@ def _quote(text: str, limit: int = 300) -> str:
     m = re.match(r'^"(.*)"\s*(\(p\.[^)]*\))?\s*$', t, re.S)
     if m:
         t, tail = m.group(1), (" " + m.group(2) if m.group(2) else "")
+    elif t.startswith('"'):
+        # Already quoted, with more after the quote (a page note, added
+        # table rows): print as stored rather than quoting it again.
+        return t if len(t) <= limit else t[:limit].rsplit(" ", 1)[0] + " [...]"
     if len(t) > limit:
         t = t[:limit].rsplit(" ", 1)[0] + " [...]"
     return f'"{t}"{tail}'

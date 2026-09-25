@@ -146,3 +146,6 @@ Whether to accept them needs a looser rule, and choosing one is the team
 lead's decision (Manual Validation). The names most likely to be single
 people (Miri, Chancellor, Begliarbekov, Vrahoretis) are the strongest
 candidates for an exact-full-name rule; Sam Wu is the weakest.
+
+**Decided 2026-09-25 (team lead, Manual Validation Q1 = 2)**: they stay
+unresolved; no looser rule.

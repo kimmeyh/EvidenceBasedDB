@@ -97,6 +97,12 @@ this project keeps having to replace with a step.
   earlier in the same run, 0 refused; `--verify` 7/7 on samples. `[QC-8]`
   (Emami et al., Scientific Reports 2026), unobtainable from the
   bibliography alone, arrived through the author search. Store: 329 papers
+- **fix**: Manual Validation feedback -- `learnings.py` quotes each sentence
+  once and cuts only at a word; `view.py contexts` no longer lists a
+  primary-context paper again "via applicability" (pre-existing since Sprint
+  2); the six pilot papers' stale "not yet screened" removed, and
+  `set_tier()` now removes it at every promotion (Q7); the Table 3 rows
+  under `cvqboost-vs-xgboost-auc-under-balancing` added (Q6); F37 carded (Q4)
 
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 

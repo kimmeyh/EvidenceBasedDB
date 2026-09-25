@@ -442,3 +442,31 @@ def test_only_the_doors_marker_or_a_declared_replay_is_accepted(declared):
     # The two legitimate values still pass.
     validate_paper(PaperRecord(**base, citation_source=DERIVED_BY_DOOR))
     validate_paper(PaperRecord(**base, citation_source=REPLAY))
+
+
+def test_promotion_removes_not_yet_screened_regression(tmp_path):
+    """Team lead, Sprint 5 Manual Validation Q7 (2026-09-25): bulk `seen`
+    dispositions keep '; not yet screened' and the clause is removed at
+    each promotion, by set_tier itself. Proven to fail by injection: the
+    F28 pilot promoted six papers with set_tier before this existed and
+    left the clause stale on all six."""
+    import sqlite3 as _sq
+    from store import create_store
+    from store.ingest import NOT_YET_SCREENED, PaperRecord, insert_paper, set_tier
+    conn = create_store(tmp_path / "t.db")
+    local = tmp_path / "x.pdf"
+    local.write_bytes(b"%PDF")
+    for pid in ("p-promoted", "p-stays"):
+        insert_paper(conn, PaperRecord(
+            id=pid, tier="seen", access=str(local), context="method", value="T",
+            disposition="Bulk intake 2026-09 from a test" + NOT_YET_SCREENED,
+            citation="X, \"T,\" 2026 (hand-transcribed from cover)", citation_origin="hand",
+            hand_transcribed_from="cover", updated="2026-09-25", updated_reason="t"))
+    set_tier(conn, "p-promoted", "screened")
+    set_tier(conn, "p-stays", "seen")
+    disp = dict(conn.execute("SELECT record_id, disposition FROM paper_fields"))
+    assert disp["p-promoted"] == "Bulk intake 2026-09 from a test"
+    assert disp["p-stays"].endswith(NOT_YET_SCREENED)
+    reason = conn.execute("SELECT updated_reason FROM records WHERE id = 'p-promoted'").fetchone()[0]
+    assert reason.startswith("t | ") and "not yet screened" in reason, "append-only, and says what changed"
+    conn.close()

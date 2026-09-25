@@ -148,6 +148,25 @@ store through the existing intake path). Plan:
   stands as the store's only adjudication measurement; the cold-mode
   number stays unmeasured by decision, not by omission.
 
+**Manual Validation decisions, 2026-09-25 (team lead: "1. 2 2.1 3 1 4. 1
+5. 2 6. add the row it rests on 7 2"):**
+- Q1 = 2: the author-search papers the written rule could not resolve
+  (Miri 139 of 144, Chancellor 68 of 74, Sam Wu 26 of 27, ...) stay
+  unresolved; no looser name rule.
+- Q2 = 1: retention rule 3's "superseded" clause (a backup is covered once
+  an export commit landed after it) accepted.
+- Q3 = 1: the six pilot papers' `read` promotions on Claude's reading
+  accepted as they stand (the Sprint 4 Task H practice); the three
+  learnings stay "awaiting team-lead adjudication".
+- Q4 = 1: an explicit assertion derivation marker carded as F37.
+- Q5 = 2: the papers `[IN-2]` and `[CL-21]` meant are not added; the store
+  holds what their ids point to.
+- Q6: the table rows `cvqboost-vs-xgboost-auc-under-balancing` rests on
+  added after the vendor's sentence, which is kept
+  (`scripts/sprint5_cvqboost_quote_fix.py`).
+- Q7 = 2: bulk `seen` dispositions keep "; not yet screened"; `set_tier()`
+  removes it at every promotion (`tests/test_ingest.py`).
+
 ## Next Sprint Candidates
 
 Refined 2026-09-23 after Sprint 4 (Sprint 5 Phase 1.2). Shipped and
@@ -406,6 +425,19 @@ same day, and every count in them is a snapshot as of 2026-09-23.
   - every write appends to `updated_reason`, never replaces it.
 - Depends on: F34 (decide together), then this card's ADR-0005 amendment
   before any schema change (Class 1, ADR-first).
+
+**F37. An explicit derivation marker on assertions (~small, no-history) Priority 24** (NEW 2026-09-25)
+- Phase: Design / ADR. Carded at Sprint 5 Manual Validation (Q4 = 1) from
+  the F28 pilot's finding 1 (`docs/LEARNING_SYNTHESIS.md` section 7).
+- Platform: ADR-0004 section 3 (dated amendment), `store/schema.sql`,
+  `store/ingest.py`, `scripts/learnings.py`.
+- A learning is recognized today only by a provenance string beginning
+  "synthesis of"; the pilot's first definition ("no paper yields it")
+  wrongly caught a project assertion. Proposed: `derivation: extracted |
+  synthesized | project` on every assertion, back-filled from existing
+  provenance, with `learnings.py` reading the column instead of a string.
+- Depends on: decide in the same ADR amendment as F34 and F36, so the
+  assertion and paper fields change once.
 
 **F5. Deep-dive QCi: identify authors, find their other papers, scrape QCi's own documentation (~large, no-history) Priority 10**
 - Phase: Sourcing / research. Tentatively assigned Sprint 2 (team lead, 2026-09-16)

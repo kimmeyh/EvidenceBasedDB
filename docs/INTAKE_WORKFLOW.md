@@ -379,3 +379,14 @@ landing pages (`applications`, `entropy-quantum-optimization`, `lessons`,
 Citation: `Quantum Computing Inc., "<page title>," quantumcomputinginc.com,
 <date if the page prints one, else n.d.> (hand-transcribed from the saved
 page's title bar)`.
+
+## 14. Amendment 2026-09-25: "not yet screened" is removed at promotion
+
+Sections 6 and 11 prescribe a bulk disposition ending "; not yet
+screened". That clause states tier in prose, and the Sprint 5 F28 pilot
+left it stale on six papers it promoted to `read` (found in the team
+lead's Manual Validation run). **Team lead's decision (Q7 = 2)**: keep the
+wording for `seen` records, and remove the clause at each promotion.
+Implemented in `store.ingest.set_tier()`, the one sanctioned tier-change
+path, which also appends the removal to `updated_reason`; guarded by
+`tests/test_ingest.py::test_promotion_removes_not_yet_screened_regression`.

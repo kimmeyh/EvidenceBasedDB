@@ -186,6 +186,8 @@ def prune(backups_dir: str | Path, repo: Path | None = None, now: datetime | Non
     the same happened to every old backup after any change to the export
     format. A later committed export means the backup's state was
     superseded and committed onward, not that it is the only copy.
+    Accepted by the team lead at Sprint 5 Manual Validation (Q2 = 1,
+    2026-09-25).
 
     `protect` names backups that must survive this call whatever their age
     (restore_store.py protects the backup it is about to restore)."""

@@ -15,6 +15,7 @@ from pathlib import Path
 from store import citations
 
 HAND_MARKER = "hand-transcribed from"
+NOT_YET_SCREENED = "; not yet screened"  # bulk-intake disposition suffix; set_tier removes it on promotion
 
 
 class _DerivedByDoor:
@@ -338,6 +339,18 @@ def set_tier(
         )
     else:
         conn.execute("UPDATE paper_fields SET tier = ? WHERE record_id = ?", (tier, record_id))
+    # Team lead, Sprint 5 Manual Validation Q7 (2026-09-25): bulk `seen`
+    # dispositions keep "; not yet screened", and the clause is removed at
+    # each promotion. Done HERE, the one sanctioned tier-change path, so no
+    # promotion can leave it stale (the F28 pilot did, six times).
+    if tier != "seen":
+        disp = conn.execute("SELECT disposition FROM paper_fields WHERE record_id = ?", (record_id,)).fetchone()[0]
+        if disp.endswith(NOT_YET_SCREENED):
+            from datetime import date
+            conn.execute("UPDATE paper_fields SET disposition = ? WHERE record_id = ?",
+                         (disp[: -len(NOT_YET_SCREENED)], record_id))
+            append_updated_reason(conn, record_id, f"{date.today().isoformat()}: promoted to {tier}; "
+                                  "removed 'not yet screened' from the disposition", date.today().isoformat())
 
 
 def derive_citation(paper: PaperRecord, fetcher: citations.Fetcher | None = None) -> PaperRecord:
