@@ -157,9 +157,11 @@ def _datacite_query(q: str, given: str, family: str) -> list[dict]:
             ident = a["doi"].lower().removeprefix("10.48550/arxiv.")
             cats = {m.group(1) for s in a.get("subjects", []) if s.get("subjectScheme") == "arXiv"
                     for m in [re.search(r"\(([a-z\-]+(?:\.[A-Za-z\-]+)?)\)", s.get("subject", ""))] if m}
+            abstract = next((d.get("description", "") for d in a.get("descriptions", [])
+                             if d.get("descriptionType") == "Abstract"), "")
             hits.append({"id": f"arXiv:{ident}", "title": (a.get("titles") or [{}])[0].get("title", ""),
                          "year": a.get("publicationYear"), "authors": creators, "cats": sorted(cats),
-                         "source": "DataCite (arXiv DOIs)"})
+                         "abstract": " ".join(abstract.split()), "source": "DataCite (arXiv DOIs)"})
         if page >= (data["meta"].get("totalPages") or 1) or page >= 10:
             break
         page += 1
@@ -167,7 +169,7 @@ def _datacite_query(q: str, given: str, family: str) -> list[dict]:
 
 
 def crossref_hits(given: str, family: str) -> list[dict]:
-    url = (f"{CROSSREF}?rows=200&select=DOI,title,author,issued,type&query.author="
+    url = (f"{CROSSREF}?rows=200&select=DOI,title,author,issued,type,abstract&query.author="
            + urllib.parse.quote(f"{given} {family}"))
     out = []
     for it in _json(url)["message"]["items"]:
@@ -177,8 +179,9 @@ def crossref_hits(given: str, family: str) -> list[dict]:
         if it["DOI"].lower().startswith("10.48550/"):
             continue
         year = ((it.get("issued") or {}).get("date-parts") or [[None]])[0][0]
+        abstract = re.sub(r"<[^>]+>", " ", it.get("abstract", ""))  # Crossref abstracts are JATS XML
         out.append({"id": f"DOI:{it['DOI']}", "title": (it.get("title") or [""])[0], "year": year,
-                    "authors": creators, "cats": [], "source": "Crossref"})
+                    "authors": creators, "cats": [], "abstract": " ".join(abstract.split()), "source": "Crossref"})
     return out
 
 
@@ -270,6 +273,9 @@ def search(pause_s: float = 1.0) -> dict:
             "arxiv_api": ax_note, "hits": len(by_id), "accepted": sorted(accepted, key=lambda h: h["id"]),
             "unresolved_count": len(unresolved),
             "unresolved_sample": [f"{h['id']} {h['title'][:70]}" for h in unresolved[:10]],
+            # Every unresolved hit, with its abstract, for the team lead's
+            # revised Q1 (topic screening, 2026-09-25).
+            "unresolved": sorted(unresolved, key=lambda h: h["id"]),
         }
         print(f"{name:24s} hits {len(by_id):4d}  accepted {len(accepted):4d} "
               f"(seed {sum(a['rule'] == 'seed' for a in accepted)}, network {sum(a['rule'] == 'network' for a in accepted)})"

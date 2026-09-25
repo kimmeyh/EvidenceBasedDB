@@ -103,6 +103,12 @@ this project keeps having to replace with a step.
   2); the six pilot papers' stale "not yet screened" removed, and
   `set_tier()` now removes it at every promotion (Q7); the Table 3 rows
   under `cvqboost-vs-xgboost-auc-under-balancing` added (Q6); F37 carded (Q4)
+- **feat**: Q1 revised by the team lead -- the author-search hits the
+  co-authorship rule left unresolved were screened on their abstracts for
+  QML, ML or the Zeno effect (`scripts/sprint5_qci_topic_screen.py`, rule
+  written first): 392 unresolved, 25 matched, 4 rejected on reading, 21
+  entered at `seen` with "authorship not confirmed" in the disposition;
+  15 PDFs downloaded. Store: 350 papers
 
 ### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 

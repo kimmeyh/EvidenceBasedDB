@@ -150,9 +150,12 @@ store through the existing intake path). Plan:
 
 **Manual Validation decisions, 2026-09-25 (team lead: "1. 2 2.1 3 1 4. 1
 5. 2 6. add the row it rests on 7 2"):**
-- Q1 = 2: the author-search papers the written rule could not resolve
-  (Miri 139 of 144, Chancellor 68 of 74, Sam Wu 26 of 27, ...) stay
-  unresolved; no looser name rule.
+- Q1 = 2, then REVISED the same morning (team lead: "can you pull any of
+  the papers from the authors IF they are related to QML, ML or the Zeno
+  effect (can you screen the abstracts to determine)"): no looser name
+  rule, but the unresolved hits were screened on their abstracts; 21 of
+  392 entered, marked "authorship not confirmed" (research doc, "Q1
+  revised").
 - Q2 = 1: retention rule 3's "superseded" clause (a backup is covered once
   an export commit landed after it) accepted.
 - Q3 = 1: the six pilot papers' `read` promotions on Claude's reading

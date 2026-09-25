@@ -149,3 +149,51 @@ candidates for an exact-full-name rule; Sam Wu is the weakest.
 
 **Decided 2026-09-25 (team lead, Manual Validation Q1 = 2)**: they stay
 unresolved; no looser rule.
+
+## Q1 revised by the team lead (2026-09-25): topic screening of the unresolved hits
+
+Team lead, during Manual Validation: "can you pull any of the papers from
+the authors IF they are related to QML, ML or the Zeno effect (can you
+screen the abstracts to determine)". This replaces Q1 = 2 for the
+unresolved hits. Rule, written BEFORE any abstract was screened:
+
+1. **Topic test on the registry abstract** (DataCite for arXiv records,
+   Crossref where it carries one), case-insensitive:
+   - QML or ML: "machine learning", "neural network", "deep learning",
+     "reinforcement learning", "supervised", "unsupervised", "classifier",
+     "classification", "reservoir computing", "extreme learning",
+     "kernel method", "support vector", "boosting", "feature selection",
+     "clustering", "generative model", "transformer", "large language
+     model", "training data";
+   - Zeno: "zeno".
+   A hit with no abstract is tested on its title with the same terms.
+2. **Claude reads every keyword-positive abstract** and rejects any whose
+   match is incidental (for example "classification" of optical modes,
+   not of data). Kept and rejected lists are recorded with one line each.
+3. **Identity is NOT established by this rule.** Each admitted record's
+   disposition says "topic-screened; authorship not confirmed by
+   co-authorship". Admissions under a common family name (Wu, Huang,
+   Nguyen) are listed separately for the team lead.
+
+### Result of the topic screen (2026-09-25; counts are a snapshot as of this date)
+
+`scripts/sprint5_qci_topic_screen.py`. The search was re-run to keep every
+unresolved hit with its registry abstract; the accepted set came out
+identical to the 2026-09-24 run. Of 392 unresolved hits (225 with an
+abstract, 167 tested on the title), 25 matched a term; Claude's reading
+rejected 4 (recorded with reasons in the script's `REJECTED`: an
+error-correction paper using "machine learning" as an analogy, two
+astronomy papers, and a journal duplicate of a kept arXiv paper). **21
+entered at `seen`**, each disposition saying "topic-screened ...;
+authorship not confirmed by co-authorship": Chancellor 6 (Zeno
+computation, quantum Boltzmann machines, QNN training), Miri 3, Chukwu 1,
+Yu-Ping Huang 10 (5 on the quantum Zeno blockade), Sam Wu 1. 15 PDFs
+downloaded to `QCiAuthorsPapers/<person>/topic-screened/`; 2 were already
+on disk.
+
+**Weakest on identity, for the team lead**: three admissions whose topic
+passes but whose authorship is least likely to be the QCi person --
+`arXiv:2405.02958` (MRI reconstruction) and `DOI:10.1101/2021.05.04.21256502`
+(dental deep learning) under "Yu-Ping Huang", and `arXiv:2603.15546`
+(human-motion generation) under "Sam Wu". The Zeno-blockade papers are
+Yu-Ping Huang's own line of work and are not in doubt.
