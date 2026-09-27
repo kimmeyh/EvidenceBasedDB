@@ -13,7 +13,17 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-09-23 onward (Sprint 5, PR #43)
+### 2026-09-23 to 2026-09-25 (Sprint 5, PR #43, merged to develop 2026-09-27 and to main via PR #53 the same day)
+
+Reconciled 2026-09-27 at Sprint 6 Phase 1.1 against `git log`: commits on
+2026-09-23, -24 and -25, none on 2026-09-26, the two merges on 2026-09-27.
+Every commit below was entered in the same commit as its change; the
+entries were checked against the log, not rewritten. Full detail:
+`docs/sprints/SPRINT_5_SUMMARY.md`.
+
+- **fix**: PR #43 Copilot review (2026-09-25) -- one finding verified false
+  (the `visible_words` pattern is lazy; a two-script test now pins it, proven
+  by injecting the greedy form), one fixed (`sprint_status.json` date)
 
 - **docs**: Sprint 5 scope (F31, F30, F28, F5), F19 and F29 closed without
   implementation, F32-F35 carded for Sprint 6, plan approved with decisions

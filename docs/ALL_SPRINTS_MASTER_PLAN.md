@@ -40,13 +40,13 @@ repository exists. No other F# from either source repository applies here.
 | 2 | docs/sprints/SPRINT_2_SUMMARY.md | [OK] Complete | 2026-09-17 to 2026-09-18 |
 | 3 | docs/sprints/SPRINT_3_SUMMARY.md | [OK] Complete | 2026-09-18 to 2026-09-19 |
 | 4 | docs/sprints/SPRINT_4_SUMMARY.md | [OK] Complete | 2026-09-19 to 2026-09-23 |
-| 5 | docs/sprints/SPRINT_5_SUMMARY.md | [OK] Complete, PR #43 awaiting merge | 2026-09-23 to 2026-09-25 |
+| 5 | docs/sprints/SPRINT_5_SUMMARY.md | [OK] Complete | 2026-09-23 to 2026-09-25 |
 
 ## Last Completed Sprint
 
 Sprint 5 is below; Sprint 4 follows it for continuity.
 
-### Sprint 5: Make the Store Durable, Then Fill It (2026-09-23 to 2026-09-25, PR #43)
+### Sprint 5: Make the Store Durable, Then Fill It (2026-09-23 to 2026-09-25, PR #43, merged to develop and to main via PR #53 on 2026-09-27)
 
 Nine tasks, nine issues (#44-#52), all closed. **Durable first** (F30): the
 store rebuilds byte-identically from the committed export, takes a verified
@@ -63,6 +63,38 @@ improvements applied now, each extending an existing control. Full detail:
 **The lesson worth carrying**: the author's own injection-proven tests did
 not find the four defects a fresh-eyes reviewer found in the same code; a
 review launched at the task's commit is now the rule.
+
+**Sprint 5 scope and decisions, kept here from its "Current sprint" section
+(moved 2026-09-27 at Sprint 6 Phase 1.2):**
+
+- **Scope selected 2026-09-23 (team lead, DEFINED)**: F31 (new: download
+  and process the HSBC Phase 2 bibliography, then propose the fields it
+  shows the store is missing), F30 (store durability), F28 (learn from the
+  papers), F5 (QCi deep-dive, with every find added to the store through
+  the existing intake path).
+- **Closed 2026-09-23 without implementation (team lead):** F19
+  (SPRINT_RESUME_GUIDE.md and a startup-check skill): "This is not
+  necessary if the sprint execution docs are kept up-to-date. In other
+  repositories using the same Sprint framework Coding Agents pick up where
+  everything is left off very quickly by looking at github and reading a
+  couple of documents. This can be closed." F29 (cold-mode adjudication
+  timing): "This is not needed and can be closed." F11's confirm-mode
+  number (1.08 team-lead minutes per record) stands as the store's only
+  adjudication measurement; the cold-mode number stays unmeasured by
+  decision, not by omission.
+- **Manual Validation decisions, 2026-09-25** (team lead: "1. 2 2.1 3 1 4. 1
+  5. 2 6. add the row it rests on 7 2"): Q1 = 2, then REVISED the same
+  morning ("can you pull any of the papers from the authors IF they are
+  related to QML, ML or the Zeno effect (can you screen the abstracts to
+  determine)"): 21 of 392 unresolved hits entered, marked "authorship not
+  confirmed"; Q8 = 2 then removed the three weakest, 18 remain. Q2 = 1:
+  retention rule 3's "superseded" clause accepted. Q3 = 1: the six pilot
+  `read` promotions accepted; the three learnings stay "awaiting team-lead
+  adjudication". Q4 = 1: F37 carded. Q5 = 2: the papers `[IN-2]` and
+  `[CL-21]` meant are not added. Q6: the Table 3 rows added under
+  `cvqboost-vs-xgboost-auc-under-balancing`, the vendor sentence kept.
+  Q7 = 2: `set_tier()` removes "; not yet screened" at every promotion.
+  Q9 = 1: Manual Validation complete.
 
 
 ### Sprint 4: Fix the Path, Fix the Records, Measure the Cost (2026-09-19 to 2026-09-23, PR #30, merged to main via PR #42)
@@ -147,62 +179,28 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 5** (branch `feature/20260923_Sprint_5`, cut 2026-09-23 at the
-Sprint 4 carry-forward). Phase 1 Backlog Refinement complete.
+**Sprint 6** (branch `feature/20260927_Sprint_6`, cut 2026-09-27 at the
+Sprint 5 carry-forward, after PR #43 merged to develop and PR #53 merged
+develop to main). Phase 1 Backlog Refinement in progress; scope not yet
+selected. The slate is below.
 
-**Scope selected 2026-09-23 (team lead, DEFINED)**: **F31** (new: download
-and process the HSBC Phase 2 bibliography, then propose the fields it
-shows the store is missing), **F30** (store durability), **F28** (learn
-from the papers), **F5** (QCi deep-dive, with every find added to the
-store through the existing intake path). Plan:
-`docs/sprints/SPRINT_5_PLAN.md`.
-
-**Closed 2026-09-23 without implementation (team lead):**
-- **F19** (SPRINT_RESUME_GUIDE.md and a startup-check skill): "This is not
-  necessary if the sprint execution docs are kept up-to-date. In other
-  repositories using the same Sprint framework Coding Agents pick up where
-  everything is left off very quickly by looking at github and reading a
-  couple of documents. This can be closed."
-- **F29** (cold-mode adjudication timing): "This is not needed and can be
-  closed." F11's confirm-mode number (1.08 team-lead minutes per record)
-  stands as the store's only adjudication measurement; the cold-mode
-  number stays unmeasured by decision, not by omission.
-
-**Manual Validation decisions, 2026-09-25 (team lead: "1. 2 2.1 3 1 4. 1
-5. 2 6. add the row it rests on 7 2"):**
-- Q1 = 2, then REVISED the same morning (team lead: "can you pull any of
-  the papers from the authors IF they are related to QML, ML or the Zeno
-  effect (can you screen the abstracts to determine)"): no looser name
-  rule, but the unresolved hits were screened on their abstracts; 21 of
-  392 entered, marked "authorship not confirmed" (research doc, "Q1
-  revised"). Q8 = 2: the three weakest on authorship then removed; 18
-  remain.
-- Q9 = 1: Manual Validation complete; proceed to Phase 7.
-- Q2 = 1: retention rule 3's "superseded" clause (a backup is covered once
-  an export commit landed after it) accepted.
-- Q3 = 1: the six pilot papers' `read` promotions on Claude's reading
-  accepted as they stand (the Sprint 4 Task H practice); the three
-  learnings stay "awaiting team-lead adjudication".
-- Q4 = 1: an explicit assertion derivation marker carded as F37.
-- Q5 = 2: the papers `[IN-2]` and `[CL-21]` meant are not added; the store
-  holds what their ids point to.
-- Q6: the table rows `cvqboost-vs-xgboost-auc-under-balancing` rests on
-  added after the vendor's sentence, which is kept
-  (`scripts/sprint5_cvqboost_quote_fix.py`).
-- Q7 = 2: bulk `seen` dispositions keep "; not yet screened"; `set_tier()`
-  removes it at every promotion (`tests/test_ingest.py`).
+**For the Sprint 6 retrospective (found at this Phase 1.2)**: in Sprint 5
+the master plan's shipped cards were pruned with Python cut-between-headers
+code twice (Phase 1 and Phase 7), against step 1.2's rule to prune BY HAND.
+Checked 2026-09-27: every section heading present before Sprint 5 is still
+present, so no damage; the rule was still broken. This Phase 1.2 edit was
+made by hand.
 
 ## Next Sprint Candidates
 
-Refined 2026-09-23 after Sprint 4 (Sprint 5 Phase 1.2). Shipped and
+Refined 2026-09-27 after Sprint 5 (Sprint 6 Phase 1.2). Shipped and
 pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint 2); F2
 Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25, F26,
-F27 (Sprint 4). The superseded stubs F12 and F21-F24 are removed now
-that F25 has shipped -- their history lives in the Sprint 3 and 4 docs
-and in git. Remaining items below, newly added ones marked. F19 and F29
-were closed at Sprint 5 scope selection (see "Current sprint" above).
-F5, F28, F30 and F31 shipped in Sprint 5 and are pruned (history in the
-Sprint 5 docs and git).
+F27 (Sprint 4); F5, F28, F30, F31 (Sprint 5). Closed without
+implementation: F19, F29 (Sprint 5 scope selection, reasons under Sprint 5
+in "Last Completed Sprint"). The superseded stubs F12 and F21-F24 were
+removed after F25 shipped; their history lives in the Sprint 3 and 4 docs
+and in git. Remaining items below.
 
 ### Bulk intake: targeted for Sprint 6 (team lead, 2026-09-23)
 
