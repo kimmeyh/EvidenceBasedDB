@@ -50,6 +50,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
+from store.backup import backup_before_write  # noqa: E402
 from store.export import regenerate  # noqa: E402
 from store.ingest import (  # noqa: E402
     DERIVED_BY_DOOR, HAND_MARKER, PaperRecord, _ANCHOR, _TIER_IN_TEXT, insert_paper, validate_paper,
@@ -115,6 +116,12 @@ def build_record(entry: dict, fetcher=None, today: str = "") -> PaperRecord:
     )
     if citations.parse_access(access):
         md, rendered = citations.resolve(access, fetcher=fetcher or FETCHER or citations.PacedFetcher())
+        provider = md.extra.get("provider")
+        if provider and not entry.get("updated_reason"):
+            # Sprint 5 Task C: arXiv refused 73 of 75 paced requests and DataCite
+            # answered; the render differs slightly by provider (no journal_ref),
+            # so which source of record answered is part of the provenance.
+            common["updated_reason"] += f"; metadata from {provider} (arXiv API did not answer)"
         paper = PaperRecord(id=entry.get("id") or make_id(md), value=entry.get("title") or md.title,
                             citation=rendered, citation_origin="api",
                             # This citation came from citations.resolve() one line above,
@@ -226,6 +233,8 @@ def main(argv: list[str] | None = None) -> int:
 
     verify_id = opt("--verify")
     manifest = opt("--manifest")
+    if apply and not verify_id:
+        backup_before_write(DB_PATH, "intake --apply")  # F30: verified backup, or no write at all
     conn = connect(DB_PATH)
     try:
         if verify_id:

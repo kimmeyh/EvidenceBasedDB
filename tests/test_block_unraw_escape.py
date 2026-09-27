@@ -75,3 +75,42 @@ def test_malformed_payload_fails_open():
     proc = subprocess.run([sys.executable, str(HOOK)], input="not json",
                           capture_output=True, text=True, encoding="utf-8")
     assert proc.returncode == 0
+
+
+# ---- Sprint 5 retrospective improvement 2 (2026-09-25): no .py rewriting through python-in-shell
+
+SPRINT5_BREAKER = (
+    "cd /repo && cat > /tmp/mf3.py <<'PYEOF'\n"
+    "p='scripts/sprint5_bibliography_manifest.py'\n"
+    "s=open(p,encoding='utf-8').read()\n"
+    "s=s.replace('a', 'b')\n"
+    "open(p,'w',encoding='utf-8',newline='\n').write(s)\n"
+    "PYEOF\n"
+    "python /tmp/mf3.py"
+)
+
+
+def test_blocks_python_rewriting_a_py_file_regression():
+    """The shape that broke three files in Sprint 5. Proven to fail by
+    injection: with _writes_python_source returning False, this command
+    passes (exit 0) and the assert goes red."""
+    proc = run(SPRINT5_BREAKER)
+    assert proc.returncode == 2, proc.stderr
+    assert "rewriting a .py file" in proc.stderr
+
+
+@pytest.mark.parametrize("command", [
+    # a python heredoc editing a prose file (CHANGELOG) stays allowed
+    "python - <<'PYEOF'\np='CHANGELOG.md'\ns=open(p,encoding='utf-8').read()\nopen(p,'w',encoding='utf-8').write(s)\nPYEOF",
+    # running a script, or the test suite, writes nothing through a string
+    "python scripts/intake.py --manifest m.json --apply",
+    "python -m pytest -q tests/test_ingest.py",
+    # reading a .py file is fine
+    "python -c \"print(open('scripts/view.py').read()[:10])\"",
+])
+def test_allows_non_code_writes_and_plain_runs(command):
+    assert run(command).returncode == 0
+
+
+def test_python_writes_code_bypass_token():
+    assert run(SPRINT5_BREAKER + " # allow_python_writes_code").returncode == 0

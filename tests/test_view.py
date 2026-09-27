@@ -263,3 +263,18 @@ def test_main_succeeds_for_real_contexts_listing(store_db_path):
     proc = _run_view_cli(store_db_path, ["contexts"])
     assert proc.returncode == 0, f"stderr: {proc.stderr}"
     assert "qml" in proc.stdout
+
+
+def test_primary_context_paper_is_not_listed_again_via_applicability_regression(store_conn):
+    """`view.py contexts <id>` prints the applicability section as "(not
+    primary context)". test-paper-one's primary context is qml and it also
+    claims qml applicability; it must appear once, in the direct list.
+    Proven to fail by injection: without the NOT IN clause it appeared in
+    both (team lead's Manual Validation run, 2026-09-25, 26 such papers)."""
+    mod = _load_view_module()
+    data = mod.cmd_contexts_detail(store_conn, "qml")
+    direct = {r["id"] for r in data["records"]}
+    via = {r["id"] for r in data["papers_via_applicability"]}
+    assert "test-paper-one" in direct
+    assert not (direct & via), f"listed twice: {sorted(direct & via)}"
+    assert "test-paper-one" in {r["id"] for r in mod.cmd_contexts_detail(store_conn, "qc")["papers_via_applicability"]}
