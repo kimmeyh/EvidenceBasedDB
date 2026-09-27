@@ -74,3 +74,24 @@ is checked or explicitly deferred with a reason.
       dated amendments at the bottom of each ADR, never as silent edits
 
 ---
+
+## Sprint 5: Make the Store Durable, Then Fill It (reconciled 2026-09-25 at Phase 7)
+
+**Drift found at this reconciliation**: the Sprint 1 rows above were never
+checked off, and Sprints 2 to 4 have no section here, although all four
+sprints closed with their docs triads. Marking those rows now needs per-row
+evidence, which is Sprint 6 Phase 1.2 work (carded there), not a
+recollection. Evidence for each Sprint 5 row is the commit named.
+
+- [x] **C**: Task A (F30) -- rebuild byte-identical, verified backup before
+      every write, restore by script (b0a66ec; review fixes d2da51d)
+- [x] **C**: Task B (F31) -- 96 files, none twice, 14 on the manual list (b0b0c84)
+- [x] **C**: Task C (F31) -- 121 records at seen, 0 refused (775d6de)
+- [x] **C**: Task D (F31) -- F36 carded (a33ca2f)
+- [x] **C**: Task E (F5) -- 18 people, page-cited (b54c11a)
+- [x] **C**: Task F (F5) -- 191 acceptances, 39 PDFs (f76372f)
+- [x] **C**: Task G (F5) -- 544 pages, eqc-models 0.21.0 (508a14d)
+- [x] **C**: Task H (F5) -- 52 site + 108 author records (b880e76, b6f7636)
+- [x] **C**: Task I (F28) -- design and pilot, 3 learnings (0de4a48)
+- [x] **H+C**: Manual Validation Q1-Q9 decided and applied (b130786, 3d929e5, 4ca65c2)
+- [x] **H+C**: Retrospective, 16 x 4, improvements 1-8 applied (d735f6f, 5be2402)

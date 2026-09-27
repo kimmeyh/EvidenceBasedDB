@@ -22,19 +22,38 @@ def _papers() -> list[dict]:
     return json.loads(PAPERS_EXPORT.read_text(encoding="utf-8"))
 
 
-def test_every_paper_has_real_applicability():
-    """Every paper must have at least one real context claimed. Until
-    2026-09-19 one exception was pinned here: pere-qml-github-repo-empty,
-    the placeholder for a 0-byte seed file. The team lead removed the file
-    and the record at Sprint 4 Manual Validation (the related papers now
-    sit under QMLPapers/ for a future sprint), so the exception is gone
-    and the assertion tightened, not loosened."""
+def test_every_screened_or_read_paper_has_real_applicability():
+    """Every paper at `screened` or `read` must claim at least one real
+    context. ADR-0005 Amendment A2 (2026-09-19) makes applicability the
+    `screened` tier's obligation; a `seen` record asserts only that the
+    source exists and why (its disposition), and docs/INTAKE_WORKFLOW.md
+    section 6 loads bulk sources at `seen` with applicability derived
+    later, one cluster at a time.
+
+    Until 2026-09-24 this asserted applicability on EVERY paper, which held
+    only because all 48 had been re-filed in Sprint 4 Task F; the first
+    bulk `seen` load (Sprint 5 Task C, 121 records) showed the test was
+    stricter than the ADR it guards. Aligned to the ADR, not loosened
+    beyond it. Until 2026-09-19 one exception was also pinned here
+    (pere-qml-github-repo-empty), removed with its record at Sprint 4
+    Manual Validation. Proven to fail by injection: a `screened` paper with
+    its applicability rows stripped goes red (test below)."""
     papers = _papers()
-    without = [p["id"] for p in papers if not p.get("applicability")]
+    without = [p["id"] for p in papers if p.get("tier") in ("screened", "read") and not p.get("applicability")]
     assert without == [], (
-        f"papers with no applicability: {without}. If a real paper shows up "
+        f"screened or read papers with no applicability: {without}. If a real paper shows up "
         "here, its applicability regressed."
     )
+
+
+def test_screened_paper_without_applicability_is_detected_regression():
+    """Injection for the guard above: take a real screened paper and strip
+    its applicability; the same filter must report it."""
+    papers = _papers()
+    victim = next(p for p in papers if p.get("tier") == "screened")
+    stripped = [{**p, "applicability": []} if p["id"] == victim["id"] else p for p in papers]
+    without = [p["id"] for p in stripped if p.get("tier") in ("screened", "read") and not p.get("applicability")]
+    assert without == [victim["id"]]
 
 
 def test_every_applicability_entry_has_a_real_rationale():

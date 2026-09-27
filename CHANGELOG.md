@@ -13,7 +13,116 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-09-19 to 2026-09-20 (Sprint 4, PR #30)
+### 2026-09-23 onward (Sprint 5, PR #43)
+
+- **docs**: Sprint 5 scope (F31, F30, F28, F5), F19 and F29 closed without
+  implementation, F32-F35 carded for Sprint 6, plan approved with decisions
+  Q1-Q6 (PR #43)
+- **feat**: store durability (Task A, F30, Issue #44) --
+  `scripts/rebuild_store_from_export.py` rebuilds the store from the
+  committed export through the real door and proves the regenerated export
+  byte-identical (it is, first run); `store/backup.py` takes a SQLite-API
+  backup before every live `--apply`, verified at creation, with three-rule
+  retention (32 days; newest of the last 5 sprints; never before its content
+  is committed); `scripts/restore_store.py` restores and verifies;
+  `validate_paper(check_local_paths=False)` is the one explicit exception the
+  rebuild needs to run on CI; 14 tests, each guard carrying its own injection
+- **feat**: HSBC Phase 2 bibliography downloaded (Task B, F31 part 1, Issue
+  #45) -- `scripts/sprint5_bibliography.py`: 120 entries, 64 arXiv PDFs plus
+  web, vendor and challenge copies saved under the existing material folders
+  (Q1 = 2), 9 found already on disk and 3 already in the store, none fetched
+  twice; `BIBLIOGRAPHY.md` preserved under `References/`; 14 items on a
+  manual-download list with reasons. A saved page with fewer than 50 visible
+  words is treated as a failure, after four publisher bot-challenge pages, a
+  JavaScript-only page and a redirect stub were first saved as "copies"
+- **docs**: QCi-affiliated people identified from the papers themselves
+  (Task E, F5 sub-part 1, Issue #48) --
+  `docs/research/2026-09-24_F5_qci_affiliated_people.md`: 18 people, each
+  verified on a named page; none of the SMU/Loke authors is QCi-affiliated;
+  Task F's disambiguation rule written before any search hit was read
+- **feat**: HSBC Phase 2 bibliography processed into the store (Task C, F31
+  part 2, Issue #46) -- `scripts/sprint5_bibliography_manifest.py` generated
+  121 entries under context rules written first (`INTAKE_WORKFLOW.md`
+  section 11); `intake.py` wrote 121, refused 0 (73 arXiv, 16 DOI, 10
+  repositories, 22 hand-origin); `--verify` 7/7 on a sample of every source
+  type. DOIs used only when written, derived-and-confirmed, or found by
+  exact title plus year, first author and venue (an exact-title match first
+  picked a 2015 conference abstract for a 2014 Nature paper). `intake.py`
+  now records when DataCite, not arXiv, supplied the metadata (68 records).
+  `test_every_paper_has_real_applicability` aligned to ADR-0005 A2: the
+  obligation is `screened`'s, not `seen`'s, with an injection test
+- **docs**: F36 carded (Task D, F31 part 3, Issue #47) -- the nine per-entry
+  elements of the bibliography a paper record cannot hold, each classed as
+  computed (a resolver) or stored, a dry-run back-fill for existing papers,
+  and "decide together with F34"; reading notes deliberately NOT a field
+- **feat**: QCi's own documentation and package pulled (Task G, F5 sub-parts
+  3-4, Issue #50) -- `scripts/sprint5_qci_site.py`: of the sitemap's 2,755
+  URLs, 1,660 older package versions and 170 duplicate mounts skipped per
+  Q3 = 1; 544 pages saved under `References/QCi-site/`, 1 reused from Task
+  B, 25 dead sitemap links (HTTP 404) listed; `eqc-models` 0.21.0 sdist and
+  wheel saved, sha256-verified against PyPI. The plan estimated about 300
+  pages; the latest package docs alone are 462
+- **feat**: learning from the papers, designed and piloted (Task I, F28,
+  Issue #52) -- `docs/LEARNING_SYNTHESIS.md`: a key learning is an
+  assertion with "synthesis of" provenance, its evidence wired by
+  `supports`/`contradicts`, its certainty derived by named reasons;
+  `scripts/learnings.py` computes the evidence table, storing nothing.
+  Pilot: six papers to `read`, seven assertions, three learnings (QML on
+  tabular data MODERATE; resampling for strong trees LOW; metric and power
+  checks MODERATE). Existing primitives sufficed; three gaps proposed, not
+  applied. Two defects found and fixed on the way: the query double-counted
+  an assertion with two sources, and the promotion skipped `screened`'s
+  applicability (caught by the aligned guard)
+- **feat**: every paper the 18 QCi people co-authored, where a written rule
+  can tell (Task F, F5 sub-part 2, Issue #49) -- `scripts/sprint5_qci_authors.py`:
+  seed (another of the 18 co-authors) then a two-shared-co-author network,
+  written before the search; strict name matching for common families
+  (`tests/test_qci_author_matching.py`, proven by injection); 191
+  acceptances, 121 new papers, 39 arXiv PDFs to `QCiAuthorsPapers/`. The
+  rule leaves most of Miri's, Chancellor's and Sam Wu's earlier papers
+  unresolved: reported per person, not downloaded, for a team-lead decision
+- **fix**: four defects in the Task A durability code, found by the Phase 5
+  fresh-eyes review -- `restore_store.py` could not restore a corrupt live
+  store (it now moves the unverifiable file aside and restores into a fresh
+  one) and could prune the very backup it was restoring (now protected);
+  retention rule 3 kept any backup of an intermediate state forever (now
+  also met when an export commit landed after the backup); `learnings.py`
+  created an empty store when none existed. The write-script coverage guard
+  now asks whether a script writes, not whether its text mentions --apply.
+  Each fix has a test built on the failing case
+- **feat**: the QCi authors' papers into the store (Task H part 2, F5,
+  Issue #51) -- 121 accepted papers through the door under
+  `INTAKE_WORKFLOW.md` section 12's category rule: 108 written, 13 skipped
+  as other versions (preprint, journal, conference) of works written
+  earlier in the same run, 0 refused; `--verify` 7/7 on samples. `[QC-8]`
+  (Emami et al., Scientific Reports 2026), unobtainable from the
+  bibliography alone, arrived through the author search. Store: 329 papers
+- **fix**: Manual Validation feedback -- `learnings.py` quotes each sentence
+  once and cuts only at a word; `view.py contexts` no longer lists a
+  primary-context paper again "via applicability" (pre-existing since Sprint
+  2); the six pilot papers' stale "not yet screened" removed, and
+  `set_tier()` now removes it at every promotion (Q7); the Table 3 rows
+  under `cvqboost-vs-xgboost-auc-under-balancing` added (Q6); F37 carded (Q4)
+- **feat**: Q1 revised by the team lead -- the author-search hits the
+  co-authorship rule left unresolved were screened on their abstracts for
+  QML, ML or the Zeno effect (`scripts/sprint5_qci_topic_screen.py`, rule
+  written first): 392 unresolved, 25 matched, 4 rejected on reading, 21
+  entered at `seen` with "authorship not confirmed" in the disposition;
+  15 PDFs downloaded. Store: 350 papers. Q8: the three weakest on
+  authorship removed at the team lead's decision; 347 papers
+- **process**: Sprint 5 retrospective improvements 1-8, all applied now
+  (team lead: "do all now"), each extending an existing control --
+  `set_tier()` refuses `screened`/`read` without applicability (1); the
+  unraw-escape hook also blocks Python rewriting a `.py` file from a shell
+  command (2); the guard-discipline test fails on `or True` / `assert True`
+  (3); the door refuses a hand-origin record whose saved `.html` copy has
+  fewer than 50 visible words (4); fresh-eyes review at the structural
+  task's commit (5); computed numbers and reported caps (6); estimation
+  calibration and the Sprint 5 model-assignment log rows (7); F36 gains the
+  metadata provider as its tenth field (8). Every mechanical one proven by
+  injection
+
+### 2026-09-19 to 2026-09-23 (Sprint 4, PR #30, merged to develop and main 2026-09-23)
 
 Sprint 4 fixed the path, fixed the records, and prepared the cost
 measurement: Tasks A-K per `docs/sprints/SPRINT_4_PLAN.md`, run across a
@@ -73,6 +182,36 @@ written, `docs/sprints/SPRINT_4_SUMMARY.md`. This entry summarizes.
 - **test**: the CHANGELOG currency guard now reads the range-dated section
   headers this file uses; it had read 2026-09-14 as the newest entry for
   three sprints and passed on its own defect until the calendar moved
+- **process**: F11 measured 2026-09-21 -- the team lead adjudicated the 18
+  corrected records in 19.4 minutes, 1.08 per record, 18/18 accept. Recorded
+  with its caveat: this is CONFIRM mode over model-corrected records with
+  F10's findings in view, not the cold adjudication F10's 599 s compares
+  against. F29 cards the cold measurement
+- **fix**: PR #30 review round 1 (Copilot plus three Claude reviewers)
+  found five defects, one merge-blocking and already shipped: an inverted
+  ternary had destroyed `updated_reason` on 44 of 48 paper records, 43 of
+  them losing the Sprint 1 seed-load note. Recovered from git by
+  `scripts/recover_updated_reason_history.py`. Also: an api-origin record
+  could carry any fabricated citation with no network call; an empty
+  provider title was skipped while the run reported success; `apply()`
+  wrote to `records` without passing the door; a DOI-shaped folder in a
+  local path was read as a DOI; and Copilot alone caught GitHub-backed
+  records being routed to `fetch_doi` and reported as broken DOIs
+- **fix**: PR #30 review round 2, run against round 1's own fixes, found
+  that three of those guards did not guard. The append-only test scanned
+  SOURCE TEXT, so three rewrites destroyed history with the full suite
+  green; the citation marker was a string a caller could type, refusing an
+  omission but not a fabrication; and the new commit hook drifted its
+  offsets, blocking at 19 preceding lines and ALLOWING at 20. Fixed
+  structurally: one `append_updated_reason` implementation that all four
+  sites call and the tests EXECUTE, a sentinel object compared by identity,
+  and exact offsets. Copilot also found CI red on every fresh checkout (a
+  test failed rather than skipped when the gitignored store was absent) and
+  one hook registered without a timeout
+- **chore**: F30 carded for Sprint 5 after the team lead asked about
+  database backups -- the premise check found there were none, and the
+  deeper gap is that no script rebuilds the store from the committed
+  export, the recovery path ADR-0004's design implies
 
 ### 2026-09-18 to 2026-09-19 (Sprint 3, PR #20)
 

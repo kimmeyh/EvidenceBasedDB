@@ -15,6 +15,17 @@ from pathlib import Path
 from store import citations
 
 HAND_MARKER = "hand-transcribed from"
+NOT_YET_SCREENED = "; not yet screened"  # bulk-intake disposition suffix; set_tier removes it on promotion
+MIN_VISIBLE_WORDS = 50  # below this a saved web page is a shell, not the content (Sprint 5 Task B)
+
+
+def visible_words(data: bytes) -> int:
+    """Words a reader would see in a saved HTML page: scripts and styles
+    removed, then tags. The one implementation; the Sprint 5 download
+    scripts import it from here."""
+    text = data.decode("utf-8", errors="replace")
+    text = re.sub(r"<script.*?</script>|<style.*?</style>", " ", text, flags=re.S | re.I)
+    return len(re.sub(r"<[^>]+>", " ", text).split())
 
 
 class _DerivedByDoor:
@@ -173,7 +184,7 @@ def append_updated_reason(conn, record_id: str, note: str, today: str) -> str:
     return joined
 
 
-def validate_paper(paper: PaperRecord) -> None:
+def validate_paper(paper: PaperRecord, check_local_paths: bool = True) -> None:
     """Enforce ADR-0005 section 2's rule that checked_against_source is
     set at tier 'read'. Fixed 2026-09-18 (F6 finding 2, PR #1 review):
     schema.sql's comment promised an application-layer check that did not
@@ -195,6 +206,13 @@ def validate_paper(paper: PaperRecord) -> None:
     satisfies this check. None AND blank/whitespace-only both fail it
     (Copilot PR #20 review, 2026-09-19: an empty string previously passed,
     letting the required field be effectively missing).
+
+    `check_local_paths=False` skips ONE rule: that a hand-origin record's
+    local file exists on THIS machine. Every other rule still runs. It is
+    a property of the machine, not of the record, and exists for
+    store/rebuild.py (Sprint 5 Task A, F30): rebuilding the store from the
+    committed export must work on a CI runner that has no
+    D:/Data/Harold/EvidenceBasedDB. Intake never passes it.
     """
     value = paper.checked_against_source
     if paper.tier == "read" and (value is None or not value.strip()):
@@ -239,13 +257,27 @@ def validate_paper(paper: PaperRecord) -> None:
         # and must exist. A URL that carried a DOI or arXiv id would have
         # been caught by the resolvable-id rule above.
         local = paper.access.split(_ACCESS_URL_SEP, 1)[0]
-        if not Path(local).exists():
+        if check_local_paths and not Path(local).exists():
             raise ValueError(
                 f"paper {pid!r}: access {paper.access!r} is not an existing local path. "
                 "ADR-0005 section 3: access is a DOI, an arXiv id, or a local path outside "
                 "version control -- never the bare words 'local file'. An id-less web page "
                 f"may follow the path as '<path>{_ACCESS_URL_SEP}<url>'."
             )
+        # Sprint 5 retrospective improvement 4 (2026-09-25): the local copy a
+        # hand-origin record depends on must carry content. Sprint 5 Task B
+        # first saved four publisher bot-challenge pages, a JavaScript shell
+        # and a redirect stub as "copies"; the check lived only in the
+        # download script. It lives at the door now, so no route can admit
+        # a hollow page. Saved web pages (.html/.htm) only; a PDF or a text
+        # file cannot be word-counted this way.
+        if check_local_paths and Path(local).suffix.lower() in (".html", ".htm"):
+            words = visible_words(Path(local).read_bytes())
+            if words < MIN_VISIBLE_WORDS:
+                raise ValueError(
+                    f"paper {pid!r}: the saved page {local!r} has {words} visible words, fewer than "
+                    f"{MIN_VISIBLE_WORDS}: a bot challenge, a JavaScript-only shell or a redirect stub, "
+                    "not the content. Save the real page (print to PDF, or the text) and point access at it.")
     if paper.citation and any(marker.lower() in paper.citation.lower() for marker in _AUDIT_MARKERS):
         raise ValueError(
             f"paper {pid!r}: citation carries audit-trail text ({', '.join(m for m in _AUDIT_MARKERS if m.lower() in paper.citation.lower())}). "
@@ -317,6 +349,18 @@ def set_tier(
     ).fetchone()
     if row is None:
         raise ValueError(f"paper {record_id!r} has no paper_fields row")
+    # A promotion owes every lower tier's obligations too (Sprint 5
+    # retrospective improvement 1, 2026-09-25). ADR-0005 Amendment A2 makes
+    # applicability `screened`'s obligation, and `read` includes it; the F28
+    # pilot promoted six papers seen -> read with none, and only a suite-wide
+    # test caught it afterwards. Refused here, at the one promotion path,
+    # beside the read-tier check below that already worked this way.
+    if tier in ("screened", "read") and not conn.execute(
+            "SELECT 1 FROM paper_applicability WHERE record_id = ? LIMIT 1", (record_id,)).fetchone():
+        raise ValueError(
+            f"cannot set paper {record_id!r} to tier={tier!r}: it has no applicability. ADR-0005 "
+            "Amendment A2: `screened` (and so `read`) requires applicability derived from the source, "
+            "each rationale ending in its source anchor. Write the applicability rows first.")
     effective = checked_against_source if checked_against_source is not None else row["checked_against_source"]
     if tier == "read" and (effective is None or not effective.strip()):
         raise ValueError(
@@ -331,6 +375,18 @@ def set_tier(
         )
     else:
         conn.execute("UPDATE paper_fields SET tier = ? WHERE record_id = ?", (tier, record_id))
+    # Team lead, Sprint 5 Manual Validation Q7 (2026-09-25): bulk `seen`
+    # dispositions keep "; not yet screened", and the clause is removed at
+    # each promotion. Done HERE, the one sanctioned tier-change path, so no
+    # promotion can leave it stale (the F28 pilot did, six times).
+    if tier != "seen":
+        disp = conn.execute("SELECT disposition FROM paper_fields WHERE record_id = ?", (record_id,)).fetchone()[0]
+        if disp.endswith(NOT_YET_SCREENED):
+            from datetime import date
+            conn.execute("UPDATE paper_fields SET disposition = ? WHERE record_id = ?",
+                         (disp[: -len(NOT_YET_SCREENED)], record_id))
+            append_updated_reason(conn, record_id, f"{date.today().isoformat()}: promoted to {tier}; "
+                                  "removed 'not yet screened' from the disposition", date.today().isoformat())
 
 
 def derive_citation(paper: PaperRecord, fetcher: citations.Fetcher | None = None) -> PaperRecord:
@@ -352,6 +408,7 @@ def insert_paper(
     conn: sqlite3.Connection,
     paper: PaperRecord,
     fetcher: citations.Fetcher | None = None,
+    check_local_paths: bool = True,
 ) -> PaperRecord:
     """The ONLY way a paper enters the store. Derives the citation from the
     source of record for api-origin papers (unless one was supplied), then
@@ -360,7 +417,7 @@ def insert_paper(
     the citation lives once, in records.provenance, and the export reads it
     from there."""
     paper = derive_citation(paper, fetcher)
-    validate_paper(paper)
+    validate_paper(paper, check_local_paths=check_local_paths)
     conn.execute(
         "INSERT INTO records (id, class, value, provenance, evidence_tag, updated, updated_reason) "
         "VALUES (?, 'paper', ?, ?, ?, ?, ?)",

@@ -1,5 +1,24 @@
 [
   {
+    "id": "auprc-not-generally-superior-under-imbalance",
+    "class": "assertion",
+    "value": "AUROC and AUPRC differ only in how they weight false positives: AUROC weighs all equally, AUPRC weighs them by the inverse of the model's rate of scoring above the threshold, so AUPRC prioritizes correcting high-score errors and, for a model calibrated on a low-prevalence subgroup, favors the higher-prevalence subgroup; AUPRC is therefore not generally the better metric under class imbalance",
+    "provenance": "mcdermott-2025-closer-look-auroc-auprc-under (arXiv:2401.06091v4, NeurIPS 2024), p.2 Theorem 1; p.4 Theorem 2; p.5 Theorem 3; p.8",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "method"
+    ],
+    "certainty": "high",
+    "certainty_reasons": "Started HIGH: theorems with proofs. The subgroup result (Theorem 3) assumes perfect calibration, which the authors name as its largest limitation (p.10); the real-data effect is mild at prevalence ratios up to 2.7 (p.8)",
+    "fidelity": "scoped",
+    "updated": "2026-09-24",
+    "updated_reason": "2026-09-24 (Sprint 5 Task I, F28 pilot): extracted at promotion to read",
+    "citation_context": "AUROC weighs all false positives equally, whereas AUPRC weighs false positives at a threshold",
+    "supports": [
+      "learning-method-check-metric-and-power-before-reading-a-difference"
+    ]
+  },
+  {
     "id": "cvqboost-knn-aucpr-0-8108-kaggle-fraud",
     "class": "assertion",
     "value": "On the MLG-ULB Kaggle credit-card fraud dataset, CVQBoost run on Dirac-3 with KNN weak classifiers reached a mean AUC-PR of 0.8108 and AUC-ROC of 0.9821 over 10 runs, against 0.7423 and 0.9734 for the best published classical model (CAD, Gao et al. 2025): an absolute AUC-PR gain of 0.0685, about 9.2% relative",
@@ -14,7 +33,10 @@
     "reading_level": 13,
     "updated": "2026-09-19",
     "updated_reason": "2026-09-19 (Sprint 4 Task H, F25 D6): promoted to read after a direct read; assertions extracted; see paper_yields",
-    "citation_context": "\"In comparison, our Dirac-3 CVQBoost with KNN weak classifiers reached 0.8108 AUC-PR, an absolute improvement of 0.0685 over CAD, corresponding to a relative improvement of approximately 9.2%.\" (p.7)"
+    "citation_context": "\"In comparison, our Dirac-3 CVQBoost with KNN weak classifiers reached 0.8108 AUC-PR, an absolute improvement of 0.0685 over CAD, corresponding to a relative improvement of approximately 9.2%.\" (p.7)",
+    "contradicts": [
+      "learning-qml-no-reliable-tabular-accuracy-gain"
+    ]
   },
   {
     "id": "cvqboost-vs-xgboost-auc-under-balancing",
@@ -29,9 +51,12 @@
     "certainty_reasons": "Started LOW: vendor self-benchmark (see the runtime assertion). UPGRADED one level for admission against interest: the authors' own table shows the comparator ahead in 23 of 24 rows, which is costly to publish and therefore credible; the assertion is read off that table, not off the prose that summarizes it favorably. NOT upgraded further: one dataset, and qci-2024-profiling is the same table, not a second measurement",
     "fidelity": "exact",
     "reading_level": 13,
-    "updated": "2026-09-19",
-    "updated_reason": "2026-09-19 (Sprint 4 Task H, F25 D6): promoted to read after a direct read; assertions extracted; see paper_yields",
-    "citation_context": "\"The results show that comparable accuracy with traditional boosting methods (XGBoost) when balancing techniques have been applied. In particular, we found that CVQBoost can even exceed the performance of XGBoost when the ADASYN balancing strategy is used.\" (p.11)"
+    "updated": "2026-09-25",
+    "updated_reason": "2026-09-19 (Sprint 4 Task H, F25 D6): promoted to read after a direct read; assertions extracted; see paper_yields | 2026-09-25 (Sprint 5 Manual Validation Q6): added the Table 3 rows the claim rests on after the vendor's summary sentence, which is kept",
+    "citation_context": "\"The results show that comparable accuracy with traditional boosting methods (XGBoost) when balancing techniques have been applied. In particular, we found that CVQBoost can even exceed the performance of XGBoost when the ADASYN balancing strategy is used.\" (p.11) | The rows the claim rests on, Table 3 (emami-2025 p.14; same values in qci-2024-profiling p.11): ADASYN, ratio 0.01: CVQBoost AUC 0.7105 +/- 0.0, XGBoost AUC 0.9003 +/- 0.0; ADASYN, ratio 1.0: CVQBoost AUC 0.8855 +/- 0.0019, XGBoost AUC 0.8826 +/- 0.0 (the only one of the 24 rows in which CVQBoost leads)",
+    "supports": [
+      "learning-qml-no-reliable-tabular-accuracy-gain"
+    ]
   },
   {
     "id": "cvqboost-vs-xgboost-training-time-dirac3",
@@ -137,6 +162,9 @@
     "updated": "2026-09-19",
     "updated_reason": "2026-09-19 (Sprint 4 Task H, F25 D6): promoted to read after a direct read; assertions extracted; see paper_yields",
     "citation_context": "\"Some tuned classical model reaches every target whose spectrum is low-order, on-grid, slow, correlated, or sparse enough to enumerate, and public tabular exports essentially always land inside that reach. The negative benchmark literature is therefore evidence about datasets, not about quantum models.\" (p.13)",
+    "supports": [
+      "learning-qml-no-reliable-tabular-accuracy-gain"
+    ],
     "contradicts": [
       "cvqboost-knn-aucpr-0-8108-kaggle-fraud",
       "cvqboost-vs-xgboost-auc-under-balancing"
@@ -194,6 +222,108 @@
     "updated_reason": "Sprint 2 Task B: ingest a real HSBC-submission assertion so Task B has something to spot-check"
   },
   {
+    "id": "learning-method-check-metric-and-power-before-reading-a-difference",
+    "class": "assertion",
+    "value": "Before a comparison of imbalanced-data classifiers is read as a difference between models, check it for metric and power artifacts: AUPRC's behavior under imbalance is metric-specific rather than generally better, and non-significance over very few folds cannot establish that two models are equal",
+    "provenance": "synthesis of the assertions that support or contradict it (see assertion_relations); written by Claude, 2026-09-24; awaiting team-lead adjudication",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "method"
+    ],
+    "certainty": "moderate",
+    "certainty_reasons": "Starts HIGH from its supports (a theorem and an arithmetic property of the exact test). DOWN one for INDIRECTNESS: the learning generalizes a procedure from two specific results",
+    "fidelity": "scoped",
+    "updated": "2026-09-24",
+    "updated_reason": "2026-09-24 (Sprint 5 Task I, F28 pilot): learning written from the pilot's evidence"
+  },
+  {
+    "id": "learning-ml-resampling-not-the-lever-for-strong-trees",
+    "class": "assertion",
+    "value": "For strong gradient-boosted tree classifiers on imbalanced tabular data, resampling the training data is not a reliable way to improve predictions: it did not improve AUC for XGBoost or CatBoost, it degrades probability calibration unless followed by recalibration, and tuning the decision threshold gives comparable F1 at lower cost",
+    "provenance": "synthesis of the assertions that support or contradict it (see assertion_relations); written by Claude, 2026-09-24; awaiting team-lead adjudication",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "ml"
+    ],
+    "certainty": "low",
+    "certainty_reasons": "Starts LOW from its strongest supports (two single empirical studies, each LOW). NOT down further: the two agree and were run independently. Stated limit: neither tested imbalance near fraud's (one does not report ratios, the other stops at 70)",
+    "fidelity": "scoped",
+    "updated": "2026-09-24",
+    "updated_reason": "2026-09-24 (Sprint 5 Task I, F28 pilot): learning written from the pilot's evidence"
+  },
+  {
+    "id": "learning-qml-no-reliable-tabular-accuracy-gain",
+    "class": "assertion",
+    "value": "On classical tabular prediction tasks, the evidence in this store shows no reliable accuracy gain from current quantum kernel, variational or quantum-boosting models over tuned classical baselines; where a quantum model helps, the gain is small and dataset-specific, and several model families provably reduce to classical kernels",
+    "provenance": "synthesis of the assertions that support or contradict it (see assertion_relations); written by Claude, 2026-09-24; awaiting team-lead adjudication",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "qml"
+    ],
+    "certainty": "moderate",
+    "certainty_reasons": "Starts HIGH from its strongest support (real-amplitude-encoding-pqc-is-classical-kernel, a theorem). DOWN one for INDIRECTNESS: the high-certainty support covers one model family, and the empirical support is UCI tables, reduced images and one fraud dataset. NOT down for inconsistency: the one contradicting result (cvqboost-knn-aucpr-0-8108-kaggle-fraud) is LOW, below this level, and compares against a published figure rather than a re-run baseline",
+    "fidelity": "scoped",
+    "updated": "2026-09-24",
+    "updated_reason": "2026-09-24 (Sprint 5 Task I, F28 pilot): learning written from the pilot's evidence"
+  },
+  {
+    "id": "oversampling-helps-weak-not-strong-boosters",
+    "class": "assertion",
+    "value": "Across 73 tabular datasets with validation-tuned hyperparameters, oversampling (random, SMOTE and three variants) improved AUC for weak classifiers (MLP, SVM, decision tree, AdaBoost, LightGBM) but not for XGBoost or CatBoost; for F1, tuning the decision threshold matched balancing except for MLP and SVM",
+    "provenance": "elor-2022-smote-or-not-smote (arXiv:2201.08528v3), p.4 section 4.1 Figure 1(b); p.5 Table 3",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "ml"
+    ],
+    "certainty": "low",
+    "certainty_reasons": "Started LOW: one empirical study. NOT upgraded: dispersion reported as one SD with no formal test for this comparison; imbalance ratios of the 73 datasets not reported, so fraud-level imbalance is not shown to be covered",
+    "fidelity": "scoped",
+    "updated": "2026-09-24",
+    "updated_reason": "2026-09-24 (Sprint 5 Task I, F28 pilot): extracted at promotion to read",
+    "citation_context": "balancing significantly improved prediction for the weak classifiers: MLP, SVM, decision tree, Adaboost and LGBM. However, for the stronger classifiers, XGBoost and Catboost, it did not.",
+    "supports": [
+      "learning-ml-resampling-not-the-lever-for-strong-trees"
+    ]
+  },
+  {
+    "id": "qelm-local-dynamics-match-haar-classically-simulable",
+    "class": "assertion",
+    "value": "For quantum extreme learning machines on PCA- or autoencoder-reduced MNIST, Fashion-MNIST and CIFAR-10 at 6 to 11 qubits, a local integrable XX evolution reached accuracy comparable to Haar-random unitaries, with limited entanglement that the authors judge compatible with efficient classical simulation",
+    "provenance": "de-lorenzis-2026-entanglement-classical-simulability-quantum-extreme (arXiv:2509.06873v3), p.1 abstract; p.11 conclusions",
+    "evidence_tag": "SIM",
+    "contexts": [
+      "qml"
+    ],
+    "certainty": "low",
+    "certainty_reasons": "Started LOW: one simulation study. NOT upgraded: 6-11 qubits, comparison descriptive with no test, authors ask for larger studies (p.11); image data, so INDIRECT for tabular prediction; two authors at a quantum vendor (Qilimanjaro), which here argues against their interest",
+    "fidelity": "scoped",
+    "updated": "2026-09-24",
+    "updated_reason": "2026-09-24 (Sprint 5 Task I, F28 pilot): extracted at promotion to read",
+    "citation_context": "Remarkably, the saturated performance is comparable to that obtained using Haar-random unitaries that generate maximally complex dynamics, even though the XX model is integrable and local.",
+    "supports": [
+      "learning-qml-no-reliable-tabular-accuracy-gain"
+    ]
+  },
+  {
+    "id": "qksvm-classical-kernels-better-on-uci-tabular",
+    "class": "assertion",
+    "value": "On nine UCI binary tabular datasets with nested cross-validation, classical kernel SVMs outperformed the best quantum-kernel SVM on 8 of 9; with 16 paired seeds, classical kernels were significantly better on 6 of 7 datasets (p < 0.001) and a quantum kernel was significantly better only on haberman (+1.9 percentage points balanced accuracy, p = 0.004)",
+    "provenance": "kakavand-2026-benchmarking-quantum-kernel-support-vector (arXiv:2604.18837v1), p.19 seed-sensitivity analysis; p.14 section 6.2",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "qml"
+    ],
+    "certainty": "low",
+    "certainty_reasons": "Started LOW: one empirical study. NOT downgraded: nested CV, 16 paired seeds, Wilcoxon and Friedman tests, the authors' own power caveat stated (p.14), no quantum-vendor funding (p.42). NOT upgraded: nine small UCI datasets, none at fraud scale or fraud-level imbalance",
+    "fidelity": "scoped",
+    "updated": "2026-09-24",
+    "updated_reason": "2026-09-24 (Sprint 5 Task I, F28 pilot): extracted at promotion to read",
+    "citation_context": "On 6/7 datasets, classical kernels are significantly better (p < 0.001). On haberman, quantum kernels are significantly better (p = 0.004), winning on 14/16 seeds.",
+    "supports": [
+      "learning-qml-no-reliable-tabular-accuracy-gain"
+    ]
+  },
+  {
     "id": "real-amplitude-encoding-pqc-is-classical-kernel",
     "class": "assertion",
     "value": "Any parameterized quantum circuit built on a real-valued amplitude encoding of the data (including probability loading), with a data-independent ansatz and any observable, computes a function of the form c(x)^T A c(x) with A a real symmetric matrix: the reproducing kernel Hilbert space of the kernel (c(x)^T c(x'))^2, which a classical kernel machine computes in O(N^2) time; such models offer no quantum advantage of that kind",
@@ -210,7 +340,62 @@
     "updated_reason": "2026-09-19 (Sprint 4 Task H, F25 D6): promoted to read after a direct read; assertions extracted; see paper_yields",
     "citation_context": "\"The hypothesis class of any real-valued amplitude encoding PQC therefore provides no Type B quantum advantage: a classical kernel machine with the same data access computes the same functions.\" (p.5)",
     "supports": [
-      "fourier-wall-public-tabular-refuses-qml"
+      "fourier-wall-public-tabular-refuses-qml",
+      "learning-qml-no-reliable-tabular-accuracy-gain"
+    ]
+  },
+  {
+    "id": "resampling-degrades-calibration-recalibration-repairs",
+    "class": "assertion",
+    "value": "On five OpenML datasets (imbalance ratio 1.9 to 70) with random forest and histogram gradient boosting, SMOTE and random oversampling raised expected calibration error slightly and random undersampling strongly; one Platt or isotonic recalibration step brought the SMOTE model's ECE from 0.061 to 0.021 or 0.025, below the unsampled baseline",
+    "provenance": "liu-2026-hidden-cost-resampling-how-imbalance (arXiv:2606.29720v1), p.3 sections V-B and V-C",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "ml"
+    ],
+    "certainty": "low",
+    "certainty_reasons": "Started LOW: one empirical study, single-author preprint. NOT downgraded: paired Wilcoxon with Holm-Bonferroni, Cliff's delta, a designed sample-size control. NOT upgraded: five datasets; the author bounds the result at imbalance ratio 70 (p.7), far below fraud's",
+    "fidelity": "scoped",
+    "updated": "2026-09-24",
+    "updated_reason": "2026-09-24 (Sprint 5 Task I, F28 pilot): extracted at promotion to read",
+    "citation_context": "indicating the harm comes specifically from altering the training data, not merely from rebalancing the objective",
+    "supports": [
+      "learning-ml-resampling-not-the-lever-for-strong-trees"
+    ]
+  },
+  {
+    "id": "rff-not-generic-dequantizer-but-matches-some-pqcs",
+    "class": "assertion",
+    "value": "Random-Fourier-feature linear regression is not a generic classical dequantization of parameterized quantum circuit regression, but for some practically relevant circuits and regression problems it provably matches the best circuit output efficiently",
+    "provenance": "sweke-2025-potential-limitations-random-fourier-features (arXiv:2309.11647v4), p.3 main results; Theorem 1 pp.13-14",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "qml"
+    ],
+    "certainty": "high",
+    "certainty_reasons": "Started HIGH: theorems with proofs (Appendix B). Scope is the paper's: regression, and the positive result needs efficiently samplable re-weighting that the authors say often fails (p.14)",
+    "fidelity": "scoped",
+    "updated": "2026-09-24",
+    "updated_reason": "2026-09-24 (Sprint 5 Task I, F28 pilot): extracted at promotion to read",
+    "citation_context": "RFF-based linear regression cannot be a generic dequantization technique."
+  },
+  {
+    "id": "wilcoxon-n5-floor-is-not-parity",
+    "class": "assertion",
+    "value": "With five paired observations the exact two-sided Wilcoxon signed-rank test cannot give p below 0.0625, so 'no comparison significant at 0.05' over five folds is a floor on power, not evidence that two models perform alike",
+    "provenance": "kakavand-2026-benchmarking-quantum-kernel-support-vector (arXiv:2604.18837v1), p.14 section 6.2",
+    "evidence_tag": "N/A",
+    "contexts": [
+      "method"
+    ],
+    "certainty": "high",
+    "certainty_reasons": "Started HIGH: an arithmetic property of the exact test (the smallest two-sided p at n = 5 is 2/32), stated by the authors and confirmed by their own 16-seed rerun reaching significance",
+    "fidelity": "exact",
+    "updated": "2026-09-24",
+    "updated_reason": "2026-09-24 (Sprint 5 Task I, F28 pilot): extracted at promotion to read",
+    "citation_context": "The lack of Wilcoxon significance is thus a sample-size limitation (n = 5), not an absence of performance differences.",
+    "supports": [
+      "learning-method-check-metric-and-power-before-reading-a-difference"
     ]
   }
 ]

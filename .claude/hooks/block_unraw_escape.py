@@ -81,6 +81,21 @@ def _read_command() -> str:
     return ""
 
 
+# Sprint 5 retrospective improvement 2 (2026-09-25): the same class, one step
+# on. Python source written THROUGH a Python string inside a shell command
+# (`p='scripts/x.py'; s=open(p).read(); ...; open(p,'w').write(s)`) passes
+# every escape through two interpreters. Sprint 5 broke files that way three
+# times: a "\\n" meant for the target file became a real line break and left
+# an unterminated string literal, found only when the file failed to parse.
+# The Edit and Write tools take code verbatim and cannot do this.
+PY_FILE_LITERAL = re.compile(r"""['"][^'"\n]*\.py['"]""")
+WRITES_FILE = re.compile(r"""open\([^)]*['"]w['"]|\.write_text\(|\.write\(""")
+
+
+def _writes_python_source(cmd: str) -> bool:
+    return bool(PY_FILE_LITERAL.search(cmd) and WRITES_FILE.search(cmd))
+
+
 def main() -> int:
     try:
         cmd = _read_command()
@@ -89,11 +104,30 @@ def main() -> int:
 
     if not cmd or not cmd.strip():
         return 0
-    if "allow_unraw_escape" in cmd:
-        return 0
 
     # Only look at commands that actually run python.
     if not PYTHON_INVOCATION.search(cmd):
+        return 0
+
+    if "allow_python_writes_code" not in cmd and _writes_python_source(cmd):
+        print(
+            "[BLOCKED] Python code rewriting a .py file from inside a shell command\n"
+            "(Sprint 5 retrospective improvement 2).\n"
+            "\n"
+            "Escapes pass through two interpreters here: a \"\\n\" meant for the target file\n"
+            "becomes a real line break and leaves an unterminated string. Sprint 5 broke\n"
+            "three files this way.\n"
+            "\n"
+            "FIX: change code files with the Edit tool (or Write for a new file); they take\n"
+            "the text verbatim. Keep python heredocs for data and prose files.\n"
+            "\n"
+            "If a script genuinely must write a .py file, re-run with the literal token\n"
+            "allow_python_writes_code in the command.",
+            file=sys.stderr,
+        )
+        return 2
+
+    if "allow_unraw_escape" in cmd:
         return 0
 
     # Only a DRIVE-LETTER path is unambiguous enough to block on. Legitimate

@@ -36,6 +36,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
+from store.backup import backup_before_write  # noqa: E402
 from store.export import regenerate  # noqa: E402
 from store.ingest import DERIVED_BY_DOOR, PaperRecord, validate_paper  # noqa: E402
 
@@ -225,6 +226,7 @@ def main(argv: list[str] | None = None) -> int:
         if not do_apply:
             print("PLANNED (dry run; re-run with --apply to write DIFFERS rows)")
             return 0
+        backup_before_write(DB_PATH, "refresh_citations --apply")  # F30: verified backup, or no write
         # EXPLICIT transaction. Python's legacy sqlite3 mode happens to wrap
         # these UPDATEs today, so an exception before commit() unwinds them --
         # but that is an accident of the default, and the same default is what
