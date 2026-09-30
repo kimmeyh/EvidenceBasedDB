@@ -452,6 +452,41 @@ same day, and every count in them is a snapshot as of 2026-09-23.
 - Target: Sprint 6 Phase 1.2 (completeness sweep), where the reconciliation
   belongs.
 
+**F39. Evaluate the available models and update the model-assignment heuristics -- PERMANENT (~1h per release) Priority 10** (NEW 2026-09-29)
+- Phase: Process (recurring)
+- Platform: `.claude/model_assignment_heuristics.json`,
+  `docs/SPRINT_PLANNING.md` (team roles table),
+  `tests/test_model_assignment_heuristics.py`; Anthropic's model
+  documentation as the primary source
+- Team lead, 2026-09-29: "add to backlog as permenant item and release a
+  copy for this sprint: evaluate the models available and update the
+  hueristics for how models are assigned to agents."
+- **How a permanent item works (first of its kind here)**: F39 is never
+  pruned. A sprint that selects it gets a released COPY with the next free
+  F# ("F39 release for Sprint N"); the copy ships and is pruned like any
+  card, and F39 stays.
+- **Each release**: (1) list the models available to this environment
+  with id, version and release date, verified against Anthropic's current
+  documentation that day, never from memory; (2) record what changed since
+  the last release (new models, retirements, price or context changes);
+  (3) re-read the heuristics' `learning_log` outcomes since the last
+  release; (4) update tiers, task patterns and escalation triggers, and
+  the SPRINT_PLANNING.md role table, with each change naming its evidence;
+  (5) a failing test guards whatever the release adds.
+- Depends on: nothing
+
+**F40. F39 release for Sprint 6: evaluate the available models and update the model-assignment heuristics (~1h) Priority 10** (NEW 2026-09-29)
+- Phase: Process
+- Platform: as F39
+- The first release of F39. Found while carding it: the tiers record
+  roles only (no model id, version, cost or date last checked), and
+  SPRINT_PLANNING.md still names "Fable 5" while this environment lists
+  Fable 5.1. The release adds the missing facts with their source and
+  date, and a test that fails when a tier carries no verification date.
+- Runs first in the sprint, so the Sprint 6 plan's own model assignments
+  use the updated heuristics.
+- Depends on: nothing
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
