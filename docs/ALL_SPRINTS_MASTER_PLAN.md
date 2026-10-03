@@ -428,6 +428,17 @@ same day, and every count in them is a snapshot as of 2026-09-23.
   - every write appends to `updated_reason`, never replaces it.
 - Depends on: F34 (decide together), then this card's ADR-0005 amendment
   before any schema change (Class 1, ADR-first).
+- **Planning note, 2026-10-03** (from the Cyc and CVQBoost handoff,
+  `12-backlog-cards-proposed.md`, folding its draft card "Record how deeply
+  each source was read" into field 2, `read_extent`):
+  - Add `grep` and `subagent` to the vocabulary. F36 lists `full | partial:
+    <what> | abstract | html-render | summary`, which has no word for either.
+  - Evidence: on 2026-09-28 a research agent grepped Lenat and Marcus 2023
+    and reported no source for "reasoners bid on time". Page 14 says it. 33
+    of the 48 pending facts (`07-assertion-candidates-pending.md`) were seen
+    only through a subagent or a WebFetch summary.
+  - Add to acceptance: `set_tier(..., "read")` refuses `grep`, `subagent`
+    and `summary`, with a test for each refusal.
 
 **F37. An explicit derivation marker on assertions (~small, no-history) Priority 24** (NEW 2026-09-25)
 - Phase: Design / ADR. Carded at Sprint 5 Manual Validation (Q4 = 1) from
@@ -441,6 +452,23 @@ same day, and every count in them is a snapshot as of 2026-09-23.
   provenance, with `learnings.py` reading the column instead of a string.
 - Depends on: decide in the same ADR amendment as F34 and F36, so the
   assertion and paper fields change once.
+- **Planning note, 2026-10-03** (from the Cyc and CVQBoost handoff,
+  `12-backlog-cards-proposed.md`, folding its draft cards "Say what kind of
+  claim each assertion is" and "Decide where synthesis lives"):
+  - F37's `synthesized` value is the home for the six synthesis items
+    (F-702, S-001 to S-005 in `FACTS-WITH-CERTAINTY.md`). Add to
+    acceptance: a `synthesized` assertion's provenance names at least two
+    existing assertion ids.
+  - Decide in the same amendment whether certainty of a synthesized
+    assertion is capped at its weakest input. Cyc's 2009 engine does
+    exactly this for deductions (`argumentation.java`, `strength_combine`,
+    line 117).
+  - `claim_type` is a different question from derivation and is NOT
+    covered by F37. Absence claims (F-207 "QCi does not claim fault
+    tolerance", F-704 "no closed form exists") need a stated search scope
+    and date, and vendor claims about the vendor's own product need a flag.
+    Raise it in the same ADR amendment as F34, F36 and F37, so the
+    assertion fields change once.
 
 **F38. Back-fill CHECKLIST-Phase2-pre.md for Sprints 1 to 4, with evidence per row (~small, no-history) Priority 12** (NEW 2026-09-25)
 - Phase: Process. Found at Sprint 5's Phase 7 reconciliation: the Sprint 1
@@ -486,6 +514,166 @@ same day, and every count in them is a snapshot as of 2026-09-23.
 - Runs first in the sprint, so the Sprint 6 plan's own model assignments
   use the updated heuristics.
 - Depends on: nothing
+
+### Cyc and CVQBoost intake (proposed 2026-10-03)
+
+Registered 2026-10-03 at the team lead's request from
+`D:\Data\Harold\EvidenceBasedDB\Handoff-2026-10\ebdb-handoff\12-backlog-cards-proposed.md`,
+prepared outside the repository; card text as drafted there. File names
+`01` to `12` (`03-manifest-sources.json`, `07-assertion-candidates-pending.md`,
+`11-decisions-2026-10-03.md`, and so on) refer to that folder;
+`FACTS-WITH-CERTAINTY.md` is in its parent, `Handoff-2026-10\`. All
+estimates are `[no-history]`. Priorities 26, 28 and 30 sprint together; so
+do 40 and 42, and 60 and 62.
+
+**F41. Apply the Cyc and CVQBoost intake package, with the 2026-10-03 decisions (~2h) Priority 28**
+- Phase: Sourcing / intake
+- Platform: N/A for tracked content. Reads `D:\Data\Harold\EvidenceBasedDB\Handoff-2026-10\ebdb-handoff\`
+- These drafts were written FOR the repository (a script, a manifest, doc
+  text). They are not source material, so CLAUDE.md's "never copy its
+  contents into this repository" rule, which protects papers and books, does
+  not apply to them. The References and GitHubRepos files they cite stay
+  outside, as always.
+- Applies `01` (intake section 15, written BEFORE the manifest runs), `03`
+  (the source manifest), and `05` (the sprint script: 3 promotions, 41
+  assertions, 4 notes), in the order `README.md` gives.
+- Folds in the 2026-10-03 decisions (`11-decisions-2026-10-03.md`): a 12th
+  source record for `HARDWARE_PLAN_PHASE_2.md` pinned at commit `a6c3453`,
+  with applicability `hsbc-2026` and `platform:dirac-3`; three assertions
+  change from no yield to that record; `method` applicability rows on the
+  CVQBoost and Fourier Wall records; `heuristics-over-general-reasoning`
+  LOW to MODERATE; a derived certainty on `cyc-no-numeric-confidence`.
+- Blocked on decision 1 (authorship of the CVQBoost findings): the citation
+  and possibly the record id depend on it.
+- Acceptance: the manifest dry run prints 12 planned, 0 refused; the script
+  dry run is read before `--apply`; `PRAGMA foreign_key_check` returns 0
+  rows; every assertion sits in a context its yielding record's
+  applicability lists, or has no yielding record by a stated convention; the
+  full test suite passes; the export is regenerated and committed.
+- This enables the 41 assertions and the Cyc sources to be cited from the
+  store. It prevents the two known gaps from entering as silent looseness.
+- Depends on: decision 1; F43 should land first or in the same sprint.
+
+**F42. Add the two Cyc research documents and the amendment to cyc-knowledge-representation.md (~45m) Priority 30**
+- Phase: Sourcing / intake
+- Platform: `docs/research/`
+- Copies `docs-research/*` to `docs/research/`, replacing `Fxx` in the file
+  names and in the links between them with F42. Appends the dated amendment
+  in `08-corrections.md` section 5 to `cyc-knowledge-representation.md`, which
+  closes two of its "could not establish" items.
+- Fix first: the review's links to session files become record ids; run the
+  US English and no-em-dash tests. `08-corrections.md` item 6: the heading
+  "Generalisation before entry" (line 204) is British spelling that
+  `scripts/us_english_fix.py` does not catch. Add the pair or fix the heading.
+- Acceptance: both documents present; no `Fxx` remains; the amendment is
+  appended, not edited in; `tests/test_us_english.py` and
+  `tests/test_no_em_dashes.py` pass.
+- Depends on: F41 (the documents cite the record ids it creates).
+
+**F43. Assert the table, not the summary (~30m) Priority 26**
+- Phase: Process
+- Platform: `docs/INTAKE_WORKFLOW.md`
+- Sources summarize their own tables wrongly. The assertion states the table,
+  and its reasons name the mismatch.
+- Evidence, found 2026-09-30: the CVQBoost findings, section 11, say the
+  in-segment train-test gap is "3-8x XGBoost's on every `target` cell"; the
+  table's ratios are 83, 7.6, 8.2 and 1.7. The hsbc hardware plan says cost
+  is "superlinear in variables"; its own fit has a variable exponent of 0.75.
+- Acceptance: one dated paragraph in `INTAKE_WORKFLOW.md`, with these two
+  cases as the worked examples.
+- The hsbc repository may want its own wording fixed. That is a change for a
+  session in that repository; EvidenceBasedDB sessions may not write there.
+- Depends on: none.
+
+**F44. Download and intake the eight pending Cycorp papers (~90m) Priority 40**
+- Phase: Sourcing / intake
+- Platform: arXiv API for S16; hand-origin records for the rest
+- The eight in `04-pending-sources.md`: T07 (FLAIRS 2007), R05 (2005), S16
+  (arXiv:1603.04402), S19 (2019), M06 (2006), OV19 (Technology Overview,
+  2019), PH20 (2020), L10 (AI Magazine 2010; look for a DOI first).
+- Downloads need the team lead's approval (filename, source, size). Files go
+  to `Papers\` under the naming convention, never into the repository.
+- Enter at `seen`. The 2026-09-28 agent's reading is not a
+  `checked_against_source` by this library's standard.
+- Acceptance: eight records, each with a local `access` path and a SHA-256;
+  T07 is read directly to settle "eight tactic types" (2007) against the six
+  the 2009 code lists, and the "about a thousand HL modules" figure for
+  `cyc-hl-module-count`.
+- Depends on: F41 (section 15 sets the context rule for Cyc sources).
+
+**F45. Dirac-3 reading pass: promote four sources and enter up to 11 facts (~2h) Priority 42**
+- Phase: Sourcing / extraction
+- Platform: N/A
+- From `07-assertion-candidates-pending.md`: F-201 to F-206, F-208, F-209
+  (the Dirac-3 User Guide v0.0.4 and arXiv:2407.04512), F-301 and F-302 (the
+  two independent assessments), F-303 (a per-paper affiliation check).
+- Each source is read directly, promoted with applicability, then yields its
+  assertion: the Sprint 4 task H pattern. F-209: cross-check the 949-level
+  figure in the hsbc hardware plan.
+- Not in scope: F-207, an absence claim, which waits for the `claim_type`
+  decision (F37 planning note).
+- Acceptance: each promoted record names what was read and when; each
+  assertion quotes its source verbatim; facts that duplicate an existing
+  assertion become `supports` links instead.
+- Depends on: F41.
+
+**F46. Remaining reading pass: the other pending facts, split at selection (~large, no-history) Priority 80**
+- Phase: Sourcing / extraction
+- Platform: N/A
+- The rest of `07`: World (8), entanglement (1), the April 2026 claim (4),
+  classical fraud detection (7), ceiling estimation (9). Too large for one
+  card; split by source group when a sprint selects it.
+- Depends on: F45 (to calibrate the estimate from its actual).
+
+### Store and process lessons from Cyc (proposed 2026-10-03)
+
+**F47. Name the admission-against-interest upgrade and test it (~1h) Priority 50**
+- Phase: Design / ADR
+- Platform: ADR-0005 (dated amendment), a new test
+- ADR-0005's worked example applies the upgrade to
+  `cyc-general-prover-disabled` and withholds it from `cyc-hl-module-count`,
+  but no sentence states the rule. The ADR itself asks whether it is worth a
+  level.
+- Rule to write down: the upgrade applies only when the claim costs its
+  author something. A counterfactual that supports the author's own method
+  does not qualify (`fourier-wall-incomplete-bar-manufactures-advantage`).
+- Acceptance: the amendment states the rule; a test checks that every
+  `certainty_reasons` naming the upgrade also names what the claim cost.
+- Depends on: none.
+
+**F48. Keep local source paths honest (~2h) Priority 60**
+- Phase: Tooling
+- Platform: `store/ingest.py`, a new check script
+- A local `access` path breaks silently when a file moves. Seen during the
+  Cyc work: three archives moved to the Recycle Bin; the hsbc repository
+  exists at two paths, and only one has `docs\`.
+- Acceptance: SHA-256 recorded for every local-access source; a check that
+  reports a missing file or a changed hash; a test with one moved file that
+  the check catches.
+- Depends on: none. F41 adds nine local-access sources, so earlier is
+  better.
+
+**F49. Prove the export keeps every context (~1h) Priority 62**
+- Phase: Tooling
+- Platform: `tests/`
+- OpenCyc's 2012 OWL export dropped the microtheory of every fact: 19
+  `definingMt` statements in 2,189,031. Cyc requires every assertion to sit
+  in a microtheory, and nothing noticed the loss.
+- Acceptance: a test that, for every record, the contexts in
+  `store/evidence.db` equal the contexts in `export/`, in both directions;
+  proven to fail by removing one context from a copy of the export.
+- Depends on: none.
+
+**F50. Qualify "compute, never store" with Cyc's stored counts (~30m) Priority 70**
+- Phase: Process
+- Platform: `docs/research/cyc-knowledge-representation.md` (dated amendment)
+- Point 7 says counts should be computed, never stored. Cyc stores a count at
+  every index layer and the planner reads it as the lookup cost
+  (`removal_modules_lookup.java`, line 84). The difference: Cyc keeps the
+  count beside the data and updates both together.
+- Acceptance: a dated amendment to point 7. A stored count is allowed only
+  with a test that recomputes and compares it.
+- Depends on: none.
 
 ## Design documents governing this repository
 
