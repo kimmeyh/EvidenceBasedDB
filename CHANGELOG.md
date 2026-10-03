@@ -13,6 +13,19 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
+### 2026-09-27 to 2026-10-03 (Sprint 6, in progress)
+
+- **docs**: Sprint 6 Phase 1 (2026-09-27) -- carry-forward cut after PR #43
+  (develop) and PR #53 (main); CHANGELOG reconciled; master plan swept by
+  hand; Phase 1.3 design-document currency recorded (refresh over 347
+  papers: SAME 247, NO-ID 98, POORER 1, DIFFERS 1)
+- **docs**: F39 carded as the first permanent item (model evaluation), F40
+  its Sprint 6 release (2026-09-29)
+- **docs**: F41-F50 registered from the Cyc and CVQBoost handoff, with
+  planning notes on F36 and F37 (2026-10-03)
+- **docs**: Sprint 6 scope selected (12 items) and `SPRINT_6_PLAN.md`
+  drafted with pre-flights and decisions Q1-Q11 (2026-10-03)
+
 ### 2026-09-23 to 2026-09-25 (Sprint 5, PR #43, merged to develop 2026-09-27 and to main via PR #53 the same day)
 
 Reconciled 2026-09-27 at Sprint 6 Phase 1.1 against `git log`: commits on

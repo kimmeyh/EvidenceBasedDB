@@ -181,8 +181,19 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 **Sprint 6** (branch `feature/20260927_Sprint_6`, cut 2026-09-27 at the
 Sprint 5 carry-forward, after PR #43 merged to develop and PR #53 merged
-develop to main). Phase 1 Backlog Refinement in progress; scope not yet
-selected. The slate is below.
+develop to main). Phase 1 Backlog Refinement complete.
+
+**Scope selected 2026-10-03 (team lead, DEFINED)**, in the team lead's
+order: F40, F38, F43, F34, F36, F37, F47, F41, F42, F32, F33, F35. Plan:
+`docs/sprints/SPRINT_6_PLAN.md`.
+- Priorities as proposed at 1.4 and carried in the team lead's list:
+  F34 16, F36 18, F37 20, F33 22, F35 24 (were 18, 22, 24, 16, 20).
+- Q3 = 1: F32 includes running the bulk load, not only the manifest.
+- Q4 (authorship of the CVQBoost findings), team lead: "it will be updated
+  after the next hsbc repo sprint (the experiement will be re-run) and then
+  it can be referenced". So F41 enters the package WITHOUT the CVQBoost
+  findings record and the six assertions it yields; those wait for the
+  re-run.
 
 **For the Sprint 6 retrospective (found at this Phase 1.2)**: in Sprint 5
 the master plan's shipped cards were pruned with Python cut-between-headers
@@ -243,7 +254,7 @@ same day, and every count in them is a snapshot as of 2026-09-23.
   (for example `manifests/`) keeps the two apart. Team lead's call at
   carding.
 
-**F33. Ingest withdrawn and retracted status as first-class facts (~2h) Priority 16**
+**F33. Ingest withdrawn and retracted status as first-class facts (~2h) Priority 22**
 - Phase: Sourcing / bulk intake
 - Platform: arXiv API `<arxiv:comment>` field; Springer article page for the retraction
 - Seven papers in the bulk set changed status after publication and the store
@@ -268,7 +279,7 @@ same day, and every count in them is a snapshot as of 2026-09-23.
   moves ahead of it, or the sprint plan sequences F34 first regardless of
   priority.
 
-**F34. ADR amendment: how the store represents a withdrawn or retracted source (~1h) Priority 18**
+**F34. ADR amendment: how the store represents a withdrawn or retracted source (~1h) Priority 16**
 - Phase: Design / ADR
 - Platform: N/A
 - ADR-0004 and ADR-0005 define provenance and derived certainty but say
@@ -289,7 +300,7 @@ same day, and every count in them is a snapshot as of 2026-09-23.
   card F36. Publication status is the same family of fact, so F34 and F36
   should be decided together in one amendment, not two.
 
-**F35. Map the 135 verified repository notes to the GitHub intake path (~2h) Priority 20**
+**F35. Map the 135 verified repository notes to the GitHub intake path (~2h) Priority 24**
 - Phase: Sourcing / bulk intake
 - Platform: GitHub API (`store/citations.py` already carries `GITHUB_API` and
   a `_GITHUB` matcher)
@@ -321,7 +332,7 @@ same day, and every count in them is a snapshot as of 2026-09-23.
 
 ### Proposed by Sprint 5 Task D (F31 part 3), 2026-09-24
 
-**F36. Reference fields the HSBC Phase 2 bibliography shows the store is missing, and a back-fill for existing papers (~large, no-history) Priority 22**
+**F36. Reference fields the HSBC Phase 2 bibliography shows the store is missing, and a back-fill for existing papers (~3h) Priority 18**
 - Phase: Design / ADR, then back-fill. Proposed 2026-09-24 by Sprint 5 Task D
   at the team lead's request ("note any additional fields or content you
   think we should keep for all references based on the content of
@@ -440,7 +451,7 @@ same day, and every count in them is a snapshot as of 2026-09-23.
   - Add to acceptance: `set_tier(..., "read")` refuses `grep`, `subagent`
     and `summary`, with a test for each refusal.
 
-**F37. An explicit derivation marker on assertions (~small, no-history) Priority 24** (NEW 2026-09-25)
+**F37. An explicit derivation marker on assertions (~45m) Priority 20** (NEW 2026-09-25)
 - Phase: Design / ADR. Carded at Sprint 5 Manual Validation (Q4 = 1) from
   the F28 pilot's finding 1 (`docs/LEARNING_SYNTHESIS.md` section 7).
 - Platform: ADR-0004 section 3 (dated amendment), `store/schema.sql`,
