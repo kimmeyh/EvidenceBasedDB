@@ -62,6 +62,21 @@ this project keeps having to replace with a step.
   (`learning-qml-no-reliable-tabular-accuracy-gain`: moderate, capped low);
   the rebuild restores every new key and never writes the derived ones
   back; `learnings.py` selects on `derivation`; the F47 test
+- **fix**: Task E fresh-eyes review (Issue #59) -- the `read` gate also
+  holds at insert (`intake --tier read` went around it) and binds the read
+  to the reader named in `checked_against_source`; a synthesis inherits its
+  inputs' retraction floor; a caller-set `metadata_provider` is refused
+  unless the citation is the door's or a replay; the migration rolls back
+  itself, with its own tests (schema parity, idempotency, dry run, rollback
+  proven by injection); `checked_against_source = 'never'` no longer
+  satisfies `read`
+- **feat**: F36 back-fill, stored fields (Task F, Issue #60) --
+  `scripts/backfill_reference_fields.py` routed all 347 papers
+  (`found_via`), 121 with `cited_as` from the preserved bibliography, 249
+  with `metadata_provider` (135 DataCite and 7 others named in the history,
+  107 inferred from the access id and marked so), and `read_extent` for the
+  12 papers at `read` from `checked_against_source`; `coi` (347) and
+  `read_extent` below `read` (14) queued, not guessed
 
 ### 2026-09-23 to 2026-09-25 (Sprint 5, PR #43, merged to develop 2026-09-27 and to main via PR #53 the same day)
 

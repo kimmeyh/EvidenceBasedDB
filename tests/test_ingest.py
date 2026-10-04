@@ -78,7 +78,7 @@ def test_insert_assertion_links_to_its_yielding_paper(db):
     paper = PaperRecord(
         id="p1", tier="read", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
-        checked_against_source="2026-09-15, test fixture",
+        checked_against_source="2026-09-15, test fixture", reads=[("test", "2026-09-15", "full", "")],
     )
     insert_paper(db, paper)
 
@@ -294,6 +294,44 @@ def test_set_tier_read_accepts_a_named_partial_read_beside_a_subagent(db):
     assert db.execute("SELECT tier FROM paper_fields WHERE record_id = 'p1'").fetchone()["tier"] == "read"
 
 
+def test_set_tier_read_needs_the_qualifying_read_by_the_reader_who_checks(db):
+    """Fresh-eyes review, 2026-10-03: A4 (c) binds the read to the reader
+    who sets checked_against_source. Another reader's partial row does not
+    carry Claude's promotion."""
+    _screened(db)
+    add_read(db, "p1", "agent-x", "2026-10-03", "partial", "pp.1-2")
+    with pytest.raises(ValueError, match="reader named"):
+        set_tier(db, "p1", "read", checked_against_source="2026-10-03, Claude, pp.1-2 directly")
+    set_tier(db, "p1", "read", checked_against_source="2026-10-03, agent-x, pp.1-2 directly")
+
+
+def test_insert_at_read_holds_the_same_gate_regression(db):
+    """Fresh-eyes review, 2026-10-03: the gate lived only in set_tier, so
+    `intake --tier read` inserted a read paper with no read recorded.
+    Proven to fail by injection: before validate_paper carried the check,
+    the first insert below went through."""
+    base = dict(id="p1", tier="read", citation_origin="api", citation="Cite", citation_source="replay",
+                access="arXiv:0000.00001", disposition="why", context="method", value="a paper",
+                updated="2026-10-03", updated_reason="test", checked_against_source="2026-10-03, Claude, p.2",
+                applicability=[("method", "fixture rationale -- test")])
+    with pytest.raises(ValueError, match="read_extent"):
+        insert_paper(db, PaperRecord(**base))
+    insert_paper(db, PaperRecord(**base, reads=[("Claude", "2026-10-03", "partial", "p.2")]))
+
+
+def test_metadata_provider_is_the_doors_statement(db):
+    """A caller-set provider is refused unless the citation is a replay or
+    the door's own derivation."""
+    base = dict(id="p1", tier="seen", citation_origin="hand", citation="Cite (hand-transcribed from p.1)",
+                hand_transcribed_from="p.1", access=__file__, disposition="why", context="method",
+                value="a paper", updated="2026-10-03", updated_reason="test")
+    with pytest.raises(ValueError, match="metadata_provider"):
+        validate_paper(PaperRecord(**base, metadata_provider="Crossref"))
+    validate_paper(PaperRecord(**{**base, "citation_origin": "api", "access": "arXiv:0000.00001",
+                                  "citation": "Cite", "citation_source": "replay", "hand_transcribed_from": None},
+                               metadata_provider="arXiv"))
+
+
 def test_partial_read_must_say_what_was_read(db):
     _screened(db)
     with pytest.raises(ValueError, match="partial"):
@@ -444,15 +482,19 @@ def test_insert_paper_derives_citation_and_title_from_the_source_of_record(db):
     assert written.citation == row["provenance"] and written.value == row["value"]
 
 
-def test_validate_paper_accepts_read_tier_with_literal_never():
-    """'never' is a valid, meaningful value distinct from None -- a
-    statement someone made, not an unpopulated field (ADR-0005 section 2)."""
+def test_validate_paper_refuses_read_tier_with_literal_never():
+    """'never' stays a valid value distinct from None for the
+    checked_against_source rule (ADR-0005 section 2), but since ADR-0005 A4
+    (c) `read` also needs a qualifying read by the reader named in it, and
+    'never' names none. This test pinned acceptance until Sprint 6 Task E;
+    no record in the store carried 'never' at any tier on 2026-10-03."""
     paper = PaperRecord(
         id="p1", tier="read", citation_origin="api", citation="Cite", citation_source="replay", access="arXiv:0000.00001", disposition="why",
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
         checked_against_source="never",
     )
-    validate_paper(paper)  # must not raise
+    with pytest.raises(ValueError, match="read_extent"):
+        validate_paper(paper)
 
 
 def test_validate_paper_does_not_require_checked_against_source_below_read():

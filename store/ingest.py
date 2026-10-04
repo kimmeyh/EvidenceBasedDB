@@ -357,6 +357,33 @@ def validate_paper(paper: PaperRecord, check_local_paths: bool = True) -> None:
             raise ValueError(f"paper {pid!r}: a found_via route is blank; name the collection and locator.")
     for read in paper.reads:
         validate_read(pid, *read)
+    # The read gate holds at insert as well as at promotion (fresh-eyes
+    # review, 2026-10-03: `intake --tier read` went around set_tier). The
+    # 12 records at `read` before A4 were back-filled by Task F first.
+    if paper.tier == "read":
+        qualifying_read_problem(pid, paper.reads, paper.checked_against_source)
+    # A provider is the door's statement about which registry answered, so a
+    # caller may carry one only for a citation the door derived or a replay.
+    if paper.metadata_provider is not None and paper.citation_source is not DERIVED_BY_DOOR \
+            and paper.citation_source != REPLAY:
+        raise ValueError(
+            f"paper {pid!r}: metadata_provider is set by the door from the registry that answered; "
+            "a caller supplies it only with citation_source=REPLAY.")
+
+
+def qualifying_read_problem(record_id: str, reads, checked_against_source: str | None) -> None:
+    """ADR-0005 A4 (c): `read` needs a 'full' or 'partial' row by the reader
+    who sets `checked_against_source` (named in it). `reads` is a list of
+    (reader, read_on, extent, detail). Raises with what was found."""
+    extents = sorted({r[2] for r in reads})
+    cas = checked_against_source or ""
+    if not any(r[2] in READ_QUALIFYING and r[0] in cas for r in reads):
+        raise ValueError(
+            f"cannot set paper {record_id!r} to tier='read': its read_extent is {extents or 'not recorded'}"
+            f"{' (no qualifying row by a reader named in checked_against_source)' if extents else ''}. "
+            "ADR-0005 A4: `read` needs a 'full' or 'partial' read by the reader who checks it; grep, "
+            "subagent, summary, abstract and html-render alone do not qualify. Record the pages read "
+            "with add_read first.")
 
 
 def validate_read(record_id: str, reader: str, read_on: str, extent: str, detail: str = "") -> None:
@@ -433,15 +460,6 @@ def set_tier(
     # report, a summary, an abstract or an HTML render alone does not
     # qualify; on 2026-09-28 a grep reported "no source" for a claim page
     # 14 states.
-    if tier == "read":
-        extents = sorted({r[0] for r in conn.execute(
-            "SELECT extent FROM paper_reads WHERE record_id = ?", (record_id,))})
-        if not set(extents) & set(READ_QUALIFYING):
-            raise ValueError(
-                f"cannot set paper {record_id!r} to tier='read': its read_extent is "
-                f"{extents or 'not recorded'}. ADR-0005 A4: `read` needs a 'full' or 'partial' "
-                "read by the reader who checks it; grep, subagent, summary, abstract and "
-                "html-render alone do not qualify. Record the pages read with add_read first.")
     effective = checked_against_source if checked_against_source is not None else row["checked_against_source"]
     if tier == "read" and (effective is None or not effective.strip()):
         raise ValueError(
@@ -449,6 +467,10 @@ def set_tier(
             f"{'not set' if effective is None else 'blank'}. ADR-0005 section 2 requires it "
             "at this tier -- pass checked_against_source (the literal 'never' is valid)."
         )
+    if tier == "read":
+        reads = [tuple(r) for r in conn.execute(
+            "SELECT reader, read_on, extent, detail FROM paper_reads WHERE record_id = ?", (record_id,))]
+        qualifying_read_problem(record_id, reads, effective)
     if checked_against_source is not None:
         conn.execute(
             "UPDATE paper_fields SET tier = ?, checked_against_source = ? WHERE record_id = ?",

@@ -104,19 +104,39 @@ def test_synthesis_cap_lowers_the_qml_learning_and_only_it(conn):
     assert stored == "moderate", "the cap is computed beside the stored judgment, never written into it"
 
 
-def test_retraction_floor_applies_only_when_every_source_is_unusable_regression(conn):
-    """ADR-0004 A6 (d). Proven to fail by injection: before any probe the
-    floor is absent; one withdrawn source of two leaves it absent; both
-    withdrawn or retracted computes very-low with each source named."""
+def _retract_both_sources(conn) -> None:
+    record_probe(conn, "emami-2025-financial-fraud-entropy-computing-qci", "publication_status", "withdrawn",
+                 "arXiv", "2026-10-03")
+    record_probe(conn, "qci-2024-profiling-cvqboost", "publication_status", "retracted", "hand", "2026-10-03",
+                 anchor="fixture -- not a real retraction")
+
+
+def test_retraction_floor_applies_only_when_every_source_is_unusable_regression(conn, monkeypatch):
+    """ADR-0004 A6 (d): before any probe the floor is absent; one withdrawn
+    source of two leaves it absent; both withdrawn or retracted computes
+    very-low with each source named. Proven to fail by injection: the last
+    step empties the set of unusable statuses and the floor disappears."""
+    import store.resolvers as resolvers
     target = "cvqboost-vs-xgboost-auc-under-balancing"  # yielded by two papers
     assert target not in certainty_caps(conn)
     record_probe(conn, "emami-2025-financial-fraud-entropy-computing-qci", "publication_status", "withdrawn",
                  "arXiv", "2026-10-03")
     assert target not in certainty_caps(conn)
-    record_probe(conn, "qci-2024-profiling-cvqboost", "publication_status", "retracted", "hand", "2026-10-03",
-                 anchor="fixture -- not a real retraction")
+    _retract_both_sources(conn)
     cap, why = certainty_caps(conn)[target]
     assert cap == "very-low" and "emami-2025-financial-fraud-entropy-computing-qci: withdrawn" in why
+    monkeypatch.setattr(resolvers, "_UNUSABLE", ())
+    assert target not in certainty_caps(conn)
+
+
+def test_a_synthesis_inherits_its_inputs_retraction_floor(conn):
+    """Fresh-eyes review, 2026-10-03: the cap read each input's STORED
+    certainty, so a learning resting on a retracted input kept its level.
+    The QML learning's moderate input, once both its sources are
+    unusable, is read at very-low."""
+    _retract_both_sources(conn)
+    cap, why = certainty_caps(conn)[QML]
+    assert cap == "very-low" and "cvqboost-vs-xgboost-auc-under-balancing" in why
 
 
 # ------------------------------------------------- the round trip, with every new field populated
@@ -130,11 +150,13 @@ def test_new_fields_round_trip_byte_identically(conn, tmp_path):
     other = conn.execute("SELECT record_id FROM paper_fields WHERE record_id <> ? ORDER BY record_id",
                          (paper,)).fetchone()[0]
     add_found_via(conn, paper, "QMLPapers/2024/manifest.tsv", "a cited-as string")
-    add_found_via(conn, paper, "HSBC Phase 2 bibliography [DQ-5]")
+    add_found_via(conn, paper, "a second fixture route")
     add_read(conn, paper, "Claude", "2026-10-03", "partial", "pp.1-3")
     add_read(conn, paper, "read-only agent", "2026-10-03", "subagent")
     record_probe(conn, paper, "publication_status", "published", "Crossref", "2026-10-03")
     record_probe(conn, paper, "access_status", "open", "probe", "2026-10-03")
+    record_probe(conn, paper, "version_of", "10.1000/fixture", "arXiv", "2026-10-03")
+    record_probe(conn, paper, "affiliations", "Somewhere University", "hand", "2026-10-03", anchor="p.1 byline")
     add_source_link(conn, other, paper, "responds-to", "the sentence that says so")
     conn.execute("UPDATE paper_fields SET metadata_provider = 'arXiv', coi = 'none declared -- p.9' "
                  "WHERE record_id = ?", (paper,))
@@ -142,7 +164,9 @@ def test_new_fields_round_trip_byte_identically(conn, tmp_path):
     out = tmp_path / "export"
     regenerate(conn, out)
     record = next(p for p in json.loads((out / "papers.json").read_text(encoding="utf-8")) if p["id"] == paper)
-    assert {"found_via", "read_extent", "publication_status", "access_status", "metadata_provider", "coi"} <= set(record)
+    assert {"found_via", "read_extent", "publication_status", "access_status", "version_of", "affiliations",
+            "metadata_provider", "coi"} <= set(record)
+    assert record["affiliations"]["anchor"] == "p.1 byline"
     assert rebuild_and_compare(out, check_local_paths=False) == []
 
 

@@ -111,18 +111,22 @@ def apply(conn: sqlite3.Connection, today: str) -> None:
         raise SystemExit(f"classification names ids not in the store: {p['classified_ids_not_in_store']}")
     conn.execute("PRAGMA foreign_keys = OFF")  # the table rebuild below; re-checked before commit
     conn.execute("BEGIN")
-    if p["needs_assertion_fields"]:
-        _rebuild_assertion_fields(conn, p["assertions"], today)
-    for column in p["missing_columns"]:
-        conn.execute(f"ALTER TABLE paper_fields ADD COLUMN {column} TEXT")
-    for table in p["missing_tables"]:
-        conn.execute(schema_statement(table))
-    problems = conn.execute("PRAGMA foreign_key_check").fetchall()
-    if problems:
-        conn.rollback()
-        raise SystemExit(f"foreign_key_check failed, nothing written: {[tuple(r) for r in problems]}")
-    conn.commit()
-    conn.execute("PRAGMA foreign_keys = ON")
+    try:
+        if p["needs_assertion_fields"]:
+            _rebuild_assertion_fields(conn, p["assertions"], today)
+        for column in p["missing_columns"]:
+            conn.execute(f"ALTER TABLE paper_fields ADD COLUMN {column} TEXT")
+        for table in p["missing_tables"]:
+            conn.execute(schema_statement(table))
+        problems = conn.execute("PRAGMA foreign_key_check").fetchall()
+        if problems:
+            raise RuntimeError(f"foreign_key_check failed: {[tuple(r) for r in problems]}")
+        conn.commit()
+    except BaseException:
+        conn.rollback()  # nothing written; never rely on close() to discard it
+        raise
+    finally:
+        conn.execute("PRAGMA foreign_keys = ON")
 
 
 def _rebuild_assertion_fields(conn: sqlite3.Connection, assertions: list[dict], today: str) -> None:

@@ -61,16 +61,39 @@ _UNUSABLE = ("withdrawn", "retracted")
 
 
 def certainty_caps(conn) -> dict[str, tuple[str, str]]:
-    """{assertion id: (cap, reason)} for every assertion a cap LOWERS.
+    """{assertion id: (cap, reason)} for every assertion a cap LOWERS, and
+    for every UNRATED assertion a cap applies to (with no stored judgment,
+    the cap is the only reading there is, even when it is `high`).
 
     Synthesis cap (A6 (c)): a synthesized assertion is no stronger than the
-    weakest assertion that `supports` it (Cyc's strength_combine). An
-    unrated input counts as very-low: an input nobody graded cannot lift
-    the conclusion. Retraction floor (A6 (d)): an assertion whose every
+    weakest assertion that `supports` it (Cyc's strength_combine), each
+    input read at its own retraction floor when one applies. An unrated
+    input counts as very-low: an input nobody graded cannot lift the
+    conclusion. Retraction floor (A6 (d)): an assertion whose every
     yielding source has publication_status withdrawn or retracted is
     very-low. Three queries, whatever the store's size."""
     certainty = {r[0]: r[1] for r in conn.execute("SELECT id, certainty FROM records WHERE class = 'assertion'")}
     caps: dict[str, list[tuple[str, str]]] = {}
+
+    # The retraction floor first: a synthesis inherits it through its inputs
+    # (fresh-eyes review, 2026-10-03: an input stored `high` whose every
+    # source is retracted must not lift the learning built on it).
+    sources_of: dict[str, list[tuple[str, str | None]]] = {}
+    for assertion_id, paper_id, status in conn.execute(
+            "SELECT y.assertion_id, y.paper_id, p.value FROM paper_yields y "
+            "LEFT JOIN paper_probes p ON p.record_id = y.paper_id AND p.field = 'publication_status' "
+            "ORDER BY y.assertion_id, y.paper_id"):
+        sources_of.setdefault(assertion_id, []).append((paper_id, status))
+    floored = set()
+    for assertion_id, sources in sources_of.items():
+        if all(status in _UNUSABLE for _, status in sources):
+            floored.add(assertion_id)
+            caps.setdefault(assertion_id, []).append(("very-low", (
+                "retraction floor (ADR-0004 A6 (d)): every yielding source is withdrawn or retracted ("
+                + ", ".join(f"{p}: {s}" for p, s in sources) + ")")))
+
+    def effective(assertion_id: str) -> int:
+        return 3 if assertion_id in floored else _RANK.get(certainty.get(assertion_id), 3)
 
     inputs: dict[str, list[str]] = {}
     for target, source in conn.execute(
@@ -80,23 +103,11 @@ def certainty_caps(conn) -> dict[str, tuple[str, str]]:
             "ORDER BY a.to_assertion_id, a.from_assertion_id"):
         inputs.setdefault(target, []).append(source)
     for target, sources in inputs.items():
-        weakest = max(_RANK.get(certainty.get(s), 3) for s in sources)
-        at_floor = [s for s in sources if _RANK.get(certainty.get(s), 3) == weakest]
+        weakest = max(effective(s) for s in sources)
+        at_floor = [s for s in sources if effective(s) == weakest]
         caps.setdefault(target, []).append((LEVELS[weakest], (
             f"synthesis cap (ADR-0004 A6 (c)): no stronger than its weakest supporting input, "
             f"{LEVELS[weakest]} ({', '.join(at_floor)})")))
-
-    sources_of: dict[str, list[tuple[str, str | None]]] = {}
-    for assertion_id, paper_id, status in conn.execute(
-            "SELECT y.assertion_id, y.paper_id, p.value FROM paper_yields y "
-            "LEFT JOIN paper_probes p ON p.record_id = y.paper_id AND p.field = 'publication_status' "
-            "ORDER BY y.assertion_id, y.paper_id"):
-        sources_of.setdefault(assertion_id, []).append((paper_id, status))
-    for assertion_id, sources in sources_of.items():
-        if all(status in _UNUSABLE for _, status in sources):
-            caps.setdefault(assertion_id, []).append(("very-low", (
-                "retraction floor (ADR-0004 A6 (d)): every yielding source is withdrawn or retracted ("
-                + ", ".join(f"{p}: {s}" for p, s in sources) + ")")))
 
     out = {}
     for assertion_id, found in caps.items():

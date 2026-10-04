@@ -91,7 +91,7 @@ def _seed_store(db_path: Path):
             disposition="fixture",
             context="qml",
             applicability=[("qml", "primary topic -- fixture"), ("qc", "uses a QC backend -- fixture")],
-            checked_against_source="2026-09-17, fixture",
+            checked_against_source="2026-09-17, fixture", reads=[("fixture", "2026-09-17", "full", "")],
         ),
     )
     insert_assertion(
