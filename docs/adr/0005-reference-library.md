@@ -980,5 +980,4 @@ that one level is the right size.
 fetches a copy into the repository.
 
 *Revisit when* the first bulk load (Sprint 6 Task J) shows how many
-probes go stale per cycle, and when a `vendor-self-claim` assertion
-(ADR-0004 A6 (f)) is upgraded for admission against interest.
+probes go stale per cycle.

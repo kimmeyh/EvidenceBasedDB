@@ -800,6 +800,7 @@ derived by the assessor, with reasons. The new computed caps are a second,
 mechanical reading beside it, never a replacement.
 
 *Revisit when* a learning is built on another learning (a cap over a
-cap), and when the first `vendor-self-claim` assertion is upgraded: the
-flag and the admission-against-interest rule (ADR-0005 A4) then meet on
-the same record.
+cap). The `vendor-self-claim` flag and the admission-against-interest
+rule (ADR-0005 A4 (e)) already meet: both assertions that carry the
+upgrade are a vendor's statement about its own system, which is where an
+admission against interest belongs.
