@@ -14,9 +14,16 @@ removed where none does.
 |---|---|
 | Customer Representative / Product Owner / Agile Coach / Scrum Master / Chief Architect / Chief Developer / Chief Test Engineer | Harold Kimmey (the team lead) |
 | Assistant Scrum Master, Architecture Development Team, Senior Test Engineers, Development Team | Claude Code (whichever model executes the task; parallel subagents allowed) |
-| Lead Developer | Claude Code top tier (Fable 5 preferred, Opus otherwise) |
-| Senior Developers | Claude Code Sonnet (subagents) |
-| Developers | Claude Code Haiku (subagents) |
+| Lead Developer | Claude Code top tier (Fable 5.1 preferred, Opus 5.5 otherwise) |
+| Senior Developers | Claude Code Sonnet 5.5 (subagents) |
+| Developers | Claude Code Haiku 4.5 (subagents) until it retires (not sooner than 2026-10-15), then Sonnet 5.5 |
+
+**Model versions are verified, not remembered (F39, permanent; first release
+Sprint 6 Task A, F40, 2026-10-03).** Each tier's model id, price, context
+window, retirement date and the date it was last checked live in
+`.claude/model_assignment_heuristics.json`, sourced from Anthropic's models
+page. This table must name the same versions; a test fails if it does not,
+and if a tier passes its retirement date with no successor.
 
 **Data-driven complement (Sprint 4 Task K, F18, 2026-09-19)**: the table
 above is static. `.claude/model_assignment_heuristics.json` records task

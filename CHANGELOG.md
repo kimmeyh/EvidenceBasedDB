@@ -25,6 +25,14 @@ this project keeps having to replace with a step.
   planning notes on F36 and F37 (2026-10-03)
 - **docs**: Sprint 6 scope selected (12 items) and `SPRINT_6_PLAN.md`
   drafted with pre-flights and decisions Q1-Q11 (2026-10-03)
+- **process**: F40, the first release of permanent item F39 (Task A, Issue
+  #55) -- each model tier in `model_assignment_heuristics.json` now names its
+  verified model, id, price, context, retirement date and the date checked,
+  from Anthropic's models page (2026-10-03): Fable 5.1, Opus 5.5, Sonnet 5.5,
+  Haiku 4.5. Haiku 4.5 retires not sooner than 2026-10-15; the Developers
+  role then moves to Sonnet 5.5, and a new trigger flags any tier within 30
+  days of retirement. The SPRINT_PLANNING.md role table no longer says
+  "Fable 5"; three guards, each proven by injection
 
 ### 2026-09-23 to 2026-09-25 (Sprint 5, PR #43, merged to develop 2026-09-27 and to main via PR #53 the same day)
 
