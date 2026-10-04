@@ -37,6 +37,12 @@ this project keeps having to replace with a step.
   assert the table, not the summary; both worked examples verified at
   source (CVQBoost's "3-8x" against table ratios of 1.7x to 83x; the
   hardware plan's "superlinear" beside its own `vars^0.75` fit)
+- **docs**: F38 (Task B, Issue #56) -- `CHECKLIST-Phase2-pre.md` back-filled
+  for Sprints 1 to 4: 45 rows checked with a verified commit or document, 5
+  left unchecked with the reason (Sprint 1's adjudication timing and median,
+  first measured in Sprint 4; Sprint 2's replaced measurement; "--no-verify
+  never used", unprovable from history; reading-level escalation, not
+  tracked anywhere)
 
 ### 2026-09-23 to 2026-09-25 (Sprint 5, PR #43, merged to develop 2026-09-27 and to main via PR #53 the same day)
 
