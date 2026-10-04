@@ -159,8 +159,8 @@ def test_copy_nonnull_omits_none_but_copies_a_real_value(db):
         "VALUES ('a1', 'assertion', 'a claim', 'source', 'N/A', '2026-09-18', 'created')"
     )
     db.execute(
-        "INSERT INTO assertion_fields (record_id, units, rounding, citation_context) "
-        "VALUES ('a1', NULL, 'nearest integer', NULL)"
+        "INSERT INTO assertion_fields (record_id, units, rounding, citation_context, derivation) "
+        "VALUES ('a1', NULL, 'nearest integer', NULL, 'extracted')"
     )
     db.commit()
     row = db.execute("SELECT * FROM assertion_fields WHERE record_id = 'a1'").fetchone()
@@ -243,8 +243,8 @@ def test_assertion_export_carries_citation_context_and_documents(db):
         "VALUES ('a1', 'assertion', 'a claim', 'a source', 'N/A', '2026-09-15', 'created')"
     )
     db.execute(
-        "INSERT INTO assertion_fields (record_id, units, rounding, citation_context) "
-        "VALUES ('a1', 'AUPRC', '4 decimal places', '\"the exact sentence making the claim\"')"
+        "INSERT INTO assertion_fields (record_id, units, rounding, citation_context, derivation) "
+        "VALUES ('a1', 'AUPRC', '4 decimal places', '\"the exact sentence making the claim\"', 'extracted')"
     )
     db.execute("INSERT INTO assertion_documents (record_id, document) VALUES ('a1', 'docs/paper/appendix.md')")
     db.commit()

@@ -113,11 +113,14 @@ def build_record(entry: dict, fetcher=None, today: str = "") -> PaperRecord:
         evidence=entry.get("evidence"), mined_by=entry.get("mined_by"), checked_against_source=entry.get("checked_against_source"),
         updated=today, updated_reason=entry.get("updated_reason") or f"{today}: added through scripts/intake.py ({kind})",
         applicability=_parse_applicability(entry.get("applicability")),
+        # ADR-0005 A4 fields 1 and 8: the collection and locator this entry
+        # came from, and how that collection cited it.
+        found_via=[(entry["found_via"], entry.get("cited_as"))] if entry.get("found_via") else [],
     )
     if citations.parse_access(access):
         md, rendered = citations.resolve(access, fetcher=fetcher or FETCHER or citations.PacedFetcher())
         provider = md.extra.get("provider")
-        if provider and not entry.get("updated_reason"):
+        if provider and md.kind == "arxiv" and not entry.get("updated_reason"):
             # Sprint 5 Task C: arXiv refused 73 of 75 paced requests and DataCite
             # answered; the render differs slightly by provider (no journal_ref),
             # so which source of record answered is part of the provenance.
@@ -126,7 +129,8 @@ def build_record(entry: dict, fetcher=None, today: str = "") -> PaperRecord:
                             citation=rendered, citation_origin="api",
                             # This citation came from citations.resolve() one line above,
                             # so it carries the door's own marker, not a self-declaration.
-                            citation_source=DERIVED_BY_DOOR, **common)
+                            citation_source=DERIVED_BY_DOOR, metadata_provider=citations.provider_of(md),
+                            **common)
     else:
         if not entry.get("id"):
             raise ValueError("a hand-origin record needs --id (nothing to derive it from)")

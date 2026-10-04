@@ -323,7 +323,16 @@ def parse_datacite(body: bytes) -> Metadata:
             break
     return Metadata(kind="doi", ident=attrs.get("doi", ""), title=title, authors=authors,
                     year=year, date=date or year, venue=attrs.get("publisher", "") or "",
-                    doi=attrs.get("doi", ""), source_url=attrs.get("url", "") or "")
+                    doi=attrs.get("doi", ""), source_url=attrs.get("url", "") or "",
+                    extra={"provider": "DataCite"})
+
+
+def provider_of(md: Metadata) -> str:
+    """Which registry answered (ADR-0005 A4 field 10, `metadata_provider`).
+    `extra["provider"]` is set only on the DataCite paths (an arXiv id
+    answered by DataCite, or a DOI Crossref did not know); otherwise the
+    kind names the registry."""
+    return md.extra.get("provider") or {"arxiv": "arXiv", "doi": "Crossref", "github": "GitHub"}.get(md.kind, md.kind)
 
 
 def fetch_doi(doi: str, fetcher: Fetcher | None = None) -> Metadata:

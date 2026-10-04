@@ -49,6 +49,19 @@ this project keeps having to replace with a step.
   ADR-0005 A4 (`publication_status`, the ten reference fields with the
   probe rule, the `read_extent` gate at `read`, `read`'s cost restated per
   Q7, the admission-against-interest rule)
+- **feat**: the migration (Task E, Issue #59) -- `store/schema.sql` gains
+  `assertion_fields.derivation`, `claim_type`, `search_scope` (every
+  assertion now has a row), `paper_fields.metadata_provider` and `coi`, and
+  the tables `paper_found_via`, `paper_reads`, `paper_probes`,
+  `source_links`; `scripts/migrate_sprint6_reference_fields.py` (dry run by
+  default, verified backup, per-piece idempotent) applied to the live store:
+  23 assertions back-filled (18 extracted, 3 synthesized, 2 project; 8
+  vendor-self-claim). The door validates the new fields and `set_tier`
+  refuses `read` without a `full` or `partial` read; the export emits them
+  plus the computed `certainty_cap` and `certainty_cap_reason`
+  (`learning-qml-no-reliable-tabular-accuracy-gain`: moderate, capped low);
+  the rebuild restores every new key and never writes the derived ones
+  back; `learnings.py` selects on `derivation`; the F47 test
 
 ### 2026-09-23 to 2026-09-25 (Sprint 5, PR #43, merged to develop 2026-09-27 and to main via PR #53 the same day)
 

@@ -27,6 +27,8 @@ import sqlite3
 from collections import defaultdict
 from pathlib import Path
 
+from store.resolvers import certainty_caps
+
 
 def _copy_nonnull(record: dict, row: sqlite3.Row, *columns: str) -> None:
     """Copy each named column from `row` into `record` under the same key,
@@ -107,7 +109,10 @@ def _fields_by_record(conn: sqlite3.Connection, table: str, columns: str, record
 
 
 def _export_assertions(conn: sqlite3.Connection, rows: list[sqlite3.Row], contexts, prerequisites) -> list[dict]:
-    fields = _fields_by_record(conn, "assertion_fields", "f.units, f.rounding, f.citation_context", "assertion")
+    fields = _fields_by_record(
+        conn, "assertion_fields",
+        "f.units, f.rounding, f.citation_context, f.derivation, f.claim_type, f.search_scope", "assertion")
+    caps = certainty_caps(conn)
     documents = _grouped(
         conn,
         "SELECT d.record_id, d.document FROM assertion_documents d "
@@ -138,6 +143,13 @@ def _export_assertions(conn: sqlite3.Connection, rows: list[sqlite3.Row], contex
             record["supports"] = supports
         if contradicts:
             record["contradicts"] = contradicts
+        if f is not None:
+            # ADR-0004 A6 (Sprint 6 Task E).
+            _copy_nonnull(record, f, "derivation", "claim_type", "search_scope")
+        if row["id"] in caps:
+            # DERIVED keys (A6 (e)): computed here from stored facts on every
+            # export; store/rebuild.py knows them and never writes them back.
+            record["certainty_cap"], record["certainty_cap_reason"] = caps[row["id"]]
         out.append(record)
     return out
 
@@ -182,7 +194,34 @@ def _export_terms(conn: sqlite3.Connection, rows: list[sqlite3.Row], contexts, p
 def _export_papers(conn: sqlite3.Connection, rows: list[sqlite3.Row], contexts, prerequisites) -> list[dict]:
     fields = _fields_by_record(
         conn, "paper_fields",
-        "f.tier, f.access, f.disposition, f.evidence, f.mined_by, f.checked_against_source", "paper",
+        "f.tier, f.access, f.disposition, f.evidence, f.mined_by, f.checked_against_source, "
+        "f.metadata_provider, f.coi", "paper",
+    )
+    # ADR-0005 A4 (Sprint 6 Task E): the reference fields' child tables.
+    found_via = _grouped(
+        conn,
+        "SELECT v.record_id, v.route, v.cited_as FROM paper_found_via v "
+        "JOIN records r ON r.id = v.record_id WHERE r.class = 'paper' ORDER BY v.record_id, v.route",
+        (), "record_id",
+    )
+    reads = _grouped(
+        conn,
+        "SELECT d.record_id, d.reader, d.read_on, d.extent, d.detail FROM paper_reads d "
+        "JOIN records r ON r.id = d.record_id WHERE r.class = 'paper' "
+        "ORDER BY d.record_id, d.read_on, d.reader, d.extent, d.detail",
+        (), "record_id",
+    )
+    probes = _grouped(
+        conn,
+        "SELECT p.record_id, p.field, p.value, p.provider, p.probed_on, p.anchor FROM paper_probes p "
+        "JOIN records r ON r.id = p.record_id WHERE r.class = 'paper' ORDER BY p.record_id, p.field",
+        (), "record_id",
+    )
+    links = _grouped(
+        conn,
+        "SELECT s.from_id AS record_id, s.to_id, s.link_type, s.evidence FROM source_links s "
+        "JOIN records r ON r.id = s.from_id WHERE r.class = 'paper' ORDER BY s.from_id, s.link_type, s.to_id",
+        (), "record_id",
     )
     applicability = _grouped(
         conn,
@@ -219,6 +258,24 @@ def _export_papers(conn: sqlite3.Connection, rows: list[sqlite3.Row], contexts, 
         y = yields.get(row["id"], [])
         if y:
             record["yields"] = y
+        if f is not None:
+            _copy_nonnull(record, f, "metadata_provider", "coi")
+        fv = found_via.get(row["id"], [])
+        if fv:
+            record["found_via"] = [{"route": v["route"], **({"cited_as": v["cited_as"]} if v["cited_as"] is not None else {})}
+                                   for v in fv]
+        rd = reads.get(row["id"], [])
+        if rd:
+            record["read_extent"] = [{"reader": d["reader"], "read_on": d["read_on"], "extent": d["extent"],
+                                      **({"detail": d["detail"]} if d["detail"] else {})} for d in rd]
+        # Each computed field under its own name, as the probe's last result
+        # (the probe rule): value, the provider that answered, and the date.
+        for p in probes.get(row["id"], []):
+            record[p["field"]] = {"value": p["value"], "provider": p["provider"], "probed_on": p["probed_on"],
+                                  **({"anchor": p["anchor"]} if p["anchor"] is not None else {})}
+        sl = links.get(row["id"], [])
+        if sl:
+            record["source_links"] = [{"type": s["link_type"], "to": s["to_id"], "evidence": s["evidence"]} for s in sl]
         out.append(record)
     return out
 

@@ -14,11 +14,14 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from store import create_store  # noqa: E402
+from store.export import export_class  # noqa: E402
 from store.ingest import (  # noqa: E402
     AssertionRecord,
     PaperRecord,
+    add_read,
     insert_assertion,
     insert_paper,
+    record_probe,
     set_tier,
     validate_paper,
 )
@@ -80,7 +83,7 @@ def test_insert_assertion_links_to_its_yielding_paper(db):
     insert_paper(db, paper)
 
     assertion = AssertionRecord(
-        id="a1", value="a claim", provenance="p1, p1", evidence_tag="N/A",
+        id="a1", value="a claim", provenance="p1, p1", evidence_tag="N/A", derivation="extracted",
         context="method", updated="2026-09-15", updated_reason="test",
     )
     insert_assertion(db, assertion, yielded_by="p1")
@@ -96,7 +99,7 @@ def test_insert_assertion_without_a_yielding_paper_still_works(db):
     a direct measurement)."""
     assertion = AssertionRecord(
         id="a1", value="a world fact", provenance="direct measurement",
-        evidence_tag="PROJ", context="world", updated="2026-09-15", updated_reason="test",
+        evidence_tag="PROJ", context="world", updated="2026-09-15", updated_reason="test", derivation="project",
     )
     insert_assertion(db, assertion)
     db.commit()
@@ -112,7 +115,7 @@ def test_insert_assertion_writes_units_rounding_and_citation_context(db):
     was accepted by the dataclass and populated by a real ingestion script
     but had no column anywhere and was silently dropped."""
     assertion = AssertionRecord(
-        id="a1", value="a claim", provenance="source", evidence_tag="N/A",
+        id="a1", value="a claim", provenance="source", evidence_tag="N/A", derivation="extracted",
         context="world", units="AUPRC", rounding="4 decimal places",
         citation_context='"the exact sentence making the claim"',
         updated="2026-09-15", updated_reason="test",
@@ -128,19 +131,25 @@ def test_insert_assertion_writes_units_rounding_and_citation_context(db):
     assert fields["citation_context"] == '"the exact sentence making the claim"'
 
 
-def test_insert_assertion_does_not_write_assertion_fields_when_all_optional_fields_are_none(db):
-    """An assertion with no units/rounding/citation_context gets no
-    assertion_fields row at all -- there is no reason to carry an
-    all-NULL row for the common case."""
+def test_insert_assertion_writes_assertion_fields_with_only_the_required_fields(db):
+    """Since ADR-0004 A6 (Sprint 6 Task E) every assertion has an
+    assertion_fields row, because `derivation` and `claim_type` are
+    required. Until then an assertion with no units/rounding/
+    citation_context got no row at all. The three optional fields stay
+    NULL, and the export still omits them."""
     assertion = AssertionRecord(
-        id="a1", value="a claim", provenance="source", evidence_tag="N/A",
+        id="a1", value="a claim", provenance="source", evidence_tag="N/A", derivation="extracted",
         context="world", updated="2026-09-15", updated_reason="test",
     )
     insert_assertion(db, assertion)
     db.commit()
 
     row = db.execute("SELECT * FROM assertion_fields WHERE record_id = 'a1'").fetchone()
-    assert row is None
+    assert (row["units"], row["rounding"], row["citation_context"]) == (None, None, None)
+    assert (row["derivation"], row["claim_type"], row["search_scope"]) == ("extracted", "positive", None)
+    exported = export_class(db, "assertion")[0]
+    assert not {"units", "rounding", "citation_context", "search_scope"} & set(exported)
+    assert (exported["derivation"], exported["claim_type"]) == ("extracted", "positive")
 
 
 def test_insert_assertion_writes_documents_without_requiring_assertion_fields(db):
@@ -150,15 +159,16 @@ def test_insert_assertion_writes_documents_without_requiring_assertion_fields(db
     document citation could be attached. An assertion with ONLY a document
     and no units/rounding/citation_context must still be able to record it."""
     assertion = AssertionRecord(
-        id="a1", value="a claim", provenance="source", evidence_tag="N/A",
+        id="a1", value="a claim", provenance="source", evidence_tag="N/A", derivation="extracted",
         context="world", documents=["docs/paper/appendix.md"],
         updated="2026-09-15", updated_reason="test",
     )
     insert_assertion(db, assertion)
     db.commit()
 
-    assert db.execute("SELECT * FROM assertion_fields WHERE record_id = 'a1'").fetchone() is None
-    documents = [r["document"] for r in db.execute("SELECT document FROM assertion_documents WHERE record_id = 'a1'")]
+    fields = db.execute("SELECT units, rounding, citation_context FROM assertion_fields WHERE record_id = 'a1'").fetchone()
+    assert tuple(fields) == (None, None, None)
+    documents =[r["document"] for r in db.execute("SELECT document FROM assertion_documents WHERE record_id = 'a1'")]
     assert documents == ["docs/paper/appendix.md"]
 
 
@@ -167,7 +177,7 @@ def test_insert_assertion_writes_supports_and_contradicts(db):
         insert_assertion(
             db,
             AssertionRecord(
-                id=rid, value=f"claim {rid}", provenance="source", evidence_tag="N/A",
+                id=rid, value=f"claim {rid}", provenance="source", evidence_tag="N/A", derivation="extracted",
                 context="world", updated="2026-09-15", updated_reason="test",
             ),
         )
@@ -177,7 +187,7 @@ def test_insert_assertion_writes_supports_and_contradicts(db):
     insert_assertion(
         db,
         AssertionRecord(
-            id="a4", value="claim a4", provenance="source", evidence_tag="N/A",
+            id="a4", value="claim a4", provenance="source", evidence_tag="N/A", derivation="extracted",
             context="world", supports=["a1"], contradicts=["a2"],
             updated="2026-09-15", updated_reason="test",
         ),
@@ -227,6 +237,7 @@ def test_set_tier_refuses_read_without_checked_against_source(db):
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
         applicability=[("method", "fixture rationale -- test")],
     ))
+    add_read(db, "p1", "test", "2026-09-19", "full")  # the read_extent gate passes; this rule is next
     with pytest.raises(ValueError, match="checked_against_source"):
         set_tier(db, "p1", "read")
     tier = db.execute("SELECT tier FROM paper_fields WHERE record_id = 'p1'").fetchone()["tier"]
@@ -239,9 +250,82 @@ def test_set_tier_promotes_to_read_when_checked_against_source_is_supplied(db):
         context="method", value="a paper", updated="2026-09-15", updated_reason="test",
         applicability=[("method", "fixture rationale -- test")],
     ))
+    add_read(db, "p1", "test", "2026-09-19", "full")
     set_tier(db, "p1", "read", checked_against_source="2026-09-19, test, read in full")
     row = db.execute("SELECT tier, checked_against_source FROM paper_fields WHERE record_id = 'p1'").fetchone()
     assert (row["tier"], row["checked_against_source"]) == ("read", "2026-09-19, test, read in full")
+
+
+def _screened(db) -> None:
+    insert_paper(db, PaperRecord(
+        id="p1", tier="screened", citation_origin="api", citation="Cite", citation_source="replay",
+        access="arXiv:0000.00001", disposition="why", context="method", value="a paper",
+        updated="2026-10-03", updated_reason="test", applicability=[("method", "fixture rationale -- test")],
+    ))
+
+
+@pytest.mark.parametrize("extent", ["grep", "subagent", "summary", "abstract", "html-render"])
+def test_set_tier_read_refuses_a_read_that_does_not_qualify_regression(db, extent):
+    """ADR-0005 A4 (c), decisions Q3 and Q7 (Sprint 6 Task E): `read` needs
+    a 'full' or 'partial' read. One case per refused extent: grep,
+    subagent and summary as the plan requires, abstract and html-render
+    as A4 adds. Proven to fail by injection: with the read_extent gate
+    removed from set_tier, all five promotions went through and every case
+    went red."""
+    _screened(db)
+    add_read(db, "p1", "Claude", "2026-10-03", extent)
+    with pytest.raises(ValueError, match="read_extent"):
+        set_tier(db, "p1", "read", checked_against_source="2026-10-03, Claude")
+    assert db.execute("SELECT tier FROM paper_fields WHERE record_id = 'p1'").fetchone()["tier"] == "screened"
+
+
+def test_set_tier_read_refuses_when_no_read_is_recorded(db):
+    _screened(db)
+    with pytest.raises(ValueError, match="not recorded"):
+        set_tier(db, "p1", "read", checked_against_source="2026-10-03, Claude")
+
+
+def test_set_tier_read_accepts_a_named_partial_read_beside_a_subagent(db):
+    """Sprint 5's pilot shape: a subagent extracted, the lead checked named pages."""
+    _screened(db)
+    add_read(db, "p1", "read-only agent", "2026-10-03", "subagent")
+    add_read(db, "p1", "Claude", "2026-10-03", "partial", "pp.3-5, Table 2")
+    set_tier(db, "p1", "read", checked_against_source="2026-10-03, Claude, pp.3-5 directly")
+    assert db.execute("SELECT tier FROM paper_fields WHERE record_id = 'p1'").fetchone()["tier"] == "read"
+
+
+def test_partial_read_must_say_what_was_read(db):
+    _screened(db)
+    with pytest.raises(ValueError, match="partial"):
+        add_read(db, "p1", "Claude", "2026-10-03", "partial")
+
+
+def test_assertion_door_refuses_a_missing_derivation_and_an_unscoped_absence(db):
+    """ADR-0004 A6 (a) and (f): derivation is the caller's statement, and
+    an absence claim needs its search scope."""
+    base = dict(id="a1", value="v", provenance="p", evidence_tag="N/A", context="world",
+                updated="2026-10-03", updated_reason="test")
+    with pytest.raises(ValueError, match="derivation"):
+        insert_assertion(db, AssertionRecord(**base))
+    with pytest.raises(ValueError, match="search_scope"):
+        insert_assertion(db, AssertionRecord(**base, derivation="extracted", claim_type="absence"))
+    insert_assertion(db, AssertionRecord(**base, derivation="extracted", claim_type="absence",
+                                         search_scope="arXiv full text for 'fault tolerance', 2026-10-03"))
+
+
+def test_probe_rows_follow_the_probe_rule(db):
+    """ADR-0005 A4 (b): one row per computed field, the newer measurement
+    replacing the older; a hand-recorded status names its anchor; the
+    status vocabulary is the four Q1 values."""
+    _screened(db)
+    record_probe(db, "p1", "publication_status", "preprint", "arXiv", "2026-10-01")
+    record_probe(db, "p1", "publication_status", "withdrawn", "arXiv", "2026-10-03")
+    rows = db.execute("SELECT value, probed_on FROM paper_probes WHERE record_id = 'p1'").fetchall()
+    assert [tuple(r) for r in rows] == [("withdrawn", "2026-10-03")]
+    with pytest.raises(ValueError, match="anchor"):
+        record_probe(db, "p1", "publication_status", "retracted", "hand", "2026-10-03")
+    with pytest.raises(ValueError, match="publication_status"):
+        record_probe(db, "p1", "publication_status", "superseded", "Crossref", "2026-10-03")
 
 
 def test_set_tier_to_screened_requires_applicability_regression(db):

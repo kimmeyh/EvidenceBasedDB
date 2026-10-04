@@ -31,14 +31,21 @@ from pathlib import Path
 
 from store import create_store
 from store.export import regenerate
-from store.ingest import HAND_MARKER, REPLAY, AssertionRecord, PaperRecord, insert_assertion, insert_paper
+from store.ingest import (HAND_MARKER, REPLAY, AssertionRecord, PaperRecord, add_source_link, insert_assertion,
+                          insert_paper, record_probe)
 
 EXPORT_FILES = ("contexts.json", "assertions.json", "acronyms.json", "terms.json", "papers.json")
 
 _SPINE = {"id", "class", "value", "provenance", "evidence_tag", "contexts", "certainty",
           "certainty_reasons", "fidelity", "reading_level", "prerequisites", "updated", "updated_reason"}
+# DERIVED keys: computed by store/export.py from stored facts on every export
+# (ADR-0004 A6 (e)). Known, so the rebuild accepts them; never written back,
+# so a rebuilt store recomputes them and the round trip stays byte-identical.
+DERIVED_KEYS = {"assertion": {"certainty_cap", "certainty_cap_reason"}}
+PROBE_KEYS = ("publication_status", "version_of", "access_status", "affiliations")
 KNOWN_KEYS = {
-    "assertion": _SPINE | {"units", "rounding", "citation_context", "documents", "supports", "contradicts"},
+    "assertion": _SPINE | {"units", "rounding", "citation_context", "documents", "supports", "contradicts",
+                           "derivation", "claim_type", "search_scope"} | DERIVED_KEYS["assertion"],
     "acronym": _SPINE | {"expansion", "plain_definition", "visual"},
     "term": _SPINE | {"plain_definition", "visual", "see_also"},
     # A paper's spine never carries certainty/fidelity/reading_level/
@@ -46,7 +53,9 @@ KNOWN_KEYS = {
     # NOT known keys for papers and would be refused rather than lost.
     "paper": {"id", "class", "value", "provenance", "evidence_tag", "contexts", "updated", "updated_reason",
               "tier", "citation", "access", "disposition", "evidence", "mined_by",
-              "checked_against_source", "applicability", "yields"},
+              "checked_against_source", "applicability", "yields",
+              # ADR-0005 A4 (Sprint 6 Task E)
+              "metadata_provider", "coi", "found_via", "read_extent", "source_links", *PROBE_KEYS},
 }
 _HAND_FROM = re.compile(re.escape(HAND_MARKER) + r"\s+([^)]*)\)")
 
@@ -97,6 +106,9 @@ def _paper_from_export(r: dict) -> PaperRecord:
         checked_against_source=r.get("checked_against_source"),
         updated=r["updated"], updated_reason=r["updated_reason"],
         applicability=[(a["context"], a["rationale"]) for a in r.get("applicability", [])],
+        metadata_provider=r.get("metadata_provider"), coi=r.get("coi"),
+        found_via=[(v["route"], v.get("cited_as")) for v in r.get("found_via", [])],
+        reads=[(d["reader"], d["read_on"], d["extent"], d.get("detail", "")) for d in r.get("read_extent", [])],
     )
 
 
@@ -130,6 +142,8 @@ def rebuild(export_dir: str | Path, db_path: str | Path, check_local_paths: bool
                 rounding=r.get("rounding"), documents=r.get("documents", []), certainty=r.get("certainty"),
                 certainty_reasons=r.get("certainty_reasons"), fidelity=r.get("fidelity"),
                 reading_level=r.get("reading_level"), updated=r["updated"], updated_reason=r["updated_reason"],
+                derivation=r.get("derivation", ""), claim_type=r.get("claim_type", "positive"),
+                search_scope=r.get("search_scope"),
             ))
             _extra_contexts(conn, r)
         for r in data["acronyms.json"] + data["terms.json"]:
@@ -152,6 +166,10 @@ def rebuild(export_dir: str | Path, db_path: str | Path, check_local_paths: bool
             _extra_contexts(conn, r)
             for assertion_id in r.get("yields", []):
                 conn.execute("INSERT INTO paper_yields (paper_id, assertion_id) VALUES (?, ?)", (r["id"], assertion_id))
+            for key in PROBE_KEYS:
+                if key in r:
+                    p = r[key]
+                    record_probe(conn, r["id"], key, p["value"], p["provider"], p["probed_on"], p.get("anchor"))
 
         # Cross-record links, now that every record exists.
         for r in data["assertions.json"]:
@@ -159,6 +177,9 @@ def rebuild(export_dir: str | Path, db_path: str | Path, check_local_paths: bool
                 for target in r.get(relation, []):
                     conn.execute("INSERT INTO assertion_relations (from_assertion_id, to_assertion_id, relation) "
                                  "VALUES (?, ?, ?)", (r["id"], target, relation))
+        for r in data["papers.json"]:
+            for link in r.get("source_links", []):
+                add_source_link(conn, r["id"], link["to"], link["type"], link["evidence"])
         for r in data["terms.json"]:
             for target in r.get("see_also", []):
                 conn.execute("INSERT INTO term_see_also (record_id, see_also_id) VALUES (?, ?)", (r["id"], target))
