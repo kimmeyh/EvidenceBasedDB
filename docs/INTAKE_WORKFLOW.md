@@ -390,3 +390,25 @@ wording for `seen` records, and remove the clause at each promotion.
 Implemented in `store.ingest.set_tier()`, the one sanctioned tier-change
 path, which also appends the removal to `updated_reason`; guarded by
 `tests/test_ingest.py::test_promotion_removes_not_yet_screened_regression`.
+
+## 15. Added 2026-10-03: assert the table, not the summary (Sprint 6 Task C, F43)
+
+A source's prose summary of its own table is a second claim, and it can be
+wrong while the table is right. When the two disagree, the assertion states
+what the TABLE shows, and its `certainty_reasons` name the mismatch, so the
+summary's wording never enters the store as if it were the measurement.
+Both worked examples were checked against their sources on 2026-10-03:
+
+- **FourierWall2, `docs/CVQBoost_Findings.md`, section 11.** The takeaway
+  says CVQBoost's "in-segment train-test gap is 3-8x XGBoost's on every
+  `target` cell". The table above it gives gaps of 0.083 against 0.001
+  (energy, 83x), 0.389 against 0.051 (maintenance, 7.6x), 0.212 against
+  0.026 (oil and gas, 8.2x) and 0.135 against 0.080 (telecom, 1.7x). The
+  range is 1.7x to 83x, and one cell is below 3x.
+- **hsbc-quantum-fraud-2026, `docs/HARDWARE_PLAN_PHASE_2.md`, at commit
+  `a6c3453`.** The text says "Cost is also superlinear in variables"; the
+  same paragraph's two-factor fit is roughly `vars^0.75 x levels^0.52`. An
+  exponent of 0.75 is sublinear.
+
+The fix to a source's own wording belongs to that source (for the hsbc
+repository, a session working there; this repository never writes to it).

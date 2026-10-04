@@ -33,6 +33,10 @@ this project keeps having to replace with a step.
   role then moves to Sonnet 5.5, and a new trigger flags any tier within 30
   days of retirement. The SPRINT_PLANNING.md role table no longer says
   "Fable 5"; three guards, each proven by injection
+- **docs**: F43 (Task C, Issue #57) -- `INTAKE_WORKFLOW.md` section 15:
+  assert the table, not the summary; both worked examples verified at
+  source (CVQBoost's "3-8x" against table ratios of 1.7x to 83x; the
+  hardware plan's "superlinear" beside its own `vars^0.75` fit)
 
 ### 2026-09-23 to 2026-09-25 (Sprint 5, PR #43, merged to develop 2026-09-27 and to main via PR #53 the same day)
 
