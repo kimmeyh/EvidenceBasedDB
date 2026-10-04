@@ -923,10 +923,13 @@ deterministic and must build offline, so a resolver cannot be called at
 export time. Each computed field is therefore kept as the last result of
 its probe, with the probe date and the provider that answered. That row
 is a dated measurement, not a copy of the fact: the resolver stays
-authoritative, and `scripts/refresh_citations.py` re-runs the probes each
-delivery cycle (Phase 1.3), reporting every change. A field whose last
-probe is older than one cycle is reported as stale, never silently
-trusted.
+authoritative, and `scripts/probe_reference_fields.py` re-runs the
+probes. A probe that gets no answer (a rate limit, a server error, no
+connection) records nothing and keeps the last measurement; a probe never
+turns a recorded withdrawal or retraction back into `preprint` or
+`published`. Not built as of this date, and put to the team lead at
+Sprint 6 Manual Validation: running the probes each delivery cycle
+(Phase 1.3), and reporting a probe older than one cycle as stale.
 
 *(c) How far a source was read (field 2; decisions Q3 and Q7).* The
 vocabulary is `full | partial: <what> | abstract | html-render | summary
