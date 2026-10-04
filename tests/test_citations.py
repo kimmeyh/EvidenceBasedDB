@@ -401,3 +401,48 @@ def test_doi_is_registered_returns_true_on_transport_failure():
         raise socket.timeout("timed out")
 
     assert citations.doi_is_registered("10.1000/x", fetcher=unreachable) is True
+
+
+# ---------------------------------------------------------------- GitHub token (Sprint 6 Task K, F35)
+
+def test_github_requests_carry_the_token_and_nothing_else_does_regression(monkeypatch):
+    """The token goes into the Authorization header of api.github.com
+    requests only. Proven to fail by injection: with the header line in
+    default_fetcher removed, the first assertion went red; with the URL
+    check removed, the arXiv request carried the token and the second did."""
+    monkeypatch.setenv("GITHUB_TOKEN", "tok-FIXTURE-123")
+    monkeypatch.delenv("GH_TOKEN", raising=False)
+    seen = {}
+
+    def fake_open(req, timeout):
+        seen[req.full_url] = req.get_header("Authorization")
+        return _Resp(b"{}")
+
+    citations.default_fetcher(citations.GITHUB_API + "owner/name", "application/json", _open=fake_open)
+    citations.default_fetcher("https://export.arxiv.org/x", "application/atom+xml", _open=fake_open)
+    assert seen[citations.GITHUB_API + "owner/name"] == "Bearer tok-FIXTURE-123"
+    assert seen["https://export.arxiv.org/x"] is None
+
+
+def test_without_a_token_github_requests_stay_unauthenticated(monkeypatch):
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+    monkeypatch.delenv("GH_TOKEN", raising=False)
+    seen = []
+    citations.default_fetcher(citations.GITHUB_API + "o/n", "application/json",
+                              _open=lambda req, timeout: seen.append(req.get_header("Authorization")) or _Resp(b"{}"))
+    assert seen == [None] and citations.github_token() is None
+
+
+def test_the_token_never_appears_in_a_failure(monkeypatch):
+    """A refused request's exception must not carry the credential (ADR-0002:
+    values are never logged)."""
+    import urllib.error
+    monkeypatch.setenv("GH_TOKEN", "tok-FIXTURE-456")
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+
+    def refused(req, timeout):
+        raise urllib.error.HTTPError(req.full_url, 401, "Bad credentials", {}, None)
+
+    with pytest.raises(urllib.error.HTTPError) as err:
+        citations.default_fetcher(citations.GITHUB_API + "o/n", "application/json", _open=refused)
+    assert "tok-FIXTURE-456" not in str(err.value) and "tok-FIXTURE-456" not in repr(err.value)

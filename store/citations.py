@@ -34,6 +34,7 @@ it; `default_fetcher` is the only function here that touches a socket.
 from __future__ import annotations
 
 import json
+import os
 import re
 import time
 import urllib.error
@@ -132,6 +133,18 @@ _sleep = time.sleep          # module attributes so tests can stub the wait
 _monotonic = time.monotonic  # and the clock PacedFetcher measures against
 
 
+def github_token() -> str | None:
+    """A GitHub token from the environment (GITHUB_TOKEN, then GH_TOKEN), or
+    None. Read per request, so a run started without one stays
+    unauthenticated rather than failing. The caller sets it, for example
+    from `gh auth token`; this module never reads a credential file."""
+    for name in ("GITHUB_TOKEN", "GH_TOKEN"):
+        value = (os.environ.get(name) or "").strip()
+        if value:
+            return value
+    return None
+
+
 def default_fetcher(url: str, accept: str, _open=None) -> bytes:
     """GET with the plain User-Agent, retrying on transient refusals.
 
@@ -143,7 +156,14 @@ def default_fetcher(url: str, accept: str, _open=None) -> bytes:
     any other failure propagates at once.
     """
     _open = _open or urllib.request.urlopen
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": accept})
+    headers = {"User-Agent": USER_AGENT, "Accept": accept}
+    token = github_token() if url.startswith(GITHUB_API) else None
+    if token:
+        # Sprint 6 Task K (F35): 5,000 requests per hour against 60. The token
+        # goes into this one header and nowhere else: never into a URL, a log
+        # line, an exception or the store.
+        headers["Authorization"] = f"Bearer {token}"
+    req = urllib.request.Request(url, headers=headers)
     for attempt, wait in enumerate((*RETRY_SLEEPS_S, None)):
         try:
             with _open(req, timeout=30) as resp:
