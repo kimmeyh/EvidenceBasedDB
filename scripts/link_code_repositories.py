@@ -121,12 +121,27 @@ def main(argv: list[str] | None = None) -> int:
                     problems.append(f"{path.name}: {note['repo']} did not resolve ({str(ex)[:120]})")
                     continue
                 existing = record.id
-                if apply:
-                    insert_paper(conn, record)
-                counts["new repo records"] += 1
+                # GitHub answers with the CANONICAL owner/name, so two notes
+                # with different URLs (a rename, a redirect, a case change) can
+                # derive the same record id (Task K re-run, 2026-10-04).
+                if conn.execute("SELECT 1 FROM records WHERE id = ?", (existing,)).fetchone():
+                    if apply and not conn.execute("SELECT 1 FROM paper_found_via WHERE record_id = ? AND route = ?",
+                                                  (existing, route)).fetchone():
+                        add_found_via(conn, existing, route, note["repo_url"])
+                    if conn.execute("SELECT 1 FROM source_links WHERE from_id = ? AND to_id = ? AND link_type = "
+                                    "'code-of'", (existing, paper)).fetchone():
+                        counts["already linked"] += 1
+                        continue
+                else:
+                    if apply:
+                        insert_paper(conn, record)
+                    counts["new repo records"] += 1
             elif apply and not conn.execute("SELECT 1 FROM paper_found_via WHERE record_id = ? AND route = ?",
                                             (existing, route)).fetchone():
                 add_found_via(conn, existing, route, note["repo_url"])
+            if existing == paper:
+                problems.append(f"{path.name}: {note['repo']} resolves to the paper's own record {paper}; not linked")
+                continue
             if apply:
                 add_source_link(conn, existing, paper, "code-of", note["evidence"])
                 conn.commit()

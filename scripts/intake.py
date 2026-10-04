@@ -58,6 +58,24 @@ from store.ingest import (  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 FETCHER = None  # tests inject; the real run paces arXiv
+_PACER: citations.PacedFetcher | None = None
+
+
+def _fetcher():
+    """FETCHER if a test injected one, else ONE PacedFetcher for the whole run.
+
+    Sprint 6 Task J (2026-10-04): this used to be `citations.PacedFetcher()`
+    at each call site, a new pacer per entry. A new pacer remembers no
+    previous request, so it never waited: since Sprint 4 every manifest run
+    sent arXiv requests back to back. 684 entries went out in 10 minutes,
+    against the team lead's 6 s spacing, and the 429s of 2026-10-03 most
+    likely came from the same defect."""
+    global _PACER
+    if FETCHER is not None:
+        return FETCHER
+    if _PACER is None:
+        _PACER = citations.PacedFetcher()
+    return _PACER
 
 # Sprint 6 Task J: with output redirected to a file, Windows encodes stdout as
 # cp1252 and the first author named with a character outside it ("ś")
@@ -127,7 +145,7 @@ def build_record(entry: dict, fetcher=None, today: str = "") -> PaperRecord:
         reads=[(r[0], r[1], r[2], r[3] if len(r) > 3 else "") for r in entry.get("reads", [])],
     )
     if citations.parse_access(access):
-        md, rendered = citations.resolve(access, fetcher=fetcher or FETCHER or citations.PacedFetcher())
+        md, rendered = citations.resolve(access, fetcher=fetcher or _fetcher())
         provider = md.extra.get("provider")
         if provider and md.kind == "arxiv" and not entry.get("updated_reason"):
             # Sprint 5 Task C: arXiv refused 73 of 75 paced requests and DataCite
@@ -196,7 +214,7 @@ def verify(conn, record_id: str, fetcher=None) -> list[tuple[str, bool, str]]:
     parsed = citations.parse_access(r["access"])
     if parsed:
         try:
-            md, rendered = citations.resolve(r["access"], fetcher=fetcher or FETCHER or citations.PacedFetcher())
+            md, rendered = citations.resolve(r["access"], fetcher=fetcher or _fetcher())
             checks.append(("citation matches the source of record", rendered == r["provenance"],
                            "SAME" if rendered == r["provenance"] else f"DIFFERS: {rendered[:120]}"))
             checks.append(("title matches the source of record", md.title == r["value"], md.title[:80]))

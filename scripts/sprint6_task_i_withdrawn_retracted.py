@@ -66,7 +66,9 @@ def enter(conn, entry: dict, today: str, apply: bool) -> str:
     rid = present(conn, kind, ident)
     if rid:
         return rid
-    record = intake.build_record(entry, fetcher=citations.PacedFetcher(), today=today)
+    # The run's ONE pacer (intake._fetcher()), shared with main()'s lookups
+    # below: a new PacedFetcher per call never waits (Task J, 2026-10-04).
+    record = intake.build_record(entry, fetcher=intake._fetcher(), today=today)
     if apply:
         insert_paper(conn, record)
     return record.id
@@ -79,10 +81,15 @@ def main(argv: list[str] | None = None) -> int:
     if apply:
         backup_before_write(DB_PATH, "sprint6 task I withdrawn and retracted")
     conn = connect(DB_PATH)
-    fetcher = citations.PacedFetcher()
+    fetcher = intake._fetcher()
     try:
         for ident, folder, successor in WITHDRAWN:
-            got = _arxiv_entry(ident, fetcher)
+            try:
+                got = _arxiv_entry(ident, fetcher)
+            except Exception as ex:  # noqa: BLE001 -- a withdrawal shows only in arXiv's record; report, never guess
+                print(f"REPORT arXiv:{ident}: arXiv did not answer ({str(ex)[:80]}); nothing written. "
+                      "DataCite cannot show a withdrawal, so this id waits for arXiv")
+                continue
             if got is None:
                 print(f"REPORT arXiv:{ident}: arXiv returned no entry; nothing written")
                 continue

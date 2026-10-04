@@ -235,3 +235,32 @@ def test_verify_reports_a_source_it_cannot_reach_rather_than_passing(store):
     assert proc.returncode == 1
     assert "FAIL  citation matches the source of record" in proc.stdout
     assert "could not resolve" in proc.stdout
+
+
+def _atom_for(ident: str) -> bytes:
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:arxiv="http://arxiv.org/schemas/atom">
+<entry><id>http://arxiv.org/abs/{ident}v1</id><title>A title for {ident}</title>
+<published>2024-01-02T00:00:00Z</published><updated>2024-01-02T00:00:00Z</updated>
+<author><name>Ada Lovelace</name></author></entry></feed>""".encode()
+
+
+def test_one_run_shares_one_pacer_so_arxiv_requests_are_spaced_regression(monkeypatch):
+    """Sprint 6 Task J (2026-10-04): build_record made a NEW PacedFetcher per
+    entry, a new pacer never waits, and 684 entries went to arXiv in 10
+    minutes against the team lead's 6 s spacing. Proven to fail by
+    injection: with _fetcher() returning a new PacedFetcher on each call, no
+    wait was recorded between the two entries."""
+    import importlib.util
+    from store import citations
+    spec = importlib.util.spec_from_file_location("intake_pacing", ROOT / "scripts" / "intake.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    waits, clock = [], [100.0]
+    monkeypatch.setattr(citations, "_sleep", lambda s: waits.append(round(s, 3)))
+    monkeypatch.setattr(citations, "_monotonic", lambda: clock[0])
+    monkeypatch.setattr(citations, "default_fetcher",
+                        lambda url, accept: _atom_for(url.split("id_list=")[1]))
+    for ident in ("2401.00001", "2401.00002"):
+        mod.build_record({"access": f"arXiv:{ident}", "context": "qml", "disposition": "test"}, today="2026-10-04")
+    assert waits == [citations.ARXIV_MIN_INTERVAL_S], f"arXiv requests in one run must be paced; waits were {waits}"

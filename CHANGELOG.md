@@ -125,6 +125,26 @@ this project keeps having to replace with a step.
   arXiv failure (any HTTP code, timeout, bad feed) goes to DataCite, in the
   door and in the probes; tests proven by injection. `intake.py` writes its
   output as UTF-8 (an author name outside cp1252 stopped the sample dry run)
+- **feat**: F32 bulk load complete (Task J, Issue #64) -- 1,402 of 1,403
+  entries in at `seen` (1,810 papers in the store as of 2026-10-04);
+  `2403.07059`'s earlier 404 was transient; 1 refused for the entry itself
+  (`2108.0131`, malformed in `QMLPapers/2021/manifest.tsv`); 34 second
+  `found_via` rows on papers already present
+- **fix**: arXiv requests were NEVER paced between intake entries (Task J,
+  2026-10-04) -- `intake.py` built a new `PacedFetcher` per entry, and a new
+  pacer never waits. Present since Sprint 4 (64d067f). The resumed load sent
+  684 requests in 10 minutes against the team lead's 6 s instruction, and
+  the 429s of 2026-10-03 most likely had the same cause. One pacer per run
+  now (`_fetcher()`), in intake and in Task I's script; test proven by
+  injection. arXiv refused again after the burst, so Task I waits 2 hours
+- **feat**: F35 complete (Task K, Issue #65) -- 105 of the 135 repository
+  notes linked (`code-of`, with the paper's sentence); 30 reported: 23
+  repositories return HTTP 404 (most are URLs truncated by the note
+  extractor), 6 notes are not GitHub links or are malformed, 1 paper is the
+  malformed `2108.0131`. Two door fixes found on the way: GitHub answers a
+  repository's canonical name, so two notes can share a record; and
+  `parse_access` read `github.com/<owner>/arXiv-2502.18361-...` as an arXiv
+  id (test proven by injection)
 - **fix**: the F47 test ignored case and flagged "NOT upgraded for admission
   against interest" on the record F47 names as not qualifying; now
   case-sensitive and never after NOT, with that sentence in its test

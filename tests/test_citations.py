@@ -491,3 +491,13 @@ def test_an_arxiv_404_also_goes_to_datacite(monkeypatch):
             raise _http_error(404)
         return DATACITE_ARXIV_JSON
     assert citations.fetch_arxiv_batch(["2303.05509"], fetcher=fetcher)["2303.05509"].extra["provider"] == "DataCite"
+
+
+def test_an_arxiv_id_inside_a_repository_name_is_the_repository_regression():
+    """Sprint 6 Task K: the door read this repository URL as arXiv:2502.18361
+    and resolved it to the paper it belongs to. Proven to fail by injection:
+    with the inside-repo check removed, parse_access returned ("arxiv", ...)."""
+    url = "https://github.com/salvatore-lorenzo/arXiv-2502.18361-QELMWITNESS"
+    assert citations.parse_access(url) == ("github", "salvatore-lorenzo/arXiv-2502.18361-QELMWITNESS")
+    assert citations.parse_access("arXiv:2502.18361") == ("arxiv", "2502.18361")
+    assert citations.parse_access("https://arxiv.org/abs/2502.18361") == ("arxiv", "2502.18361")

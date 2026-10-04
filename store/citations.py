@@ -122,12 +122,16 @@ def parse_access(access: str) -> tuple[str, str] | None:
     m = _DOI.search(searchable)
     if m:
         return ("doi", m.group(1).rstrip("."))
+    gh = _GITHUB.search(searchable)
     m = _ARXIV_ID.search(searchable)
-    if m and ("arxiv" in searchable.lower() or "/abs/" in searchable):
+    # An arXiv id INSIDE a GitHub repository name is part of that name
+    # (github.com/salvatore-lorenzo/arXiv-2502.18361-QELMWITNESS; Sprint 6
+    # Task K, 2026-10-04): read first as arXiv, it resolved to the paper.
+    inside_repo = bool(gh and m and gh.start() <= m.start() < gh.end())
+    if m and not inside_repo and ("arxiv" in searchable.lower() or "/abs/" in searchable):
         return ("arxiv", m.group(1))
-    m = _GITHUB.search(searchable)
-    if m:
-        return ("github", f"{m.group(1)}/{m.group(2)}")  # Sprint 4 Task G: a repository is a source of record too
+    if gh:
+        return ("github", f"{gh.group(1)}/{gh.group(2)}")  # Sprint 4 Task G: a repository is a source of record too
     return None
 
 
