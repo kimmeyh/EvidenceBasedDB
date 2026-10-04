@@ -78,7 +78,7 @@ this project keeps having to replace with a step.
   12 papers at `read` from `checked_against_source`; `coi` (347) and
   `read_extent` below `read` (14) queued, not guessed
 - **feat**: F41, the Cyc and Fourier Wall package without the CVQBoost
-  findings (Task G, Issue #62) -- `manifests/sprint6_f41_cyc_sources.json`
+  findings (Task G, Issue #61) -- `manifests/sprint6_f41_cyc_sources.json`
   (10 Cyc and repository sources plus the hardware plan, pinned at hsbc
   `a6c3453`; 11 written, 0 refused) and
   `scripts/sprint6_task_g_cyc_and_facts.py` (35 assertions, the six CVQBoost
@@ -86,7 +86,7 @@ this project keeps having to replace with a step.
   decision 3's certainty changes; decision 4.1's `method` row found already
   present); `INTAKE_WORKFLOW.md` section 16, appended after the manifest ran
   (the order slip is stated in the section)
-- **docs**: F42, the two Cyc research documents (Task H, Issue #63) --
+- **docs**: F42, the two Cyc research documents (Task H, Issue #62; commit 39b179e's subject says #63 in error) --
   `docs/research/2026-09-28_F42_*`; the dated amendment appended to
   `cyc-knowledge-representation.md`; its "Generalization" heading fixed and
   the `-isation` pair added to `scripts/us_english_fix.py`, which now
@@ -110,6 +110,8 @@ this project keeps having to replace with a step.
   duplicates across folders, 3 hand path, 0 malformed); the three hand-path
   rows entered from their page 1 (`manifests/qmlpapers_nonarxiv.json`: Beer
   et al. by its printed DOI, Aaronson and Zhang-Ni hand-transcribed)
+- **fix**: Q11 (Task L, Issue #66) -- `du-2024` citation refreshed to its Scientific
+  Reports publication (`refresh_citations.py --apply`, verified backup)
 - **fix**: the F47 test ignored case and flagged "NOT upgraded for admission
   against interest" on the record F47 names as not qualifying; now
   case-sensitive and never after NOT, with that sentence in its test
