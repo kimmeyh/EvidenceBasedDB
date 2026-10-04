@@ -501,3 +501,37 @@ def test_an_arxiv_id_inside_a_repository_name_is_the_repository_regression():
     assert citations.parse_access(url) == ("github", "salvatore-lorenzo/arXiv-2502.18361-QELMWITNESS")
     assert citations.parse_access("arXiv:2502.18361") == ("arxiv", "2502.18361")
     assert citations.parse_access("https://arxiv.org/abs/2502.18361") == ("arxiv", "2502.18361")
+
+
+def test_an_arxiv_id_beside_a_repository_counts_in_either_order():
+    gh = "https://github.com/x/arXiv-2502.18361-Q"
+    assert citations.parse_access(f"{gh} | arXiv:2401.00001") == ("arxiv", "2401.00001")
+    assert citations.parse_access(f"arXiv:2401.00001 | {gh}") == ("arxiv", "2401.00001")
+
+
+def test_a_200_that_is_not_a_feed_goes_to_datacite_regression(monkeypatch):
+    """Sprint 6 Phase 5 review: ET.ParseError is a SyntaxError, not a
+    ValueError, so an HTML body from arXiv escaped the fallback. Proven to
+    fail by injection: with ARXIV_FAILURES back to (OSError, ValueError),
+    the ParseError propagated."""
+    monkeypatch.setattr(citations, "_sleep", lambda s: None)
+
+    def fetcher(url, accept):
+        return b"<html><body>rate limited" if "export.arxiv.org" in url else DATACITE_ARXIV_JSON
+    assert citations.fetch_arxiv_batch(["2303.05509"], fetcher=fetcher)["2303.05509"].extra["provider"] == "DataCite"
+
+
+def test_every_request_that_lands_on_arxiv_is_paced_regression(monkeypatch):
+    """Team lead, 2026-10-04: 'space out any other requests to arxiv'. The
+    API, the site and an arXiv DOI at doi.org share one 6 s clock; other
+    hosts are not paced. Proven to fail by injection: with the pacer back
+    to export.arxiv.org only, the arxiv.org/abs request went out unpaced."""
+    waits, clock = [], [100.0]
+    monkeypatch.setattr(citations, "_sleep", lambda s: waits.append(s))
+    monkeypatch.setattr(citations, "_monotonic", lambda: clock[0])
+    pacer = citations.PacedFetcher(inner=lambda u, a: b"")
+    pacer("https://export.arxiv.org/api/query?id_list=1", "x")
+    pacer.wait_for("https://arxiv.org/abs/2401.00001")
+    pacer.wait_for("https://doi.org/10.48550/arXiv.2401.00001")
+    pacer("https://api.crossref.org/works/10.1/x", "x")
+    assert waits == [6.0, 6.0]

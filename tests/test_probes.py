@@ -138,3 +138,15 @@ def test_a_probe_never_downgrades_a_recorded_withdrawal_regression(tmp_path):
     assert mod.keeps_terminal_status(conn, "p", "publication_status", "retracted") is False
     assert mod.keeps_terminal_status(conn, "p", "access_status", "open (HTTP 200)") is False
     conn.close()
+
+
+def test_a_rate_limit_or_no_connection_is_no_answer_not_an_access_status():
+    """Sprint 6 Phase 5 review: '429' and 'unreachable' describe this client
+    at that moment, and were overwriting the last good measurement."""
+    def limited(req, timeout):
+        raise _http(429)
+
+    def down(req, timeout):
+        raise TimeoutError("timed out")
+    assert probes.probe_access("https://example.org", _open=limited) is None
+    assert probes.probe_access("https://example.org", _open=down) is None

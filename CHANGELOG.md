@@ -155,6 +155,15 @@ this project keeps having to replace with a step.
   `2210.14450`. The Lin duplicate and its replacement derive the same id, so
   the withdrawn copy carries its arXiv number. A probe can no longer
   downgrade a recorded withdrawal or retraction (test proven by injection)
+- **fix**: Phase 5 fresh-eyes review of the Sprint 6 store changes, all
+  findings taken -- every request that lands on arXiv (the API, the site,
+  an arXiv DOI at doi.org) now shares the 6 s pacer, including the access
+  probe's GET and Task I's `/pdf` HEAD, which had gone out unpaced; every
+  arXiv failure (an HTML or truncated body, a connection reset) reaches
+  DataCite (`ARXIV_FAILURES`); a 429, a 5xx or no connection is "no answer",
+  never an access status (none had been stored); Task I's links are
+  idempotent on re-run; `parse_access` counts an arXiv id beside a
+  repository in either order. Guards proven by injection
 - **fix**: the F47 test ignored case and flagged "NOT upgraded for admission
   against interest" on the record F47 names as not qualifying; now
   case-sensitive and never after NOT, with that sentence in its test

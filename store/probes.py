@@ -14,6 +14,7 @@ left unanswered rather than called a preprint.
 """
 from __future__ import annotations
 
+import http.client
 import json
 import urllib.error
 import urllib.parse
@@ -70,7 +71,7 @@ def probe_arxiv(record_id: str, ident: str, fetcher) -> ProbeResult:
     r = ProbeResult(record_id)
     try:
         got = _arxiv_entry(ident, fetcher)
-    except (TimeoutError, urllib.error.URLError, ValueError):
+    except citations.ARXIV_FAILURES:
         # Any arXiv failure goes to DataCite (team lead, 2026-10-04): the full
         # run of 2026-10-03 lost 8 of 142 ids to read timeouts.
         got = None
@@ -148,10 +149,14 @@ def landing_url(access: str) -> str | None:
     return url.strip() if sep and url.strip().startswith("http") else None
 
 
-def probe_access(url: str, _open=None, timeout: int = 30) -> str:
+def probe_access(url: str, _open=None, timeout: int = 30) -> str | None:
     """What a reader gets at `url`, stated as observed. A paywall cannot be
     told from a page reliably, so it is never claimed; a page that returns
-    200 with almost no visible words is a bot challenge or a script shell."""
+    200 with almost no visible words is a bot challenge or a script shell.
+
+    None means NO ANSWER: a 429, a 5xx, or no connection describes this
+    client or the network at that moment, not the source, and must not
+    replace the last good measurement (Sprint 6 Phase 5 review)."""
     _open = _open or urllib.request.urlopen
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (EvidenceBasedDB access probe)"})
     try:
@@ -159,10 +164,12 @@ def probe_access(url: str, _open=None, timeout: int = 30) -> str:
             body = resp.read(400_000)
             ctype = resp.headers.get("Content-Type", "")
     except urllib.error.HTTPError as err:
+        if err.code == 429 or err.code >= 500:
+            return None
         return {401: "refused (HTTP 401)", 403: "refused (HTTP 403)", 404: "not found (HTTP 404)",
-                410: "gone (HTTP 410)", 429: "rate limited (HTTP 429)"}.get(err.code, f"error (HTTP {err.code})")
-    except (urllib.error.URLError, TimeoutError, OSError) as err:
-        return f"unreachable ({type(err).__name__})"
+                410: "gone (HTTP 410)"}.get(err.code, f"error (HTTP {err.code})")
+    except (OSError, http.client.HTTPException):
+        return None
     if "html" in ctype and visible_words(body) < 50:
         return "bot challenge or script shell (HTTP 200, under 50 visible words)"
     return "open (HTTP 200)"

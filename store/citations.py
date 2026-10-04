@@ -33,6 +33,7 @@ it; `default_fetcher` is the only function here that touches a socket.
 """
 from __future__ import annotations
 
+import http.client
 import json
 import os
 import re
@@ -123,12 +124,13 @@ def parse_access(access: str) -> tuple[str, str] | None:
     if m:
         return ("doi", m.group(1).rstrip("."))
     gh = _GITHUB.search(searchable)
-    m = _ARXIV_ID.search(searchable)
     # An arXiv id INSIDE a GitHub repository name is part of that name
     # (github.com/salvatore-lorenzo/arXiv-2502.18361-QELMWITNESS; Sprint 6
     # Task K, 2026-10-04): read first as arXiv, it resolved to the paper.
-    inside_repo = bool(gh and m and gh.start() <= m.start() < gh.end())
-    if m and not inside_repo and ("arxiv" in searchable.lower() or "/abs/" in searchable):
+    # Any arXiv id OUTSIDE the repository span still counts, in either order.
+    m = next((x for x in _ARXIV_ID.finditer(searchable)
+              if not (gh and gh.start() <= x.start() < gh.end())), None)
+    if m and ("arxiv" in searchable.lower() or "/abs/" in searchable):
         return ("arxiv", m.group(1))
     if gh:
         return ("github", f"{gh.group(1)}/{gh.group(2)}")  # Sprint 4 Task G: a repository is a source of record too
@@ -137,6 +139,12 @@ def parse_access(access: str) -> tuple[str, str] | None:
 
 RETRY_CODES = (406, 429, 500, 502, 503, 504)
 RETRY_SLEEPS_S = (3.0, 6.0)  # two retries: 3 attempts in all
+# Every way an arXiv request can fail, so each one reaches DataCite (team
+# lead, 2026-10-04). OSError covers HTTPError, URLError, timeouts and
+# connection resets; ET.ParseError (a SyntaxError, NOT a ValueError) covers a
+# 200 with an HTML or truncated body; HTTPException covers IncompleteRead
+# (Sprint 6 Phase 5 review).
+ARXIV_FAILURES = (OSError, ValueError, ET.ParseError, http.client.HTTPException)
 _sleep = time.sleep          # module attributes so tests can stub the wait
 _monotonic = time.monotonic  # and the clock PacedFetcher measures against
 
@@ -304,7 +312,7 @@ def fetch_arxiv_batch(ids: list[str], fetcher: Fetcher | None = None) -> dict[st
                 out[md.ident] = md
             if ident in out:
                 continue
-        except (TimeoutError, urllib.error.URLError, ValueError):
+        except ARXIV_FAILURES:
             # Any arXiv failure goes to DataCite (team lead, 2026-10-04): a
             # refusal, a timeout (20 of the first 730 bulk ids), an HTTP error
             # of any code, or a body that is not a valid feed. DataCite then
@@ -519,21 +527,38 @@ def resolve(access: str, fetcher: Fetcher | None = None) -> tuple[Metadata, str]
     return md, render_citation(md)
 
 
+def is_arxiv_host(url: str) -> bool:
+    """Any request that lands on arXiv: the API, the site, and doi.org for
+    an arXiv DOI (10.48550/arXiv.*), which redirects there. The 6 s rule
+    covers them all (team lead, 2026-10-04: "space out any other requests
+    to arxiv")."""
+    host = urllib.parse.urlsplit(url).hostname or ""
+    return host == "arxiv.org" or host.endswith(".arxiv.org") or (
+        host == "doi.org" and ARXIV_DOI_PREFIX.lower() in url.lower())
+
+
 class PacedFetcher:
-    """A fetcher that keeps arXiv's requested spacing between requests to
-    export.arxiv.org and leaves other hosts alone. For bulk runs."""
+    """A fetcher that keeps the arXiv spacing between EVERY request that
+    lands on arXiv (is_arxiv_host) and leaves other hosts alone. For bulk
+    runs. A request made outside the fetcher (an access probe, a HEAD)
+    calls wait_for(url) first, so it is paced too (Sprint 6 Phase 5 review:
+    the access probe's GET to arxiv.org/abs went out right after the API
+    call)."""
 
     def __init__(self, inner: Fetcher | None = None, interval_s: float = ARXIV_MIN_INTERVAL_S):
         self.inner = inner or default_fetcher
         self.interval_s = interval_s
         self._last_arxiv = 0.0
 
-    def __call__(self, url: str, accept: str) -> bytes:
-        if "export.arxiv.org" in url:
+    def wait_for(self, url: str) -> None:
+        if is_arxiv_host(url):
             wait = self.interval_s - (_monotonic() - self._last_arxiv)
             if wait > 0:
                 # Module attribute, not time.sleep directly, so tests can stub
                 # the wait like the rest of this file does (PR #30 review).
                 _sleep(wait)
             self._last_arxiv = _monotonic()
+
+    def __call__(self, url: str, accept: str) -> bytes:
+        self.wait_for(url)
         return self.inner(url, accept)

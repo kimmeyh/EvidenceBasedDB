@@ -113,7 +113,9 @@ def main(argv: list[str] | None = None) -> int:
             # comment carries the stated REASON and often never says
             # "withdrawn" ("This a duplicated upload by mistake"). Paced like
             # every arXiv request (6 s).
-            citations._sleep(citations.ARXIV_MIN_INTERVAL_S)
+            # Through the run's pacer, so the NEXT arXiv request is also
+            # measured from this one (Sprint 6 Phase 5 review).
+            fetcher.wait_for(f"https://arxiv.org/pdf/{ident}")
             pdf_status = _http_status(f"https://arxiv.org/pdf/{ident}")
             withdrawn = pdf_status == 404 or "withdraw" in comment.lower()
             route = f"{QML}/{folder}/failed-downloads.txt"
@@ -140,7 +142,9 @@ def main(argv: list[str] | None = None) -> int:
                     "disposition": f"Named as the replacement in the arXiv comment of withdrawn arXiv:{ident} (F33); "
                                    "not yet screened",
                     "found_via": f"F33: the arXiv comment of arXiv:{ident}"}, today, apply)
-                if apply:
+                # Idempotent on re-run: source_links' key is (from, to, type).
+                if apply and not conn.execute("SELECT 1 FROM source_links WHERE from_id = ? AND to_id = ? AND "
+                                              "link_type = 'superseded-by'", (rid, srid)).fetchone():
                     add_source_link(conn, rid, srid, "superseded-by", f"arXiv comment on {ident}: \"{comment}\"")
                 print(f"      superseded-by {srid}")
             if apply:

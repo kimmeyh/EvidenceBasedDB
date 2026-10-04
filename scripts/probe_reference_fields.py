@@ -88,7 +88,15 @@ def probe(record_id: str, access: str, kind: str, fetcher):
         notes += r.notes
     url = landing_url(access)
     if url:
-        found.append(("access_status", probe_access(url), "HTTP probe"))
+        # Paced like every request that lands on arXiv: the landing page of an
+        # arXiv record IS arxiv.org (Sprint 6 Phase 5 review).
+        if hasattr(fetcher, "wait_for"):
+            fetcher.wait_for(url)
+        status = probe_access(url)
+        if status is None:
+            notes.append("access probe got no answer (429, 5xx or no connection); last measurement kept")
+        else:
+            found.append(("access_status", status, "HTTP probe"))
     elif kind == "hand-local":
         notes.append("no public URL: access_status not probed")
     return found, notes
