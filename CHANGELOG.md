@@ -43,6 +43,12 @@ this project keeps having to replace with a step.
   first measured in Sprint 4; Sprint 2's replaced measurement; "--no-verify
   never used", unprovable from history; reading-level escalation, not
   tracked anywhere)
+- **docs**: F34, F36, F37, F47 (Task D, Issue #58) -- ADR-0004 A6
+  (`derivation`, `claim_type` with `search_scope`, the synthesis cap and
+  the retraction floor, both computed and exported as derived keys) and
+  ADR-0005 A4 (`publication_status`, the ten reference fields with the
+  probe rule, the `read_extent` gate at `read`, `read`'s cost restated per
+  Q7, the admission-against-interest rule)
 
 ### 2026-09-23 to 2026-09-25 (Sprint 5, PR #43, merged to develop 2026-09-27 and to main via PR #53 the same day)
 
