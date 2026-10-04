@@ -112,6 +112,19 @@ this project keeps having to replace with a step.
   et al. by its printed DOI, Aaronson and Zhang-Ni hand-transcribed)
 - **fix**: Q11 (Task L, Issue #66) -- `du-2024` citation refreshed to its Scientific
   Reports publication (`refresh_citations.py --apply`, verified backup)
+- **feat**: F32 bulk load, first part (Task J, Issue #64) -- 717 of 1,403
+  QMLPapers entries in at `seen`, each with its `found_via` and `cited_as`.
+  Stopped at entry 765: arXiv's API answered read timeouts, then HTTP 429 to
+  every request, after about 1,130 lookups in 3.5 hours at 3 s spacing
+  (arxiv.org itself and status.arxiv.org were up). Refused so far: 2 for the
+  entry itself (`2108.0131` malformed in the TSV; `2403.07059` HTTP 404), the
+  rest timeouts, retried in the second part
+- **fix**: arXiv pacing (team lead, 2026-10-04: "increase the request rate at
+  every 6 seconds ... If a request failes on arxiv, then try via DataCite";
+  Q2 = 2) -- `ARXIV_MIN_INTERVAL_S` 6.0; arXiv gets one attempt and any
+  arXiv failure (any HTTP code, timeout, bad feed) goes to DataCite, in the
+  door and in the probes; tests proven by injection. `intake.py` writes its
+  output as UTF-8 (an author name outside cp1252 stopped the sample dry run)
 - **fix**: the F47 test ignored case and flagged "NOT upgraded for admission
   against interest" on the record F47 names as not qualifying; now
   case-sensitive and never after NOT, with that sentence in its test

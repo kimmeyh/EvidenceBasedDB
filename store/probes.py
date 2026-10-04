@@ -70,13 +70,9 @@ def probe_arxiv(record_id: str, ident: str, fetcher) -> ProbeResult:
     r = ProbeResult(record_id)
     try:
         got = _arxiv_entry(ident, fetcher)
-    except urllib.error.HTTPError as err:
-        if err.code not in citations.RETRY_CODES:
-            raise
-        got = None
-    except (TimeoutError, urllib.error.URLError):
-        # The full run of 2026-10-03 lost 8 of 142 arXiv ids to read timeouts;
-        # a timeout is the same "arXiv did not answer" as a refusal.
+    except (TimeoutError, urllib.error.URLError, ValueError):
+        # Any arXiv failure goes to DataCite (team lead, 2026-10-04): the full
+        # run of 2026-10-03 lost 8 of 142 ids to read timeouts.
         got = None
     if got is None:
         r.provider = "DataCite"

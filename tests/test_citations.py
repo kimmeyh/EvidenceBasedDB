@@ -282,7 +282,7 @@ def test_default_fetcher_retries_transient_refusals_with_backoff(monkeypatch):
             raise _http_error(406)
         return _Resp(b"<feed/>")
     monkeypatch.setattr(citations, "_sleep", waits.append)
-    assert citations.default_fetcher("https://export.arxiv.org/x", "application/atom+xml", _open=fake_open) == b"<feed/>"
+    assert citations.default_fetcher("https://api.crossref.org/works/x", "application/json", _open=fake_open) == b"<feed/>"
     assert len(calls) == 3 and waits == list(citations.RETRY_SLEEPS_S)
 
 
@@ -291,7 +291,7 @@ def test_default_fetcher_gives_up_after_the_last_retry(monkeypatch):
     def always_406(req, timeout):
         raise _http_error(406)
     with pytest.raises(Exception, match="406|refused"):
-        citations.default_fetcher("https://export.arxiv.org/x", "application/atom+xml", _open=always_406)
+        citations.default_fetcher("https://api.crossref.org/works/x", "application/json", _open=always_406)
 
 
 def test_default_fetcher_does_not_retry_a_404(monkeypatch):
@@ -446,3 +446,48 @@ def test_the_token_never_appears_in_a_failure(monkeypatch):
     with pytest.raises(urllib.error.HTTPError) as err:
         citations.default_fetcher(citations.GITHUB_API + "o/n", "application/json", _open=refused)
     assert "tok-FIXTURE-456" not in str(err.value) and "tok-FIXTURE-456" not in repr(err.value)
+
+
+def test_fetch_arxiv_batch_falls_back_to_datacite_on_a_timeout_regression(monkeypatch):
+    """Sprint 6 Task J: 20 bulk ids were refused on arXiv read timeouts
+    because only an HTTP refusal fell through to DataCite. Proven to fail by
+    injection: without the timeout clause, the TimeoutError propagated."""
+    monkeypatch.setattr(citations, "_sleep", lambda s: None)
+
+    def fetcher(url, accept):
+        if "export.arxiv.org" in url:
+            raise TimeoutError("The read operation timed out")
+        return DATACITE_ARXIV_JSON
+    md = citations.fetch_arxiv_batch(["2303.05509"], fetcher=fetcher)["2303.05509"]
+    assert md.extra["provider"] == "DataCite"
+
+
+def test_arxiv_gets_one_attempt_and_the_batch_goes_to_datacite_regression(monkeypatch):
+    """Team lead, 2026-10-04 (Q2 = 2): no arXiv retries; any arXiv failure
+    goes straight to DataCite, so a refused id costs ONE arXiv request.
+    Proven to fail by injection: with arXiv given the retry sleeps again,
+    three arXiv requests were counted."""
+    monkeypatch.setattr(citations, "_sleep", lambda s: None)
+    arxiv_calls = []
+
+    def fake_open(req, timeout):
+        if "arxiv.org" in req.full_url:
+            arxiv_calls.append(req.full_url)
+            raise _http_error(429)
+        return _Resp(DATACITE_ARXIV_JSON)
+
+    def fetcher(url, accept):
+        return citations.default_fetcher(url, accept, _open=fake_open)
+
+    md = citations.fetch_arxiv_batch(["2303.05509"], fetcher=fetcher)["2303.05509"]
+    assert len(arxiv_calls) == 1 and md.extra["provider"] == "DataCite"
+
+
+def test_an_arxiv_404_also_goes_to_datacite(monkeypatch):
+    monkeypatch.setattr(citations, "_sleep", lambda s: None)
+
+    def fetcher(url, accept):
+        if "export.arxiv.org" in url:
+            raise _http_error(404)
+        return DATACITE_ARXIV_JSON
+    assert citations.fetch_arxiv_batch(["2303.05509"], fetcher=fetcher)["2303.05509"].extra["provider"] == "DataCite"

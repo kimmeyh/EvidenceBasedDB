@@ -85,10 +85,12 @@ def test_time_already_spent_counts_toward_the_interval(clock):
     assert clock["slept"] == [1.0]
 
 
-def test_the_default_interval_is_arxivs_published_rate():
-    """Pinned so nobody 'optimizes' the bulk run into a multi-minute block."""
-    assert citations.ARXIV_MIN_INTERVAL_S == 3.0
-    assert citations.PacedFetcher().interval_s == 3.0
+def test_the_default_interval_is_twice_arxivs_published_rate():
+    """Pinned so nobody 'optimizes' the bulk run into a multi-minute block.
+    6 s since 2026-10-04 (team lead): at arXiv's published 3 s, a sustained
+    run of about 1,130 lookups ended in HTTP 429 for everything."""
+    assert citations.ARXIV_MIN_INTERVAL_S == 6.0
+    assert citations.PacedFetcher().interval_s == 6.0
 
 
 def test_the_wrapped_fetcher_receives_url_and_accept_unchanged(clock):

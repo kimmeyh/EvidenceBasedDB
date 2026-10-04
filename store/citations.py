@@ -24,7 +24,7 @@ multi-id `id_list=a,b,...` request gets 406, after which EVERY urllib
 request, single ids included, gets 406 for several minutes; curl sends the
 same multi-id URL at the same moment and gets 200. Retries do not help
 inside the block. So `fetch_arxiv_batch` sends ONE id per request, paced
-ARXIV_MIN_INTERVAL_S apart (arXiv's own published rate), and falls back to
+ARXIV_MIN_INTERVAL_S apart (twice arXiv's published rate since 2026-10-04), and falls back to
 DataCite per id when arXiv still refuses. A full 1,200-paper pass is about
 an hour, which the sprint plan already budgeted.
 
@@ -49,7 +49,11 @@ ARXIV_API = "https://export.arxiv.org/api/query"
 CROSSREF_API = "https://api.crossref.org/works/"
 DATACITE_API = "https://api.datacite.org/dois/"
 DOI_HANDLE_API = "https://doi.org/api/handles/"  # the registry itself; responseCode 100 = no such handle
-ARXIV_MIN_INTERVAL_S = 3.0
+# Team lead, 2026-10-04 (Sprint 6 Task J): 6 s, double arXiv's documented
+# floor of one request every 3 s. After about 1,130 lookups at 3 s over 3.5
+# hours the API answered HTTP 429 to everything; the per-request rule alone
+# did not protect a sustained run.
+ARXIV_MIN_INTERVAL_S = 6.0
 MAX_AUTHORS = 10  # rendered before "et al."; see render_citation
 
 _ARXIV_ID = re.compile(r"(?<![\d.])(\d{4}\.\d{4,5})(v\d+)?")
@@ -154,6 +158,10 @@ def default_fetcher(url: str, accept: str, _open=None) -> bytes:
     is intermittent and load-shaped, not (only) a header problem, and one
     attempt is the wrong number. Three attempts with 3 s / 6 s backoff;
     any other failure propagates at once.
+
+    Except arXiv, since 2026-10-04: one attempt, and the caller falls back
+    to DataCite (team lead's decision after the API answered 429 to a
+    sustained run; see ARXIV_MIN_INTERVAL_S).
     """
     _open = _open or urllib.request.urlopen
     headers = {"User-Agent": USER_AGENT, "Accept": accept}
@@ -164,7 +172,11 @@ def default_fetcher(url: str, accept: str, _open=None) -> bytes:
         # line, an exception or the store.
         headers["Authorization"] = f"Bearer {token}"
     req = urllib.request.Request(url, headers=headers)
-    for attempt, wait in enumerate((*RETRY_SLEEPS_S, None)):
+    # arXiv gets ONE attempt (team lead, 2026-10-04, Q2 = 2): a retry is one
+    # more request at an API that is already refusing, and the callers fall
+    # back to DataCite on any arXiv failure. Other hosts keep the retries.
+    sleeps = () if "arxiv.org" in url else RETRY_SLEEPS_S
+    for attempt, wait in enumerate((*sleeps, None)):
         try:
             with _open(req, timeout=30) as resp:
                 return resp.read()
@@ -288,9 +300,12 @@ def fetch_arxiv_batch(ids: list[str], fetcher: Fetcher | None = None) -> dict[st
                 out[md.ident] = md
             if ident in out:
                 continue
-        except urllib.error.HTTPError as err:
-            if err.code not in RETRY_CODES:
-                raise
+        except (TimeoutError, urllib.error.URLError, ValueError):
+            # Any arXiv failure goes to DataCite (team lead, 2026-10-04): a
+            # refusal, a timeout (20 of the first 730 bulk ids), an HTTP error
+            # of any code, or a body that is not a valid feed. DataCite then
+            # answers or raises, and the caller reports it.
+            pass
         out[ident] = parse_datacite_arxiv(
             fetcher(DATACITE_API + urllib.parse.quote(ARXIV_DOI_PREFIX + ident, safe="/."), "application/vnd.api+json"),
             ident,

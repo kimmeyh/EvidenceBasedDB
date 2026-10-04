@@ -59,6 +59,12 @@ from store.ingest import (  # noqa: E402
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 FETCHER = None  # tests inject; the real run paces arXiv
 
+# Sprint 6 Task J: with output redirected to a file, Windows encodes stdout as
+# cp1252 and the first author named with a character outside it ("ś")
+# stopped the sample dry run at entry 107 of 115.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 KIND_PREFIX = {"paper": None, "book": "Book:", "reference": "Reference:", "repo": "Code repository:"}
 _STOP = {"a", "an", "the", "of", "for", "and", "in", "on", "with", "to", "using", "via", "from", "by", "at", "is", "are", "its"}
 _DATE = None  # set per run
