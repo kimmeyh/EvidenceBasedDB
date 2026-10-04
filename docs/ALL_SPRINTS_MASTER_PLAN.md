@@ -686,6 +686,23 @@ do 40 and 42, and 60 and 62.
   with a test that recomputes and compares it.
 - Depends on: none.
 
+### HOLD Items (waiting on an external event)
+
+**F51. The CVQBoost findings record and its six assertions (~45m) Priority HOLD** (NEW 2026-10-03)
+- Phase: Sourcing / intake
+- Platform: the Cyc and CVQBoost handoff
+  (`D:\Data\Harold\EvidenceBasedDB\Handoff-2026-10\ebdb-handoff\`): the
+  manifest entry `kimmey-2026-maximizing-predictions-cvqboost-cumulative-findings`,
+  the six CVQBoost assertions in the sprint script, and decision 4.1's
+  `method` applicability row on that record.
+- Carded at Sprint 6 plan approval (Q10 = 1) so the remainder is not lost
+  when F41 ships without it. Team lead, Q4: "it will be updated after the
+  next hsbc repo sprint (the experiement will be re-run) and then it can be
+  referenced".
+- The record's authorship (decision 1 in the handoff) is settled by the
+  re-run's own provenance, not by attribution.
+- Depends on: the hsbc repository's re-run of the experiment.
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT

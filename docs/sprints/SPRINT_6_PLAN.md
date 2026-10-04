@@ -45,6 +45,7 @@ estimate.
 | H | **F42 -- the two Cyc research documents** into `docs/research/` with F42 in their names and links, the review's session-file links turned into record ids, "Generalisation" fixed; the dated amendment appended to `cyc-knowledge-representation.md` | 30m | none | Claude |
 | I | **F33 -- withdrawn and retracted, discoverable both ways.** Pre-flight corrected the card twice: the six withdrawn ids are in `QMLPapers/<year>/failed-downloads.txt`, not in any `manifest.tsv` (so the bulk load would never have reached them; this task creates their records), and the journal retraction IS discoverable through Crossref: notice `10.1007/s00500-026-11351-6`, type `retraction`, dated 2026-03-10, found with the `updates:` filter. Records at `seen` with publication status per Q1, the reason from arXiv's comment, the two `superseded-by` links per Q1 | 60m | about 1 min (7 lookups) | Claude |
 | J | **F32 -- manifest and bulk load.** Generator over the 12 arXiv-bearing TSVs (1,436 rows; `NonArxiv` routed to the DOI or hand path), writing to the folder per Q9, excluding Task I's ids; every entry carries the Task E fields (`found_via` "QMLPapers/<year>/manifest.tsv"); dry run per Q8; load with a heartbeat file | 60m | **82 min per pass at 3.5 s per id if arXiv keeps answering (0.5 s measured on 2026-10-03), about 5 h per pass under the Sprint 5 refusal (13 s per id)**; arXiv lookups dominate | Claude; background run |
+| L | **Q11 -- the out-of-date citation** found at Phase 1.3: `refresh_citations.py --ids du-2024-chip-integrated-spectroscopy-capable-temperature --apply` (verified backup first), adding its Scientific Reports DOI | 5m | one lookup | Claude |
 | K | **F35 -- the 135 repositories.** `store/citations.py` reads a GitHub token from the environment (never logged; pre-flight: the `gh` token gives 5,000 requests per hour against 60), with a test; each note's repository through the GitHub path, attached to its paper by a `code-of` source link carrying the note's quoted evidence sentence; a wrong attachment removable without touching the paper | 75m | under 5 min with the token | Claude; fresh-eyes review at commit (citations.py) |
 
 **Sequence**: A first (the assignments below may change with it); B and C
@@ -98,6 +99,12 @@ made unilaterally.
   library and pytest only).
 
 ## Decisions for the team lead at approval (numbered; answer with digits)
+
+**DECIDED 2026-10-03 (team lead: "q1. 1 q2. 1 q3. 1 q4 1 q5. 1 q6 1 q7. 1
+q8. 1 q9. 1 q10. 1 q11. 1" and "Sprint plan approved as amended (with any
+comments I provided), proceed with execution")**: every decision is option
+1. Q10 adds card F51 (the CVQBoost remainder, HOLD until the hsbc re-run);
+Q11 adds Task L (the `du-2024` citation refresh, about 5 minutes).
 
 The amendment (Task D) is Class 1 and ADR-first, and the auto-advance
 window forbids asking later, so its substance is decided here; its text is
