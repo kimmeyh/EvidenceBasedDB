@@ -574,7 +574,7 @@ do 40 and 42, and 60 and 62.
   closes two of its "could not establish" items.
 - Fix first: the review's links to session files become record ids; run the
   US English and no-em-dash tests. `08-corrections.md` item 6: the heading
-  "Generalisation before entry" (line 204) is British spelling that
+  "Generalization before entry" (line 204) is spelled the British way, which
   `scripts/us_english_fix.py` does not catch. Add the pair or fix the heading.
 - Acceptance: both documents present; no `Fxx` remains; the amendment is
   appended, not edited in; `tests/test_us_english.py` and

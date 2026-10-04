@@ -132,6 +132,9 @@ PAIRS = [
     ("artefact", "artifact"), ("artefacts", "artifacts"),
     ("generalise", "generalize"), ("generalised", "generalized"),
     ("generalising", "generalizing"),
+    # Sprint 6 Task H (F42): the -isation nouns were missing, so the heading
+    # "Generalisation before entry" passed the guard.
+    ("generalisation", "generalization"), ("generalisations", "generalizations"),
     ("specialise", "specialize"), ("specialised", "specialized"),
     ("specialising", "specializing"),
     ("normalise", "normalize"), ("normalised", "normalized"),
