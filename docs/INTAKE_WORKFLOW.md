@@ -412,3 +412,54 @@ Both worked examples were checked against their sources on 2026-10-03:
 
 The fix to a source's own wording belongs to that source (for the hsbc
 repository, a session working there; this repository never writes to it).
+
+## 16. Applied 2026-10-03: the Cyc sources and the hardware plan (Sprint 6 Task G, F41)
+
+**Order, stated because it slipped.** Sections 11 to 13 require this section
+BEFORE the manifest runs. On 2026-10-03 the manifest
+(`manifests/sprint6_f41_cyc_sources.json`) was applied first and this
+section was appended minutes later, from the handoff draft written on
+2026-09-29 before any manifest existed. The context decisions below are that
+draft's, made in advance; only the write order slipped. Recorded for the
+Sprint 6 retrospective.
+
+The text follows the handoff's draft section (`01-intake-section-15-draft.md`,
+2026-10 handoff, outside version control), renumbered 16 because section 15
+is F43's. **Counts in this section are a snapshot as of 2026-10-03.**
+
+- **Cyc engine source, releases, manual pages and archives** -> `method`. The
+  precedent is `lenat-marcus-2023-trustworthy-ai`: material about how Cyc
+  represents and reasons is methodology for this library, the tool it is
+  building. None of it passes the `world` test (an engineering system, not a
+  theorem or a measurement of nature), and none carries an ML or quantum
+  workload.
+  - `white-flame/clyc` is a third-party port with no Cycorp affiliation. It
+    takes `method` like the rest, and its disposition says what it is.
+- **The hsbc repository's Phase 2 hardware plan** -> `hsbc-2026` (decision
+  4.2 of 2026-10-03). It is the submission's own document, which section 11
+  says takes the context by its own definition. Its applicability adds
+  `platform:dirac-3` for the Experiment 3 cost table, so the two Dirac-3 cost
+  assertions it yields sit inside it. A living document, so the record pins
+  commit `a6c3453`.
+- **Not entered: the CVQBoost findings document** and the six assertions it
+  yields. The team lead deferred its authorship until the hsbc repository
+  re-runs the experiment (Sprint 6 Q4); card F51 holds it.
+
+**Tier at load.** Sources read directly enter at `read` with
+`checked_against_source` naming what was read, anchored applicability, and
+(since ADR-0005 A4) a `read_extent` row of `full` or `partial` by that
+reader. Sources known only through the research agent enter at `seen`.
+
+**Local copies.** The four 2002 Cycorp manual pages were copied to
+`References\` on 2026-09-29 (SHA-256 verified against their sources). The
+engine source, the two OpenCyc releases and the documentation archive stay
+under `GitHubRepos\`; each record's `access` points there.
+
+**Disposition**, one line, no tier word, prefixed `Reference:` or
+`Code repository:` for those kinds (section 2).
+
+**Not entered here, and why:** seven Cycorp papers found by the research
+agent have no local copy and no verified identifier, and wait on a download
+decision (the handoff's `04-pending-sources.md`); Siegel, Goolsbey,
+Kahlert, Matthews, "The Cyc System: Notes on Architecture" (Cycorp, 2004)
+was never obtained and goes on the exception list.

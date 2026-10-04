@@ -36,7 +36,11 @@ def conn(tmp_path):
 
 # ------------------------------------------------- F47: admission against interest
 
-_APPLIES = re.compile(r"UPGRADED[^.]*?admission against interest", re.I)
+# Case-sensitive on purpose, and never after NOT: the store writes an applied
+# upgrade as "UPGRADED" and a withheld one as "NOT upgraded". The first
+# version ignored case and flagged fourier-wall-incomplete-bar-manufactures-
+# advantage, the very record F47 names as NOT qualifying (Task G, 2026-10-03).
+_APPLIES = re.compile(r"(?<!NOT )UPGRADED[^.]*?admission against interest")
 _COST = re.compile(r"\bcostly to\b", re.I)
 
 
@@ -66,7 +70,10 @@ def test_every_applied_admission_against_interest_names_its_cost_regression():
 def test_a_reason_that_withholds_the_upgrade_is_not_flagged():
     withheld = [{"id": "x", "certainty_reasons": "NOT upgraded: favourable to the author, so the "
                  "admission-against-interest upgrade does not apply"},
-                {"id": "y", "certainty_reasons": "two authors at a vendor, which here argues against their interest"}]
+                {"id": "y", "certainty_reasons": "two authors at a vendor, which here argues against their interest"},
+                {"id": "z", "certainty_reasons": "Started LOW: single-group preprint. NOT upgraded for admission against "
+                 "interest: the counterfactual argues for the authors' own bar-completeness requirement"},
+                {"id": "w", "certainty_reasons": "NOT UPGRADED for admission against interest: it costs nothing"}]
     assert admission_problems(withheld) == []
 
 

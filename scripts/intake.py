@@ -116,6 +116,9 @@ def build_record(entry: dict, fetcher=None, today: str = "") -> PaperRecord:
         # ADR-0005 A4 fields 1 and 8: the collection and locator this entry
         # came from, and how that collection cited it.
         found_via=[(entry["found_via"], entry.get("cited_as"))] if entry.get("found_via") else [],
+        # ADR-0005 A4 (c): an entry at `read` carries how far it was read,
+        # as [reader, read_on, extent, detail] rows.
+        reads=[(r[0], r[1], r[2], r[3] if len(r) > 3 else "") for r in entry.get("reads", [])],
     )
     if citations.parse_access(access):
         md, rendered = citations.resolve(access, fetcher=fetcher or FETCHER or citations.PacedFetcher())

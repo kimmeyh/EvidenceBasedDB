@@ -77,6 +77,42 @@ this project keeps having to replace with a step.
   107 inferred from the access id and marked so), and `read_extent` for the
   12 papers at `read` from `checked_against_source`; `coi` (347) and
   `read_extent` below `read` (14) queued, not guessed
+- **feat**: F41, the Cyc and Fourier Wall package without the CVQBoost
+  findings (Task G, Issue #62) -- `manifests/sprint6_f41_cyc_sources.json`
+  (10 Cyc and repository sources plus the hardware plan, pinned at hsbc
+  `a6c3453`; 11 written, 0 refused) and
+  `scripts/sprint6_task_g_cyc_and_facts.py` (35 assertions, the six CVQBoost
+  ones filtered; three promotions to `read` with their read extents;
+  decision 3's certainty changes; decision 4.1's `method` row found already
+  present); `INTAKE_WORKFLOW.md` section 16, appended after the manifest ran
+  (the order slip is stated in the section)
+- **docs**: F42, the two Cyc research documents (Task H, Issue #63) --
+  `docs/research/2026-09-28_F42_*`; the dated amendment appended to
+  `cyc-knowledge-representation.md`; its "Generalization" heading fixed and
+  the `-isation` pair added to `scripts/us_english_fix.py`, which now
+  catches it (proven: the guard went red on the old heading)
+- **feat**: F36 computed fields (Task F part 2, Issue #60) -- `store/probes.py`
+  (publication status from arXiv's comment, journal_ref and DOI or Crossref's
+  type and `updates:` notices; version of record; affiliations; access as
+  observed) and `scripts/probe_reference_fields.py` (pilot of 30 across
+  source types, then all 361 papers, heartbeat file, per-record commits).
+  Snapshot 2026-10-03: 139 published, 96 preprint, 0 withdrawn or retracted
+  among existing records; access 286 open, 31 bot challenge or script shell, 12 refused, 6 not found; 3 arXiv ids left unanswered (DataCite cannot show
+  a withdrawal); 8 read timeouts re-probed after a DataCite fallback was
+  added for timeouts
+- **feat**: F35 code (Task K, Issue #65) -- `store/citations.py` sends a
+  GitHub token from `GITHUB_TOKEN` or `GH_TOKEN` on api.github.com requests
+  only, never logged (ADR-0002), with tests proven by injection;
+  `scripts/link_code_repositories.py` parses the 135 notes (129 GitHub, 6
+  reported: 4 Zenodo or Gitee, 2 malformed) and runs after Task J
+- **feat**: F32 NonArxiv rows (Task J, Issue #64) -- `scripts/qmlpapers_manifest.py`
+  reconciles all 1,440 TSV rows (1,403 new, 15 already in the store, 19
+  duplicates across folders, 3 hand path, 0 malformed); the three hand-path
+  rows entered from their page 1 (`manifests/qmlpapers_nonarxiv.json`: Beer
+  et al. by its printed DOI, Aaronson and Zhang-Ni hand-transcribed)
+- **fix**: the F47 test ignored case and flagged "NOT upgraded for admission
+  against interest" on the record F47 names as not qualifying; now
+  case-sensitive and never after NOT, with that sentence in its test
 
 ### 2026-09-23 to 2026-09-25 (Sprint 5, PR #43, merged to develop 2026-09-27 and to main via PR #53 the same day)
 
