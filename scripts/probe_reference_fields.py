@@ -62,6 +62,22 @@ def select(conn, args: list[str]) -> list[tuple[str, str, str]]:
     return out
 
 
+TERMINAL = ("withdrawn", "retracted")
+
+
+def keeps_terminal_status(conn, record_id: str, field_name: str, value: str) -> bool:
+    """A probe never turns a recorded withdrawal or retraction back into
+    `preprint` or `published`. The probe sees a withdrawal only when arXiv's
+    comment says the word; Task I (2026-10-04) recorded four from arXiv's
+    own signature (/pdf 404) whose comments give only the reason. Both
+    states are terminal on their registries."""
+    if field_name != "publication_status" or value in TERMINAL:
+        return False
+    row = conn.execute("SELECT value FROM paper_probes WHERE record_id = ? AND field = 'publication_status'",
+                       (record_id,)).fetchone()
+    return bool(row and row[0] in TERMINAL)
+
+
 def probe(record_id: str, access: str, kind: str, fetcher):
     """[(field, value, provider)], notes."""
     found, notes = [], []
@@ -108,6 +124,9 @@ def main(argv: list[str] | None = None) -> int:
                   + (f"  -- {' | '.join(notes)}" if notes else ""))
             if apply:
                 for field_name, value, provider in found:
+                    if keeps_terminal_status(conn, rid, field_name, value):
+                        print(f"      kept {rid}'s recorded withdrawal or retraction over the probe's {value!r}")
+                        continue
                     record_probe(conn, rid, field_name, value, provider, today)
                 conn.commit()
             if heartbeat:

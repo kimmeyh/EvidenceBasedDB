@@ -116,3 +116,25 @@ def test_landing_url_per_access_kind():
     assert probes.landing_url("doi:10.1234/x") == "https://doi.org/10.1234/x"
     assert probes.landing_url("D:/x/page.html | https://example.org/p") == "https://example.org/p"
     assert probes.landing_url("D:/x/report.pdf") is None
+
+
+def test_a_probe_never_downgrades_a_recorded_withdrawal_regression(tmp_path):
+    """Task I recorded four withdrawals from arXiv's /pdf 404 signature whose
+    comments never say 'withdrawn'; a later probe would have called them
+    preprints. Proven to fail by injection: with keeps_terminal_status
+    returning False, the preprint value was reported as writable."""
+    import importlib.util
+    from store import create_store
+    from store.ingest import PaperRecord, insert_paper, record_probe
+    spec = importlib.util.spec_from_file_location("probe_script", ROOT / "scripts" / "probe_reference_fields.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    conn = create_store(tmp_path / "s.db")
+    insert_paper(conn, PaperRecord(id="p", tier="seen", access="arXiv:2304.05672", disposition="d", context="qml",
+                                   value="t", citation="C", citation_origin="api", citation_source="replay",
+                                   updated="2026-10-04", updated_reason="test"))
+    record_probe(conn, "p", "publication_status", "withdrawn", "arXiv", "2026-10-04")
+    assert mod.keeps_terminal_status(conn, "p", "publication_status", "preprint") is True
+    assert mod.keeps_terminal_status(conn, "p", "publication_status", "retracted") is False
+    assert mod.keeps_terminal_status(conn, "p", "access_status", "open (HTTP 200)") is False
+    conn.close()

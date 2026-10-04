@@ -53,6 +53,20 @@ WITHDRAWN = [
 RETRACTED_DOI = "10.1007/s00500-022-07037-4"
 
 
+def _http_status(url: str) -> int | None:
+    """The HTTP status a reader gets at `url`, or None if unreachable."""
+    import urllib.error
+    import urllib.request
+    req = urllib.request.Request(url, method="HEAD", headers={"User-Agent": citations.USER_AGENT})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            return resp.status
+    except urllib.error.HTTPError as err:
+        return err.code
+    except (urllib.error.URLError, TimeoutError):
+        return None
+
+
 def present(conn, kind: str, ident: str) -> str | None:
     for rid, access in conn.execute("SELECT record_id, access FROM paper_fields WHERE access LIKE ?", (f"%{ident}%",)):
         if citations.parse_access(access) == (kind, ident):
@@ -94,15 +108,27 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"REPORT arXiv:{ident}: arXiv returned no entry; nothing written")
                 continue
             comment = got[0]
-            withdrawn = "withdraw" in comment.lower()
+            # The source of truth for a withdrawal is arXiv's own signature, as
+            # F33 verified on 2026-09-18: /abs answers 200 and /pdf 404. The
+            # comment carries the stated REASON and often never says
+            # "withdrawn" ("This a duplicated upload by mistake"). Paced like
+            # every arXiv request (6 s).
+            citations._sleep(citations.ARXIV_MIN_INTERVAL_S)
+            pdf_status = _http_status(f"https://arxiv.org/pdf/{ident}")
+            withdrawn = pdf_status == 404 or "withdraw" in comment.lower()
             route = f"{QML}/{folder}/failed-downloads.txt"
             rid = enter(conn, {
                 "access": f"arXiv:{ident}", "context": "qml",
+                # The Lin duplicate and its replacement share first author,
+                # year and title, so the derived ids collide; the withdrawn
+                # copy carries its own arXiv number instead.
+                **({"id": "lin-2023-implementing-arbitrary-quantum-operations-2304-05672"}
+                   if ident == "2304.05672" else {}),
                 "disposition": "Withdrawn by its authors on arXiv; kept as a record so it is never cited as live "
                                "evidence (F33)",
-                "evidence": f"arXiv comment, read {today}: \"{comment}\". The PDF returns HTTP 404; /abs returns 200.",
+                "evidence": f"arXiv comment, read {today}: \"{comment}\". arxiv.org/pdf/{ident} answered HTTP {pdf_status} on {today}; the API still returns the /abs record.",
                 "found_via": route}, today, apply)
-            print(f"{'WRITE' if apply else 'PLAN '} {rid}: withdrawn={withdrawn}; comment: {comment[:140]}")
+            print(f"{'WRITE' if apply else 'PLAN '} {rid}: pdf HTTP {pdf_status}; withdrawn={withdrawn}; comment: {comment[:100]}")
             if not withdrawn:
                 print(f"REPORT {rid}: the comment does not say withdrawn; status NOT recorded")
                 continue

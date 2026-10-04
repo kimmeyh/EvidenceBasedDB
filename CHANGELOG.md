@@ -145,6 +145,16 @@ this project keeps having to replace with a step.
   repository's canonical name, so two notes can share a record; and
   `parse_access` read `github.com/<owner>/arXiv-2502.18361-...` as an arXiv
   id (test proven by injection)
+- **feat**: F33, withdrawn and retracted (Task I, Issue #63) -- after the
+  2-hour arXiv pause, 6 s spacing: six withdrawn arXiv preprints at `seen`
+  with `publication_status` withdrawn from arXiv's own signature (`/pdf`
+  HTTP 404, measured 2026-10-04; four of the six comments give only the
+  reason, never the word "withdrawn"), each comment quoted as the reason;
+  Valdez and Melin retracted, from Crossref notice
+  `10.1007/s00500-026-11351-6`; `superseded-by` links to `2405.13351` and
+  `2210.14450`. The Lin duplicate and its replacement derive the same id, so
+  the withdrawn copy carries its arXiv number. A probe can no longer
+  downgrade a recorded withdrawal or retraction (test proven by injection)
 - **fix**: the F47 test ignored case and flagged "NOT upgraded for admission
   against interest" on the record F47 names as not qualifying; now
   case-sensitive and never after NOT, with that sentence in its test
