@@ -703,6 +703,49 @@ do 40 and 42, and 60 and 62.
   re-run's own provenance, not by attribution.
 - Depends on: the hsbc repository's re-run of the experiment.
 
+### Carded at Sprint 6 Manual Validation, 2026-10-05
+
+**F52. Probe the computed fields for the bulk papers, under a per-session arXiv cap (~2h plus runtime) Priority 26** (NEW 2026-10-05, Sprint 6 MV Q6 = 1)
+- Phase: Sourcing / computed fields
+- Platform: `scripts/probe_reference_fields.py`, `store/citations.py`
+- The 1,402 QMLPapers papers loaded by Sprint 6 Task J have no
+  `publication_status`, `version_of`, `access_status` or affiliations probe.
+  At 6 s per arXiv request that is about 1,400 requests and at least 2.5
+  hours.
+- Add a per-session arXiv request cap (a count, enforced by the shared
+  pacer), so a run stops itself before arXiv throttles it; a stopped run
+  resumes on the records still unprobed.
+- Evidence for the cap: about 1,130 lookups in 3.5 hours ended in HTTP 429
+  on 2026-10-03, with the intake pacing defect live; after the fix the
+  number arXiv tolerates is unknown, so the first run measures it.
+- Acceptance: every bulk paper probed or reported; the cap tested; no
+  stored value from a run that got no answer.
+
+**F53. Run the probes each delivery cycle and report stale ones (~1h) Priority 28** (NEW 2026-10-05, Sprint 6 MV Q7 = 1)
+- Phase: Process / tooling
+- Platform: `docs/SPRINT_EXECUTION_WORKFLOW.md` Phase 1.3,
+  `scripts/probe_reference_fields.py`
+- ADR-0005 A4's probe rule names this as not built: Phase 1.3 runs
+  `refresh_citations.py` but not the probes, and nothing reports a probe
+  older than one cycle.
+- Acceptance: Phase 1.3 runs the probes (within F52's cap); a report lists
+  every probe older than the last cycle; a test fails on a stale probe.
+
+**F54. Recover the 30 repository notes that did not link (~1h) Priority 32** (NEW 2026-10-05, Sprint 6 MV Q8 = 1)
+- Phase: Sourcing / repositories
+- Platform: `scripts/link_code_repositories.py`, the GitHub API (token)
+- Sprint 6 Task K reported 30 of 135 notes: 23 repositories return HTTP 404
+  (most URLs were cut short by the note extractor: `zhihan-z/MCM_`,
+  `dfki-ric-quantum/learning_`, `yikaimao/Q`), 6 are Zenodo, Gitee or
+  malformed links, 1 belongs to the malformed `2108.0131`.
+- Step 1: read the full URL from the paper's own text (the note quotes the
+  sentence). Step 2, team lead 2026-10-05: "if still unfound, can you try to
+  find the repo on github.com using the partial URL" (GitHub search by owner
+  and name prefix). A match found by search is recorded as found by search,
+  with the query, so the link's evidence says how it was found.
+- Acceptance: each of the 30 linked with its evidence, or reported again
+  with what was tried.
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
