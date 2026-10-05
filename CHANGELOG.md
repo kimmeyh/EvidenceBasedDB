@@ -172,8 +172,9 @@ this project keeps having to replace with a step.
   formulation is near-trivial (strictly convex, nearly degenerate), so it
   does not test hard problems. Neither source sentence mentions error
   correction
-- **docs**: Manual Validation decisions Q1, Q2, Q5 = 1 (both amendments
-  accepted; the cap stays computed); cards F52 to F57 (bulk probes with an
+- **docs**: Manual Validation decisions Q1, Q2, Q3, Q4, Q5 = 1 (both
+  amendments accepted; inputs only in `assertion_relations`; the 14
+  `claim_type` classifications kept; the cap stays computed); cards F52 to F57 (bulk probes with an
   arXiv cap, probes each cycle, the 30 unlinked notes, `cites` links, the
   corroboration question, the permanent read-for-claims program) and a Q9
   note on F45
