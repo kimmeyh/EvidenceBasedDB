@@ -627,6 +627,17 @@ do 40 and 42, and 60 and 62.
   assertion quotes its source verbatim; facts that duplicate an existing
   assertion become `supports` links instead.
 - Depends on: F41.
+- **Planning note, 2026-10-05 (Sprint 6 MV Q9 = 1)**: add the three QCi
+  sources on Dirac-3's error behavior, all at `seen`:
+  `huang-2025-noise-reversal-entropy-quantum-computing`,
+  `qci-research-an-open-quantum-system-for-discrete-optimization`,
+  `qci-lessons-entropy-quantum-computing-overview`. Record what they claim
+  about noise and error correction as `vendor-self-claim`, beside the
+  gate-model contrast (fault tolerance is a gate-model concept). F-207 is
+  no longer blocked: `claim_type` exists, so it enters as `absence` with its
+  search scope. The hsbc measurement is already in the store
+  (`dirac3-matches-exact-optimum-on-convex-cvqboost`, with its limit
+  `dirac3-fidelity-test-is-near-trivial-on-convex-formulation`).
 
 **F46. Remaining reading pass: the other pending facts, split at selection (~large, no-history) Priority 80**
 - Phase: Sourcing / extraction
@@ -745,6 +756,58 @@ do 40 and 42, and 60 and 62.
   with the query, so the link's evidence says how it was found.
 - Acceptance: each of the 30 linked with its evidence, or reported again
   with what was tried.
+
+**F55. Record which papers cite which, as a computed link (~2h) Priority 34** (NEW 2026-10-05, Sprint 6 MV Q10 = 1)
+- Phase: Sourcing / computed fields
+- Platform: Crossref reference lists (`works/<doi>`, field `reference`),
+  arXiv-to-DOI via `version_of`; `source_links`
+- A `cites` link between two SOURCE records in the store, computed from the
+  publisher's reference list (probe rule: last result, date, provider),
+  never typed by hand. Recorded once, readable from both ends.
+- Not a certainty input (Q10 = 1): a citation is not corroboration, since a
+  citing paper may criticize. Its use is to FIND candidate corroboration
+  for F56: the papers that cite A are where to look for evidence on A's
+  claims.
+- Needs an ADR-0005 amendment (a new link type, computed). Coverage is
+  partial: many arXiv preprints have no Crossref reference list.
+- Acceptance: links for every pair both in the store where a reference list
+  answers; coverage reported; no link typed by hand.
+
+**F56. Should corroboration raise an assertion's certainty, and how? (~1h decision, then build) Priority 36** (NEW 2026-10-05, team lead at Sprint 6 MV)
+- Phase: Design / ADR (Class 1)
+- Team lead, 2026-10-05: "if we have a paper who's assertions scores very
+  high and with verifiable evidence and it is linke to another paper that
+  verifies the claims of the first paper or otherwise increases the
+  confidance of the assertions of the other paper, shoudn't that affect the
+  assertions/claims in some way" ... "Think it is important and could be
+  used, but not sure how".
+- Today only downward caps are computed (ADR-0004 A6); `supports` between
+  assertions is recorded but never moves certainty. GRADE does raise
+  certainty for consistent results across independent studies.
+- Options to decide: (1) a computed "corroborated" flag beside the stored
+  certainty when an assertion is supported by an INDEPENDENT assertion
+  (different authors, not the same vendor) at equal or higher certainty;
+  the assessor then decides an upgrade, with the reason; (2) a computed
+  upward cap, symmetric to A6's; (3) leave it to judgment, as now.
+- Independence is the hard part: same lab, same dataset, or the same vendor
+  is not corroboration (the admission-against-interest rule's logic).
+- Depends on: F55 helps find candidates; not required.
+
+**F57. Read for claims: the records still at `seen` and `screened` (permanent, released in slices) Priority 38** (NEW 2026-10-05, team lead at Sprint 6 MV)
+- Phase: Sourcing / extraction (permanent item, like F39)
+- Team lead, 2026-10-05: "what else has not been read for claims - if not
+  in backlog, add backlog item to do any missing 'read for claims' entries".
+- **Snapshot as of 2026-10-05**: 1,875 papers; 24 at `read`, all with
+  yielded assertions; 14 `screened`; 1,837 `seen`. F45 and F46 cover only
+  the handoff's pending facts, not these.
+- Too large for one sprint. Each release: (1) screen a slice (applicability
+  from the source, the Sprint 4 Task F tests); (2) rank by relevance to the
+  consumer's open questions (`hsbc-2026`, `platform:dirac-3`, then `qml`);
+  (3) read the top of the ranking directly and extract, under ADR-0005 A4's
+  read gate. Records that do not bear on any context stay `seen` with the
+  reason.
+- Acceptance per release: the slice screened, the ranking recorded, every
+  promoted record read and yielding, every refused one with its reason.
 
 ## Design documents governing this repository
 

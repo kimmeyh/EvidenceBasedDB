@@ -164,6 +164,19 @@ this project keeps having to replace with a step.
   never an access status (none had been stored); Task I's links are
   idempotent on re-run; `parse_access` counts an arXiv id beside a
   repository in either order. Guards proven by injection
+- **feat**: Manual Validation follow-up (team lead, 2026-10-05: "look at the
+  hsbc repo ... Find and add as evidence") -- the hsbc Phase 1 results memo
+  as a source (pinned at 203881e, read directly) and two `platform:dirac-3`
+  assertions: Dirac-3 matched the exact classical optimum on the Phase 1
+  CVQBoost formulation (-0.0010 AUPRC, CI containing zero), and that
+  formulation is near-trivial (strictly convex, nearly degenerate), so it
+  does not test hard problems. Neither source sentence mentions error
+  correction
+- **docs**: Manual Validation decisions Q1, Q2, Q5 = 1 (both amendments
+  accepted; the cap stays computed); cards F52 to F57 (bulk probes with an
+  arXiv cap, probes each cycle, the 30 unlinked notes, `cites` links, the
+  corroboration question, the permanent read-for-claims program) and a Q9
+  note on F45
 - **fix**: the F47 test ignored case and flagged "NOT upgraded for admission
   against interest" on the record F47 names as not qualifying; now
   case-sensitive and never after NOT, with that sentence in its test
