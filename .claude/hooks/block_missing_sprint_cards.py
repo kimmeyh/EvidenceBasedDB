@@ -67,6 +67,37 @@ def is_git_commit(cmd: str) -> bool:
     return bool(GIT_COMMIT.search(scan))
 
 
+# Sprint 6 retrospective I3 (2026-10-05): two Sprint 6 commit subjects named
+# the wrong issue ("Task H (#63)" for #62; "G (#62)" for #61). The numbers
+# were typed from memory; the map in sprint_status.json is the source.
+TASK_REF = re.compile(r"\bTasks?\s+([A-Z])\b[^()\n]{0,60}?\(#(\d+)\)")
+MISMATCH_BYPASS = "allow_task_issue_mismatch"
+
+
+def check_task_issue_numbers(cmd: str, current: dict) -> int:
+    """Block a commit whose message names "Task X (#N)" when the sprint's
+    task_issues map says X is a different issue. Reads the RAW command,
+    since the subject lives inside the quoted message. Without a map there
+    is nothing to check (fail open)."""
+    mapping = current.get("task_issues")
+    if not isinstance(mapping, dict) or MISMATCH_BYPASS in cmd:
+        return 0
+    wrong = [f"Task {letter} (#{num}): the map says Task {letter} is #{mapping[letter]}"
+             for letter, num in TASK_REF.findall(cmd)
+             if letter in mapping and str(mapping[letter]) != num]
+    if not wrong:
+        return 0
+    print(
+        "[BLOCKED by block_missing_sprint_cards hook: task issue number]\n\n"
+        + "\n".join(f"  - {w}" for w in wrong)
+        + "\n\nThe task-to-issue map is current_sprint.task_issues in .claude/sprint_status.json.\n"
+        "Use the number it gives (scripts/close_task_issue.py <letter> resolves it too).\n"
+        f"Bypass (team-lead-sanctioned only): the literal token {MISMATCH_BYPASS}.",
+        file=sys.stderr,
+    )
+    return 2
+
+
 def main() -> int:
     try:
         payload = _read_payload()
@@ -114,7 +145,7 @@ def main() -> int:
     if pr is None or str(pr).strip() == "":
         missing.append("pr is null or missing (the draft PR)")
     if not missing:
-        return 0
+        return check_task_issue_numbers(cmd, current)
 
     lines = "\n".join(f"  - {m}" for m in missing)
     print(
