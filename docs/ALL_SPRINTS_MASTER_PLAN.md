@@ -239,6 +239,19 @@ and in git. Remaining items below.
   (5) a failing test guards whatever the release adds.
 - Depends on: nothing
 
+**F59. F39 release for Sprint 7: re-verify the models and act on Haiku 4.5's retirement (~45m) Priority 10** (NEW 2026-10-06)
+- Phase: Process
+- Platform: as F39
+- The second release of F39. Haiku 4.5's recorded retirement is "not
+  sooner than 2026-10-15", inside Sprint 7, and the heuristics name Sonnet
+  5.5 as its successor; this release re-reads the models page that day,
+  records what changed, and moves the subagent tier if the retirement has
+  happened or been rescheduled.
+- The existing test fails on a tier past its retirement without a
+  successor, so the release keeps it green with evidence, not by editing
+  dates.
+- Depends on: nothing; runs first in the sprint.
+
 ### Cyc and CVQBoost intake (proposed 2026-10-03)
 
 Registered 2026-10-03 at the team lead's request from
@@ -396,6 +409,10 @@ do 40 and 42, and 60 and 62.
   with the query, so the link's evidence says how it was found.
 - Acceptance: each of the 30 linked with its evidence, or reported again
   with what was tried.
+- Include `2108.0131`, malformed in `QMLPapers/2021/manifest.tsv` and the
+  one refusal of the Sprint 6 bulk load: read the full id from the paper's
+  own PDF in that folder, then enter it through the door (Sprint 6
+  retrospective category 13).
 - Carried from F35 (pruned at Sprint 6 Phase 7): `QMLPapers\Repos\REVIEW.md`
   holds 218 further candidates the extractor would not accept automatically;
   78 score >= 0 and are a real screening queue, 140 score < 0 and are mostly
