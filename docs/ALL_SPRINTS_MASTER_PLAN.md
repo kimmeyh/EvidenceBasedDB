@@ -458,6 +458,65 @@ do 40 and 42, and 60 and 62.
 - Acceptance per release: the slice screened, the ranking recorded, every
   promoted record read and yielding, every refused one with its reason.
 
+### Targeted for Sprint 7 (team lead, 2026-10-06)
+
+**F58. Move the store, its backups and the export out of the repository (~3h, ADR first) Priority 8** (NEW 2026-10-06)
+- Phase: Design / ADR, then migration
+- Team lead, 2026-10-06, verbatim: "Add to backlog for next sprint - sqlite
+  db needs to be stored off repository in D:\Data\Harold\EvidenceBasedDB\store
+  and not in github any longer as it will quickly exceed space allowed by
+  github. Database backups should similarly be moved to
+  D:\Data\Harold\EvidenceBasedDB\store\backups and once they have bee moved
+  then the .json files are no longer needed and can be removed from the
+  repository. Noting that wether the chema.sql and ingest.py and
+  restore_store.py should stay in the repo (likely) or move with the DB
+  should be recommended by the coding agent team. Will need to include an
+  amendment to ADR-0004 for these updates"
+- **Facts at carding (snapshot as of 2026-10-06)**:
+  - `store/evidence.db` (3.1 MB) and `store/backups/` (34 files, 46 MB) are
+    already NOT in GitHub: `.gitignore` excludes `*.db` and `backups/`. They
+    live in the working tree, so the move is from the repository FOLDER,
+    not from GitHub.
+  - What GitHub holds is the JSON export (`export/`, 2.7 MB: `papers.json`
+    2.6 MB for 1,875 papers, about 1.4 KB per paper). The whole repository
+    is about 7.7 MB of git objects; `papers.json` has changed in 30 commits.
+  - GitHub's limits (docs.github.com, "About large files on GitHub", read
+    2026-10-06): a warning above 50 MiB per file, a block above 100 MiB per
+    file, and repositories "ideally less than 1 GB, and less than 5 GB is
+    strongly recommended". At about 1.4 KB per paper, `papers.json` reaches
+    50 MiB near 36,000 papers; every regeneration also adds a new version to
+    the history.
+  - `D:\Data\Harold\EvidenceBasedDB\store` does not exist yet.
+- **Coding agent team recommendation (requested by the team lead)**:
+  `schema.sql`, `ingest.py`, `restore_store.py`, `rebuild.py`, `backup.py`
+  and every other script STAY in the repository: they are code, versioned
+  and tested, and the door's rules live in them. Only DATA moves. The store
+  path becomes one setting read in one place (`store.script_paths`), with
+  the off-repository default and an environment override for tests and CI.
+- **What removing the export changes, to decide at planning (Class 1)**:
+  1. The export is today the reviewable record of the data (ADR-0004
+     section 2: "the store is a build output; the export is the artifact").
+     Without it, git holds no history of what the store said and when, and
+     a data change has no diff to review.
+  2. 12 test files read the committed export, including the byte-identity
+     rebuild check that CI runs. They move to the off-repository export or
+     to small committed fixtures; CI cannot reach `D:\`.
+  3. Recovery then rests on the backups alone. Options: (a) keep a full
+     export beside the store, off-repository, regenerated on every write;
+     (b) also keep backups somewhere off this machine; (c) keep a small
+     committed sample export for CI and review.
+- Platform: `store/__init__.py` (`script_paths`), `store/backup.py`,
+  `scripts/*.py` that write or read the store or the export, `.gitignore`,
+  `tests/` (export-reading tests), `.github/workflows/ci.yml`; ADR-0004 (a
+  dated amendment, required by the team lead); ADR-0005 section 3 and
+  `CLAUDE.md` ("The two directories") also name these locations.
+- Acceptance: the ADR-0004 amendment accepted before any move; the store
+  and backups at the new paths with a verified backup taken before the move;
+  every script and test passes with the new paths; the export's fate as
+  decided; no data file left in the repository; `git rm` of `export/` only
+  after the decided replacement exists and a rebuild from it is proven.
+- Depends on: none. Run before F52, F57 or any other bulk load.
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
