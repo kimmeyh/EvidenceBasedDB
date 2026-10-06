@@ -59,6 +59,8 @@ Any item that depends on an external capability (a GitHub API behavior, a librar
 
 **The pre-flight inventories CODE, not only documents (Sprint 10 improvement 6).** Grep the source tree for whatever the item is about to change, not just the docs that mention it. F40's card listed four documents referencing the path being moved and was verified against exactly those four. It missed `data.py`, which hardcoded the ULB dataset location -- so the repository that Appendix C promises "regenerates every figure" would have worked on no machine but the author's. The card was right about every document and silent about the one line that mattered.
 
+**A task that adds records at scale states which derived fields run on them (Sprint 6 retrospective I5, 2026-10-05).** For a bulk load, the plan names each computed or derived field the new records will carry (probes, back-fills, links), with its runtime sized from a pilot, or names the card that defers it. Sprint 6 sized its computed-field probes for the 347 papers already in the store and loaded 1,402 more without saying whether they would be probed; they were not, and F52 was carded at Manual Validation. The question costs one line at planning and a sprint of drift when it is skipped.
+
 ## Defined-scope rule (team lead, 2026-08-30 -- binding)
 
 Sprint scope is DEFINED, never additive: the team lead's selection list IS the complete scope. Items previously proposed, drafted, or carded are NOT in scope unless they appear in the selection. If an unselected item looks critical-path, raise it as a question during refinement; never plan it in by inference. Cards created for unselected items are closed as premature and recreated at the sprint that selects them.
