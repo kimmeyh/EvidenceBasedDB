@@ -248,9 +248,10 @@ def _atom_for(ident: str) -> bytes:
 def test_one_run_shares_one_pacer_so_arxiv_requests_are_spaced_regression(monkeypatch):
     """Sprint 6 Task J (2026-10-04): build_record made a NEW PacedFetcher per
     entry, a new pacer never waits, and 684 entries went to arXiv in 10
-    minutes against the team lead's 6 s spacing. Proven to fail by
-    injection: with _fetcher() returning a new PacedFetcher on each call, no
-    wait was recorded between the two entries."""
+    minutes against the team lead's 6 s spacing. Since retrospective I1
+    (2026-10-05) the clock is process-wide, so new pacers are safe. Proven to
+    fail by injection: with each new PacedFetcher resetting the clock (the
+    old per-instance behavior), no wait was recorded between the entries."""
     import importlib.util
     from store import citations
     spec = importlib.util.spec_from_file_location("intake_pacing", ROOT / "scripts" / "intake.py")

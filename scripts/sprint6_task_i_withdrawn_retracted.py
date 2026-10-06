@@ -80,9 +80,8 @@ def enter(conn, entry: dict, today: str, apply: bool) -> str:
     rid = present(conn, kind, ident)
     if rid:
         return rid
-    # The run's ONE pacer (intake._fetcher()), shared with main()'s lookups
-    # below: a new PacedFetcher per call never waits (Task J, 2026-10-04).
-    record = intake.build_record(entry, fetcher=intake._fetcher(), today=today)
+    # Paced by the process-wide arXiv clock (store/citations.py, I1).
+    record = intake.build_record(entry, fetcher=citations.PacedFetcher(), today=today)
     if apply:
         insert_paper(conn, record)
     return record.id
@@ -95,7 +94,7 @@ def main(argv: list[str] | None = None) -> int:
     if apply:
         backup_before_write(DB_PATH, "sprint6 task I withdrawn and retracted")
     conn = connect(DB_PATH)
-    fetcher = intake._fetcher()
+    fetcher = citations.PacedFetcher()  # the process-wide clock paces it (I1)
     try:
         for ident, folder, successor in WITHDRAWN:
             try:

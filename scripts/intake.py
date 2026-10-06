@@ -58,24 +58,17 @@ from store.ingest import (  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 FETCHER = None  # tests inject; the real run paces arXiv
-_PACER: citations.PacedFetcher | None = None
 
 
 def _fetcher():
-    """FETCHER if a test injected one, else ONE PacedFetcher for the whole run.
+    """FETCHER if a test injected one, else a PacedFetcher.
 
-    Sprint 6 Task J (2026-10-04): this used to be `citations.PacedFetcher()`
-    at each call site, a new pacer per entry. A new pacer remembers no
-    previous request, so it never waited: since Sprint 4 every manifest run
-    sent arXiv requests back to back. 684 entries went out in 10 minutes,
-    against the team lead's 6 s spacing, and the 429s of 2026-10-03 most
-    likely came from the same defect."""
-    global _PACER
-    if FETCHER is not None:
-        return FETCHER
-    if _PACER is None:
-        _PACER = citations.PacedFetcher()
-    return _PACER
+    Sprint 6 Task J (2026-10-04) found that a new pacer per entry never
+    waited: 684 entries went to arXiv in 10 minutes against the team lead's
+    6 s spacing. The fix that stays (retrospective I1 and I6, 2026-10-05) is
+    in store/citations.py: every pacer shares ONE process-wide clock, so
+    building a new one here is safe and no caller needs to hold a pacer."""
+    return FETCHER if FETCHER is not None else citations.PacedFetcher()
 
 # Sprint 6 Task J: with output redirected to a file, Windows encodes stdout as
 # cp1252 and the first author named with a character outside it ("ś")

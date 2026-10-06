@@ -548,17 +548,25 @@ class PacedFetcher:
     def __init__(self, inner: Fetcher | None = None, interval_s: float = ARXIV_MIN_INTERVAL_S):
         self.inner = inner or default_fetcher
         self.interval_s = interval_s
-        self._last_arxiv = 0.0
 
     def wait_for(self, url: str) -> None:
+        global _last_arxiv_request
         if is_arxiv_host(url):
-            wait = self.interval_s - (_monotonic() - self._last_arxiv)
+            wait = self.interval_s - (_monotonic() - _last_arxiv_request)
             if wait > 0:
                 # Module attribute, not time.sleep directly, so tests can stub
                 # the wait like the rest of this file does (PR #30 review).
                 _sleep(wait)
-            self._last_arxiv = _monotonic()
+            _last_arxiv_request = _monotonic()
 
     def __call__(self, url: str, accept: str) -> bytes:
         self.wait_for(url)
         return self.inner(url, accept)
+
+
+# ONE clock for the whole process (Sprint 6 retrospective I1, 2026-10-05).
+# It used to live on each PacedFetcher, and a new pacer per intake entry
+# started at zero and never waited: since Sprint 4, arXiv requests from
+# intake were not spaced between entries. A module-level clock cannot be
+# reset by building another pacer. -inf means "no arXiv request yet".
+_last_arxiv_request: float = float("-inf")

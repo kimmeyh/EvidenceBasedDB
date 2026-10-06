@@ -121,3 +121,14 @@ message opened: "Manual Validation complete".
 - **Scrum Master**: none
 - **Lead Developer**: none
 - **Claude Code Development Team**: none
+
+## Improvement Decisions
+
+Team lead, 2026-10-05: "all now". Every improvement prevents its problem at the source first, and extends an existing mechanism where one exists.
+
+- **I1. One arXiv clock per process** (now): the pacing clock moves from each `PacedFetcher` instance to module level in `store/citations.py`, so a new pacer can never start at zero (the defect class behind the 2026-10-03 429s). Control: a test that a second, separate pacer waits.
+- **I2. Intake refuses a manifest that no intake section names** (now): `intake.py --manifest <file in manifests/> --apply` refuses unless `docs/INTAKE_WORKFLOW.md` names the file, so the section is written first.
+- **I3. Issue numbers resolved from the task letter** (now): the task-to-issue map is stored as named pairs in `.claude/sprint_status.json`; `scripts/close_task_issue.py <letter>` closes the right issue; a hook blocks a commit subject "Task X (#N)" whose N does not match X.
+- **I4. Phase 5 re-reads each new amendment against the code** (now): extends the Phase 5 acceptance walk in `docs/SPRINT_EXECUTION_WORKFLOW.md`.
+- **I5. Bulk loads state their derived fields at planning** (now): extends the capability pre-flight in `docs/SPRINT_PLANNING.md`.
+- **I6. Retire the per-script pacer workarounds** (now, with I1): one way to pace.
