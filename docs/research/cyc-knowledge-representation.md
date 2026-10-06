@@ -201,7 +201,7 @@ Desideratum 12, *Meta-knowledge*, is the one that names our exact failure mode:
 That last point is a direct argument about scope: Cyc stores *rules of thumb*,
 not a fact dump, and looks the facts up.
 
-## Generalisation before entry
+## Generalization before entry
 
 The authoring discipline is worth copying:
 
@@ -260,3 +260,35 @@ Seven things worth carrying, and two worth deliberately NOT carrying.
 9. **Hand-authoring at Cyc's scale.** 2,000 person-years is the cost of
    world-modeling. Our scope is 151 records and a bounded set of assertions,
    which is why this is tractable at all.
+
+## Amendment 2026-10-03: two gaps closed by the engine source (Sprint 6 Task H, F42)
+
+The 2026-09-13 text above stays as written. Sources: the 2009 LarKC release of
+the Cyc engine (`cycorp-2009-larkc-cyc-inference-engine-source`), OpenCyc 4.0
+(`cycorp-2012-opencyc-4-0-release`) and the 2002 OpenCyc 0.7.0 manual pages.
+Full research: `docs/research/2026-09-28_F42_cyc-kb-organization-and-inference.md`.
+
+**Numeric confidence.** Still none on assertions. The engine carries numbers,
+but all of them steer search:
+
+- Thirteen strategic heuristics with scaling factors from 1 to 300,000
+  (`inference_strategic_heuristics.java`, lines 1241 to 1272).
+- A fallback rule-success probability of 0.02939361143247565 for a rule with
+  no history (`inference_analysis.java`, line 1418). OpenCyc 4.0 ships the
+  history file for it, `rule-utility-experience.cfasl`, as 1 byte.
+- Deduction strength combines discretely: unknown if any support is unknown,
+  else default if any is default, else monotonic (`argumentation.java`,
+  `strength_combine`, line 117). A conclusion is as strong as its weakest
+  support.
+
+**Truth maintenance.** The mechanism exists and cascades:
+
+- "Remove ARGUMENT for ASSERTION from the KB and perform necessary truth
+  maintenance." (`tms.java`, line 194)
+- "Remove all the deductions depending on this ASSERTION." (`tms.java`,
+  line 538)
+- OpenCyc 4.0's KB 5022 stores 337,085 deductions for this purpose, beside
+  1,889,842 assertions (`units/5022/deduction-count.text`,
+  `assertion-count.text`).
+
+Still open: anything after 2023, and whether current Cyc keeps these defaults.

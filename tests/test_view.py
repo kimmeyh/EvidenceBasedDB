@@ -91,7 +91,7 @@ def _seed_store(db_path: Path):
             disposition="fixture",
             context="qml",
             applicability=[("qml", "primary topic -- fixture"), ("qc", "uses a QC backend -- fixture")],
-            checked_against_source="2026-09-17, fixture",
+            checked_against_source="2026-09-17, fixture", reads=[("fixture", "2026-09-17", "full", "")],
         ),
     )
     insert_assertion(
@@ -100,7 +100,7 @@ def _seed_store(db_path: Path):
             id="test-assertion-two",
             value="A second assertion that contradicts the first",
             provenance="test-paper-one, p2",
-            evidence_tag="N/A",
+            evidence_tag="N/A", derivation="extracted",
             context="qml",
             certainty="low",
             certainty_reasons="fixture",
@@ -115,7 +115,7 @@ def _seed_store(db_path: Path):
             id="test-assertion-one",
             value="Test assertion value with unicode: café, αβγ",
             provenance="test-paper-one, p1",
-            evidence_tag="N/A",
+            evidence_tag="N/A", derivation="extracted",
             context="qml",
             certainty="high",
             certainty_reasons="fixture",

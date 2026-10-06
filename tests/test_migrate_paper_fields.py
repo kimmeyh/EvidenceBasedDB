@@ -52,13 +52,17 @@ def old_store():
         yield db_path, export_dir
 
 
-def _run(db_path: Path, export_dir: Path, args: list[str]) -> subprocess.CompletedProcess:
+def _run(db_path: Path, export_dir: Path, args: list[str], script: Path = SCRIPT) -> subprocess.CompletedProcess:
     wrapper = (
         "import sys, importlib.util\nfrom pathlib import Path\n"
         f"sys.path.insert(0, {str(ROOT)!r})\n"
-        f"spec = importlib.util.spec_from_file_location('mig', {str(SCRIPT)!r})\n"
+        f"spec = importlib.util.spec_from_file_location('mig', {str(script)!r})\n"
         "mod = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(mod)\n"
         f"mod.DB_PATH = Path({str(db_path)!r}); mod.EXPORT_DIR = Path({str(export_dir)!r})\n"
+        # A throwaway store: the verified backup goes beside it, not into store/backups.
+        f"mod.__dict__.get('backup_before_write') and setattr(mod, 'backup_before_write', "
+        f"lambda db, reason: __import__('store.backup', fromlist=['x']).backup_before_write("
+        f"db, reason, Path({str(db_path.parent / 'backups')!r})))\n"
         f"raise SystemExit(mod.main({args!r}))\n"
     )
     return subprocess.run([sys.executable, "-c", wrapper], capture_output=True, text=True)
@@ -98,6 +102,11 @@ def test_apply_drops_the_column_adds_the_check_and_keeps_dependents(old_store):
             conn.execute("UPDATE paper_fields SET checked_against_source = NULL WHERE record_id='p1'")
     finally:
         conn.close()
+    # Migrations run in order (Sprint 6 Task E, 2026-10-03): a store this old
+    # is exported only after the Sprint 6 migration, which this chains.
+    assert "export NOT regenerated" in proc.stdout and not export_dir.exists()
+    later = _run(db_path, export_dir, ["--apply"], ROOT / "scripts" / "migrate_sprint6_reference_fields.py")
+    assert later.returncode == 0, later.stderr
     assert (export_dir / "papers.json").exists()
 
 

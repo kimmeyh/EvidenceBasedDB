@@ -18,6 +18,18 @@ HAND_MARKER = "hand-transcribed from"
 NOT_YET_SCREENED = "; not yet screened"  # bulk-intake disposition suffix; set_tier removes it on promotion
 MIN_VISIBLE_WORDS = 50  # below this a saved web page is a shell, not the content (Sprint 5 Task B)
 
+# ADR-0004 A6 and ADR-0005 A4 (2026-10-03, Sprint 6 Task E). The schema
+# CHECKs hold the same sets; the door holds them too so a refusal can say
+# what to do instead.
+DERIVATIONS = ("extracted", "synthesized", "project")
+CLAIM_TYPES = ("positive", "absence", "vendor-self-claim")
+READ_EXTENTS = ("full", "partial", "abstract", "html-render", "summary", "grep", "subagent")
+READ_QUALIFYING = ("full", "partial")  # what `read` needs (ADR-0005 A4 (c))
+PROBE_FIELDS = ("publication_status", "version_of", "access_status", "affiliations")
+PUBLICATION_STATUSES = ("published", "preprint", "withdrawn", "retracted")
+LINK_TYPES = ("code-of", "dataset-of", "version-of", "superseded-by", "responds-to")
+_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
 
 def visible_words(data: bytes) -> int:
     """Words a reader would see in a saved HTML page: scripts and styles
@@ -127,6 +139,12 @@ class PaperRecord:
     updated: str = ""
     updated_reason: str = ""
     applicability: list[tuple[str, str]] = field(default_factory=list)  # (context_id, rationale)
+    # ADR-0005 A4 (Sprint 6 Task E). `metadata_provider` is set by the door
+    # from the registry that answered; a caller supplies it only on replay.
+    metadata_provider: str | None = None
+    coi: str | None = None  # a DISCLOSED conflict of interest, ending in its anchor
+    found_via: list[tuple[str, str | None]] = field(default_factory=list)  # (route, cited_as)
+    reads: list[tuple[str, str, str, str]] = field(default_factory=list)  # (reader, read_on, extent, detail)
 
 
 @dataclass
@@ -148,6 +166,13 @@ class AssertionRecord:
     contradicts: list[str] = field(default_factory=list)
     updated: str = ""
     updated_reason: str = ""
+    # ADR-0004 A6 (Sprint 6 Task E). `derivation` has no default on
+    # purpose: whether a claim was read from a source, synthesized from
+    # other assertions, or is a fact about this project is the caller's
+    # statement to make, never the door's guess.
+    derivation: str = ""
+    claim_type: str = "positive"
+    search_scope: str | None = None
 
 
 def append_updated_reason(conn, record_id: str, note: str, today: str) -> str:
@@ -322,6 +347,75 @@ def validate_paper(paper: PaperRecord, check_local_paths: bool = True) -> None:
                 "' -- arXiv affiliation block'); a rationale that cannot say where its value "
                 "came from is the defect this whole system exists against."
             )
+    # --- ADR-0005 A4 (Sprint 6 Task E): the stored reference fields. ---
+    if paper.coi is not None and not _ANCHOR.search(paper.coi):
+        raise ValueError(
+            f"paper {pid!r}: coi records a DISCLOSED interest and must end with its anchor "
+            "(' -- p.12 competing interests'). Affiliations are computed, not typed here.")
+    for route, _cited_as in paper.found_via:
+        if not (route or "").strip():
+            raise ValueError(f"paper {pid!r}: a found_via route is blank; name the collection and locator.")
+    for read in paper.reads:
+        validate_read(pid, *read)
+    # The read gate holds at insert as well as at promotion (fresh-eyes
+    # review, 2026-10-03: `intake --tier read` went around set_tier). The
+    # 12 records at `read` before A4 were back-filled by Task F first.
+    if paper.tier == "read":
+        qualifying_read_problem(pid, paper.reads, paper.checked_against_source)
+    # A provider is the door's statement about which registry answered, so a
+    # caller may carry one only for a citation the door derived or a replay.
+    if paper.metadata_provider is not None and paper.citation_source is not DERIVED_BY_DOOR \
+            and paper.citation_source != REPLAY:
+        raise ValueError(
+            f"paper {pid!r}: metadata_provider is set by the door from the registry that answered; "
+            "a caller supplies it only with citation_source=REPLAY.")
+
+
+def qualifying_read_problem(record_id: str, reads, checked_against_source: str | None) -> None:
+    """ADR-0005 A4 (c): `read` needs a 'full' or 'partial' row by the reader
+    who sets `checked_against_source` (named in it). `reads` is a list of
+    (reader, read_on, extent, detail). Raises with what was found."""
+    extents = sorted({r[2] for r in reads})
+    cas = checked_against_source or ""
+    if not any(r[2] in READ_QUALIFYING and r[0] in cas for r in reads):
+        raise ValueError(
+            f"cannot set paper {record_id!r} to tier='read': its read_extent is {extents or 'not recorded'}"
+            f"{' (no qualifying row by a reader named in checked_against_source)' if extents else ''}. "
+            "ADR-0005 A4: `read` needs a 'full' or 'partial' read by the reader who checks it; grep, "
+            "subagent, summary, abstract and html-render alone do not qualify. Record the pages read "
+            "with add_read first.")
+
+
+def validate_read(record_id: str, reader: str, read_on: str, extent: str, detail: str = "") -> None:
+    """One `read_extent` row (ADR-0005 A4 (c))."""
+    if extent not in READ_EXTENTS:
+        raise ValueError(f"paper {record_id!r}: read extent {extent!r} is not one of {READ_EXTENTS}.")
+    if not (reader or "").strip():
+        raise ValueError(f"paper {record_id!r}: a read row needs its reader.")
+    if not _DATE.match(read_on or ""):
+        raise ValueError(f"paper {record_id!r}: read_on {read_on!r} must be YYYY-MM-DD.")
+    if extent == "partial" and not (detail or "").strip():
+        raise ValueError(f"paper {record_id!r}: a 'partial' read must say what was read (pages, sections).")
+
+
+def validate_assertion(assertion: AssertionRecord) -> None:
+    """ADR-0004 A6: what the door can check on the record itself. The
+    synthesized-inputs rule (at least two `supports`) cannot be checked
+    here: the rebuild writes every relation after every assertion exists.
+    It is store.resolvers.synthesis_input_problems, run by a test over the
+    committed export."""
+    aid = assertion.id
+    if assertion.derivation not in DERIVATIONS:
+        raise ValueError(
+            f"assertion {aid!r}: derivation must be one of {DERIVATIONS} (got {assertion.derivation!r}). "
+            "ADR-0004 A6: say whether a source yields it, it synthesizes other assertions, or it is "
+            "a fact about this project.")
+    if assertion.claim_type not in CLAIM_TYPES:
+        raise ValueError(f"assertion {aid!r}: claim_type must be one of {CLAIM_TYPES} (got {assertion.claim_type!r}).")
+    if assertion.claim_type == "absence" and not (assertion.search_scope or "").strip():
+        raise ValueError(
+            f"assertion {aid!r}: an absence claim is only as good as the search behind it. "
+            "Set search_scope to what was searched and the date.")
 
 
 def set_tier(
@@ -361,6 +455,11 @@ def set_tier(
             f"cannot set paper {record_id!r} to tier={tier!r}: it has no applicability. ADR-0005 "
             "Amendment A2: `screened` (and so `read`) requires applicability derived from the source, "
             "each rationale ending in its source anchor. Write the applicability rows first.")
+    # ADR-0005 A4 (c), decisions Q3 and Q7: `read` needs a reader who read
+    # the source itself, in full or in named part. A grep, a subagent's
+    # report, a summary, an abstract or an HTML render alone does not
+    # qualify; on 2026-09-28 a grep reported "no source" for a claim page
+    # 14 states.
     effective = checked_against_source if checked_against_source is not None else row["checked_against_source"]
     if tier == "read" and (effective is None or not effective.strip()):
         raise ValueError(
@@ -368,6 +467,10 @@ def set_tier(
             f"{'not set' if effective is None else 'blank'}. ADR-0005 section 2 requires it "
             "at this tier -- pass checked_against_source (the literal 'never' is valid)."
         )
+    if tier == "read":
+        reads = [tuple(r) for r in conn.execute(
+            "SELECT reader, read_on, extent, detail FROM paper_reads WHERE record_id = ?", (record_id,))]
+        qualifying_read_problem(record_id, reads, effective)
     if checked_against_source is not None:
         conn.execute(
             "UPDATE paper_fields SET tier = ?, checked_against_source = ? WHERE record_id = ?",
@@ -401,7 +504,8 @@ def derive_citation(paper: PaperRecord, fetcher: citations.Fetcher | None = None
     # object rather than a string precisely so a caller cannot forge it
     # (PR #30 round-2 review, 2026-09-23).
     return replace(paper, citation=rendered, value=paper.value or md.title,
-                   citation_source=DERIVED_BY_DOOR)
+                   citation_source=DERIVED_BY_DOOR,
+                   metadata_provider=paper.metadata_provider or citations.provider_of(md))
 
 
 def insert_paper(
@@ -428,10 +532,17 @@ def insert_paper(
         (paper.id, paper.context),
     )
     conn.execute(
-        "INSERT INTO paper_fields (record_id, tier, access, disposition, evidence, mined_by, checked_against_source) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)",
-        (paper.id, paper.tier, paper.access, paper.disposition, paper.evidence, paper.mined_by, paper.checked_against_source),
+        "INSERT INTO paper_fields (record_id, tier, access, disposition, evidence, mined_by, checked_against_source, "
+        "metadata_provider, coi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        (paper.id, paper.tier, paper.access, paper.disposition, paper.evidence, paper.mined_by,
+         paper.checked_against_source, paper.metadata_provider, paper.coi),
     )
+    for route, cited_as in paper.found_via:
+        conn.execute("INSERT INTO paper_found_via (record_id, route, cited_as) VALUES (?, ?, ?)",
+                     (paper.id, route, cited_as))
+    for reader, read_on, extent, detail in paper.reads:
+        conn.execute("INSERT INTO paper_reads (record_id, reader, read_on, extent, detail) VALUES (?, ?, ?, ?, ?)",
+                     (paper.id, reader, read_on, extent, detail or ""))
     for context_id, rationale in paper.applicability:
         conn.execute(
             "INSERT INTO paper_applicability (record_id, context_id, rationale) VALUES (?, ?, ?)",
@@ -441,6 +552,7 @@ def insert_paper(
 
 
 def insert_assertion(conn: sqlite3.Connection, assertion: AssertionRecord, yielded_by: str | None = None) -> None:
+    validate_assertion(assertion)
     conn.execute(
         "INSERT INTO records (id, class, value, provenance, evidence_tag, certainty, certainty_reasons, "
         "fidelity, reading_level, updated, updated_reason) "
@@ -455,18 +567,17 @@ def insert_assertion(conn: sqlite3.Connection, assertion: AssertionRecord, yield
         "INSERT INTO record_contexts (record_id, context_id) VALUES (?, ?)",
         (assertion.id, assertion.context),
     )
-    # assertion_fields is written whenever ANY of its optional fields is
-    # set, not unconditionally -- an assertion with no units/rounding/
-    # citation_context has no reason to carry an all-NULL row. Fixed
-    # 2026-09-16 (Copilot PR #1 review): this row previously was never
-    # written at all, which meant assertion_documents (originally keyed to
-    # assertion_fields, now to records directly) had no row to key against
-    # even when it didn't need one, and citation_context had nowhere to go.
-    if assertion.units is not None or assertion.rounding is not None or assertion.citation_context is not None:
-        conn.execute(
-            "INSERT INTO assertion_fields (record_id, units, rounding, citation_context) VALUES (?, ?, ?, ?)",
-            (assertion.id, assertion.units, assertion.rounding, assertion.citation_context),
-        )
+    # assertion_fields is written for EVERY assertion since ADR-0004 A6
+    # (Sprint 6 Task E): `derivation` and `claim_type` are required. Until
+    # then the row was written only when units/rounding/citation_context
+    # was set (2026-09-16, Copilot PR #1 review); those three stay NULL
+    # when unset and the export still omits them.
+    conn.execute(
+        "INSERT INTO assertion_fields (record_id, units, rounding, citation_context, derivation, claim_type, "
+        "search_scope) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        (assertion.id, assertion.units, assertion.rounding, assertion.citation_context,
+         assertion.derivation, assertion.claim_type, assertion.search_scope),
+    )
     for document in assertion.documents:
         conn.execute(
             "INSERT INTO assertion_documents (record_id, document) VALUES (?, ?)",
@@ -487,3 +598,57 @@ def insert_assertion(conn: sqlite3.Connection, assertion: AssertionRecord, yield
             "INSERT INTO assertion_relations (from_assertion_id, to_assertion_id, relation) VALUES (?, ?, 'contradicts')",
             (assertion.id, target),
         )
+
+
+# --- ADR-0005 A4 (Sprint 6 Task E): writers for the child rows added after a
+# paper exists. Each validates, then writes; none commits.
+
+def add_read(conn: sqlite3.Connection, record_id: str, reader: str, read_on: str, extent: str,
+             detail: str = "") -> None:
+    """Record how far `reader` read the source on `read_on` (ADR-0005 A4 (c))."""
+    validate_read(record_id, reader, read_on, extent, detail)
+    conn.execute("INSERT INTO paper_reads (record_id, reader, read_on, extent, detail) VALUES (?, ?, ?, ?, ?)",
+                 (record_id, reader, read_on, extent, detail or ""))
+
+
+def add_found_via(conn: sqlite3.Connection, record_id: str, route: str, cited_as: str | None = None) -> None:
+    """One more route by which the source was found (field 1), with how
+    that route cited it (field 8)."""
+    if not (route or "").strip():
+        raise ValueError(f"paper {record_id!r}: a found_via route is blank; name the collection and locator.")
+    conn.execute("INSERT INTO paper_found_via (record_id, route, cited_as) VALUES (?, ?, ?)",
+                 (record_id, route, cited_as))
+
+
+def record_probe(conn: sqlite3.Connection, record_id: str, field_name: str, value: str, provider: str,
+                 probed_on: str, anchor: str | None = None) -> None:
+    """Keep the last result of a computed field's probe (the probe rule,
+    ADR-0005 A4 (b)). Replaces the previous result for that field: a probe
+    row is a dated measurement, and a newer measurement supersedes it. A
+    hand-origin status (provider 'hand') must carry its anchor."""
+    if field_name not in PROBE_FIELDS:
+        raise ValueError(f"paper {record_id!r}: probe field {field_name!r} is not one of {PROBE_FIELDS}.")
+    if field_name == "publication_status" and value not in PUBLICATION_STATUSES:
+        raise ValueError(f"paper {record_id!r}: publication_status {value!r} is not one of {PUBLICATION_STATUSES}.")
+    if not (value or "").strip() or not (provider or "").strip():
+        raise ValueError(f"paper {record_id!r}: a {field_name} probe needs its value and the provider that answered.")
+    if not _DATE.match(probed_on or ""):
+        raise ValueError(f"paper {record_id!r}: probed_on {probed_on!r} must be YYYY-MM-DD.")
+    if provider == "hand" and not (anchor or "").strip():
+        raise ValueError(f"paper {record_id!r}: a hand-recorded {field_name} must name where it was read (anchor).")
+    conn.execute(
+        "INSERT INTO paper_probes (record_id, field, value, provider, probed_on, anchor) VALUES (?, ?, ?, ?, ?, ?) "
+        "ON CONFLICT(record_id, field) DO UPDATE SET value = excluded.value, provider = excluded.provider, "
+        "probed_on = excluded.probed_on, anchor = excluded.anchor",
+        (record_id, field_name, value, provider, probed_on, anchor))
+
+
+def add_source_link(conn: sqlite3.Connection, from_id: str, to_id: str, link_type: str, evidence: str) -> None:
+    """A typed link between two SOURCE records (field 6), carrying the
+    sentence that establishes it. Removing it never touches either record."""
+    if link_type not in LINK_TYPES:
+        raise ValueError(f"source link {from_id!r} -> {to_id!r}: type {link_type!r} is not one of {LINK_TYPES}.")
+    if not (evidence or "").strip():
+        raise ValueError(f"source link {from_id!r} -> {to_id!r}: carry the sentence that establishes it.")
+    conn.execute("INSERT INTO source_links (from_id, to_id, link_type, evidence) VALUES (?, ?, ?, ?)",
+                 (from_id, to_id, link_type, evidence))

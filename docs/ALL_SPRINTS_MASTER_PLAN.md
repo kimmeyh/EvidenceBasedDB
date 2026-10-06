@@ -40,13 +40,29 @@ repository exists. No other F# from either source repository applies here.
 | 2 | docs/sprints/SPRINT_2_SUMMARY.md | [OK] Complete | 2026-09-17 to 2026-09-18 |
 | 3 | docs/sprints/SPRINT_3_SUMMARY.md | [OK] Complete | 2026-09-18 to 2026-09-19 |
 | 4 | docs/sprints/SPRINT_4_SUMMARY.md | [OK] Complete | 2026-09-19 to 2026-09-23 |
-| 5 | docs/sprints/SPRINT_5_SUMMARY.md | [OK] Complete, PR #43 awaiting merge | 2026-09-23 to 2026-09-25 |
+| 5 | docs/sprints/SPRINT_5_SUMMARY.md | [OK] Complete | 2026-09-23 to 2026-09-25 |
+| 6 | docs/sprints/SPRINT_6_SUMMARY.md | [OK] Complete | 2026-09-27 to 2026-10-05 |
 
 ## Last Completed Sprint
 
-Sprint 5 is below; Sprint 4 follows it for continuity.
+Sprint 6 is below; Sprint 5 follows it for continuity.
 
-### Sprint 5: Make the Store Durable, Then Fill It (2026-09-23 to 2026-09-25, PR #43)
+### Sprint 6: Decide the Fields Once, Then Load at Scale (2026-09-27 to 2026-10-05, PR #54)
+
+Twelve tasks, twelve issues (#55-#66), all closed. **Fields decided once**:
+ADR-0004 A6 (`derivation`, `claim_type`, two computed certainty caps) and
+ADR-0005 A4 (publication status, ten reference fields under the probe rule,
+the `read` gate, the admission-against-interest rule), both accepted at
+Manual Validation, then migrated with a byte-identical round trip.
+**Loaded at scale**: 1,402 QMLPapers papers (F32), the Cyc package without
+the CVQBoost findings (F41; F51 holds the rest), six withdrawn and one
+retracted source (F33), 105 repository links (F35). Store 361 -> 1,875
+papers, 23 -> 60 assertions; suite 506 -> 572. Found mid-sprint: intake had
+never paced arXiv between entries (since Sprint 4); fixed, then prevented at
+the source. Retrospective: team lead all "Very Good"; six improvements
+applied now. Full detail: `docs/sprints/SPRINT_6_SUMMARY.md`.
+
+### Sprint 5: Make the Store Durable, Then Fill It (2026-09-23 to 2026-09-25, PR #43, merged to develop and to main via PR #53 on 2026-09-27)
 
 Nine tasks, nine issues (#44-#52), all closed. **Durable first** (F30): the
 store rebuilds byte-identically from the committed export, takes a verified
@@ -63,6 +79,38 @@ improvements applied now, each extending an existing control. Full detail:
 **The lesson worth carrying**: the author's own injection-proven tests did
 not find the four defects a fresh-eyes reviewer found in the same code; a
 review launched at the task's commit is now the rule.
+
+**Sprint 5 scope and decisions, kept here from its "Current sprint" section
+(moved 2026-09-27 at Sprint 6 Phase 1.2):**
+
+- **Scope selected 2026-09-23 (team lead, DEFINED)**: F31 (new: download
+  and process the HSBC Phase 2 bibliography, then propose the fields it
+  shows the store is missing), F30 (store durability), F28 (learn from the
+  papers), F5 (QCi deep-dive, with every find added to the store through
+  the existing intake path).
+- **Closed 2026-09-23 without implementation (team lead):** F19
+  (SPRINT_RESUME_GUIDE.md and a startup-check skill): "This is not
+  necessary if the sprint execution docs are kept up-to-date. In other
+  repositories using the same Sprint framework Coding Agents pick up where
+  everything is left off very quickly by looking at github and reading a
+  couple of documents. This can be closed." F29 (cold-mode adjudication
+  timing): "This is not needed and can be closed." F11's confirm-mode
+  number (1.08 team-lead minutes per record) stands as the store's only
+  adjudication measurement; the cold-mode number stays unmeasured by
+  decision, not by omission.
+- **Manual Validation decisions, 2026-09-25** (team lead: "1. 2 2.1 3 1 4. 1
+  5. 2 6. add the row it rests on 7 2"): Q1 = 2, then REVISED the same
+  morning ("can you pull any of the papers from the authors IF they are
+  related to QML, ML or the Zeno effect (can you screen the abstracts to
+  determine)"): 21 of 392 unresolved hits entered, marked "authorship not
+  confirmed"; Q8 = 2 then removed the three weakest, 18 remain. Q2 = 1:
+  retention rule 3's "superseded" clause accepted. Q3 = 1: the six pilot
+  `read` promotions accepted; the three learnings stay "awaiting team-lead
+  adjudication". Q4 = 1: F37 carded. Q5 = 2: the papers `[IN-2]` and
+  `[CL-21]` meant are not added. Q6: the Table 3 rows added under
+  `cvqboost-vs-xgboost-auc-under-balancing`, the vendor sentence kept.
+  Q7 = 2: `set_tier()` removes "; not yet screened" at every promotion.
+  Q9 = 1: Manual Validation complete.
 
 
 ### Sprint 4: Fix the Path, Fix the Records, Measure the Cost (2026-09-19 to 2026-09-23, PR #30, merged to main via PR #42)
@@ -147,312 +195,268 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 5** (branch `feature/20260923_Sprint_5`, cut 2026-09-23 at the
-Sprint 4 carry-forward). Phase 1 Backlog Refinement complete.
+**Sprint 6** (branch `feature/20260927_Sprint_6`, PR #54) is at Phase 7:
+Manual Validation and the retrospective complete 2026-10-05; the PR goes to
+the team lead for merge once its reviews are complete. **Sprint 7** starts
+at the carry-forward after that merge, with Phase 1 Backlog Refinement.
 
-**Scope selected 2026-09-23 (team lead, DEFINED)**: **F31** (new: download
-and process the HSBC Phase 2 bibliography, then propose the fields it
-shows the store is missing), **F30** (store durability), **F28** (learn
-from the papers), **F5** (QCi deep-dive, with every find added to the
-store through the existing intake path). Plan:
-`docs/sprints/SPRINT_5_PLAN.md`.
-
-**Closed 2026-09-23 without implementation (team lead):**
-- **F19** (SPRINT_RESUME_GUIDE.md and a startup-check skill): "This is not
-  necessary if the sprint execution docs are kept up-to-date. In other
-  repositories using the same Sprint framework Coding Agents pick up where
-  everything is left off very quickly by looking at github and reading a
-  couple of documents. This can be closed."
-- **F29** (cold-mode adjudication timing): "This is not needed and can be
-  closed." F11's confirm-mode number (1.08 team-lead minutes per record)
-  stands as the store's only adjudication measurement; the cold-mode
-  number stays unmeasured by decision, not by omission.
-
-**Manual Validation decisions, 2026-09-25 (team lead: "1. 2 2.1 3 1 4. 1
-5. 2 6. add the row it rests on 7 2"):**
-- Q1 = 2, then REVISED the same morning (team lead: "can you pull any of
-  the papers from the authors IF they are related to QML, ML or the Zeno
-  effect (can you screen the abstracts to determine)"): no looser name
-  rule, but the unresolved hits were screened on their abstracts; 21 of
-  392 entered, marked "authorship not confirmed" (research doc, "Q1
-  revised"). Q8 = 2: the three weakest on authorship then removed; 18
-  remain.
-- Q9 = 1: Manual Validation complete; proceed to Phase 7.
-- Q2 = 1: retention rule 3's "superseded" clause (a backup is covered once
-  an export commit landed after it) accepted.
-- Q3 = 1: the six pilot papers' `read` promotions on Claude's reading
-  accepted as they stand (the Sprint 4 Task H practice); the three
-  learnings stay "awaiting team-lead adjudication".
-- Q4 = 1: an explicit assertion derivation marker carded as F37.
-- Q5 = 2: the papers `[IN-2]` and `[CL-21]` meant are not added; the store
-  holds what their ids point to.
-- Q6: the table rows `cvqboost-vs-xgboost-auc-under-balancing` rests on
-  added after the vendor's sentence, which is kept
-  (`scripts/sprint5_cvqboost_quote_fix.py`).
-- Q7 = 2: bulk `seen` dispositions keep "; not yet screened"; `set_tier()`
-  removes it at every promotion (`tests/test_ingest.py`).
+The Sprint 5 scripted-prune finding noted here at Sprint 6 Phase 1.2 is
+recorded in `docs/sprints/SPRINT_6_RETROSPECTIVE.md` (category 9); Sprint 6
+pruned its own shipped cards by hand.
 
 ## Next Sprint Candidates
 
-Refined 2026-09-23 after Sprint 4 (Sprint 5 Phase 1.2). Shipped and
-pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint 2); F2
-Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25, F26,
-F27 (Sprint 4). The superseded stubs F12 and F21-F24 are removed now
-that F25 has shipped -- their history lives in the Sprint 3 and 4 docs
-and in git. Remaining items below, newly added ones marked. F19 and F29
-were closed at Sprint 5 scope selection (see "Current sprint" above).
-F5, F28, F30 and F31 shipped in Sprint 5 and are pruned (history in the
-Sprint 5 docs and git).
+Refined 2026-09-27 after Sprint 5 (Sprint 6 Phase 1.2); Sprint 6's shipped
+cards pruned BY HAND (Edit tool, card by card) at its Phase 7, 2026-10-05.
+Shipped and pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint
+2); F2 Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25,
+F26, F27 (Sprint 4); F5, F28, F30, F31 (Sprint 5); F32-F38, F40-F43, F47
+(Sprint 6; F35's 30 unlinked notes continue as F54, F41's CVQBoost part as
+F51). F39 is permanent and stays. Closed without
+implementation: F19, F29 (Sprint 5 scope selection, reasons under Sprint 5
+in "Last Completed Sprint"). The superseded stubs F12 and F21-F24 were
+removed after F25 shipped; their history lives in the Sprint 3 and 4 docs
+and in git. Remaining items below.
 
-### Bulk intake: targeted for Sprint 6 (team lead, 2026-09-23)
+### Permanent items
 
-Added 2026-09-23 during Sprint 5 Phase 3 at the team lead's request, "Add
-to backlog and target for next sprint". Card text is the team lead's;
-lines marked **Planning note** are Claude's checks against the disk the
-same day, and every count in them is a snapshot as of 2026-09-23.
+**F39. Evaluate the available models and update the model-assignment heuristics -- PERMANENT (~1h per release) Priority 10** (NEW 2026-09-29)
+- Phase: Process (recurring)
+- Platform: `.claude/model_assignment_heuristics.json`,
+  `docs/SPRINT_PLANNING.md` (team roles table),
+  `tests/test_model_assignment_heuristics.py`; Anthropic's model
+  documentation as the primary source
+- Team lead, 2026-09-29: "add to backlog as permenant item and release a
+  copy for this sprint: evaluate the models available and update the
+  hueristics for how models are assigned to agents."
+- **How a permanent item works (first of its kind here)**: F39 is never
+  pruned. A sprint that selects it gets a released COPY with the next free
+  F# ("F39 release for Sprint N"); the copy ships and is pruned like any
+  card, and F39 stays.
+- **Each release**: (1) list the models available to this environment
+  with id, version and release date, verified against Anthropic's current
+  documentation that day, never from memory; (2) record what changed since
+  the last release (new models, retirements, price or context changes);
+  (3) re-read the heuristics' `learning_log` outcomes since the last
+  release; (4) update tiers, task patterns and escalation triggers, and
+  the SPRINT_PLANNING.md role table, with each change naming its evidence;
+  (5) a failing test guards whatever the release adds.
+- Depends on: nothing
 
-**F32. Generate the bulk intake manifest from the QMLPapers manifest.tsv files (~90m) Priority 14**
-- Phase: Sourcing / bulk intake
-- Platform: N/A for tracked content -- reads `D:\Data\Harold\EvidenceBasedDB\QMLPapers\`
-  (NOT this repository; ADR-0005 section 3), writes a manifest JSON under `export/`
-- INTAKE_WORKFLOW section 9 already specifies this: the manifest is GENERATED
-  from the twelve year `manifest.tsv` files, never authored by hand. Their
-  columns are `file, arxiv_id, url, title` (about 1,450 rows). `arxiv_id`
-  gives api-origin `access`; `title` is discarded because the door derives it
-  from the API.
-- Emits `context: qml` and the section 9 disposition wording verbatim:
-  "Bulk intake 2026-MM from QMLPapers/<year>/manifest.tsv (a QML literature
-  collection); not yet screened".
-- Excludes the ids listed in F33 (withdrawn/retracted), so they are not
-  loaded as ordinary sources.
-- Acceptance: a dry run prints every derived record and exits non-zero on any
-  row whose `arxiv_id` is absent or malformed; the generated manifest loads
-  under `intake.py --manifest` without hand editing; row count reconciles
-  against the twelve TSVs.
-- This enables the ~1,410-record bulk load with no hand authoring.
-- **Planning note (counts)**: 13 `manifest.tsv` files exist. Twelve carry
-  `file, arxiv_id, url, title`: the 10 year folders (1,381 rows) plus
-  `Reviews` (30) and `Workforce` (25), 1,436 rows in all. The thirteenth,
-  `NonArxiv/manifest.tsv`, has `file, source_url, pdf_url, title` and 4
-  rows; it has no `arxiv_id`, so a generator that reads every TSV must
-  route it to the DOI or hand path (section 9) rather than fail on it.
-  The 9 files Sprint 5 Task C ingests (F31, Q2) are already present by
-  then and are skipped by derived id.
-- **Planning note (output location)**: `export/` is the store's committed
-  artifact (ADR-0004 section 2). `tests/test_export_currency.py` checks
-  only its five named files, so a manifest there breaks no test, but it
-  would place an intake INPUT among the store's OUTPUTS. A separate path
-  (for example `manifests/`) keeps the two apart. Team lead's call at
-  carding.
+### Cyc and CVQBoost intake (proposed 2026-10-03)
 
-**F33. Ingest withdrawn and retracted status as first-class facts (~2h) Priority 16**
-- Phase: Sourcing / bulk intake
-- Platform: arXiv API `<arxiv:comment>` field; Springer article page for the retraction
-- Seven papers in the bulk set changed status after publication and the store
-  has nowhere to say so. A store whose purpose is provenance and derived
-  certainty must not ingest a retracted source as an ordinary one.
-- Six author-withdrawn, verified 2026-09-18 by `/abs` returning 200 while
-  `/pdf` returns 404, reason read from `<arxiv:comment>`: `2308.08167`
-  (superseded by `2405.13351`), `2304.05672` (duplicate upload, published as
-  `2210.14450`), `2409.10932`, `2403.17444`, `2410.03853`, `2503.23408`.
-- One retracted: Valdez & Melin 2022, `10.1007/s00500-022-07037-4`, retraction
-  notice dated 10 March 2026 on the publisher page. No arXiv record exists,
-  so the arXiv path cannot discover it.
-- Two of the withdrawn name a superseding paper; the store should be able to
-  carry that relation rather than lose it.
-- Depends on: F34 (the ADR must say how status is represented before
-  records are written)
-- Acceptance: each of the seven carries its status, its source of truth, and
-  its stated reason; a query can list them; the two superseding ids are linked.
-- This prevents a retracted paper being cited as evidence without warning.
-- **Planning note (order)**: this card is Priority 16 and depends on F34 at
-  Priority 18, so priority order and dependency order disagree. Either F34
-  moves ahead of it, or the sprint plan sequences F34 first regardless of
-  priority.
+Registered 2026-10-03 at the team lead's request from
+`D:\Data\Harold\EvidenceBasedDB\Handoff-2026-10\ebdb-handoff\12-backlog-cards-proposed.md`,
+prepared outside the repository; card text as drafted there. File names
+`01` to `12` (`03-manifest-sources.json`, `07-assertion-candidates-pending.md`,
+`11-decisions-2026-10-03.md`, and so on) refer to that folder;
+`FACTS-WITH-CERTAINTY.md` is in its parent, `Handoff-2026-10\`. All
+estimates are `[no-history]`. Priorities 26, 28 and 30 sprint together; so
+do 40 and 42, and 60 and 62.
 
-**F34. ADR amendment: how the store represents a withdrawn or retracted source (~1h) Priority 18**
-- Phase: Design / ADR
+**F44. Download and intake the eight pending Cycorp papers (~90m) Priority 40**
+- Phase: Sourcing / intake
+- Platform: arXiv API for S16; hand-origin records for the rest
+- The eight in `04-pending-sources.md`: T07 (FLAIRS 2007), R05 (2005), S16
+  (arXiv:1603.04402), S19 (2019), M06 (2006), OV19 (Technology Overview,
+  2019), PH20 (2020), L10 (AI Magazine 2010; look for a DOI first).
+- Downloads need the team lead's approval (filename, source, size). Files go
+  to `Papers\` under the naming convention, never into the repository.
+- Enter at `seen`. The 2026-09-28 agent's reading is not a
+  `checked_against_source` by this library's standard.
+- Acceptance: eight records, each with a local `access` path and a SHA-256;
+  T07 is read directly to settle "eight tactic types" (2007) against the six
+  the 2009 code lists, and the "about a thousand HL modules" figure for
+  `cyc-hl-module-count`.
+- Depends on: F41 (section 15 sets the context rule for Cyc sources).
+
+**F45. Dirac-3 reading pass: promote four sources and enter up to 11 facts (~2h) Priority 42**
+- Phase: Sourcing / extraction
 - Platform: N/A
-- ADR-0004 and ADR-0005 define provenance and derived certainty but say
-  nothing about a source whose status changed after publication. F33 cannot
-  be written correctly until this is decided.
-- Questions for the team lead (Class 1): is status a field on the record, a
-  context, or a derived-certainty input? Does a retraction force certainty to
-  a floor, or is it a named reason a human weighs? How is "superseded by
-  <id>" represented -- an assertion relation, or a field?
-- Note the asymmetry: arXiv withdrawal is discoverable from the API, journal
-  retraction is not. The design should not assume the API can find it.
-- Acceptance: the chosen representation is written into the ADR with its
-  reasoning, and F33's acceptance criteria are restated against it.
-- This enables the withdrawn/retracted ingest and prevents the same question
-  being re-litigated per record.
-- **Planning note**: Sprint 5 Task D proposes new per-reference fields from
-  the HSBC bibliography (peer-review status, access status and similar) as
-  card F36. Publication status is the same family of fact, so F34 and F36
-  should be decided together in one amendment, not two.
+- From `07-assertion-candidates-pending.md`: F-201 to F-206, F-208, F-209
+  (the Dirac-3 User Guide v0.0.4 and arXiv:2407.04512), F-301 and F-302 (the
+  two independent assessments), F-303 (a per-paper affiliation check).
+- Each source is read directly, promoted with applicability, then yields its
+  assertion: the Sprint 4 task H pattern. F-209: cross-check the 949-level
+  figure in the hsbc hardware plan.
+- Not in scope: F-207, an absence claim, which waits for the `claim_type`
+  decision (F37 planning note).
+- Acceptance: each promoted record names what was read and when; each
+  assertion quotes its source verbatim; facts that duplicate an existing
+  assertion become `supports` links instead.
+- Depends on: F41.
+- **Planning note, 2026-10-05 (Sprint 6 MV Q9 = 1)**: add the three QCi
+  sources on Dirac-3's error behavior, all at `seen`:
+  `huang-2025-noise-reversal-entropy-quantum-computing`,
+  `qci-research-an-open-quantum-system-for-discrete-optimization`,
+  `qci-lessons-entropy-quantum-computing-overview`. Record what they claim
+  about noise and error correction as `vendor-self-claim`, beside the
+  gate-model contrast (fault tolerance is a gate-model concept). F-207 is
+  no longer blocked: `claim_type` exists, so it enters as `absence` with its
+  search scope. The hsbc measurement is already in the store
+  (`dirac3-matches-exact-optimum-on-convex-cvqboost`, with its limit
+  `dirac3-fidelity-test-is-near-trivial-on-convex-formulation`).
 
-**F35. Map the 135 verified repository notes to the GitHub intake path (~2h) Priority 20**
-- Phase: Sourcing / bulk intake
-- Platform: GitHub API (`store/citations.py` already carries `GITHUB_API` and
-  a `_GITHUB` matcher)
-- `QMLPapers\Repos\` holds 135 `_repo.md` notes, one per paper whose authors
-  released code. Each names the repository, the owning paper's arXiv id, and
-  quotes the sentence in the paper that announces the release.
-- INTAKE_WORKFLOW section 9 is explicit that the note is local evidence, not
-  the record: the repository takes the section 2 GitHub path and the note
-  supplies the provenance for why it is attached to that paper.
-- `REVIEW.md` holds 218 further candidates the extractor would not accept
-  automatically. 78 score >= 0 and are a real work queue; 140 score < 0 and
-  are mostly third-party dependencies (Qiskit, PennyLane) correctly held back.
-  This item covers the 135 only; the 78 are a later screening pass.
-- The extraction is heuristic and produced three rounds of corrected defects.
-  Each note quotes its evidence sentence precisely so a wrong attachment is
-  visible; spot-check before trusting the set.
-- Depends on: F32 (the papers must exist as records before repositories
-  attach)
-- Acceptance: each of the 135 resolves to a live repository or is reported;
-  every attachment carries the quoted evidence sentence; a wrong attachment
-  is removable without touching the paper record.
-- This enables "which papers ship runnable code" to be answered from the store.
-- **Planning note (counts)**: 135 `_repo.md` notes confirmed on disk;
-  `INTAKE_WORKFLOW.md` section 9 recorded 137 on 2026-09-19, so two were
-  removed in between. `REVIEW.md` exists both at `QMLPapers\REVIEW.md` and
-  `QMLPapers\Repos\REVIEW.md`; the card should name which one is the queue.
-  GitHub's unauthenticated API allows 60 requests per hour, so 135
-  lookups take over two hours unless the run authenticates.
+**F46. Remaining reading pass: the other pending facts, split at selection (~large, no-history) Priority 80**
+- Phase: Sourcing / extraction
+- Platform: N/A
+- The rest of `07`: World (8), entanglement (1), the April 2026 claim (4),
+  classical fraud detection (7), ceiling estimation (9). Too large for one
+  card; split by source group when a sprint selects it.
+- Depends on: F45 (to calibrate the estimate from its actual).
 
-### Proposed by Sprint 5 Task D (F31 part 3), 2026-09-24
+### Store and process lessons from Cyc (proposed 2026-10-03)
 
-**F36. Reference fields the HSBC Phase 2 bibliography shows the store is missing, and a back-fill for existing papers (~large, no-history) Priority 22**
-- Phase: Design / ADR, then back-fill. Proposed 2026-09-24 by Sprint 5 Task D
-  at the team lead's request ("note any additional fields or content you
-  think we should keep for all references based on the content of
-  BIBLIOGRAPHY.md ... Also include a way re-process existing papers to fill
-  in the new fields and content"). **Decide together with F34**: publication
-  status (withdrawn, retracted, superseded) is the same family of fact as
-  field 3 below, and one ADR amendment should settle both.
-- Platform: `store/schema.sql`, ADR-0005 section 2 (paper record fields) as
-  a dated amendment, `store/ingest.py` (the door validates the new fields),
-  `store/export.py`, a new back-fill script.
-- **Method**: every per-entry element of `BIBLIOGRAPHY.md` (120 entries,
-  preserved at `References/2026-09_HSBC-Phase2-research_BIBLIOGRAPHY.md`)
-  was compared with what a paper record can hold today (`records` spine
-  plus `paper_fields`, `paper_applicability`, `paper_yields`). Nine
-  elements have no home (a tenth, the metadata provider, was added at the
-  Sprint 5 retrospective). Each is classed by CLAUDE.md's rule --
-  determinate facts are COMPUTED (a resolver), never stored -- because
-  four of the nine are determinate and must not become stored copies.
-- **The nine, with a recommendation each:**
-  1. **How it was found** (`found_via`): the collection and locator, e.g.
-     "HSBC Phase 2 bibliography [DQ-5]", "F5 author search (Nicholas
-     Chancellor, network)", "QMLPapers/2024/manifest.tsv". Today it lives
-     only in disposition prose, so "everything from collection X" is a text
-     search. STORED (a fact about our process, not about the paper), as a
-     child table so one paper can be found by two routes.
-  2. **How much of it the reader read** (`read_extent`): the bibliography
-     marks "Read in full (16pp)", "Abstract only", "read via arXiv HTML",
-     "Appendices not extracted -- theorem statements read from HTML render".
-     `checked_against_source` says WHO checked, at `read` only; nothing says
-     how much. A claim read from an abstract and one read from Table 3 are
-     not the same evidence. STORED, per reader and date: `full | partial:
-     <what> | abstract | html-render | summary`.
-  3. **Publication and review status** (`publication_status`): preprint,
-     peer-reviewed at a venue, not peer reviewed (`[EX-4]` Zenodo), vendor
-     document, blog, news, conference abstract (the `[IN-3]` ISMVL item).
-     Plus F34's withdrawn, retracted, superseded. MOSTLY COMPUTED: arXiv
-     `journal_ref`, DataCite `IsVersionOf`, Crossref `type` answer it for
-     api-origin records; stored only for hand-origin ones, with an anchor.
-  4. **Version of record** (`version_of`): the bibliography pairs arXiv ids
-     with journal DOIs (`[EN-2]` Nature Communications, `[DS-2]` npj QI,
-     `[DS-3]` APL Computational Physics, `[CL-5]` Mathematics, `[QC-1]`
-     Communications Physics). COMPUTED from the registries (DataCite
-     `IsVersionOf`, arXiv `doi`); never typed.
-  5. **Access status** (`access_status`): paywalled (`[QF-10]`), HTTP 403
-     to automation (`[EN-3]`, `[EN-4]`, `[QF-9]`), bot-challenge pages
-     (Springer, Nature, Kaggle), a CDN link that "may rotate" (`[QC-2]`).
-     COMPUTED by a probe, stored only as the probe's last result and date,
-     so it can be re-run rather than trusted.
-  6. **Links to code and data** (`source_links`): "Code:", "Software:",
-     datasets (`[FW-3]`'s UCI ids, `[CL-20]`'s BAF suite). Sprint 5 Task C
-     entered 10 repositories as their own records with nothing tying them to
-     their papers; F35 needs exactly this link for 135 more. STORED as a
-     typed relation between SOURCE records (`code-of`, `dataset-of`,
-     `version-of`, `superseded-by`, `responds-to`), carrying the evidence
-     sentence. Evidential support and contradiction stay between
-     ASSERTIONS (ADR-0005 section 2b2); a critique (`[IC-1]` on `[QC-1]`)
-     is recorded as `responds-to`, and what it refutes is extracted as
-     assertions with `contradicts`.
-  7. **Affiliation and conflict of interest** (`coi`): "All six authors at
-     QCi", "Disclosed QCi shares/options" (`[QC-8]`), "HSBC-affiliated
-     author" (`[QF-4]`), "Genuinely independent" (`[IC-2]`), vendor in-kind
-     support (loke-2026). GRADE's risk-of-bias domain needs it, and today a
-     certainty reason can only restate it in prose. Affiliations are
-     COMPUTED where the registry carries them; a disclosed interest is
-     STORED with its anchor (page, section).
-  8. **How the source was cited** (`cited_as`): the bibliography cites 6
-     entries differently from their registry -- `[IN-2]` and `[CL-21]` give
-     titles of OTHER papers for their ids, `[EX-4]` a paraphrase, `[CE-20]`
-     and `[QF-6]` a different year, `[IC-1]` a wrong initial. That is this
-     store's founding defect class caught in a collection's own citations.
-     STORED on the `found_via` row (how THAT route cited it), so a later
-     comparison against the registry is a query, not a re-read.
-  9. **Reading notes** (the `>` lines: "0 of 29 comparisons reached
-     alpha=0.05", "Overclaim", "Does not transfer"): NOT a field. They are
-     claims, and a claim enters as an assertion with provenance through
-     extraction. Recommended: the extraction pass (F28's pilot shows the
-     path) reads the preserved bibliography as a pointer to where to look,
-     and each note becomes an assertion only once checked against the paper.
-  10. **Which registry answered** (`metadata_provider`; added 2026-09-25,
-     Sprint 5 retrospective improvement 8): arXiv refused 73 of 75 paced
-     requests in Sprint 5 and DataCite answered, and the rendered citation
-     differs slightly by provider (no journal_ref from DataCite). Today the
-     provider is a phrase appended to `updated_reason` on 68 records
-     ("metadata from DataCite"). STORED as a field, set by the door from
-     `Metadata.extra["provider"]`, so a refresh can explain a DIFFERS; the
-     back-fill reads the existing phrase.
-- **Not recommended**: a topic field from the bibliography's 15 section
-  names. Contexts already partition; a free topic list is "a tag wearing a
-  costume" (ADR-0004 section 3b).
-- **Re-processing existing papers** (`scripts/backfill_reference_fields.py`,
-  dry run by default, one verified backup before `--apply` per F30):
-  - COMPUTED fields (3, 4, 5, and affiliations in 7) are resolvers, so
-    "back-fill" means running them once over every record and storing
-    nothing but the probe dates -- the first run over the 48 seed papers
-    doubles as their test;
-  - `found_via` (1) is derived for every existing record from text the
-    store already holds: the Sprint 1 seed-load note, the "Bulk intake ...
-    [TAG]" dispositions, F5's "(<person>, <rule>)" dispositions;
-  - `cited_as` (8) is filled for bibliography records from the preserved
-    file, and for the seed set from `scripts/seed_set_metadata.json`'s
-    history in git;
-  - `read_extent` (2) and disclosed `coi` (7) are human-or-agent judgments;
-    the script QUEUES them for the next screening pass and never guesses;
-  - every write appends to `updated_reason`, never replaces it.
-- Depends on: F34 (decide together), then this card's ADR-0005 amendment
-  before any schema change (Class 1, ADR-first).
+**F48. Keep local source paths honest (~2h) Priority 60**
+- Phase: Tooling
+- Platform: `store/ingest.py`, a new check script
+- A local `access` path breaks silently when a file moves. Seen during the
+  Cyc work: three archives moved to the Recycle Bin; the hsbc repository
+  exists at two paths, and only one has `docs\`.
+- Acceptance: SHA-256 recorded for every local-access source; a check that
+  reports a missing file or a changed hash; a test with one moved file that
+  the check catches.
+- Depends on: none. F41 adds nine local-access sources, so earlier is
+  better.
 
-**F37. An explicit derivation marker on assertions (~small, no-history) Priority 24** (NEW 2026-09-25)
-- Phase: Design / ADR. Carded at Sprint 5 Manual Validation (Q4 = 1) from
-  the F28 pilot's finding 1 (`docs/LEARNING_SYNTHESIS.md` section 7).
-- Platform: ADR-0004 section 3 (dated amendment), `store/schema.sql`,
-  `store/ingest.py`, `scripts/learnings.py`.
-- A learning is recognized today only by a provenance string beginning
-  "synthesis of"; the pilot's first definition ("no paper yields it")
-  wrongly caught a project assertion. Proposed: `derivation: extracted |
-  synthesized | project` on every assertion, back-filled from existing
-  provenance, with `learnings.py` reading the column instead of a string.
-- Depends on: decide in the same ADR amendment as F34 and F36, so the
-  assertion and paper fields change once.
+**F49. Prove the export keeps every context (~1h) Priority 62**
+- Phase: Tooling
+- Platform: `tests/`
+- OpenCyc's 2012 OWL export dropped the microtheory of every fact: 19
+  `definingMt` statements in 2,189,031. Cyc requires every assertion to sit
+  in a microtheory, and nothing noticed the loss.
+- Acceptance: a test that, for every record, the contexts in
+  `store/evidence.db` equal the contexts in `export/`, in both directions;
+  proven to fail by removing one context from a copy of the export.
+- Depends on: none.
 
-**F38. Back-fill CHECKLIST-Phase2-pre.md for Sprints 1 to 4, with evidence per row (~small, no-history) Priority 12** (NEW 2026-09-25)
-- Phase: Process. Found at Sprint 5's Phase 7 reconciliation: the Sprint 1
-  rows were never checked off and Sprints 2 to 4 have no section, although
-  each sprint closed with its docs triad. The file's own rule is "nothing
-  here may be marked done without evidence", so the back-fill cites the
-  commit or document for every row rather than recollection.
-- Platform: `CHECKLIST-Phase2-pre.md`; the Sprint 1-4 PLAN and SUMMARY docs.
-- Target: Sprint 6 Phase 1.2 (completeness sweep), where the reconciliation
-  belongs.
+**F50. Qualify "compute, never store" with Cyc's stored counts (~30m) Priority 70**
+- Phase: Process
+- Platform: `docs/research/cyc-knowledge-representation.md` (dated amendment)
+- Point 7 says counts should be computed, never stored. Cyc stores a count at
+  every index layer and the planner reads it as the lookup cost
+  (`removal_modules_lookup.java`, line 84). The difference: Cyc keeps the
+  count beside the data and updates both together.
+- Acceptance: a dated amendment to point 7. A stored count is allowed only
+  with a test that recomputes and compares it.
+- Depends on: none.
+
+### HOLD Items (waiting on an external event)
+
+**F51. The CVQBoost findings record and its six assertions (~45m) Priority HOLD** (NEW 2026-10-03)
+- Phase: Sourcing / intake
+- Platform: the Cyc and CVQBoost handoff
+  (`D:\Data\Harold\EvidenceBasedDB\Handoff-2026-10\ebdb-handoff\`): the
+  manifest entry `kimmey-2026-maximizing-predictions-cvqboost-cumulative-findings`,
+  the six CVQBoost assertions in the sprint script, and decision 4.1's
+  `method` applicability row on that record.
+- Carded at Sprint 6 plan approval (Q10 = 1) so the remainder is not lost
+  when F41 ships without it. Team lead, Q4: "it will be updated after the
+  next hsbc repo sprint (the experiement will be re-run) and then it can be
+  referenced".
+- The record's authorship (decision 1 in the handoff) is settled by the
+  re-run's own provenance, not by attribution.
+- Depends on: the hsbc repository's re-run of the experiment.
+
+### Carded at Sprint 6 Manual Validation, 2026-10-05
+
+**F52. Probe the computed fields for the bulk papers, under a per-session arXiv cap (~2h plus runtime) Priority 26** (NEW 2026-10-05, Sprint 6 MV Q6 = 1)
+- Phase: Sourcing / computed fields
+- Platform: `scripts/probe_reference_fields.py`, `store/citations.py`
+- The 1,402 QMLPapers papers loaded by Sprint 6 Task J have no
+  `publication_status`, `version_of`, `access_status` or affiliations probe.
+  At 6 s per arXiv request that is about 1,400 requests and at least 2.5
+  hours.
+- Add a per-session arXiv request cap (a count, enforced by the shared
+  pacer), so a run stops itself before arXiv throttles it; a stopped run
+  resumes on the records still unprobed.
+- Evidence for the cap: about 1,130 lookups in 3.5 hours ended in HTTP 429
+  on 2026-10-03, with the intake pacing defect live; after the fix the
+  number arXiv tolerates is unknown, so the first run measures it.
+- Acceptance: every bulk paper probed or reported; the cap tested; no
+  stored value from a run that got no answer.
+
+**F53. Run the probes each delivery cycle and report stale ones (~1h) Priority 28** (NEW 2026-10-05, Sprint 6 MV Q7 = 1)
+- Phase: Process / tooling
+- Platform: `docs/SPRINT_EXECUTION_WORKFLOW.md` Phase 1.3,
+  `scripts/probe_reference_fields.py`
+- ADR-0005 A4's probe rule names this as not built: Phase 1.3 runs
+  `refresh_citations.py` but not the probes, and nothing reports a probe
+  older than one cycle.
+- Acceptance: Phase 1.3 runs the probes (within F52's cap); a report lists
+  every probe older than the last cycle; a test fails on a stale probe.
+
+**F54. Recover the 30 repository notes that did not link (~1h) Priority 32** (NEW 2026-10-05, Sprint 6 MV Q8 = 1)
+- Phase: Sourcing / repositories
+- Platform: `scripts/link_code_repositories.py`, the GitHub API (token)
+- Sprint 6 Task K reported 30 of 135 notes: 23 repositories return HTTP 404
+  (most URLs were cut short by the note extractor: `zhihan-z/MCM_`,
+  `dfki-ric-quantum/learning_`, `yikaimao/Q`), 6 are Zenodo, Gitee or
+  malformed links, 1 belongs to the malformed `2108.0131`.
+- Step 1: read the full URL from the paper's own text (the note quotes the
+  sentence). Step 2, team lead 2026-10-05: "if still unfound, can you try to
+  find the repo on github.com using the partial URL" (GitHub search by owner
+  and name prefix). A match found by search is recorded as found by search,
+  with the query, so the link's evidence says how it was found.
+- Acceptance: each of the 30 linked with its evidence, or reported again
+  with what was tried.
+- Carried from F35 (pruned at Sprint 6 Phase 7): `QMLPapers\Repos\REVIEW.md`
+  holds 218 further candidates the extractor would not accept automatically;
+  78 score >= 0 and are a real screening queue, 140 score < 0 and are mostly
+  third-party dependencies (Qiskit, PennyLane), correctly held back. A later
+  pass, or a slice of this card if a sprint selects it.
+
+**F55. Record which papers cite which, as a computed link (~2h) Priority 34** (NEW 2026-10-05, Sprint 6 MV Q10 = 1)
+- Phase: Sourcing / computed fields
+- Platform: Crossref reference lists (`works/<doi>`, field `reference`),
+  arXiv-to-DOI via `version_of`; `source_links`
+- A `cites` link between two SOURCE records in the store, computed from the
+  publisher's reference list (probe rule: last result, date, provider),
+  never typed by hand. Recorded once, readable from both ends.
+- Not a certainty input (Q10 = 1): a citation is not corroboration, since a
+  citing paper may criticize. Its use is to FIND candidate corroboration
+  for F56: the papers that cite A are where to look for evidence on A's
+  claims.
+- Needs an ADR-0005 amendment (a new link type, computed). Coverage is
+  partial: many arXiv preprints have no Crossref reference list.
+- Acceptance: links for every pair both in the store where a reference list
+  answers; coverage reported; no link typed by hand.
+
+**F56. Should corroboration raise an assertion's certainty, and how? (~1h decision, then build) Priority 36** (NEW 2026-10-05, team lead at Sprint 6 MV)
+- Phase: Design / ADR (Class 1)
+- Team lead, 2026-10-05: "if we have a paper who's assertions scores very
+  high and with verifiable evidence and it is linke to another paper that
+  verifies the claims of the first paper or otherwise increases the
+  confidance of the assertions of the other paper, shoudn't that affect the
+  assertions/claims in some way" ... "Think it is important and could be
+  used, but not sure how".
+- Today only downward caps are computed (ADR-0004 A6); `supports` between
+  assertions is recorded but never moves certainty. GRADE does raise
+  certainty for consistent results across independent studies.
+- Options to decide: (1) a computed "corroborated" flag beside the stored
+  certainty when an assertion is supported by an INDEPENDENT assertion
+  (different authors, not the same vendor) at equal or higher certainty;
+  the assessor then decides an upgrade, with the reason; (2) a computed
+  upward cap, symmetric to A6's; (3) leave it to judgment, as now.
+- Independence is the hard part: same lab, same dataset, or the same vendor
+  is not corroboration (the admission-against-interest rule's logic).
+- Depends on: F55 helps find candidates; not required.
+
+**F57. Read for claims: the records still at `seen` and `screened` (permanent, released in slices) Priority 38** (NEW 2026-10-05, team lead at Sprint 6 MV)
+- Phase: Sourcing / extraction (permanent item, like F39)
+- Team lead, 2026-10-05: "what else has not been read for claims - if not
+  in backlog, add backlog item to do any missing 'read for claims' entries".
+- **Snapshot as of 2026-10-05**: 1,875 papers; 24 at `read`, all with
+  yielded assertions; 14 `screened`; 1,837 `seen`. F45 and F46 cover only
+  the handoff's pending facts, not these.
+- Too large for one sprint. Each release: (1) screen a slice (applicability
+  from the source, the Sprint 4 Task F tests); (2) rank by relevance to the
+  consumer's open questions (`hsbc-2026`, `platform:dirac-3`, then `qml`);
+  (3) read the top of the ranking directly and extract, under ADR-0005 A4's
+  read gate. Records that do not bear on any context stay `seen` with the
+  reason.
+- Acceptance per release: the slice screened, the ranking recorded, every
+  promoted record read and yielding, every refused one with its reason.
 
 ## Design documents governing this repository
 

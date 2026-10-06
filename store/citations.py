@@ -24,7 +24,7 @@ multi-id `id_list=a,b,...` request gets 406, after which EVERY urllib
 request, single ids included, gets 406 for several minutes; curl sends the
 same multi-id URL at the same moment and gets 200. Retries do not help
 inside the block. So `fetch_arxiv_batch` sends ONE id per request, paced
-ARXIV_MIN_INTERVAL_S apart (arXiv's own published rate), and falls back to
+ARXIV_MIN_INTERVAL_S apart (twice arXiv's published rate since 2026-10-04), and falls back to
 DataCite per id when arXiv still refuses. A full 1,200-paper pass is about
 an hour, which the sprint plan already budgeted.
 
@@ -33,7 +33,9 @@ it; `default_fetcher` is the only function here that touches a socket.
 """
 from __future__ import annotations
 
+import http.client
 import json
+import os
 import re
 import time
 import urllib.error
@@ -48,7 +50,11 @@ ARXIV_API = "https://export.arxiv.org/api/query"
 CROSSREF_API = "https://api.crossref.org/works/"
 DATACITE_API = "https://api.datacite.org/dois/"
 DOI_HANDLE_API = "https://doi.org/api/handles/"  # the registry itself; responseCode 100 = no such handle
-ARXIV_MIN_INTERVAL_S = 3.0
+# Team lead, 2026-10-04 (Sprint 6 Task J): 6 s, double arXiv's documented
+# floor of one request every 3 s. After about 1,130 lookups at 3 s over 3.5
+# hours the API answered HTTP 429 to everything; the per-request rule alone
+# did not protect a sustained run.
+ARXIV_MIN_INTERVAL_S = 6.0
 MAX_AUTHORS = 10  # rendered before "et al."; see render_citation
 
 _ARXIV_ID = re.compile(r"(?<![\d.])(\d{4}\.\d{4,5})(v\d+)?")
@@ -117,19 +123,42 @@ def parse_access(access: str) -> tuple[str, str] | None:
     m = _DOI.search(searchable)
     if m:
         return ("doi", m.group(1).rstrip("."))
-    m = _ARXIV_ID.search(searchable)
+    gh = _GITHUB.search(searchable)
+    # An arXiv id INSIDE a GitHub repository name is part of that name
+    # (github.com/salvatore-lorenzo/arXiv-2502.18361-QELMWITNESS; Sprint 6
+    # Task K, 2026-10-04): read first as arXiv, it resolved to the paper.
+    # Any arXiv id OUTSIDE the repository span still counts, in either order.
+    m = next((x for x in _ARXIV_ID.finditer(searchable)
+              if not (gh and gh.start() <= x.start() < gh.end())), None)
     if m and ("arxiv" in searchable.lower() or "/abs/" in searchable):
         return ("arxiv", m.group(1))
-    m = _GITHUB.search(searchable)
-    if m:
-        return ("github", f"{m.group(1)}/{m.group(2)}")  # Sprint 4 Task G: a repository is a source of record too
+    if gh:
+        return ("github", f"{gh.group(1)}/{gh.group(2)}")  # Sprint 4 Task G: a repository is a source of record too
     return None
 
 
 RETRY_CODES = (406, 429, 500, 502, 503, 504)
 RETRY_SLEEPS_S = (3.0, 6.0)  # two retries: 3 attempts in all
+# Every way an arXiv request can fail, so each one reaches DataCite (team
+# lead, 2026-10-04). OSError covers HTTPError, URLError, timeouts and
+# connection resets; ET.ParseError (a SyntaxError, NOT a ValueError) covers a
+# 200 with an HTML or truncated body; HTTPException covers IncompleteRead
+# (Sprint 6 Phase 5 review).
+ARXIV_FAILURES = (OSError, ValueError, ET.ParseError, http.client.HTTPException)
 _sleep = time.sleep          # module attributes so tests can stub the wait
 _monotonic = time.monotonic  # and the clock PacedFetcher measures against
+
+
+def github_token() -> str | None:
+    """A GitHub token from the environment (GITHUB_TOKEN, then GH_TOKEN), or
+    None. Read per request, so a run started without one stays
+    unauthenticated rather than failing. The caller sets it, for example
+    from `gh auth token`; this module never reads a credential file."""
+    for name in ("GITHUB_TOKEN", "GH_TOKEN"):
+        value = (os.environ.get(name) or "").strip()
+        if value:
+            return value
+    return None
 
 
 def default_fetcher(url: str, accept: str, _open=None) -> bytes:
@@ -141,10 +170,25 @@ def default_fetcher(url: str, accept: str, _open=None) -> bytes:
     is intermittent and load-shaped, not (only) a header problem, and one
     attempt is the wrong number. Three attempts with 3 s / 6 s backoff;
     any other failure propagates at once.
+
+    Except arXiv, since 2026-10-04: one attempt, and the caller falls back
+    to DataCite (team lead's decision after the API answered 429 to a
+    sustained run; see ARXIV_MIN_INTERVAL_S).
     """
     _open = _open or urllib.request.urlopen
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": accept})
-    for attempt, wait in enumerate((*RETRY_SLEEPS_S, None)):
+    headers = {"User-Agent": USER_AGENT, "Accept": accept}
+    token = github_token() if url.startswith(GITHUB_API) else None
+    if token:
+        # Sprint 6 Task K (F35): 5,000 requests per hour against 60. The token
+        # goes into this one header and nowhere else: never into a URL, a log
+        # line, an exception or the store.
+        headers["Authorization"] = f"Bearer {token}"
+    req = urllib.request.Request(url, headers=headers)
+    # arXiv gets ONE attempt (team lead, 2026-10-04, Q2 = 2): a retry is one
+    # more request at an API that is already refusing, and the callers fall
+    # back to DataCite on any arXiv failure. Other hosts keep the retries.
+    sleeps = () if "arxiv.org" in url else RETRY_SLEEPS_S
+    for attempt, wait in enumerate((*sleeps, None)):
         try:
             with _open(req, timeout=30) as resp:
                 return resp.read()
@@ -268,9 +312,12 @@ def fetch_arxiv_batch(ids: list[str], fetcher: Fetcher | None = None) -> dict[st
                 out[md.ident] = md
             if ident in out:
                 continue
-        except urllib.error.HTTPError as err:
-            if err.code not in RETRY_CODES:
-                raise
+        except ARXIV_FAILURES:
+            # Any arXiv failure goes to DataCite (team lead, 2026-10-04): a
+            # refusal, a timeout (20 of the first 730 bulk ids), an HTTP error
+            # of any code, or a body that is not a valid feed. DataCite then
+            # answers or raises, and the caller reports it.
+            pass
         out[ident] = parse_datacite_arxiv(
             fetcher(DATACITE_API + urllib.parse.quote(ARXIV_DOI_PREFIX + ident, safe="/."), "application/vnd.api+json"),
             ident,
@@ -323,7 +370,16 @@ def parse_datacite(body: bytes) -> Metadata:
             break
     return Metadata(kind="doi", ident=attrs.get("doi", ""), title=title, authors=authors,
                     year=year, date=date or year, venue=attrs.get("publisher", "") or "",
-                    doi=attrs.get("doi", ""), source_url=attrs.get("url", "") or "")
+                    doi=attrs.get("doi", ""), source_url=attrs.get("url", "") or "",
+                    extra={"provider": "DataCite"})
+
+
+def provider_of(md: Metadata) -> str:
+    """Which registry answered (ADR-0005 A4 field 10, `metadata_provider`).
+    `extra["provider"]` is set only on the DataCite paths (an arXiv id
+    answered by DataCite, or a DOI Crossref did not know); otherwise the
+    kind names the registry."""
+    return md.extra.get("provider") or {"arxiv": "arXiv", "doi": "Crossref", "github": "GitHub"}.get(md.kind, md.kind)
 
 
 def fetch_doi(doi: str, fetcher: Fetcher | None = None) -> Metadata:
@@ -471,21 +527,46 @@ def resolve(access: str, fetcher: Fetcher | None = None) -> tuple[Metadata, str]
     return md, render_citation(md)
 
 
+def is_arxiv_host(url: str) -> bool:
+    """Any request that lands on arXiv: the API, the site, and doi.org for
+    an arXiv DOI (10.48550/arXiv.*), which redirects there. The 6 s rule
+    covers them all (team lead, 2026-10-04: "space out any other requests
+    to arxiv")."""
+    host = urllib.parse.urlsplit(url).hostname or ""
+    return host == "arxiv.org" or host.endswith(".arxiv.org") or (
+        host == "doi.org" and ARXIV_DOI_PREFIX.lower() in url.lower())
+
+
 class PacedFetcher:
-    """A fetcher that keeps arXiv's requested spacing between requests to
-    export.arxiv.org and leaves other hosts alone. For bulk runs."""
+    """A fetcher that keeps the arXiv spacing between EVERY request that
+    lands on arXiv (is_arxiv_host) and leaves other hosts alone. For bulk
+    runs. A request made outside the fetcher (an access probe, a HEAD)
+    calls wait_for(url) first, so it is paced too (Sprint 6 Phase 5 review:
+    the access probe's GET to arxiv.org/abs went out right after the API
+    call)."""
 
     def __init__(self, inner: Fetcher | None = None, interval_s: float = ARXIV_MIN_INTERVAL_S):
         self.inner = inner or default_fetcher
         self.interval_s = interval_s
-        self._last_arxiv = 0.0
 
-    def __call__(self, url: str, accept: str) -> bytes:
-        if "export.arxiv.org" in url:
-            wait = self.interval_s - (_monotonic() - self._last_arxiv)
+    def wait_for(self, url: str) -> None:
+        global _last_arxiv_request
+        if is_arxiv_host(url):
+            wait = self.interval_s - (_monotonic() - _last_arxiv_request)
             if wait > 0:
                 # Module attribute, not time.sleep directly, so tests can stub
                 # the wait like the rest of this file does (PR #30 review).
                 _sleep(wait)
-            self._last_arxiv = _monotonic()
+            _last_arxiv_request = _monotonic()
+
+    def __call__(self, url: str, accept: str) -> bytes:
+        self.wait_for(url)
         return self.inner(url, accept)
+
+
+# ONE clock for the whole process (Sprint 6 retrospective I1, 2026-10-05).
+# It used to live on each PacedFetcher, and a new pacer per intake entry
+# started at zero and never waited: since Sprint 4, arXiv requests from
+# intake were not spaced between entries. A module-level clock cannot be
+# reset by building another pacer. -inf means "no arXiv request yet".
+_last_arxiv_request: float = float("-inf")

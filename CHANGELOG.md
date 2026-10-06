@@ -13,7 +13,186 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-09-23 onward (Sprint 5, PR #43)
+### 2026-09-27 to 2026-10-03 (Sprint 6, in progress)
+
+- **docs**: Sprint 6 Phase 1 (2026-09-27) -- carry-forward cut after PR #43
+  (develop) and PR #53 (main); CHANGELOG reconciled; master plan swept by
+  hand; Phase 1.3 design-document currency recorded (refresh over 347
+  papers: SAME 247, NO-ID 98, POORER 1, DIFFERS 1)
+- **docs**: F39 carded as the first permanent item (model evaluation), F40
+  its Sprint 6 release (2026-09-29)
+- **docs**: F41-F50 registered from the Cyc and CVQBoost handoff, with
+  planning notes on F36 and F37 (2026-10-03)
+- **docs**: Sprint 6 scope selected (12 items) and `SPRINT_6_PLAN.md`
+  drafted with pre-flights and decisions Q1-Q11 (2026-10-03)
+- **process**: F40, the first release of permanent item F39 (Task A, Issue
+  #55) -- each model tier in `model_assignment_heuristics.json` now names its
+  verified model, id, price, context, retirement date and the date checked,
+  from Anthropic's models page (2026-10-03): Fable 5.1, Opus 5.5, Sonnet 5.5,
+  Haiku 4.5. Haiku 4.5 retires not sooner than 2026-10-15; the Developers
+  role then moves to Sonnet 5.5, and a new trigger flags any tier within 30
+  days of retirement. The SPRINT_PLANNING.md role table no longer says
+  "Fable 5"; three guards, each proven by injection
+- **docs**: F43 (Task C, Issue #57) -- `INTAKE_WORKFLOW.md` section 15:
+  assert the table, not the summary; both worked examples verified at
+  source (CVQBoost's "3-8x" against table ratios of 1.7x to 83x; the
+  hardware plan's "superlinear" beside its own `vars^0.75` fit)
+- **docs**: F38 (Task B, Issue #56) -- `CHECKLIST-Phase2-pre.md` back-filled
+  for Sprints 1 to 4: 45 rows checked with a verified commit or document, 5
+  left unchecked with the reason (Sprint 1's adjudication timing and median,
+  first measured in Sprint 4; Sprint 2's replaced measurement; "--no-verify
+  never used", unprovable from history; reading-level escalation, not
+  tracked anywhere)
+- **docs**: F34, F36, F37, F47 (Task D, Issue #58) -- ADR-0004 A6
+  (`derivation`, `claim_type` with `search_scope`, the synthesis cap and
+  the retraction floor, both computed and exported as derived keys) and
+  ADR-0005 A4 (`publication_status`, the ten reference fields with the
+  probe rule, the `read_extent` gate at `read`, `read`'s cost restated per
+  Q7, the admission-against-interest rule)
+- **feat**: the migration (Task E, Issue #59) -- `store/schema.sql` gains
+  `assertion_fields.derivation`, `claim_type`, `search_scope` (every
+  assertion now has a row), `paper_fields.metadata_provider` and `coi`, and
+  the tables `paper_found_via`, `paper_reads`, `paper_probes`,
+  `source_links`; `scripts/migrate_sprint6_reference_fields.py` (dry run by
+  default, verified backup, per-piece idempotent) applied to the live store:
+  23 assertions back-filled (18 extracted, 3 synthesized, 2 project; 8
+  vendor-self-claim). The door validates the new fields and `set_tier`
+  refuses `read` without a `full` or `partial` read; the export emits them
+  plus the computed `certainty_cap` and `certainty_cap_reason`
+  (`learning-qml-no-reliable-tabular-accuracy-gain`: moderate, capped low);
+  the rebuild restores every new key and never writes the derived ones
+  back; `learnings.py` selects on `derivation`; the F47 test
+- **fix**: Task E fresh-eyes review (Issue #59) -- the `read` gate also
+  holds at insert (`intake --tier read` went around it) and binds the read
+  to the reader named in `checked_against_source`; a synthesis inherits its
+  inputs' retraction floor; a caller-set `metadata_provider` is refused
+  unless the citation is the door's or a replay; the migration rolls back
+  itself, with its own tests (schema parity, idempotency, dry run, rollback
+  proven by injection); `checked_against_source = 'never'` no longer
+  satisfies `read`
+- **feat**: F36 back-fill, stored fields (Task F, Issue #60) --
+  `scripts/backfill_reference_fields.py` routed all 347 papers
+  (`found_via`), 121 with `cited_as` from the preserved bibliography, 249
+  with `metadata_provider` (135 DataCite and 7 others named in the history,
+  107 inferred from the access id and marked so), and `read_extent` for the
+  12 papers at `read` from `checked_against_source`; `coi` (347) and
+  `read_extent` below `read` (14) queued, not guessed
+- **feat**: F41, the Cyc and Fourier Wall package without the CVQBoost
+  findings (Task G, Issue #61) -- `manifests/sprint6_f41_cyc_sources.json`
+  (10 Cyc and repository sources plus the hardware plan, pinned at hsbc
+  `a6c3453`; 11 written, 0 refused) and
+  `scripts/sprint6_task_g_cyc_and_facts.py` (35 assertions, the six CVQBoost
+  ones filtered; three promotions to `read` with their read extents;
+  decision 3's certainty changes; decision 4.1's `method` row found already
+  present); `INTAKE_WORKFLOW.md` section 16, appended after the manifest ran
+  (the order slip is stated in the section)
+- **docs**: F42, the two Cyc research documents (Task H, Issue #62; commit 39b179e's subject says #63 in error) --
+  `docs/research/2026-09-28_F42_*`; the dated amendment appended to
+  `cyc-knowledge-representation.md`; its "Generalization" heading fixed and
+  the `-isation` pair added to `scripts/us_english_fix.py`, which now
+  catches it (proven: the guard went red on the old heading)
+- **feat**: F36 computed fields (Task F part 2, Issue #60) -- `store/probes.py`
+  (publication status from arXiv's comment, journal_ref and DOI or Crossref's
+  type and `updates:` notices; version of record; affiliations; access as
+  observed) and `scripts/probe_reference_fields.py` (pilot of 30 across
+  source types, then all 361 papers, heartbeat file, per-record commits).
+  Snapshot 2026-10-03: 139 published, 96 preprint, 0 withdrawn or retracted
+  among existing records; access 286 open, 31 bot challenge or script shell, 12 refused, 6 not found; 3 arXiv ids left unanswered (DataCite cannot show
+  a withdrawal); 8 read timeouts re-probed after a DataCite fallback was
+  added for timeouts
+- **feat**: F35 code (Task K, Issue #65) -- `store/citations.py` sends a
+  GitHub token from `GITHUB_TOKEN` or `GH_TOKEN` on api.github.com requests
+  only, never logged (ADR-0002), with tests proven by injection;
+  `scripts/link_code_repositories.py` parses the 135 notes (129 GitHub, 6
+  reported: 4 Zenodo or Gitee, 2 malformed) and runs after Task J
+- **feat**: F32 NonArxiv rows (Task J, Issue #64) -- `scripts/qmlpapers_manifest.py`
+  reconciles all 1,440 TSV rows (1,403 new, 15 already in the store, 19
+  duplicates across folders, 3 hand path, 0 malformed); the three hand-path
+  rows entered from their page 1 (`manifests/qmlpapers_nonarxiv.json`: Beer
+  et al. by its printed DOI, Aaronson and Zhang-Ni hand-transcribed)
+- **fix**: Q11 (Task L, Issue #66) -- `du-2024` citation refreshed to its Scientific
+  Reports publication (`refresh_citations.py --apply`, verified backup)
+- **feat**: F32 bulk load, first part (Task J, Issue #64) -- 717 of 1,403
+  QMLPapers entries in at `seen`, each with its `found_via` and `cited_as`.
+  Stopped at entry 765: arXiv's API answered read timeouts, then HTTP 429 to
+  every request, after about 1,130 lookups in 3.5 hours at 3 s spacing
+  (arxiv.org itself and status.arxiv.org were up). Refused so far: 2 for the
+  entry itself (`2108.0131` malformed in the TSV; `2403.07059` HTTP 404), the
+  rest timeouts, retried in the second part
+- **fix**: arXiv pacing (team lead, 2026-10-04: "increase the request rate at
+  every 6 seconds ... If a request failes on arxiv, then try via DataCite";
+  Q2 = 2) -- `ARXIV_MIN_INTERVAL_S` 6.0; arXiv gets one attempt and any
+  arXiv failure (any HTTP code, timeout, bad feed) goes to DataCite, in the
+  door and in the probes; tests proven by injection. `intake.py` writes its
+  output as UTF-8 (an author name outside cp1252 stopped the sample dry run)
+- **feat**: F32 bulk load complete (Task J, Issue #64) -- 1,402 of 1,403
+  entries in at `seen` (1,810 papers in the store as of 2026-10-04);
+  `2403.07059`'s earlier 404 was transient; 1 refused for the entry itself
+  (`2108.0131`, malformed in `QMLPapers/2021/manifest.tsv`); 34 second
+  `found_via` rows on papers already present
+- **fix**: arXiv requests were NEVER paced between intake entries (Task J,
+  2026-10-04) -- `intake.py` built a new `PacedFetcher` per entry, and a new
+  pacer never waits. Present since Sprint 4 (64d067f). The resumed load sent
+  684 requests in 10 minutes against the team lead's 6 s instruction, and
+  the 429s of 2026-10-03 most likely had the same cause. One pacer per run
+  now (`_fetcher()`), in intake and in Task I's script; test proven by
+  injection. arXiv refused again after the burst, so Task I waits 2 hours
+- **feat**: F35 complete (Task K, Issue #65) -- 105 of the 135 repository
+  notes linked (`code-of`, with the paper's sentence); 30 reported: 23
+  repositories return HTTP 404 (most are URLs truncated by the note
+  extractor), 6 notes are not GitHub links or are malformed, 1 paper is the
+  malformed `2108.0131`. Two door fixes found on the way: GitHub answers a
+  repository's canonical name, so two notes can share a record; and
+  `parse_access` read `github.com/<owner>/arXiv-2502.18361-...` as an arXiv
+  id (test proven by injection)
+- **feat**: F33, withdrawn and retracted (Task I, Issue #63) -- after the
+  2-hour arXiv pause, 6 s spacing: six withdrawn arXiv preprints at `seen`
+  with `publication_status` withdrawn from arXiv's own signature (`/pdf`
+  HTTP 404, measured 2026-10-04; four of the six comments give only the
+  reason, never the word "withdrawn"), each comment quoted as the reason;
+  Valdez and Melin retracted, from Crossref notice
+  `10.1007/s00500-026-11351-6`; `superseded-by` links to `2405.13351` and
+  `2210.14450`. The Lin duplicate and its replacement derive the same id, so
+  the withdrawn copy carries its arXiv number. A probe can no longer
+  downgrade a recorded withdrawal or retraction (test proven by injection)
+- **fix**: Phase 5 fresh-eyes review of the Sprint 6 store changes, all
+  findings taken -- every request that lands on arXiv (the API, the site,
+  an arXiv DOI at doi.org) now shares the 6 s pacer, including the access
+  probe's GET and Task I's `/pdf` HEAD, which had gone out unpaced; every
+  arXiv failure (an HTML or truncated body, a connection reset) reaches
+  DataCite (`ARXIV_FAILURES`); a 429, a 5xx or no connection is "no answer",
+  never an access status (none had been stored); Task I's links are
+  idempotent on re-run; `parse_access` counts an arXiv id beside a
+  repository in either order. Guards proven by injection
+- **feat**: Manual Validation follow-up (team lead, 2026-10-05: "look at the
+  hsbc repo ... Find and add as evidence") -- the hsbc Phase 1 results memo
+  as a source (pinned at 203881e, read directly) and two `platform:dirac-3`
+  assertions: Dirac-3 matched the exact classical optimum on the Phase 1
+  CVQBoost formulation (-0.0010 AUPRC, CI containing zero), and that
+  formulation is near-trivial (strictly convex, nearly degenerate), so it
+  does not test hard problems. Neither source sentence mentions error
+  correction
+- **docs**: Manual Validation decisions Q1, Q2, Q3, Q4, Q5 = 1 (both
+  amendments accepted; inputs only in `assertion_relations`; the 14
+  `claim_type` classifications kept; the cap stays computed); cards F52 to F57 (bulk probes with an
+  arXiv cap, probes each cycle, the 30 unlinked notes, `cites` links, the
+  corroboration question, the permanent read-for-claims program) and a Q9
+  note on F45
+- **fix**: the F47 test ignored case and flagged "NOT upgraded for admission
+  against interest" on the record F47 names as not qualifying; now
+  case-sensitive and never after NOT, with that sentence in its test
+
+### 2026-09-23 to 2026-09-25 (Sprint 5, PR #43, merged to develop 2026-09-27 and to main via PR #53 the same day)
+
+Reconciled 2026-09-27 at Sprint 6 Phase 1.1 against `git log`: commits on
+2026-09-23, -24 and -25, none on 2026-09-26, the two merges on 2026-09-27.
+Every commit below was entered in the same commit as its change; the
+entries were checked against the log, not rewritten. Full detail:
+`docs/sprints/SPRINT_5_SUMMARY.md`.
+
+- **fix**: PR #43 Copilot review (2026-09-25) -- one finding verified false
+  (the `visible_words` pattern is lazy; a two-script test now pins it, proven
+  by injecting the greedy form), one fixed (`sprint_status.json` date)
 
 - **docs**: Sprint 5 scope (F31, F30, F28, F5), F19 and F29 closed without
   implementation, F32-F35 carded for Sprint 6, plan approved with decisions

@@ -235,3 +235,61 @@ def test_verify_reports_a_source_it_cannot_reach_rather_than_passing(store):
     assert proc.returncode == 1
     assert "FAIL  citation matches the source of record" in proc.stdout
     assert "could not resolve" in proc.stdout
+
+
+def _atom_for(ident: str) -> bytes:
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:arxiv="http://arxiv.org/schemas/atom">
+<entry><id>http://arxiv.org/abs/{ident}v1</id><title>A title for {ident}</title>
+<published>2024-01-02T00:00:00Z</published><updated>2024-01-02T00:00:00Z</updated>
+<author><name>Ada Lovelace</name></author></entry></feed>""".encode()
+
+
+def test_one_run_shares_one_pacer_so_arxiv_requests_are_spaced_regression(monkeypatch):
+    """Sprint 6 Task J (2026-10-04): build_record made a NEW PacedFetcher per
+    entry, a new pacer never waits, and 684 entries went to arXiv in 10
+    minutes against the team lead's 6 s spacing. Since retrospective I1
+    (2026-10-05) the clock is process-wide, so new pacers are safe. Proven to
+    fail by injection: with each new PacedFetcher resetting the clock (the
+    old per-instance behavior), no wait was recorded between the entries."""
+    import importlib.util
+    from store import citations
+    spec = importlib.util.spec_from_file_location("intake_pacing", ROOT / "scripts" / "intake.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    waits, clock = [], [100.0]
+    monkeypatch.setattr(citations, "_sleep", lambda s: waits.append(round(s, 3)))
+    monkeypatch.setattr(citations, "_monotonic", lambda: clock[0])
+    monkeypatch.setattr(citations, "default_fetcher",
+                        lambda url, accept: _atom_for(url.split("id_list=")[1]))
+    for ident in ("2401.00001", "2401.00002"):
+        mod.build_record({"access": f"arXiv:{ident}", "context": "qml", "disposition": "test"}, today="2026-10-04")
+    assert waits == [citations.ARXIV_MIN_INTERVAL_S], f"arXiv requests in one run must be paced; waits were {waits}"
+
+
+def _intake_module(name: str):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(name, ROOT / "scripts" / "intake.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def test_a_manifest_no_intake_section_names_is_refused_regression(tmp_path):
+    """Sprint 6 retrospective I2: the section comes BEFORE the manifest runs.
+    Proven to fail by injection: with the name check replaced by True, the
+    unnamed manifest was accepted."""
+    mod = _intake_module("intake_i2")
+    doc = tmp_path / "INTAKE_WORKFLOW.md"
+    doc.write_text("## 18. Applied: manifests/named_one.json", encoding="utf-8")
+    assert "not named" in mod.unrecorded_manifest(ROOT / "manifests" / "never_written_section.json", doc)
+    assert mod.unrecorded_manifest(ROOT / "manifests" / "named_one.json", doc) is None
+    assert mod.unrecorded_manifest(tmp_path / "scratch_retry.json", doc) is None  # outside manifests/
+
+
+def test_every_committed_manifest_is_named_in_the_workflow():
+    mod = _intake_module("intake_i2b")
+    for m in sorted((ROOT / "manifests").glob("*.json")):
+        if m.name == "qmlpapers_routes_for_present.json":
+            continue  # not an intake manifest (INTAKE_WORKFLOW section 17)
+        assert mod.unrecorded_manifest(m) is None, m.name

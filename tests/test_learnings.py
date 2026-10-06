@@ -36,10 +36,11 @@ def _mod():
     return m
 
 
-def test_learnings_are_found_by_provenance_not_by_absence_of_a_paper(conn):
+def test_learnings_are_found_by_derivation_not_by_absence_of_a_paper(conn):
     """hsbc-b1-variable-count-wrong-78 is yielded by no paper and is the
     target of a `contradicts` edge, yet is NOT a synthesis; the first
-    definition caught it."""
+    definition caught it. Since ADR-0004 A6 (Sprint 6 Task E) a learning is
+    selected by `derivation = 'synthesized'`, and that record is `project`."""
     ids = _mod().learning_ids(conn)
     assert QML in ids
     assert "hsbc-b1-variable-count-wrong-78" not in ids

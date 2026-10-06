@@ -93,3 +93,53 @@ def test_f7_f10_row_matches_the_sprint_3_actuals():
 def test_planning_doc_points_at_the_heuristics_file():
     assert ".claude/model_assignment_heuristics.json" in PLANNING.read_text(encoding="utf-8"), (
         "docs/SPRINT_PLANNING.md's role table must reference the heuristics file (F18 card: Platform)")
+
+
+# ---- F39/F40 (Sprint 6 Task A, 2026-10-03): model facts are verified, dated and current
+
+from datetime import date as _date
+
+MODEL_TIERS = ("haiku", "sonnet", "opus", "fable")
+REQUIRED = ("model", "model_id", "agent_alias", "price_per_mtok", "context_tokens",
+            "retirement_not_before", "verified", "source")
+
+
+def test_every_model_tier_carries_verified_facts_regression():
+    """F40's acceptance: a tier names a model, not just a role, and says
+    when and where it was checked. Proven to fail by injection: deleting
+    "verified" from the sonnet tier turns this red."""
+    tiers = _load()["tiers"]
+    missing = {t: [k for k in REQUIRED if not tiers[t].get(k)] for t in MODEL_TIERS}
+    assert not any(missing.values()), f"tiers missing verified facts: {missing}"
+    for t in MODEL_TIERS:
+        _date.fromisoformat(tiers[t]["verified"])
+        _date.fromisoformat(tiers[t]["retirement_not_before"])
+        assert tiers[t]["source"].startswith("https://"), t
+
+
+def test_no_tier_is_past_retirement_without_a_successor_regression():
+    """A tier whose model has reached its retirement date must name a
+    successor tier, or the assignment table points at nothing. Proven to
+    fail by injection: setting haiku's retirement_not_before to a past date
+    and its successor to null turns this red. NOTE: this test is meant to
+    go red over time -- that is the signal to run the next F39 release."""
+    tiers = _load()["tiers"]
+    today = _date.today()
+    stale = [t for t in MODEL_TIERS
+             if _date.fromisoformat(tiers[t]["retirement_not_before"]) <= today
+             and tiers[t].get("successor") not in MODEL_TIERS]
+    assert not stale, f"tiers past retirement with no successor: {stale}"
+
+
+def test_planning_role_table_names_the_verified_versions_regression():
+    """The static role table in SPRINT_PLANNING.md must not drift from the
+    verified file (it named "Fable 5" until F40). Proven to fail by
+    injection: restoring "Fable 5 preferred" turns this red."""
+    tiers = _load()["tiers"]
+    text = PLANNING.read_text(encoding="utf-8")
+    role_lines = [line for line in text.splitlines()
+                  if line.startswith(("| Lead Developer", "| Senior Developers", "| Developers"))]
+    joined = " ".join(role_lines)
+    for t in MODEL_TIERS:
+        version = tiers[t]["model"].removeprefix("Claude ")
+        assert version in joined, f"role table does not name {version!r} (tier {t})"

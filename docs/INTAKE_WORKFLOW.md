@@ -390,3 +390,102 @@ wording for `seen` records, and remove the clause at each promotion.
 Implemented in `store.ingest.set_tier()`, the one sanctioned tier-change
 path, which also appends the removal to `updated_reason`; guarded by
 `tests/test_ingest.py::test_promotion_removes_not_yet_screened_regression`.
+
+## 15. Added 2026-10-03: assert the table, not the summary (Sprint 6 Task C, F43)
+
+A source's prose summary of its own table is a second claim, and it can be
+wrong while the table is right. When the two disagree, the assertion states
+what the TABLE shows, and its `certainty_reasons` name the mismatch, so the
+summary's wording never enters the store as if it were the measurement.
+Both worked examples were checked against their sources on 2026-10-03:
+
+- **FourierWall2, `docs/CVQBoost_Findings.md`, section 11.** The takeaway
+  says CVQBoost's "in-segment train-test gap is 3-8x XGBoost's on every
+  `target` cell". The table above it gives gaps of 0.083 against 0.001
+  (energy, 83x), 0.389 against 0.051 (maintenance, 7.6x), 0.212 against
+  0.026 (oil and gas, 8.2x) and 0.135 against 0.080 (telecom, 1.7x). The
+  range is 1.7x to 83x, and one cell is below 3x.
+- **hsbc-quantum-fraud-2026, `docs/HARDWARE_PLAN_PHASE_2.md`, at commit
+  `a6c3453`.** The text says "Cost is also superlinear in variables"; the
+  same paragraph's two-factor fit is roughly `vars^0.75 x levels^0.52`. An
+  exponent of 0.75 is sublinear.
+
+The fix to a source's own wording belongs to that source (for the hsbc
+repository, a session working there; this repository never writes to it).
+
+## 16. Applied 2026-10-03: the Cyc sources and the hardware plan (Sprint 6 Task G, F41)
+
+**Order, stated because it slipped.** Sections 11 to 13 require this section
+BEFORE the manifest runs. On 2026-10-03 the manifest
+(`manifests/sprint6_f41_cyc_sources.json`) was applied first and this
+section was appended minutes later, from the handoff draft written on
+2026-09-29 before any manifest existed. The context decisions below are that
+draft's, made in advance; only the write order slipped. Recorded for the
+Sprint 6 retrospective.
+
+The text follows the handoff's draft section (`01-intake-section-15-draft.md`,
+2026-10 handoff, outside version control), renumbered 16 because section 15
+is F43's. **Counts in this section are a snapshot as of 2026-10-03.**
+
+- **Cyc engine source, releases, manual pages and archives** -> `method`. The
+  precedent is `lenat-marcus-2023-trustworthy-ai`: material about how Cyc
+  represents and reasons is methodology for this library, the tool it is
+  building. None of it passes the `world` test (an engineering system, not a
+  theorem or a measurement of nature), and none carries an ML or quantum
+  workload.
+  - `white-flame/clyc` is a third-party port with no Cycorp affiliation. It
+    takes `method` like the rest, and its disposition says what it is.
+- **The hsbc repository's Phase 2 hardware plan** -> `hsbc-2026` (decision
+  4.2 of 2026-10-03). It is the submission's own document, which section 11
+  says takes the context by its own definition. Its applicability adds
+  `platform:dirac-3` for the Experiment 3 cost table, so the two Dirac-3 cost
+  assertions it yields sit inside it. A living document, so the record pins
+  commit `a6c3453`.
+- **Not entered: the CVQBoost findings document** and the six assertions it
+  yields. The team lead deferred its authorship until the hsbc repository
+  re-runs the experiment (Sprint 6 Q4); card F51 holds it.
+
+**Tier at load.** Sources read directly enter at `read` with
+`checked_against_source` naming what was read, anchored applicability, and
+(since ADR-0005 A4) a `read_extent` row of `full` or `partial` by that
+reader. Sources known only through the research agent enter at `seen`.
+
+**Local copies.** The four 2002 Cycorp manual pages were copied to
+`References\` on 2026-09-29 (SHA-256 verified against their sources). The
+engine source, the two OpenCyc releases and the documentation archive stay
+under `GitHubRepos\`; each record's `access` points there.
+
+**Disposition**, one line, no tier word, prefixed `Reference:` or
+`Code repository:` for those kinds (section 2).
+
+**Not entered here, and why:** seven Cycorp papers found by the research
+agent have no local copy and no verified identifier, and wait on a download
+decision (the handoff's `04-pending-sources.md`); Siegel, Goolsbey,
+Kahlert, Matthews, "The Cyc System: Notes on Architecture" (Cycorp, 2004)
+was never obtained and goes on the exception list.
+
+## 17. Applied 2026-10-04: the QMLPapers bulk load (Sprint 6 Task J, F32)
+
+**Written after the load, on 2026-10-05, and stated as such** (Sprint 6
+retrospective I2, the same slip as section 16). The decisions it records
+were made in advance, in section 9 and in the Sprint 6 plan (Q8, Q9); only
+this section's write order slipped. Since I2, `scripts/intake.py` refuses
+`--apply` on a manifest under `manifests/` that no section here names, so
+this cannot recur. **Counts are a snapshot as of 2026-10-04.**
+
+- `manifests/qmlpapers_bulk.json` (1,403 entries) and
+  `manifests/qmlpapers_sample.json` (115, the Q8 dry run): generated by
+  `scripts/qmlpapers_manifest.py` from the 13 `manifest.tsv` files, never
+  by hand. Context `qml` and section 9's disposition wording; `found_via`
+  is the TSV, `cited_as` its title line. 1,402 loaded; 1 refused
+  (`2108.0131`, malformed in the 2021 TSV).
+- `manifests/qmlpapers_nonarxiv.json` (3 entries): the `NonArxiv` rows whose
+  URLs carry no resolvable id. Beer et al. took the DOI printed on its
+  page 1; Aaronson and Zhang-Ni took the hand path, with no year, since
+  page 1 prints none.
+- `manifests/qmlpapers_routes_for_present.json` (34 rows): papers already in
+  the store gain the collection as a second `found_via` route; not an
+  intake manifest.
+- arXiv pacing: 6 s between requests, one attempt, then DataCite (team
+  lead, 2026-10-04). A new pacer per entry never waited until the clock
+  became process-wide (retrospective I1).

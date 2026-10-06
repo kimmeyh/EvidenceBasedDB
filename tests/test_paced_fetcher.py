@@ -15,7 +15,7 @@ bulk run.
 
 Injection-verified 2026-09-22: `if "export.arxiv.org" in url` -> `if False`
 turns test_consecutive_arxiv_requests_are_spaced red; removing the
-`self._last_arxiv = _monotonic()` stamp turns it red as well.
+module clock stamp (`_last_arxiv_request = _monotonic()`, since Sprint 6) turns it red as well.
 """
 from __future__ import annotations
 
@@ -85,10 +85,12 @@ def test_time_already_spent_counts_toward_the_interval(clock):
     assert clock["slept"] == [1.0]
 
 
-def test_the_default_interval_is_arxivs_published_rate():
-    """Pinned so nobody 'optimizes' the bulk run into a multi-minute block."""
-    assert citations.ARXIV_MIN_INTERVAL_S == 3.0
-    assert citations.PacedFetcher().interval_s == 3.0
+def test_the_default_interval_is_twice_arxivs_published_rate():
+    """Pinned so nobody 'optimizes' the bulk run into a multi-minute block.
+    6 s since 2026-10-04 (team lead): at arXiv's published 3 s, a sustained
+    run of about 1,130 lookups ended in HTTP 429 for everything."""
+    assert citations.ARXIV_MIN_INTERVAL_S == 6.0
+    assert citations.PacedFetcher().interval_s == 6.0
 
 
 def test_the_wrapped_fetcher_receives_url_and_accept_unchanged(clock):
@@ -100,3 +102,13 @@ def test_the_wrapped_fetcher_receives_url_and_accept_unchanged(clock):
 
 def test_default_inner_is_the_real_fetcher():
     assert citations.PacedFetcher().inner is citations.default_fetcher
+
+
+def test_a_second_pacer_shares_the_clock_regression(clock):
+    """Sprint 6 retrospective I1: a NEW pacer must not start at zero. intake
+    built one per entry, and none of them ever waited. Proven to fail by
+    injection: with the clock moved back onto each instance, the second
+    pacer's request went out with no wait."""
+    citations.PacedFetcher(inner=lambda u, a: b"ok")(ARXIV, "x")
+    citations.PacedFetcher(inner=lambda u, a: b"ok")(ARXIV, "x")
+    assert clock["slept"] == [citations.ARXIV_MIN_INTERVAL_S]

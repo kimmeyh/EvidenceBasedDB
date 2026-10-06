@@ -865,3 +865,122 @@ between their yielded assertions. Tiers as of this date: 6 `read`, 14
 *(e) Governing design.* `docs/INTAKE_WORKFLOW.md` is the design document
 for how a source enters the store; this ADR owns what a record IS, that
 document owns how one arrives, and both are amended by dated section.
+
+**2026-10-03 (A4): publication status, ten reference fields, how far a
+source was read, and the admission-against-interest rule.** Sprint 6 Task
+D (backlog items F34, F36 and F47), taking decisions Q1, Q3, Q6 and Q7
+approved at Sprint 6 planning (team lead: "q1. 1 q2. 1 ... q11. 1").
+Decided in one amendment with ADR-0004 A6, which owns the assertion
+fields; this amendment owns the source fields.
+
+**Every count below is a snapshot as of 2026-10-03, against the store as
+it existed before Sprint 6 Task E's migration.** The store grows by
+design; re-query it rather than reading these numbers as current later.
+
+*Why.* Three gaps, found three ways. Sprint 5's QMLPapers survey found
+six withdrawn arXiv preprints and a retracted journal article, and this
+ADR said nothing about a source whose status changed after publication
+(F34). Sprint 5 Task D compared every per-entry element of the HSBC Phase
+2 bibliography with what a paper record can hold, and found nine elements
+with no home, plus a tenth at the retrospective (F36). And section 2's
+worked example applies an upgrade for admission against interest to one
+assertion and withholds it from another without a sentence stating the
+rule (F47).
+
+*(a) Publication status (decision Q1).* A `publication_status` on the
+paper record: `published | preprint | withdrawn | retracted`. Exactly
+these four; the other kinds the F36 card lists (vendor document, blog,
+conference abstract) are already carried by the disposition's kind prefix
+(A3 (b)). "Superseded by" is a `superseded-by` source link, field 6
+below. Status is a fact about the source, not a context (contexts
+partition claims, ADR-0004 section 3b) and not a certainty input alone
+(that would hide it from every query). Its effect on certainty is
+ADR-0004 A6 (d). The discovery is asymmetric and the design does not
+assume an API finds it: arXiv answers a withdrawal (the comment field,
+and the PDF returns HTTP 404); Crossref answers a retraction only through
+the notice that points at the article (`works?filter=updates:<doi>`), not
+through the article's own record.
+
+*(b) The ten fields, stored or computed (decision Q3).* The rule is
+CLAUDE.md's: a determinate fact is computed by a resolver, never stored as
+a copy.
+
+| # | Field | Kind | Home |
+|---|---|---|---|
+| 1 | `found_via`: collection and locator ("QMLPapers/2024/manifest.tsv", "HSBC Phase 2 bibliography [DQ-5]") | STORED, a fact about our process | child table, one row per route, so one paper can be found two ways |
+| 2 | `read_extent`, per reader and date | STORED, a judgment | child table; vocabulary and gate in (c) |
+| 3 | `publication_status` | COMPUTED for api-origin; stored with an anchor for hand-origin | see (a) and the probe rule below |
+| 4 | `version_of` (arXiv id to journal DOI) | COMPUTED (DataCite `IsVersionOf`, arXiv `doi`) | probe rule below |
+| 5 | `access_status` (open, paywalled, HTTP 403, bot challenge) | COMPUTED by a probe | probe rule below |
+| 6 | `source_links`: `code-of`, `dataset-of`, `version-of`, `superseded-by`, `responds-to` | STORED, carrying the evidence sentence | typed relation between SOURCE records; support and contradiction stay between assertions (section 2b2) |
+| 7 | affiliations; disclosed conflict of interest (`coi`) | affiliations COMPUTED where the registry carries them; a disclosed `coi` STORED with its anchor (page, section) | `paper_fields` for `coi` |
+| 8 | `cited_as`: how a route cited the source | STORED | on the `found_via` row, so comparing it with the registry is a query |
+| 9 | reading notes | NOT a field: a note is a claim, and enters as an assertion with provenance | extraction |
+| 10 | `metadata_provider`: which registry answered | STORED, set by the door | `paper_fields` |
+
+*The probe rule, for fields 3, 4, 5 and affiliations.* The export must be
+deterministic and must build offline, so a resolver cannot be called at
+export time. Each computed field is therefore kept as the last result of
+its probe, with the probe date and the provider that answered. That row
+is a dated measurement, not a copy of the fact: the resolver stays
+authoritative, and `scripts/probe_reference_fields.py` re-runs the
+probes. A probe that gets no answer (a rate limit, a server error, no
+connection) records nothing and keeps the last measurement; a probe never
+turns a recorded withdrawal or retraction back into `preprint` or
+`published`. Not built as of this date, and put to the team lead at
+Sprint 6 Manual Validation: running the probes each delivery cycle
+(Phase 1.3), and reporting a probe older than one cycle as stale.
+
+*(c) How far a source was read (field 2; decisions Q3 and Q7).* The
+vocabulary is `full | partial: <what> | abstract | html-render | summary
+| grep | subagent`. `grep` and `subagent` are added to the F36 card's
+list: on 2026-09-28 a research agent grepped Lenat and Marcus 2023 and
+reported no source for "reasoners bid on time", which page 14 states.
+
+The `read` tier is now reached only with at least one `read_extent` row of
+`full` or `partial` for the reader who sets `checked_against_source`.
+`set_tier(..., "read")` therefore refuses `grep`, `subagent` and
+`summary` (each with its own test), and by the same rule `abstract` and
+`html-render`. A subagent's extraction may still support a `read`
+record, as in Sprint 5's pilot, when the lead reader checks the quoted
+pages directly and records them as `partial`. The rule binds promotions
+from this date; the 12 records already at `read` keep their tier, and
+their `read_extent` rows are back-filled from `checked_against_source` by
+Sprint 6 Task F.
+
+*(d) Section 2c, `read`'s cost (decision Q7).* A2's tier table puts
+`read`'s cost on the team lead. In practice `read` has been reached on
+Claude's direct reading, at Sprint 4 Task H and at the Sprint 5 pilot,
+and the team lead accepted both. A2 is not edited; its table now reads:
+
+| Tier | What it asserts | Whose cost |
+|---|---|---|
+| `seen` | An agent recorded that the source exists and why it was or was not pursued | Agent, negligible |
+| `screened` | An agent recorded a one-line disposition and derived `applicability` from the source itself; no claims extracted yet | Agent, small |
+| `read` | The source was opened and adjudicated: `checked_against_source` is set, `read_extent` is `full` or `partial`, and claims were extracted (`yields`) | The reader who opened it, real (Claude's direct reading qualifies); the team lead adjudicates every learning and any record they choose |
+
+*(e) Admission against interest (decision Q6).* Section 2's worked
+example is now a rule. **The upgrade applies only when the claim costs
+its author something, and the certainty reason must say what it cost.**
+A counterfactual that supports the author's own method does not qualify
+(`fourier-wall-incomplete-bar-manufactures-advantage`, entering with
+Sprint 6 Task G), and neither does a
+count reported favorably (`cyc-hl-module-count`). As of this date the
+upgrade is applied twice, and both name the cost:
+`cyc-general-prover-disabled` ("costly to disclose") and
+`cvqboost-vs-xgboost-auc-under-balancing` ("costly to publish"). Three
+other reasons mention the upgrade or the interest without applying it
+(`cyc-hl-module-count`, `heuristics-over-general-reasoning`,
+`qelm-local-dynamics-match-haar-classically-simulable`). A test checks
+every reason that APPLIES the upgrade ("UPGRADED ... for admission
+against interest") for a cost phrase ("costly to ..."); a reason that
+only mentions it passes. Section 2's open question (is the admission
+worth a level?) stays open: the rule says when the upgrade may apply, not
+that one level is the right size.
+
+*Consequence for section 3 (records, never PDFs).* Unchanged. The
+`access_status` probe records whether a source is reachable; it never
+fetches a copy into the repository.
+
+*Revisit when* the first bulk load (Sprint 6 Task J) shows how many
+probes go stale per cycle.

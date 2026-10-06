@@ -59,6 +59,23 @@ from store.ingest import (  # noqa: E402
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 FETCHER = None  # tests inject; the real run paces arXiv
 
+
+def _fetcher():
+    """FETCHER if a test injected one, else a PacedFetcher.
+
+    Sprint 6 Task J (2026-10-04) found that a new pacer per entry never
+    waited: 684 entries went to arXiv in 10 minutes against the team lead's
+    6 s spacing. The fix that stays (retrospective I1 and I6, 2026-10-05) is
+    in store/citations.py: every pacer shares ONE process-wide clock, so
+    building a new one here is safe and no caller needs to hold a pacer."""
+    return FETCHER if FETCHER is not None else citations.PacedFetcher()
+
+# Sprint 6 Task J: with output redirected to a file, Windows encodes stdout as
+# cp1252 and the first author named with a character outside it ("ś")
+# stopped the sample dry run at entry 107 of 115.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 KIND_PREFIX = {"paper": None, "book": "Book:", "reference": "Reference:", "repo": "Code repository:"}
 _STOP = {"a", "an", "the", "of", "for", "and", "in", "on", "with", "to", "using", "via", "from", "by", "at", "is", "are", "its"}
 _DATE = None  # set per run
@@ -113,11 +130,17 @@ def build_record(entry: dict, fetcher=None, today: str = "") -> PaperRecord:
         evidence=entry.get("evidence"), mined_by=entry.get("mined_by"), checked_against_source=entry.get("checked_against_source"),
         updated=today, updated_reason=entry.get("updated_reason") or f"{today}: added through scripts/intake.py ({kind})",
         applicability=_parse_applicability(entry.get("applicability")),
+        # ADR-0005 A4 fields 1 and 8: the collection and locator this entry
+        # came from, and how that collection cited it.
+        found_via=[(entry["found_via"], entry.get("cited_as"))] if entry.get("found_via") else [],
+        # ADR-0005 A4 (c): an entry at `read` carries how far it was read,
+        # as [reader, read_on, extent, detail] rows.
+        reads=[(r[0], r[1], r[2], r[3] if len(r) > 3 else "") for r in entry.get("reads", [])],
     )
     if citations.parse_access(access):
-        md, rendered = citations.resolve(access, fetcher=fetcher or FETCHER or citations.PacedFetcher())
+        md, rendered = citations.resolve(access, fetcher=fetcher or _fetcher())
         provider = md.extra.get("provider")
-        if provider and not entry.get("updated_reason"):
+        if provider and md.kind == "arxiv" and not entry.get("updated_reason"):
             # Sprint 5 Task C: arXiv refused 73 of 75 paced requests and DataCite
             # answered; the render differs slightly by provider (no journal_ref),
             # so which source of record answered is part of the provenance.
@@ -126,7 +149,8 @@ def build_record(entry: dict, fetcher=None, today: str = "") -> PaperRecord:
                             citation=rendered, citation_origin="api",
                             # This citation came from citations.resolve() one line above,
                             # so it carries the door's own marker, not a self-declaration.
-                            citation_source=DERIVED_BY_DOOR, **common)
+                            citation_source=DERIVED_BY_DOOR, metadata_provider=citations.provider_of(md),
+                            **common)
     else:
         if not entry.get("id"):
             raise ValueError("a hand-origin record needs --id (nothing to derive it from)")
@@ -183,7 +207,7 @@ def verify(conn, record_id: str, fetcher=None) -> list[tuple[str, bool, str]]:
     parsed = citations.parse_access(r["access"])
     if parsed:
         try:
-            md, rendered = citations.resolve(r["access"], fetcher=fetcher or FETCHER or citations.PacedFetcher())
+            md, rendered = citations.resolve(r["access"], fetcher=fetcher or _fetcher())
             checks.append(("citation matches the source of record", rendered == r["provenance"],
                            "SAME" if rendered == r["provenance"] else f"DIFFERS: {rendered[:120]}"))
             checks.append(("title matches the source of record", md.title == r["value"], md.title[:80]))
@@ -211,6 +235,29 @@ def verify(conn, record_id: str, fetcher=None) -> list[tuple[str, bool, str]]:
     return checks
 
 
+WORKFLOW_DOC = ROOT / "docs" / "INTAKE_WORKFLOW.md"
+
+
+def unrecorded_manifest(manifest: Path, workflow: Path | None = None) -> str | None:
+    """Why a manifest may not be applied yet, or None.
+
+    Sprint 6 retrospective I2 (2026-10-05): sections 11 to 13 of
+    INTAKE_WORKFLOW.md require the intake section BEFORE the manifest runs,
+    and Sprint 6 broke that twice (sections 16 and 17 were written after
+    their loads). A manifest under manifests/ is applied only once the
+    workflow document names its file. Dry runs are not checked; a manifest
+    outside manifests/ (a scratch retry list) is not either."""
+    workflow = workflow or WORKFLOW_DOC
+    try:
+        manifest.resolve().relative_to((ROOT / "manifests").resolve())
+    except ValueError:
+        return None
+    if manifest.name in workflow.read_text(encoding="utf-8"):
+        return None
+    return (f"{manifest.name} is not named in {workflow.name}. Write its intake section first "
+            "(sections 11 to 13: the section comes BEFORE the manifest runs), then apply.")
+
+
 def main(argv: list[str] | None = None) -> int:
     from datetime import date
     args = list(sys.argv[1:] if argv is None else argv)
@@ -233,6 +280,11 @@ def main(argv: list[str] | None = None) -> int:
 
     verify_id = opt("--verify")
     manifest = opt("--manifest")
+    if apply and manifest:
+        problem = unrecorded_manifest(Path(manifest))
+        if problem:
+            print(f"REFUSED: {problem}", file=sys.stderr)
+            return 1
     if apply and not verify_id:
         backup_before_write(DB_PATH, "intake --apply")  # F30: verified backup, or no write at all
     conn = connect(DB_PATH)
