@@ -235,6 +235,29 @@ def verify(conn, record_id: str, fetcher=None) -> list[tuple[str, bool, str]]:
     return checks
 
 
+WORKFLOW_DOC = ROOT / "docs" / "INTAKE_WORKFLOW.md"
+
+
+def unrecorded_manifest(manifest: Path, workflow: Path | None = None) -> str | None:
+    """Why a manifest may not be applied yet, or None.
+
+    Sprint 6 retrospective I2 (2026-10-05): sections 11 to 13 of
+    INTAKE_WORKFLOW.md require the intake section BEFORE the manifest runs,
+    and Sprint 6 broke that twice (sections 16 and 17 were written after
+    their loads). A manifest under manifests/ is applied only once the
+    workflow document names its file. Dry runs are not checked; a manifest
+    outside manifests/ (a scratch retry list) is not either."""
+    workflow = workflow or WORKFLOW_DOC
+    try:
+        manifest.resolve().relative_to((ROOT / "manifests").resolve())
+    except ValueError:
+        return None
+    if manifest.name in workflow.read_text(encoding="utf-8"):
+        return None
+    return (f"{manifest.name} is not named in {workflow.name}. Write its intake section first "
+            "(sections 11 to 13: the section comes BEFORE the manifest runs), then apply.")
+
+
 def main(argv: list[str] | None = None) -> int:
     from datetime import date
     args = list(sys.argv[1:] if argv is None else argv)
@@ -257,6 +280,11 @@ def main(argv: list[str] | None = None) -> int:
 
     verify_id = opt("--verify")
     manifest = opt("--manifest")
+    if apply and manifest:
+        problem = unrecorded_manifest(Path(manifest))
+        if problem:
+            print(f"REFUSED: {problem}", file=sys.stderr)
+            return 1
     if apply and not verify_id:
         backup_before_write(DB_PATH, "intake --apply")  # F30: verified backup, or no write at all
     conn = connect(DB_PATH)

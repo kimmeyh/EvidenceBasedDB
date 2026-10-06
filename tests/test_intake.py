@@ -265,3 +265,31 @@ def test_one_run_shares_one_pacer_so_arxiv_requests_are_spaced_regression(monkey
     for ident in ("2401.00001", "2401.00002"):
         mod.build_record({"access": f"arXiv:{ident}", "context": "qml", "disposition": "test"}, today="2026-10-04")
     assert waits == [citations.ARXIV_MIN_INTERVAL_S], f"arXiv requests in one run must be paced; waits were {waits}"
+
+
+def _intake_module(name: str):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(name, ROOT / "scripts" / "intake.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def test_a_manifest_no_intake_section_names_is_refused_regression(tmp_path):
+    """Sprint 6 retrospective I2: the section comes BEFORE the manifest runs.
+    Proven to fail by injection: with the name check replaced by True, the
+    unnamed manifest was accepted."""
+    mod = _intake_module("intake_i2")
+    doc = tmp_path / "INTAKE_WORKFLOW.md"
+    doc.write_text("## 18. Applied: manifests/named_one.json", encoding="utf-8")
+    assert "not named" in mod.unrecorded_manifest(ROOT / "manifests" / "never_written_section.json", doc)
+    assert mod.unrecorded_manifest(ROOT / "manifests" / "named_one.json", doc) is None
+    assert mod.unrecorded_manifest(tmp_path / "scratch_retry.json", doc) is None  # outside manifests/
+
+
+def test_every_committed_manifest_is_named_in_the_workflow():
+    mod = _intake_module("intake_i2b")
+    for m in sorted((ROOT / "manifests").glob("*.json")):
+        if m.name == "qmlpapers_routes_for_present.json":
+            continue  # not an intake manifest (INTAKE_WORKFLOW section 17)
+        assert mod.unrecorded_manifest(m) is None, m.name
