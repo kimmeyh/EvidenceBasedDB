@@ -13,8 +13,31 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-09-27 to 2026-10-03 (Sprint 6, in progress)
+### 2026-10-06 onward (Sprint 7, in progress)
 
+- **docs**: Sprint 7 Phase 1 (2026-10-06) -- carry-forward cut
+  `feature/20261006_Sprint_7` from the Sprint 6 branch after PR #54
+  (develop) and PR #67 (main), carrying F58's card, which was committed
+  after the merge; CHANGELOG reconciled; Sprint 6 completeness sweep;
+  design-document currency checked; candidate slate presented
+
+### 2026-09-27 to 2026-10-06 (Sprint 6, PR #54, merged to develop 2026-10-06 and to main via PR #67 the same day)
+
+- **docs**: F58 carded and targeted for Sprint 7 (2026-10-06): the store,
+  its backups and the export move out of the repository, ADR-0004 amendment
+  first (840d255)
+- **chore**: Sprint 6 merge-ready (2026-10-05): Copilot review complete
+  with no findings; PR #54 marked ready (66f1b20)
+- **docs**: Sprint 6 completion updates (2026-10-05): SPRINT_6_SUMMARY.md;
+  master plan rolled and shipped cards pruned by hand; checklist Sprint 6
+  section (be72649)
+- **process**: Sprint 6 retrospective improvements I1-I6, all applied now
+  (2026-10-05): one process-wide arXiv clock (I1, I6, 498f53c); intake
+  refuses a manifest no INTAKE_WORKFLOW section names (I2, f58f5d2); task
+  issue numbers resolved from the task letter, hook-checked (I3, 4ea7e6b);
+  Phase 5 re-reads amendments against the code and bulk loads state their
+  derived fields at planning (I4, I5, eeb2e46)
+- **docs**: Sprint 6 retrospective recorded (2026-10-05, 9ae41db)
 - **docs**: Sprint 6 Phase 1 (2026-09-27) -- carry-forward cut after PR #43
   (develop) and PR #53 (main); CHANGELOG reconciled; master plan swept by
   hand; Phase 1.3 design-document currency recorded (refresh over 347

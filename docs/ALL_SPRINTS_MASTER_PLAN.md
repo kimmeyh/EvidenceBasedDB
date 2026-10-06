@@ -47,7 +47,7 @@ repository exists. No other F# from either source repository applies here.
 
 Sprint 6 is below; Sprint 5 follows it for continuity.
 
-### Sprint 6: Decide the Fields Once, Then Load at Scale (2026-09-27 to 2026-10-05, PR #54)
+### Sprint 6: Decide the Fields Once, Then Load at Scale (2026-09-27 to 2026-10-05, PR #54, merged to develop and to main via PR #67 on 2026-10-06)
 
 Twelve tasks, twelve issues (#55-#66), all closed. **Fields decided once**:
 ADR-0004 A6 (`derivation`, `claim_type`, two computed certainty caps) and
@@ -195,14 +195,10 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 6** (branch `feature/20260927_Sprint_6`, PR #54) is at Phase 7:
-Manual Validation and the retrospective complete 2026-10-05; the PR goes to
-the team lead for merge once its reviews are complete. **Sprint 7** starts
-at the carry-forward after that merge, with Phase 1 Backlog Refinement.
-
-The Sprint 5 scripted-prune finding noted here at Sprint 6 Phase 1.2 is
-recorded in `docs/sprints/SPRINT_6_RETROSPECTIVE.md` (category 9); Sprint 6
-pruned its own shipped cards by hand.
+**Sprint 7** (branch `feature/20261006_Sprint_7`, cut 2026-10-06 at the
+Sprint 6 carry-forward, after PR #54 merged to develop and PR #67 merged
+develop to main). Phase 1 Backlog Refinement in progress; scope not yet
+selected.
 
 ## Next Sprint Candidates
 
