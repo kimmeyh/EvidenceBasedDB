@@ -139,3 +139,24 @@ sprints closed with their docs triads. Back-filled with per-row evidence on
 - [x] **C**: Task I (F28) -- design and pilot, 3 learnings (0de4a48)
 - [x] **H+C**: Manual Validation Q1-Q9 decided and applied (b130786, 3d929e5, 4ca65c2)
 - [x] **H+C**: Retrospective, 16 x 4, improvements 1-8 applied (d735f6f, 5be2402)
+
+## Sprint 6: Decide the Fields Once, Then Load at Scale (reconciled 2026-10-05 at Phase 7)
+
+Evidence for each row is the commit named; every hash was checked with
+`git cat-file` at this reconciliation.
+
+- [x] **C**: Task A (F40) -- model tiers verified, test proven by injection (b7cde4d)
+- [x] **C**: Task B (F38) -- checklist back-filled for Sprints 1 to 4 (d35d945)
+- [x] **C**: Task C (F43) -- INTAKE_WORKFLOW section 15 (efadb67)
+- [x] **H+C**: Task D -- ADR-0004 A6 and ADR-0005 A4 written (745af25, 1ffb5df, 26f26d9), accepted at Manual Validation
+- [x] **C**: Task E -- migration, byte-identical round trip (7b63965); review fixes (3708e63)
+- [x] **C**: Task F (F36) -- stored back-fill (3708e63); computed probes (32a6deb)
+- [x] **C**: Task G (F41) -- 11 sources, 35 assertions, CVQBoost part held as F51 (32a6deb)
+- [x] **C**: Task H (F42) -- the two Cyc research documents and the amendment (39b179e)
+- [x] **C**: Task I (F33) -- six withdrawn, one retracted, two superseded-by links (5478880)
+- [x] **C**: Task J (F32) -- 1,402 of 1,403 loaded (aca2be1, cfeb485)
+- [x] **C**: Task K (F35) -- 105 of 135 notes linked, 30 reported (90784bf, 95f35c3, cfeb485)
+- [x] **C**: Task L -- du-2024 refreshed (dff3595)
+- [x] **C**: Phase 5 fresh-eyes review findings fixed (34893bb)
+- [x] **H+C**: Manual Validation Q1-Q10 decided and applied (fdc8532, 3cbadae, e841545)
+- [x] **H+C**: Retrospective, 16 x 4, improvements I1-I6 applied (498f53c, f58f5d2, 4ea7e6b, eeb2e46)

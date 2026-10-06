@@ -68,7 +68,7 @@ message opened: "Manual Validation complete".
 - **Product Owner**: Very Good
 - **Scrum Master**: Very Good
 - **Lead Developer**: Very Good
-- **Claude Code Development Team**: Hooks caught four real mistakes before they landed: a piped test gate, a Python rewrite of a .py file, an unescaped Windows path, and a sibling-repo path in a generator command (a false positive, worked around without the override token). The pacing defect is the process lesson: a rule enforced by a constant is not enforced unless the object that holds the clock is shared.
+- **Claude Code Development Team**: Hooks caught four real mistakes before they landed: a piped test gate, a Python rewrite of a .py file, an unescaped Windows path, and a sibling-repo path in a generator command (a false positive, worked around without the override token). The pacing defect is the process lesson: a rule enforced by a constant is not enforced unless the object that holds the clock is shared. Carried from Sprint 6 Phase 1.2, and omitted from this draft until the completion updates: Sprint 5 pruned the master plan's shipped cards with Python cut-between-headers code twice, against step 1.2's rule to prune BY HAND (no damage found, rule still broken). Sprint 6's Phase 7 pruning was done by hand, card by card with the Edit tool.
 
 ### 10. Risk Management
 
