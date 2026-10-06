@@ -158,3 +158,26 @@ def test_malformed_payload_fails_open():
 def test_empty_payload_fails_open():
     proc = subprocess.run([sys.executable, str(HOOK)], input="{}", capture_output=True, text=True)
     assert proc.returncode == 0
+
+
+MAP = {"A": 31, "B": 32, "C": 33}
+
+
+def test_blocks_a_commit_naming_the_wrong_issue_for_its_task_regression(tmp_path):
+    """Sprint 6 retrospective I3: "Task H (#63)" landed for #62. Proven to
+    fail by injection: with check_task_issue_numbers returning 0 at once,
+    this commit was allowed."""
+    proc = _run(_repo(tmp_path, _status(task_issues=MAP)), 'git commit -m "Task B (#33): wrong number"')
+    assert proc.returncode == 2
+    assert "Task B is #32" in proc.stderr
+
+
+def test_allows_matching_task_numbers_and_several_tasks(tmp_path):
+    repo = _repo(tmp_path, _status(task_issues=MAP))
+    assert _run(repo, 'git commit -m "Tasks A (#31) and C (#33) complete"').returncode == 0
+    assert _run(repo, 'git commit -m "Task B review fixes (#32)"').returncode == 0
+
+
+def test_no_map_means_no_number_check(tmp_path):
+    proc = _run(_repo(tmp_path, _status()), 'git commit -m "Task B (#99)"')
+    assert proc.returncode == 0

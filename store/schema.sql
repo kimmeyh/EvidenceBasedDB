@@ -97,7 +97,19 @@ CREATE TABLE assertion_fields (
     -- context was accepted by the ingestion dataclass and populated by
     -- scripts/ingest_lenat_marcus.py with real quoted source text, but had
     -- no column anywhere and was silently dropped on every ingest.
-    citation_context TEXT
+    citation_context TEXT,
+    -- ADR-0004 A6 (2026-10-03, Sprint 6 Task E). Every assertion carries
+    -- these, so since A6 every assertion has an assertion_fields row.
+    -- `derivation`: extracted (a source yields it), synthesized (a
+    -- generalization over the assertions that `supports` it), project (a
+    -- fact about this project, sourced from its own documents).
+    derivation       TEXT NOT NULL CHECK (derivation IN ('extracted', 'synthesized', 'project')),
+    -- `claim_type`: an absence claim is only as good as the search behind
+    -- it, so it must say what was searched and when (`search_scope`).
+    claim_type       TEXT NOT NULL DEFAULT 'positive'
+                     CHECK (claim_type IN ('positive', 'absence', 'vendor-self-claim')),
+    search_scope     TEXT,
+    CHECK (claim_type <> 'absence' OR (search_scope IS NOT NULL AND trim(search_scope) <> ''))
 );
 
 -- Documents that cite an assertion (ADR-0004 section 3: "the `documents`
@@ -164,6 +176,12 @@ CREATE TABLE paper_fields (
     -- valid, meaningful value -- distinct from NULL, which means "not yet
     -- tiered to require it."
     checked_against_source  TEXT,
+    -- ADR-0005 A4 (2026-10-03, Sprint 6 Task E), fields 10 and 7. Which
+    -- registry answered (set by the door), and a DISCLOSED conflict of
+    -- interest with its anchor (" -- p.12 competing interests").
+    -- Affiliations are computed (paper_probes), never typed here.
+    metadata_provider       TEXT,
+    coi                     TEXT,
     CHECK (tier <> 'read' OR checked_against_source IS NOT NULL)
 );
 
@@ -183,6 +201,61 @@ CREATE TABLE paper_yields (
     paper_id     TEXT NOT NULL REFERENCES paper_fields(record_id) ON DELETE CASCADE,
     assertion_id TEXT NOT NULL REFERENCES records(id),
     PRIMARY KEY (paper_id, assertion_id)
+);
+
+-- ---------------------------------------------------------------------
+-- ADR-0005 A4 (2026-10-03, Sprint 6 Task E): the reference fields.
+-- ---------------------------------------------------------------------
+
+-- Field 1 and 8: how the source was found, one row per route, and how that
+-- route cited it (so comparing a collection's citation with the registry
+-- is a query, not a re-read).
+CREATE TABLE paper_found_via (
+    record_id TEXT NOT NULL REFERENCES paper_fields(record_id) ON DELETE CASCADE,
+    route     TEXT NOT NULL CHECK (trim(route) <> ''),
+    cited_as  TEXT,
+    PRIMARY KEY (record_id, route)
+);
+
+-- Field 2: how far a reader read the source, per reader and date. `read`
+-- needs a `full` or `partial` row (enforced in store/ingest.py set_tier).
+-- `detail` is '' rather than NULL so the primary key stays unique.
+CREATE TABLE paper_reads (
+    record_id TEXT NOT NULL REFERENCES paper_fields(record_id) ON DELETE CASCADE,
+    reader    TEXT NOT NULL CHECK (trim(reader) <> ''),
+    read_on   TEXT NOT NULL CHECK (read_on GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'),
+    extent    TEXT NOT NULL CHECK (extent IN ('full', 'partial', 'abstract', 'html-render', 'summary', 'grep', 'subagent')),
+    detail    TEXT NOT NULL DEFAULT '',
+    PRIMARY KEY (record_id, reader, read_on, extent, detail),
+    CHECK (extent <> 'partial' OR trim(detail) <> '')
+);
+
+-- Fields 3, 4, 5 and affiliations: COMPUTED facts, kept only as the last
+-- result of their probe, with its date and the provider that answered (the
+-- probe rule). A dated measurement, not a copy: the resolver stays
+-- authoritative and refresh_citations.py re-runs it each cycle. A
+-- hand-origin record's status has provider 'hand' and must carry an anchor.
+CREATE TABLE paper_probes (
+    record_id TEXT NOT NULL REFERENCES paper_fields(record_id) ON DELETE CASCADE,
+    field     TEXT NOT NULL CHECK (field IN ('publication_status', 'version_of', 'access_status', 'affiliations')),
+    value     TEXT NOT NULL CHECK (trim(value) <> ''),
+    provider  TEXT NOT NULL CHECK (trim(provider) <> ''),
+    probed_on TEXT NOT NULL CHECK (probed_on GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'),
+    anchor    TEXT,
+    PRIMARY KEY (record_id, field),
+    CHECK (field <> 'publication_status' OR value IN ('published', 'preprint', 'withdrawn', 'retracted')),
+    CHECK (provider <> 'hand' OR (anchor IS NOT NULL AND trim(anchor) <> ''))
+);
+
+-- Field 6: typed links between SOURCE records, each carrying the sentence
+-- that establishes it. Support and contradiction stay between assertions.
+CREATE TABLE source_links (
+    from_id   TEXT NOT NULL REFERENCES paper_fields(record_id) ON DELETE CASCADE,
+    to_id     TEXT NOT NULL REFERENCES paper_fields(record_id) ON DELETE CASCADE,
+    link_type TEXT NOT NULL CHECK (link_type IN ('code-of', 'dataset-of', 'version-of', 'superseded-by', 'responds-to')),
+    evidence  TEXT NOT NULL CHECK (trim(evidence) <> ''),
+    PRIMARY KEY (from_id, to_id, link_type),
+    CHECK (from_id != to_id)
 );
 
 -- ---------------------------------------------------------------------

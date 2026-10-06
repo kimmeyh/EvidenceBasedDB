@@ -1,23 +1,77 @@
 {
   "_comment": "Model-assignment heuristics for this repository (Sprint 4 Task K, F18, 2026-09-19). Data-driven complement to the static role table in docs/SPRINT_PLANNING.md: which model tier AND which review protocol a task pattern gets, with the outcomes that justify it. Modeled on spamfilter-multi's .claude/model_assignment_heuristics.json (read-only survey, Sprint 3 Task A), rewritten for this repository. Every number in learning_log names its source document; a success_rate is null until sample_size is at least 1 real outcome, never estimated. Update at every retrospective (Category 5, Model Assignments) and whenever a delegated task's report is verified against repository state. Guarded by tests/test_model_assignment_heuristics.py.",
   "version": 1,
-  "updated": "2026-09-25",
+  "updated": "2026-10-03",
   "tiers": {
     "haiku": {
       "role": "Developers (subagents)",
-      "source": "docs/SPRINT_PLANNING.md team roles"
+      "source": "https://platform.claude.com/docs/en/about-claude/models/overview",
+      "model": "Claude Haiku 4.5",
+      "model_id": "claude-haiku-4-5-20251001",
+      "agent_alias": "haiku",
+      "price_per_mtok": {
+        "input": 1.0,
+        "output": 5.0
+      },
+      "context_tokens": 200000,
+      "max_output_tokens": 64000,
+      "retirement_not_before": "2026-10-15",
+      "successor": "sonnet",
+      "retirement_plan": "Sprint 6 Task A (F40), 2026-10-03: Haiku 4.5 retires not sooner than 2026-10-15. Until then it is usable for small mechanical work; from that date the Developers role moves to the sonnet tier (Sonnet 5.5) unless a successor Haiku is listed on the models page by the next F39 release. No Haiku-tier outcome exists in the learning_log beyond Sprint 3's F7 review, so nothing measured is lost.",
+      "verified": "2026-10-03",
+      "source_note": "fetched 2026-10-03 (docs.anthropic.com redirects here, 301); matches the claude-api skill's model table cached 2026-09-25"
     },
     "sonnet": {
       "role": "Senior Developers (subagents)",
-      "source": "docs/SPRINT_PLANNING.md team roles"
+      "source": "https://platform.claude.com/docs/en/about-claude/models/overview",
+      "model": "Claude Sonnet 5.5",
+      "model_id": "claude-sonnet-5-5",
+      "agent_alias": "sonnet",
+      "price_per_mtok": {
+        "input": 2.0,
+        "output": 10.0
+      },
+      "context_tokens": 1000000,
+      "max_output_tokens": 128000,
+      "retirement_not_before": "2027-09-28",
+      "successor": null,
+      "verified": "2026-10-03",
+      "source_note": "fetched 2026-10-03 (docs.anthropic.com redirects here, 301); matches the claude-api skill's model table cached 2026-09-25"
     },
     "opus": {
       "role": "Lead Developer when Fable is unavailable",
-      "source": "docs/SPRINT_PLANNING.md team roles"
+      "source": "https://platform.claude.com/docs/en/about-claude/models/overview",
+      "model": "Claude Opus 5.5",
+      "model_id": "claude-opus-5-5",
+      "agent_alias": "opus",
+      "price_per_mtok": {
+        "input": 4.0,
+        "output": 20.0
+      },
+      "context_tokens": 1000000,
+      "max_output_tokens": 128000,
+      "retirement_not_before": "2027-09-22",
+      "successor": null,
+      "page_guidance": "Anthropic's page: 'start with Claude Opus 5.5 for most workloads. Use Claude Fable 5.1 for demanding reasoning and long-horizon agentic work'",
+      "verified": "2026-10-03",
+      "source_note": "fetched 2026-10-03 (docs.anthropic.com redirects here, 301); matches the claude-api skill's model table cached 2026-09-25"
     },
     "fable": {
       "role": "Lead Developer, top tier (mandatory for planning, retrospectives, refinement, ADR authoring, schema and context decisions, security-sensitive review)",
-      "source": "docs/SPRINT_PLANNING.md 'Activities requiring the top tier'"
+      "source": "https://platform.claude.com/docs/en/about-claude/models/overview",
+      "model": "Claude Fable 5.1",
+      "model_id": "claude-fable-5-1",
+      "agent_alias": "fable",
+      "price_per_mtok": {
+        "input": 10.0,
+        "output": 50.0
+      },
+      "context_tokens": 1000000,
+      "max_output_tokens": 128000,
+      "retirement_not_before": "2027-09-01",
+      "successor": null,
+      "verified": "2026-10-03",
+      "source_note": "fetched 2026-10-03 (docs.anthropic.com redirects here, 301); matches the claude-api skill's model table cached 2026-09-25"
     },
     "team_lead": {
       "role": "Adjudication of record verdicts; merges at every level; every Class 1/2/3 decision",
@@ -191,6 +245,11 @@
       "trigger": "the decision touches an ACCEPTED ADR's spine, a certainty level, or approved scope",
       "action": "Class 1/2/3: stop and surface to the team lead as a plain numbered list",
       "source": "docs/SPRINT_PROCESS.md decision classes"
+    },
+    {
+      "trigger": "a tier's retirement_not_before falls within 30 days of a sprint's planning date",
+      "action": "the plan names the replacement tier for that sprint's assignments, and the next F39 release records it",
+      "source": "Sprint 6 Task A (F40), 2026-10-03: found Haiku 4.5 retiring 12 days after planning"
     }
   ],
   "scoring_rubric": {

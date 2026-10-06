@@ -711,3 +711,96 @@ pass: `method` 16 applicability rows (was 8), `ml` 15 (was 0), `world` 4
 (unchanged in number; moved off `arute` and `rand`, onto `zajac` and
 `kerger`), `platform:braket` 1 (was 0). 26 of 48 records changed context
 set; every rationale now ends with the anchor naming where it was read.
+
+**2026-10-03 (A6): two new assertion fields, `derivation` and
+`claim_type`, and two computed certainty caps.** Sprint 6 Task D (backlog
+items F37 and F34, with the `claim_type` question F37's planning note
+raised), taking decisions Q2, Q4 and Q5 approved at Sprint 6 planning
+(team lead: "q1. 1 q2. 1 ... q11. 1"). Decided in one amendment with
+ADR-0005 A4 so the assertion fields change once.
+
+**Every count below is a snapshot as of 2026-10-03, against the store as
+it existed before Sprint 6 Task E's migration.** The store grows by
+design; re-query it rather than reading these numbers as current later.
+
+*Why.* A learning was recognized only by a provenance string beginning
+"synthesis of" (`scripts/learnings.py`, Sprint 5). The pilot's first
+definition, "no paper yields it", wrongly caught a project assertion
+(`docs/LEARNING_SYNTHESIS.md` section 7). A record that is told apart from
+its neighbors by the wording of a free-text field is one edit away from
+being misfiled. Separately, an absence claim ("QCi does not claim fault
+tolerance") and a vendor's claim about its own product were stored exactly
+like a measured result, with nothing a query could select on.
+
+*(a) `derivation: extracted | synthesized | project`, on every
+assertion.* `extracted`: read from a source, which yields it
+(`paper_yields`). `synthesized`: a generalization over other assertions
+(a learning). `project`: a fact about this project or its consumer, whose
+provenance is the project's own document. Back-filled from what the store
+holds: provenance beginning "synthesis of" is `synthesized`; a `yields`
+row is `extracted`; neither is `project`. As of this date: 18 extracted, 3
+synthesized, 2 project (`hsbc-b1-variable-count` and
+`hsbc-b1-variable-count-wrong-78`). `scripts/learnings.py` selects on
+the column, not on the string.
+
+*(b) A synthesized assertion's inputs.* Its inputs are the assertions
+with a `supports` relation to it in `assertion_relations`, and there must
+be at least two. **This departs from the F37 planning note's wording**
+("provenance names at least two existing assertion ids"): the ids already
+live in `assertion_relations`, and restating them in provenance would be
+the one-value-in-two-places drift this project exists against. Provenance
+stays "synthesis of the assertions that support or contradict it (see
+assertion_relations)". A `contradicts` row is evidence the synthesis must
+answer, not an input.
+
+*(c) The synthesis cap (decision Q4).* A synthesized assertion's
+certainty is capped at the weakest of its inputs. This is Cyc's rule for
+deductions (`argumentation.java`, `strength_combine`, line 117): a
+conclusion is no stronger than its weakest premise. As of this date the
+cap moves one of the three learnings:
+`learning-qml-no-reliable-tabular-accuracy-gain` is `moderate` with
+inputs at `low`, `low`, `high`, `low` and `moderate`, so it is capped to
+`low`; `learning-ml-resampling-not-the-lever-for-strong-trees` is `low`
+with inputs at `low` and `low`, unchanged;
+`learning-method-check-metric-and-power-before-reading-a-difference` is
+`moderate` with inputs at `high` and `high`, unchanged.
+
+*(d) The retraction floor (decision Q2).* An assertion whose only
+yielding sources are `withdrawn` or `retracted` (ADR-0005 A4) is computed
+to `very-low`, with the reason naming each source and its status. GRADE
+treats a retracted study as unusable; computing the floor keeps the
+reason visible instead of leaving it to a reader to notice.
+
+*(e) Where the caps live.* Both caps are determinate from other stored
+facts, so they are COMPUTED, never stored. Stored `certainty` and
+`certainty_reasons` remain the assessor's GRADE judgment. The export
+emits each assertion's computed cap, when one applies, as separate derived
+keys (`certainty_cap`, `certainty_cap_reason`) beside the stored ones, and
+the rebuild path does not write derived keys back into the store. Folding
+the cap into `certainty` would make the rebuild write a computed value
+into a stored field, and the export would stop being a byte-identical
+round trip.
+
+*(f) `claim_type: positive | absence | vendor-self-claim` (decision
+Q5).* `positive` is the default: the source states something that is.
+`absence`: the claim is that something was not found ("no closed form
+exists", "QCi does not claim fault tolerance"). An absence claim is only
+as good as the search behind it, so it requires a new
+`assertion_fields.search_scope` (what was searched, and the date),
+refused at the door when empty; `citation_context` stays reserved for
+quoted text. `vendor-self-claim`: a vendor's statement about its own
+product, flagged so a query can select it and a certainty reason can cite
+it. The 23 existing assertions are classified one by one at the
+migration (Sprint 6 Task E), each with its reason in `updated_reason`;
+none becomes `absence` without its scope.
+
+*Consequence for section 3.* The assertion record gains two fields and a
+conditional third (`search_scope`). `certainty` keeps its meaning:
+derived by the assessor, with reasons. The new computed caps are a second,
+mechanical reading beside it, never a replacement.
+
+*Revisit when* a learning is built on another learning (a cap over a
+cap). The `vendor-self-claim` flag and the admission-against-interest
+rule (ADR-0005 A4 (e)) already meet: both assertions that carry the
+upgrade are a vendor's statement about its own system, which is where an
+admission against interest belongs.

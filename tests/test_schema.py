@@ -261,7 +261,8 @@ def test_paper_fields_has_no_citation_column(db):
     records.provenance."""
     cols = [r["name"] for r in db.execute("PRAGMA table_info(paper_fields)")]
     assert "citation" not in cols
-    assert cols == ["record_id", "tier", "access", "disposition", "evidence", "mined_by", "checked_against_source"]
+    assert cols == ["record_id", "tier", "access", "disposition", "evidence", "mined_by", "checked_against_source",
+                    "metadata_provider", "coi"]  # the last two: ADR-0005 A4, Sprint 6 Task E
 
 
 def test_paper_fields_check_rejects_read_tier_without_checked_against_source(db):

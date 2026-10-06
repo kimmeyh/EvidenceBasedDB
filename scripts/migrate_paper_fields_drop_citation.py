@@ -128,6 +128,12 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         before = _export_hash()
         apply(conn)
+        if "metadata_provider" not in _columns(conn, "paper_fields"):
+            # Migrations run in order. The export code is current, so a store
+            # this old cannot be exported until the later migrations run
+            # (Sprint 6 Task E, 2026-10-03).
+            print("applied. export NOT regenerated: run scripts/migrate_sprint6_reference_fields.py --apply next")
+            return 0
         regenerate(conn, EXPORT_DIR)
         after = _export_hash()
         print(f"applied. paper_fields columns now: {_columns(conn, 'paper_fields')}")

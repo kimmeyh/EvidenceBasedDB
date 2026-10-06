@@ -282,7 +282,7 @@ def test_default_fetcher_retries_transient_refusals_with_backoff(monkeypatch):
             raise _http_error(406)
         return _Resp(b"<feed/>")
     monkeypatch.setattr(citations, "_sleep", waits.append)
-    assert citations.default_fetcher("https://export.arxiv.org/x", "application/atom+xml", _open=fake_open) == b"<feed/>"
+    assert citations.default_fetcher("https://api.crossref.org/works/x", "application/json", _open=fake_open) == b"<feed/>"
     assert len(calls) == 3 and waits == list(citations.RETRY_SLEEPS_S)
 
 
@@ -291,7 +291,7 @@ def test_default_fetcher_gives_up_after_the_last_retry(monkeypatch):
     def always_406(req, timeout):
         raise _http_error(406)
     with pytest.raises(Exception, match="406|refused"):
-        citations.default_fetcher("https://export.arxiv.org/x", "application/atom+xml", _open=always_406)
+        citations.default_fetcher("https://api.crossref.org/works/x", "application/json", _open=always_406)
 
 
 def test_default_fetcher_does_not_retry_a_404(monkeypatch):
@@ -401,3 +401,137 @@ def test_doi_is_registered_returns_true_on_transport_failure():
         raise socket.timeout("timed out")
 
     assert citations.doi_is_registered("10.1000/x", fetcher=unreachable) is True
+
+
+# ---------------------------------------------------------------- GitHub token (Sprint 6 Task K, F35)
+
+def test_github_requests_carry_the_token_and_nothing_else_does_regression(monkeypatch):
+    """The token goes into the Authorization header of api.github.com
+    requests only. Proven to fail by injection: with the header line in
+    default_fetcher removed, the first assertion went red; with the URL
+    check removed, the arXiv request carried the token and the second did."""
+    monkeypatch.setenv("GITHUB_TOKEN", "tok-FIXTURE-123")
+    monkeypatch.delenv("GH_TOKEN", raising=False)
+    seen = {}
+
+    def fake_open(req, timeout):
+        seen[req.full_url] = req.get_header("Authorization")
+        return _Resp(b"{}")
+
+    citations.default_fetcher(citations.GITHUB_API + "owner/name", "application/json", _open=fake_open)
+    citations.default_fetcher("https://export.arxiv.org/x", "application/atom+xml", _open=fake_open)
+    assert seen[citations.GITHUB_API + "owner/name"] == "Bearer tok-FIXTURE-123"
+    assert seen["https://export.arxiv.org/x"] is None
+
+
+def test_without_a_token_github_requests_stay_unauthenticated(monkeypatch):
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+    monkeypatch.delenv("GH_TOKEN", raising=False)
+    seen = []
+    citations.default_fetcher(citations.GITHUB_API + "o/n", "application/json",
+                              _open=lambda req, timeout: seen.append(req.get_header("Authorization")) or _Resp(b"{}"))
+    assert seen == [None] and citations.github_token() is None
+
+
+def test_the_token_never_appears_in_a_failure(monkeypatch):
+    """A refused request's exception must not carry the credential (ADR-0002:
+    values are never logged)."""
+    import urllib.error
+    monkeypatch.setenv("GH_TOKEN", "tok-FIXTURE-456")
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+
+    def refused(req, timeout):
+        raise urllib.error.HTTPError(req.full_url, 401, "Bad credentials", {}, None)
+
+    with pytest.raises(urllib.error.HTTPError) as err:
+        citations.default_fetcher(citations.GITHUB_API + "o/n", "application/json", _open=refused)
+    assert "tok-FIXTURE-456" not in str(err.value) and "tok-FIXTURE-456" not in repr(err.value)
+
+
+def test_fetch_arxiv_batch_falls_back_to_datacite_on_a_timeout_regression(monkeypatch):
+    """Sprint 6 Task J: 20 bulk ids were refused on arXiv read timeouts
+    because only an HTTP refusal fell through to DataCite. Proven to fail by
+    injection: without the timeout clause, the TimeoutError propagated."""
+    monkeypatch.setattr(citations, "_sleep", lambda s: None)
+
+    def fetcher(url, accept):
+        if "export.arxiv.org" in url:
+            raise TimeoutError("The read operation timed out")
+        return DATACITE_ARXIV_JSON
+    md = citations.fetch_arxiv_batch(["2303.05509"], fetcher=fetcher)["2303.05509"]
+    assert md.extra["provider"] == "DataCite"
+
+
+def test_arxiv_gets_one_attempt_and_the_batch_goes_to_datacite_regression(monkeypatch):
+    """Team lead, 2026-10-04 (Q2 = 2): no arXiv retries; any arXiv failure
+    goes straight to DataCite, so a refused id costs ONE arXiv request.
+    Proven to fail by injection: with arXiv given the retry sleeps again,
+    three arXiv requests were counted."""
+    monkeypatch.setattr(citations, "_sleep", lambda s: None)
+    arxiv_calls = []
+
+    def fake_open(req, timeout):
+        if "arxiv.org" in req.full_url:
+            arxiv_calls.append(req.full_url)
+            raise _http_error(429)
+        return _Resp(DATACITE_ARXIV_JSON)
+
+    def fetcher(url, accept):
+        return citations.default_fetcher(url, accept, _open=fake_open)
+
+    md = citations.fetch_arxiv_batch(["2303.05509"], fetcher=fetcher)["2303.05509"]
+    assert len(arxiv_calls) == 1 and md.extra["provider"] == "DataCite"
+
+
+def test_an_arxiv_404_also_goes_to_datacite(monkeypatch):
+    monkeypatch.setattr(citations, "_sleep", lambda s: None)
+
+    def fetcher(url, accept):
+        if "export.arxiv.org" in url:
+            raise _http_error(404)
+        return DATACITE_ARXIV_JSON
+    assert citations.fetch_arxiv_batch(["2303.05509"], fetcher=fetcher)["2303.05509"].extra["provider"] == "DataCite"
+
+
+def test_an_arxiv_id_inside_a_repository_name_is_the_repository_regression():
+    """Sprint 6 Task K: the door read this repository URL as arXiv:2502.18361
+    and resolved it to the paper it belongs to. Proven to fail by injection:
+    with the inside-repo check removed, parse_access returned ("arxiv", ...)."""
+    url = "https://github.com/salvatore-lorenzo/arXiv-2502.18361-QELMWITNESS"
+    assert citations.parse_access(url) == ("github", "salvatore-lorenzo/arXiv-2502.18361-QELMWITNESS")
+    assert citations.parse_access("arXiv:2502.18361") == ("arxiv", "2502.18361")
+    assert citations.parse_access("https://arxiv.org/abs/2502.18361") == ("arxiv", "2502.18361")
+
+
+def test_an_arxiv_id_beside_a_repository_counts_in_either_order():
+    gh = "https://github.com/x/arXiv-2502.18361-Q"
+    assert citations.parse_access(f"{gh} | arXiv:2401.00001") == ("arxiv", "2401.00001")
+    assert citations.parse_access(f"arXiv:2401.00001 | {gh}") == ("arxiv", "2401.00001")
+
+
+def test_a_200_that_is_not_a_feed_goes_to_datacite_regression(monkeypatch):
+    """Sprint 6 Phase 5 review: ET.ParseError is a SyntaxError, not a
+    ValueError, so an HTML body from arXiv escaped the fallback. Proven to
+    fail by injection: with ARXIV_FAILURES back to (OSError, ValueError),
+    the ParseError propagated."""
+    monkeypatch.setattr(citations, "_sleep", lambda s: None)
+
+    def fetcher(url, accept):
+        return b"<html><body>rate limited" if "export.arxiv.org" in url else DATACITE_ARXIV_JSON
+    assert citations.fetch_arxiv_batch(["2303.05509"], fetcher=fetcher)["2303.05509"].extra["provider"] == "DataCite"
+
+
+def test_every_request_that_lands_on_arxiv_is_paced_regression(monkeypatch):
+    """Team lead, 2026-10-04: 'space out any other requests to arxiv'. The
+    API, the site and an arXiv DOI at doi.org share one 6 s clock; other
+    hosts are not paced. Proven to fail by injection: with the pacer back
+    to export.arxiv.org only, the arxiv.org/abs request went out unpaced."""
+    waits, clock = [], [100.0]
+    monkeypatch.setattr(citations, "_sleep", lambda s: waits.append(s))
+    monkeypatch.setattr(citations, "_monotonic", lambda: clock[0])
+    pacer = citations.PacedFetcher(inner=lambda u, a: b"")
+    pacer("https://export.arxiv.org/api/query?id_list=1", "x")
+    pacer.wait_for("https://arxiv.org/abs/2401.00001")
+    pacer.wait_for("https://doi.org/10.48550/arXiv.2401.00001")
+    pacer("https://api.crossref.org/works/10.1/x", "x")
+    assert waits == [6.0, 6.0]

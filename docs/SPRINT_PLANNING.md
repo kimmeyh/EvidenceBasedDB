@@ -14,9 +14,16 @@ removed where none does.
 |---|---|
 | Customer Representative / Product Owner / Agile Coach / Scrum Master / Chief Architect / Chief Developer / Chief Test Engineer | Harold Kimmey (the team lead) |
 | Assistant Scrum Master, Architecture Development Team, Senior Test Engineers, Development Team | Claude Code (whichever model executes the task; parallel subagents allowed) |
-| Lead Developer | Claude Code top tier (Fable 5 preferred, Opus otherwise) |
-| Senior Developers | Claude Code Sonnet (subagents) |
-| Developers | Claude Code Haiku (subagents) |
+| Lead Developer | Claude Code top tier (Fable 5.1 preferred, Opus 5.5 otherwise) |
+| Senior Developers | Claude Code Sonnet 5.5 (subagents) |
+| Developers | Claude Code Haiku 4.5 (subagents) until it retires (not sooner than 2026-10-15), then Sonnet 5.5 |
+
+**Model versions are verified, not remembered (F39, permanent; first release
+Sprint 6 Task A, F40, 2026-10-03).** Each tier's model id, price, context
+window, retirement date and the date it was last checked live in
+`.claude/model_assignment_heuristics.json`, sourced from Anthropic's models
+page. This table must name the same versions; a test fails if it does not,
+and if a tier passes its retirement date with no successor.
 
 **Data-driven complement (Sprint 4 Task K, F18, 2026-09-19)**: the table
 above is static. `.claude/model_assignment_heuristics.json` records task
@@ -51,6 +58,8 @@ Any item that depends on an external capability (a GitHub API behavior, a librar
 **The pre-flight tests the request shape the CODE will send, not a simpler one (Sprint 4 improvement 3).** Probe the exact call, with the same batching, headers and pacing the implementation will use. Sprint 4's arXiv pre-flight fetched one id, found the User-Agent that works, and passed; the implementation then used the API's own `id_list` to batch many ids per request, which arXiv answers with HTTP 406 and follows with a multi-minute refusal of every further request from that client, single ids included. That cost about 90 minutes mid-sprint to diagnose, and the diagnosis was slowed by probing in bursts, which extended the block being measured. A pre-flight that differs from production in batching, concurrency or headers has tested a different request. When a probe does hit a rate limit or a refusal, pace the follow-up probes at the documented interval rather than retrying immediately: the retry is then part of the measurement, not a second cause.
 
 **The pre-flight inventories CODE, not only documents (Sprint 10 improvement 6).** Grep the source tree for whatever the item is about to change, not just the docs that mention it. F40's card listed four documents referencing the path being moved and was verified against exactly those four. It missed `data.py`, which hardcoded the ULB dataset location -- so the repository that Appendix C promises "regenerates every figure" would have worked on no machine but the author's. The card was right about every document and silent about the one line that mattered.
+
+**A task that adds records at scale states which derived fields run on them (Sprint 6 retrospective I5, 2026-10-05).** For a bulk load, the plan names each computed or derived field the new records will carry (probes, back-fills, links), with its runtime sized from a pilot, or names the card that defers it. Sprint 6 sized its computed-field probes for the 347 papers already in the store and loaded 1,402 more without saying whether they would be probed; they were not, and F52 was carded at Manual Validation. The question costs one line at planning and a sprint of drift when it is skipped.
 
 ## Defined-scope rule (team lead, 2026-08-30 -- binding)
 

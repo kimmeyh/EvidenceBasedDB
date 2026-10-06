@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Key learnings, computed (Sprint 5 Task I, F28; design in docs/LEARNING_SYNTHESIS.md).
 
-A LEARNING is an assertion whose provenance begins "synthesis of" (a
+A LEARNING is an assertion whose `derivation` is `synthesized` (a
 generalization over other assertions, which reach it through `supports`
-and `contradicts`). The first definition -- "an assertion no paper yields
-that something supports or contradicts" -- was tried first and caught
-hsbc-b1-variable-count-wrong-78, a project assertion sourced from the
-consumer repository's amendment log: not being yielded by a paper does
-not make an assertion a synthesis. See docs/LEARNING_SYNTHESIS.md section 7. This script finds them and prints each
+and `contradicts`; ADR-0004 A6, Sprint 6 Task E). Two earlier definitions
+failed or were fragile. "An assertion no paper yields that something
+supports or contradicts" caught hsbc-b1-variable-count-wrong-78, a
+project assertion sourced from the consumer repository's amendment log
+(docs/LEARNING_SYNTHESIS.md section 7). "Provenance begins 'synthesis
+of'" worked, but filed a record by the wording of a free-text field; F37
+replaced it with the column. This script finds them and prints each
 with its evidence: every supporting and contradicting assertion, its
 certainty, its source paper and that paper's tier, and the verbatim
 sentence it rests on. Nothing printed is stored -- the evidence table is
@@ -29,6 +31,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
+from store.resolvers import certainty_caps  # noqa: E402
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -39,9 +42,8 @@ ORDER = {"high": 0, "moderate": 1, "low": 2, "very-low": 3, None: 4}
 
 def learning_ids(conn) -> list[str]:
     rows = conn.execute(
-        "SELECT r.id FROM records r "
-        "WHERE r.class = 'assertion' AND r.provenance LIKE 'synthesis of%' "
-        "ORDER BY r.id"
+        "SELECT f.record_id AS id FROM assertion_fields f "
+        "WHERE f.derivation = 'synthesized' ORDER BY f.record_id"
     )
     return [r["id"] for r in rows]
 
@@ -79,7 +81,9 @@ def learning(conn, learning_id: str) -> dict:
         level = e["certainty"] or "unrated"
         balance[e["relation"]][level] = balance[e["relation"]].get(level, 0) + 1
     evidence_contexts = sorted({c for e in ev for c in (e["contexts"] or "").split(",") if c})
-    return {**dict(r), "evidence": ev, "balance": balance, "evidence_contexts": evidence_contexts}
+    cap = certainty_caps(conn).get(learning_id)  # ADR-0004 A6 (c), computed
+    return {**dict(r), "evidence": ev, "balance": balance, "evidence_contexts": evidence_contexts,
+            "certainty_cap": cap[0] if cap else None, "certainty_cap_reason": cap[1] if cap else None}
 
 
 def _quote(text: str, limit: int = 600) -> str:
@@ -104,7 +108,9 @@ def _quote(text: str, limit: int = 600) -> str:
 def render(item: dict) -> str:
     lines = [f"LEARNING {item['id']}  [{item['contexts']}]  certainty: {item['certainty']}",
              f"  {item['value']}",
-             f"  why this certainty: {item['certainty_reasons']}",
+             f"  why this certainty: {item['certainty_reasons']}"
+             + (f"\n  computed cap: {item['certainty_cap']} -- {item['certainty_cap_reason']}"
+                if item.get("certainty_cap") else ""),
              f"  balance: supports {item['balance']['supports'] or '-'}; "
              f"contradicts {item['balance']['contradicts'] or '-'}; evidence contexts {item['evidence_contexts']}"]
     for e in sorted(item["evidence"], key=lambda e: (e["relation"] != "supports", ORDER.get(e["certainty"], 4))):
