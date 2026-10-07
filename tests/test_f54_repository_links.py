@@ -30,7 +30,9 @@ def test_every_recovered_link_says_how_it_was_found(live_conn):
     (0 against 24)."""
     rows = live_conn.execute("SELECT from_id, to_id, evidence FROM source_links "
                              "WHERE evidence LIKE '%How found (Sprint 7 F54)%'").fetchall()
-    assert len(rows) == sum(len(t) for t in _script().RESOLVED.values()) == 24
+    # 24 from the resolution table, plus the 2108.00131 link
+    # (scripts/sprint7_f54_enter_2108_00131.py), which carries the same tag.
+    assert len(rows) == sum(len(t) for t in _script().RESOLVED.values()) + 1 == 25
     for from_id, to_id, evidence in rows:
         quote, _, how = evidence.partition(" [How found (Sprint 7 F54): ")
         assert quote.strip(), f"{from_id} -> {to_id}: the paper's own sentence is missing"

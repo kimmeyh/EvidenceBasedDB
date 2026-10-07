@@ -88,6 +88,10 @@ this project keeps having to replace with a step.
   was found. 7 reported again with what was tried: 4 repositories gone, 1
   candidate rejected (Julia, where the paper says Python), 1 on Gitee (no
   route), and `2108.0131`, whose PDF is a different paper (arXiv:2108.00131)
+- **feat**: F54's last item (Task E, Issue #73) -- arXiv:2108.00131
+  (Radhakrishnan et al., PNAS), the paper actually in the mislabeled
+  QMLPapers file, entered through the door in a pause of Task C's run (one
+  arXiv request), with its code `uhlerlab/ntk_matrix_completion` linked
 - **feat**: F62 card and read-only discovery pilot (team lead, Q11 = 1 and
   3) -- `scripts/discover_candidates.py` ranks candidate papers from
   OpenAlex metadata in four streams (ml, qml, tensor, fraud), drops what the
