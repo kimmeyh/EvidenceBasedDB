@@ -91,6 +91,39 @@ never made unilaterally.
 
 ## Decisions for the team lead at approval (numbered; answer with digits)
 
+**DECIDED 2026-10-06** (team lead: "q1. 2 q2. 1 as backups of any changes
+are made every day and exist for 40 days q3. 1 q4. 1 q5. 1 q6. 1 q7. 1 -
+switch all arxiv api calls and / requests to 18 seconds q8. E can run, F
+should wait, G should wait for F | note this can run all night without any
+impact on the team", and "Sprint plan approved as amended"):
+
+- **Q1 = 2: no export.** The committed export is removed and none is kept
+  off the repository; the store's verified backups are the recovery path.
+  Consequences for Task B: automatic export regeneration leaves the write
+  scripts; `store/export.py` and `store/rebuild.py` stay as library code
+  (an on-demand dump and its rebuild, tested on synthetic stores);
+  `tests/test_export_currency.py` retires; tests that checked the REAL data
+  through the export read the live store instead, under a `live_store`
+  pytest marker that fails (never skips) locally when the store is missing,
+  and that CI deselects by name in `ci.yml`, since CI cannot reach `D:\`.
+  Backup retention's rule 3 ("content is committed") loses its basis and is
+  replaced in ADR-0004 A7.
+- **Q2 = 1**: one backup location; the team lead's daily backups of the
+  drive, kept 40 days, are the redundancy.
+- **Q3 = 1**: the export's git history stays; no rewrite.
+- **Q4 = 1**: default `D:\Data\Harold\EvidenceBasedDB\store`, override
+  `EBDB_STORE_DIR`.
+- **Q5 = 1**: arXiv's abstract page, the API retried once per session.
+- **Q6 = 1**: 240 arXiv requests per session, then at least 2 hours' pause.
+- **Q7, amended: every arXiv request, API and site alike, 18 s apart.**
+  Task C's runtime becomes 1,403 x 18 s = about 7 hours of requests, in
+  sessions of 240 (72 min) with 2-hour pauses: about 20 hours in all, run
+  overnight ("can run all night without any impact on the team").
+- **Q8, amended**: E may run during C's pauses; F waits for C to finish; G
+  waits for F.
+- **Q9**: not answered; the current priorities stand, and the question is
+  asked again at Manual Validation.
+
 F58 is Class 1 and ADR-first, and the auto-advance window forbids asking
 later, so its substance is decided here; the amendment's text is reviewed
 at Manual Validation.
