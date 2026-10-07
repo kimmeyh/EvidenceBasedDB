@@ -804,3 +804,78 @@ cap). The `vendor-self-claim` flag and the admission-against-interest
 rule (ADR-0005 A4 (e)) already meet: both assertions that carry the
 upgrade are a vendor's statement about its own system, which is where an
 admission against interest belongs.
+
+**2026-10-06 (A7): the store leaves the repository, and the committed export
+is retired.** Sprint 7 Task B (backlog item F58), taking the team lead's
+request of 2026-10-06 and decisions Q1 = 2, Q2 = 1, Q3 = 1 and Q4 = 1
+approved at Sprint 7 planning. This amendment reverses section 2's
+"text export committed alongside"; ADR-0003 A2 and ADR-0005 A5 carry the
+same change into those documents.
+
+**Every count below is a snapshot as of 2026-10-06.** The store grows by
+design; re-query it rather than reading these numbers as current later.
+
+*Why.* The team lead, 2026-10-06: "sqlite db needs to be stored off
+repository in D:\Data\Harold\EvidenceBasedDB\store and not in github any
+longer as it will quickly exceed space allowed by github." The database and
+its backups were already gitignored; what GitHub held was the export
+(2.7 MB, `papers.json` 2.6 MB for 1,875 papers, about 1.4 KB per paper).
+GitHub warns at 50 MiB per file and blocks at 100 MiB (docs.github.com,
+"About large files on GitHub", read 2026-10-06), and every regeneration
+adds a version to the history. A collection meant to reach tens of
+thousands of papers cannot keep its full text in the repository.
+
+*(a) Where the data lives.* The store is
+`D:\Data\Harold\EvidenceBasedDB\store\evidence.db` and its backups are in
+`D:\Data\Harold\EvidenceBasedDB\store\backups\`, outside every repository.
+`store.script_paths` is the one place that resolves them: the default is
+that folder, and the environment variable `EBDB_STORE_DIR` overrides it
+(tests and CI point it at a temporary folder). No script writes data inside
+the repository; a test checks that every default path resolves outside it.
+`.gitignore` keeps `*.db` and `backups/` so a stray copy never lands.
+
+*(b) The store is the record; the committed export is retired (Q1 = 2).*
+Section 2 made the SQLite store a build output and the committed export the
+artifact. That is reversed: the store is the record, and git holds code and
+documents only. `export/` is removed from the repository; write scripts no
+longer regenerate an export. `store/export.py` and `store/rebuild.py` stay
+as library code: `scripts/regenerate_export.py --out <dir>` writes an
+on-demand dump (outside the repository) and
+`scripts/rebuild_store_from_export.py --from <dir>` rebuilds a store from
+one. Neither has a default inside the repository. The export's past
+versions stay in git history (Q3 = 1); nothing is rewritten.
+
+*(c) What is lost, and what stands in for it.* Lost: a reviewable diff of
+every data change, git history of what the store said and when, and a CI
+round trip over the real data. In their place: every record's
+`updated_reason` is append-only and says what changed and why; a verified
+backup precedes every write (Sprint 5, unchanged); the team lead's daily
+backups of the drive, kept 40 days, are the redundancy (Q2 = 1); and the
+local suite keeps one round trip over the real data (dump the live store,
+rebuild from the dump, dump again, compare bytes), so the on-demand dump
+stays a proven recovery path.
+
+*(d) Backup retention (replaces Sprint 5's rule 3).* Rule 3 kept a backup
+until its content was in a committed export, and that export no longer
+exists. A backup is now deleted only when ALL THREE hold: it is older than
+32 days; it is not the newest backup of one of the last 5 sprints; and it
+is not one of the 10 newest backups. At least ten backups therefore survive
+whatever their age.
+
+*(e) Tests.* Mechanism tests (backup, restore, retention, the dump and
+rebuild round trip, determinism) run on small synthetic stores and run
+everywhere. Checks of the REAL data (the admission-against-interest rule,
+synthesis inputs, the caps, the learnings, the F11 packet) carry the
+`live_store` pytest marker and read the live store read-only, or a copy
+taken with the SQLite backup API when they must write. Locally a missing
+store FAILS them, never skips them. CI cannot reach `D:\` and deselects
+them by name in `.github/workflows/ci.yml`, with the reason beside it.
+
+*Consequence for section 2.* "SQLite, with a text export committed
+alongside" now reads: SQLite, outside the repository, with verified
+backups; an export is an on-demand dump, never committed.
+
+*Revisit when* the store needs a second reader on another machine (then a
+shared location or a published dump is the question), or when a data
+change needs review before it lands (then a reviewable dump comes back,
+outside git).

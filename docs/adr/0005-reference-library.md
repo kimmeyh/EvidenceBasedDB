@@ -984,3 +984,13 @@ fetches a copy into the repository.
 
 *Revisit when* the first bulk load (Sprint 6 Task J) shows how many
 probes go stale per cycle.
+
+**2026-10-06 (A5): search reads the store, not a committed export.** Sprint
+7 Task B (F58), with ADR-0004 A7, which retires the committed export.
+Section 4's "Phase one: full-text search over the committed export" now
+reads: phase one is search over the store itself (`scripts/view.py`, and
+SQL over `records`), which sits outside the repository at
+`D:\Data\Harold\EvidenceBasedDB\store`. The trigger for embeddings is
+unchanged. Section 3 (records, never PDFs) is unchanged: the store holds
+records and the files stay where they were; only the store's own location
+moved.
