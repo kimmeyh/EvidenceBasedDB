@@ -1,7 +1,9 @@
 """The ADR-0004 A6 and ADR-0005 A4 fields (Sprint 6 Task E, F34/F36/F37/F47).
 
-Runs against stores rebuilt from the committed export, so it needs no
-local store and runs on CI.
+Real-data checks run against the live store (ADR-0004 A7: no committed
+export): `conn` is a COPY taken with the SQLite backup API, since several
+tests write probe rows; those tests are live_store (local only, deselected
+on CI). The strict-key check runs on a synthetic dump, everywhere.
 """
 from __future__ import annotations
 
@@ -22,14 +24,13 @@ from store.ingest import add_found_via, add_read, add_source_link, record_probe 
 from store.rebuild import EXPORT_FILES, KNOWN_KEYS, UnrestorableKey, rebuild, rebuild_and_compare  # noqa: E402
 from store.resolvers import certainty_caps, synthesis_input_problems  # noqa: E402
 
-EXPORT_DIR = ROOT / "export"
 QML = "learning-qml-no-reliable-tabular-accuracy-gain"
 
 
 @pytest.fixture
-def conn(tmp_path):
-    rebuild(EXPORT_DIR, tmp_path / "evidence.db", check_local_paths=False).close()
-    c = connect(tmp_path / "evidence.db")
+def conn(live_copy):
+    """A copy of the live store; the live file is never written."""
+    c = connect(live_copy)
     yield c
     c.close()
 
@@ -52,11 +53,12 @@ def admission_problems(assertions: list[dict]) -> list[str]:
             if _APPLIES.search(a.get("certainty_reasons") or "") and not _COST.search(a["certainty_reasons"])]
 
 
-def test_every_applied_admission_against_interest_names_its_cost_regression():
-    """F47 over the committed export. Proven to fail by injection: the second
-    half of this test strips "costly to disclose" from
+@pytest.mark.live_store
+def test_every_applied_admission_against_interest_names_its_cost_regression(live_export):
+    """F47 over the live store's assertions. Proven to fail by injection: the
+    second half of this test strips "costly to disclose" from
     cyc-general-prover-disabled's reason and the same check reports it."""
-    assertions = json.loads((EXPORT_DIR / "assertions.json").read_text(encoding="utf-8"))
+    assertions = json.loads((live_export / "assertions.json").read_text(encoding="utf-8"))
     applied = [a["id"] for a in assertions if _APPLIES.search(a.get("certainty_reasons") or "")]
     assert applied, "the check would be vacuous: no reason applies the upgrade"
     assert admission_problems(assertions) == []
@@ -79,17 +81,20 @@ def test_a_reason_that_withholds_the_upgrade_is_not_flagged():
 
 # ------------------------------------------------- A6: derivation and the caps
 
-def test_every_assertion_carries_derivation_and_claim_type():
-    assertions = json.loads((EXPORT_DIR / "assertions.json").read_text(encoding="utf-8"))
+@pytest.mark.live_store
+def test_every_assertion_carries_derivation_and_claim_type(live_export):
+    assertions = json.loads((live_export / "assertions.json").read_text(encoding="utf-8"))
     assert all(a.get("derivation") in ("extracted", "synthesized", "project") for a in assertions)
     assert all(a.get("claim_type") in ("positive", "absence", "vendor-self-claim") for a in assertions)
     assert all(a.get("search_scope") for a in assertions if a["claim_type"] == "absence")
 
 
+@pytest.mark.live_store
 def test_every_synthesis_has_at_least_two_supporting_inputs(conn):
     assert synthesis_input_problems(conn) == []
 
 
+@pytest.mark.live_store
 def test_synthesis_input_check_reports_a_deliberately_thin_synthesis_regression(conn):
     """Proven to fail by injection: removing every `supports` row into one
     learning but one makes the check report it."""
@@ -100,6 +105,7 @@ def test_synthesis_input_check_reports_a_deliberately_thin_synthesis_regression(
     assert synthesis_input_problems(conn) == [f"{QML}: 1 supporting input(s), at least 2 required"]
 
 
+@pytest.mark.live_store
 def test_synthesis_cap_lowers_the_qml_learning_and_only_it(conn):
     """ADR-0004 A6 (c), as reported in the amendment: the QML learning is
     stored moderate and capped low; the other two learnings are unchanged."""
@@ -118,6 +124,7 @@ def _retract_both_sources(conn) -> None:
                  anchor="fixture -- not a real retraction")
 
 
+@pytest.mark.live_store
 def test_retraction_floor_applies_only_when_every_source_is_unusable_regression(conn, monkeypatch):
     """ADR-0004 A6 (d): before any probe the floor is absent; one withdrawn
     source of two leaves it absent; both withdrawn or retracted computes
@@ -136,6 +143,7 @@ def test_retraction_floor_applies_only_when_every_source_is_unusable_regression(
     assert target not in certainty_caps(conn)
 
 
+@pytest.mark.live_store
 def test_a_synthesis_inherits_its_inputs_retraction_floor(conn):
     """Fresh-eyes review, 2026-10-03: the cap read each input's STORED
     certainty, so a learning resting on a retracted input kept its level.
@@ -148,6 +156,7 @@ def test_a_synthesis_inherits_its_inputs_retraction_floor(conn):
 
 # ------------------------------------------------- the round trip, with every new field populated
 
+@pytest.mark.live_store
 def test_new_fields_round_trip_byte_identically(conn, tmp_path):
     """The committed export carries none of the A4 child rows yet (Task F
     back-fills them), so the CI rebuild test alone would pass without the
@@ -177,13 +186,11 @@ def test_new_fields_round_trip_byte_identically(conn, tmp_path):
     assert rebuild_and_compare(out, check_local_paths=False) == []
 
 
-def test_rebuild_refuses_a_new_field_it_was_not_taught(tmp_path, monkeypatch):
+def test_rebuild_refuses_a_new_field_it_was_not_taught(synthetic_dump, tmp_path, monkeypatch):
     """The F30 strict-key rule extended to the new fields: with `found_via`
-    taken out of KNOWN_KEYS, a record carrying it is refused, not dropped."""
-    export = tmp_path / "export"
-    export.mkdir()
-    for name in EXPORT_FILES:
-        shutil.copy2(EXPORT_DIR / name, export / name)
+    taken out of KNOWN_KEYS, a record carrying it is refused, not dropped.
+    Runs on a synthetic dump, everywhere."""
+    export = synthetic_dump
     papers = json.loads((export / "papers.json").read_text(encoding="utf-8"))
     papers[0]["found_via"] = [{"route": "x"}]
     (export / "papers.json").write_text(json.dumps(papers, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

@@ -27,7 +27,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.ingest import record_probe  # noqa: E402
 from store.probes import landing_url, probe_access, probe_arxiv, probe_doi  # noqa: E402
 
@@ -144,8 +143,7 @@ def main(argv: list[str] | None = None) -> int:
             f"{k}: n={len(v)} mean {sum(v) / len(v):.1f} max {max(v):.1f}" for k, v in timings.items()))
         print(f"errors: {errors}")
         if apply:
-            regenerate(conn, EXPORT_DIR)
-            print("APPLIED; export regenerated")
+            print("APPLIED")
         else:
             print("DRY RUN: nothing written. Re-run with --apply.")
         return 0

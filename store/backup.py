@@ -24,25 +24,23 @@ deleted only when ALL THREE rules allow it:
   1. it is older than RETENTION_DAYS (32);
   2. it is not the newest backup of one of the last KEEP_SPRINTS (5)
      sprints -- the state at each recent sprint boundary;
-  3. its content IS in a committed export (every file of the export
-     regenerated from it exists as a blob somewhere in git history under
-     export/), OR an export commit landed after it was taken, so its state
-     was superseded and committed onward (see prune()). Until one of those
-     holds the backup may be the only copy.
-Any doubt (git unavailable, the backup unreadable) keeps the backup.
+  3. it is not one of the KEEP_NEWEST (10) newest backups. Until 2026-10-06
+     this rule was "its content is in a committed export"; ADR-0004 A7
+     retired the committed export, and the replacement guarantees that at
+     least ten backups survive whatever their age. The team lead's daily
+     backups of the drive, kept 40 days, are the second copy (Q2 = 1).
 """
 from __future__ import annotations
 
 import json
 import re
 import sqlite3
-import subprocess
-import tempfile
 from datetime import datetime, timedelta
 from pathlib import Path
 
 RETENTION_DAYS = 32
 KEEP_SPRINTS = 5
+KEEP_NEWEST = 10  # rule 3 since ADR-0004 A7: the ten newest always survive
 _NAME = re.compile(r"^evidence-(\d{8}T\d{6}\d{6})-sprint(\d+)-([a-z0-9-]+)\.db$")
 _STAMP = "%Y%m%dT%H%M%S%f"
 
@@ -56,9 +54,10 @@ def _root() -> Path:
 
 
 def default_backups_dir(db_path: str | Path) -> Path:
-    """Backups live beside the database they protect: store/backups/ for the
-    real store (gitignored), <tmp>/backups/ for a test's temporary store, so
-    a test never writes into the repository."""
+    """Backups live beside the database they protect: backups/ in the store
+    folder outside the repository for the real store (ADR-0004 A7),
+    <tmp>/backups/ for a test's temporary store, so a test never writes into
+    the repository."""
     return Path(db_path).resolve().parent / "backups"
 
 
@@ -118,76 +117,15 @@ def parse_name(path: Path) -> tuple[datetime, int] | None:
     return datetime.strptime(m.group(1), _STAMP), int(m.group(2))
 
 
-def committed_export_blobs(repo: Path) -> set[str] | None:
-    """Every blob id that has ever been committed under export/, or None if
-    git cannot answer (then nothing counts as committed, and nothing is
-    deleted under rule 3)."""
-    try:
-        out = subprocess.run(["git", "-C", str(repo), "rev-list", "--all", "--objects", "--", "export"],
-                             capture_output=True, text=True, check=True, timeout=60).stdout
-    except (OSError, subprocess.SubprocessError):
-        return None
-    return {line.split()[0] for line in out.splitlines() if line.startswith(tuple("0123456789abcdef"))}
-
-
-def _git_blob_id(repo: Path, name: str, data: bytes) -> str | None:
-    """The blob id git WOULD store for these bytes at export/<name>.
-
-    Not a raw SHA-1 of the bytes: with core.autocrlf=true the working copy
-    is CRLF while the committed blob is LF-normalized (checked 2026-09-24:
-    export/papers.json hashes to 0a74... raw and 79f7... committed). Asking
-    git to hash with --path applies the same filters a commit would."""
-    try:
-        return subprocess.run(["git", "-C", str(repo), "hash-object", "--path", f"export/{name}", "--stdin"],
-                              input=data, capture_output=True, check=True, timeout=30).stdout.decode().strip()
-    except (OSError, subprocess.SubprocessError):
-        return None
-
-
-def content_is_committed(backup: Path, blobs: set[str] | None, repo: Path | None = None) -> bool:
-    if not blobs:
-        return False
-    repo = repo or _root()
-    from store import connect
-    from store.export import regenerate
-    from store.rebuild import EXPORT_FILES
-    try:
-        with tempfile.TemporaryDirectory() as tmp:
-            conn = connect(backup)
-            try:
-                regenerate(conn, tmp)
-            finally:
-                conn.close()
-            return all(_git_blob_id(repo, name, (Path(tmp) / name).read_bytes()) in blobs for name in EXPORT_FILES)
-    except (sqlite3.DatabaseError, OSError):
-        return False
-
-
-def last_export_commit(repo: Path) -> datetime | None:
-    """When the newest commit touching export/ was made, or None."""
-    try:
-        out = subprocess.run(["git", "-C", str(repo), "log", "-1", "--format=%ct", "--", "export"],
-                             capture_output=True, text=True, check=True, timeout=30).stdout.strip()
-    except (OSError, subprocess.SubprocessError):
-        return None
-    return datetime.fromtimestamp(int(out)) if out else None
-
-
 def prune(backups_dir: str | Path, repo: Path | None = None, now: datetime | None = None,
           sprint: int | None = None, apply: bool = True,
           protect: tuple[Path, ...] = ()) -> tuple[list[Path], list[tuple[Path, str]]]:
     """Apply the three retention rules. Returns (deleted, kept_with_reason).
 
-    Rule 3 is met when the backup's own content is in a committed export OR
-    an export commit landed AFTER the backup was taken. The second clause
-    was added 2026-09-24 after a fresh-eyes review found that a backup of
-    an intermediate state (two --apply runs committed together) can never
-    match any committed export, so rule 3 as first written kept it forever;
-    the same happened to every old backup after any change to the export
-    format. A later committed export means the backup's state was
-    superseded and committed onward, not that it is the only copy.
-    Accepted by the team lead at Sprint 5 Manual Validation (Q2 = 1,
-    2026-09-25).
+    Rule 3 (ADR-0004 A7, Sprint 7 Task B, 2026-10-06): the backup is not one
+    of the KEEP_NEWEST newest. It replaces "content is in a committed
+    export", which lost its basis when the committed export was retired;
+    with it, at least KEEP_NEWEST backups survive whatever their age.
 
     `protect` names backups that must survive this call whatever their age
     (restore_store.py protects the backup it is about to restore)."""
@@ -201,9 +139,10 @@ def prune(backups_dir: str | Path, repo: Path | None = None, now: datetime | Non
     for p in parsed:
         newest_per_sprint[parse_name(p)[1]] = p
     protected = {p for s, p in newest_per_sprint.items() if s > sprint - KEEP_SPRINTS}
-    blobs = None
+    # Not parsed[-KEEP_NEWEST:]: at 0 that slice is the WHOLE list (found by
+    # this rule's own injection test, 2026-10-06).
+    newest = set(parsed[max(len(parsed) - KEEP_NEWEST, 0):])
     deleted, kept = [], []
-    last_commit = None
     for p in parsed:
         stamp, _ = parse_name(p)
         if p.resolve() in protect:
@@ -215,12 +154,8 @@ def prune(backups_dir: str | Path, repo: Path | None = None, now: datetime | Non
         if p in protected:
             kept.append((p, f"newest backup of one of the last {KEEP_SPRINTS} sprints"))
             continue
-        if blobs is None:
-            blobs = committed_export_blobs(repo) or set()  # None -> empty -> keep everything
-            last_commit = last_export_commit(repo) if blobs else None
-        superseded = last_commit is not None and last_commit > stamp
-        if not superseded and not content_is_committed(p, blobs, repo):
-            kept.append((p, "content not yet in a committed export"))
+        if p in newest:
+            kept.append((p, f"one of the {KEEP_NEWEST} newest backups"))
             continue
         if apply:
             try:

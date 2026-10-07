@@ -16,7 +16,10 @@ import pytest
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from store import connect, create_store, script_paths  # noqa: E402
+from store import (  # noqa: E402
+    DEFAULT_STORE_DIR, NO_COMMITTED_EXPORT, connect, create_store, script_paths, store_dir,
+)
+from store.backup import default_backups_dir  # noqa: E402
 
 
 @pytest.fixture
@@ -283,28 +286,48 @@ def test_paper_fields_check_rejects_read_tier_without_checked_against_source(db)
     db.commit()
 
 
-def test_script_paths_derives_db_and_export_paths_from_repo_root():
-    """F6 finding 5 (PR #1 review): ROOT/DB_PATH/EXPORT_DIR resolution was
-    copy-pasted near-identically across every ingestion/correction script.
-    A fake script path two directories under a synthetic repo root proves
-    the function resolves relative to ITS ARGUMENT, not to this test
-    file's own location, which is the exact bug a hardcoded parents[N]
-    depth could introduce silently."""
+def test_script_paths_derives_the_root_from_its_argument(monkeypatch):
+    """F6 finding 5 (PR #1 review): ROOT resolution was copy-pasted across
+    every script. A fake script path two directories under a synthetic repo
+    root proves the function resolves ROOT relative to ITS ARGUMENT."""
+    monkeypatch.delenv("EBDB_STORE_DIR", raising=False)
     fake_script = Path("/some/repo/scripts/whatever_ingest.py")
     root, db_path, export_dir = script_paths(str(fake_script))
-    # .resolve() prefixes the current drive on Windows, so compare parts
-    # rather than full equality against a rootless POSIX-style path.
     assert root.parts[-2:] == ("some", "repo")
-    assert db_path.parts[-3:] == ("repo", "store", "evidence.db")
-    assert export_dir.parts[-2:] == ("repo", "export")
+    assert db_path == DEFAULT_STORE_DIR / "evidence.db"
+    assert export_dir is NO_COMMITTED_EXPORT
 
 
-def test_script_paths_matches_this_repository_layout():
-    """The real store/evidence.db and export/ directories must actually
-    exist at the paths this function derives for a script under THIS
-    repository's scripts/ directory -- not just at some synthetic path."""
-    real_script = Path(__file__).resolve().parents[1] / "scripts" / "view.py"
-    root, db_path, export_dir = script_paths(str(real_script))
-    assert (root / "CLAUDE.md").exists()
-    assert db_path.parent.name == "store"
-    assert export_dir.name == "export"
+def test_every_default_store_path_is_outside_the_repository_regression(monkeypatch):
+    """ADR-0004 A7 (a): no script writes data inside the repository. Proven
+    to fail by injection: with DEFAULT_STORE_DIR set to the repository's own
+    store/ folder (the layout before A7), the first assertion went red."""
+    monkeypatch.delenv("EBDB_STORE_DIR", raising=False)
+    repo = Path(__file__).resolve().parents[1]
+    root, db_path, _ = script_paths(str(repo / "scripts" / "view.py"))
+    assert root == repo
+    assert repo not in db_path.resolve().parents
+    assert repo not in default_backups_dir(db_path).resolve().parents
+
+
+def test_the_store_location_can_be_overridden(monkeypatch, tmp_path):
+    """ADR-0004 A7 (a), Q4 = 1: EBDB_STORE_DIR is the one override."""
+    monkeypatch.setenv("EBDB_STORE_DIR", str(tmp_path))
+    assert store_dir() == tmp_path
+    assert script_paths(__file__)[1] == tmp_path / "evidence.db"
+
+
+def test_no_export_can_be_written_inside_the_repository(tmp_path):
+    """ADR-0004 A7 (b): the committed export is retired. A historical
+    script's regenerate(conn, EXPORT_DIR) fails loudly, and so does any
+    dump aimed inside the repository."""
+    import pytest as _pytest
+    from store.export import regenerate
+    conn = create_store(tmp_path / "s.db")
+    try:
+        with _pytest.raises(RuntimeError, match="no committed export"):
+            regenerate(conn, NO_COMMITTED_EXPORT)
+        with _pytest.raises(RuntimeError, match="inside the repository"):
+            regenerate(conn, Path(__file__).resolve().parents[1] / "export")
+    finally:
+        conn.close()

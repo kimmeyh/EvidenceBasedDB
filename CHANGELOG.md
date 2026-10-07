@@ -32,6 +32,19 @@ this project keeps having to replace with a step.
   output and retirement date unchanged; Haiku 4.5 still "not sooner than
   October 15, 2026", no successor Haiku listed. The Developers role and the
   one Haiku task pattern move to Sonnet 5.5 now, ahead of the date
+- **feat**: F58, the store out of the repository (Task B, Issue #70) --
+  ADR-0004 A7, ADR-0003 A2 and ADR-0005 A5 first; the store and its 35
+  backups moved to `D:\Data\Harold\EvidenceBasedDB\store` (verified backup
+  first, copied with the SQLite backup API, integrity and counts checked);
+  `store.script_paths` reads one setting (override `EBDB_STORE_DIR`);
+  `export/` removed from the repository and no export is written (Q1 = 2;
+  history kept, Q3 = 1); `regenerate_export.py --out` and
+  `rebuild_store_from_export.py --from` as on-demand tools; backup
+  retention's rule 3 is now "one of the 10 newest" (its own injection test
+  found that `parsed[-0:]` is the whole list); real-data tests carry the
+  `live_store` marker (locally a missing store fails them; CI deselects them
+  by name); `test_export_currency.py` retired; CLAUDE.md, the workflow and
+  `.gitignore` updated
 
 ### 2026-09-27 to 2026-10-06 (Sprint 6, PR #54, merged to develop 2026-10-06 and to main via PR #67 the same day)
 

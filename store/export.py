@@ -345,7 +345,20 @@ def write_contexts_export(conn: sqlite3.Connection, export_dir: str | Path) -> N
     path.write_text(text + "\n", encoding="utf-8")
 
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
+
 def regenerate(conn: sqlite3.Connection, export_dir: str | Path) -> None:
-    """Regenerate the full export: contexts plus all four record classes."""
+    """Write a full export: contexts plus all four record classes.
+
+    Since ADR-0004 A7 (2026-10-06) an export is an on-demand dump, never
+    committed: a folder inside the repository is refused, and so is the
+    NO_COMMITTED_EXPORT marker a historical script still passes (building a
+    Path from it raises with the reason)."""
+    target = Path(export_dir).resolve()
+    if target == REPO_ROOT or REPO_ROOT in target.parents:
+        raise RuntimeError(
+            f"refusing to write an export inside the repository ({target}). ADR-0004 A7 retired the "
+            "committed export; dump to a folder outside it.")
     write_contexts_export(conn, export_dir)
     write_export(conn, export_dir)

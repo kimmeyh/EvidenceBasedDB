@@ -2,9 +2,12 @@
 
 Every guard here carries its own injection: the test builds the broken
 case and asserts it is caught, so "proven to fail" is re-proven on every
-run rather than once in a terminal. The rebuild tests run on CI too: they
-need only the committed export, not store/evidence.db, which is why the
-door's local-path rule is switched off explicitly for them.
+run rather than once in a terminal.
+
+Since ADR-0004 A7 (Sprint 7 Task B, 2026-10-06) there is no committed
+export. The mechanism tests run on a small synthetic store (conftest.py
+`build_synthetic_store`) and its on-demand dump, everywhere, CI included;
+one `live_store` test keeps the round trip over the real data, locally.
 """
 from __future__ import annotations
 
@@ -29,38 +32,47 @@ from store.rebuild import (  # noqa: E402
     EXPORT_FILES, KNOWN_KEYS, UnrestorableKey, compare_exports, rebuild, rebuild_and_compare,
 )
 
-EXPORT_DIR = ROOT / "export"
-
-
-def _copy_export(tmp_path: Path) -> Path:
-    dst = tmp_path / "export"
-    dst.mkdir()
-    for name in EXPORT_FILES:
-        shutil.copy2(EXPORT_DIR / name, dst / name)
-    return dst
+from conftest import build_synthetic_store  # noqa: E402
 
 
 def _store(tmp_path: Path, name: str = "evidence.db") -> Path:
-    """A realistic store: the committed export, rebuilt."""
-    db = tmp_path / name
-    rebuild(EXPORT_DIR, db, check_local_paths=False).close()
-    return db
+    """A small store exercising every record shape the door writes."""
+    return build_synthetic_store(tmp_path / name)
+
+
+def _dump(tmp_path: Path, name: str = "export") -> Path:
+    """An on-demand dump of a fresh synthetic store, in its own folder."""
+    db = _store(tmp_path, f"{name}_source.db")
+    conn = connect(db)
+    try:
+        regenerate(conn, tmp_path / name)
+    finally:
+        conn.close()
+    return tmp_path / name
 
 
 # ---------------------------------------------------------------- rebuild
 
-def test_committed_export_rebuilds_byte_identically():
-    """ADR-0004 section 2's claim, executed: the export is a complete
-    artifact. Proven to fail by test_rebuild_detects_a_deliberately_lost_field
+def test_a_dump_rebuilds_byte_identically(tmp_path):
+    """The dump is a complete copy of the store: rebuilt, it dumps the same
+    bytes. Proven to fail by test_rebuild_detects_a_deliberately_lost_field
     below, which drops a field and watches this same comparison go red."""
-    assert rebuild_and_compare(EXPORT_DIR, check_local_paths=False) == []
+    assert rebuild_and_compare(_dump(tmp_path), check_local_paths=False) == []
+
+
+@pytest.mark.live_store
+def test_the_live_store_round_trips_through_a_dump(live_export):
+    """ADR-0004 A7 (c): the on-demand dump stays a proven recovery path for
+    the REAL data: dump the live store, rebuild from the dump, dump again,
+    compare bytes."""
+    assert rebuild_and_compare(live_export, check_local_paths=False) == []
 
 
 def test_rebuild_detects_a_deliberately_lost_field(tmp_path, monkeypatch):
     """Injection: a paper exports a field the rebuild is told it knows but
     cannot actually write (insert_paper has no reading_level). The
     byte-identity comparison must report papers.json."""
-    export = _copy_export(tmp_path)
+    export = _dump(tmp_path)
     papers = json.loads((export / "papers.json").read_text(encoding="utf-8"))
     papers[0]["reading_level"] = 12
     (export / "papers.json").write_text(json.dumps(papers, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -69,7 +81,7 @@ def test_rebuild_detects_a_deliberately_lost_field(tmp_path, monkeypatch):
 
 
 def test_rebuild_refuses_an_unrestorable_key(tmp_path):
-    export = _copy_export(tmp_path)
+    export = _dump(tmp_path)
     papers = json.loads((export / "papers.json").read_text(encoding="utf-8"))
     papers[0]["kind"] = "paper"  # a field the store has no column for
     (export / "papers.json").write_text(json.dumps(papers, indent=2) + "\n", encoding="utf-8")
@@ -81,7 +93,7 @@ def test_rebuild_refuses_an_unrestorable_key(tmp_path):
 def test_rebuild_never_overwrites_an_existing_store(tmp_path):
     db = _store(tmp_path)
     with pytest.raises(FileExistsError):
-        rebuild(EXPORT_DIR, db, check_local_paths=False)
+        rebuild(_dump(tmp_path), db, check_local_paths=False)
 
 
 def test_local_path_rule_stays_on_by_default(tmp_path):
@@ -208,79 +220,57 @@ def _fake_backup(src: Path, d: Path, when: datetime, sprint: int) -> Path:
     return p
 
 
-def test_retention_deletes_only_what_all_three_rules_allow(tmp_path, monkeypatch):
+def test_retention_deletes_only_what_all_three_rules_allow(tmp_path):
+    """ADR-0004 A7 (d): deleted only when older than 32 days AND not the
+    newest of one of the last 5 sprints AND not one of the 10 newest."""
     db = _store(tmp_path)
     d = tmp_path / "backups"
     now = datetime(2026, 12, 1, 12, 0, 0)
-    old = now - timedelta(days=40)
     recent = _fake_backup(db, d, now - timedelta(days=3), 12)
-    old_s5_a = _fake_backup(db, d, old - timedelta(hours=1), 5)
-    old_s5_newest = _fake_backup(db, d, old, 5)
-    old_s11_newest = _fake_backup(db, d, old, 11)
-    uncommitted = _fake_backup(db, d, old - timedelta(hours=2), 5)
-    committed = {old_s5_a.name, old_s5_newest.name, old_s11_newest.name}
-    monkeypatch.setattr(backup_mod, "committed_export_blobs", lambda repo: {"x"})
-    monkeypatch.setattr(backup_mod, "content_is_committed", lambda p, blobs, repo=None: p.name in committed)
+    s11 = _fake_backup(db, d, now - timedelta(days=60), 11)          # oldest, but its sprint is recent
+    s5 = [_fake_backup(db, d, now - timedelta(days=41, hours=i), 5) for i in range(11)]
     deleted, kept = backup_mod.prune(d, repo=tmp_path, now=now, sprint=12)
     reasons = {p.name: r for p, r in kept}
-    assert [p.name for p in deleted] == [old_s5_a.name, old_s5_newest.name]
+    # Ten newest: `recent` and s5[0..8]. Deletable: s5[9] and s5[10].
+    assert [p.name for p in deleted] == [s5[10].name, s5[9].name]
     assert "32 days" in reasons[recent.name]
-    assert "last 5 sprints" in reasons[old_s11_newest.name]   # sprint 11 is within 12-4..12
-    assert "not yet in a committed export" in reasons[uncommitted.name]
-    assert all(p.exists() for p in (recent, old_s11_newest, uncommitted))
+    assert "last 5 sprints" in reasons[s11.name]          # sprint 11 is within 12-4..12
+    assert "10 newest" in reasons[s5[0].name]
+    assert all(p.exists() for p in (recent, s11, *s5[:9]))
 
 
-def test_retention_keeps_everything_when_git_cannot_answer(tmp_path, monkeypatch):
+def test_the_ten_newest_backups_survive_whatever_their_age_regression(tmp_path, monkeypatch):
+    """Rule 3 since ADR-0004 A7: at least ten backups survive, so a long
+    pause can never prune every copy. Proven to fail by injection, inside
+    this test: with KEEP_NEWEST set to 0, all twelve old backups go."""
     db = _store(tmp_path)
     d = tmp_path / "backups"
     now = datetime(2026, 12, 1)
-    p = _fake_backup(db, d, now - timedelta(days=90), 1)
-    monkeypatch.setattr(backup_mod, "committed_export_blobs", lambda repo: None)
-    deleted, _ = backup_mod.prune(d, repo=tmp_path, now=now, sprint=12)
-    assert deleted == [] and p.exists()
-
-
-def test_rule_three_recognizes_committed_content_and_rejects_a_deliberately_changed_store(tmp_path):
-    """Rule 3 against real git history. A store rebuilt from the committed
-    export IS committed content; the same store with one record changed is
-    NOT (injection). Hashes through git so CRLF/LF normalization matches a
-    commit (autocrlf: the working copy and the blob differ)."""
-    # Build from the export AS COMMITTED at HEAD, not the working tree: with
-    # an uncommitted export (mid-task) the working tree's content is
-    # correctly "not yet committed", which is rule 3 working, not failing.
-    import subprocess
-    head_export = tmp_path / "head_export"
-    head_export.mkdir()
-    for name in EXPORT_FILES:
-        data = subprocess.run(["git", "-C", str(ROOT), "show", f"HEAD:export/{name}"],
-                              capture_output=True, check=True).stdout
-        (head_export / name).write_bytes(data)
-    db = tmp_path / "evidence.db"
-    rebuild(head_export, db, check_local_paths=False).close()
-    blobs = backup_mod.committed_export_blobs(ROOT)
-    assert blobs, "git history under export/ must be readable here"
-    assert backup_mod.content_is_committed(db, blobs, ROOT) is True
-    conn = sqlite3.connect(db)
-    conn.execute("UPDATE records SET updated_reason = updated_reason || ' x' WHERE class = 'paper' "
-                 "AND id = (SELECT MIN(id) FROM records WHERE class = 'paper')")
-    conn.commit()
-    conn.close()
-    assert backup_mod.content_is_committed(db, blobs, ROOT) is False
+    olds = [_fake_backup(db, d, now - timedelta(days=100, hours=i), 1) for i in range(12)]
+    deleted, _ = backup_mod.prune(d, repo=tmp_path, now=now, sprint=12, apply=False)
+    assert sorted(p.name for p in deleted) == sorted(p.name for p in olds[10:])
+    monkeypatch.setattr(backup_mod, "KEEP_NEWEST", 0)
+    deleted, _ = backup_mod.prune(d, repo=tmp_path, now=now, sprint=12, apply=False)
+    assert len(deleted) == 12
 
 
 # ---------------------------------------------------------------- restore
 
 def test_restore_brings_back_the_backed_up_content(tmp_path):
     """Back up, damage the store (delete a paper), restore, and prove the
-    regenerated export matches the committed one. Proven to fail by the
-    damaged state itself: the comparison is asserted non-empty before the
-    restore runs."""
+    restored store dumps exactly what it dumped before the damage. Proven to
+    fail by the damaged state itself: the comparison is asserted non-empty
+    before the restore runs."""
     import importlib.util
     spec = importlib.util.spec_from_file_location("restore_mod", ROOT / "scripts" / "restore_store.py")
     restore_mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(restore_mod)
 
     db = _store(tmp_path)
+    before = tmp_path / "before"
+    conn = connect(db)
+    regenerate(conn, before)
+    conn.close()
     saved = backup_mod.backup_store(db, tmp_path / "backups", "before damage", 5)
     conn = connect(db)
     victim = conn.execute("SELECT id FROM records WHERE class='paper' ORDER BY id LIMIT 1").fetchone()[0]
@@ -291,7 +281,7 @@ def test_restore_brings_back_the_backed_up_content(tmp_path):
     damaged = tmp_path / "damaged"
     regenerate(conn, damaged)
     conn.close()
-    assert "papers.json" in compare_exports(EXPORT_DIR, damaged)
+    assert "papers.json" in compare_exports(before, damaged)
 
     restore_mod.restore(saved, db)
     conn = connect(db)
@@ -299,7 +289,7 @@ def test_restore_brings_back_the_backed_up_content(tmp_path):
         regenerate(conn, tmp_path / "restored")
     finally:
         conn.close()
-    assert compare_exports(EXPORT_DIR, tmp_path / "restored") == []
+    assert compare_exports(before, tmp_path / "restored") == []
 
 
 # ------------------------------------------- fresh-eyes review fixes (2026-09-24)
@@ -319,6 +309,10 @@ def test_restore_recovers_a_deliberately_corrupted_live_store(tmp_path, monkeypa
     never deleted."""
     m = _restore_mod()
     db = _store(tmp_path)
+    before = tmp_path / "before"
+    conn = connect(db)
+    regenerate(conn, before)
+    conn.close()
     saved = backup_mod.backup_store(db, tmp_path / "backups", "good state", 5)
     data = bytearray(db.read_bytes())
     for i in range(4096, min(len(data), 4096 * 8)):
@@ -332,42 +326,21 @@ def test_restore_recovers_a_deliberately_corrupted_live_store(tmp_path, monkeypa
         regenerate(conn, tmp_path / "restored")
     finally:
         conn.close()
-    assert compare_exports(EXPORT_DIR, tmp_path / "restored") == []
+    assert compare_exports(before, tmp_path / "restored") == []
 
 
 def test_prune_never_deletes_a_protected_backup(tmp_path, monkeypatch):
     """restore_store.py protects the backup it restores from the prune in
-    its own pre-restore backup. Injection: an old, committed,
-    unprotected-by-sprint backup IS deleted without `protect`."""
+    its own pre-restore backup. Injection: the same old backup, which no
+    rule keeps (beyond the ten newest, sprint long past), IS deleted
+    without `protect`."""
     db = _store(tmp_path)
     d = tmp_path / "backups"
     now = datetime(2026, 12, 1)
-    old = _fake_backup(db, d, now - timedelta(days=60), 1)
-    _fake_backup(db, d, now - timedelta(days=59), 1)   # newer, so `old` is not its sprint's newest
-    monkeypatch.setattr(backup_mod, "committed_export_blobs", lambda repo: {"x"})
-    monkeypatch.setattr(backup_mod, "content_is_committed", lambda p, blobs, repo=None: True)
+    old = _fake_backup(db, d, now - timedelta(days=90), 1)
+    for i in range(10):   # ten newer backups, so `old` is not among the ten newest
+        _fake_backup(db, d, now - timedelta(days=80, hours=i), 1)
     deleted, _ = backup_mod.prune(d, repo=tmp_path, now=now, sprint=12, apply=False, protect=(old,))
     assert old not in deleted
     deleted, _ = backup_mod.prune(d, repo=tmp_path, now=now, sprint=12, apply=False)
     assert old in deleted
-
-
-def test_superseded_backup_is_not_kept_forever(tmp_path, monkeypatch):
-    """Rule 3's second clause. A backup of an intermediate state never
-    matches a committed export; the first version kept it forever. It is
-    deletable once an export commit landed AFTER it, and still kept when
-    the last export commit is OLDER than it (then it may be the only copy)."""
-    db = _store(tmp_path)
-    d = tmp_path / "backups"
-    now = datetime(2026, 12, 1)
-    stamp = now - timedelta(days=60)
-    p = _fake_backup(db, d, stamp, 1)
-    _fake_backup(db, d, now - timedelta(days=59), 1)
-    monkeypatch.setattr(backup_mod, "committed_export_blobs", lambda repo: {"x"})
-    monkeypatch.setattr(backup_mod, "content_is_committed", lambda p, blobs, repo=None: False)
-    monkeypatch.setattr(backup_mod, "last_export_commit", lambda repo: stamp + timedelta(hours=1))
-    deleted, _ = backup_mod.prune(d, repo=tmp_path, now=now, sprint=12, apply=False)
-    assert p in deleted
-    monkeypatch.setattr(backup_mod, "last_export_commit", lambda repo: stamp - timedelta(hours=1))
-    deleted, kept = backup_mod.prune(d, repo=tmp_path, now=now, sprint=12, apply=False)
-    assert p not in deleted and dict((k.name, v) for k, v in kept)[p.name].startswith("content not yet")

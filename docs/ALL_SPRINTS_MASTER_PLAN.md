@@ -343,6 +343,11 @@ do 40 and 42, and 60 and 62.
   `store/evidence.db` equal the contexts in `export/`, in both directions;
   proven to fail by removing one context from a copy of the export.
 - Depends on: none.
+- **Planning note, 2026-10-06 (Sprint 7 Task B)**: largely moot under
+  ADR-0004 A7 (Q1 = 2): there is no committed export to drop a context. What
+  survives is the on-demand dump's round trip, which
+  `test_the_live_store_round_trips_through_a_dump` already proves byte for
+  byte. Recommend closing at the next refinement.
 
 **F50. Qualify "compute, never store" with Cyc's stored counts (~30m) Priority 70**
 - Phase: Process

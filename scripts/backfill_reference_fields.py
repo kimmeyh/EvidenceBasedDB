@@ -25,8 +25,7 @@ Judgment fields are QUEUED, never filled: `read_extent` for records below
 stored (it is a query).
 
 DRY-RUN BY DEFAULT. `--apply` takes a verified backup first, writes in one
-transaction, appends to every touched record's updated_reason, and
-regenerates the export.
+transaction, and appends to every touched record's updated_reason.
 
 Usage:
     python scripts/backfill_reference_fields.py            # plan only
@@ -43,7 +42,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.ingest import add_found_via, add_read, append_updated_reason  # noqa: E402
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -215,8 +213,7 @@ def main(argv: list[str] | None = None) -> int:
         today = date.today().isoformat()
         apply(conn, p, today)
         conn.commit()
-        regenerate(conn, EXPORT_DIR)
-        print("APPLIED; export regenerated")
+        print("APPLIED")
         return 0
     finally:
         conn.close()

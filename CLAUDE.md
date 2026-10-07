@@ -46,6 +46,14 @@ The second holds `Papers` (46), `Books` (38), `GitHubRepos` (8) and
 repository.** The `access` field on a paper record points there, or at a DOI or
 arXiv id.
 
+**The store lives there too, since 2026-10-06** (ADR-0004 A7, Sprint 7 Task
+B): `D:\Data\Harold\EvidenceBasedDB\store\evidence.db`, with its verified
+backups in `store\backups\`. `store.script_paths` resolves it; the environment
+variable `EBDB_STORE_DIR` overrides it. No database and no export is committed:
+git holds code and documents only. Tests that check the real data are marked
+`live_store` (local only; a missing store fails them; CI deselects them by
+name).
+
 Every repository on this machine lives under `D:\Data\Harold\github\`. The
 first attempt at seeding this one put the git repository inside the non-repo
 directory, which conflated the two; corrected 2026-09-14 by cloning to the right

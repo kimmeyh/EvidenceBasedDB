@@ -9,13 +9,50 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
+import os
+
 SCHEMA_PATH = Path(__file__).parent / "schema.sql"
 SEED_CONTEXTS_PATH = Path(__file__).parent / "seed_contexts.sql"
 
+# ADR-0004 A7 (Sprint 7 Task B, F58, 2026-10-06): the store and its backups
+# live OUTSIDE every repository. One setting, read here and nowhere else:
+# the default below, or the environment variable EBDB_STORE_DIR (tests and
+# CI point it at a temporary folder).
+DEFAULT_STORE_DIR = Path(r"D:\Data\Harold\EvidenceBasedDB\store")
+STORE_DIR_ENV = "EBDB_STORE_DIR"
 
-def script_paths(script_file: str) -> tuple[Path, Path, Path]:
+
+def store_dir() -> Path:
+    """The folder holding evidence.db and backups/ (ADR-0004 A7)."""
+    override = (os.environ.get(STORE_DIR_ENV) or "").strip()
+    return Path(override) if override else DEFAULT_STORE_DIR
+
+
+class _NoCommittedExport:
+    """What script_paths returns where EXPORT_DIR used to be.
+
+    ADR-0004 A7 retired the committed export (Q1 = 2). A historical one-off
+    that still calls `regenerate(conn, EXPORT_DIR)` must fail loudly rather
+    than write an export into the repository; store.export.regenerate
+    refuses this value with the reason. On-demand dumps name their folder:
+    `scripts/regenerate_export.py --out <dir>`."""
+
+    def __repr__(self) -> str:  # pragma: no cover -- diagnostics only
+        return "<no committed export since ADR-0004 A7>"
+
+    def __fspath__(self) -> str:
+        raise RuntimeError(
+            "There is no committed export since ADR-0004 A7 (2026-10-06). Write an on-demand dump "
+            "with scripts/regenerate_export.py --out <dir outside the repository>.")
+
+
+NO_COMMITTED_EXPORT = _NoCommittedExport()
+
+
+def script_paths(script_file: str) -> tuple[Path, Path, object]:
     """(ROOT, DB_PATH, EXPORT_DIR) for a script under scripts/, given its
-    own __file__.
+    own __file__. Since ADR-0004 A7, DB_PATH is under store_dir() (outside
+    the repository) and EXPORT_DIR is NO_COMMITTED_EXPORT.
 
     F6 finding 5 (PR #1 review): `ROOT = Path(__file__).resolve().parents[1]`,
     `DB_PATH = ROOT / "store" / "evidence.db"`, and `EXPORT_DIR = ROOT /
@@ -33,7 +70,7 @@ def script_paths(script_file: str) -> tuple[Path, Path, Path]:
     circular.
     """
     root = Path(script_file).resolve().parents[1]
-    return root, root / "store" / "evidence.db", root / "export"
+    return root, store_dir() / "evidence.db", NO_COMMITTED_EXPORT
 
 
 def connect(db_path: str | Path) -> sqlite3.Connection:

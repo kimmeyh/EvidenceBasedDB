@@ -14,12 +14,23 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
-PAPERS_EXPORT = ROOT / "export" / "papers.json"
+# Real data, read from a dump of the live store (ADR-0004 A7: no committed
+# export). The whole module is live_store: it fails locally without the
+# store and is deselected on CI.
+pytestmark = pytest.mark.live_store
+_DUMP: dict = {}
+
+
+@pytest.fixture(autouse=True)
+def _dump(live_export):
+    _DUMP["dir"] = live_export
 
 
 def _papers() -> list[dict]:
-    return json.loads(PAPERS_EXPORT.read_text(encoding="utf-8"))
+    return json.loads((_DUMP["dir"] / "papers.json").read_text(encoding="utf-8"))
 
 
 def test_every_screened_or_read_paper_has_real_applicability():

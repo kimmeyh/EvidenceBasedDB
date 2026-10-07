@@ -46,7 +46,7 @@ sys.path.insert(0, str(ROOT))
 from store import create_store  # noqa: E402
 from store.ingest import append_updated_reason  # noqa: E402
 
-PAPERS_EXPORT = ROOT / "export" / "papers.json"
+
 
 SEED_NOTE = "Sprint 1 Task F: 46-paper seed set loaded at seen tier"
 LATER_NOTE = "2026-09-19 (Sprint 4 Task C): citation re-derived from the API"
@@ -154,14 +154,16 @@ def test_no_script_spells_the_join_itself(script):
 
 # --- the shipped artifact ---------------------------------------------------
 
-def test_the_committed_export_still_carries_the_sprint_1_provenance():
+@pytest.mark.live_store
+def test_the_committed_export_still_carries_the_sprint_1_provenance(live_export):
     """The data check. 43 papers arrived in the Sprint 1 seed load and one in
     the Task E premise-falsifier run; the export must still say so.
 
     Pinned as an ID SET rather than a count (round-2 audit): a count with no
     slack turns red on any legitimate deletion and invites someone to lower
-    the number, which would hide a real erasure."""
-    papers = json.loads(PAPERS_EXPORT.read_text(encoding="utf-8"))
+    the number, which would hide a real erasure. Reads the live store
+    (ADR-0004 A7: no committed export)."""
+    papers = json.loads((live_export / "papers.json").read_text(encoding="utf-8"))
     by_id = {p["id"]: (p.get("updated_reason") or "") for p in papers}
     seeded = {pid for pid, r in by_id.items() if "Sprint 1 Task F" in r}
     assert len(seeded) >= 43, (
@@ -172,33 +174,35 @@ def test_the_committed_export_still_carries_the_sprint_1_provenance():
         "the premise-falsifier record lost its own origin note")
 
 
-def test_no_paper_lost_the_updated_reason_it_had_before_the_corrections():
-    """Whatever a record said BEFORE Sprint 4's correction passes, it must
-    still say.
+# The last committed export is in git history at this commit (Sprint 6 plan
+# approval, 2026-10-03); ADR-0004 A7 removed export/ from the tree afterward
+# and kept its history (Q3 = 1).
+BASELINE_COMMIT = "0044a44"
 
-    Anchored to the MERGE-BASE, not to the moving `develop` ref. The first
-    version read `develop:export/papers.json`, which becomes byte-identical
-    to the current export the moment this PR merges -- every string is a
-    substring of itself, so the guard would go silently vacuous exactly when
-    it was meant to start protecting the merged history (round-2 audit,
-    2026-09-23).
+
+@pytest.mark.live_store
+def test_no_paper_lost_the_updated_reason_it_had_before_the_corrections(live_export):
+    """Whatever a record said at the baseline, it must still say.
+
+    Anchored to a FIXED commit. The first version read
+    `develop:export/papers.json`, which went vacuous the moment a PR merged
+    (round-2 audit, 2026-09-23); the second read the merge-base with
+    develop, which would have skipped silently once ADR-0004 A7 removed the
+    export from develop (Sprint 7 Task B, 2026-10-06). A fixed commit with
+    the export in it keeps a real baseline, and the live store is compared
+    against it.
     """
-    base = subprocess.run(["git", "merge-base", "develop", "HEAD"], cwd=ROOT,
-                          capture_output=True, text=True, encoding="utf-8")
-    if base.returncode != 0 or not base.stdout.strip():
-        pytest.skip("no merge-base with develop available")
-    ref = f"{base.stdout.strip()}:export/papers.json"
+    ref = f"{BASELINE_COMMIT}:export/papers.json"
     raw = subprocess.run(["git", "show", ref], cwd=ROOT,
                          capture_output=True, text=True, encoding="utf-8")
-    if raw.returncode != 0:
-        pytest.skip(f"no {ref} to compare against")
+    assert raw.returncode == 0, f"the baseline {ref} must be readable from git history"
 
     renames = {
         "rand-2023-pqc-critical-infrastructure-assessment": "rand-2022-pqc-critical-infrastructure-assessment",
         "rand-2023-pqc-critical-infrastructure-assessment-appendix-b": "rand-2022-pqc-critical-infrastructure-assessment-appendix-b",
     }
     current = {p["id"]: (p.get("updated_reason") or "")
-               for p in json.loads(PAPERS_EXPORT.read_text(encoding="utf-8"))}
+               for p in json.loads((live_export / "papers.json").read_text(encoding="utf-8"))}
     baseline = {renames.get(p["id"], p["id"]): (p.get("updated_reason") or "").strip()
                 for p in json.loads(raw.stdout)}
 
@@ -213,5 +217,5 @@ def test_no_paper_lost_the_updated_reason_it_had_before_the_corrections():
 
     lost = [pid for pid, was in comparable.items() if was not in current[pid]]
     assert not lost, (
-        f"{len(lost)} record(s) lost the updated_reason they carried at the merge-base: "
+        f"{len(lost)} record(s) lost the updated_reason they carried at the baseline commit: "
         f"{lost[:5]}. updated_reason is append-only.")

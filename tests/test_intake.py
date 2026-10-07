@@ -65,7 +65,7 @@ def test_dry_run_derives_the_record_and_writes_nothing(store):
     assert not export_dir.exists()
 
 
-def test_apply_writes_an_api_origin_record_with_a_derived_id_and_regenerates(store):
+def test_apply_writes_an_api_origin_record_with_a_derived_id(store):
     db_path, export_dir, _ = store
     proc = _run(db_path, export_dir, ARXIV_ARGS + ["--apply"])
     assert proc.returncode == 0, proc.stderr
@@ -76,7 +76,7 @@ def test_apply_writes_an_api_origin_record_with_a_derived_id_and_regenerates(sto
     assert row["value"] == "Quantum-Enhanced Greedy Combinatorial Optimization Solver"
     assert row["provenance"].startswith('Dupont, M., Evert, B., "Quantum-Enhanced') and row["tier"] == "screened"
     assert [(a["context_id"], a["rationale"]) for a in app] == [("qc", "Run on gate-based hardware -- arXiv abstract")]
-    assert (export_dir / "papers.json").exists()
+    assert not export_dir.exists(), "no export is written since ADR-0004 A7"
     again = _run(db_path, export_dir, ARXIV_ARGS + ["--apply"])
     assert again.returncode == 0 and f"PRESENT {DUPONT_ID}" in again.stdout
 
@@ -136,7 +136,7 @@ def test_manifest_commits_per_entry_and_resumes(store, tmp_path):
     ids = {r[0] for r in conn.execute("SELECT id FROM records")}
     conn.close()
     assert ids == {DUPONT_ID, MERLIN_ID}, "the entries before and after the bad one landed (per-entry commit)"
-    assert (export_dir / "papers.json").exists()
+    assert not export_dir.exists(), "no export is written since ADR-0004 A7"
     rerun = _run(db_path, export_dir, ["--manifest", str(manifest), "--apply"])
     assert "0 written, 2 already present, 1 refused" in rerun.stdout
 
