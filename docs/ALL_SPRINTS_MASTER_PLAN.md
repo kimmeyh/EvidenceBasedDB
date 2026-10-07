@@ -561,6 +561,32 @@ do 40 and 42, and 60 and 62.
   the mismatch is listed; the Asfaw paper entered or recorded as out of
   scope with the reason.
 
+**F61. Mine the Massoli et al. survey's curated paper list for candidates (~2h plus runtime) Priority 46** (NEW 2026-10-06, team lead during Sprint 7)
+- Phase: Sourcing / collections
+- Platform: `github.com/fvmassoli/survey-quantum-computation`
+  (`allPapers.md`, `LeapIntoQuantumComputationsPaperList.xlsx`), the
+  companion list of arXiv:2107.03313 ("A Leap among Quantum Computing and
+  Quantum Neural Networks: A Survey"); `scripts/intake.py`
+- Team lead, 2026-10-06, on the F35 screen holding this repository back as
+  "neither code nor data": "this repository may contain papers that we are
+  interested in (although there likely could be duplicates of what we
+  already have)".
+- **Facts at carding (snapshot as of 2026-10-06)**: 184 entries, each a
+  link plus a BibTeX record, tagged by topic (Quantum Perceptrons, QNNs,
+  gate model and adiabatic). 25 titles already match a store record exactly
+  (an undercount: punctuation and subtitle variants miss); 31 entries carry
+  an arXiv id, 9 of them already in the store. Most link to publishers (APS
+  29, Nature 26, Springer 14, IOP 12, IEEE 11), so the door's DOI path, not
+  arXiv, carries most of them; several BibTeX records have no DOI.
+- Scope: duplicates are found before anything is entered (arXiv id, DOI,
+  then normalized title and first author); new entries go through the door
+  at `seen` with `found_via` naming this list and the entry's topic tags as
+  the collection locator; the survey itself (2107.03313, already in the
+  store) gets the list as its companion repository.
+- Acceptance: every entry classed as already in the store (with the record
+  it matched), entered, or refused with the door's reason.
+- Depends on: arXiv entries share F52's cap; run outside its sessions.
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
