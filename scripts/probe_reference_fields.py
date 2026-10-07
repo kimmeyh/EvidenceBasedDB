@@ -187,13 +187,30 @@ def probe(record_id: str, access: str, kind: str, fetcher, mode: str = "api"):
         if r.access is not None:
             found.append(("access_status", r.access, "HTTP probe"))
         return found, notes + r.notes, r.provider == SITE_PROVIDER
-    if kind in ("arxiv", "doi"):
+    if kind == "arxiv":
+        # API mode: the API for status, version and affiliations, and the
+        # abstract page (the second request, which the access probe needs
+        # anyway) parsed too. The page shows withdrawals the API comment
+        # does not: 4 of the 6 recorded ones (live check, 2026-10-06). If
+        # the API did not answer, the page answers in its place.
         ident = citations.parse_access(access)[1]
-        r = probe_arxiv(record_id, ident, fetcher) if kind == "arxiv" else probe_doi(record_id, ident, fetcher)
+        api = probe_arxiv(record_id, ident, fetcher)
+        page = probe_arxiv_site(record_id, ident, fetcher, _open=SITE_OPEN)
+        best = api if api.provider == "arXiv" or page.provider != SITE_PROVIDER else page
+        provided = {f: (v, best.provider) for f, v in best.values.items()}
+        if page.values.get("publication_status") == "withdrawn" and best is api and \
+                api.values.get("publication_status") != "withdrawn":
+            provided["publication_status"] = ("withdrawn", SITE_PROVIDER)
+            notes.append("withdrawal read from the abstract page; the API comment did not say so")
+        found += [(f, v, p) for f, (v, p) in sorted(provided.items())]
+        notes += best.notes
+        if page.access is not None:
+            found.append(("access_status", page.access, "HTTP probe"))
+        return found, notes, best.provider in ("arXiv", SITE_PROVIDER)
+    if kind == "doi":
+        r = probe_doi(record_id, citations.parse_access(access)[1], fetcher)
         found += [(f, v, r.provider) for f, v in sorted(r.values.items())]
         notes += r.notes
-        if kind == "arxiv":
-            answered = r.provider == "arXiv"
     url = landing_url(access)
     if url:
         # Paced and counted like every request that lands on arXiv: the

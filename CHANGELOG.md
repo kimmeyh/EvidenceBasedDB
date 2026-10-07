@@ -76,7 +76,9 @@ this project keeps having to replace with a step.
   arXiv request (found live: 0.3 s after the previous run); `--site`
   forces the abstract page. Live check: the page matched the API on the
   pilot's 12 papers (8 published with their DOIs, 4 preprints) and saw all
-  6 recorded withdrawals, 4 of which the API comment never showed
+  6 recorded withdrawals, 4 of which the API comment never showed; so in
+  API mode the abstract page (fetched anyway for access) is parsed too and
+  its withdrawal wins, at no extra request
 - **feat**: F53, probes each cycle and a stale report (Task D, Issue #72)
   -- `probe_reference_fields.py --stale` lists every probe measured before
   the cycle start (computed from the sprint branch's date) and exits 1 when

@@ -282,6 +282,25 @@ def test_a_new_run_waits_before_its_first_arxiv_request_regression(monkeypatch, 
     conn.close()
 
 
+def test_api_mode_takes_a_withdrawal_from_the_page_regression(monkeypatch):
+    """Live check, 2026-10-06: the abstract page showed all 6 recorded
+    withdrawals; the API comment showed 2. In API mode the page is fetched
+    anyway (for access), so its withdrawal wins. Proven to fail by
+    injection, 2026-10-06: without the override, the status was the API's
+    'preprint'."""
+    atom = (b'<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom" '
+            b'xmlns:arxiv="http://arxiv.org/schemas/atom"><entry><id>http://arxiv.org/abs/2401.00001v2</id>'
+            b'<title>T</title><arxiv:comment>Not needed anymore</arxiv:comment></entry></feed>')
+
+    def inner(url, accept):
+        return atom if "export.arxiv.org" in url else _inner(url, accept)
+    mod, _ = _script(monkeypatch, _site({"2401.00001": _page("2401.00001", banner=True)}))
+    found, notes, answered = mod.probe("p", "arXiv:2401.00001", "arxiv", citations.PacedFetcher(inner=inner), "api")
+    assert ("publication_status", "withdrawn", probes.SITE_PROVIDER) in found
+    assert ("access_status", probes.OPEN, "HTTP probe") in found and answered is True
+    assert citations.arxiv_requests_this_session() == 2
+
+
 def test_a_crossref_failure_keeps_the_page_result(monkeypatch):
     def inner(url, accept):
         if "api.crossref.org" in url:
