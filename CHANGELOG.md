@@ -88,6 +88,13 @@ this project keeps having to replace with a step.
   was found. 7 reported again with what was tried: 4 repositories gone, 1
   candidate rejected (Julia, where the paper says Python), 1 on Gitee (no
   route), and `2108.0131`, whose PDF is a different paper (arXiv:2108.00131)
+- **feat**: F62 card and read-only discovery pilot (team lead, Q11 = 1 and
+  3) -- `scripts/discover_candidates.py` ranks candidate papers from
+  OpenAlex metadata in four streams (ml, qml, tensor, fraud), drops what the
+  store holds, and writes its report outside the repository; the OpenAlex
+  key is read from `OPENALEX_API_KEY` and sent only in a header (guard
+  proven by injection). Pilot of 100 found stream-precision and
+  citation-quality issues, recorded on F62
 - **feat**: F35's held-back repository candidates, the optional slice of
   F54 (Task E, Issue #73) -- the 78 with score >= 0 screened (subagent, read
   only) into `scripts/sprint7_f35_screen.json`: 42 own, 26 third-party, 10

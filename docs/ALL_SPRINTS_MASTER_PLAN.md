@@ -601,6 +601,53 @@ do 40 and 42, and 60 and 62.
   its arXiv version first, else a list (DOI, Xplore link, target file name)
   the team lead downloads by hand into `D:\Data\Harold\EvidenceBasedDB\Papers`.
 
+**F62. Discover, rank and triage candidate papers from open metadata, with a hand-download list (~4h plus review) Priority 45** (NEW 2026-10-06, team lead during Sprint 7, Q11 = 1 and 3)
+- Phase: Sourcing / discovery
+- Platform: `scripts/discover_candidates.py` (pilot built in Sprint 7),
+  OpenAlex (abstracts, topics, citations, open-access copies), Semantic
+  Scholar (cross-check: arXiv id, citations, free PDF), `scripts/intake.py`
+- Team lead, 2026-10-06: "is there a way to get enough of the papers
+  related to QML and ML (targeting and prioritizing around what we think
+  are valuable) to evaluate the papers we would be interested, then check
+  all the other sources and develop a prioritized sub-list of papers we may
+  want to download by hand"; "... and tensors"; "we are interested in the
+  best of Machine Learning (ML) even if it is unrelated to Quantum
+  Computing and Credit Card Fraud and Fraud".
+- Pipeline: discover by stream; drop what the store holds (DOI, arXiv id,
+  normalized title); rank (computed each run, never stored); the team lead
+  reviews the top of each stream on title and abstract; chosen papers enter
+  through the door by DOI at `seen`; for papers chosen for READING, the
+  free copy (arXiv first, inside F52's cap; then other open copies); the
+  rest form the hand-download list (rank, title, DOI, publisher link, why,
+  target file name). F61's survey list is one more discovery input. IEEE
+  PDFs by hand only (F61's note: Xplore's license bars automated downloads).
+- **Pilot facts (snapshot as of 2026-10-06; 25 per stream, keyless)**:
+  - Streams: ml (the most-cited works in OpenAlex's Artificial
+    Intelligence and Computer Vision subfields since 2012), qml, tensor,
+    fraud.
+  - Already in the store: qml 14 of 25; ml, tensor and fraud 0 of 25.
+  - Abstract present: ml 21, qml 17, tensor 21, fraud 20 (of 25 each).
+  - No free copy, so hand-download candidates: ml 6, qml 1, tensor 4,
+    fraud 12. Fraud is where an account matters most.
+  - Precision findings: OpenAlex's `search` parameter matched far too
+    broadly (a sentiment-analysis survey for QML, YOLO for tensor
+    networks); the `title_and_abstract.search` filter fixed qml and
+    tensor, and fraud needed "fraud" in the TITLE plus an ML term in the
+    abstract.
+  - Data-quality finding in the ml stream: OpenAlex merged-record errors
+    distort citation ranks (a tutoring-systems paper credited with 78,458
+    citations; "Attention Is All You Need" as a 2025 record under an
+    unknown DOI prefix). Before ranking, cross-check citations against
+    Semantic Scholar and collapse duplicate titles to the canonical record.
+- Budget: OpenAlex meters a daily budget (keyless about 100 searches;
+  single-DOI lookups free); the team lead has an OpenAlex key, read from
+  `OPENALEX_API_KEY` (user environment) and sent only in the Authorization
+  header. Semantic Scholar: 1 request per second with a free key.
+- Acceptance: a ranking rubric approved by the team lead; per stream, a
+  reviewed top list; the chosen papers entered; a hand-download list with
+  every entry's free-copy search recorded.
+- Depends on: F52's cap for arXiv; F61 (shared discovery input).
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
