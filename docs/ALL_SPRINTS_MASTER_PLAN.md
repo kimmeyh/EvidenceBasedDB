@@ -540,6 +540,27 @@ do 40 and 42, and 60 and 62.
   after the decided replacement exists and a rebuild from it is proven.
 - Depends on: none. Run before F52, F57 or any other bulk load.
 
+**F60. A mislabeled QMLPapers file: the "Asfaw 2108.0131" PDF is another paper (~30m) Priority 44** (NEW 2026-10-06, found in Sprint 7 Task E)
+- Phase: Sourcing / collection hygiene
+- Platform: `D:\Data\Harold\EvidenceBasedDB\QMLPapers\2021\manifest.tsv`
+  (outside the repository; read only from here), `scripts/intake.py`
+- Found reading the PDF for F54: the file
+  `Asfaw-et-al._2021_Building-a-Quantum-Engineering-Undergraduate-Program__2108.0131.pdf`
+  begins "arXiv:2108.00131v2 [cs.LG] 22 Feb 2022" and is Radhakrishnan,
+  Stefanakis, Belkin and Uhler on infinite-width neural networks for matrix
+  completion, the paper whose code its repository note names
+  (`uhlerlab/ntk_matrix_`). The manifest row's title (Asfaw et al.) and its
+  id (`2108.0131`, one digit short) do not match the file. The Asfaw paper
+  itself was never downloaded; its real arXiv id is not yet verified.
+- Sprint 7 Task E enters `2108.00131` (the paper on disk) and links its
+  repository; this card is the rest: find the Asfaw paper's real id, decide
+  whether it belongs in the collection, and look for other rows whose file
+  is not the paper the row names (a first-page id check against the
+  manifest id, all folders).
+- Acceptance: every manifest row's id matches its file's first-page id, or
+  the mismatch is listed; the Asfaw paper entered or recorded as out of
+  scope with the reason.
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
