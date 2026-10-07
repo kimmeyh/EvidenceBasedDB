@@ -12,6 +12,14 @@ serial, 18 s apart, and capped per session (Sprint 7 Task C, F52):
         --progress <file> --heartbeat <file>                     # the bulk run, overnight
     python scripts/probe_reference_fields.py --ids a,b,c [--apply]
     python scripts/probe_reference_fields.py --all [--apply]
+    python scripts/probe_reference_fields.py --refresh --apply --sessions \
+        --progress <file> --heartbeat <file>                     # Phase 1.3, each cycle (F53)
+    python scripts/probe_reference_fields.py --stale [--before YYYY-MM-DD]
+
+STALE (F53): a probe measured before the current cycle's start (the date in
+the sprint branch's name) is stale once Phase 1.3 has run. `--stale` lists
+them and exits 1 when there is any; `--refresh` selects every record with a
+stale probe or none. Hand-recorded values are readings, never stale.
 
 SESSIONS (team lead, 2026-10-04 and Sprint 7 Q5-Q7): at most
 citations.ARXIV_SESSION_CAP arXiv requests per session, then a pause of at
@@ -41,6 +49,8 @@ printed as DIFFERS.
 """
 from __future__ import annotations
 
+import json
+import re
 import sys
 import time
 from datetime import date, datetime, timedelta
@@ -84,6 +94,11 @@ def select(conn, args: list[str]) -> list[tuple[str, str, str]]:
     if "--unprobed" in args:
         probed = {r[0] for r in conn.execute("SELECT DISTINCT record_id FROM paper_probes")}
         return [(i, a, kind_of(a)) for i, a in rows if i not in probed]
+    if "--refresh" in args:
+        # Phase 1.3 (F53): every record with a stale probe or none at all.
+        fresh = {r[0] for r in conn.execute("SELECT DISTINCT record_id FROM paper_probes")} - {
+            s[0] for s in stale_probes(conn, cycle_start())}
+        return [(i, a, kind_of(a)) for i, a in rows if i not in fresh]
     # Pilot: spread across the alphabet within each type, deterministic.
     out = []
     for kind, n in PILOT.items():
@@ -91,6 +106,41 @@ def select(conn, args: list[str]) -> list[tuple[str, str, str]]:
         step = max(1, len(of_kind) // n)
         out += [(i, a, kind) for i, a in of_kind[::step][:n]]
     return out
+
+
+SPRINT_STATUS = ROOT / ".claude" / "sprint_status.json"
+
+
+def cycle_start(status_path: Path | None = None) -> str:
+    """The current delivery cycle's first day, computed from the sprint
+    branch's name (`feature/YYYYMMDD_Sprint_N`, cut at Phase 6.6). Phase 1.3
+    re-runs the probes, so after it no probe should be older than this."""
+    branch = json.loads((status_path or SPRINT_STATUS).read_text(encoding="utf-8"))["current_sprint"]["branch"]
+    m = re.search(r"(\d{4})(\d{2})(\d{2})_Sprint", branch)
+    if not m:
+        raise ValueError(f"cannot read a cycle start date from branch {branch!r}")
+    return "-".join(m.groups())
+
+
+def stale_probes(conn, before: str) -> list[tuple[str, str, str, str]]:
+    """(record_id, field, provider, probed_on) for every probe measured
+    before `before` (F53). A hand-recorded value (provider 'hand') is a
+    reading with an anchor, not a registry measurement, so no probe run can
+    refresh it and it is never stale."""
+    return [tuple(r) for r in conn.execute(
+        "SELECT record_id, field, provider, probed_on FROM paper_probes "
+        "WHERE probed_on < ? AND provider <> 'hand' ORDER BY record_id, field", (before,))]
+
+
+def report_stale(conn, before: str) -> int:
+    """`--stale`: list every stale probe; exit 1 when there is any."""
+    rows = stale_probes(conn, before)
+    for rid, field_name, provider, probed_on in rows:
+        print(f"STALE {rid} {field_name} [{provider}] probed {probed_on}")
+    records = len({r[0] for r in rows})
+    print(f"{len(rows)} probe(s) on {records} record(s) older than the cycle start {before}"
+          + ("; refresh with --refresh --apply --sessions --progress <file>" if rows else ""))
+    return 1 if rows else 0
 
 
 TERMINAL = ("withdrawn", "retracted")
@@ -259,6 +309,9 @@ def main(argv: list[str] | None = None) -> int:
 
     conn = connect(DB_PATH)
     try:
+        if "--stale" in args:
+            before = args[args.index("--before") + 1] if "--before" in args else cycle_start()
+            return report_stale(conn, before)
         targets = select(conn, args)
         if apply:
             backup_before_write(DB_PATH, "probe reference fields")

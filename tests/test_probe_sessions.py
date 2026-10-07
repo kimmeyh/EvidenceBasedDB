@@ -226,3 +226,46 @@ def test_a_differing_value_is_reported(monkeypatch, tmp_path, capsys):
             sessions=False, progress=None, heartbeat=None)
     assert "DIFFERS p2401.00001 publication_status: stored 'preprint', probe 'published'" in capsys.readouterr().out
     conn.close()
+
+
+# ------------------------------------------------------------ F53: stale probes
+
+def test_a_stale_probe_is_reported_and_fails_the_check_regression(monkeypatch, tmp_path, capsys):
+    """F53: a probe measured before the cycle start is listed and the check
+    exits 1; a fresh one, or a hand-recorded reading, is not. Proven to fail
+    by injection, 2026-10-06: with the date comparison made always false,
+    nothing was reported and the check exited 0."""
+    mod, _ = _script(monkeypatch, None)
+    conn = _store(tmp_path, ["2401.00001", "2401.00002", "2401.00003"])
+    record_probe(conn, "p2401.00001", "publication_status", "preprint", "arXiv", "2026-10-03")    # stale
+    record_probe(conn, "p2401.00002", "publication_status", "preprint", "arXiv", "2026-10-06")    # fresh
+    record_probe(conn, "p2401.00003", "publication_status", "withdrawn", "hand", "2026-10-01",
+                 anchor="the abstract page, read 2026-10-01")                                        # a reading
+    assert mod.report_stale(conn, "2026-10-06") == 1
+    out = capsys.readouterr().out
+    assert "STALE p2401.00001 publication_status [arXiv] probed 2026-10-03" in out
+    assert "p2401.00002" not in out and "p2401.00003" not in out
+    record_probe(conn, "p2401.00001", "publication_status", "preprint", "arXiv", "2026-10-07")
+    assert mod.report_stale(conn, "2026-10-06") == 0
+    conn.close()
+
+
+def test_refresh_selects_stale_and_unprobed_records(monkeypatch, tmp_path):
+    mod, _ = _script(monkeypatch, None)
+    monkeypatch.setattr(mod, "cycle_start", lambda: "2026-10-06")
+    conn = _store(tmp_path, ["2401.00001", "2401.00002", "2401.00003"])
+    record_probe(conn, "p2401.00001", "access_status", "open (HTTP 200)", "HTTP probe", "2026-10-03")
+    record_probe(conn, "p2401.00002", "access_status", "open (HTTP 200)", "HTTP probe", "2026-10-06")
+    assert [t[0] for t in mod.select(conn, ["--refresh"])] == ["p2401.00001", "p2401.00003"]
+    conn.close()
+
+
+def test_the_cycle_start_is_computed_from_the_sprint_branch(monkeypatch, tmp_path):
+    mod, _ = _script(monkeypatch, None)
+    status = tmp_path / "sprint_status.json"
+    status.write_text(json.dumps({"current_sprint": {"branch": "feature/20261006_Sprint_7"}}))
+    assert mod.cycle_start(status) == "2026-10-06"
+    status.write_text(json.dumps({"current_sprint": {"branch": "main"}}))
+    with pytest.raises(ValueError):
+        mod.cycle_start(status)
+    assert len(mod.cycle_start()) == 10  # the real file parses

@@ -65,6 +65,12 @@ this project keeps having to replace with a step.
   such sessions stop the run; `--sessions` pauses 2 hours between caps;
   `--progress` makes a stopped run resumable; values that differ from the
   stored probe print as DIFFERS. Five guards proven by injection
+- **feat**: F53, probes each cycle and a stale report (Task D, Issue #72)
+  -- `probe_reference_fields.py --stale` lists every probe measured before
+  the cycle start (computed from the sprint branch's date) and exits 1 when
+  any is stale; hand-recorded readings are never stale; `--refresh`
+  selects stale and unprobed records; Phase 1.3 of the workflow runs the
+  refresh within F52's cap, then `--stale`. Guard proven by injection
 
 ### 2026-09-27 to 2026-10-06 (Sprint 6, PR #54, merged to develop 2026-10-06 and to main via PR #67 the same day)
 
