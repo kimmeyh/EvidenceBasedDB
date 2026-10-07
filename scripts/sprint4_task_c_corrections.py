@@ -65,7 +65,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.ingest import HAND_MARKER, PaperRecord, append_updated_reason, validate_paper  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
@@ -450,9 +449,8 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         conn.execute("COMMIT")
         conn.execute("PRAGMA foreign_keys = ON")
-        regenerate(conn, EXPORT_DIR)
         n = write_metadata(conn)
-        print(f"applied. export regenerated; {n} entries written to {METADATA_PATH.name}")
+        print(f"applied; {n} entries written to {METADATA_PATH.name}")
         return 0
     finally:
         conn.close()

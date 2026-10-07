@@ -32,7 +32,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.ingest import PaperRecord, append_updated_reason, validate_paper  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
@@ -357,8 +356,7 @@ def main(argv: list[str] | None = None) -> int:
             print("PLANNED (dry run; nothing written). Re-run with --apply to commit." if not do_apply else "NOT APPLIED: the gate refused; nothing written.")
             return 0 if not do_apply else 1
         conn.execute("COMMIT")
-        regenerate(conn, EXPORT_DIR)
-        print("applied; export regenerated")
+        print("applied")
         return 0
     finally:
         conn.close()

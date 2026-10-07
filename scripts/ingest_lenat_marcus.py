@@ -24,7 +24,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.ingest import AssertionRecord, PaperRecord, insert_assertion, insert_paper  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
@@ -203,10 +202,9 @@ def main() -> int:
         insert_assertion(conn, assertion, yielded_by=paper.id)
 
     conn.commit()
-    regenerate(conn, EXPORT_DIR)
     conn.close()
 
-    print(f"Ingested {paper.id} plus {len(yields)} assertions. Export regenerated.")
+    print(f"Ingested {paper.id} plus {len(yields)} assertions.")
     return 0
 
 

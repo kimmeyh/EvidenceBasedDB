@@ -22,7 +22,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.export import regenerate  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 ACCESS = ["arXiv:2405.02958", "DOI:10.1101/2021.05.04.21256502", "arXiv:2603.15546"]
@@ -65,12 +64,11 @@ def main(argv: list[str] | None = None) -> int:
             print(f"NOT APPLIED: foreign_key_check {fk}", file=sys.stderr)
             return 1
         conn.execute("COMMIT")
-        regenerate(conn, EXPORT_DIR)
     finally:
         conn.close()
     for p in pdfs:
         p.unlink()
-    print(f"deleted {len(ids)} records and {len(pdfs)} files; export regenerated")
+    print(f"deleted {len(ids)} records and {len(pdfs)} files")
     return 0
 
 

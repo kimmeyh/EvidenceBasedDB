@@ -20,6 +20,7 @@ Two kinds of test follow from that:
 from __future__ import annotations
 
 import sqlite3
+import stat
 import sys
 from pathlib import Path
 
@@ -58,13 +59,20 @@ def _live_db(request) -> Path:
     return db
 
 
-@pytest.fixture
-def live_conn(request):
-    """The live store, opened READ-ONLY."""
-    db = _live_db(request)
+def _open_read_only(db: Path) -> sqlite3.Connection:
+    """Every live fixture opens the live store this way, so no test can
+    write to it (Task B review, 2026-10-06: live_copy and live_export
+    opened it read-write)."""
     conn = sqlite3.connect(f"file:{db.as_posix()}?mode=ro", uri=True)
     conn.execute("PRAGMA foreign_keys = ON")
     conn.row_factory = sqlite3.Row
+    return conn
+
+
+@pytest.fixture
+def live_conn(request):
+    """The live store, opened READ-ONLY."""
+    conn = _open_read_only(_live_db(request))
     yield conn
     conn.close()
 
@@ -75,7 +83,7 @@ def live_copy(request, tmp_path) -> Path:
     that must write. The live store itself is never written."""
     db = _live_db(request)
     target = tmp_path / "live_copy.db"
-    src, dst = sqlite3.connect(db), sqlite3.connect(target)
+    src, dst = _open_read_only(db), sqlite3.connect(target)
     try:
         src.backup(dst)
     finally:
@@ -94,15 +102,19 @@ def _live_dump_once(tmp_path_factory) -> dict:
 @pytest.fixture
 def live_export(request, _live_dump_once) -> Path:
     """An on-demand dump of the live store, for tests that read the JSON.
-    Read-only by convention: copy it before changing anything in it."""
+    Shared by the whole session, so its files are made read-only: a test
+    that changes one fails at once instead of corrupting every later live
+    test (Task B review, 2026-10-06). Copy it before changing anything."""
     db = _live_db(request)
     if _live_dump_once["dir"] is None:
         out = _live_dump_once["factory"].mktemp("live_export")
-        conn = connect(db)
+        conn = _open_read_only(db)
         try:
             regenerate(conn, out)
         finally:
             conn.close()
+        for f in out.iterdir():
+            f.chmod(stat.S_IREAD)
         _live_dump_once["dir"] = out
     return _live_dump_once["dir"]
 

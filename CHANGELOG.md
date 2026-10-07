@@ -45,6 +45,17 @@ this project keeps having to replace with a step.
   `live_store` marker (locally a missing store fails them; CI deselects them
   by name); `test_export_currency.py` retired; CLAUDE.md, the workflow and
   `.gitignore` updated
+- **fix**: Task B fresh-eyes review findings (Issue #70) -- CI was red: off
+  Windows the default `D:\` store path is one relative segment and resolved
+  inside the checkout, so `store_dir()` now refuses it there and names
+  `EBDB_STORE_DIR` (new test, proven by injection); 17 historical scripts
+  committed their write and only then hit the retired export, so those
+  `regenerate` calls are gone and a test keeps them out (proven by
+  injection); both public export writers refuse a folder inside the
+  repository, not only `regenerate`; every live fixture opens the store
+  read-only and the shared session dump is read-only; the append-only
+  `updated_reason` check also anchors at 3bf2eda, the last export, so Sprint
+  6's records are covered; stale docstrings corrected
 
 ### 2026-09-27 to 2026-10-06 (Sprint 6, PR #54, merged to develop 2026-10-06 and to main via PR #67 the same day)
 

@@ -1,10 +1,10 @@
 """Verified backups of the store, taken before every write (Sprint 5 Task A, F30 part 2).
 
 Premise check 2026-09-23: there was NO backup of store/evidence.db
-anywhere. The committed export made the data recoverable in principle;
-store/rebuild.py makes it recoverable in fact. Backups cover the gap
-between a write and the commit of its export -- until that commit, the
-backup is the only other copy.
+anywhere. Until ADR-0004 A7 the committed export was the other copy and
+backups covered the gap between a write and the commit of its export.
+Since A7 (2026-10-06) no export is committed: these backups, beside the
+store outside the repository, ARE the recovery path.
 
 Mechanism (team lead, 2026-09-23: "if it is [sqlite], then backups and
 restores are part of the sqlite package"): `sqlite3.Connection.backup()`,

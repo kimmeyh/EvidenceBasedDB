@@ -1,15 +1,15 @@
 """The Evidence Based DB store: SQLite as the store of record.
 
-ADR-0004 section 2: SQLite first, with a deterministic text export
-regenerated from it (store/export.py, Task C). The store is a build
-output; the export is the artifact.
+ADR-0004 section 2 made the committed text export the artifact. Since
+ADR-0004 A7 (2026-10-06) the store itself is the record, it lives outside
+the repository, and its verified backups are the recovery path; the export
+(store/export.py) is an on-demand dump only.
 """
 from __future__ import annotations
 
-import sqlite3
-from pathlib import Path
-
 import os
+import sqlite3
+from pathlib import Path, PureWindowsPath
 
 SCHEMA_PATH = Path(__file__).parent / "schema.sql"
 SEED_CONTEXTS_PATH = Path(__file__).parent / "seed_contexts.sql"
@@ -18,14 +18,30 @@ SEED_CONTEXTS_PATH = Path(__file__).parent / "seed_contexts.sql"
 # live OUTSIDE every repository. One setting, read here and nowhere else:
 # the default below, or the environment variable EBDB_STORE_DIR (tests and
 # CI point it at a temporary folder).
-DEFAULT_STORE_DIR = Path(r"D:\Data\Harold\EvidenceBasedDB\store")
+DEFAULT_STORE_DIR = PureWindowsPath(r"D:\Data\Harold\EvidenceBasedDB\store")
 STORE_DIR_ENV = "EBDB_STORE_DIR"
 
 
+def _on_windows() -> bool:
+    return os.name == "nt"  # a function, so tests can take either branch on any OS
+
+
 def store_dir() -> Path:
-    """The folder holding evidence.db and backups/ (ADR-0004 A7)."""
+    """The folder holding evidence.db and backups/ (ADR-0004 A7).
+
+    The default is a Windows path. Off Windows, `Path(r"D:\\...")` is ONE
+    relative segment and resolves inside the current folder, which is the
+    repository on CI (Task B review, 2026-10-06: CI went red on exactly
+    this). So off Windows the override is required, and its absence raises."""
     override = (os.environ.get(STORE_DIR_ENV) or "").strip()
-    return Path(override) if override else DEFAULT_STORE_DIR
+    if override:
+        return Path(override)
+    if not _on_windows():
+        raise RuntimeError(
+            f"The default store folder {DEFAULT_STORE_DIR} is a Windows path. On this system set "
+            f"{STORE_DIR_ENV} to the store folder (ADR-0004 A7); without it the path would resolve "
+            "inside the current folder.")
+    return Path(DEFAULT_STORE_DIR)
 
 
 class _NoCommittedExport:
@@ -89,8 +105,8 @@ def create_store(db_path: str | Path) -> sqlite3.Connection:
     """Create a new store at db_path from schema.sql and return an open connection.
 
     Raises if db_path already exists, so this never silently overwrites a
-    populated store -- rebuild from the committed export instead of calling
-    this on an existing file.
+    populated store -- restore a verified backup (scripts/restore_store.py)
+    instead of calling this on an existing file.
     """
     db_path = Path(db_path)
     if db_path.exists():

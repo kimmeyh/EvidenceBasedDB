@@ -7,6 +7,8 @@ the violation it exists to catch, not merely that a valid row is accepted.
 """
 from __future__ import annotations
 
+import os
+import re
 import sqlite3
 import tempfile
 from pathlib import Path
@@ -16,6 +18,7 @@ import pytest
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import store as store_pkg  # noqa: E402
 from store import (  # noqa: E402
     DEFAULT_STORE_DIR, NO_COMMITTED_EXPORT, connect, create_store, script_paths, store_dir,
 )
@@ -291,23 +294,69 @@ def test_script_paths_derives_the_root_from_its_argument(monkeypatch):
     every script. A fake script path two directories under a synthetic repo
     root proves the function resolves ROOT relative to ITS ARGUMENT."""
     monkeypatch.delenv("EBDB_STORE_DIR", raising=False)
+    monkeypatch.setattr(store_pkg, "_on_windows", lambda: True)
     fake_script = Path("/some/repo/scripts/whatever_ingest.py")
     root, db_path, export_dir = script_paths(str(fake_script))
     assert root.parts[-2:] == ("some", "repo")
-    assert db_path == DEFAULT_STORE_DIR / "evidence.db"
+    assert db_path == Path(DEFAULT_STORE_DIR) / "evidence.db"
     assert export_dir is NO_COMMITTED_EXPORT
 
 
 def test_every_default_store_path_is_outside_the_repository_regression(monkeypatch):
-    """ADR-0004 A7 (a): no script writes data inside the repository. Proven
-    to fail by injection: with DEFAULT_STORE_DIR set to the repository's own
-    store/ folder (the layout before A7), the first assertion went red."""
+    """ADR-0004 A7 (a): no script writes data inside the repository. The
+    default is an ABSOLUTE Windows path (a drive and a root), and on
+    Windows it resolves outside this checkout.
+
+    Proven to fail by injection: with DEFAULT_STORE_DIR set to the
+    repository's own store/ folder (the layout before A7), the Windows
+    assertion went red. Off Windows the default is refused outright; that
+    branch is the next test (Task B review, 2026-10-06: CI on Linux
+    resolved the default INSIDE the checkout)."""
     monkeypatch.delenv("EBDB_STORE_DIR", raising=False)
+    assert DEFAULT_STORE_DIR.drive and DEFAULT_STORE_DIR.root, "the default must be absolute on Windows"
+    if os.name != "nt":
+        return  # the Windows default cannot be resolved here; the next test covers this system
     repo = Path(__file__).resolve().parents[1]
     root, db_path, _ = script_paths(str(repo / "scripts" / "view.py"))
     assert root == repo
     assert repo not in db_path.resolve().parents
     assert repo not in default_backups_dir(db_path).resolve().parents
+
+
+def test_off_windows_the_default_store_is_refused_regression(monkeypatch):
+    """Off Windows, Path(r"D:\\...") is one relative segment, so the default
+    would put evidence.db inside the current folder (the checkout, on CI).
+    store_dir() must refuse it and name the override. Runs on every OS by
+    taking the non-Windows branch explicitly.
+
+    Proven to fail by injection, 2026-10-06: with the `if not
+    _on_windows(): raise` branch removed from store_dir, this went red
+    (DID NOT RAISE)."""
+    monkeypatch.delenv("EBDB_STORE_DIR", raising=False)
+    monkeypatch.setattr(store_pkg, "_on_windows", lambda: False)
+    with pytest.raises(RuntimeError, match="EBDB_STORE_DIR"):
+        store_dir()
+    with pytest.raises(RuntimeError, match="EBDB_STORE_DIR"):
+        script_paths(__file__)
+
+
+def test_no_script_regenerates_an_export_after_its_write_regression():
+    """ADR-0004 A7 (b) retired the committed export. Seventeen historical
+    scripts committed their write and only THEN called
+    regenerate(conn, EXPORT_DIR), which raises: the operator saw a traceback
+    for a write that had landed, and might re-run a script that is not
+    idempotent (Task B review, 2026-10-06). The calls were removed; this
+    keeps them out.
+
+    Proven to fail by injection, 2026-10-06: re-adding the call to
+    scripts/sprint5_cvqboost_quote_fix.py turned this red naming that file."""
+    scripts = Path(__file__).resolve().parents[1] / "scripts"
+    # Exempt: this migration hashes EXPORT_DIR BEFORE it writes, so it fails
+    # before the write, not after it.
+    exempt = {"migrate_paper_fields_drop_citation.py"}
+    offenders = sorted(p.name for p in scripts.glob("*.py") if p.name not in exempt
+                       and re.search(r"^\s*regenerate\(conn, EXPORT_DIR\)", p.read_text(encoding="utf-8"), re.M))
+    assert offenders == [], f"scripts still regenerate the retired export after writing: {offenders}"
 
 
 def test_the_store_location_can_be_overridden(monkeypatch, tmp_path):

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Restore store/evidence.db from a backup (Sprint 5 Task A, F30 part 3).
+"""Restore the store's evidence.db from a backup (Sprint 5 Task A, F30 part 3).
+The store is at store.store_dir() since ADR-0004 A7, outside the repository.
 
 A restore is a script with a test, not a documented gesture.
 
@@ -8,12 +9,10 @@ the restore would change -- the backup's record counts per class against
 the current store's. Nothing is written.
 
 --apply: backs the CURRENT store up first (so a restore is itself
-reversible), then copies the backup into store/evidence.db with SQLite's
-backup API, then checks the restored store's integrity and counts. The
-export is NOT regenerated automatically: compare it first
-(`python scripts/regenerate_export.py`, then `git diff export/`), because
-a restore that silently rewrites the committed artifact would hide what
-changed.
+reversible), then copies the backup into the store with SQLite's backup
+API, then checks the restored store's integrity and counts. No export is
+committed since ADR-0004 A7; to see what a restore changed, dump before and
+after with `python scripts/regenerate_export.py --out <dir>` and compare.
 
 Usage:
   python scripts/restore_store.py --list

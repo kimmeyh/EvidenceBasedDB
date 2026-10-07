@@ -38,7 +38,6 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from store import connect, script_paths  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
 from store.ingest import AssertionRecord, add_read, append_updated_reason, insert_assertion, set_tier  # noqa: E402
 
@@ -664,8 +663,7 @@ def main(argv: list[str] | None = None) -> int:
             print("PLANNED (dry run; nothing written). Re-run with --apply to commit." if not do_apply else "NOT APPLIED")
             return 0 if not do_apply else 1
         conn.execute("COMMIT")
-        regenerate(conn, EXPORT_DIR)
-        print("applied; export regenerated")
+        print("applied")
         return 0
     finally:
         conn.close()

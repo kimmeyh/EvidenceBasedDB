@@ -39,7 +39,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
-from store.export import regenerate  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 
@@ -128,8 +127,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"NOT APPLIED: {len(bad)} row(s) did not verify: {bad}", file=sys.stderr)
             return 1
         conn.execute("COMMIT")
-        regenerate(conn, EXPORT_DIR)
-        print(f"recovered {len(todo)} record(s); export regenerated")
+        print(f"recovered {len(todo)} record(s)")
         return 0
     finally:
         conn.close()

@@ -174,48 +174,60 @@ def test_the_committed_export_still_carries_the_sprint_1_provenance(live_export)
         "the premise-falsifier record lost its own origin note")
 
 
-# The last committed export is in git history at this commit (Sprint 6 plan
-# approval, 2026-10-03); ADR-0004 A7 removed export/ from the tree afterward
-# and kept its history (Q3 = 1).
+# Two fixed anchors, both with export/ in their tree (history kept, Q3 = 1):
+# - BASELINE_COMMIT (0044a44, Sprint 6 plan approval, 2026-10-03): from
+#   before later correction passes, so the current reasons DIFFER from it and
+#   the vacuity check below has something to see.
+# - LAST_EXPORT_COMMIT (3bf2eda, 2026-10-06): the parent of the commit that
+#   removed export/ under ADR-0004 A7. Every record Sprint 6 added or changed
+#   is checked against it (Task B review, 2026-10-06: with the first anchor
+#   alone, those records were outside the check).
 BASELINE_COMMIT = "0044a44"
+LAST_EXPORT_COMMIT = "3bf2eda"
+_RENAMES = {
+    "rand-2023-pqc-critical-infrastructure-assessment": "rand-2022-pqc-critical-infrastructure-assessment",
+    "rand-2023-pqc-critical-infrastructure-assessment-appendix-b": "rand-2022-pqc-critical-infrastructure-assessment-appendix-b",
+}
 
 
-@pytest.mark.live_store
-def test_no_paper_lost_the_updated_reason_it_had_before_the_corrections(live_export):
-    """Whatever a record said at the baseline, it must still say.
-
-    Anchored to a FIXED commit. The first version read
-    `develop:export/papers.json`, which went vacuous the moment a PR merged
-    (round-2 audit, 2026-09-23); the second read the merge-base with
-    develop, which would have skipped silently once ADR-0004 A7 removed the
-    export from develop (Sprint 7 Task B, 2026-10-06). A fixed commit with
-    the export in it keeps a real baseline, and the live store is compared
-    against it.
-    """
-    ref = f"{BASELINE_COMMIT}:export/papers.json"
+def _reasons_at(commit: str) -> dict[str, str]:
+    ref = f"{commit}:export/papers.json"
     raw = subprocess.run(["git", "show", ref], cwd=ROOT,
                          capture_output=True, text=True, encoding="utf-8")
     assert raw.returncode == 0, f"the baseline {ref} must be readable from git history"
+    return {_RENAMES.get(p["id"], p["id"]): (p.get("updated_reason") or "").strip()
+            for p in json.loads(raw.stdout)}
 
-    renames = {
-        "rand-2023-pqc-critical-infrastructure-assessment": "rand-2022-pqc-critical-infrastructure-assessment",
-        "rand-2023-pqc-critical-infrastructure-assessment-appendix-b": "rand-2022-pqc-critical-infrastructure-assessment-appendix-b",
-    }
+
+@pytest.mark.live_store
+@pytest.mark.parametrize("commit", [BASELINE_COMMIT, LAST_EXPORT_COMMIT])
+def test_no_paper_lost_the_updated_reason_it_had_before_the_corrections(live_export, commit):
+    """Whatever a record said at each anchor, it must still say.
+
+    Anchored to FIXED commits. The first version read
+    `develop:export/papers.json`, which went vacuous the moment a PR merged
+    (round-2 audit, 2026-09-23); the second read the merge-base with
+    develop, which would have skipped silently once ADR-0004 A7 removed the
+    export from develop (Sprint 7 Task B, 2026-10-06). Fixed commits with
+    the export in them keep a real baseline, and the live store is compared
+    against each.
+    """
     current = {p["id"]: (p.get("updated_reason") or "")
                for p in json.loads((live_export / "papers.json").read_text(encoding="utf-8"))}
-    baseline = {renames.get(p["id"], p["id"]): (p.get("updated_reason") or "").strip()
-                for p in json.loads(raw.stdout)}
+    baseline = _reasons_at(commit)
 
-    # The guard must not be vacuous: the baseline has to differ from what we
-    # compare it against, or "nothing lost" means "nothing checked".
     comparable = {pid: was for pid, was in baseline.items() if was and pid in current}
     assert comparable, "no comparable records: this guard would assert nothing"
-    assert any(was != current[pid] for pid, was in comparable.items()), (
-        "every baseline reason is identical to the current one, so this guard is "
-        "vacuous -- it is comparing the export against itself. Anchor it to a "
-        "commit from before the correction passes.")
+    if commit == BASELINE_COMMIT:
+        # The guard must not be vacuous: the older anchor has to differ from
+        # what we compare it against, or "nothing lost" means "nothing
+        # checked". The newest anchor may legitimately equal the store.
+        assert any(was != current[pid] for pid, was in comparable.items()), (
+            "every baseline reason is identical to the current one, so this guard is "
+            "vacuous -- it is comparing the export against itself. Anchor it to a "
+            "commit from before the correction passes.")
 
     lost = [pid for pid, was in comparable.items() if was not in current[pid]]
     assert not lost, (
-        f"{len(lost)} record(s) lost the updated_reason they carried at the baseline commit: "
+        f"{len(lost)} record(s) lost the updated_reason they carried at {commit}: "
         f"{lost[:5]}. updated_reason is append-only.")

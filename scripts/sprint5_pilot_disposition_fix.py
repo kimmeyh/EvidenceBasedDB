@@ -24,7 +24,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.ingest import append_updated_reason  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
@@ -57,8 +56,7 @@ def main(argv: list[str] | None = None) -> int:
             print("PLANNED (dry run; rolled back). Re-run with --apply.")
             return 0
         conn.execute("COMMIT")
-        regenerate(conn, EXPORT_DIR)
-        print("COMMITTED; export regenerated")
+        print("COMMITTED")
         return 0
     finally:
         conn.close()
