@@ -20,6 +20,10 @@ this project keeps having to replace with a step.
   (develop) and PR #67 (main), carrying F58's card, which was committed
   after the merge; CHANGELOG reconciled; Sprint 6 completeness sweep;
   design-document currency checked; candidate slate presented
+- **docs**: Sprint 7 scope selected (team lead, 2026-10-06): F59, F58, F52,
+  F53, F54, F44, F45; `SPRINT_7_PLAN.md` drafted with pre-flights (the arXiv
+  API still answers 429; arxiv.org's robots.txt sets a 15 s crawl delay) and
+  decisions Q1-Q9
 
 ### 2026-09-27 to 2026-10-06 (Sprint 6, PR #54, merged to develop 2026-10-06 and to main via PR #67 the same day)
 

@@ -197,8 +197,13 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 **Sprint 7** (branch `feature/20261006_Sprint_7`, cut 2026-10-06 at the
 Sprint 6 carry-forward, after PR #54 merged to develop and PR #67 merged
-develop to main). Phase 1 Backlog Refinement in progress; scope not yet
-selected.
+develop to main). Phase 1 Backlog Refinement complete.
+
+**Scope selected 2026-10-06 (team lead, DEFINED)**: F59, F58, F52, F53, F54,
+F44, F45. Team lead's order: F59 first; F58; F52 and F53 together; F54;
+F44 ("each download is approved - do this after 59, 58, 52 and 54, but
+before 45"); F45. Plan: `docs/sprints/SPRINT_7_PLAN.md` (draft, awaiting
+approval). Refinement Q2 (priority changes) is carried to the plan as Q9.
 
 ## Next Sprint Candidates
 
