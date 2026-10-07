@@ -598,6 +598,22 @@ def arxiv_requests_this_session() -> int:
     return _arxiv_requests_this_session
 
 
+def assume_recent_arxiv_request() -> None:
+    """Start the clock as though an arXiv request had just gone out. The
+    clock is per process, so a new run cannot know when the previous one
+    last asked; its first request waits the full interval instead (Sprint 7
+    Task C: a run started right after another sent its first request 0.3 s
+    in)."""
+    global _last_arxiv_request
+    _last_arxiv_request = _monotonic()
+
+
+def continue_arxiv_session(count: int) -> None:
+    """Resume a session a restarted process saved, with its count."""
+    global _arxiv_requests_this_session
+    _arxiv_requests_this_session = count
+
+
 def reset_arxiv_session() -> None:
     """Start a new session's count, after the pause."""
     global _arxiv_requests_this_session

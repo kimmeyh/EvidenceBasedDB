@@ -215,6 +215,115 @@ def test_refusals_end_a_session_early_and_two_quiet_sessions_stop_the_run_regres
                  sessions=True, progress=None, heartbeat=None)
     assert rc == 3
     assert len(site.seen) == 6 and len(pauses) == 1  # 3 per session, two sessions, one pause between
+    # The refused records were not finished: --unprobed still selects them.
+    assert {f"p{i}" for i in ids} <= {t[0] for t in mod.select(conn, ["--unprobed"])}
+    conn.close()
+
+
+def test_a_refused_record_is_retried_then_given_up_so_the_run_ends_regression(monkeypatch, tmp_path):
+    """Task C review, 2026-10-06: a refused record was marked done and kept
+    only DataCite's version_of, losing its status for good. Now it is
+    retried in later sessions, up to MAX_ATTEMPTS, and then given up, so two
+    refused records (fewer than MAX_NO_ANSWERS) cannot loop forever.
+    Proven to fail by injection, 2026-10-06: with every record marked
+    finished again, the progress file held the refused ids after session 1
+    and no pause happened."""
+    monkeypatch.setattr(citations, "ARXIV_SESSION_CAP", 50)
+    ids = ["2401.00001", "2401.00002", "2401.00003"]
+    site = _site({"2401.00001": _page("2401.00001"), "2401.00002": _http(429), "2401.00003": _http(429)})
+    mod, pauses = _script(monkeypatch, site)
+    conn, progress = _store(tmp_path, ids), tmp_path / "progress.txt"
+    rc = mod.run(conn, mod.select(conn, ["--all"]), citations.PacedFetcher(inner=_inner), apply=True,
+                 sessions=True, progress=progress, heartbeat=None)
+    assert rc == 0
+    assert len(pauses) == mod.MAX_ATTEMPTS - 1
+    assert site.seen.count("https://arxiv.org/abs/2401.00002") == mod.MAX_ATTEMPTS
+    assert sorted(progress.read_text().split()) == [f"p{i}" for i in ids]  # given up, so finished
+    status = {r[0] for r in conn.execute("SELECT record_id FROM paper_probes WHERE field = 'publication_status'")}
+    assert status == {"p2401.00001"}
+    assert [t[0] for t in mod.select(conn, ["--unprobed"])] == ["p2401.00002", "p2401.00003"]
+    conn.close()
+
+
+def test_a_restart_honors_the_saved_pause_and_count_regression(monkeypatch, tmp_path):
+    """Task C review, 2026-10-06: the count and the pause lived only in
+    memory, so a restart started a fresh session at once. Proven to fail by
+    injection, 2026-10-06: with _resume_session returning False at once,
+    no wait happened and the count restarted at 0."""
+    mod, pauses = _script(monkeypatch, _site({"2401.00001": _page("2401.00001")}))
+    monkeypatch.setattr(mod, "_now", lambda: 10_000.0)
+    conn, progress = _store(tmp_path, ["2401.00001"]), tmp_path / "progress.txt"
+    state = mod._state_path(progress)
+    state.write_text(json.dumps({"requests": 7, "last_request": 9_000.0, "paused_until": 12_000.0}))
+    mod.run(conn, mod.select(conn, ["--all"]), citations.PacedFetcher(inner=_inner), apply=False,
+            sessions=False, progress=progress, heartbeat=None)
+    assert pauses[0] == 2_000.0  # the rest of the saved pause
+    state.write_text(json.dumps({"requests": 7, "last_request": 9_999.0, "paused_until": None}))
+    citations.reset_arxiv_session()
+    assert mod._resume_session(state) is True
+    assert citations.arxiv_requests_this_session() == 7
+    assert pauses[-1] == pytest.approx(citations.ARXIV_MIN_INTERVAL_S - 1.0)
+    conn.close()
+
+
+def test_a_new_run_waits_before_its_first_arxiv_request_regression(monkeypatch, tmp_path):
+    """The pacing clock is per process; a run started right after another
+    sent its first request 0.3 s in (2026-10-06). Proven to fail by
+    injection, 2026-10-06: without the assume_recent_arxiv_request call in
+    run(), the first request did not wait."""
+    waits = []
+    monkeypatch.setattr(citations, "_sleep", waits.append)
+    monkeypatch.setattr(citations, "_monotonic", lambda: 500.0)
+    mod, _ = _script(monkeypatch, _site({"2401.00001": _page("2401.00001")}))
+    conn = _store(tmp_path, ["2401.00001"])
+    mod.run(conn, mod.select(conn, ["--all"]), citations.PacedFetcher(inner=_inner), apply=False,
+            sessions=False, progress=None, heartbeat=None, force_site=True)
+    assert waits and waits[0] == citations.ARXIV_MIN_INTERVAL_S
+    conn.close()
+
+
+def test_a_crossref_failure_keeps_the_page_result(monkeypatch):
+    def inner(url, accept):
+        if "api.crossref.org" in url:
+            raise _http(503)
+        return _inner(url, accept)
+    r = probes.probe_arxiv_site("p", "2405.12044", citations.PacedFetcher(inner=inner),
+                                _open=_site({"2405.12044": _page("2405.12044", doi="10.22331/q-1")}))
+    assert r.values == {"publication_status": "published", "version_of": "10.22331/q-1"}
+    assert any("retraction check did not answer" in n for n in r.notes)
+
+
+def test_an_arxiv_block_or_a_foreign_page_records_no_access():
+    """A 403 from arXiv is its block on this client; an open page that is
+    not this paper's page says nothing about the paper."""
+    fetcher = citations.PacedFetcher(inner=_inner)
+    r = probes.probe_arxiv_site("p", "2401.00001", fetcher, _open=_site({"2401.00001": _http(403)}))
+    assert r.access is None
+    r = probes.probe_arxiv_site("p", "2401.00001", fetcher, _open=_site({"2401.00001": _page("2401.99999")}))
+    assert r.access is None and "publication_status" not in r.values
+    r = probes.probe_arxiv_site("p", "2401.00001", fetcher, _open=_site({"2401.00001": _http(404)}))
+    assert r.access == "not found (HTTP 404)"
+
+
+def test_api_mode_costs_two_requests_per_paper_and_stops_at_the_cap(monkeypatch, tmp_path):
+    """When the API answers its session check, each paper costs the API
+    request plus the abstract page for access. Cap 4: the check, then one
+    paper (2), then the next paper's API request (4th); its access request
+    would be the 5th and raises, so that paper is not written."""
+    monkeypatch.setattr(citations, "ARXIV_SESSION_CAP", 4)
+    atom = (b'<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom" '
+            b'xmlns:arxiv="http://arxiv.org/schemas/atom"><entry><id>http://arxiv.org/abs/2401.00001v1</id>'
+            b'<title>T</title></entry></feed>')
+
+    def inner(url, accept):
+        return atom if "export.arxiv.org" in url else _inner(url, accept)
+    mod, _ = _script(monkeypatch, _site({i: _page(i) for i in IDS}))
+    conn = _store(tmp_path, IDS)
+    rc = mod.run(conn, mod.select(conn, ["--all"]), citations.PacedFetcher(inner=inner), apply=True,
+                 sessions=False, progress=None, heartbeat=None)
+    assert rc == 2 and citations.arxiv_requests_this_session() == 4
+    written = {r[0] for r in conn.execute("SELECT DISTINCT record_id FROM paper_probes")}
+    assert written == {"p2401.00001"}
     conn.close()
 
 

@@ -65,6 +65,18 @@ this project keeps having to replace with a step.
   such sessions stop the run; `--sessions` pauses 2 hours between caps;
   `--progress` makes a stopped run resumable; values that differ from the
   stored probe print as DIFFERS. Five guards proven by injection
+- **fix**: Task C fresh-eyes review findings (Issue #71) -- a record arXiv
+  refused was marked done and lost its status for good: it now stays
+  unfinished and is retried in later sessions, up to 3, and `--unprobed`
+  selects an arXiv record without a status; the session count and the
+  pause are saved beside the progress file so a restart honors them; a
+  Crossref failure no longer discards the registry's answer; an arXiv 403,
+  or an open page that is not the paper's, records no access; a 2-minute
+  SQLite busy timeout; a new run waits the full interval before its first
+  arXiv request (found live: 0.3 s after the previous run); `--site`
+  forces the abstract page. Live check: the page matched the API on the
+  pilot's 12 papers (8 published with their DOIs, 4 preprints) and saw all
+  6 recorded withdrawals, 4 of which the API comment never showed
 - **feat**: F53, probes each cycle and a stale report (Task D, Issue #72)
   -- `probe_reference_fields.py --stale` lists every probe measured before
   the cycle start (computed from the sprint branch's date) and exits 1 when

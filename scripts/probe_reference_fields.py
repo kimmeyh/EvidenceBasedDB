@@ -36,6 +36,8 @@ SOURCE (Q5 = 1): each session starts with ONE API request. If the API
 answers, that session uses the API for status, version and affiliations
 and the abstract page for access (two arXiv requests per paper); if not,
 the abstract page alone answers status, version and access in one request.
+`--site` skips the API check and uses the abstract page (one request per
+paper); a dry run with it checks the page parser against stored API values.
 
 RESUME: `--progress <file>` lists every record whose probe finished, one id
 per line; a later run with the same file skips them. The store records
@@ -72,8 +74,10 @@ ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 PILOT = {"arxiv": 12, "doi": 10, "github": 3, "hand-url": 5}  # 30, every source type
 PAUSE_HOURS = 2.0      # team lead, 2026-10-04: "pause for 2 hours"
 MAX_NO_ANSWERS = 3     # arXiv no-answers in a row that end a session early
+MAX_ATTEMPTS = 3       # sessions a record is retried without an arXiv answer
 SITE_OPEN = None       # urlopen for the abstract page and access probes; tests inject
-_pause = time.sleep    # module attribute so tests do not wait two hours
+_pause = time.sleep    # module attributes so tests do not wait two hours
+_now = time.time       # and can move the wall clock the saved state uses
 
 
 def kind_of(access: str) -> str:
@@ -92,8 +96,13 @@ def select(conn, args: list[str]) -> list[tuple[str, str, str]]:
     if "--all" in args:
         return [(i, a, kind_of(a)) for i, a in rows]
     if "--unprobed" in args:
+        # No probe at all, or an arXiv record whose status arXiv never
+        # answered (a DataCite version_of alone is not a finished probe).
         probed = {r[0] for r in conn.execute("SELECT DISTINCT record_id FROM paper_probes")}
-        return [(i, a, kind_of(a)) for i, a in rows if i not in probed]
+        with_status = {r[0] for r in conn.execute(
+            "SELECT record_id FROM paper_probes WHERE field = 'publication_status'")}
+        return [(i, a, k) for i, a in rows for k in [kind_of(a)]
+                if i not in probed or (k == "arxiv" and i not in with_status)]
     if "--refresh" in args:
         # Phase 1.3 (F53): every record with a stale probe or none at all.
         fresh = {r[0] for r in conn.execute("SELECT DISTINCT record_id FROM paper_probes")} - {
@@ -206,24 +215,62 @@ def _beat(heartbeat: Path | None, text: str) -> None:
         heartbeat.write_text(f"{datetime.now().isoformat(timespec='seconds')} {text}\n", encoding="utf-8")
 
 
+def _state_path(progress: Path | None) -> Path | None:
+    return progress.with_name(progress.name + ".state.json") if progress else None
+
+
+def _save_state(path: Path | None, *, paused_until: float | None = None) -> None:
+    """The session's arXiv count, the last request's wall time, and any
+    pause, beside the progress file: a restart must honor the cap and the
+    pause (Task C review, 2026-10-06: they lived only in process memory)."""
+    if path:
+        path.write_text(json.dumps({"requests": citations.arxiv_requests_this_session(),
+                                    "last_request": _now(), "paused_until": paused_until}), encoding="utf-8")
+
+
+def _resume_session(path: Path | None) -> bool:
+    """Apply a saved state. True when the saved session continues (its count
+    restored); False when a new session starts."""
+    if not path or not path.exists():
+        return False
+    state = json.loads(path.read_text(encoding="utf-8"))
+    now = _now()
+    if state.get("paused_until") and state["paused_until"] > now:
+        print(f"resuming inside a pause: waiting {(state['paused_until'] - now) / 60:.0f} more minute(s)")
+        _pause(state["paused_until"] - now)
+        return False
+    if now - state.get("last_request", 0) < PAUSE_HOURS * 3600:
+        citations.continue_arxiv_session(int(state.get("requests", 0)))
+        _pause(max(0.0, state["last_request"] + citations.ARXIV_MIN_INTERVAL_S - now))
+        print(f"resuming the saved session: {citations.arxiv_requests_this_session()} arXiv request(s) already used")
+        return True
+    return False
+
+
 def run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path | None,
-        heartbeat: Path | None) -> int:
+        heartbeat: Path | None, force_site: bool = False) -> int:
     done = set(progress.read_text(encoding="utf-8").split()) if progress and progress.exists() else set()
     todo = [t for t in targets if t[0] not in done]
     if done:
         print(f"resuming: {len(targets) - len(todo)} record(s) already finished per {progress}")
+    state = _state_path(progress)
+    citations.assume_recent_arxiv_request()  # another process may have just asked arXiv
+    continuing = _resume_session(state)
     timings: dict[str, list[float]] = {}
+    refusals: dict[str, int] = {}  # arXiv no-answers per record, across sessions
     errors = 0
     session, quiet_sessions = 0, 0
     while todo:
         session += 1
-        citations.reset_arxiv_session()
+        if not continuing:
+            citations.reset_arxiv_session()
+        continuing = False
         first_arxiv = next((citations.parse_access(a)[1] for _, a, k in todo if k == "arxiv"), None)
-        mode = "api" if first_arxiv and api_answers(first_arxiv, fetcher) else "site"
+        mode = "site" if force_site or not (first_arxiv and api_answers(first_arxiv, fetcher)) else "api"
         print(f"\n== session {session}: arXiv source = {'API (+ abstract page for access)' if mode == 'api' else 'abstract page'}; "
               f"{len(todo)} record(s) to go")
         no_answers, answered_this_session, stop_reason = 0, 0, None
-        remaining = []
+        remaining, retry = [], []
         for n, (rid, access, kind) in enumerate(todo, 1):
             if stop_reason:
                 remaining.append((rid, access, kind))
@@ -257,19 +304,31 @@ def run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path |
                         continue
                     record_probe(conn, rid, field_name, value, provider, date.today().isoformat())  # the run crosses midnight
                 conn.commit()
-            if progress:
-                with progress.open("a", encoding="utf-8") as fh:
-                    fh.write(rid + "\n")
+            finished = True
             if answered is True:
                 no_answers, answered_this_session = 0, answered_this_session + 1
             elif answered is False:
                 no_answers += 1
+                refusals[rid] = refusals.get(rid, 0) + 1
+                # arXiv did not answer this record: whatever DataCite gave is
+                # kept, but the record is NOT finished, so a later session
+                # asks arXiv again for its status (Task C review, 2026-10-06),
+                # up to MAX_ATTEMPTS sessions so the run always ends.
+                if refusals[rid] < MAX_ATTEMPTS:
+                    finished = False
+                    retry.append((rid, access, kind))
+                else:
+                    print(f"      gave up on {rid} after {MAX_ATTEMPTS} sessions without an arXiv answer")
                 if no_answers >= MAX_NO_ANSWERS:
                     stop_reason = "refused"
                     print(f"      {MAX_NO_ANSWERS} arXiv no-answers in a row: ending session {session} early")
+            if finished and progress:
+                with progress.open("a", encoding="utf-8") as fh:
+                    fh.write(rid + "\n")
+            _save_state(state)
             _beat(heartbeat, f"session {session} ({mode}) arXiv requests {citations.arxiv_requests_this_session()}/"
                              f"{citations.ARXIV_SESSION_CAP} record {n}/{len(todo)} {rid}")
-        todo = remaining
+        todo = remaining + retry
         used = citations.arxiv_requests_this_session()
         print(f"== session {session} ended ({stop_reason or 'all records done'}): {used} arXiv request(s), "
               f"{answered_this_session} arXiv record(s) answered, {len(todo)} record(s) to go")
@@ -288,6 +347,7 @@ def run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path |
         until = datetime.now() + timedelta(hours=PAUSE_HOURS)
         print(f"   pausing {PAUSE_HOURS:g} h, until {until:%H:%M}")
         _beat(heartbeat, f"session {session} done, {len(todo)} to go; paused until {until:%Y-%m-%d %H:%M}")
+        _save_state(state, paused_until=_now() + PAUSE_HOURS * 3600)
         _pause(PAUSE_HOURS * 3600)
     if timings:
         print("\nseconds per record by type: " + ", ".join(
@@ -308,6 +368,9 @@ def main(argv: list[str] | None = None) -> int:
         return Path(args[args.index(name) + 1]) if name in args else None
 
     conn = connect(DB_PATH)
+    # Another process (Task E's linking, an intake) may write during a
+    # 20-hour run; wait up to 2 minutes for its lock instead of 5 seconds.
+    conn.execute("PRAGMA busy_timeout = 120000")
     try:
         if "--stale" in args:
             before = args[args.index("--before") + 1] if "--before" in args else cycle_start()
@@ -316,7 +379,7 @@ def main(argv: list[str] | None = None) -> int:
         if apply:
             backup_before_write(DB_PATH, "probe reference fields")
         rc = run(conn, targets, citations.PacedFetcher(), apply=apply, sessions="--sessions" in args,
-                 progress=path_arg("--progress"), heartbeat=path_arg("--heartbeat"))
+                 progress=path_arg("--progress"), heartbeat=path_arg("--heartbeat"), force_site="--site" in args)
         print("APPLIED" if apply else "DRY RUN: nothing written. Re-run with --apply.")
         return rc
     finally:
