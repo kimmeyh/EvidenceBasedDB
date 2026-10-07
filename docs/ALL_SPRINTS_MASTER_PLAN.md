@@ -588,6 +588,18 @@ do 40 and 42, and 60 and 62.
 - Depends on: arXiv entries share F52's cap; run outside its sessions.
 - Timing (team lead, 2026-10-06, Q10 = 1): Sprint 8 backlog refinement, not
   added to Sprint 7.
+- IEEE entries (team lead asked 2026-10-06; checked that day): IEEE papers
+  carry Crossref DOIs (prefix 10.1109), so their RECORDS enter through the
+  door's DOI path with no IEEE account; Crossref title search resolved the
+  list's first IEEE-linked entry to its DOI. Many also have an arXiv
+  preprint (IEEE's policy allows posting the accepted version). Only the PDF
+  needs the team lead's IEEE account, and only by hand: IEEE Xplore's
+  license allows individual downloads for personal research but prohibits
+  systematic downloading "using a robot, spider, crawler, screen scraping or
+  similar", and the Xplore API's personal key covers metadata and open
+  access content only. So a PDF is fetched only when a paper is to be READ:
+  its arXiv version first, else a list (DOI, Xplore link, target file name)
+  the team lead downloads by hand into `D:\Data\Harold\EvidenceBasedDB\Papers`.
 
 ## Design documents governing this repository
 
