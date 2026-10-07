@@ -586,6 +586,8 @@ do 40 and 42, and 60 and 62.
 - Acceptance: every entry classed as already in the store (with the record
   it matched), entered, or refused with the door's reason.
 - Depends on: arXiv entries share F52's cap; run outside its sessions.
+- Timing (team lead, 2026-10-06, Q10 = 1): Sprint 8 backlog refinement, not
+  added to Sprint 7.
 
 ## Design documents governing this repository
 
