@@ -79,6 +79,15 @@ this project keeps having to replace with a step.
   6 recorded withdrawals, 4 of which the API comment never showed; so in
   API mode the abstract page (fetched anyway for access) is parsed too and
   its withdrawal wins, at no extra request
+- **feat**: F54, the 30 unlinked repository notes (Task E, Issue #73) --
+  `scripts/sprint7_f54_recover_repo_notes.py` linked 23 of them (24 links,
+  24 new records): 9 by the owner's repository list (punctuation lost at a
+  line wrap), 9 by the paper's own PDF text (cut-short names), 1 by GitHub
+  search with its query (the cited owner is gone; the repository belongs to
+  a co-author), 4 Zenodo records by DOI. Each link's evidence says how it
+  was found. 7 reported again with what was tried: 4 repositories gone, 1
+  candidate rejected (Julia, where the paper says Python), 1 on Gitee (no
+  route), and `2108.0131`, whose PDF is a different paper (arXiv:2108.00131)
 - **feat**: F53, probes each cycle and a stale report (Task D, Issue #72)
   -- `probe_reference_fields.py --stale` lists every probe measured before
   the cycle start (computed from the sprint branch's date) and exits 1 when
