@@ -16,7 +16,7 @@ removed where none does.
 | Assistant Scrum Master, Architecture Development Team, Senior Test Engineers, Development Team | Claude Code (whichever model executes the task; parallel subagents allowed) |
 | Lead Developer | Claude Code top tier (Fable 5.1 preferred, Opus 5.5 otherwise) |
 | Senior Developers | Claude Code Sonnet 5.5 (subagents) |
-| Developers | Claude Code Haiku 4.5 (subagents) until it retires (not sooner than 2026-10-15), then Sonnet 5.5 |
+| Developers | Claude Code Sonnet 5.5 (subagents) from 2026-10-06 (F59); Haiku 4.5 no longer assigned, ahead of its retirement (not sooner than 2026-10-15) |
 
 **Model versions are verified, not remembered (F39, permanent; first release
 Sprint 6 Task A, F40, 2026-10-03).** Each tier's model id, price, context

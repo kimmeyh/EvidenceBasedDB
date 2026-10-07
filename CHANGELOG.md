@@ -27,6 +27,11 @@ this project keeps having to replace with a step.
 - **docs**: Sprint 7 plan approved (2026-10-06): no export (Q1 = 2), one
   backup location (Q2 = 1), every arXiv request 18 s apart (Q7), F after C
   and G after F (Q8); issues #69-#75 = Tasks A-G
+- **process**: F59, F39 release for Sprint 7 (Task A, Issue #69) -- the
+  models page re-read 2026-10-06: every tier's id, price, context, maximum
+  output and retirement date unchanged; Haiku 4.5 still "not sooner than
+  October 15, 2026", no successor Haiku listed. The Developers role and the
+  one Haiku task pattern move to Sonnet 5.5 now, ahead of the date
 
 ### 2026-09-27 to 2026-10-06 (Sprint 6, PR #54, merged to develop 2026-10-06 and to main via PR #67 the same day)
 
