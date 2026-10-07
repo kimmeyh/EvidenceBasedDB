@@ -44,6 +44,7 @@ def pytest_configure(config):
 @pytest.fixture(autouse=True)
 def _fresh_arxiv_clock(monkeypatch):
     monkeypatch.setattr(citations, "_last_arxiv_request", float("-inf"))
+    monkeypatch.setattr(citations, "_arxiv_requests_this_session", 0)  # the session cap's count (Sprint 7 Task C)
 
 
 # ------------------------------------------------------------------ live store

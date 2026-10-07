@@ -85,12 +85,47 @@ def test_time_already_spent_counts_toward_the_interval(clock):
     assert clock["slept"] == [1.0]
 
 
-def test_the_default_interval_is_twice_arxivs_published_rate():
+def test_the_default_interval_is_18_seconds_for_api_and_site():
     """Pinned so nobody 'optimizes' the bulk run into a multi-minute block.
-    6 s since 2026-10-04 (team lead): at arXiv's published 3 s, a sustained
-    run of about 1,130 lookups ended in HTTP 429 for everything."""
-    assert citations.ARXIV_MIN_INTERVAL_S == 6.0
-    assert citations.PacedFetcher().interval_s == 6.0
+    6 s from 2026-10-04 (team lead): at arXiv's published 3 s, a sustained
+    run of about 1,130 lookups ended in HTTP 429 for everything. 18 s from
+    2026-10-06 (team lead, Sprint 7 Q7), above the site's robots.txt
+    Crawl-delay of 15."""
+    assert citations.ARXIV_MIN_INTERVAL_S == 18.0
+    assert citations.PacedFetcher().interval_s == 18.0
+
+
+def test_the_session_cap_stops_the_request_over_it_regression(clock, monkeypatch):
+    """Sprint 7 Q6: at most ARXIV_SESSION_CAP arXiv requests per session.
+    With a cap of 12, the 13th arXiv request raises BEFORE it goes out;
+    other hosts are not counted; a reset starts a new session.
+
+    Proven to fail by injection, 2026-10-06: with the cap check removed
+    from wait_for, the 13th request went out (DID NOT RAISE)."""
+    monkeypatch.setattr(citations, "ARXIV_SESSION_CAP", 12)
+    sent = []
+    fetcher = citations.PacedFetcher(inner=lambda u, a: sent.append(u) or b"ok")
+    for _ in range(12):
+        fetcher(ARXIV, "x")
+        fetcher(CROSSREF, "x")  # not arXiv: never counted
+    with pytest.raises(citations.ArxivSessionCapReached):
+        fetcher(ARXIV, "x")
+    with pytest.raises(citations.ArxivSessionCapReached):
+        fetcher.wait_for("https://arxiv.org/abs/2401.00001")  # the site counts too
+    assert sent.count(ARXIV) == 12 and citations.arxiv_requests_this_session() == 12
+    citations.reset_arxiv_session()
+    fetcher(ARXIV, "x")
+    assert sent.count(ARXIV) == 13
+
+
+def test_the_cap_is_not_an_arxiv_failure_regression():
+    """A caller that falls back to DataCite on ARXIV_FAILURES, or that
+    swallows OSError (probe_access), must not swallow the cap.
+
+    Proven to fail by injection, 2026-10-06: with ArxivSessionCapReached
+    derived from OSError, this went red."""
+    assert not issubclass(citations.ArxivSessionCapReached, citations.ARXIV_FAILURES)
+    assert not issubclass(citations.ArxivSessionCapReached, OSError)
 
 
 def test_the_wrapped_fetcher_receives_url_and_accept_unchanged(clock):

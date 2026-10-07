@@ -56,6 +56,15 @@ this project keeps having to replace with a step.
   read-only and the shared session dump is read-only; the append-only
   `updated_reason` check also anchors at 3bf2eda, the last export, so Sprint
   6's records are covered; stale docstrings corrected
+- **feat**: F52 machinery (Task C, Issue #71) -- every arXiv request, API
+  and site, 18 s apart (Q7); a per-session cap of 240 arXiv requests on the
+  shared clock that raises before the request over it (Q6); the abstract
+  page as the probe source while the API refuses, answering status, version
+  of record and access in one request (Q5), the API retried once per
+  session; a session ends early after 3 arXiv no-answers in a row and two
+  such sessions stop the run; `--sessions` pauses 2 hours between caps;
+  `--progress` makes a stopped run resumable; values that differ from the
+  stored probe print as DIFFERS. Five guards proven by injection
 
 ### 2026-09-27 to 2026-10-06 (Sprint 6, PR #54, merged to develop 2026-10-06 and to main via PR #67 the same day)
 

@@ -523,7 +523,8 @@ def test_a_200_that_is_not_a_feed_goes_to_datacite_regression(monkeypatch):
 
 def test_every_request_that_lands_on_arxiv_is_paced_regression(monkeypatch):
     """Team lead, 2026-10-04: 'space out any other requests to arxiv'. The
-    API, the site and an arXiv DOI at doi.org share one 6 s clock; other
+    API, the site and an arXiv DOI at doi.org share one clock (18 s since
+    2026-10-06); other
     hosts are not paced. Proven to fail by injection: with the pacer back
     to export.arxiv.org only, the arxiv.org/abs request went out unpaced."""
     waits, clock = [], [100.0]
@@ -534,4 +535,4 @@ def test_every_request_that_lands_on_arxiv_is_paced_regression(monkeypatch):
     pacer.wait_for("https://arxiv.org/abs/2401.00001")
     pacer.wait_for("https://doi.org/10.48550/arXiv.2401.00001")
     pacer("https://api.crossref.org/works/10.1/x", "x")
-    assert waits == [6.0, 6.0]
+    assert waits == [citations.ARXIV_MIN_INTERVAL_S] * 2
