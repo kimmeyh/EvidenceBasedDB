@@ -830,7 +830,9 @@ thousands of papers cannot keep its full text in the repository.
 `D:\Data\Harold\EvidenceBasedDB\store\backups\`, outside every repository.
 `store.script_paths` is the one place that resolves them: the default is
 that folder, and the environment variable `EBDB_STORE_DIR` overrides it
-(tests and CI point it at a temporary folder). No script writes data inside
+(tests and CI point it at a temporary folder). On a machine that is not
+Windows, with no override, `store_dir()` raises an error naming
+`EBDB_STORE_DIR` instead of resolving the Windows path. No script writes data inside
 the repository; a test checks that every default path resolves outside it.
 `.gitignore` keeps `*.db` and `backups/` so a stray copy never lands.
 
@@ -869,7 +871,8 @@ synthesis inputs, the caps, the learnings, the F11 packet) carry the
 `live_store` pytest marker and read the live store read-only, or a copy
 taken with the SQLite backup API when they must write. Locally a missing
 store FAILS them, never skips them. CI cannot reach `D:\` and deselects
-them by name in `.github/workflows/ci.yml`, with the reason beside it.
+them by their marker (`pytest -q -m "not live_store"`) in
+`.github/workflows/ci.yml`, with the reason beside it.
 
 *Consequence for section 2.* "SQLite, with a text export committed
 alongside" now reads: SQLite, outside the repository, with verified
