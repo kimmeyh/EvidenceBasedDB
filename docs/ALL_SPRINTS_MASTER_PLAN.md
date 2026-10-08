@@ -648,6 +648,27 @@ do 40 and 42, and 60 and 62.
   every entry's free-copy search recorded.
 - Depends on: F52's cap for arXiv; F61 (shared discovery input).
 
+**F63. Two Dirac-3 admissions in arXiv:2407.04512 as assertions (~1h) Priority 47** (NEW 2026-10-08, found in Sprint 7 Task G; team lead approved as a Sprint 8 candidate at Manual Validation)
+- Phase: Content / assertions
+- Platform: the store; record `nguyen-2025-entropy-computing-paradigm-optimization-open`
+  (read partially in Sprint 7 Task G); a script in the pattern of
+  `scripts/sprint7_f45_dirac3_reading.py`
+- Two statements by QCi's own authors, found while reading for F45 and not
+  entered (outside Task G's planned assertions). Both checked verbatim
+  against the local copy with pdftotext on 2026-10-08:
+  - p.15: "Our current Dirac-3 hybrid implementation does not utilize
+    quantum entanglement."
+  - p.6: the optical parts "do not involve large scale non-Gaussian quantum
+    superpositions, they could in principle be instead classically
+    simulated, as has been argued in the coherent Ising machine setting".
+- Both are candidates for the admission-against-interest upgrade: a vendor
+  stating a limit of its own product. Each upgrade must say why the
+  statement is costly to the vendor.
+- Acceptance: each entered with its page anchor and a verbatim-quote test;
+  relations to the existing Dirac-3 assertions (for example
+  `dirac3-per-loop-measurement-rules-out-quantum-advantage`) recorded.
+- Depends on: none.
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
