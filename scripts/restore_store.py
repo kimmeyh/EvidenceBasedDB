@@ -105,7 +105,8 @@ def main(argv: list[str] | None = None) -> int:
             shutil.move(str(DB_PATH), aside)
             print(f"live store failed verification ({ex}); moved aside UNVERIFIED to {aside}")
     restore(backup, DB_PATH)
-    print(f"RESTORED {DB_PATH} from {backup.name}; verified. Regenerate and diff the export before committing.")
+    print(f"RESTORED {DB_PATH} from {backup.name}; verified. To see what changed, dump before and after with "
+          "scripts/regenerate_export.py --out <dir> and compare.")
     return 0
 
 

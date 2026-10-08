@@ -118,6 +118,18 @@ this project keeps having to replace with a step.
   abstract page where the API did not answer; affiliations on 13 of 1,301
   API answers. ADR-0005 A6 records F52 and F53 as built and the
   measurements; Phase 1.3's runtime estimate corrected from 20 to 36+ hours
+- **feat**: F44, the eight Cycorp papers (Task F, Issue #74) -- downloaded
+  to `Papers\` under the naming convention (approved 2026-10-06), each
+  record's `access` a local path plus its identifier or URL and its
+  `evidence` the SHA-256; INTAKE_WORKFLOW.md section 18 written before the
+  load. S16 by arXiv id, and S19 and L10 by DOIs found on Crossref (the plan
+  expected S19 hand-origin); five hand-origin, OV19 and PH20 as
+  `Reference:`. T07 read in full and promoted; it yields two
+  `vendor-self-claim` assertions (about a thousand inference modules in
+  2007; eight tactic types, unreconciled with the 2009 code's six) and
+  settles Sprint 6's open note on `cyc-hl-module-count`. Guards proven by
+  injection. `restore_store.py`'s closing message no longer names the
+  retired export
 
 ### 2026-09-27 to 2026-10-06 (Sprint 6, PR #54, merged to develop 2026-10-06 and to main via PR #67 the same day)
 
