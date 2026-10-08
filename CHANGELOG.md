@@ -130,6 +130,18 @@ this project keeps having to replace with a step.
   settles Sprint 6's open note on `cyc-hl-module-count`. Guards proven by
   injection. `restore_store.py`'s closing message no longer names the
   retired export
+- **feat**: F45, the Dirac-3 reading pass (Task G, Issue #75) -- seven
+  sources read directly and promoted (the User Guide and the critique in
+  full; arXiv:2407.04512, arXiv:2502.08591, arXiv:2608.10787, the protein
+  paper's article page and QCi's EQC lesson in part), yielding 14
+  assertions: F-201 to F-209, F-301 to F-303 and the planning note's QCi
+  noise claims, every quote checked against its local copy. F-207 enters
+  as `absence` with its search scope (545 QCi site files and four PDFs);
+  the Zeno claim contradicts the peer-reviewed dissipation mechanism;
+  disclosed coi stored on two records. Two second-hand errors corrected by
+  the reading (section 15): F-301's "80 percent" is not in the critique,
+  and F-302's 122% bundles a 24% formulation gap. Guards proven by
+  injection
 
 ### 2026-09-27 to 2026-10-06 (Sprint 6, PR #54, merged to develop 2026-10-06 and to main via PR #67 the same day)
 
