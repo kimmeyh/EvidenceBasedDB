@@ -994,3 +994,74 @@ SQL over `records`), which sits outside the repository at
 unchanged. Section 3 (records, never PDFs) is unchanged: the store holds
 records and the files stay where they were; only the store's own location
 moved.
+
+**2026-10-08 (A6): the probes are built, capped, and re-run each cycle.**
+Sprint 7 Tasks C and D (F52, F53), taking decisions Q5, Q6 and Q7
+approved at Sprint 7 planning. A4 (b) said that running the probes each
+delivery cycle and reporting a stale probe were "Not built as of this
+date"; both are built now, and A4 is not edited.
+
+**Every count below is a snapshot as of 2026-10-08, against the store as
+it existed when Task C's bulk run finished.** The store grows by design;
+re-query it rather than reading these numbers as current later.
+
+*(a) Source (Q5 = 1).* Each session of `scripts/probe_reference_fields.py`
+starts with one arXiv API request. If the API answers, the session uses
+the API for status, version and affiliations and parses the abstract page
+too, which the access probe fetches anyway (two arXiv requests per
+paper). For a paper the API does not answer, the abstract page answers
+status, version and access in its place, with the provider "arXiv
+abstract page". If the session's first API request gets no answer, the
+whole session uses the abstract page alone (one request per paper).
+`--site` forces that mode. A withdrawal read from the page wins over an
+API comment that does not state it: of the 6 recorded withdrawals, the
+page showed 4 that the API comment did not state.
+
+*(b) Pacing and the cap (Q6 = 1, Q7).* Every arXiv request is 18 s after
+the previous one (`store.citations.ARXIV_MIN_INTERVAL_S`). A session sends
+at most 240 arXiv requests (`ARXIV_SESSION_CAP`), then pauses at least 2
+hours. The cap raises before the request over it goes out. A session also
+ends after 3 arXiv no-answers in a row, and two such sessions in a row with
+nothing answered stop the run. The count, the last request time and the
+pause are saved beside the progress file, so a restarted run honors them.
+A probe that gets no answer stores nothing, as A4's probe rule says.
+
+*(c) Each cycle, and stale (F53).* Phase 1.3 of
+`SPRINT_EXECUTION_WORKFLOW.md` runs `--refresh` in sessions. A probe is
+stale when it was measured before the cycle start, which is computed from
+the date in the sprint branch's name. `--stale` lists every stale probe
+and exits 1 when there is one. A hand-recorded value is a reading with an
+anchor, not a measurement, so it is never stale.
+
+*(d) What the bulk run measured.* Task C probed every record that had no
+probe: 1,524 records (1,396 arXiv, 100 GitHub, 27 local files with no
+public URL, 1 DOI) in 12 sessions, from 2026-10-06 21:36 to 2026-10-08
+09:49 (36 hours), with 0 errors and no arXiv refusal. An arXiv record took
+36.3 s on average (two requests at 18 s). Results:
+
+- `publication_status`: 1,301 from the API, 107 from the abstract page
+  (the API did not answer them, all between about 20:00 on 2026-10-07 and
+  00:33 on 2026-10-08), 11 from Crossref.
+- `access_status`: 1,519 open, 6 a bot challenge or script shell, 1
+  refused (HTTP 403), 1 not found (HTTP 404).
+- Affiliations: 13 of the 1,301 API answers carried one (1%), plus 2 from
+  Crossref. **Finding:** the arXiv API seldom carries affiliations, so
+  field 7's "COMPUTED where the registry carries them" leaves almost every
+  arXiv record without one. The 107 records the page answered were not
+  re-probed for affiliations: at this rate, 214 requests would add about
+  one.
+
+After the run, 611 probes on 321 records, measured on 2026-10-03 and
+2026-10-04 by Sprint 6, are stale against this cycle's start (2026-10-06).
+They are refreshed at the next cycle's Phase 1.3, which re-measures every
+record.
+
+*Consequence for Phase 1.3.* The workflow estimated about 20 hours for a
+full refresh. Measured, 1,524 records took 36 hours in API mode; a full
+refresh of every probed arXiv record (1,551 here) in API mode is about
+14 sessions, or about 43 hours. Site mode halves the arXiv requests. Which mode
+Phase 1.3 uses is not decided here.
+
+*Revisit when* the first Phase 1.3 refresh shows how many measurements
+change between cycles; a field that never changes can be probed less
+often.

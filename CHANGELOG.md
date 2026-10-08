@@ -112,6 +112,12 @@ this project keeps having to replace with a step.
   any is stale; hand-recorded readings are never stale; `--refresh`
   selects stale and unprobed records; Phase 1.3 of the workflow runs the
   refresh within F52's cap, then `--stale`. Guard proven by injection
+- **feat**: F52, the bulk probe run (Task C, Issue #71) -- 1,524 records
+  probed in 12 capped sessions over 36 hours (2026-10-06 21:36 to
+  2026-10-08 09:49), 0 errors, no arXiv refusal; 107 statuses from the
+  abstract page where the API did not answer; affiliations on 13 of 1,301
+  API answers. ADR-0005 A6 records F52 and F53 as built and the
+  measurements; Phase 1.3's runtime estimate corrected from 20 to 36+ hours
 
 ### 2026-09-27 to 2026-10-06 (Sprint 6, PR #54, merged to develop 2026-10-06 and to main via PR #67 the same day)
 
