@@ -669,6 +669,52 @@ do 40 and 42, and 60 and 62.
   `dirac3-per-loop-measurement-rules-out-quantum-advantage`) recorded.
 - Depends on: none.
 
+**F64. Staggered 12-month re-check, with revised-version detection and a re-pull list (~4h) Priority 48** (NEW 2026-10-09, team lead at Sprint 7 Manual Validation, Q12 = 1, Q15 = 2, Q16 = 1)
+- Phase: Sourcing / currency
+- Platform: `scripts/probe_reference_fields.py`, `store/probes.py`,
+  `scripts/view.py`, Phase 1.3 of `docs/SPRINT_EXECUTION_WORKFLOW.md`,
+  ADR-0005 (a new amendment)
+- Team lead, 2026-10-09: a re-check "every 6-12 months (most do not change
+  after first upload) and only a brief check to ensure the paper has not
+  been replaced, withdrawn or updated. If updated, then we can re-pull the
+  paper"; "we can't have it do 1,000+ papers in one sprint as we loaded all
+  the current papers in the last month"; split them into 24 sections, the
+  first about 10 months out, then 1/24th every 2 weeks, picked up by the
+  next sprint that passes the date.
+- Proposed process (presented 2026-10-09; the team lead approves it at
+  Sprint 8 refinement):
+  - Section: every record belongs to one of 24 half-month sections of the
+    calendar year (1 = January 1-15, 2 = January 16-31, ... 24 = December
+    16-31), computed from its id (a stable hash, mod 24). Computed, never
+    stored; an id never changes, so the section never does. About 1/24 of
+    the records fall in each.
+  - Next re-check date: the first start of the record's section that is
+    at least 10 months after its last check. Computed from the stored
+    check date, never stored itself. For the papers checked in October
+    2026 that gives mid-August 2027 to early August 2028, 1/24th every
+    two weeks;
+    after that, each record comes due once a year in its own section. A
+    paper entered later falls into its section too, so a bulk load never
+    bunches into one sprint.
+  - Phase 1.3: re-check every record whose next re-check date is on or
+    before the sprint's start. About 65 arXiv papers per section, one
+    request each (the abstract page): about 20 minutes, well inside F52's
+    cap. A sprint that spans two sections takes both.
+  - The brief check: withdrawn; published with a DOI (replaced by the
+    journal version); a newer arXiv version than the local copy (the page
+    shows the latest version; the local PDF's first page carries a stamp
+    such as "arXiv:2407.04512v4"); the link still opens.
+  - Output: three lists for the team lead: newer version, to re-pull;
+    withdrawn; newly published. Nothing is downloaded automatically.
+  - `view.py paper <id>` shows the section and the next re-check date.
+- Replaces `--stale` against the cycle start as the Phase 1.3 check:
+  "stale" becomes "past its next re-check date".
+- Acceptance: the section and the date computed and shown; Phase 1.3 picks
+  up only due records; a bulk load spreads over the 24 sections (a test
+  over synthetic ids); a revised version on a test record is reported for
+  re-pull; ADR-0005 amended.
+- Depends on: F52's cap (built).
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
