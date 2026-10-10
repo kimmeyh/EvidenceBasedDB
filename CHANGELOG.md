@@ -28,6 +28,10 @@ this project keeps having to replace with a step.
   selected: F65, F63, F64, F60, F61 and an F39 release (F67, Haiku 5.5);
   priorities renumbered in steps of 10 (Q2 = 1); F49 closed without
   implementation as moot under ADR-0004 A7 (Q3 = 1)
+- **docs**: Sprint 8 plan drafted (2026-10-10, Phase 3) -- Tasks A to E
+  (F67, F65 with F63, F64, F60, F61) with planning pre-flights and six
+  decisions for approval; F67 carded (the F39 release, Haiku 5.5); F66 and
+  F67 under a new "Carded during Sprint 8" heading
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 

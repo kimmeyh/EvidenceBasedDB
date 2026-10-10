@@ -584,6 +584,27 @@ estimates are `[no-history]`.
   local copy by test; the team lead's items each answered or carded.
 - Depends on: F63 (same QCi source family; can run in the same task).
 
+### Carded during Sprint 8 (2026-10-10 onward)
+
+**F67. F39 release for Sprint 8: add Haiku 5.5 and re-verify the tiers (~30m) Priority 10** (NEW 2026-10-10, team lead at Sprint 8 scope selection)
+- Phase: Process (released copy of the permanent F39)
+- Platform: `.claude/model_assignment_heuristics.json`,
+  `docs/SPRINT_PLANNING.md` (team roles table),
+  `tests/test_model_assignment_heuristics.py`; Anthropic's models page
+- Team lead, 2026-10-10: "F39 as Haiku 5.5 was released and we will want
+  to include in the list of models".
+- **Facts at carding (snapshot as of 2026-10-10, models page)**: Claude
+  Haiku 5.5, `claude-haiku-5-5`, "for high-volume, latency-sensitive tasks
+  such as classification, extraction, and routing"; pricing "From $0.10 /
+  input MTok, From $0.50 / output MTok" (Sonnet 5.5: $2 / $10); 1M context,
+  128K output; retirement not sooner than 2027-10-07. The heuristics file's
+  haiku tier still names Haiku 4.5 (retiring not before 2026-10-15), and the
+  Developers role has been on Sonnet 5.5 since F59.
+- Acceptance: F39's five release steps; the haiku tier names Haiku 5.5 with
+  the date checked; the Developers role per the plan's decision; the test
+  green on evidence.
+- Depends on: nothing
+
 **F66. Make develop the default branch: a git-flow model with main as the release branch (~1h) Priority 20** (NEW 2026-10-10, team lead at Sprint 8 Phase 1.4; TARGET: Sprint 8)
 - Phase: Process / repository
 - Platform: GitHub repository settings (`gh repo edit`),
