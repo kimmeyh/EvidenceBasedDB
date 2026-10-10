@@ -186,7 +186,20 @@ def test_allows_the_same_question_before_plan_approval(tmp_path):
     assert proc.returncode == 0
 
 
-@pytest.mark.parametrize("phase", ["phase_5_validation", "phase_7_retrospective_complete", "phase_1_refinement"])
+@pytest.mark.parametrize("phase", ["Phase 4.1 Execution -- Task C next", "phase_4_execution"])
+def test_blocks_in_either_status_form_of_phase_4(tmp_path, phase):
+    """Sprint 7 retrospective I6: the status reads "Phase n.n Name", the
+    footer's format. Proven to fail by injection, 2026-10-10: with the
+    window check restored to `startswith("phase_4")`, the "Phase 4.1
+    Execution" case was allowed (exit 0) and this test went red."""
+    repo = _scratch_repo(tmp_path, _status(status=phase))
+    proc = _run_hook(repo, SPRINT_BRANCH, BLOCK_MESSAGES[0])
+    assert proc.returncode == 2, proc.stderr
+
+
+@pytest.mark.parametrize("phase", ["phase_5_validation", "phase_7_retrospective_complete", "phase_1_refinement",
+                                   "Phase 5.3 Manual Validation", "Phase 1.1 Backlog Refinement",
+                                   "Phase 40.1 Made Up", "phase_40_made_up"])
 def test_allows_the_same_question_outside_phase_4(tmp_path, phase):
     """From validation onward, asking is CORRECT (Invariant 1)."""
     repo = _scratch_repo(tmp_path, _status(status=phase))

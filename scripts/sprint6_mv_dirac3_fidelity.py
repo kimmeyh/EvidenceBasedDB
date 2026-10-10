@@ -29,7 +29,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.ingest import AssertionRecord, insert_assertion, insert_paper  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location("intake", Path(__file__).with_name("intake.py"))
@@ -121,8 +120,7 @@ def main(argv: list[str] | None = None) -> int:
             for a in ASSERTIONS:
                 insert_assertion(conn, a, yielded_by=MEMO)
             conn.commit()
-            regenerate(conn, EXPORT_DIR)
-            print("APPLIED; export regenerated")
+            print("APPLIED")
         else:
             print("DRY RUN: nothing written. Re-run with --apply.")
         return 0

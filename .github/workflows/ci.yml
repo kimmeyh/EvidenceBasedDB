@@ -38,8 +38,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest
 
+      # ADR-0004 A7 (Sprint 7 Task B, 2026-10-06): the store lives outside
+      # the repository and CI cannot reach it. Tests marked live_store check
+      # the REAL data and run in the local suite, where a missing store
+      # fails them; here they are deselected BY NAME, never skipped
+      # silently. EBDB_STORE_DIR points any other store access at a
+      # throwaway folder.
       - name: Tests
-        run: pytest -q
+        env:
+          EBDB_STORE_DIR: ${{ runner.temp }}/ebdb-store
+        run: pytest -q -m "not live_store"
 
       # If the suite modified any tracked file, the build fails and names
       # the files. A test that writes to the repository is a defect even

@@ -1,7 +1,7 @@
 """The computed synthesis (Sprint 5 Task I, F28; docs/LEARNING_SYNTHESIS.md).
 
-Runs scripts/learnings.py against a store rebuilt from the committed
-export, so it needs no local store and runs on CI.
+Runs scripts/learnings.py against the live store, read-only (ADR-0004 A7:
+no committed export). Those tests are live_store: local only, deselected on CI.
 """
 from __future__ import annotations
 
@@ -15,18 +15,15 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from store import connect  # noqa: E402
-from store.rebuild import rebuild  # noqa: E402
 
 QML = "learning-qml-no-reliable-tabular-accuracy-gain"
 
 
-@pytest.fixture(scope="module")
-def conn(tmp_path_factory):
-    db = tmp_path_factory.mktemp("learn") / "evidence.db"
-    rebuild(ROOT / "export", db, check_local_paths=False).close()
-    c = connect(db)
-    yield c
-    c.close()
+@pytest.fixture
+def conn(live_conn):
+    """The live store, read-only (ADR-0004 A7: no committed export to
+    rebuild from). Tests using it are marked live_store."""
+    return live_conn
 
 
 def _mod():
@@ -36,6 +33,7 @@ def _mod():
     return m
 
 
+@pytest.mark.live_store
 def test_learnings_are_found_by_derivation_not_by_absence_of_a_paper(conn):
     """hsbc-b1-variable-count-wrong-78 is yielded by no paper and is the
     target of a `contradicts` edge, yet is NOT a synthesis; the first
@@ -47,6 +45,7 @@ def test_learnings_are_found_by_derivation_not_by_absence_of_a_paper(conn):
     assert all(i.startswith("learning-") for i in ids)
 
 
+@pytest.mark.live_store
 def test_balance_counts_assertions_not_sources_regression(conn):
     """cvqboost-vs-xgboost-auc-under-balancing is yielded by two papers; it
     is ONE piece of evidence. Proven to fail by injection: the first
@@ -59,6 +58,7 @@ def test_balance_counts_assertions_not_sources_regression(conn):
     assert item["balance"]["supports"].get("moderate") == 1
 
 
+@pytest.mark.live_store
 def test_every_learning_names_why_and_has_evidence(conn):
     m = _mod()
     for lid in m.learning_ids(conn):

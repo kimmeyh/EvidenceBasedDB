@@ -25,7 +25,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
-from store.export import regenerate  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 
@@ -296,7 +295,6 @@ def main() -> int:
         raise
 
     conn.commit()
-    regenerate(conn, EXPORT_DIR)
     conn.close()
 
     print(

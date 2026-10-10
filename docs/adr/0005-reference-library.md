@@ -984,3 +984,97 @@ fetches a copy into the repository.
 
 *Revisit when* the first bulk load (Sprint 6 Task J) shows how many
 probes go stale per cycle.
+
+**2026-10-06 (A5): search reads the store, not a committed export.** Sprint
+7 Task B (F58), with ADR-0004 A7, which retires the committed export.
+Section 4's "Phase one: full-text search over the committed export" now
+reads: phase one is search over the store itself (`scripts/view.py`, and
+SQL over `records`), which sits outside the repository at
+`D:\Data\Harold\EvidenceBasedDB\store`. The trigger for embeddings is
+unchanged. Section 3 (records, never PDFs) is unchanged: the store holds
+records and the files stay where they were; only the store's own location
+moved.
+
+**2026-10-08 (A6): the probes are built and capped; a record is re-checked
+about every 12 months, not every cycle.** Sprint 7 Tasks C and D (F52,
+F53), taking decisions Q5, Q6 and Q7 approved at Sprint 7 planning, and
+the team lead's Manual Validation decision of 2026-10-09 (Q12 = 1). A4 (b)
+said that running the probes each delivery cycle and reporting a stale
+probe were "Not built as of this date"; both are built now, running them
+each cycle is not adopted ((c) below), and A4 is not edited.
+
+**Every count below is a snapshot as of 2026-10-08, against the store as
+it existed when Task C's bulk run finished.** The store grows by design;
+re-query it rather than reading these numbers as current later.
+
+*(a) Source (Q5 = 1).* Each session of `scripts/probe_reference_fields.py`
+starts with one arXiv API request. If the API answers, the session uses
+the API for status, version and affiliations and parses the abstract page
+too, which the access probe fetches anyway (two arXiv requests per
+paper). For a paper the API does not answer, the abstract page answers
+status, version and access in its place, with the provider "arXiv
+abstract page". If the session's first API request gets no answer, the
+whole session uses the abstract page alone (one request per paper).
+`--site` forces that mode. A withdrawal read from the page wins over an
+API comment that does not state it: of the 6 recorded withdrawals, the
+page showed 4 that the API comment did not state.
+
+*(b) Pacing and the cap (Q6 = 1, Q7).* Every arXiv request is 18 s after
+the previous one (`store.citations.ARXIV_MIN_INTERVAL_S`). A session sends
+at most 240 arXiv requests (`ARXIV_SESSION_CAP`), then pauses at least 2
+hours. The cap raises before the request over it goes out. A session also
+ends after 3 arXiv no-answers in a row, and two such sessions in a row with
+nothing answered stop the run. The count, the last request time and the
+pause are saved beside the progress file, so a restarted run honors them.
+A probe that gets no answer stores nothing, as A4's probe rule says.
+
+*(c) Stale, and why the probes are not re-run each cycle (F53; team lead,
+2026-10-09).* Built: `--refresh` re-probes every record measured before
+the cycle start, which is computed from the date in the sprint branch's
+name, and `--stale` lists those probes and exits 1 when there is one. A
+hand-recorded value is a reading with an anchor, not a measurement, so it
+is never stale. Not adopted: running `--refresh` at every Phase 1.3. The
+team lead, 2026-10-09: most papers do not change after first upload, so a
+brief check every 6 to 12 months is enough, and the re-checks must not
+land 1,000+ papers in one sprint. Decided (Q12 = 1): a record is
+re-checked about 12 months after its last check, with one request per
+arXiv paper (the abstract page; site mode in (a)). The schedule that
+spreads the re-checks evenly, and the detection of a revised arXiv
+version, are Sprint 8 candidate F64 (`docs/ALL_SPRINTS_MASTER_PLAN.md`).
+Until F64 is built, Phase 1.3 runs no probe refresh, and `--stale`
+against the cycle start is not a Phase 1.3 gate.
+
+*(d) What the bulk run measured.* Task C probed every record that had no
+probe: 1,524 records (1,396 arXiv, 100 GitHub, 27 local files with no
+public URL, 1 DOI) in 12 sessions, from 2026-10-06 21:36 to 2026-10-08
+09:49 (36 hours), with 0 errors and no arXiv refusal. An arXiv record took
+36.3 s on average (two requests at 18 s). Results:
+
+- `publication_status`: 1,301 from the API, 107 from the abstract page
+  (the API did not answer them, all between about 20:00 on 2026-10-07 and
+  00:33 on 2026-10-08), 11 from Crossref.
+- `access_status`: 1,519 open, 6 a bot challenge or script shell, 1
+  refused (HTTP 403), 1 not found (HTTP 404).
+- Affiliations: 13 of the 1,301 API answers carried one (1%), plus 2 from
+  Crossref. **Finding:** the arXiv API seldom carries affiliations, so
+  field 7's "COMPUTED where the registry carries them" leaves almost every
+  arXiv record without one. The 107 records the page answered were not
+  re-probed for affiliations: at this rate, 214 requests would add about
+  one.
+
+After the run, 611 probes on 321 records, measured on 2026-10-03 and
+2026-10-04 by Sprint 6, are stale against this cycle's start (2026-10-06).
+Under the 12-month rule in (c) they are current; F64 schedules their
+re-check.
+
+*Consequence for Phase 1.3.* The workflow estimated about 20 hours for a
+full refresh. Measured, 1,524 records took 36 hours in API mode; a full
+refresh of every probed arXiv record (1,551 here) in API mode is about
+14 sessions, or about 43 hours, and site mode halves that. Neither runs
+each cycle under (c). Spread evenly over a year in 24 parts, about 65
+arXiv records come due every two weeks: about 20 minutes in site mode,
+well inside one session.
+
+*Revisit when* the first scheduled re-checks show how many measurements
+change in 12 months; a field that never changes can be checked less
+often.

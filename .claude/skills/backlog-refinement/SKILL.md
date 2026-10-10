@@ -54,7 +54,7 @@ State in one line which pass this is and for which sprint:
   RETROSPECTIVE, SUMMARY with `## Actuals`), the master plan is rolled
   (Last Completed Sprint, Past Sprint Summary row), shipped cards are
   pruned BY HAND (never by a script), and `.claude/sprint_status.json`
-  already says Sprint N in `phase_1_refinement` with `plan_doc: null`.
+  already says Sprint N in `"Phase 1.1 Backlog Refinement"` with `plan_doc: null`.
   Corrections only.
 - **Phase 1.4, Pass 2 (Scope Selection) for Sprint N**: the slate.
 

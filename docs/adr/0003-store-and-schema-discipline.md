@@ -86,3 +86,25 @@ list, and the discipline (schema-complete writes, deterministic export,
 store-as-build-output) is what this ADR now states. The original
 results.json content is preserved in this repository's git history at the
 commit that seeded it, and remains live in hsbc-quantum-fraud-2026 itself.
+
+**2026-10-06 (A2): the store is the record; no export is committed.**
+Sprint 7 Task B (F58), with ADR-0004 A7, which states the decision and its
+reasons. Two bullets of the Decision above no longer hold as written:
+
+- "SQLite is the store of record; a deterministic text export is the
+  artifact ... its diff is the review mechanism": the store, outside the
+  repository, is the record and there is no committed artifact. A
+  record's own `updated_reason`, append-only, is the account of each
+  change.
+- "The export regenerates deterministically from the store ... the
+  committed export is checked against a fresh regeneration
+  (`tests/test_export_currency.py`)": the export is still deterministic
+  (`tests/test_export.py` holds), but it is an on-demand dump, and
+  `tests/test_export_currency.py` is retired with the committed export.
+
+The other bullets stand: every record is schema-complete at commit time,
+and writes go through the ingestion path. "The store itself is a build
+output and is gitignored" now reads: the store lives outside the
+repository (`D:\Data\Harold\EvidenceBasedDB\store`, override
+`EBDB_STORE_DIR`), and verified backups, not a rebuild from committed
+files, are its recovery path.

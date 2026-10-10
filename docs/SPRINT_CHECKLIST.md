@@ -3,7 +3,7 @@
 Consult at EVERY phase boundary (open this file in the same turn; walk lines with DONE/N-A/NOT-DONE + evidence). Full detail: SPRINT_EXECUTION_WORKFLOW.md.
 
 ## Phase 1: Backlog Refinement (Sprint N's first phase, on Sprint N's branch -- re-homed from prior-sprint Phase 8, 2026-09-19)
-- [ ] sprint_status.json advanced to N at the carry-forward cut (`phase_1_refinement`, `plan_doc: null`); status line says Sprint N
+- [ ] sprint_status.json advanced to N at the carry-forward cut (`"Phase 1.1 Backlog Refinement"`, `plan_doc: null`); status line says Sprint N
 - [ ] 1.1 CHANGELOG reconciled for Sprint N-1 (from git history, never memory)
 - [ ] 1.2 Pass 1 sweep for N-1: issues closed, docs triad incl. SUMMARY (+ `## Actuals`), master plan rolled, shipped cards pruned BY HAND
 - [ ] 1.3 Design-document currency: ADR-0004/0005 still match schema and export; `pytest -q` green

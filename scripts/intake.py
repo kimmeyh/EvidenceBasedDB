@@ -9,8 +9,8 @@ of everything that enters, whether one record from the command line or
 
 DRY-RUN BY DEFAULT (QUALITY_STANDARDS.md): the record is derived from the
 source of record (arXiv / Crossref / DataCite / GitHub) and pushed through
-the door, and what WOULD be written is printed. `--apply` writes it and
-regenerates export/.
+the door, and what WOULD be written is printed. `--apply` writes it (no
+export is regenerated since ADR-0004 A7).
 
     # one record, api-origin (id derived from the metadata unless --id is given)
     python scripts/intake.py arXiv:2602.11092 --context qml --tier screened \
@@ -51,7 +51,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.ingest import (  # noqa: E402
     DERIVED_BY_DOOR, HAND_MARKER, PaperRecord, _ANCHOR, _TIER_IN_TEXT, insert_paper, validate_paper,
 )  # noqa: E402
@@ -315,10 +314,8 @@ def main(argv: list[str] | None = None) -> int:
             entry["access"] = positional[0]
             entries = [entry]
         done, skipped, failures = intake(conn, entries, apply, today)
-        if apply and done:
-            regenerate(conn, EXPORT_DIR)
         verb = "written" if apply else "planned"
-        print(f"\n{done} {verb}, {skipped} already present, {len(failures)} refused" + ("; export regenerated" if apply and done else ""))
+        print(f"\n{done} {verb}, {skipped} already present, {len(failures)} refused")
         if not apply:
             print("PLANNED (dry run; nothing written). Re-run with --apply to write.")
         return 1 if failures else 0

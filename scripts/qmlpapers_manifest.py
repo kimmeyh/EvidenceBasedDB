@@ -40,7 +40,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.ingest import add_found_via, append_updated_reason  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
@@ -153,8 +152,7 @@ def main(argv: list[str] | None = None) -> int:
             today = date.today().isoformat()
             n = add_routes(conn, routes, today)
             conn.commit()
-            regenerate(conn, EXPORT_DIR)
-            print(f"APPLIED: {n} found_via rows added; export regenerated")
+            print(f"APPLIED: {n} found_via rows added")
             return 0
         entries, routes, bad, notes = build(conn)
     finally:

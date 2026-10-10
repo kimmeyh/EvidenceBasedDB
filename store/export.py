@@ -2,8 +2,9 @@
 
 ADR-0004 section 2: "A deterministic text export (JSON or Markdown per
 record class) regenerated from it and committed... The export is
-generated, never hand-edited." This is the artifact; the SQLite store is a
-build output.
+generated, never hand-edited." Since ADR-0004 A7 (2026-10-06) nothing is
+committed: the store is the record, and this module writes on-demand dumps
+outside the repository only.
 
 Determinism requirements, load-bearing for the "diff is reviewable" goal
 ADR-0004 states: records are emitted in a fixed sort order (by id), object
@@ -316,8 +317,23 @@ def export_class(conn: sqlite3.Connection, record_class: str) -> list[dict]:
     return exporter(conn, rows, contexts, prerequisites)
 
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
+
+def _outside_the_repository(export_dir: str | Path) -> Path:
+    """The export folder, refused when it is inside the repository
+    (ADR-0004 A7). In both public writers, not only regenerate (Task B
+    review, 2026-10-06)."""
+    target = Path(export_dir).resolve()
+    if target == REPO_ROOT or REPO_ROOT in target.parents:
+        raise RuntimeError(
+            f"refusing to write an export inside the repository ({target}). ADR-0004 A7 retired the "
+            "committed export; dump to a folder outside it.")
+    return Path(export_dir)
+
+
 def write_export(conn: sqlite3.Connection, export_dir: str | Path) -> None:
-    """Regenerate the committed export: one JSON file per record class.
+    """Write an on-demand dump: one JSON file per record class.
 
     Deterministic: fixed record order (by id), fixed key order (dict
     insertion order in each _export_* function, which is fixed by the code
@@ -325,7 +341,7 @@ def write_export(conn: sqlite3.Connection, export_dir: str | Path) -> None:
     one trailing newline per file so a re-run with no data change produces
     a byte-identical file and an empty diff.
     """
-    export_dir = Path(export_dir)
+    export_dir = _outside_the_repository(export_dir)
     export_dir.mkdir(parents=True, exist_ok=True)
     for record_class in ("assertion", "acronym", "term", "paper"):
         records = export_class(conn, record_class)
@@ -336,7 +352,7 @@ def write_export(conn: sqlite3.Connection, export_dir: str | Path) -> None:
 
 def write_contexts_export(conn: sqlite3.Connection, export_dir: str | Path) -> None:
     """Export the contexts table itself, since it is referenced but not a record class."""
-    export_dir = Path(export_dir)
+    export_dir = _outside_the_repository(export_dir)
     export_dir.mkdir(parents=True, exist_ok=True)
     rows = conn.execute("SELECT id, description FROM contexts ORDER BY id")
     contexts = [{"id": r["id"], "description": r["description"]} for r in rows]
@@ -346,6 +362,11 @@ def write_contexts_export(conn: sqlite3.Connection, export_dir: str | Path) -> N
 
 
 def regenerate(conn: sqlite3.Connection, export_dir: str | Path) -> None:
-    """Regenerate the full export: contexts plus all four record classes."""
+    """Write a full export: contexts plus all four record classes.
+
+    Since ADR-0004 A7 (2026-10-06) an export is an on-demand dump, never
+    committed: a folder inside the repository is refused (by both writers),
+    and so is the NO_COMMITTED_EXPORT marker (building a Path from it
+    raises with the reason)."""
     write_contexts_export(conn, export_dir)
     write_export(conn, export_dir)

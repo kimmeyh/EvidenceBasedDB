@@ -107,7 +107,8 @@ def test_apply_drops_the_column_adds_the_check_and_keeps_dependents(old_store):
     assert "export NOT regenerated" in proc.stdout and not export_dir.exists()
     later = _run(db_path, export_dir, ["--apply"], ROOT / "scripts" / "migrate_sprint6_reference_fields.py")
     assert later.returncode == 0, later.stderr
-    assert (export_dir / "papers.json").exists()
+    assert "APPLIED" in later.stdout
+    assert not export_dir.exists(), "no export is written since ADR-0004 A7"
 
 
 def test_apply_is_idempotent(old_store):

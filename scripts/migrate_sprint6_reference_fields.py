@@ -17,7 +17,7 @@ store cannot drift from a fresh one.
 
 DRY-RUN BY DEFAULT (QUALITY_STANDARDS.md): prints the plan and exits.
 `--apply` takes a verified backup first (F30), then migrates, runs
-`PRAGMA foreign_key_check`, commits and regenerates the export.
+`PRAGMA foreign_key_check` and commits (no export since ADR-0004 A7).
 
 Usage:
     python scripts/migrate_sprint6_reference_fields.py          # plan only
@@ -35,7 +35,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import SCHEMA_PATH, connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.ingest import append_updated_reason  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
@@ -173,8 +172,7 @@ def main(argv: list[str] | None = None) -> int:
         backup_before_write(DB_PATH, "sprint6 reference fields migration")
         apply(conn, date.today().isoformat())
         conn.isolation_level = ""
-        regenerate(conn, EXPORT_DIR)
-        print("APPLIED; export regenerated")
+        print("APPLIED")
         return 0
     finally:
         conn.close()

@@ -27,7 +27,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.ingest import add_source_link, insert_paper, record_probe  # noqa: E402
 from store.probes import _arxiv_entry, probe_doi  # noqa: E402
 
@@ -162,8 +161,7 @@ def main(argv: list[str] | None = None) -> int:
             record_probe(conn, rid, "publication_status", "retracted", "Crossref", today)
         if apply:
             conn.commit()
-            regenerate(conn, EXPORT_DIR)
-            print("APPLIED; export regenerated")
+            print("APPLIED")
         else:
             print("DRY RUN: nothing written. Re-run with --apply.")
         return 0

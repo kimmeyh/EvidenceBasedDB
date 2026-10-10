@@ -13,8 +13,153 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-09-27 to 2026-10-03 (Sprint 6, in progress)
+### 2026-10-06 onward (Sprint 7, in progress)
 
+- **docs**: Sprint 7 Phase 1 (2026-10-06) -- carry-forward cut
+  `feature/20261006_Sprint_7` from the Sprint 6 branch after PR #54
+  (develop) and PR #67 (main), carrying F58's card, which was committed
+  after the merge; CHANGELOG reconciled; Sprint 6 completeness sweep;
+  design-document currency checked; candidate slate presented
+- **docs**: Sprint 7 scope selected (team lead, 2026-10-06): F59, F58, F52,
+  F53, F54, F44, F45; `SPRINT_7_PLAN.md` drafted with pre-flights (the arXiv
+  API still answers 429; arxiv.org's robots.txt sets a 15 s crawl delay) and
+  decisions Q1-Q9
+- **docs**: Sprint 7 plan approved (2026-10-06): no export (Q1 = 2), one
+  backup location (Q2 = 1), every arXiv request 18 s apart (Q7), F after C
+  and G after F (Q8); issues #69-#75 = Tasks A-G
+- **process**: F59, F39 release for Sprint 7 (Task A, Issue #69) -- the
+  models page re-read 2026-10-06: every tier's id, price, context, maximum
+  output and retirement date unchanged; Haiku 4.5 still "not sooner than
+  October 15, 2026", no successor Haiku listed. The Developers role and the
+  one Haiku task pattern move to Sonnet 5.5 now, ahead of the date
+- **feat**: F58, the store out of the repository (Task B, Issue #70) --
+  ADR-0004 A7, ADR-0003 A2 and ADR-0005 A5 first; the store and its 35
+  backups moved to `D:\Data\Harold\EvidenceBasedDB\store` (verified backup
+  first, copied with the SQLite backup API, integrity and counts checked);
+  `store.script_paths` reads one setting (override `EBDB_STORE_DIR`);
+  `export/` removed from the repository and no export is written (Q1 = 2;
+  history kept, Q3 = 1); `regenerate_export.py --out` and
+  `rebuild_store_from_export.py --from` as on-demand tools; backup
+  retention's rule 3 is now "one of the 10 newest" (its own injection test
+  found that `parsed[-0:]` is the whole list); real-data tests carry the
+  `live_store` marker (locally a missing store fails them; CI deselects them
+  by name); `test_export_currency.py` retired; CLAUDE.md, the workflow and
+  `.gitignore` updated
+- **fix**: Task B fresh-eyes review findings (Issue #70) -- CI was red: off
+  Windows the default `D:\` store path is one relative segment and resolved
+  inside the checkout, so `store_dir()` now refuses it there and names
+  `EBDB_STORE_DIR` (new test, proven by injection); 17 historical scripts
+  committed their write and only then hit the retired export, so those
+  `regenerate` calls are gone and a test keeps them out (proven by
+  injection); both public export writers refuse a folder inside the
+  repository, not only `regenerate`; every live fixture opens the store
+  read-only and the shared session dump is read-only; the append-only
+  `updated_reason` check also anchors at 3bf2eda, the last export, so Sprint
+  6's records are covered; stale docstrings corrected
+- **feat**: F52 machinery (Task C, Issue #71) -- every arXiv request, API
+  and site, 18 s apart (Q7); a per-session cap of 240 arXiv requests on the
+  shared clock that raises before the request over it (Q6); the abstract
+  page as the probe source while the API refuses, answering status, version
+  of record and access in one request (Q5), the API retried once per
+  session; a session ends early after 3 arXiv no-answers in a row and two
+  such sessions stop the run; `--sessions` pauses 2 hours between caps;
+  `--progress` makes a stopped run resumable; values that differ from the
+  stored probe print as DIFFERS. Five guards proven by injection
+- **fix**: Task C fresh-eyes review findings (Issue #71) -- a record arXiv
+  refused was marked done and lost its status for good: it now stays
+  unfinished and is retried in later sessions, up to 3, and `--unprobed`
+  selects an arXiv record without a status; the session count and the
+  pause are saved beside the progress file so a restart honors them; a
+  Crossref failure no longer discards the registry's answer; an arXiv 403,
+  or an open page that is not the paper's, records no access; a 2-minute
+  SQLite busy timeout; a new run waits the full interval before its first
+  arXiv request (found live: 0.3 s after the previous run); `--site`
+  forces the abstract page. Live check: the page matched the API on the
+  pilot's 12 papers (8 published with their DOIs, 4 preprints) and saw all
+  6 recorded withdrawals, 4 of which the API comment never showed; so in
+  API mode the abstract page (fetched anyway for access) is parsed too and
+  its withdrawal wins, at no extra request
+- **feat**: F54, the 30 unlinked repository notes (Task E, Issue #73) --
+  `scripts/sprint7_f54_recover_repo_notes.py` linked 23 of them (24 links,
+  24 new records): 9 by the owner's repository list (punctuation lost at a
+  line wrap), 9 by the paper's own PDF text (cut-short names), 1 by GitHub
+  search with its query (the cited owner is gone; the repository belongs to
+  a co-author), 4 Zenodo records by DOI. Each link's evidence says how it
+  was found. 7 reported again with what was tried: 4 repositories gone, 1
+  candidate rejected (Julia, where the paper says Python), 1 on Gitee (no
+  route), and `2108.0131`, whose PDF is a different paper (arXiv:2108.00131)
+- **feat**: F54's last item (Task E, Issue #73) -- arXiv:2108.00131
+  (Radhakrishnan et al., PNAS), the paper actually in the mislabeled
+  QMLPapers file, entered through the door in a pause of Task C's run (one
+  arXiv request), with its code `uhlerlab/ntk_matrix_completion` linked
+- **feat**: F62 card and read-only discovery pilot (team lead, Q11 = 1 and
+  3) -- `scripts/discover_candidates.py` ranks candidate papers from
+  OpenAlex metadata in four streams (ml, qml, tensor, fraud), drops what the
+  store holds, and writes its report outside the repository; the OpenAlex
+  key is read from `OPENALEX_API_KEY` and sent only in a header (guard
+  proven by injection). Pilot of 100 found stream-precision and
+  citation-quality issues, recorded on F62
+- **feat**: F35's held-back repository candidates, the optional slice of
+  F54 (Task E, Issue #73) -- the 78 with score >= 0 screened (subagent, read
+  only) into `scripts/sprint7_f35_screen.json`: 42 own, 26 third-party, 10
+  unsure; every "own" row checked independently (repository resolves 40 of
+  40; sentence in the paper's PDF 40 of 40); `sprint7_f35_screen_links.py`
+  applied 39 links and 38 new records, each carrying the paper's sentence
+  and how it was found. Unsure and third-party rows held back
+- **feat**: F53, probes each cycle and a stale report (Task D, Issue #72)
+  -- `probe_reference_fields.py --stale` lists every probe measured before
+  the cycle start (computed from the sprint branch's date) and exits 1 when
+  any is stale; hand-recorded readings are never stale; `--refresh`
+  selects stale and unprobed records; Phase 1.3 of the workflow runs the
+  refresh within F52's cap, then `--stale`. Guard proven by injection
+- **feat**: F52, the bulk probe run (Task C, Issue #71) -- 1,524 records
+  probed in 12 capped sessions over 36 hours (2026-10-06 21:36 to
+  2026-10-08 09:49), 0 errors, no arXiv refusal; 107 statuses from the
+  abstract page where the API did not answer; affiliations on 13 of 1,301
+  API answers. ADR-0005 A6 records F52 and F53 as built and the
+  measurements; Phase 1.3's runtime estimate corrected from 20 to 36+ hours
+- **feat**: F44, the eight Cycorp papers (Task F, Issue #74) -- downloaded
+  to `Papers\` under the naming convention (approved 2026-10-06), each
+  record's `access` a local path plus its identifier or URL and its
+  `evidence` the SHA-256; INTAKE_WORKFLOW.md section 18 written before the
+  load. S16 by arXiv id, and S19 and L10 by DOIs found on Crossref (the plan
+  expected S19 hand-origin); five hand-origin, OV19 and PH20 as
+  `Reference:`. T07 read in full and promoted; it yields two
+  `vendor-self-claim` assertions (about a thousand inference modules in
+  2007; eight tactic types, unreconciled with the 2009 code's six) and
+  settles Sprint 6's open note on `cyc-hl-module-count`. Guards proven by
+  injection. `restore_store.py`'s closing message no longer names the
+  retired export
+- **feat**: F45, the Dirac-3 reading pass (Task G, Issue #75) -- seven
+  sources read directly and promoted (the User Guide and the critique in
+  full; arXiv:2407.04512, arXiv:2502.08591, arXiv:2608.10787, the protein
+  paper's article page and QCi's EQC lesson in part), yielding 14
+  assertions: F-201 to F-209, F-301 to F-303 and the planning note's QCi
+  noise claims, every quote checked against its local copy. F-207 enters
+  as `absence` with its search scope (545 QCi site files and four PDFs);
+  the Zeno claim contradicts the peer-reviewed dissipation mechanism;
+  disclosed coi stored on two records. Two second-hand errors corrected by
+  the reading (section 15): F-301's "80 percent" is not in the critique,
+  and F-302's 122% bundles a 24% formulation gap. Guards proven by
+  injection
+
+### 2026-09-27 to 2026-10-06 (Sprint 6, PR #54, merged to develop 2026-10-06 and to main via PR #67 the same day)
+
+- **docs**: F58 carded and targeted for Sprint 7 (2026-10-06): the store,
+  its backups and the export move out of the repository, ADR-0004 amendment
+  first (840d255)
+- **chore**: Sprint 6 merge-ready (2026-10-05): Copilot review complete
+  with no findings; PR #54 marked ready (66f1b20)
+- **docs**: Sprint 6 completion updates (2026-10-05): SPRINT_6_SUMMARY.md;
+  master plan rolled and shipped cards pruned by hand; checklist Sprint 6
+  section (be72649)
+- **process**: Sprint 6 retrospective improvements I1-I6, all applied now
+  (2026-10-05): one process-wide arXiv clock (I1, I6, 498f53c); intake
+  refuses a manifest no INTAKE_WORKFLOW section names (I2, f58f5d2); task
+  issue numbers resolved from the task letter, hook-checked (I3, 4ea7e6b);
+  Phase 5 re-reads amendments against the code and bulk loads state their
+  derived fields at planning (I4, I5, eeb2e46)
+- **docs**: Sprint 6 retrospective recorded (2026-10-05, 9ae41db)
 - **docs**: Sprint 6 Phase 1 (2026-09-27) -- carry-forward cut after PR #43
   (develop) and PR #53 (main); CHANGELOG reconciled; master plan swept by
   hand; Phase 1.3 design-document currency recorded (refresh over 347
