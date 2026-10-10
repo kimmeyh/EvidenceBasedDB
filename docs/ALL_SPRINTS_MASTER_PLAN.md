@@ -592,6 +592,62 @@ do 40 and 42, and 60 and 62.
   local copy by test; the team lead's items each answered or carded.
 - Depends on: F63 (same QCi source family; can run in the same task).
 
+**F66. Make develop the default branch: a git-flow model with main as the release branch (~1h) Priority 15** (NEW 2026-10-10, team lead at Sprint 8 Phase 1.4; TARGET: Sprint 8)
+- Phase: Process / repository
+- Platform: GitHub repository settings (`gh repo edit`),
+  `.github/workflows/ci.yml`, the sprint docs and scripts that name a
+  branch
+- Team lead, 2026-10-10: "add to backlog and target for next sprint -
+  switch the default branch from main to develop". The model: develop is
+  the GitHub default, where feature work is integrated, and feature and
+  sprint branches open PRs into it; main is the release branch, changed
+  only by a PR from develop to main that the team lead merges, and each
+  release merge is tagged.
+- **Facts at carding (snapshot as of 2026-10-10, read only)**: the default
+  branch is `main`; `develop` and `main` both exist on origin; the one CI
+  workflow runs on `pull_request` into `develop` only, so a release PR into
+  `main` is not tested today; no `dependabot.yml`.
+- The team lead's instructions, kept in their three phases:
+  - Phase A, inspect and report, change nothing: the default branch;
+    whether `develop` exists locally and on origin; commits on each side
+    the other lacks (`git rev-list --count` both ways), and whether main's
+    extra commits change any file (`git diff --stat <merge-base>
+    origin/main`); open PRs and their bases; CI workflows and their
+    triggers, noting any that start or stop running when the default
+    changes; `dependabot.yml`'s `target-branch`, branch protection or
+    rulesets (a 403 on a private free repository means none), CODEOWNERS;
+    every branch name in scripts, hooks, docs and tests ("main", "master",
+    "develop", "default branch", "--base", "origin/HEAD"), each classed as
+    must change, fine as is, or history (records of past events are never
+    edited). Findings as bullets, then a numbered list of proposed
+    changes; stop for approval.
+  - Phase B, approved changes only: create `develop` from main only if it
+    is missing; if main has commits with real file changes that develop
+    lacks, stop and ask (never merge main into develop without approval);
+    `gh repo edit --default-branch develop`, then `git remote set-head
+    origin -a`, verified with `gh repo view`; CI on `pull_request` into
+    develop AND main, so release PRs are tested; Dependabot (if present)
+    `target-branch: develop`; open PRs into main that are feature work are
+    listed and retargeted only with approval (`gh pr edit N --base
+    develop`); fix the "must change" hits and write down the release step:
+    "PR develop -> main, merged by the owner, then tag the merge." Edits on
+    a feature branch with a PR into develop; the suite runs before each
+    commit; commit messages state no test results.
+  - Phase C, verify and report: the default is develop (`gh repo view
+    --json defaultBranchRef`); `gh pr create` with no `--base` targets
+    develop; CI triggers include develop and main; a note that "Closes
+    #N" now closes issues when a PR merges into develop, since GitHub
+    reads the keyword only on PRs into the default branch. Report as
+    bullets: what changed, what was left alone and why, any decision
+    still open.
+- Standing limits: no PR merged and no branch deleted by Claude; every
+  decision a plain numbered list answered by one digit.
+- Acceptance: Phase C's checks all pass; the release step written in the
+  workflow docs; a test that fails if `ci.yml` stops triggering on either
+  branch, proven by injection.
+- Depends on: none. Best done first in the sprint: the sprint PR's base
+  and its "Closes #N" behavior both follow the default.
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT

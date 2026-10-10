@@ -21,6 +21,9 @@ this project keeps having to replace with a step.
   Name" format; CHANGELOG reconciled for Sprint 7's last three days;
   Sprint 7 completeness sweep; design-document currency checked; candidate
   slate presented
+- **docs**: F66 carded (2026-10-10, team lead at Phase 1.4, target Sprint
+  8) -- make develop the default branch, with main as the release branch
+  changed only by a tagged develop-to-main PR; CI to run on PRs into both
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
