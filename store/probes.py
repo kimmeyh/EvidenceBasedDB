@@ -142,7 +142,7 @@ def probe_doi(record_id: str, doi: str, fetcher) -> ProbeResult:
     else:
         r.notes.append(f"Crossref type {kind!r} is not mapped to a status")
     _check_retraction(r, doi, fetcher)
-    rel =msg.get("relation") or {}
+    rel = msg.get("relation") or {}
     for key in ("is-preprint-of", "has-preprint"):
         for item in rel.get(key, []):
             if item.get("id"):
@@ -253,13 +253,15 @@ def probe_arxiv_site(record_id: str, ident: str, fetcher, _open=None) -> ProbeRe
     r.access, body = _observe(url, _open)
     parsed = parse_arxiv_abs(body.decode("utf-8", "replace"), ident) if body else None
     if parsed is None:
-        r.notes.append("arXiv's abstract page did not answer" if r.access is None else
-                       f"arXiv's abstract page gave no record ({r.access}); access not recorded")
+        seen = r.access
         # An "open" page that is not arXiv's page for this id (a challenge,
         # a redirect) says nothing about the paper's access either. A 404 or
         # 410 from arXiv is about the paper, and stays.
-        if r.access == OPEN or (r.access or "").startswith("bot challenge"):
+        if seen == OPEN or (seen or "").startswith("bot challenge"):
             r.access = None
+        r.notes.append("arXiv's abstract page did not answer" if seen is None else
+                       f"arXiv's abstract page gave no record ({seen}); access "
+                       + ("not recorded" if r.access is None else "recorded"))
         try:
             md = citations.parse_datacite_arxiv(fetcher(
                 citations.DATACITE_API + urllib.parse.quote(citations.ARXIV_DOI_PREFIX + ident, safe="/."),

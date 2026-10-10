@@ -320,8 +320,15 @@ def test_an_arxiv_block_or_a_foreign_page_records_no_access():
     assert r.access is None
     r = probes.probe_arxiv_site("p", "2401.00001", fetcher, _open=_site({"2401.00001": _page("2401.99999")}))
     assert r.access is None and "publication_status" not in r.values
+    assert any("access not recorded" in n for n in r.notes)
     r = probes.probe_arxiv_site("p", "2401.00001", fetcher, _open=_site({"2401.00001": _http(404)}))
     assert r.access == "not found (HTTP 404)"
+    # The note says what was done with the access value (Copilot, PR #68):
+    # a 404 is about the paper and is recorded, so the note must not say
+    # "not recorded". Proven to fail by injection, 2026-10-10: with the
+    # note text restored to the unconditional "access not recorded", this
+    # assertion went red.
+    assert any("(not found (HTTP 404)); access recorded" in n for n in r.notes), r.notes
 
 
 def test_api_mode_costs_two_requests_per_paper_and_stops_at_the_cap(monkeypatch, tmp_path):
