@@ -715,6 +715,32 @@ do 40 and 42, and 60 and 62.
   re-pull; ADR-0005 amended.
 - Depends on: F52's cap (built).
 
+**F65. Deep research into the Dirac-3S, QCi's upgraded Dirac-3 (~3h) Priority 40** (NEW 2026-10-10, team lead during Sprint 7 Phase 7; TARGET: Sprint 8)
+- Phase: Content / platform research
+- Platform: `D:\Data\Harold\EvidenceBasedDB\References\QCi-site\systems\Dirac_3S_Users_Guide_Rev_A-1.pdf`
+  (outside the repository; "Dirac-3S User Guide, September 2026, Revision
+  A", QCi-QMS-900-000001, 38 pp., created 2026-09-24, SHA-256
+  0ddbc5339966a42ab67c44988d7a12a599724c462839ecc2848189f048af5971);
+  the store's Dirac-3 assertions from F45; a script in the pattern of
+  `scripts/sprint7_f45_dirac3_reading.py`
+- Team lead, 2026-10-10: "Add to backlog and target NEXT sprint: deep
+  research into the new Dirac-3S (upgraded Dirac-3 system)", with a list
+  of further items. **The list did not arrive** (the message held a paste
+  placeholder, not its text); it is added here when the team lead re-sends
+  it, before Sprint 8 planning.
+- Scope: read the guide in full and enter it as a source; for each
+  Dirac-3 assertion from F45 (the variable ceiling, the 200-to-1 analog
+  resolution, the 0-to-16 integer bound and the 949 / 954 level count,
+  the summation constraint, the measurement loop), record whether the
+  Dirac-3S guide confirms, changes or supersedes it, as a relation to the
+  existing assertion, never an edit of it; new Dirac-3S claims as
+  `vendor-self-claim` with page anchors; the team lead's listed items.
+- Acceptance: the guide read in full (read row and SHA-256); every F45
+  Dirac-3 assertion classed against the guide (confirmed, changed,
+  superseded, or not addressed); every quote verified verbatim against the
+  local copy by test; the team lead's items each answered or carded.
+- Depends on: F63 (same QCi source family; can run in the same task).
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
