@@ -31,7 +31,7 @@ plan (`SPRINT_7_PLAN.md`), `git log`, the issues, the retrospective
 - **ADR-0005 A6.** The probes are built and capped; a record is re-checked
   about every 12 months, not every cycle. Approved at Manual Validation.
 
-Store: 1,875 -> 1,947 papers; 60 -> 76 assertions. Suite: 572 -> 610.
+Store: 1,875 -> 1,947 papers; 60 -> 76 assertions. Suite: 572 -> 610 at Manual Validation; 617 after retrospective I6.
 
 ## Manual Validation decisions
 

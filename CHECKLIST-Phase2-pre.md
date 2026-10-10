@@ -174,4 +174,4 @@ Evidence for each row is the commit named.
 - [x] **C**: Task G (F45) -- Dirac-3 reading pass, 14 assertions (a4eeeea)
 - [x] **C**: Phase 5 I4 re-read, ADR-0004 A7 matched to the code (de4e487)
 - [x] **H+C**: Manual Validation Q9, Q12-Q20 decided and applied (b8f3bca, 89accb9)
-- [ ] **H+C**: Retrospective, 16 x 4 (f403121), improvements I1-I5, I7 applied (0747a9b); I6's status-format half awaits the team lead
+- [x] **H+C**: Retrospective, 16 x 4 (f403121), improvements I1-I7 applied (0747a9b; I6's status format in the commit after cf6f5e4)

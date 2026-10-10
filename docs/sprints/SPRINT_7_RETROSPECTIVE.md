@@ -208,14 +208,15 @@ existing mechanism.
   file.
 - **I5. The Phase 5 amendment re-read covers every restatement** (now,
   0747a9b): extends Sprint 6 I4; `CLAUDE.md`'s "by name" corrected.
-- **I6. No stored `updated` date; one status format** (now, partly
-  applied): the `updated` field is removed from `sprint_status.json`
-  (0747a9b; `git log` answers it, and nothing read it). The status-format
-  half is NOT applied: making "Phase n.n Name" the one format needs
-  `.claude/hooks/block_procedural_question_stop.py` to read the phase
-  number from it (it checks a `phase_4` prefix, so "Phase 4.1 Execution"
-  would silently fall outside its window), and the edit to that hook was
-  refused by the session's permission classifier on 2026-10-10. Held for
-  the team lead's decision.
+- **I6. No stored `updated` date; one status format** (now): the
+  `updated` field is removed from `sprint_status.json` (0747a9b; `git log`
+  answers it, and nothing read it). The status format is "Phase n.n Name
+  -- detail" everywhere: the Phase 4 Stop hook and
+  `tests/test_sprint_documents.py` read the phase number from it (either
+  form), and a test fails on a live status the footer cannot read; both
+  new guards proven to fail by injection. The first attempt at the hook
+  edit was refused by the session's permission classifier on 2026-10-10;
+  the hook was restored unchanged, and the team lead switched to manual
+  permissions (Q22 = 1) for the edit.
 - **I7. Task start times in the note** (now, 0747a9b): extends the Phase 4
   rule that the note is written at every task boundary.

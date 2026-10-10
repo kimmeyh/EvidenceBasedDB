@@ -36,10 +36,21 @@ SPRINTS = ROOT / "docs" / "sprints"
 STATUS = ROOT / ".claude" / "sprint_status.json"
 
 
-# Underscore-terminated on purpose: a bare "phase_1" prefix would also match
-# a hypothetical "phase_10_..." (caught by this module's own edge-case test
-# before the rule ever ran against a real file).
-PRE_PLANNING_PHASES = ("phase_1_", "phase_2_")
+# The phase NUMBER, read from either status form: "Phase 1.1 Backlog
+# Refinement -- ..." (the one format since Sprint 7 retrospective I6, which
+# the status footer reads) or the older "phase_1_refinement". The lookahead
+# keeps "phase_10_..." and "Phase 10.1" from reading as phase 1 (caught by
+# this module's own edge-case test before the rule ever ran against a real
+# file).
+PRE_PLANNING_PHASES = (1, 2)
+PHASE_NUMBER = re.compile(r"(?i)^\s*phase[ _](\d+)(?=[._ ]|$)")
+# What the status footer script parses: "Phase n.n <Name>" at the start.
+FOOTER_FORMAT = re.compile(r"^Phase \d+\.\d+ [A-Za-z]")
+
+
+def phase_number(status: str) -> int | None:
+    m = PHASE_NUMBER.match(status)
+    return int(m.group(1)) if m else None
 
 
 def _current_status() -> dict | None:
@@ -70,7 +81,7 @@ def status_requires_plan_doc(current_sprint: dict) -> bool:
     close-out message (F27). One rule now: the number follows the branch;
     the plan is owed from Phase 3."""
     status = str(current_sprint.get("status", ""))
-    return not status.startswith(PRE_PLANNING_PHASES)
+    return phase_number(status) not in PRE_PLANNING_PHASES
 
 
 def previous_summary_may_wait(current_sprint: dict) -> bool:
@@ -172,3 +183,25 @@ def test_status_requires_plan_doc_only_from_phase_3():
     assert status_requires_plan_doc({"status": ""})
     assert status_requires_plan_doc({})
     assert status_requires_plan_doc({"status": "phase_10_made_up"})  # startswith("phase_1") must not match
+    assert not status_requires_plan_doc({"status": "Phase 1.1 Backlog Refinement"})
+    assert not status_requires_plan_doc({"status": "Phase 2.3 Pre-Kickoff -- issues closed"})
+    assert status_requires_plan_doc({"status": "Phase 4.1 Execution"})
+    assert status_requires_plan_doc({"status": "Phase 10.1 Made Up"})
+
+
+@pytest.mark.skipif(not STATUS.exists(), reason="no sprint_status.json")
+def test_the_live_status_is_in_the_footer_format():
+    """Sprint 7 retrospective I6: the status footer reads the phase from
+    "Phase n.n <Name>" at the start of the status, and printed no phase at
+    all for "Phase 7 Retrospective" (2026-10-09) or for the older
+    "phase_4_execution" form. Proven to fail by injection, 2026-10-10: with
+    the live status set to "phase_7_retrospective", this test went red.
+    The pre-planning value is "Phase 1.1 Backlog Refinement" (workflow
+    8.2)."""
+    st = json.loads(STATUS.read_text(encoding="utf-8"))["current_sprint"]
+    status = str(st.get("status", ""))
+    assert FOOTER_FORMAT.match(status), (
+        f"sprint_status.json status {status!r} does not start with 'Phase n.n <Name>'; "
+        "the footer cannot read its phase")
+    assert "updated" not in json.loads(STATUS.read_text(encoding="utf-8")), (
+        "'updated' is a stored copy of what git log answers; it was removed in Sprint 7 (I6)")

@@ -16,7 +16,8 @@ repository's own hook convention and with its own fixture set
 
 Blocks a stop only when ALL of these hold:
   1. the branch matches ^feature/<digits>_Sprint_<N>;
-  2. .claude/sprint_status.json has plan_approved true AND a phase_4_* status
+  2. .claude/sprint_status.json has plan_approved true AND a Phase 4 status
+     ("Phase 4.1 Execution -- ..." or the older "phase_4_execution")
      (the window: approved, executing, not yet at Phase 5);
   3. the plan document named by plan_doc exists;
   4. the last assistant message ends in a procedural question ("shall I",
@@ -44,8 +45,18 @@ from pathlib import Path
 BRANCH_PATTERN = re.compile(r"^feature/\d+_Sprint_(\d+)")
 
 # The window: plan approved and a Phase 4 status. Phase 5 (validation) and
-# later are outside it, as is anything before approval.
-WINDOW_STATUS_PREFIX = "phase_4"
+# later are outside it, as is anything before approval. The phase number is
+# read from either status form: "Phase 4.1 Execution -- ..." (the footer's
+# format, one format since Sprint 7 retrospective I6) or the older
+# "phase_4_execution". A "phase_4" prefix check read "Phase 4.1" as outside
+# the window, which would have silenced this hook without a sign.
+WINDOW_PHASE = 4
+PHASE_NUMBER = re.compile(r"(?i)^\s*phase[ _](\d+)(?=[._ ]|$)")
+
+
+def phase_number(status: str) -> int | None:
+    m = PHASE_NUMBER.match(status)
+    return int(m.group(1)) if m else None
 
 # A message that names a stopping criterion (or one of the workflow's other
 # sanctioned stop shapes) is allowed to stop even if it asks a question.
@@ -143,7 +154,7 @@ def _in_window(repo: Path) -> tuple[bool, str]:
     if current.get("plan_approved") is not True:
         return False, "plan not approved"
     phase = str(current.get("status") or "")
-    if not phase.startswith(WINDOW_STATUS_PREFIX):
+    if phase_number(phase) != WINDOW_PHASE:
         return False, f"status {phase!r} is outside Phase 4"
     plan_doc = current.get("plan_doc")
     if not plan_doc or not (repo / str(plan_doc)).exists():
