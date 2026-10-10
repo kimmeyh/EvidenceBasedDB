@@ -27,7 +27,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
-from store.export import regenerate  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 METADATA_PATH = ROOT / "scripts" / "seed_set_metadata.json"
@@ -64,8 +63,7 @@ def main(argv: list[str] | None = None) -> int:
         entries = json.loads(METADATA_PATH.read_text(encoding="utf-8"))
         kept = [e for e in entries if e["id"] != RECORD_ID]
         METADATA_PATH.write_text(json.dumps(kept, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-        regenerate(conn, EXPORT_DIR)
-        print(f"deleted {RECORD_ID}; seed metadata now {len(kept)} entries; export regenerated")
+        print(f"deleted {RECORD_ID}; seed metadata now {len(kept)} entries")
         return 0
     finally:
         conn.close()

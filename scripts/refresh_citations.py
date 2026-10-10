@@ -11,7 +11,7 @@ human-owned.
 DRY-RUN BY DEFAULT (QUALITY_STANDARDS.md): prints a per-paper report and
 writes nothing. `--apply` updates `records.provenance` (the citation) and
 `records.value` (the title) for every DIFFERS row, with a dated
-`updated_reason` naming the provider, then regenerates the export. It never
+`updated_reason` naming the provider (no export since ADR-0004 A7). It never
 touches papers it could not resolve, and it never auto-applies when the
 fetched title is empty.
 
@@ -37,7 +37,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.ingest import DERIVED_BY_DOOR, PaperRecord, validate_paper  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
@@ -238,9 +237,8 @@ def main(argv: list[str] | None = None) -> int:
             conn.execute("ROLLBACK")
             raise
         conn.execute("COMMIT")
-        regenerate(conn, EXPORT_DIR)
         errors = [e for e in report if e["status"] == "ERROR"]
-        print(f"applied {n} update(s); export regenerated")
+        print(f"applied {n} update(s)")
         if errors:
             print(f"warning: {len(errors)} paper(s) could not be resolved and were NOT updated: "
                   + ", ".join(e["id"] for e in errors), file=sys.stderr)

@@ -3,7 +3,8 @@ while machine-checkable artifacts contradict it.
 
 Converted 2026-09-14 from verify-closeout-complete.ps1 (itself ported
 2026-09-02 from spamfilter-multi, Sprint 50 escape lesson), adapted to this
-repo's sprint_status schema (current_sprint.pr, updated) and doc paths.
+repo's sprint_status schema (current_sprint.pr; the top-level `updated`
+field was removed in Sprint 7, retrospective I6) and doc paths.
 
 Fires ONLY when the final assistant message claims close-out completion AND
 an artifact contradicts it. Checks: sprint_status currency and sprint

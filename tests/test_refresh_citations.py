@@ -68,7 +68,7 @@ def test_dry_run_reports_differs_and_no_id_and_writes_nothing(store):
     assert not export_dir.exists()
 
 
-def test_apply_rewrites_citation_and_title_with_a_dated_reason_and_regenerates(store):
+def test_apply_rewrites_citation_and_title_with_a_dated_reason(store):
     db_path, export_dir = store
     proc = _run(db_path, export_dir, ["--apply"])
     assert proc.returncode == 0, proc.stderr
@@ -80,9 +80,7 @@ def test_apply_rewrites_citation_and_title_with_a_dated_reason_and_regenerates(s
     assert row["value"] == "Quantum-Enhanced Greedy Combinatorial Optimization Solver"
     assert "re-derived from arxiv:2303.05509 via arXiv" in row["updated_reason"] and "previous citation" in row["updated_reason"]
     assert vendor.startswith("Vendor,"), "a NO-ID paper is never touched"
-    assert (export_dir / "papers.json").exists()
-    papers = json.loads((export_dir / "papers.json").read_text(encoding="utf-8"))
-    assert next(p for p in papers if p["id"] == "dupont")["citation"] == FRESH
+    assert not export_dir.exists(), "no export is written since ADR-0004 A7"
 
 
 def test_apply_keeps_a_same_day_reason_written_by_an_earlier_pass(store):

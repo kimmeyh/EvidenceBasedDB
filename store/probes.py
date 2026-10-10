@@ -14,8 +14,10 @@ left unanswered rather than called a preprint.
 """
 from __future__ import annotations
 
+import html
 import http.client
 import json
+import re
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -36,6 +38,9 @@ class ProbeResult:
     provider: str = ""
     values: dict[str, str] = field(default_factory=dict)  # field name -> value
     notes: list[str] = field(default_factory=list)       # what could not be answered, and why
+    # access_status observed by the SAME request (the arXiv site probe), so
+    # the caller does not spend a second request on it; None = not observed.
+    access: str | None = None
 
 
 def _arxiv_entry(ident: str, fetcher) -> tuple[str, str, str, list[str]] | None:
@@ -67,6 +72,24 @@ def retraction_notice(doi: str, fetcher) -> str | None:
     return None
 
 
+_CROSSREF_FAILURES = (OSError, ValueError, KeyError, TypeError, http.client.HTTPException)
+
+
+def _check_retraction(r: ProbeResult, doi: str, fetcher) -> None:
+    """Apply a Crossref retraction notice to `r`. A Crossref failure is a
+    note, never an exception: it must not throw away the status the
+    registry already answered (Task C review, 2026-10-06), and the status
+    stays as answered, with the unchecked notice said."""
+    try:
+        notice = retraction_notice(doi, fetcher)
+    except _CROSSREF_FAILURES as ex:
+        r.notes.append(f"Crossref retraction check did not answer ({type(ex).__name__}); not checked this run")
+        return
+    if notice:
+        r.values["publication_status"] = "retracted"
+        r.notes.append(f"Crossref retraction notice {notice}")
+
+
 def probe_arxiv(record_id: str, ident: str, fetcher) -> ProbeResult:
     r = ProbeResult(record_id)
     try:
@@ -94,10 +117,7 @@ def probe_arxiv(record_id: str, ident: str, fetcher) -> ProbeResult:
         r.values["publication_status"] = "preprint"
     if doi:
         r.values["version_of"] = doi
-        notice = retraction_notice(doi, fetcher)
-        if notice:
-            r.values["publication_status"] = "retracted"
-            r.notes.append(f"Crossref retraction notice {notice}")
+        _check_retraction(r, doi, fetcher)
     if affs:
         r.values["affiliations"] = "; ".join(affs)
     return r
@@ -121,10 +141,7 @@ def probe_doi(record_id: str, doi: str, fetcher) -> ProbeResult:
         r.values["publication_status"] = "published"
     else:
         r.notes.append(f"Crossref type {kind!r} is not mapped to a status")
-    notice = retraction_notice(doi, fetcher)
-    if notice:
-        r.values["publication_status"] = "retracted"
-        r.notes.append(f"Crossref retraction notice {notice}")
+    _check_retraction(r, doi, fetcher)
     rel = msg.get("relation") or {}
     for key in ("is-preprint-of", "has-preprint"):
         for item in rel.get(key, []):
@@ -149,14 +166,11 @@ def landing_url(access: str) -> str | None:
     return url.strip() if sep and url.strip().startswith("http") else None
 
 
-def probe_access(url: str, _open=None, timeout: int = 30) -> str | None:
-    """What a reader gets at `url`, stated as observed. A paywall cannot be
-    told from a page reliably, so it is never claimed; a page that returns
-    200 with almost no visible words is a bot challenge or a script shell.
+OPEN = "open (HTTP 200)"
 
-    None means NO ANSWER: a 429, a 5xx, or no connection describes this
-    client or the network at that moment, not the source, and must not
-    replace the last good measurement (Sprint 6 Phase 5 review)."""
+
+def _observe(url: str, _open=None, timeout: int = 30) -> tuple[str | None, bytes | None]:
+    """(access status, body). The body is returned only for an open page."""
     _open = _open or urllib.request.urlopen
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (EvidenceBasedDB access probe)"})
     try:
@@ -165,11 +179,111 @@ def probe_access(url: str, _open=None, timeout: int = 30) -> str | None:
             ctype = resp.headers.get("Content-Type", "")
     except urllib.error.HTTPError as err:
         if err.code == 429 or err.code >= 500:
-            return None
+            return None, None
+        if err.code == 403 and citations.is_arxiv_host(url):
+            # arXiv blocks a client with 403: a fact about this client, not
+            # the paper, so no answer (Task C review, 2026-10-06).
+            return None, None
         return {401: "refused (HTTP 401)", 403: "refused (HTTP 403)", 404: "not found (HTTP 404)",
-                410: "gone (HTTP 410)"}.get(err.code, f"error (HTTP {err.code})")
+                410: "gone (HTTP 410)"}.get(err.code, f"error (HTTP {err.code})"), None
     except (OSError, http.client.HTTPException):
-        return None
+        return None, None
     if "html" in ctype and visible_words(body) < 50:
-        return "bot challenge or script shell (HTTP 200, under 50 visible words)"
-    return "open (HTTP 200)"
+        return "bot challenge or script shell (HTTP 200, under 50 visible words)", None
+    return OPEN, body
+
+
+def probe_access(url: str, _open=None, timeout: int = 30) -> str | None:
+    """What a reader gets at `url`, stated as observed. A paywall cannot be
+    told from a page reliably, so it is never claimed; a page that returns
+    200 with almost no visible words is a bot challenge or a script shell.
+
+    None means NO ANSWER: a 429, a 5xx, or no connection describes this
+    client or the network at that moment, not the source, and must not
+    replace the last good measurement (Sprint 6 Phase 5 review)."""
+    return _observe(url, _open, timeout)[0]
+
+
+# ------------------------------------------------------------- arXiv's site
+# Sprint 7 Task C (F52, Q5 = 1): while the API answers 429, arXiv's abstract
+# page is the source. Markers read from two live pages on 2026-10-06
+# (2308.08167, withdrawn; 2405.12044, published in Quantum).
+SITE_PROVIDER = "arXiv abstract page"
+_PAGE_ID = re.compile(r'<meta name="citation_arxiv_id" content="([^"]+)"')
+_WITHDRAWN_BANNER = re.compile(r'<span class="error"[^>]*>[^<]*has been withdrawn', re.IGNORECASE)
+_COMMENTS_CELL = re.compile(r'<td class="tablecell comments[^"]*">(.*?)</td>', re.DOTALL)
+_JREF_CELL = re.compile(r'<td class="tablecell jref">(.*?)</td>', re.DOTALL)
+# The published version's DOI. Never `tablecell arxivdoi`: that is arXiv's
+# own 10.48550 DOI for the preprint itself.
+_RELATED_DOI = re.compile(r'<td class="tablecell doi">.*?data-doi="([^"]+)"', re.DOTALL)
+_CITATION_DOI = re.compile(r'<meta name="citation_doi" content="([^"]+)"')
+_TAG = re.compile(r"<[^>]+>")
+
+
+def parse_arxiv_abs(page: str, ident: str) -> tuple[bool, str, str] | None:
+    """(withdrawn, journal_ref, doi) from an abstract page, or None when the
+    page is not arXiv's page for `ident` (a challenge page, a redirect
+    elsewhere): an unrecognized page answers nothing."""
+    m = _PAGE_ID.search(page)
+    if not m or m.group(1).split("v")[0] != ident:
+        return None
+    comment_cell = _COMMENTS_CELL.search(page)
+    comment = html.unescape(_TAG.sub(" ", comment_cell.group(1))) if comment_cell else ""
+    withdrawn = bool(_WITHDRAWN_BANNER.search(page)) or any(w in comment.lower() for w in _WITHDRAWN_WORDS)
+    jref_cell = _JREF_CELL.search(page)
+    jref = " ".join(html.unescape(_TAG.sub(" ", jref_cell.group(1))).split()) if jref_cell else ""
+    doi_m = _RELATED_DOI.search(page) or _CITATION_DOI.search(page)
+    doi = html.unescape(doi_m.group(1)).strip() if doi_m else ""
+    if doi.lower().startswith("10.48550/"):
+        doi = ""
+    return withdrawn, jref, doi
+
+
+def probe_arxiv_site(record_id: str, ident: str, fetcher, _open=None) -> ProbeResult:
+    """publication_status, version_of and access_status from ONE request to
+    arXiv's abstract page, paced and counted by `fetcher.wait_for` (the
+    session cap raises from there and is never caught here). Affiliations
+    are not on the page and are left unanswered. When the page does not
+    answer, DataCite gives version_of, as with the API (team lead,
+    2026-10-04: "If a request fails on arxiv, then try via DataCite")."""
+    r = ProbeResult(record_id)
+    url = f"https://arxiv.org/abs/{ident}"
+    if hasattr(fetcher, "wait_for"):
+        fetcher.wait_for(url)
+    r.access, body = _observe(url, _open)
+    parsed = parse_arxiv_abs(body.decode("utf-8", "replace"), ident) if body else None
+    if parsed is None:
+        seen = r.access
+        # An "open" page that is not arXiv's page for this id (a challenge,
+        # a redirect) says nothing about the paper's access either. A 404 or
+        # 410 from arXiv is about the paper, and stays.
+        if seen == OPEN or (seen or "").startswith("bot challenge"):
+            r.access = None
+        r.notes.append("arXiv's abstract page did not answer" if seen is None else
+                       f"arXiv's abstract page gave no record ({seen}); access "
+                       + ("not recorded" if r.access is None else "recorded"))
+        try:
+            md = citations.parse_datacite_arxiv(fetcher(
+                citations.DATACITE_API + urllib.parse.quote(citations.ARXIV_DOI_PREFIX + ident, safe="/."),
+                "application/vnd.api+json"), ident)
+        except (OSError, ValueError, KeyError, http.client.HTTPException) as ex:
+            r.notes.append(f"DataCite did not answer either ({type(ex).__name__})")
+            return r
+        r.provider = "DataCite"
+        if md.doi and not md.doi.lower().startswith("10.48550/"):
+            r.values["version_of"] = md.doi
+        r.notes.append("publication_status left unanswered (a withdrawal shows only on arXiv)")
+        return r
+    r.provider = SITE_PROVIDER
+    withdrawn, jref, doi = parsed
+    if withdrawn:
+        r.values["publication_status"] = "withdrawn"
+    elif jref or doi:
+        r.values["publication_status"] = "published"
+    else:
+        r.values["publication_status"] = "preprint"
+    if doi:
+        r.values["version_of"] = doi
+        _check_retraction(r, doi, fetcher)
+    r.notes.append("affiliations are not on the abstract page; left unanswered")
+    return r

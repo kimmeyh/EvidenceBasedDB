@@ -69,25 +69,15 @@ def test_screened_records_added_after_f10_are_listed_apart_not_timed(store):
     assert "| 1 | `a-screened` |" in text and "`c-screened` |" not in text.split("## Timing sheet")[1]
 
 
-LIVE_DB = ROOT / "store" / "evidence.db"
-
-
-@pytest.mark.skipif(not LIVE_DB.exists(),
-                    reason="store/evidence.db not present (gitignored; build it locally)")
-def test_committed_packet_is_current_against_the_live_store():
+@pytest.mark.live_store
+def test_committed_packet_is_current_against_the_live_store(live_conn):
     """The packet is generated; a stale committed copy would time the wrong
     records.
 
-    SKIPS rather than fails when the store is absent, matching
-    tests/test_export_currency.py. It used to `pytest.fail`, which made CI
-    red on every fresh checkout: `store/evidence.db` is gitignored and the
-    workflow runs a bare `pytest -q` without building it (Copilot review of
-    PR #30, 2026-09-23). A guard that cannot run is not a guard that failed.
-    """
-    conn = connect(LIVE_DB)
-    try:
-        expected = _load().render(conn)
-    finally:
-        conn.close()
+    Until 2026-10-06 this SKIPPED when the store was absent, because CI ran a
+    bare `pytest -q` (Copilot review of PR #30, 2026-09-23). Since ADR-0004
+    A7 it is a live_store test: locally a missing store FAILS it, and CI
+    deselects it by name, so it is never silently skipped."""
+    expected = _load().render(live_conn)
     assert PACKET.exists(), "run python scripts/render_f11_packet.py"
     assert PACKET.read_text(encoding="utf-8") == expected, "packet is stale: re-run scripts/render_f11_packet.py and commit"

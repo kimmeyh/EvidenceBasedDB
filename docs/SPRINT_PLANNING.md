@@ -16,7 +16,7 @@ removed where none does.
 | Assistant Scrum Master, Architecture Development Team, Senior Test Engineers, Development Team | Claude Code (whichever model executes the task; parallel subagents allowed) |
 | Lead Developer | Claude Code top tier (Fable 5.1 preferred, Opus 5.5 otherwise) |
 | Senior Developers | Claude Code Sonnet 5.5 (subagents) |
-| Developers | Claude Code Haiku 4.5 (subagents) until it retires (not sooner than 2026-10-15), then Sonnet 5.5 |
+| Developers | Claude Code Sonnet 5.5 (subagents) from 2026-10-06 (F59); Haiku 4.5 no longer assigned, ahead of its retirement (not sooner than 2026-10-15) |
 
 **Model versions are verified, not remembered (F39, permanent; first release
 Sprint 6 Task A, F40, 2026-10-03).** Each tier's model id, price, context
@@ -60,6 +60,8 @@ Any item that depends on an external capability (a GitHub API behavior, a librar
 **The pre-flight inventories CODE, not only documents (Sprint 10 improvement 6).** Grep the source tree for whatever the item is about to change, not just the docs that mention it. F40's card listed four documents referencing the path being moved and was verified against exactly those four. It missed `data.py`, which hardcoded the ULB dataset location -- so the repository that Appendix C promises "regenerates every figure" would have worked on no machine but the author's. The card was right about every document and silent about the one line that mattered.
 
 **A task that adds records at scale states which derived fields run on them (Sprint 6 retrospective I5, 2026-10-05).** For a bulk load, the plan names each computed or derived field the new records will carry (probes, back-fills, links), with its runtime sized from a pilot, or names the card that defers it. Sprint 6 sized its computed-field probes for the 347 papers already in the store and loaded 1,402 more without saying whether they would be probed; they were not, and F52 was carded at Manual Validation. The question costs one line at planning and a sprint of drift when it is skipped.
+
+**Every option in a decision states its cost (Sprint 7 retrospective I1, 2026-10-09).** Extends the line above from derived fields to every decision the team lead makes at planning. Each numbered option carries its runtime for one run, computed from that option's own inputs (requests per item, spacing, cap, pauses), and, when the option adds a step that recurs (each sprint, each Phase 1.3), its cost per recurrence and how often it recurs. Sprint 7 planned Task C at 5.8 hours from one request per paper at 15 s; the approved options (Q5 = 1, two requests per paper; Q7, 18 s) made it 36 hours, and Task D built a refresh "each cycle" that would have cost about two nights every sprint. Neither cost was in front of the team lead at the choice, and Task D was replaced at Manual Validation by a yearly re-check. A cost stated in the option is a decision made once; a cost discovered after approval is rework.
 
 ## Defined-scope rule (team lead, 2026-08-30 -- binding)
 

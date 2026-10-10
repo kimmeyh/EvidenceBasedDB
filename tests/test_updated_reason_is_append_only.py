@@ -46,7 +46,7 @@ sys.path.insert(0, str(ROOT))
 from store import create_store  # noqa: E402
 from store.ingest import append_updated_reason  # noqa: E402
 
-PAPERS_EXPORT = ROOT / "export" / "papers.json"
+
 
 SEED_NOTE = "Sprint 1 Task F: 46-paper seed set loaded at seen tier"
 LATER_NOTE = "2026-09-19 (Sprint 4 Task C): citation re-derived from the API"
@@ -154,14 +154,16 @@ def test_no_script_spells_the_join_itself(script):
 
 # --- the shipped artifact ---------------------------------------------------
 
-def test_the_committed_export_still_carries_the_sprint_1_provenance():
+@pytest.mark.live_store
+def test_the_committed_export_still_carries_the_sprint_1_provenance(live_export):
     """The data check. 43 papers arrived in the Sprint 1 seed load and one in
     the Task E premise-falsifier run; the export must still say so.
 
     Pinned as an ID SET rather than a count (round-2 audit): a count with no
     slack turns red on any legitimate deletion and invites someone to lower
-    the number, which would hide a real erasure."""
-    papers = json.loads(PAPERS_EXPORT.read_text(encoding="utf-8"))
+    the number, which would hide a real erasure. Reads the live store
+    (ADR-0004 A7: no committed export)."""
+    papers = json.loads((live_export / "papers.json").read_text(encoding="utf-8"))
     by_id = {p["id"]: (p.get("updated_reason") or "") for p in papers}
     seeded = {pid for pid, r in by_id.items() if "Sprint 1 Task F" in r}
     assert len(seeded) >= 43, (
@@ -172,46 +174,60 @@ def test_the_committed_export_still_carries_the_sprint_1_provenance():
         "the premise-falsifier record lost its own origin note")
 
 
-def test_no_paper_lost_the_updated_reason_it_had_before_the_corrections():
-    """Whatever a record said BEFORE Sprint 4's correction passes, it must
-    still say.
+# Two fixed anchors, both with export/ in their tree (history kept, Q3 = 1):
+# - BASELINE_COMMIT (0044a44, Sprint 6 plan approval, 2026-10-03): from
+#   before later correction passes, so the current reasons DIFFER from it and
+#   the vacuity check below has something to see.
+# - LAST_EXPORT_COMMIT (3bf2eda, 2026-10-06): the parent of the commit that
+#   removed export/ under ADR-0004 A7. Every record Sprint 6 added or changed
+#   is checked against it (Task B review, 2026-10-06: with the first anchor
+#   alone, those records were outside the check).
+BASELINE_COMMIT = "0044a44"
+LAST_EXPORT_COMMIT = "3bf2eda"
+_RENAMES = {
+    "rand-2023-pqc-critical-infrastructure-assessment": "rand-2022-pqc-critical-infrastructure-assessment",
+    "rand-2023-pqc-critical-infrastructure-assessment-appendix-b": "rand-2022-pqc-critical-infrastructure-assessment-appendix-b",
+}
 
-    Anchored to the MERGE-BASE, not to the moving `develop` ref. The first
-    version read `develop:export/papers.json`, which becomes byte-identical
-    to the current export the moment this PR merges -- every string is a
-    substring of itself, so the guard would go silently vacuous exactly when
-    it was meant to start protecting the merged history (round-2 audit,
-    2026-09-23).
-    """
-    base = subprocess.run(["git", "merge-base", "develop", "HEAD"], cwd=ROOT,
-                          capture_output=True, text=True, encoding="utf-8")
-    if base.returncode != 0 or not base.stdout.strip():
-        pytest.skip("no merge-base with develop available")
-    ref = f"{base.stdout.strip()}:export/papers.json"
+
+def _reasons_at(commit: str) -> dict[str, str]:
+    ref = f"{commit}:export/papers.json"
     raw = subprocess.run(["git", "show", ref], cwd=ROOT,
                          capture_output=True, text=True, encoding="utf-8")
-    if raw.returncode != 0:
-        pytest.skip(f"no {ref} to compare against")
+    assert raw.returncode == 0, f"the baseline {ref} must be readable from git history"
+    return {_RENAMES.get(p["id"], p["id"]): (p.get("updated_reason") or "").strip()
+            for p in json.loads(raw.stdout)}
 
-    renames = {
-        "rand-2023-pqc-critical-infrastructure-assessment": "rand-2022-pqc-critical-infrastructure-assessment",
-        "rand-2023-pqc-critical-infrastructure-assessment-appendix-b": "rand-2022-pqc-critical-infrastructure-assessment-appendix-b",
-    }
+
+@pytest.mark.live_store
+@pytest.mark.parametrize("commit", [BASELINE_COMMIT, LAST_EXPORT_COMMIT])
+def test_no_paper_lost_the_updated_reason_it_had_before_the_corrections(live_export, commit):
+    """Whatever a record said at each anchor, it must still say.
+
+    Anchored to FIXED commits. The first version read
+    `develop:export/papers.json`, which went vacuous the moment a PR merged
+    (round-2 audit, 2026-09-23); the second read the merge-base with
+    develop, which would have skipped silently once ADR-0004 A7 removed the
+    export from develop (Sprint 7 Task B, 2026-10-06). Fixed commits with
+    the export in them keep a real baseline, and the live store is compared
+    against each.
+    """
     current = {p["id"]: (p.get("updated_reason") or "")
-               for p in json.loads(PAPERS_EXPORT.read_text(encoding="utf-8"))}
-    baseline = {renames.get(p["id"], p["id"]): (p.get("updated_reason") or "").strip()
-                for p in json.loads(raw.stdout)}
+               for p in json.loads((live_export / "papers.json").read_text(encoding="utf-8"))}
+    baseline = _reasons_at(commit)
 
-    # The guard must not be vacuous: the baseline has to differ from what we
-    # compare it against, or "nothing lost" means "nothing checked".
     comparable = {pid: was for pid, was in baseline.items() if was and pid in current}
     assert comparable, "no comparable records: this guard would assert nothing"
-    assert any(was != current[pid] for pid, was in comparable.items()), (
-        "every baseline reason is identical to the current one, so this guard is "
-        "vacuous -- it is comparing the export against itself. Anchor it to a "
-        "commit from before the correction passes.")
+    if commit == BASELINE_COMMIT:
+        # The guard must not be vacuous: the older anchor has to differ from
+        # what we compare it against, or "nothing lost" means "nothing
+        # checked". The newest anchor may legitimately equal the store.
+        assert any(was != current[pid] for pid, was in comparable.items()), (
+            "every baseline reason is identical to the current one, so this guard is "
+            "vacuous -- it is comparing the export against itself. Anchor it to a "
+            "commit from before the correction passes.")
 
     lost = [pid for pid, was in comparable.items() if was not in current[pid]]
     assert not lost, (
-        f"{len(lost)} record(s) lost the updated_reason they carried at the merge-base: "
+        f"{len(lost)} record(s) lost the updated_reason they carried at {commit}: "
         f"{lost[:5]}. updated_reason is append-only.")

@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Regenerate the committed export from store/evidence.db (Sprint 1 Task C).
+"""Write an ON-DEMAND dump of the store (Sprint 1 Task C; reworked by
+Sprint 7 Task B, F58, under ADR-0004 A7).
 
-Run after any change to the store's data. The export is the artifact
-(ADR-0004 section 2); this script is how it gets regenerated rather than
-hand-edited.
+Until 2026-10-06 this regenerated the committed export, which ADR-0004
+section 2 called the artifact. A7 retired that export: the store, outside
+the repository, is the record, and a dump is written only when asked, to a
+folder outside the repository (store.export.regenerate refuses one inside).
 
-Usage: python scripts/regenerate_export.py
+Usage: python scripts/regenerate_export.py --out <dir>
 """
 from __future__ import annotations
 
@@ -15,21 +17,27 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from store import connect  # noqa: E402
+from store import connect, script_paths  # noqa: E402
 from store.export import regenerate  # noqa: E402
 
-DB_PATH = ROOT / "store" / "evidence.db"
-EXPORT_DIR = ROOT / "export"
+_, DB_PATH, _ = script_paths(__file__)
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    args = list(sys.argv[1:] if argv is None else argv)
+    if "--out" not in args or args.index("--out") + 1 >= len(args):
+        print(__doc__, file=sys.stderr)
+        return 2
+    out = Path(args[args.index("--out") + 1])
     if not DB_PATH.exists():
-        print(f"error: {DB_PATH} does not exist. Run store.create_store() first.", file=sys.stderr)
+        print(f"error: {DB_PATH} does not exist.", file=sys.stderr)
         return 1
     conn = connect(DB_PATH)
-    regenerate(conn, EXPORT_DIR)
-    conn.close()
-    print(f"Regenerated export at {EXPORT_DIR} from {DB_PATH}")
+    try:
+        regenerate(conn, out)
+    finally:
+        conn.close()
+    print(f"Wrote a dump of {DB_PATH} to {out}")
     return 0
 
 

@@ -26,7 +26,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
-from store.export import regenerate  # noqa: E402
 from store.ingest import AssertionRecord, insert_assertion  # noqa: E402
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
@@ -126,10 +125,9 @@ def main() -> int:
     insert_assertion(conn, correct)
 
     conn.commit()
-    regenerate(conn, EXPORT_DIR)
     conn.close()
 
-    print("Ingested hsbc-b1-variable-count (91, correct) and hsbc-b1-variable-count-wrong-78 (78, the documented defect). Export regenerated.")
+    print("Ingested hsbc-b1-variable-count (91, correct) and hsbc-b1-variable-count-wrong-78 (78, the documented defect).")
     return 0
 
 

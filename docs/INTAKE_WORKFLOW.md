@@ -489,3 +489,40 @@ this cannot recur. **Counts are a snapshot as of 2026-10-04.**
 - arXiv pacing: 6 s between requests, one attempt, then DataCite (team
   lead, 2026-10-04). A new pacer per entry never waited until the clock
   became process-wide (retrospective I1).
+
+## 18. Applied 2026-10-08: the eight pending Cycorp papers (Sprint 7 Task F, F44)
+
+**Written before the load.** The eight papers the 2026-09-28 research agent
+found (the 2026-10 handoff's `04-pending-sources.md`), downloaded with the
+team lead's approval of 2026-10-06 ("each download is approved") and
+entered by `scripts/sprint7_f44_cycorp_papers.py`, not by a manifest.
+Section 16's context rule applies: every one is about how Cyc represents
+and reasons, so each takes `method`.
+
+- **Files.** Each PDF is in `D:\Data\Harold\EvidenceBasedDB\Papers\` under
+  section 3's convention. The month in the name is the printed month where
+  the paper prints one (PH20, April 2020), the registry's issue month where
+  a DOI resolves (S19, L10), the arXiv month (S16), and otherwise the PDF's
+  own creation date (T07, R05, M06, OV19), which the script records.
+- **Origin.** Three resolve, so they are api-origin, with `access` =
+  `<local path> | <identifier>`: S16 (`arXiv:1603.04402`), and two DOIs
+  found on Crossref on 2026-10-08 that the plan did not expect, S19
+  (`10.1609/aaai.v33i01.33011360`, AAAI 2019) and L10
+  (`10.1609/aimag.v31i3.2299`, AI Magazine 31(3), 2010). Section 1 refuses
+  a hand citation for an id that resolves. L10's local copy is the
+  Northwestern mirror (27 pages), not the publisher's PDF; its record says
+  so. The other five are hand-origin with `access` = `<local path> | <url>`;
+  OV19 and PH20 are vendor documents with no venue, so they are
+  `Reference:` records.
+- **Venues not printed on the page.** T07, R05 and M06 print only the AAAI
+  copyright. Each citation names its venue and says where the venue came
+  from: the AAAI URL path, and the reference lists of the other Cycorp
+  papers (T07 cites R05's workshop; S19 cites M06's symposium).
+- **SHA-256.** Recorded in each record's `evidence`, with the source URL,
+  the size and the download date, as section 16 did for the 2002 manual
+  pages.
+- **Tier.** Seven enter at `seen`. T07 is read in full (six pages) and
+  enters at `read`, yielding two `vendor-self-claim` assertions: about a
+  thousand inference modules (2007), and eight tactic types. The second is
+  not reconciled with the six base tactic types the 2009 LarKC source
+  lists; its `certainty_reasons` say why.

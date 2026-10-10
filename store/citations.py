@@ -24,7 +24,7 @@ multi-id `id_list=a,b,...` request gets 406, after which EVERY urllib
 request, single ids included, gets 406 for several minutes; curl sends the
 same multi-id URL at the same moment and gets 200. Retries do not help
 inside the block. So `fetch_arxiv_batch` sends ONE id per request, paced
-ARXIV_MIN_INTERVAL_S apart (twice arXiv's published rate since 2026-10-04), and falls back to
+ARXIV_MIN_INTERVAL_S apart (18 s since 2026-10-06; see the constant), and falls back to
 DataCite per id when arXiv still refuses. A full 1,200-paper pass is about
 an hour, which the sprint plan already budgeted.
 
@@ -50,11 +50,17 @@ ARXIV_API = "https://export.arxiv.org/api/query"
 CROSSREF_API = "https://api.crossref.org/works/"
 DATACITE_API = "https://api.datacite.org/dois/"
 DOI_HANDLE_API = "https://doi.org/api/handles/"  # the registry itself; responseCode 100 = no such handle
-# Team lead, 2026-10-04 (Sprint 6 Task J): 6 s, double arXiv's documented
-# floor of one request every 3 s. After about 1,130 lookups at 3 s over 3.5
-# hours the API answered HTTP 429 to everything; the per-request rule alone
-# did not protect a sustained run.
-ARXIV_MIN_INTERVAL_S = 6.0
+# Every request that lands on arXiv, API and site alike, 18 s apart (team
+# lead, 2026-10-06, Sprint 7 Q7: "switch all arxiv api calls and / requests
+# to 18 seconds"). History: 3 s (arXiv's documented API floor) until about
+# 1,130 lookups over 3.5 hours drew HTTP 429 to everything; 6 s from
+# 2026-10-04; then the Sprint 7 pre-flight found arxiv.org's robots.txt sets
+# "Crawl-delay: 15", which the site requests at 6 s had broken.
+ARXIV_MIN_INTERVAL_S = 18.0
+# At most this many arXiv requests per session, then at least a 2-hour pause
+# (team lead, 2026-10-04; Sprint 7 Q6 = 1). Counted on the same module clock
+# as the pacing, so no second fetcher can reset it.
+ARXIV_SESSION_CAP = 240
 MAX_AUTHORS = 10  # rendered before "et al."; see render_citation
 
 _ARXIV_ID = re.compile(r"(?<![\d.])(\d{4}\.\d{4,5})(v\d+)?")
@@ -173,7 +179,7 @@ def default_fetcher(url: str, accept: str, _open=None) -> bytes:
 
     Except arXiv, since 2026-10-04: one attempt, and the caller falls back
     to DataCite (team lead's decision after the API answered 429 to a
-    sustained run; see ARXIV_MIN_INTERVAL_S).
+    sustained run; see ARXIV_MIN_INTERVAL_S for the spacing).
     """
     _open = _open or urllib.request.urlopen
     headers = {"User-Agent": USER_AGENT, "Accept": accept}
@@ -529,9 +535,9 @@ def resolve(access: str, fetcher: Fetcher | None = None) -> tuple[Metadata, str]
 
 def is_arxiv_host(url: str) -> bool:
     """Any request that lands on arXiv: the API, the site, and doi.org for
-    an arXiv DOI (10.48550/arXiv.*), which redirects there. The 6 s rule
-    covers them all (team lead, 2026-10-04: "space out any other requests
-    to arxiv")."""
+    an arXiv DOI (10.48550/arXiv.*), which redirects there. The spacing
+    and the session cap cover them all (team lead, 2026-10-04: "space out
+    any other requests to arxiv"; 2026-10-06: 18 s for API and site)."""
     host = urllib.parse.urlsplit(url).hostname or ""
     return host == "arxiv.org" or host.endswith(".arxiv.org") or (
         host == "doi.org" and ARXIV_DOI_PREFIX.lower() in url.lower())
@@ -550,8 +556,15 @@ class PacedFetcher:
         self.interval_s = interval_s
 
     def wait_for(self, url: str) -> None:
-        global _last_arxiv_request
+        """Wait out the spacing, count the request against the session
+        cap, or raise ArxivSessionCapReached BEFORE it goes out."""
+        global _last_arxiv_request, _arxiv_requests_this_session
         if is_arxiv_host(url):
+            if _arxiv_requests_this_session >= ARXIV_SESSION_CAP:
+                raise ArxivSessionCapReached(
+                    f"{_arxiv_requests_this_session} arXiv requests this session (cap {ARXIV_SESSION_CAP}); "
+                    "pause at least 2 hours, then reset_arxiv_session()")
+            _arxiv_requests_this_session += 1
             wait = self.interval_s - (_monotonic() - _last_arxiv_request)
             if wait > 0:
                 # Module attribute, not time.sleep directly, so tests can stub
@@ -570,3 +583,38 @@ class PacedFetcher:
 # intake were not spaced between entries. A module-level clock cannot be
 # reset by building another pacer. -inf means "no arXiv request yet".
 _last_arxiv_request: float = float("-inf")
+# The session cap's count lives beside the clock for the same reason.
+_arxiv_requests_this_session: int = 0
+
+
+class ArxivSessionCapReached(Exception):
+    """The session's arXiv budget is spent. Deliberately NOT a subclass of
+    anything in ARXIV_FAILURES (or of OSError, which probe_access
+    swallows): a caller that falls back to DataCite on an arXiv failure
+    must not swallow this, or the next request goes out over the cap."""
+
+
+def arxiv_requests_this_session() -> int:
+    return _arxiv_requests_this_session
+
+
+def assume_recent_arxiv_request() -> None:
+    """Start the clock as though an arXiv request had just gone out. The
+    clock is per process, so a new run cannot know when the previous one
+    last asked; its first request waits the full interval instead (Sprint 7
+    Task C: a run started right after another sent its first request 0.3 s
+    in)."""
+    global _last_arxiv_request
+    _last_arxiv_request = _monotonic()
+
+
+def continue_arxiv_session(count: int) -> None:
+    """Resume a session a restarted process saved, with its count."""
+    global _arxiv_requests_this_session
+    _arxiv_requests_this_session = count
+
+
+def reset_arxiv_session() -> None:
+    """Start a new session's count, after the pause."""
+    global _arxiv_requests_this_session
+    _arxiv_requests_this_session = 0

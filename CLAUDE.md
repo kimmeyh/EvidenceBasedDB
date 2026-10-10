@@ -46,6 +46,14 @@ The second holds `Papers` (46), `Books` (38), `GitHubRepos` (8) and
 repository.** The `access` field on a paper record points there, or at a DOI or
 arXiv id.
 
+**The store lives there too, since 2026-10-06** (ADR-0004 A7, Sprint 7 Task
+B): `D:\Data\Harold\EvidenceBasedDB\store\evidence.db`, with its verified
+backups in `store\backups\`. `store.script_paths` resolves it; the environment
+variable `EBDB_STORE_DIR` overrides it. No database and no export is committed:
+git holds code and documents only. Tests that check the real data are marked
+`live_store` (local only; a missing store fails them; CI deselects them by
+their marker, `-m "not live_store"`).
+
 Every repository on this machine lives under `D:\Data\Harold\github\`. The
 first attempt at seeding this one put the git repository inside the non-repo
 directory, which conflated the two; corrected 2026-09-14 by cloning to the right
@@ -121,6 +129,19 @@ once for exactly that reason.
   research, update as needed to prevent in the future." Checking that the
   rule exists is not the same as stopping to apply it before the tool
   call -- there is no case where the tool call is the right move here.
+- **Don't lead a decision option with the mechanism; lead with the
+  outcome.** Each option says first what Harold gets: how often, how long,
+  what it costs, what is lost. How it works follows, and only where it
+  changes the choice. Sprint 7 (2026-10-08) asked Q12 as "site mode against
+  API mode"; the team lead answered "I do not understand and need more
+  info", and the decision turned out to be how often to re-check at all.
+  (Sprint 7 retrospective I3; extends the numbered-question rule above.)
+- **Don't drop or change a commitment silently.** When Claude stops doing
+  something it told Harold it would do, or does it differently, the NEXT
+  message says so and why, and the sprint_status note records it. Sprint 7
+  promised at 12:28am to re-probe 107 records, dropped it after measuring a
+  1% yield, and disclosed it only at Manual Validation, two days later.
+  (Sprint 7 retrospective I4.)
 - **Don't phrase a decision question so "yes" could mean two different
   things.** Each question needs one unambiguous answer form: yes/no, or
   select 1/2/3/.../all. A compound question carrying two decisions ("approve

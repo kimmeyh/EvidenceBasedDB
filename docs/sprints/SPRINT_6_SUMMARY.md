@@ -87,6 +87,14 @@ about 700 Claude-side minutes plus Task J's runtime (82 min to 10 h).
 - The hsbc Dirac-3 runs show the device matched the exact classical optimum
   on the Phase 1 formulation, which the same memo calls near-trivial.
 
+## Commit references corrected
+
+Two commit subjects name the wrong issue (recorded here, since history is
+not rewritten; retrospective category 13): 39b179e says #63 for Task H,
+which is #62; 32a6deb says #62 for Task G, which is #61. Since
+retrospective I3, a hook checks task issue numbers against
+`sprint_status.json`.
+
 ## Verification
 
 - Suite 572 passed at the retrospective-improvements commit (eeb2e46).
