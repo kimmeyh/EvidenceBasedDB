@@ -13,7 +13,16 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-06 onward (Sprint 7, in progress)
+### 2026-10-10 onward (Sprint 8, in progress)
+
+- **docs**: Sprint 8 Phase 1 (2026-10-10) -- carry-forward cut
+  `feature/20261010_Sprint_8` from the Sprint 7 branch after PR #68
+  (develop) and PR #76 (main); sprint status advanced in the "Phase n.n
+  Name" format; CHANGELOG reconciled for Sprint 7's last three days;
+  Sprint 7 completeness sweep; design-document currency checked; candidate
+  slate presented
+
+### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
 - **docs**: Sprint 7 Phase 1 (2026-10-06) -- carry-forward cut
   `feature/20261006_Sprint_7` from the Sprint 6 branch after PR #54
@@ -142,6 +151,31 @@ this project keeps having to replace with a step.
   the reading (section 15): F-301's "80 percent" is not in the critique,
   and F-302's 122% bundles a 24% formulation gap. Guards proven by
   injection
+- **docs**: Phase 5 I4 re-read (2026-10-08) -- ADR-0004 A7 matched to the
+  code in two sentences (CI deselects by marker; off Windows with no
+  override, `store_dir()` refuses and names `EBDB_STORE_DIR`) (de4e487);
+  Manual Validation package handed over
+- **docs**: Manual Validation decisions (2026-10-08 and 2026-10-09) -- Q9
+  keep priorities; Q13 no action on the 949 / 954 Dirac-3 level ceiling;
+  F63 carded (two Dirac-3 admissions in arXiv:2407.04512); Q12 = 1 a
+  12-month re-check, Q15 = 2 built in Sprint 8, Q16 = 1 F64 carded (the
+  staggered 24-section schedule); ADR-0005 A6 revised and approved (Q19);
+  ADR-0004 A7, ADR-0003 A2, ADR-0005 A5 approved; Phase 1.3 no longer
+  refreshes the probes each cycle (b8f3bca, 89accb9)
+- **docs**: Sprint 7 retrospective (2026-10-09 and 2026-10-10) -- team
+  lead's feedback verbatim (all Very Good) with Claude's (f403121); F65
+  carded (Dirac-3S, target Sprint 8); `SPRINT_7_SUMMARY.md`; master plan
+  and checklist rolled (cf6f5e4)
+- **process**: Sprint 7 retrospective I1-I7 (2026-10-10, Q21 = 1) --
+  decision options state their cost; the plan absorbs its decisions at
+  3.7; options lead with the outcome; dropped commitments disclosed in the
+  next message; the amendment re-read covers restatements; one sprint
+  status format ("Phase n.n Name") read by the footer, the Phase 4 Stop
+  hook and the tests, with the stored `updated` field removed; task start
+  times in the note. Guards proven by injection (0747a9b, 9cf69a6)
+- **fix**: Copilot review on PR #68 (2026-10-10) -- the abstract-page probe
+  note said "access not recorded" for a 404 or 410 that IS recorded; PEP 8
+  spacing (a63cad9)
 
 ### 2026-09-27 to 2026-10-06 (Sprint 6, PR #54, merged to develop 2026-10-06 and to main via PR #67 the same day)
 

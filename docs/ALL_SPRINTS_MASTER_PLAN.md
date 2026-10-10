@@ -48,7 +48,7 @@ repository exists. No other F# from either source repository applies here.
 
 Sprint 7 is below; Sprint 6 follows it for continuity.
 
-### Sprint 7: Move the Data Out, Then Measure arXiv Safely (2026-10-06 to 2026-10-10, PR #68, merge pending)
+### Sprint 7: Move the Data Out, Then Measure arXiv Safely (2026-10-06 to 2026-10-10, PR #68, merged to develop and to main via PR #76 on 2026-10-10)
 
 Seven tasks, seven issues (#69-#75), all closed. **Data out**: the store
 and backups moved to `D:\Data\Harold\EvidenceBasedDB\store`, the committed
@@ -210,25 +210,23 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 7** (branch `feature/20261006_Sprint_7`, cut 2026-10-06 at the
-Sprint 6 carry-forward, after PR #54 merged to develop and PR #67 merged
-develop to main). Phase 1 Backlog Refinement complete.
-
-**Scope selected 2026-10-06 (team lead, DEFINED)**: F59, F58, F52, F53, F54,
-F44, F45. Team lead's order: F59 first; F58; F52 and F53 together; F54;
-F44 ("each download is approved - do this after 59, 58, 52 and 54, but
-before 45"); F45. Plan: `docs/sprints/SPRINT_7_PLAN.md` (draft, awaiting
-approval). Refinement Q2 (priority changes) is carried to the plan as Q9.
+**Sprint 8** (branch `feature/20261010_Sprint_8`, cut 2026-10-10 at the
+Sprint 7 carry-forward, after PR #68 merged to develop and PR #76 merged
+develop to main). Phase 1 Backlog Refinement in progress; scope not yet
+selected.
 
 ## Next Sprint Candidates
 
-Refined 2026-09-27 after Sprint 5 (Sprint 6 Phase 1.2); Sprint 6's shipped
-cards pruned BY HAND (Edit tool, card by card) at its Phase 7, 2026-10-05.
+Refined 2026-10-10 after Sprint 7 (Sprint 8 Phase 1.2); Sprint 7's shipped
+cards pruned BY HAND (Edit tool, card by card) the same day.
 Shipped and pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint
 2); F2 Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25,
 F26, F27 (Sprint 4); F5, F28, F30, F31 (Sprint 5); F32-F38, F40-F43, F47
-(Sprint 6; F35's 30 unlinked notes continue as F54, F41's CVQBoost part as
-F51). F39 is permanent and stays. Closed without
+(Sprint 6; F35's 30 unlinked notes continued as F54, F41's CVQBoost part as
+F51); F44, F45, F52, F53, F54, F58, F59 (Sprint 7; F53's per-cycle refresh
+replaced by F64's 12-month re-check; F54's 10 "unsure" and 140 third-party
+repository candidates stay held back in `sprint7_f35_screen.json` and
+`QMLPapers\Repos\REVIEW.md`). F39 is permanent and stays. Closed without
 implementation: F19, F29 (Sprint 5 scope selection, reasons under Sprint 5
 in "Last Completed Sprint"). The superseded stubs F12 and F21-F24 were
 removed after F25 shipped; their history lives in the Sprint 3 and 4 docs
@@ -259,19 +257,6 @@ and in git. Remaining items below.
   (5) a failing test guards whatever the release adds.
 - Depends on: nothing
 
-**F59. F39 release for Sprint 7: re-verify the models and act on Haiku 4.5's retirement (~45m) Priority 10** (NEW 2026-10-06)
-- Phase: Process
-- Platform: as F39
-- The second release of F39. Haiku 4.5's recorded retirement is "not
-  sooner than 2026-10-15", inside Sprint 7, and the heuristics name Sonnet
-  5.5 as its successor; this release re-reads the models page that day,
-  records what changed, and moves the subagent tier if the retirement has
-  happened or been rescheduled.
-- The existing test fails on a tier past its retirement without a
-  successor, so the release keeps it green with evidence, not by editing
-  dates.
-- Depends on: nothing; runs first in the sprint.
-
 ### Cyc and CVQBoost intake (proposed 2026-10-03)
 
 Registered 2026-10-03 at the team lead's request from
@@ -283,56 +268,14 @@ prepared outside the repository; card text as drafted there. File names
 estimates are `[no-history]`. Priorities 26, 28 and 30 sprint together; so
 do 40 and 42, and 60 and 62.
 
-**F44. Download and intake the eight pending Cycorp papers (~90m) Priority 40**
-- Phase: Sourcing / intake
-- Platform: arXiv API for S16; hand-origin records for the rest
-- The eight in `04-pending-sources.md`: T07 (FLAIRS 2007), R05 (2005), S16
-  (arXiv:1603.04402), S19 (2019), M06 (2006), OV19 (Technology Overview,
-  2019), PH20 (2020), L10 (AI Magazine 2010; look for a DOI first).
-- Downloads need the team lead's approval (filename, source, size). Files go
-  to `Papers\` under the naming convention, never into the repository.
-- Enter at `seen`. The 2026-09-28 agent's reading is not a
-  `checked_against_source` by this library's standard.
-- Acceptance: eight records, each with a local `access` path and a SHA-256;
-  T07 is read directly to settle "eight tactic types" (2007) against the six
-  the 2009 code lists, and the "about a thousand HL modules" figure for
-  `cyc-hl-module-count`.
-- Depends on: F41 (section 15 sets the context rule for Cyc sources).
-
-**F45. Dirac-3 reading pass: promote four sources and enter up to 11 facts (~2h) Priority 42**
-- Phase: Sourcing / extraction
-- Platform: N/A
-- From `07-assertion-candidates-pending.md`: F-201 to F-206, F-208, F-209
-  (the Dirac-3 User Guide v0.0.4 and arXiv:2407.04512), F-301 and F-302 (the
-  two independent assessments), F-303 (a per-paper affiliation check).
-- Each source is read directly, promoted with applicability, then yields its
-  assertion: the Sprint 4 task H pattern. F-209: cross-check the 949-level
-  figure in the hsbc hardware plan.
-- Not in scope: F-207, an absence claim, which waits for the `claim_type`
-  decision (F37 planning note).
-- Acceptance: each promoted record names what was read and when; each
-  assertion quotes its source verbatim; facts that duplicate an existing
-  assertion become `supports` links instead.
-- Depends on: F41.
-- **Planning note, 2026-10-05 (Sprint 6 MV Q9 = 1)**: add the three QCi
-  sources on Dirac-3's error behavior, all at `seen`:
-  `huang-2025-noise-reversal-entropy-quantum-computing`,
-  `qci-research-an-open-quantum-system-for-discrete-optimization`,
-  `qci-lessons-entropy-quantum-computing-overview`. Record what they claim
-  about noise and error correction as `vendor-self-claim`, beside the
-  gate-model contrast (fault tolerance is a gate-model concept). F-207 is
-  no longer blocked: `claim_type` exists, so it enters as `absence` with its
-  search scope. The hsbc measurement is already in the store
-  (`dirac3-matches-exact-optimum-on-convex-cvqboost`, with its limit
-  `dirac3-fidelity-test-is-near-trivial-on-convex-formulation`).
-
 **F46. Remaining reading pass: the other pending facts, split at selection (~large, no-history) Priority 80**
 - Phase: Sourcing / extraction
 - Platform: N/A
 - The rest of `07`: World (8), entanglement (1), the April 2026 claim (4),
   classical fraud detection (7), ceiling estimation (9). Too large for one
   card; split by source group when a sprint selects it.
-- Depends on: F45 (to calibrate the estimate from its actual).
+- Depends on: F45 (shipped in Sprint 7; its actual, 14 assertions from
+  seven sources, calibrates this estimate).
 
 ### Store and process lessons from Cyc (proposed 2026-10-03)
 
@@ -394,56 +337,6 @@ do 40 and 42, and 60 and 62.
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
 
-**F52. Probe the computed fields for the bulk papers, under a per-session arXiv cap (~2h plus runtime) Priority 26** (NEW 2026-10-05, Sprint 6 MV Q6 = 1)
-- Phase: Sourcing / computed fields
-- Platform: `scripts/probe_reference_fields.py`, `store/citations.py`
-- The 1,402 QMLPapers papers loaded by Sprint 6 Task J have no
-  `publication_status`, `version_of`, `access_status` or affiliations probe.
-  At 6 s per arXiv request that is about 1,400 requests and at least 2.5
-  hours.
-- Add a per-session arXiv request cap (a count, enforced by the shared
-  pacer), so a run stops itself before arXiv throttles it; a stopped run
-  resumes on the records still unprobed.
-- Evidence for the cap: about 1,130 lookups in 3.5 hours ended in HTTP 429
-  on 2026-10-03, with the intake pacing defect live; after the fix the
-  number arXiv tolerates is unknown, so the first run measures it.
-- Acceptance: every bulk paper probed or reported; the cap tested; no
-  stored value from a run that got no answer.
-
-**F53. Run the probes each delivery cycle and report stale ones (~1h) Priority 28** (NEW 2026-10-05, Sprint 6 MV Q7 = 1)
-- Phase: Process / tooling
-- Platform: `docs/SPRINT_EXECUTION_WORKFLOW.md` Phase 1.3,
-  `scripts/probe_reference_fields.py`
-- ADR-0005 A4's probe rule names this as not built: Phase 1.3 runs
-  `refresh_citations.py` but not the probes, and nothing reports a probe
-  older than one cycle.
-- Acceptance: Phase 1.3 runs the probes (within F52's cap); a report lists
-  every probe older than the last cycle; a test fails on a stale probe.
-
-**F54. Recover the 30 repository notes that did not link (~1h) Priority 32** (NEW 2026-10-05, Sprint 6 MV Q8 = 1)
-- Phase: Sourcing / repositories
-- Platform: `scripts/link_code_repositories.py`, the GitHub API (token)
-- Sprint 6 Task K reported 30 of 135 notes: 23 repositories return HTTP 404
-  (most URLs were cut short by the note extractor: `zhihan-z/MCM_`,
-  `dfki-ric-quantum/learning_`, `yikaimao/Q`), 6 are Zenodo, Gitee or
-  malformed links, 1 belongs to the malformed `2108.0131`.
-- Step 1: read the full URL from the paper's own text (the note quotes the
-  sentence). Step 2, team lead 2026-10-05: "if still unfound, can you try to
-  find the repo on github.com using the partial URL" (GitHub search by owner
-  and name prefix). A match found by search is recorded as found by search,
-  with the query, so the link's evidence says how it was found.
-- Acceptance: each of the 30 linked with its evidence, or reported again
-  with what was tried.
-- Include `2108.0131`, malformed in `QMLPapers/2021/manifest.tsv` and the
-  one refusal of the Sprint 6 bulk load: read the full id from the paper's
-  own PDF in that folder, then enter it through the door (Sprint 6
-  retrospective category 13).
-- Carried from F35 (pruned at Sprint 6 Phase 7): `QMLPapers\Repos\REVIEW.md`
-  holds 218 further candidates the extractor would not accept automatically;
-  78 score >= 0 and are a real screening queue, 140 score < 0 and are mostly
-  third-party dependencies (Qiskit, PennyLane), correctly held back. A later
-  pass, or a slice of this card if a sprint selects it.
-
 **F55. Record which papers cite which, as a computed link (~2h) Priority 34** (NEW 2026-10-05, Sprint 6 MV Q10 = 1)
 - Phase: Sourcing / computed fields
 - Platform: Crossref reference lists (`works/<doi>`, field `reference`),
@@ -496,64 +389,7 @@ do 40 and 42, and 60 and 62.
 - Acceptance per release: the slice screened, the ranking recorded, every
   promoted record read and yielding, every refused one with its reason.
 
-### Targeted for Sprint 7 (team lead, 2026-10-06)
-
-**F58. Move the store, its backups and the export out of the repository (~3h, ADR first) Priority 8** (NEW 2026-10-06)
-- Phase: Design / ADR, then migration
-- Team lead, 2026-10-06, verbatim: "Add to backlog for next sprint - sqlite
-  db needs to be stored off repository in D:\Data\Harold\EvidenceBasedDB\store
-  and not in github any longer as it will quickly exceed space allowed by
-  github. Database backups should similarly be moved to
-  D:\Data\Harold\EvidenceBasedDB\store\backups and once they have bee moved
-  then the .json files are no longer needed and can be removed from the
-  repository. Noting that wether the chema.sql and ingest.py and
-  restore_store.py should stay in the repo (likely) or move with the DB
-  should be recommended by the coding agent team. Will need to include an
-  amendment to ADR-0004 for these updates"
-- **Facts at carding (snapshot as of 2026-10-06)**:
-  - `store/evidence.db` (3.1 MB) and `store/backups/` (34 files, 46 MB) are
-    already NOT in GitHub: `.gitignore` excludes `*.db` and `backups/`. They
-    live in the working tree, so the move is from the repository FOLDER,
-    not from GitHub.
-  - What GitHub holds is the JSON export (`export/`, 2.7 MB: `papers.json`
-    2.6 MB for 1,875 papers, about 1.4 KB per paper). The whole repository
-    is about 7.7 MB of git objects; `papers.json` has changed in 30 commits.
-  - GitHub's limits (docs.github.com, "About large files on GitHub", read
-    2026-10-06): a warning above 50 MiB per file, a block above 100 MiB per
-    file, and repositories "ideally less than 1 GB, and less than 5 GB is
-    strongly recommended". At about 1.4 KB per paper, `papers.json` reaches
-    50 MiB near 36,000 papers; every regeneration also adds a new version to
-    the history.
-  - `D:\Data\Harold\EvidenceBasedDB\store` does not exist yet.
-- **Coding agent team recommendation (requested by the team lead)**:
-  `schema.sql`, `ingest.py`, `restore_store.py`, `rebuild.py`, `backup.py`
-  and every other script STAY in the repository: they are code, versioned
-  and tested, and the door's rules live in them. Only DATA moves. The store
-  path becomes one setting read in one place (`store.script_paths`), with
-  the off-repository default and an environment override for tests and CI.
-- **What removing the export changes, to decide at planning (Class 1)**:
-  1. The export is today the reviewable record of the data (ADR-0004
-     section 2: "the store is a build output; the export is the artifact").
-     Without it, git holds no history of what the store said and when, and
-     a data change has no diff to review.
-  2. 12 test files read the committed export, including the byte-identity
-     rebuild check that CI runs. They move to the off-repository export or
-     to small committed fixtures; CI cannot reach `D:\`.
-  3. Recovery then rests on the backups alone. Options: (a) keep a full
-     export beside the store, off-repository, regenerated on every write;
-     (b) also keep backups somewhere off this machine; (c) keep a small
-     committed sample export for CI and review.
-- Platform: `store/__init__.py` (`script_paths`), `store/backup.py`,
-  `scripts/*.py` that write or read the store or the export, `.gitignore`,
-  `tests/` (export-reading tests), `.github/workflows/ci.yml`; ADR-0004 (a
-  dated amendment, required by the team lead); ADR-0005 section 3 and
-  `CLAUDE.md` ("The two directories") also name these locations.
-- Acceptance: the ADR-0004 amendment accepted before any move; the store
-  and backups at the new paths with a verified backup taken before the move;
-  every script and test passes with the new paths; the export's fate as
-  decided; no data file left in the repository; `git rm` of `export/` only
-  after the decided replacement exists and a rebuild from it is proven.
-- Depends on: none. Run before F52, F57 or any other bulk load.
+### Carded during Sprint 7 (2026-10-06 to 2026-10-10)
 
 **F60. A mislabeled QMLPapers file: the "Asfaw 2108.0131" PDF is another paper (~30m) Priority 44** (NEW 2026-10-06, found in Sprint 7 Task E)
 - Phase: Sourcing / collection hygiene
