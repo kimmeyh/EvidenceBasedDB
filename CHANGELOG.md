@@ -24,6 +24,10 @@ this project keeps having to replace with a step.
 - **docs**: F66 carded (2026-10-10, team lead at Phase 1.4, target Sprint
   8) -- make develop the default branch, with main as the release branch
   changed only by a tagged develop-to-main PR; CI to run on PRs into both
+- **docs**: Backlog refinement (2026-10-10, Phase 1.5) -- Sprint 8 scope
+  selected: F65, F63, F64, F60, F61 and an F39 release (F67, Haiku 5.5);
+  priorities renumbered in steps of 10 (Q2 = 1); F49 closed without
+  implementation as moot under ADR-0004 A7 (Q3 = 1)
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 

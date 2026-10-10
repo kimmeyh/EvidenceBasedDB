@@ -212,8 +212,12 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 **Sprint 8** (branch `feature/20261010_Sprint_8`, cut 2026-10-10 at the
 Sprint 7 carry-forward, after PR #68 merged to develop and PR #76 merged
-develop to main). Phase 1 Backlog Refinement in progress; scope not yet
-selected.
+develop to main). **Scope (DEFINED, team lead 2026-10-10)**: F65, F63,
+F64, F60, F61, and an F39 release (registered as F67: "Haiku 5.5 was
+released and we will want to include in the list of models"). F66, carded
+the same day with a Sprint 8 target, is not in the selection list; it is
+asked as a question at plan approval, never planned in by inference. Plan:
+`docs/sprints/SPRINT_8_PLAN.md`.
 
 ## Next Sprint Candidates
 
@@ -228,7 +232,12 @@ replaced by F64's 12-month re-check; F54's 10 "unsure" and 140 third-party
 repository candidates stay held back in `sprint7_f35_screen.json` and
 `QMLPapers\Repos\REVIEW.md`). F39 is permanent and stays. Closed without
 implementation: F19, F29 (Sprint 5 scope selection, reasons under Sprint 5
-in "Last Completed Sprint"). The superseded stubs F12 and F21-F24 were
+in "Last Completed Sprint"); F49 (Sprint 8 scope selection, Q3 = 1: moot
+under ADR-0004 A7, since no committed export exists to drop a context, and
+`test_the_live_store_round_trips_through_a_dump` already proves the
+on-demand dump's round trip byte for byte). Priorities renumbered at Sprint
+8 scope selection (Q2 = 1) in steps of 10, with steps of 2 for items that
+sprint together. The superseded stubs F12 and F21-F24 were
 removed after F25 shipped; their history lives in the Sprint 3 and 4 docs
 and in git. Remaining items below.
 
@@ -265,10 +274,9 @@ prepared outside the repository; card text as drafted there. File names
 `01` to `12` (`03-manifest-sources.json`, `07-assertion-candidates-pending.md`,
 `11-decisions-2026-10-03.md`, and so on) refer to that folder;
 `FACTS-WITH-CERTAINTY.md` is in its parent, `Handoff-2026-10\`. All
-estimates are `[no-history]`. Priorities 26, 28 and 30 sprint together; so
-do 40 and 42, and 60 and 62.
+estimates are `[no-history]`.
 
-**F46. Remaining reading pass: the other pending facts, split at selection (~large, no-history) Priority 80**
+**F46. Remaining reading pass: the other pending facts, split at selection (~large, no-history) Priority 110**
 - Phase: Sourcing / extraction
 - Platform: N/A
 - The rest of `07`: World (8), entanglement (1), the April 2026 claim (4),
@@ -279,7 +287,7 @@ do 40 and 42, and 60 and 62.
 
 ### Store and process lessons from Cyc (proposed 2026-10-03)
 
-**F48. Keep local source paths honest (~2h) Priority 60**
+**F48. Keep local source paths honest (~2h) Priority 90**
 - Phase: Tooling
 - Platform: `store/ingest.py`, a new check script
 - A local `access` path breaks silently when a file moves. Seen during the
@@ -291,23 +299,7 @@ do 40 and 42, and 60 and 62.
 - Depends on: none. F41 adds nine local-access sources, so earlier is
   better.
 
-**F49. Prove the export keeps every context (~1h) Priority 62**
-- Phase: Tooling
-- Platform: `tests/`
-- OpenCyc's 2012 OWL export dropped the microtheory of every fact: 19
-  `definingMt` statements in 2,189,031. Cyc requires every assertion to sit
-  in a microtheory, and nothing noticed the loss.
-- Acceptance: a test that, for every record, the contexts in
-  `store/evidence.db` equal the contexts in `export/`, in both directions;
-  proven to fail by removing one context from a copy of the export.
-- Depends on: none.
-- **Planning note, 2026-10-06 (Sprint 7 Task B)**: largely moot under
-  ADR-0004 A7 (Q1 = 2): there is no committed export to drop a context. What
-  survives is the on-demand dump's round trip, which
-  `test_the_live_store_round_trips_through_a_dump` already proves byte for
-  byte. Recommend closing at the next refinement.
-
-**F50. Qualify "compute, never store" with Cyc's stored counts (~30m) Priority 70**
+**F50. Qualify "compute, never store" with Cyc's stored counts (~30m) Priority 100**
 - Phase: Process
 - Platform: `docs/research/cyc-knowledge-representation.md` (dated amendment)
 - Point 7 says counts should be computed, never stored. Cyc stores a count at
@@ -337,7 +329,7 @@ do 40 and 42, and 60 and 62.
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
 
-**F55. Record which papers cite which, as a computed link (~2h) Priority 34** (NEW 2026-10-05, Sprint 6 MV Q10 = 1)
+**F55. Record which papers cite which, as a computed link (~2h) Priority 80** (NEW 2026-10-05, Sprint 6 MV Q10 = 1)
 - Phase: Sourcing / computed fields
 - Platform: Crossref reference lists (`works/<doi>`, field `reference`),
   arXiv-to-DOI via `version_of`; `source_links`
@@ -353,7 +345,7 @@ do 40 and 42, and 60 and 62.
 - Acceptance: links for every pair both in the store where a reference list
   answers; coverage reported; no link typed by hand.
 
-**F56. Should corroboration raise an assertion's certainty, and how? (~1h decision, then build) Priority 36** (NEW 2026-10-05, team lead at Sprint 6 MV)
+**F56. Should corroboration raise an assertion's certainty, and how? (~1h decision, then build) Priority 82** (NEW 2026-10-05, team lead at Sprint 6 MV)
 - Phase: Design / ADR (Class 1)
 - Team lead, 2026-10-05: "if we have a paper who's assertions scores very
   high and with verifiable evidence and it is linke to another paper that
@@ -373,7 +365,7 @@ do 40 and 42, and 60 and 62.
   is not corroboration (the admission-against-interest rule's logic).
 - Depends on: F55 helps find candidates; not required.
 
-**F57. Read for claims: the records still at `seen` and `screened` (permanent, released in slices) Priority 38** (NEW 2026-10-05, team lead at Sprint 6 MV)
+**F57. Read for claims: the records still at `seen` and `screened` (permanent, released in slices) Priority 70** (NEW 2026-10-05, team lead at Sprint 6 MV)
 - Phase: Sourcing / extraction (permanent item, like F39)
 - Team lead, 2026-10-05: "what else has not been read for claims - if not
   in backlog, add backlog item to do any missing 'read for claims' entries".
@@ -391,7 +383,7 @@ do 40 and 42, and 60 and 62.
 
 ### Carded during Sprint 7 (2026-10-06 to 2026-10-10)
 
-**F60. A mislabeled QMLPapers file: the "Asfaw 2108.0131" PDF is another paper (~30m) Priority 44** (NEW 2026-10-06, found in Sprint 7 Task E)
+**F60. A mislabeled QMLPapers file: the "Asfaw 2108.0131" PDF is another paper (~30m) Priority 50** (NEW 2026-10-06, found in Sprint 7 Task E)
 - Phase: Sourcing / collection hygiene
 - Platform: `D:\Data\Harold\EvidenceBasedDB\QMLPapers\2021\manifest.tsv`
   (outside the repository; read only from here), `scripts/intake.py`
@@ -412,7 +404,7 @@ do 40 and 42, and 60 and 62.
   the mismatch is listed; the Asfaw paper entered or recorded as out of
   scope with the reason.
 
-**F61. Mine the Massoli et al. survey's curated paper list for candidates (~2h plus runtime) Priority 46** (NEW 2026-10-06, team lead during Sprint 7)
+**F61. Mine the Massoli et al. survey's curated paper list for candidates (~2h plus runtime) Priority 60** (NEW 2026-10-06, team lead during Sprint 7)
 - Phase: Sourcing / collections
 - Platform: `github.com/fvmassoli/survey-quantum-computation`
   (`allPapers.md`, `LeapIntoQuantumComputationsPaperList.xlsx`), the
@@ -452,7 +444,7 @@ do 40 and 42, and 60 and 62.
   its arXiv version first, else a list (DOI, Xplore link, target file name)
   the team lead downloads by hand into `D:\Data\Harold\EvidenceBasedDB\Papers`.
 
-**F62. Discover, rank and triage candidate papers from open metadata, with a hand-download list (~4h plus review) Priority 45** (NEW 2026-10-06, team lead during Sprint 7, Q11 = 1 and 3)
+**F62. Discover, rank and triage candidate papers from open metadata, with a hand-download list (~4h plus review) Priority 62** (NEW 2026-10-06, team lead during Sprint 7, Q11 = 1 and 3)
 - Phase: Sourcing / discovery
 - Platform: `scripts/discover_candidates.py` (pilot built in Sprint 7),
   OpenAlex (abstracts, topics, citations, open-access copies), Semantic
@@ -499,7 +491,7 @@ do 40 and 42, and 60 and 62.
   every entry's free-copy search recorded.
 - Depends on: F52's cap for arXiv; F61 (shared discovery input).
 
-**F63. Two Dirac-3 admissions in arXiv:2407.04512 as assertions (~1h) Priority 47** (NEW 2026-10-08, found in Sprint 7 Task G; team lead approved as a Sprint 8 candidate at Manual Validation)
+**F63. Two Dirac-3 admissions in arXiv:2407.04512 as assertions (~1h) Priority 32** (NEW 2026-10-08, found in Sprint 7 Task G; team lead approved as a Sprint 8 candidate at Manual Validation)
 - Phase: Content / assertions
 - Platform: the store; record `nguyen-2025-entropy-computing-paradigm-optimization-open`
   (read partially in Sprint 7 Task G); a script in the pattern of
@@ -520,7 +512,7 @@ do 40 and 42, and 60 and 62.
   `dirac3-per-loop-measurement-rules-out-quantum-advantage`) recorded.
 - Depends on: none.
 
-**F64. Staggered 12-month re-check, with revised-version detection and a re-pull list (~4h) Priority 48** (NEW 2026-10-09, team lead at Sprint 7 Manual Validation, Q12 = 1, Q15 = 2, Q16 = 1)
+**F64. Staggered 12-month re-check, with revised-version detection and a re-pull list (~4h) Priority 40** (NEW 2026-10-09, team lead at Sprint 7 Manual Validation, Q12 = 1, Q15 = 2, Q16 = 1)
 - Phase: Sourcing / currency
 - Platform: `scripts/probe_reference_fields.py`, `store/probes.py`,
   `scripts/view.py`, Phase 1.3 of `docs/SPRINT_EXECUTION_WORKFLOW.md`,
@@ -566,7 +558,7 @@ do 40 and 42, and 60 and 62.
   re-pull; ADR-0005 amended.
 - Depends on: F52's cap (built).
 
-**F65. Deep research into the Dirac-3S, QCi's upgraded Dirac-3 (~3h) Priority 40** (NEW 2026-10-10, team lead during Sprint 7 Phase 7; TARGET: Sprint 8)
+**F65. Deep research into the Dirac-3S, QCi's upgraded Dirac-3 (~3h) Priority 30** (NEW 2026-10-10, team lead during Sprint 7 Phase 7; TARGET: Sprint 8)
 - Phase: Content / platform research
 - Platform: `D:\Data\Harold\EvidenceBasedDB\References\QCi-site\systems\Dirac_3S_Users_Guide_Rev_A-1.pdf`
   (outside the repository; "Dirac-3S User Guide, September 2026, Revision
@@ -592,7 +584,7 @@ do 40 and 42, and 60 and 62.
   local copy by test; the team lead's items each answered or carded.
 - Depends on: F63 (same QCi source family; can run in the same task).
 
-**F66. Make develop the default branch: a git-flow model with main as the release branch (~1h) Priority 15** (NEW 2026-10-10, team lead at Sprint 8 Phase 1.4; TARGET: Sprint 8)
+**F66. Make develop the default branch: a git-flow model with main as the release branch (~1h) Priority 20** (NEW 2026-10-10, team lead at Sprint 8 Phase 1.4; TARGET: Sprint 8)
 - Phase: Process / repository
 - Platform: GitHub repository settings (`gh repo edit`),
   `.github/workflows/ci.yml`, the sprint docs and scripts that name a
