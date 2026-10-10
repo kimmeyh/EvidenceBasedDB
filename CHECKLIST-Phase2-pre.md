@@ -160,3 +160,18 @@ Evidence for each row is the commit named; every hash was checked with
 - [x] **C**: Phase 5 fresh-eyes review findings fixed (34893bb)
 - [x] **H+C**: Manual Validation Q1-Q10 decided and applied (fdc8532, 3cbadae, e841545)
 - [x] **H+C**: Retrospective, 16 x 4, improvements I1-I6 applied (498f53c, f58f5d2, 4ea7e6b, eeb2e46)
+
+## Sprint 7: Move the Data Out, Then Measure arXiv Safely (reconciled 2026-10-10 at Phase 7)
+
+Evidence for each row is the commit named.
+
+- [x] **C**: Task A (F59) -- model tiers re-verified, Developers to Sonnet 5.5 (b5fdf01)
+- [x] **H+C**: Task B (F58) -- ADR-0004 A7, ADR-0003 A2, ADR-0005 A5 (3bf2eda); store out of the repository, export retired (65a048e); review fixes (d0b837d); accepted at Manual Validation
+- [x] **C**: Task C (F52) -- cap, pacing, page fallback (60f831a, f360e04, 3200be3); bulk run measured in ADR-0005 A6 (5a2dac1)
+- [x] **C**: Task D (F53) -- `--stale` and `--refresh` (0e7e2e7); per-cycle run replaced by a 12-month re-check (89accb9)
+- [x] **C**: Task E (F54) -- notes linked (de3caa5, 8fe2fd5, c0d321b)
+- [x] **C**: Task F (F44) -- eight Cycorp papers, T07's two assertions (2a27964)
+- [x] **C**: Task G (F45) -- Dirac-3 reading pass, 14 assertions (a4eeeea)
+- [x] **C**: Phase 5 I4 re-read, ADR-0004 A7 matched to the code (de4e487)
+- [x] **H+C**: Manual Validation Q9, Q12-Q20 decided and applied (b8f3bca, 89accb9)
+- [ ] **H+C**: Retrospective, 16 x 4 (f403121), improvements I1-I5, I7 applied (0747a9b); I6's status-format half awaits the team lead

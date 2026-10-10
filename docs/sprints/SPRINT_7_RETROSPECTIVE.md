@@ -190,4 +190,32 @@ message opened: "Manual Validation complete".
 
 ## Improvement Decisions
 
-Proposed 2026-10-09; awaiting the team lead's disposition.
+Team lead, 2026-10-10: "Q21 1" (all seven now, as recommended). Every
+improvement prevents its problem at the source first, and extends an
+existing mechanism.
+
+- **I1. Every decision option states its cost** (now, 0747a9b): extends
+  the planning check of what tools can do in `docs/SPRINT_PLANNING.md`
+  (Sprint 6 I5): runtime per run, and per recurrence when the option adds
+  a recurring step.
+- **I2. The plan absorbs its decisions at 3.7** (now, 0747a9b): extends
+  workflow step 3.7; each task's runtime and acceptance lines that a
+  decision changed are rewritten in the commit that records the decisions.
+- **I3. Decision options lead with the outcome** (now, 0747a9b): extends
+  the numbered-question rule in `CLAUDE.md` and its memory file.
+- **I4. A dropped or changed commitment is disclosed in the next message**
+  (now, 0747a9b): `CLAUDE.md` "Things Claude Should NOT Do", with a memory
+  file.
+- **I5. The Phase 5 amendment re-read covers every restatement** (now,
+  0747a9b): extends Sprint 6 I4; `CLAUDE.md`'s "by name" corrected.
+- **I6. No stored `updated` date; one status format** (now, partly
+  applied): the `updated` field is removed from `sprint_status.json`
+  (0747a9b; `git log` answers it, and nothing read it). The status-format
+  half is NOT applied: making "Phase n.n Name" the one format needs
+  `.claude/hooks/block_procedural_question_stop.py` to read the phase
+  number from it (it checks a `phase_4` prefix, so "Phase 4.1 Execution"
+  would silently fall outside its window), and the edit to that hook was
+  refused by the session's permission classifier on 2026-10-10. Held for
+  the team lead's decision.
+- **I7. Task start times in the note** (now, 0747a9b): extends the Phase 4
+  rule that the note is written at every task boundary.

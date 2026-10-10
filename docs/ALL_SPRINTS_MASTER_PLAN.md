@@ -42,10 +42,25 @@ repository exists. No other F# from either source repository applies here.
 | 4 | docs/sprints/SPRINT_4_SUMMARY.md | [OK] Complete | 2026-09-19 to 2026-09-23 |
 | 5 | docs/sprints/SPRINT_5_SUMMARY.md | [OK] Complete | 2026-09-23 to 2026-09-25 |
 | 6 | docs/sprints/SPRINT_6_SUMMARY.md | [OK] Complete | 2026-09-27 to 2026-10-05 |
+| 7 | docs/sprints/SPRINT_7_SUMMARY.md | [OK] Complete | 2026-10-06 to 2026-10-10 |
 
 ## Last Completed Sprint
 
-Sprint 6 is below; Sprint 5 follows it for continuity.
+Sprint 7 is below; Sprint 6 follows it for continuity.
+
+### Sprint 7: Move the Data Out, Then Measure arXiv Safely (2026-10-06 to 2026-10-10, PR #68, merge pending)
+
+Seven tasks, seven issues (#69-#75), all closed. **Data out**: the store
+and backups moved to `D:\Data\Harold\EvidenceBasedDB\store`, the committed
+export retired (ADR-0004 A7, ADR-0003 A2, ADR-0005 A5). **arXiv measured
+safely**: 18 s spacing, a 240-request session cap, the abstract page as
+fallback; 1,524 records probed in 36 hours with 0 errors (ADR-0005 A6). At
+Manual Validation the per-cycle refresh became a staggered 12-month
+re-check (F64). Content: eight Cycorp papers (F44) and the Dirac-3 reading
+pass (F45, 14 assertions). Store 1,875 -> 1,947 papers, 60 -> 76
+assertions; suite 572 -> 610. Retrospective: team lead all "Very Good";
+seven improvements approved. Full detail: `docs/sprints/SPRINT_7_SUMMARY.md`.
+
 
 ### Sprint 6: Decide the Fields Once, Then Load at Scale (2026-09-27 to 2026-10-05, PR #54, merged to develop and to main via PR #67 on 2026-10-06)
 
