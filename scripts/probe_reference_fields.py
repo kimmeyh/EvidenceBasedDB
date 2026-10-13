@@ -136,10 +136,16 @@ def select(conn, args: list[str]) -> list[tuple[str, str, str]]:
 
 
 def due_date(args: list[str]) -> date:
-    """`--due [YYYY-MM-DD]`: the date given, else today."""
+    """`--due [YYYY-MM-DD]`: the date given, else today. A date in another
+    form is refused, never read as today (PR #77 review: `--due 10/13/2026`
+    listed, and with --probe checked, the wrong set)."""
     i = args.index("--due")
     nxt = args[i + 1] if i + 1 < len(args) else ""
-    return date.fromisoformat(nxt) if re.fullmatch(r"\d{4}-\d{2}-\d{2}", nxt) else date.today()
+    if not nxt or nxt.startswith("--"):
+        return date.today()
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", nxt):
+        raise ValueError(f"--due takes a date as YYYY-MM-DD, got {nxt!r}")
+    return date.fromisoformat(nxt)
 
 
 SPRINT_STATUS = ROOT / ".claude" / "sprint_status.json"
@@ -269,8 +275,11 @@ def recheck_findings(findings: dict[str, list[str]], rid: str, access: str, kind
                      extra: dict, local_version_of=None, local_copy_of=None) -> None:
     """Sort one re-checked record into the lists ADR-0005 A7 (d) names.
     `before` is the publication_status stored before this check."""
-    local_version_of = local_version_of or recheck.local_version
-    local_copy_of = local_copy_of or recheck.local_copy
+    # The record's own local path first, then QMLPapers by id (PR #77
+    # review: a copy kept in Papers\ under another name was never found, so
+    # the record landed in no list).
+    local_copy_of = local_copy_of or (lambda ident: recheck.local_pdf(access, ident))
+    local_version_of = local_version_of or (lambda ident: recheck.local_version(ident, path=local_copy_of(ident)))
     status = next((v for f, v, _ in found if f == "publication_status"), None)
     if status in TERMINAL and before not in TERMINAL:
         findings["withdrawn"].append(f"{rid}: {status}")
@@ -364,7 +373,12 @@ def _resume_session(path: Path | None) -> bool:
 def run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path | None,
         heartbeat: Path | None, force_site: bool = False, recheck_mode: bool = False,
         report: Path | None = None) -> int:
-    findings = load_findings(report)
+    # A report is reloaded only when this run resumes one (its progress file
+    # lists finished records); a fresh run over an old report path starts
+    # empty (PR #77 review: a dry run then --apply with the same --report
+    # listed every finding twice).
+    resuming = bool(progress and progress.exists() and progress.read_text(encoding="utf-8").split())
+    findings = load_findings(report) if resuming else {name: [] for name in FINDING_LISTS}
     rc = _run(conn, targets, fetcher, apply=apply, sessions=sessions, progress=progress, heartbeat=heartbeat,
               force_site=force_site or recheck_mode, findings=findings if recheck_mode else None,
               report_path=report if recheck_mode else None)
@@ -432,6 +446,10 @@ def _run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path 
                 if row and row[0] != value:
                     print(f"      DIFFERS {rid} {field_name}: stored {row[0]!r}, probe {value!r} [{provider}]")
             if findings is not None and extra is not None:
+                # One set of findings per record: a retry in a later session
+                # replaces this record's lines instead of adding to them.
+                for name in FINDING_LISTS:
+                    findings[name] = [x for x in findings[name] if not x.startswith(f"{rid}: ")]
                 try:
                     recheck_findings(findings, rid, access, kind, found, before, extra)
                 except Exception as ex:  # noqa: BLE001 -- a sorting failure is a finding, not the end of the run
@@ -516,7 +534,20 @@ def main(argv: list[str] | None = None) -> int:
         if "--stale" in args:
             before = args[args.index("--before") + 1] if "--before" in args else cycle_start()
             return report_stale(conn, before)
-        targets = select(conn, args)
+        try:
+            targets = select(conn, args)
+        except ValueError as ex:
+            print(f"error: {ex}", file=sys.stderr)
+            return 2
+        if "--due" in args and "--probe" in args and "--progress" in args and "--report" not in args:
+            # A resumed run skips finished records, so their findings live
+            # only in the report (PR #77 review).
+            print("error: --due --probe --progress needs --report, or a resumed run loses the first run's findings",
+                  file=sys.stderr)
+            return 2
+        if "--due" in args and "--probe" in args and not recheck.QMLPAPERS.exists():
+            print(f"WARNING: {recheck.QMLPAPERS} is missing; only records whose access names a local path can be "
+                  "version-checked", file=sys.stderr)
         if "--due" in args and "--probe" not in args:
             # Sprint 8 retrospective I4: without --probe, --due only lists,
             # from stored dates; no request is sent and nothing is written.

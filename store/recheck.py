@@ -142,8 +142,20 @@ def local_copies(ident: str, root: Path = QMLPAPERS) -> list[Path]:
     return sorted(hits)
 
 
-def local_version(ident: str, root: Path = QMLPAPERS) -> int | None:
-    path = local_copy(ident, root)
+def local_pdf(access: str, ident: str, root: Path = QMLPAPERS) -> Path | None:
+    """A paper's local PDF: the first local path its `access` names that
+    exists, else the QMLPapers copy found by id (PR #77 review: copies in
+    `Papers\\` carry author-title names, not ids, so the id search alone
+    missed them)."""
+    for p in local_paths(access or ""):
+        if p.lower().endswith(".pdf") and Path(p).is_file():
+            return Path(p)
+    hits = local_copies(ident, root)
+    return hits[0] if hits else None
+
+
+def local_version(ident: str, root: Path = QMLPAPERS, path: Path | None = None) -> int | None:
+    path = path or local_copy(ident, root)
     if path is None:
         return None
     text = subprocess.run(["pdftotext", "-l", "1", str(path), "-"], capture_output=True,

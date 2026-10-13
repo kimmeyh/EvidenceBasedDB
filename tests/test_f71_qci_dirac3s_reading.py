@@ -67,3 +67,72 @@ def test_the_site_check_separates_menu_changes_from_page_changes():
     diffs = {"a": menu, "b": menu, "c": menu | real}
     chrome = g.site_wide(diffs)
     assert [u for u, d in diffs.items() if d - chrome] == ["c"]
+
+
+def test_a_small_section_keeps_its_own_change():
+    """PR #77 review: a section with one or two compared pages read its own
+    change as that section's menu, so the Dirac-3 product page could be
+    reported unchanged. Proven to fail by injection, 2026-10-13: with
+    MIN_CHROME_PAGES set to 1, both the one-page and the two-page cases
+    went unchanged."""
+    g = _load("sprint8_f71_qci_site_check")
+    site = g.SITE
+    menu = g.word_changes("Home Lessons Qudits", "Home Lessons Benchmarking Qudits")
+    real = g.word_changes("Introducing Dirac-3 949 Variables", "Introducing Dirac-3S 9,980 Variables")
+    lessons = {f"{site}/learn/lessons/l{i}": menu for i in range(3)}
+    one = {**lessons, f"{site}/products/systems/dirac-3": menu | real}
+    assert g.split_changed(one)[0] == [f"{site}/products/systems/dirac-3"]
+    two = {**lessons, f"{site}/technology/a": menu | real, f"{site}/technology/b": menu}
+    assert g.split_changed(two)[0] == [f"{site}/technology/a"]
+
+
+def test_an_ambiguous_match_is_listed_not_guessed(tmp_path):
+    g = _load("sprint8_f71_qci_site_check")
+    (tmp_path / "lessons").mkdir()
+    (tmp_path / "lessons" / "intro.html").write_text("x", encoding="utf-8")
+    scraped = g.scraped_pages(tmp_path)
+    urls = [f"{g.SITE}/learn/lessons/a/intro", f"{g.SITE}/learn/lessons/b/intro"]
+    matched, gone, ambiguous = g.resolve(scraped, urls)
+    assert matched == {} and gone == [] and ambiguous and "a/intro" in ambiguous[0] and "b/intro" in ambiguous[0]
+
+
+def test_failed_fetches_and_undated_pages_are_not_lost(tmp_path):
+    g = _load("sprint8_f71_qci_site_check")
+    log = tmp_path / "fetch-log.tsv"
+    log.write_text("t\tHTTP 503\thttps://x/a\nt\t200\thttps://x/a\nt\tredirected to https://x/\thttps://x/b\n",
+                   encoding="utf-8")
+    assert g.fetch_failures(log) == {"https://x/b": "redirected to https://x/"}
+    index = tmp_path / "sitemap.xml"
+    index.write_text('<?xml version="1.0"?><sitemapindex><sitemap><loc>u</loc></sitemap></sitemapindex>',
+                     encoding="utf-8")
+    with pytest.raises(ValueError):
+        g.sitemap_entries(index)
+    plain = tmp_path / "plain.xml"
+    plain.write_text("<urlset><url><loc>https://quantumcomputinginc.com/news/x</loc></url></urlset>", encoding="utf-8")
+    entries = g.sitemap_entries(plain)
+    assert entries == {"https://quantumcomputinginc.com/news/x": ""}
+    assert g.main(["--fetc"]) == 2
+
+
+def test_recent_includes_the_scrape_day_and_undated_pages(monkeypatch):
+    """PR #77 review: the cutoff is a string comparison with no boundary
+    test, and a page with no `lastmod` was in no list."""
+    g = _load("sprint8_f71_qci_site_check")
+    monkeypatch.setattr(g, "scraped_pages", lambda old=None: {})
+    news = f"{g.SITE}/news/"
+    entries = {news + "on": g.SCRAPED_ON, news + "before": "2026-09-23", news + "undated": ""}
+    *_, recent = g.wanted_lists(entries)
+    assert recent == [news + "on", news + "undated"]
+
+
+@pytest.mark.live_store
+def test_a_second_apply_writes_nothing(live_copy):
+    """PR #77 review: the script's idempotence was claimed, not tested."""
+    from store import connect
+    f71 = _load("sprint8_f71_qci_dirac3s_reading")
+    conn = connect(live_copy)
+    try:
+        log = f71.apply_changes(conn)
+    finally:
+        conn.close()
+    assert log and all(line.startswith("exists") for line in log), [x for x in log if not x.startswith("exists")]

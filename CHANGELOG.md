@@ -181,6 +181,21 @@ this project keeps having to replace with a step.
   `docs/sprints/SPRINT_8_F71_QCI_SITE_CHECK.md`; QCi's PDFs kept with the
   other references outside the repository (team lead); tests proven by
   injection
+- **fix**: PR #77 review findings (2026-10-13; Claude pr-review-toolkit
+  code, test-coverage and silent-failure reviews; Copilot found none on
+  #77) -- site check: a section of one or two pages keeps its own change
+  (the menu rule needs 3 pages), ambiguous matches listed, redirects and
+  failed fetches reported, undated pages counted recent, a sitemap index
+  and unknown flags refused; re-check: the record's own local path first
+  (`recheck.local_pdf`), an invalid `--due` date refused, a fresh run no
+  longer repeats an old report's findings and a retry replaces a record's
+  lines, `--progress` needs `--report`; `view.py` shows "now" for an
+  undated paper; F71 script: exact id match and SHA-256 on every local
+  copy; hook: a heredoc a shell runs is scanned, `truncate`, the `py`
+  launcher and python writes onto .sql caught, an internal error fails
+  open with a warning; workflow I2 sentence corrected to what the search
+  covers; F74 carded (a partial answer resets the re-check clock; a tool
+  failure blames the paper)
 - **docs**: Sprint 8 close-out (2026-10-13) -- `SPRINT_8_SUMMARY.md` with
   Actuals; master plan Last Completed Sprint and summary row; checklist
   reconciled; retrospective notes Task G

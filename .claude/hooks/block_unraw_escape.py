@@ -45,7 +45,8 @@ import sys
 # python-dateutil`, or prose. During review of PR #58 it blocked a `gh api`
 # call whose only Python content was example text inside the comment being
 # posted.
-PYTHON_INVOCATION = re.compile(r"(?:^|[\s;&|(])python[0-9.]*(?:\.exe)?(?:\s|$)")
+# `py` is the Windows launcher (PR #77 review: `py -c` was not matched).
+PYTHON_INVOCATION = re.compile(r"(?:^|[\s;&|(])(?:python[0-9.]*|py)(?:\.exe)?(?:\s|$)")
 
 # EXACT Python string prefixes only. A substring test over an [A-Za-z]*
 # capture lets an adjacent identifier ending in r -- str'...', dir'...',
@@ -93,7 +94,8 @@ def _read_command() -> str:
 # times: a "\\n" meant for the target file became a real line break and left
 # an unterminated string literal, found only when the file failed to parse.
 # The Edit and Write tools take code verbatim and cannot do this.
-PY_FILE_LITERAL = re.compile(r"""['"][^'"\n]*\.py['"]""")
+# .sql too: I5 names it a code file (PR #77 review).
+PY_FILE_LITERAL = re.compile(r"""['"][^'"\n]*\.(?:py|sql)['"]""")
 WRITES_FILE = re.compile(r"""open\([^)]*['"]w['"]|\.write_text\(|\.write\(""")
 
 
@@ -133,7 +135,9 @@ def _writes_python_source(cmd: str) -> bool:
 # back into the repository counts; the bypass token counts only outside
 # data, so a commit message that names it does not open the gate.
 #
-# Known limits, not blocked: a target held in a variable (`sed -i ... "$f"`),
+# Known limits, not blocked: a copy into a directory (`cp a.txt store/`: the
+# file's own name decides, and the hook does not see it), a target held in a
+# variable (`sed -i ... "$f"`),
 # `bash -c '...'` in single quotes (single-quoted text with a space is not
 # read for redirects, so a `>` inside a sed or python expression is not
 # taken as one), `patch`, and git's own restores (`git checkout -- x.py`,
@@ -171,14 +175,21 @@ CODE_GLOB_SOURCE = re.compile(r"\b(?:find|ls-files|grep\s+-\w*l\w*|rg\s+-\w*l\w*
                               + CODE_PATH, re.I)
 
 
+SHELL_READS_HEREDOC = re.compile(r"(?:^|[\s;&|(])(?:bash|sh|zsh|dash|ksh|pwsh|powershell)(?:\.exe)?(?:\s+-\S+)*\s*$",
+                                 re.I)
+_TRUNCATE = re.compile(r"\btruncate\b[^\n;|&]*?\s" + CODE_PATH, re.I)
+
+
 def _data_removed(cmd: str) -> str:
     """The command with its data taken out: heredoc bodies, PowerShell
     here-string bodies, message and field values, full-line comments."""
     cmd = PS_HERE_STRING.sub("''", cmd)
-    lines, tag, body = [], None, []
+    lines, tag, body, runs_body = [], None, [], False
     for line in cmd.split("\n"):
         if tag is not None:
             if line.strip() == tag:
+                if runs_body:
+                    lines += body  # a shell runs this body: it is commands
                 tag, body = None, []
             else:
                 body.append(line)
@@ -187,6 +198,9 @@ def _data_removed(cmd: str) -> str:
         m = HEREDOC_START.search(line)
         if m:
             tag = m.group(1)
+            # PR #77 review: `bash <<EOF ... sed -i ... EOF` passed, because
+            # the body was taken as data.
+            runs_body = bool(SHELL_READS_HEREDOC.search(line[:m.start()]))
     # A heredoc that never closes was not one (a quoted `<<` in prose, say):
     # its "body" is command text and is scanned.
     kept = [ln for ln in lines + body if not ln.lstrip().startswith("#")]
@@ -240,6 +254,7 @@ def _shell_edits_code(text: str) -> list[str]:
     unquoted = SINGLE_QUOTED.sub(lambda m: " " * len(m.group(0)), text)
     hits += [p for m in REDIRECT_ONTO.finditer(unquoted) for p in keep(m)]
     hits += [p for t in TEE.finditer(unquoted) for m in CODE_ARG.finditer(t["rest"]) for p in keep(m)]
+    hits += [p for m in _TRUNCATE.finditer(unquoted) for p in keep(m)]
     return list(dict.fromkeys(hits))
 
 
@@ -251,7 +266,18 @@ def main() -> int:
 
     if not cmd or not cmd.strip():
         return 0
+    try:
+        return _check(cmd)
+    except Exception as ex:  # noqa: BLE001
+        # Fail open, deliberately and visibly: a bug in this hook must not
+        # block every command (PR #77 review: an exception here exited 1,
+        # which also allows the command, but said nothing about why).
+        print(f"[hook warning] block_unraw_escape.py could not check this command: {type(ex).__name__}: {ex}",
+              file=sys.stderr)
+        return 0
 
+
+def _check(cmd: str) -> int:
     runs_python = PYTHON_INVOCATION.search(cmd)
 
     if runs_python and "allow_python_writes_code" not in cmd and _writes_python_source(cmd):

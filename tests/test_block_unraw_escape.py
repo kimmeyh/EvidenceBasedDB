@@ -166,6 +166,9 @@ def test_python_writes_code_bypass_token():
     "cd /tmp && cd /d/Data/Harold/github/EvidenceBasedDB && sed -i 's/a/b/' store/x.py",
     "git commit -m 'allow_shell_code_edit is named here' && sed -i 's/a/b/' store/x.py",
     "sed -i 's/a/b/;s/c/d/' store/x.py",
+    # PR #77 review, 2026-10-13
+    "bash <<EOF\nsed -i s/a/b/ store/recheck.py\nEOF",
+    "truncate -s0 store/x.py",
 ])
 def test_blocks_a_shell_edit_of_a_repository_code_file(command):
     """Proven to fail by injection, 2026-10-13: with _shell_edits_code
@@ -212,6 +215,18 @@ def test_blocks_a_shell_edit_of_a_repository_code_file(command):
 def test_allows_reads_scratch_files_and_messages(command):
     proc = run(command)
     assert proc.returncode == 0, f"{command}\n{proc.stderr}"
+
+
+@pytest.mark.parametrize("command", [
+    "py -c \"p = 'D:\\Data\\new.txt'\"",
+    "python - <<'PYEOF'\nopen('store/schema.sql','w').write('x')\nPYEOF",
+])
+def test_the_python_checks_cover_the_launcher_and_sql(command):
+    """PR #77 review: the `py` launcher was not read as python, and a python
+    write onto a .sql file was not read as a code write. Proven to fail,
+    2026-10-13: both commands passed (exit 0) against the hook as committed
+    in 301ea4c."""
+    assert run(command).returncode == 2, command
 
 
 def test_shell_code_edit_bypass_token():

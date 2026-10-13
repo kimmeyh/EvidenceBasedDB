@@ -665,6 +665,30 @@ estimates are `[no-history]`.
   recorded as out of scope, with the reason.
 - Depends on: none
 
+**F74. Re-check correctness: a partial answer must not reset the 12-month clock, and a tool failure must not read as the paper's fault (~1.5h) Priority 30** (NEW 2026-10-13, PR #77 silent-failure review; TARGET: Sprint 9)
+- Phase: Store / re-check (ADR-0005 A7)
+- Platform: `store/recheck.py` (`last_check`), `scripts/probe_reference_fields.py`
+  (the probe writes and `recheck_findings`)
+- Found by the PR #77 review, 2026-10-13, read only:
+  - **A partial answer resets the clock.** `last_check` is the latest
+    `probed_on` over every provider except hand readings. If arXiv's
+    abstract page fails and DataCite answers, the DataCite field is written
+    with today's date, so the paper leaves `--due` for about 10 months with
+    its version unread and its withdrawal unchecked. A `local file check`
+    that records "local copy missing" does the same.
+  - **A tool failure blames the paper.** When `pdftotext` is missing or
+    fails, the first page reads as empty and the paper is listed as "no
+    readable stamp"; a record whose probe raised is listed as "the abstract
+    page showed no version".
+- Scope: decide (ADR-0005 amendment) which probe answers count as a
+  completed check, and count only those in `last_check`; report a tool
+  failure as a tool failure. Both are design decisions about what the
+  stored dates mean, so they are carded rather than patched in the review.
+- Acceptance: a test where DataCite answers and arXiv does not leaves the
+  paper due; a test with `pdftotext` unavailable reports the tool, not the
+  paper; both proven to fail by injection.
+- Depends on: F64 (done)
+
 **F71. F65's four items: the Dirac-3S release, technical reference and product page, and what is new on QCi's site since the 2026-09-24 scrape (~3h) Priority 25** (NEW 2026-10-13, team lead at Sprint 8 Phase 7, Q1 = 2: "add as backlog item, fully plan, sprint card, execute"; TARGET: Sprint 8, Task G)
 - Phase: Content / platform research
 - Platform: the three links from F65's recovered list; QCi's sitemap

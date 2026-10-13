@@ -210,8 +210,8 @@ def test_a_due_run_passes_the_state_through_and_keeps_its_report(tmp_path, monke
         return [("publication_status", "published", prf.SITE_PROVIDER)], [], True
 
     monkeypatch.setattr(prf, "probe", fake_probe)
-    monkeypatch.setattr(prf.recheck, "local_version", lambda ident, root=None: 3)
-    monkeypatch.setattr(prf.recheck, "local_copy", lambda ident, root=None: Path("x.pdf"))
+    monkeypatch.setattr(prf.recheck, "local_version", lambda ident, root=None, path=None: 3)
+    monkeypatch.setattr(prf.recheck, "local_pdf", lambda access, ident, root=None: Path("x.pdf"))
     monkeypatch.setattr(prf.citations, "assume_recent_arxiv_request", lambda: None)
     report = tmp_path / "report.txt"
     rc = prf.run(conn, [("r1", "arXiv:2407.04512", "arxiv")], fetcher=object(), apply=False, sessions=False,
@@ -277,7 +277,65 @@ def test_view_shows_the_computed_schedule(live_conn):
     rid = "nguyen-2025-entropy-computing-paradigm-optimization-open"
     shown = view.cmd_paper(live_conn, rid)["recheck"]
     section, last, nxt = recheck.schedule(live_conn, rid)
-    assert shown == {"section": str(section), "last_check": str(last), "next_recheck": str(nxt)}
+    assert shown == {"section": section, "last_check": last.isoformat(), "next_recheck": nxt.isoformat()}
+
+
+def test_view_shows_a_paper_with_no_dates_as_due_now():
+    """PR #77 review: the schedule of a paper with no dates read "None"."""
+    spec = importlib.util.spec_from_file_location("view", ROOT / "scripts" / "view.py")
+    view = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(view)
+    assert view._schedule((7, None, None)) == {"section": 7, "last_check": None, "next_recheck": None}
+
+
+def test_a_paper_with_no_date_is_due():
+    """recheck.due's documented case: no date to start from counts as due
+    now. Proven to fail by injection, 2026-10-13: with the `nxt is None`
+    branch removed, the undated record dropped out of the list."""
+    conn = sqlite3.connect(":memory:")
+    conn.executescript("CREATE TABLE paper_fields (record_id TEXT PRIMARY KEY, access TEXT);"
+                       "CREATE TABLE records (id TEXT PRIMARY KEY, updated TEXT);"
+                       "CREATE TABLE paper_probes (record_id TEXT, field TEXT, value TEXT, provider TEXT, probed_on TEXT)")
+    conn.execute("INSERT INTO paper_fields VALUES ('undated', 'arXiv:2101.00001')")
+    conn.execute("INSERT INTO records VALUES ('undated', NULL)")
+    assert [r[0] for r in recheck.due(conn, date(2026, 10, 13))] == ["undated"]
+
+
+def test_a_fresh_run_does_not_repeat_an_old_reports_findings(tmp_path, monkeypatch):
+    """PR #77 review: a dry run then --apply with the same --report listed
+    every finding twice. Two guards stop it: a fresh run does not reload the
+    report, and a record's lines are replaced, not added. Proven to fail by
+    injection, 2026-10-13: with both removed, 'withdrawn' held r1 twice."""
+    prf = _probe_script()
+    conn = sqlite3.connect(":memory:")
+    conn.executescript("CREATE TABLE paper_fields (record_id TEXT PRIMARY KEY, access TEXT, evidence TEXT);"
+                       "CREATE TABLE paper_probes (record_id TEXT, field TEXT, value TEXT, provider TEXT, "
+                       "probed_on TEXT, PRIMARY KEY (record_id, field))")
+    conn.execute("INSERT INTO paper_fields VALUES ('r1', 'https://example.org/r1', NULL)")
+    monkeypatch.setattr(prf, "probe", lambda *a, **k: ([("publication_status", "withdrawn", "x")], [], True))
+    monkeypatch.setattr(prf.citations, "assume_recent_arxiv_request", lambda: None)
+    report = tmp_path / "report.txt"
+    for _ in range(2):
+        prf.run(conn, [("r1", "https://example.org/r1", "url")], fetcher=object(), apply=False, sessions=False,
+                progress=None, heartbeat=None, recheck_mode=True, report=report)
+    assert prf.load_findings(report)["withdrawn"] == ["r1: withdrawn"]
+
+
+def test_a_due_date_in_another_form_is_refused():
+    prf = _probe_script()
+    with pytest.raises(ValueError):
+        prf.due_date(["--due", "10/13/2026"])
+    assert prf.due_date(["--due", "--probe"]) == date.today()
+    assert prf.due_date(["--due", "2027-08-20"]) == date(2027, 8, 20)
+
+
+def test_the_re_check_finds_a_copy_named_in_the_records_access(tmp_path):
+    """PR #77 review: a copy kept outside QMLPapers under an author-title
+    name (Papers\\2016-03_Sharma_...pdf) was never found."""
+    pdf = tmp_path / "2016-03_Sharma_Controlling-Search.pdf"
+    pdf.write_bytes(b"%PDF")
+    assert recheck.local_pdf(f"{pdf} | arXiv:1603.04402", "1603.04402", root=tmp_path / "none") == pdf
+    assert recheck.local_pdf("arXiv:1603.04402", "1603.04402", root=tmp_path / "none") is None
 
 
 @pytest.mark.live_store

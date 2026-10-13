@@ -80,11 +80,21 @@ LOCAL = {
     PROD_OLD: REFS + r"\QCi-site\systems\dirac-3.html",
     NB: NEW + r"\learn\benchmarking\planted\dirac-3s-planted-benchmarking.html",
 }
-SHA256 = {
-    BENCH: "37f63ee29c690685becc783d86796352d10277bc27d51a103b59cf2204dc3373",
-}
 MS_FILE = TECH + r"\Motzkin-Straus_Optimization_on_an_Entropy-Computing_Platform__4mfcL8t2byM8pEIsLXl6oH.pdf"
 SQ_FILE = TECH + r"\Standard_Quadratic_Formulations_of_Many_NP_Problems__MDdq4hP69ryoXR78JqaYE.pdf"
+# Every local copy as read on 2026-10-13; a copy that changes stops the
+# script (PR #77 review: only the review PDF was checked at first).
+SHA256 = {
+    BENCH: "37f63ee29c690685becc783d86796352d10277bc27d51a103b59cf2204dc3373",
+    PRN: "e5c72f74fbccef0b59324f4fe6a3f62c40b66df5cf2668f6ecd10abc1cdc9547",
+    PROD: "870fc66447997f951d8298a519165a16b2dcaf3a920a7f5951b5e4e8700f2c2f",
+    PROD_OLD: "54fbaf311b061e39cd8c6684893f9a0d9d3d1c3c92e240ff17f07bd9a83950c3",
+    NB: "798ed16a5874808c070c5162f5cd4d53631c5ad1e1e4756e0453426f9ab155bb",
+}
+FILE_SHA256 = {
+    MS_FILE: "a150a95d2222acdf4a59b93616319da450df3a7852bbcbb1ee4dfffc6b233d06",
+    SQ_FILE: "1b6fbb0d0911d79b29c2a9cc80053cb96ee49e13ceeecbcf351fd9f4a933ccca",
+}
 
 
 def sha256_of(path: str) -> str:
@@ -357,7 +367,11 @@ def apply_changes(conn) -> list[str]:
             log.append(f"exists {entry['id']}")
     for entry in PAPERS:
         ident = entry["access"].split(" | ")[0]
-        row = conn.execute("SELECT record_id FROM paper_fields WHERE access LIKE ?", (f"{ident}%",)).fetchone()
+        # The id as a whole access segment, never a prefix (PR #77 review:
+        # LIKE 'arXiv:2101.0001%' also matched arXiv:2101.00011).
+        row = next((r for r in conn.execute("SELECT record_id, access FROM paper_fields WHERE access LIKE ?",
+                                            (f"%{ident}%",))
+                    if ident.lower() in (s.strip().lower() for s in r[1].split("|"))), None)
         if row is None:
             paper = intake.build_record(entry, today=TODAY)
             insert_paper(conn, paper)
@@ -386,9 +400,9 @@ def main(argv: list[str] | None = None) -> int:
     if missing:
         print("missing local copies:\n" + "\n".join(missing))
         return 1
-    for rid, digest in SHA256.items():
-        if sha256_of(LOCAL[rid]) != digest:
-            print(f"{LOCAL[rid]} differs from the copy read on {TODAY} (SHA-256)")
+    for path, digest in [*((LOCAL[r], d) for r, d in SHA256.items()), *FILE_SHA256.items()]:
+        if sha256_of(path) != digest:
+            print(f"{path} differs from the copy read on {TODAY} (SHA-256)")
             return 1
     if "--apply" not in args:
         for entry in SOURCES:
