@@ -46,7 +46,7 @@ TODAY = "2026-10-12"
 TAG = "Sprint 8 Task C, F65 and F63"
 REASON = f"{TODAY} ({TAG}): extracted from a source read directly on {TODAY}"
 CTX = "platform:dirac-3s"
-CTX_DESCRIPTION = "QCi's Dirac-3S, the modular successor to Dirac-3 (ADR-0004 A8, 2026-10-12)"
+CTX_DESCRIPTION = "QCi's Dirac-3S modular optimization system (ADR-0004 A8, 2026-10-12)"
 
 D3S = "qci-2026-dirac-3s-user-guide-rev-a"
 UG = "ctfassets-2026-dirac-3-user-guide-v0"
@@ -97,6 +97,8 @@ VENDOR = "Started MODERATE: vendor primary documentation of its own device. Not 
 DOC_FACT = ("Started HIGH: a statement about what the guide itself says, checked directly against the local copy "
             "page by page")
 REUSE = "dirac3s-guide-reuses-dirac-3-text-and-figures"
+COPIED = (" The passage repeats the Dirac-3 guide's wording and names Dirac-3 (see " + REUSE + "), so the "
+          "`supports` link records a vendor restatement, not independent corroboration")
 SEARCH_SCOPE = (f"{TODAY}, Claude: the full text of the Dirac-3S User Guide Rev A (all 38 pages, pdftotext), "
                 "searched for fault[- ]toleran*, error[- ]correct*, entangle*, Zeno and advantage. The only "
                 "'error correction' is the post-processing step in section 4 and Figure 8; no fault-tolerance, "
@@ -109,14 +111,14 @@ ASSERTIONS: list[tuple[AssertionRecord, list[str]]] = [
     (A(id="dirac3s-variable-ceiling-by-configuration",
        value=("The Dirac-3S base module (one 5U unit) takes at most 949 variables at second order, 135 at third, 39 "
               "at fourth and 19 at fifth, all-to-all; with one expansion module the ceilings rise to 9,980, 580, "
-              "145 and 55. The base figures equal Dirac-3's for second to fifth order; the guide lists no first-order "
-              "row, which the Dirac-3 guide gave as 949"),
+              "145 and 55. The guide lists no first-order row"),
        provenance=f"{D3S}, p.11, Table 2 (Dirac-3S Hardware Characteristics and Configuration Options)",
        citation_context=('"Max number of variables 2nd 949 9980" (p.11, Table 2 rows, read as a table); "Max number '
                          'of variables 3rd 135 580" (p.11); "Max number of variables 4th 39 145" (p.11); "Max number '
                          'of variables 5th 19 55" (p.11)'),
-       certainty="moderate", certainty_reasons=VENDOR + ". Dirac-3's first-order row has no Dirac-3S counterpart, so "
-       "the Dirac-3 assertion is confirmed only in part and is not linked (ADR-0004 A8 (b))",
+       certainty="moderate", certainty_reasons=VENDOR + ". The base figures for second to fifth order equal those of "
+       "dirac3-variable-ceiling-falls-with-interaction-order; its first-order row has no Dirac-3S counterpart, so "
+       "that assertion is confirmed only in part and is not linked (ADR-0004 A8 (b))",
        claim_type="vendor-self-claim"), [D3S]),
     (A(id="dirac3s-power-and-size-by-configuration",
        value=("The Dirac-3S base configuration is one 5U rackmount unit drawing 100 W; adding one expansion module adds "
@@ -131,17 +133,18 @@ ASSERTIONS: list[tuple[AssertionRecord, list[str]]] = [
        citation_context=('"it struggles to distinguish very small coupling terms due to its effective analog '
                          'resolution limit, which is approximately 200:1, or 23 dB." (p.18)'),
        certainty="moderate", certainty_reasons=VENDOR + " here (an admission-against-interest upgrade, as F45 gave "
-       "the Dirac-3 assertion, is a Manual Validation decision)", claim_type="vendor-self-claim",
+       "the Dirac-3 assertion, is a Manual Validation decision)." + COPIED, claim_type="vendor-self-claim",
        supports=["dirac3-analog-resolution-about-200-to-1"]), [D3S]),
     (A(id="dirac3s-guide-gives-two-integer-ranges",
        value=("The Dirac-3S guide gives two different ranges for its integer solver: 0 to 15 in Table 1 (p.10) and 0 "
               "to 16 in section 5.1 (p.17), where it also says more than 16 states need the continuous solver; the "
               "guide does not say which holds for the Dirac-3S"),
        provenance=f"{D3S}, p.10 (Table 1) and p.17 (section 5.1)",
-       citation_context=('"Integer Solver vi ∈ {0, . . . , 15}" (p.10, Table 1); "For problems requiring more than 16 '
-                         'states, the continuous solver is recommended." (p.17)'),
-       certainty="high", certainty_reasons=DOC_FACT + ". The Dirac-3 assertion (0 to 16) is neither confirmed nor "
-       "contradicted for the Dirac-3S until QCi resolves the two figures", claim_type="positive"), [D3S]),
+       citation_context=('"Integer Solver vi ∈ {0, . . . , 15}" (p.10, Table 1); "vi ∈ N, 0 ≤ vi ≤ 16" (p.17); "For '
+                         'problems requiring more than 16 states, the continuous solver is recommended." (p.17)'),
+       certainty="high", certainty_reasons=DOC_FACT + ". Section 5.1 restates the whole Dirac-3 assertion (0 to 16), "
+       "so it is confirmed in part; Table 1 conflicts, and \"more than 16 states\" fits 0 to 15 (16 states) better "
+       "than 0 to 16 (17 states). Not linked until QCi resolves the two figures", claim_type="positive"), [D3S]),
     (A(id="dirac3s-sum-constraint-1-to-10000",
        value=("The Dirac-3S continuous solver keeps the variables non-negative with a fixed sum R between 1 and 10,000; "
               "a larger R spreads the same number of resolution levels more thinly, so precision falls"),
@@ -180,20 +183,24 @@ ASSERTIONS: list[tuple[AssertionRecord, list[str]]] = [
               "quantum information is represented using photon-number states, which section 5.4 qualifies"),
        provenance=f"{D3S}, p.19, section 5.4 Mean Photon Number and Shot Noise; p.6, section 1.2",
        citation_context=('"In current hybrid implementation of Dirac-3, we use a common approximation of Fock states '
-                         'which is coherent states with ultra-low mean photon number" (p.19); "Users have option to '
-                         'modify MPN to search for best parameter for their problems" (p.19); "Quantum information is '
-                         'represented using photon-number states across optical modes" (p.6)'),
-       certainty="moderate", certainty_reasons=VENDOR, claim_type="vendor-self-claim",
+                         'which is coherent states with ultra-low mean photon number" (p.19); "Dirac-3 is maintained '
+                         'such that about 1% or less of pulses has more than 1 photon." (p.19); "Users have option to '
+                         'modify MPN to search for best parameter for their problems between the range from 6.67" '
+                         '(p.19; the range continues "x 10^-5 to 6.67 x 10^-3" in superscript notation); "Quantum '
+                         'information is represented using photon-number states across optical modes" (p.6)'),
+       certainty="moderate", certainty_reasons=VENDOR + "." + COPIED, claim_type="vendor-self-claim",
        supports=["dirac3-uses-weak-coherent-states-not-fock-states"]), [D3S]),
     (A(id="dirac3s-coupling-computed-in-fpga",
        value=("In the Dirac-3S, as in the Dirac-3, the interaction among variables is computed electronically: an FPGA "
               "processes the photon measurements and matrix multiplication emulates the global interaction, fed back "
               "into the optical system over many sequential iterations"),
        provenance=f"{D3S}, p.23, section 5.8 Understanding Dirac-3S Timing",
-       citation_context=('"Matrix multiplication is used to emulate the global interaction of each "qudit," with '
-                         'results feeding back into the quantum system and undergoing multiple iterations '
-                         'sequentially." (p.23; the typographic quotation marks normalized)'),
-       certainty="moderate", certainty_reasons=VENDOR, claim_type="vendor-self-claim",
+       citation_context=('"Dirac-3 leverages digital electronics through the utilization of a field-programmable gate '
+                         'array (FPGA) to process quantum wavefunction measurements information." (p.23); "Matrix '
+                         'multiplication is used to emulate the global interaction of each "qudit," with results '
+                         'feeding back into the quantum system and undergoing multiple iterations sequentially." '
+                         '(p.23; the typographic quotation marks normalized)'),
+       certainty="moderate", certainty_reasons=VENDOR + "." + COPIED, claim_type="vendor-self-claim",
        supports=["dirac3-variable-coupling-computed-in-fpga"]), [D3S]),
     (A(id="dirac3s-photon-count-is-the-feedback-signal",
        value=("The Dirac-3S guide states that the machine uses the single-photon count of each time bin as its "
@@ -232,17 +239,20 @@ ASSERTIONS: list[tuple[AssertionRecord, list[str]]] = [
        claim_type="vendor-self-claim", units="seconds per sample"), [D3S]),
     (A(id="dirac3s-not-yet-ce-or-fcc-compliant",
        value=("QCi states that the Dirac-3S is still going through CE or FCC emissions certification, and that users "
-              "should take precautions and use the device at their own risk; the Dirac-3 guide carried the same notice"),
+              "should take precautions and use the device at their own risk"),
        provenance=f"{D3S}, p.5, Warning",
        citation_context=('"This device is undergoing the process to become compliant with CE or FCC emissions '
                          'certification testings." (p.5)'),
        certainty="moderate", certainty_reasons=VENDOR + " here (an admission-against-interest candidate for Manual "
        "Validation)", claim_type="vendor-self-claim"), [D3S]),
     (A(id="dirac3s-on-premises-has-no-100-sample-cap",
-       value=("An on-premises Dirac-3S has no limit on samples per run; QCi's cloud devices allow at most 100"),
-       provenance=f"{D3S}, p.21, section 5.6 Number of Samples",
+       value=("QCi states that an on-premises Dirac-3S is not subject to the 100-sample maximum of its cloud devices; "
+              "the guide's own parameter table (Table 3) still gives Number of Samples a range of 1 to 100, so the "
+              "guide is inconsistent on the on-premises limit"),
+       provenance=f"{D3S}, p.21, section 5.6 Number of Samples; p.18, Table 3",
        citation_context=('"User devices are not subject to the sample maximum of 100 that exists for cloud devices." '
-                         '(p.21)'),
+                         '(p.21); "Number of independent solution samples generated per solver exe-" (p.18, Table 3, '
+                         'the Number of Samples row; its range column reads 1-100)'),
        certainty="moderate", certainty_reasons=VENDOR, claim_type="vendor-self-claim"), [D3S]),
     (A(id=REUSE,
        value=("Much of the Dirac-3S guide is Dirac-3 text: section 2 is headed \"Dirac-3 at a Glance\", section 4 "
@@ -270,10 +280,12 @@ ASSERTIONS: list[tuple[AssertionRecord, list[str]]] = [
     (A(id="dirac3-does-not-use-entanglement",
        context="platform:dirac-3",
        value=("QCi's own authors state that the current Dirac-3 hybrid implementation does not use quantum "
-              "entanglement; they attribute its performance to relaxation, fast optical propagation and the intrinsic "
-              "randomness of quantum fluctuations"),
+              "entanglement; they attribute its speed to relaxation and fast optical propagation, and its escape from "
+              "local minima to the intrinsic randomness of quantum fluctuations"),
        provenance=f"{N24}, p.15 (Discussion)",
-       citation_context='"Our current Dirac-3 hybrid implementation does not utilize quantum entanglement." (p.15)',
+       citation_context=('"The speed of our approach comes from relaxation mechanism as well as the fast propagation '
+                         'and processing of information within light." (p.15); "Our current Dirac-3 hybrid '
+                         'implementation does not utilize quantum entanglement." (p.15)'),
        certainty="moderate",
        certainty_reasons=("Started MODERATE: peer-reviewed (Communications Physics 8:411), QCi-authored. Not upgraded "
                           "here: an admission-against-interest upgrade (a vendor limiting what its product can claim "
@@ -300,8 +312,8 @@ CLASSED = {
     "dirac3-uses-weak-coherent-states-not-fock-states": ("confirmed", "dirac3s-uses-weak-coherent-states"),
     "dirac3-variable-coupling-computed-in-fpga": ("confirmed", "dirac3s-coupling-computed-in-fpga"),
     "dirac3-no-fault-tolerance-claim-in-qci-sources": ("confirmed", "dirac3s-no-fault-tolerance-claim-in-guide"),
-    "dirac3-variable-ceiling-falls-with-interaction-order": ("changed", "dirac3s-variable-ceiling-by-configuration"),
-    "dirac3-integer-variables-bounded-0-to-16": ("changed", "dirac3s-guide-gives-two-integer-ranges"),
+    "dirac3-variable-ceiling-falls-with-interaction-order": ("confirmed in part", "dirac3s-variable-ceiling-by-configuration"),
+    "dirac3-integer-variables-bounded-0-to-16": ("confirmed in part", "dirac3s-guide-gives-two-integer-ranges"),
     "dirac3-returns-suboptimal-answers-at-a-measurable-rate": ("confirmed in part", "dirac3s-worked-example-is-not-like-for-like"),
     "dirac3-per-loop-measurement-rules-out-quantum-advantage": ("confirmed in part", "dirac3s-photon-count-is-the-feedback-signal"),
     "eqc-presented-as-harnessing-noise-not-correcting-it": ("confirmed in part", None),
@@ -323,6 +335,8 @@ CANDIDATE_UPGRADES = ["dirac3-does-not-use-entanglement", "dirac3-optics-could-b
                       "dirac3s-not-yet-ce-or-fcc-compliant"]
 
 N24_READ = ("Claude", TODAY, "partial", "pp. 6 and 15 re-read for F63")
+REVIEW_NOTE = (f"{TODAY} ({TAG}, fresh-eyes review): value, quotes or certainty reasons corrected to say only what "
+               "the quoted text supports")
 
 
 def sha256_of(path: str) -> str:
@@ -344,9 +358,26 @@ def apply_changes(conn) -> list[str]:
                               "dirac3-does-not-use-entanglement and dirac3-optics-could-be-classically-simulated",
                               TODAY)
         log.append(f"read   {N24}")
+    if conn.execute("SELECT description FROM contexts WHERE id = ?", (CTX,)).fetchone()[0] != CTX_DESCRIPTION:
+        conn.execute("UPDATE contexts SET description = ? WHERE id = ?", (CTX_DESCRIPTION, CTX))
+        log.append(f"context {CTX} description corrected")
     for assertion, yielded_by in ASSERTIONS:
-        if conn.execute("SELECT 1 FROM records WHERE id = ?", (assertion.id,)).fetchone():
-            log.append(f"exists {assertion.id}")
+        stored = conn.execute(
+            "SELECT r.value, f.citation_context, r.certainty_reasons FROM records r "
+            "JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (assertion.id,)).fetchone()
+        if stored:
+            want = (assertion.value, assertion.citation_context, assertion.certainty_reasons)
+            if tuple(stored) != want:
+                # The fresh-eyes review of Task C (2026-10-12) corrected
+                # wording entered earlier the same day; the reason says so.
+                conn.execute("UPDATE records SET value = ?, certainty_reasons = ? WHERE id = ?",
+                             (assertion.value, assertion.certainty_reasons, assertion.id))
+                conn.execute("UPDATE assertion_fields SET citation_context = ? WHERE record_id = ?",
+                             (assertion.citation_context, assertion.id))
+                append_updated_reason(conn, assertion.id, REVIEW_NOTE, TODAY)
+                log.append(f"fixed  {assertion.id}")
+            else:
+                log.append(f"exists {assertion.id}")
             continue
         insert_assertion(conn, assertion, yielded_by=yielded_by[0])
         for extra in yielded_by[1:]:

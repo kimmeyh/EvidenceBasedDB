@@ -66,7 +66,9 @@ def test_every_prior_dirac3_assertion_is_classed(live_conn):
     live = {r[0] for r in live_conn.execute(
         "SELECT r.id FROM records r JOIN record_contexts c ON c.record_id = r.id "
         "WHERE r.class = 'assertion' AND c.context_id = 'platform:dirac-3'")} - new
-    assert set(f65.CLASSED) == live
+    assert set(f65.CLASSED) == live, (
+        f"unclassed: {live - set(f65.CLASSED)}; gone: {set(f65.CLASSED) - live}. A new Dirac-3 assertion is classed "
+        "against the Dirac-3S guide when it is entered")
     for rid, (cls, by) in f65.CLASSED.items():
         assert cls in CLASSES, rid
         assert by or cls != "confirmed", f"{rid}: confirmed with no Dirac-3S assertion behind it"
@@ -76,7 +78,9 @@ def test_every_prior_dirac3_assertion_is_classed(live_conn):
 
 def test_supports_links_only_where_the_whole_claim_is_confirmed(live_conn):
     """ADR-0004 A8 (b): a `supports` link from a Dirac-3S assertion goes only
-    to a Dirac-3 assertion classed `confirmed`."""
+    to a Dirac-3 assertion classed `confirmed`, and every `confirmed` pair
+    has its link. Proven to fail by injection, 2026-10-12: with the FPGA
+    pair's link deleted from a copy of the store, this test named it."""
     f65 = _script()
     confirmed_by = {by: rid for rid, (cls, by) in f65.CLASSED.items() if cls == "confirmed"}
     for assertion, _ in f65.ASSERTIONS:
@@ -88,6 +92,10 @@ def test_supports_links_only_where_the_whole_claim_is_confirmed(live_conn):
         assert stored == set(assertion.supports), assertion.id
         for target in stored:
             assert confirmed_by.get(assertion.id) == target, f"{assertion.id} -> {target} is not a confirmed pair"
+    for by, rid in confirmed_by.items():
+        assert live_conn.execute("SELECT 1 FROM assertion_relations WHERE from_assertion_id = ? AND "
+                                 "to_assertion_id = ? AND relation = 'supports'", (by, rid)).fetchone(), \
+            f"{rid} is classed confirmed by {by}, but no supports link records it"
 
 
 def test_the_guide_is_read_in_full_with_its_hash(live_conn):
@@ -100,11 +108,14 @@ def test_the_guide_is_read_in_full_with_its_hash(live_conn):
     assert f65.sha256_of(f65.D3S_FILE) == f65.D3S_SHA256
 
 
-def test_no_admission_upgrade_was_applied_in_the_window(live_conn):
+def test_an_admission_upgrade_needs_the_team_leads_decision(live_conn):
     """Plan risk table: the admission-against-interest upgrades are Class 2,
-    presented at Manual Validation, never applied by the task."""
+    decided by the team lead at Manual Validation, never by the task. An
+    upgraded candidate must name that decision in its reasons."""
     f65 = _script()
     for rid in f65.CANDIDATE_UPGRADES:
         certainty, reasons = live_conn.execute("SELECT certainty, certainty_reasons FROM records WHERE id = ?",
                                                (rid,)).fetchone()
-        assert certainty == "moderate" and not re.search(r"UPGRADED", reasons), rid
+        if certainty != "moderate" or re.search(r"UPGRADED", reasons):
+            assert "team lead" in reasons and "Manual Validation" in reasons, \
+                f"{rid}: upgraded without the team lead's recorded decision"

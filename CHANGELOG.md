@@ -56,6 +56,13 @@ this project keeps having to replace with a step.
   published); arXiv version read from the abstract page against the local
   copy's first-page stamp; `view.py paper` shows the schedule; ADR-0005
   A7; workflow Phase 1.3 updated
+- **fix**: Task C fresh-eyes review (2026-10-12) -- eight assertions'
+  wording, quotes or reasons corrected to say only what the quoted text
+  supports (sample cap, integer range, ceiling, FPGA, coherent states,
+  CE/FCC, entanglement); two classes changed to "confirmed in part"; the
+  `supports` links from copied Dirac-3 text marked as vendor restatements;
+  the context description no longer says "successor"; the supports test
+  checks both directions
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
