@@ -32,7 +32,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.ingest import AssertionRecord, add_read, append_updated_reason, insert_assertion, insert_paper  # noqa: E402
+from store.ingest import (AssertionRecord, add_read, admission_upgrade_reason, append_updated_reason,  # noqa: E402
+                          insert_assertion, insert_paper)
 
 import importlib.util  # noqa: E402
 
@@ -359,8 +360,8 @@ def wanted(assertion: AssertionRecord) -> tuple[str, str]:
         return assertion.certainty, assertion.certainty_reasons
     if assertion.certainty != "moderate":
         raise ValueError(f"{assertion.id}: an upgrade starts from moderate, not {assertion.certainty}")
-    return "high", (f"{assertion.certainty_reasons}. UPGRADED one level for admission against interest, "
-                    f"{UPGRADE_DECISION}: costly to disclose, because {CANDIDATE_UPGRADES[assertion.id]}")
+    return "high", admission_upgrade_reason(assertion.certainty_reasons, CANDIDATE_UPGRADES[assertion.id],
+                                            UPGRADE_DECISION)
 
 N24_READ = ("Claude", TODAY, "partial", "pp. 6 and 15 re-read for F63")
 REVIEW_NOTE = (f"{TODAY} ({TAG}, fresh-eyes review): value, quotes or certainty reasons corrected to say only what "

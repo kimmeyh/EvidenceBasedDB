@@ -69,6 +69,19 @@ def test_every_applied_admission_against_interest_names_its_cost_regression(live
     assert admission_problems(broken) == ["cyc-general-prover-disabled"]
 
 
+def test_the_shared_upgrade_reason_always_names_the_cost():
+    """Sprint 8 retrospective I3: `admission_upgrade_reason` is the one
+    place an upgrade reason is built, and its output passes F47. Proven to
+    fail by injection, 2026-10-13: with "costly to disclose" removed from
+    the builder, admission_problems named the record."""
+    from store.ingest import admission_upgrade_reason
+    reason = admission_upgrade_reason("Started MODERATE: vendor guide", "QCi disclaims a guarantee", "the team lead, Q7")
+    assert _APPLIES.search(reason), "the built reason does not read as an applied upgrade"
+    assert admission_problems([{"id": "r", "certainty_reasons": reason}]) == []
+    with pytest.raises(ValueError):
+        admission_upgrade_reason("Started MODERATE", "  ")
+
+
 def test_a_reason_that_withholds_the_upgrade_is_not_flagged():
     withheld = [{"id": "x", "certainty_reasons": "NOT upgraded: favourable to the author, so the "
                  "admission-against-interest upgrade does not apply"},

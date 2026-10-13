@@ -209,6 +209,26 @@ def append_updated_reason(conn, record_id: str, note: str, today: str) -> str:
     return joined
 
 
+def admission_upgrade_reason(prior: str, cost: str, decision: str = "") -> str:
+    """The `certainty_reasons` for a one-level upgrade for admission against
+    interest: the prior reasons, then the upgrade, then what the claim cost
+    its author ("costly to disclose, because <cost>"), as ADR-0005 A4 (e)
+    and the F47 test require.
+
+    One implementation, like `append_updated_reason` (Sprint 8
+    retrospective I3): Sprint 8's first Q7 apply spelled the reason in its
+    own script and left the cost out; the F47 test caught it after the
+    write, and the store was restored from its backup. A caller that builds
+    the reason here cannot leave the cost out. `decision` names who
+    approved the upgrade and when, where that is not the reading itself.
+    """
+    cost = cost.strip()
+    if not cost:
+        raise ValueError("an admission-against-interest upgrade must say what the claim cost its author")
+    by = f", {decision}" if decision else ""
+    return f"{prior}. UPGRADED one level for admission against interest{by}: costly to disclose, because {cost}"
+
+
 def validate_paper(paper: PaperRecord, check_local_paths: bool = True) -> None:
     """Enforce ADR-0005 section 2's rule that checked_against_source is
     set at tier 'read'. Fixed 2026-09-18 (F6 finding 2, PR #1 review):
