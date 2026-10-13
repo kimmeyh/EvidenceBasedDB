@@ -83,6 +83,17 @@ this project keeps having to replace with a step.
   `docs/sprints/SPRINT_8_F61_MASSOLI_LIST.md`; F68 carded (old-style arXiv
   ids and DOIs with parentheses); SPRINT_CHECKLIST 1.3 names the due
   re-check
+- **docs**: Manual Validation answers (2026-10-13) -- ADR-0004 A8 and
+  ADR-0005 A7 approved; F69 carded (the Cerezo NonArxiv paper, Q8 = 1);
+  the F60 report corrected: the Asfaw PDF was already present in
+  `QMLPapers/Workforce` under 2108.01311, so no download was made
+- **process**: F66 (Task A, #78, PR #84 into develop, 2026-10-13) --
+  develop set as the GitHub default branch; `Closes #N` now closes issues
+  on a merge into develop; the release step (PR develop -> main, merged by
+  the owner, then tag the merge `sprint-N`) written into workflow 8.1 and
+  SPRINT_PROCESS.md; ADR-0001 A2; CI stays on PRs into develop only (team
+  lead decision); tags `sprint-1` to `sprint-7` pushed on the seven past
+  main merges
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 

@@ -11,9 +11,10 @@ assertion is linked `supports` to a Dirac-3 assertion only when the WHOLE
 Dirac-3 claim is confirmed; a partial match is stated in the text and not
 linked (ADR-0004 A8 (b)). No Dirac-3 assertion is edited.
 
-Certainty: vendor documentation starts MODERATE, as in F45. No upgrade for
-admission against interest is applied here: that is a Class 2 decision, and
-the candidates are listed in CANDIDATE_UPGRADES for Manual Validation.
+Certainty: vendor documentation starts MODERATE, as in F45. An upgrade for
+admission against interest is a Class 2 decision: the candidates are listed
+in CANDIDATE_UPGRADES for Manual Validation, and only the ids the team lead
+approves, in UPGRADES_APPROVED, are raised (see wanted()).
 
 Every quote was located in the local copy (pdftotext, page by page) and is
 checked by `tests/test_f65_dirac3s_reading.py`. DRY-RUN BY DEFAULT;
@@ -24,6 +25,7 @@ from __future__ import annotations
 
 import hashlib
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -329,10 +331,34 @@ CLASSED = {
     "favorable-dirac3-papers-are-qci-authored": ("not addressed", None),
 }
 
-# Admission-against-interest candidates, for the team lead at Manual Validation (Class 2).
-CANDIDATE_UPGRADES = ["dirac3-does-not-use-entanglement", "dirac3-optics-could-be-classically-simulated",
-                      "dirac3s-analog-resolution-about-200-to-1", "dirac3s-not-an-exact-solver",
-                      "dirac3s-not-yet-ce-or-fcc-compliant"]
+# Admission-against-interest candidates, for the team lead at Manual
+# Validation (Class 2): id -> why the statement costs QCi something.
+CANDIDATE_UPGRADES = {
+    "dirac3-does-not-use-entanglement": "QCi gives up an entanglement claim for its quantum product",
+    "dirac3-optics-could-be-classically-simulated": ("QCi concedes that the optical part of its quantum product "
+                                                     "could be classically simulated"),
+    "dirac3s-analog-resolution-about-200-to-1": ("a limit of QCi's own product that bounds which problems the device "
+                                                 "can represent (F45 upgraded the Dirac-3 statement the same way)"),
+    "dirac3s-not-an-exact-solver": "QCi disclaims any guarantee that the device finds the optimum",
+    "dirac3s-not-yet-ce-or-fcc-compliant": "QCi admits a regulatory gap that limits where the device can be deployed",
+}
+# The candidates the team lead approved. Empty until the decision is
+# recorded; apply_changes then raises each one moderate -> high, and the
+# sync keeps it there (a later --apply compares certainty too).
+UPGRADES_APPROVED: set[str] = set()
+UPGRADE_DECISION = "the team lead's decision at Sprint 8 Manual Validation (Q7), 2026-10-13"
+UPGRADE_NOTE = f"2026-10-13 ({TAG}): certainty UPGRADED moderate -> high for admission against interest, {UPGRADE_DECISION}"
+
+
+def wanted(assertion: AssertionRecord) -> tuple[str, str]:
+    """(certainty, certainty_reasons) the store should hold: as entered,
+    or one level up where the team lead approved the upgrade."""
+    if assertion.id not in UPGRADES_APPROVED:
+        return assertion.certainty, assertion.certainty_reasons
+    if assertion.certainty != "moderate":
+        raise ValueError(f"{assertion.id}: an upgrade starts from moderate, not {assertion.certainty}")
+    return "high", (f"{assertion.certainty_reasons}. UPGRADED one level for admission against interest, "
+                    f"{UPGRADE_DECISION}: {CANDIDATE_UPGRADES[assertion.id]}")
 
 N24_READ = ("Claude", TODAY, "partial", "pp. 6 and 15 re-read for F63")
 REVIEW_NOTE = (f"{TODAY} ({TAG}, fresh-eyes review): value, quotes or certainty reasons corrected to say only what "
@@ -362,28 +388,34 @@ def apply_changes(conn) -> list[str]:
         conn.execute("UPDATE contexts SET description = ? WHERE id = ?", (CTX_DESCRIPTION, CTX))
         log.append(f"context {CTX} description corrected")
     for assertion, yielded_by in ASSERTIONS:
+        certainty, reasons = wanted(assertion)
         stored = conn.execute(
-            "SELECT r.value, f.citation_context, r.certainty_reasons FROM records r "
+            "SELECT r.value, f.citation_context, r.certainty_reasons, r.certainty FROM records r "
             "JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (assertion.id,)).fetchone()
         if stored:
-            want = (assertion.value, assertion.citation_context, assertion.certainty_reasons)
+            want = (assertion.value, assertion.citation_context, reasons, certainty)
             if tuple(stored) != want:
                 # The fresh-eyes review of Task C (2026-10-12) corrected
-                # wording entered earlier the same day; the reason says so.
-                conn.execute("UPDATE records SET value = ?, certainty_reasons = ? WHERE id = ?",
-                             (assertion.value, assertion.certainty_reasons, assertion.id))
+                # wording entered earlier the same day, and Manual
+                # Validation (2026-10-13) decided the upgrades; the
+                # appended reason says which.
+                upgraded = stored[3] != certainty
+                conn.execute("UPDATE records SET value = ?, certainty = ?, certainty_reasons = ? WHERE id = ?",
+                             (assertion.value, certainty, reasons, assertion.id))
                 conn.execute("UPDATE assertion_fields SET citation_context = ? WHERE record_id = ?",
                              (assertion.citation_context, assertion.id))
-                append_updated_reason(conn, assertion.id, REVIEW_NOTE, TODAY)
-                log.append(f"fixed  {assertion.id}")
+                append_updated_reason(conn, assertion.id, UPGRADE_NOTE if upgraded else REVIEW_NOTE,
+                                      "2026-10-13" if upgraded else TODAY)
+                log.append(f"{'upgrade' if upgraded else 'fixed  '} {assertion.id} [{certainty}]")
             else:
                 log.append(f"exists {assertion.id}")
             continue
-        insert_assertion(conn, assertion, yielded_by=yielded_by[0])
+        insert_assertion(conn, replace(assertion, certainty=certainty, certainty_reasons=reasons),
+                         yielded_by=yielded_by[0])
         for extra in yielded_by[1:]:
             conn.execute("INSERT OR IGNORE INTO paper_yields (paper_id, assertion_id) VALUES (?, ?)",
                          (extra, assertion.id))
-        log.append(f"assert {assertion.id} <- {', '.join(yielded_by)} [{assertion.certainty}, {assertion.claim_type}]")
+        log.append(f"assert {assertion.id} <- {', '.join(yielded_by)} [{certainty}, {assertion.claim_type}]")
     return log
 
 

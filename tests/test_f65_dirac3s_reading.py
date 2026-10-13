@@ -119,3 +119,25 @@ def test_an_admission_upgrade_needs_the_team_leads_decision(live_conn):
         if certainty != "moderate" or re.search(r"UPGRADED", reasons):
             assert "team lead" in reasons and "Manual Validation" in reasons, \
                 f"{rid}: upgraded without the team lead's recorded decision"
+
+
+def test_an_approved_upgrade_is_applied_and_a_later_apply_keeps_it(live_copy):
+    """The sync in apply_changes compares certainty as well as the text, so
+    an approved upgrade reaches the store and a re-run neither repeats nor
+    reverts it. Proven to fail by injection, 2026-10-13: with the sync's
+    UPDATE no longer setting certainty (as it stood at Task C), the
+    approved record stayed moderate."""
+    from store import connect
+    f65 = _script()
+    rid = "dirac3s-not-an-exact-solver"
+    conn = connect(live_copy)
+    try:
+        assert f"exists {rid}" in f65.apply_changes(conn), "the store differs from the script before any upgrade"
+        f65.UPGRADES_APPROVED = {rid}
+        assert f"upgrade {rid} [high]" in f65.apply_changes(conn)
+        certainty, reasons = conn.execute("SELECT certainty, certainty_reasons FROM records WHERE id = ?",
+                                          (rid,)).fetchone()
+        assert certainty == "high" and "team lead" in reasons and "Manual Validation" in reasons
+        assert f"exists {rid}" in f65.apply_changes(conn)
+    finally:
+        conn.close()
