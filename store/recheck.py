@@ -149,9 +149,16 @@ def check_local(access: str, evidence: str | None) -> tuple[str, str]:
     path = Path(paths[0])
     if not path.exists():
         return "local copy missing", f"{path} not found"
+    if path.is_dir():
+        # A folder (an unpacked release, a repository) has no single hash.
+        return "local copy present (a folder; not hashed)", ""
     m = _SHA.search(evidence or "")
     if not m:
         return "local copy present (no SHA-256 recorded)", ""
-    if hashlib.sha256(path.read_bytes()).hexdigest() != m.group(1):
+    try:
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    except OSError as err:
+        return "local copy unreadable", f"{path}: {type(err).__name__}"
+    if digest != m.group(1):
         return "local copy changed (SHA-256 differs)", f"{path} differs from the recorded SHA-256"
     return "local copy present (SHA-256 unchanged)", ""

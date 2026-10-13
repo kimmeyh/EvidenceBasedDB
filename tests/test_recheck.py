@@ -68,7 +68,10 @@ def test_section_starts(section, start):
     (date(2026, 10, 3), 15, date(2028, 8, 1)),    # 2027-08-01 is two days short of 10 months
     (date(2026, 10, 3), 11, date(2028, 6, 1)),
     (date(2026, 10, 3), 17, date(2027, 9, 1)),
-    (date(2026, 12, 31), 21, date(2027, 11, 1)),  # the 31st of a 30-day month: October 31 is fine
+    (date(2026, 12, 31), 21, date(2027, 11, 1)),
+    (date(2026, 12, 31), 20, date(2028, 10, 16)),  # October 16 is before October 31
+    (date(2026, 7, 31), 7, date(2028, 4, 1)),      # 10 months on is 2027-05-31, after April 1
+    (date(2026, 6, 1), 7, date(2027, 4, 1)),       # exactly 10 months: the start itself counts
     (date(2026, 4, 30), 5, date(2027, 3, 1)),     # 10 months lands on February 28
     (date(2026, 4, 30), 4, date(2028, 2, 16)),    # February 16 is before February 28
     (date(2027, 8, 16), 16, date(2028, 8, 16)),   # one year later in the same section
@@ -83,7 +86,7 @@ def _mini_store() -> sqlite3.Connection:
     conn.executescript("CREATE TABLE records (id TEXT PRIMARY KEY, updated TEXT);"
                        "CREATE TABLE paper_fields (record_id TEXT PRIMARY KEY, access TEXT, evidence TEXT);"
                        "CREATE TABLE paper_probes (record_id TEXT, field TEXT, value TEXT, provider TEXT, "
-                       "probed_on TEXT)")
+                       "probed_on TEXT, PRIMARY KEY (record_id, field))")
     return conn
 
 
@@ -95,7 +98,7 @@ def test_last_check_skips_hand_readings_and_falls_back_to_updated():
     conn.executemany("INSERT INTO paper_probes VALUES (?, ?, ?, ?, ?)", [
         ("a", "publication_status", "preprint", "arXiv", "2026-10-03"),
         ("a", "access_status", "open (HTTP 200)", "HTTP probe", "2026-10-05"),
-        ("a", "publication_status", "withdrawn", "hand", "2026-10-09")])
+        ("a", "affiliations", "QCi", "hand", "2026-10-09")])
     assert recheck.last_check(conn, "a") == date(2026, 10, 5)
     assert recheck.last_check(conn, "b") == date(2026, 9, 21)
 
@@ -140,20 +143,90 @@ def test_findings_sort_a_record_into_the_three_lists():
     prf = _probe_script()
     lists = {name: [] for name in prf.FINDING_LISTS}
     found = [("publication_status", "published", "arXiv abstract page"), ("version_of", "10.1/x", "arXiv abstract page")]
+    no_copy, a_copy = (lambda ident: None), (lambda ident: Path("x.pdf"))
     prf.recheck_findings(lists, "r1", "arXiv:2407.04512", "arxiv", found, "preprint", {"latest_version": 4},
-                         local_version_of=lambda ident: 2)
+                         local_version_of=lambda ident: 2, local_copy_of=a_copy)
     assert lists["re-pull"] == ["r1: local copy v2, arXiv shows v4"]
     assert lists["newly published"] == ["r1: 10.1/x"]
     prf.recheck_findings(lists, "r2", "arXiv:2407.04512", "arxiv", found, "published", {"latest_version": 4},
-                         local_version_of=lambda ident: 4)
+                         local_version_of=lambda ident: 4, local_copy_of=a_copy)
     prf.recheck_findings(lists, "r3", "arXiv:2407.04512", "arxiv", found, "published", {"latest_version": 9},
-                         local_version_of=lambda ident: None)
+                         local_version_of=lambda ident: None, local_copy_of=no_copy)
     assert lists["re-pull"] == ["r1: local copy v2, arXiv shows v4"], "same version, or no local copy, is not re-pulled"
     assert lists["newly published"] == ["r1: 10.1/x"], "already published is not new"
-    prf.recheck_findings(lists, "r4", "arXiv:1", "arxiv", [("publication_status", "withdrawn", "x")], "preprint",
-                         {"latest_version": None})
+    assert lists["version unread"] == []
+    prf.recheck_findings(lists, "r4", "arXiv:2401.00001", "arxiv", [("publication_status", "withdrawn", "x")], "preprint",
+                         {"latest_version": None}, local_copy_of=no_copy)
     assert lists["withdrawn"] == ["r4: withdrawn"]
-    assert lists["version unread"] == ["r4"]
+    assert lists["version unread"] == ["r4: the abstract page showed no version"]
+
+
+def test_findings_do_not_report_what_did_not_change():
+    """A recorded withdrawal stays (keeps_terminal_status), so neither a
+    second `withdrawn` nor a `published` over it is news; a status with no
+    earlier value is listed as such. Proven to fail by injection,
+    2026-10-12: with `before not in TERMINAL` removed, r1 was listed."""
+    prf = _probe_script()
+    lists = {name: [] for name in prf.FINDING_LISTS}
+    no_copy = lambda ident: None  # noqa: E731
+    no_version = lambda ident: None  # noqa: E731
+    prf.recheck_findings(lists, "r1", "arXiv:2401.00001", "arxiv", [("publication_status", "withdrawn", "x")],
+                         "withdrawn", {"latest_version": 1}, local_version_of=no_version, local_copy_of=no_copy)
+    prf.recheck_findings(lists, "r2", "arXiv:2401.00001", "arxiv", [("publication_status", "published", "x")],
+                         "retracted", {"latest_version": 1}, local_version_of=no_version, local_copy_of=no_copy)
+    prf.recheck_findings(lists, "r3", "doi:10.1/y", "doi", [("publication_status", "published", "Crossref")], None,
+                         {})
+    assert lists["withdrawn"] == []
+    assert lists["newly published"] == ["r3: no DOI given (no status was recorded before)"]
+
+
+def test_an_unreadable_local_stamp_and_a_bad_local_file_are_reported():
+    prf = _probe_script()
+    lists = {name: [] for name in prf.FINDING_LISTS}
+    prf.recheck_findings(lists, "r1", "arXiv:0705.3360", "arxiv", [], "preprint", {"latest_version": 2},
+                         local_version_of=lambda ident: None, local_copy_of=lambda ident: Path("x.pdf"))
+    prf.recheck_findings(lists, "r2", "D:\\x.pdf | https://x", "hand-url", [], None,
+                         {"local": ("local copy missing", "D:\\x.pdf not found")})
+    assert lists["version unread"] == ["r1: the local copy's first page has no readable stamp"]
+    assert lists["local copy missing or changed"] == ["r2: local copy missing (D:\\x.pdf not found)"]
+
+
+def test_a_due_run_passes_the_state_through_and_keeps_its_report(tmp_path, monkeypatch):
+    """The plumbing in run(): site mode forced, the stored status read
+    before the probe, the page's version handed back, the report written
+    as it grows and reloaded by a resumed run."""
+    prf = _probe_script()
+    conn = sqlite3.connect(":memory:")
+    conn.executescript("CREATE TABLE paper_fields (record_id TEXT PRIMARY KEY, access TEXT, evidence TEXT);"
+                       "CREATE TABLE paper_probes (record_id TEXT, field TEXT, value TEXT, provider TEXT, "
+                       "probed_on TEXT, PRIMARY KEY (record_id, field))")
+    conn.execute("INSERT INTO paper_fields VALUES ('r1', 'arXiv:2407.04512', NULL)")
+    conn.execute("INSERT INTO paper_probes VALUES ('r1', 'publication_status', 'preprint', 'arXiv', '2026-10-03')")
+    seen = {}
+
+    def fake_probe(rid, access, kind, fetcher, mode="api", extra=None):
+        seen["mode"], seen["extra"] = mode, extra
+        extra["latest_version"] = 5
+        return [("publication_status", "published", prf.SITE_PROVIDER)], [], True
+
+    monkeypatch.setattr(prf, "probe", fake_probe)
+    monkeypatch.setattr(prf.recheck, "local_version", lambda ident, root=None: 3)
+    monkeypatch.setattr(prf.recheck, "local_copy", lambda ident, root=None: Path("x.pdf"))
+    monkeypatch.setattr(prf.citations, "assume_recent_arxiv_request", lambda: None)
+    report = tmp_path / "report.txt"
+    rc = prf.run(conn, [("r1", "arXiv:2407.04512", "arxiv")], fetcher=object(), apply=False, sessions=False,
+                 progress=None, heartbeat=None, recheck_mode=True, report=report)
+    assert rc == 0 and seen["mode"] == "site" and "evidence" in seen["extra"]
+    text = report.read_text(encoding="utf-8")
+    assert "r1: local copy v3, arXiv shows v5" in text and "newly published: 1" in text
+    assert prf.load_findings(report)["re-pull"] == ["r1: local copy v3, arXiv shows v5"]
+
+
+def test_a_folder_or_an_unreadable_file_does_not_stop_the_check(tmp_path):
+    folder = tmp_path / "release"
+    folder.mkdir()
+    good = "SHA-256 " + "0" * 64
+    assert recheck.check_local(str(folder), good)[0] == "local copy present (a folder; not hashed)"
 
 
 def test_a_local_only_record_is_checked_and_recorded_as_a_probe(tmp_path):

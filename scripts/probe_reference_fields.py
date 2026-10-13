@@ -262,36 +262,60 @@ FINDING_LISTS = ("re-pull", "withdrawn", "newly published", "local copy missing 
 
 
 def recheck_findings(findings: dict[str, list[str]], rid: str, access: str, kind: str, found, before: str | None,
-                     extra: dict, local_version_of=recheck.local_version) -> None:
+                     extra: dict, local_version_of=None, local_copy_of=None) -> None:
     """Sort one re-checked record into the lists ADR-0005 A7 (d) names.
     `before` is the publication_status stored before this check."""
+    local_version_of = local_version_of or recheck.local_version
+    local_copy_of = local_copy_of or recheck.local_copy
     status = next((v for f, v, _ in found if f == "publication_status"), None)
     if status in TERMINAL and before not in TERMINAL:
         findings["withdrawn"].append(f"{rid}: {status}")
-    if status == "published" and before != "published":
+    # Only a real change: from `preprint`, or from no status at all (said
+    # so). A recorded withdrawal or retraction is kept (keeps_terminal_status),
+    # so a probe's `published` over it is not news.
+    if status == "published" and before in ("preprint", None):
         doi = next((v for f, v, _ in found if f == "version_of"), "")
-        findings["newly published"].append(f"{rid}: {doi or 'no DOI given'}")
+        findings["newly published"].append(f"{rid}: {doi or 'no DOI given'}"
+                                           + (" (no status was recorded before)" if before is None else ""))
     if kind == "arxiv":
         latest = extra.get("latest_version")
+        ident = citations.parse_access(access)[1]
+        local = local_version_of(ident) if latest is not None else None
         if latest is None:
-            findings["version unread"].append(rid)
-        else:
-            ident = citations.parse_access(access)[1]
-            local = local_version_of(ident)
-            if local is not None and latest > local:
-                findings["re-pull"].append(f"{rid}: local copy v{local}, arXiv shows v{latest}")
+            findings["version unread"].append(f"{rid}: the abstract page showed no version")
+        elif local is not None and latest > local:
+            findings["re-pull"].append(f"{rid}: local copy v{local}, arXiv shows v{latest}")
+        elif local is None and local_copy_of(ident) is not None:
+            findings["version unread"].append(f"{rid}: the local copy's first page has no readable stamp")
     local_check = extra.get("local")
-    if local_check and local_check[0] in ("local copy missing", "local copy changed (SHA-256 differs)"):
+    if local_check and local_check[0] in ("local copy missing", "local copy changed (SHA-256 differs)",
+                                          "local copy unreadable"):
         findings["local copy missing or changed"].append(f"{rid}: {local_check[0]} ({local_check[1]})")
 
 
-def report_findings(findings: dict[str, list[str]], path: Path | None) -> None:
+def load_findings(path: Path | None) -> dict[str, list[str]]:
+    """The lists a stopped run already wrote to `--report`, so a resumed run
+    (`--progress` skips finished records) adds to them instead of losing them."""
+    findings: dict[str, list[str]] = {name: [] for name in FINDING_LISTS}
+    if path and path.exists():
+        current = None
+        for line in path.read_text(encoding="utf-8").splitlines():
+            head = line.rsplit(":", 1)[0]
+            if not line.startswith("  ") and head in findings:
+                current = head
+            elif line.startswith("  ") and current:
+                findings[current].append(line[2:])
+    return findings
+
+
+def report_findings(findings: dict[str, list[str]], path: Path | None, quiet: bool = False) -> None:
     lines = []
     for name in FINDING_LISTS:
         lines.append(f"{name}: {len(findings[name])}")
         lines += [f"  {item}" for item in findings[name]]
     text = "\n".join(lines)
-    print("\n== re-check lists (nothing downloaded)\n" + text)
+    if not quiet:
+        print("\n== re-check lists (nothing downloaded)\n" + text)
     if path:
         path.write_text(text + "\n", encoding="utf-8")
 
@@ -336,16 +360,18 @@ def _resume_session(path: Path | None) -> bool:
 def run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path | None,
         heartbeat: Path | None, force_site: bool = False, recheck_mode: bool = False,
         report: Path | None = None) -> int:
-    findings: dict[str, list[str]] = {name: [] for name in FINDING_LISTS}
+    findings = load_findings(report)
     rc = _run(conn, targets, fetcher, apply=apply, sessions=sessions, progress=progress, heartbeat=heartbeat,
-              force_site=force_site or recheck_mode, findings=findings if recheck_mode else None)
+              force_site=force_site or recheck_mode, findings=findings if recheck_mode else None,
+              report_path=report if recheck_mode else None)
     if recheck_mode:
         report_findings(findings, report)
     return rc
 
 
 def _run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path | None,
-         heartbeat: Path | None, force_site: bool, findings: dict[str, list[str]] | None) -> int:
+         heartbeat: Path | None, force_site: bool, findings: dict[str, list[str]] | None,
+         report_path: Path | None = None) -> int:
     done = set(progress.read_text(encoding="utf-8").split()) if progress and progress.exists() else set()
     todo = [t for t in targets if t[0] not in done]
     if done:
@@ -402,7 +428,12 @@ def _run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path 
                 if row and row[0] != value:
                     print(f"      DIFFERS {rid} {field_name}: stored {row[0]!r}, probe {value!r} [{provider}]")
             if findings is not None and extra is not None:
-                recheck_findings(findings, rid, access, kind, found, before, extra)
+                try:
+                    recheck_findings(findings, rid, access, kind, found, before, extra)
+                except Exception as ex:  # noqa: BLE001 -- a sorting failure is a finding, not the end of the run
+                    findings["version unread"].append(f"{rid}: could not be sorted ({type(ex).__name__}: {ex})")
+                if report_path:
+                    report_findings(findings, report_path, quiet=True)  # written as it grows: a stop loses nothing
             if apply:
                 for field_name, value, provider in found:
                     if keeps_terminal_status(conn, rid, field_name, value):

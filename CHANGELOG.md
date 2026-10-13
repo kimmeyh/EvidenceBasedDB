@@ -63,6 +63,13 @@ this project keeps having to replace with a step.
   `supports` links from copied Dirac-3 text marked as vendor restatements;
   the context description no longer says "successor"; the supports test
   checks both directions
+- **fix**: Task D fresh-eyes review (2026-10-12) -- a folder or an
+  unreadable local file no longer stops the re-check; "newly published"
+  counts only a change from preprint or from no status; an unreadable local
+  stamp is listed as "version unread"; the report is written as it grows and
+  reloaded by a resumed run; ADR-0005 A7 states the 10-to-22-month first
+  round; tests added for the exact-10-month boundary, terminal statuses and
+  the run's plumbing
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 

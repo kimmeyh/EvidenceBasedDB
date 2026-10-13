@@ -1096,7 +1096,12 @@ hand-recorded readings (A6 (c): a reading is never refreshed); a record
 with none takes its `updated` date (Q4, team lead: "end of the line after
 10 months - same algorithm"). Its next re-check is the first start of its
 section at least 10 months after the last check. `store/recheck.py`
-computes all three; `scripts/view.py paper <id>` shows them.
+computes all three; `scripts/view.py paper <id>` shows them. So the first
+re-check comes 10 to 22 months after the last check, depending on the
+section (the team lead's "first pull about 10 months out, then stagger
+1/24th every 2 weeks"); from then on a paper is re-checked every 12 months,
+as long as each run is less than two months late. A record with no date to
+start from counts as due.
 
 *(b) Who is due, and when it runs.* Phase 1.3 runs
 `scripts/probe_reference_fields.py --due --apply --sessions --progress
@@ -1106,21 +1111,30 @@ mid-August 2027; after that about 1/24 of the store comes due every two
 weeks. `--stale` stays available but is no longer the Phase 1.3 check.
 
 *(c) Every paper, whatever its kind (Q5 = 1, "but all papers").* arXiv by
-its abstract page (one request, inside F52's cap); a DOI by Crossref; a
-GitHub repository or any other public URL by one request to its page; a
-local path by the file's presence, with its SHA-256 compared where the
-record's `evidence` states one. For a paper whose only access is local, the check is recorded as an
+its abstract page (one request, inside F52's cap); a DOI by Crossref plus
+one request to its landing page; a GitHub repository or any other public
+URL by one request to its page; a local path by the file's presence, with
+its SHA-256 compared where the record's `evidence` states one (a folder is
+present but not hashed; a file that cannot be read is reported). For a
+paper whose only access is local, the check is recorded as an
 `access_status` probe with provider `local file check`, so its last-check
-date moves like any other; a missing file or a changed hash is reported.
+date moves like any other. For a paper with a local copy and a URL, the URL
+answers `access_status` and the file check is a finding only. A missing,
+changed or unreadable file is listed.
 
 *(d) The brief check's output: three lists, nothing downloaded.* (1)
 Re-pull: an arXiv paper whose abstract page shows a later version than the
 first-page stamp ("arXiv:2407.04512v4") of the local copy in
 `D:\Data\Harold\EvidenceBasedDB\QMLPapers\`; a paper with no local copy is
 not listed. (2) Withdrawn: a status that became `withdrawn` or `retracted`
-at this check. (3) Newly published: a status that became `published`, with
-the version of record's DOI. A page whose version cannot be read is
-reported as unread, never as "no newer version".
+at this check (a withdrawal already recorded is not listed again). (3)
+Newly published: a status that became `published` from `preprint`, or from
+no recorded status (marked so), with the version of record's DOI; a
+recorded withdrawal or retraction is kept and is not news. A page whose
+version cannot be read, or a local copy whose first page has no readable
+stamp, is listed as "version unread", never as "no newer version". The
+lists are written to `--report` as they grow, and a resumed run adds to
+them, so a stopped run loses none.
 
 *(e) Cost.* Per section, about 65 arXiv papers at 18 s (about 20 minutes)
 plus about 16 other records (under a minute); a sprint that spans two
