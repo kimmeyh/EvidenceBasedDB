@@ -18,10 +18,14 @@ this project keeps having to replace with a step.
 - **process**: F66 (Sprint 8 Task A, #78, PR #84 into develop,
   2026-10-13) -- develop set as the GitHub default branch; `Closes #N`
   now closes issues on a merge into develop; the release step (PR
-  develop -> main, merged by the owner, then tag the merge `sprint-N`)
+  develop -> main, merged by the team lead, then tag the merge `sprint-N`)
   written into workflow 8.1 and SPRINT_PROCESS.md; ADR-0001 A2; CI stays
   on PRs into develop only (team lead decision); tags `sprint-1` to
   `sprint-7` pushed on the seven past main merges
+- **docs**: PR #84 review fixes (2026-10-13) -- "team lead", not "owner",
+  merges develop -> main, as everywhere else in the process docs (Copilot);
+  ADR-0001 A2's lead-in now matches its two changes and one decision not
+  to change (Claude code review)
 
 ### 2026-10-10 onward (Sprint 8, in progress)
 
