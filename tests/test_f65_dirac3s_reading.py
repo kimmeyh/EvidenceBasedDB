@@ -113,9 +113,11 @@ def test_an_admission_upgrade_needs_the_team_leads_decision(live_conn):
     decided by the team lead at Manual Validation, never by the task. An
     upgraded candidate must name that decision in its reasons."""
     f65 = _script()
+    assert f65.UPGRADES_APPROVED <= set(f65.CANDIDATE_UPGRADES)
     for rid in f65.CANDIDATE_UPGRADES:
         certainty, reasons = live_conn.execute("SELECT certainty, certainty_reasons FROM records WHERE id = ?",
                                                (rid,)).fetchone()
+        assert (certainty == "high") == (rid in f65.UPGRADES_APPROVED), f"{rid}: {certainty} in the store"
         if certainty != "moderate" or re.search(r"UPGRADED", reasons):
             assert "team lead" in reasons and "Manual Validation" in reasons, \
                 f"{rid}: upgraded without the team lead's recorded decision"
@@ -130,10 +132,13 @@ def test_an_approved_upgrade_is_applied_and_a_later_apply_keeps_it(live_copy):
     from store import connect
     f65 = _script()
     rid = "dirac3s-not-an-exact-solver"
+    entered = next(a for a, _ in f65.ASSERTIONS if a.id == rid)
     conn = connect(live_copy)
     try:
-        assert f"exists {rid}" in f65.apply_changes(conn), "the store differs from the script before any upgrade"
-        f65.UPGRADES_APPROVED = {rid}
+        assert f"exists {rid}" in f65.apply_changes(conn), "the store differs from the script"
+        # Back to the state before Q7 was answered, then apply again.
+        conn.execute("UPDATE records SET certainty = ?, certainty_reasons = ? WHERE id = ?",
+                     (entered.certainty, entered.certainty_reasons, rid))
         assert f"upgrade {rid} [high]" in f65.apply_changes(conn)
         certainty, reasons = conn.execute("SELECT certainty, certainty_reasons FROM records WHERE id = ?",
                                           (rid,)).fetchone()

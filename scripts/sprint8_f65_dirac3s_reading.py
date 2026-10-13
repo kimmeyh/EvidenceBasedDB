@@ -334,18 +334,20 @@ CLASSED = {
 # Admission-against-interest candidates, for the team lead at Manual
 # Validation (Class 2): id -> why the statement costs QCi something.
 CANDIDATE_UPGRADES = {
-    "dirac3-does-not-use-entanglement": "QCi gives up an entanglement claim for its quantum product",
-    "dirac3-optics-could-be-classically-simulated": ("QCi concedes that the optical part of its quantum product "
-                                                     "could be classically simulated"),
+    "dirac3-does-not-use-entanglement": ("QCi gives up an entanglement claim for Dirac-3 (the source says "
+                                         "\"Our current Dirac-3 hybrid implementation\", p.15; it says nothing of "
+                                         "Dirac-3S or QCi's other products)"),
+    "dirac3-optics-could-be-classically-simulated": ("QCi concedes that Dirac-3's optical parts could in principle be "
+                                                     "classically simulated (arXiv:2407.04512, p.6, on Dirac-3 only)"),
     "dirac3s-analog-resolution-about-200-to-1": ("a limit of QCi's own product that bounds which problems the device "
                                                  "can represent (F45 upgraded the Dirac-3 statement the same way)"),
     "dirac3s-not-an-exact-solver": "QCi disclaims any guarantee that the device finds the optimum",
     "dirac3s-not-yet-ce-or-fcc-compliant": "QCi admits a regulatory gap that limits where the device can be deployed",
 }
-# The candidates the team lead approved. Empty until the decision is
-# recorded; apply_changes then raises each one moderate -> high, and the
-# sync keeps it there (a later --apply compares certainty too).
-UPGRADES_APPROVED: set[str] = set()
+# The candidates the team lead approved (Q7, 2026-10-13: "all 5", once the
+# entanglement statement named its product). apply_changes raises each one
+# moderate -> high, and the sync keeps it there (it compares certainty too).
+UPGRADES_APPROVED: set[str] = set(CANDIDATE_UPGRADES)
 UPGRADE_DECISION = "the team lead's decision at Sprint 8 Manual Validation (Q7), 2026-10-13"
 UPGRADE_NOTE = f"2026-10-13 ({TAG}): certainty UPGRADED moderate -> high for admission against interest, {UPGRADE_DECISION}"
 
@@ -358,7 +360,7 @@ def wanted(assertion: AssertionRecord) -> tuple[str, str]:
     if assertion.certainty != "moderate":
         raise ValueError(f"{assertion.id}: an upgrade starts from moderate, not {assertion.certainty}")
     return "high", (f"{assertion.certainty_reasons}. UPGRADED one level for admission against interest, "
-                    f"{UPGRADE_DECISION}: {CANDIDATE_UPGRADES[assertion.id]}")
+                    f"{UPGRADE_DECISION}: costly to disclose, because {CANDIDATE_UPGRADES[assertion.id]}")
 
 N24_READ = ("Claude", TODAY, "partial", "pp. 6 and 15 re-read for F63")
 REVIEW_NOTE = (f"{TODAY} ({TAG}, fresh-eyes review): value, quotes or certainty reasons corrected to say only what "
@@ -399,7 +401,7 @@ def apply_changes(conn) -> list[str]:
                 # wording entered earlier the same day, and Manual
                 # Validation (2026-10-13) decided the upgrades; the
                 # appended reason says which.
-                upgraded = stored[3] != certainty
+                upgraded = stored[3] == "moderate" and certainty == "high"
                 conn.execute("UPDATE records SET value = ?, certainty = ?, certainty_reasons = ? WHERE id = ?",
                              (assertion.value, certainty, reasons, assertion.id))
                 conn.execute("UPDATE assertion_fields SET citation_context = ? WHERE record_id = ?",
