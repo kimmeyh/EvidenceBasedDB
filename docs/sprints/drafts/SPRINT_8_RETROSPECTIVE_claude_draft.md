@@ -14,6 +14,9 @@ task's first commit does not show in git.
   run kept file suffixes on seven DOIs; and the F60 report said the Asfaw
   PDF was never downloaded, which was wrong: it was in `Workforce`. That
   last one reached the team lead as a decision (Q6) that was not needed.
+  After Manual Validation: the first Q7 apply wrote upgrade reasons
+  without saying what each claim cost QCi; the F47 guard caught it, the
+  pre-apply backup was restored and the corrected script re-applied.
 
 ### 2. Testing Approach
 
@@ -131,5 +134,6 @@ task's first commit does not show in git.
 
 ### 16. Questions to be discussed before ending the sprint
 
-- **Claude Code Development Team**: Q7 (the five admission upgrades);
-  F65's 11-line list; the merge order of #84 and #77.
+- **Claude Code Development Team**: Q7 is answered (all five, applied
+  2026-10-13, with the two F63 reasons naming Dirac-3). Open: F65's 11-line
+  list. #84 and #77 now merge in either order.
