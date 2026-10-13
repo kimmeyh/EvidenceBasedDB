@@ -34,6 +34,13 @@ this project keeps having to replace with a step.
   F67 under a new "Carded during Sprint 8" heading
 - **docs**: Sprint 8 plan approved as amended (2026-10-12) -- F66 added as
   Task A; decisions Q1 to Q6 absorbed into the task lines; issues #78 to #83
+- **chore**: F67, the F39 release for Sprint 8 (Task B, #79, 2026-10-12) --
+  the haiku tier now names Haiku 5.5 (`claude-haiku-5-5`, tiered by prompt
+  length); the Developers role moves to it (Q6 = 1); the other tiers
+  re-verified unchanged; a release note records Claude Mythos 5.1 as listed
+  and unassigned
+- **docs**: F66 Phase A inspection (Task A, #78) -- findings held for the
+  Manual Validation hand-over; no change made
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
