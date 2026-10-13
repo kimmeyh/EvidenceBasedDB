@@ -169,6 +169,18 @@ this project keeps having to replace with a step.
   pre-flights (robots.txt allows all; 2,854 sitemap URLs; `lastmod` is no
   change signal), risks and Definition of Done; F70 skipped because the
   workflow quotes the consumer repository's F70
+- **feat**: F71, Sprint 8 Task G (2026-10-13, #85) -- the Dirac-3S release,
+  the Technical Reference module (its Continuous Solver Benchmarking review
+  read in full) and the Dirac-3 product page (now the Dirac-3S page) entered
+  as five references at `read`; two QCi arXiv papers at `seen`; 11
+  assertions under `platform:dirac-3s` (the review's all-optimal headline
+  against its own Table 6, its two ub = 10 counts, which device ran); four
+  admission-against-interest candidates held for the team lead; the site
+  diff computed (`scripts/sprint8_f71_qci_site_check.py`: 4 changed, 5 new,
+  1 gone, 43 recent in uncovered sections, qci-client v5.0.3); report
+  `docs/sprints/SPRINT_8_F71_QCI_SITE_CHECK.md`; QCi's PDFs kept with the
+  other references outside the repository (team lead); tests proven by
+  injection
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 

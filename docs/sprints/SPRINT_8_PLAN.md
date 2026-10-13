@@ -279,6 +279,15 @@ dated 2026-10-13; each new source entered with local path, URL and a read
 row; every quote verified verbatim against its local copy by test; any
 upgrade candidate held for the team lead; full suite green.
 
+**QCi's documents (team lead, 2026-10-13):** the benchmarking and
+technical-reference pages render their content from PDFs QCi publishes
+(for example `Dirac_3S_Continuous_Solver_Benchmarking.pdf`), so Task G
+saves those PDFs, as the only form of the content, with the other QCi
+references at `References\QCi-site\dirac-3s-technical-reference\`
+(outside the repository): "This should be included in sprint 8 and kept
+with other references." This is the one exception to "Downloading any PDF"
+under Out of scope; records, never the PDFs, enter the repository.
+
 **Sequence:** G runs now, before Phase 6 and 7.7 close-out. No second
 retrospective (team lead); G's outcome is noted in the retrospective's
 decisions section and in the summary.
