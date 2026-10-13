@@ -41,6 +41,13 @@ this project keeps having to replace with a step.
   and unassigned
 - **docs**: F66 Phase A inspection (Task A, #78) -- findings held for the
   Manual Validation hand-over; no change made
+- **feat**: F65 with F63 (Task C, #80, 2026-10-12) -- the Dirac-3S User
+  Guide Rev A entered and read in full (SHA-256 recorded); ADR-0004 A8 adds
+  the context `platform:dirac-3s`; 17 Dirac-3S assertions and F63's two
+  Dirac-3 admissions, every quote verified against the local PDFs by
+  `tests/test_f65_dirac3s_reading.py`; the 19 prior Dirac-3 assertions
+  classed against the guide; admission-against-interest upgrades held for
+  Manual Validation
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
