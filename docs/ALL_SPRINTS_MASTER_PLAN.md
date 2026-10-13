@@ -605,6 +605,19 @@ estimates are `[no-history]`.
   green on evidence.
 - Depends on: nothing
 
+**F68. The door misses two identifier forms: old-style arXiv ids and DOIs with parentheses (~1h) Priority 64** (NEW 2026-10-12, found in Sprint 8 Task F)
+- Phase: Sourcing / intake
+- Platform: `store/citations.py` (`parse_access`), `scripts/intake.py`
+- Found running F61 against the Massoli list (2026-10-12): `arXiv:quant-ph/0405098`,
+  `quant-ph/0107012` and `quant-ph/0001106` were refused as hand-origin ("needs
+  --id"), because `parse_access` reads only new-style ids; and
+  `10.1016/s0020-0255(00)00055-4` and `10.1016/0304-4149(89)90040-9` were cut at
+  the parenthesis and refused as unregistered. Both are real, registered
+  identifiers.
+- Acceptance: both forms resolve through the door; a test for each, proven by
+  injection; the five Massoli entries re-run through F61's script.
+- Depends on: none
+
 **F66. Make develop the default branch: a git-flow model with main as the release branch (~1h) Priority 20** (NEW 2026-10-10, team lead at Sprint 8 Phase 1.4; TARGET: Sprint 8)
 - Phase: Process / repository
 - Platform: GitHub repository settings (`gh repo edit`),

@@ -76,6 +76,13 @@ this project keeps having to replace with a step.
   mismatch (the Asfaw row; the paper is arXiv:2108.01311, already in the
   store), 38 with no stamp, 28 PDFs with no row; report in
   `docs/sprints/SPRINT_8_F60_MANIFEST_CHECK.md`
+- **feat**: F61 (Task F, #83, 2026-10-12) -- the Massoli et al. survey
+  list mined: 184 entries, 137 entered at `seen` through the door, 28
+  already in the store, 1 duplicate, 18 refused with reasons; the list's
+  repository linked to the survey as `dataset-of`; report in
+  `docs/sprints/SPRINT_8_F61_MASSOLI_LIST.md`; F68 carded (old-style arXiv
+  ids and DOIs with parentheses); SPRINT_CHECKLIST 1.3 names the due
+  re-check
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
