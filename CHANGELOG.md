@@ -32,6 +32,8 @@ this project keeps having to replace with a step.
   (F67, F65 with F63, F64, F60, F61) with planning pre-flights and six
   decisions for approval; F67 carded (the F39 release, Haiku 5.5); F66 and
   F67 under a new "Carded during Sprint 8" heading
+- **docs**: Sprint 8 plan approved as amended (2026-10-12) -- F66 added as
+  Task A; decisions Q1 to Q6 absorbed into the task lines; issues #78 to #83
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
