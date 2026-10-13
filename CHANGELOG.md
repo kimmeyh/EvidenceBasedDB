@@ -13,6 +13,16 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
+### 2026-10-13 (F66, Sprint 8 Task A, PR #84)
+
+- **process**: F66 (Sprint 8 Task A, #78, PR #84 into develop,
+  2026-10-13) -- develop set as the GitHub default branch; `Closes #N`
+  now closes issues on a merge into develop; the release step (PR
+  develop -> main, merged by the owner, then tag the merge `sprint-N`)
+  written into workflow 8.1 and SPRINT_PROCESS.md; ADR-0001 A2; CI stays
+  on PRs into develop only (team lead decision); tags `sprint-1` to
+  `sprint-7` pushed on the seven past main merges
+
 ### 2026-10-06 onward (Sprint 7, in progress)
 
 - **docs**: Sprint 7 Phase 1 (2026-10-06) -- carry-forward cut
