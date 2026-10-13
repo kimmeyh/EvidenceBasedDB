@@ -164,6 +164,11 @@ this project keeps having to replace with a step.
   `gh api -f body=` values or full-line comments; the bypass token counts
   only outside data; known limits listed in the hook; 26 new cases red
   against the previous version
+- **docs**: F71 carded and planned as Sprint 8 Task G (2026-10-13, team
+  lead Q1 = 2, #85) -- F65's four recovered items; plan amendment with
+  pre-flights (robots.txt allows all; 2,854 sitemap URLs; `lastmod` is no
+  change signal), risks and Definition of Done; F70 skipped because the
+  workflow quotes the consumer repository's F70
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 

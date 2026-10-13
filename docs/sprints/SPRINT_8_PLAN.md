@@ -238,3 +238,47 @@ F39 itself (released as F67), F46, F48, F50, F55, F56,
 F57, F62 (Sprint 9, fed by E), F51 (HOLD). F49 closed at scope selection.
 Downloading any PDF. Any write to `hsbc-quantum-fraud-2026` or
 `spamfilter-multi`.
+
+## Amended 2026-10-13: Task G (F71)
+
+Team lead, 2026-10-13, at Phase 7 (Q1 = 2): "add as backlog item, fully
+plan, sprint card, execute. no need to another sprint retrospective." F65's
+item list, never received at planning, was recovered the same day from the
+team lead's input history: three links and "Do a deep dive on
+quantumcomputinginc.com for anything new since last scrape." Carded as F71
+(F70 is skipped: the workflow quotes the consumer repository's F70).
+
+| # | Task | Est | Runtime (dominant term) | Owner |
+|---|---|---|---|---|
+| G | **F71, F65's four items.** (1) The PR Newswire release on the Dirac-3S, (2) QCi's Dirac-3S technical reference module (6 pages in the sitemap), (3) QCi's Dirac-3 product page: each saved locally under `References\QCi-site_2026-10-13\`, entered as a source (local path plus URL) and read in full. (4) The site diff against the 2026-09-24 scrape (546 files): new pages (in the sitemap, not in the scrape), changed pages (in both, visible text different), gone pages (scraped, no longer in the sitemap), and new software-package versions, as computed lists in `docs/sprints/SPRINT_8_F71_QCI_SITE_CHECK.md`; the Dirac-related new or changed pages read in full (the benchmarking section, the Dirac-3S press release, the two featured publications' pages), the rest listed with their date. New Dirac-3S claims as `vendor-self-claim` under `platform:dirac-3s`, each relation to an existing assertion recorded, never an edit of it. A script in the pattern of `scripts/sprint8_f65_dirac3s_reading.py`, dry run by default | 180m | about 10 min: about 110 page requests, serial, 3 s apart | Claude, top tier (certainty) |
+
+**Pre-flights (2026-10-13, read only):** robots.txt allows all
+(`User-Agent: * / Allow: /`). The sitemap lists 2,854 URLs. Its `lastmod`
+is not a change signal: 1,784 show a date on or after 2026-09-24, most of
+them today's date, including scraped pages; so "changed" is computed by
+comparing visible text with the scraped copy. In the sitemap and not in the
+scrape, outside the software-package docs: the benchmarking section (11
+pages: Dirac-3S, Hexaly and PGD on max-clique, planted and QPLIB problems),
+the Dirac-3S technical reference module (6 pages), two featured
+publications, and two press releases (the Dirac-3S announcement; an
+investor summit). The quote test reads HTML (`tests/test_f45_dirac3_reading.py`
+`_text`).
+
+**Risks:**
+
+| Risk | Mitigation |
+|---|---|
+| PR Newswire refuses a scripted fetch | Try a browser fetch; if that fails too, record the status and date and say so in the report |
+| A vendor benchmark is read as independent evidence | Every benchmark claim is `vendor-self-claim` at the certainty its provenance supports; the comparison's own stated limits are quoted |
+| An admission-against-interest upgrade is applied without the team lead (Class 2) | Candidates are listed for the team lead with a numbered question; nothing is upgraded in the task |
+| The deep dive grows without bound | Bounded above: read in full only the Dirac-related new or changed pages; list the rest |
+
+**Definition of Done (G):** the four items answered in the report; the
+three lists and the package versions computed by the script, as a snapshot
+dated 2026-10-13; each new source entered with local path, URL and a read
+row; every quote verified verbatim against its local copy by test; any
+upgrade candidate held for the team lead; full suite green.
+
+**Sequence:** G runs now, before Phase 6 and 7.7 close-out. No second
+retrospective (team lead); G's outcome is noted in the retrospective's
+decisions section and in the summary.

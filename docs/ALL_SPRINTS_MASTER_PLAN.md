@@ -217,7 +217,8 @@ F64, F60, F61, and an F39 release (registered as F67: "Haiku 5.5 was
 released and we will want to include in the list of models"). F66, carded
 the same day with a Sprint 8 target, is not in the selection list; it is
 asked as a question at plan approval, never planned in by inference. Plan:
-`docs/sprints/SPRINT_8_PLAN.md`.
+`docs/sprints/SPRINT_8_PLAN.md`. **Added 2026-10-13** (team lead, Phase 7,
+Q1 = 2): F71, F65's four recovered items, as Task G.
 
 ## Next Sprint Candidates
 
@@ -585,7 +586,9 @@ estimates are `[no-history]`.
     a deep dive on quantumcomputinginc.com for anything new since last
     scrape." The original request also said the research comes "before any
     further usage of Dirac-3 qpu seconds". Sprint 8 Task C read the guide
-    only; none of the four items was answered in Sprint 8.
+    only. The four items are carded as F71 (team lead, Q1 = 2; F70 is skipped because the
+    workflow quotes the consumer repository's F70) and run as
+    Sprint 8 Task G.
 - Scope: read the guide in full and enter it as a source; for each
   Dirac-3 assertion from F45 (the variable ceiling, the 200-to-1 analog
   resolution, the 0-to-16 integer bound and the 949 / 954 level count,
@@ -645,6 +648,32 @@ estimates are `[no-history]`.
   `seen` through the door with `found_via` naming the QMLPapers folder; or
   recorded as out of scope, with the reason.
 - Depends on: none
+
+**F71. F65's four items: the Dirac-3S release, technical reference and product page, and what is new on QCi's site since the 2026-09-24 scrape (~3h) Priority 25** (NEW 2026-10-13, team lead at Sprint 8 Phase 7, Q1 = 2: "add as backlog item, fully plan, sprint card, execute"; TARGET: Sprint 8, Task G)
+- Phase: Content / platform research
+- Platform: the three links from F65's recovered list; QCi's sitemap
+  (`https://quantumcomputinginc.com/sitemap.xml`, 2,854 URLs on
+  2026-10-13; robots.txt allows all); the 2026-09-24 scrape at
+  `D:\Data\Harold\EvidenceBasedDB\References\QCi-site\` (546 files) as the
+  baseline; new copies under `References\QCi-site_2026-10-13\` (outside
+  the repository)
+- Team lead, 2026-10-10 (recovered 2026-10-13, see F65): the three links,
+  and "Do a deep dive on quantumcomputinginc.com for anything new since
+  last scrape", before any further use of Dirac-3 QPU seconds.
+- Scope: (1) the PR Newswire release, (2) the Dirac-3S technical reference
+  module, (3) the Dirac-3 product page, each saved locally, entered as a
+  source (local path plus URL) and read in full; (4) the site diff:
+  pages in the sitemap and not in the scrape (new), pages in both whose
+  visible text changed (changed), scraped pages no longer listed (gone),
+  and new software-package versions; the Dirac-related new or changed
+  pages read in full, the rest listed with their date. New Dirac-3S claims
+  as `vendor-self-claim` under `platform:dirac-3s` with section anchors,
+  each relation to an existing assertion recorded, never an edit of it.
+- Acceptance: the four items each answered in a dated report
+  (`docs/sprints/SPRINT_8_F71_QCI_SITE_CHECK.md`) with the three computed
+  lists; every quote verified verbatim against its local copy by test; any
+  admission-against-interest candidate held for the team lead (Class 2).
+- Depends on: F65 (done)
 
 **F66. Make develop the default branch: a git-flow model with main as the release branch (~1h) Priority 20** (NEW 2026-10-10, team lead at Sprint 8 Phase 1.4; TARGET: Sprint 8)
 - Phase: Process / repository
