@@ -571,6 +571,21 @@ estimates are `[no-history]`.
   of further items. **The list did not arrive** (the message held a paste
   placeholder, not its text); it is added here when the team lead re-sends
   it, before Sprint 8 planning.
+  - **Recovered 2026-10-13** from the team lead's own Claude Code input
+    history (the paste was first made on 2026-10-10 in another project's
+    session, with the same request, and only its placeholder was carried
+    here). Its 11 lines are three links and one instruction, with blank
+    lines between: the PR Newswire release "Quantum Computing Inc.
+    Announces Dirac-3S Scaling to Nearly 10,000 Variables"
+    (`https://www.prnewswire.com/news-releases/quantum-computing-inc-announces-dirac-3s-scaling-to-nearly-10-000-variables-302895913.html`);
+    QCi's "Dirac-3S technical reference" learning module
+    (`https://quantumcomputinginc.com/learn/module/dirac-3s-technical-reference`);
+    QCi's Dirac-3 product page
+    (`https://quantumcomputinginc.com/products/systems/dirac-3`); and "Do
+    a deep dive on quantumcomputinginc.com for anything new since last
+    scrape." The original request also said the research comes "before any
+    further usage of Dirac-3 qpu seconds". Sprint 8 Task C read the guide
+    only; none of the four items was answered in Sprint 8.
 - Scope: read the guide in full and enter it as a source; for each
   Dirac-3 assertion from F45 (the variable ceiling, the 200-to-1 analog
   resolution, the 0-to-16 integer bound and the 949 / 954 level count,

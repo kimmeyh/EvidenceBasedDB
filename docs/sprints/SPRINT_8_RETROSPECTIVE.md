@@ -190,4 +190,17 @@ message opened: "Manual Validation complete".
 ## Improvement Decisions
 
 Proposed 2026-10-13 (I1 to I6, prevention first, extending an existing
-prevention where one is connected); disposition pending.
+prevention where one is connected). Team lead, 2026-10-13: "apply all 6
+now". All six applied the same day on the Sprint 8 branch.
+
+| # | Improvement | Type | Disposition | Commit |
+|---|---|---|---|---|
+| I1 | A question with numbered options is never titled as yes/no; every decision question ends with "Recommend N" (CLAUDE.md, workflow Phase 5, memory) | Prevention | Now, applied | ec4da7b |
+| I2 | A "no local copy" finding is computed with `store.recheck.local_copies`, which searches all of QMLPapers and completes a short new-style id; the F60 check lists the copies | Prevention | Now, applied | 3bd964f |
+| I3 | One shared builder, `store.ingest.admission_upgrade_reason`, writes every admission-against-interest upgrade reason with its cost; F47 stays the backstop | Prevention | Now, applied | 204d228 |
+| I4 | `--due` alone lists from stored dates and sends no request; `--due --probe` checks (ADR-0005 A8) | Prevention | Now, applied | 3dde5ef |
+| I5 | The existing `block_unraw_escape.py` hook blocks shell edits of repository code files | Control | Now, applied | 6a260ce |
+| I6 | Work approved during an open sprint goes on the sprint branch unless the team lead asks for a separate PR (workflow 6.6, hook message) | Prevention | Now, applied | 08b0751 |
+
+Also on 2026-10-13, outside I1 to I6, on the team lead's instruction: the
+stored Dirac-3 QPU-seconds balance was removed from the store (7e04efa).
