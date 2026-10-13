@@ -116,6 +116,12 @@ this project keeps having to replace with a step.
   now) -- a question with numbered options is never titled as yes/no, and
   every decision question ends with "Recommend N"; added to CLAUDE.md's
   question rules, the workflow's Phase 5 hand-over and the memory file
+- **process**: Sprint 8 retrospective I2 (2026-10-13) -- a "no local copy"
+  finding is computed: `store.recheck.local_copies` searches all of
+  QMLPapers and completes a new-style id one digit short; the F60 check
+  lists every copy for a mismatch or missing row (the real run now names
+  the Asfaw copy in `Workforce`); workflow Phase 4 note; tests proven to
+  fail by injection
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 

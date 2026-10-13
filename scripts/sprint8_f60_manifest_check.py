@@ -18,6 +18,11 @@ Classes, one per row:
   no id       the row has no arXiv id (NonArxiv); not checked by stamp
 Files in a folder that no manifest row names are listed too.
 
+For a mismatch or a missing row, the report lists every copy of the row's
+id and of the stamped id anywhere in QMLPapers (`store.recheck.
+local_copies`), so "not downloaded" is computed, never asserted by hand
+(Sprint 8 retrospective I2).
+
 Read-only: writes nothing to the store or the folder. `--out <file>`
 writes the report as JSON.
 """
@@ -29,6 +34,10 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from store.recheck import local_copies  # noqa: E402
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -70,6 +79,10 @@ def check(root: Path = QMLPAPERS, read=first_page) -> list[dict]:
                 else:
                     cls, stamped = classify(rid, read(path))
                     entry.update(cls=cls, stamped=stamped)
+                if entry["cls"] in ("mismatch", "missing"):
+                    ids = [i for i in (rid, entry["stamped"]) if i]
+                    entry["copies"] = sorted({p.relative_to(root).as_posix()
+                                              for i in ids for p in local_copies(i, root)})
                 rows.append(entry)
         for pdf in sorted(folder.glob("*.pdf")):
             if pdf.name not in named:
@@ -89,6 +102,8 @@ def main(argv: list[str] | None = None) -> int:
         if r["cls"] not in ("match", "no id"):
             print(f"{r['cls']:15} {r['folder']}/{r['file']} row {r['row_id'] or '-'}"
                   + (f" stamp {r['stamped']}" if r["stamped"] else ""))
+            if "copies" in r:
+                print(f"{'':15} copies in QMLPapers: {', '.join(r['copies']) or 'none'}")
     if "--out" in args:
         Path(args[args.index("--out") + 1]).write_text(json.dumps(rows, indent=1, ensure_ascii=False),
                                                          encoding="utf-8")

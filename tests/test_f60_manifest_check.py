@@ -41,3 +41,33 @@ def test_classes_for_every_row_and_unlisted_file(tmp_path):
     got = {r["file"]: r["cls"] for r in rows}
     assert got == {"A__2101.00001.pdf": "match", "B__2101.00002.pdf": "mismatch", "C__2101.00003.pdf": "no stamp",
                    "D__2101.00004.pdf": "missing", "E.pdf": "no manifest row"}
+
+
+def test_a_mismatch_lists_the_real_papers_copy_elsewhere_in_the_collection(tmp_path):
+    """Sprint 8 retrospective I2: the Asfaw row named 2108.0131 (one digit
+    short), its file was another paper, and the F60 report said the real
+    paper was never downloaded; 2108.01311 was in `Workforce`. A mismatch
+    now lists every copy of the row's id, the short id's completions and
+    the stamped id, anywhere under the root. Proven to fail by injection,
+    2026-10-13: with local_copies matching exact names only, `copies` was
+    missing the Workforce file and this test went red."""
+    year, other = tmp_path / "2021", tmp_path / "Workforce"
+    year.mkdir()
+    other.mkdir()
+    (year / "manifest.tsv").write_text("file\tarxiv_id\turl\ttitle\nAsfaw__2108.0131.pdf\t2108.0131\tu\tAsfaw\n",
+                                       encoding="utf-8")
+    (year / "Asfaw__2108.0131.pdf").write_bytes(b"%PDF")
+    (other / "Asfaw-et-al__2108.01311.pdf").write_bytes(b"%PDF")
+    rows = _mod().check(tmp_path, read=lambda p: "arXiv:2108.00131v2 [cs.LG]")
+    (row,) = rows
+    assert row["cls"] == "mismatch"
+    assert "Workforce/Asfaw-et-al__2108.01311.pdf" in row["copies"]
+
+
+def test_local_copies_completes_only_a_short_new_style_id(tmp_path):
+    from store.recheck import local_copies
+    (tmp_path / "a__2108.01311.pdf").write_bytes(b"%PDF")
+    (tmp_path / "b__0801.12341.pdf").write_bytes(b"%PDF")
+    assert [p.name for p in local_copies("2108.0131", tmp_path)] == ["a__2108.01311.pdf"]
+    assert local_copies("0801.1234", tmp_path) == []  # 2008: four digits was the full length
+    assert local_copies("2108.01311", tmp_path)[0].name == "a__2108.01311.pdf"

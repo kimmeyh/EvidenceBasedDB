@@ -122,6 +122,26 @@ def local_copy(ident: str, root: Path = QMLPAPERS) -> Path | None:
     return hits[0] if hits else None
 
 
+_SHORT_NEW_STYLE = re.compile(r"(\d{4})\.(\d{4})")
+
+
+def local_copies(ident: str, root: Path = QMLPAPERS) -> list[Path]:
+    """Every local PDF anywhere under `root` for `ident`: the exact
+    `__<ident>.pdf` names, and, for a new-style id one digit short (four
+    digits after a YYMM of 1501 or later, when arXiv ids have five), the
+    names it is a prefix of. A finding that a paper has no local copy is
+    computed with this, never asserted by hand (Sprint 8 retrospective I2:
+    the F60 report said the Asfaw paper was never downloaded; its row named
+    2108.0131, and 2108.01311 was already in `Workforce`)."""
+    if not root.exists():
+        return []
+    hits = set(root.rglob(f"*__{ident}.pdf"))
+    short = _SHORT_NEW_STYLE.fullmatch(ident)
+    if short and int(short.group(1)) >= 1501:
+        hits.update(root.rglob(f"*__{ident}[0-9].pdf"))
+    return sorted(hits)
+
+
 def local_version(ident: str, root: Path = QMLPAPERS) -> int | None:
     path = local_copy(ident, root)
     if path is None:
