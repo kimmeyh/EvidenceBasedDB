@@ -13,12 +13,14 @@ repository, which has no deadline (SPRINT_1_PLAN.md: "No deadline").
 ## Branch and push model
 
 ```
-main      (stable; team lead merges develop -> main during Phase 8)
+main      (stable release branch; team lead merges develop -> main during Phase 8; each merge tagged sprint-N)
   ^
 develop   (integration + repository default; every sprint PR targets it)
   ^
 feature/YYYYMMDD_Sprint_N   (one branch per sprint; DRAFT PR from creation; ready only at Phase 7.7)
 ```
+
+**Release step (F66, ADR-0001 A2, 2026-10-13):** PR develop -> main, merged by the owner, then tag the merge (`sprint-N`, annotated, created and pushed by Claude on the main-merge notification; workflow 8.1). develop has been the GitHub default branch since the same date, so `Closes #N` closes issues when a PR merges into develop. CI runs on PRs into develop only (team lead, 2026-10-13).
 
 **Merges are team-lead-only, at every level**: Claude never merges any PR -- feature to develop included. Claude's responsibility ends at ready-for-review plus notification; the team lead merges and says when done.
 
