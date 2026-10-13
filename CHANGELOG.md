@@ -48,6 +48,14 @@ this project keeps having to replace with a step.
   `tests/test_f65_dirac3s_reading.py`; the 19 prior Dirac-3 assertions
   classed against the guide; admission-against-interest upgrades held for
   Manual Validation
+- **feat**: F64, the staggered 12-month re-check (Task D, #81, 2026-10-12)
+  -- `store/recheck.py` computes each paper's section (1 to 24, from its
+  id's hash), last check and next re-check; `probe_reference_fields.py
+  --due` checks only the papers due, every kind (local files by presence
+  and SHA-256), and prints three lists (re-pull, withdrawn, newly
+  published); arXiv version read from the abstract page against the local
+  copy's first-page stamp; `view.py paper` shows the schedule; ADR-0005
+  A7; workflow Phase 1.3 updated
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 

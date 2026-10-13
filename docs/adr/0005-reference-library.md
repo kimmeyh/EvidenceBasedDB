@@ -1078,3 +1078,55 @@ well inside one session.
 *Revisit when* the first scheduled re-checks show how many measurements
 change in 12 months; a field that never changes can be checked less
 often.
+
+**2026-10-12 (A7): the staggered 12-month re-check (F64).** Sprint 8 Task
+D. The process was proposed at Sprint 7 Manual Validation (2026-10-09) and
+approved at Sprint 8 refinement (Q18 = 1); its open points were decided at
+plan approval (Q4, Q5 = 1). It replaces A6 (c)'s "until F64 is built".
+
+**Every count below is a snapshot as of 2026-10-12.**
+
+*(a) The schedule, computed and never stored.* Every paper record belongs
+to one of 24 half-month sections of the calendar year (1 = January 1 to
+15, 2 = January 16 to 31, ... 24 = December 16 to 31): the SHA-256 of its
+id, first 8 hex digits read as an integer, mod 24, plus 1. An id never
+changes, so its section never does, and a bulk load spreads over all 24.
+Its last check is the latest `probed_on` among its probe rows, leaving out
+hand-recorded readings (A6 (c): a reading is never refreshed); a record
+with none takes its `updated` date (Q4, team lead: "end of the line after
+10 months - same algorithm"). Its next re-check is the first start of its
+section at least 10 months after the last check. `store/recheck.py`
+computes all three; `scripts/view.py paper <id>` shows them.
+
+*(b) Who is due, and when it runs.* Phase 1.3 runs
+`scripts/probe_reference_fields.py --due --apply --sessions --progress
+<file>`: every record whose next re-check is on or before the day it runs.
+For the probes measured from 2026-10-03 to 2026-10-08 the first due date is
+mid-August 2027; after that about 1/24 of the store comes due every two
+weeks. `--stale` stays available but is no longer the Phase 1.3 check.
+
+*(c) Every paper, whatever its kind (Q5 = 1, "but all papers").* arXiv by
+its abstract page (one request, inside F52's cap); a DOI by Crossref; a
+GitHub repository or any other public URL by one request to its page; a
+local path by the file's presence, with its SHA-256 compared where the
+record's `evidence` states one. For a paper whose only access is local, the check is recorded as an
+`access_status` probe with provider `local file check`, so its last-check
+date moves like any other; a missing file or a changed hash is reported.
+
+*(d) The brief check's output: three lists, nothing downloaded.* (1)
+Re-pull: an arXiv paper whose abstract page shows a later version than the
+first-page stamp ("arXiv:2407.04512v4") of the local copy in
+`D:\Data\Harold\EvidenceBasedDB\QMLPapers\`; a paper with no local copy is
+not listed. (2) Withdrawn: a status that became `withdrawn` or `retracted`
+at this check. (3) Newly published: a status that became `published`, with
+the version of record's DOI. A page whose version cannot be read is
+reported as unread, never as "no newer version".
+
+*(e) Cost.* Per section, about 65 arXiv papers at 18 s (about 20 minutes)
+plus about 16 other records (under a minute); a sprint that spans two
+sections takes both. Nothing comes due before August 2027, so Sprint 8
+measures nothing live; the parser and the schedule are tested on fixtures
+and synthetic ids.
+
+*Revisit when* the first year of re-checks shows how often a field
+changes, as A6 says.

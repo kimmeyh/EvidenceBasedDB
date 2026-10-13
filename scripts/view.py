@@ -25,7 +25,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import connect, script_paths  # noqa: E402
+from store import connect, recheck, script_paths  # noqa: E402
 
 # Windows consoles commonly default to cp1252, which cannot encode most
 # citation text (accents, math symbols). Reconfigure stdout to UTF-8 so
@@ -152,6 +152,9 @@ def cmd_paper(conn, paper_id: str) -> dict:
         "disposition": fields["disposition"] if fields else None,
         "checked_against_source": fields["checked_against_source"] if fields else None,
         "applicability": [{"context": r["context_id"], "rationale": r["rationale"]} for r in applicability],
+        # ADR-0005 A7 (F64): computed on every view, never stored.
+        "recheck": dict(zip(("section", "last_check", "next_recheck"),
+                            (str(v) for v in recheck.schedule(conn, paper_id)))),
         "yields": yields,
     }
 
@@ -240,6 +243,9 @@ def _print_text(data: dict, mode: str) -> None:
         print(f"  Access:     {data['access']}")
         print(f"  Disposition: {data['disposition']}")
         print(f"  Checked against source: {data['checked_against_source']}")
+        rc = data["recheck"]
+        print(f"  Re-check:   section {rc['section']} of 24; last checked {rc['last_check']}; "
+              f"next re-check {rc['next_recheck']}")
         if data["applicability"]:
             print("  Applicability:")
             for a in data["applicability"]:
