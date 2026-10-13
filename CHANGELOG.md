@@ -181,6 +181,9 @@ this project keeps having to replace with a step.
   `docs/sprints/SPRINT_8_F71_QCI_SITE_CHECK.md`; QCi's PDFs kept with the
   other references outside the repository (team lead); tests proven by
   injection
+- **docs**: Sprint 8 close-out (2026-10-13) -- `SPRINT_8_SUMMARY.md` with
+  Actuals; master plan Last Completed Sprint and summary row; checklist
+  reconciled; retrospective notes Task G
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 

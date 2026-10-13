@@ -204,3 +204,6 @@ now". All six applied the same day on the Sprint 8 branch.
 
 Also on 2026-10-13, outside I1 to I6, on the team lead's instruction: the
 stored Dirac-3 QPU-seconds balance was removed from the store (7e04efa).
+
+2026-10-13, after the retrospective: F65's four items were carded as F71
+and run as Task G (899afaa); the team lead waived a second retrospective.

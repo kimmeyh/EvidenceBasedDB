@@ -43,10 +43,26 @@ repository exists. No other F# from either source repository applies here.
 | 5 | docs/sprints/SPRINT_5_SUMMARY.md | [OK] Complete | 2026-09-23 to 2026-09-25 |
 | 6 | docs/sprints/SPRINT_6_SUMMARY.md | [OK] Complete | 2026-09-27 to 2026-10-05 |
 | 7 | docs/sprints/SPRINT_7_SUMMARY.md | [OK] Complete | 2026-10-06 to 2026-10-10 |
+| 8 | docs/sprints/SPRINT_8_SUMMARY.md | [OK] Complete, merge pending | 2026-10-10 to 2026-10-13 |
 
 ## Last Completed Sprint
 
-Sprint 7 is below; Sprint 6 follows it for continuity.
+Sprint 8 is below (its PRs await the team lead's merge); Sprint 7 follows it
+for continuity.
+
+### Sprint 8: Read QCi's Newest Guide, Then Build the Yearly Re-check (2026-10-10 to 2026-10-13, PR #77 and PR #84 into develop, merge pending)
+
+Seven tasks, seven issues (#78-#83, #85; Task G added at Phase 7). **QCi's
+newest material**: the Dirac-3S guide under its own context (ADR-0004 A8,
+F65 with F63), and F65's recovered item list as F71: the release, QCi's
+benchmarking review (its all-optimal headline contradicted by its own
+Table 6) and the site diff since 2026-09-24. **The yearly re-check**: 24
+computed sections, `--due` (ADR-0005 A7, A8). Also: develop as the default
+branch with `sprint-N` release tags (F66, ADR-0001 A2), Haiku 5.5 (F67),
+the QMLPapers manifest check (F60) and the Massoli list (F61). Store 1,947
+-> 2,093 papers, 76 -> 105 assertions; suite 617 -> 745. Retrospective:
+team lead all "Very Good"; six improvements applied. Full detail:
+`docs/sprints/SPRINT_8_SUMMARY.md`.
 
 ### Sprint 7: Move the Data Out, Then Measure arXiv Safely (2026-10-06 to 2026-10-10, PR #68, merged to develop and to main via PR #76 on 2026-10-10)
 

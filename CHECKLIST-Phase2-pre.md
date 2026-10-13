@@ -175,3 +175,18 @@ Evidence for each row is the commit named.
 - [x] **C**: Phase 5 I4 re-read, ADR-0004 A7 matched to the code (de4e487)
 - [x] **H+C**: Manual Validation Q9, Q12-Q20 decided and applied (b8f3bca, 89accb9)
 - [x] **H+C**: Retrospective, 16 x 4 (f403121), improvements I1-I7 applied (0747a9b; I6's status format in the commit after cf6f5e4)
+
+## Sprint 8: Read QCi's Newest Guide, Then Build the Yearly Re-check (reconciled 2026-10-13 at Phase 7)
+
+Evidence for each row is the commit named.
+
+- [x] **H+C**: Task A (F66) -- develop as the default branch, `sprint-N` tags, ADR-0001 A2 (abadd7a, PR #84)
+- [x] **C**: Task B (F67) -- Haiku 5.5 as the haiku tier (4923cf9)
+- [x] **H+C**: Task C (F65 with F63) -- Dirac-3S guide, ADR-0004 A8 (0a9655f); review fixes (1e02aba); Q7 upgrades (56c6950)
+- [x] **H+C**: Task D (F64) -- staggered re-check, ADR-0005 A7 (d0d9c93); review fixes (e8530e3); `--due` lists only, ADR-0005 A8 (3dde5ef)
+- [x] **C**: Task E (F60) -- manifest check (d43822d); report corrected at Manual Validation (88f2c7a)
+- [x] **C**: Task F (F61) -- Massoli list (15b7e90)
+- [x] **C**: Task G (F71, added at Phase 7) -- Dirac-3S release, benchmarking review, product page, site diff (899afaa)
+- [x] **H+C**: Manual Validation Q1-Q8 decided and applied (88f2c7a, abadd7a, 56c6950)
+- [x] **H+C**: Retrospective, 16 x 4 (0182581), improvements I1-I6 applied (ec4da7b, 3bd964f, 204d228, 3dde5ef, 6a260ce, 08b0751), review fixes (91f508b, 301ea4c)
+- [x] **H**: The stored QPU-seconds balance removed (7e04efa)
