@@ -15,13 +15,17 @@ serial, 18 s apart, and capped per session (Sprint 7 Task C, F52):
     python scripts/probe_reference_fields.py --refresh --apply --sessions \
         --progress <file> --heartbeat <file>                     # a full refresh (F53); not run each cycle
     python scripts/probe_reference_fields.py --stale [--before YYYY-MM-DD]
-    python scripts/probe_reference_fields.py --due [YYYY-MM-DD] --apply --sessions \
+    python scripts/probe_reference_fields.py --due [YYYY-MM-DD]  # list what is due; no request
+    python scripts/probe_reference_fields.py --due [YYYY-MM-DD] --probe --apply --sessions \
         --progress <file> [--report <file>]                      # Phase 1.3 (F64, ADR-0005 A7)
 
 DUE (F64, ADR-0005 A7): every paper has a computed section (1 to 24) and a
 next re-check date, the first start of its section at least 10 months
-after its last check (`store/recheck.py`). `--due` selects the papers due
-on or before the date given (default today) and runs the brief check:
+after its last check (`store/recheck.py`). `--due` alone lists the papers
+due on or before the date given (default today), from stored dates, and
+sends no request (Sprint 8 retrospective I4: a dry run of a probe still
+probes, and one started by mistake may have sent arXiv requests).
+`--due --probe` runs the brief check on them:
 arXiv by its abstract page alone (one request), with the latest version
 read from the page; other kinds as below; a local path by the file's
 presence and SHA-256. It ends with three lists (re-pull, withdrawn, newly
@@ -513,6 +517,18 @@ def main(argv: list[str] | None = None) -> int:
             before = args[args.index("--before") + 1] if "--before" in args else cycle_start()
             return report_stale(conn, before)
         targets = select(conn, args)
+        if "--due" in args and "--probe" not in args:
+            # Sprint 8 retrospective I4: without --probe, --due only lists,
+            # from stored dates; no request is sent and nothing is written.
+            if apply:
+                print("error: --due --apply checks the web; add --probe to say so", file=sys.stderr)
+                return 1
+            print(f"{len(targets)} record(s) due on or before {due_date(args)} (ADR-0005 A7); listed from "
+                  "stored dates, no request sent. Add --probe to check them.")
+            for rid, access, _ in targets:
+                section, last, nxt = recheck.schedule(conn, rid)
+                print(f"  {rid}  section {section}  last {last or '-'}  next {nxt or 'now'}  {access}")
+            return 0
         if apply:
             backup_before_write(DB_PATH, "probe reference fields")
         if "--due" in args:

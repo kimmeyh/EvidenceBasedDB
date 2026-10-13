@@ -1144,3 +1144,14 @@ and synthetic ids.
 
 *Revisit when* the first year of re-checks shows how often a field
 changes, as A6 says.
+
+**2026-10-13 (A8): `--due` lists; `--due --probe` checks.** Sprint 8
+retrospective I4, approved by the team lead with I1 to I6 ("apply all 6
+now"). It changes A7 (b)'s command. In Sprint 8 a `--due` dry run was
+started by mistake and may have sent a few paced arXiv requests, because a
+dry run of a probe still probes. Now `--due` alone lists the papers due,
+with each one's section, last check and next re-check, computed from
+stored dates; it sends no request and writes nothing. The re-check itself
+is `scripts/probe_reference_fields.py --due --probe --apply --sessions
+--progress <file> --report <file>`. `--due --apply` without `--probe` is
+refused. A test proves that `--due` alone makes no request.

@@ -128,6 +128,11 @@ this project keeps having to replace with a step.
   because ..." and refuses an empty cost; the F65 script uses it (its
   stored reasons unchanged); the F47 test stays as the backstop; test
   proven to fail by injection
+- **process**: Sprint 8 retrospective I4 (2026-10-13) -- `--due` alone
+  lists the papers due from stored dates and sends no request; the
+  re-check is `--due --probe`; `--due --apply` without `--probe` is
+  refused; ADR-0005 A8; workflow Phase 1.3 and checklist 1.3 updated; test
+  proven to fail by injection
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 

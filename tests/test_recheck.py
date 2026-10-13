@@ -222,6 +222,34 @@ def test_a_due_run_passes_the_state_through_and_keeps_its_report(tmp_path, monke
     assert prf.load_findings(report)["re-pull"] == ["r1: local copy v3, arXiv shows v5"]
 
 
+def test_due_alone_lists_and_sends_no_request(tmp_path, monkeypatch, capsys):
+    """Sprint 8 retrospective I4 (ADR-0005 A8): `--due` without `--probe`
+    lists from stored dates; no fetcher is built, no probe runs, no backup
+    is taken. `--due --apply` without `--probe` is refused; `--due --probe`
+    reaches the check. Proven to fail by injection, 2026-10-13: with the
+    `--probe` gate removed from main(), the first call built the fetcher."""
+    prf = _probe_script()
+    db = tmp_path / "store.db"
+    sqlite3.connect(db).close()
+    monkeypatch.setattr(prf, "DB_PATH", db)
+    monkeypatch.setattr(prf, "select", lambda conn, args: [("r1", "arXiv:2407.04512", "arxiv")])
+    monkeypatch.setattr(prf.recheck, "schedule", lambda conn, rid: (7, None, None))
+
+    def no_network(*a, **k):
+        raise AssertionError("a request path was reached")
+
+    monkeypatch.setattr(prf.citations, "PacedFetcher", no_network)
+    monkeypatch.setattr(prf, "run", no_network)
+    monkeypatch.setattr(prf, "backup_before_write", no_network)
+    assert prf.main(["--due", "2027-09-01"]) == 0
+    assert "r1  section 7" in capsys.readouterr().out
+    assert prf.main(["--due", "--apply"]) == 1
+    reached = []
+    monkeypatch.setattr(prf.citations, "PacedFetcher", lambda: object())
+    monkeypatch.setattr(prf, "run", lambda *a, **k: reached.append(k["recheck_mode"]) or 0)
+    assert prf.main(["--due", "--probe"]) == 0 and reached == [True]
+
+
 def test_a_folder_or_an_unreadable_file_does_not_stop_the_check(tmp_path):
     folder = tmp_path / "release"
     folder.mkdir()
