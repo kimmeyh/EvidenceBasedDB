@@ -11,7 +11,7 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 - [ ] 1.5 Record team-lead selection; update master plan; commit
 
 ## Phase 2: Pre-Kickoff
-- [ ] Previous PR merged; previous sprint issues CLOSED (manual close; feature->develop does not auto-close)
+- [ ] Previous PR merged; previous sprint issues CLOSED (`Closes #N` closes on merge into develop since 2026-10-13; close any left open by hand)
 - [ ] Working tree clean; develop pulled current; sprint branches never deleted
 - [ ] `pytest -q` green; dependency scan noted
 
