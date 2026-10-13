@@ -136,8 +136,9 @@ _SHA = re.compile(r"SHA-256 ([0-9a-f]{64})")
 
 
 def local_paths(access: str) -> list[str]:
-    """Every rooted local path segment in an access field."""
-    return [seg.strip() for seg in access.split("|") if re.match(r"^\s*[A-Za-z]:[\\/]", seg)]
+    """Every rooted local path segment in an access field: a drive letter or
+    a leading slash, as `citations.parse_access` treats a path."""
+    return [seg.strip() for seg in access.split("|") if re.match(r"^\s*(?:[A-Za-z]:[\\/]|/)", seg)]
 
 
 def check_local(access: str, evidence: str | None) -> tuple[str, str]:
