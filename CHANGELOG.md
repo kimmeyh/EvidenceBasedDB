@@ -140,6 +140,10 @@ this project keeps having to replace with a step.
   `.sql`); heredoc bodies and scratch files outside the repository pass;
   bypass token `allow_shell_code_edit`; workflow Phase 4 names the rule;
   tests proven to fail by injection
+- **process**: Sprint 8 retrospective I6 (2026-10-13) -- work approved
+  during an open sprint goes on the sprint branch unless the team lead
+  asks for a separate PR; added to workflow 6.6 and to the
+  branch-from-develop hook's block message, before its bypass token
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 

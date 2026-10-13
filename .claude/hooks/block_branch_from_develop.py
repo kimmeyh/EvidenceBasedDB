@@ -131,8 +131,14 @@ def main() -> int:
                 "Recovery for a branch already mis-cut is cherry-pick onto a correctly-cut\n"
                 "branch, never stash.\n"
                 "\n"
-                f"If this is genuinely new work off {base} and NOT a sprint carry-forward, re-run\n"
-                "with the literal token allow_branch_from_base in the command.",
+                "WORK APPROVED DURING AN OPEN SPRINT goes on the sprint branch, not a branch off\n"
+                f"{base}, unless the team lead asked for a separate PR (Sprint 8 retrospective I6:\n"
+                "the F66 branch off develop conflicted with the sprint PR in the CHANGELOG and\n"
+                "needed a branch merge to untangle).\n"
+                "\n"
+                f"If this is genuinely new work off {base}, NOT a sprint carry-forward, and either\n"
+                "no sprint is open or the team lead asked for a separate PR, re-run with the\n"
+                "literal token allow_branch_from_base in the command.",
                 file=sys.stderr,
             )
             return 2
