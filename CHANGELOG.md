@@ -144,6 +144,15 @@ this project keeps having to replace with a step.
   during an open sprint goes on the sprint branch unless the team lead
   asks for a separate PR; added to workflow 6.6 and to the
   branch-from-develop hook's block message, before its bypass token
+- **fix**: I1-I6 fresh-eyes review (2026-10-13) -- the I5 hook now also
+  blocks sed after `xargs`, `env` or `bash -c`, `perl -0pi`, `1>` and `&>`,
+  and no longer loses later lines after a `<<<` here-string; it no longer
+  blocks a PowerShell write whose target is not code, a `git commit -m`
+  message, or a relative path after a `cd` out of the repository (12 cases
+  added, each red against the first version); the upgrade-reason builder
+  avoids a double period; the QPU-balance test reads either quote style in
+  any scripts subfolder; the removal script refuses on every
+  non-cascading link
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 

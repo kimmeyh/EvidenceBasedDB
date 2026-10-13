@@ -80,6 +80,7 @@ def test_the_shared_upgrade_reason_always_names_the_cost():
     assert admission_problems([{"id": "r", "certainty_reasons": reason}]) == []
     with pytest.raises(ValueError):
         admission_upgrade_reason("Started MODERATE", "  ")
+    assert ".." not in admission_upgrade_reason("Started MODERATE: vendor guide.", "a cost")
 
 
 def test_a_reason_that_withholds_the_upgrade_is_not_flagged():

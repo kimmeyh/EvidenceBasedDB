@@ -226,7 +226,7 @@ def admission_upgrade_reason(prior: str, cost: str, decision: str = "") -> str:
     if not cost:
         raise ValueError("an admission-against-interest upgrade must say what the claim cost its author")
     by = f", {decision}" if decision else ""
-    return f"{prior}. UPGRADED one level for admission against interest{by}: costly to disclose, because {cost}"
+    return f"{prior.rstrip().rstrip('.')}. UPGRADED one level for admission against interest{by}: costly to disclose, because {cost}"
 
 
 def validate_paper(paper: PaperRecord, check_local_paths: bool = True) -> None:

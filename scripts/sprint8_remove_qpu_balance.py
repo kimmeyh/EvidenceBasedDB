@@ -38,10 +38,14 @@ def main(argv: list[str] | None = None) -> int:
         if conn.execute("SELECT 1 FROM records WHERE id = ?", (RECORD_ID,)).fetchone() is None:
             print(f"{RECORD_ID}: not in the store; nothing to do")
             return 0
-        linked = conn.execute("SELECT COUNT(*) FROM assertion_relations WHERE from_assertion_id = ? "
-                              "OR to_assertion_id = ?", (RECORD_ID, RECORD_ID)).fetchone()[0]
+        # Every reference the DELETE would not remove: the relations, and the
+        # two non-cascading references (fresh-eyes review, 2026-10-13).
+        linked = sum(conn.execute(sql, (RECORD_ID,) * sql.count("?")).fetchone()[0] for sql in (
+            "SELECT COUNT(*) FROM assertion_relations WHERE from_assertion_id = ? OR to_assertion_id = ?",
+            "SELECT COUNT(*) FROM prerequisites WHERE prerequisite_id = ?",
+            "SELECT COUNT(*) FROM term_see_also WHERE see_also_id = ?"))
         if linked:
-            print(f"refusing: {RECORD_ID} has {linked} assertion relation(s)", file=sys.stderr)
+            print(f"refusing: {RECORD_ID} has {linked} link(s) from other records", file=sys.stderr)
             return 1
         print(f"REMOVE {RECORD_ID}")
         if not apply:

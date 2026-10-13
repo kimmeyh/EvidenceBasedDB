@@ -128,10 +128,24 @@ def test_python_writes_code_bypass_token():
     "cat > scripts/new.py <<'EOF'\nprint(1)\nEOF",
     "Set-Content -Path scripts/view.py -Value 'x'",
     "sed -i 's/a/b/' D:/Data/Harold/github/EvidenceBasedDB/store/recheck.py",
+    # Fresh-eyes review, 2026-10-13: shapes that escaped the first version
+    "cat <<< 'a'\nsed -i 's/a/b/' store/x.py",
+    "git ls-files store | xargs sed -i 's/a/b/' store/recheck.py",
+    "bash -c \"sed -i 's/a/b/' store/x.py\"",
+    "env sed -i 's/a/b/' store/x.py",
+    "perl -0pi -e 's/a/b/' store/x.py",
+    "echo x 1> store/x.py",
+    "echo x &> store/x.py",
+    "cd /d/Data/Harold/github/EvidenceBasedDB && sed -i 's/a/b/' store/x.py",
+    "Set-Content -Value 'x' -Path scripts/view.py",
+    "Out-File -Encoding utf8 -FilePath store/a.py",
+    "Set-Content scripts/view.py 'x'",
 ])
 def test_blocks_a_shell_edit_of_a_repository_code_file(command):
     """Proven to fail by injection, 2026-10-13: with _shell_edits_code
-    returning [], every case passed (exit 0) and this test went red."""
+    returning [], every case passed (exit 0) and this test went red. The
+    fresh-eyes review's cases (here and in the allowed list below) each
+    failed against the hook as committed in 6a260ce, run the same day."""
     proc = run(command)
     assert proc.returncode == 2, command
     assert "editing a repository code file" in proc.stderr
@@ -144,6 +158,13 @@ def test_blocks_a_shell_edit_of_a_repository_code_file(command):
     "cat > /tmp/scratch.py <<'EOF'\nprint(1)\nEOF",        # a scratch file outside the repository
     "git commit -q -F - <<'EOF'\nfix: no more sed -i on scripts/x.py; > store/y.py\nEOF",  # a message is data
     "sed -i 's/a/b/' CHANGELOG.md",                        # prose, not code
+    # Fresh-eyes review, 2026-10-13: everyday commands the first version blocked
+    "Get-Content a.txt | Out-File log.txt; python scripts/view.py",
+    "Out-File -FilePath log.txt -InputObject (python store/recheck.py)",
+    "Set-Content -Path notes.txt -Value 'see store/x.py'",
+    'git commit -m "hook: blocks echo > store/x.py"',
+    "cd C:/Users/kimme/AppData/Local/Temp && sed -i 's/a/b/' scratch.py",
+    "python -m pytest -q 2>&1 | tee pt.log",
 ])
 def test_allows_reads_scratch_files_and_messages(command):
     proc = run(command)

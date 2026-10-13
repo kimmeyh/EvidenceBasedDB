@@ -24,6 +24,6 @@ def test_the_removed_balance_is_not_in_the_store(live_conn):
 def test_no_script_would_re_add_it():
     """Proven to fail by injection, 2026-10-13: with the assertion restored
     to scripts/sprint6_task_g_cyc_and_facts.py, this test named that file."""
-    pattern = re.compile(rf'id="{re.escape(REMOVED)}"')
-    offenders = [p.name for p in (ROOT / "scripts").glob("*.py") if pattern.search(p.read_text(encoding="utf-8"))]
+    pattern = re.compile(rf"""id\s*=\s*['"]{re.escape(REMOVED)}['"]""")
+    offenders = [p.name for p in (ROOT / "scripts").rglob("*.py") if pattern.search(p.read_text(encoding="utf-8"))]
     assert offenders == [], f"a script would re-add {REMOVED}: {offenders}"

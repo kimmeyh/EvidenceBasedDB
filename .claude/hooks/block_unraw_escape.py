@@ -26,7 +26,7 @@ Both are one keystroke.
 Exit 0 = allow. Exit 2 = block; stderr fed back to Claude.
 Bypass: literal token allow_unraw_escape, for the rare case where the escape
 is deliberate (writing an actual tab or newline into a path string).
-Only inspects python heredocs, so shell strings and prose are untouched.
+The escape check inspects only commands that run python.
 
 Also blocks, on any command, a shell edit of a repository code file
 (`sed -i`, `perl -i`, a redirect or `tee`, PowerShell Set-Content and its
@@ -107,46 +107,70 @@ def _writes_python_source(cmd: str) -> bool:
 # and take the text verbatim). The rule existed and was broken once, so it
 # is now mechanical: an in-place `sed`/`perl`, a shell redirect or `tee`, or
 # a PowerShell Set-Content/Add-Content/Out-File onto a repository .py or
-# .sql file is blocked. Heredoc bodies are data (a commit message, a script
-# fed to python) and are not scanned; a scratch file outside the repository
-# is not blocked.
-HEREDOC_START = re.compile(r"<<-?\s*['\"]?([A-Za-z_]\w*)['\"]?")
-IN_PLACE_TOOL = re.compile(r"(?:^|[;&|(])\s*(?:sudo\s+)?(?:sed|perl)\s(?P<rest>.*)")
-IN_PLACE_FLAG = re.compile(r"(?:^|\s)(?:-[A-Za-z]*i[A-Za-z.]*|--in-place\S*)(?=\s|$)")
+# .sql file is blocked. Data is not scanned: heredoc bodies (a commit
+# message, a script fed to python) and the quoted text of a -m, --message,
+# --body, --title or --notes argument. A scratch file outside the
+# repository is not blocked, nor is a relative path after a `cd` to a
+# directory outside it.
+#
+# Fresh-eyes review of 2026-10-13 (seven shapes, each now in the tests): a
+# `<<<` here-string opened a heredoc that never closed and hid every later
+# line; sed after `xargs`, `env` or `bash -c "` escaped; `-0pi` escaped;
+# `1>` and `&>` escaped; Set-Content's span ran past `;` and `|` onto a
+# later .py; a `git commit -m` message was scanned; a `cd` out of the
+# repository was ignored.
+HEREDOC_START = re.compile(r"(?<!<)<<(?!<)-?\s*['\"]?([A-Za-z_]\w*)['\"]?")
+IN_PLACE_TOOL = re.compile(r"(?:^|[;&|(\"'`]|\b(?:xargs|env|sudo|exec|command)\s+(?:-\S+\s+|\S+=\S*\s+)*)\s*"
+                           r"(?:sed|perl)\s(?P<rest>.*)")
+IN_PLACE_FLAG = re.compile(r"(?:^|\s)(?:-[A-Za-z0-9]*i[A-Za-z0-9.]*|--in-place\S*)(?=\s|$)")
 CODE_PATH = r"""['"]?(?P<path>[^\s'"<>|;&]+\.(?:py|sql))['"]?(?=$|[\s;&|)])"""
 CODE_ARG = re.compile(r"(?:^|\s)" + CODE_PATH)
-REDIRECT_ONTO = re.compile(r"(?:(?<![0-9&>])>>?|\btee\s+(?:-a\s+)?|\b(?:Set-Content|Add-Content|Out-File)\b[^\n]*?\s)\s*"
-                           + CODE_PATH)
+_PS_WRITE = r"\b(?:Set-Content|Add-Content|Out-File)\b"
+_PS_PATH = r"-(?:Path|FilePath|LiteralPath)(?:\s+|:)"
+# The target of a PowerShell write is its first positional argument or its
+# -Path value, never any .py named later on the line.
+REDIRECT_ONTO = re.compile(r"(?:(?<![0-9>])[1&]?>>?|\btee\s+(?:-a\s+)?|"
+                           rf"{_PS_WRITE}(?:\s+{_PS_PATH})?\s|{_PS_WRITE}[^\n;|&]*?\s{_PS_PATH})\s*" + CODE_PATH)
+MESSAGE_ARG = re.compile(r"""(?:^|\s)(?:-m|--message|--body|--title|--notes)[\s=]+(?:"(?:[^"\\]|\\.)*"|'[^']*')""")
+CD_TO = re.compile(r"""(?:^|[;&|(])\s*(?:cd|Set-Location|pushd)\s+['"]?([^\s'";&|]+)""")
 
 
 def _without_heredoc_bodies(cmd: str) -> list[str]:
-    lines, tag = [], None
+    lines, tag, body = [], None, []
     for line in cmd.split("\n"):
         if tag is not None:
             if line.strip() == tag:
-                tag = None
+                tag, body = None, []
+            else:
+                body.append(line)
             continue
         lines.append(line)
         m = HEREDOC_START.search(line)
         if m:
             tag = m.group(1)
-    return lines
+    # A heredoc that never closes was not one (a quoted `<<` in prose, say):
+    # its "body" is command text and is scanned.
+    return lines + body
 
 
-def _in_repository(path: str) -> bool:
+def _in_repository(path: str, outside_cwd: bool = False) -> bool:
     p = path.replace("\\", "/")
-    if "CLAUDE_PROJECT_DIR" in p or "github/evidencebaseddb/" in p.lower():
+    if "CLAUDE_PROJECT_DIR" in p or "github/evidencebaseddb/" in p.lower().rstrip("/") + "/":
         return True
-    return not re.match(r"^(?:[A-Za-z]:/|/|~|\$)", p)
+    return not outside_cwd and not re.match(r"^(?:[A-Za-z]:/|/|~|\$)", p)
 
 
 def _shell_edits_code(cmd: str) -> list[str]:
     hits = []
-    for line in _without_heredoc_bodies(cmd):
+    lines = [MESSAGE_ARG.sub(" ''", line) for line in _without_heredoc_bodies(cmd)]
+    outside = any(not _in_repository(d) for line in lines for d in CD_TO.findall(line)
+                  if re.match(r"^(?:[A-Za-z]:[\\/]|/|~)", d))
+    for line in lines:
         tool = IN_PLACE_TOOL.search(line)
         if tool and IN_PLACE_FLAG.search(tool.group("rest")):
-            hits += [m.group("path") for m in CODE_ARG.finditer(tool.group("rest")) if _in_repository(m.group("path"))]
-        hits += [m.group("path") for m in REDIRECT_ONTO.finditer(line) if _in_repository(m.group("path"))]
+            hits += [m.group("path") for m in CODE_ARG.finditer(tool.group("rest"))
+                     if _in_repository(m.group("path"), outside)]
+        hits += [m.group("path") for m in REDIRECT_ONTO.finditer(line) if _in_repository(m.group("path"), outside)]
     return hits
 
 
