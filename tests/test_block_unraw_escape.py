@@ -114,3 +114,41 @@ def test_allows_non_code_writes_and_plain_runs(command):
 
 def test_python_writes_code_bypass_token():
     assert run(SPRINT5_BREAKER + " # allow_python_writes_code").returncode == 0
+
+
+# ---- Sprint 8 retrospective I5 (2026-10-13): no shell edits of repository code files
+
+@pytest.mark.parametrize("command", [
+    "sed -i 's/old/new/' scripts/sprint8_f60_manifest_check.py",  # the Sprint 8 shape
+    "cd /d/Data/Harold/github/EvidenceBasedDB && sed -i.bak -e 's/a/b/' store/recheck.py",
+    "perl -pi -e 's/a/b/' tests/test_recheck.py",
+    "git show HEAD:store/ingest.py > store/ingest.py",
+    "echo 'x = 1' >> scripts/view.py",
+    "printf 'x' | tee store/schema.sql",
+    "cat > scripts/new.py <<'EOF'\nprint(1)\nEOF",
+    "Set-Content -Path scripts/view.py -Value 'x'",
+    "sed -i 's/a/b/' D:/Data/Harold/github/EvidenceBasedDB/store/recheck.py",
+])
+def test_blocks_a_shell_edit_of_a_repository_code_file(command):
+    """Proven to fail by injection, 2026-10-13: with _shell_edits_code
+    returning [], every case passed (exit 0) and this test went red."""
+    proc = run(command)
+    assert proc.returncode == 2, command
+    assert "editing a repository code file" in proc.stderr
+
+
+@pytest.mark.parametrize("command", [
+    "sed -n 1,40p scripts/view.py",                       # reading
+    "grep -n def store/recheck.py > /tmp/defs.txt",         # redirect onto a text file
+    "python -m pytest -q > C:/Users/kimme/AppData/Local/Temp/pt.log 2>&1",
+    "cat > /tmp/scratch.py <<'EOF'\nprint(1)\nEOF",        # a scratch file outside the repository
+    "git commit -q -F - <<'EOF'\nfix: no more sed -i on scripts/x.py; > store/y.py\nEOF",  # a message is data
+    "sed -i 's/a/b/' CHANGELOG.md",                        # prose, not code
+])
+def test_allows_reads_scratch_files_and_messages(command):
+    proc = run(command)
+    assert proc.returncode == 0, f"{command}\n{proc.stderr}"
+
+
+def test_shell_code_edit_bypass_token():
+    assert run("git show HEAD:store/ingest.py > store/ingest.py  # allow_shell_code_edit").returncode == 0

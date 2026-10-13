@@ -27,6 +27,11 @@ Exit 0 = allow. Exit 2 = block; stderr fed back to Claude.
 Bypass: literal token allow_unraw_escape, for the rare case where the escape
 is deliberate (writing an actual tab or newline into a path string).
 Only inspects python heredocs, so shell strings and prose are untouched.
+
+Also blocks, on any command, a shell edit of a repository code file
+(`sed -i`, `perl -i`, a redirect or `tee`, PowerShell Set-Content and its
+kin onto a .py or .sql file; Sprint 8 retrospective I5). Bypass: the
+literal token allow_shell_code_edit.
 """
 from __future__ import annotations
 
@@ -96,6 +101,55 @@ def _writes_python_source(cmd: str) -> bool:
     return bool(PY_FILE_LITERAL.search(cmd) and WRITES_FILE.search(cmd))
 
 
+# Sprint 8 retrospective I5 (2026-10-13): the same class, without Python.
+# Two code lines were changed with `sed -i` in Sprint 8, against the rule
+# that code files change only through Edit and Write (which show the change
+# and take the text verbatim). The rule existed and was broken once, so it
+# is now mechanical: an in-place `sed`/`perl`, a shell redirect or `tee`, or
+# a PowerShell Set-Content/Add-Content/Out-File onto a repository .py or
+# .sql file is blocked. Heredoc bodies are data (a commit message, a script
+# fed to python) and are not scanned; a scratch file outside the repository
+# is not blocked.
+HEREDOC_START = re.compile(r"<<-?\s*['\"]?([A-Za-z_]\w*)['\"]?")
+IN_PLACE_TOOL = re.compile(r"(?:^|[;&|(])\s*(?:sudo\s+)?(?:sed|perl)\s(?P<rest>.*)")
+IN_PLACE_FLAG = re.compile(r"(?:^|\s)(?:-[A-Za-z]*i[A-Za-z.]*|--in-place\S*)(?=\s|$)")
+CODE_PATH = r"""['"]?(?P<path>[^\s'"<>|;&]+\.(?:py|sql))['"]?(?=$|[\s;&|)])"""
+CODE_ARG = re.compile(r"(?:^|\s)" + CODE_PATH)
+REDIRECT_ONTO = re.compile(r"(?:(?<![0-9&>])>>?|\btee\s+(?:-a\s+)?|\b(?:Set-Content|Add-Content|Out-File)\b[^\n]*?\s)\s*"
+                           + CODE_PATH)
+
+
+def _without_heredoc_bodies(cmd: str) -> list[str]:
+    lines, tag = [], None
+    for line in cmd.split("\n"):
+        if tag is not None:
+            if line.strip() == tag:
+                tag = None
+            continue
+        lines.append(line)
+        m = HEREDOC_START.search(line)
+        if m:
+            tag = m.group(1)
+    return lines
+
+
+def _in_repository(path: str) -> bool:
+    p = path.replace("\\", "/")
+    if "CLAUDE_PROJECT_DIR" in p or "github/evidencebaseddb/" in p.lower():
+        return True
+    return not re.match(r"^(?:[A-Za-z]:/|/|~|\$)", p)
+
+
+def _shell_edits_code(cmd: str) -> list[str]:
+    hits = []
+    for line in _without_heredoc_bodies(cmd):
+        tool = IN_PLACE_TOOL.search(line)
+        if tool and IN_PLACE_FLAG.search(tool.group("rest")):
+            hits += [m.group("path") for m in CODE_ARG.finditer(tool.group("rest")) if _in_repository(m.group("path"))]
+        hits += [m.group("path") for m in REDIRECT_ONTO.finditer(line) if _in_repository(m.group("path"))]
+    return hits
+
+
 def main() -> int:
     try:
         cmd = _read_command()
@@ -105,11 +159,9 @@ def main() -> int:
     if not cmd or not cmd.strip():
         return 0
 
-    # Only look at commands that actually run python.
-    if not PYTHON_INVOCATION.search(cmd):
-        return 0
+    runs_python = PYTHON_INVOCATION.search(cmd)
 
-    if "allow_python_writes_code" not in cmd and _writes_python_source(cmd):
+    if runs_python and "allow_python_writes_code" not in cmd and _writes_python_source(cmd):
         print(
             "[BLOCKED] Python code rewriting a .py file from inside a shell command\n"
             "(Sprint 5 retrospective improvement 2).\n"
@@ -126,6 +178,27 @@ def main() -> int:
             file=sys.stderr,
         )
         return 2
+
+    edited = [] if "allow_shell_code_edit" in cmd else _shell_edits_code(cmd)
+    if edited:
+        print(
+            "[BLOCKED] A shell command editing a repository code file (Sprint 8 retrospective I5):\n"
+            f"    {', '.join(edited[:3])}\n"
+            "\n"
+            "Code files change only through the Edit tool (or Write for a new file), which\n"
+            "shows the change and takes the text verbatim. Sprint 8 changed two code lines\n"
+            "with sed -i against that rule. Reading with sed -n, cat or grep is fine.\n"
+            "\n"
+            "If a shell write to a code file is genuinely needed (restoring a file for a\n"
+            "test injection, say), re-run with the literal token allow_shell_code_edit in\n"
+            "the command.",
+            file=sys.stderr,
+        )
+        return 2
+
+    # The checks below look only at commands that actually run python.
+    if not runs_python:
+        return 0
 
     if "allow_unraw_escape" in cmd:
         return 0

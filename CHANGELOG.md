@@ -133,6 +133,13 @@ this project keeps having to replace with a step.
   re-check is `--due --probe`; `--due --apply` without `--probe` is
   refused; ADR-0005 A8; workflow Phase 1.3 and checklist 1.3 updated; test
   proven to fail by injection
+- **process**: Sprint 8 retrospective I5 (2026-10-13) -- the existing
+  `block_unraw_escape.py` hook now also blocks a shell edit of a
+  repository code file (`sed -i`, `perl -i`, a redirect or `tee`,
+  PowerShell `Set-Content`/`Add-Content`/`Out-File` onto a `.py` or
+  `.sql`); heredoc bodies and scratch files outside the repository pass;
+  bypass token `allow_shell_code_edit`; workflow Phase 4 names the rule;
+  tests proven to fail by injection
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
