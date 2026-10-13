@@ -153,6 +153,17 @@ this project keeps having to replace with a step.
   avoids a double period; the QPU-balance test reads either quote style in
   any scripts subfolder; the removal script refuses on every
   non-cascading link
+- **fix**: I5 hook edge-case pass (2026-10-13, team lead asked whether the
+  edge cases had been searched; they had not) -- now also blocks `>|`,
+  any fd redirect, `tee` with options or several files, `dd of=`, `cp`,
+  `mv`, Copy-Item and Move-Item onto code, `awk -i inplace`, `ruby -pi`,
+  `sed -i''`, `find -exec sed -i` and `ls-files | xargs sed -i`,
+  `[IO.File]::WriteAll*`, `New-Item -Value`, every repository code type
+  (.py .sql .yml .ini, plus .yaml .toml .ps1 .sh) in any case, and a `cd`
+  back into the repository; no longer reads PowerShell here-strings,
+  `gh api -f body=` values or full-line comments; the bypass token counts
+  only outside data; known limits listed in the hook; 26 new cases red
+  against the previous version
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 

@@ -119,23 +119,62 @@ def _writes_python_source(cmd: str) -> bool:
 # `1>` and `&>` escaped; Set-Content's span ran past `;` and `|` onto a
 # later .py; a `git commit -m` message was scanned; a `cd` out of the
 # repository was ignored.
+#
+# Edge-case pass of 2026-10-13, after the review (each case in the tests):
+# every code type the repository holds (.py, .sql, .yml, .ini) plus .yaml,
+# .toml, .ps1 and .sh, in any case; `>|`, any fd digit (`2> x.py` writes it
+# too); `tee` with options or several files; `dd of=`; `cp`, `mv`,
+# `install`, Copy-Item and Move-Item onto code; `awk -i inplace` and
+# `ruby -pi`; `sed -i''`; `find ... -exec sed -i` and `git ls-files '*.py'
+# | xargs sed -i`, where the code path comes before the editor;
+# [IO.File]::WriteAllText and its kin; New-Item -Value; PowerShell
+# here-string bodies and `gh api -f body=...` values are data; a full-line
+# `#` comment is not scanned; a `cd` is tracked in order, so a later `cd`
+# back into the repository counts; the bypass token counts only outside
+# data, so a commit message that names it does not open the gate.
+#
+# Known limits, not blocked: a target held in a variable (`sed -i ... "$f"`),
+# `bash -c '...'` in single quotes (single-quoted text with a space is not
+# read for redirects, so a `>` inside a sed or python expression is not
+# taken as one), `patch`, and git's own restores (`git checkout -- x.py`,
+# `git restore`), which return a file to a committed state. Blocked though
+# harmless: a `>` before a code path inside double-quoted prose outside a
+# message argument (`echo "a > store/x.py"`); the bypass token covers it.
 HEREDOC_START = re.compile(r"(?<!<)<<(?!<)-?\s*['\"]?([A-Za-z_]\w*)['\"]?")
-IN_PLACE_TOOL = re.compile(r"(?:^|[;&|(\"'`]|\b(?:xargs|env|sudo|exec|command)\s+(?:-\S+\s+|\S+=\S*\s+)*)\s*"
-                           r"(?:sed|perl)\s(?P<rest>.*)")
-IN_PLACE_FLAG = re.compile(r"(?:^|\s)(?:-[A-Za-z0-9]*i[A-Za-z0-9.]*|--in-place\S*)(?=\s|$)")
-CODE_PATH = r"""['"]?(?P<path>[^\s'"<>|;&]+\.(?:py|sql))['"]?(?=$|[\s;&|)])"""
-CODE_ARG = re.compile(r"(?:^|\s)" + CODE_PATH)
-_PS_WRITE = r"\b(?:Set-Content|Add-Content|Out-File)\b"
+PS_HERE_STRING = re.compile(r"(?s)@(['\"])\r?\n.*?\r?\n\1@")
+_EXT = r"\.(?:py|sql|ya?ml|ini|toml|ps1|sh)"
+CODE_PATH = rf"""['"]?(?P<path>[^\s'"<>|;&]+{_EXT})['"]?(?=$|[\s;&|),])"""
+CODE_ARG = re.compile(r"(?:^|[\s=])" + CODE_PATH, re.I)
+_LEAD = r"(?:^|[;&|(\"`\n]|\{\}|\b(?:xargs|env|sudo|exec|command|nice|time)\s+(?:-\S+\s+|\S+=\S*\s+)*|-exec(?:dir)?\s+)"
+IN_PLACE_TOOL = re.compile(_LEAD + r"\s*(?P<tool>sed|perl|ruby|g?awk)\s(?P<rest>[^\n]*)")
+# -M and -I are perl's module and include switches (-Mstrict is not -i).
+IN_PLACE_FLAG = re.compile(r"""(?:^|\s)(?:-(?![MI])[A-Za-z0-9]*i[A-Za-z0-9.'"]*|--in-place\S*)(?=\s|$)""")
+COPY_ONTO = re.compile(_LEAD + r"\s*(?:cp|mv|install|Copy-Item|Move-Item|copy|move)\s(?P<rest>[^\n;&|]*)", re.I)
+_PS_WRITE = r"\b(?:Set-Content|Add-Content|Out-File|sc|ac)\b"
 _PS_PATH = r"-(?:Path|FilePath|LiteralPath)(?:\s+|:)"
 # The target of a PowerShell write is its first positional argument or its
-# -Path value, never any .py named later on the line.
-REDIRECT_ONTO = re.compile(r"(?:(?<![0-9>])[1&]?>>?|\btee\s+(?:-a\s+)?|"
-                           rf"{_PS_WRITE}(?:\s+{_PS_PATH})?\s|{_PS_WRITE}[^\n;|&]*?\s{_PS_PATH})\s*" + CODE_PATH)
-MESSAGE_ARG = re.compile(r"""(?:^|\s)(?:-m|--message|--body|--title|--notes)[\s=]+(?:"(?:[^"\\]|\\.)*"|'[^']*')""")
-CD_TO = re.compile(r"""(?:^|[;&|(])\s*(?:cd|Set-Location|pushd)\s+['"]?([^\s'";&|]+)""")
+# -Path value, never a path named later on the line.
+REDIRECT_ONTO = re.compile(
+    r"(?:(?<![>=-])(?:\d|&)?>[>|]?|\bof=|"
+    rf"{_PS_WRITE}(?:\s+{_PS_PATH})?\s|{_PS_WRITE}[^\n;|&]*?\s{_PS_PATH}|"
+    r"\bNew-Item\b[^\n;|&]*?(?=[^\n;|&]*-Value)\s|"
+    r"\[(?:System\.)?IO\.File\]::(?:WriteAll|AppendAll)\w*\(\s*)\s*" + CODE_PATH, re.I)
+TEE = re.compile(r"\btee\b(?P<rest>[^\n;&|]*)")
+# Data: the quoted value of a message, body or field argument.
+MESSAGE_ARG = re.compile(r"""(?:^|\s)(?:-m|--message|--body|--title|--notes|--subject|-[fF]\s+\w+=|"""
+                         r"""--(?:raw-)?field\s+\w+=)[\s=]*(?:"(?:[^"\\]|\\.)*"|'[^']*')""")
+# Single-quoted text holding a space or a `>` is an expression or prose, not
+# a path; a single-quoted lone path ('store/x.py') is still read.
+SINGLE_QUOTED = re.compile(r"'[^'\n]*[\s>][^'\n]*'")
+CD_TO = re.compile(r"""(?:^|[;&|(\n])\s*(?:cd|Set-Location|sl|pushd|Push-Location)\s+['"]?(?P<dir>[^\s'";&|)]+)""")
+CODE_GLOB_SOURCE = re.compile(r"\b(?:find|ls-files|grep\s+-\w*l\w*|rg\s+-\w*l\w*|ls|dir|Get-ChildItem)\b[^\n;&]*?"
+                              + CODE_PATH, re.I)
 
 
-def _without_heredoc_bodies(cmd: str) -> list[str]:
+def _data_removed(cmd: str) -> str:
+    """The command with its data taken out: heredoc bodies, PowerShell
+    here-string bodies, message and field values, full-line comments."""
+    cmd = PS_HERE_STRING.sub("''", cmd)
     lines, tag, body = [], None, []
     for line in cmd.split("\n"):
         if tag is not None:
@@ -150,28 +189,58 @@ def _without_heredoc_bodies(cmd: str) -> list[str]:
             tag = m.group(1)
     # A heredoc that never closes was not one (a quoted `<<` in prose, say):
     # its "body" is command text and is scanned.
-    return lines + body
+    kept = [ln for ln in lines + body if not ln.lstrip().startswith("#")]
+    return MESSAGE_ARG.sub(" ''", "\n".join(kept))
+
+
+def _absolute(path: str) -> bool:
+    return bool(re.match(r"^(?:[A-Za-z]:[\\/]|/|~|\$)", path))
 
 
 def _in_repository(path: str, outside_cwd: bool = False) -> bool:
     p = path.replace("\\", "/")
     if "CLAUDE_PROJECT_DIR" in p or "github/evidencebaseddb/" in p.lower().rstrip("/") + "/":
         return True
-    return not outside_cwd and not re.match(r"^(?:[A-Za-z]:/|/|~|\$)", p)
+    return not outside_cwd and not _absolute(p)
 
 
-def _shell_edits_code(cmd: str) -> list[str]:
+def _shell_edits_code(text: str) -> list[str]:
+    # Each `cd` sets whether relative paths after it point outside the
+    # repository, in command order.
+    cds = [(m.start(), _absolute(m["dir"]) and not _in_repository(m["dir"])) for m in CD_TO.finditer(text)]
+
+    def outside_at(pos: int) -> bool:
+        state = False
+        for at, out in cds:
+            if at < pos:
+                state = out
+        return state
+
+    def keep(m) -> list[str]:
+        return [m["path"]] if _in_repository(m["path"], outside_at(m.start())) else []
+
     hits = []
-    lines = [MESSAGE_ARG.sub(" ''", line) for line in _without_heredoc_bodies(cmd)]
-    outside = any(not _in_repository(d) for line in lines for d in CD_TO.findall(line)
-                  if re.match(r"^(?:[A-Za-z]:[\\/]|/|~)", d))
-    for line in lines:
-        tool = IN_PLACE_TOOL.search(line)
-        if tool and IN_PLACE_FLAG.search(tool.group("rest")):
-            hits += [m.group("path") for m in CODE_ARG.finditer(tool.group("rest"))
-                     if _in_repository(m.group("path"), outside)]
-        hits += [m.group("path") for m in REDIRECT_ONTO.finditer(line) if _in_repository(m.group("path"), outside)]
-    return hits
+    for tool in IN_PLACE_TOOL.finditer(text):
+        rest = tool["rest"]
+        if not IN_PLACE_FLAG.search(rest) or (tool["tool"].endswith("awk") and "inplace" not in rest):
+            continue
+        targets = [p for m in CODE_ARG.finditer(rest) for p in keep(m)]
+        if not targets:
+            # The code path can come before the editor: find ... -exec sed -i,
+            # git ls-files '*.py' | xargs sed -i.
+            line_start = text.rfind("\n", 0, tool.start()) + 1
+            segment = re.split(r"&&|\|\||;", text[line_start:tool.start()])[-1]
+            targets = [p for m in CODE_GLOB_SOURCE.finditer(segment) for p in keep(m)]
+        hits += targets
+    for cp in COPY_ONTO.finditer(text):
+        operands = [m for m in CODE_ARG.finditer(cp["rest"])]
+        tokens = [t for t in cp["rest"].split() if not t.startswith("-")]
+        if operands and tokens and tokens[-1].strip("'\"").lower().endswith(operands[-1]["path"].lower()):
+            hits += keep(operands[-1])
+    unquoted = SINGLE_QUOTED.sub(lambda m: " " * len(m.group(0)), text)
+    hits += [p for m in REDIRECT_ONTO.finditer(unquoted) for p in keep(m)]
+    hits += [p for t in TEE.finditer(unquoted) for m in CODE_ARG.finditer(t["rest"]) for p in keep(m)]
+    return list(dict.fromkeys(hits))
 
 
 def main() -> int:
@@ -203,7 +272,8 @@ def main() -> int:
         )
         return 2
 
-    edited = [] if "allow_shell_code_edit" in cmd else _shell_edits_code(cmd)
+    command_text = _data_removed(cmd)
+    edited = [] if "allow_shell_code_edit" in command_text else _shell_edits_code(command_text)
     if edited:
         print(
             "[BLOCKED] A shell command editing a repository code file (Sprint 8 retrospective I5):\n"
