@@ -85,9 +85,24 @@ to F, plus 180 for G.
 - F65's list had sat in the team lead's input history since 2026-10-10; it
   was recovered there, not re-sent.
 
+## PR reviews (2026-10-13)
+
+- **Copilot**: #77 no findings; #84 one low finding ("owner" for the
+  develop-to-main merge, where the docs say "team lead"), fixed in f8a2be6
+  and its thread resolved.
+- **Claude (pr-review-toolkit)**: code review (#77 three findings, #84 one
+  wording slip), test coverage and silent failures (#77). Fixed in 385f769
+  and f8a2be6: the site check's small-section bug and its other gaps, the
+  re-check's local-copy lookup, report duplication and date parsing,
+  `view.py`'s "None", the F71 script's id match and hashes, and four hook
+  gaps. Carded as F74 (Sprint 9): a partial answer resets the re-check
+  clock, and a tool failure is reported as the paper's fault. Not changed:
+  tests for the one-shot QPU-removal script (already applied; a re-run does
+  nothing). The dispositions are posted as one comment on each PR.
+
 ## Verification
 
-- Suite 745 passed at the last commit, including the `live_store` tests.
+- Suite 759 passed at the last commit, including the `live_store` tests.
 - `gh issue list --label sprint --state open`: #78 (closes with PR #84) and
   #85 (closes with PR #77), both by `Closes` lines that fire on the merge
   into develop.
