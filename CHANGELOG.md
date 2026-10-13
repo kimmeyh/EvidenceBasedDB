@@ -97,6 +97,21 @@ this project keeps having to replace with a step.
   ADR-0005 A7 approved; F69 carded (the Cerezo NonArxiv paper, Q8 = 1);
   the F60 report corrected: the Asfaw PDF was already present in
   `QMLPapers/Workforce` under 2108.01311, so no download was made
+- **feat**: Q7 applied (2026-10-13, #80) -- the five admission-against-interest
+  candidates raised from moderate to high on the team lead's decision; each
+  reason says what the claim cost QCi to disclose; the two F63 reasons name
+  Dirac-3; a re-apply keeps the upgrades (test proven to fail by
+  injection). Not recorded in the CHANGELOG at the time; added here
+- **docs**: Sprint 8 retrospective recorded (2026-10-13) -- team lead
+  verbatim, Claude feedback in 16 categories, improvements I1-I6 proposed.
+  Not recorded in the CHANGELOG at the time; added here
+- **fix**: QPU balance removed from the store (2026-10-13, team lead) --
+  `hsbc-dirac3-allocation-1681-after-sizing-probes` held a Dirac-3
+  QPU-seconds balance that was stale after QCi's grant of 2026-10-09; a
+  balance is answered by the account, not stored.
+  `scripts/sprint8_remove_qpu_balance.py` removed it (backup taken first);
+  Sprint 6's script no longer carries it; `tests/test_qpu_balance_not_stored.py`
+  (both tests proven to fail)
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
