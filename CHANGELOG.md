@@ -70,6 +70,12 @@ this project keeps having to replace with a step.
   reloaded by a resumed run; ADR-0005 A7 states the 10-to-22-month first
   round; tests added for the exact-10-month boundary, terminal statuses and
   the run's plumbing
+- **feat**: F60 (Task E, #82, 2026-10-12) -- every QMLPapers manifest row
+  checked against its file's first-page arXiv stamp
+  (`scripts/sprint8_f60_manifest_check.py`, read-only): 1,397 match, one
+  mismatch (the Asfaw row; the paper is arXiv:2108.01311, already in the
+  store), 38 with no stamp, 28 PDFs with no row; report in
+  `docs/sprints/SPRINT_8_F60_MANIFEST_CHECK.md`
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
