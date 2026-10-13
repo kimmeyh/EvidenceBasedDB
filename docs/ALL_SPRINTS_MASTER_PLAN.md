@@ -618,6 +618,19 @@ estimates are `[no-history]`.
   injection; the five Massoli entries re-run through F61's script.
 - Depends on: none
 
+**F69. Enter the Cerezo NonArxiv paper, "Key questions for the quantum machine learner to ask themselves" (~20m) Priority 66** (NEW 2026-10-13, team lead at Sprint 8 Manual Validation, Q8 = 1; found in Sprint 8 Task E)
+- Phase: Sourcing / intake
+- Platform: `scripts/intake.py`; the local file
+  `D:\Data\Harold\EvidenceBasedDB\QMLPapers\NonArxiv\Cerezo_2020_Key-questions-for-the-quantum-machine-learner-to-ask-themselves.pdf`
+- F60's check (2026-10-12) found this PDF in `QMLPapers\NonArxiv` with no
+  manifest row and no store record (by id, access or title). It has no
+  arXiv id in its file name.
+- Acceptance: its identifier (DOI or arXiv id) found from the PDF or a
+  search, or the record entered by local path plus SHA-256; entered at
+  `seen` through the door with `found_via` naming the QMLPapers folder; or
+  recorded as out of scope, with the reason.
+- Depends on: none
+
 **F66. Make develop the default branch: a git-flow model with main as the release branch (~1h) Priority 20** (NEW 2026-10-10, team lead at Sprint 8 Phase 1.4; TARGET: Sprint 8)
 - Phase: Process / repository
 - Platform: GitHub repository settings (`gh repo edit`),

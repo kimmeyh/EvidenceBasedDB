@@ -17,9 +17,15 @@ repository and was not changed). **Every count below is a snapshot as of
   Program" (its abstract page read 2026-10-12, one request, v1). The store
   already holds it correctly: `asfaw-2021-building-quantum-engineering-undergraduate-program`,
   access `arXiv:2108.01311`, tier `seen` (entered 2026-10-04). Only the
-  folder is wrong: the file under the Asfaw name is another paper, and the
-  Asfaw PDF was never downloaded. Whether to download it is the team
-  lead's decision at Manual Validation.
+  folder is wrong: the file under the Asfaw name is another paper.
+  ~~The Asfaw PDF was never downloaded.~~ **Corrected 2026-10-13:** the
+  Asfaw PDF is present, in another folder:
+  `Workforce/Asfaw-et-al._2022_Building-a-Quantum-Engineering-Undergraduate-Program__2108.01311.pdf`,
+  first-page stamp `arXiv:2108.01311v1`, named by its own row in
+  `Workforce/manifest.tsv` (one of the 1397 matches). The first report
+  looked for the id in the mismatched row's folder only. No download was
+  needed and none was made. The 2021 row and its file are left for the
+  team lead to fix by hand (Manual Validation Q6 = 1).
 - 38 rows: the first page carries no arXiv stamp (a journal
   version or a typeset copy), so the file's identity was not checked by
   stamp. In every one the file name's id equals the row's id, and all 38
