@@ -112,6 +112,10 @@ this project keeps having to replace with a step.
   `scripts/sprint8_remove_qpu_balance.py` removed it (backup taken first);
   Sprint 6's script no longer carries it; `tests/test_qpu_balance_not_stored.py`
   (both tests proven to fail)
+- **process**: Sprint 8 retrospective I1 (2026-10-13, team lead: all six
+  now) -- a question with numbered options is never titled as yes/no, and
+  every decision question ends with "Recommend N"; added to CLAUDE.md's
+  question rules, the workflow's Phase 5 hand-over and the memory file
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
