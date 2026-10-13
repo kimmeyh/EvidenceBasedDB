@@ -63,14 +63,14 @@ CLAUDE.md already states.
 each release to main is tagged (Sprint 8 Task A, F66).** The Decision
 section has named develop the "repository default" since this ADR was
 written, but the GitHub setting was still `main` until 2026-10-13. Two
-effects followed, and both are corrected:
+changes follow, and one thing is deliberately left as it was:
 *(a)* **The setting.** `gh repo edit --default-branch develop`, then
 `git remote set-head origin -a`, on 2026-10-13. New PRs now open against
 develop by default, and `Closes #N` in a PR merged into develop closes the
 issue (GitHub closes linked issues only on a merge into the default
 branch). Workflow 2.3 and Phase 5 said the opposite and are corrected; the
 open-issue check stays as a backstop.
-*(b)* **The release step.** PR develop -> main, merged by the owner, then
+*(b)* **The release step.** PR develop -> main, merged by the team lead, then
 tag the merge: an annotated tag `sprint-N` on main's merge commit, which
 Claude creates and pushes on the main-merge notification (workflow 8.1).
 The seven earlier releases were tagged `sprint-1` to `sprint-7` the same
