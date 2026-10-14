@@ -234,7 +234,7 @@ repository now holds the re-run it waits on. Priorities renumbered at
 selection in steps of 10, 2 for items that sprint together (the slate's
 numbers, which the team lead's selection used): F78 10, F79 20, F74 30,
 F68 40, F69 42, F39 50, F62 60, F57 70, F55 80, F56 82, F48 90, F50 100,
-F46 110. Plan: `docs/sprints/SPRINT_9_PLAN.md` (in drafting).
+F46 110. F57 released as F80. Plan: `docs/sprints/SPRINT_9_PLAN.md`.
 
 ## Next Sprint Candidates
 
@@ -569,6 +569,16 @@ estimates are `[no-history]`.
 - Acceptance: a hook test that a write into the Phase 2 path is blocked,
   proven to fail by injection; the intake path tried on one real Phase 2
   result.
+- Depends on: none
+
+**F80. F57 release for Sprint 9: read for claims, first slice (~60m) Priority 70** (NEW 2026-10-14, released from the permanent F57 at Sprint 9 scope selection)
+- Phase: Sourcing / extraction (released copy of the permanent F57)
+- Platform: the store; the 26 records at `seen` or `screened` under
+  `hsbc-2026`, `platform:dirac-3` and `platform:dirac-3s` (snapshot as of
+  2026-10-14), none in the CE group
+- Scope per F57's release steps, the slice per Sprint 9 plan Q7.
+- Acceptance: the slice screened; every promoted record read and
+  yielding; every refused one with its reason.
 - Depends on: none
 
 **F74. Re-check correctness: a partial answer must not reset the 12-month clock, and a tool failure must not read as the paper's fault (~1.5h) Priority 30** (NEW 2026-10-13, PR #77 silent-failure review; TARGET: Sprint 9)
