@@ -183,15 +183,10 @@ ASSERTIONS: list[tuple[AssertionRecord, str | None]] = [
        fidelity="exact"), CVQ),
 
     # ---- hsbc-2026 project facts ----
-    (A(id="hsbc-dirac3-allocation-1681-after-sizing-probes",
-       value=("Of the 3,000 Dirac-3 seconds granted on 2026-09-09, 1,039 were drawn by the Phase 1 campaign and 280 by the integer "
-              "sizing probes of 2026-09-23, leaving 1,681"),
-       provenance=f"{HWPLAN}, Allocation position table",
-       evidence_tag="N/A", context="hsbc-2026",
-       certainty="high",
-       certainty_reasons=("Started HIGH: the project's own ledger, read directly, arithmetic checked (3,000 - 1,039 - 280 = 1,681). "
-                          "Note CHECKLIST-Phase2.md line 61 still read 1,961 on 2026-09-30, the figure before the probes"),
-       fidelity="exact"), HWPLAN),
+    # hsbc-dirac3-allocation-1681-after-sizing-probes (a Dirac-3 QPU-seconds
+    # balance) was removed on the team lead's decision of 2026-10-13: a
+    # balance is answered by the account, not stored. See
+    # scripts/sprint8_remove_qpu_balance.py; it is not re-added here.
     (A(id="challenge-terms-participant-ip-retained",
        value="Under the challenge terms, all intellectual property in a submission remains the participant's",
        provenance=f"{TNC}, p.2 section 4.1",

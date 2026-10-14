@@ -71,6 +71,7 @@ def test_pilot_and_domain_scale_contexts_are_seeded(db):
         "hsbc-2026", "world", "method",
         "ml", "qc", "qml",
         "platform:dirac-3", "platform:braket", "platform:classiq",
+        "platform:dirac-3s",  # ADR-0004 A8, 2026-10-12
     }
 
 

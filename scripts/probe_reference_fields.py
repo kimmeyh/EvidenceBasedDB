@@ -13,8 +13,24 @@ serial, 18 s apart, and capped per session (Sprint 7 Task C, F52):
     python scripts/probe_reference_fields.py --ids a,b,c [--apply]
     python scripts/probe_reference_fields.py --all [--apply]
     python scripts/probe_reference_fields.py --refresh --apply --sessions \
-        --progress <file> --heartbeat <file>                     # Phase 1.3, each cycle (F53)
+        --progress <file> --heartbeat <file>                     # a full refresh (F53); not run each cycle
     python scripts/probe_reference_fields.py --stale [--before YYYY-MM-DD]
+    python scripts/probe_reference_fields.py --due [YYYY-MM-DD]  # list what is due; no request
+    python scripts/probe_reference_fields.py --due [YYYY-MM-DD] --probe --apply --sessions \
+        --progress <file> [--report <file>]                      # Phase 1.3 (F64, ADR-0005 A7)
+
+DUE (F64, ADR-0005 A7): every paper has a computed section (1 to 24) and a
+next re-check date, the first start of its section at least 10 months
+after its last check (`store/recheck.py`). `--due` alone lists the papers
+due on or before the date given (default today), from stored dates, and
+sends no request (Sprint 8 retrospective I4: a dry run of a probe still
+probes, and one started by mistake may have sent arXiv requests).
+`--due --probe` runs the brief check on them:
+arXiv by its abstract page alone (one request), with the latest version
+read from the page; other kinds as below; a local path by the file's
+presence and SHA-256. It ends with three lists (re-pull, withdrawn, newly
+published) plus local files missing or changed and pages whose version
+could not be read. Nothing is downloaded.
 
 STALE (F53): a probe measured before the current cycle's start (the date in
 the sprint branch's name) is stale once Phase 1.3 has run. `--stale` lists
@@ -60,7 +76,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import citations, connect, script_paths  # noqa: E402
+from store import citations, connect, recheck, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
 from store.ingest import record_probe  # noqa: E402
 from store.probes import (  # noqa: E402
@@ -95,6 +111,8 @@ def select(conn, args: list[str]) -> list[tuple[str, str, str]]:
         return [(i, a, kind_of(a)) for i, a in rows if i in wanted]
     if "--all" in args:
         return [(i, a, kind_of(a)) for i, a in rows]
+    if "--due" in args:
+        return [(i, a, kind_of(a)) for i, a, _ in recheck.due(conn, due_date(args))]
     if "--unprobed" in args:
         # No probe at all, or an arXiv record whose status arXiv never
         # answered (a DataCite version_of alone is not a finished probe).
@@ -115,6 +133,19 @@ def select(conn, args: list[str]) -> list[tuple[str, str, str]]:
         step = max(1, len(of_kind) // n)
         out += [(i, a, kind) for i, a in of_kind[::step][:n]]
     return out
+
+
+def due_date(args: list[str]) -> date:
+    """`--due [YYYY-MM-DD]`: the date given, else today. A date in another
+    form is refused, never read as today (PR #77 review: `--due 10/13/2026`
+    listed, and with --probe checked, the wrong set)."""
+    i = args.index("--due")
+    nxt = args[i + 1] if i + 1 < len(args) else ""
+    if not nxt or nxt.startswith("--"):
+        return date.today()
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", nxt):
+        raise ValueError(f"--due takes a date as YYYY-MM-DD, got {nxt!r}")
+    return date.fromisoformat(nxt)
 
 
 SPRINT_STATUS = ROOT / ".claude" / "sprint_status.json"
@@ -177,15 +208,25 @@ def api_answers(ident: str, fetcher) -> bool:
         return False
 
 
-def probe(record_id: str, access: str, kind: str, fetcher, mode: str = "api"):
+def probe(record_id: str, access: str, kind: str, fetcher, mode: str = "api", extra: dict | None = None):
     """[(field, value, provider)], notes, arxiv_answered (None when the
-    record sent nothing to arXiv)."""
+    record sent nothing to arXiv). With `extra` (the re-check, F64), the
+    page's latest arXiv version and any local-copy check are put there, and
+    a local-only record's file check is returned as its access_status."""
     found, notes, answered = [], [], None
+    if extra is not None and recheck.local_paths(access):
+        status, note = recheck.check_local(access, extra.get("evidence"))
+        extra["local"] = (status, note)
+        if kind == "hand-local":
+            found.append(("access_status", status, recheck.LOCAL_FILE_PROVIDER))
+            return found, [note] if note else [], None
     if kind == "arxiv" and mode == "site":
         r = probe_arxiv_site(record_id, citations.parse_access(access)[1], fetcher, _open=SITE_OPEN)
         found += [(f, v, r.provider) for f, v in sorted(r.values.items())]
         if r.access is not None:
             found.append(("access_status", r.access, "HTTP probe"))
+        if extra is not None:
+            extra["latest_version"] = r.latest_version
         return found, notes + r.notes, r.provider == SITE_PROVIDER
     if kind == "arxiv":
         # API mode: the API for status, version and affiliations, and the
@@ -227,6 +268,71 @@ def probe(record_id: str, access: str, kind: str, fetcher, mode: str = "api"):
     return found, notes, answered
 
 
+FINDING_LISTS = ("re-pull", "withdrawn", "newly published", "local copy missing or changed", "version unread")
+
+
+def recheck_findings(findings: dict[str, list[str]], rid: str, access: str, kind: str, found, before: str | None,
+                     extra: dict, local_version_of=None, local_copy_of=None) -> None:
+    """Sort one re-checked record into the lists ADR-0005 A7 (d) names.
+    `before` is the publication_status stored before this check."""
+    # The record's own local path first, then QMLPapers by id (PR #77
+    # review: a copy kept in Papers\ under another name was never found, so
+    # the record landed in no list).
+    local_copy_of = local_copy_of or (lambda ident: recheck.local_pdf(access, ident))
+    local_version_of = local_version_of or (lambda ident: recheck.local_version(ident, path=local_copy_of(ident)))
+    status = next((v for f, v, _ in found if f == "publication_status"), None)
+    if status in TERMINAL and before not in TERMINAL:
+        findings["withdrawn"].append(f"{rid}: {status}")
+    # Only a real change: from `preprint`, or from no status at all (said
+    # so). A recorded withdrawal or retraction is kept (keeps_terminal_status),
+    # so a probe's `published` over it is not news.
+    if status == "published" and before in ("preprint", None):
+        doi = next((v for f, v, _ in found if f == "version_of"), "")
+        findings["newly published"].append(f"{rid}: {doi or 'no DOI given'}"
+                                           + (" (no status was recorded before)" if before is None else ""))
+    if kind == "arxiv":
+        latest = extra.get("latest_version")
+        ident = citations.parse_access(access)[1]
+        local = local_version_of(ident) if latest is not None else None
+        if latest is None:
+            findings["version unread"].append(f"{rid}: the abstract page showed no version")
+        elif local is not None and latest > local:
+            findings["re-pull"].append(f"{rid}: local copy v{local}, arXiv shows v{latest}")
+        elif local is None and local_copy_of(ident) is not None:
+            findings["version unread"].append(f"{rid}: the local copy's first page has no readable stamp")
+    local_check = extra.get("local")
+    if local_check and local_check[0] in ("local copy missing", "local copy changed (SHA-256 differs)",
+                                          "local copy unreadable"):
+        findings["local copy missing or changed"].append(f"{rid}: {local_check[0]} ({local_check[1]})")
+
+
+def load_findings(path: Path | None) -> dict[str, list[str]]:
+    """The lists a stopped run already wrote to `--report`, so a resumed run
+    (`--progress` skips finished records) adds to them instead of losing them."""
+    findings: dict[str, list[str]] = {name: [] for name in FINDING_LISTS}
+    if path and path.exists():
+        current = None
+        for line in path.read_text(encoding="utf-8").splitlines():
+            head = line.rsplit(":", 1)[0]
+            if not line.startswith("  ") and head in findings:
+                current = head
+            elif line.startswith("  ") and current:
+                findings[current].append(line[2:])
+    return findings
+
+
+def report_findings(findings: dict[str, list[str]], path: Path | None, quiet: bool = False) -> None:
+    lines = []
+    for name in FINDING_LISTS:
+        lines.append(f"{name}: {len(findings[name])}")
+        lines += [f"  {item}" for item in findings[name]]
+    text = "\n".join(lines)
+    if not quiet:
+        print("\n== re-check lists (nothing downloaded)\n" + text)
+    if path:
+        path.write_text(text + "\n", encoding="utf-8")
+
+
 def _beat(heartbeat: Path | None, text: str) -> None:
     if heartbeat:
         heartbeat.write_text(f"{datetime.now().isoformat(timespec='seconds')} {text}\n", encoding="utf-8")
@@ -265,7 +371,25 @@ def _resume_session(path: Path | None) -> bool:
 
 
 def run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path | None,
-        heartbeat: Path | None, force_site: bool = False) -> int:
+        heartbeat: Path | None, force_site: bool = False, recheck_mode: bool = False,
+        report: Path | None = None) -> int:
+    # A report is reloaded only when this run resumes one (its progress file
+    # lists finished records); a fresh run over an old report path starts
+    # empty (PR #77 review: a dry run then --apply with the same --report
+    # listed every finding twice).
+    resuming = bool(progress and progress.exists() and progress.read_text(encoding="utf-8").split())
+    findings = load_findings(report) if resuming else {name: [] for name in FINDING_LISTS}
+    rc = _run(conn, targets, fetcher, apply=apply, sessions=sessions, progress=progress, heartbeat=heartbeat,
+              force_site=force_site or recheck_mode, findings=findings if recheck_mode else None,
+              report_path=report if recheck_mode else None)
+    if recheck_mode:
+        report_findings(findings, report)
+    return rc
+
+
+def _run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path | None,
+         heartbeat: Path | None, force_site: bool, findings: dict[str, list[str]] | None,
+         report_path: Path | None = None) -> int:
     done = set(progress.read_text(encoding="utf-8").split()) if progress and progress.exists() else set()
     todo = [t for t in targets if t[0] not in done]
     if done:
@@ -293,8 +417,15 @@ def run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path |
                 remaining.append((rid, access, kind))
                 continue
             t0 = time.monotonic()
+            extra, before = None, None
+            if findings is not None:
+                extra = {"evidence": conn.execute("SELECT evidence FROM paper_fields WHERE record_id = ?",
+                                                  (rid,)).fetchone()[0]}
+                row = conn.execute("SELECT value FROM paper_probes WHERE record_id = ? AND "
+                                   "field = 'publication_status'", (rid,)).fetchone()
+                before = row[0] if row else None
             try:
-                found, notes, answered = probe(rid, access, kind, fetcher, mode)
+                found, notes, answered = probe(rid, access, kind, fetcher, mode, extra)
             except citations.ArxivSessionCapReached:
                 # BEFORE the catch-all: the record is not written and not
                 # marked done, so the next session redoes it.
@@ -314,6 +445,17 @@ def run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path |
                                    (rid, field_name)).fetchone()
                 if row and row[0] != value:
                     print(f"      DIFFERS {rid} {field_name}: stored {row[0]!r}, probe {value!r} [{provider}]")
+            if findings is not None and extra is not None:
+                # One set of findings per record: a retry in a later session
+                # replaces this record's lines instead of adding to them.
+                for name in FINDING_LISTS:
+                    findings[name] = [x for x in findings[name] if not x.startswith(f"{rid}: ")]
+                try:
+                    recheck_findings(findings, rid, access, kind, found, before, extra)
+                except Exception as ex:  # noqa: BLE001 -- a sorting failure is a finding, not the end of the run
+                    findings["version unread"].append(f"{rid}: could not be sorted ({type(ex).__name__}: {ex})")
+                if report_path:
+                    report_findings(findings, report_path, quiet=True)  # written as it grows: a stop loses nothing
             if apply:
                 for field_name, value, provider in found:
                     if keeps_terminal_status(conn, rid, field_name, value):
@@ -392,11 +534,39 @@ def main(argv: list[str] | None = None) -> int:
         if "--stale" in args:
             before = args[args.index("--before") + 1] if "--before" in args else cycle_start()
             return report_stale(conn, before)
-        targets = select(conn, args)
+        try:
+            targets = select(conn, args)
+        except ValueError as ex:
+            print(f"error: {ex}", file=sys.stderr)
+            return 2
+        if "--due" in args and "--probe" in args and "--progress" in args and "--report" not in args:
+            # A resumed run skips finished records, so their findings live
+            # only in the report (PR #77 review).
+            print("error: --due --probe --progress needs --report, or a resumed run loses the first run's findings",
+                  file=sys.stderr)
+            return 2
+        if "--due" in args and "--probe" in args and not recheck.QMLPAPERS.exists():
+            print(f"WARNING: {recheck.QMLPAPERS} is missing; only records whose access names a local path can be "
+                  "version-checked", file=sys.stderr)
+        if "--due" in args and "--probe" not in args:
+            # Sprint 8 retrospective I4: without --probe, --due only lists,
+            # from stored dates; no request is sent and nothing is written.
+            if apply:
+                print("error: --due --apply checks the web; add --probe to say so", file=sys.stderr)
+                return 1
+            print(f"{len(targets)} record(s) due on or before {due_date(args)} (ADR-0005 A7); listed from "
+                  "stored dates, no request sent. Add --probe to check them.")
+            for rid, access, _ in targets:
+                section, last, nxt = recheck.schedule(conn, rid)
+                print(f"  {rid}  section {section}  last {last or '-'}  next {nxt or 'now'}  {access}")
+            return 0
         if apply:
             backup_before_write(DB_PATH, "probe reference fields")
+        if "--due" in args:
+            print(f"{len(targets)} record(s) due on or before {due_date(args)} (ADR-0005 A7)")
         rc = run(conn, targets, citations.PacedFetcher(), apply=apply, sessions="--sessions" in args,
-                 progress=path_arg("--progress"), heartbeat=path_arg("--heartbeat"), force_site="--site" in args)
+                 progress=path_arg("--progress"), heartbeat=path_arg("--heartbeat"), force_site="--site" in args,
+                 recheck_mode="--due" in args, report=path_arg("--report"))
         print("APPLIED" if apply else "DRY RUN: nothing written. Re-run with --apply.")
         return rc
     finally:

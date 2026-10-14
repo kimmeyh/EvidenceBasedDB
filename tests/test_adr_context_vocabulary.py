@@ -36,6 +36,7 @@ ADR_0005 = ROOT / "docs" / "adr" / "0005-reference-library.md"
 # listed in the scope correction above").
 _DOMAIN_SCALE_TABLE_HEADER = "| Context | Holds |"
 _CONTEXT_ID_IN_TABLE_ROW = re.compile(r"^\|\s*`([a-z0-9:_-]+)`")
+_CONTEXT_ADDED_BY_AMENDMENT = re.compile(r"The domain-scale context list gains\s+`([a-z0-9:_-]+)`")
 
 
 def _contexts_in_adr_0004_domain_scale_table() -> set[str]:
@@ -72,6 +73,14 @@ def _contexts_in_adr_0004_domain_scale_table() -> set[str]:
         m = _CONTEXT_ID_IN_TABLE_ROW.match(line)
         if m:
             ids.add(m.group(1))
+    # A context added after acceptance is added by a dated amendment at the
+    # bottom of the ADR, never by editing the table in place (CLAUDE.md
+    # "Early innovation"). Each such amendment states it in one fixed
+    # sentence; ADR-0004 A8 (2026-10-12) is the first. Proven by injection
+    # 2026-10-12: with A8's sentence reworded, the database-match test below
+    # went red naming platform:dirac-3s.
+    amendments = text[text.index("\n## Amendments"):]
+    ids.update(_CONTEXT_ADDED_BY_AMENDMENT.findall(amendments))
     return ids
 
 

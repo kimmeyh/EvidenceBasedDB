@@ -146,7 +146,13 @@ once for exactly that reason.
   things.** Each question needs one unambiguous answer form: yes/no, or
   select 1/2/3/.../all. A compound question carrying two decisions ("approve
   the text? And where should it be hosted?") is two numbered questions, not
-  one.
+  one. **A question with numbered options is never titled as a yes/no
+  question, and every decision question ends with a "Recommend N" line.**
+  Sprint 8 (2026-10-13): Q5 was titled "Should the 7 past release merges be
+  tagged too?" over numbered options, so the answer "yes" had to be
+  interpreted; Q7 had no recommendation line, so "as recommended" bound to
+  nothing and Q7 was asked again. Before sending, check each question for
+  both. (Sprint 8 retrospective I1.)
 - **Don't point Harold back to something he would have to scroll for.**
   "The plan from earlier," "as listed above," "per my previous message" all
   point at content that may be many screens back, behind tool output and

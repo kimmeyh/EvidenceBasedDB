@@ -25,7 +25,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import connect, script_paths  # noqa: E402
+from store import connect, recheck, script_paths  # noqa: E402
 
 # Windows consoles commonly default to cp1252, which cannot encode most
 # citation text (accents, math symbols). Reconfigure stdout to UTF-8 so
@@ -113,6 +113,14 @@ def cmd_contexts_detail(conn, context_id: str) -> dict:
     }
 
 
+def _schedule(schedule: tuple) -> dict:
+    """The re-check schedule as JSON values: section an int, dates ISO or
+    None (None for the next date means due now)."""
+    section, last, nxt = schedule
+    return {"section": section, "last_check": last.isoformat() if last else None,
+            "next_recheck": nxt.isoformat() if nxt else None}
+
+
 def cmd_paper(conn, paper_id: str) -> dict:
     """`view.py paper <id>` -- the full paper record plus every assertion
     it yields, each with ITS full fields, not just ids."""
@@ -152,6 +160,10 @@ def cmd_paper(conn, paper_id: str) -> dict:
         "disposition": fields["disposition"] if fields else None,
         "checked_against_source": fields["checked_against_source"] if fields else None,
         "applicability": [{"context": r["context_id"], "rationale": r["rationale"]} for r in applicability],
+        # ADR-0005 A7 (F64): computed on every view, never stored.
+        # A paper with no date to start from is due now (PR #77 review: it
+        # showed the string "None").
+        "recheck": _schedule(recheck.schedule(conn, paper_id)),
         "yields": yields,
     }
 
@@ -240,6 +252,9 @@ def _print_text(data: dict, mode: str) -> None:
         print(f"  Access:     {data['access']}")
         print(f"  Disposition: {data['disposition']}")
         print(f"  Checked against source: {data['checked_against_source']}")
+        rc = data["recheck"]
+        print(f"  Re-check:   section {rc['section']} of 24; last checked {rc['last_check'] or 'never'}; "
+              f"next re-check {rc['next_recheck'] or 'now'}")
         if data["applicability"]:
             print("  Applicability:")
             for a in data["applicability"]:

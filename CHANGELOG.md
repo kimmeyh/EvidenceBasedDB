@@ -27,7 +27,184 @@ this project keeps having to replace with a step.
   ADR-0001 A2's lead-in now matches its two changes and one decision not
   to change (Claude code review)
 
-### 2026-10-06 onward (Sprint 7, in progress)
+### 2026-10-10 onward (Sprint 8, in progress)
+
+- **docs**: Sprint 8 Phase 1 (2026-10-10) -- carry-forward cut
+  `feature/20261010_Sprint_8` from the Sprint 7 branch after PR #68
+  (develop) and PR #76 (main); sprint status advanced in the "Phase n.n
+  Name" format; CHANGELOG reconciled for Sprint 7's last three days;
+  Sprint 7 completeness sweep; design-document currency checked; candidate
+  slate presented
+- **docs**: F66 carded (2026-10-10, team lead at Phase 1.4, target Sprint
+  8) -- make develop the default branch, with main as the release branch
+  changed only by a tagged develop-to-main PR; CI to run on PRs into both
+- **docs**: Backlog refinement (2026-10-10, Phase 1.5) -- Sprint 8 scope
+  selected: F65, F63, F64, F60, F61 and an F39 release (F67, Haiku 5.5);
+  priorities renumbered in steps of 10 (Q2 = 1); F49 closed without
+  implementation as moot under ADR-0004 A7 (Q3 = 1)
+- **docs**: Sprint 8 plan drafted (2026-10-10, Phase 3) -- Tasks A to E
+  (F67, F65 with F63, F64, F60, F61) with planning pre-flights and six
+  decisions for approval; F67 carded (the F39 release, Haiku 5.5); F66 and
+  F67 under a new "Carded during Sprint 8" heading
+- **docs**: Sprint 8 plan approved as amended (2026-10-12) -- F66 added as
+  Task A; decisions Q1 to Q6 absorbed into the task lines; issues #78 to #83
+- **chore**: F67, the F39 release for Sprint 8 (Task B, #79, 2026-10-12) --
+  the haiku tier now names Haiku 5.5 (`claude-haiku-5-5`, tiered by prompt
+  length); the Developers role moves to it (Q6 = 1); the other tiers
+  re-verified unchanged; a release note records Claude Mythos 5.1 as listed
+  and unassigned
+- **docs**: F66 Phase A inspection (Task A, #78) -- findings held for the
+  Manual Validation hand-over; no change made
+- **feat**: F65 with F63 (Task C, #80, 2026-10-12) -- the Dirac-3S User
+  Guide Rev A entered and read in full (SHA-256 recorded); ADR-0004 A8 adds
+  the context `platform:dirac-3s`; 17 Dirac-3S assertions and F63's two
+  Dirac-3 admissions, every quote verified against the local PDFs by
+  `tests/test_f65_dirac3s_reading.py`; the 19 prior Dirac-3 assertions
+  classed against the guide; admission-against-interest upgrades held for
+  Manual Validation
+- **feat**: F64, the staggered 12-month re-check (Task D, #81, 2026-10-12)
+  -- `store/recheck.py` computes each paper's section (1 to 24, from its
+  id's hash), last check and next re-check; `probe_reference_fields.py
+  --due` checks only the papers due, every kind (local files by presence
+  and SHA-256), and prints three lists (re-pull, withdrawn, newly
+  published); arXiv version read from the abstract page against the local
+  copy's first-page stamp; `view.py paper` shows the schedule; ADR-0005
+  A7; workflow Phase 1.3 updated
+- **fix**: Task C fresh-eyes review (2026-10-12) -- eight assertions'
+  wording, quotes or reasons corrected to say only what the quoted text
+  supports (sample cap, integer range, ceiling, FPGA, coherent states,
+  CE/FCC, entanglement); two classes changed to "confirmed in part"; the
+  `supports` links from copied Dirac-3 text marked as vendor restatements;
+  the context description no longer says "successor"; the supports test
+  checks both directions
+- **fix**: Task D fresh-eyes review (2026-10-12) -- a folder or an
+  unreadable local file no longer stops the re-check; "newly published"
+  counts only a change from preprint or from no status; an unreadable local
+  stamp is listed as "version unread"; the report is written as it grows and
+  reloaded by a resumed run; ADR-0005 A7 states the 10-to-22-month first
+  round; tests added for the exact-10-month boundary, terminal statuses and
+  the run's plumbing
+- **feat**: F60 (Task E, #82, 2026-10-12) -- every QMLPapers manifest row
+  checked against its file's first-page arXiv stamp
+  (`scripts/sprint8_f60_manifest_check.py`, read-only): 1,397 match, one
+  mismatch (the Asfaw row; the paper is arXiv:2108.01311, already in the
+  store), 38 with no stamp, 28 PDFs with no row; report in
+  `docs/sprints/SPRINT_8_F60_MANIFEST_CHECK.md`
+- **feat**: F61 (Task F, #83, 2026-10-12) -- the Massoli et al. survey
+  list mined: 184 entries, 137 entered at `seen` through the door, 28
+  already in the store, 1 duplicate, 18 refused with reasons; the list's
+  repository linked to the survey as `dataset-of`; report in
+  `docs/sprints/SPRINT_8_F61_MASSOLI_LIST.md`; F68 carded (old-style arXiv
+  ids and DOIs with parentheses); SPRINT_CHECKLIST 1.3 names the due
+  re-check
+- **docs**: Manual Validation answers (2026-10-13) -- ADR-0004 A8 and
+  ADR-0005 A7 approved; F69 carded (the Cerezo NonArxiv paper, Q8 = 1);
+  the F60 report corrected: the Asfaw PDF was already present in
+  `QMLPapers/Workforce` under 2108.01311, so no download was made
+- **feat**: Q7 applied (2026-10-13, #80) -- the five admission-against-interest
+  candidates raised from moderate to high on the team lead's decision; each
+  reason says what the claim cost QCi to disclose; the two F63 reasons name
+  Dirac-3; a re-apply keeps the upgrades (test proven to fail by
+  injection). Not recorded in the CHANGELOG at the time; added here
+- **docs**: Sprint 8 retrospective recorded (2026-10-13) -- team lead
+  verbatim, Claude feedback in 16 categories, improvements I1-I6 proposed.
+  Not recorded in the CHANGELOG at the time; added here
+- **fix**: QPU balance removed from the store (2026-10-13, team lead) --
+  `hsbc-dirac3-allocation-1681-after-sizing-probes` held a Dirac-3
+  QPU-seconds balance that was stale after QCi's grant of 2026-10-09; a
+  balance is answered by the account, not stored.
+  `scripts/sprint8_remove_qpu_balance.py` removed it (backup taken first);
+  Sprint 6's script no longer carries it; `tests/test_qpu_balance_not_stored.py`
+  (both tests proven to fail)
+- **process**: Sprint 8 retrospective I1 (2026-10-13, team lead: all six
+  now) -- a question with numbered options is never titled as yes/no, and
+  every decision question ends with "Recommend N"; added to CLAUDE.md's
+  question rules, the workflow's Phase 5 hand-over and the memory file
+- **process**: Sprint 8 retrospective I2 (2026-10-13) -- a "no local copy"
+  finding is computed: `store.recheck.local_copies` searches all of
+  QMLPapers and completes a new-style id one digit short; the F60 check
+  lists every copy for a mismatch or missing row (the real run now names
+  the Asfaw copy in `Workforce`); workflow Phase 4 note; tests proven to
+  fail by injection
+- **process**: Sprint 8 retrospective I3 (2026-10-13) -- one shared builder,
+  `store.ingest.admission_upgrade_reason`, writes every
+  admission-against-interest upgrade reason with "costly to disclose,
+  because ..." and refuses an empty cost; the F65 script uses it (its
+  stored reasons unchanged); the F47 test stays as the backstop; test
+  proven to fail by injection
+- **process**: Sprint 8 retrospective I4 (2026-10-13) -- `--due` alone
+  lists the papers due from stored dates and sends no request; the
+  re-check is `--due --probe`; `--due --apply` without `--probe` is
+  refused; ADR-0005 A8; workflow Phase 1.3 and checklist 1.3 updated; test
+  proven to fail by injection
+- **process**: Sprint 8 retrospective I5 (2026-10-13) -- the existing
+  `block_unraw_escape.py` hook now also blocks a shell edit of a
+  repository code file (`sed -i`, `perl -i`, a redirect or `tee`,
+  PowerShell `Set-Content`/`Add-Content`/`Out-File` onto a `.py` or
+  `.sql`); heredoc bodies and scratch files outside the repository pass;
+  bypass token `allow_shell_code_edit`; workflow Phase 4 names the rule;
+  tests proven to fail by injection
+- **process**: Sprint 8 retrospective I6 (2026-10-13) -- work approved
+  during an open sprint goes on the sprint branch unless the team lead
+  asks for a separate PR; added to workflow 6.6 and to the
+  branch-from-develop hook's block message, before its bypass token
+- **fix**: I1-I6 fresh-eyes review (2026-10-13) -- the I5 hook now also
+  blocks sed after `xargs`, `env` or `bash -c`, `perl -0pi`, `1>` and `&>`,
+  and no longer loses later lines after a `<<<` here-string; it no longer
+  blocks a PowerShell write whose target is not code, a `git commit -m`
+  message, or a relative path after a `cd` out of the repository (12 cases
+  added, each red against the first version); the upgrade-reason builder
+  avoids a double period; the QPU-balance test reads either quote style in
+  any scripts subfolder; the removal script refuses on every
+  non-cascading link
+- **fix**: I5 hook edge-case pass (2026-10-13, team lead asked whether the
+  edge cases had been searched; they had not) -- now also blocks `>|`,
+  any fd redirect, `tee` with options or several files, `dd of=`, `cp`,
+  `mv`, Copy-Item and Move-Item onto code, `awk -i inplace`, `ruby -pi`,
+  `sed -i''`, `find -exec sed -i` and `ls-files | xargs sed -i`,
+  `[IO.File]::WriteAll*`, `New-Item -Value`, every repository code type
+  (.py .sql .yml .ini, plus .yaml .toml .ps1 .sh) in any case, and a `cd`
+  back into the repository; no longer reads PowerShell here-strings,
+  `gh api -f body=` values or full-line comments; the bypass token counts
+  only outside data; known limits listed in the hook; 26 new cases red
+  against the previous version
+- **docs**: F71 carded and planned as Sprint 8 Task G (2026-10-13, team
+  lead Q1 = 2, #85) -- F65's four recovered items; plan amendment with
+  pre-flights (robots.txt allows all; 2,854 sitemap URLs; `lastmod` is no
+  change signal), risks and Definition of Done; F70 skipped because the
+  workflow quotes the consumer repository's F70
+- **feat**: F71, Sprint 8 Task G (2026-10-13, #85) -- the Dirac-3S release,
+  the Technical Reference module (its Continuous Solver Benchmarking review
+  read in full) and the Dirac-3 product page (now the Dirac-3S page) entered
+  as five references at `read`; two QCi arXiv papers at `seen`; 11
+  assertions under `platform:dirac-3s` (the review's all-optimal headline
+  against its own Table 6, its two ub = 10 counts, which device ran); four
+  admission-against-interest candidates held for the team lead; the site
+  diff computed (`scripts/sprint8_f71_qci_site_check.py`: 4 changed, 5 new,
+  1 gone, 43 recent in uncovered sections, qci-client v5.0.3); report
+  `docs/sprints/SPRINT_8_F71_QCI_SITE_CHECK.md`; QCi's PDFs kept with the
+  other references outside the repository (team lead); tests proven by
+  injection
+- **fix**: PR #77 review findings (2026-10-13; Claude pr-review-toolkit
+  code, test-coverage and silent-failure reviews; Copilot found none on
+  #77) -- site check: a section of one or two pages keeps its own change
+  (the menu rule needs 3 pages), ambiguous matches listed, redirects and
+  failed fetches reported, undated pages counted recent, a sitemap index
+  and unknown flags refused; re-check: the record's own local path first
+  (`recheck.local_pdf`), an invalid `--due` date refused, a fresh run no
+  longer repeats an old report's findings and a retry replaces a record's
+  lines, `--progress` needs `--report`; `view.py` shows "now" for an
+  undated paper; F71 script: exact id match and SHA-256 on every local
+  copy; hook: a heredoc a shell runs is scanned, `truncate`, the `py`
+  launcher and python writes onto .sql caught, an internal error fails
+  open with a warning; workflow I2 sentence corrected to what the search
+  covers; F74 carded (a partial answer resets the re-check clock; a tool
+  failure blames the paper)
+- **docs**: Sprint 8 close-out (2026-10-13) -- `SPRINT_8_SUMMARY.md` with
+  Actuals; master plan Last Completed Sprint and summary row; checklist
+  reconciled; retrospective notes Task G
+
+### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
 - **docs**: Sprint 7 Phase 1 (2026-10-06) -- carry-forward cut
   `feature/20261006_Sprint_7` from the Sprint 6 branch after PR #54
@@ -156,6 +333,31 @@ this project keeps having to replace with a step.
   the reading (section 15): F-301's "80 percent" is not in the critique,
   and F-302's 122% bundles a 24% formulation gap. Guards proven by
   injection
+- **docs**: Phase 5 I4 re-read (2026-10-08) -- ADR-0004 A7 matched to the
+  code in two sentences (CI deselects by marker; off Windows with no
+  override, `store_dir()` refuses and names `EBDB_STORE_DIR`) (de4e487);
+  Manual Validation package handed over
+- **docs**: Manual Validation decisions (2026-10-08 and 2026-10-09) -- Q9
+  keep priorities; Q13 no action on the 949 / 954 Dirac-3 level ceiling;
+  F63 carded (two Dirac-3 admissions in arXiv:2407.04512); Q12 = 1 a
+  12-month re-check, Q15 = 2 built in Sprint 8, Q16 = 1 F64 carded (the
+  staggered 24-section schedule); ADR-0005 A6 revised and approved (Q19);
+  ADR-0004 A7, ADR-0003 A2, ADR-0005 A5 approved; Phase 1.3 no longer
+  refreshes the probes each cycle (b8f3bca, 89accb9)
+- **docs**: Sprint 7 retrospective (2026-10-09 and 2026-10-10) -- team
+  lead's feedback verbatim (all Very Good) with Claude's (f403121); F65
+  carded (Dirac-3S, target Sprint 8); `SPRINT_7_SUMMARY.md`; master plan
+  and checklist rolled (cf6f5e4)
+- **process**: Sprint 7 retrospective I1-I7 (2026-10-10, Q21 = 1) --
+  decision options state their cost; the plan absorbs its decisions at
+  3.7; options lead with the outcome; dropped commitments disclosed in the
+  next message; the amendment re-read covers restatements; one sprint
+  status format ("Phase n.n Name") read by the footer, the Phase 4 Stop
+  hook and the tests, with the stored `updated` field removed; task start
+  times in the note. Guards proven by injection (0747a9b, 9cf69a6)
+- **fix**: Copilot review on PR #68 (2026-10-10) -- the abstract-page probe
+  note said "access not recorded" for a 404 or 410 that IS recorded; PEP 8
+  spacing (a63cad9)
 
 ### 2026-09-27 to 2026-10-06 (Sprint 6, PR #54, merged to develop 2026-10-06 and to main via PR #67 the same day)
 
