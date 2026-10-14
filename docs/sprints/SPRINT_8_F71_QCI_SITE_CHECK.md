@@ -75,7 +75,8 @@ repository: pages under `References\QCi-site_2026-10-13\`, QCi's PDFs under
 **Held for the team lead (Class 2):** four of these are
 admission-against-interest candidates and stay at moderate:
 per-sample success, best-of-four schedules, dedicated clique algorithms,
-slower than PGD.
+slower than PGD. Decided 2026-10-14: the team lead upgraded none of the
+four; all stay at moderate.
 
 ## The site diff (computed)
 
