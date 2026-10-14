@@ -114,3 +114,120 @@ def test_allows_non_code_writes_and_plain_runs(command):
 
 def test_python_writes_code_bypass_token():
     assert run(SPRINT5_BREAKER + " # allow_python_writes_code").returncode == 0
+
+
+# ---- Sprint 8 retrospective I5 (2026-10-13): no shell edits of repository code files
+
+@pytest.mark.parametrize("command", [
+    "sed -i 's/old/new/' scripts/sprint8_f60_manifest_check.py",  # the Sprint 8 shape
+    "cd /d/Data/Harold/github/EvidenceBasedDB && sed -i.bak -e 's/a/b/' store/recheck.py",
+    "perl -pi -e 's/a/b/' tests/test_recheck.py",
+    "git show HEAD:store/ingest.py > store/ingest.py",
+    "echo 'x = 1' >> scripts/view.py",
+    "printf 'x' | tee store/schema.sql",
+    "cat > scripts/new.py <<'EOF'\nprint(1)\nEOF",
+    "Set-Content -Path scripts/view.py -Value 'x'",
+    "sed -i 's/a/b/' D:/Data/Harold/github/EvidenceBasedDB/store/recheck.py",
+    # Fresh-eyes review, 2026-10-13: shapes that escaped the first version
+    "cat <<< 'a'\nsed -i 's/a/b/' store/x.py",
+    "git ls-files store | xargs sed -i 's/a/b/' store/recheck.py",
+    "bash -c \"sed -i 's/a/b/' store/x.py\"",
+    "env sed -i 's/a/b/' store/x.py",
+    "perl -0pi -e 's/a/b/' store/x.py",
+    "echo x 1> store/x.py",
+    "echo x &> store/x.py",
+    "cd /d/Data/Harold/github/EvidenceBasedDB && sed -i 's/a/b/' store/x.py",
+    "Set-Content -Value 'x' -Path scripts/view.py",
+    "Out-File -Encoding utf8 -FilePath store/a.py",
+    "Set-Content scripts/view.py 'x'",
+    # Edge-case pass, 2026-10-13
+    "echo x >| store/x.py",
+    "python scripts/view.py 2> store/x.py",
+    "exec 3> scripts/x.py",
+    "printf x | tee -a log.txt store/x.py",
+    "printf x | tee --append store/x.py",
+    "dd if=/dev/zero of=store/x.py count=1",
+    "cp /tmp/x.py store/recheck.py",
+    "mv C:/Users/kimme/x.py scripts/view.py",
+    "Copy-Item C:/tmp/x.py -Destination store/recheck.py",
+    "awk -i inplace '{print}' store/x.py",
+    "ruby -pi -e 'gsub(/a/, \"b\")' store/x.py",
+    "sed -i'' 's/a/b/' store/x.py",
+    "find store -name '*.py' -exec sed -i 's/a/b/' {} +",
+    "git ls-files '*.py' | xargs sed -i 's/a/b/'",
+    "sed -i 's/a/b/' .github/workflows/ci.yml",
+    "sed -i 's/a/b/' pytest.ini",
+    "sed -i 's/a/b/' STORE/X.PY",
+    "[IO.File]::WriteAllText('store/x.py', 'x')",
+    "[System.IO.File]::AppendAllLines('scripts/x.py', $lines)",
+    "New-Item store/x.py -ItemType File -Value 'x'",
+    "Set-Content -Path 'store/x.py' -Value 'x'",
+    "echo x > 'store/x.py'",
+    "cd /tmp && cd /d/Data/Harold/github/EvidenceBasedDB && sed -i 's/a/b/' store/x.py",
+    "git commit -m 'allow_shell_code_edit is named here' && sed -i 's/a/b/' store/x.py",
+    "sed -i 's/a/b/;s/c/d/' store/x.py",
+    # PR #77 review, 2026-10-13
+    "bash <<EOF\nsed -i s/a/b/ store/recheck.py\nEOF",
+    "truncate -s0 store/x.py",
+])
+def test_blocks_a_shell_edit_of_a_repository_code_file(command):
+    """Proven to fail by injection, 2026-10-13: with _shell_edits_code
+    returning [], every case passed (exit 0) and this test went red. The
+    fresh-eyes review's cases (here and in the allowed list below) each
+    failed against the hook as committed in 6a260ce, run the same day. Of
+    the edge-case pass's cases (both lists), 26 failed against the hook as
+    committed in 91f508b; the rest guard behavior it already had."""
+    proc = run(command)
+    assert proc.returncode == 2, command
+    assert "editing a repository code file" in proc.stderr
+
+
+@pytest.mark.parametrize("command", [
+    "sed -n 1,40p scripts/view.py",                       # reading
+    "grep -n def store/recheck.py > /tmp/defs.txt",         # redirect onto a text file
+    "python -m pytest -q > C:/Users/kimme/AppData/Local/Temp/pt.log 2>&1",
+    "cat > /tmp/scratch.py <<'EOF'\nprint(1)\nEOF",        # a scratch file outside the repository
+    "git commit -q -F - <<'EOF'\nfix: no more sed -i on scripts/x.py; > store/y.py\nEOF",  # a message is data
+    "sed -i 's/a/b/' CHANGELOG.md",                        # prose, not code
+    # Fresh-eyes review, 2026-10-13: everyday commands the first version blocked
+    "Get-Content a.txt | Out-File log.txt; python scripts/view.py",
+    "Out-File -FilePath log.txt -InputObject (python store/recheck.py)",
+    "Set-Content -Path notes.txt -Value 'see store/x.py'",
+    'git commit -m "hook: blocks echo > store/x.py"',
+    "cd C:/Users/kimme/AppData/Local/Temp && sed -i 's/a/b/' scratch.py",
+    "python -m pytest -q 2>&1 | tee pt.log",
+    # Edge-case pass, 2026-10-13
+    "python -m pytest -q > pt.log 2>&1; echo exit=$?",
+    "cp store/recheck.py C:/Users/kimme/AppData/Local/Temp/x.py",  # copying code out
+    "cp CHANGELOG.md /tmp/c.md",
+    "perl -Mstrict -ne 'print if /def /' store/recheck.py",
+    "awk '{print $1}' store/recheck.py",
+    "sed -n 's/a/b/p' store/recheck.py",
+    "grep -c 'x > y' store/recheck.py",
+    "python -c \"print(1 if 2 > 1 else 0)\" scripts/view.py",
+    "gh api repos/o/r/pulls/1/comments/2/replies -f body='Fixed: sed -i on store/x.py is now blocked; > store/y.py too'",
+    "git commit -q -F - <<'EOF'\nfix: tee store/x.py and cp a.py store/b.py are blocked\nEOF",
+    "git commit -m @'\nfix: Set-Content store/x.py is blocked\n'@",
+    "# sed -i 's/a/b/' store/x.py\necho done",
+    "git checkout -- store/recheck.py",
+    "x => store/recheck.py",
+])
+def test_allows_reads_scratch_files_and_messages(command):
+    proc = run(command)
+    assert proc.returncode == 0, f"{command}\n{proc.stderr}"
+
+
+@pytest.mark.parametrize("command", [
+    "py -c \"p = 'D:\\Data\\new.txt'\"",
+    "python - <<'PYEOF'\nopen('store/schema.sql','w').write('x')\nPYEOF",
+])
+def test_the_python_checks_cover_the_launcher_and_sql(command):
+    """PR #77 review: the `py` launcher was not read as python, and a python
+    write onto a .sql file was not read as a code write. Proven to fail,
+    2026-10-13: both commands passed (exit 0) against the hook as committed
+    in 301ea4c."""
+    assert run(command).returncode == 2, command
+
+
+def test_shell_code_edit_bypass_token():
+    assert run("git show HEAD:store/ingest.py > store/ingest.py  # allow_shell_code_edit").returncode == 0

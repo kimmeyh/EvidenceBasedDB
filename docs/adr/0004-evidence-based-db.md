@@ -882,3 +882,41 @@ backups; an export is an on-demand dump, never committed.
 shared location or a published dump is the question), or when a data
 change needs review before it lands (then a reviewable dump comes back,
 outside git).
+
+**2026-10-12 (A8): a context per QCi system, `platform:dirac-3s` beside
+`platform:dirac-3`.** Sprint 8 Task C (F65), decided at plan approval (Q3 =
+1). Team lead: "they should be separate - ok to list common assertions,
+facts... that you can confirm."
+
+**Every count below is a snapshot as of 2026-10-12.**
+
+*(a) Why a new context passes section 3b's rule.* QCi's Dirac-3S User Guide
+(September 2026, Revision A) describes a different machine: a 5U base
+module plus optional expansion modules, with its own variable ceilings and
+power figures. Its claims share an assumption the Dirac-3 claims do not
+(this hardware generation and configuration), so filing them under
+`platform:dirac-3` would make a query for the Dirac-3 return Dirac-3S
+claims. That is the "context factors out shared assumptions" case, not a
+tag.
+
+*(b) How the two systems relate, with no new relation type.*
+`assertion_relations` keeps its two values. A Dirac-3S assertion that
+states the same fact as a Dirac-3 assertion is linked `supports` to it,
+but only when the WHOLE Dirac-3 claim is confirmed; a partial confirmation
+is stated in the Dirac-3S assertion's text and not linked. Where the guide
+differs, the Dirac-3S assertion states the difference and names the Dirac-3
+assertion; `contradicts` is used only when both cannot hold for the same
+system. The 19 Dirac-3 assertions are not edited.
+
+*(c) What was considered.* New relation types `confirms` and `supersedes`
+(a schema migration, about 90 minutes more) were declined at Q3; filing
+Dirac-3S claims under `platform:dirac-3` with a note was declined because
+one context would then hold two systems.
+
+*Consequence for section 3b.* The domain-scale context list gains
+`platform:dirac-3s`, seeded in `store/seed_contexts.sql` and added to the
+live store by `scripts/sprint8_f65_dirac3s_reading.py`.
+
+*Revisit when* QCi publishes a third Dirac generation, or a claim must hold
+for every Dirac system: then a computed intersection, not a third sibling
+context, is the question (section 3b, Cyc's `IntersectContexts`).

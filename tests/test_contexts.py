@@ -39,6 +39,7 @@ DOMAIN_SCALE_CONTEXTS = {
     "platform:dirac-3",
     "platform:braket",
     "platform:classiq",
+    "platform:dirac-3s",  # ADR-0004 A8, 2026-10-12
 }
 
 

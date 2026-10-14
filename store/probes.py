@@ -23,7 +23,7 @@ import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
 
-from store import citations
+from store import citations, recheck
 from store.citations import _ATOM, _safe_xml_root
 from store.ingest import visible_words
 
@@ -41,6 +41,9 @@ class ProbeResult:
     # access_status observed by the SAME request (the arXiv site probe), so
     # the caller does not spend a second request on it; None = not observed.
     access: str | None = None
+    # The latest version the abstract page shows (ADR-0005 A7 (d)); None =
+    # not read. Set only by the site probe.
+    latest_version: int | None = None
 
 
 def _arxiv_entry(ident: str, fetcher) -> tuple[str, str, str, list[str]] | None:
@@ -275,6 +278,7 @@ def probe_arxiv_site(record_id: str, ident: str, fetcher, _open=None) -> ProbeRe
         r.notes.append("publication_status left unanswered (a withdrawal shows only on arXiv)")
         return r
     r.provider = SITE_PROVIDER
+    r.latest_version = recheck.latest_version(body.decode("utf-8", "replace"))
     withdrawn, jref, doi = parsed
     if withdrawn:
         r.values["publication_status"] = "withdrawn"

@@ -122,6 +122,7 @@ def test_contexts_export_matches_the_seeded_contexts(db):
         "hsbc-2026", "world", "method",
         "ml", "qc", "qml",
         "platform:dirac-3", "platform:braket", "platform:classiq",
+        "platform:dirac-3s",  # ADR-0004 A8, 2026-10-12
     }
 
 
