@@ -665,6 +665,63 @@ estimates are `[no-history]`.
   recorded as out of scope, with the reason.
 - Depends on: none
 
+**F78. Ceiling estimation: read the whole CE group in full and enter it, so the store answers "can this dataset or problem be done better?" (~6.5h) Priority 10** (NEW 2026-10-14, team lead EDB query, Q1 = 1, Q3 = 2 everything in full, Q4 = 1 first task of Sprint 9; TARGET: Sprint 9)
+- Phase: Content / reading
+- Platform: the 31 records whose disposition names `[CE-n]` (the HSBC
+  Phase 2 bibliography's "Ceiling estimation / Bayes error" group); local
+  copies in `D:\Data\Harold\EvidenceBasedDB\Papers\` and `References\`;
+  a new `scripts/sprint9_f78_ceiling_reading.py` (dry run by default,
+  verified backup on `--apply`, idempotent)
+- Team lead, 2026-10-13: "did we find the paper that proposes/finds a
+  theoretical optimum for any ML ... cannot be any more than X ... confusion
+  matrix, AUPUC or other", then "it might not have been ML, but an
+  optimization problem"; 2026-10-14: "add all of them to the store, read
+  them all and update the database", and "is there a way to find the
+  maximum, near maximum predictions or can't be better than... on any ML
+  dataset and/or any optimization problem. This will be helpful at least on
+  wether further improvement can be done on a dataset or if a better
+  dataset is needed."
+- **Facts at carding (snapshot as of 2026-10-14, read only)**: 31 CE
+  records; 1 read (McDermott, CE-5); 6 read on 2026-10-13 and not yet
+  recorded (Boyd, Dhama, Butt and Tschirschwitz in full; Zhao, CE-7, and
+  Ushio in part); 14 unread ceiling or Bayes-error papers (11 with local
+  copies; Chen 2025, Te Sun 1994 and Thanh 2026 publisher-only); 3
+  synthetic-data papers (Allen, Altman, Ostman); 7 repositories or a
+  handbook. Not in the store: Ishida et al., ICLR 2023 (arXiv:2202.00395)
+  and Theisen et al., NeurIPS 2021 (arXiv:2106.03357).
+- Scope: every item read in full (Q3 = 2), repositories by README and
+  code; each read recorded in `paper_reads`; Zhao and Ushio finished; the
+  ceiling, bound and method claims entered as assertions with section
+  anchors (Butt's 0.451 F1 ceiling with the gap between its abstract and
+  its Theorem 1 and its Table IV exceedance; Tschirschwitz's LVIS bound;
+  Zhao's F-score and BER bounds; Boyd's AUPRC minimum); `access` pointed
+  at the local copy plus the identifier; Ishida and Theisen entered
+  through the door (two serial arXiv requests inside the cap); each
+  publisher-only paper tried once and recorded if unobtainable.
+- Acceptance: every CE record at `read` or carrying a recorded reason it
+  is not; every quote verified verbatim against its local copy by test;
+  a short answer document for the team lead's question (ML ceilings and
+  optimization bounds, each method with its source), with verified and
+  inferred kept apart.
+- Depends on: none
+
+**F79. The consumer is now hsbc-qfraud-phase2: name it in CLAUDE.md and cover it with the read-only rule and hook (~45m) Priority 20** (NEW 2026-10-14, team lead "yes" to carding it; TARGET: Sprint 9)
+- Phase: Process / repository
+- Platform: `CLAUDE.md`, `.claude/hooks/block_sibling_repo_writes.py`, its
+  test, the read-but-never-write memory file
+- **Facts at carding (snapshot as of 2026-10-14)**: `kimmeyh/hsbc-quantum-fraud-2026`
+  (Phase 1) is archived; the active consumer is `kimmeyh/hsbc-qfraud-phase2`
+  (Sprint 26, PR 21 open). CLAUDE.md still names the archived repository
+  as the first consumer, and the sibling-write rule and hook list only
+  `spamfilter-multi` and `hsbc-quantum-fraud-2026`.
+- Scope: CLAUDE.md names Phase 2 as the consumer and keeps Phase 1 as
+  history; the hook blocks writes to `hsbc-qfraud-phase2` too (whether
+  that is wanted is asked at planning); ADR-0005's privacy consequence
+  re-read against the new repository.
+- Acceptance: a hook test that a write into the Phase 2 path is blocked,
+  proven to fail by injection.
+- Depends on: none
+
 **F74. Re-check correctness: a partial answer must not reset the 12-month clock, and a tool failure must not read as the paper's fault (~1.5h) Priority 30** (NEW 2026-10-13, PR #77 silent-failure review; TARGET: Sprint 9)
 - Phase: Store / re-check (ADR-0005 A7)
 - Platform: `store/recheck.py` (`last_check`), `scripts/probe_reference_fields.py`
