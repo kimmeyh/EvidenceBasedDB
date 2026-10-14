@@ -546,7 +546,9 @@ estimates are `[no-history]`.
   the rule cover `hsbc-qfraud-phase2` (read freely, never write); (3)
   inbound: an intake path for Phase 2 experiment results arriving as a
   pasted prompt, each result entered with provenance naming the Phase 2
-  repository, commit and run, and certainty from that evidence;
+  repository, commit and run, checked against that commit's files before
+  entry (reading Phase 2 is allowed; the pasted prompt is the channel, not
+  the evidence), and certainty from that evidence;
   (4) outbound: a prompt shape for answers sent to Phase 2, with each
   claim's provenance inline (ADR-0005: no citation may depend on this
   private store resolving); (5) Phase 2's own read-only guard is that
