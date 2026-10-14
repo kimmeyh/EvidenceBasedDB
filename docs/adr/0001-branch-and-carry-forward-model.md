@@ -58,3 +58,29 @@ replaced with "Related design documents" naming this repository's own
 ADR-0004 and ADR-0005. The `experiments/src/` reference in the Decision
 section is replaced with the general ACCEPTED-ADR-amendment rule
 CLAUDE.md already states.
+
+**2026-10-13 (A2): The GitHub default branch now matches this ADR, and
+each release to main is tagged (Sprint 8 Task A, F66).** The Decision
+section has named develop the "repository default" since this ADR was
+written, but the GitHub setting was still `main` until 2026-10-13. Two
+changes follow, and one thing is deliberately left as it was:
+*(a)* **The setting.** `gh repo edit --default-branch develop`, then
+`git remote set-head origin -a`, on 2026-10-13. New PRs now open against
+develop by default, and `Closes #N` in a PR merged into develop closes the
+issue (GitHub closes linked issues only on a merge into the default
+branch). Workflow 2.3 and Phase 5 said the opposite and are corrected; the
+open-issue check stays as a backstop.
+*(b)* **The release step.** PR develop -> main, merged by the team lead, then
+tag the merge: an annotated tag `sprint-N` on main's merge commit, which
+Claude creates and pushes on the main-merge notification (workflow 8.1).
+The seven earlier releases were tagged `sprint-1` to `sprint-7` the same
+day (PRs #10, #19, #29, #42, #53, #67, #76; each carried exactly one
+sprint's PR).
+*(c)* **Not changed, by decision.** CI keeps running on PRs into develop
+only. F66's card asked for CI on PRs into develop and main; the team lead
+declined that change and a test guarding it (Sprint 8 Manual Validation,
+2026-10-13). No branch protection was added: on this private repository's plan GitHub
+answers 403 to the protection API.
+*Revisit when* a release to main is made from anything other than develop,
+or the repository becomes public (then branch protection becomes
+available).
