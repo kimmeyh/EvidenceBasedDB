@@ -43,14 +43,13 @@ repository exists. No other F# from either source repository applies here.
 | 5 | docs/sprints/SPRINT_5_SUMMARY.md | [OK] Complete | 2026-09-23 to 2026-09-25 |
 | 6 | docs/sprints/SPRINT_6_SUMMARY.md | [OK] Complete | 2026-09-27 to 2026-10-05 |
 | 7 | docs/sprints/SPRINT_7_SUMMARY.md | [OK] Complete | 2026-10-06 to 2026-10-10 |
-| 8 | docs/sprints/SPRINT_8_SUMMARY.md | [OK] Complete, merge pending | 2026-10-10 to 2026-10-13 |
+| 8 | docs/sprints/SPRINT_8_SUMMARY.md | [OK] Complete | 2026-10-10 to 2026-10-14 |
 
 ## Last Completed Sprint
 
-Sprint 8 is below (its PRs await the team lead's merge); Sprint 7 follows it
-for continuity.
+Sprint 8 is below; Sprint 7 follows it for continuity.
 
-### Sprint 8: Read QCi's Newest Guide, Then Build the Yearly Re-check (2026-10-10 to 2026-10-13, PR #77 and PR #84 into develop, merge pending)
+### Sprint 8: Read QCi's Newest Guide, Then Build the Yearly Re-check (2026-10-10 to 2026-10-14, PR #77 and PR #84, merged to develop and to main via PR #86 and PR #87 on 2026-10-14; tagged sprint-8)
 
 Seven tasks, seven issues (#78-#83, #85; Task G added at Phase 7). **QCi's
 newest material**: the Dirac-3S guide under its own context (ADR-0004 A8,
@@ -226,19 +225,13 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 8** (branch `feature/20261010_Sprint_8`, cut 2026-10-10 at the
-Sprint 7 carry-forward, after PR #68 merged to develop and PR #76 merged
-develop to main). **Scope (DEFINED, team lead 2026-10-10)**: F65, F63,
-F64, F60, F61, and an F39 release (registered as F67: "Haiku 5.5 was
-released and we will want to include in the list of models"). F66, carded
-the same day with a Sprint 8 target, is not in the selection list; it is
-asked as a question at plan approval, never planned in by inference. Plan:
-`docs/sprints/SPRINT_8_PLAN.md`. **Added 2026-10-13** (team lead, Phase 7,
-Q1 = 2): F71, F65's four recovered items, as Task G.
+**Sprint 9** (branch `feature/20261014_Sprint_9`, cut 2026-10-14 at the
+Sprint 8 carry-forward, after PR #77 merged to develop and PR #87 merged
+develop to main). Scope: not yet selected (Phase 1.4).
 
 ## Next Sprint Candidates
 
-Refined 2026-10-10 after Sprint 7 (Sprint 8 Phase 1.2); Sprint 7's shipped
+Refined 2026-10-14 after Sprint 8 (Sprint 9 Phase 1.2); Sprint 8's shipped
 cards pruned BY HAND (Edit tool, card by card) the same day.
 Shipped and pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint
 2); F2 Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25,
@@ -247,7 +240,8 @@ F26, F27 (Sprint 4); F5, F28, F30, F31 (Sprint 5); F32-F38, F40-F43, F47
 F51); F44, F45, F52, F53, F54, F58, F59 (Sprint 7; F53's per-cycle refresh
 replaced by F64's 12-month re-check; F54's 10 "unsure" and 140 third-party
 repository candidates stay held back in `sprint7_f35_screen.json` and
-`QMLPapers\Repos\REVIEW.md`). F39 is permanent and stays. Closed without
+`QMLPapers\Repos\REVIEW.md`); F60, F61, F63, F64, F65, F66, F67, F71
+(Sprint 8). F39 is permanent and stays. Closed without
 implementation: F19, F29 (Sprint 5 scope selection, reasons under Sprint 5
 in "Last Completed Sprint"); F49 (Sprint 8 scope selection, Q3 = 1: moot
 under ADR-0004 A7, since no committed export exists to drop a context, and
@@ -400,67 +394,6 @@ estimates are `[no-history]`.
 
 ### Carded during Sprint 7 (2026-10-06 to 2026-10-10)
 
-**F60. A mislabeled QMLPapers file: the "Asfaw 2108.0131" PDF is another paper (~30m) Priority 50** (NEW 2026-10-06, found in Sprint 7 Task E)
-- Phase: Sourcing / collection hygiene
-- Platform: `D:\Data\Harold\EvidenceBasedDB\QMLPapers\2021\manifest.tsv`
-  (outside the repository; read only from here), `scripts/intake.py`
-- Found reading the PDF for F54: the file
-  `Asfaw-et-al._2021_Building-a-Quantum-Engineering-Undergraduate-Program__2108.0131.pdf`
-  begins "arXiv:2108.00131v2 [cs.LG] 22 Feb 2022" and is Radhakrishnan,
-  Stefanakis, Belkin and Uhler on infinite-width neural networks for matrix
-  completion, the paper whose code its repository note names
-  (`uhlerlab/ntk_matrix_`). The manifest row's title (Asfaw et al.) and its
-  id (`2108.0131`, one digit short) do not match the file. The Asfaw paper
-  itself was never downloaded; its real arXiv id is not yet verified.
-- Sprint 7 Task E enters `2108.00131` (the paper on disk) and links its
-  repository; this card is the rest: find the Asfaw paper's real id, decide
-  whether it belongs in the collection, and look for other rows whose file
-  is not the paper the row names (a first-page id check against the
-  manifest id, all folders).
-- Acceptance: every manifest row's id matches its file's first-page id, or
-  the mismatch is listed; the Asfaw paper entered or recorded as out of
-  scope with the reason.
-
-**F61. Mine the Massoli et al. survey's curated paper list for candidates (~2h plus runtime) Priority 60** (NEW 2026-10-06, team lead during Sprint 7)
-- Phase: Sourcing / collections
-- Platform: `github.com/fvmassoli/survey-quantum-computation`
-  (`allPapers.md`, `LeapIntoQuantumComputationsPaperList.xlsx`), the
-  companion list of arXiv:2107.03313 ("A Leap among Quantum Computing and
-  Quantum Neural Networks: A Survey"); `scripts/intake.py`
-- Team lead, 2026-10-06, on the F35 screen holding this repository back as
-  "neither code nor data": "this repository may contain papers that we are
-  interested in (although there likely could be duplicates of what we
-  already have)".
-- **Facts at carding (snapshot as of 2026-10-06)**: 184 entries, each a
-  link plus a BibTeX record, tagged by topic (Quantum Perceptrons, QNNs,
-  gate model and adiabatic). 25 titles already match a store record exactly
-  (an undercount: punctuation and subtitle variants miss); 31 entries carry
-  an arXiv id, 9 of them already in the store. Most link to publishers (APS
-  29, Nature 26, Springer 14, IOP 12, IEEE 11), so the door's DOI path, not
-  arXiv, carries most of them; several BibTeX records have no DOI.
-- Scope: duplicates are found before anything is entered (arXiv id, DOI,
-  then normalized title and first author); new entries go through the door
-  at `seen` with `found_via` naming this list and the entry's topic tags as
-  the collection locator; the survey itself (2107.03313, already in the
-  store) gets the list as its companion repository.
-- Acceptance: every entry classed as already in the store (with the record
-  it matched), entered, or refused with the door's reason.
-- Depends on: arXiv entries share F52's cap; run outside its sessions.
-- Timing (team lead, 2026-10-06, Q10 = 1): Sprint 8 backlog refinement, not
-  added to Sprint 7.
-- IEEE entries (team lead asked 2026-10-06; checked that day): IEEE papers
-  carry Crossref DOIs (prefix 10.1109), so their RECORDS enter through the
-  door's DOI path with no IEEE account; Crossref title search resolved the
-  list's first IEEE-linked entry to its DOI. Many also have an arXiv
-  preprint (IEEE's policy allows posting the accepted version). Only the PDF
-  needs the team lead's IEEE account, and only by hand: IEEE Xplore's
-  license allows individual downloads for personal research but prohibits
-  systematic downloading "using a robot, spider, crawler, screen scraping or
-  similar", and the Xplore API's personal key covers metadata and open
-  access content only. So a PDF is fetched only when a paper is to be READ:
-  its arXiv version first, else a list (DOI, Xplore link, target file name)
-  the team lead downloads by hand into `D:\Data\Harold\EvidenceBasedDB\Papers`.
-
 **F62. Discover, rank and triage candidate papers from open metadata, with a hand-download list (~4h plus review) Priority 62** (NEW 2026-10-06, team lead during Sprint 7, Q11 = 1 and 3)
 - Phase: Sourcing / discovery
 - Platform: `scripts/discover_candidates.py` (pilot built in Sprint 7),
@@ -508,136 +441,7 @@ estimates are `[no-history]`.
   every entry's free-copy search recorded.
 - Depends on: F52's cap for arXiv; F61 (shared discovery input).
 
-**F63. Two Dirac-3 admissions in arXiv:2407.04512 as assertions (~1h) Priority 32** (NEW 2026-10-08, found in Sprint 7 Task G; team lead approved as a Sprint 8 candidate at Manual Validation)
-- Phase: Content / assertions
-- Platform: the store; record `nguyen-2025-entropy-computing-paradigm-optimization-open`
-  (read partially in Sprint 7 Task G); a script in the pattern of
-  `scripts/sprint7_f45_dirac3_reading.py`
-- Two statements by QCi's own authors, found while reading for F45 and not
-  entered (outside Task G's planned assertions). Both checked verbatim
-  against the local copy with pdftotext on 2026-10-08:
-  - p.15: "Our current Dirac-3 hybrid implementation does not utilize
-    quantum entanglement."
-  - p.6: the optical parts "do not involve large scale non-Gaussian quantum
-    superpositions, they could in principle be instead classically
-    simulated, as has been argued in the coherent Ising machine setting".
-- Both are candidates for the admission-against-interest upgrade: a vendor
-  stating a limit of its own product. Each upgrade must say why the
-  statement is costly to the vendor.
-- Acceptance: each entered with its page anchor and a verbatim-quote test;
-  relations to the existing Dirac-3 assertions (for example
-  `dirac3-per-loop-measurement-rules-out-quantum-advantage`) recorded.
-- Depends on: none.
-
-**F64. Staggered 12-month re-check, with revised-version detection and a re-pull list (~4h) Priority 40** (NEW 2026-10-09, team lead at Sprint 7 Manual Validation, Q12 = 1, Q15 = 2, Q16 = 1)
-- Phase: Sourcing / currency
-- Platform: `scripts/probe_reference_fields.py`, `store/probes.py`,
-  `scripts/view.py`, Phase 1.3 of `docs/SPRINT_EXECUTION_WORKFLOW.md`,
-  ADR-0005 (a new amendment)
-- Team lead, 2026-10-09: a re-check "every 6-12 months (most do not change
-  after first upload) and only a brief check to ensure the paper has not
-  been replaced, withdrawn or updated. If updated, then we can re-pull the
-  paper"; "we can't have it do 1,000+ papers in one sprint as we loaded all
-  the current papers in the last month"; split them into 24 sections, the
-  first about 10 months out, then 1/24th every 2 weeks, picked up by the
-  next sprint that passes the date.
-- Proposed process (presented 2026-10-09; the team lead approves it at
-  Sprint 8 refinement):
-  - Section: every record belongs to one of 24 half-month sections of the
-    calendar year (1 = January 1-15, 2 = January 16-31, ... 24 = December
-    16-31), computed from its id (a stable hash, mod 24). Computed, never
-    stored; an id never changes, so the section never does. About 1/24 of
-    the records fall in each.
-  - Next re-check date: the first start of the record's section that is
-    at least 10 months after its last check. Computed from the stored
-    check date, never stored itself. For the papers checked in October
-    2026 that gives mid-August 2027 to early August 2028, 1/24th every
-    two weeks;
-    after that, each record comes due once a year in its own section. A
-    paper entered later falls into its section too, so a bulk load never
-    bunches into one sprint.
-  - Phase 1.3: re-check every record whose next re-check date is on or
-    before the sprint's start. About 65 arXiv papers per section, one
-    request each (the abstract page): about 20 minutes, well inside F52's
-    cap. A sprint that spans two sections takes both.
-  - The brief check: withdrawn; published with a DOI (replaced by the
-    journal version); a newer arXiv version than the local copy (the page
-    shows the latest version; the local PDF's first page carries a stamp
-    such as "arXiv:2407.04512v4"); the link still opens.
-  - Output: three lists for the team lead: newer version, to re-pull;
-    withdrawn; newly published. Nothing is downloaded automatically.
-  - `view.py paper <id>` shows the section and the next re-check date.
-- Replaces `--stale` against the cycle start as the Phase 1.3 check:
-  "stale" becomes "past its next re-check date".
-- Acceptance: the section and the date computed and shown; Phase 1.3 picks
-  up only due records; a bulk load spreads over the 24 sections (a test
-  over synthetic ids); a revised version on a test record is reported for
-  re-pull; ADR-0005 amended.
-- Depends on: F52's cap (built).
-
-**F65. Deep research into the Dirac-3S, QCi's upgraded Dirac-3 (~3h) Priority 30** (NEW 2026-10-10, team lead during Sprint 7 Phase 7; TARGET: Sprint 8)
-- Phase: Content / platform research
-- Platform: `D:\Data\Harold\EvidenceBasedDB\References\QCi-site\systems\Dirac_3S_Users_Guide_Rev_A-1.pdf`
-  (outside the repository; "Dirac-3S User Guide, September 2026, Revision
-  A", QCi-QMS-900-000001, 38 pp., created 2026-09-24, SHA-256
-  0ddbc5339966a42ab67c44988d7a12a599724c462839ecc2848189f048af5971);
-  the store's Dirac-3 assertions from F45; a script in the pattern of
-  `scripts/sprint7_f45_dirac3_reading.py`
-- Team lead, 2026-10-10: "Add to backlog and target NEXT sprint: deep
-  research into the new Dirac-3S (upgraded Dirac-3 system)", with a list
-  of further items. **The list did not arrive** (the message held a paste
-  placeholder, not its text); it is added here when the team lead re-sends
-  it, before Sprint 8 planning.
-  - **Recovered 2026-10-13** from the team lead's own Claude Code input
-    history (the paste was first made on 2026-10-10 in another project's
-    session, with the same request, and only its placeholder was carried
-    here). Its 11 lines are three links and one instruction, with blank
-    lines between: the PR Newswire release "Quantum Computing Inc.
-    Announces Dirac-3S Scaling to Nearly 10,000 Variables"
-    (`https://www.prnewswire.com/news-releases/quantum-computing-inc-announces-dirac-3s-scaling-to-nearly-10-000-variables-302895913.html`);
-    QCi's "Dirac-3S technical reference" learning module
-    (`https://quantumcomputinginc.com/learn/module/dirac-3s-technical-reference`);
-    QCi's Dirac-3 product page
-    (`https://quantumcomputinginc.com/products/systems/dirac-3`); and "Do
-    a deep dive on quantumcomputinginc.com for anything new since last
-    scrape." The original request also said the research comes "before any
-    further usage of Dirac-3 qpu seconds". Sprint 8 Task C read the guide
-    only. The four items are carded as F71 (team lead, Q1 = 2; F70 is skipped because the
-    workflow quotes the consumer repository's F70) and run as
-    Sprint 8 Task G.
-- Scope: read the guide in full and enter it as a source; for each
-  Dirac-3 assertion from F45 (the variable ceiling, the 200-to-1 analog
-  resolution, the 0-to-16 integer bound and the 949 / 954 level count,
-  the summation constraint, the measurement loop), record whether the
-  Dirac-3S guide confirms, changes or supersedes it, as a relation to the
-  existing assertion, never an edit of it; new Dirac-3S claims as
-  `vendor-self-claim` with page anchors; the team lead's listed items.
-- Acceptance: the guide read in full (read row and SHA-256); every F45
-  Dirac-3 assertion classed against the guide (confirmed, changed,
-  superseded, or not addressed); every quote verified verbatim against the
-  local copy by test; the team lead's items each answered or carded.
-- Depends on: F63 (same QCi source family; can run in the same task).
-
 ### Carded during Sprint 8 (2026-10-10 onward)
-
-**F67. F39 release for Sprint 8: add Haiku 5.5 and re-verify the tiers (~30m) Priority 10** (NEW 2026-10-10, team lead at Sprint 8 scope selection)
-- Phase: Process (released copy of the permanent F39)
-- Platform: `.claude/model_assignment_heuristics.json`,
-  `docs/SPRINT_PLANNING.md` (team roles table),
-  `tests/test_model_assignment_heuristics.py`; Anthropic's models page
-- Team lead, 2026-10-10: "F39 as Haiku 5.5 was released and we will want
-  to include in the list of models".
-- **Facts at carding (snapshot as of 2026-10-10, models page)**: Claude
-  Haiku 5.5, `claude-haiku-5-5`, "for high-volume, latency-sensitive tasks
-  such as classification, extraction, and routing"; pricing "From $0.10 /
-  input MTok, From $0.50 / output MTok" (Sonnet 5.5: $2 / $10); 1M context,
-  128K output; retirement not sooner than 2027-10-07. The heuristics file's
-  haiku tier still names Haiku 4.5 (retiring not before 2026-10-15), and the
-  Developers role has been on Sonnet 5.5 since F59.
-- Acceptance: F39's five release steps; the haiku tier names Haiku 5.5 with
-  the date checked; the Developers role per the plan's decision; the test
-  green on evidence.
-- Depends on: nothing
 
 **F68. The door misses two identifier forms: old-style arXiv ids and DOIs with parentheses (~1h) Priority 64** (NEW 2026-10-12, found in Sprint 8 Task F)
 - Phase: Sourcing / intake
@@ -776,88 +580,6 @@ estimates are `[no-history]`.
   paper due; a test with `pdftotext` unavailable reports the tool, not the
   paper; both proven to fail by injection.
 - Depends on: F64 (done)
-
-**F71. F65's four items: the Dirac-3S release, technical reference and product page, and what is new on QCi's site since the 2026-09-24 scrape (~3h) Priority 25** (NEW 2026-10-13, team lead at Sprint 8 Phase 7, Q1 = 2: "add as backlog item, fully plan, sprint card, execute"; TARGET: Sprint 8, Task G)
-- Phase: Content / platform research
-- Platform: the three links from F65's recovered list; QCi's sitemap
-  (`https://quantumcomputinginc.com/sitemap.xml`, 2,854 URLs on
-  2026-10-13; robots.txt allows all); the 2026-09-24 scrape at
-  `D:\Data\Harold\EvidenceBasedDB\References\QCi-site\` (546 files) as the
-  baseline; new copies under `References\QCi-site_2026-10-13\` (outside
-  the repository)
-- Team lead, 2026-10-10 (recovered 2026-10-13, see F65): the three links,
-  and "Do a deep dive on quantumcomputinginc.com for anything new since
-  last scrape", before any further use of Dirac-3 QPU seconds.
-- Scope: (1) the PR Newswire release, (2) the Dirac-3S technical reference
-  module, (3) the Dirac-3 product page, each saved locally, entered as a
-  source (local path plus URL) and read in full; (4) the site diff:
-  pages in the sitemap and not in the scrape (new), pages in both whose
-  visible text changed (changed), scraped pages no longer listed (gone),
-  and new software-package versions; the Dirac-related new or changed
-  pages read in full, the rest listed with their date. New Dirac-3S claims
-  as `vendor-self-claim` under `platform:dirac-3s` with section anchors,
-  each relation to an existing assertion recorded, never an edit of it.
-- Acceptance: the four items each answered in a dated report
-  (`docs/sprints/SPRINT_8_F71_QCI_SITE_CHECK.md`) with the three computed
-  lists; every quote verified verbatim against its local copy by test; any
-  admission-against-interest candidate held for the team lead (Class 2).
-- Depends on: F65 (done)
-
-**F66. Make develop the default branch: a git-flow model with main as the release branch (~1h) Priority 20** (NEW 2026-10-10, team lead at Sprint 8 Phase 1.4; TARGET: Sprint 8)
-- Phase: Process / repository
-- Platform: GitHub repository settings (`gh repo edit`),
-  `.github/workflows/ci.yml`, the sprint docs and scripts that name a
-  branch
-- Team lead, 2026-10-10: "add to backlog and target for next sprint -
-  switch the default branch from main to develop". The model: develop is
-  the GitHub default, where feature work is integrated, and feature and
-  sprint branches open PRs into it; main is the release branch, changed
-  only by a PR from develop to main that the team lead merges, and each
-  release merge is tagged.
-- **Facts at carding (snapshot as of 2026-10-10, read only)**: the default
-  branch is `main`; `develop` and `main` both exist on origin; the one CI
-  workflow runs on `pull_request` into `develop` only, so a release PR into
-  `main` is not tested today; no `dependabot.yml`.
-- The team lead's instructions, kept in their three phases:
-  - Phase A, inspect and report, change nothing: the default branch;
-    whether `develop` exists locally and on origin; commits on each side
-    the other lacks (`git rev-list --count` both ways), and whether main's
-    extra commits change any file (`git diff --stat <merge-base>
-    origin/main`); open PRs and their bases; CI workflows and their
-    triggers, noting any that start or stop running when the default
-    changes; `dependabot.yml`'s `target-branch`, branch protection or
-    rulesets (a 403 on a private free repository means none), CODEOWNERS;
-    every branch name in scripts, hooks, docs and tests ("main", "master",
-    "develop", "default branch", "--base", "origin/HEAD"), each classed as
-    must change, fine as is, or history (records of past events are never
-    edited). Findings as bullets, then a numbered list of proposed
-    changes; stop for approval.
-  - Phase B, approved changes only: create `develop` from main only if it
-    is missing; if main has commits with real file changes that develop
-    lacks, stop and ask (never merge main into develop without approval);
-    `gh repo edit --default-branch develop`, then `git remote set-head
-    origin -a`, verified with `gh repo view`; CI on `pull_request` into
-    develop AND main, so release PRs are tested; Dependabot (if present)
-    `target-branch: develop`; open PRs into main that are feature work are
-    listed and retargeted only with approval (`gh pr edit N --base
-    develop`); fix the "must change" hits and write down the release step:
-    "PR develop -> main, merged by the owner, then tag the merge." Edits on
-    a feature branch with a PR into develop; the suite runs before each
-    commit; commit messages state no test results.
-  - Phase C, verify and report: the default is develop (`gh repo view
-    --json defaultBranchRef`); `gh pr create` with no `--base` targets
-    develop; CI triggers include develop and main; a note that "Closes
-    #N" now closes issues when a PR merges into develop, since GitHub
-    reads the keyword only on PRs into the default branch. Report as
-    bullets: what changed, what was left alone and why, any decision
-    still open.
-- Standing limits: no PR merged and no branch deleted by Claude; every
-  decision a plain numbered list answered by one digit.
-- Acceptance: Phase C's checks all pass; the release step written in the
-  workflow docs; a test that fails if `ci.yml` stops triggering on either
-  branch, proven by injection.
-- Depends on: none. Best done first in the sprint: the sprint PR's base
-  and its "Closes #N" behavior both follow the default.
 
 ## Design documents governing this repository
 
