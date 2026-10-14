@@ -227,7 +227,14 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 **Sprint 9** (branch `feature/20261014_Sprint_9`, cut 2026-10-14 at the
 Sprint 8 carry-forward, after PR #77 merged to develop and PR #87 merged
-develop to main). Scope: not yet selected (Phase 1.4).
+develop to main). **Scope (DEFINED, team lead 2026-10-14)**: F78, F79,
+F74, F68, F69, F62, F57, F55, F56, F48, F46, F51. F51 is a HOLD item
+selected while its hold stands; planning checks whether the Phase 2
+repository now holds the re-run it waits on. Priorities renumbered at
+selection in steps of 10, 2 for items that sprint together (the slate's
+numbers, which the team lead's selection used): F78 10, F79 20, F74 30,
+F68 40, F69 42, F39 50, F62 60, F57 70, F55 80, F56 82, F48 90, F50 100,
+F46 110. Plan: `docs/sprints/SPRINT_9_PLAN.md` (in drafting).
 
 ## Next Sprint Candidates
 
@@ -254,7 +261,7 @@ and in git. Remaining items below.
 
 ### Permanent items
 
-**F39. Evaluate the available models and update the model-assignment heuristics -- PERMANENT (~1h per release) Priority 10** (NEW 2026-09-29)
+**F39. Evaluate the available models and update the model-assignment heuristics -- PERMANENT (~1h per release) Priority 50** (NEW 2026-09-29)
 - Phase: Process (recurring)
 - Platform: `.claude/model_assignment_heuristics.json`,
   `docs/SPRINT_PLANNING.md` (team roles table),
@@ -394,7 +401,7 @@ estimates are `[no-history]`.
 
 ### Carded during Sprint 7 (2026-10-06 to 2026-10-10)
 
-**F62. Discover, rank and triage candidate papers from open metadata, with a hand-download list (~4h plus review) Priority 62** (NEW 2026-10-06, team lead during Sprint 7, Q11 = 1 and 3)
+**F62. Discover, rank and triage candidate papers from open metadata, with a hand-download list (~4h plus review) Priority 60** (NEW 2026-10-06, team lead during Sprint 7, Q11 = 1 and 3)
 - Phase: Sourcing / discovery
 - Platform: `scripts/discover_candidates.py` (pilot built in Sprint 7),
   OpenAlex (abstracts, topics, citations, open-access copies), Semantic
@@ -443,7 +450,7 @@ estimates are `[no-history]`.
 
 ### Carded during Sprint 8 (2026-10-10 onward)
 
-**F68. The door misses two identifier forms: old-style arXiv ids and DOIs with parentheses (~1h) Priority 64** (NEW 2026-10-12, found in Sprint 8 Task F)
+**F68. The door misses two identifier forms: old-style arXiv ids and DOIs with parentheses (~1h) Priority 40** (NEW 2026-10-12, found in Sprint 8 Task F)
 - Phase: Sourcing / intake
 - Platform: `store/citations.py` (`parse_access`), `scripts/intake.py`
 - Found running F61 against the Massoli list (2026-10-12): `arXiv:quant-ph/0405098`,
@@ -456,7 +463,7 @@ estimates are `[no-history]`.
   injection; the five Massoli entries re-run through F61's script.
 - Depends on: none
 
-**F69. Enter the Cerezo NonArxiv paper, "Key questions for the quantum machine learner to ask themselves" (~20m) Priority 66** (NEW 2026-10-13, team lead at Sprint 8 Manual Validation, Q8 = 1; found in Sprint 8 Task E)
+**F69. Enter the Cerezo NonArxiv paper, "Key questions for the quantum machine learner to ask themselves" (~20m) Priority 42** (NEW 2026-10-13, team lead at Sprint 8 Manual Validation, Q8 = 1; found in Sprint 8 Task E)
 - Phase: Sourcing / intake
 - Platform: `scripts/intake.py`; the local file
   `D:\Data\Harold\EvidenceBasedDB\QMLPapers\NonArxiv\Cerezo_2020_Key-questions-for-the-quantum-machine-learner-to-ask-themselves.pdf`
@@ -520,7 +527,7 @@ estimates are `[no-history]`.
   inferred kept apart.
 - Depends on: none
 
-**F79. hsbc-qfraud-phase2 and this repository consume each other, by pasted prompt only: write it down and enforce the one-way writes (~1.5h) Priority 20** (NEW 2026-10-14, team lead "yes" to carding it, scope stated the same day; TARGET: Sprint 9)
+**F79. hsbc-qfraud-phase2 and this repository read each other freely and never write to each other; anything to be written goes as a pasted prompt (~30m) Priority 20** (NEW 2026-10-14, team lead "yes" to carding it, scope stated the same day and corrected the same day; TARGET: Sprint 9)
 - Phase: Process / repository
 - Platform: `CLAUDE.md`, `.claude/hooks/block_sibling_repo_writes.py`, its
   test, the read-but-never-write memory file, `docs/INTAKE_WORKFLOW.md`
@@ -540,15 +547,20 @@ estimates are `[no-history]`.
   valuable additions to the EvidenceBasedDB. But this session cannot write
   to hsbc-qfraud-phase2 - any transfers to hsbc-qfraud-phase2 would be via
   prompts developed here and then pasted into the hsbc-qfraud-phase2
-  claude session."
+  claude session." Corrected the same day: "they are both consumers of
+  each other and reads are permitted without direct prompts from the
+  other - so each could read from each other, but cannot write to each
+  other".
 - Scope: (1) CLAUDE.md names Phase 2 as the consumer, keeps Phase 1 as
-  history, and states the two-way, prompt-only exchange; (2) the hook and
+  history, and states the rule: each repository reads the other
+  directly, with no prompt needed; neither writes to the other; a change
+  wanted in the other repository goes as a prompt the team lead pastes; (2) the hook and
   the rule cover `hsbc-qfraud-phase2` (read freely, never write); (3)
-  inbound: an intake path for Phase 2 experiment results arriving as a
-  pasted prompt, each result entered with provenance naming the Phase 2
-  repository, commit and run, checked against that commit's files before
-  entry (reading Phase 2 is allowed; the pasted prompt is the channel, not
-  the evidence), and certainty from that evidence;
+  inbound: an intake path for Phase 2 experiment results, read directly
+  from the Phase 2 repository (a pasted prompt may point at them, but the
+  files at the named commit are the evidence), each entered with
+  provenance naming the repository, commit and run, and certainty from
+  that evidence;
   (4) outbound: a prompt shape for answers sent to Phase 2, with each
   claim's provenance inline (ADR-0005: no citation may depend on this
   private store resolving); (5) Phase 2's own read-only guard is that

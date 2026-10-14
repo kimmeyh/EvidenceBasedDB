@@ -23,21 +23,34 @@ Every item carries a real registered ID: **F#** for features/process/tech-debt i
 
 ## Backlog Presentation Format (AUTHORITATIVE)
 
-**Summary Index first** -- every item's header line only, in presentation order, HOLD items one line each in the same full shape (never a bare ID list). The heading names the sprint being planned, which is the branch's sprint number:
+**Revised 2026-10-14 (team lead, Sprint 9 Phase 1.4):** the details are no longer grouped under phase headers, they follow the Summary Index's order, the Summary Index holds at most 20 items, and Claude's recommendation for the sprint comes first. Until then the details sat under `### <Phase Name>` groups in a different order from the index, so an item had to be found twice.
+
+**Summary Index first**, in three parts. The heading names the sprint being planned, which is the branch's sprint number:
+
+1. **Recommended for Sprint <N>**: Claude's proposed scope, each item's header line, with the total estimate. It is a proposal; the team lead selects.
+2. **The top 20**: the 20 highest-priority non-HOLD items (fewer if fewer exist), header lines only, ordered by priority, Priority 10 first. Recommended items appear here too, in their priority place. Items past the 20th are counted in one line ("N more, Priority X to Y, in the master plan"), not listed.
+3. **HOLD items**: one line each in the same full shape, after the 20 (never a bare ID list).
 
 ```markdown
 ## Sprint <N> Candidates at a glance
 
+**Recommended for Sprint <N>** (~<total>):
+- **F75. Action the 20-paper ADR checkpoint (~2h) Priority 6**
+
+**Top 20 by priority:**
 - **F75. Action the 20-paper ADR checkpoint (~2h) Priority 6**
 - **F76. Guard the shared vocabulary between ADR-0004 and ADR-0005 (~1h) Priority 7**
 - ...
+- 3 more, Priority 120 to 140, in the master plan
+
+**HOLD:**
 - F13. Phase 2 planning (~unknown) Priority HOLD
 ```
 
-**Item format** (verbatim):
+**Item details** follow, one flat list in exactly the Summary Index's order (the top 20, then the HOLD items), with no group headers. Each recommended item is detailed once, in its priority place. An item's group is named in its own `Phase:` line, never as a header. **Item format** (verbatim):
 ```markdown
 **<ID>. <Title> (~<effort>) Priority <N>**
-- Phase: <phase/stage name>
+- Phase: <phase/stage name; this is where the group is named>
 - Platform: <N/A, or the specific tool/service the item touches>
 - <description bullet>
 - <description bullet>
@@ -46,9 +59,9 @@ Every item carries a real registered ID: **F#** for features/process/tech-debt i
 
 **Rules**:
 - Priorities are NUMERIC, increments of 10; items that should sprint together use increments of 2. Never ad-hoc groupings.
-- Group items under `### <Phase Name>` section headers matching this repository's own sprint sequence (e.g. Foundation, Process, Tooling) -- never a fixed set copied from another project's timeline.
-- HOLD items use `Priority HOLD` in a `### HOLD Items (<reason>)` section at the bottom, with full detail bullets there.
-- Bugs and tech debt interleave by priority within their phase group; no separate sections.
+- No `### <Phase Name>` group headers in the details; the `Phase:` line carries the group (team lead, 2026-10-14).
+- HOLD items use `Priority HOLD` and come after the top 20, with full detail bullets.
+- Bugs and tech debt interleave by priority; no separate sections.
 - Completed items are REMOVED (history lives in sprint docs and git).
 - No grid tables for the presentation.
 

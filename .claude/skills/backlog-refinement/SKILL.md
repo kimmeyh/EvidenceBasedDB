@@ -30,7 +30,8 @@ same as applying it (CLAUDE.md "Things Claude Should NOT Do").
    and card references never appear in a candidate presentation.
 4. **No grid tables in the presentation; no invented tiers; numeric
    priorities in increments of 10 (2 for items that sprint together);
-   HOLD items in their own section at the bottom.**
+   the recommendation first, at most 20 items, details in the index's
+   order with no group headers, HOLD items after the 20.**
 5. **Pass 1 never selects scope. Pass 2 is the only pass that does.**
    The team lead makes the final call; the slate is a proposal.
 6. **Decision questions are a plain numbered list** the team lead can
@@ -74,14 +75,16 @@ items (anything three or more sprints old gets re-read, not re-listed).
 
 ### Step 4: present "Sprint N Candidates at a glance"
 
-Produce the presentation in the format read in Step 1: Summary Index
-first (every item's header line, HOLD items in the same full shape),
-then the items grouped under `### <Phase Name>` headers that match this
-repository's own sequence, each item in the verbatim item format
-(Phase, Platform, description bullets, Depends on), HOLD items last in
-`### HOLD Items (<reason>)`. Estimates in minutes calibrated from the
-actuals gathered in Step 3, `[no-history]` plus a timebox where none
-exist.
+Produce the presentation in the format read in Step 1 (revised
+2026-10-14): Summary Index first, in three parts:
+"Recommended for Sprint N" (Claude's proposed scope, with its total), then at most 20
+non-HOLD items by priority, Priority 10 first (the rest counted in one
+line), then the HOLD items one line each in the same full shape. The
+item details follow as one flat list in exactly that order, with no
+group headers: each item's `Phase:` line names its group. Each item in
+the verbatim item format (Phase, Platform, description bullets, Depends
+on). Estimates in minutes calibrated from the actuals gathered in Step
+3, `[no-history]` plus a timebox where none exist.
 
 ### Step 5: record the selection
 
