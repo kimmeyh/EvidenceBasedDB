@@ -665,7 +665,7 @@ estimates are `[no-history]`.
   recorded as out of scope, with the reason.
 - Depends on: none
 
-**F78. Ceiling estimation: read the whole CE group in full and enter it, so the store answers "can this dataset or problem be done better?" (~6.5h) Priority 10** (NEW 2026-10-14, team lead EDB query, Q1 = 1, Q3 = 2 everything in full, Q4 = 1 first task of Sprint 9; TARGET: Sprint 9)
+**F78. Ceiling estimation: read the whole CE group in full and enter it, so the store answers "can this dataset or problem be done better?" (~7h) Priority 10** (NEW 2026-10-14, team lead EDB query, Q1 = 1, Q3 = 2 everything in full, Q4 = 1 first task of Sprint 9; TARGET: Sprint 9)
 - Phase: Content / reading
 - Platform: the 31 records whose disposition names `[CE-n]` (the HSBC
   Phase 2 bibliography's "Ceiling estimation / Bayes error" group); local
@@ -698,6 +698,17 @@ estimates are `[no-history]`.
   at the local copy plus the identifier; Ishida and Theisen entered
   through the door (two serial arXiv requests inside the cap); each
   publisher-only paper tried once and recorded if unobtainable.
+- **Local copies (team lead, 2026-10-14: "also include adding any papers
+  that are not downloaded as PDF's to the local repository in an
+  appropriate folder")**: every paper in the group with no local PDF is
+  downloaded into `D:\Data\Harold\EvidenceBasedDB\Papers\` (outside git;
+  the folder that already holds the group's 11 local copies) under its
+  `YYYY-MM_Author_Title.pdf` convention, with its SHA-256 recorded and
+  `access` naming both the identifier and the path. Expected: Ishida,
+  Theisen, Chen 2025, Te Sun 1994, Thanh 2026, Allen 2025; a paywalled one
+  is recorded as such, not downloaded around the paywall. The 7
+  repositories are read on GitHub; a clone into `GitHubRepos\` is asked at
+  planning.
 - Acceptance: every CE record at `read` or carrying a recorded reason it
   is not; every quote verified verbatim against its local copy by test;
   a short answer document for the team lead's question (ML ceilings and
@@ -705,21 +716,41 @@ estimates are `[no-history]`.
   inferred kept apart.
 - Depends on: none
 
-**F79. The consumer is now hsbc-qfraud-phase2: name it in CLAUDE.md and cover it with the read-only rule and hook (~45m) Priority 20** (NEW 2026-10-14, team lead "yes" to carding it; TARGET: Sprint 9)
+**F79. hsbc-qfraud-phase2 and this repository consume each other, by pasted prompt only: write it down and enforce the one-way writes (~1.5h) Priority 20** (NEW 2026-10-14, team lead "yes" to carding it, scope stated the same day; TARGET: Sprint 9)
 - Phase: Process / repository
 - Platform: `CLAUDE.md`, `.claude/hooks/block_sibling_repo_writes.py`, its
-  test, the read-but-never-write memory file
+  test, the read-but-never-write memory file, `docs/INTAKE_WORKFLOW.md`
 - **Facts at carding (snapshot as of 2026-10-14)**: `kimmeyh/hsbc-quantum-fraud-2026`
   (Phase 1) is archived; the active consumer is `kimmeyh/hsbc-qfraud-phase2`
-  (Sprint 26, PR 21 open). CLAUDE.md still names the archived repository
-  as the first consumer, and the sibling-write rule and hook list only
-  `spamfilter-multi` and `hsbc-quantum-fraud-2026`.
-- Scope: CLAUDE.md names Phase 2 as the consumer and keeps Phase 1 as
-  history; the hook blocks writes to `hsbc-qfraud-phase2` too (whether
-  that is wanted is asked at planning); ADR-0005's privacy consequence
-  re-read against the new repository.
+  (Sprint 26, PR 21 open; private, like this repository). CLAUDE.md still
+  names the archived repository as the first consumer, and the
+  sibling-write rule and hook list only `spamfilter-multi` and
+  `hsbc-quantum-fraud-2026`.
+- Team lead, 2026-10-14: "hsbc-qfraud-phase2 will be on ongoing consumer
+  of the EvidenceBasedDB - it will read it and reference the library/store
+  of papers, but never write to this repository - any transfer will be via
+  prompt (it will write a prompt and I will copy/paste it into this
+  session)). The EvidenceBasedDB is also a consumer of hsbc-qfraud-phase2,
+  in that it will run QML tests/experiments against
+  QC/photonic/entropy/reservior simulators and devices and those could be
+  valuable additions to the EvidenceBasedDB. But this session cannot write
+  to hsbc-qfraud-phase2 - any transfers to hsbc-qfraud-phase2 would be via
+  prompts developed here and then pasted into the hsbc-qfraud-phase2
+  claude session."
+- Scope: (1) CLAUDE.md names Phase 2 as the consumer, keeps Phase 1 as
+  history, and states the two-way, prompt-only exchange; (2) the hook and
+  the rule cover `hsbc-qfraud-phase2` (read freely, never write); (3)
+  inbound: an intake path for Phase 2 experiment results arriving as a
+  pasted prompt, each result entered with provenance naming the Phase 2
+  repository, commit and run, and certainty from that evidence;
+  (4) outbound: a prompt shape for answers sent to Phase 2, with each
+  claim's provenance inline (ADR-0005: no citation may depend on this
+  private store resolving); (5) Phase 2's own read-only guard is that
+  repository's change, so a prompt asking for it is drafted here for the
+  team lead to paste.
 - Acceptance: a hook test that a write into the Phase 2 path is blocked,
-  proven to fail by injection.
+  proven to fail by injection; the intake path tried on one real Phase 2
+  result.
 - Depends on: none
 
 **F74. Re-check correctness: a partial answer must not reset the 12-month clock, and a tool failure must not read as the paper's fault (~1.5h) Priority 30** (NEW 2026-10-13, PR #77 silent-failure review; TARGET: Sprint 9)

@@ -13,21 +13,24 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-13 (F66, Sprint 8 Task A, PR #84)
+### 2026-10-14 onward (Sprint 9, in progress)
 
-- **process**: F66 (Sprint 8 Task A, #78, PR #84 into develop,
-  2026-10-13) -- develop set as the GitHub default branch; `Closes #N`
-  now closes issues on a merge into develop; the release step (PR
-  develop -> main, merged by the team lead, then tag the merge `sprint-N`)
-  written into workflow 8.1 and SPRINT_PROCESS.md; ADR-0001 A2; CI stays
-  on PRs into develop only (team lead decision); tags `sprint-1` to
-  `sprint-7` pushed on the seven past main merges
-- **docs**: PR #84 review fixes (2026-10-13) -- "team lead", not "owner",
-  merges develop -> main, as everywhere else in the process docs (Copilot);
-  ADR-0001 A2's lead-in now matches its two changes and one decision not
-  to change (Claude code review)
+- **docs**: Sprint 9 Phase 1 (2026-10-14) -- the team lead merged PR #84
+  and PR #77 into develop and PR #86 and PR #87 to main; `sprint-8` tagged
+  on PR #87's merge commit; carry-forward cut `feature/20261014_Sprint_9`
+  from the Sprint 8 branch; sprint status advanced; CHANGELOG reconciled
+- **process**: every PR title starts `Sprint N: ` (team lead,
+  2026-10-14): `Sprint N: <sprint name>`, `Sprint N: F<n> <title>`,
+  `Sprint N: Develop to Main`; workflow 3.3.1 and the release step
+- **docs**: F78 and F79 carded (2026-10-14, team lead) -- F78 reads the
+  whole ceiling-estimation (CE) group in full, enters it, downloads every
+  paper with no local PDF into `Papers\` outside the repository, and
+  answers whether a dataset or optimization problem can be done better;
+  F79 records that hsbc-qfraud-phase2 and this repository consume each
+  other by pasted prompt only, and extends the never-write rule and hook
+  to Phase 2
 
-### 2026-10-10 onward (Sprint 8, in progress)
+### 2026-10-10 to 2026-10-14 (Sprint 8, PR #77, merged to develop 2026-10-14 and to main via PR #87 the same day; tagged sprint-8)
 
 - **docs**: Sprint 8 Phase 1 (2026-10-10) -- carry-forward cut
   `feature/20261010_Sprint_8` from the Sprint 7 branch after PR #68
@@ -203,6 +206,29 @@ this project keeps having to replace with a step.
 - **docs**: Sprint 8 close-out (2026-10-13) -- `SPRINT_8_SUMMARY.md` with
   Actuals; master plan Last Completed Sprint and summary row; checklist
   reconciled; retrospective notes Task G
+- **chore**: sprint status note (2026-10-13) -- times corrected to the
+  commit times; the merge-readiness message's omitted F71 question
+  disclosed and recorded; the team lead's EDB query (a proved performance
+  ceiling) answered from six papers read locally, nothing written to the
+  store; Zhao et al.'s JMLR PDF saved beside its CE-7 reference, outside
+  the repository
+- **docs**: F71 Class 2 decided (2026-10-14, team lead = 6) -- none of the
+  four admission-against-interest candidates upgraded; all stay at
+  moderate; the F71 report says so
+
+### 2026-10-13 (F66, Sprint 8 Task A, PR #84)
+
+- **process**: F66 (Sprint 8 Task A, #78, PR #84 into develop,
+  2026-10-13) -- develop set as the GitHub default branch; `Closes #N`
+  now closes issues on a merge into develop; the release step (PR
+  develop -> main, merged by the team lead, then tag the merge `sprint-N`)
+  written into workflow 8.1 and SPRINT_PROCESS.md; ADR-0001 A2; CI stays
+  on PRs into develop only (team lead decision); tags `sprint-1` to
+  `sprint-7` pushed on the seven past main merges
+- **docs**: PR #84 review fixes (2026-10-13) -- "team lead", not "owner",
+  merges develop -> main, as everywhere else in the process docs (Copilot);
+  ADR-0001 A2's lead-in now matches its two changes and one decision not
+  to change (Claude code review)
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
