@@ -577,3 +577,25 @@ pastes into a Phase 2 session. Never write the change from here (hook:
   ids;
 - asks for that repository's own test or check, proven to fail where it
   guards something.
+
+## 20. Applied 2026-10-15: F68's door fixes and the F69 paper (Sprint 9 Task B)
+
+- **The door reads two more identifier forms** (`store/citations.py`,
+  `parse_access`): old-style arXiv ids from before April 2007
+  (`quant-ph/0405098`, `math.PR/0601001`), and DOIs that contain
+  parentheses (`10.1016/0304-4149(89)90040-9`). A closing parenthesis with
+  no opening one inside the DOI belongs to the prose and is dropped.
+- **The five Massoli entries refused on 2026-10-12** were re-run by
+  `scripts/sprint9_f68_massoli_rerun.py`, which reuses F61's parsing,
+  classification and entry shape for only those five. All five entered at
+  `seen`. Their `updated_reason` names F61's script (its entry builder)
+  with the Sprint 9 tag.
+- **F69: the file named "Cerezo" is by Nathan Wiebe.** Its first page reads
+  "To cite this article: Nathan Wiebe 2020 New J. Phys. 22 091001", and its
+  second page gives `https://doi.org/10.1088/1367-2630/abac39`. It is open
+  access (IOP "PERSPECTIVE, OPEN ACCESS"). It enters at `seen` through the
+  door by `manifests/sprint9_f69_wiebe_key_questions.json`: access
+  `<local path> | DOI:10.1088/1367-2630/abac39`, the local copy's SHA-256 in
+  `evidence`, and `found_via` naming the QMLPapers `NonArxiv` folder. The
+  file's misleading name is recorded, not changed: the folder is the team
+  lead's.
