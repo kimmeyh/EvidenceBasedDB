@@ -26,6 +26,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, recheck, resolvers, script_paths  # noqa: E402
+from store.links import links_of  # noqa: E402
 
 # Windows consoles commonly default to cp1252, which cannot encode most
 # citation text (accents, math symbols). Reconfigure stdout to UTF-8 so
@@ -146,6 +147,8 @@ def cmd_paper(conn, paper_id: str) -> dict:
         )
     ]
     yields = [cmd_assertion(conn, aid) for aid in yield_ids]
+    # ADR-0005 A10: one stored row per link, read here from both ends.
+    links = links_of(conn, paper_id)
 
     return {
         "id": paper["id"],
@@ -165,6 +168,10 @@ def cmd_paper(conn, paper_id: str) -> dict:
         # showed the string "None").
         "recheck": _schedule(recheck.schedule(conn, paper_id)),
         "yields": yields,
+        "cites": [lk["other"] for lk in links["out"] if lk["type"] == "cites"],
+        "cited_by": [lk["other"] for lk in links["in"] if lk["type"] == "cites"],
+        "other_links": [{"type": lk["type"], "direction": d, "other": lk["other"]}
+                        for d in ("out", "in") for lk in links[d] if lk["type"] != "cites"],
     }
 
 
@@ -264,6 +271,14 @@ def _print_text(data: dict, mode: str) -> None:
             print("  Applicability:")
             for a in data["applicability"]:
                 print(f"    - {a['context']}: {a['rationale']}")
+        for label, key in (("Cites (papers in the store)", "cites"), ("Cited by (papers in the store)", "cited_by")):
+            if data[key]:
+                print(f"  {label}: {len(data[key])}")
+                for other in data[key]:
+                    print(f"    - {other}")
+        for lk in data["other_links"]:
+            arrow = "->" if lk["direction"] == "out" else "<-"
+            print(f"  Link: {lk['type']} {arrow} {lk['other']}")
         if data["yields"]:
             print(f"  Yields ({len(data['yields'])} assertion(s)):")
             for y in data["yields"]:

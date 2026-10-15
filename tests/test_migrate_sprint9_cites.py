@@ -136,6 +136,31 @@ def test_the_door_and_the_schema_allow_the_same_link_types():
     assert in_schema == set(LINK_TYPES), in_schema ^ set(LINK_TYPES)
 
 
+def test_view_shows_cites_and_cited_by(synthetic_store):
+    """The end-user view of "readable from both ends". Proven to fail by
+    injection, 2026-10-15: with cmd_paper's cited_by reading the outgoing
+    list, the cited paper showed nothing."""
+    import json
+    import os
+    import subprocess
+    conn = connect(synthetic_store)
+    try:
+        add_source_link(conn, *CITE)
+        conn.commit()
+    finally:
+        conn.close()
+    env = {**os.environ, "EBDB_STORE_DIR": str(synthetic_store.parent)}
+
+    def view(pid):
+        out = subprocess.run([sys.executable, str(ROOT / "scripts" / "view.py"), "paper", pid, "--json"],
+                             capture_output=True, text=True, env=env, cwd=ROOT)
+        assert out.returncode == 0, out.stderr
+        return json.loads(out.stdout)
+    assert view(CITE[0])["cites"] == [CITE[1]] and view(CITE[0])["cited_by"] == []
+    assert view(CITE[1])["cited_by"] == [CITE[0]]
+    assert {"type": "code-of", "direction": "in", "other": "gamma-repo-github-repo"} in view(CITE[0])["other_links"]
+
+
 def test_a_link_reads_from_both_ends(synthetic_store):
     """Proven to fail by injection, 2026-10-15: with the incoming query
     reading from_id, the cited paper's "in" list held the wrong row."""
