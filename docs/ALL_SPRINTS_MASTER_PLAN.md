@@ -398,6 +398,15 @@ estimates are `[no-history]`.
   reason.
 - Acceptance per release: the slice screened, the ranking recorded, every
   promoted record read and yielding, every refused one with its reason.
+- **Release size: 74 records per sprint, every sprint, until no record is
+  left at `seen` or `screened`** (team lead, 2026-10-15, Sprint 9 approval
+  Q7: "we need to read all that have not been read, so backlog a repeated
+  item to read in chunck of 74 until they have all been read"). Sprint 9's
+  release (F80) is 76 records, as approved at Q7 = 2; from Sprint 10 each
+  release is 74. Snapshot as of 2026-10-14: 2,055 records at `seen` or
+  `screened`, so about 27 more releases at 74 each. The item closes when
+  the count is 0, not before. Refresh the count at each release, because
+  intake adds records.
 
 ### Carded during Sprint 7 (2026-10-06 to 2026-10-10)
 
@@ -571,12 +580,13 @@ estimates are `[no-history]`.
   result.
 - Depends on: none
 
-**F80. F57 release for Sprint 9: read for claims, first slice (~60m) Priority 70** (NEW 2026-10-14, released from the permanent F57 at Sprint 9 scope selection)
+**F80. F57 release for Sprint 9: read for claims, first slice of 76 (~3.5h) Priority 70** (NEW 2026-10-14, released from the permanent F57 at Sprint 9 scope selection; slice widened 2026-10-15 at approval, Q7 = 2)
 - Phase: Sourcing / extraction (released copy of the permanent F57)
 - Platform: the store; the 26 records at `seen` or `screened` under
   `hsbc-2026`, `platform:dirac-3` and `platform:dirac-3s` (snapshot as of
-  2026-10-14), none in the CE group
-- Scope per F57's release steps, the slice per Sprint 9 plan Q7.
+  2026-10-14), none in the CE group, plus the 50 most-cited `qml` records
+  at `seen` or `screened`
+- Scope per F57's release steps, the slice per Sprint 9 plan Q7 = 2.
 - Acceptance: the slice screened; every promoted record read and
   yielding; every refused one with its reason.
 - Depends on: none

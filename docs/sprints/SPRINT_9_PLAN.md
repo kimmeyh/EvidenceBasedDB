@@ -36,11 +36,11 @@ its commit, with one review-and-fix cycle in its estimate.
 |---|---|---|---|---|
 | A | **F79, the Phase 2 exchange.** CLAUDE.md names `hsbc-qfraud-phase2` as the consumer, keeps Phase 1 as history, and states the rule: each repository reads the other directly, with no prompt needed; neither writes to the other; a change wanted in the other repository goes as a prompt the team lead pastes. The never-write hook and its memory file add Phase 2's repository and Claude Code project directory; a hook test proven to fail by injection. `docs/INTAKE_WORKFLOW.md` gets the inbound path (a Phase 2 result read from Phase 2's files at a named commit, provenance naming repository, commit and run) and the outbound prompt shape (each claim with its provenance inline). A prompt is drafted for the team lead to paste into Phase 2, asking it to add its own never-write guard for this repository. The inbound path is tried on one real Phase 2 result (Q9) | 30m | none | Claude, top tier |
 | B | **F68 with F69, two door fixes and one paper.** `parse_access` reads old-style arXiv ids (`quant-ph/0405098`) and DOIs with parentheses; a test for each, proven by injection; the five Massoli entries re-run through F61's script. Then the Cerezo PDF: its identifier from its first page or a search, entered at `seen` through the door, or recorded out of scope with the reason | 25m | about 1 min (5 door lookups, 1 search) | Claude |
-| C | **F74, re-check correctness.** ADR-0005 A9: a re-check counts as complete only when the paper's own primary source answered (Q4). `last_check` counts only those answers; a missing or failing `pdftotext` is reported as a tool failure, not as the paper's fault; a probe that raised is reported as a probe failure. Two tests (DataCite answers and arXiv does not, so the paper stays due; `pdftotext` unavailable), each proven by injection | 30m | none (nothing due before August 2027) | Claude, top tier (ADR) |
+| C | **F74, re-check correctness.** ADR-0005 A9: a re-check counts as complete only when the paper's own primary source answered (Q4 = 1). Every paper whose primary source failed is listed at Manual Validation with a recommendation for each: investigate now, card it for Sprint 10, or accept it as due and retry at the next Phase 1.3. `last_check` counts only those answers; a missing or failing `pdftotext` is reported as a tool failure, not as the paper's fault; a probe that raised is reported as a probe failure. Two tests (DataCite answers and arXiv does not, so the paper stays due; `pdftotext` unavailable), each proven by injection | 30m | none (nothing due before August 2027) | Claude, top tier (ADR) |
 | D | **F48, honest local paths.** SHA-256 recorded for every local-access source (125 records; 11 carry one today); a check that reports a missing file or a changed hash, folded into the re-check's local-file check so it runs on the same schedule; a test with one moved file, proven by injection | 30m | about 1 min (114 files hashed locally) | Claude |
-| E | **F78, the ceiling-estimation group, read in full (Q3 = 2).** All 31 CE records, plus Ishida et al. 2023 (arXiv:2202.00395) and Theisen et al. 2021 (arXiv:2106.03357) entered through the door. Every paper and repository read in full and its read recorded; Zhao and Ushio finished; the ceiling, bound and method claims entered as assertions with section anchors, every quote verified verbatim by test (Butt's 0.451 F1 ceiling with its abstract-to-theorem gap and its Table IV exceedance; Tschirschwitz's LVIS bound; Zhao's F-score and BER bounds; Boyd's AUPRC minimum; the Bayes-error estimators and where each fails). F46's nine ceiling facts (F-701 to F-710) are answered here, since they come from the same papers. Local copies: Ishida, Theisen and Thanh (arXiv), Allen (Federal Reserve) downloaded into `Papers\` with SHA-256; Chen 2025 and Te Sun 1994 are closed, so they go on a hand-download list (Q3). Repositories per Q2. The answer document `docs/research/ceilings-ml-and-optimization.md`: how to find a ceiling for an ML dataset and a bound for an optimization problem, each method with its source, verified and inferred kept apart, plus a sort of the store's QML-advantage claims into families (optimization, kernels, linear algebra, sampling, quantum data). **Findings allowance 30%** | 150m + 45m allowance | about 2 min: 3 arXiv PDFs at 18 s spacing inside F52's cap, 1 Federal Reserve PDF, 7 repositories at their pinned commits | Claude, top tier (certainty); Sonnet 5.5 subagents for first-pass reads, every quote checked by the coordinator |
+| E | **F78, the ceiling-estimation group, read in full (team lead, 2026-10-14: "read everything in full").** All 31 CE records, plus Ishida et al. 2023 (arXiv:2202.00395) and Theisen et al. 2021 (arXiv:2106.03357) entered through the door. Every paper and repository read in full and its read recorded; Zhao and Ushio finished; the ceiling, bound and method claims entered as assertions with section anchors, every quote verified verbatim by test (Butt's 0.451 F1 ceiling with its abstract-to-theorem gap and its Table IV exceedance; Tschirschwitz's LVIS bound; Zhao's F-score and BER bounds; Boyd's AUPRC minimum; the Bayes-error estimators and where each fails). F46's nine ceiling facts (F-701 to F-710) are answered here, since they come from the same papers. Local copies: Ishida, Theisen and Thanh (arXiv), Allen (Federal Reserve) downloaded into `Papers\` with SHA-256; Chen 2025 and Te Sun 1994 are closed, so they go on a hand-download list (Q3). Repositories per Q2 = 2: each shallow-cloned into `D:\Data\Harold\EvidenceBasedDB\GitHubRepos\` (outside git), its commit recorded in the read row. The answer document `docs/research/ceilings-ml-and-optimization.md`: how to find a ceiling for an ML dataset and a bound for an optimization problem, each method with its source, verified and inferred kept apart, plus a sort of the store's QML-advantage claims into families (optimization, kernels, linear algebra, sampling, quantum data). **Findings allowance 30%** | 150m + 45m allowance | about 2 min: 3 arXiv PDFs at 18 s spacing inside F52's cap, 1 Federal Reserve PDF, 7 shallow clones | Claude, top tier (certainty); Sonnet 5.5 subagents for first-pass reads, every quote checked by the coordinator |
 | F | **F46, the remaining pending facts (non-ceiling).** From the handoff's `07-assertion-candidates-pending.md`: World (8), Entanglement in QML (1), the April 2026 claim (4), Classical fraud detection (7); 20 facts. Each source read directly first, then the assertion; the four already-read records compared before adding (a `supports` link, a refinement or a duplicate); new records for the sources with none (the NVIDIA blog and Kaggle write-up, the Kaggle leaderboard with its access date, the ULB temporal-split repository, the April 2026 blog post). The Holevo bound (F-001) needs a primary source: the 1973 paper or a textbook, else it stays out with the reason. **Findings allowance 30%** | 90m + 27m allowance | about 4 min: about 12 arXiv PDFs at 18 s, inside the cap | Claude, top tier (certainty) |
-| G | **F80, F57 release for Sprint 9: read for claims, first slice.** Ranked by the card's order: the 26 records at `seen` or `screened` under `hsbc-2026` (6), `platform:dirac-3` (18) and `platform:dirac-3s` (2), none in the CE group. Each screened, read directly if it bears on a context, and yielding; each refused one stays `seen` with its reason (Q7) | 60m | about 6 min: up to 20 arXiv PDFs not held locally, at 18 s | Claude, top tier |
+| G | **F80, F57 release for Sprint 9: read for claims, first slice of 76 (Q7 = 2).** Ranked by the card's order: the 26 records at `seen` or `screened` under `hsbc-2026` (6), `platform:dirac-3` (18) and `platform:dirac-3s` (2), none in the CE group; then the 50 most-cited `qml` records at `seen` or `screened`. Each screened, read directly if it bears on a context, and yielding; each refused one stays `seen` with its reason. From Sprint 10, F57 releases 74 records per sprint until none remain (team lead, 2026-10-15) | 210m | about 20 min: up to 66 arXiv PDFs not held locally, at 18 s | Claude, top tier |
 | H | **F55, citation links.** A computed `cites` link (Q5: a new link type, ADR-0005 amendment and schema migration with backup) from Crossref reference lists, for every pair of papers both in the store; recorded once, readable from both ends; never typed by hand; coverage reported. Not a certainty input | 45m | about 8 min: 214 DOI records plus arXiv records whose probe found a journal DOI, one Crossref request each, serial (pre-flight: Chen 2025 returns 44 references) | Claude, top tier (ADR) |
 | I | **F56, corroboration (Class 1 decision at approval, Q6).** As decided: ADR-0004 amendment, then the build. Under the recommendation, a computed "corroborated" flag shown beside the stored certainty when an INDEPENDENT assertion (different authors, not the same vendor) at equal or higher certainty supports it; the assessor decides any upgrade, with the reason; `view.py` shows the flag; a test with a same-vendor pair that must not count, proven by injection | 20m + 40m | none | Claude, top tier (ADR) |
 | J | **F62, discovery and the hand-download list.** The pilot script run with the team lead's OpenAlex key (Authorization header only) under the ranking rubric approved at Q8; citations cross-checked against Semantic Scholar and duplicate titles collapsed before ranking; per stream (ml, qml, tensor, fraud) a top list for the team lead's review at Manual Validation; chosen papers enter through the door at `seen`; a hand-download list (rank, title, DOI, publisher link, why, target file name) with every entry's free-copy search recorded | 90m | about 10 min: 4 streams, OpenAlex searches inside the daily budget, Semantic Scholar at 1 request per second | Claude; the team lead reviews the lists |
@@ -52,9 +52,9 @@ before E, because E's intake uses the door and E's downloads need
 SHA-256 recording. C is independent and small. E before F, because F's
 ceiling facts were moved into E. H before I, because citation links find
 corroboration candidates. J last among the builds, because its review
-happens at Manual Validation. Total about 630 minutes of coordinator
-time (558 plus 72 minutes of allowance), plus about 32 minutes of
-runtime. **If a Criterion 3 stop becomes necessary, the cut line is
+happens at Manual Validation. Total about 780 minutes of coordinator
+time (708 plus 72 minutes of allowance), plus about 46 minutes of
+runtime (Q7 = 2 added 150 minutes and 14 minutes of arXiv traffic). **If a Criterion 3 stop becomes necessary, the cut line is
 before J**: J and K move to Sprint 10. Deferring approved work is a
 Class 3 decision and is never made unilaterally.
 
@@ -104,67 +104,45 @@ Class 3 decision and is never made unilaterally.
 - **Plan-to-branch verification** (3.2.2.1): no Task A to K artifact
   exists yet; every selected F# is an open card in the master plan.
 
-## Decisions for the team lead at approval (numbered; answer with digits)
+## Decisions (team lead, 2026-10-15, at approval)
 
-Q4, Q5 and Q6 shape ADR amendments (Q6 is Class 1: the certainty model);
-the auto-advance window forbids asking later, so their substance is
-decided here and the amendment text is reviewed at Manual Validation.
+The team lead answered "q1. 1 highest priority first q2 2 q3 walk me
+through downloading right after this with detailed steps, while other
+tasks run q4 1, but reported at Manual Validation with recommendation to
+investigate further or backlog for next sprint or ?? | q5 1 q6 1 q7 2 we
+need to read all that have not been read, so backlog a repeated item to
+read in chunck of 74 until they have all been read. q8 1 q9 1". The plan
+is approved with these answers.
 
-- **Q1. In the slate, which way do the top 20 run?** (Your format
-  instruction said "reverse priority order"; the two readings give
-  opposite lists.) (1) Most important first: Priority 10 at the top,
-  under the recommendation (the format doc says this today). (2) Least
-  important first: Priority 110 at the top, the most important last.
-  Recommend 1.
-- **Q2. The 7 repositories in F78.** (1) Read on GitHub at a commit
-  recorded in the read row: no local copy, about 1 minute of requests;
-  the commit makes the read repeatable. (2) Shallow-clone each into
-  `D:\Data\Harold\EvidenceBasedDB\GitHubRepos\`: a local copy that
-  survives a deleted repository, about 2 minutes and some disk. Recommend
-  1.
-- **Q3. Chen 2025 and Te Sun 1994 have no free copy.** (1) You download
-  both by hand into `Papers\` from the list Task E gives (target file
-  names included); Task E reads them when they arrive and records them as
-  pending until then. (2) Read the abstracts only and record the reads as
-  partial; no download. Recommend 1.
-- **Q4. When does a re-check count as done (F74)?** (1) Only when the
-  paper's own primary source answered: the arXiv abstract page for an
-  arXiv paper, Crossref for a DOI, the page for a URL, the file for a
-  local path. A paper whose primary source failed stays due and is
-  retried at the next Phase 1.3; no added cost unless a source is down.
-  (2) When any provider answered, as now: a DataCite answer can hide an
-  unread arXiv version for about 10 months. Recommend 1.
-- **Q5. Where citation links live (F55).** (1) A new `cites` type in
-  `source_links`: a schema migration with a backup and an ADR-0005
-  amendment, about 15 minutes more; links show wherever source links
-  already show. (2) A separate computed table: no change to an existing
-  CHECK, but `view.py` and the export need new code, about 30 minutes
-  more. Recommend 1.
-- **Q6. Should corroboration raise certainty, and how (F56, Class 1)?**
-  (1) A computed "corroborated" flag beside the stored certainty when an
-  independent assertion (different authors, not the same vendor) at equal
-  or higher certainty supports it; the assessor decides any upgrade with
-  the reason, as with admissions. About 40 minutes to build. (2) A
-  computed upward cap, symmetric to ADR-0004 A6's downward caps: certainty
-  rises automatically; about 60 minutes, and independence errors then move
-  certainty with no human check. (3) Leave it to judgment, as now: no
-  build; corroboration stays invisible. Recommend 1.
-- **Q7. The first "read for claims" slice (F80).** (1) The 26 records
-  under `hsbc-2026`, `platform:dirac-3` and `platform:dirac-3s`: about 60
-  minutes; the consumer's own contexts first, as the card ranks them. (2)
-  Those 26 plus the top 50 `qml` records by citations: about 150 minutes
-  more. Recommend 1.
-- **Q8. The ranking rubric for F62.** (1) Citations per year since
-  publication, cross-checked against Semantic Scholar, with a bonus for a
-  match to a store context (hsbc-2026, a platform, qml); 25 per stream for
-  your review. (2) Raw citation count: simpler, but favors old papers.
-  Recommend 1.
-- **Q9. F51 (HOLD), whose findings document has not changed since
-  2026-08-04.** (1) Keep it held, as you set it; Task K records the check;
-  Task A's inbound trial uses Phase 2's B4 and B5 hardware result instead,
-  so newer CVQBoost evidence still enters this sprint. (2) Enter the
-  findings record and its six assertions now from the 2026-08-04 version,
-  marked as awaiting the re-run. Recommend 1.
+- **Q1 = 1.** The slate's top 20 run most important first, Priority 10 at
+  the top, under the recommendation. The format doc already says this; no
+  change.
+- **Q2 = 2.** F78's 7 repositories are shallow-cloned into
+  `D:\Data\Harold\EvidenceBasedDB\GitHubRepos\`, outside git, each
+  clone's commit recorded in its read row.
+- **Q3 = 1.** The team lead downloads Chen 2025
+  (DOI:10.1007/s10994-025-06761-w) and Han and Verdu 1994
+  (DOI:10.1109/18.335943) by hand into `Papers\`. The step-by-step
+  walkthrough was given at approval; Task E reads each when it arrives,
+  and each read stays pending until then.
+- **Q4 = 1, with a report.** A re-check counts only when the paper's own
+  primary source answered. Every paper left due because its primary source
+  failed is reported at Manual Validation with a recommendation:
+  investigate now, card it for Sprint 10, or accept it as due.
+- **Q5 = 1.** `cites` becomes a new `source_links` type: schema migration
+  with a backup, and an ADR-0005 amendment.
+- **Q6 = 1 (Class 1).** A computed "corroborated" flag beside the stored
+  certainty; the assessor decides any upgrade, with the reason. ADR-0004
+  amendment.
+- **Q7 = 2, and a standing rule.** The first slice is 76 records: the 26
+  under the consumer's contexts plus the 50 most-cited `qml` records. F57
+  now releases 74 records per sprint, every sprint, until no record is
+  left at `seen` or `screened` (recorded on the F57 card). Task G grows
+  from 60 to 210 minutes.
+- **Q8 = 1.** F62 ranks by citations per year, cross-checked against
+  Semantic Scholar, with a context bonus; 25 per stream for review.
+- **Q9 = 1.** F51 stays held; Task K records the check; Task A's inbound
+  trial uses Phase 2's B4 and B5 hardware result.
 
 ## Premise falsifier
 

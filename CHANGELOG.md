@@ -15,6 +15,11 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **docs**: Sprint 9 plan approved (2026-10-15, team lead) with Q1 to Q9
+  answered; F78's repositories shallow-cloned (Q2 = 2); re-check failures
+  reported at Manual Validation (Q4); the first read-for-claims slice
+  widened to 76 records (Q7 = 2); F57 now releases 74 records per sprint
+  until none remain at `seen` or `screened` (PR #88)
 - **docs**: Sprint 9 Phase 1 (2026-10-14) -- the team lead merged PR #84
   and PR #77 into develop and PR #86 and PR #87 to main; `sprint-8` tagged
   on PR #87's merge commit; carry-forward cut `feature/20261014_Sprint_9`
