@@ -599,3 +599,25 @@ pastes into a Phase 2 session. Never write the change from here (hook:
   `evidence`, and `found_via` naming the QMLPapers `NonArxiv` folder. The
   file's misleading name is recorded, not changed: the folder is the team
   lead's.
+
+## 21. Applied 2026-10-15: the ceiling group's local copies and two new papers (Sprint 9 Task E, F78)
+
+- **Downloads** (team lead, 2026-10-14: every paper in the group with no
+  local PDF goes into `Papers\`): `scripts/sprint9_f78_downloads.py` saved
+  Ishida et al. (arXiv:2202.00395), Theisen et al. (arXiv:2106.03357), Thanh
+  et al. (arXiv:2511.00964, the preprint of the Machine Learning paper) and
+  Allen (the Federal Reserve's own FEDS 2025-017 PDF), each checked against
+  its first page. arXiv went through the door's paced fetcher. Chen et al.
+  2025 and Han and Verdu 1994 have no free copy; they are the team lead's
+  hand downloads (plan Q3 = 1) and were not fetched.
+- **Repositories** (plan Q2 = 2): six shallow clones in
+  `D:\Data\Harold\EvidenceBasedDB\GitHubRepos\`, each read at the commit
+  named in its read row. The seventh record (CE-14) is the handbook's
+  rendered site, the same source as the handbook repository.
+- **Two papers the group cites but the store lacked** enter at `seen` by
+  `manifests/sprint9_f78_ishida_theisen.json`, each with `access`
+  `arXiv:<id> | <local path>`; the reading script promotes them.
+- **Han and Verdu 1994** is stored as `te-sun-1994-generalizing-fano-inequality`:
+  Crossref gave the first author's name as one string, so the derived id
+  took "te-sun". The citation reads "Te Sun Han". Ids are not renamed; the
+  record's evidence says so.
