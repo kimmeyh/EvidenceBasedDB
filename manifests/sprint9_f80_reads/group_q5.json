@@ -1,0 +1,466 @@
+{
+ "papers": [
+  {
+   "record_id": "mcclean-2018-barren-plateaus-quantum-neural-network",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2018-03_Mcclean_Barren-plateaus-in-quantum-neural-network-training-landscapes.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Google paper showing that randomly initialised deep parameterised quantum circuits have gradients that concentrate to zero exponentially in qubit number (barren plateaus).",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "mcclean-rpqc-gradient-variance-exp-small",
+     "value": "For random parameterized quantum circuits in which at least one of the two circuit halves around a parameter forms a unitary 2-design (and the halves are independent), the expected gradient is zero and the gradient variance, hence the probability of a non-negligible gradient, is exponentially small in the number of qubits; such circuits sit on a barren plateau.",
+     "anchor": "Gradient concentration in random circuits and Appendix I; pdf page 2/3",
+     "quotes": [
+      "the probability that any given instance of such a random circuit deviates from this average value by a small constant is exponentially small in the number of qubits",
+      "then with high probability one will produce an ansatz state on a barren plateau of the quantum landscape, with no interesting search directions in sight"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Analytic result via Haar-measure integration in the appendix, valid under stated 2-design and independence assumptions.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "mcclean-numerics-gradient-var-decay-1d-circuits",
+     "value": "Numerical simulation of 1D random circuits up to 24 qubits shows the sample variance of a two-local Pauli gradient decaying exponentially with qubit number, and saturating with layer count at a plateau height set by qubit number.",
+     "anchor": "Numerical simulations, Figs. 3-4; pdf page 3",
+     "quotes": [
+      "both the expected value of the gradient and its spread decay exponentially as a function of the number of qubits even when the number of layers is a modest linear function"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Simulation of one circuit family and one Pauli objective; the authors extrapolate to other objectives.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "mcclean-gradient-descent-random-walk-limit",
+     "value": "On a quantum device gradient estimation costs grow polynomially in 1/precision, so with too few measurements gradient-based optimisation on a barren plateau becomes a random walk, and without some additional strategy it cannot escape in polynomial time.",
+     "anchor": "Contrast with gradients in classical deep networks; pdf page 4",
+     "quotes": [
+      "For a number of measurements much lower than this limit with the size of the gradient, a gradient based optimization will result in a random walk",
+      "gradient descent without some additional strategy cannot circumvent this challenge on a quantum device in polynomial time"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Argument from concentration of measure plus a cited measurement-cost scaling, not a separate theorem.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "mcclean-mitigation-structured-init-proposed",
+     "value": "The authors suggest structured initial guesses or segment-by-segment pre-training as ways to avoid barren plateaus; these are proposals to be studied, not shown to work in this paper.",
+     "anchor": "Conclusions; pdf page 4",
+     "quotes": [
+      "One approach to avoid these landscapes in the quantum setting is to use structured initial guesses, such as those adopted in quantum simulation"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Stated as a possible direction with no demonstration in the paper.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "benedetti-2019-parameterized-quantum-circuits-as-machine",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2019\\Benedetti-et-al._2019_Parameterized-quantum-circuits-as-machine-learning-models__1906.07682.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Review of parameterised quantum circuits as machine learning models: encoders, variational circuits, training, applications to classical and quantum data, and an outlook.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "benedetti-pqc-practical-advantage-open-question",
+     "value": "The review states that whether classically hard feature maps or circuits give an advantage in practical machine learning is an open question, and that supervised-learning experiments to date used scaled-down, often trivial datasets.",
+     "anchor": "Sec. II A and III A; pdf page 4/10",
+     "quotes": [
+      "Whether this leads to an advantage in practical machine learning is an open question and should be tested empirically on existing computers",
+      "To date, all supervised learning experiments involved scaled-down, often trivial, datasets due to the limitation of available quantum hardware"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Authors' own statement of the evidence gap in a review; it summarises the literature rather than adding results.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "benedetti-amplitude-encoding-loading-cost",
+     "value": "Amplitude encoding of a 2^n-dimensional vector into n qubits gives an exponential memory advantage, but the encoder circuit depth is expected to scale exponentially in qubit number for generic inputs, so such algorithms may be limited by data loading.",
+     "anchor": "Sec. II A; pdf page 4",
+     "quotes": [
+      "Unfortunately, the depth of this encoder circuit is expected to scale exponentially with the number of qubits for generic inputs",
+      "Therefore, algorithms based on amplitude encoding could be impeded by our inability to coherently load data into quantum states"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Stated as an expectation in a review without proof; matches the widely discussed data-access assumption.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "benedetti-pqc-universal-but-possibly-exponentially-deep",
+     "value": "A quantum circuit exists that represents any target function to arbitrary error, but it may be exponentially deep and impractical, so practical models rely on fixed circuit structures with polynomially many parameters.",
+     "anchor": "Sec. II B; pdf page 4",
+     "quotes": [
+      "there always exists a quantum circuit that can represent a target function within an arbitrary small error",
+      "The caveat is that such a circuit may be exponentially deep and therefore impractical"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Stated by analogy with the universal approximation theorem; the proof is not given in this review.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "benedetti-quantum-data-advantage-conditional",
+     "value": "The review claims PQC models will clearly beat classical methods on quantum learning tasks, provided quantum data can be efficiently loaded or prepared in a qubit register.",
+     "anchor": "Sec. IV Outlook; pdf page 14",
+     "quotes": [
+      "PQC models will deliver a clear advantage over classical methods for quantum learning tasks"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Conditional claim resting on a data-preparation assumption and on a complexity-theoretic supremacy argument, not on an experiment.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "wang-2024-noise-induced-barren-plateaus-variational",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2020\\Wang-et-al._2020_Noise-Induced-Barren-Plateaus-in-Variational-Quantum-Algorithms__2007.14384.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Proves that local Pauli noise makes the gradient of variational quantum algorithm cost functions vanish exponentially in circuit depth, hence exponentially in qubit number when depth grows linearly (noise-induced barren plateaus).",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "wang-nibp-gradient-vanishes-linear-depth",
+     "value": "Theorem 1 and Corollary 1 prove, for local Pauli noise acting before and after each layer, an upper bound on the partial derivative of the cost that decays exponentially with circuit depth L; if L grows linearly in qubit number n the gradient vanishes exponentially in n, for any noise strength q below 1.",
+     "anchor": "Abstract, Theorem 1, Corollary 1; pdf page 1/4",
+     "quotes": [
+      "for the local Pauli noise considered, we prove that the gradient vanishes exponentially in the number of qubits n if the depth of the ansatz grows linearly with n",
+      "NIBPs occur regardless of the noise strength, it only changes the severity of the exponential scaling"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Rigorous theorem and corollary with proofs in the supplement, under the stated noise model and efficient Pauli decomposition assumptions.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "wang-nibp-cost-concentration-lemma",
+     "value": "Lemma 1 proves that the noisy cost function concentrates exponentially around its value for the maximally mixed state, Tr[O]/2^n, when the number of layers scales linearly with qubit number.",
+     "anchor": "Lemma 1; pdf page 3",
+     "quotes": [
+      "the noisy cost function concentrates around the corresponding value for the maximally mixed state",
+      "This lemma implies the cost landscape exponentially concentrates on the value"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Stated as a lemma with a bound; same local Pauli noise model as Theorem 1.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "wang-nibp-not-fixed-by-correlated-parameters",
+     "value": "NIBPs differ from noise-free barren plateaus: they flatten the whole landscape at every point, and remedies for noise-free barren plateaus such as correlating parameters do not avoid them; the only avoidance strategies the authors name are lower hardware noise or shallower ansatzes.",
+     "anchor": "Corollary 1 discussion, Remark 1, Discussion; pdf page 4/8",
+     "quotes": [
+      "such correlated or degenerate parameters do not help in avoiding NIBPs",
+      "the only strategies we are aware of for avoiding NIBPs are: (1) reducing the hardware noise level, or (2) improving the design of variational ansatzes such that their circuit depth scales more weakly with n"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The correlated-parameter case is proved in Remark 1; the claim that other strategies fail is the authors' statement of what they know.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "wang-nibp-numerics-qaoa-and-hardware",
+     "value": "Numerics with a gate-set-tomography noise model for QAOA MaxCut and a run of the Hamiltonian Variational Ansatz on a 27-qubit IBM device show cost deviation and gradients decaying roughly exponentially with depth or qubit number, until shot noise dominates near n = 9 on hardware.",
+     "anchor": "QAOA and HVA heuristics, Figs. 3-5; pdf page 6/8",
+     "quotes": [
+      "This plot shows an exponential decay of the partial derivative with p in accordance with Theorem 1",
+      "As n increases, the noisy average partial derivative decreases approximately exponentially, until around n = 9"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Small-scale simulation and one hardware run; decay is described as approximate and the hardware trend ends at the shot-noise floor.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "perez-salinas-2020-data-re-uploading-universal-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2020\\Perez-Salinas-et-al._2020_Data-re-uploading-for-a-universal-quantum-classifier__1907.02085.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Proposes a single-qubit (and multi-qubit) quantum classifier that re-uploads the data at each layer, argues universality by analogy to the universal approximation theorem, and benchmarks it by simulation.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "perez-salinas-reuploading-qubit-layer-tradeoff",
+     "value": "The main claim is a trade-off: fewer qubits can be used at the price of re-entering the classical data several times along the circuit, because repeated single-qubit rotations generate non-trivial functions of the data without a sophisticated encoder.",
+     "anchor": "Introduction; pdf page 2",
+     "quotes": [
+      "That is, we may use fewer qubits at the price of re-entering data several times along the quantum computation",
+      "Single-qubit rotations applied multiple times along the circuit generate highly non-trivial functions of the data values"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Stated as the paper's main result and supported by simulations on four toy problems, not by a general proof.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "perez-salinas-universality-argument-heuristic",
+     "value": "Universality of the single-qubit re-uploading classifier is motivated by analogy with the universal approximation theorem and is not a complete proof: the authors note more parameters are needed to map their argument onto the theorem's form.",
+     "anchor": "Sec. 3; pdf page 6/7",
+     "quotes": [
+      "Thus, this theorem establishes that it is possible to reconstruct any continuous function with a single layer neural network of N neurons",
+      "However, more parameters are necessary to map this argument with the UAT expression"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Heuristic correspondence to a classical theorem; the authors do not give a rigorous equivalence.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "perez-salinas-simulated-benchmarks-toy-problems",
+     "value": "Classical simulation of the classifier on circle, 3-circles, 4-dimensional hypersphere and annulus problems gives success rates of about 90 to 98 percent with a handful of layers, with training sets kept small by computational limits; comparison is to default scikit-learn models only.",
+     "anchor": "Sec. 6 and conclusions; pdf page 9/12",
+     "quotes": [
+      "A single-qubit achieves 97% of success with eight layers (82 parameters) using the weighted",
+      "We were forced to use small training sets due to computational capabilities for our simulations"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Noise-free simulation on synthetic two-to-four dimensional problems with small training sets.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "perez-salinas-no-quantum-advantage-single-qubit",
+     "value": "The authors state that the single-qubit classifier cannot carry a quantum advantage over classical techniques such as neural networks; advantage is only anticipated for the multi-qubit entangled version, and that is not established here.",
+     "anchor": "Sec. 3 and 4; pdf page 7",
+     "quotes": [
+      "cannot carry any quantum advantage respect classical",
+      "However, it is not clear if the introduction of entanglement between qubits can be understood as a deep neural network architecture"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Explicit limitation stated by the authors; the multi-qubit advantage statement is a proposal without evidence in the paper.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "henderson-2020-quanvolutional-neural-networks-powering-image",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2019-04_Henderson_Quanvolutional-neural-networks-powering-image-recognition-with-quantum-circuits.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Introduces quanvolutional layers, which filter local image patches with fixed random quantum circuits, and compares them with a CNN and a random classical non-linear layer on MNIST in noise-free simulation.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "henderson-qnn-higher-accuracy-mnist-simulated",
+     "value": "In noise-free simulation on MNIST, a CNN with one quanvolutional front layer reached higher test accuracy and trained faster than a purely classical CNN.",
+     "anchor": "Abstract and Sec. 3; pdf page 1",
+     "quotes": [
+      "Our results showed that the QNN models had both higher test set accuracy as well as faster training compared to the purely classical CNNs"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Single dataset and one architecture, simulated without noise; the paper's own control undercuts a quantum-specific reading.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "henderson-qnn-indistinguishable-from-random-classical",
+     "value": "The quanvolutional model was statistically indistinguishable from a CNN with a random classical non-linear front layer, so the paper does not show a quantum advantage.",
+     "anchor": "Sec. 3.6 and conclusion; pdf page 7",
+     "quotes": [
+      "The results of RANDOM MODEL were statistically indistinguishable from the QNN MODEL results",
+      "However, while this is a promising step for some form of QNN applicability, it still does not show any clear quantum advantage over all classical models"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Stated directly by the authors from their three-model comparison.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "henderson-qnn-lookup-table-simulation-not-hardware",
+     "value": "The experiments replaced circuit execution by a look-up table of all input-output pairs computed from the full simulated state, an approach the authors say is infeasible on hardware, and used no noise models.",
+     "anchor": "Sec. 3.3 and 3.5; pdf page 6",
+     "quotes": [
+      "This means that in essence, a look-up table was being applied on each new input set of spatially-local data, rather than re-running the data through a quantum circuit each time",
+      "While this exact approach is infeasible on hardware since the full state-space will never be known"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct description of the experimental method by the authors.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "martyn-2021-grand-unification-quantum-algorithms",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2021\\Martyn-et-al._2021_Grand-Unification-of-Quantum-Algorithms__2105.02859.pdf",
+   "read_extent": "partial",
+   "partial_detail": "39-page tutorial. Read in full: abstract, introduction, Theorems 1-4 and their setup, the search, phase estimation, Hamiltonian simulation and matrix inversion sections' statements and complexity discussion, and the conclusion/outlook. Appendices (QSP convention proofs, polynomial constructions) skimmed by heading and theorem statements only.",
+   "what_it_is": "Pedagogical tutorial showing that quantum singular value transformation (QSVT) yields search, phase estimation, Hamiltonian simulation and matrix inversion as instances of one framework.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "martyn-qsvt-unifies-major-quantum-algorithms",
+     "value": "The tutorial presents quantum singular value transformation as a single parametrised framework from which search, phase estimation, Hamiltonian simulation and linear-system inversion are built by changing the polynomial; the underlying constructions come from the GSLW 2019 paper.",
+     "anchor": "Introduction; pdf page 2",
+     "quotes": [
+      "As shown in this tutorial, by simply adjusting the parameters of QSVT, one can construct nearly all known quantum algorithms"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Expository claim backed by constructions taken from earlier work; the sweeping phrase nearly all known is the authors' own.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "martyn-qsvt-matrix-inversion-vs-hhl",
+     "value": "Matrix inversion by QSVT has query complexity O(kappa log(kappa/epsilon)), better in condition number than HHL, and has no explicit N dependence, although the block encoding of the matrix may itself scale with N.",
+     "anchor": "Sec. VI B; pdf page 24",
+     "quotes": [
+      "This is an improvement over the conventional HHL algorithm, which has runtime",
+      "the QSVT algorithm does not use such a subroutine and thus N dependence is absent from its complexity"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Complexity statement cited from GSLW 2019 and the authors' derivation sketch; assumes an efficient block encoding of the matrix.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "martyn-qsvt-qram-no-general-exponential-speedup",
+     "value": "If the matrix is supplied through QRAM, a classical sampling-and-query algorithm with runtime polynomial in the Frobenius norm gives the same singular value transformation access, so QRAM-based QSVT cannot always achieve an exponential speedup; QRAM itself faces practical difficulties.",
+     "anchor": "Sec. VII Discussion; pdf page 25",
+     "quotes": [
+      "This polynomial runtime suggests that QRAM-based QSVT cannot always achieve an exponential speedup over classical algorithms",
+      "requiring a number of ancillary qubits which grows linearly with the number of items stored"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Stated by the authors by reference to a cited dequantization result; it is a caveat on data-access assumptions rather than a theorem proved here.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "wan-2017-quantum-generalisation-feedforward-neural-networks",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2016-12_Wan_Quantum-generalisation-of-feedforward-neural-networks.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Proposes quantum feedforward networks whose neurons are unitary generalisations of reversible classical neurons, trained by gradient descent, and demonstrates a quantum autoencoder and learned teleportation in classical simulation.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "wan-qnn-training-cost-polynomial-evaluations",
+     "value": "The number of cost-function evaluations per gradient-descent step grows polynomially in the number of neurons, but the authors give no proof that convergence takes polynomially many iterations.",
+     "anchor": "Training section; pdf page 4",
+     "quotes": [
+      "Thus the number of evaluations of the cost function for a given iteration of the gradient descent grows polynomially in the number of neurons",
+      "We do not here attempt to provide a proof that the convergence to zero cost-function, where possible, will always take a number of iterations that grows polynomially in the number of neurons"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Per-iteration cost follows from the parameter counting; total-iteration efficiency is explicitly left unproved.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "wan-qnn-autoencoder-converges-in-simulation",
+     "value": "In classical simulation, the quantum autoencoder cost converged towards zero for the tested pairs of orthogonal two-qubit inputs, including entangled ones; for non-orthogonal inputs it does not reach zero and gives an approximately compressing unitary.",
+     "anchor": "Autoencoder example; pdf page 5",
+     "quotes": [
+      "the cost function of the quantum autoencoder converged towards zero through global gradient descent in every case, starting with uniformly randomised weights",
+      "For 2 non-orthogonal inputs and a 1-qubit bottleneck the cost-function will not converge to zero as is to be expected"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Small two-qubit simulations on a few input sets, with no scaling study.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "wan-qnn-learns-teleportation-in-simulation",
+     "value": "In classical simulation, a network trained only on the task converged to a teleportation protocol that works for arbitrary qubit states, with a mean cost of about 5e-4 over 1000 random Haar-distributed test states.",
+     "anchor": "Teleportation example, Fig. 6; pdf page 5",
+     "quotes": [
+      "As can be seen, the training was found to be successful, i.e. the cost function converged towards zero",
+      "This held for all tests with randomly initialised weights"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Single small protocol simulated classically; the cost-distribution figure is in the Fig. 6 caption.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "wan-qnn-advantage-claim-quantum-inputs",
+     "value": "The authors argue the quantum network can do quantum-input tasks a classical network cannot, and only anticipate (without showing) faster processing of classical inputs.",
+     "anchor": "Discussion; pdf page 5",
+     "quotes": [
+      "A key type of quantum supremacy is that the quantum network can take and process quantum inputs",
+      "We anticipate that they will moreover, in some cases be able to process classical inputs faster, by turning them into superpositions"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "The quantum-input point is definitional; the classical-input speedup is stated as an expectation with no evidence.",
+     "context": "qml"
+    }
+   ]
+  }
+ ]
+}

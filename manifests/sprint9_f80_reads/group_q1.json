@@ -1,0 +1,558 @@
+{
+ "papers": [
+  {
+   "record_id": "biamonte-2018-quantum-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2007-2017\\Biamonte-et-al._2016_Quantum-machine-Learning__1611.09347.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Nature review of quantum machine learning covering qBLAS-based algorithms, quantum Boltzmann machines, quantum data and open problems.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "biamonte-hhl-speedup-caveats",
+     "value": "The review states that HHL-based exponential speedups apply only to certain problems: the input state must be prepared (on a quantum computer or via qRAM, which may be expensive), the output gives only features of the solution, and the matrix must be well conditioned.",
+     "anchor": "Box 2 HHL Algorithm, p.7",
+     "quotes": [
+      "The second caveat is that the input vector |b needs to be prepared, either on a quantum computer or using qRAM, which may be expensive.",
+      "In general, the promise of exponential speedups for linear systems should be tempered with the realization that they only apply to certain problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Stated explicitly by the authors as caveats of a cited algorithm; no new proof in this paper.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "biamonte-four-fundamental-qml-problems",
+     "value": "The review distills the caveats of quantum ML algorithms into four problems: input, output, costing and benchmarking. Reading in the input can dominate the cost, and very little is known about the gate counts of QML algorithms.",
+     "anchor": "Perspectives on future work, pp.13-14",
+     "quotes": [
+      "We can distill the caveats mentioned above into four fundamental problems.",
+      "Input problem: While quantum algorithms can provide dramatic speedups for processing data they seldom provide advantages for reading data.",
+      "Costing problem: Closely related to the input/output problem(s), at present very little is known about the actual number of gates required by quantum machine learning algorithms."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct statement of the authors' synthesis; a qualitative position rather than a measured result.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "biamonte-qpca-exponential-with-qram",
+     "value": "Quantum PCA of classical data is claimed to scale as O((log d)^2) in computational and query complexity versus O(d^2) classically, which the review calls exponentially more efficient. The claim relies on qRAM to load each data vector as a quantum state.",
+     "anchor": "Quantum principal component analysis, p.6",
+     "quotes": [
+      "The quantum state that summarizes the vector has log d qubits, and the operation of the qRAM requires O(d) operations divided over O(log d) steps that can be performed in parallel.",
+      "That is, quantum PCA is exponentially more"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Cited result restated with qRAM assumption; the review itself later says qRAM cost may be prohibitive and that output reading is a problem.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "biamonte-quantum-boltzmann-quadratic-training-access",
+     "value": "With quantum access to training data (qRAM or a quantum black box), a quantum algorithm is claimed to train a deep network using quadratically fewer accesses to the training data than classical methods.",
+     "anchor": "Deep quantum learning, p.10",
+     "quotes": [
+      "quantum access to the training data (i.e. qRAM or a quantum blackbox subroutine) allows the machine to be trained using quadratically fewer accesses to the training data than classical methods requires"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Cited result from Wiebe et al.; depends on quantum data access, and the review does not reprove it.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "farhi-2014-quantum-approximate-optimization-algorithm",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2007-2017\\Fahri-Goldstone_2014_Quantum-Approximate-Optimization-Algorithms__1411.4028.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Original QAOA paper: a parameterized alternating-operator quantum circuit for approximate combinatorial optimization, analyzed on MaxCut for 2-regular and 3-regular graphs.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "farhi-qaoa-p1-3regular-ratio-0p6924",
+     "value": "For p = 1, QAOA on any 3-regular MaxCut instance yields a cut at least 0.6924 times the optimum; the authors note this is not as good as known classical algorithms.",
+     "anchor": "Section V, pp.8-10",
+     "quotes": [
+      "that it achieves its minimum value at s = t = 0 and the value is 0.6924.",
+      "This p = 1 result on 3-regular graphs is not as good as known classical algorithms [1]."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Analytic bound whose final minimization over s and t is evaluated numerically in the paper; the paper itself says it is below classical performance.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "farhi-qaoa-ring-ratio-approaches-one",
+     "value": "On 2-regular rings, numerical maximization for p = 1 to 6 gives M_p = n(2p+1)/(2p+2), from which the authors conclude the approximation ratio approaches 1 as p grows, with circuit depth independent of n.",
+     "anchor": "Section IV, p.8",
+     "quotes": [
+      "from which we conclude that Mp = n(2p + 1)/(2p + 2) for all p.",
+      "Since the best cut is n, we see that our quantum algorithm can produce an approximation ratio that can be made arbitrarily close to 1 by making p large enough, independent of n."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The formula is fitted to numerical maxima for p up to 6 and then generalized; it is not derived analytically here. A ring is a trivially classically solvable instance.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "farhi-qaoa-mp-converges-to-optimum",
+     "value": "M_p is nondecreasing in p, and the authors argue via the adiabatic algorithm, Trotterization and Perron-Frobenius that M_p tends to the maximum of C as p grows, though p may need to be exponentially large in n.",
+     "anchor": "Sections I and VI, pp.3 and 10-11",
+     "quotes": [
+      "Note that the maximization at p − 1 can be viewed as a constrained maximization at p so",
+      "With (9), this proves the assertion of (10).",
+      "In fact on the ring of disagrees the state produced at p = 1, which gives a 3/4 approximation ratio, has an exponentially small overlap with the optimal strings."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Argued as a proof sketch via adiabatic theorem; the authors state that large p may be exponential in n, so it gives no efficiency guarantee.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "farhi-qaoa-depth-and-classical-preprocessing",
+     "value": "Circuit depth grows linearly with p times (at worst) the number of constraints. For fixed p and bounded-degree instances, the optimal angles can be found by classical preprocessing whose resources do not grow with n, though this may be infeasible for large p.",
+     "anchor": "Abstract and Section II, pp.1 and 6",
+     "quotes": [
+      "The depth of the circuit grows linearly with p times (at worst) the number of constraints.",
+      "Admittedly for large p this may be beyond current classical technology, but the resource requirements do not grow with n."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct design property and complexity statement derived in the paper for the stated bounded-degree case.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "abbas-2020-power-quantum-neural-networks",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2020\\Abbas-et-al.-2020_The-power-of-quantum-neural-networks__2011.00027.pdf",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, sections 1-5 and conclusion read in full; appendix A read; appendix B proof of Theorem 3.2 and appendix C skimmed.",
+   "what_it_is": "Paper defining a Fisher-information effective dimension, proving a generalization bound for it, and reporting simulations and one hardware run claiming a particular quantum neural network has higher effective dimension and trains faster than comparable classical networks.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "abbas-effective-dimension-generalisation-bound",
+     "value": "The paper proves a generalisation bound (Theorem 3.2) in terms of the Fisher-information effective dimension, under Lipschitz and Holder continuity and a full-rank Fisher matrix assumption; the full-rank assumption often fails for classical networks, so a discretised relaxation is also given.",
+     "anchor": "Section 3.3, Theorem 3.2, Remark 3.4, pp.5-6; conclusion p.10",
+     "quotes": [
+      "as a robust capacity measure for quantum and classical models, which we justify through proof of a novel generalisation bound.",
+      "The full rank assumption on the Fisher information matrix, however, often does not hold in classical models."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "A theorem with proof in Appendix B; applies only under the stated regularity and rank assumptions.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "abbas-qnn-higher-effective-dimension",
+     "value": "In numerical experiments with matched parameter count (d up to 100) and input size, one specific QNN with a conjectured hard-to-simulate feature map attains a higher effective dimension and a more uniform Fisher spectrum than classical feedforward networks and an easy quantum model; the advantage is attributed to the feature map.",
+     "anchor": "Sections 4.1-4.2, Figures 2-3, pp.8-9; conclusion p.10",
+     "quotes": [
+      "The quantum neural network consistently achieves the highest",
+      "In order to do a systematic study, we deem two models comparable if they share the same number of trainable parameters (d), input size (sin), and output size (sout)",
+      "The feature map in the quantum neural network is conjectured to be hard to simulate classically, and replacing it with one that is easily simulable, impairs these advantages."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Simulation results for one architecture and a specific comparison definition; classical comparison is a family of feedforward networks only, and hardness of the feature map is a conjecture.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "abbas-qnn-faster-training-hardware",
+     "value": "In a small Iris two-class experiment (d = 8, 100 iterations, 100 trials) the QNN reaches a lower training loss than the classical and easy quantum models; one run on ibmq montreal with reduced linear entanglement is reported to persist.",
+     "anchor": "Section 4.3, Figure 3b, p.10 and p.9 caption",
+     "quotes": [
+      "the quantum neural network trains to a lower loss, faster than the other two models over an average of 100 trials.",
+      "we train all three models using d = 8 trainable parameters with full batch size.",
+      "We reduce the number of CNOT-gates by only considering linear entanglement instead of all-to-all entanglement in the feature map and variational circuit."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Single small dataset, tiny model, one hardware run with a modified circuit; the paper itself lists multi-dataset and larger-model generalisation as future work.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "abbas-fisher-spectrum-barren-plateau-link",
+     "value": "The paper argues that, for a log-likelihood loss, a barren plateau forces the Fisher matrix trace toward zero, so a Fisher spectrum not concentrated at zero makes a barren plateau unlikely; it reports the hard-feature-map QNN keeps a roughly constant spectrum as qubit count grows while the easy model does not.",
+     "anchor": "Sections 3.4 and 4.3, pp.6-10",
+     "quotes": [
+      "Conversely, a model with a Fisher information spectrum that is not concentrated around zero is unlikely to experience a barren plateau.",
+      "and a large amount of the eigenvalues are not near zero, thus, the model shows resilience against barren plateaus."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The forward implication is derived, the converse is stated as unlikely rather than proved, and the resilience evidence is numerical for small qubit counts; noise-induced barren plateaus are explicitly not examined.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "cerezo-2023-challenges-opportunities-quantum-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\Reviews\\Cerezo-et-al._2022_Challenges-and-opportunities-in-quantum-machine-learning__2303.09491.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Short review of QML methods (QNNs, quantum kernels), trainability challenges such as barren plateaus and noise, and prospects for quantum advantage.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "cerezo-barren-plateau-causes",
+     "value": "The review lists several causes of barren plateaus in QML models: over-expressive deep circuits with weak inductive bias, global observables, and excess entanglement; local observables avoid the global-observable case.",
+     "anchor": "Section III.B, pp.7-8",
+     "quotes": [
+      "while local observables (those comparing quantum states at the single-qubit level) avoid this issue [78, 87].",
+      "QNNs (or embedding schemes) that generate too much entanglement also lead to barren plateaus [84, 86, 88]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Summary of cited theorems from other papers; the review does not itself prove them.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "cerezo-noise-undermines-qml-claims",
+     "value": "The review states that noise can cause noise-induced barren plateaus, and that most QML research neglects noise in analysis and simulation while still claiming near-term compatibility.",
+     "anchor": "Section III.D, p.9",
+     "quotes": [
+      "Moreover, when using QNNs, noise can hinder their trainability as it leads to noise-induced barren plateaus [89, 97].",
+      "Despite this fact, most QML research neglects noise in the analytical calculations and numerical simulations while still promising that the methods are near-term compatible."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct statement by the authors, citing proofs elsewhere for noise-induced barren plateaus.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "cerezo-no-known-exponential-advantage-classical-data",
+     "value": "For purely classical data the review says no exponential quantum advantage is known and that results suggest advantage with classical data may not be straightforward; polynomial advantage is considered reasonable to expect.",
+     "anchor": "Sections III.A and IV.B, pp.7 and 10",
+     "quotes": [
+      "there is no known exponential advantage [117]. However, it is still reasonable to expect polynomial advantage.",
+      "Furthermore, some recent results suggest that achieving a quantum advantage with classical data might not be straightforward [49]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Qualitative assessment citing the literature; stated as absence of a known result, not an impossibility proof.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "cerezo-sample-complexity-advantage-quantum-data",
+     "value": "The review states an exponential quantum advantage in sample complexity has been shown for learning from experiments, when a quantum sensor, quantum memory and quantum computer are available to retrieve, store and process the quantum information.",
+     "anchor": "Section IV.B, p.10",
+     "quotes": [
+      "there is an exponential quantum advantage in sample complexity when we can use a quantum sensor, quantum memory, and quantum computer to retrieve, store, and process quantum information from experiments."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Cited result; the advantage is conditional on quantum memory and a quantum sensor interface, and the review notes time-complexity advantage is subtler and unproven for practical systems.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "ciliberto-2018-quantum-machine-learning-classical-perspective",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\Reviews\\Ciliberto-et-al._2018_Quantum-machine-learning-a-classical-perspective__1707.08561.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Review of quantum machine learning for classical machine-learning readers, stressing data-access and other caveats and comparing quantum algorithms with best classical counterparts.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "ciliberto-qlsa-caveats-and-classical-rivals",
+     "value": "The review lists caveats of the quantum linear system algorithm (sparsity, logarithmic-time data loading, output as a quantum state, sublinear condition number) and notes that classical sampling can compute the same kind of expectation value in time linear in the sparsity.",
+     "anchor": "Section 6, pp.9-10",
+     "quotes": [
+      "Third, the output of the algorithm is not x itself but a quantum state that encodes the entries of x in superposition.",
+      "For example, it is possible to show that calculating an expectation value of the form xT Ax can be done in time linear in the sparsity of the matrix A, using classical sampling methods."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Synthesis of cited results (Aaronson and others) stated by the authors; speedup claims depend on QRAM-style data access and a sparse well-conditioned matrix.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "ciliberto-qram-caveats",
+     "value": "The review states QRAM needs O(Nd) physical resources, requires uniformly distributed data to stay efficient, and so may not give a genuine advantage once all resources are counted.",
+     "anchor": "Section 5, pp.8-9",
+     "quotes": [
+      "However, the number of physical resources it requires scales as O(N d).",
+      "A third caveats of the QRAM is the requirement of having data distributed in a relatively uniform manner over the quantum register."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Summary of cited arguments (Aaronson, Steiger and Troyer, Prakash); some of these arguments remain disputed, as the review itself notes.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "ciliberto-quantum-pac-sample-complexity-equivalent",
+     "value": "In the quantum PAC model, sample complexity is equivalent to classical PAC up to constant factors, so in general quantum mechanics does not reduce the data needed to learn; advantages appear in time complexity (for example DNF under the uniform distribution) or other learning models.",
+     "anchor": "Section 4, p.8",
+     "quotes": [
+      "This implies that, in general, quantum mechanics does not help to reduce the amount of data required to perform a learning task."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Review of proved results by Arunachalam and de Wolf and others; the review states it as a consequence of those cited theorems.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "ciliberto-no-exponential-advantage-conclusion",
+     "value": "The review concludes the theoretical evidence does not yet allow concluding quantum techniques give an exponential advantage in a realistic learning setting, because data access and problem restrictions may limit linear-algebra-based algorithms.",
+     "anchor": "Section 12, pp.21-22",
+     "quotes": [
+      "Despite a number of promising results, the theoretical evidence presented in the current literature does not yet allow us to conclude that quantum techniques can obtain an exponential advantage in a realistic learning setting.",
+      "The quantum machine learning algorithms based on linear algebra subroutines are those that promise the greatest computational advantages (i.e. exponential)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct concluding statement of the authors (2018), a position on the state of evidence at that date.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "mari-2020-transfer-learning-hybrid-classical-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2019-12_Mari_Transfer-learning-in-hybrid-classical-quantum-neural-networks.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Xanadu paper extending transfer learning to hybrid classical-quantum networks (CC, CQ, QC, QQ) with dressed quantum circuits, numerical examples and a 4-qubit image-classification run on IBM and Rigetti hardware.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "mari-cq-transfer-learning-hardware-demo",
+     "value": "A pre-trained ResNet18 feature extractor feeding a 4-qubit dressed quantum circuit classified ants versus bees: maximum test accuracy 0.967 in simulation, also run on ibmqx4 and Aspen-4-4Q-A with 1024 shots per expectation value. The authors say the aim is feasibility, not a claim of performance versus classical models.",
+     "anchor": "Section 4 Example 2, Table 2 and Section 1, pp.1 and 6-7",
+     "quotes": [
+      "After each epoch, the model was validated with respect to the test dataset, obtaining a maximum accuracy of 0.967.",
+      "On the other hand, for both experiments performed on real quantum processors, we averaged 1024 measurement shots for each expectation value.",
+      "the scope of this study to make claims about the performance of quantum models with respect to classical models, but just to demonstrate that quantum transfer learning is feasible."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Small binary task with a 245-image training set on 4 qubits; the classical feature extractor does the heavy lifting and no quantum advantage is claimed.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "mari-dressed-circuit-spirals-vs-classical",
+     "value": "On the two-spiral dataset a dressed 4-qubit circuit scored 0.97 test accuracy versus 0.85 for a classical counterpart, but the authors state this is only a qualitative benchmark and a rigorous comparison is beyond the paper.",
+     "anchor": "Section 4 Example 1, p.6",
+     "quotes": [
+      "The corresponding accuracy, i.e., the fraction of test points correctly classiﬁed, is 0.97 for the dressed quantum circuit and 0.85 for the classical network.",
+      "even if in this particular example the quantum model outperforms the classical one, any general and rigorous comparison would require a much more complex and detailed analysis which is beyond the aim of this work."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Single simulated run on a toy dataset with a hand-chosen classical baseline; the authors disclaim generality.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "mari-qq-transfer-faster-training-not-better-final",
+     "value": "In a quantum-to-quantum transfer example (Gaussian versus non-Gaussian states), a pre-trained first layer speeds up training of a small circuit, but a network trained from scratch eventually matches or beats it because it has more variational parameters.",
+     "anchor": "Section 4 Example 5, pp.10-11",
+     "quotes": [
+      "the network trained from scratch is in principle more powerful by construction, because it has more variational parameters.",
+      "In all these kind of practically constrained situations, QQ transfer learning could represent a very convenient strategy."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Simulated proof-of-principle with depths 3 and 4; the benefit is limited to training-resource-constrained settings by the authors' own account.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "mari-qc-optimal-truncation-depth",
+     "value": "In the quantum-to-classical example (noisy two-mode coherent-state classification, 25-layer pre-trained photonic network), accuracy peaked at a truncation depth around q = 15 layers and fell for larger depths, so truncating the pre-trained network helped.",
+     "anchor": "Section 4 Example 4, Figure 8, pp.8-10",
+     "quotes": [
+      "On the other hand, it is evident that the quantum depth has an optimal value around q = 15 while for larger values the accuracy is reduced."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Numerical simulation on one task with fixed noise variance; the authors call the truncation benefit notable but it is a single example.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "lubasch-2020-variational-quantum-algorithms-nonlinear-problems",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2019-07_Lubasch_Variational-quantum-algorithms-for-nonlinear-problems.pdf",
+   "read_extent": "partial",
+   "partial_detail": "Main text (pp.1-6) read in full; supplementary material sections I and II read, later supplement sections (Burgers equation, MPS ansatz, sampling error, fidelity optimization) skimmed only.",
+   "what_it_is": "Variational quantum algorithm for nonlinear PDEs using a quantum nonlinear processing unit with multiple state copies, demonstrated on the nonlinear Schrodinger equation numerically and with a 2-qubit IBM Q run.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "lubasch-polynomial-quantum-resources-nonlinear-vqc",
+     "value": "The authors claim that all quantum resources of their nonlinear variational algorithm scale polynomially in qubit number, an exponential reduction versus some conventional algorithms, using depth poly(n) circuits whose parameter count is exponentially smaller than N grid-point parameters.",
+     "anchor": "Introduction and ansatz section, pp.2-3",
+     "quotes": [
+      "In this way all quantum resources of nonlinear VQC scale polynomially with the number of qubits, which represents an exponential reduction compared with some conventional algorithms.",
+      "We consider depths d ∝ poly(n) such that the quantum ansatz requires exponentially fewer parameters N than standard classical schemes with N parameters."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Resource scaling argued from circuit construction; the paper separately notes sampling cost grows with grid size and that classical parameter optimization remains hard.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "lubasch-ansatz-exponentially-more-efficient-than-mps",
+     "value": "From numerical representation-error scaling with the maximum entanglement entropy, the authors conclude the quantum ansatz needs parameters growing as log(kappa_1) versus poly(kappa_1) for MPS in the strongly disordered regime; the extrapolation to exponential advantage is a conjecture.",
+     "anchor": "Section on Fig. 3, pp.5-6",
+     "quotes": [
+      "These entanglement considerations show that the quantum ansatz has the potential to be exponentially more",
+      "Based on the numerical analysis of Fig. 3, we conjecture that MPS require resources"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Numerical evidence on emulated small cases plus an entanglement argument, with the exponential separation explicitly stated as a conjecture; compared with an MPS-based classical method only.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "lubasch-quantum-advantage-only-in-cost-evaluation",
+     "value": "The authors state that any quantum advantage comes solely from faster cost-function evaluation, since the optimization remains classical, and that the proposed supremacy calculation is beyond current NISQ hardware.",
+     "anchor": "Pages 5-6",
+     "quotes": [
+      "The quantum advantage stems solely from the faster evaluation of the cost function for our quantum ansatz in Fig. 1(b) on a quantum computer.",
+      "The quantum hardware requirements for this quantum supremacy calculation go beyond the current capabilities of available NISQ devices [73]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Explicit limitation stated by the authors.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "lubasch-ibm-two-qubit-demonstration",
+     "value": "A hardware demonstration used only n = 2 qubits and a single real variational parameter on 20-qubit IBM devices, finding the optimal parameter within an error under 10 percent; the authors say device errors were slightly too large for the full algorithm so a hardware-reduced circuit was used.",
+     "anchor": "Main text p.6 and Supplement Section I",
+     "quotes": [
+      "The experimental implementation of the nonlinear VQC algorithm was able to identify the optimal variational parameter with an error of less than 10%",
+      "To illustrate that this quantum algorithm works, we chose the smallest non-trivial system size of n = 2 qubits and the variational ansatz of Fig. S1 (c) which is parametrized by one real parameter λ."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Tiny instance with a modified, ancilla-free circuit; shows feasibility only, not scaling or advantage.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "perdomo-ortiz-2018-opportunities-challenges-quantum-assisted-machine",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2007-2017\\Perdomo-Ortiz-et-al.-2017_Opportunities-and-challenges-for-quantum-assisted-machine-learning__1708.09757.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "NASA QuAIL perspective arguing near-term quantum ML should target intractable generative-model sampling with hybrid algorithms, and proposing the quantum-assisted Helmholtz machine tested on D-Wave 2000Q.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "perdomo-ortiz-linear-algebra-qml-impractical-near-term",
+     "value": "The authors argue linear-algebra-based quantum ML proposals with claimed polynomial or exponential speedups are unlikely to be practical on near-term devices because industrial-scale problems would need millions or billions of qubits, and report no concrete benchmarks showing such proposals outperforming classical ML.",
+     "anchor": "Sections I and V, pp.2 and 10",
+     "quotes": [
+      "In other words, regardless of the claims about polynomial and even exponential algorithmic speedup, reaching interesting industrial scale applications would require millions or even billions of qubits.",
+      "More importantly, to date there are no concrete benchmarks indicating that such work can be close to outperforming their conventional classical ML counterparts."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Authors' argued position as of 2018, not a theorem or measurement.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "perdomo-ortiz-hybrid-quantum-sampling-strategy",
+     "value": "The authors propose hybrid algorithms in which classical computers run tractable subroutines and quantum devices assist only intractable steps such as sampling for generative-model training; this is stated as a research strategy, and the paper notes the lack of knowledge of the effective temperature breaks classical-quantum communication.",
+     "anchor": "Section III intro and III.A, pp.5-6",
+     "quotes": [
+      "Instead, our attention goes to hybrid quantum-classical algorithms where conventional computers are used in the tractable subroutines of the algorithms and quantum computers assist only in the intractable steps.",
+      "The lack of knowledge of this parameter implies that the communication between classical and quantum components of our hybrid algorithm is broken."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Position and design argument supported by the authors' earlier annealer experiments, not a demonstrated advantage.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "perdomo-ortiz-qahm-dwave-preliminary-demo",
+     "value": "The quantum-assisted Helmholtz machine was tested on a D-Wave 2000Q with the deepest 60-variable layer mapped to 1644 qubits, generating 16 by 16 MNIST-like images; the authors state the results are preliminary and cannot compete with state-of-the-art ML.",
+     "anchor": "Section IV, p.9",
+     "quotes": [
+      "The deepest layer of 60 variables was mapped to 1644 qubits in D-Wave 2000Q using the approach in Ref. [21].",
+      "Although these preliminary results cannot compete with state-of-the-art ML,"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Single preliminary experiment judged by visual resemblance, with no quantitative comparison to classical models; the authors disclaim competitiveness.",
+     "context": "qml"
+    }
+   ]
+  }
+ ]
+}

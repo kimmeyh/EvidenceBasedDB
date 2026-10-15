@@ -15,6 +15,17 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **feat**: F80 slice read and entered (Sprint 9 Task G, Issue #95) --
+  `scripts/sprint9_f80_reading.py`: ten first-pass readers
+  (`manifests/sprint9_f80_reads/`), then the coordinator read every quoted
+  passage in context; 65 of 76 records promoted to `read`, 234 assertions
+  (snapshot, 2026-10-15). The coordinator's read corrected seven values and
+  stripped an unsupported clause from eqc-models. 11 records refused with
+  reasons; the nine that name Dirac-1 are carded as F84. Vendor claims about
+  their own product are graded LOW, or MODERATE for plain descriptions. The
+  17 new Dirac-3 assertions are classed against the Dirac-3S guide
+  (F65 `CLASSED`). `tests/test_f80_slice_reading.py`, each test proven red
+  by injection
 - **feat**: F80 slice selected and its copies fetched (Sprint 9 Task G,
   Issue #95) -- `scripts/sprint9_f80_slice.py` records the 76-record slice
   in `manifests/sprint9_f80_slice.json` (the 26 consumer-context records

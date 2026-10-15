@@ -642,3 +642,23 @@ pastes into a Phase 2 session. Never write the change from here (hook:
   into `GitHubRepos\` (plan Q2 = 2's rule).
 - From Sprint 10, F57 releases 74 records per sprint until none remain at
   `seen` or `screened` (team lead, 2026-10-15).
+
+## 23. Applied 2026-10-15: the slice read and entered (Sprint 9 Task G, F80)
+
+- **Reads.** Ten Sonnet 5.5 first-pass readers, kept verbatim in
+  `manifests/sprint9_f80_reads/group_*.json` (J1 to J3 the submission's
+  sources, Q1 to Q7 the QML papers). Some entries name a `quote_file` or
+  `quote_file_default` in the session's scratch folder: those were the
+  readers' text extracts and no longer exist. `scripts/sprint9_f80_reading.py`
+  ignores them and resolves every quote to the real source file, and the
+  quote test checks it there.
+- **Entered** (as a snapshot on 2026-10-15): 65 of the 76 records promoted to
+  `read`, 234 assertions, each read with a subagent row and the
+  coordinator's `partial` row (ADR-0005 A4). Local copies were added to
+  `access` where missing. Each record has a SHA-256, except two clones,
+  which carry the commit they were read at, and eqc-models, whose read source
+  is the wheel and the PyPI metadata, not the stored sdist.
+- **Refused** (11, kept at `seen`, each with its reason in the record's
+  history): eight QCi application pages and one QCi article name Dirac-1
+  while the store tags them `platform:dirac-3` (F84). The space-logistics
+  page has no body text. The trade magazine PDF has no text layer.

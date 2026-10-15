@@ -665,6 +665,22 @@ estimates are `[no-history]`.
   with the store ids, as a dated amendment.
 - Depends on: none
 
+**F84. Nine QCi records name Dirac-1 but are tagged Dirac-3 (~1h) Priority 150** (NEW 2026-10-15, Sprint 9 Task G)
+- Phase: Store correction
+- Platform: the store (`record_contexts`, `contexts`)
+- Eight QCi application pages (dimensionality reduction, feature selection,
+  graph partitioning, max-cut, portfolio optimization, set partitioning,
+  traveling salesman, risk-based UAS trajectory) state "Device: Dirac-1",
+  and the QC-7 article names Dirac 1 and never Dirac-3. All nine are
+  tagged `platform:dirac-3`. The store has no Dirac-1 context, so Task G
+  refused their figures and left them at `seen`.
+- Acceptance: a decision on a Dirac-1 context (add `platform:dirac-1`, or
+  retag to a general QCi context), the nine records retagged with the
+  reason, and their first-pass assertions
+  (`manifests/sprint9_f80_reads/group_j2.json` and `group_j3.json`)
+  re-checked and entered against the right context.
+- Depends on: none
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
