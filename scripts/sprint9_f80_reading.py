@@ -48,7 +48,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, recheck, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.ingest import AssertionRecord, add_read, append_updated_reason, insert_assertion, set_tier  # noqa: E402
+from store.ingest import (AssertionRecord, add_read, admission_upgrade_reason, append_updated_reason,  # noqa: E402
+                          insert_assertion, set_tier)
 
 _spec = importlib.util.spec_from_file_location("f78", Path(__file__).with_name("sprint9_f78_ceiling_reading.py"))
 f78 = importlib.util.module_from_spec(_spec)
@@ -198,6 +199,11 @@ CANDIDATE_UPGRADES = {
     "dirac3s-dimacs-best-known-33-of-75": "QCi reports Dirac-3S missed the best known clique on 42 of 75 graphs",
     "dirac3-portfolio-vs-localsolver-energies-similar": "QCi reports LocalSolver lower for some solutions",
 }
+# The candidates the team lead approved (Q3, 2026-10-15: "q3 1", all three).
+# certainty() raises each one low -> moderate, and the sync keeps it there.
+UPGRADES_APPROVED: set[str] = set(CANDIDATE_UPGRADES)
+UPGRADE_DECISION = "the team lead's decision at Sprint 9 Manual Validation (Q3), 2026-10-15"
+UPGRADE_NOTE = f"2026-10-15 ({TAG}): certainty UPGRADED low -> moderate for admission against interest, {UPGRADE_DECISION}"
 
 
 def load_groups() -> list[tuple[str, dict]]:
@@ -238,6 +244,17 @@ def claim_type(aid: str, a: dict) -> str:
 
 
 def certainty(aid: str, a: dict) -> tuple[str, str]:
+    """(certainty, certainty_reasons) as graded, or one level up where the
+    team lead approved an admission-against-interest upgrade."""
+    level, reasons = _graded(aid, a)
+    if aid not in UPGRADES_APPROVED:
+        return level, reasons
+    if level != "low":
+        raise ValueError(f"{aid}: an upgrade starts from low, not {level}")
+    return "moderate", admission_upgrade_reason(reasons, CANDIDATE_UPGRADES[aid], UPGRADE_DECISION)
+
+
+def _graded(aid: str, a: dict) -> tuple[str, str]:
     if aid in CERTAINTY_OVERRIDES:
         return CERTAINTY_OVERRIDES[aid]
     if claim_type(aid, a) == "vendor-self-claim":
@@ -401,8 +418,10 @@ def apply_changes(conn) -> list[str]:
         if stored_ctx != [a.context]:
             conn.execute("DELETE FROM record_contexts WHERE record_id = ?", (a.id,))
             conn.execute("INSERT INTO record_contexts (record_id, context_id) VALUES (?, ?)", (a.id, a.context))
-        append_updated_reason(conn, a.id, f"{TODAY} ({TAG}): corrected to the script's current text", TODAY)
-        log.append(f"update {a.id}")
+        upgraded = stored[1] == "low" and a.certainty == "moderate" and a.id in UPGRADES_APPROVED
+        append_updated_reason(conn, a.id, UPGRADE_NOTE if upgraded else
+                              f"{TODAY} ({TAG}): corrected to the script's current text", TODAY)
+        log.append(f"{'upgrade' if upgraded else 'update'} {a.id}")
     return log
 
 

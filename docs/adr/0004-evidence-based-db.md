@@ -982,3 +982,11 @@ spellings of one name ("Brandão", "Brandao"; 18 such names in the store)
 did not match. Organizations now also match when one name's words lead
 the other's ("D-Wave", "D-Wave Systems Inc."). The live counts in A9 (d)
 are unchanged by the fixes.
+
+*A9 decision, 2026-10-15 (Sprint 9 Manual Validation).* The team lead
+approved A9 and its correction as proposed, and answered the open question
+in correction (1) with Q1 = 1: a non-vendor pair whose organizations are
+not recorded on one side still counts as corroborated, and its reason keeps
+the label "organizations not recorded on one side, so not compared". The
+code already behaved this way, so nothing changed; the flagged count stays
+1 of 17 (a snapshot as of 2026-10-15).

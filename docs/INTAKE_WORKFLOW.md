@@ -663,3 +663,29 @@ pastes into a Phase 2 session. Never write the change from here (hook:
   history): eight QCi application pages and one QCi article name Dirac-1
   while the store tags them `platform:dirac-3` (F84). The space-logistics
   page has no body text. The trade magazine PDF has no text layer.
+
+## 24. Applied 2026-10-15: the F62 discovery candidates at `seen` (Sprint 9 Task J, Manual Validation Q4 = 1)
+
+- **What entered.** The team lead chose all 100 candidates in the four
+  top-25 lists of `f62_review_2026-10-15.md` except 13 named off-topic.
+  `scripts/sprint9_f62_enter_seen.py` pins each exclusion to its title,
+  so a re-ranked file stops the run instead of excluding the wrong paper.
+  All 87 entered at `seen` (as a snapshot on 2026-10-15): 50 `ml`, 16 `qc`,
+  11 `world`, 10 `qml`.
+- **Through the door, never from OpenAlex.** Id, title and citation come
+  from the identifier: the arXiv id where OpenAlex or Semantic Scholar gave
+  one (57, paced 18 s apart), the DOI otherwise. OpenAlex's DOI can be a
+  mirror's ("Attention Is All You Need" carries a preprint server's DOI).
+- **A title check refused 5 at first.** Each arXiv preprint has a title
+  other than the published paper's (nnU-Net's preprint is "Automated Design
+  of Deep Learning Methods for Biomedical Image Segmentation"). They are
+  the same works; they entered by the journal DOI, whose title matched. A
+  wrong identifier attaches a different paper with no error, so the check
+  stays.
+- **Context** is the stream's (the fraud stream enters as `ml`: the HSBC
+  context holds the submission's own facts), except where it was plainly
+  wrong: quantum simulation and chemistry papers in the qml stream are
+  `qc`, condensed-matter and tensor-method physics in the tensor stream are
+  `world`, and three tensor decomposition papers are `ml`. Screening
+  refines it.
+- **Reading** comes later, from F57's 74-per-sprint release.

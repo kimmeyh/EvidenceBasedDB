@@ -710,6 +710,39 @@ estimates are `[no-history]`.
   re-checked and entered against the right context.
 - Depends on: none
 
+**F85. Enter Phase 2's Dirac-3S verification (F142 there) (~45m) Priority 160** (NEW 2026-10-15, Sprint 9 Manual Validation Q5 = 2)
+- Phase: Inbound evidence (F79)
+- Platform: the store; `hsbc-qfraud-phase2` read only
+- Phase 2 shared back on 2026-10-15: the store's B4 records cover Dirac-3
+  only, and Phase 2's `docs/phase2/F142_DIRAC3S_VERIFY.md` (read at commit
+  c141a57) shows Dirac-3S returning B4's reference optimum in all 8
+  samples on seeds 42 and 43 (weight cosine 0.999993 and 0.9999999,
+  against Dirac-3's 0.895 and 0.901), returned weights far finer than the
+  0.005 step that 200:1 implies (the cause inferred as post-processing,
+  marked unverified there), test AUPRC unchanged, and per-sample cost at
+  relaxation schedule 2 for 91, 560 and 833 variables. Two fits: Phase 2
+  calls the result descriptive, not a test.
+- Acceptance: the document re-read at the commit current when the work
+  starts (it was revised after review the day it was written); 3 or 4 HW
+  assertions entered by the inbound path of Sprint 9 Task A, every quote
+  checked by a test against the file at that commit; each related to
+  `dirac3s-analog-resolution-about-200-to-1`,
+  `dirac3s-error-correction-is-a-post-processing-step` and
+  `dirac3s-time-per-sample-by-schedule` as the text supports.
+- Depends on: none
+
+**F86. One paper's primary source never answered: the Zenodo record (~15m) Priority 170** (NEW 2026-10-15, Sprint 9 Manual Validation Q2 = 2)
+- Phase: Re-check (ADR-0005 A9)
+- Platform: the store; `store/recheck.py`
+- `sepulveda-jimenez-2026-optimality-generalization-quantum-oracle-sketching`
+  (DOI:10.5281/zenodo.19985473) has probes, but only the HTTP probe
+  answered; DataCite, its primary source, never did, so under A9 it stays
+  due.
+- Acceptance: one DataCite request for the DOI; if it answers, the probe
+  is recorded and the clock resets; if not, the reason is recorded and the
+  record's access or provider routing is corrected.
+- Depends on: none
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT

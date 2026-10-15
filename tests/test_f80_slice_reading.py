@@ -106,9 +106,24 @@ def test_vendor_descriptions_stay_moderate_and_vendor_results_are_low():
     f80 = _script()
     vendor = {a.id: a.certainty for _, a, _ in f80.assertions()
               if a.claim_type == "vendor-self-claim" and a.id not in f80.CERTAINTY_OVERRIDES}
-    wrong = [i for i, c in vendor.items() if c != ("moderate" if i in f80.VENDOR_DESCRIPTIONS else "low")]
+    moderate = f80.VENDOR_DESCRIPTIONS | f80.UPGRADES_APPROVED
+    wrong = [i for i, c in vendor.items() if c != ("moderate" if i in moderate else "low")]
     assert not wrong, wrong
     assert f80.VENDOR_DESCRIPTIONS <= set(vendor)
+
+
+def test_approved_upgrades_rise_one_level_and_say_what_they_cost():
+    """Sprint 9 Manual Validation Q3 = 1: the three admission-against-interest
+    candidates go low -> moderate, each reason naming its cost and the
+    decision. Proven to fail by injection, 2026-10-15: with UPGRADES_APPROVED
+    emptied, the first assertion failed, listing the three candidate ids."""
+    f80 = _script()
+    got = {a.id: a for _, a, _ in f80.assertions() if a.id in f80.CANDIDATE_UPGRADES}
+    assert set(got) == set(f80.CANDIDATE_UPGRADES) == f80.UPGRADES_APPROVED
+    wrong = [i for i, a in got.items()
+             if a.certainty != "moderate" or "costly to disclose" not in a.certainty_reasons
+             or "Sprint 9 Manual Validation (Q3)" not in a.certainty_reasons]
+    assert not wrong, wrong
 
 
 @pytest.mark.live_store

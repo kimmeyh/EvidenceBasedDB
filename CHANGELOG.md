@@ -15,6 +15,16 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **feat**: Manual Validation decisions applied (Sprint 9, 2026-10-15) --
+  ADRs approved as proposed; Q1 = 1 recorded on ADR-0004 A9 (an
+  unrecorded-organization pair still counts, labeled; no code change); Q3
+  = 1: the three QCi admission-against-interest assertions upgraded low ->
+  moderate with their cost and the decision (Task G, Issue #95); Q4 = 1:
+  87 F62 candidates entered at `seen` through the door by
+  `scripts/sprint9_f62_enter_seen.py`, 5 retitled preprints by journal DOI
+  after the title check refused them (Task J, Issue #98; INTAKE section
+  24); Q2 = 2 and Q5 = 2 carded as F86 (the Zenodo record) and F85 (Phase
+  2's Dirac-3S verification). Tests injection-proven
 - **fix**: F62 review (Sprint 9 Task J, Issue #98) -- a Semantic Scholar
   answer counts only for the same title (a wrong-paper answer had won); a
   second pass for refusals; refused candidates listed apart so a refusal
