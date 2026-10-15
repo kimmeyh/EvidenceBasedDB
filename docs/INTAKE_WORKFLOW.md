@@ -621,3 +621,24 @@ pastes into a Phase 2 session. Never write the change from here (hook:
   Crossref gave the first author's name as one string, so the derived id
   took "te-sun". The citation reads "Te Sun Han". Ids are not renamed; the
   record's evidence says so.
+
+## 22. Applied 2026-10-15: the first read-for-claims slice (Sprint 9 Task G, F80)
+
+- **The slice** is recorded in `manifests/sprint9_f80_slice.json` by
+  `scripts/sprint9_f80_slice.py` (team lead, plan Q7 = 2): the 26 records at
+  `seen` or `screened` under `hsbc-2026`, `platform:dirac-3` and
+  `platform:dirac-3s`, none in the ceiling group, and the 50 most-cited
+  `qml` records at `seen` or `screened`. It is a record of what this sprint
+  chose, not an intake list: it adds no record, and its citation counts are
+  never written to the store (they change).
+- **Counts.** OpenAlex, queried by each record's arXiv DOI, then by the
+  journal DOI the store's probes recorded (`version_of`): 1,146 of 1,521
+  candidates counted. Semantic Scholar's unauthenticated batch endpoint
+  answered 429 to every attempt on 2026-10-15 and is not used. The 375
+  uncounted records are the selection's stated limit.
+- **Copies.** `scripts/sprint9_f80_downloads.py` saved the free arXiv
+  version of the 21 slice papers stored by journal DOI only, each checked
+  for its arXiv stamp on the first page. One repository was shallow-cloned
+  into `GitHubRepos\` (plan Q2 = 2's rule).
+- From Sprint 10, F57 releases 74 records per sprint until none remain at
+  `seen` or `screened` (team lead, 2026-10-15).

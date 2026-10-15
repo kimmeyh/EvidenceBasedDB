@@ -15,11 +15,20 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **feat**: F80 slice selected and its copies fetched (Sprint 9 Task G,
+  Issue #95) -- `scripts/sprint9_f80_slice.py` records the 76-record slice
+  in `manifests/sprint9_f80_slice.json` (the 26 consumer-context records
+  and the 50 most-cited `qml` records, 263 to 4,662 citations); counts from
+  OpenAlex by arXiv DOI, then by the store's probed journal DOI (1,146 of
+  1,521 counted; Semantic Scholar's unauthenticated batch refused every
+  attempt and is not used; the 375 uncounted are recorded as a limit);
+  `scripts/sprint9_f80_downloads.py` fetched 21 free arXiv copies into
+  `Papers\`, each stamp-checked; one repository shallow-cloned
 - **feat**: F46, the 20 remaining pending facts (Sprint 9 Task F, Issue
   #94) -- each checked against its primary source and entered, merged or
   refused with the reason (`FACT_DISPOSITIONS` in
   `scripts/sprint9_f46_pending_facts.py`): 15 entered (most corrected: the
-  handoff wording overstated its source in 12), 2 merged into assertions
+  handoff wording overstated its source in 10: nine corrected, one entered in part), 2 merged into assertions
   already read (F-402, F-604), 3 not entered (F-001: the cited restatement
   of Holevo does not exist; F-008: the handoff's own arithmetic, Han and
   Verdu pending; F-603: the repository was never identified). 12 sources
