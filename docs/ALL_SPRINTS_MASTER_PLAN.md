@@ -459,6 +459,18 @@ estimates are `[no-history]`.
   single-DOI lookups free); the team lead has an OpenAlex key, read from
   `OPENALEX_API_KEY` (user environment) and sent only in the Authorization
   header. Semantic Scholar: 1 request per second with a free key.
+- **Sprint 9 Task J run (snapshot as of 2026-10-15; key in the header)**:
+  rubric approved at plan Q8 = 1 (citations per year, Semantic Scholar's
+  count where it answers, x1.5 for a store-context match; unchecked counts
+  listed after checked ones). 100 fetched per stream; already held: ml 2,
+  qml 41, tensor 1, fraud 1; Semantic Scholar answered 176 of 197 asked
+  (the first run drew 52 refusals and left OpenAlex record errors at the
+  top of ml, hence backoff, an arXiv fallback and the checked-first
+  order); 22 counts disagree by more than 2x. Lists and a 9-entry
+  hand-download list in `D:\Data\Harold\EvidenceBasedDB\discovery\`
+  (`f62_review_2026-10-15.md`, `f62_hand_download_2026-10-15.md`), for
+  the team lead's review at Manual Validation. Precision note: the tensor
+  stream also catches knowledge-graph tensor factorization.
 - Acceptance: a ranking rubric approved by the team lead; per stream, a
   reviewed top list; the chosen papers entered; a hand-download list with
   every entry's free-copy search recorded.

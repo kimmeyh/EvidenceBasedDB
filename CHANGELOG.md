@@ -15,6 +15,14 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **feat**: F62 discovery with the approved rubric (Sprint 9 Task J, Issue
+  #98) -- `scripts/discover_candidates.py` now ranks by citations per year
+  cross-checked against Semantic Scholar (paced, backoff on 429, arXiv
+  fallback), x1.5 for a store-context match, duplicate titles collapsed,
+  unchecked counts after checked ones; writes 25 per stream for review and
+  a hand-download list with every free-copy search; the pilot stays behind
+  `--pilot`. Run of 2026-10-15 recorded on the F62 card. Tests
+  injection-proven
 - **fix**: F55 and F56 review (Sprint 9, Issues #96 and #97) -- the
   corroboration parser read "Name, I. (Affiliation)" and accented names
   wrongly, both toward independence: fixed and tested, with organization
