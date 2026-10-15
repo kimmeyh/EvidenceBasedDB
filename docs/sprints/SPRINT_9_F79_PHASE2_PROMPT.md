@@ -12,8 +12,11 @@ may edit it.
   2026-10-15 (bytecode writing off, so nothing landed in Phase 2):
   `D:\Data\Harold\github\EvidenceBasedDB\CLAUDE.md` is blocked, and
   `D:\Data\Harold\EvidenceBasedDB\store\evidence.db` is blocked.
-- **The gap:** `C:\Users\kimme\.claude\projects\D--Data-Harold-github-EvidenceBasedDB\memory\x.md`
-  is NOT blocked. `check_path` matches whole folder names, and the Claude
+- **The gap, for the Edit, Write and NotebookEdit tools only:** a write to
+  `C:\Users\kimme\.claude\projects\D--Data-Harold-github-EvidenceBasedDB\memory\x.md`
+  is NOT blocked. Shell commands are already blocked there, because
+  `check_command` matches the name as a substring (fresh-eyes review,
+  2026-10-15). `check_path` matches whole folder names, and the Claude
   Code project folder is named `D--Data-Harold-github-EvidenceBasedDB`,
   which is not the folder name `EvidenceBasedDB`.
 - Phase 2's `CLAUDE.md` says the sibling repositories are read-only from
@@ -29,8 +32,10 @@ without direct prompts from the other - so each could read from each other,
 but cannot write to each other").
 
 1. Close a gap in .claude/hooks/block_cross_repo_write.py. check_path
-   matches whole folder names, so a write into EvidenceBasedDB's Claude Code
-   project directory is not blocked:
+   (the Edit, Write and NotebookEdit path) matches whole folder names, so an
+   Edit or Write into EvidenceBasedDB's Claude Code project directory is not
+   blocked. Shell commands there are already blocked, because check_command
+   matches the name as a substring; change only check_path:
      C:\Users\kimme\.claude\projects\D--Data-Harold-github-EvidenceBasedDB\memory\x.md
    (checked 2026-10-15: check_path returns None for it; the repository and
    D:\Data\Harold\EvidenceBasedDB\store\evidence.db are blocked correctly).

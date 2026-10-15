@@ -19,6 +19,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 HOOK = Path(__file__).resolve().parents[1] / ".claude" / "hooks" / "block_sibling_repo_writes.py"
 
 
@@ -150,6 +152,44 @@ def test_writes_into_phase2_and_its_memory_directory_are_blocked():
     }
     for payload in (write, commit, memory):
         assert _run(payload).returncode == 2, payload
+
+
+P2 = "D:/Data/Harold/github/hsbc-qfraud-phase2"
+
+
+@pytest.mark.parametrize("command", [
+    f'git -C "{P2}" commit -am x',
+    f"git -C {P2} push",
+    f'git -C "{P2}" checkout -- docs/x.md',
+    f"cd {P2}; git restore docs/x.md",
+    f"cd {P2} && git stash",
+    rf'Remove-Item "D:\Data\Harold\github\hsbc-qfraud-phase2\x.md"',
+    rf'Copy-Item a.md "D:\Data\Harold\github\hsbc-qfraud-phase2\x.md"',
+    f"echo x | tee {P2}/x.md",
+    f"sed -i 's/a/b/' {P2}/x.md",
+])
+def test_write_forms_into_phase2_are_blocked(command):
+    """Sprint 9 Task A review (2026-10-15): each of these returned exit 0.
+    `git -C <phase2> <write>` matters most, because INTAKE_WORKFLOW.md
+    section 19 reads Phase 2 with `git -C`.
+
+    Verified by injection, 2026-10-15: with the hook's `-C` option group
+    removed, the two `git -C` commit and push cases and the checkout case
+    went red; with Remove-Item, Copy-Item, tee and sed -i removed from the
+    verbs, those four went red. Restored and green again."""
+    assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 2, command
+
+
+@pytest.mark.parametrize("command", [
+    f'git -C "{P2}" show 139fa13:docs/B4_B5_HARDWARE_RESULT.md',
+    f"git -C {P2} log --oneline -3",
+    f"sed -n 1,20p {P2}/CLAUDE.md",
+])
+def test_read_forms_of_phase2_stay_allowed(command):
+    """Known over-block, accepted by the hook's design (module docstring): a
+    read whose pattern is a bare write verb, such as `grep tee <phase2
+    file>`, is blocked; quote the pattern or use the Grep tool."""
+    assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 0, command
 
 
 def test_reading_phase2_stays_allowed():

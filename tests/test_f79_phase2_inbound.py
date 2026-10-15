@@ -57,6 +57,31 @@ def test_the_record_names_the_commit_it_was_read_at(live_conn):
     assert f79.SHA256 in evidence
 
 
+def test_every_number_in_a_value_is_in_the_source():
+    """Sprint 9 Task A review: only the quotes were checked, and figures
+    such as "11 of 12" sat outside every quote. Every number in each value
+    must appear in the document at the pinned commit.
+
+    Proven to fail by injection, 2026-10-15: with "0.212" changed to
+    "0.221" in qsvm-on-dirac3-weak-on-ulb-b5's value, this test named it."""
+    import re
+    f79 = _script()
+    text = _plain(f79.source_text())
+    for a in f79.ASSERTIONS:
+        for num in re.findall(r"\d+(?:\.\d+)?", a.value):
+            assert re.search(rf"(?<![\d.]){re.escape(num)}(?![\d])", text), f"{a.id}: {num} is not in the source"
+
+
+@pytest.mark.live_store
+def test_the_store_holds_the_scripts_current_text(live_conn):
+    """Sprint 9 Task A review: an edited value used to print "exists" and
+    never reach the store."""
+    f79 = _script()
+    for a in f79.ASSERTIONS:
+        stored = live_conn.execute("SELECT value, certainty_reasons FROM records WHERE id = ?", (a.id,)).fetchone()
+        assert tuple(stored) == (a.value, a.certainty_reasons), a.id
+
+
 @pytest.mark.live_store
 def test_a_second_apply_writes_nothing(live_copy):
     from store import connect

@@ -15,6 +15,15 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **fix**: F79 fresh-eyes review (Sprint 9 Task A, Issue #89) -- the
+  never-write hook now blocks `git -C <repo> <write>` and the git verbs
+  that change a tree (checkout, restore, stash, apply, tag), plus
+  Remove-Item, Copy-Item, Move-Item, Rename-Item, tee and `sed -i`, each
+  proven by injection; two inbound assertions corrected ("exact" dropped;
+  the computed means and the unchecked bar basis stated); the inbound
+  script now corrects an existing record whose text changed; a test checks
+  every number in a value against the source; the Phase 2 prompt names
+  the gap as Edit/Write only
 - **feat**: F79, the Phase 2 exchange (Sprint 9 Task A, Issue #89) --
   `hsbc-qfraud-phase2` named as the active consumer; the never-write hook,
   its memory file and CLAUDE.md cover Phase 2's repository and Claude Code

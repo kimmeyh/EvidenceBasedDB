@@ -32,7 +32,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.ingest import AssertionRecord, insert_assertion, insert_paper  # noqa: E402
+from store.ingest import AssertionRecord, append_updated_reason, insert_assertion, insert_paper  # noqa: E402
 
 import importlib.util  # noqa: E402
 
@@ -46,6 +46,7 @@ if hasattr(sys.stdout, "reconfigure"):
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 TODAY = "2026-10-15"
 TAG = "Sprint 9 Task A, F79"
+CORRECTED_ON = "2026-10-15"
 REASON = f"{TODAY} ({TAG}): extracted from hsbc-qfraud-phase2 at commit 139fa13, read directly on {TODAY}"
 
 PHASE2 = r"D:\Data\Harold\github\hsbc-qfraud-phase2"
@@ -118,7 +119,7 @@ OWN = "Started HIGH: the consumer project's own hardware measurement, read direc
 ASSERTIONS: list[AssertionRecord] = [
     A(id="dirac3-matches-classical-proxy-in-pocket-spectra-b4",
       value=("On Phase 2's B4 SPECTRA cells (oilgas_gasturbine and telecom_churn, 8 scoreable seeds), Dirac-3 and its "
-             "exact classical proxy scored the identical in-pocket rows within 0.0072 AUPRC of each other, the device "
+             "classical proxy scored the identical in-pocket rows within 0.0072 AUPRC of each other, the device "
              "better on 4 of 8 cells and worse by 0.0009 on average"),
       provenance=f"{SRC}, the in-pocket table and the paragraph under it (B4 section)",
       citation_context=('"The device is better on 4 of 8 cells, with a mean difference of -0.0009 and no difference '
@@ -147,7 +148,10 @@ ASSERTIONS: list[AssertionRecord] = [
       provenance=f"{SRC}, B4 section, 'What it says', third bullet",
       citation_context=('"F100\'s HistGradientBoosting reaches 0.874 on oilgas_gasturbine and 0.867 on telecom_churn" '
                         '(What it says); "the device reaches 0.839 and 0.733" (What it says)'),
-      certainty_reasons=OWN + ". The bar's own figures come from Phase 2's docs/F100_CLASSICAL_BAR.md, not read here",
+      certainty_reasons=(OWN + ". The source gives 0.839 and 0.733 without naming them; they equal the means of the "
+                         "B4 table's Test AUPRC column over seeds 42 to 46 (recomputed 2026-10-15), which is how "
+                         "this value names them. The bar's figures come from Phase 2's docs/F100_CLASSICAL_BAR.md, "
+                         "not read here, so whether the bar is also a five-seed mean was not checked"),
       context="hsbc-2026"),
     A(id="qsvm-on-dirac3-weak-on-ulb-b5",
       value=("Phase 2's B5 sign-augmented primal QSVM on Dirac-3 reached test AUPRC 0.068 to 0.260 (mean 0.212) on the "
@@ -169,7 +173,19 @@ def apply_changes(conn) -> list[str]:
     else:
         log.append(f"exists {SRC}")
     for assertion in ASSERTIONS:
-        if conn.execute("SELECT 1 FROM records WHERE id = ?", (assertion.id,)).fetchone():
+        stored = conn.execute("SELECT value, certainty_reasons FROM records WHERE id = ?", (assertion.id,)).fetchone()
+        if stored and tuple(stored) != (assertion.value, assertion.certainty_reasons):
+            # The script is the record's source: a corrected value or reason
+            # reaches the store, with the correction in updated_reason
+            # (Sprint 9 Task A review: an edit here otherwise printed
+            # "exists" and never landed).
+            conn.execute("UPDATE records SET value = ?, certainty_reasons = ? WHERE id = ?",
+                         (assertion.value, assertion.certainty_reasons, assertion.id))
+            append_updated_reason(conn, assertion.id, f"{CORRECTED_ON} ({TAG} review): value or certainty reasons "
+                                  "corrected to the script's current text", CORRECTED_ON)
+            log.append(f"update {assertion.id}")
+            continue
+        if stored:
             log.append(f"exists {assertion.id}")
             continue
         insert_assertion(conn, assertion, yielded_by=SRC)

@@ -67,11 +67,22 @@ _GUARDED_PATTERNS = [
 # routine research (which motivated this hook in the first place) into a
 # constant bypass-token exercise, training the same disable-by-friction
 # failure this project's other hooks are written to avoid.
+#
+# Widened 2026-10-15 (Sprint 9 Task A review): `git -C <repo> commit` passed,
+# because `commit` had to follow `git` directly, and INTAKE_WORKFLOW.md
+# section 19 tells sessions to read Phase 2 with `git -C`, which makes that
+# the likeliest slip. Git's global options (-C <path>, -c <key=value>) may
+# now come first, and the git verbs that change a working tree or history
+# (checkout, restore, stash, apply, tag, switch, clean, cherry-pick) count.
+# Remove-Item, Copy-Item, Move-Item, Rename-Item, tee and sed -i passed too.
 _WRITE_VERBS = re.compile(
-    r"(?:^|[\s;&|])(?:"
-    r"git\s+(?:commit|push|add|rm|mv|checkout\s+-b|reset|merge|rebase)"
-    r"|rm|mv|cp|copy|del|erase|ren|rename"
+    r"(?:^|[\s;&|(])(?:"
+    r"git(?:\s+-[Cc]\s+(?:\"[^\"]*\"|'[^']*'|\S+))*\s+"
+    r"(?:commit|push|add|rm|mv|checkout|restore|switch|reset|merge|rebase|stash|apply|tag|clean|cherry-pick)"
+    r"|rm|mv|cp|copy|del|erase|ren|rename|tee"
+    r"|sed(?:\s+-\S+)*\s+-i\S*"
     r"|touch|mkdir|New-Item|Set-Content|Add-Content|Out-File"
+    r"|Remove-Item|Copy-Item|Move-Item|Rename-Item|Clear-Content"
     r"|>|>>"
     r")(?:\s|$)",
     re.IGNORECASE,
