@@ -63,10 +63,17 @@ S2_INTERVAL_S = 1.1  # Semantic Scholar's keyless rate is about 1 request per se
 CONTEXT_BONUS = 1.5
 CONTEXT_TERMS = {
     "hsbc-2026": ("fraud", "credit card", "card transaction"),
-    "platform": ("dirac", "entropy computing", "entropy quantum", "coherent ising", "quantum annealing", "braket",
-                 "classiq"),
+    # Anchored: plain "dirac" matched the Dirac equation, and "braket" would
+    # match bra-ket notation (Task J review).
+    "platform": ("dirac-3", "dirac-1", "dirac 3", "quantum computing inc", "entropy computing", "entropy quantum",
+                 "coherent ising", "quantum annealing", "amazon braket", "classiq"),
     "qml": ("quantum machine learning", "quantum neural", "quantum kernel", "variational quantum"),
 }
+# A stream's own context earns no bonus inside it: every fraud record matched
+# hsbc-2026 and 57 of 59 qml records matched qml, so the bonus ranked nothing.
+STREAM_CONTEXT = {"fraud": "hsbc-2026", "qml": "qml"}
+UNCHECKED_SHOWN = 10  # per stream, listed apart so a refusal cannot hide a paper
+S2_SECOND_PASS_PAUSE_S = 60.0
 DISAGREE_RATIO = 2.0  # OpenAlex and Semantic Scholar counts further apart than this are flagged
 STREAMS = {
     "ml": {"filter": "primary_topic.subfield.id:1702|1707,from_publication_date:2012-01-01,type:article|preprint",
@@ -149,15 +156,23 @@ def candidate(work: dict, stream: str, today: date) -> dict:
         "abstract": abstract_text(work.get("abstract_inverted_index")),
         "date": work.get("publication_date") or str(year),
         "first_author": first_author(work),
+        "type": work.get("type"),
     }
 
 
+_PARTICLES = {"da", "dal", "de", "del", "della", "der", "di", "du", "la", "le", "van", "von", "dos", "das", "ter"}
+
+
 def first_author(work: dict) -> str:
-    """The first author's family name, for the hand-download file name."""
+    """The first author's family name, with its particles ("Dal Pozzolo"),
+    for the hand-download file name."""
     for a in work.get("authorships") or []:
-        name = ((a.get("author") or {}).get("display_name") or "").strip()
-        if name:
-            return name.split()[-1]
+        parts = ((a.get("author") or {}).get("display_name") or "").split()
+        if parts:
+            i = len(parts) - 1
+            while i > 1 and parts[i - 1].lower() in _PARTICLES:
+                i -= 1
+            return " ".join(parts[i:])
     return "Unknown"
 
 
@@ -181,6 +196,7 @@ def s2_check(c: dict, fetch=None, sleep=time.sleep) -> dict:
     status = "not found"
     for ident in idents:
         url = S2 + urllib.parse.quote(ident, safe=":/") + "?fields=" + S2_FIELDS
+        d = None
         for wait in (*S2_BACKOFF_S, None):
             try:
                 d = json.loads(fetch(url))
@@ -191,17 +207,29 @@ def s2_check(c: dict, fetch=None, sleep=time.sleep) -> dict:
                     continue
                 if err.code != 404:
                     return {"s2_status": f"unchecked (HTTP {err.code})"}
-                d = None
                 break
             except (OSError, ValueError) as err:
                 return {"s2_status": f"unchecked ({type(err).__name__})"}
-        if d is not None:
-            break
-    else:
-        return {"s2_status": status}
-    return {"s2_status": "answered", "s2_cites": d.get("citationCount"), "s2_year": d.get("year"),
-            "s2_arxiv": (d.get("externalIds") or {}).get("ArXiv"),
-            "s2_pdf": (d.get("openAccessPdf") or {}).get("url") or None}
+        if d is None:
+            continue
+        # The answer must be the same paper (Task J review: a 2026 record came
+        # back as a 2021 work with 9 citations, and its count won).
+        if not same_title(c.get("title") or "", d.get("title") or ""):
+            status = f"mismatch (Semantic Scholar's {ident} is \"{(d.get('title') or '')[:80]}\")"
+            continue
+        return {"s2_status": "answered", "s2_matched_by": ident, "s2_cites": d.get("citationCount"),
+                "s2_year": d.get("year"), "s2_arxiv": (d.get("externalIds") or {}).get("ArXiv"),
+                "s2_pdf": (d.get("openAccessPdf") or {}).get("url") or None}
+    return {"s2_status": status}
+
+
+def same_title(a: str, b: str) -> bool:
+    """Equal after normalizing, or one is the other plus a subtitle."""
+    x, y = norm_title(a), norm_title(b)
+    if not x or not y:
+        return False
+    short, long_ = sorted((x, y), key=len)
+    return x == y or (len(short) >= 20 and long_.startswith(short))
 
 
 def context_matches(c: dict) -> list[str]:
@@ -224,8 +252,9 @@ def score(c: dict, today: date) -> dict:
             year = min(year, c["s2_year"])
     cpy = cites / max(1, today.year - year + 1)
     ctxs = context_matches(c)
+    bonus = [x for x in ctxs if x != STREAM_CONTEXT.get(c.get("stream"))]
     return {"rank_cites": cites, "rank_year": year, "citation_check": check, "contexts": ctxs,
-            "score": round(cpy * (CONTEXT_BONUS if ctxs else 1.0), 1)}
+            "bonus_contexts": bonus, "score": round(cpy * (CONTEXT_BONUS if bonus else 1.0), 1)}
 
 
 def rank_key(c: dict) -> tuple[bool, float]:
@@ -253,12 +282,28 @@ def free_copy(c: dict) -> str | None:
 
 
 def _ascii_words(text: str) -> list[str]:
-    return re.sub(r"[^A-Za-z0-9 ]", "", unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode()).split()
+    """Words for a file name: accents dropped, hyphens inside a word kept
+    ("Human-level", not "Humanlevel")."""
+    plain = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode()
+    return [w.strip("-") for w in re.sub(r"[^A-Za-z0-9 -]", "", plain).split() if w.strip("-")]
+
+
+def is_book(c: dict) -> bool:
+    return (c.get("type") or "") in ("book", "monograph", "edited-book")
+
+
+def target_folder(c: dict) -> str:
+    return "Books" if is_book(c) else "Papers"
 
 
 def target_name(c: dict) -> str:
-    """The Papers folder's convention: YYYY-MM_Author_Title-words.pdf."""
-    author = "".join(_ascii_words(c["first_author"])) or "Unknown"
+    """The folder's convention: Papers `YYYY-MM_Author_Title-words.pdf`;
+    Books `Book - Title - Publisher Year.pdf` (Task J review: a Springer
+    book was routed as a paper)."""
+    if is_book(c):
+        return f"Book - {' '.join(_ascii_words(c['title']))} - {' '.join(_ascii_words(c.get('publisher') or ''))} " \
+               f"{c['year']}.pdf".replace("  ", " ")
+    author = "-".join(_ascii_words(c["first_author"])) or "Unknown"
     return f"{(c.get('date') or str(c['year']))[:7]}_{author}_{'-'.join(_ascii_words(c['title'])[:8])}.pdf"
 
 
@@ -269,17 +314,21 @@ def free_copy_search(c: dict) -> str:
             f"{c.get('s2_pdf') or 'none'} ({c.get('s2_status', 'not asked')})")
 
 
-def render_review(top: dict[str, list[dict]], counts: dict, today: date) -> str:
+def render_review(top: dict[str, list[dict]], counts: dict, today: date,
+                  unchecked: dict[str, list[dict]] | None = None) -> str:
+    unchecked = unchecked or {}
     lines = [f"# F62 candidates for review, {today.isoformat()}", "",
              "Sprint 9 Task J. Every count is a snapshot as of this date. Score = citations per year since "
-             f"publication (Semantic Scholar's count where it answered), times {CONTEXT_BONUS} when the title or "
-             "abstract matches a store context (hsbc-2026, a platform, qml). Candidates whose count Semantic "
-             "Scholar could not check follow every checked one. Computed, never stored. Nothing here "
-             "is in the store: a paper you choose enters through the door at `seen`.", ""]
+             f"publication (Semantic Scholar's count where it answered for the same title), times {CONTEXT_BONUS} "
+             "when the title or abstract matches a store context (hsbc-2026, a platform, qml) other than the "
+             "stream's own. Candidates whose count Semantic Scholar could not check are listed apart, after "
+             "each stream's top list. Computed, never stored. Nothing here is in the store: a paper you choose "
+             "enters through the door at `seen`.", ""]
     for stream, c in counts.items():
         lines.append(f"- **{stream}**: {c['fetched']} fetched; {c['held']} already in the store; {c['dupes']} "
-                     f"duplicate titles collapsed; {c['checked']} checked against Semantic Scholar "
-                     f"({c['answered']} answered, {c['disagree']} disagree); top {len(top[stream])} listed; "
+                     f"duplicate titles collapsed; {c['checked']} asked of Semantic Scholar "
+                     f"({c['answered']} answered for the same title, {c.get('mismatch', 0)} answered with a "
+                     f"different paper, {c['disagree']} disagree); top {len(top[stream])} listed; "
                      f"{c['no_copy']} of those with no free copy")
     for stream, rows in top.items():
         lines += ["", f"## {stream}", ""]
@@ -290,13 +339,20 @@ def render_review(top: dict[str, list[dict]], counts: dict, today: date) -> str:
                          f"{free_copy(c) or 'NONE: by hand'}.")
             if c["abstract"]:
                 lines.append(f"   Abstract: {c['abstract'][:600]}{'...' if len(c['abstract']) > 600 else ''}")
+        if unchecked.get(stream):
+            lines += ["", f"### {stream}: count not confirmed by Semantic Scholar (listed so a refusal cannot "
+                          "hide a paper)", ""]
+            for c in unchecked[stream]:
+                lines.append(f"- **{c['title']}** ({c['rank_year']}). OpenAlex {c['rank_cites']} citations; "
+                             f"{c.get('s2_status', 'not asked')}. DOI {c['doi'] or 'none'}. Copy: "
+                             f"{free_copy(c) or 'NONE: by hand'}.")
     return "\n".join(lines) + "\n"
 
 
 def render_hand_list(top: dict[str, list[dict]], today: date) -> str:
     lines = [f"# F62 hand-download list, {today.isoformat()}", "",
-             "Candidates in the review lists with no free copy found. Download by hand into "
-             "`D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\` under the target name, only if you choose the paper "
+             "Candidates in the review lists with no free copy found. Download by hand into the target folder "
+             "under `D:\\Data\\Harold\\EvidenceBasedDB\\`, under the target name, only if you choose the paper "
              "and only where your access allows. Never around a paywall.", ""]
     n = 0
     for stream, rows in top.items():
@@ -308,7 +364,7 @@ def render_hand_list(top: dict[str, list[dict]], today: date) -> str:
                       f"   - DOI: {c['doi'] or 'none'}; publisher link: "
                       f"{'https://doi.org/' + c['doi'] if c['doi'] else 'none'}",
                       f"   - Why: {stream} stream rank {i}; contexts {', '.join(c['contexts']) or 'none'}",
-                      f"   - Target file name: {target_name(c)}",
+                      f"   - Target: {target_folder(c)}\\{target_name(c)}",
                       f"   - Free-copy search: {free_copy_search(c)}"]
     if not n:
         lines.append("None: every listed candidate has a free copy.")
@@ -340,7 +396,22 @@ def held_by_store(c: dict, keys: tuple[set, set, set]) -> str | None:
     return None
 
 
-def fetch_stream(stream: str, per: int, key: str | None, opener=urllib.request.urlopen) -> list[dict]:
+class DropAuthOnHostChange(urllib.request.HTTPRedirectHandler):
+    """urllib copies every header onto a redirect, the key included, to any
+    host (Task J review). A redirect off OpenAlex's host goes without it."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        new = super().redirect_request(req, fp, code, msg, headers, newurl)
+        if new is not None and urllib.parse.urlsplit(newurl).hostname != urllib.parse.urlsplit(req.full_url).hostname:
+            new.remove_header("Authorization")
+        return new
+
+
+_OPENER = urllib.request.build_opener(DropAuthOnHostChange)
+
+
+def fetch_stream(stream: str, per: int, key: str | None, opener=None) -> list[dict]:
+    opener = opener or _OPENER.open
     spec = STREAMS[stream]
     params = {"per_page": per, "select": SELECT, "sort": spec["sort"]}
     if "filter" in spec:
@@ -398,35 +469,51 @@ def main(argv: list[str] | None = None, s2_fetch=None, sleep=time.sleep) -> int:
         keys = store_keys(conn)
     finally:
         conn.close()
-    top, counts, everything, asked = {}, {}, [], 0
+    fetched, to_check = {}, []
     for stream in STREAMS:
         rows = [candidate(w, stream, today) for w in fetch_stream(stream, per, key)]
         for c in rows:
             c["held"] = held_by_store(c, keys)
         new = [c for c in rows if not c["held"]]
         new.sort(key=lambda c: -score(c, today)["score"])
-        for c in new[:n_check]:
-            if asked:
-                sleep(S2_INTERVAL_S)
-            asked += 1
+        fetched[stream] = (rows, new)
+        to_check += new[:n_check]
+    asked = 0
+    for c in to_check:
+        if asked:
+            sleep(S2_INTERVAL_S)
+        asked += 1
+        c.update(s2_check(c, s2_fetch, sleep))
+    # A second pass for refusals after a pause (Task J review: 11 of the ml
+    # stream's best-known papers stayed refused and fell below the cut).
+    refused = [c for c in to_check if c["s2_status"].startswith("unchecked (HTTP 429")]
+    if refused:
+        sleep(S2_SECOND_PASS_PAUSE_S)
+        for c in refused:
+            sleep(S2_INTERVAL_S)
             c.update(s2_check(c, s2_fetch, sleep))
+    top, unchecked, counts, everything = {}, {}, {}, []
+    for stream, (rows, new) in fetched.items():
         new, dupes = collapse_duplicates(new)
         for c in new:
             c.update(score(c, today))
         new.sort(key=rank_key)
-        top[stream] = new[:n_top]
-        checked = [c for c in new if "s2_status" in c]
+        top[stream] = [c for c in new if c["citation_check"] != "unchecked"][:n_top]
+        unchecked[stream] = [c for c in new if c["citation_check"] == "unchecked" and "s2_status" in c][
+            :UNCHECKED_SHOWN]
+        sent = [c for c in new if "s2_status" in c and c["s2_status"] != "no identifier"]
         counts[stream] = {"fetched": len(rows), "held": len(rows) - len([c for c in rows if not c["held"]]),
-                          "dupes": dupes, "checked": len(checked),
-                          "answered": sum(c["s2_status"] == "answered" for c in checked),
-                          "disagree": sum(c["citation_check"].startswith("DISAGREE") for c in checked),
+                          "dupes": dupes, "checked": len(sent),
+                          "answered": sum(c["s2_status"] == "answered" for c in sent),
+                          "mismatch": sum(c["s2_status"].startswith("mismatch") for c in sent),
+                          "disagree": sum(c["citation_check"].startswith("DISAGREE") for c in sent),
                           "no_copy": sum(1 for c in top[stream] if not free_copy(c))}
         everything += new
         print(f"{stream}: {counts[stream]}")
     out.mkdir(parents=True, exist_ok=True)
     stem = f"f62_review_{today.isoformat()}"
     (out / f"{stem}.json").write_text(json.dumps(everything, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    (out / f"{stem}.md").write_text(render_review(top, counts, today), encoding="utf-8")
+    (out / f"{stem}.md").write_text(render_review(top, counts, today, unchecked), encoding="utf-8")
     (out / f"f62_hand_download_{today.isoformat()}.md").write_text(render_hand_list(top, today), encoding="utf-8")
     print(f"wrote {out / (stem + '.md')}, .json and the hand-download list")
     return 0

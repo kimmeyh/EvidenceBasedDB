@@ -15,6 +15,17 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **fix**: F62 review (Sprint 9 Task J, Issue #98) -- a Semantic Scholar
+  answer counts only for the same title (a wrong-paper answer had won); a
+  second pass for refusals; refused candidates listed apart so a refusal
+  cannot hide a paper; no bonus for a stream's own context, `dirac` and
+  `braket` anchored; books routed to `Books\` under that folder's naming;
+  particles and hyphens kept in file names; the key dropped on a redirect
+  to another host; tests for each, injection-proven, and a vacuous key
+  assertion replaced by an output-file check. Re-run recorded on the F62
+  card
+- **feat**: `view.py paper` shows cites and cited-by (Sprint 9, F55, Issue
+  #96, daf1fa8)
 - **feat**: F62 discovery with the approved rubric (Sprint 9 Task J, Issue
   #98) -- `scripts/discover_candidates.py` now ranks by citations per year
   cross-checked against Semantic Scholar (paced, backoff on 429, arXiv

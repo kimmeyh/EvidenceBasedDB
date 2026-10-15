@@ -462,15 +462,23 @@ estimates are `[no-history]`.
 - **Sprint 9 Task J run (snapshot as of 2026-10-15; key in the header)**:
   rubric approved at plan Q8 = 1 (citations per year, Semantic Scholar's
   count where it answers, x1.5 for a store-context match; unchecked counts
-  listed after checked ones). 100 fetched per stream; already held: ml 2,
-  qml 41, tensor 1, fraud 1; Semantic Scholar answered 176 of 197 asked
-  (the first run drew 52 refusals and left OpenAlex record errors at the
-  top of ml, hence backoff, an arXiv fallback and the checked-first
-  order); 22 counts disagree by more than 2x. Lists and a 9-entry
+  listed apart; no bonus for a stream's own context; a Semantic Scholar
+  answer counts only for the same title). 100 fetched per stream; already
+  held: ml 2, qml 41, tensor 1, fraud 1; of 192 requests, 179 answered
+  for the same title, 2 named a different paper, the rest stayed refused
+  after a second pass; 22 counts disagree by more than 2x. Earlier runs the
+  same day drew 52 Semantic Scholar refusals, let a wrong-paper answer win,
+  and gave every fraud and qml record the bonus; the fresh-eyes review
+  found these and they are fixed and tested. Lists and an 8-entry
   hand-download list in `D:\Data\Harold\EvidenceBasedDB\discovery\`
   (`f62_review_2026-10-15.md`, `f62_hand_download_2026-10-15.md`), for
-  the team lead's review at Manual Validation. Precision note: the tensor
-  stream also catches knowledge-graph tensor factorization.
+  the team lead's review at Manual Validation. Precision note: the stream
+  filters still admit off-topic records (ml: software libraries such as
+  Tidyverse, NumPy and SciPy, and nature-inspired metaheuristics; tensor:
+  knowledge-graph tensor factorization, a 1969 density-estimation paper,
+  equivariant potentials; qml: quantum chemistry and hardware papers and a
+  brain-tumor survey). Tightening the filters is a candidate for the next
+  release of this card.
 - Acceptance: a ranking rubric approved by the team lead; per stream, a
   reviewed top list; the chosen papers entered; a hand-download list with
   every entry's free-copy search recorded.
