@@ -15,6 +15,21 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **feat**: F46, the 20 remaining pending facts (Sprint 9 Task F, Issue
+  #94) -- each checked against its primary source and entered, merged or
+  refused with the reason (`FACT_DISPOSITIONS` in
+  `scripts/sprint9_f46_pending_facts.py`): 15 entered (most corrected: the
+  handoff wording overstated its source in 12), 2 merged into assertions
+  already read (F-402, F-604), 3 not entered (F-001: the cited restatement
+  of Holevo does not exist; F-008: the handoff's own arithmetic, Han and
+  Verdu pending; F-603: the repository was never identified). 12 sources
+  promoted to `read` with a subagent row and the coordinator's partial row
+  (Zhao et al. read in part even at first pass; its absence claim carries
+  the search as its scope); 53 assertions; two arXiv PDFs downloaded by
+  `scripts/sprint9_f46_downloads.py` (committed with d14520a); tests check
+  quotes, figures, dispositions, read rows and idempotence, each proven by
+  injection. The answer document's family counts refreshed after the
+  "samples" fix
 - **fix**: F78 fresh-eyes review (Sprint 9 Task E, Issue #93) -- the
   answer document's false "lowest Bayes error simulated was 1 percent" is
   replaced by the positive-rate gap it meant (Theisen reports flow-model

@@ -1,0 +1,399 @@
+{
+ "papers": [
+  {
+   "record_id": "faryad-2026-input-problem-permanent-bottleneck-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Faryad_2026_The-Input-Problem-A-Permanent-Bottleneck-for-Quantum-Machine-Learning__2608.08433.pdf",
+   "pages": 5,
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "A single-author review and argument that loading classical data into quantum states costs Theta(N), with gate counts and a checklist for advantage claims.",
+   "title_on_page_1": "The Input Problem: A Permanent Bottleneck for Quantum Machine Learning",
+   "venue_or_status_on_page_1": "arXiv:2608.08433v1 [quant-ph], 9 Aug 2026 (dated August 11, 2026); preprint",
+   "assertions": [
+    {
+     "id_suggestion": "faryad-state-prep-omega-2n-dimension-count",
+     "value": "The paper states that preparing an arbitrary n-qubit state needs Omega(2^n) two-qubit gates, by a dimension-count argument (a sketch, not a full proof), and says this is not a limitation of compilers, qubits or decompositions.",
+     "anchor": "Sec. III, p. 2",
+     "quotes": [
+      "The argument is a dimension count. The target manifold of normalized states has 2n+1 − 2 real parameters.",
+      "A Θ(N ) gate count is not a limitation of current compilers, qubits, or decompositions. Improved hardware will not remove it."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Standard counting bound, argued in a short sketch in a single-author preprint, and the paper cites [2, 8, 9] for constructions that meet it.",
+     "context": "world"
+    },
+    {
+     "id_suggestion": "faryad-counting-argument-not-hardware-limit",
+     "value": "The paper states that the input problem is a counting argument rather than a hardware limitation, and that it will constrain quantum machine learning for as long as the learning is applied to classical data.",
+     "anchor": "Sec. VIII, p. 4",
+     "quotes": [
+      "The input problem is permanent. It is a counting argument rather than a hardware limitation, and it will constrain quantum machine learning for as long as quantum machine learning is applied to classical data."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Authorial conclusion resting on the Sec. III dimension count; scope is generic classical data, not structured data.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "faryad-generic-data-loading-theta-n-with-preprocessing",
+     "value": "The paper states that for generic classical data the loading cost is Theta(N), and that the classical computation of the rotation angles reads the whole input vector first. Structured data (an efficiently integrable distribution) is the stated exception.",
+     "anchor": "Intro p. 1, Sec. II.B p. 2, Sec. VII p. 4",
+     "quotes": [
+      "In brief: for generic classical data it is Θ(N ), provably so, and it is therefore not a hardware problem that better qubits will eventually solve.",
+      "Those angles are computed classically, on an ordinary computer, before a single quantum gate exists. Producing them requires reading the entire data vector.",
+      "Where a closed-form CDF admits a poly(n) reversible circuit, the Grover–Rudolph construction performs as advertised."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Upper bound by construction and lower bound by the Sec. III sketch; scoped to generic data, and the paper itself lists efficiently preparable states as an exception.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "faryad-qae-9p6e9-gates-vs-1e10-samples",
+     "value": "The paper extrapolates its measured CNOT counts and reports that at precision 1e-5 the amplitude-estimation Monte Carlo pipeline needs about 9.6e9 two-qubit gates against 1e10 classical samples. This is an extrapolation of Table I, not a measurement at that size.",
+     "anchor": "Sec. V, p. 3",
+     "quotes": [
+      "Extrapolating the measured counts of Table I makes this concrete: at ϵ = 10−5 the pipeline requires approximately 9.6 × 109 two-qubit gates, against 1010 classical samples"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Extrapolation from measured counts at n up to 8 qubits (Table I), within a specific Monte Carlo pricing setting.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "faryad-quantum-kernel-gram-theta-m2-preparations",
+     "value": "The paper states that filling the Gram matrix of a quantum kernel on M training points takes Theta(M^2) state preparations, that loading is per data point, and that it does not amortize across the dataset. No proof is given.",
+     "anchor": "Sec. VI, p. 4",
+     "quotes": [
+      "On M training points this is Θ(M 2 ) state preparations to fill the Gram matrix, each with its own circuit and its own shot budget.",
+      "the loading is nevertheless per-data-point, does not amortize across the dataset, and the quadratic count in M underlies every quantum kernel result whether or not it is reported."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Counting statement made in prose without a derivation; it follows from one kernel entry per pair with fresh feature states.",
+     "context": "qml"
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-001",
+     "verdict": "not addressed",
+     "explanation": "The paper never mentions Holevo or a bound on classical bits extracted from n qubits, and its reference list has no Holevo entry. The fact cannot be checked against this paper.",
+     "supporting_assertions": []
+    },
+    {
+     "fact_id": "F-002",
+     "verdict": "supported",
+     "explanation": "Sec. III states the Omega(2^n) two-qubit-gate lower bound for an arbitrary n-qubit state, gives a dimension-count argument, and calls it a counting theorem, not a limitation of hardware. Note that the argument assumes a fixed two-qubit gate set with continuous parameters and is only sketched.",
+     "supporting_assertions": [
+      "faryad-state-prep-omega-2n-dimension-count",
+      "faryad-counting-argument-not-hardware-limit"
+     ]
+    },
+    {
+     "fact_id": "F-003",
+     "verdict": "partly",
+     "explanation": "Theta(N) is stated for generic classical data and includes the classical angle computation, and the 9.6e9 versus 1e10 figures at eps = 1e-5 are in Sec. V. The wording drops two limits: Theta(N) is for generic data only (efficiently integrable CDFs cost O(n poly(n))), and the 9.6e9 figure is an extrapolation of Table I counts in the amplitude-estimation Monte Carlo setting, not a measured result.",
+     "supporting_assertions": [
+      "faryad-generic-data-loading-theta-n-with-preprocessing",
+      "faryad-qae-9p6e9-gates-vs-1e10-samples"
+     ]
+    },
+    {
+     "fact_id": "F-004",
+     "verdict": "supported",
+     "explanation": "Sec. VI states Theta(M^2) state preparations for the Gram matrix and that the cost does not amortize across the dataset. Stated in prose, not proved.",
+     "supporting_assertions": [
+      "faryad-quantum-kernel-gram-theta-m2-preparations"
+     ]
+    }
+   ]
+  },
+  {
+   "record_id": "chowdhury-2026-gottesman-knill-limit-one-way",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Chowdhury-et-al._2025_Gottesman-Knill-Limit-on-One-way-Communication-Complexity-Tracing-the__2506.19369.pdf",
+   "pages": 12,
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "A theory paper proving that stabilizer-limited one-way quantum communication in prime dimension has no advantage over classical communication with shared randomness, and that tiny magic suffices for advantage in random access codes.",
+   "title_on_page_1": "Gottesman–Knill Limit on One-way Communication Complexity: Tracing the Quantum Advantage down to Magic Resources",
+   "venue_or_status_on_page_1": "arXiv:2506.19369v2 [quant-ph], 12 Apr 2026; preprint",
+   "assertions": [
+    {
+     "id_suggestion": "chowdhury-stabilizer-one-way-protocols-classically-simulable",
+     "value": "Theorem 1: for prime dimension d, every one-way quantum communication protocol limited to stabilizer-state encodings and Clifford (stabilizer-preserving) decodings can be exactly simulated by a classical d-level system with shared randomness.",
+     "anchor": "Sec. I p. 1, Theorem 1 Sec. III.B pp. 4-5",
+     "quotes": [
+      "Specifically, for any prime dimension d, we prove that every one-way quantum protocol confined to stabilizer preparations and Clifford measurements always admits an exact simulation by a classical d-level system assisted with shared randomness (SR)."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Stated as Theorem 1 with a proof in the paper (preprint, v2 April 2026); scope is prime d and the one-way communication setting.",
+     "context": "world"
+    },
+    {
+     "id_suggestion": "chowdhury-theorem-needs-mub-structure",
+     "value": "The paper states that Theorem 1 holds for states and measurements in the convex hull of eigenstates of a chosen mutually unbiased basis set and fails for non-MUB sets.",
+     "anchor": "Sec. III.B, p. 5",
+     "quotes": [
+      "It holds whenever preparations and measurements are restricted to the convex hull of eigenstates of a chosen MUB, but fails for non-MUB sets."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Remark after the theorem, supported by an octagon example, not a separate proof.",
+     "context": "world"
+    },
+    {
+     "id_suggestion": "chowdhury-gottesman-knill-restated-stabilizer-simulable",
+     "value": "The paper restates the Gottesman-Knill theorem: stabilizer-state and Clifford circuits, despite creating large entanglement and superposition, can be efficiently simulated classically. It cites Gottesman [4] and does not mention interference.",
+     "anchor": "Sec. I, p. 1",
+     "quotes": [
+      "A striking illustration comes from the seminal Gottesman-Knill theorem, which shows that quantum circuits restricted to stabilizer state preparations and Clifford operations—despite creating large entanglement and superposition—can be efficiently simulated classically [4]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Cited, textbook theorem (Gottesman 1998); this paper is a restatement, not the primary source.",
+     "context": "world"
+    },
+    {
+     "id_suggestion": "chowdhury-non-stabilizer-resource-called-magic",
+     "value": "The paper states that adding a single non-stabilizer resource such as the T-gate makes the system universal, and that this identifies non-stabilizer resources as the magic of quantum computation. It cites [5-10] for this.",
+     "anchor": "Sec. I, p. 1",
+     "quotes": [
+      "However, inclusion of a single non-stabilizer resource, such as the T-gate, renders the system universal and confers quantum advantage, thereby identifying non-stabilizer resources as element of magic in quantum computation [5–10]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Cited background statement; the paper's own results concern one-way communication, not universality.",
+     "context": "world"
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-005",
+     "verdict": "partly",
+     "explanation": "The paper supports the first half: it restates Gottesman-Knill, with entanglement and superposition named (not interference), and it equates magic with non-stabilizer resources. It does not say that magic is equivalent to Wigner negativity or contextuality; those words appear only in cited titles in the reference list. Its own theorem is about one-way communication, not circuit simulation. Use Howard 2014 for the contextuality link.",
+     "supporting_assertions": [
+      "chowdhury-gottesman-knill-restated-stabilizer-simulable",
+      "chowdhury-non-stabilizer-resource-called-magic",
+      "chowdhury-stabilizer-one-way-protocols-classically-simulable"
+     ]
+    }
+   ]
+  },
+  {
+   "record_id": "howard-2014-contextuality-supplies-magic-quantum-computation",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2014-01_Howard_Contextuality-Supplies-the-Magic-for-Quantum-Computation.pdf",
+   "pages": 9,
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "A theory paper proving that contextuality is necessary for quantum speed-up via magic state distillation, with an iff for odd prime qudits.",
+   "title_on_page_1": "Contextuality supplies the magic for quantum computation",
+   "venue_or_status_on_page_1": "arXiv:1401.4174v2 [quant-ph], 15 Oct 2014 (arXiv version of the Nature paper)",
+   "assertions": [
+    {
+     "id_suggestion": "howard-contextuality-necessary-for-msd-speedup",
+     "value": "The paper proves that violating a noncontextuality inequality is necessary for quantum speed-up through magic state distillation, for both qubits and odd-prime qudits.",
+     "anchor": "Intro p. 2 and Significance p. 5",
+     "quotes": [
+      "Whereas in both cases we can prove that violating a non-contextuality inequality is necessary for quantumcomputational speed-up via MSD",
+      "These results establish that contextuality is a necessary resource for universal quantum computation via MSD."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Theorem 1 with proof (computer-assisted for qubits, analytic for odd primes) in a peer-reviewed Nature paper; scope is stabilizer measurements and the magic-state-distillation model.",
+     "context": "world"
+    },
+    {
+     "id_suggestion": "howard-qudit-noncontextual-iff-in-simulable-polytope",
+     "value": "For odd prime dimension, the paper states that a state is noncontextual under stabilizer measurements if and only if it lies in the polytope P_SIM, the set known to be useless for magic state distillation.",
+     "anchor": "Significance and outlook, p. 5",
+     "quotes": [
+      "For qudits of odd prime dimension (hereafter referred to simply as qudits), a state is non-contextual under the available set of measurements—stabilizer measurements—if and only if it lies in the polytope PSIM"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Follows from Theorem 1 plus the existence of the discrete Wigner function noncontextual model; holds for odd prime dimension only.",
+     "context": "world"
+    },
+    {
+     "id_suggestion": "howard-psim-equals-nonnegative-discrete-wigner-states",
+     "value": "The paper cites prior results that the set P_SIM equals the set of states with nonnegative discrete Wigner function.",
+     "anchor": "p. 3",
+     "quotes": [
+      "By prior results34,39 , we know that the set of states PSIM coincides exactly with the set of states that are nonnegatively represented within a distinguished quasiprobability representation—a discrete Wigner function (DWF)40–42 ."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Stated as a result from earlier work (refs 34, 39), not proved here; the discrete Wigner function is the one for odd prime dimension.",
+     "context": "world"
+    },
+    {
+     "id_suggestion": "howard-contextuality-not-sufficient-qubits-open-for-qudits",
+     "value": "The paper states that for qubits the mere presence of contextuality cannot be sufficient for universality, and that sufficiency for qudits is an open problem.",
+     "anchor": "Significance and outlook, p. 5",
+     "quotes": [
+      "For qubits, the mere presence of contextuality cannot be sufficient to promote stabilizer circuits to universality",
+      "While substantial progress in this direction has been made18 , it is still an open problem."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Qubit insufficiency argued by example (state-independent contextuality, I/4 state); qudit sufficiency is stated as open.",
+     "context": "world"
+    },
+    {
+     "id_suggestion": "howard-stabilizer-subtheory-efficiently-simulable",
+     "value": "The paper states that the stabilizer subtheory is not universal and admits an efficient classical simulation. It cites ref 30 and does not state that interference arises in it.",
+     "anchor": "Intro, p. 1",
+     "quotes": [
+      "These operations define a closed subtheory of quantum theory, the stabilizer subtheory, which is not universal and in fact admits an efficient classical simulation30 ."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Cited background (Gottesman-Knill); not the primary source for that theorem.",
+     "context": "world"
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-005",
+     "verdict": "partly",
+     "explanation": "Supported: the stabilizer subtheory is efficiently simulable (cited), and contextuality is proved necessary for magic-state-distillation speed-up, with a match to nonnegative discrete Wigner function for odd prime qudits. Overstated: 'equivalently' fails. For qubits contextuality is not sufficient, for qudits sufficiency is open, and the Wigner link is for odd prime dimension and cited from earlier work. The paper does not discuss interference.",
+     "supporting_assertions": [
+      "howard-contextuality-necessary-for-msd-speedup",
+      "howard-qudit-noncontextual-iff-in-simulable-polytope",
+      "howard-psim-equals-nonnegative-discrete-wigner-states",
+      "howard-contextuality-not-sufficient-qubits-open-for-qudits",
+      "howard-stabilizer-subtheory-efficiently-simulable"
+     ]
+    }
+   ]
+  },
+  {
+   "record_id": "ortiz-marrero-2021-entanglement-induced-barren-plateaus",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2020-10_Ortiz-Marrero_Entanglement-Induced-Barren-Plateaus.pdf",
+   "pages": 13,
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "A theory paper with small numerics arguing that visible-hidden entanglement in QNNs and quantum Boltzmann machines produces vanishing gradients under 2-design assumptions.",
+   "title_on_page_1": "Entanglement Induced Barren Plateaus",
+   "venue_or_status_on_page_1": "arXiv:2010.15968v2 [quant-ph], 10 Mar 2021 (arXiv version of the PRX Quantum paper)",
+   "assertions": [
+    {
+     "id_suggestion": "ortiz-2design-visible-observables-near-maximally-mixed",
+     "value": "Proposition 2: if the unitary or Boltzmann-machine state is drawn from a unitary 2-design, the expectation of any bounded visible-only observable deviates from its maximally mixed value by O(sqrt(Dv/Dh)) with high probability.",
+     "anchor": "Sec. III, pp. 3-4",
+     "quotes": [
+      "This shows that for both the Boltzmann machine, as well as unitary quantum networks, any observable measured on the visible layers will be indistinguishable, in expectation, to the maximally mixed state with high probability."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Proposition 2 with proof; conditional on the 2-design assumption and on observables supported on the visible subsystem only.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "ortiz-volume-law-predictions-no-better-than-random",
+     "value": "Proposition 1: for states satisfying a volume law (as the paper defines it), the bound on the visible expectation shift is O(sqrt(Dv/Dh)), so predictions are asymptotically no better than random guessing; the proposition assumes Dh >= Dv.",
+     "anchor": "Sec. II, p. 3",
+     "quotes": [
+      "This shows that if our quantum neural network outputs states that satisfy a volume law then asymptotically the predictions of the neural network would be no better than random guessing."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Proposition 1 has a proof by relative-entropy inequalities; the volume law is defined for visible-hidden entanglement, and the random-guessing reading is the authors' interpretation.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "ortiz-lipschitz-gradient-bound-scales-with-hidden-dimension",
+     "value": "Theorem 3: under 2-design and independence assumptions, the objective of a unitary network is Lipschitz in the parameters with a constant O(sqrt(Dv/Dh)); the conclusion states exponential vanishing of the gradient with the number of hidden units for Haar-random and thermal states.",
+     "anchor": "Sec. IV.A p. 4 and Sec. VII p. 6",
+     "quotes": [
+      "We then see that the value of the objective function is Lipshitz continuous with a constant that scales inversely with the hidden-dimension",
+      "We showed that for Haar-random pure states and thermal states of random Hamiltonians, the gradient of an observable objective function will be vanishing exponentially with the number of hidden units."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Theorem 3 proved in Appendix A under strong assumptions (2-design, independence); the decay is in hidden units, not total system size.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "ortiz-area-law-tolerable-but-not-shown-gradient-preserving",
+     "value": "The paper states that large entanglement (volume law) can be catastrophic while an area law between hidden and visible units can often be tolerated, and that QNNs need not show the problem under an area law. It proves only the Proposition 1 bound for the area-law case, not non-vanishing gradients, and gives no threshold.",
+     "anchor": "Sec. II, pp. 2-3",
+     "quotes": [
+      "we conclude that large amounts of entanglement (as quantified by a volume law) can be catastrophic for the model; whereas an area law scaling for the entanglement entropy between the hidden and visible can often be tolerated.",
+      "quantum neural networks will not necessarily observe this problem if the entanglement entropy is characteristic of an area-law scaling unless the number of hidden units in the first layer"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Hedged authorial interpretation of Proposition 1 (may, often, not necessarily); no gradient theorem is given for the area-law case.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "ortiz-numerics-small-networks-consistent-with-bounds",
+     "value": "The paper reports numerical experiments on small networks (one visible qubit) that it says show its asymptotic results apply, with fitted exponential decay of gradient variance as hidden units increase.",
+     "anchor": "Sec. VI, p. 6",
+     "quotes": [
+      "We ran a series of numerical experiments summarized in Figure 3 and 4 to demonstrate that our asymptotic results apply to small-sized quantum networks."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Small-scale numerics on random two-local Hamiltonian ansatzes (Figs. 3-4), not a proof.",
+     "context": "qml"
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-006",
+     "verdict": "partly",
+     "explanation": "Supported in part: under a 2-design assumption, visible expectations and gradient Lipschitz constants shrink as the hidden dimension grows (visible-hidden entanglement), proved as Props 1-2 and Thm 3. Not supported or overstated: (1) the causal direction is reversed. The paper ASSUMES 2-design behavior and derives that volume law is typical; it does not show volume-law entanglement drives circuits to 2-designs. (2) The decay is in the number of hidden units (Dh), not system size generally. (3) 'Below threshold, area-law preserves non-vanishing gradients' is not shown: the paper says area laws 'can often be tolerated' or 'may be more desirable', proves only a bound for the area-law case, and names no threshold. (4) Results are conditional on 2-design and independence assumptions.",
+     "supporting_assertions": [
+      "ortiz-2design-visible-observables-near-maximally-mixed",
+      "ortiz-volume-law-predictions-no-better-than-random",
+      "ortiz-lipschitz-gradient-bound-scales-with-hidden-dimension",
+      "ortiz-area-law-tolerable-but-not-shown-gradient-preserving"
+     ]
+    }
+   ]
+  }
+ ]
+}

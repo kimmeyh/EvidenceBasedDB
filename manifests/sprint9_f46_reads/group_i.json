@@ -1,0 +1,442 @@
+{
+ "papers": [
+  {
+   "record_id": "nvidia-2019-ieee-cis-1st-place-solution",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\References\\2019_CL-1_nvidia_IEEE-CIS-1st-Place-Solution-2.html",
+   "pages": 1,
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "NVIDIA technical blog (dated Jan 26, 2021) by Carol McDonald and Chris Deotte describing the first-place IEEE-CIS Fraud Detection solution.",
+   "title_on_page_1": "Leveraging Machine Learning to Detect Fraud: Tips to Developing a Winning Kaggle Solution",
+   "venue_or_status_on_page_1": "NVIDIA Technical Blog, Data Science, Jan 26, 2021",
+   "assertions": [
+    {
+     "id_suggestion": "ieee-cis-uid-from-card1-addr1-d1",
+     "value": "The first-place team built a client identifier called UID from card1, addr1 and D1. The blog code forms it as card1_addr1 joined to floor(day - D1), with day equal to TransactionDT divided by 86400. The blog describes D1 only as a timedelta, such as days between previous transactions.",
+     "anchor": "Section New features from aggregation encoding (code listing); Vesta data set list",
+     "quotes": [
+      "After extensive EDA, Chris’s team created a credit card client unique ID,",
+      "Timedelta, such as days between previous transactions, and so on."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Author account of own solution; formula is in a code listing that cannot be quoted, and the blog never says D1 counts from the first transaction.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "ieee-cis-uid-aggregates-local-auc-0-9363-to-0-9472",
+     "value": "On the team local validation, XGBoost with 216 features scored AUC 0.9363 before the UID features. After adding UID-aggregated features it scored AUC 0.9472. Both figures are local validation, not leaderboard scores, and the blog does not state how many aggregations were added.",
+     "anchor": "Sections Feature selection and New features from aggregation encoding",
+     "quotes": [
+      "The result with the XGBoost model with 216 features achieved AUC = 0.9363.",
+      "-aggregated features included achieved AUC = 0.9472. In Figure 15, seven of the"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Reported by the solution authors from their own local validation split; not independently reproduced here.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "ieee-cis-uid-column-not-used-in-training",
+     "value": "The UID column itself was kept out of the training features; only aggregate features computed per UID value were used. The blog gives overfitting avoidance as the reason.",
+     "anchor": "Section New features from aggregation encoding",
+     "quotes": [
+      "column itself was not used in training to avoid overfitting. For more information, see the resources mentioned in the Conclusion section."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Direct statement by the authors of the solution.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "ieee-cis-final-score-public-0-9677-private-0-9459",
+     "value": "The final first-place submission scored 0.9677 on the public leaderboard and 0.9459 on the private leaderboard. It was an ensemble of XGBoost, CatBoost and LightGBM with post-processing that replaced predictions within one UID by that UID average.",
+     "anchor": "Section Final model training and predictions submission",
+     "quotes": [
+      "value with that client’s average prediction. The final submission score was public LB 0.9677 and private LB 0.9459, taking first place."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Leaderboard result stated by the winning team members; the score belongs to the ensemble, not to a single XGBoost model.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "ieee-cis-group-aggregations-credited-for-win",
+     "value": "The blog attributes the winning edge to feature engineering, specifically new columns built from group aggregations of other columns.",
+     "anchor": "Section Conclusion",
+     "quotes": [
+      "The secret to creating a high-scoring model in this competition was feature engineering.",
+      "The features that made the difference for the winning team were new columns created from group aggregations of other columns."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Authors opinion about their own solution; no ablation isolating the aggregations from other factors is shown beyond the two local AUC figures.",
+     "context": "hsbc-2026"
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-601",
+     "verdict": "partly",
+     "explanation": "Supported: UID is built from card1, addr1 and D1 (formula day minus D1 in the code listing); UID aggregation features moved local validation AUC from 0.9363 (216-feature XGBoost) to 0.9472; the UID column itself is not fed to the model. Not in the blog: the words account-open date (the blog never interprets day minus D1), and the description of D1 as time since first transaction (the blog says D1 is a timedelta, such as days between previous transactions). The number 45 is not stated; the blog lists 46 UID-derived feature names (45 if UID_FE is excluded), so 45 is a reader count. Both AUC figures are local validation, not leaderboard.",
+     "supporting_assertions": [
+      "ieee-cis-uid-from-card1-addr1-d1",
+      "ieee-cis-uid-aggregates-local-auc-0-9363-to-0-9472",
+      "ieee-cis-uid-column-not-used-in-training"
+     ]
+    },
+    {
+     "fact_id": "F-602",
+     "verdict": "partly",
+     "explanation": "Stated in the blog: public LB 0.9677 and private LB 0.9459 for the final ensemble, first place. Not stated anywhere in the blog: the naive XGBoost range of 0.88 to 0.90 (the only baseline figure is 0.9363 local validation for the 216-feature XGBoost, which is not a naive pipeline and not a leaderboard score). The 0.88 to 0.90 figure must come from another source. The wording also drops that 0.9459 is an ensemble with UID post-processing.",
+     "supporting_assertions": [
+      "ieee-cis-final-score-public-0-9677-private-0-9459"
+     ]
+    }
+   ]
+  },
+  {
+   "record_id": "hayat-2025-data-leakage-deceptive-performance-critical",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2025-06_Hayat_Data-Leakage-and-Deceptive-Performance-A-Critical-Examination.pdf",
+   "pages": 19,
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Preprint reviewing methodological flaws in deep-learning credit card fraud papers and demonstrating inflated metrics with a deliberately leaky SMOTE plus MLP pipeline on the European card dataset.",
+   "title_on_page_1": "DATA LEAKAGE AND DECEPTIVE PERFORMANCE: A CRITICAL EXAMINATION OF CREDIT CARD FRAUD DETECTION METHODOLOGIES",
+   "venue_or_status_on_page_1": "arXiv:2506.02703v3 [cs.LG] 10 Nov 2025, A PREPRINT",
+   "assertions": [
+    {
+     "id_suggestion": "leaky-smote-mlp-reaches-99-9-recall-european-card-data",
+     "value": "In the authors case study on the European credit card dataset (284,807 transactions, 492 fraud), an MLP with one hidden layer of 16 neurons reached recall 0.999 and precision 0.992 when SMOTE was applied to the whole dataset before the train-test split.",
+     "anchor": "Sections 2.1 and 4.3 and Table 2 (pages 2 and 15)",
+     "quotes": [
+      "It contains 284,807 transactions made by European cardholders over two days in September 2013, out of which only 492 are fraudulent, just 0.17%, highlighting extreme class imbalance.",
+      "performance metrics improved incrementally with more neurons, reaching near-perfect scores (99.9% recall) at N = 16."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Reported experimental result on one public dataset with deliberately leaky protocol; single run, no variance reported.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "leak-in-case-study-is-smote-before-split",
+     "value": "The leakage in the case study is one specific flaw: SMOTE applied before the train-test split. The authors state the resulting numbers are artificially inflated and would not generalize.",
+     "anchor": "Sections 4 and 4.3 (pages 13 and 15)",
+     "quotes": [
+      "we will present a deliberately flawed MLP implementation with SMOTE applied before train-test splitting - a clear violation of proper evaluation protocol.",
+      "Such results are artificially inflated and would not generalize to real-world scenarios"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct statement of the authors design; no leak-free run of the same MLP is reported to quantify the inflation.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "minimal-leaky-network-outperforms-published-methods-claim",
+     "value": "The authors claim a minimal neural network with leakage outperforms many sophisticated published methods and conclude that evaluation methodology matters more than model complexity. The comparison is against metrics other papers reported, not against methods rerun under one protocol.",
+     "anchor": "Abstract (page 1) and Section 4.3 (page 15)",
+     "quotes": [
+      "We present a case study showing how a minimal neural network architecture with data leakage outperforms many sophisticated methods reported in literature, achieving 99.9% recall despite fundamental evaluation flaws.",
+      "This experiment underscores that proper evaluation methodology matters more than model complexity."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Conclusion rests on comparison with other papers reported (and by the authors own account flawed) numbers; several of those report recall of 99.9 percent or 100 percent in Table 1 and Section 3.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "card-fraud-literature-preprocessing-before-split-pattern",
+     "value": "The authors report that numerous reviewed credit card fraud studies perform preprocessing such as normalization or SMOTE before the train-test split. The paper marks most such cases as suspected from the described pipelines, not confirmed by rerunning code.",
+     "anchor": "Section 3 literature review summary (page 12) and Table 1 (page 5)",
+     "quotes": [
+      "Numerous studies perform critical preprocessing steps (normalization, SMOTE etc.) before train-test splitting, artificially inflating performance metrics through information leakage.",
+      "suspected Data leak; dataset balancing before the split"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Reviewer reading of other papers methods sections, with no reproduction.",
+     "context": "hsbc-2026"
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-605",
+     "verdict": "partly",
+     "explanation": "Supported: the case-study network is minimal (one hidden layer, N=16 neurons; also N=0 reaches recall 0.939) and reaches 99.9 percent recall on the European card dataset. Needs scoping: the leakage is SMOTE before the split, the result is explicitly artificial, and the data is the 2013 European card set, not general fraud data. The claim that it outperforms many sophisticated published methods is the authors statement, made against other papers reported numbers (some of which also report recall near 99.9 to 100 percent); the paper reports no leak-free control. The closing sentence that methodology matters more than complexity is the authors conclusion, argued from this one demonstration. Read without the leakage context, the fact wording could be mistaken for a legitimate performance claim.",
+     "supporting_assertions": [
+      "leaky-smote-mlp-reaches-99-9-recall-european-card-data",
+      "leak-in-case-study-is-smote-before-split",
+      "minimal-leaky-network-outperforms-published-methods-claim"
+     ]
+    }
+   ]
+  },
+  {
+   "record_id": "khaleghpour-2026-leakage-safe-graph-features-interpretable",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2026-03_Khaleghpour_Leakage-Safe-Graph-Features-for-Interpretable-Fraud-Detection.pdf",
+   "pages": 7,
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Preprint proposing time-respecting (causal) graph feature extraction for temporal transaction networks and testing a Random Forest on the Elliptic dataset with a chronological split.",
+   "title_on_page_1": "Leakage Safe Graph Features for Interpretable Fraud Detection in Temporal Transaction Networks",
+   "venue_or_status_on_page_1": "arXiv:2603.06632v1 [cs.LG] 24 Feb 2026",
+   "assertions": [
+    {
+     "id_suggestion": "full-graph-features-may-include-future-edges",
+     "value": "The paper states that graph features computed on the full temporal transaction graph may include edges that occur after the prediction time. This is look-ahead bias. The wording is conditional (may inadvertently) and the paper reports no measurement of the size of the effect.",
+     "anchor": "Section 1 Introduction (page 1)",
+     "quotes": [
+      "In temporal transaction networks, graph features computed on the full graph may inadvertently incorporate edges that occur in the future relative to the prediction time."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Stated as methodological risk in the introduction; no non-causal versus causal comparison is reported in the results tables.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "look-ahead-leakage-can-inflate-metrics-claim",
+     "value": "The paper states that such look-ahead leakage can substantially inflate evaluation metrics and give misleading conclusions about deployable performance. No experiment in the paper quantifies the inflation.",
+     "anchor": "Section 1 Introduction (page 1)",
+     "quotes": [
+      "This leakage can substantially inflate evaluation metrics and produce misleading conclusions about deployable performance."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Assertion without a reported measurement; Tables 2 and 3 use causal features only.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "causal-protocol-historical-subgraph-per-timestep",
+     "value": "The proposed protocol computes graph features for transactions at timestep t on the subgraph of edges observed at or before t, so that no future edge influences a feature value. The listed features are degree statistics, PageRank, HITS scores, k-core number, neighbor degree summaries and two-hop reachability; clustering coefficients are not listed.",
+     "anchor": "Section 2.2.4 and 2.2.5 (page 3)",
+     "quotes": [
+      "This ensures that no future edges influence the feature values, producing leakage-safe graph descriptors suitable for deployment."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Design property of the authors protocol, true by construction; not tested against a leaky variant.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "elliptic-causal-graph-features-add-little-over-transaction-features",
+     "value": "On the Elliptic dataset with a chronological split, a Random Forest using causal graph features reached test ROC-AUC 0.853 and AP 0.537. Transaction-only features reached 0.847 and 0.537. Graph-only features reached 0.562 and 0.049. Graph features added little over transaction features on this benchmark.",
+     "anchor": "Sections 4.2 and 4.3, Tables 2 and 3 (pages 5 and 6)",
+     "quotes": [
+      "performance decreases from validation (ROC-AUC = 0.977, AP = 0.925) to the held-out future test period (ROC-AUC = 0.853, AP = 0.537).",
+      "while the graph-only model performs substantially worse (ROC-AUC = 0.562, AP = 0.049)."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Single dataset, single model family, single temporal split; the paper does not state it is card data.",
+     "context": "ml"
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-606",
+     "verdict": "partly",
+     "explanation": "Supported in part: the paper says graph features computed on the full graph may incorporate future edges (look-ahead bias) and that this leakage can inflate metrics. Not supported as worded: (1) clustering coefficients are never mentioned (the paper uses degree, PageRank, HITS, k-core, neighbor degree, two-hop reach); (2) the paper states the risk conditionally and never measures it, since no non-causal result is reported; (3) the experiments use the Elliptic dataset, which the paper describes only as licit and illicit transactions, not card data. Treat as a stated methodological claim, not a demonstrated leakage vector.",
+     "supporting_assertions": [
+      "full-graph-features-may-include-future-edges",
+      "look-ahead-leakage-can-inflate-metrics-claim",
+      "causal-protocol-historical-subgraph-per-timestep"
+     ]
+    }
+   ]
+  },
+  {
+   "record_id": "cheng-2025-realistic-evaluation-tabpfn-v2-open",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2025-05_Cheng_Realistic-Evaluation-of-TabPFN-v2-in-Open-Environments.pdf",
+   "pages": 24,
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Preprint evaluating TabPFN v2 against tree-based and deep baselines under four open-environment challenges (new classes, feature shift, distribution shift, varied metrics).",
+   "title_on_page_1": "Realistic Evaluation of TabPFN v2 in Open Environments",
+   "venue_or_status_on_page_1": "arXiv:2505.16226v1 [cs.LG] 22 May 2025; Preprint. Under review.",
+   "assertions": [
+    {
+     "id_suggestion": "tabpfn-v2-suited-small-covariate-shifted-balanced-tasks",
+     "value": "The authors conclude TabPFN v2 shows significant limitations in open environments but is suitable for small-scale, covariate-shifted and class-balanced tasks. They conclude tree-based models remain the better general choice.",
+     "anchor": "Abstract (page 1)",
+     "quotes": [
+      "Empirical results demonstrate that TabPFN v2 shows significant limitations in open environments but is suitable for small-scale, covariate-shifted, and classbalanced tasks."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Summary of benchmark results on public datasets, none of them fraud; preprint under review.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "tabpfn-v2-degrades-on-f1-balanced-accuracy-majority-bias",
+     "value": "On the paper i.i.d. datasets, TabPFN v2 degrades significantly on class-imbalance-sensitive metrics (F1-score and balanced accuracy) while staying comparable on accuracy and ROC-AUC. The authors read this as bias toward majority classes and use the phrase statistically significant without showing a test in the main text.",
+     "anchor": "Section 5.4 (pages 7 and 8)",
+     "quotes": [
+      "Figure 3 reveals that the performance of TabPFN v2 degrades significantly on class-imbalance-sensitive metrics (F1-score and Balanced Accuracy), suggesting inherent limitations in handling minority classes.",
+      "TabPFN v2 demonstrates competitive performance with respect to accuracy and ROC-AUC, achieving comparable results to other models in these specific evaluation criteria."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Result shown in a figure on public datasets with moderate imbalance; severe fraud-level imbalance was not tested.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "tabpfn-v2-dataset-size-limit-background-and-50k-subsample",
+     "value": "The paper background lists a TabPFN v2 dataset size limit below 10^4 rows, taken from prior work, as one of three constraints. The paper itself ran TabPFN v2 on datasets subsampled up to 50,000 instances, so the limit is not a hard cap in its own experiments.",
+     "anchor": "Appendix A.2 (page 14) and Section 5.3 (page 7)",
+     "quotes": [
+      "TabPFN v2 has three fundamental constraints: (1) quadratic complexity scaling, (2) dataset size limit < 104, and (3) maximum class count (≤ 10 for classification tasks).",
+      "we apply stratified subsampling (up to 50,000 instances) while preserving the original train/test splits."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Background statement citing earlier work, not a measurement by this paper; extraction renders 10^4 as 104.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "open-env-average-rank-catboost-best-tabpfn-v2-third",
+     "value": "In the paper Table 3 (average rank over four open-environment task groups, lower is better) CatBoost has the best average rank, 3.37, XGBoost is 3.49, TabPFN v2 is 3.53 and RandomForest is 3.93. These numbers sit in table cells; the quotes give the caption and the text claim.",
+     "anchor": "Section 5.5 and Table 3 (page 9)",
+     "quotes": [
+      "Table 3: Average rank across four open environments tasks.",
+      "CatBoost achieves the best overall ranking, excelling in both changing data distributions and varied learning objectives, demonstrating stronger adaptability in open environments."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Unweighted mean of four per-task-group ranks; the 0.16 gap between CatBoost and TabPFN v2 has no significance test, and the text says tree-based models consistently outperform TabPFN v2 although RandomForest ranks below it.",
+     "context": "ml"
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-607",
+     "verdict": "partly",
+     "explanation": "Supported by this paper: the suitable-for trio (small-scale, covariate-shifted, class-balanced) is in the abstract; degradation on imbalance-sensitive metrics (F1, balanced accuracy) with majority-class bias is Section 5.4 (but accuracy and ROC-AUC are comparable, and the datasets are not fraud-level imbalanced); average rank CatBoost 3.37 against TabPFN v2 3.53 is Table 3 (XGBoost 3.49 sits between them, and RandomForest 3.93 ranks below TabPFN v2). Overstated: the below 10^4 rows cap appears only as background citing prior work, and this paper itself ran TabPFN v2 on up to 50,000-row subsamples; calling the bias systematic reflects the authors heading, not a shown test. The TabPFN-2.5 default-XGBoost sentence is not in this paper.",
+     "supporting_assertions": [
+      "tabpfn-v2-suited-small-covariate-shifted-balanced-tasks",
+      "tabpfn-v2-degrades-on-f1-balanced-accuracy-majority-bias",
+      "tabpfn-v2-dataset-size-limit-background-and-50k-subsample",
+      "open-env-average-rank-catboost-best-tabpfn-v2-third"
+     ]
+    }
+   ]
+  },
+  {
+   "record_id": "grinsztajn-2026-tabpfn-2-5-advancing-state",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2025-11_Grinsztajn_TabPFN-2-5-Advancing-the-State-of-the.pdf",
+   "pages": 35,
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Prior Labs vendor technical report (authors listed as Prior Labs Team) introducing TabPFN-2.5 with TabArena and internal benchmark results.",
+   "title_on_page_1": "TabPFN-2.5: Advancing the State of the Art in Tabular Foundation Models",
+   "venue_or_status_on_page_1": "arXiv:2511.08667v2 [cs.LG] 5 Feb 2026; report dated November 6, 2025",
+   "assertions": [
+    {
+     "id_suggestion": "tabpfn-2-5-win-rate-against-default-xgboost",
+     "value": "The vendor reports default TabPFN-2.5 wins 100 percent of the time against default XGBoost on classification datasets up to 10,000 points and 500 features, and 87 percent on larger datasets up to 100K samples and 2K features (85 percent for regression). The baseline in this statement is default, not tuned, XGBoost.",
+     "anchor": "Abstract (page 1)",
+     "quotes": [
+      "Remarkably, default TabPFN-2.5 has a 100% win rate against default XGBoost on small to medium-sized classification datasets (≤10,000 data points, 500 features)",
+      "and a 87% win rate on larger datasets up to 100K samples and 2K features (85% for regression)."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Vendor-reported result on a benchmark the vendor chose how to present; the abstract does not say how many datasets it covers.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "tabpfn-2-5-also-claims-to-beat-tuned-trees-with-fewer-configs",
+     "value": "The report also claims TabPFN-2.5 substantially outperforms tuned tree-based models on TabArena. The tuning budget differs: TabPFN-2.5 was tuned with 60 random configurations against 200 for the baselines. So the beats-XGBoost claims are not all against default XGBoost.",
+     "anchor": "Abstract (page 1) and Figure 3 caption (page 7)",
+     "quotes": [
+      "TabPFN-2.5 is now the leading method for the industry standard benchmark TabArena (which contains datasets with up to 100,000 training data points), substantially outperforming tuned tree-based models",
+      "Note that tuning for TabPFN-2.5 is only based on 60 random configs compared to 200 for the baselines."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Vendor-reported; evaluator and model author are the same organization.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "tabpfn-v2-practical-up-to-10000-samples-recommended-not-hard-cap",
+     "value": "The report describes TabPFNv2 as a practical model for datasets up to 10,000 samples. It states the listed row and feature maxima are recommended sizes and that models also fit larger datasets but are not built and evaluated for them. The 10,000 figure is a recommendation, not a hard cap.",
+     "anchor": "Section 1 (page 2) and Table 1 caption (page 5)",
+     "quotes": [
+      "scaled this idea into a practical model for datasets up to 10,000 samples.",
+      "Max Rows and Features are the recommended maximum sizes. The models also fit larger datasets but are not built and evaluated for these settings."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Direct vendor statement about its own model design range.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "tabpfn-2-5-default-scores-threshold-tuning-helps-f1",
+     "value": "Unless noted, all classification results in the report use default uncalibrated scores without threshold tuning. The report says decision-threshold tuning gives substantial F1 improvement on several imbalanced datasets. It reports no fraud-specific or imbalance-specific head-to-head against XGBoost.",
+     "anchor": "Section 3 (page 5) and Appendix H (page 30)",
+     "quotes": [
+      "Unless otherwise noted, however, all classification results in this report are computed using uncalibrated, default scores, without temperature scaling or threshold tuning.",
+      "Figure 17 quantifies the performance gains that this procedure can yield, illustrating substantial improvement in F1-score for several imbalanced datasets when tuning the threshold."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Vendor statements about its own evaluation setup; Figure 17 data is in a plot and was not read as numbers.",
+     "context": "ml"
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-607",
+     "verdict": "partly",
+     "explanation": "Only the TabPFN-2.5 part of F-607 can come from this report. Supported: the 100 percent and 87 percent win-rate claims are against default XGBoost. Incomplete as worded: the report also claims to beat tuned tree models (TabPFN-2.5 tuned with 60 configs against 200 for baselines), so the claims are not default-only. Also: TabPFNv2 10,000 samples is a recommended size, not a hard cap. The report does not address class imbalance head to head, covariate shift, or CatBoost versus TabPFN v2 average rank; those are in the Cheng paper. This is a vendor report, so the results are self-reported.",
+     "supporting_assertions": [
+      "tabpfn-2-5-win-rate-against-default-xgboost",
+      "tabpfn-2-5-also-claims-to-beat-tuned-trees-with-fewer-configs",
+      "tabpfn-v2-practical-up-to-10000-samples-recommended-not-hard-cap"
+     ]
+    }
+   ]
+  }
+ ]
+}

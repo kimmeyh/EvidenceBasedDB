@@ -101,10 +101,10 @@ title claims an advantage, a speedup or an enhancement. Snapshot as of
 
 - other or unspecified (the title names no mechanism): 34
 - optimization: 16
-- sampling and generative models: 9
 - kernels and feature maps: 8
+- sampling and generative models: 8
 - learning theory: 8
-- quantum data and sensing: 5
+- quantum data and sensing: 6
 - quantum dynamics (reservoirs, simulation): 4
 - linear algebra: 1
 
