@@ -653,11 +653,12 @@ pastes into a Phase 2 session. Never write the change from here (hook:
   ignores them and resolves every quote to the real source file, and the
   quote test checks it there.
 - **Entered** (as a snapshot on 2026-10-15): 65 of the 76 records promoted to
-  `read`, 234 assertions, each read with a subagent row and the
-  coordinator's `partial` row (ADR-0005 A4). Local copies were added to
-  `access` where missing. Each record has a SHA-256, except two clones,
-  which carry the commit they were read at, and eqc-models, whose read source
-  is the wheel and the PyPI metadata, not the stored sdist.
+  `read`, 233 assertions (234 first; the review dropped one that restated a
+  determinate fact), each read with a subagent row and the coordinator's
+  `partial` row (ADR-0005 A4). Local copies were added to `access` where
+  missing, each with its SHA-256. The two clones carry the commit they were
+  read at instead. eqc-models carries SHA-256s for the wheel and the PyPI
+  metadata it was read from, beside the stored sdist.
 - **Refused** (11, kept at `seen`, each with its reason in the record's
   history): eight QCi application pages and one QCi article name Dirac-1
   while the store tags them `platform:dirac-3` (F84). The space-logistics

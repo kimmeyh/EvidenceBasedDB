@@ -21,9 +21,17 @@ trade magazine PDF has no text layer, so no quote in it can be checked.
 
 CERTAINTY follows Task E's GRADE mapping (scripts/sprint9_f78_ceiling_reading.py),
 with one addition: a vendor's claim about its own product starts MODERATE as
-vendor primary documentation (Sprint 7, F45) and is downgraded to LOW unless
-the reader judged it a plain description of the product. No
-admission-against-interest upgrade is made here (that is a Class 2 decision).
+vendor primary documentation (Sprint 7, F45) and is downgraded to LOW when it
+reports a result; a description of the product (VENDOR_DESCRIPTIONS: a
+version, a module, a stated limit or setup) stays MODERATE. No
+admission-against-interest upgrade is made here (a Class 2 decision); the
+candidates are listed in CANDIDATE_UPGRADES for Manual Validation.
+
+THE FRESH-EYES REVIEW of 9f71f19 (2026-10-15) corrected five more values,
+three grades that followed the reader's suggestion rather than the claim, one
+claim type, three applicability rows, two missing conflict-of-interest
+entries, and dropped one assertion that restated a determinate fact. A
+re-apply now syncs every field the script sets.
 
 DRY-RUN BY DEFAULT; `--apply` takes a verified backup first. Idempotent; a
 changed value or read detail is corrected in place with the reason.
@@ -103,7 +111,10 @@ VALUE_EDITS = {  # (exact reader text, replacement), from the coordinator's read
     "grant-gradient-variance-size-invariant-numerical": [("(up to 12 qubits, 120 layers", "(120 layers")],
     "tilly-single-register-runtime-too-large-needs-parallelism": [(
         "100 ns gates, 10^6 shots, k-UpCCGSD with k=1)",
-        "100 ns gates, k-UpCCGSD with k=1, precision 10^-3 mEh for one expectation value)")],
+        "100 ns gates, k-UpCCGSD with k=1, precision 10^-3 mEh for one expectation value)"),
+        ("which makes parallelization essential.",
+         "which makes parallelization essential. The review's text gives chemical precision as 1.6 mEH, about "
+         "10^-3 EH, so Table 2's unit is inconsistent with it.")],
     "killoran-cvqnn-curve-fitting-saturates-at-six-layers": [(
         "fit quality improved with circuit depth",
         "the depth study (for sin(pi x)) showed fit quality improving with circuit depth"),
@@ -117,13 +128,76 @@ VALUE_EDITS = {  # (exact reader text, replacement), from the coordinator's read
         "11-qubit generative example", "11-qubit supervised example (8 inputs, 3 outputs, trained on the joint "
                                        "distribution)")],
     # Figures restated in the source's own form (the number test found them).
-    "qci-fraud-qboost-vs-xgboost-table": [("about 3,000 transactions (80% train, 20% test)",
-                                           "about 3000 transactions (80% train, the remainder test)")],
     "dirac3-portfolio-255-monthly-problems-21y": [("2003-01-01 to 2024-03-31",
                                                    "January 1st, 2003, to March 31st, 2024")],
+    # Fresh-eyes review of 9f71f19 (2026-10-15).
+    "qci-fraud-qboost-vs-xgboost-table": [("about 3,000 transactions (80% train, 20% test)",
+                                           "about 3000 transactions (80% train, the remainder test)"),
+                                          ("QCi's own test; single split described, no confidence intervals.",
+                                           "QCi's own test; the page reports one table and says repeated random "
+                                           "sub-samples gave very similar results, with no figures; no confidence "
+                                           "intervals.")],
+    "grant-training-experiments-mnist-and-vqe": [("(132 layers, 200 trials)", "(132 layers)")],
+    "moll-h2-vqe-ideal-simulator-needs-two-entanglers": [(
+        "needed for chemical accuracy without noise.",
+        "needed for chemical accuracy without noise, for the given experimental connectivity.")],
+    "dirac3s-c250-9-time-vs-gpu-pgd": [(" Dirac-3S was thus slower by an order of magnitude on that instance.", "")],
 }
 
 VENDOR_START = "Started MODERATE: vendor primary documentation of its own product"
+
+# The rest, from the fresh-eyes review of 9f71f19 (2026-10-15).
+# A vendor's description of its product (a version, a module, a stated limit
+# or setup) is not a result, so it is not downgraded.
+VENDOR_DESCRIPTIONS = {
+    "eqc-models-dirac3-cloud-solvers", "eqc-direct-package-v2-0-2", "qci-client-package-v5-0-0",
+    "eqc-models-polynomial-fifth-order", "eqc-models-dirac3-sum-constraint", "eqc-models-direct-solver-python-limit",
+    "dirac3-portfolio-255-monthly-problems-21y",
+}
+_DOC_FACT = ("Started HIGH: a statement of what the source itself says (a rule or date it sets), read in context. "
+             "Graded by what the claim is, not by the first-pass suggestion")
+CERTAINTY_OVERRIDES = {
+    "kimmeyh-headline-null-cvqboost-trails": (
+        "low", "Started LOW: an empirical result from one study (that CVQBoost trails the tuned classical "
+               "detector); the absence of an advantage claim is what the source says, the trailing is measured. "
+               "NOT upgraded"),
+    "phase1-scored-against-published-criteria": ("high", _DOC_FACT),
+    "challenge-two-stage-timeline-2026-2027": ("high", _DOC_FACT),
+}
+CLAIM_FIX = {  # a vendor's own result for its own platform
+    "henriet-connectivity-lowers-gate-overhead-5-10x": "vendor-self-claim",  # Pasqal authors, Pasqal's platform
+}
+APPLIC_FIX = {  # record id -> (context, rationale), replacing what is stored
+    "cao-2018-quantum-chemistry-age-quantum-computing": (
+        "qc", "A review of quantum algorithms for quantum chemistry (phase estimation, VQE, NISQ methods); its "
+              "subject is quantum computing for chemistry, not QML -- first-pass read"),
+    "henriet-2020-quantum-computing-neutral-atoms": (
+        "qc", "A Pasqal review of neutral-atom quantum processors and their applications; a hardware review, not "
+              "QML -- first-pass read"),
+    "miri-2026-standard-quadratic-formulations-many-np": (
+        "platform:dirac-3s", "QCi lists it among its Dirac-3S technical references; the paper itself is "
+                             "hardware-neutral formulation theory and never names Dirac -- QCi site placement and "
+                             "the paper"),
+}
+DROPPED = {  # assertions not entered, and removed if a first apply stored them
+    "kaggle-creditcard-fraud-284807-492": (
+        "the dataset's size is a determinate fact about the dataset, already held twice in the store; a vendor "
+        "page restating it adds nothing (CLAUDE.md: computed, never stored)"),
+}
+COI = {
+    "miri-2026-standard-quadratic-formulations-many-np":
+        "The authors are affiliated with Quantum Computing Inc. (QCi) -- Competing interests section",
+    "wang-2026-motzkin-straus-optimization-entropy-computing":
+        "All four authors are affiliated with Quantum Computing Inc. (QCi), one also with UIUC; no "
+        "competing-interests statement found -- title-page affiliations",
+}
+# Admission-against-interest candidates for the team lead at Manual
+# Validation (Class 2), as F65's CANDIDATE_UPGRADES: id -> what it costs QCi.
+CANDIDATE_UPGRADES = {
+    "dirac3s-c250-9-time-vs-gpu-pgd": "QCi's own table shows Dirac-3S about 12 times slower than GPU PGD on C250.9",
+    "dirac3s-dimacs-best-known-33-of-75": "QCi reports Dirac-3S missed the best known clique on 42 of 75 graphs",
+    "dirac3-portfolio-vs-localsolver-energies-similar": "QCi reports LocalSolver lower for some solutions",
+}
 
 
 def load_groups() -> list[tuple[str, dict]]:
@@ -159,9 +233,15 @@ def edited_value(aid: str, value: str) -> str:
     return " ".join(value.split())
 
 
+def claim_type(aid: str, a: dict) -> str:
+    return CLAIM_FIX.get(aid) or a.get("claim_type") or "positive"
+
+
 def certainty(aid: str, a: dict) -> tuple[str, str]:
-    if a.get("claim_type") == "vendor-self-claim":
-        if a["kind"] == "claimed" and a.get("certainty_suggestion") == "high":
+    if aid in CERTAINTY_OVERRIDES:
+        return CERTAINTY_OVERRIDES[aid]
+    if claim_type(aid, a) == "vendor-self-claim":
+        if aid in VENDOR_DESCRIPTIONS:
             return ("moderate", f"{VENDOR_START}. Not upgraded: a description of the product, not a result")
         return ("low", f"{VENDOR_START}. DOWNGRADED one level: a result the vendor reports about its own product, "
                        "not independently checked")
@@ -169,6 +249,8 @@ def certainty(aid: str, a: dict) -> tuple[str, str]:
 
 
 def context_of(rid: str, a: dict) -> str:
+    if rid in APPLIC_FIX and APPLIC_FIX[rid][0] in ("qc", "qml", "ml"):
+        return APPLIC_FIX[rid][0]
     return CONTEXT_FIX.get(rid) or a.get("context") or "qml"
 
 
@@ -178,6 +260,8 @@ def assertions() -> list[tuple[str, AssertionRecord, str]]:
         rid = p["record_id"]
         for a in p["assertions"]:
             aid = a["id_suggestion"]
+            if aid in DROPPED:
+                continue
             cert, reasons = certainty(aid, a)
             absence = a.get("claim_type") == "absence"
             out.append((g, AssertionRecord(
@@ -185,7 +269,7 @@ def assertions() -> list[tuple[str, AssertionRecord, str]]:
                 citation_context="; ".join(f'"{q}" ({a["anchor"]})' for q in a["quotes"]),
                 evidence_tag="N/A", context=context_of(rid, a), certainty=cert, certainty_reasons=reasons,
                 fidelity=a.get("fidelity") or "scoped", derivation="extracted",
-                claim_type=a.get("claim_type") or "positive",
+                claim_type=claim_type(aid, a),
                 search_scope=(a.get("search_scope") if absence else None),
                 updated=TODAY, updated_reason=f"{TODAY} ({TAG}): extracted from {rid}; first-pass read by a subagent, "
                                               "every quoted passage read in context by the coordinator"), rid))
@@ -222,7 +306,8 @@ def apply_changes(conn) -> list[str]:
         have = {(r[0], r[1], r[2], r[3]) for r in conn.execute(
             "SELECT reader, read_on, extent, detail FROM paper_reads WHERE record_id = ?", (rid,))}
         if reason:
-            if (SUBAGENT_READER, TODAY, "subagent", sub_detail) not in have:
+            # Keyed without the detail: a reworded detail must not add a second row.
+            if (SUBAGENT_READER, TODAY, "subagent") not in {h[:3] for h in have}:
                 add_read(conn, rid, SUBAGENT_READER, TODAY, "subagent", sub_detail)
                 append_updated_reason(conn, rid, f"{TODAY} ({TAG}): read at first pass and NOT entered: {reason}",
                                       TODAY)
@@ -254,6 +339,23 @@ def apply_changes(conn) -> list[str]:
             conn.execute("INSERT INTO paper_applicability (record_id, context_id, rationale) VALUES (?, ?, ?)",
                          (rid, ctx, rationale))
             log.append(f"applic {rid} [{ctx}]")
+        if rid in APPLIC_FIX:
+            ctx, rationale = APPLIC_FIX[rid]
+            rows_now = conn.execute("SELECT context_id, rationale FROM paper_applicability WHERE record_id = ?",
+                                    (rid,)).fetchall()
+            if [tuple(r) for r in rows_now] != [(ctx, rationale)]:
+                conn.execute("DELETE FROM paper_applicability WHERE record_id = ?", (rid,))
+                conn.execute("INSERT INTO paper_applicability (record_id, context_id, rationale) VALUES (?, ?, ?)",
+                             (rid, ctx, rationale))
+                append_updated_reason(conn, rid, f"{TODAY} ({TAG}, review): applicability corrected to {ctx}", TODAY)
+                log.append(f"update applic {rid} [{ctx}]")
+        if rid in COI:
+            stored_coi = conn.execute("SELECT coi FROM paper_fields WHERE record_id = ?", (rid,)).fetchone()[0]
+            if stored_coi != COI[rid]:
+                conn.execute("UPDATE paper_fields SET coi = ? WHERE record_id = ?", (COI[rid], rid))
+                append_updated_reason(conn, rid, f"{TODAY} ({TAG}, review): disclosed conflict of interest recorded",
+                                      TODAY)
+                log.append(f"update coi {rid}")
         coord = COORDINATOR_DETAIL_REPO if rid in REPO_COMMITS else COORDINATOR_DETAIL
         rows = {(r[0], r[1], r[2]): r[3] for r in have}
         for reader, extent, detail in ((SUBAGENT_READER, "subagent", sub_detail), ("Claude", "partial", coord)):
@@ -269,22 +371,38 @@ def apply_changes(conn) -> list[str]:
             set_tier(conn, rid, "read", checked_against_source=(
                 f"{TODAY}, Claude, read the opening and every quoted passage in context; first pass by a subagent"))
             log.append(f"tier   {rid} -> read")
+    for aid in sorted(DROPPED):
+        if conn.execute("SELECT 1 FROM records WHERE id = ?", (aid,)).fetchone():
+            conn.execute("DELETE FROM paper_yields WHERE assertion_id = ?", (aid,))  # no cascade on this side
+            conn.execute("DELETE FROM records WHERE id = ?", (aid,))
+            log.append(f"drop   {aid}")
     for g, a, rid in assertions():
         if a.context not in contexts:
             raise ValueError(f"{a.id}: context {a.context!r} is not a context")
-        stored = conn.execute("SELECT value, certainty, certainty_reasons FROM records WHERE id = ?",
-                              (a.id,)).fetchone()
-        if stored and tuple(stored) != (a.value, a.certainty, a.certainty_reasons):
-            conn.execute("UPDATE records SET value = ?, certainty = ?, certainty_reasons = ? WHERE id = ?",
-                         (a.value, a.certainty, a.certainty_reasons, a.id))
-            append_updated_reason(conn, a.id, f"{TODAY} ({TAG}): corrected to the script's current text", TODAY)
-            log.append(f"update {a.id}")
+        stored = conn.execute(
+            "SELECT r.value, r.certainty, r.certainty_reasons, r.provenance, f.citation_context, f.claim_type "
+            "FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()
+        if not stored:
+            insert_assertion(conn, a, yielded_by=rid)
+            log.append(f"assert {a.id} <- {rid} [{a.certainty}]")
             continue
-        if stored:
+        # Every field the script sets is compared, so a changed quote, context
+        # or claim type is synced too (review of 9f71f19: only three were).
+        stored_ctx = sorted(r[0] for r in conn.execute(
+            "SELECT context_id FROM record_contexts WHERE record_id = ?", (a.id,)))
+        want = (a.value, a.certainty, a.certainty_reasons, a.provenance, a.citation_context, a.claim_type)
+        if tuple(stored) == want and stored_ctx == [a.context]:
             log.append(f"exists {a.id}")
             continue
-        insert_assertion(conn, a, yielded_by=rid)
-        log.append(f"assert {a.id} <- {rid} [{a.certainty}]")
+        conn.execute("UPDATE records SET value = ?, certainty = ?, certainty_reasons = ?, provenance = ? WHERE id = ?",
+                     (a.value, a.certainty, a.certainty_reasons, a.provenance, a.id))
+        conn.execute("UPDATE assertion_fields SET citation_context = ?, claim_type = ? WHERE record_id = ?",
+                     (a.citation_context, a.claim_type, a.id))
+        if stored_ctx != [a.context]:
+            conn.execute("DELETE FROM record_contexts WHERE record_id = ?", (a.id,))
+            conn.execute("INSERT INTO record_contexts (record_id, context_id) VALUES (?, ?)", (a.id, a.context))
+        append_updated_reason(conn, a.id, f"{TODAY} ({TAG}): corrected to the script's current text", TODAY)
+        log.append(f"update {a.id}")
     return log
 
 

@@ -99,6 +99,42 @@ def test_no_vendor_claim_about_its_own_product_is_high():
     assert all(a.certainty in ("moderate", "low") for a in vendor), [a.id for a in vendor if a.certainty == "high"]
 
 
+def test_vendor_descriptions_stay_moderate_and_vendor_results_are_low():
+    """Review of 9f71f19: five descriptions carried a result's downgrade.
+    Proven to fail by injection, 2026-10-15: with certainty() no longer
+    consulting VENDOR_DESCRIPTIONS, this test named the descriptions."""
+    f80 = _script()
+    vendor = {a.id: a.certainty for _, a, _ in f80.assertions()
+              if a.claim_type == "vendor-self-claim" and a.id not in f80.CERTAINTY_OVERRIDES}
+    wrong = [i for i, c in vendor.items() if c != ("moderate" if i in f80.VENDOR_DESCRIPTIONS else "low")]
+    assert not wrong, wrong
+    assert f80.VENDOR_DESCRIPTIONS <= set(vendor)
+
+
+@pytest.mark.live_store
+def test_the_store_holds_exactly_what_the_script_sets(live_conn):
+    """Review of 9f71f19: a changed quote or context was never synced, and
+    the quote test read the manifest, so the two could diverge.
+    Proven to fail by injection, 2026-10-15: with one VALUE_EDITS
+    replacement changed and not applied, this test named the assertion."""
+    f80 = _script()
+    bad = []
+    for _, a, _ in f80.assertions():
+        row = live_conn.execute(
+            "SELECT r.value, r.certainty, r.certainty_reasons, r.provenance, f.citation_context, f.claim_type "
+            "FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()
+        ctx = [r[0] for r in live_conn.execute("SELECT context_id FROM record_contexts WHERE record_id = ?",
+                                               (a.id,))]
+        if not row or tuple(row) != (a.value, a.certainty, a.certainty_reasons, a.provenance, a.citation_context,
+                                     a.claim_type) or ctx != [a.context]:
+            bad.append(a.id)
+    assert not bad, bad
+    for aid in f80.DROPPED:
+        assert not live_conn.execute("SELECT 1 FROM records WHERE id = ?", (aid,)).fetchone(), aid
+    for rid, coi in f80.COI.items():
+        assert live_conn.execute("SELECT coi FROM paper_fields WHERE record_id = ?", (rid,)).fetchone()[0] == coi
+
+
 def test_refused_records_yield_nothing_and_each_has_a_reason():
     """Proven to fail by injection, 2026-10-15: with kept_groups() no longer
     filtering REFUSE, this test named the refused records that then yielded."""

@@ -338,8 +338,10 @@ CLASSED = {
     # Added 2026-10-15 (Sprint 9 Task G, F80): the slice's QCi pages, packages
     # and the postquantum article, classed against the guide's text. The guide
     # gives the device 2nd to 5th order (not the package), a sum constraint R
-    # of 1 to 10,000, eqc-direct on Python 3.8 to 3.10 (p.33), and per-sample
-    # times of 1.093 s for schedule 3 against 1.278 s for 4 on its own problem.
+    # of 1 to 10,000, eqc-direct on Python 3.8 to 3.10 (p.34; p.11 gives
+    # 3.10.6), and per-sample times of 1.093 s for schedule 3 against 1.278 s
+    # for 4 on its own problem: a 15% gap, which only weakly supports the
+    # portfolio page's "significantly improved runtime".
     "eqc-models-dirac3-sum-constraint": ("confirmed in part", "dirac3s-sum-constraint-1-to-10000"),
     "eqc-models-polynomial-fifth-order": ("confirmed in part", "dirac3s-variable-ceiling-by-configuration"),
     "dirac3-portfolio-relaxation-schedule-3-vs-4": ("confirmed in part", "dirac3s-time-per-sample-by-schedule"),
