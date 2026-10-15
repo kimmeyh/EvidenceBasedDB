@@ -1194,3 +1194,52 @@ premise (c)).
 
 *Revisit when* a section's re-check finds its primary source silent on
 more than 10% of its papers.
+
+**2026-10-15 (A10): `cites`, a computed link between two papers in the
+store.** Sprint 9 Task H (F55); decided by the team lead at Sprint 9 plan
+approval, Q5 = 1. It adds a sixth type to field 6 (`source_links`).
+Every count below is a snapshot as of 2026-10-15.
+
+*(a) What it is.* A `cites` link goes from the citing paper to the cited
+one, and both must be in the store. It is computed, never typed: each link
+comes from one entry of the citing paper's Crossref reference list
+(`works/<doi>`, field `reference`), matched to a store record by DOI, or by
+an arXiv id in an unstructured reference. Its evidence names the list, the
+date it was fetched and the entry that matched. Records that share the
+citing DOI are versions of one paper and never link to each other. It is
+not a certainty input; F56's corroboration flag (ADR-0004 A9) reads
+`supports`, not `cites`.
+
+*(b) Recorded once, read from both ends.* One row per pair. The incoming
+side is a query (`store/links.py` `links_of`, with an index on `to_id`),
+never a second row, since a reverse copy would be a stored determinate
+fact. The schema change is a table rebuild
+(`scripts/migrate_sprint9_cites_link_type.py`, verified backup first, row
+count and foreign keys checked before the commit).
+
+*(c) Which papers are asked.* Every DOI the store holds for a paper: from
+`access`, and from the `version_of` probe of an arXiv record. arXiv's own
+DOIs are DataCite's and carry no reference list, so they are not asked;
+they can still be cited. The raw answers are cached outside git
+(`<store dir>\crossref_references\`) as the record of what Crossref said on
+the fetch date, and a re-run computes the same links from them; a test
+recomputes every stored link from the cache. The fetch is serial, 1 s
+apart, with the plain User-Agent and no contact address.
+
+*(d) Coverage.* 807 DOIs asked; 792 answered and 15 not found; 750 carried
+a reference list (93%, against the plan's 10% falsifier). Of 49,206
+references, 38,903 carry a DOI and 5,610 name a store paper. The result is
+5,620 links from 674 citing papers to 508 cited ones; 793 of the store's
+2,102 papers are at one end or the other. 56 pairs cite each other, which
+was checked: published versions citing each other's preprints, not
+duplicate records. Papers held only as arXiv records with no journal DOI
+are cited but never citing, because arXiv has no reference list to ask.
+
+*(e) What was considered.* A separate table (Q5 option 2) was declined: a
+`cites` link is a typed relation between source records, which is what
+field 6 is. Matching references by title was declined: it is fuzzy, and a
+wrong link would be a fabricated provenance.
+
+*Revisit when* the arXiv-only papers need citing links: their references
+would have to come from the PDF text or Semantic Scholar, a different
+provider with a different failure mode.

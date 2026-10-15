@@ -252,7 +252,11 @@ CREATE TABLE paper_probes (
 CREATE TABLE source_links (
     from_id   TEXT NOT NULL REFERENCES paper_fields(record_id) ON DELETE CASCADE,
     to_id     TEXT NOT NULL REFERENCES paper_fields(record_id) ON DELETE CASCADE,
-    link_type TEXT NOT NULL CHECK (link_type IN ('code-of', 'dataset-of', 'version-of', 'superseded-by', 'responds-to')),
+    -- `cites` (ADR-0005 A10, Sprint 9 Task H): from the citing paper to the
+    -- cited one, computed from the citing paper's Crossref reference list;
+    -- one row per pair, read from either end (store.links.links_of).
+    link_type TEXT NOT NULL CHECK (link_type IN ('code-of', 'dataset-of', 'version-of', 'superseded-by', 'responds-to',
+                                                 'cites')),
     evidence  TEXT NOT NULL CHECK (trim(evidence) <> ''),
     PRIMARY KEY (from_id, to_id, link_type),
     CHECK (from_id != to_id)
@@ -280,3 +284,4 @@ CREATE TABLE assertion_relations (
 CREATE INDEX idx_records_class ON records(class);
 CREATE INDEX idx_record_contexts_context ON record_contexts(context_id);
 CREATE INDEX idx_paper_fields_tier ON paper_fields(tier);
+CREATE INDEX idx_source_links_to ON source_links(to_id);  -- links read from the cited end (ADR-0005 A10)

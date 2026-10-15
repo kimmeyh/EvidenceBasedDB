@@ -27,7 +27,7 @@ READ_EXTENTS = ("full", "partial", "abstract", "html-render", "summary", "grep",
 READ_QUALIFYING = ("full", "partial")  # what `read` needs (ADR-0005 A4 (c))
 PROBE_FIELDS = ("publication_status", "version_of", "access_status", "affiliations")
 PUBLICATION_STATUSES = ("published", "preprint", "withdrawn", "retracted")
-LINK_TYPES = ("code-of", "dataset-of", "version-of", "superseded-by", "responds-to")
+LINK_TYPES = ("code-of", "dataset-of", "version-of", "superseded-by", "responds-to", "cites")  # cites: ADR-0005 A10
 _DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
