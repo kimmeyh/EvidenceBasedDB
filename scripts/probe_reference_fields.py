@@ -268,7 +268,11 @@ def probe(record_id: str, access: str, kind: str, fetcher, mode: str = "api", ex
     return found, notes, answered
 
 
-FINDING_LISTS = ("re-pull", "withdrawn", "newly published", "local copy missing or changed", "version unread")
+FINDING_LISTS = ("re-pull", "withdrawn", "newly published", "local copy missing or changed", "version unread",
+                 # F74 (ADR-0005 A9): faults that are not the paper's, and
+                 # papers that stay due because their own source was silent
+                 # (reported at Manual Validation, team lead Q4 = 1).
+                 "primary source did not answer (stays due)", "tool failure", "probe failure")
 
 
 def recheck_findings(findings: dict[str, list[str]], rid: str, access: str, kind: str, found, before: str | None,
@@ -280,6 +284,11 @@ def recheck_findings(findings: dict[str, list[str]], rid: str, access: str, kind
     # the record landed in no list).
     local_copy_of = local_copy_of or (lambda ident: recheck.local_pdf(access, ident))
     local_version_of = local_version_of or (lambda ident: recheck.local_version(ident, path=local_copy_of(ident)))
+    if not any(recheck.is_primary_answer(kind, p, v) for _, v, p in found):
+        sources = " or ".join(recheck.PRIMARY_PROVIDERS.get(kind, ("its source",)))
+        findings["primary source did not answer (stays due)"].append(
+            f"{rid}: {kind}, no answer from {sources}" + (f"; others answered: "
+            f"{', '.join(sorted({p for _, _, p in found}))}" if found else ""))
     status = next((v for f, v, _ in found if f == "publication_status"), None)
     if status in TERMINAL and before not in TERMINAL:
         findings["withdrawn"].append(f"{rid}: {status}")
@@ -293,8 +302,15 @@ def recheck_findings(findings: dict[str, list[str]], rid: str, access: str, kind
     if kind == "arxiv":
         latest = extra.get("latest_version")
         ident = citations.parse_access(access)[1]
-        local = local_version_of(ident) if latest is not None else None
-        if latest is None:
+        try:
+            local = local_version_of(ident) if latest is not None else None
+            tool_error = None
+        except recheck.PdfToolError as err:
+            local, tool_error = None, err
+        if tool_error:
+            # The tool's fault, not the paper's (F74): no stamp verdict.
+            findings["tool failure"].append(f"{rid}: {tool_error}; the local copy's version was not read")
+        elif latest is None:
             findings["version unread"].append(f"{rid}: the abstract page showed no version")
         elif local is not None and latest > local:
             findings["re-pull"].append(f"{rid}: local copy v{local}, arXiv shows v{latest}")
@@ -435,6 +451,9 @@ def _run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path 
             except Exception as ex:  # noqa: BLE001 -- one record's failure is reported, the run goes on
                 found, notes, answered = [], [f"ERROR {type(ex).__name__}: {ex}"], None
                 errors += 1
+                probe_error = f"{rid}: the probe raised {type(ex).__name__}: {ex}"
+            else:
+                probe_error = None
             dt = time.monotonic() - t0
             timings.setdefault(kind, []).append(dt)
             print(f"[{n}/{len(todo)}] {rid} ({kind}, {dt:.1f}s): "
@@ -450,10 +469,15 @@ def _run(conn, targets, fetcher, *, apply: bool, sessions: bool, progress: Path 
                 # replaces this record's lines instead of adding to them.
                 for name in FINDING_LISTS:
                     findings[name] = [x for x in findings[name] if not x.startswith(f"{rid}: ")]
-                try:
-                    recheck_findings(findings, rid, access, kind, found, before, extra)
-                except Exception as ex:  # noqa: BLE001 -- a sorting failure is a finding, not the end of the run
-                    findings["version unread"].append(f"{rid}: could not be sorted ({type(ex).__name__}: {ex})")
+                if probe_error:
+                    # A probe that raised says nothing about the paper (F74):
+                    # reported as a probe failure, never as "showed no version".
+                    findings["probe failure"].append(probe_error)
+                else:
+                    try:
+                        recheck_findings(findings, rid, access, kind, found, before, extra)
+                    except Exception as ex:  # noqa: BLE001 -- a sorting failure is a finding, not the end of the run
+                        findings["probe failure"].append(f"{rid}: could not be sorted ({type(ex).__name__}: {ex})")
                 if report_path:
                     report_findings(findings, report_path, quiet=True)  # written as it grows: a stop loses nothing
             if apply:

@@ -23,6 +23,14 @@ team lead explicitly asks for a change to be made in one of those
 repositories from an EvidenceBasedDB session rather than switching to a
 session already working there.
 
+THREAT MODEL (stated 2026-10-15, after three automated security reviews):
+this hook stops ACCIDENTAL writes by this repository's own sessions, the
+failure it was written for. It is not a sandbox against a session trying to
+evade it: abbreviated git options, pager or editor environment variables,
+and command names built from strings or variables can still get past a
+regex. Those forms are carded as F82 for the team lead to weigh; the real
+boundary against a determined writer is the operating system's permissions.
+
 Covers two tool shapes:
   1. Write / Edit / NotebookEdit -- tool_input.file_path is the target,
      read directly, no parsing needed.

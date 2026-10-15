@@ -15,6 +15,17 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **feat**: F74, re-check correctness (Sprint 9 Task C, Issue #91) --
+  ADR-0005 A9: a re-check counts only when the paper's own primary source
+  answered (arXiv for arXiv, Crossref or DataCite for a DOI, the page for a
+  URL, a present file for a local copy); `pdftotext` failures are "tool
+  failure" and a probe that raised is "probe failure", never findings about
+  the paper; each run lists "primary source did not answer (stays due)" for
+  Manual Validation; five tests, each proven by injection. Snapshot
+  2026-10-15: 1 of 2,100 papers has probes but no primary answer
+- **process**: the never-write hook states its threat model (accidental
+  writes, not evasion); F82 carded for the remaining evasive forms the third
+  automated security review listed
 - **fix**: second automated security review of the never-write hook
   (2026-10-15, Issue #89) -- a git read subcommand that writes through an
   option (`--output`, `-O`, `--open-files-in-pager`, `-c`, `--config-env`)

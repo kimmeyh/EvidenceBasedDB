@@ -1155,3 +1155,42 @@ stored dates; it sends no request and writes nothing. The re-check itself
 is `scripts/probe_reference_fields.py --due --probe --apply --sessions
 --progress <file> --report <file>`. `--due --apply` without `--probe` is
 refused. A test proves that `--due` alone makes no request.
+
+**2026-10-15 (A9): a re-check counts only when the paper's own primary
+source answered.** Sprint 9 Task C (F74), found by the PR #77 review on
+2026-10-13; decided by the team lead at Sprint 9 plan approval, Q4 = 1
+("1, but reported at Manual Validation with recommendation to investigate
+further or backlog for next sprint"). It changes A7 (a)'s "last check" and
+A7 (d)'s lists. Every count below is a snapshot as of 2026-10-15.
+
+*(a) What counts.* The last check is the latest date the paper's own
+primary source answered: the arXiv API or the arXiv abstract page for an
+arXiv paper; the DOI's registration agency (Crossref or DataCite) for a
+DOI; the page itself (the HTTP probe) for a URL or a GitHub repository; and
+the file, found present, for a local-only paper. Any other provider's
+answer is still recorded, but it no longer moves the clock. Before this, a
+DataCite answer for an arXiv paper whose abstract page failed reset the
+clock, so the paper left the due list for about 10 months with its version
+unread; a local check that found the file missing did the same. A paper
+with no primary answer takes its `updated` date, as a never-probed paper
+always has, so a failed check leaves it due. `store/recheck.py`
+(`PRIMARY_PROVIDERS`, `is_primary_answer`, `last_check`).
+
+*(b) Faults that are not the paper's.* A missing or failing `pdftotext` is
+listed as "tool failure", and a probe that raised is listed as "probe
+failure". Before this, both read as findings about the paper ("no readable
+stamp", "the abstract page showed no version").
+
+*(c) The team lead sees the silent sources.* Each re-check run lists
+"primary source did not answer (stays due)", with the providers that did
+answer. At Manual Validation each listed paper gets a recommendation:
+investigate now, card it for the next sprint, or accept it as due until
+the next Phase 1.3.
+
+*(d) Effect on the store.* Of 2,100 papers, 1 (a DOI record) has probes but
+no primary answer; no paper comes due before 2027-08-01 under either rule.
+The rule therefore does not leave most papers due forever (the plan's
+premise (c)).
+
+*Revisit when* a section's re-check finds its primary source silent on
+more than 10% of its papers.

@@ -631,6 +631,26 @@ estimates are `[no-history]`.
   blocked; both proven by injection.
 - Depends on: none
 
+**F82. Decide how far the never-write hook should go against evasive command forms (~1h) Priority 130** (NEW 2026-10-15, Sprint 9 Task A, third automated security review)
+- Phase: Process / hooks
+- Platform: `.claude/hooks/block_sibling_repo_writes.py`
+- Three automated security reviews of the Phase 2 extension (2026-10-15)
+  each found more forms a regex misses. Fixed the same day: `git -C`
+  writes, PowerShell write cmdlets, `tee`, `sed -i`, a fail-closed git read
+  list, write-capable options on reads, and `git` after a quote or
+  backtick. Still open: abbreviated long options (`--outp`) and short-option
+  clusters containing `O`; pager, editor and config environment variables
+  (`GIT_PAGER`, `GIT_CONFIG_*`, `$env:` assignments); `--ext-diff` and
+  `--textconv`; command names built from strings or variables (`iex`,
+  `& (...)`, `$cmd`).
+- The decision (Class 1): the hook's stated threat model is accidental
+  writes by this repository's own sessions, not evasion. Option 1 keeps
+  that model and closes only forms a session might type by accident.
+  Option 2 makes every shell command that names a guarded path
+  fail-closed unless it matches a short read allowlist, which blocks more
+  legitimate reads.
+- Depends on: none
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
