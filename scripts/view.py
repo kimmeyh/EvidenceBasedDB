@@ -25,7 +25,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import connect, recheck, script_paths  # noqa: E402
+from store import connect, recheck, resolvers, script_paths  # noqa: E402
 
 # Windows consoles commonly default to cp1252, which cannot encode most
 # citation text (accents, math symbols). Reconfigure stdout to UTF-8 so
@@ -205,6 +205,9 @@ def cmd_assertion(conn, assertion_id: str) -> dict:
     yielding_paper = conn.execute(
         "SELECT paper_id FROM paper_yields WHERE assertion_id = ?", (assertion_id,)
     ).fetchone()
+    # ADR-0004 A9 (F56): computed on every view, never stored; it never
+    # changes the certainty above it.
+    corr = resolvers.corroboration(conn).get(assertion_id, {"by": [], "not_counted": []})
 
     return {
         "id": record["id"],
@@ -213,6 +216,8 @@ def cmd_assertion(conn, assertion_id: str) -> dict:
         "evidence_tag": record["evidence_tag"],
         "certainty": record["certainty"],
         "certainty_reasons": record["certainty_reasons"],
+        "corroborated_by": [{"id": y, "why": why} for y, why in corr["by"]],
+        "supporters_not_counted": [{"id": y, "why": why} for y, why in corr["not_counted"]],
         "fidelity": record["fidelity"],
         "reading_level": record["reading_level"],
         "units": fields["units"] if fields else None,
@@ -273,6 +278,14 @@ def _print_text(data: dict, mode: str) -> None:
         print(f"  Provenance: {data['provenance']}")
         print(f"  Evidence tag: {data['evidence_tag']}")
         print(f"  Certainty:  {data['certainty']}  ({data['certainty_reasons']})")
+        if data["corroborated_by"]:
+            print("  Corroborated (computed; the stored certainty is unchanged until an assessor decides):")
+            for c in data["corroborated_by"]:
+                print(f"    - by [{c['id']}]: {c['why']}")
+        if data["supporters_not_counted"]:
+            print("  Supporters not counted as corroboration:")
+            for c in data["supporters_not_counted"]:
+                print(f"    - [{c['id']}]: {c['why']}")
         print(f"  Fidelity:   {data['fidelity']}   Reading level: {data['reading_level']}")
         if data["units"] or data["rounding"]:
             print(f"  Units: {data['units']}  Rounding: {data['rounding']}")

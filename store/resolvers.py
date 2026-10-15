@@ -119,6 +119,115 @@ def certainty_caps(conn) -> dict[str, tuple[str, str]]:
     return out
 
 
+# ---------------------------------------------------------------------------
+# ADR-0004 A9 (2026-10-15, Sprint 9 Task I, F56; team lead, plan Q6 = 1): the
+# computed "corroborated" flag. It is shown beside the stored certainty and
+# never moves it; the assessor decides any upgrade and records the reason.
+
+_INITIALS = re.compile(r"^(?:[A-Z]\.?-?)+$|^[A-Z][a-z]?\.?$")
+_ORG_NOISE = re.compile(r"\b(?:inc|ltd|llc|corp|corporation|co|gmbh|plc|the)\b")
+
+
+def _org_keys(name: str) -> set[str]:
+    """An organization's comparable forms: its first comma part, lower-case,
+    punctuation and legal-form words removed, and the initials of every word
+    of a name with two or more words. "Quantum Computing Inc., Leesburg"
+    gives {"quantum computing", "qci"}, so it meets "QCi" (live store,
+    2026-10-15: the Dirac-3 guide's author is "QCi", the Dirac-3S guide's
+    "Quantum Computing Inc.")."""
+    words = re.sub(r"[^\w\s]", " ", name.split(",")[0].lower()).split()
+    keys = {" ".join(_ORG_NOISE.sub(" ", " ".join(words)).split())}
+    if len(words) >= 2:
+        keys.add("".join(w[0] for w in words))
+    return {k for k in keys if k}
+
+
+def _people_and_orgs(citation: str) -> tuple[set[str], set[str]]:
+    """(author family names, corporate authors) from a rendered citation:
+    the part before the quoted title, read as "Family, I." pairs; a name
+    with no initials after it is a corporate author."""
+    head = citation.split(', "')[0] if ', "' in citation else ""
+    toks = [t.strip() for t in head.split(",") if t.strip()]
+    people, orgs, i = set(), set(), 0
+    while i < len(toks):
+        if toks[i].lower().startswith("et al"):
+            i += 1
+        elif i + 1 < len(toks) and _INITIALS.match(toks[i + 1].replace(" ", "")):
+            people.add(toks[i].lower())
+            i += 2
+        else:
+            orgs |= _org_keys(toks[i])
+            i += 1
+    return people, orgs
+
+
+def corroboration(conn) -> dict[str, dict[str, list[tuple[str, str]]]]:
+    """{assertion id: {"by": [(supporter, why)], "not_counted": [(supporter,
+    why)]}} for every assertion that another assertion `supports`.
+
+    A supporter corroborates when it is rated at the same or a higher
+    certainty AND independent: both come from papers, no paper is shared,
+    both name their authors and no family name is shared, and no
+    organization is shared (corporate authors and registry affiliations,
+    compared by name and by initials). When either is a vendor's claim
+    about its own product, both sides must name their organizations, or
+    independence from the vendor cannot be shown and the supporter is not
+    counted. Unknown is never independent."""
+    rows = {r[0]: (r[1], r[2]) for r in conn.execute(
+        "SELECT r.id, r.certainty, f.claim_type FROM records r LEFT JOIN assertion_fields f ON f.record_id = r.id "
+        "WHERE r.class = 'assertion'")}
+    papers: dict[str, set[str]] = {}
+    for aid, pid in conn.execute("SELECT assertion_id, paper_id FROM paper_yields"):
+        papers.setdefault(aid, set()).add(pid)
+    citation = {r[0]: r[1] or "" for r in conn.execute(
+        "SELECT r.id, r.provenance FROM records r WHERE r.class = 'paper'")}
+    affil: dict[str, set[str]] = {}
+    for pid, value in conn.execute("SELECT record_id, value FROM paper_probes WHERE field = 'affiliations'"):
+        affil[pid] = {k for part in value.split(";") for k in _org_keys(part)}
+
+    def side(aid: str) -> tuple[set[str], set[str], set[str]]:
+        ps = papers.get(aid, set())
+        people, orgs = set(), set()
+        for pid in ps:
+            pe, og = _people_and_orgs(citation.get(pid, ""))
+            people |= pe
+            orgs |= og | affil.get(pid, set())
+        return ps, people, orgs
+
+    def independent(x: str, y: str) -> tuple[bool, str]:
+        (px, ax, ox), (py, ay, oy) = side(x), side(y)
+        if not px or not py:
+            return False, "not both from papers"
+        if px & py:
+            return False, f"same paper ({', '.join(sorted(px & py))})"
+        if not ax or not ay:
+            # A corporate or repository name shows overlap but cannot show
+            # independence (live store, 2026-10-15: two of the team lead's own
+            # project documents, cited by repository name, read as independent).
+            return False, "no named author on one side"
+        if ax & ay:
+            return False, f"shared author(s): {', '.join(sorted(ax & ay))}"
+        if ox & oy:
+            return False, f"shared organization(s): {', '.join(sorted(ox & oy))}"
+        if "vendor-self-claim" in (rows[x][1], rows[y][1]) and not (ox and oy):
+            return False, "a vendor's own claim, and one side names no organization, so independence is not shown"
+        return True, "different papers, authors and organizations"
+
+    out: dict[str, dict[str, list[tuple[str, str]]]] = {}
+    for y, x in conn.execute("SELECT from_assertion_id, to_assertion_id FROM assertion_relations "
+                             "WHERE relation = 'supports' ORDER BY to_assertion_id, from_assertion_id"):
+        entry = out.setdefault(x, {"by": [], "not_counted": []})
+        cx, cy = rows.get(x, (None, None))[0], rows.get(y, (None, None))[0]
+        if cx not in _RANK or cy not in _RANK:
+            entry["not_counted"].append((y, "unrated"))
+        elif _RANK[cy] > _RANK[cx]:
+            entry["not_counted"].append((y, f"rated lower ({cy} against {cx})"))
+        else:
+            ok, why = independent(x, y)
+            entry["by" if ok else "not_counted"].append((y, why))
+    return out
+
+
 def synthesis_input_problems(conn) -> list[str]:
     """A6 (b): every synthesized assertion has at least two `supports`
     inputs. Not a door check: the rebuild writes relations after every

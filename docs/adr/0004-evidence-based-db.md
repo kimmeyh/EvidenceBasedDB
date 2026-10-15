@@ -920,3 +920,46 @@ live store by `scripts/sprint8_f65_dirac3s_reading.py`.
 *Revisit when* QCi publishes a third Dirac generation, or a claim must hold
 for every Dirac system: then a computed intersection, not a third sibling
 context, is the question (section 3b, Cyc's `IntersectContexts`).
+
+**2026-10-15 (A9): a computed "corroborated" flag beside the stored
+certainty.** Sprint 9 Task I (F56); decided by the team lead at Sprint 9
+plan approval, Q6 = 1 (Class 1). It adds to A6, which computes only
+downward caps. Every count below is a snapshot as of 2026-10-15.
+
+*(a) What the flag is.* An assertion is corroborated when another
+assertion `supports` it, is rated at the same or a higher certainty, and
+is independent of it. The flag is computed on every view and export
+(`store/resolvers.py` `corroboration`, `scripts/view.py`, the export's
+derived `corroborated_by` key) and never stored. It never changes the
+stored certainty. An assessor who decides to upgrade records the decision
+and the reason in `certainty_reasons`, as with any GRADE judgment.
+
+*(b) Independence, and why unknown never counts.* Both assertions come
+from papers; no paper is shared; both papers name their authors and no
+family name is shared; no organization is shared, compared by name and by
+initials, over corporate authors and registry affiliations. When either
+assertion is a vendor's claim about its own product, both sides must name
+their organizations. Anything that cannot be shown is not independent.
+The first build missed two cases on the live store, and both are now
+tested: QCi's two user guides, whose authors are written "QCi" and
+"Quantum Computing Inc.", and two of the team lead's own project
+documents, cited by repository name. Same lab, same vendor or same
+project is not corroboration, for the same reason an admission against
+interest is the only upgrade a vendor's own word earns.
+
+*(c) What was considered.* A computed upward cap, symmetric to A6's, was
+declined: it would move certainty with no assessor's reason. Leaving
+corroboration to judgment alone was declined: the support links already
+exist and nothing surfaced them.
+
+*(d) Effect on the store.* Of 17 assertions that another assertion
+supports, 1 is flagged corroborated (the Fourier Wall assertion, by the
+Zajac et al. amplitude-encoding result). The other 34 supporter rows are
+not counted: 15 lack a named author on one side, 7 share the paper, 6 are
+not both from papers, 5 are rated lower and 1 is unrated. F55's `cites`
+links (ADR-0005 A10) are a source of candidate pairs; they are not
+`supports` relations and do not feed the flag.
+
+*Revisit when* the store holds affiliations for most read papers; until
+then the organization check rests mostly on corporate authors, and the
+flag errs toward "not counted".
