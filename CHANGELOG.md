@@ -15,6 +15,20 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **feat**: F78, the ceiling-estimation group read and entered (Sprint 9
+  Task E, Issue #93) -- 29 CE records plus Ishida and Theisen promoted to
+  `read`, each with two read rows: a Sonnet 5.5 first-pass read of the
+  whole source (`subagent`) and the coordinator's `partial` read of the
+  opening and every quoted passage in context; Boyd, Dhama, Butt and
+  Tschirschwitz also carry Claude's full reads of 2026-10-13. 140
+  assertions from 257 verbatim quotes, certainty by the GRADE convention
+  (73 high, 3 moderate, 64 low); 2 reader assertions dropped and the
+  readers' own inferences cut from 36 values, each with its reason in
+  `scripts/sprint9_f78_ceiling_reading.py`; 26 local paths added with
+  SHA-256; F46's nine ceiling facts each entered, merged or refused with
+  the reason; Chen 2025 and Han and Verdu 1994 stay `seen`, awaiting the
+  team lead's hand download. Tests check every quote, every figure in a
+  value, the cuts, the read rows and idempotence, each proven by injection
 - **feat**: F48, honest local paths (Sprint 9 Task D, Issue #92) --
   `scripts/check_local_sources.py` lists every local source that is
   missing, changed or unhashed (the re-check's own `check_local`, so the

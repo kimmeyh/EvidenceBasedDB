@@ -1,0 +1,437 @@
+{
+ "papers": [
+  {
+   "record_id": "scarlett-2019-introductory-guide-fano-s-inequality",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2019-01_Scarlett_An-Introductory-Guide-to-Fano-s-Inequality-with.pdf",
+   "pages": 46,
+   "read_extent": "full",
+   "what_it_is": "A survey chapter on Fano's inequality and its variants (approximate, conditional) as a tool for algorithm-independent lower bounds in statistical estimation, with examples including noisy convex optimization.",
+   "title_on_page_1": "An Introductory Guide to Fano's Inequality with Applications in Statistical Estimation",
+   "venue_or_status_on_page_1": "arXiv:1901.00555v3 [cs.IT] 25 Nov 2019 (book chapter; no journal printed)",
+   "assertions": [
+    {
+     "id_suggestion": "fano-error-lower-bound-from-mutual-information",
+     "value": "PROVED (Theorem 1, proof deferred to a textbook): for a discrete V uniform on a finite alphabet and any estimate of V, the error probability is at least 1 minus (I(V; V-hat) + log 2) / log|V|. The bound takes the information the estimate carries about V as input, and the achievable error rises as that information falls short of the prior uncertainty log|V|.",
+     "anchor": "Section 1.1.2 p.7 and Theorem 1, Section 2.1 pp.8-9",
+     "quotes": [
+      "provides a lower bound on its error probability in terms of the mutual information, which is one of the most fundamental information measures in information theory.",
+      "The intuition is as follows: The term log M represents the prior uncertainty (i.e., entropy) of V"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Textbook theorem stated with its exact form in the survey.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "fano-binary-case-uses-exact-form-not-simplified",
+     "value": "PROVED: the simplified Fano form is meaningless for a two-class V because its right-hand side is negative. For |V| = 2 and uniform V the paper gives I(V; V-hat) >= log 2 - H2(Pe), so Pe >= the inverse binary entropy of (log 2 - I(V; V-hat)), a value in [0, 1/2]. A binary fraud label needs this exact form. The remark assumes V is uniform; a skewed fraud prior is not covered by this remark.",
+     "anchor": "Remark 1, Section 2.1 p.9",
+     "quotes": [
+      "a notable case where one should use (6) is the binary setting, i.e., |V| = 2. In this case, (7) is meaningless due to the right-hand side being negative"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper states the binary form explicitly; the uniform-prior condition is stated, and the non-uniform note is my reading of the scope.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "fano-extends-to-noisy-optimization-minimax-risk",
+     "value": "PROVED (Theorem 11): the paper applies Fano plus the data processing inequality to stochastic optimization. It lower-bounds the minimax optimality gap of any algorithm that queries a noisy oracle n times, in terms of I(V; X, Y) for a finite set of hard functions (V uniform on M functions). For M = 2 it uses the inverse binary entropy form. This is a worst-case bound over a function class, not a bound for one given problem or dataset.",
+     "anchor": "Section 5.4 pp.28-29, Theorem 11 and proof",
+     "quotes": [
+      "A notable example, which we consider in this section, is stochastic optimization.",
+      "apply Fano’s inequality (cf., Theorem 1 and Remark 1) and the data processing inequality (cf., third part of Lemma 3)."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Theorem is proved in the chapter; the scope note (class-level worst case) is the drafter's reading of the minimax definition.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "fano-bounds-weak-nonasymptotic-and-adaptive-limits",
+     "value": "CLAIMED by the authors: Fano-based converse bounds can be inferior to alternative methods in the non-asymptotic sense, even when their asymptotics are correct. They are also hard to analyze in adaptive settings. So a Fano-derived limit is a weak-converse style bound, not a guaranteed tight ceiling at finite sample size.",
+     "anchor": "Section 7.1 pp.35-36",
+     "quotes": [
+      "Even in scenarios where Fano’s inequality provides converse bounds with the correct asymptotics including constants, these bounds can be inferior to alternative methods in the nonasymptotic sense"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The authors state it and cite other works [50,51] for the support; not proved in this chapter.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Fano's inequality (standard and binary form)",
+     "what_it_bounds": "Lower bound on the error probability of recovering a discrete V from an estimate or from data.",
+     "inputs_needed": "Mutual information I(V; V-hat), or after the data processing inequality I(V; Y); alphabet size |V|; uniform prior on V for the simple form.",
+     "fails_when": "Not tight at finite sample size in some settings; the simple form is vacuous for |V| = 2; needs a known or bounded mutual information, which for real data must itself be estimated (see the MI papers).",
+     "quote": "provides a lower bound on its error probability in terms of the mutual information, which is one of the most fundamental information measures in information theory."
+    },
+    {
+     "name": "Fano with approximate recovery and conditional Fano",
+     "what_it_bounds": "Error probability when only closeness (distance at most t) is required, or when conditioning on a random input.",
+     "inputs_needed": "I(V; V-hat), |V|, Nmax(t) (ball size) for approximate recovery; the distribution of the conditioning variable for the conditional form.",
+     "fails_when": "Same limits as standard Fano; the paper gives no finite-sample guarantee for a particular dataset.",
+     "quote": "Even in scenarios where Fano’s inequality provides converse bounds with the correct asymptotics including constants, these bounds can be inferior to alternative methods in the nonasymptotic sense"
+    }
+   ],
+   "facts": []
+  },
+  {
+   "record_id": "jmlr-2013-beyond-fano-s-inequality-bounds",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\References\\2013_CE-7_jmlr_Beyond-Fano-s-Inequality-Bounds-on-the.pdf",
+   "pages": 58,
+   "read_extent": "full",
+   "what_it_is": "A theory paper that extends Fano's and Hellman's bounds, between Bayes error and conditional entropy for two-class problems, to the optimal balanced error rate, F-score and cost-sensitive risk, and shows information maximization is unsuitable for F-score or cost-sensitive risk.",
+   "title_on_page_1": "Beyond Fano's Inequality: Bounds on the Optimal F-Score, BER, and Cost-Sensitive Risk and Their Implications",
+   "venue_or_status_on_page_1": "Journal of Machine Learning Research 14 (2013) 1033-1090; Submitted 8/12; Revised 1/13; Published 4/13",
+   "assertions": [
+    {
+     "id_suggestion": "fano-hellman-bayes-error-bounds-two-class",
+     "value": "PROVED: for the two-class problem the Bayes error rate is bounded below by Fano's bound and above by the Hellman and Raviv bound, both increasing functions of the Shannon conditional entropy H(y|x). The multi-class upper bound says the Bayes error rate cannot exceed half the conditional entropy. The input is the true class posterior distribution; the bounds describe the problem, not any classifier.",
+     "anchor": "Section 1 p.1034 and Figure 1 caption p.1035",
+     "quotes": [
+      "the Bayes error rate of a multi-class problem cannot exceed half of the Shannon conditional entropy (of the class label given the feature vector).",
+      "The lower (Fano) and upper (Hellman & Raviv) bounds on the Bayes error rate in terms of Shannon’s conditional entropy, for the two-class problem."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Classical results restated and re-derived in the paper (Theorem 4).",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "conditional-entropy-error-bounds-tight-any-concave-h",
+     "value": "PROVED (Theorem 4, Theorem 5, Corollary 6): for any concave h with h(0) = h(1) = 0, 2*h(0.5)*ERR <= H(y|x) <= concave hull of max{h(ERR), h(1-ERR)}, for any two-class task. Both bounds are attained by some task, so they are sharp, and they hold for any task. Sharp means no tighter bound can use only ERR and H(y|x); it does not mean the interval is narrow for a given problem.",
+     "anchor": "Section 3, Theorem 4 p.1045, Corollary 6 and closing remarks",
+     "quotes": [
+      "In Theorem 4 (Equation (24)), the two bounds on H(y|x) are tight.",
+      "They are also universal in that Theorem 4 holds for any task (µ, η)."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Theorem and tightness corollary are proved in the paper; the note on interval width is the drafter's reading.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "max-fscore-bounds-from-conditional-entropy",
+     "value": "PROVED (Theorem 15): for a symmetric concave h and any two-class task, 0 <= H(y|x) <= h(FSC/(2-FSC)), with both inequalities sharp. Given a value of H(y|x), a unique beta in [0, 0.5] with h(beta) = h(1-beta) = H(y|x) gives an interval for the maximum F-score FSC: roughly 2*beta/(1+beta) <= FSC <= (2-2*beta)/(2-beta) (formula read from garbled extraction, check against the PDF). The interval is wide: FSC can be any value in [0, 1] when H(y|x) tends to zero.",
+     "anchor": "Section 7, Theorem 15 and discussion pp.1058-1063; Section 8 p.1062",
+     "quotes": [
+      "for any given value of H(y|x) in the range of h(·), there exists a unique β ∈ [0, 0.5] such that h(β) = h(1 − β) = H(y|x)",
+      "Moreover, from Figure 8 we see that FSC may take any value between 0 and 1 when H(y|x) tends to zero."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Theorem 15 is proved; the F-score interval formula was reconstructed from garbled extraction, so the coordinator should check it against the PDF image.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "infomax-can-yield-low-fscore-and-high-cost-risk",
+     "value": "PROVED by analysis and a counter-example (Example 1, Section 8): minimizing Shannon conditional entropy (equivalently maximizing mutual information with the label) does not maximize the optimal F-score or minimize cost-sensitive risk. The lower bound on maximum F-score falls to zero as H(y|x) tends to zero, and a task with any given maximum F-score can have arbitrarily small H(y|x). The paper does not call the bounds loose; they are sharp but wide for these metrics.",
+     "anchor": "Abstract p.1033; Section 8 pp.1062-1064",
+     "quotes": [
+      "As a consequence, we show that Infomax is not suitable for optimizing F-score or cost-sensitive risk, in that it can potentially lead to low F-score and high risk.",
+      "With F-score, however, as we decrease entropy, the worst case F-score gets even worse, decreasing to zero when H(y|x) tends to zero."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Shown analytically with an explicit two-point example.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "bounds-extend-to-ber-and-cost-sensitive-risk",
+     "value": "PROVED (Theorems 7 and 11): the Fano and Hellman bounds extend to minimum cost-sensitive risk (inputs: H(y|x), costs c0, c1) and to minimum balanced error rate (inputs: H(y|x) and class prior pi). With c0 = c1 = 1 Theorem 7 reduces to Theorem 4. The BER upper bound on H(y|x) is a maximum of a concave function with no closed form; the paper computes it numerically. A cost-sensitive conditional entropy is proposed to fix the monotonicity issue; a matching measure for F-score is left open.",
+     "anchor": "Sections 4-5, Theorem 7 and Theorem 11 pp.1049-1056; Section 9 p.1070",
+     "quotes": [
+      "One observes that when c0 = c1 = 1 the above theorem is reduced to Theorem 4, so it is the extension of Fano’s and Hellman’s results to the cost-sensitive case.",
+      "The expression of minimum balanced error rate and its lower/upper bounds are given in Section 5."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Theorems are proved; the numerical-maximum and open-problem points are the paper's own statements paraphrased from Sections 5 and 9.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Entropy-based bounds on Bayes error (Fano / Hellman-Raviv)",
+     "what_it_bounds": "Minimum error rate of any classifier for a two-class task.",
+     "inputs_needed": "Shannon conditional entropy H(y|x) from the true class posterior.",
+     "fails_when": "Gives only an interval; needs the true posterior or an estimate of H(y|x), which is an estimation problem of its own; says nothing about F-score or cost-sensitive risk directly.",
+     "quote": "The lower (Fano) and upper (Hellman & Raviv) bounds on the Bayes error rate in terms of Shannon’s conditional entropy, for the two-class problem."
+    },
+    {
+     "name": "Theorem 15 (maximum F-score from conditional entropy)",
+     "what_it_bounds": "Interval on the optimal F-score of any classifier for a two-class task.",
+     "inputs_needed": "H(y|x) under a symmetric concave h.",
+     "fails_when": "Interval is wide: the maximum F-score may be anywhere in [0, 1] when H(y|x) tends to zero.",
+     "quote": "Moreover, from Figure 8 we see that FSC may take any value between 0 and 1 when H(y|x) tends to zero."
+    },
+    {
+     "name": "Theorems 7 and 11 (cost-sensitive risk and BER)",
+     "what_it_bounds": "Minimum cost-sensitive risk, and minimum balanced error rate, for a two-class task.",
+     "inputs_needed": "H(y|x), costs c0 and c1 (Theorem 7); class prior pi (Theorem 11).",
+     "fails_when": "Theorem 11 needs a numerical maximum; bounds describe the infinite-sample optimum, not finite-sample performance.",
+     "quote": "One observes that when c0 = c1 = 1 the above theorem is reduced to Theorem 4, so it is the extension of Fano’s and Hellman’s results to the cost-sensitive case."
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-705",
+     "verdict": "partly",
+     "explanation": "First half supported: the paper proves Infomax (maximizing mutual information, minimizing H(y|x)) can lead to low F-score and high cost-sensitive risk. Second half needs care: the paper calls its bounds tight (sharp) and universal, not loose. They are valid and sharp as functions of H(y|x), but they give wide intervals for F-score (any value in [0,1] as H tends to 0). So valid but loose is a fair plain-language reading of the F-score interval, yet the word loose is not the authors' and sharpness is proved.",
+     "quote": "As a consequence, we show that Infomax is not suitable for optimizing F-score or cost-sensitive risk, in that it can potentially lead to low F-score and high risk."
+    }
+   ]
+  },
+  {
+   "record_id": "gowri-2024-approximating-mutual-information-high-dimensional",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\References\\2025_CE-20_harvard_Approximating-mutual-information-of-high-dimensional-variables.pdf",
+   "pages": 33,
+   "read_extent": "full",
+   "what_it_is": "A method paper proposing latent MI (LMI) approximation, which runs the KSG nearest-neighbor estimator on low-dimensional learned representations, with benchmarks against KSG, MINE and InfoNCE and two biology applications.",
+   "title_on_page_1": "Approximating mutual information of high-dimensional variables using learned representations",
+   "venue_or_status_on_page_1": "38th Conference on Neural Information Processing Systems (NeurIPS 2024) (printed on page 1)",
+   "assertions": [
+    {
+     "id_suggestion": "ksg-mine-infonce-fail-dimension-thresholds-gaussian",
+     "value": "ESTIMATED (simulation): on synthetic Gaussian data with one correlated dimension (k = 1), 1 bit of true MI, d from 1 to 50 and N from 100 to 10,000, KSG did not reach error below 0.1 bits for d >= 13 at any tested N. MINE failed for d >= 25 and InfoNCE for d >= 37. Any N here means any N up to 10^4 in this experiment, not a proof. Setting: Gaussian, 1 bit, k = 1, error tolerance 0.1.",
+     "anchor": "Section 3.1.1 p.5, Figure 3a",
+     "quotes": [
+      "KSG fails to estimate MI for d ≥ 13 for any N , while MINE and InfoNCE scale slightly better, failing for d ≥ 25 and d ≥ 37 respectively.",
+      "methods that do not explicitly learn low-dimensional representations (InfoNCE, MINE, KSG) require increasing numbers of samples to estimate MI with error below ϵ = 0.1 (Fig. 3a)"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "One simulation family with fixed MI and tolerance; the authors do not claim the thresholds hold for other distributions.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "existing-mi-estimators-fail-above-100-dims-n2000",
+     "value": "ESTIMATED (simulation): with N = 2,000 samples on Gaussian data (d = 10 to 5,000; k = 1 to 9), existing estimators degrade with ambient dimension d, with near complete failure for d > 100. LMI stayed stable up to d = 5,000 when the dependence was low-dimensional.",
+     "anchor": "Section 3.1 p.4, Figure 2",
+     "quotes": [
+      "For estimates from N = 2 · 103 samples, we find that, as expected, the performance of existing estimators degrades with d, with near complete failure for d > 100"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Single sample size and synthetic Gaussian data.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "no-mi-estimator-accurate-without-strong-assumptions",
+     "value": "CLAIMED (cited, not proved here): no technique can accurately estimate MI from finite samples without strong assumptions about the sampling distribution (credited to McAllester and Stratos, ref [21]). KSG also systematically underestimated MI on resampled MNIST and protein-embedding benchmarks. Implication for a ceiling check: an estimated MI between features and label is itself uncertain and is not a guaranteed bound.",
+     "anchor": "Section 1 p.2; Section 3.2 p.6",
+     "quotes": [
+      "it has been shown that no technique can accurately estimate MI from finite samples without making strong assumptions about the distribution from which samples are drawn [21]",
+      "The KSG estimator, while achieving high relative accuracy, systematically underestimates MI, resulting in low absolute accuracy."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The impossibility is a cited result; the underestimate is an empirical finding on two resampled datasets.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "ksg-fails-near-deterministic-and-lmi-needs-low-dim-structure",
+     "value": "CLAIMED/ESTIMATED: KSG fails for strongly dependent (near deterministically related) variables, and LMI inherits that limit. LMI is effective only when the dependence has low-dimensional structure. At full-rank dependence (k = d) its convergence is no longer favored over other estimators.",
+     "anchor": "Section 3.1.1 p.5, Limitations p.10",
+     "quotes": [
+      "Our implementation of LMI approximation also inherits some limitations of the KSG estimator, notably that it fails for strongly dependent (near deterministically related) variables [32, 34].",
+      "When the same experiment is performed with increasing numbers of correlated dimensions at the limit where k = d, the convergence behavior of LMI is no longer favored over other estimators"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The KSG limit is cited from prior work; the k = d result is the paper's own simulation.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "latent-mi-lower-bounds-true-mi",
+     "value": "PROVED (Theorems 2 and 3, Appendix): for the learned encoders, I(Zx; Zy) <= I(X; Y), and I(Zx; Zy) = 0 when I(X; Y) = 0. So the true MI of the latent codes never exceeds the MI of the raw variables. The KSG estimate on the latent codes still carries estimator error, which the paper does not bound.",
+     "anchor": "Section 2 p.3 (Appendix Theorems 2 and 3)",
+     "quotes": [
+      "namely that I(Zx; Zy) ≤ I(X; Y ), and that I(Zx; Zy) = 0 if I(X; Y ) = 0."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Stated as proved in the paper (data processing inequality); I read the statement in the main text, not the proof.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "KSG (Kraskov-Stoegbauer-Grassberger nearest-neighbor MI estimator)",
+     "what_it_bounds": "Not a bound: a nonparametric point estimate of MI.",
+     "inputs_needed": "Joint samples; number of neighbors k (the paper uses k = 3 for pointwise decompositions).",
+     "fails_when": "d >= 13 per variable in the paper's Gaussian k = 1 test (error 0.1 bits, N up to 10^4); near complete failure above d = 100 at N = 2,000; strongly dependent (near deterministic) variables; systematic underestimation on real-data benchmarks.",
+     "quote": "KSG fails to estimate MI for d ≥ 13 for any N , while MINE and InfoNCE scale slightly better, failing for d ≥ 25 and d ≥ 37 respectively."
+    },
+    {
+     "name": "MINE and InfoNCE (variational critic estimators)",
+     "what_it_bounds": "Variational lower bounds on MI, used as estimates.",
+     "inputs_needed": "Joint samples; a trained critic network (two hidden layers of 16 and 8 units in this paper).",
+     "fails_when": "MINE d >= 25 and InfoNCE d >= 37 in the Gaussian k = 1 test; high variance on real-data benchmarks; failures on symmetric distributions at fewer than 10 dimensions.",
+     "quote": "KSG fails to estimate MI for d ≥ 13 for any N , while MINE and InfoNCE scale slightly better, failing for d ≥ 25 and d ≥ 37 respectively."
+    },
+    {
+     "name": "LMI (latent MI approximation)",
+     "what_it_bounds": "Estimate of MI from low-dimensional learned codes; true latent MI is at most the raw MI.",
+     "inputs_needed": "N joint samples, half for training autoencoders and half for KSG estimation; latent size chosen a priori (16 dimensions in the tests).",
+     "fails_when": "Dependence not captured by the latent space (k = d); symmetric distributions with E[X|Y] = E[X]; inherits KSG failure for near deterministic dependence.",
+     "quote": "When the same experiment is performed with increasing numbers of correlated dimensions at the limit where k = d, the convergence behavior of LMI is no longer favored over other estimators"
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-706",
+     "verdict": "partly",
+     "explanation": "This paper states the three thresholds: KSG fails for d >= 13 for any N, MINE for d >= 25, InfoNCE for d >= 37. Caveats: it is a simulation on Gaussian data with one correlated dimension, 1 bit of MI, error tolerance 0.1 bits and N tested only up to 10^4, so for any N is not a proof. Here d is the ambient dimension of each variable. The KSG bias O(N^(-1/(d_x+d_y))) statement is NOT in this paper; I found no convergence-rate formula for KSG bias in it.",
+     "quote": "KSG fails to estimate MI for d ≥ 13 for any N , while MINE and InfoNCE scale slightly better, failing for d ≥ 25 and d ≥ 37 respectively."
+    }
+   ]
+  },
+  {
+   "record_id": "abdelaleem-2026-accurate-estimation-mutual-information-high",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2025-06_Abdelaleem_Accurate-Estimation-of-Mutual-Information-in-High-Dimensional.pdf",
+   "pages": 36,
+   "read_extent": "full",
+   "what_it_is": "A method paper that gives neural MI estimators (InfoNCE, SMILE with probabilistic VSIB critics) a protocol with early stopping, subsampling-extrapolation bias checks and confidence intervals, and explains when they work.",
+   "title_on_page_1": "Accurate Estimation of Mutual Information in High Dimensional Data",
+   "venue_or_status_on_page_1": "arXiv:2506.00330v3 [physics.data-an] 10 Jun 2026 (arXiv stamp only; no journal or conference printed)",
+   "assertions": [
+    {
+     "id_suggestion": "mi-estimation-sample-need-exponential-in-dimension",
+     "value": "CLAIMED (a simple argument, not a theorem): for variables bounded in range A with smoothness scale a, accurate MI estimation needs N much greater than (A/a)^Ktot samples, with Ktot = KX + KY. That is exponential in total dimension when A/a > 1. The authors add that many MI methods break down beyond Ktot of about 10 dimensions, citing Holmes and Nemenman 2019.",
+     "anchor": "Section 2 Traditional MI Estimation p.3",
+     "quotes": [
+      "Then accurate estimation requires N ≫ (A/a)Ktot samples, where Ktot = KX + KY is the total dimensionality of X and Y .",
+      "they often break down beyond Ktot ∼ 10 dimensions Holmes and Nemenman (2019)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Heuristic argument stated in the text; the 10-dimension figure is cited from another paper.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "no-universally-good-mi-estimator-without-smoothness",
+     "value": "CLAIMED (cited): universally good MI estimation without smoothness assumptions on the underlying distribution is impossible (Paninski 2003; Kandasamy et al. 2015). No estimator is unbiased for all distributions, so sample-size dependent bias is the dominant practical problem. The remedy offered is empirical: test how the estimate changes with sample size.",
+     "anchor": "Section 1 p.2; Section 4.3 p.11",
+     "quotes": [
+      "universally good MI estimation without smoothness assumptions on the underlying distribution is impossible (see, e.g., Paninski (2003); Kandasamy et al. (2015))"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Cited results restated by the authors; I did not read the cited papers.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "infonce-saturates-near-log-batch-size",
+     "value": "ESTIMATED (simulation) with a known cause: InfoNCE and its VSIB variant saturate near log(batch size), about 7 bits for batch 128, so they cannot report MI above that ceiling. At 8 bits of true MI all variational bounds degrade; SMILE overestimates when the sample is large. The cap follows from the van den Oord 2018 derivation and was observed in the paper's runs.",
+     "anchor": "Section 4.2 p.9",
+     "quotes": [
+      "InfoNCE and InfoNCE − VSIB both saturate near log(batch size) = 7 bits, as expected (van den Oord et al., 2018).",
+      "For higher true MI (8 bits), all variational bounds and corresponding estimators degrade (Poole et al., 2019)."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Observed in simulation on teacher-network data; the saturation cause is cited, not re-derived here.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "neural-mi-accuracy-needs-low-dim-latent-structure",
+     "value": "ESTIMATED with a PROVED Gaussian-model piece (Proposition 1): accurate MI estimation needs a low-dimensional latent structure, an expressive enough critic and enough data to sample the latent space, with the scaling N >~ KZ^2 / I. Proposition 1 gives the minimum N for detecting nonzero MI in a latent Gaussian model. When the latent dimension KZ is comparable to K, estimation may be infeasible at any accessible N.",
+     "anchor": "Section 4.3 pp.10-11, Limitations p.15, Appendix A.4 Proposition 1",
+     "quotes": [
+      "accurate MI estimation requires: (i) statistical dependencies in the data distribution representable in a low-dimensional latent space; (ii) a sufficiently expressive critic; and (iii) enough data to sample that latent space, with the scaling N ≳ KZ2 /I",
+      "if the true KZ is comparable to K, sample complexity is too high and estimation may be infeasible at any accessible N (Fig. 5, right panel)."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The scaling comes from a Gaussian latent model; the authors say formal guarantees in the non-Gaussian case remain open.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "reliable-estimation-k500-n256-with-latent-10",
+     "value": "ESTIMATED (simulation): with K = 500 ambient dimensions per variable and a 10-dimensional latent structure (4 bits true MI), the protocol gave a near-correct MI estimate from N = 256 samples. On noisy MNIST (K = 784, true MI about 3.3 bits) it gave 3.13 plus or minus 0.12 bits at N = 16,384. These results depend on the low-dimensional latent structure; they do not show that high-dimensional MI is estimable in general.",
+     "anchor": "Abstract p.1; Sections 4.3-4.4 pp.11-12",
+     "quotes": [
+      "On synthetic benchmarks, we demonstrate reliable estimation with K = 500 and N as low as 256."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Synthetic teacher networks and noisy MNIST only; the authors note real-data use needs domain-specific choices.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "InfoNCE (separable critic)",
+     "what_it_bounds": "Variational lower bound on MI, used as an estimate.",
+     "inputs_needed": "Joint samples, a trained critic, batch size; the paper adds subsampling-extrapolation and a held-out stopping rule.",
+     "fails_when": "Saturates near log(batch size) (about 7 bits at batch 128); degrades at 8 bits true MI; needs N much greater than latent dimension KZ; infeasible when KZ is about K.",
+     "quote": "InfoNCE and InfoNCE − VSIB both saturate near log(batch size) = 7 bits, as expected (van den Oord et al., 2018)."
+    },
+    {
+     "name": "SMILE and SMILE-VSIB (clipped DV critic)",
+     "what_it_bounds": "Variational estimate of MI with a clipped critic (clip factor 5 in the paper).",
+     "inputs_needed": "Joint samples, a trained critic, clipping factor tau.",
+     "fails_when": "High variance and overestimation at high MI or in overfit, undersampled runs; VSIB regularization reduces both.",
+     "quote": "For higher true MI (8 bits), all variational bounds and corresponding estimators degrade (Poole et al., 2019)."
+    },
+    {
+     "name": "KSG (as run in the appendix)",
+     "what_it_bounds": "Nonparametric point estimate of MI.",
+     "inputs_needed": "Joint samples and neighbor count k.",
+     "fails_when": "On K = 500 teacher-network data the estimate did not approach the correct value as the data fraction went to infinity, and linear extrapolation was unreliable in high dimensions. No dimension threshold such as d = 13 is given.",
+     "quote": "The KSG estimator does not asymptotically approach the correct value of information at γ = 0, corresponding to the infinite data limit, and linear extrapolations (done the same way as in Fig. 6) is unreliable for KSG in high dimensions."
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-706",
+     "verdict": "not addressed",
+     "explanation": "This paper does not state KSG d >= 13, MINE d >= 25, InfoNCE d >= 37 or the O(N^(-1/(d_x+d_y))) KSG bias. Those thresholds are in Gowri et al. (NeurIPS 2024). Closest statements here: methods often break down beyond Ktot of about 10 dimensions (citing Holmes and Nemenman 2019), and KSG does not converge on K = 500 teacher data. The paper also says LMI (Gowri) assumes linear-Gaussian structure, which conflicts with Gowri's nonlinear autoencoders; treat that remark with care.",
+     "quote": "they often break down beyond Ktot ∼ 10 dimensions Holmes and Nemenman (2019)."
+    }
+   ]
+  }
+ ]
+}
