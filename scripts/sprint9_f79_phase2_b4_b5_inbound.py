@@ -54,6 +54,9 @@ COMMIT = "139fa133265254521b24c0c425099796b425c558"
 FILE = "docs/B4_B5_HARDWARE_RESULT.md"
 # The file as stored at COMMIT; a different blob stops the script.
 SHA256 = "28b98c3db1227bfdb0445d2cab6aaace299fab4ffb313e4349b1df70b035c90a"
+# The same file as checked out in Phase 2's working tree (CRLF). Task D
+# (F48) found the record "changed" when only the blob hash was recorded.
+WORKING_SHA256 = "81acd50648b3a0f7e89e14e02b372c991fe4185fcad913e254af7f00a92dec59"
 REPO_URL = "https://github.com/kimmeyh/hsbc-qfraud-phase2"
 
 SRC = "hsbc-qfraud-phase2-b4-b5-hardware-result"
@@ -82,8 +85,10 @@ SOURCE = {
                     "cells, five seeds, against a matched random-segment control and the classical proxy) and B5 "
                     "(sign-augmented primal QSVM on ULB, 12 fits)"),
     "access": f"{PHASE2}\\docs\\B4_B5_HARDWARE_RESULT.md | {REPO_URL}/blob/{COMMIT}/{FILE}",
-    "evidence": (f"A living document in an active repository: this record cites commit 139fa13 (2026-10-07), whose blob "
-                 f"has SHA-256 {SHA256}; the working copy and Phase 2's HEAD 07f44f3 matched it on {TODAY}. The "
+    "evidence": (f"Working copy SHA-256 {WORKING_SHA256} (as checked out on {TODAY}, CRLF line endings), which the "
+                 "local-file check compares against, so it reports any later edit in Phase 2. A living document in an "
+                 f"active repository: this record cites commit 139fa13 (2026-10-07), whose committed blob (LF) hashes "
+                 f"to {SHA256}; the working copy and Phase 2's HEAD 07f44f3 matched it on {TODAY}. The "
                  "figures are in Phase 2's experiments/results/results.json (blocks B4 and B5). The document's two "
                  "corrections stand inside it: its 'Proxy's edge' column is not like-for-like and is not used here; "
                  "its stored device samples were truncated, which it says affects no AUPRC figure. The private "
@@ -167,9 +172,16 @@ ASSERTIONS: list[AssertionRecord] = [
 
 def apply_changes(conn) -> list[str]:
     log = []
-    if conn.execute("SELECT 1 FROM records WHERE id = ?", (SRC,)).fetchone() is None:
+    stored_evidence = conn.execute("SELECT evidence FROM paper_fields WHERE record_id = ?", (SRC,)).fetchone()
+    if stored_evidence is None:
         insert_paper(conn, intake.build_record(SOURCE, today=TODAY))
         log.append(f"paper  {SRC} [read]")
+    elif stored_evidence[0] != SOURCE["evidence"]:
+        conn.execute("UPDATE paper_fields SET evidence = ? WHERE record_id = ?", (SOURCE["evidence"], SRC))
+        append_updated_reason(conn, SRC, f"{CORRECTED_ON} (Sprint 9 Task D, F48): evidence now leads with the "
+                              "working copy's SHA-256; the committed blob's hash alone read as a changed file",
+                              CORRECTED_ON)
+        log.append(f"update {SRC} (evidence)")
     else:
         log.append(f"exists {SRC}")
     for assertion in ASSERTIONS:

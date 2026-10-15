@@ -15,6 +15,16 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **feat**: F48, honest local paths (Sprint 9 Task D, Issue #92) --
+  `scripts/check_local_sources.py` lists every local source that is
+  missing, changed or unhashed (the re-check's own `check_local`, so the
+  two agree) and records a SHA-256 where none was; 112 hashes recorded, so
+  124 of 127 local-access records carry one and 3 are folders (snapshot
+  2026-10-15); a moved-file test and a never-overwrite test, each proven
+  by injection, and a live test that no local file lacks a hash. Found on
+  the way: Task A's Phase 2 record held only the committed blob's hash (LF)
+  while the working copy is CRLF, so it read as changed; its evidence now
+  leads with the working copy's hash
 - **feat**: F74, re-check correctness (Sprint 9 Task C, Issue #91) --
   ADR-0005 A9: a re-check counts only when the paper's own primary source
   answered (arXiv for arXiv, Crossref or DataCite for a DOI, the page for a
