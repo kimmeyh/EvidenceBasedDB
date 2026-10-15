@@ -15,6 +15,14 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **fix**: F55 and F56 review (Sprint 9, Issues #96 and #97) -- the
+  corroboration parser read "Name, I. (Affiliation)" and accented names
+  wrongly, both toward independence: fixed and tested, with organization
+  names matched by leading words; a non-vendor pair with no recorded
+  organizations now says "not compared" (dated corrections to ADR-0004 A9
+  and ADR-0005 A10); a CI round trip exports `corroborated_by`; a rollback
+  test for the migration; injection proofs recorded for nine more tests;
+  one test that could not fail removed
 - **docs**: F51 hold checked (Sprint 9 Task K, Issue #99) -- all three
   copies of the CVQBoost findings document unchanged (SHA-256
   `425358a7b4cec71f...`, "Last updated 2026-08-04"); stays HOLD; recorded on
@@ -33,8 +41,8 @@ this project keeps having to replace with a step.
   A10; `cites` added to `source_links` by a table rebuild
   (`scripts/migrate_sprint9_cites_link_type.py`, backup first) with a
   `to_id` index; `store/links.py` reads a link from both ends;
-  `scripts/sprint9_f55_cites.py` fetched 807 Crossref reference lists
-  (cached outside git) and wrote 5,620 links, 793 of 2,102 papers at an end
+  `scripts/sprint9_f55_cites.py` asked Crossref for 807 DOIs (750 answers
+  carried a reference list; cached outside git) and wrote 5,620 links, 793 of 2,102 papers at an end
   (snapshot, 2026-10-15); tests for the migration, matching, the cache and
   a live recompute of every stored link, injection-proven
 - **fix**: F80 review (Sprint 9 Task G, Issue #95) -- fresh-eyes review

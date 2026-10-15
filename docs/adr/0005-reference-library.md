@@ -1243,3 +1243,10 @@ wrong link would be a fabricated provenance.
 *Revisit when* the arXiv-only papers need citing links: their references
 would have to come from the PDF text or Semantic Scholar, a different
 provider with a different failure mode.
+
+*A10 correction, 2026-10-15 (fresh-eyes review of 4c997a1, the same day).*
+A10 (d) says "56 pairs cite each other": it is 28 pairs, 56 links, all
+checked as real. "674 citing papers" counts records, so a paper held as
+both a preprint and a journal record is counted twice. The review
+recomputed every coverage figure from the cache and found them exact, and
+found every one of the 5,224 DOI-matched links in the citing paper's list.

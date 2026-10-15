@@ -963,3 +963,22 @@ links (ADR-0005 A10) are a source of candidate pairs; they are not
 *Revisit when* the store holds affiliations for most read papers; until
 then the organization check rests mostly on corporate authors, and the
 flag errs toward "not counted".
+
+*A9 correction, 2026-10-15 (fresh-eyes review of 79ae0d4, the same day).*
+Three statements in A9 (b) were stronger than the code. Every count is a
+snapshot as of 2026-10-15. (1) "Anything that cannot be shown is not
+independent" holds for authors and, for a vendor's own claim, for
+organizations; for any other claim the organizations are compared only
+when both papers record them, and only 3 of the 146 papers that yield
+assertions carry an `affiliations` probe. The one flagged pair is such a
+case, and its reason now says "organizations not recorded on one side, so
+not compared". Whether that should count is the team lead's decision at
+Manual Validation. (2) A shared dataset is not checked. (3) An "et al."
+author list is read as complete. Two parser defects, both erring toward
+independence, were fixed and tested: an affiliation written in
+parentheses after the initials ("Neven, H. (Google Inc.)") dropped the
+author and misread the organization; and accented and unaccented
+spellings of one name ("Brandão", "Brandao"; 18 such names in the store)
+did not match. Organizations now also match when one name's words lead
+the other's ("D-Wave", "D-Wave Systems Inc."). The live counts in A9 (d)
+are unchanged by the fixes.

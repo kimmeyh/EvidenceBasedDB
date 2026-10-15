@@ -100,6 +100,8 @@ def _why(result, x, y) -> str:
 
 
 def test_an_independent_supporter_at_equal_certainty_corroborates(store):
+    """Proven to fail by injection, 2026-10-15: with every pair read as not
+    both from papers, the list came back empty."""
     result = corroboration(store)
     assert [y for y, _ in result["x-indep"]["by"]] == ["y-indep"]
 
@@ -122,6 +124,8 @@ def test_a_vendor_claim_needs_both_organizations_named(store):
 
 
 def test_shared_authors_lower_ratings_and_the_same_paper_never_count(store):
+    """Proven to fail by injection, 2026-10-15: with the shared-author check
+    removed, x-shared's supporter read as independent."""
     result = corroboration(store)
     assert _why(result, "x-shared", "y-shared") == "shared author(s): doe"
     assert _why(result, "x-indep", "y-lower") == "rated lower (low against high)"
@@ -144,10 +148,47 @@ def test_documents_cited_by_repository_name_never_count(store):
     assert _why(result, "x-repo", "y-repo") == "no named author on one side"
 
 
-def test_the_flag_never_changes_stored_certainty(store):
-    before = dict(store.execute("SELECT id, certainty FROM records WHERE class = 'assertion'"))
-    corroboration(store)
-    assert dict(store.execute("SELECT id, certainty FROM records WHERE class = 'assertion'")) == before
+def test_the_derived_key_exports_and_the_dump_rebuilds_byte_identically(store, tmp_path):
+    """Review of 79ae0d4: the CI round trip never exported corroborated_by
+    (the synthetic store flags nothing), so only the live test covered it.
+    Proven to fail by injection, 2026-10-15: with corroborated_by removed
+    from rebuild.DERIVED_KEYS, the rebuild refused the dump."""
+    from store.export import regenerate
+    from store.rebuild import rebuild_and_compare
+    regenerate(store, tmp_path / "dump")
+    exported = json.loads((tmp_path / "dump" / "assertions.json").read_text(encoding="utf-8"))
+    assert [r["corroborated_by"] for r in exported if r["id"] == "x-indep"] == [
+        [{"id": "y-indep", "why": "different papers and authors; organizations not recorded on one side, so not "
+                                  "compared"}]]
+    assert rebuild_and_compare(tmp_path / "dump", check_local_paths=False) == []
+
+
+def test_parenthesized_affiliations_and_accents_are_read(store):
+    """Review of 79ae0d4: "Neven, H. (Google Inc.)" lost the author and
+    misread the organization, and accented spellings of one author did not
+    match. Proven to fail by injection, 2026-10-15: with _fold returning its
+    input unchanged, brandao and brandão were two authors and y-accent
+    counted; with the parenthesis split removed, y-paren counted."""
+    _paper(store, "p-paren-1", "Matuszek, C. (Cycorp), Lee, D. (MIT)")
+    _paper(store, "p-paren-2", "Witbrock, M.", "Cycorp Inc.")
+    _claim(store, "x-paren", "p-paren-1", "moderate")
+    _claim(store, "y-paren", "p-paren-2", "high")
+    _supports(store, "y-paren", "x-paren")
+    _paper(store, "p-accent-1", "Brandão, F.G.S.L., Smith, J.")
+    _paper(store, "p-accent-2", "Brandao, F.G.S.L.")
+    _claim(store, "x-accent", "p-accent-1", "moderate")
+    _claim(store, "y-accent", "p-accent-2", "high")
+    _supports(store, "y-accent", "x-accent")
+    _paper(store, "p-dwave-1", "Neven, H. (Google Inc.), Macready, W.G. (D-Wave Systems Inc.)")
+    _paper(store, "p-dwave-2", "King, A.D.", "D-Wave")
+    _claim(store, "x-dwave", "p-dwave-1", "moderate")
+    _claim(store, "y-dwave", "p-dwave-2", "high")
+    _supports(store, "y-dwave", "x-dwave")
+    store.commit()
+    result = corroboration(store)
+    assert _why(result, "x-paren", "y-paren") == "shared organization(s): cycorp"
+    assert _why(result, "x-accent", "y-accent") == "shared author(s): brandao"
+    assert _why(result, "x-dwave", "y-dwave") == "shared organization(s): d wave"
 
 
 def test_view_shows_the_flag_beside_certainty(store, tmp_path):

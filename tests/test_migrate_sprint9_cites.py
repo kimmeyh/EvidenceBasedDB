@@ -90,7 +90,27 @@ def test_migration_keeps_every_row_and_allows_cites(mig):
         conn.close()
 
 
+def test_a_failure_after_the_rebuild_rolls_everything_back(mig, monkeypatch):
+    """Review of 79ae0d4: the rollback path was untested. The index statement
+    is made to fail AFTER the table rebuild; the old table, its CHECK and its
+    rows must all survive. Proven to fail by injection, 2026-10-15: with
+    apply()'s rollback replaced by a commit, the rebuilt table remained."""
+    mod, db = mig
+    before = sqlite3.connect(db).execute("SELECT * FROM source_links ORDER BY 1, 2, 3").fetchall()
+    real = mod.schema_statement
+    monkeypatch.setattr(mod, "schema_statement",
+                        lambda p: "CREATE INDEX broken ON no_such_table(x);" if "INDEX" in p else real(p))
+    with pytest.raises(sqlite3.OperationalError):
+        mod.main(["--apply"])
+    conn = sqlite3.connect(db)
+    assert "'cites'" not in conn.execute("SELECT sql FROM sqlite_master WHERE name = 'source_links'").fetchone()[0]
+    assert conn.execute("SELECT * FROM source_links ORDER BY 1, 2, 3").fetchall() == before
+    assert not conn.execute("SELECT 1 FROM sqlite_master WHERE name = 'source_links_new'").fetchone()
+
+
 def test_a_second_run_changes_nothing(mig, capsys):
+    """Proven to fail by injection, 2026-10-15: with plan() always reporting
+    the index missing, the second run raised 'index already exists'."""
     mod, db = mig
     assert mod.main(["--apply"]) == 0
     capsys.readouterr()
@@ -99,6 +119,8 @@ def test_a_second_run_changes_nothing(mig, capsys):
 
 
 def test_a_dry_run_writes_nothing(mig):
+    """Proven to fail by injection, 2026-10-15: with the dry-run return
+    skipped, the table came back rebuilt with 'cites'."""
     mod, db = mig
     assert mod.main([]) == 0
     sql = sqlite3.connect(db).execute("SELECT sql FROM sqlite_master WHERE name = 'source_links'").fetchone()[0]
@@ -115,6 +137,8 @@ def test_the_door_and_the_schema_allow_the_same_link_types():
 
 
 def test_a_link_reads_from_both_ends(synthetic_store):
+    """Proven to fail by injection, 2026-10-15: with the incoming query
+    reading from_id, the cited paper's "in" list held the wrong row."""
     conn = connect(synthetic_store)
     try:
         add_source_link(conn, *CITE)

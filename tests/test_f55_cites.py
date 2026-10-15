@@ -62,6 +62,8 @@ def test_links_match_by_doi_and_arxiv_and_skip_versions(tmp_path):
 
 
 def test_an_id_without_arxiv_named_is_not_matched(tmp_path):
+    """Proven to fail by injection, 2026-10-15: with the "arxiv" condition
+    removed from _match, a bare 2101.00001 was linked."""
     f55 = _script()
     _cache(f55, tmp_path, refs=[REFS[3]])
     links, _ = f55.compute_links(CITING, BY_DOI, BY_ARXIV, tmp_path)
@@ -69,6 +71,8 @@ def test_an_id_without_arxiv_named_is_not_matched(tmp_path):
 
 
 def test_a_404_counts_as_not_found_and_yields_nothing(tmp_path):
+    """Proven to fail by injection, 2026-10-15: with a 404 read as an
+    answer, its cached list yielded links."""
     f55 = _script()
     _cache(f55, tmp_path, status=404)
     links, cov = f55.compute_links(CITING, BY_DOI, BY_ARXIV, tmp_path)
@@ -101,6 +105,8 @@ def test_fetch_caches_200_and_404_but_not_a_failure_and_never_asks_twice(tmp_pat
 
 
 def test_requests_are_paced(tmp_path):
+    """Proven to fail by injection, 2026-10-15: with the sleep before each
+    request after the first removed, waits was empty."""
     f55 = _script()
     waits = []
     f55.fetch(["10.1/a", "10.1/b", "10.1/c"],

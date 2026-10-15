@@ -16,6 +16,7 @@ function here only reads files under that repository, never writes.
 from __future__ import annotations
 
 import re
+import unicodedata
 from pathlib import Path
 
 CONSUMER_REPO_PREREGISTRATION = Path(
@@ -142,18 +143,53 @@ def _org_keys(name: str) -> set[str]:
     return {k for k in keys if k}
 
 
+_GENERIC = {"university", "institute", "department", "school", "center", "centre", "laboratory", "college",
+            "research", "faculty", "division", "group"}
+
+
+def _orgs_shared(a: set[str], b: set[str]) -> set[str]:
+    """Organizations two papers share: equal keys, or one key's words leading
+    the other's ("d wave" and "d wave systems"), unless the shorter is a
+    single generic word ("university")."""
+    shared = a & b
+    for x in a:
+        for y in b:
+            short, long_ = sorted((x.split(), y.split()), key=len)
+            if short != long_ and long_[:len(short)] == short and not (len(short) == 1 and short[0] in _GENERIC):
+                shared.add(" ".join(short))
+    return shared
+
+
+_FOLD = str.maketrans({"ł": "l", "Ł": "L", "ø": "o", "Ø": "O", "đ": "d", "Đ": "D", "ß": "ss"})
+_PAREN = re.compile(r"^(.*?)\s*\((.*)\)\s*$")
+
+
+def _fold(text: str) -> str:
+    """Accents removed, so "Brandão" and "Brandao" are one author (review of
+    79ae0d4: 18 family names appear in the store in both spellings)."""
+    decomposed = unicodedata.normalize("NFKD", text.translate(_FOLD))
+    return "".join(ch for ch in decomposed if not unicodedata.combining(ch))
+
+
 def _people_and_orgs(citation: str) -> tuple[set[str], set[str]]:
     """(author family names, corporate authors) from a rendered citation:
     the part before the quoted title, read as "Family, I." pairs; a name
-    with no initials after it is a corporate author."""
-    head = citation.split(', "')[0] if ', "' in citation else ""
+    with no initials after it is a corporate author. An affiliation written
+    after the initials, "Neven, H. (Google Inc.)", is an organization of
+    that paper and leaves the author in place (review of 79ae0d4)."""
+    head = _fold(citation.split(', "')[0]) if ', "' in citation else ""
     toks = [t.strip() for t in head.split(",") if t.strip()]
     people, orgs, i = set(), set(), 0
     while i < len(toks):
+        nxt = toks[i + 1] if i + 1 < len(toks) else ""
+        m = _PAREN.match(nxt)
+        initials, affiliation = (m.group(1), m.group(2)) if m else (nxt, "")
         if toks[i].lower().startswith("et al"):
             i += 1
-        elif i + 1 < len(toks) and _INITIALS.match(toks[i + 1].replace(" ", "")):
+        elif nxt and _INITIALS.match(initials.replace(" ", "")):
             people.add(toks[i].lower())
+            if affiliation:
+                orgs |= _org_keys(affiliation)
             i += 2
         else:
             orgs |= _org_keys(toks[i])
@@ -207,10 +243,12 @@ def corroboration(conn) -> dict[str, dict[str, list[tuple[str, str]]]]:
             return False, "no named author on one side"
         if ax & ay:
             return False, f"shared author(s): {', '.join(sorted(ax & ay))}"
-        if ox & oy:
-            return False, f"shared organization(s): {', '.join(sorted(ox & oy))}"
+        if _orgs_shared(ox, oy):
+            return False, f"shared organization(s): {', '.join(sorted(_orgs_shared(ox, oy)))}"
         if "vendor-self-claim" in (rows[x][1], rows[y][1]) and not (ox and oy):
             return False, "a vendor's own claim, and one side names no organization, so independence is not shown"
+        if not (ox and oy):
+            return True, "different papers and authors; organizations not recorded on one side, so not compared"
         return True, "different papers, authors and organizations"
 
     out: dict[str, dict[str, list[tuple[str, str]]]] = {}
