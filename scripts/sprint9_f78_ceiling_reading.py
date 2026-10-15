@@ -87,10 +87,27 @@ SUBAGENT_DETAIL = {
     "e": "first pass, the whole paper, every page and appendix (Sonnet 5.5 reader, group E)",
 }
 SUBAGENT_READER = "Claude Sonnet 5.5 (first-pass subagent)"
+ABSENCE_NOTE = ("; any absence a value states (a test not run, a case not covered) rests on the first-pass full "
+                "read, not on these passages")
 COORDINATOR_DETAIL = ("the opening and every passage an assertion quotes, each with about 450 characters of "
                       "surrounding text; proofs, appendices and tables beyond those passages not read by the "
-                      "coordinator")
-COORDINATOR_DETAIL_REPO = "every quoted README or code passage with its surrounding text"
+                      "coordinator" + ABSENCE_NOTE)
+COORDINATOR_DETAIL_REREAD = ("re-read: the opening and every passage an assertion quotes, in context (the whole "
+                             "paper was read by the same reader on 2026-10-13)")
+COORDINATOR_DETAIL_REPO = "every quoted README or code passage with its surrounding text" + ABSENCE_NOTE
+COORDINATOR_DETAIL_PAGE = "the whole saved page (the handbook's Foreword)"
+
+
+def coordinator_detail(rid: str) -> str:
+    """Review of 2026-10-15: one text for every source misdescribed the four
+    papers read in full on 2026-10-13 and the one-page HTML Foreword."""
+    if rid in REPOS:
+        return COORDINATOR_DETAIL_REPO
+    if EARLIER_READS.get(rid, ("",))[0] == "full":
+        return COORDINATOR_DETAIL_REREAD
+    if rid == "github-nd-reproducible-machine-learning-for-credit":
+        return COORDINATOR_DETAIL_PAGE
+    return COORDINATOR_DETAIL
 
 DROPPED = {
     "theisen-table1-estimates-exceed-sota-some-corpora":
@@ -107,10 +124,14 @@ VALUE_EDITS = {
         "the reader's list of possible causes is not in the paper"),
     "butt-abstract-explains-0.4-claimed": (
         "The paper claims the ceiling explains why unsupervised methods cluster near F1 of about 0.4 on "
-        "Bitcoin-OTC (the body says 0.3 to 0.4). Its own reported F1 values exceed 0.451 in places (GaaSTrust at its "
-        "optimal threshold 0.524, BernoulliCUSUM 0.496), so the explanation is an argument by comparison, not a "
-        "proof.",
-        "'cites no F1 values for those methods' could not be confirmed from the passages read"),
+        "Bitcoin-OTC (the body says 0.3 to 0.4).",
+        "'cites no F1 values for those methods' could not be confirmed from the passages read; the comparison with "
+        "dataset-wide F1 values (review, 2026-10-15) set unlike quantities against the per-node ceiling"),
+    "tschirschwitz-bound-fails-with-dominant-convention": (
+        "The authors say it is reasonable to assume that a model following a dominant labeling convention could "
+        "exceed the convergence threshold, and that models may overfit to such a convention. The estimate also "
+        "extrapolates from the repeated-label subset to the whole dataset and may suffer a domain gap.",
+        "the reader's 'A model can exceed it' dropped the authors' hedge (review, 2026-10-15)"),
     "fdh-sim-scenario3-label-not-function-of-features": (
         "In the handbook simulator's scenario 3, which transactions of a compromised customer become fraud is a "
         "random sample of one third of them, and the chosen ones have their amounts multiplied by 5. The label is "
@@ -122,6 +143,18 @@ VALUE_EDITS = {
 
 # Sentences or clauses cut from a reader's value: (exact text, replacement).
 REMOVE = {
+    # Review of 2026-10-15: a false sentence (the abstract does give the
+    # attack scope, "for strategic attacks"), and three unlabeled
+    # conclusions of the readers.
+    "butt-0451-is-strategic-n2-only": [(
+        " The abstract states it as 'this ceiling' for Bitcoin-OTC without the attack-type scope.", "")],
+    "fano-bounds-weak-nonasymptotic-and-adaptive-limits": [(
+        " So a Fano-derived limit is a weak-converse style bound, not a guaranteed tight ceiling at finite sample "
+        "size.", "")],
+    "toner-loss-floor-worked-example-40pct-symmetric": [(
+        " A training loss below the floor therefore signals overfitting to noisy labels.", "")],
+    "wheat-equal-class-sizes-no-imbalance-tested": [(
+        ", so a rare-event BER near 0.2 percent was not covered", "")],
     "boyd-theorem2-min-aucpr-formula": [(
         "At pi = 0.1 it is about 0.05; it rises toward 0.31 at pi = 0.5.",
         "At pi = 0.1 it is about 0.05, and it increases as pi approaches 0.5.")],
@@ -143,7 +176,8 @@ REMOVE = {
     "cl-threshold-design-targets-class-imbalance": [(
         " It does not test a rare-positive binary case such as 0.2 percent fraud, and it reports no precision or "
         "recall of error finding there.", "")],
-    "cl-real-data-issues-are-not-all-label-errors": [(" and is not a direct estimate of an accuracy ceiling", "")],
+    "cl-real-data-issues-are-not-all-label-errors": [(
+        " So a CL flag count overstates pure label error and is not a direct estimate of an accuracy ceiling.", "")],
     "blanchard-solution-is-maximal-denoising": [(
         " If mutual irreducibility fails, the estimate can exceed the true noise; this last point is a reader "
         "consequence.", "")],
@@ -233,6 +267,16 @@ CERTAINTY_OVERRIDES = {
         "moderate", CODE_FACT + ". DOWNGRADED one level: the Bayes-error part is the coordinator's inference "
                                 "from the code, not stated by the source"),
     "amlsim-false-alerts-exist": ("high", CODE_FACT),
+    # The reader downgraded this only because the formula came from garbled
+    # extraction; the coordinator confirmed it in context on 2026-10-15.
+    "max-fscore-bounds-from-conditional-entropy": (
+        "high", THEOREM + ". The F-score interval was checked by the coordinator against the passage in context"),
+    "tschirschwitz-bound-fails-with-dominant-convention": (
+        "low", AUTHOR_CLAIM + ". Hedged by the authors ('it is reasonable to assume')"),
+    # These two reader downgrades rest on a reason that no longer applies
+    # once the reader's fraud remark was cut from the value.
+    "blanchard-ignoring-noise-biases-metrics-and-unequal-priors": (
+        "high", THEOREM + " (a short algebraic argument in Sec. 2)"),
 }
 
 # F46's nine ceiling facts (handoff 07-assertion-candidates-pending.md),
@@ -292,11 +336,17 @@ def edited_value(aid: str, value: str) -> str:
     return re.sub(r"\s+", " ", value).strip()
 
 
-def certainty(aid: str, kind: str, suggestion: str, is_repo: bool) -> tuple[str, str]:
+def certainty(aid: str, kind: str, suggestion: str, is_repo: bool, reader_reason: str = "") -> tuple[str, str]:
     if aid in CERTAINTY_OVERRIDES:
         return CERTAINTY_OVERRIDES[aid]
     if kind == "proved":
-        return ("high", CODE_FACT if is_repo else THEOREM)
+        start = CODE_FACT if is_repo else THEOREM
+        if suggestion in ("moderate", "low"):
+            # Review of 2026-10-15: the first version returned HIGH for every
+            # "proved" assertion, discarding the reader's stated downgrade.
+            return (suggestion, f"{start}. DOWNGRADED to {suggestion} for the first-pass reader's stated reason, "
+                                f"kept by the coordinator: {reader_reason.rstrip('.')}")
+        return ("high", start)
     if kind == "estimated":
         return ("low", EMPIRICAL)
     if suggestion == "high":
@@ -320,7 +370,8 @@ def assertions() -> list[tuple[str, AssertionRecord, str]]:
             if aid in DROPPED:
                 continue
             value = edited_value(aid, a["value"])
-            cert, reasons = certainty(aid, a["kind"], a.get("certainty_suggestion", ""), rid in REPOS)
+            cert, reasons = certainty(aid, a["kind"], a.get("certainty_suggestion", ""), rid in REPOS,
+                                      a.get("certainty_reason", ""))
             anchor = a["anchor"]
             out.append((g, AssertionRecord(
                 id=aid, value=value, provenance=f"{rid}, {anchor}",
@@ -373,11 +424,16 @@ def apply_changes(conn) -> list[str]:
         sub_detail = (f"first pass: {p.get('partial_detail') or 'the whole source'} (Sonnet 5.5 reader, group F)"
                       if g == "f" else SUBAGENT_DETAIL[g])
         reads.append((SUBAGENT_READER, TODAY, "subagent", sub_detail))
-        reads.append(("Claude", TODAY, "partial", COORDINATOR_DETAIL_REPO if rid in REPOS else COORDINATOR_DETAIL))
+        reads.append(("Claude", TODAY, "partial", coordinator_detail(rid)))
         for reader, read_on, extent, detail in reads:
             if (reader, read_on, extent) not in have:
                 add_read(conn, rid, reader, read_on, extent, detail)
                 log.append(f"read   {rid} [{reader}, {read_on}, {extent}]")
+            elif conn.execute("SELECT detail FROM paper_reads WHERE record_id = ? AND reader = ? AND read_on = ? "
+                              "AND extent = ?", (rid, reader, read_on, extent)).fetchone()[0] != detail:
+                conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND reader = ? AND read_on = ? "
+                             "AND extent = ?", (detail, rid, reader, read_on, extent))
+                log.append(f"update {rid} read detail [{reader}, {read_on}, {extent}]")
         # (4) promotion
         if tier != "read":
             checked = (f"2026-10-13, Claude, read in full; {TODAY} every quoted passage re-read in context"
@@ -387,7 +443,18 @@ def apply_changes(conn) -> list[str]:
             set_tier(conn, rid, "read", checked_against_source=checked)
             log.append(f"tier   {rid} -> read")
     for g, a, rid in assertions():
-        if conn.execute("SELECT 1 FROM records WHERE id = ?", (a.id,)).fetchone():
+        stored = conn.execute("SELECT value, certainty, certainty_reasons FROM records WHERE id = ?",
+                              (a.id,)).fetchone()
+        if stored and tuple(stored) != (a.value, a.certainty, a.certainty_reasons):
+            # The script is the record's source: a correction reaches the
+            # store, with the reason in updated_reason (as Task A's script).
+            conn.execute("UPDATE records SET value = ?, certainty = ?, certainty_reasons = ? WHERE id = ?",
+                         (a.value, a.certainty, a.certainty_reasons, a.id))
+            append_updated_reason(conn, a.id, f"{TODAY} ({TAG} fresh-eyes review): value, certainty or reasons "
+                                  "corrected to the script's current text", TODAY)
+            log.append(f"update {a.id} [{a.certainty}]")
+            continue
+        if stored:
             log.append(f"exists {a.id}")
             continue
         insert_assertion(conn, a, yielded_by=rid)

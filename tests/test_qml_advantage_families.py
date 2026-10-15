@@ -32,6 +32,8 @@ def _script():
     ("Unleashing the Advantage of Quantum AI", "other or unspecified"),
     # precedence: a kernel title that also mentions sampling is a kernel claim
     ("Quantum kernel speedup by sampling", "kernels and feature maps"),
+    # "samples" is not sampling (review, 2026-10-15)
+    ("Quantum enhanced probing of multilayered-samples", "quantum data and sensing"),
 ])
 def test_family(title, expected):
     assert _script().family(title) == expected

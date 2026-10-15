@@ -91,7 +91,10 @@ def test_every_number_in_a_paper_value_is_in_the_paper():
 
 def test_no_reader_inference_survives_in_a_value():
     """The coordinator cut every sentence the readers marked as their own
-    inference. Proven to fail by injection, 2026-10-15: with the REMOVE
+    inference. LIMIT (review, 2026-10-15): this catches only inferences that
+    label themselves; unlabeled "so" or "therefore" conclusions were found by
+    the fresh-eyes review and cut by hand (REMOVE). Proven to fail by
+    injection, 2026-10-15: with the REMOVE
     entry for wheat-samples-per-class-for-5pct-range deleted, its value
     kept "(that last remark is an inference...)" and this test named it."""
     f78 = _script()

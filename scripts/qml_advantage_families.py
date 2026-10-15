@@ -37,7 +37,10 @@ FAMILIES = [
     ("kernels and feature maps", r"kernel|svm|support vector|feature (space|map)"),
     ("linear algebra", r"\bhhl\b|linear (system|solver|algebra)|matrix inversion|massive classical data"),
     ("sampling and generative models",
-     r"sampl|generative|born machine|\bgans?\b|boltzmann|distribution learning|monte carlo|randomness"),
+     # "sampling"/"sampler", not "samples": "Quantum enhanced probing of
+     # multilayered-samples" is a sensing paper (review, 2026-10-15).
+     r"\bsampl(ing|ers?)\b|generative|born machine|\bgans?\b|boltzmann|distribution learning|monte carlo|"
+     r"randomness"),
     ("quantum data and sensing", r"quantum data|from experiments|observables?|sensing|sensor|probing|many-body|"
                                  r"information decoder|state learning"),
     ("quantum dynamics (reservoirs, simulation)", r"reservoir|hamiltonian|chaos"),

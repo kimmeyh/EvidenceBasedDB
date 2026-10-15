@@ -19,12 +19,18 @@ Keep the two apart when citing this document.
   that data distribution. No method computes it for real data. Several
   estimate it, bound it, or compute it for a model of the data, and each
   fails under named conditions (section 1).
-- **No method read here has been tested at a fraud-like positive rate.**
-  The lowest Bayes error any of these studies simulated was 1 percent
-  (`wheat-equal-class-sizes-no-imbalance-tested`); confident learning was
-  shown imbalanced only at 9/12/79 percent
-  (`cl-threshold-design-targets-class-imbalance`). Card fraud is about 0.2
-  percent positive. This is the largest gap for HSBC's use.
+- **No estimator read here has been tested at a fraud-like positive rate.**
+  Wheat et al. drew equal numbers of points per class
+  (`wheat-equal-class-sizes-no-imbalance-tested`); Ishida et al. report no
+  class-imbalanced experiment and need the class prior for their
+  positive-confidence estimator (`ishida-pconf-needs-class-prior`);
+  confident learning was shown on imbalanced data only at 9, 12 and 79
+  percent (`cl-threshold-design-targets-class-imbalance`). Card fraud is
+  about 0.2 percent positive. This is the largest gap for HSBC's use.
+  (Corrected 2026-10-15 after review: the first version said "the lowest
+  Bayes error any of these studies simulated was 1 percent", which was
+  false, since Theisen et al. report flow-model Bayes errors as low as
+  1.07e-4, and which confused the Bayes error with the positive rate.)
 - **For an optimization problem, yes, in two narrow ways from the store:**
   instances whose optimum is known by construction (planted) or published
   (best-known), and minimax lower bounds that hold for a whole class of
@@ -48,11 +54,11 @@ Keep the two apart when citing this document.
 | Information bounds (Fano, Hellman and Raviv; F-score and cost bounds) | A lower and an upper bound on the Bayes error, and an interval for the best F-score, from the conditional entropy H(y given x) | H(y given x) or the mutual information between features and label | The interval for F-score is wide; maximizing mutual information can give a low F-score | `fano-hellman-bayes-error-bounds-two-class`, `max-fscore-bounds-from-conditional-entropy`, `infomax-can-yield-low-fscore-and-high-cost-risk`, `fano-binary-case-uses-exact-form-not-simplified` |
 | Estimating mutual information | The input the information bounds need | Low-dimensional structure in the data | KSG fails from 13 dimensions, MINE from 25, InfoNCE from 37 (one Gaussian study); no estimator is accurate without assumptions | `ksg-mine-infonce-fail-dimension-thresholds-gaussian`, `no-mi-estimator-accurate-without-strong-assumptions`, `neural-mi-accuracy-needs-low-dim-latent-structure` |
 | Annotator agreement (label convergence) | An upper bound on the metric set by contradictory labels | Examples labeled twice | One labeling convention dominates; the subset is not representative | `tschirschwitz-lvis-label-convergence-interval`, `tschirschwitz-derivation-interannotator-map`, `tschirschwitz-bound-fails-with-dominant-convention` |
-| Label-noise estimation | How much of the data is mislabeled, which caps accuracy measured against those labels | Out-of-sample probabilities; noise that depends only on the class | Noise depends on the features; classes overlap; a flagged count mixes errors with ambiguous cases | `cl-estimates-joint-noisy-true-labels-by-counting`, `cl-assumes-class-conditional-noise`, `blanchard-identifiability-two-conditions`, `blanchard-class-overlap-separate-from-label-noise`, `toner-label-noise-implies-risk-lower-bound` |
+| Label-noise estimation | An estimate of how much of the data is mislabeled, and a lower bound on proper-loss risk under label noise (not on accuracy) | Out-of-sample probabilities; noise that depends only on the class | Noise depends on the features; classes overlap; a flagged count mixes errors with ambiguous cases | `cl-estimates-joint-noisy-true-labels-by-counting`, `cl-assumes-class-conditional-noise`, `blanchard-identifiability-two-conditions`, `blanchard-class-overlap-separate-from-label-noise`, `toner-label-noise-implies-risk-lower-bound` |
 | Learning curves (error(N) = aN^-b + c) | A floor c for one model class and setup | Training on several data sizes | c is per model and setup, not a dataset floor; extrapolation beyond 10 times the data is unreliable | `ding-floor-c-is-model-and-config-specific`, `ding-extrapolation-beyond-10x-unreliable`, `ding-replicator-cv-b-0144-protocol-spread` |
 | Uncertainty methods (ensembles, Bayesian) | A split into reducible and irreducible uncertainty | A second-order model | Model bias inflates the "irreducible" part; epistemic estimates are lower bounds | `jimenez-bias-inflates-aleatoric-and-hides-epistemic`, `jimenez-epistemic-estimates-are-lower-bounds-incomplete` |
-| Synthetic data with a known label process | A dataset whose fraud rule is known, so its ceiling is knowable | A simulator | The simulator's rule is an assumption, not real fraud | `allen-cardsim-label-is-naive-bayes-rank-cutoff`, `altman-amlworld-labels-complete-by-construction`, `ostman-amlgentex-node-label-from-pattern-membership`, `fdh-sim-scenario1-amount-over-220`, `amlsim-label-set-by-alert-flag`, `sparkov-label-is-generation-path` |
-| A metric's floor | The score any model gets for nothing | The positive rate | It is a floor, not a ceiling | `boyd-theorem1-min-precision-given-recall`, `boyd-theorem2-min-aucpr-formula` |
+| Synthetic data with a known label process | A dataset whose labeling rule is written down (none of these papers computes a ceiling from it; see section 5) | A simulator | The simulator's rule is an assumption, not real fraud; in some simulators the label is not a fixed rule on the observable columns | `allen-cardsim-label-is-naive-bayes-rank-cutoff`, `altman-amlworld-labels-complete-by-construction`, `ostman-amlgentex-node-label-from-pattern-membership`, `amlsim-label-set-by-alert-flag`, `fdh-sim-scenario3-label-not-function-of-features` |
+| A metric's floor | The worst score any ranking can get | The positive rate | It is a floor, not a ceiling | `boyd-theorem1-min-precision-given-recall`, `boyd-theorem2-min-aucpr-formula` |
 
 Two fraud-specific results bear directly on "better model or better data":
 
@@ -103,9 +109,12 @@ title claims an advantage, a speedup or an enhancement. Snapshot as of
 - linear algebra: 1
 
 This is a sort of **claims by title**, not evidence that any advantage
-holds; at least one "optimization" title is a counter-claim ("The Quantum
-Approximate Optimization Algorithm Can Require Exponential Time to Optimize
-Linear Functions"). Re-run the script for current counts.
+holds. The counts are rough: the "optimization" 16 include a code record
+that duplicates its paper ("Evidence of Scaling Advantage..."), a
+counter-claim ("The Quantum Approximate Optimization Algorithm Can Require
+Exponential Time to Optimize Linear Functions") and a comparison between two
+quantum methods ("Advantages of multistage quantum walks over QAOA"). Re-run
+the script for current counts.
 
 ## 4. F46's nine ceiling facts (verified dispositions)
 
@@ -128,6 +137,12 @@ The machine-readable version is `FACT_DISPOSITIONS` in
 
 None of the following is stated by the sources read. It is a plan built
 from them, to be tested.
+
+0. **A simulator with a written-down labeling rule makes its own ceiling
+   computable in principle**: score each record with the generator's rule
+   (CardSim's naive Bayes posterior, for example) and measure how well that
+   ideal scorer does. None of the simulator papers does this, and where the
+   label depends on random draws the observable columns do not determine it.
 
 1. **Measure label quality first.** Have several reviewers label a
    stratified sample of transactions, frauds over-sampled, and record each

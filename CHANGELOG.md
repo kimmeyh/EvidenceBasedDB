@@ -15,6 +15,20 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **fix**: F78 fresh-eyes review (Sprint 9 Task E, Issue #93) -- the
+  answer document's false "lowest Bayes error simulated was 1 percent" is
+  replaced by the positive-rate gap it meant (Theisen reports flow-model
+  Bayes errors down to 1.07e-4, checked in Table 1); its verified section no
+  longer restates ideas cut from the values ("its ceiling is knowable",
+  noise "caps accuracy"), which moved to section 5 as inference; one false
+  stored sentence removed (Butt's abstract does give the attack scope);
+  proved results now keep the first-pass reader's stated downgrade (11
+  assertions; Butt's Theorem 1 is moderate), Tschirschwitz's hedge restored
+  (low), Butt's unlike comparison dropped, three unlabeled reader
+  conclusions cut; read-row details now say which papers were re-read after
+  a full read and that absences rest on the first-pass read; the script
+  corrects stored values and read details; the family sort no longer reads
+  "samples" as sampling
 - **docs**: the F78 answer document,
   `docs/research/ceilings-ml-and-optimization.md` (Sprint 9 Task E, Issue
   #93) -- the ways to find a ceiling for an ML dataset, each with what it
