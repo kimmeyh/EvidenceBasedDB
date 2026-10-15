@@ -86,8 +86,15 @@ _GIT_READS = frozenset({
     "show", "log", "diff", "status", "grep", "ls-files", "ls-tree", "rev-parse", "blame",
     "cat-file", "describe", "shortlog", "rev-list", "help", "version",
 })
-_GIT_OPTION_WITH_VALUE = frozenset({"-C", "-c", "--git-dir", "--work-tree", "--namespace", "--exec-path"})
-_GIT_CALL = re.compile(r"(?:^|[\s;&|(])git(?:\.exe)?(?=\s|$)", re.IGNORECASE)
+_GIT_OPTION_WITH_VALUE = frozenset({"-C", "--git-dir", "--work-tree", "--namespace", "--exec-path"})
+# A read subcommand can still write through these (second security review,
+# 2026-10-15): `--output`/`-O` write a file, `--open-files-in-pager` runs a
+# program, and `-c`/`--config-env` can set a pager, an editor or a hook
+# path. With a guarded path present, any of them blocks.
+_GIT_WRITING_OPTION = re.compile(r"^(?:-c|--config-env.*|--output.*|-O.*|--open-files-in-pager.*)$")
+# `git` after any non-word character (a quote, a backtick, a brace, a path
+# separator), not only after whitespace or a shell operator.
+_GIT_CALL = re.compile(r"(?:^|[^\w.-])git(?:\.exe)?(?=[\s\"'`)}]|$)", re.IGNORECASE)
 _TOKEN = re.compile(r"\"[^\"]*\"|'[^']*'|[^\s;&|()]+|[;&|()]")
 
 
@@ -97,11 +104,12 @@ def _git_writes(command: str) -> bool:
     subcommand are skipped."""
     for call in _GIT_CALL.finditer(command):
         tokens = _TOKEN.findall(command[call.end():])
+        tokens = tokens[:next((n for n, t in enumerate(tokens) if t in (";", "&", "|", "(", ")")), len(tokens))]
+        if any(_GIT_WRITING_OPTION.match(t.strip("\"'")) for t in tokens):
+            return True
         i = 0
         while i < len(tokens):
             tok = tokens[i]
-            if tok in (";", "&", "|", "(", ")"):
-                break
             if tok in _GIT_OPTION_WITH_VALUE:
                 i += 2
                 continue

@@ -15,6 +15,11 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **fix**: second automated security review of the never-write hook
+  (2026-10-15, Issue #89) -- a git read subcommand that writes through an
+  option (`--output`, `-O`, `--open-files-in-pager`, `-c`, `--config-env`)
+  now blocks when a guarded path appears, and `git` is found after a quote,
+  backtick or brace, not only after whitespace; each proven by injection
 - **fix**: the never-write hook's git check is fail-closed (automated
   security review of 2b90897, 2026-10-15) -- when a guarded path appears,
   every git invocation must name a read subcommand (show, log, diff,

@@ -174,6 +174,13 @@ P2 = "D:/Data/Harold/github/hsbc-qfraud-phase2"
     f"git -C {P2} config user.name x",
     f"git -C {P2} update-ref HEAD abc",
     f"git -c core.x=y -C {P2} revert HEAD",
+    # A read subcommand that writes through an option, and git after a quote
+    # or backtick (second security review, 2026-10-15).
+    f"git -C {P2} log --output={P2}/x.txt",
+    f"git -C {P2} -c core.pager=evil log",
+    f"git -C {P2} grep --open-files-in-pager=vi x",
+    f'"git" -C {P2} commit -m x',
+    f"echo `git -C {P2} commit -m x`",
 ])
 def test_write_forms_into_phase2_are_blocked(command):
     """Sprint 9 Task A review (2026-10-15): each of these returned exit 0.
@@ -185,7 +192,10 @@ def test_write_forms_into_phase2_are_blocked(command):
     made to return False, every git case went red. Restored and green
     again. (An earlier injection, against the first, denylist version of
     the git check, removed its `-C` option group and turned the git -C
-    cases red.)"""
+    cases red.) Second security review, same day: with the writing-option
+    check disabled, the --output and --open-files-in-pager cases went red;
+    with _GIT_CALL back to whitespace-only boundaries, the quoted and
+    backticked git cases went red. Restored and green again."""
     assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 2, command
 
 
