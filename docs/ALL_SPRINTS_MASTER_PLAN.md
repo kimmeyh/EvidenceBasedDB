@@ -615,6 +615,22 @@ estimates are `[no-history]`.
   paper; both proven to fail by injection.
 - Depends on: F64 (done)
 
+### Carded during Sprint 9 (2026-10-14 onward)
+
+**F81. The code-edit hook blocks read-only `sed -n` commands (~30m) Priority 120** (NEW 2026-10-15, Sprint 9 Task A)
+- Phase: Process / hooks
+- Platform: `.claude/hooks/block_unraw_escape.py` (`_shell_edits_code`)
+- Found 2026-10-15: two read-only commands were blocked as code edits. Each
+  was `sed -n <range>p <code file>; ... | grep -i ...`. The hook's own
+  message says "Reading with sed -n, cat or grep is fine." The likely cause
+  (inferred, not yet tested): the in-place flag search runs over the rest of
+  the command past `;`, so a later `grep -i` reads as `sed -i`.
+- Cost: friction only. The Read and Grep tools work around it. But a guard
+  that blocks correct work trains bypass.
+- Acceptance: the two blocked shapes pass; `sed -i` on a code file is still
+  blocked; both proven by injection.
+- Depends on: none
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT

@@ -526,3 +526,54 @@ and reasons, so each takes `method`.
   thousand inference modules (2007), and eight tactic types. The second is
   not reconciled with the six base tactic types the 2009 LarKC source
   lists; its `certainty_reasons` say why.
+
+## 19. Applied 2026-10-15: Phase 2 results (Sprint 9 Task A, F79)
+
+Team lead, 2026-10-14: "they are both consumers of each other and reads
+are permitted without direct prompts from the other - so each could read
+from each other, but cannot write to each other". This repository and
+`hsbc-qfraud-phase2` read each other freely; neither writes to the other.
+
+**Inbound: a Phase 2 result entering the store.**
+
+- **Read it from Phase 2's git history, at a named commit.** Use
+  `git -C <phase2> show <commit>:<file>`, which is a read. Never read the
+  working tree as the evidence: Phase 2 is an active repository, and its
+  files move. Pin the last commit that touched the file, and check that the
+  working copy still matches it.
+- **Never copy it into Phase 2 and never edit it there.** The local copy
+  the record depends on is the committed blob itself. Its SHA-256 goes in
+  the record's `evidence`.
+- **Provenance names four things:** the repository, the commit, the file
+  and the run (date and sprint, as the document states them). `access` is
+  `<local path in Phase 2> | <GitHub URL at the commit>`. The repository
+  is private, so the URL is the pointer, and the commit is what the record
+  depends on.
+- **Assert only what the document still stands behind.** A Phase 2
+  document corrects itself in place. A column or figure it declares wrong
+  is not asserted, and a result it calls unverified is not imported.
+- **Certainty** follows the Phase 1 precedent: the consumer project's own
+  hardware measurement, read directly, starts HIGH (`HW`). It is the same
+  project as earlier consumer results, so a `supports` link between them
+  is fine, but it is not independent corroboration.
+- **The quote test reads the blob at the commit.** It never reads the
+  working tree, so it neither breaks nor passes on text that was never read.
+
+The first trial: `scripts/sprint9_f79_phase2_b4_b5_inbound.py`, record
+`hsbc-qfraud-phase2-b4-b5-hardware-result` (Phase 2's
+`docs/B4_B5_HARDWARE_RESULT.md` at commit 139fa13). It yields four
+assertions: Dirac-3 matches its classical proxy inside the pocket; no
+in-segment edge on the 8 scoreable cells; the device sits below Phase 2's
+classical bar; and B5's QSVM is weak. The quotes are checked by
+`tests/test_f79_phase2_inbound.py`.
+
+**Outbound: a change wanted in Phase 2.** Write a prompt the team lead
+pastes into a Phase 2 session. Never write the change from here (hook:
+`.claude/hooks/block_sibling_repo_writes.py`). The prompt:
+
+- states what to change, and where (file and line or section);
+- says why, with each claim's provenance inline (record id, source and
+  anchor), because Phase 2's session may not resolve this repository's
+  ids;
+- asks for that repository's own test or check, proven to fail where it
+  guards something.

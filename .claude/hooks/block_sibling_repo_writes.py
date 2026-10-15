@@ -1,6 +1,12 @@
-"""PreToolUse hook blocking writes into spamfilter-multi or
-hsbc-quantum-fraud-2026 -- their repos, their .claude directories, and
-their Claude Code memory directories.
+"""PreToolUse hook blocking writes into spamfilter-multi,
+hsbc-quantum-fraud-2026 or hsbc-qfraud-phase2 -- their repos, their .claude
+directories, and their Claude Code memory directories.
+
+hsbc-qfraud-phase2 added 2026-10-15 (Sprint 9 Task A, F79). Team lead,
+2026-10-14: "they are both consumers of each other and reads are permitted
+without direct prompts from the other - so each could read from each
+other, but cannot write to each other". A change wanted in Phase 2 goes as
+a prompt the team lead pastes into a Phase 2 session.
 
 Team lead, 2026-09-15: "from here on out, the activities in this repo
 should not write/update files in either spamfilter-multi or hsbc repo...
@@ -41,6 +47,9 @@ GUARDED_ROOTS = (
     r"D:\Data\Harold\github\hsbc-quantum-fraud-2026",
     r"C:\Users\kimme\.claude\projects\D--Data-Harold-github-spamfilter-multi",
     r"C:\Users\kimme\.claude\projects\D--Data-Harold-github-hsbc-quantum-fraud-2026",
+    r"D:\Data\Harold\github\hsbc-qfraud-phase2",
+    r"C:\Users\kimme\.claude\projects\D--Data-Harold-github-hsbc-qfraud-phase2",
+    r"C:\Users\kimme\.claude\projects\D--Data-Harold-hsbc-quantum-fraud-2026-Phase-2-Planning",
 )
 
 # Matched case-insensitively and with either slash direction, since a Bash
@@ -124,8 +133,9 @@ def main() -> int:
 
 def _block(detail: str) -> None:
     print(
-        "[BLOCKED] This session must not write into spamfilter-multi or "
-        "hsbc-quantum-fraud-2026 (team lead, 2026-09-15).\n"
+        "[BLOCKED] This session must not write into spamfilter-multi, "
+        "hsbc-quantum-fraud-2026 (team lead, 2026-09-15) or "
+        "hsbc-qfraud-phase2 (team lead, 2026-10-14).\n"
         "\n"
         f"Detail: {detail}\n"
         "\n"
@@ -138,7 +148,8 @@ def _block(detail: str) -> None:
         "If the team lead has explicitly asked for a change to be made in "
         "one of those repositories from here, re-run with the literal token "
         "allow_sibling_repo_write in the command or file path. Otherwise, "
-        "make the change from a session already working in that repository.",
+        "make the change from a session already working in that repository; "
+        "for hsbc-qfraud-phase2, draft a prompt the team lead pastes there.",
         file=sys.stderr,
     )
 

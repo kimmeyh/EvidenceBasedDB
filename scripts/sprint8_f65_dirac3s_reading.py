@@ -330,6 +330,11 @@ CLASSED = {
     "dirac3-matches-exact-optimum-on-convex-cvqboost": ("not addressed", None),
     "dirac3-stratification-falls-short-ballin-2026": ("not addressed", None),
     "favorable-dirac3-papers-are-qci-authored": ("not addressed", None),
+    # Added 2026-10-15 (Sprint 9 Task A, F79): Phase 2's B4 and B5 hardware
+    # runs, which the Dirac-3S guide does not address.
+    "dirac3-matches-classical-proxy-in-pocket-spectra-b4": ("not addressed", None),
+    "cvqboost-in-segment-edge-negative-on-device-spectra-b4": ("not addressed", None),
+    "qsvm-on-dirac3-weak-on-ulb-b5": ("not addressed", None),
 }
 
 # Admission-against-interest candidates, for the team lead at Manual

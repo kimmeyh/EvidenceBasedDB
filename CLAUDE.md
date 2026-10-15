@@ -17,11 +17,29 @@ or book, which keeps whatever spelling its source used. See F13
 ## What this repository is
 
 The **Evidence Based DB**: a store of assertions, acronyms, technical terms and
-papers, each carrying provenance and a derived certainty. Its first consumer is
+papers, each carrying provenance and a derived certainty. Its first consumer was
 the HSBC quantum fraud submission
-(`github.com/kimmeyh/hsbc-quantum-fraud-2026`), but the target scope is a domain
+(`github.com/kimmeyh/hsbc-quantum-fraud-2026`, Phase 1, now archived and kept
+as history). **Its active consumer is `hsbc-qfraud-phase2`**
+(`github.com/kimmeyh/hsbc-qfraud-phase2`, private, at
+`D:\Data\Harold\github\hsbc-qfraud-phase2`). The target scope is a domain
 knowledge base over quantum machine learning, machine learning, quantum
 computing, and the major QC platforms.
+
+**The two repositories consume each other (F79, team lead 2026-10-14):**
+"they are both consumers of each other and reads are permitted without
+direct prompts from the other - so each could read from each other, but
+cannot write to each other".
+
+- **Reads are free, both ways.** A session here reads Phase 2's files
+  directly, and a Phase 2 session reads this repository and the store. No
+  prompt is needed for a read.
+- **Writes never cross.** A change wanted in the other repository goes as a
+  prompt the team lead pastes into a session working there.
+- **Inbound evidence** (a Phase 2 result entering the store) is read from
+  Phase 2's files at a named commit; its provenance names the repository,
+  the commit, the file and the run. See `docs/INTAKE_WORKFLOW.md`, "Phase 2
+  results".
 
 **It is private.** That has a consequence recorded in ADR-0005: while it is
 private, no citation from the public consumer repository may depend on this one
@@ -100,7 +118,10 @@ rather than a qualitative decision.
   backlog item, reading a memory file -- is expected and stays fine; writing,
   editing, or running a write-shaped command against either from an
   EvidenceBasedDB session is not, and needs a session already working in
-  that repository instead. Hook-enforced:
+  that repository instead. **`hsbc-qfraud-phase2` is under the same rule**
+  (its repository and its Claude Code project directories; F79, team lead
+  2026-10-14): read freely, never write; a wanted change goes as a pasted
+  prompt. Hook-enforced:
   `.claude/hooks/block_sibling_repo_writes.py`, on both the `Bash|PowerShell`
   and `Write|Edit|NotebookEdit` PreToolUse matchers.
 

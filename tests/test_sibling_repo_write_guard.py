@@ -126,6 +126,43 @@ def test_notebook_edit_to_a_guarded_path_is_blocked():
     assert _run(payload).returncode == 2
 
 
+def test_writes_into_phase2_and_its_memory_directory_are_blocked():
+    """F79 (Sprint 9 Task A, 2026-10-15). Team lead, 2026-10-14: the two
+    repositories read each other freely and never write to each other.
+
+    Verified by injection, 2026-10-15: deleting the hsbc-qfraud-phase2
+    repository line from GUARDED_ROOTS let the Write case through (exit 0,
+    test red); deleting the project-directory line instead let the memory
+    Edit case through (test red). Each restored and green again."""
+    write = {
+        "tool_name": "Write",
+        "tool_input": {"file_path": r"D:\Data\Harold\github\hsbc-qfraud-phase2\docs\NOTE.md"},
+    }
+    commit = {
+        "tool_name": "Bash",
+        "tool_input": {"command": 'cd "D:/Data/Harold/github/hsbc-qfraud-phase2" && git commit -m x'},
+    }
+    memory = {
+        "tool_name": "Edit",
+        "tool_input": {
+            "file_path": r"C:\Users\kimme\.claude\projects\D--Data-Harold-github-hsbc-qfraud-phase2\memory\x.md"
+        },
+    }
+    for payload in (write, commit, memory):
+        assert _run(payload).returncode == 2, payload
+
+
+def test_reading_phase2_stays_allowed():
+    """The other half of F79: reads need no prompt and no bypass."""
+    payload = {
+        "tool_name": "Bash",
+        "tool_input": {
+            "command": 'git -C "D:/Data/Harold/github/hsbc-qfraud-phase2" log --oneline -1'
+        },
+    }
+    assert _run(payload).returncode == 0
+
+
 def test_malformed_payload_fails_open():
     proc = subprocess.run(
         [sys.executable, str(HOOK)], input="not json", capture_output=True, text=True

@@ -15,6 +15,16 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **feat**: F79, the Phase 2 exchange (Sprint 9 Task A, Issue #89) --
+  `hsbc-qfraud-phase2` named as the active consumer; the never-write hook,
+  its memory file and CLAUDE.md cover Phase 2's repository and Claude Code
+  project directories, test proven by injection; INTAKE_WORKFLOW.md
+  section 19 sets the inbound path (read at a named commit via `git show`)
+  and the outbound prompt shape; first inbound record
+  `hsbc-qfraud-phase2-b4-b5-hardware-result` with four HW assertions, quotes
+  verified against the pinned blob; a prompt drafted for Phase 2 to close
+  its guard's gap on this repository's memory directory; F81 carded (the
+  code-edit hook blocks read-only `sed -n`)
 - **docs**: Sprint 9 plan approved (2026-10-15, team lead) with Q1 to Q9
   answered; F78's repositories shallow-cloned (Q2 = 2); re-check failures
   reported at Manual Validation (Q4); the first read-for-claims slice
