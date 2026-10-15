@@ -15,9 +15,18 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **docs**: the F78 answer document,
+  `docs/research/ceilings-ml-and-optimization.md` (Sprint 9 Task E, Issue
+  #93) -- the ways to find a ceiling for an ML dataset, each with what it
+  needs and when it fails, citing store assertions; two verified routes
+  for optimization bounds; a computed sort of the store's QML-advantage
+  claims into families (`scripts/qml_advantage_families.py`: optimization
+  is 16 of 85, snapshot 2026-10-15); F46's nine ceiling facts; inferred
+  steps for HSBC kept apart; a test that every cited id is in the store;
+  F83 carded (per-instance optimization bounds have no source yet)
 - **feat**: F78, the ceiling-estimation group read and entered (Sprint 9
-  Task E, Issue #93) -- 29 CE records plus Ishida and Theisen promoted to
-  `read`, each with two read rows: a Sonnet 5.5 first-pass read of the
+  Task E, Issue #93) -- 28 CE records plus Ishida and Theisen promoted to
+  `read` (29 of the 31 CE records are now at `read`, with McDermott), each with two read rows: a Sonnet 5.5 first-pass read of the
   whole source (`subagent`) and the coordinator's `partial` read of the
   opening and every quoted passage in context; Boyd, Dhama, Butt and
   Tschirschwitz also carry Claude's full reads of 2026-10-13. 140

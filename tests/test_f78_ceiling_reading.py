@@ -139,6 +139,21 @@ def test_every_ceiling_fact_has_a_disposition():
 
 
 @pytest.mark.live_store
+def test_the_answer_document_cites_only_assertions_in_the_store(live_conn):
+    """docs/research/ceilings-ml-and-optimization.md names store assertions
+    as its evidence; a misspelled or missing id would cite nothing. Proven
+    to fail by injection, 2026-10-15: with one cited id misspelled in a copy
+    of the document's text, this test named it."""
+    doc = (ROOT / "docs" / "research" / "ceilings-ml-and-optimization.md").read_text(encoding="utf-8")
+    cited = set(re.findall(r"`([a-z0-9]+(?:-[a-z0-9.]+){2,})`", doc))
+    cited = {c for c in cited if not c.endswith(".py") and not c.endswith(".md")}
+    assert len(cited) >= 50
+    missing = sorted(c for c in cited if not live_conn.execute(
+        "SELECT 1 FROM records WHERE id = ? AND class = 'assertion'", (c,)).fetchone())
+    assert not missing, missing
+
+
+@pytest.mark.live_store
 def test_a_second_apply_writes_nothing(live_copy):
     from store import connect
     f78 = _script()

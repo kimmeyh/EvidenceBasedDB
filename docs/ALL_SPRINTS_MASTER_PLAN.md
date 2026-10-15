@@ -651,6 +651,20 @@ estimates are `[no-history]`.
   legitimate reads.
 - Depends on: none
 
+**F83. Source per-instance bounds for optimization problems (~1h) Priority 140** (NEW 2026-10-15, Sprint 9 Task E answer document, section 5)
+- Phase: Sourcing / reading
+- Platform: the store; `docs/research/ceilings-ml-and-optimization.md`
+- The answer document's optimization section has two verified routes
+  (minimax lower bounds over a class; instances with a known or best-known
+  optimum). The standard per-instance certificate (a relaxation or dual
+  bound, and the gap an exact solver reports) is stated there as general
+  practice with no source in the store.
+- Acceptance: primary sources for relaxation and duality bounds (for
+  example a linear or semidefinite relaxation text and a solver's gap
+  definition) entered and read; section 5 point 5 rewritten as verified,
+  with the store ids, as a dated amendment.
+- Depends on: none
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
