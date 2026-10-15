@@ -75,11 +75,48 @@ _GUARDED_PATTERNS = [
 # now come first, and the git verbs that change a working tree or history
 # (checkout, restore, stash, apply, tag, switch, clean, cherry-pick) count.
 # Remove-Item, Copy-Item, Move-Item, Rename-Item, tee and sed -i passed too.
+#
+# Git is FAIL-CLOSED since the same day (automated security review of that
+# fix): a list of git write verbs is never complete (pull, revert, am,
+# config, update-ref, worktree, gc...), and global options such as
+# --no-pager could sit before the verb. So when a guarded path appears,
+# every git invocation must name a read subcommand from _GIT_READS; any
+# other subcommand blocks. See _git_writes.
+_GIT_READS = frozenset({
+    "show", "log", "diff", "status", "grep", "ls-files", "ls-tree", "rev-parse", "blame",
+    "cat-file", "describe", "shortlog", "rev-list", "help", "version",
+})
+_GIT_OPTION_WITH_VALUE = frozenset({"-C", "-c", "--git-dir", "--work-tree", "--namespace", "--exec-path"})
+_GIT_CALL = re.compile(r"(?:^|[\s;&|(])git(?:\.exe)?(?=\s|$)", re.IGNORECASE)
+_TOKEN = re.compile(r"\"[^\"]*\"|'[^']*'|[^\s;&|()]+|[;&|()]")
+
+
+def _git_writes(command: str) -> bool:
+    """True when some git invocation in the command names a subcommand that
+    is not a known read. Global options (and their values) before the
+    subcommand are skipped."""
+    for call in _GIT_CALL.finditer(command):
+        tokens = _TOKEN.findall(command[call.end():])
+        i = 0
+        while i < len(tokens):
+            tok = tokens[i]
+            if tok in (";", "&", "|", "(", ")"):
+                break
+            if tok in _GIT_OPTION_WITH_VALUE:
+                i += 2
+                continue
+            if tok.startswith("-"):
+                i += 1
+                continue
+            if tok.strip("\"'").lower() not in _GIT_READS:
+                return True
+            break
+    return False
+
+
 _WRITE_VERBS = re.compile(
     r"(?:^|[\s;&|(])(?:"
-    r"git(?:\s+-[Cc]\s+(?:\"[^\"]*\"|'[^']*'|\S+))*\s+"
-    r"(?:commit|push|add|rm|mv|checkout|restore|switch|reset|merge|rebase|stash|apply|tag|clean|cherry-pick)"
-    r"|rm|mv|cp|copy|del|erase|ren|rename|tee"
+    r"rm|mv|cp|copy|del|erase|ren|rename|tee"
     r"|sed(?:\s+-\S+)*\s+-i\S*"
     r"|touch|mkdir|New-Item|Set-Content|Add-Content|Out-File"
     r"|Remove-Item|Copy-Item|Move-Item|Rename-Item|Clear-Content"
@@ -134,7 +171,7 @@ def main() -> int:
             return 0
         if not _matches_guarded_root(command):
             return 0
-        if not _WRITE_VERBS.search(command):
+        if not _WRITE_VERBS.search(command) and not _git_writes(command):
             return 0  # a guarded path appears, but nothing in the command writes
         _block(f"{tool_name} command referencing a guarded path and a write verb: {command!r}")
         return 2

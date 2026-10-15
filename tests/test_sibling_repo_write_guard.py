@@ -167,22 +167,33 @@ P2 = "D:/Data/Harold/github/hsbc-qfraud-phase2"
     rf'Copy-Item a.md "D:\Data\Harold\github\hsbc-qfraud-phase2\x.md"',
     f"echo x | tee {P2}/x.md",
     f"sed -i 's/a/b/' {P2}/x.md",
+    # Git is fail-closed: any subcommand outside the read list blocks,
+    # whatever global options come first (automated security review).
+    f'git --no-pager -C "{P2}" commit -m x',
+    f"git -C {P2} pull",
+    f"git -C {P2} config user.name x",
+    f"git -C {P2} update-ref HEAD abc",
+    f"git -c core.x=y -C {P2} revert HEAD",
 ])
 def test_write_forms_into_phase2_are_blocked(command):
     """Sprint 9 Task A review (2026-10-15): each of these returned exit 0.
     `git -C <phase2> <write>` matters most, because INTAKE_WORKFLOW.md
     section 19 reads Phase 2 with `git -C`.
 
-    Verified by injection, 2026-10-15: with the hook's `-C` option group
-    removed, the two `git -C` commit and push cases and the checkout case
-    went red; with Remove-Item, Copy-Item, tee and sed -i removed from the
-    verbs, those four went red. Restored and green again."""
+    Verified by injection, 2026-10-15: with Remove-Item, Copy-Item, tee and
+    sed -i removed from the verbs, those four went red; with _git_writes
+    made to return False, every git case went red. Restored and green
+    again. (An earlier injection, against the first, denylist version of
+    the git check, removed its `-C` option group and turned the git -C
+    cases red.)"""
     assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 2, command
 
 
 @pytest.mark.parametrize("command", [
     f'git -C "{P2}" show 139fa13:docs/B4_B5_HARDWARE_RESULT.md',
     f"git -C {P2} log --oneline -3",
+    f"git --no-pager -C {P2} diff HEAD~1 -- docs",
+    f'git -C "{P2}" rev-parse HEAD && git status --short',
     f"sed -n 1,20p {P2}/CLAUDE.md",
 ])
 def test_read_forms_of_phase2_stay_allowed(command):

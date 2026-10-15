@@ -15,6 +15,19 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **fix**: the never-write hook's git check is fail-closed (automated
+  security review of 2b90897, 2026-10-15) -- when a guarded path appears,
+  every git invocation must name a read subcommand (show, log, diff,
+  status, grep, rev-parse and a few more); any other subcommand blocks,
+  whatever global options come first; proven by injection (Issue #89)
+- **feat**: F68 and F69 (Sprint 9 Task B, Issue #90, 070137e) -- the door
+  reads old-style arXiv ids (`quant-ph/0405098`) and DOIs with parentheses,
+  tests proven by injection; the five Massoli entries refused on 2026-10-12
+  entered at `seen` by `scripts/sprint9_f68_massoli_rerun.py` (their
+  `updated_reason` names F61's script, whose entry builder it reuses, with
+  the Sprint 9 tag); the "Cerezo" PDF in QMLPapers\NonArxiv is Nathan
+  Wiebe's New J. Phys. perspective, entered by DOI with its SHA-256
+  (INTAKE_WORKFLOW.md section 20)
 - **fix**: F79 fresh-eyes review (Sprint 9 Task A, Issue #89) -- the
   never-write hook now blocks `git -C <repo> <write>` and the git verbs
   that change a tree (checkout, restore, stash, apply, tag), plus
