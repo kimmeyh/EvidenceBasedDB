@@ -343,6 +343,13 @@ estimates are `[no-history]`.
   referenced".
 - The record's authorship (decision 1 in the handoff) is settled by the
   re-run's own provenance, not by attribution.
+- Hold checked 2026-10-15 (Sprint 9 Task K): all three copies
+  (`References\2026-08_Kimmey_CVQBoost-Findings.md`, FourierWall2's
+  `docs\CVQBoost_Findings.md`, the consumer repository's
+  `fourierwall2\CVQBoost_Findings.md`) hash to SHA-256 `425358a7b4cec71f...`
+  and say "Last updated 2026-08-04". Phase 2 has newer Dirac runs (B4 and
+  B5 on 2026-10-06; F142 on Dirac-3S on 2026-10-15), read only, but none
+  rewrites the findings document. Stays HOLD.
 - Depends on: the hsbc repository's re-run of the experiment.
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
@@ -668,10 +675,12 @@ estimates are `[no-history]`.
 **F84. Nine QCi records name Dirac-1 but are tagged Dirac-3 (~1h) Priority 150** (NEW 2026-10-15, Sprint 9 Task G)
 - Phase: Store correction
 - Platform: the store (`record_contexts`, `contexts`)
-- Eight QCi application pages (dimensionality reduction, feature selection,
-  graph partitioning, max-cut, portfolio optimization, set partitioning,
-  traveling salesman, risk-based UAS trajectory) state "Device: Dirac-1",
-  and the QC-7 article names Dirac 1 and never Dirac-3. All nine are
+- Eight QCi application pages name Dirac-1: seven state "Device: Dirac-1"
+  in their header (dimensionality reduction, feature selection, graph
+  partitioning, max-cut, portfolio optimization, set partitioning,
+  traveling salesman), and the risk-based UAS trajectory page names Dirac-1
+  throughout its body (Dirac-3 only as future work). The QC-7 article names
+  Dirac 1 and never Dirac-3. All nine are
   tagged `platform:dirac-3`. The store has no Dirac-1 context, so Task G
   refused their figures and left them at `seen`.
 - Acceptance: a decision on a Dirac-1 context (add `platform:dirac-1`, or

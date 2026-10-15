@@ -15,6 +15,40 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **docs**: F51 hold checked (Sprint 9 Task K, Issue #99) -- all three
+  copies of the CVQBoost findings document unchanged (SHA-256
+  `425358a7b4cec71f...`, "Last updated 2026-08-04"); stays HOLD; recorded on
+  the F51 card
+- **feat**: F56, the computed "corroborated" flag (Sprint 9 Task I, Issue
+  #97) -- ADR-0004 A9; `store/resolvers.py` `corroboration`: a supporter at
+  equal or higher certainty that is independent (different papers, named
+  authors, organizations by name and initials; a vendor's own claim needs
+  both organizations named); shown in `scripts/view.py` and exported as the
+  derived `corroborated_by`, never stored and never moving certainty. Two
+  same-source pairs the first build counted on the live store (QCi under
+  two names; two project documents cited by repository name) are now
+  tested cases. 1 of 17 supported assertions flagged (snapshot,
+  2026-10-15). `tests/test_f56_corroboration.py`, injection-proven
+- **feat**: F55, `cites` links (Sprint 9 Task H, Issue #96) -- ADR-0005
+  A10; `cites` added to `source_links` by a table rebuild
+  (`scripts/migrate_sprint9_cites_link_type.py`, backup first) with a
+  `to_id` index; `store/links.py` reads a link from both ends;
+  `scripts/sprint9_f55_cites.py` fetched 807 Crossref reference lists
+  (cached outside git) and wrote 5,620 links, 793 of 2,102 papers at an end
+  (snapshot, 2026-10-15); tests for the migration, matching, the cache and
+  a live recompute of every stored link, injection-proven
+- **fix**: F80 review (Sprint 9 Task G, Issue #95) -- fresh-eyes review
+  of 9f71f19: five values corrected (one contradicted its source, one
+  carried a figure from another experiment); vendor descriptions graded
+  MODERATE (only one of seven was); three grades set by what the claim is;
+  Henriet's routing result typed as the vendor's own; Cao and Henriet
+  applicability moved to `qc`, Miri's rationale corrected; Miri and Wang
+  conflicts of interest recorded; the Kaggle dataset-size assertion dropped
+  (a determinate fact already held); a re-apply now syncs quotes, contexts,
+  claim types and provenance, with a live test that the store matches the
+  script; admission-against-interest candidates listed for Manual
+  Validation; F84 card, F65 comment and INTAKE section 23 corrected.
+  233 assertions (snapshot, 2026-10-15)
 - **feat**: F80 slice read and entered (Sprint 9 Task G, Issue #95) --
   `scripts/sprint9_f80_reading.py`: ten first-pass readers
   (`manifests/sprint9_f80_reads/`), then the coordinator read every quoted
@@ -22,7 +56,7 @@ this project keeps having to replace with a step.
   (snapshot, 2026-10-15). The coordinator's read corrected seven values and
   stripped an unsupported clause from eqc-models. 11 records refused with
   reasons; the nine that name Dirac-1 are carded as F84. Vendor claims about
-  their own product are graded LOW, or MODERATE for plain descriptions. The
+  their own product are graded LOW (see the review fix above for descriptions). The
   17 new Dirac-3 assertions are classed against the Dirac-3S guide
   (F65 `CLASSED`). `tests/test_f80_slice_reading.py`, each test proven red
   by injection
