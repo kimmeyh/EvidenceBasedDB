@@ -178,3 +178,43 @@ from them, to be tested.
   are not read yet: no free copy; they are on the team lead's hand-download
   list.
 - Per-instance optimization bounds have no source in the store (F83).
+
+## Addendum, 2026-10-16: the two closed papers
+
+Added after the team lead's Manual Validation answers; the sections above
+are left as written on 2026-10-15. Counts are a snapshot as of 2026-10-16.
+
+- **Chen et al. 2025 is read** (12 assertions). Its estimator, EF-BER,
+  counts the samples a kNN, trained on large single-label k-means clusters,
+  disagrees with (`chen-method-hkmeans-ann`). Unbiasedness is proved for
+  the exact Bayes-noise proportion, not for what EF-BER computes
+  (`chen-unbiased-oracle`). Its gain over BN-BER is cost, not accuracy:
+  BN-BER needed more than 512 GB on 245,057 rows, where EF-BER needed at
+  most 300 MB (`chen-efficiency-results`), while on 12 benchmarks BN-BER
+  was effective on 11 and EF-BER on 10 (`chen-benchmark-accuracy`). It
+  measures plain error rate only, never tests class imbalance, and its
+  synthetic data have equal priors (`chen-imbalance-untested`). For the
+  first gap above this changes nothing: still no source tests a positive
+  rate near 0.2 percent.
+- **Han and Verdu 1994 is not obtainable** (no free copy). Team lead Q6 =
+  1: its content comes from free sources instead.
+  - Scarlett and Cevher's equation (108), the data-processing form of
+    Fano, holds for any prior
+    (`scarlett-fano-data-processing-form-holds-for-any-prior`).
+  - Chen, Guntuboyina and Zhang 2016 (JMLR, read in part) prove a
+    generalized Fano inequality for any prior and any zero-one loss
+    (`cgz-generalized-fano`): the Bayes risk is at least
+    1 + (I + log(1 + R0)) / log(1 - R0), where R0 is the error with no data
+    (`cgz-r0-definition`). The paper never discusses a skewed or binary
+    non-uniform prior.
+- **Inferred (coordinator arithmetic, not in any source):** for a binary
+  label with positive rate p, R0 = p, and the bound is about p - I/p. At
+  p = 0.0017 it is 0.0017 when the features carry no information about the
+  label, 0.0011 at I = 1 millionth of a nat, and zero at I = p squared,
+  about 2.9 millionths of a nat. Any useful fraud feature carries far more
+  than that, so a Fano-type bound on plain error rate cannot set a fraud
+  ceiling. This confirms F-008's "vacuous at 0.17 percent" with a sourced
+  inequality, and points back to the routes of section 1 that do not run
+  through mutual information.
+- **Open gaps now:** no source tests a positive rate near 0.2 percent; per-
+  instance optimization bounds (F83).

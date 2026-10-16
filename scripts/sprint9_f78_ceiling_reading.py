@@ -53,7 +53,14 @@ ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 TODAY = "2026-10-15"
 TAG = "Sprint 9 Task E, F78"
 READS_DIR = ROOT / "manifests" / "sprint9_f78_reads"
-GROUPS = "abcdef"
+GROUPS = "abcdefgh"
+# Group G is Chen et al. 2025, read on 2026-10-16 once the team lead's hand
+# download arrived (Manual Validation item 7); every other group, TODAY.
+READ_ON = {"g": "2026-10-16", "h": "2026-10-16"}  # H: the JMLR 2016 paper (team lead Q6 = 1)
+
+
+def read_on(group: str) -> str:
+    return READ_ON.get(group, TODAY)
 
 RECORD_ID = {"ishida-2023": "ishida-2023-performance-my-deep-network-too",
              "theisen-2021": "theisen-2021-evaluating-state-art-classification-models"}
@@ -85,6 +92,19 @@ SUBAGENT_DETAIL = {
     "c": "first pass, the whole paper; application proofs and appendix proofs skimmed (Sonnet 5.5 reader, group C)",
     "d": "first pass, the whole paper; appendix tables and experiment figures skimmed (Sonnet 5.5 reader, group D)",
     "e": "first pass, the whole paper, every page and appendix (Sonnet 5.5 reader, group E)",
+    "g": "first pass, the whole paper, every page; the reference list not read (Sonnet 5.5 reader, group G)",
+    "h": ("first pass, in part: sections 1 to 4 and 8 in full; appendix A.3 to A.5 by keyword (A.4's two-point part "
+          "read); sections 5 to 7 and appendices B and C not read (Sonnet 5.5 reader, group H)"),
+}
+# Quotes the reader copied with a space lost from the extracted text (the
+# PDF sets an en space before a theorem's parenthesis and a space before
+# punctuation after a formula).
+QUOTE_EDITS = {
+    "chen-benchmark-accuracy": [("datasets,BG-BER", "datasets, BG-BER")],
+    "chen-unbiased-oracle": [("Theorem 1(", "Theorem 1 (")],
+    "chen-consistency-theorems": [("Theorem 2(", "Theorem 2 ("), ("Theorem 3(", "Theorem 3 (")],
+    "chen-complexity-claim": [("O(n(log2 n)2),", "O(n(log2 n)2) ,"), ("O(n2).", "O(n2) ."),
+                              ("is O(n), so", "is O(n) , so"), ("is O(n(log2 n)2).", "is O(n(log2 n)2) .")],
 }
 SUBAGENT_READER = "Claude Sonnet 5.5 (first-pass subagent)"
 ABSENCE_NOTE = ("; any absence a value states (a test not run, a case not covered) rests on the first-pass full "
@@ -198,6 +218,30 @@ REMOVE = {
         " So a held-out check of the model, not the uncertainty method alone, is needed to learn whether the model "
         "is biased and can still improve.", "")],
     "thanh-theorem1-lower-bound-model-true-error": [("; the paper never uses the term Bayes error", "")],
+    # Chen 2025 (group G, read 2026-10-16 after the team lead's download):
+    # the reader's own critique of the proof, its reading of Table 4's
+    # spread, a judgment on the validity criterion, and a relevance clause.
+    "chen-unbiased-oracle": [(
+        " The proof is a short chain of equalities that exchanges the infimum over classifiers with the expectation "
+        "(Eq. 2) without a stated condition.", "")],
+    "chen-synthetic-accuracy": [(
+        ", which contradicts the authors' sentence that EF-BER has the smallest MSE across datasets.",
+        ", while the text says EF-BER has the smallest MSE across the different datasets.")],
+    "chen-unbiasedness-experiment": [(
+        " The printed means for the three methods are close to each other (for example about 2.4E-03 to 2.6E-03 in "
+        "one parameter setting and about 5.5E-03 to 6.4E-03 in the other), so the gaps are small relative to the "
+        "printed standard deviations; the authors still call this better unbiasedness.", "")],
+    "chen-benchmark-accuracy": [(
+        " This criterion cannot detect an underestimate: an estimate far below the true BER also passes.", "")],
+    "chen-imbalance-untested": [(
+        ", so it gives no evidence for rare-positive (for example 0.2 percent) tabular problems", "")],
+    # Chen, Guntuboyina and Zhang 2016 (group H, read 2026-10-16, Q6 = 1):
+    # two clauses narrowed to what the quoted passages say.
+    "cgz-nonuniform-zero-one-corollary7": [(
+        "in the discrete uniform setting", "in the discrete setting with parameter and action sets {1, ..., N}")],
+    "cgz-limitations-spikes": [(
+        " The paper gives a partitioning fix (Remark 11) for densities bounded above.",
+        " It names an ad hoc fix, described in Remark 11, for specific examples.")],
     "thanh-lower-bound-only-no-upper": [(
         " A lower bound says error is at least this high; it does not say whether error can still be reduced.", "")],
     "thanh-osyn-failure-conditions-generator-and-n": [(
@@ -312,10 +356,50 @@ FACT_DISPOSITIONS = {
               "quantum kernel better on one; the second-hand 'none of 29 comparisons reached 0.05' does not stand"),
 }
 
-CLOSED = {  # the two the team lead downloads by hand (plan Q3 = 1)
-    "chen-2025-efficient-bayes-error-rate-estimation": "DOI:10.1007/s10994-025-06761-w",
+CLOSED = {  # the team lead's hand downloads (plan Q3 = 1); Chen 2025 arrived 2026-10-16 and is group G
     "te-sun-1994-generalizing-fano-inequality": "DOI:10.1109/18.335943",
 }
+# Team lead, 2026-10-16: no free copy of Han and Verdu; Q6 = 1, cover its
+# content from free sources (Scarlett's (108) below, and the JMLR 2016
+# paper as group H).
+NOT_OBTAINABLE = {
+    "te-sun-1994-generalizing-fano-inequality": (
+        "2026-10-16 (Sprint 9 Task E, F78): NOT READ, not obtainable: the team lead has no free copy (Manual "
+        "Validation item 7). Team lead Q6 = 1: its content is covered by Scarlett and Cevher 2019, equation (108) "
+        "(scarlett-fano-data-processing-form-holds-for-any-prior), and by chen-2016-bayes-risk-lower-bounds "
+        "(Corollary 5, a generalized Fano inequality for any prior)"),
+}
+
+SCARLETT = "scarlett-2019-introductory-guide-fano-s-inequality"
+SCARLETT_ANCHOR = "Section 7.2, equation (108), and the 'Non-uniform priors' paragraph, pp. 35-36"
+SCARLETT_READ = ("Claude", "2026-10-16", "partial",
+                 "section 7.2 and the 'Non-uniform priors' paragraph (pp. 35-36), re-read for team lead Q6 = 1")
+# Entered by the coordinator from that re-read (no first-pass reader): the
+# free statement of the inequality Han and Verdu build on.
+COORDINATOR_ASSERTIONS = [
+    AssertionRecord(
+        id="scarlett-fano-data-processing-form-holds-for-any-prior",
+        value=("Scarlett and Cevher state that most generalizations of Fano's inequality rest on the data "
+               "processing inequality for KL divergence: for any event E, the mutual information I(V; V-hat) is at "
+               "least the binary KL divergence between the probability of E under the joint distribution of V and "
+               "V-hat and its probability under the product of their marginals (equation (108)). That step makes "
+               "no use of a uniform prior and holds in the non-uniform case, where the classical form's term can be "
+               "too large to be useful. They credit Han and Verdu (their reference [57]) with weakening it into "
+               "simpler lower bounds for non-uniform settings with discrete alphabets."),
+        provenance=f"{SCARLETT}, {SCARLETT_ANCHOR}",
+        citation_context="; ".join(f'"{q}" ({SCARLETT_ANCHOR})' for q in (
+            "Most of these are not derived based on the most well-known proof of Theorem 1, but are instead based "
+            "on an alternative proof via the data processing inequality for KL divergence",
+            "is the binary KL divergence function",
+            "may be too large for the bound to be useful",
+            "the step (108) makes no use of uniformity, and continues to hold even in the non-uniform case",
+            "In [57], this bound was further weakened to provide simpler lower bounds for non-uniform settings with "
+            "discrete alphabets.")),
+        evidence_tag="N/A", context="ml", certainty="high", certainty_reasons=DOC_FACT,
+        fidelity="scoped", derivation="extracted", claim_type="positive", updated="2026-10-16",
+        updated_reason=("2026-10-16 (Sprint 9 Task E, F78; team lead Q6 = 1): extracted by the coordinator from a "
+                        "re-read of section 7.2 (pp. 35-36)")),
+]
 
 
 def load_groups() -> list[tuple[str, dict]]:
@@ -373,25 +457,32 @@ def assertions() -> list[tuple[str, AssertionRecord, str]]:
             cert, reasons = certainty(aid, a["kind"], a.get("certainty_suggestion", ""), rid in REPOS,
                                       a.get("certainty_reason", ""))
             anchor = a["anchor"]
+            quotes = list(a["quotes"])
+            for old, new in QUOTE_EDITS.get(aid, []):
+                if not any(old in q for q in quotes):
+                    raise ValueError(f"{aid}: the quote text to fix is not in the reader's quotes: {old!r}")
+                quotes = [q.replace(old, new) for q in quotes]
+            day = read_on(g)
             out.append((g, AssertionRecord(
                 id=aid, value=value, provenance=f"{rid}, {anchor}",
-                citation_context="; ".join(f'"{q}" ({anchor})' for q in a["quotes"]),
+                citation_context="; ".join(f'"{q}" ({anchor})' for q in quotes),
                 evidence_tag="N/A", context=a.get("context") or "ml", certainty=cert, certainty_reasons=reasons,
                 fidelity=a.get("fidelity") or "scoped", derivation="extracted", claim_type="positive",
-                updated=TODAY, updated_reason=f"{TODAY} ({TAG}): extracted from {rid}; first-pass read by a subagent, "
-                                              "every quoted passage read in context by the coordinator"), rid))
+                updated=day, updated_reason=f"{day} ({TAG}): extracted from {rid}; first-pass read by a subagent, "
+                                            "every quoted passage read in context by the coordinator"), rid))
     return out
 
 
-def sha_note(path: str) -> str:
+def sha_note(path: str, day: str = TODAY) -> str:
     data = Path(path).read_bytes()
-    return f"Local copy SHA-256 {hashlib.sha256(data).hexdigest()}, {len(data):,} bytes, recorded {TODAY} (F78)"
+    return f"Local copy SHA-256 {hashlib.sha256(data).hexdigest()}, {len(data):,} bytes, recorded {day} (F78)"
 
 
 def apply_changes(conn) -> list[str]:
     log = []
     groups = load_groups()
     for g, p in groups:
+        day = read_on(g)
         rid = RECORD_ID.get(p["record_id"], p["record_id"])
         row = conn.execute("SELECT access, evidence, tier FROM paper_fields WHERE record_id = ?", (rid,)).fetchone()
         if row is None:
@@ -402,10 +493,10 @@ def apply_changes(conn) -> list[str]:
         if not recheck.local_paths(access or ""):
             conn.execute("UPDATE paper_fields SET access = ? WHERE record_id = ?", (f"{access} | {local}", rid))
             note = (f"Shallow clone at commit {REPOS[rid][1]} in GitHubRepos, made {TODAY} (plan Q2 = 2)"
-                    if rid in REPOS else sha_note(local))
+                    if rid in REPOS else sha_note(local, day))
             conn.execute("UPDATE paper_fields SET evidence = ? WHERE record_id = ?",
                          (f"{evidence.rstrip()}; {note}" if evidence and evidence.strip() else note, rid))
-            append_updated_reason(conn, rid, f"{TODAY} ({TAG}): local copy added to access", TODAY)
+            append_updated_reason(conn, rid, f"{day} ({TAG}): local copy added to access", day)
             log.append(f"access {rid} += {local}")
         # (2) applicability, `screened`'s obligation (ADR-0005 A2)
         if not conn.execute("SELECT 1 FROM paper_applicability WHERE record_id = ?", (rid,)).fetchone():
@@ -423,35 +514,41 @@ def apply_changes(conn) -> list[str]:
             reads.append(("Claude", "2026-10-13", extent, detail))
         sub_detail = (f"first pass: {p.get('partial_detail') or 'the whole source'} (Sonnet 5.5 reader, group F)"
                       if g == "f" else SUBAGENT_DETAIL[g])
-        reads.append((SUBAGENT_READER, TODAY, "subagent", sub_detail))
-        reads.append(("Claude", TODAY, "partial", coordinator_detail(rid)))
-        for reader, read_on, extent, detail in reads:
-            if (reader, read_on, extent) not in have:
-                add_read(conn, rid, reader, read_on, extent, detail)
-                log.append(f"read   {rid} [{reader}, {read_on}, {extent}]")
+        reads.append((SUBAGENT_READER, day, "subagent", sub_detail))
+        reads.append(("Claude", day, "partial", coordinator_detail(rid)))
+        for reader, on, extent, detail in reads:
+            if (reader, on, extent) not in have:
+                add_read(conn, rid, reader, on, extent, detail)
+                log.append(f"read   {rid} [{reader}, {on}, {extent}]")
             elif conn.execute("SELECT detail FROM paper_reads WHERE record_id = ? AND reader = ? AND read_on = ? "
-                              "AND extent = ?", (rid, reader, read_on, extent)).fetchone()[0] != detail:
+                              "AND extent = ?", (rid, reader, on, extent)).fetchone()[0] != detail:
                 conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND reader = ? AND read_on = ? "
-                             "AND extent = ?", (detail, rid, reader, read_on, extent))
-                log.append(f"update {rid} read detail [{reader}, {read_on}, {extent}]")
+                             "AND extent = ?", (detail, rid, reader, on, extent))
+                log.append(f"update {rid} read detail [{reader}, {on}, {extent}]")
         # (4) promotion
         if tier != "read":
-            checked = (f"2026-10-13, Claude, read in full; {TODAY} every quoted passage re-read in context"
+            checked = (f"2026-10-13, Claude, read in full; {day} every quoted passage re-read in context"
                        if EARLIER_READS.get(rid, ("",))[0] == "full" else
-                       f"{TODAY}, Claude, read the opening and every quoted passage in context; first pass by a "
+                       f"{day}, Claude, read the opening and every quoted passage in context; first pass by a "
                        "subagent")
             set_tier(conn, rid, "read", checked_against_source=checked)
             log.append(f"tier   {rid} -> read")
     for g, a, rid in assertions():
-        stored = conn.execute("SELECT value, certainty, certainty_reasons FROM records WHERE id = ?",
-                              (a.id,)).fetchone()
-        if stored and tuple(stored) != (a.value, a.certainty, a.certainty_reasons):
+        stored = conn.execute("SELECT r.value, r.certainty, r.certainty_reasons, f.citation_context FROM records r "
+                              "JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()
+        if stored and tuple(stored) != (a.value, a.certainty, a.certainty_reasons, a.citation_context):
             # The script is the record's source: a correction reaches the
             # store, with the reason in updated_reason (as Task A's script).
+            # The quotes are compared too (2026-10-16: a corrected quote
+            # otherwise never landed, the defect Task G's review found).
             conn.execute("UPDATE records SET value = ?, certainty = ?, certainty_reasons = ? WHERE id = ?",
                          (a.value, a.certainty, a.certainty_reasons, a.id))
-            append_updated_reason(conn, a.id, f"{TODAY} ({TAG} fresh-eyes review): value, certainty or reasons "
-                                  "corrected to the script's current text", TODAY)
+            conn.execute("UPDATE assertion_fields SET citation_context = ? WHERE record_id = ?",
+                         (a.citation_context, a.id))
+            day = read_on(g)
+            why = "fresh-eyes review" if day == TODAY else "coordinator"
+            append_updated_reason(conn, a.id, f"{day} ({TAG} {why}): value, certainty, reasons or quotes "
+                                  "corrected to the script's current text", day)
             log.append(f"update {a.id} [{a.certainty}]")
             continue
         if stored:
@@ -466,6 +563,30 @@ def apply_changes(conn) -> list[str]:
         if "hand-download list" not in current:
             append_updated_reason(conn, rid, reason, TODAY)
             log.append(f"note   {rid} (awaiting hand download)")
+    for rid, reason in NOT_OBTAINABLE.items():
+        current = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()[0] or ""
+        if "not obtainable" not in current:
+            append_updated_reason(conn, rid, reason, "2026-10-16")
+            log.append(f"note   {rid} (not obtainable; covered by free sources)")
+    reader, on, extent, detail = SCARLETT_READ
+    if not conn.execute("SELECT 1 FROM paper_reads WHERE record_id = ? AND reader = ? AND read_on = ? AND extent = ?",
+                        (SCARLETT, reader, on, extent)).fetchone():
+        add_read(conn, SCARLETT, reader, on, extent, detail)
+        log.append(f"read   {SCARLETT} [{reader}, {on}, {extent}]")
+    for a in COORDINATOR_ASSERTIONS:
+        stored = conn.execute("SELECT value, certainty, certainty_reasons FROM records WHERE id = ?",
+                              (a.id,)).fetchone()
+        if stored is None:
+            insert_assertion(conn, a, yielded_by=SCARLETT)
+            log.append(f"assert {a.id} <- {SCARLETT} [{a.certainty}] (coordinator)")
+        elif tuple(stored) != (a.value, a.certainty, a.certainty_reasons):
+            conn.execute("UPDATE records SET value = ?, certainty = ?, certainty_reasons = ? WHERE id = ?",
+                         (a.value, a.certainty, a.certainty_reasons, a.id))
+            append_updated_reason(conn, a.id, "2026-10-16 (Sprint 9 Task E, F78): corrected to the script's "
+                                  "current text", "2026-10-16")
+            log.append(f"update {a.id}")
+        else:
+            log.append(f"exists {a.id}")
     return log
 
 

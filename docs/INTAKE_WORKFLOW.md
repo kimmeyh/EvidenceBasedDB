@@ -689,3 +689,38 @@ pastes into a Phase 2 session. Never write the change from here (hook:
   `world`, and three tensor decomposition papers are `ml`. Screening
   refines it.
 - **Reading** comes later, from F57's 74-per-sprint release.
+
+## 25. Applied 2026-10-16: Task E's two closed papers (Sprint 9 Task E, F78; Manual Validation item 7 and Q6 = 1)
+
+- **Chen et al. 2025 arrived** as the team lead's hand download,
+  `Papers\2025-MM_Chen_An-efficient-Bayes-error-rate-estimation-method.pdf`
+  (the "MM" placeholder was left in the name; the paper was published
+  online 11 April 2025; the record points at the file as named). It was
+  read in the Task E shape: a first-pass subagent read the whole paper
+  (`manifests/sprint9_f78_reads/group_g.json`, kept verbatim), then the
+  coordinator read the opening and every quoted passage in context. 12
+  assertions entered, as a snapshot on 2026-10-16. The coordinator cut five
+  reader judgments (a critique of the proof, a reading of Table 4's spread,
+  a judgment on the validity criterion, a contradiction phrased as the
+  reader's, a relevance clause) and restored one space a quote had lost.
+- **Han and Verdu 1994 has no free copy** (team lead, 2026-10-16). It
+  stays at `seen` with that reason. Team lead Q6 = 1: its content is
+  covered by free sources instead.
+  - Scarlett and Cevher 2019 (already `read`), section 7.2, equation
+    (108): the data-processing form of Fano holds for a non-uniform prior;
+    entered as a coordinator assertion from a re-read of pp. 35-36.
+  - Chen, Guntuboyina and Zhang 2016, "On Bayes Risk Lower Bounds", JMLR
+    17 (open access; arXiv:1410.0503), whose Corollary 5 is a generalized
+    Fano inequality for any prior and any zero-one loss. Downloaded from
+    jmlr.org to `Papers\2016-12_Chen_On-Bayes-Risk-Lower-Bounds.pdf` and
+    entered through the door by
+    `manifests/sprint9_q6_chen_guntuboyina_zhang.json`, then read in the
+    Task E shape (group H): sections 1 to 4 and 8 in full, so the subagent
+    row says "in part". 9 assertions entered, two clauses narrowed to what
+    the quoted passages say.
+- **Quote check fixes.** The shared normalizer in the quote tests now
+  expands the "ff", "ffi" and "ffl" ligatures, as it already did "fi" and
+  "fl" (the JMLR text sets "affirmative" with one). Five Chen quotes had
+  lost a space the PDF carries ("Theorem 1 (", "O(n2) ."); restored by
+  `QUOTE_EDITS`. The Task E sync now compares quotes too, so a corrected
+  quote reaches the store.

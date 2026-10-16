@@ -114,6 +114,33 @@ def test_every_ce_record_is_read_or_says_why_not(live_conn):
     for rid, tier, reason in rows:
         if tier != "read":
             assert rid in f78.CLOSED and "hand-download list" in (reason or ""), f"{rid}: {tier}, no reason"
+            if rid in f78.NOT_OBTAINABLE:
+                assert "not obtainable" in reason, f"{rid}: the Q6 = 1 reason is missing"
+    # Chen 2025 arrived 2026-10-16 and is read; Han and Verdu is the one left.
+    assert set(f78.CLOSED) == set(f78.NOT_OBTAINABLE) == {"te-sun-1994-generalizing-fano-inequality"}
+
+
+@pytest.mark.live_store
+def test_coordinator_assertions_quote_their_source_verbatim(live_conn):
+    """Q6 = 1: Scarlett's (108) entered by the coordinator, with no reader
+    manifest behind it. Proven to fail by injection, 2026-10-16: with
+    "non-uniform case" changed to "nonuniform case" in the script's quote,
+    this test named scarlett-fano-data-processing-form-holds-for-any-prior
+    (the store no longer matched the script). LIMIT: that injection stops at
+    the first check; the verbatim check below it is the same comparison the
+    reader-quote test uses, proven there."""
+    f78 = _script()
+    path = live_conn.execute("SELECT access FROM paper_fields WHERE record_id = ?", (f78.SCARLETT,)).fetchone()[0]
+    local = next(s.strip() for s in path.split("|") if s.strip().lower().endswith(".pdf"))
+    text = _source_text(local)
+    for a in f78.COORDINATOR_ASSERTIONS:
+        stored = live_conn.execute("SELECT citation_context FROM assertion_fields WHERE record_id = ?",
+                                   (a.id,)).fetchone()
+        assert stored and stored[0] == a.citation_context, f"{a.id}: not in the store as the script sets it"
+        quotes = _QUOTE.findall(a.citation_context)
+        assert len(quotes) == 5
+        for q in quotes:
+            assert _plain(q) in text, f"{a.id}: not verbatim: {q[:70]}"
 
 
 @pytest.mark.live_store

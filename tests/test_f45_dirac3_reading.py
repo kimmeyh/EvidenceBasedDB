@@ -38,7 +38,8 @@ def _plain(text: str) -> str:
     """The typographic forms the anchors name made plain, page-number lines
     dropped (a quote may cross a page break), whitespace collapsed."""
     for typographic, plain in (("’", "'"), ("‘", "'"), ("“", '"'), ("”", '"'),
-                               ("ﬁ", "fi"), ("ﬂ", "fl"), ("​", "")):
+                               ("ﬁ", "fi"), ("ﬂ", "fl"), ("ﬀ", "ff"), ("ﬃ", "ffi"), ("ﬄ", "ffl"),
+                               ("​", "")):
         text = text.replace(typographic, plain)
     text = re.sub(r"(?m)^\s*\d+\s*$", " ", text)
     return re.sub(r"\s+", " ", text)

@@ -116,8 +116,10 @@ FACT_DISPOSITIONS = {
               "reversed); the decay is in hidden units; the area-law threshold claim is not shown"),
     "F-007": ("entered (Task E)", ["boyd-theorem2-min-aucpr-formula"], "Boyd read in full; the closed form is Theorem 2"),
     "F-008": ("not entered", [], "the 'vacuous at 0.17 percent' part is the handoff's own arithmetic (H(Y) about "
-                                 "0.018 bits), and the generalization it calls for (Han and Verdu 1994) awaits the team "
-                                 "lead's hand download; Scarlett's binary remark assumes a uniform label "
+                                 "0.018 bits), and the generalization it calls for (Han and Verdu 1994) is not "
+                                 "obtainable (team lead, 2026-10-16); per Q6 = 1 its content is entered from free "
+                                 "sources (scarlett-fano-data-processing-form-holds-for-any-prior and "
+                                 "chen-2016-bayes-risk-lower-bounds); Scarlett's binary remark assumes a uniform label "
                                  "(fano-binary-case-uses-exact-form-not-simplified)"),
     "F-402": ("merged", ["qelm-local-dynamics-match-haar-classically-simulable"],
               "De Lorenzis was already read directly and yields the same judgement; nothing re-entered"),

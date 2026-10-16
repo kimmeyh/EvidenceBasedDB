@@ -1,0 +1,209 @@
+{
+ "papers": [
+  {
+   "record_id": "chen-2025-efficient-bayes-error-rate-estimation",
+   "file": "D:/Data/Harold/EvidenceBasedDB/Papers/2025-MM_Chen_An-efficient-Bayes-error-rate-estimation-method.pdf",
+   "pages": 25,
+   "read_extent": "full",
+   "what_it_is": "A 2025 Machine Learning paper that proves the Bayes noise sample proportion is an unbiased estimator of the Bayes error rate and proposes EF-BER, a faster BN-BER variant using hierarchical 2-means clustering and approximate kNN, claimed O(n(log2 n)^2) time and space. Tested on low-dimensional synthetic data with equal class priors and 13 KEEL benchmarks up to 245,057 rows; class imbalance and AUPRC are never addressed.",
+   "title_on_page_1": "An efficient Bayes error rate estimation method",
+   "venue_or_status_on_page_1": "Machine Learning (2025) 114:134 https://doi.org/10.1007/s10994-025-06761-w Received: 22 April 2024 / Revised: 18 January 2025 / Accepted: 28 February 2025 / Published online: 11 April 2025",
+   "assertions": [
+    {
+     "id_suggestion": "chen-ber-definition",
+     "value": "The Bayes error rate (BER) is the lowest error rate any classifier can achieve in a given feature space. Definition 1 defines it as the expectation over (X,Y) of 1 minus the maximum class posterior P(Y=y|X=x). Computing it needs the true posteriors, which the paper calls a recognized challenge to obtain from a dataset.",
+     "anchor": "Sec. 1 and Sec. 3, Definition 1, pp. 2 and 5",
+     "quotes": [
+      "The Bayes error rate (BER) (Fukunaga, 2013) refers to the lowest error rate achievable by any classifier in a given feature space.",
+      "From Definition 1, it can be seen that calculating BER requires obtaining the posterior probabilities of samples belonging to each class. However, accurately calculating posterior probabilities from dataset is a recognized challenge."
+     ],
+     "kind": "definition",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Standard definition restated by the paper.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "chen-bayes-noise-estimator",
+     "value": "The estimator is the proportion of Bayes noise samples in the dataset D, |R_D|/|D|, where a Bayes noise sample is one misclassified by the Bayes optimal classifier. This turns BER estimation into a noise identification problem. It is the same strategy as BN-BER (Chen et al. 2023).",
+     "anchor": "Sec. 3, Definitions 2 and 3, pp. 5-6",
+     "quotes": [
+      "samples that are misclassified by the Bayes optimal classifier are referred to as Bayes noise samples",
+      "the core of which is to transform the estimation of BER into a noise identification problem"
+     ],
+     "kind": "definition",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Definitions stated by the authors.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "chen-unbiased-oracle",
+     "value": "Theorem 1 states that the Bayes noise sample proportion |R_D|/|D| is an unbiased estimator of the BER. The proof assumes the Bayes noise samples R_D are known exactly (the set misclassified by the Bayes optimal classifier). It does not prove that the practical EF-BER output, which finds noise samples with clusters and an approximate kNN, is unbiased. The proof is a short chain of equalities that exchanges the infimum over classifiers with the expectation (Eq. 2) without a stated condition.",
+     "anchor": "Sec. 3, Theorem 1 and proof, p. 6",
+     "quotes": [
+      "Theorem 1(Unbiasedness)",
+      "is an unbiased estimator of the BER.",
+      "According to the definition of Bayes noise samples, it can be known that"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Peer-reviewed proof, but it covers the oracle estimator only, the infimum-expectation exchange is not justified in the text, and the practical estimator relies on approximation.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "chen-consistency-theorems",
+     "value": "Theorem 2 (restated from Chen et al. 2023) gives almost-sure convergence of the oracle estimator to the BER as n goes to infinity. Theorem 3 uses McDiarmid's inequality to give a finite-sample bound: with probability at least 1 minus delta, the absolute error is below a term of the form sqrt(ln(2/delta)/(2n)) (the exact printed form is garbled in the PDF text). Both concern the oracle Bayes-noise proportion, not the practical EF-BER output.",
+     "anchor": "Sec. 3, Theorems 2 and 3, p. 7",
+     "quotes": [
+      "Theorem 2(Consistency under the strong law of large numbers)",
+      "Theorem 3(Consistency under the weak law of large numbers)",
+      "Based on McDiarmid inequality (Doob, 1940) and Eq. (2) with Eq. (3), we can derive"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Proof in the paper; Theorem 3 is worded loosely ('we can consider ... a consistent estimator') and its rate formula is hard to read in the PDF text; applies to the oracle estimator.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "chen-method-hkmeans-ann",
+     "value": "EF-BER has two stages. Stage 1 builds homogeneous clusters by repeated 2-means splitting until every sub-cluster has one label. Stage 2 trains an approximate kNN classifier (faiss, Johnson et al. 2019) on samples in the larger homogeneous clusters, predicts the remaining samples, and counts those whose predicted label differs from the dataset label as Bayes noise. The estimate is that count divided by n. The kNN step rests on a cited result (Cannings et al. 2020) that a kNN classifier built on non-boundary samples agrees closely with the Bayes optimal classifier. The text read gives no numeric cutoff for what counts as a larger cluster.",
+     "anchor": "Sec. 4, Fig. 1, Algorithm 1, pp. 8-10",
+     "quotes": [
+      "we first use the k-means algorithm to cluster the samples into two sub-clusters",
+      "If the labels of the samples within the sub-cluster are inconsistent, then continue to use the k-means algorithm to cluster the samples within the sub-cluster into two clusters.",
+      "Samples whose predicted labels are inconsistent with the labels in the dataset are considered Bayes noise samples"
+     ],
+     "kind": "stated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Method description by the authors; the kNN-consistency premise is borrowed, not proved here.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "chen-complexity-claim",
+     "value": "The paper claims time and space complexity O(n(log2 n)^2) for EF-BER against O(n^2) for BN-BER. The derivation counts about (log2 n+1)log2 n/2 k-means divisions in the worst case (a binary tree with one sample per leaf), assumes k-means is O(n) per level, and takes approximate kNN as O(log n) from a cited source (Cai, 2019). This is an analytic argument with stated assumptions, not a formal theorem. No fitted scaling exponent is reported.",
+     "anchor": "Abstract and Sec. 4, pp. 1 and 10-11",
+     "quotes": [
+      "Through analysis, we found that the time and space complexity of the proposed method is O(n(log2 n)2), whereas the time and space complexity of the BN-BER method is O(n2).",
+      "Since the time and space complexity of the k-means algorithm is O(n), so the time and space complexity of building homogeneous clusters is O(n(log2 n)2).",
+      "the current construction method can achieve a time complexity and space complexity of O(log n) (Cai, 2019)"
+     ],
+     "kind": "stated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Worst-case argument with borrowed component costs; the k-means cost ignores dimension and iteration count, and the approximate-kNN cost is cited, not derived.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "chen-synthetic-accuracy",
+     "value": "On synthetic mixed-Gaussian data with known theoretical BER (25 binary and 25 four-class datasets, equal class priors, 2-D class means on a circle), the MSE between estimated and theoretical BER in Table 6 was, for binary: BN-BER 1.43E-04, BG-BER 9.43E-04, EF-BER 2.38E-05; for multi-class: BN-BER 3.31E-05, BG-BER 2.51E-03, EF-BER 1.33E-04. EF-BER beat BG-BER in both tasks. EF-BER beat BN-BER on binary but NOT on multi-class, where BN-BER is lower, which contradicts the authors' sentence that EF-BER has the smallest MSE across datasets. Table 3 (consistency curves, growing sample size) reports MSE values of the same order, with the text saying EF-BER is comparable to BN-BER and better than BG-BER.",
+     "anchor": "Sec. 5.3.1, Tables 3 and 6, Figs. 3-4, pp. 13-18",
+     "quotes": [
+      "the proposed method achieves comparable consistency to BN-BER and better consistency than the BG-BER method.",
+      "it can be observed that the proposed method EF-BER exhibits the smallest MSE between its curves and the true BER across different datasets",
+      "In this paper, the datasets used were generated under the condition of equal prior probabilities for each class."
+     ],
+     "kind": "empirical",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Synthetic equal-prior low-dimensional data only; one paper; Table 6 values as extracted show the authors' summary sentence is not true for multi-class.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "chen-unbiasedness-experiment",
+     "value": "In a 100-seed experiment at fixed sample sizes of 400, 4000, 8000 and 12000, the authors say EF-BER had the smallest mean difference to true BER in most cases (Table 4). The printed means for the three methods are close to each other (for example about 2.4E-03 to 2.6E-03 in one parameter setting and about 5.5E-03 to 6.4E-03 in the other), so the gaps are small relative to the printed standard deviations; the authors still call this better unbiasedness.",
+     "anchor": "Sec. 5.3.1, Table 4, p. 16",
+     "quotes": [
+      "As can be seen from the table, the mean value obtained by the proposed method is the smallest in most cases, indicating that the proposed method has better unbiasedness."
+     ],
+     "kind": "empirical",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Small differences among methods, mixed-Gaussian data only, no significance test; the ranking claim is the authors' reading and the table cell layout is damaged in the PDF text.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "chen-benchmark-accuracy",
+     "value": "On 13 KEEL benchmark datasets, effectiveness was judged only by whether the estimate is at or below the lowest error among five classifiers (SVM, DT, RF, AdaBoost, GNB), because the true BER is unknown. Among the first 12 datasets BN-BER was effective on 11 and BG-BER and EF-BER on 10 each. On dataset 13 (Skin-Segmentation, 245,057 samples, 4 dimensions) BN-BER needed over 512GB while EF-BER (0.001) and BG-BER were effective. The authors conclude the three methods are comparable. This criterion cannot detect an underestimate: an estimate far below the true BER also passes.",
+     "anchor": "Sec. 5.3.1, Table 8, pp. 18 and 20",
+     "quotes": [
+      "is effective on 11 datasets,BG-BER is effective on 10 datasets, and EF-BER is effective on 10 datasets.",
+      "Overall, the three methods achieve comparable performance."
+     ],
+     "kind": "empirical",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "The validity criterion is one-sided (an upper-bound check against five default-parameter classifiers); the benchmark BER is unknown; one paper.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "chen-efficiency-results",
+     "value": "On large datasets EF-BER used far less time and memory than BN-BER. Shuttle (58,000 samples): BN-BER about 120,000 MB (117 GB) and about 22,000 s (around 6 h); EF-BER 140 MB and within 100 s. Twonorm (7400 samples): BN-BER about 2000 MB and about 130 s; EF-BER 130 MB and about 120 s. Skin-Segmentation (245,057 samples): BN-BER over 512GB, EF-BER a maximum of 300MB. Using faiss k-means (EF-BER-F) instead of scikit-learn k-means (EF-BER-S) cut Skin-Segmentation time from about 40,000 s (111 h) to under 800 s. The largest dataset tested is 245,057 rows by 4 dimensions; no run at millions of rows or in high dimension is reported.",
+     "anchor": "Sec. 5.3.2, Fig. 5, pp. 20-21",
+     "quotes": [
+      "For dataset Skin-Segmentation that have 245,057 samples, BN-BER requires more than 512GB memory, whereas EF-BER needs a maximum of 300MB memory",
+      "would require approximately 120,000 MB (117 GB) of memory and about 22,000 s (around 6 h) of runtime.",
+      "EF-BER-S takes approximately 40,000 s (111 h) to obtain the estimated BER, while EF-BER-F can estimate the BER in less than 800 s"
+     ],
+     "kind": "empirical",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Concrete numbers printed in text, but read off a figure by the authors, one workstation (512 G RAM), few datasets. Practical speed depends on the faiss k-means variant, not on the complexity formula.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "chen-limitations-stated",
+     "value": "The authors state two limitations: the estimate is inaccurate on small-scale datasets, and with high-dimensional data the efficiency of cluster division may be affected. The second is a hedged remark, not a measured result. The paper also says earlier that Noshad et al. (2019) incurs high computational cost and errors on high-dimensional data, and that kNN-rule BER methods are sensitive to the parameter k.",
+     "anchor": "Sec. 6 Conclusion, p. 21; Sec. 1, p. 3; Sec. 2.1, p. 4",
+     "quotes": [
+      "The limitations of the proposed method mainly lie in the issue of inaccurate estimation when dealing with small-scale datasets. Additionally, when facing high-dimensional data, the efficiency of cluster division may be affected."
+     ],
+     "kind": "stated",
+     "claim_type": "limitation",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Direct author statement; not backed by an experiment in the paper.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "chen-imbalance-untested",
+     "value": "The paper never discusses class imbalance and reports no class-imbalance ratios. Its synthetic data use equal class priors, its benchmark Table 1 lists only sample, dimension and class counts, and its only error measure is plain error rate. It does not mention AUC, AUPRC, F1, precision or recall, so it gives no evidence for rare-positive (for example 0.2 percent) tabular problems. Several benchmark sets (for example HTRU2, Thyroid, Shuttle) are used but no class proportions are given for them. The highest dimension in Table 1 is 64 (Optdigits) and the largest-sample set has 4 dimensions.",
+     "anchor": "Sec. 5.1, Table 1, Sec. 6; absence checked across the full text, pp. 11-21",
+     "quotes": [
+      "In this paper, the datasets used were generated under the condition of equal prior probabilities for each class.",
+      "Detailed statistical information of the benchmark datasets can be found in Table 1."
+     ],
+     "kind": "stated",
+     "claim_type": "limitation",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Absence claim from a full read of the text; the quotes show equal priors and what Table 1 reports. Silence is not evidence that the method works or fails under imbalance.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "EF-BER (hierarchical k-means plus approximate kNN Bayes-noise counting; variants EF-BER-S and EF-BER-F)",
+     "what_it_bounds": "A point estimate (not a bound) of the Bayes error rate, the 0-1 misclassification rate of the Bayes optimal classifier, taken as the fraction of samples flagged as Bayes noise. Unbiasedness and consistency are proved only for the oracle Bayes-noise proportion. Validity on real data is judged only by being at or below the best of five classifiers' error rates.",
+     "inputs_needed": "Labeled feature vectors (hard labels only, no soft labels or posteriors). Numeric features for k-means and kNN. No tuning parameters are discussed in the text read; the comparison classifiers use default scikit-learn settings. The experiments used 10-fold cross-validation.",
+     "fails_when": "Stated: small datasets (inaccurate estimates); high-dimensional data (cluster division efficiency may be affected). Not tested: class imbalance, rare positives, metrics other than 0-1 error (AUPRC, F1, cost-weighted), label noise, categorical features, datasets above 245,057 rows or above 64 dimensions. Rests on the premise that a kNN trained on non-boundary samples approximates the Bayes classifier. Worst case of the cluster tree is one sample per leaf. Accuracy is mixed on harder synthetic data: Table 7 shows EF-BER 0.484 against theoretical BER 0.460 and 0.052 against 0.044.",
+     "quote": "The limitations of the proposed method mainly lie in the issue of inaccurate estimation when dealing with small-scale datasets. Additionally, when facing high-dimensional data, the efficiency of cluster division may be affected."
+    }
+   ],
+   "facts": []
+  }
+ ]
+}

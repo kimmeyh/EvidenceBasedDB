@@ -15,6 +15,15 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **feat**: Task E's closed papers (Sprint 9 Task E, Issue #93,
+  2026-10-16) -- Chen et al. 2025 read from the team lead's download (12
+  assertions); Han and Verdu 1994 recorded not obtainable; team lead Q6 = 1:
+  its content entered from free sources, Scarlett's equation (108) as a
+  coordinator assertion and Chen, Guntuboyina and Zhang 2016 (JMLR, open
+  access) entered through the door and read in part (9 assertions); the
+  answer document gains a dated addendum. The Task E sync now compares
+  quotes; the quote normalizer expands three more ligatures. INTAKE
+  section 25
 - **feat**: Manual Validation decisions applied (Sprint 9, 2026-10-15) --
   ADRs approved as proposed; Q1 = 1 recorded on ADR-0004 A9 (an
   unrecorded-organization pair still counts, labeled; no code change); Q3
