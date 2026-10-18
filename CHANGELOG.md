@@ -13,7 +13,16 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-14 onward (Sprint 9, in progress)
+### 2026-10-18 onward (Sprint 10, in progress)
+
+- **docs**: Sprint 10 Phase 1 (2026-10-18) -- the team lead merged PR #88
+  into develop and PR #100 to main; `sprint-9` tagged on PR #100's merge
+  commit (270961e); carry-forward cut `feature/20261018_Sprint_10` from
+  the Sprint 9 branch; sprint status advanced; CHANGELOG reconciled (three
+  Sprint 9 entries added below: the slate, the plan draft and the Manual
+  Validation hand-over)
+
+### 2026-10-14 to 2026-10-18 (Sprint 9, PR #88, merged to develop 2026-10-18 and to main via PR #100 the same day; tagged sprint-9)
 
 - **fix**: Review of the I7 commit (2026-10-18) -- the CI stop check could
   trap a session on a failure it cannot fix; a stop citing a criterion, a
@@ -22,7 +31,6 @@ this project keeps having to replace with a step.
   (existence checks, collection time, a moved store) are documented. Tests
   added for the data folder, cwd and arguments, and gh's real fail-open
   path; injection-proven (Issue #99 / PR #88)
-
 - **process**: Sprint 9 retrospective I7 (team lead, 2026-10-18, Q1 = 2).
   Prevention: `tests/conftest.py` gives every test without `live_store`
   the machine CI sees -- pdftotext and any path under the data folder or a
@@ -88,6 +96,9 @@ this project keeps having to replace with a step.
   after the title check refused them (Task J, Issue #98; INTAKE section
   24); Q2 = 2 and Q5 = 2 carded as F86 (the Zenodo record) and F85 (Phase
   2's Dirac-3S verification). Tests injection-proven
+- **docs**: Sprint 9 Manual Validation handed over (2026-10-15, c04450c,
+  reconciled 2026-10-18) -- ADR-0005 A9 and A10 and ADR-0004 A9 for
+  review, and questions Q1 to Q5 with a recommendation each
 - **fix**: F62 review (Sprint 9 Task J, Issue #98) -- a Semantic Scholar
   answer counts only for the same title (a wrong-paper answer had won); a
   second pass for refusals; refused candidates listed apart so a refusal
@@ -284,6 +295,10 @@ this project keeps having to replace with a step.
   reported at Manual Validation (Q4); the first read-for-claims slice
   widened to 76 records (Q7 = 2); F57 now releases 74 records per sprint
   until none remain at `seen` or `screened` (PR #88)
+- **docs**: Sprint 9 scope selected and plan drafted (2026-10-14, 27c9d94
+  and 81b87e2, reconciled 2026-10-18) -- 12 items selected at refinement,
+  F79 corrected to free reads both ways and no writes; Tasks A to K drafted
+  with decisions Q1 to Q9; F80 released from F57
 - **docs**: Sprint 9 Phase 1 (2026-10-14) -- the team lead merged PR #84
   and PR #77 into develop and PR #86 and PR #87 to main; `sprint-8` tagged
   on PR #87's merge commit; carry-forward cut `feature/20261014_Sprint_9`
