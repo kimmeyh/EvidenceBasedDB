@@ -36,6 +36,11 @@ this project keeps having to replace with a step.
   Sprint 9's reader outcomes logged (accurate quotes and numbers; added
   conclusions the main defect); the reading protocol now requires a
   separate `reader_inference` field. Two tests, each proven by injection
+- **docs**: Task C (F50, #104) -- dated amendment to the Cyc research
+  document's point 7: Cyc stores a count at every index layer
+  (`removal_modules_lookup.java`, line 84, re-read in the engine source);
+  a stored count is allowed here only beside its data, updated with it,
+  and checked by a test that recomputes it
 
 - **docs**: Sprint 10 Phases 1.5 to 3 (2026-10-18) -- scope selected (all
   ten non-HOLD items; F88 and F89 released from F39 and F57); Phase 2

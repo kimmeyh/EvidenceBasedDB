@@ -292,3 +292,38 @@ but all of them steer search:
   `assertion-count.text`).
 
 Still open: anything after 2023, and whether current Cyc keeps these defaults.
+
+## Amendment 2026-10-18: point 7 qualified by Cyc's stored counts (Sprint 10 Task C, F50)
+
+Point 7 above stays as written. It says to look facts up rather than store
+them where a lookup is reliable, and this repository holds the stronger
+rule that determinate facts are computed, never stored (CLAUDE.md). Cyc
+does the opposite for one kind of fact, and the reason matters.
+
+**What Cyc stores.** Every layer of an assertion index carries a count:
+"( <count> . <pred-tree> )", "( <count> . <mt-tree> )" (the F42 research
+document, section 5.2). The planner reads that count as the cost of a
+lookup without doing the lookup. In the 2009 engine source,
+`removal_lookup_pos_cost` (`removal_modules_lookup.java`, line 84, in
+`D:\Data\Harold\EvidenceBasedDB\GitHubRepos\larkc-cyc-engine-source\`,
+re-read 2026-10-18) returns a fixed cost when the literal is fully bound,
+and otherwise `inference_num_gaf_lookup_index` (line 91), the count read
+from the index.
+
+**Why that does not drift.** The count lives beside the data it counts,
+and the same code updates both. It is never a copy kept somewhere else.
+This repository's rule exists because of the other case: one value
+restated in five documents drifted in three of them.
+
+**The qualification.** A count may be stored here only when all three
+hold:
+
+1. It sits beside the data it counts, in the same store.
+2. The write that changes the data updates the count, or the count is
+   rebuilt from the data, never typed.
+3. A test recomputes the count from the data and fails when the two
+   differ.
+
+Without that test, the count is a copy, and the rule stands: compute it.
+A count in a document (an amendment, a summary) is a snapshot and says
+so with its date (CLAUDE.md); it is not covered by this qualification.
