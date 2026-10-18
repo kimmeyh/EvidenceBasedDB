@@ -29,7 +29,14 @@ this project keeps having to replace with a step.
   is searched. A read inside `bash -c "..."` followed by `grep -i` passes.
   Eleven cases, each proven against 021d2a8 or by injection. A second
   security review found `bash -c "sed "'-i ...'` still passed (a quote
-  closed mid-word continues the word); fixed, proven by two injections
+  closed mid-word continues the word); fixed, proven by two injections.
+  A third found quotes inside a file name or the awk keyword
+  (`store/x'.py'`, `in"place"`) passed, a gap older than Task A; every
+  check now reads the text with quotes removed. That exposed an older
+  offset bug: a path inside an editor's, copy's or tee's own text was
+  placed against the `cd`s by its offset in that text, so an edit of a
+  scratch file after a `cd` out of the repository was blocked. Fixed;
+  six cases, each proven against 6690c39
 - **process**: Task B (F88, the F39 release for Sprint 10, #103) -- models
   and pricing pages read 2026-10-18: no change since F67 (same four ids,
   prices, context, output and retirement dates); every tier re-verified.

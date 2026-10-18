@@ -238,6 +238,12 @@ def test_the_python_checks_cover_the_launcher_and_sql(command):
     'bash -c "sed -n 1p store/x.py" | grep -i foo',
     'bash -c "sed -n 1,5p store/x.py"; grep -i y z',
     "sed -n /don\\'t/p store/x.py | grep -i y",
+    # Third security review: a path found inside an editor's or copy's own
+    # text was placed against the `cd`s by its offset in that text, not on
+    # the line; after a `cd` out of the repository these are scratch files
+    "cd /d/Data/Harold/github/EvidenceBasedDB && cd /tmp && sed -i s/a/b/ x.py",
+    "cd /d/Data/Harold/github/EvidenceBasedDB && cd /tmp && cp a.txt b.py",
+    "cd /d/Data/Harold/github/EvidenceBasedDB && cd /tmp && echo x | tee b.py",
 ])
 def test_a_read_followed_by_another_commands_i_flag_is_allowed(command):
     """F81 (Sprint 10 Task A): the in-place flag search ran past `;`, `&&`
@@ -270,6 +276,10 @@ def test_a_read_followed_by_another_commands_i_flag_is_allowed(command):
     "sed -i s/a/b/ <(echo|cat) store/x.py",
     # Second security review: a quote closed mid-word continues the word
     "bash -c \"sed \"'-i s/a/b/ store/x.py'",
+    # Third security review: quotes inside the file name or the awk keyword
+    "sed -i s/a/b/ store/x'.py'",
+    'sed -i s/a/b/ "store/x".py',
+    "awk -i in\"place\" '{}' store/x.py",
 ])
 def test_an_in_place_edit_after_or_with_a_separator_is_still_blocked(command):
     """F81's other half: the cut at a separator must not free a real edit.
@@ -291,7 +301,13 @@ def test_an_in_place_edit_after_or_with_a_separator_is_still_blocked(command):
     mid-word was taken as the end of the command, and the quote before
     `-i` hid the flag). Proven by two injections: with either the
     word-end check or the quote strip before the flag search removed, that
-    case passed. Restored."""
+    case passed. Restored. Third security review: the three quote-in-name
+    cases passed against 6690c39 and against the hook before Task A (an
+    older gap); every check now reads the text with quotes removed. That
+    change broke the existing `cd /tmp && cd <repository> && sed -i`
+    case, which exposed an older offset bug in keep(); fixed, and the
+    three `cd`-out cases in the allowed test were each blocked at
+    6690c39."""
     proc = run(command)
     assert proc.returncode == 2, command
 

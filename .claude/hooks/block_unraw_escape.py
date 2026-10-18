@@ -218,6 +218,9 @@ def _in_repository(path: str, outside_cwd: bool = False) -> bool:
     return not outside_cwd and not _absolute(p)
 
 
+_UNQUOTE = re.compile(r"""["']""")
+
+
 def _own_command(rest: str, opened: str = "") -> str:
     """The editor's own command: `rest` up to the first `;`, `&` or `|`
     outside quotes. F81 (Sprint 10 Task A): the flag and target search ran
@@ -283,8 +286,11 @@ def _shell_edits_code(text: str) -> list[str]:
                 state = out
         return state
 
-    def keep(m) -> list[str]:
-        return [m["path"]] if _in_repository(m["path"], outside_at(m.start())) else []
+    def keep(m, base: int = 0) -> list[str]:
+        # `base` places a match found inside an editor's own text back on the
+        # line, where the `cd` positions are (Task A third security review:
+        # they were compared as if both counted from the line's start).
+        return [m["path"]] if _in_repository(m["path"], outside_at(base + m.start())) else []
 
     hits = []
     # Each match's `rest` runs to the end of the line, so a second editor on
@@ -296,30 +302,33 @@ def _shell_edits_code(text: str) -> list[str]:
         pos = m.start("rest")
     for tool in tools:
         lead = text[tool.start():tool.start("tool")].strip()
-        rest = _own_command(tool["rest"], '"' if lead.endswith('"') else "")
-        # Quotes join words in the shell, so `"'-i` is the flag -i.
-        if not IN_PLACE_FLAG.search(re.sub(r"""["']""", "", rest)) or (tool["tool"].endswith("awk") and "inplace" not in rest):
+        # Quotes join words in the shell (`"'-i` is the flag -i, `x'.py'` is
+        # x.py, `in"place"` is inplace), so every check below reads the
+        # command with its quote characters removed (Task A security reviews).
+        rest = _UNQUOTE.sub("", _own_command(tool["rest"], '"' if lead.endswith('"') else ""))
+        if not IN_PLACE_FLAG.search(rest) or (tool["tool"].endswith("awk") and "inplace" not in rest):
             continue
-        targets = [p for m in CODE_ARG.finditer(rest) for p in keep(m)]
+        base = tool.start("rest")
+        targets = [p for m in CODE_ARG.finditer(rest) for p in keep(m, base)]
         if not targets:
             # Fail closed: the cut found the flag but no code file, so the
             # whole line is searched (Task A review).
-            targets = [p for m in CODE_ARG.finditer(tool["rest"]) for p in keep(m)]
+            targets = [p for m in CODE_ARG.finditer(_UNQUOTE.sub("", tool["rest"])) for p in keep(m, base)]
         if not targets:
             # The code path can come before the editor: find ... -exec sed -i,
             # git ls-files '*.py' | xargs sed -i.
             line_start = text.rfind("\n", 0, tool.start()) + 1
             segment = re.split(r"&&|\|\||;", text[line_start:tool.start()])[-1]
-            targets = [p for m in CODE_GLOB_SOURCE.finditer(segment) for p in keep(m)]
+            targets = [p for m in CODE_GLOB_SOURCE.finditer(segment) for p in keep(m, tool.start() - len(segment))]
         hits += targets
     for cp in COPY_ONTO.finditer(text):
         operands = [m for m in CODE_ARG.finditer(cp["rest"])]
         tokens = [t for t in cp["rest"].split() if not t.startswith("-")]
         if operands and tokens and tokens[-1].strip("'\"").lower().endswith(operands[-1]["path"].lower()):
-            hits += keep(operands[-1])
+            hits += keep(operands[-1], cp.start("rest"))
     unquoted = SINGLE_QUOTED.sub(lambda m: " " * len(m.group(0)), text)
     hits += [p for m in REDIRECT_ONTO.finditer(unquoted) for p in keep(m)]
-    hits += [p for t in TEE.finditer(unquoted) for m in CODE_ARG.finditer(t["rest"]) for p in keep(m)]
+    hits += [p for t in TEE.finditer(unquoted) for m in CODE_ARG.finditer(t["rest"]) for p in keep(m, t.start("rest"))]
     hits += [p for m in _TRUNCATE.finditer(unquoted) for p in keep(m)]
     return list(dict.fromkeys(hits))
 
