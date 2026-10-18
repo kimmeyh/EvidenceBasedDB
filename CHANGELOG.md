@@ -15,6 +15,13 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **process**: Sprint 9 retrospective I5 (2026-10-17) -- the
+  shell-metacharacter hook's block message leads with the exit-code form
+  (`> log 2>&1; rc=$?`) when the blocked expansion is `${PIPESTATUS[...]}`,
+  blocked in Sprints 8 and 9 alike; behavior tests added, proven by injection
+- **docs**: Sprint 9 retrospective recorded (2026-10-16); team lead: apply
+  I1 and I3 to I5 now, I2 and I6 not needed. PR #88 body carries Closes #89
+  to #99
 - **feat**: Task E's closed papers (Sprint 9 Task E, Issue #93,
   2026-10-16) -- Chen et al. 2025 read from the team lead's download (12
   assertions); Han and Verdu 1994 recorded not obtainable; team lead Q6 = 1:
