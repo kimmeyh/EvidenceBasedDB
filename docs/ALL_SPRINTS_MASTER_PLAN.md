@@ -246,7 +246,12 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 **Sprint 10** (branch `feature/20261018_Sprint_10`, cut 2026-10-18 at the
 Sprint 9 carry-forward, after PR #88 merged to develop and PR #100 merged
-develop to main). Scope: not yet selected (Phase 1.4).
+develop to main).
+
+- **Scope selected 2026-10-18 (team lead, DEFINED)**: all ten non-HOLD
+  items, as recommended (about 375 calibrated minutes): F39 (Sprint 10
+  release), F57 (Sprint 10 release, 74 records), F50, F81, F82, F83, F84,
+  F85, F86 and F87. F51 stays HOLD.
 
 ## Next Sprint Candidates
 
