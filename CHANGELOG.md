@@ -15,6 +15,14 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **fix**: Review of the I7 commit (2026-10-18) -- the CI stop check could
+  trap a session on a failure it cannot fix; a stop citing a criterion, a
+  "STOP:" line or BLOCKED now reports it. The local-only guard also watches
+  os-level launches and an option's value (`--in=PATH`); its limits
+  (existence checks, collection time, a moved store) are documented. Tests
+  added for the data folder, cwd and arguments, and gh's real fail-open
+  path; injection-proven (Issue #99 / PR #88)
+
 - **process**: Sprint 9 retrospective I7 (team lead, 2026-10-18, Q1 = 2).
   Prevention: `tests/conftest.py` gives every test without `live_store`
   the machine CI sees -- pdftotext and any path under the data folder or a

@@ -33,7 +33,8 @@ now_override sets the clock for tests.
 
 And on a sprint branch in Phases 5 to 7 (Sprint 9 retrospective I7): a stop
 is blocked while any check on the PR named in sprint_status.json is failing
-or still running (`gh pr checks`). Checks that cannot be read allow the stop.
+or still running (`gh pr checks`). Checks that cannot be read allow the stop,
+and so does a message citing a stopping criterion, a "STOP:" line or BLOCKED.
 Payload key ci_checks_override supplies the checks for tests.
 
 Outside the window the hook is silent: pre-approval and Phase 5+ questions
@@ -132,6 +133,14 @@ def footer_error(message: str, now: datetime) -> str | None:
 # blocked while any check on the sprint's PR is failing or still running.
 CI_PHASES = (5, 6, 7)
 CI_NOT_GREEN = ("fail", "pending", "cancel")
+
+# A failure Claude cannot fix (an Actions outage, a cancelled run, a fix that
+# needs the team lead) must still be reportable (PR #88 review, 2026-10-18:
+# without this the only way out was renaming the branch). A stop that cites a
+# stopping criterion by number, a "STOP:" line or BLOCKED is allowed. The
+# wider CRITERION_PATTERNS are not used: "Manual Validation" would excuse
+# every hand-over, which is the case this check exists for.
+CI_ESCAPE_PATTERNS = CRITERION_PATTERNS[:4]
 
 
 def ci_error(checks: list[dict]) -> str | None:
@@ -302,7 +311,7 @@ def main() -> int:
     if phase_number(str(status.get("status") or "")) in CI_PHASES and isinstance(pr, int):
         checks = _pr_checks(payload, pr, cwd)
         failing = ci_error(checks) if checks else None
-        if failing:
+        if failing and not any(p.search(message) for p in CI_ESCAPE_PATTERNS):
             print(
                 "[BLOCKED by block_procedural_question_stop hook: CI]\n"
                 "\n"
@@ -311,6 +320,8 @@ def main() -> int:
                 "From the Manual Validation hand-over to gh pr ready, nothing reaches the\n"
                 "team lead while CI is red or still running (Sprint 9 retrospective I7).\n"
                 f"Wait with `gh pr checks {pr} --watch`; fix a failure first, then reply.\n"
+                "A failure you cannot fix is reported as a stop: cite the criterion\n"
+                "(\"Criterion 2: BLOCKED -- CI ...\") and name the failing check.\n"
                 "\n"
                 "Bypass (team-lead-sanctioned only): rename the branch to include\n"
                 "allow_stop_hook_bypass.",

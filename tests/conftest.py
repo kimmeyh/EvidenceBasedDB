@@ -56,7 +56,17 @@ def pytest_configure(config):
 # too, exactly as CI does: pdftotext and every path under the data folder or
 # a sibling repository raise FileNotFoundError. So the mislabel fails at the
 # desk, not on CI. Reaches this process only (opens, directory listings,
-# sqlite connects, subprocess launches); a child process is not watched.
+# sqlite connects, subprocess and os launches); a child process is not
+# watched.
+#
+# LIMITS (PR #88 review, 2026-10-18), each still caught by CI, as before:
+# - exists(), is_file() and stat() raise no audit event, so an unmarked
+#   existence check on a local path passes here.
+# - The guard is on only while an unmarked test runs: module-level code,
+#   parametrize lists, skipif conditions and module- or session-scoped
+#   fixtures run before it.
+# - A store moved with EBDB_STORE_DIR is not watched; the default data
+#   folder is (tests point that variable at temporary folders).
 _ROOT = Path(__file__).resolve().parents[1]
 _LOCAL_ONLY_ROOTS = (str(store.DEFAULT_STORE_DIR.parent), _ROOT.parent)  # data folder; sibling repos
 _local_only = {"refuse": False}
@@ -91,8 +101,15 @@ def _refuse_local_only(event: str, args: tuple) -> None:
     paths: list = []
     if event in ("open", "os.listdir", "os.scandir", "sqlite3.connect"):
         paths = [args[0]] if args else []
-    elif event == "subprocess.Popen":
-        executable, argv, cwd = args[0], args[1], args[2]
+    elif event in ("subprocess.Popen", "os.system", "os.posix_spawn", "os.exec", "os.spawn", "os.startfile"):
+        if event == "subprocess.Popen":
+            executable, argv, cwd = args[0], args[1], args[2]
+        elif event == "os.system":
+            executable, argv, cwd = None, args[0], None
+        elif event == "os.spawn":
+            executable, argv, cwd = args[1], args[2], None  # (mode, path, args, env)
+        else:
+            executable, argv, cwd = args[0], (args[1] if len(args) > 1 else None), None
         if isinstance(argv, (str, bytes, os.PathLike)):
             # On Windows the event carries the list already joined into one
             # command line (first injection, 2026-10-18: pdftotext and a
@@ -104,11 +121,13 @@ def _refuse_local_only(event: str, args: tuple) -> None:
                 argv = [a.strip('"') for a in line.split()]
         else:
             argv = list(argv or [])
+        argv = [os.fsdecode(a) if isinstance(a, (bytes, os.PathLike)) else a for a in argv]
         program = executable or (argv[0] if argv else "")
         if Path(os.fsdecode(program)).stem.lower() == "pdftotext":
             raise FileNotFoundError("pdftotext is not available to a test without @pytest.mark.live_store "
                                     "(CI has none; Sprint 9 retrospective I7)")
-        paths = [cwd, *argv]
+        # an option's value counts too: --in=D:\... (review, 2026-10-18)
+        paths = [cwd, executable, *argv, *(a.split("=", 1)[1] for a in argv if isinstance(a, str) and "=" in a)]
     else:
         return
     for p in paths:

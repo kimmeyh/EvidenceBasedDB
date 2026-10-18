@@ -43,7 +43,7 @@ Every count below is a snapshot as of 2026-10-17.
   the Stop hook holds Phases 5 to 7 while CI is not green.
 
 Store: 2,093 -> 2,190 papers (148 at `read`); 105 -> 557 assertions;
-5,620 `cites` links. Suite: 759 -> 945.
+5,620 `cites` links. Suite: 759 -> 950.
 
 ## Manual Validation decisions
 
@@ -97,13 +97,18 @@ and subagents ran in parallel. Plan estimate: 780 minutes.
   six-field sync; the sync tests covered 5 of 13 fields and did not pin the
   not-compared group. Two low notes left as they are: a re-run could move
   `updated` backward (the skipped I2), and NFKC folds superscripts.
+- **Claude (fresh eyes) on the I7 commit** (d54d2c0): two findings, both
+  fixed. The CI stop check could trap a session on a failure it cannot
+  fix (a criterion-citing stop now reports it); the guard missed os-level
+  launches and `--opt=PATH` values, and its remaining limits are now
+  documented.
 - Every task's own fresh-eyes review ran during Phase 4; findings fixed
   before the Manual Validation hand-over.
 
 ## Verification
 
-- Suite 945 passed at the last commit, including the `live_store` tests;
-  the CI selection 862 passed, 83 deselected.
+- Suite 950 passed at the last commit, including the `live_store` tests;
+  the CI selection 867 passed, 83 deselected.
 - CI green at deb726d. It was red from 070137e (2026-10-15 00:31) to
   52a439a, unnoticed until 2026-10-18: three tests that read local files
   lacked the `live_store` marker (retrospective addendum).

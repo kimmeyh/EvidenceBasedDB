@@ -305,9 +305,11 @@ def test_allows_a_true_footer_or_none(tmp_path, message):
 GREEN = [{"name": "test", "bucket": "pass"}, {"name": "lint", "bucket": "skipping"}]
 
 
-def _run_ci(repo: Path, checks, branch: str = SPRINT_BRANCH) -> subprocess.CompletedProcess:
-    payload = {"repo_override": str(repo), "branch_override": branch,
-               "last_assistant_message": "Manual Validation hand-over.", "ci_checks_override": checks}
+def _run_ci(repo: Path, checks, branch: str = SPRINT_BRANCH,
+            message: str = "Manual Validation hand-over.") -> subprocess.CompletedProcess:
+    payload = {"repo_override": str(repo), "branch_override": branch, "last_assistant_message": message}
+    if checks != "no override":
+        payload["ci_checks_override"] = checks
     return subprocess.run([sys.executable, str(HOOK)], input=json.dumps(payload),
                           capture_output=True, text=True)
 
@@ -335,4 +337,25 @@ def test_blocks_a_stop_while_ci_is_not_green_from_phase_5_to_7(tmp_path, phase, 
 def test_allows_a_stop_when_ci_is_green_unreadable_or_out_of_scope(tmp_path, phase, checks, branch):
     repo = _scratch_repo(tmp_path, _status(status=phase))
     proc = _run_ci(repo, checks, branch)
+    assert proc.returncode == 0, proc.stderr
+
+
+def test_allows_a_stop_when_gh_itself_cannot_read_the_checks(tmp_path):
+    """The real fail-open path (PR #88 review, 2026-10-18): no override, so
+    the hook runs gh in a scratch folder that is not a repository; gh prints
+    no JSON, and the stop is allowed."""
+    repo = _scratch_repo(tmp_path, _status(status="Phase 5.3 Manual Validation"))
+    assert _run_ci(repo, "no override").returncode == 0
+
+
+@pytest.mark.parametrize("message", [
+    "Criterion 2: BLOCKED -- CI fails on an Actions outage (test: fail).",
+    "STOP: the CI run was cancelled and cannot be re-run from here.",
+])
+def test_a_stop_that_cites_a_criterion_reports_a_ci_failure(tmp_path, message):
+    """PR #88 review, 2026-10-18: a failure Claude cannot fix must be
+    reportable. Proven to fail by injection, 2026-10-18: with the escape
+    removed from the CI condition, both cases were blocked (exit 2)."""
+    repo = _scratch_repo(tmp_path, _status(status="Phase 5.3 Manual Validation"))
+    proc = _run_ci(repo, [{"name": "test", "bucket": "fail"}], message=message)
     assert proc.returncode == 0, proc.stderr
