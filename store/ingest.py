@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import re
 import sqlite3
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, field, fields, replace
 from pathlib import Path
 
 from store import citations
@@ -618,6 +618,78 @@ def insert_assertion(conn: sqlite3.Connection, assertion: AssertionRecord, yield
             "INSERT INTO assertion_relations (from_assertion_id, to_assertion_id, relation) VALUES (?, ?, 'contradicts')",
             (assertion.id, target),
         )
+
+
+# Where each AssertionRecord field is stored, for sync_assertion. Every field
+# of the dataclass must appear in exactly one group; a new field that does not
+# is refused at the first sync, so it cannot be skipped silently.
+_SYNC_RECORD_COLUMNS = ("value", "provenance", "evidence_tag", "certainty", "certainty_reasons", "fidelity",
+                        "reading_level")
+_SYNC_FIELD_COLUMNS = ("units", "rounding", "citation_context", "derivation", "claim_type", "search_scope")
+_SYNC_RELATIONS = ("supports", "contradicts")
+_SYNC_NOT_COMPARED = ("id", "updated", "updated_reason")  # the key, and the history this function appends to
+
+
+def _sync_groups_cover_every_field() -> None:
+    grouped = (_SYNC_RECORD_COLUMNS + _SYNC_FIELD_COLUMNS + _SYNC_RELATIONS + _SYNC_NOT_COMPARED
+               + ("documents", "context"))
+    missing = [f.name for f in fields(AssertionRecord) if f.name not in grouped]
+    if missing:
+        raise TypeError(f"sync_assertion does not know where these AssertionRecord fields are stored: {missing}")
+
+
+def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str, today: str) -> list[str]:
+    """Bring a stored assertion to `wanted`, field by field; return the names
+    of the fields that changed (empty when it already matched). The note,
+    with those names, is appended to updated_reason.
+
+    Sprint 9 retrospective I4, 2026-10-17: each reading script spelled its
+    own sync over a hand-named list of columns, and Task E's lists left out
+    citation_context, so a corrected quote never reached the store. The list
+    here is derived from the dataclass, so a field cannot be left out.
+    `context`, `documents`, `supports` and `contradicts` are ADDED to, never
+    removed from: a record may carry more contexts than its primary one, and
+    other scripts add relations and documents later (F46's merges, the
+    synthesis links), which a reading script does not know about and must
+    not delete."""
+    _sync_groups_cover_every_field()
+    validate_assertion(wanted)
+    rid = wanted.id
+    row = conn.execute(f"SELECT {', '.join(_SYNC_RECORD_COLUMNS)} FROM records WHERE id = ? AND class = 'assertion'",
+                       (rid,)).fetchone()
+    if row is None:
+        raise ValueError(f"{rid}: no stored assertion to sync")
+    changed = [c for c, have in zip(_SYNC_RECORD_COLUMNS, row) if have != getattr(wanted, c)]
+    for column in changed:
+        conn.execute(f"UPDATE records SET {column} = ? WHERE id = ?", (getattr(wanted, column), rid))
+    row = conn.execute(f"SELECT {', '.join(_SYNC_FIELD_COLUMNS)} FROM assertion_fields WHERE record_id = ?",
+                       (rid,)).fetchone()
+    for column, have in zip(_SYNC_FIELD_COLUMNS, row):
+        if have != getattr(wanted, column):
+            conn.execute(f"UPDATE assertion_fields SET {column} = ? WHERE record_id = ?", (getattr(wanted, column), rid))
+            changed.append(column)
+    documents = {r[0] for r in conn.execute("SELECT document FROM assertion_documents WHERE record_id = ?", (rid,))}
+    new_documents = [d for d in wanted.documents if d not in documents]
+    for document in new_documents:
+        conn.execute("INSERT INTO assertion_documents (record_id, document) VALUES (?, ?)", (rid, document))
+    if new_documents:
+        changed.append("documents")
+    for relation in _SYNC_RELATIONS:
+        have = {r[0] for r in conn.execute("SELECT to_assertion_id FROM assertion_relations WHERE "
+                                           "from_assertion_id = ? AND relation = ?", (rid, relation))}
+        new_targets = [t for t in getattr(wanted, relation) if t not in have]
+        for target in new_targets:
+            conn.execute("INSERT INTO assertion_relations (from_assertion_id, to_assertion_id, relation) "
+                         "VALUES (?, ?, ?)", (rid, target, relation))
+        if new_targets:
+            changed.append(relation)
+    if not conn.execute("SELECT 1 FROM record_contexts WHERE record_id = ? AND context_id = ?",
+                        (rid, wanted.context)).fetchone():
+        conn.execute("INSERT INTO record_contexts (record_id, context_id) VALUES (?, ?)", (rid, wanted.context))
+        changed.append("context")
+    if changed:
+        append_updated_reason(conn, rid, f"{note} (fields: {', '.join(changed)})", today)
+    return changed
 
 
 # --- ADR-0005 A4 (Sprint 6 Task E): writers for the child rows added after a

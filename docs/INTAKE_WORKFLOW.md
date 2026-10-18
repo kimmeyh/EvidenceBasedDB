@@ -724,3 +724,24 @@ pastes into a Phase 2 session. Never write the change from here (hook:
   lost a space the PDF carries ("Theorem 1 (", "O(n2) ."); restored by
   `QUOTE_EDITS`. The Task E sync now compares quotes too, so a corrected
   quote reaches the store.
+
+## 26. Rule from 2026-10-17: a reading script checks quotes before it writes, and syncs every field (Sprint 9 retrospective I3 and I4)
+
+- **Check before the write.** A script that enters assertions with quotes
+  calls `store.quotes.require_verbatim(record_id, citation_context, text)`
+  for every assertion, with `text` from `store.quotes.source_text(path)`,
+  before it writes anything. A quote not in its local source stops the run,
+  so it never reaches the store. The live-store quote tests stay as the
+  backstop. `scripts/sprint9_f78_ceiling_reading.py` (`check_quotes`) is
+  the first script to do this.
+- **One normalizer.** `store.quotes.plain` applies Unicode NFKC, then makes
+  the typographic quotes plain. Ligatures, the micro sign and other
+  compatibility forms fold in one step, not one hand-added character per
+  new source. Compare `plain(quote)` with the plain source text, never the
+  raw quote.
+- **Sync every field.** A script that corrects an assertion it already
+  entered calls `store.ingest.sync_assertion(conn, wanted, note, today)`,
+  never its own UPDATE over a hand-named list of columns. The field list is
+  checked against `AssertionRecord` on every call, so a field cannot be left
+  out (Task E's list left out the quotes). Contexts, documents and
+  relations are only added to, never removed: other steps add them later.

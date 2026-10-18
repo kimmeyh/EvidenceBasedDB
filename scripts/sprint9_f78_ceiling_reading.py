@@ -44,7 +44,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from store import connect, recheck, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
 from store.ingest import (AssertionRecord, add_read, append_updated_reason, insert_assertion,  # noqa: E402
-                          set_tier)
+                          set_tier, sync_assertion)
+from store.quotes import require_verbatim, source_text  # noqa: E402
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -479,6 +480,7 @@ def sha_note(path: str, day: str = TODAY) -> str:
 
 
 def apply_changes(conn) -> list[str]:
+    check_quotes(conn)
     log = []
     groups = load_groups()
     for g, p in groups:
@@ -534,25 +536,15 @@ def apply_changes(conn) -> list[str]:
             set_tier(conn, rid, "read", checked_against_source=checked)
             log.append(f"tier   {rid} -> read")
     for g, a, rid in assertions():
-        stored = conn.execute("SELECT r.value, r.certainty, r.certainty_reasons, f.citation_context FROM records r "
-                              "JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()
-        if stored and tuple(stored) != (a.value, a.certainty, a.certainty_reasons, a.citation_context):
+        if conn.execute("SELECT 1 FROM records WHERE id = ?", (a.id,)).fetchone():
             # The script is the record's source: a correction reaches the
-            # store, with the reason in updated_reason (as Task A's script).
-            # The quotes are compared too (2026-10-16: a corrected quote
-            # otherwise never landed, the defect Task G's review found).
-            conn.execute("UPDATE records SET value = ?, certainty = ?, certainty_reasons = ? WHERE id = ?",
-                         (a.value, a.certainty, a.certainty_reasons, a.id))
-            conn.execute("UPDATE assertion_fields SET citation_context = ? WHERE record_id = ?",
-                         (a.citation_context, a.id))
+            # store, with the reason in updated_reason. Every field is
+            # compared (Sprint 9 retrospective I4: the hand-named list here
+            # left the quotes out, so a corrected quote never landed).
             day = read_on(g)
             why = "fresh-eyes review" if day == TODAY else "coordinator"
-            append_updated_reason(conn, a.id, f"{day} ({TAG} {why}): value, certainty, reasons or quotes "
-                                  "corrected to the script's current text", day)
-            log.append(f"update {a.id} [{a.certainty}]")
-            continue
-        if stored:
-            log.append(f"exists {a.id}")
+            changed = sync_assertion(conn, a, f"{day} ({TAG} {why}): corrected to the script's current text", day)
+            log.append(f"update {a.id} [{', '.join(changed)}]" if changed else f"exists {a.id}")
             continue
         insert_assertion(conn, a, yielded_by=rid)
         log.append(f"assert {a.id} <- {rid} [{a.certainty}]")
@@ -574,20 +566,31 @@ def apply_changes(conn) -> list[str]:
         add_read(conn, SCARLETT, reader, on, extent, detail)
         log.append(f"read   {SCARLETT} [{reader}, {on}, {extent}]")
     for a in COORDINATOR_ASSERTIONS:
-        stored = conn.execute("SELECT value, certainty, certainty_reasons FROM records WHERE id = ?",
-                              (a.id,)).fetchone()
-        if stored is None:
+        if not conn.execute("SELECT 1 FROM records WHERE id = ?", (a.id,)).fetchone():
             insert_assertion(conn, a, yielded_by=SCARLETT)
             log.append(f"assert {a.id} <- {SCARLETT} [{a.certainty}] (coordinator)")
-        elif tuple(stored) != (a.value, a.certainty, a.certainty_reasons):
-            conn.execute("UPDATE records SET value = ?, certainty = ?, certainty_reasons = ? WHERE id = ?",
-                         (a.value, a.certainty, a.certainty_reasons, a.id))
-            append_updated_reason(conn, a.id, "2026-10-16 (Sprint 9 Task E, F78): corrected to the script's "
-                                  "current text", "2026-10-16")
-            log.append(f"update {a.id}")
-        else:
-            log.append(f"exists {a.id}")
+            continue
+        changed = sync_assertion(conn, a, "2026-10-16 (Sprint 9 Task E, F78): corrected to the script's "
+                                 "current text", "2026-10-16")
+        log.append(f"update {a.id} [{', '.join(changed)}]" if changed else f"exists {a.id}")
     return log
+
+
+def quote_source(paper: dict, a: dict) -> str:
+    """The local file a reader's assertion quotes (its own quote_file, else the paper's)."""
+    return (a.get("quote_file") or paper["file"]).split(" (")[0]
+
+
+def check_quotes(conn) -> None:
+    """Every quote verbatim in its local source, BEFORE anything is written
+    (Sprint 9 retrospective I3); raises on the first assertion that fails."""
+    sources = {a["id_suggestion"]: quote_source(p, a) for _, p in load_groups() for a in p["assertions"]}
+    for _, a, _ in assertions():
+        require_verbatim(a.id, a.citation_context, source_text(sources[a.id]))
+    access = conn.execute("SELECT access FROM paper_fields WHERE record_id = ?", (SCARLETT,)).fetchone()[0]
+    local = next(s.strip() for s in access.split("|") if s.strip().lower().endswith(".pdf"))
+    for a in COORDINATOR_ASSERTIONS:
+        require_verbatim(a.id, a.citation_context, source_text(local))
 
 
 def main(argv: list[str] | None = None) -> int:

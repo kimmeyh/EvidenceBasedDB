@@ -8,7 +8,6 @@ coordinator row beside the subagent's."""
 from __future__ import annotations
 
 import importlib.util
-import json
 import re
 import sys
 from pathlib import Path
@@ -18,7 +17,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from tests.test_f45_dirac3_reading import _QUOTE, _plain, _text  # noqa: E402
+from tests.test_f45_dirac3_reading import _QUOTE, _plain  # noqa: E402
 
 
 def _script():
@@ -28,14 +27,7 @@ def _script():
     return mod
 
 
-def _source_text(path: str) -> str:
-    p = Path(path)
-    if p.suffix.lower() in (".pdf", ".html", ".htm"):
-        return _text(path)
-    raw = p.read_text(encoding="utf-8", errors="replace")
-    if p.suffix.lower() == ".ipynb":
-        raw = "\n".join("".join(c.get("source", [])) for c in json.loads(raw)["cells"])
-    return _plain(raw)
+from store.quotes import source_text as _source_text  # noqa: E402  (Sprint 9 retrospective I3)
 
 
 def _quote_sources(f78) -> dict[str, str]:
@@ -181,6 +173,33 @@ def test_the_answer_document_cites_only_assertions_in_the_store(live_conn):
     missing = sorted(c for c in cited if not live_conn.execute(
         "SELECT 1 FROM records WHERE id = ? AND class = 'assertion'", (c,)).fetchone())
     assert not missing, missing
+
+
+@pytest.mark.live_store
+def test_apply_restores_a_quote_that_drifted_in_the_store(live_copy):
+    """Sprint 9 retrospective I4: the sync this script used compared a
+    hand-named list and left the quotes out, so a corrected quote never
+    landed; `test_a_second_apply_writes_nothing` could not see it. Proven to
+    fail by injection, 2026-10-17: with "citation_context" removed from
+    store.ingest._SYNC_FIELD_COLUMNS, this test went red (the sync refused
+    the record: it no longer knew where that field is stored). LIMIT: that
+    injection proves the refusal, not a silent skip; the silent skip is no
+    longer constructible, because the field list is checked against the
+    dataclass on every call."""
+    from store import connect
+    f78 = _script()
+    _, a, _ = f78.assertions()[0]
+    conn = connect(live_copy)
+    try:
+        conn.execute("UPDATE assertion_fields SET citation_context = ? WHERE record_id = ?",
+                     ('"drifted" (nowhere)', a.id))
+        log = f78.apply_changes(conn)
+        stored = conn.execute("SELECT citation_context FROM assertion_fields WHERE record_id = ?",
+                              (a.id,)).fetchone()[0]
+    finally:
+        conn.close()
+    assert stored == a.citation_context
+    assert f"update {a.id} [citation_context]" in log
 
 
 @pytest.mark.live_store

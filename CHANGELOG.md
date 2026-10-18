@@ -15,6 +15,16 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **process**: Sprint 9 retrospective I3 and I4 (2026-10-17) -- I3:
+  `store/quotes.py` is the one quote normalizer and check (moved out of a
+  test module); `plain` applies Unicode NFKC, so ligatures and the micro
+  sign fold in one step; the Task E script checks every quote before it
+  writes. Three quote tests compared raw quotes and now normalize both
+  sides. I4: `store.ingest.sync_assertion` compares every `AssertionRecord`
+  field (the list checked against the dataclass on every call) and only
+  adds contexts, documents and relations; the Task E script uses it for
+  both of its syncs (its coordinator sync also skipped the quotes).
+  INTAKE section 26. Tests proven by injection
 - **process**: Sprint 9 retrospective I1 (2026-10-17) -- the Stop hook
   `block_procedural_question_stop.py` also blocks a status-footer last line
   whose time is more than 5 minutes from the clock, on every branch and in

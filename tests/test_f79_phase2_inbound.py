@@ -39,7 +39,7 @@ def test_every_quote_is_in_the_document_at_the_pinned_commit(live_conn):
         quotes = _QUOTE.findall(row[0])
         assert quotes, f"{assertion.id}: no quote found"
         for q in quotes:
-            assert q in text, f"{assertion.id}: not verbatim at commit {f79.COMMIT[:7]}: {q[:70]}"
+            assert _plain(q) in text, f"{assertion.id}: not verbatim at commit {f79.COMMIT[:7]}: {q[:70]}"
             checked += 1
     assert checked >= 9
 

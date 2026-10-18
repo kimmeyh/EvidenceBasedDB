@@ -13,7 +13,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from tests.test_f45_dirac3_reading import _QUOTE, _text  # noqa: E402
+from tests.test_f45_dirac3_reading import _QUOTE, _plain, _text  # noqa: E402
 
 
 def _load(name: str):
@@ -38,7 +38,7 @@ def test_every_quote_is_in_a_yielding_source(live_conn):
         assert quotes, f"{assertion.id}: no quote found"
         texts = [_text(f71.LOCAL[r]) for r in yielded_by]
         for q in quotes:
-            assert any(q in t for t in texts), f"{assertion.id}: not verbatim in its sources: {q[:70]}"
+            assert any(_plain(q) in t for t in texts), f"{assertion.id}: not verbatim in its sources: {q[:70]}"
             checked += 1
     assert checked >= 20
 
