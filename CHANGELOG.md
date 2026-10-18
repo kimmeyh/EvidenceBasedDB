@@ -21,6 +21,13 @@ this project keeps having to replace with a step.
   `;`, `&` or `|`, outside quotes. A second `sed -i` on the same line is
   now found on its own (it was hidden inside the first match). Nine tests,
   proven by three injections
+- **fix**: Task A review (2026-10-18; fresh-eyes and automated security
+  review) -- the cut in 021d2a8 let seven in-place edits through (a
+  backslash escape, a `2>&1` redirect, `$(...)` or backticks before the
+  file). The cut now models those, and the search fails closed: when the
+  editor's own text has the flag but names no code file, the whole line
+  is searched. A read inside `bash -c "..."` followed by `grep -i` passes.
+  Eleven cases, each proven against 021d2a8 or by injection
 
 - **docs**: Sprint 10 Phases 1.5 to 3 (2026-10-18) -- scope selected (all
   ten non-HOLD items; F88 and F89 released from F39 and F57); Phase 2

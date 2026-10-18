@@ -234,6 +234,10 @@ def test_the_python_checks_cover_the_launcher_and_sql(command):
     "sed -n 221,260p .claude/hooks/block_unraw_escape.py; echo ---; grep -n -i def store/recheck.py | head",
     "sed -n 1,5p store/recheck.py && perl -i -pe 's/a/b/' notes.txt",
     "awk '{print}' store/recheck.py | grep -i x",
+    # Task A review, 2026-10-18: still blocked after 021d2a8
+    'bash -c "sed -n 1p store/x.py" | grep -i foo',
+    'bash -c "sed -n 1,5p store/x.py"; grep -i y z',
+    "sed -n /don\\'t/p store/x.py | grep -i y",
 ])
 def test_a_read_followed_by_another_commands_i_flag_is_allowed(command):
     """F81 (Sprint 10 Task A): the in-place flag search ran past `;`, `&&`
@@ -252,6 +256,18 @@ def test_a_read_followed_by_another_commands_i_flag_is_allowed(command):
     "sed -i 's/a/b/; s/c/d/' store/x.py",
     "sed -i 's|a|b|' store/x.py",
     "perl -pi -e 's/a/b/ && 1' store/x.py",
+    # Task A review, 2026-10-18 (fresh-eyes and security review): each
+    # passed against 021d2a8, cut before its file
+    'sed -i "s/\\"/;/" store/x.py',
+    "sed -i s/a\\;b/c/ store/x.py",
+    "sed -i s/a/\\&/ store/x.py",
+    "sed -i s/a/b/ 2>&1 store/x.py",
+    "perl -pi -e s/a/b/ 2>&1 store/x.py",
+    "sed -i s/a/$(echo b|tr b c)/ store/x.py",
+    "sed -i s/a/`echo b|tr b c`/ store/x.py",
+    # A shape the cut does not model (process substitution) is caught by
+    # the fail-closed search of the whole line
+    "sed -i s/a/b/ <(echo|cat) store/x.py",
 ])
 def test_an_in_place_edit_after_or_with_a_separator_is_still_blocked(command):
     """F81's other half: the cut at a separator must not free a real edit.
@@ -260,7 +276,15 @@ def test_an_in_place_edit_after_or_with_a_separator_is_still_blocked(command):
     cutting at every separator, quoted or not, the third to fifth cases
     passed (exit 0). A second: with the tool search back to one
     non-overlapping `finditer`, the first case passed, because the first
-    `sed`'s text ran to the end of the line and hid the second `sed`."""
+    `sed`'s text ran to the end of the line and hid the second `sed`.
+    Task A review, 2026-10-18: the seven review cases each passed (exit 0)
+    against the hook as committed in 021d2a8, and the three read cases
+    added to the allowed test were each blocked there (run with a copy of
+    that version). With the fail-closed whole-line search removed, the
+    process-substitution case passed. Restored. Known cost of failing
+    closed: an in-place edit of a text file followed on the same line by a
+    command naming a code file (`sed -i ... a.txt; cat store/x.py`) is
+    blocked; the bypass token covers it."""
     proc = run(command)
     assert proc.returncode == 2, command
 
