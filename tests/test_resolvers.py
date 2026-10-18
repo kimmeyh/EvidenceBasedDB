@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from store.resolvers import consumer_amendment_count  # noqa: E402
 
 
+@pytest.mark.live_store  # reads a sibling repository; found by the I7 guard (2026-10-18)
 def test_resolves_against_the_real_consumer_repository_if_present():
     """Sanity check against the actual live document. Skips rather than
     fails if the consumer repository is not present on this machine --

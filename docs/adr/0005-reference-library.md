@@ -1155,3 +1155,98 @@ stored dates; it sends no request and writes nothing. The re-check itself
 is `scripts/probe_reference_fields.py --due --probe --apply --sessions
 --progress <file> --report <file>`. `--due --apply` without `--probe` is
 refused. A test proves that `--due` alone makes no request.
+
+**2026-10-15 (A9): a re-check counts only when the paper's own primary
+source answered.** Sprint 9 Task C (F74), found by the PR #77 review on
+2026-10-13; decided by the team lead at Sprint 9 plan approval, Q4 = 1
+("1, but reported at Manual Validation with recommendation to investigate
+further or backlog for next sprint"). It changes A7 (a)'s "last check" and
+A7 (d)'s lists. Every count below is a snapshot as of 2026-10-15.
+
+*(a) What counts.* The last check is the latest date the paper's own
+primary source answered: the arXiv API or the arXiv abstract page for an
+arXiv paper; the DOI's registration agency (Crossref or DataCite) for a
+DOI; the page itself (the HTTP probe) for a URL or a GitHub repository; and
+the file, found present, for a local-only paper. Any other provider's
+answer is still recorded, but it no longer moves the clock. Before this, a
+DataCite answer for an arXiv paper whose abstract page failed reset the
+clock, so the paper left the due list for about 10 months with its version
+unread; a local check that found the file missing did the same. A paper
+with no primary answer takes its `updated` date, as a never-probed paper
+always has, so a failed check leaves it due. `store/recheck.py`
+(`PRIMARY_PROVIDERS`, `is_primary_answer`, `last_check`).
+
+*(b) Faults that are not the paper's.* A missing or failing `pdftotext` is
+listed as "tool failure", and a probe that raised is listed as "probe
+failure". Before this, both read as findings about the paper ("no readable
+stamp", "the abstract page showed no version").
+
+*(c) The team lead sees the silent sources.* Each re-check run lists
+"primary source did not answer (stays due)", with the providers that did
+answer. At Manual Validation each listed paper gets a recommendation:
+investigate now, card it for the next sprint, or accept it as due until
+the next Phase 1.3.
+
+*(d) Effect on the store.* Of 2,100 papers, 1 (a DOI record) has probes but
+no primary answer; no paper comes due before 2027-08-01 under either rule.
+The rule therefore does not leave most papers due forever (the plan's
+premise (c)).
+
+*Revisit when* a section's re-check finds its primary source silent on
+more than 10% of its papers.
+
+**2026-10-15 (A10): `cites`, a computed link between two papers in the
+store.** Sprint 9 Task H (F55); decided by the team lead at Sprint 9 plan
+approval, Q5 = 1. It adds a sixth type to field 6 (`source_links`).
+Every count below is a snapshot as of 2026-10-15.
+
+*(a) What it is.* A `cites` link goes from the citing paper to the cited
+one, and both must be in the store. It is computed, never typed: each link
+comes from one entry of the citing paper's Crossref reference list
+(`works/<doi>`, field `reference`), matched to a store record by DOI, or by
+an arXiv id in an unstructured reference. Its evidence names the list, the
+date it was fetched and the entry that matched. Records that share the
+citing DOI are versions of one paper and never link to each other. It is
+not a certainty input; F56's corroboration flag (ADR-0004 A9) reads
+`supports`, not `cites`.
+
+*(b) Recorded once, read from both ends.* One row per pair. The incoming
+side is a query (`store/links.py` `links_of`, with an index on `to_id`),
+never a second row, since a reverse copy would be a stored determinate
+fact. The schema change is a table rebuild
+(`scripts/migrate_sprint9_cites_link_type.py`, verified backup first, row
+count and foreign keys checked before the commit).
+
+*(c) Which papers are asked.* Every DOI the store holds for a paper: from
+`access`, and from the `version_of` probe of an arXiv record. arXiv's own
+DOIs are DataCite's and carry no reference list, so they are not asked;
+they can still be cited. The raw answers are cached outside git
+(`<store dir>\crossref_references\`) as the record of what Crossref said on
+the fetch date, and a re-run computes the same links from them; a test
+recomputes every stored link from the cache. The fetch is serial, 1 s
+apart, with the plain User-Agent and no contact address.
+
+*(d) Coverage.* 807 DOIs asked; 792 answered and 15 not found; 750 carried
+a reference list (93%, against the plan's 10% falsifier). Of 49,206
+references, 38,903 carry a DOI and 5,610 name a store paper. The result is
+5,620 links from 674 citing papers to 508 cited ones; 793 of the store's
+2,102 papers are at one end or the other. 56 pairs cite each other, which
+was checked: published versions citing each other's preprints, not
+duplicate records. Papers held only as arXiv records with no journal DOI
+are cited but never citing, because arXiv has no reference list to ask.
+
+*(e) What was considered.* A separate table (Q5 option 2) was declined: a
+`cites` link is a typed relation between source records, which is what
+field 6 is. Matching references by title was declined: it is fuzzy, and a
+wrong link would be a fabricated provenance.
+
+*Revisit when* the arXiv-only papers need citing links: their references
+would have to come from the PDF text or Semantic Scholar, a different
+provider with a different failure mode.
+
+*A10 correction, 2026-10-15 (fresh-eyes review of 4c997a1, the same day).*
+A10 (d) says "56 pairs cite each other": it is 28 pairs, 56 links, all
+checked as real. "674 citing papers" counts records, so a paper held as
+both a preprint and a journal record is counted twice. The review
+recomputed every coverage figure from the cache and found them exact, and
+found every one of the 5,224 DOI-matched links in the citing paper's list.

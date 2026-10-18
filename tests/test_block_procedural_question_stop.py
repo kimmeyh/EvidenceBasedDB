@@ -259,3 +259,103 @@ def test_malformed_payload_fails_open():
 def test_empty_message_fails_open(tmp_path):
     repo = _scratch_repo(tmp_path, _status())
     assert _run_hook(repo, SPRINT_BRANCH, "").returncode == 0
+
+
+# Sprint 9 retrospective I1: a footer-shaped last line must match the clock.
+NOW = "2026-10-15T15:37:00"
+
+
+def _run_footer(repo: Path, message: str, branch: str = "develop") -> subprocess.CompletedProcess:
+    payload = {"repo_override": str(repo), "branch_override": branch,
+               "last_assistant_message": message, "now_override": NOW}
+    return subprocess.run([sys.executable, str(HOOK)], input=json.dumps(payload),
+                          capture_output=True, text=True)
+
+
+@pytest.mark.parametrize("footer", [
+    "10/15/2026 3:58pm | Sprint 9 Phase 5.3 Manual Validation",  # Sprint 9's own case
+    "10/15/2026 3:37am | Sprint 9 Phase 5.3 Manual Validation",  # am for pm
+    "10/14/2026 3:37pm | Sprint 9 Phase 5.3 Manual Validation",  # carried forward a day
+    "`10/15/2026 2:46pm | Sprint 9 Phase 5.3 Manual Validation`",
+])
+def test_blocks_a_footer_off_the_clock_on_any_branch(tmp_path, footer):
+    """Proven to fail by injection, 2026-10-17: with the footer check's
+    `return 2` made `pass`, all four cases were allowed (exit 0) and went
+    red; restored, green. The Sprint 9 footers at 3:48 and 3:58 against the
+    script's 3:37 are the first case."""
+    repo = _scratch_repo(tmp_path, None)
+    proc = _run_footer(repo, f"Report.\n\n{footer}")
+    assert proc.returncode == 2, proc.stderr
+    assert "status-footer.ps1" in proc.stderr
+
+
+@pytest.mark.parametrize("message", [
+    "Report.\n\n10/15/2026 3:37pm | Sprint 9 Phase 5.3 Manual Validation",
+    "Report.\n\n10/15/2026 3:41pm | Sprint 9 Phase 5.3 Manual Validation",  # inside tolerance
+    "Report with no footer at all.",
+    "A footer quoted mid-message, 10/01/2026 1:00pm | Sprint 9, is not the last line.\n\nDone.",
+])
+def test_allows_a_true_footer_or_none(tmp_path, message):
+    repo = _scratch_repo(tmp_path, None)
+    proc = _run_footer(repo, message)
+    assert proc.returncode == 0, proc.stderr
+
+
+# Sprint 9 retrospective I7: from the hand-over to gh pr ready, CI must be green.
+GREEN = [{"name": "test", "bucket": "pass"}, {"name": "lint", "bucket": "skipping"}]
+
+
+def _run_ci(repo: Path, checks, branch: str = SPRINT_BRANCH,
+            message: str = "Manual Validation hand-over.") -> subprocess.CompletedProcess:
+    payload = {"repo_override": str(repo), "branch_override": branch, "last_assistant_message": message}
+    if checks != "no override":
+        payload["ci_checks_override"] = checks
+    return subprocess.run([sys.executable, str(HOOK)], input=json.dumps(payload),
+                          capture_output=True, text=True)
+
+
+@pytest.mark.parametrize("phase", ["Phase 5.3 Manual Validation", "Phase 6.3 PR", "Phase 7.7 Retrospective"])
+@pytest.mark.parametrize("bucket", ["fail", "pending", "cancel"])
+def test_blocks_a_stop_while_ci_is_not_green_from_phase_5_to_7(tmp_path, phase, bucket):
+    """Proven to fail by injection, 2026-10-18: with the CI block's `return 2`
+    made `pass`, all nine cases were allowed (exit 0) and went red; restored,
+    green. Sprint 9's case: CI was red through the Manual Validation hand-over."""
+    repo = _scratch_repo(tmp_path, _status(status=phase))
+    proc = _run_ci(repo, [GREEN[0], {"name": "test (3.12)", "bucket": bucket}])
+    assert proc.returncode == 2, proc.stderr
+    assert "gh pr checks 30 --watch" in proc.stderr
+
+
+@pytest.mark.parametrize("phase,checks,branch", [
+    ("Phase 5.3 Manual Validation", GREEN, SPRINT_BRANCH),  # green
+    ("Phase 5.3 Manual Validation", None, SPRINT_BRANCH),  # unreadable: never trap the session
+    ("Phase 5.3 Manual Validation", [], SPRINT_BRANCH),  # no checks yet
+    ("Phase 4.1 Execution", [{"name": "test", "bucket": "fail"}], SPRINT_BRANCH),  # before hand-over
+    ("Phase 8.1 Delivery", [{"name": "test", "bucket": "fail"}], SPRINT_BRANCH),  # after merge
+    ("Phase 5.3 Manual Validation", [{"name": "test", "bucket": "fail"}], "develop"),  # not a sprint branch
+])
+def test_allows_a_stop_when_ci_is_green_unreadable_or_out_of_scope(tmp_path, phase, checks, branch):
+    repo = _scratch_repo(tmp_path, _status(status=phase))
+    proc = _run_ci(repo, checks, branch)
+    assert proc.returncode == 0, proc.stderr
+
+
+def test_allows_a_stop_when_gh_itself_cannot_read_the_checks(tmp_path):
+    """The real fail-open path (PR #88 review, 2026-10-18): no override, so
+    the hook runs gh in a scratch folder that is not a repository; gh prints
+    no JSON, and the stop is allowed."""
+    repo = _scratch_repo(tmp_path, _status(status="Phase 5.3 Manual Validation"))
+    assert _run_ci(repo, "no override").returncode == 0
+
+
+@pytest.mark.parametrize("message", [
+    "Criterion 2: BLOCKED -- CI fails on an Actions outage (test: fail).",
+    "STOP: the CI run was cancelled and cannot be re-run from here.",
+])
+def test_a_stop_that_cites_a_criterion_reports_a_ci_failure(tmp_path, message):
+    """PR #88 review, 2026-10-18: a failure Claude cannot fix must be
+    reportable. Proven to fail by injection, 2026-10-18: with the escape
+    removed from the CI condition, both cases were blocked (exit 2)."""
+    repo = _scratch_repo(tmp_path, _status(status="Phase 5.3 Manual Validation"))
+    proc = _run_ci(repo, [{"name": "test", "bucket": "fail"}], message=message)
+    assert proc.returncode == 0, proc.stderr

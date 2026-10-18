@@ -526,3 +526,224 @@ and reasons, so each takes `method`.
   thousand inference modules (2007), and eight tactic types. The second is
   not reconciled with the six base tactic types the 2009 LarKC source
   lists; its `certainty_reasons` say why.
+
+## 19. Applied 2026-10-15: Phase 2 results (Sprint 9 Task A, F79)
+
+Team lead, 2026-10-14: "they are both consumers of each other and reads
+are permitted without direct prompts from the other - so each could read
+from each other, but cannot write to each other". This repository and
+`hsbc-qfraud-phase2` read each other freely; neither writes to the other.
+
+**Inbound: a Phase 2 result entering the store.**
+
+- **Read it from Phase 2's git history, at a named commit.** Use
+  `git -C <phase2> show <commit>:<file>`, which is a read. Never read the
+  working tree as the evidence: Phase 2 is an active repository, and its
+  files move. Pin the last commit that touched the file, and check that the
+  working copy still matches it.
+- **Never copy it into Phase 2 and never edit it there.** The local copy
+  the record depends on is the committed blob itself. Its SHA-256 goes in
+  the record's `evidence`.
+- **Provenance names four things:** the repository, the commit, the file
+  and the run (date and sprint, as the document states them). `access` is
+  `<local path in Phase 2> | <GitHub URL at the commit>`. The repository
+  is private, so the URL is the pointer, and the commit is what the record
+  depends on.
+- **Assert only what the document still stands behind.** A Phase 2
+  document corrects itself in place. A column or figure it declares wrong
+  is not asserted, and a result it calls unverified is not imported.
+- **Certainty** follows the Phase 1 precedent: the consumer project's own
+  hardware measurement, read directly, starts HIGH (`HW`). It is the same
+  project as earlier consumer results, so a `supports` link between them
+  is fine, but it is not independent corroboration.
+- **The quote test reads the blob at the commit.** It never reads the
+  working tree, so it neither breaks nor passes on text that was never read.
+
+The first trial: `scripts/sprint9_f79_phase2_b4_b5_inbound.py`, record
+`hsbc-qfraud-phase2-b4-b5-hardware-result` (Phase 2's
+`docs/B4_B5_HARDWARE_RESULT.md` at commit 139fa13). It yields four
+assertions: Dirac-3 matches its classical proxy inside the pocket; no
+in-segment edge on the 8 scoreable cells; the device sits below Phase 2's
+classical bar; and B5's QSVM is weak. The quotes are checked by
+`tests/test_f79_phase2_inbound.py`.
+
+**Outbound: a change wanted in Phase 2.** Write a prompt the team lead
+pastes into a Phase 2 session. Never write the change from here (hook:
+`.claude/hooks/block_sibling_repo_writes.py`). The prompt:
+
+- states what to change, and where (file and line or section);
+- says why, with each claim's provenance inline (record id, source and
+  anchor), because Phase 2's session may not resolve this repository's
+  ids;
+- asks for that repository's own test or check, proven to fail where it
+  guards something.
+
+## 20. Applied 2026-10-15: F68's door fixes and the F69 paper (Sprint 9 Task B)
+
+- **The door reads two more identifier forms** (`store/citations.py`,
+  `parse_access`): old-style arXiv ids from before April 2007
+  (`quant-ph/0405098`, `math.PR/0601001`), and DOIs that contain
+  parentheses (`10.1016/0304-4149(89)90040-9`). A closing parenthesis with
+  no opening one inside the DOI belongs to the prose and is dropped.
+- **The five Massoli entries refused on 2026-10-12** were re-run by
+  `scripts/sprint9_f68_massoli_rerun.py`, which reuses F61's parsing,
+  classification and entry shape for only those five. All five entered at
+  `seen`. Their `updated_reason` names F61's script (its entry builder)
+  with the Sprint 9 tag.
+- **F69: the file named "Cerezo" is by Nathan Wiebe.** Its first page reads
+  "To cite this article: Nathan Wiebe 2020 New J. Phys. 22 091001", and its
+  second page gives `https://doi.org/10.1088/1367-2630/abac39`. It is open
+  access (IOP "PERSPECTIVE, OPEN ACCESS"). It enters at `seen` through the
+  door by `manifests/sprint9_f69_wiebe_key_questions.json`: access
+  `<local path> | DOI:10.1088/1367-2630/abac39`, the local copy's SHA-256 in
+  `evidence`, and `found_via` naming the QMLPapers `NonArxiv` folder. The
+  file's misleading name is recorded, not changed: the folder is the team
+  lead's.
+
+## 21. Applied 2026-10-15: the ceiling group's local copies and two new papers (Sprint 9 Task E, F78)
+
+- **Downloads** (team lead, 2026-10-14: every paper in the group with no
+  local PDF goes into `Papers\`): `scripts/sprint9_f78_downloads.py` saved
+  Ishida et al. (arXiv:2202.00395), Theisen et al. (arXiv:2106.03357), Thanh
+  et al. (arXiv:2511.00964, the preprint of the Machine Learning paper) and
+  Allen (the Federal Reserve's own FEDS 2025-017 PDF), each checked against
+  its first page. arXiv went through the door's paced fetcher. Chen et al.
+  2025 and Han and Verdu 1994 have no free copy; they are the team lead's
+  hand downloads (plan Q3 = 1) and were not fetched.
+- **Repositories** (plan Q2 = 2): six shallow clones in
+  `D:\Data\Harold\EvidenceBasedDB\GitHubRepos\`, each read at the commit
+  named in its read row. The seventh record (CE-14) is the handbook's
+  rendered site, the same source as the handbook repository.
+- **Two papers the group cites but the store lacked** enter at `seen` by
+  `manifests/sprint9_f78_ishida_theisen.json`, each with `access`
+  `arXiv:<id> | <local path>`; the reading script promotes them.
+- **Han and Verdu 1994** is stored as `te-sun-1994-generalizing-fano-inequality`:
+  Crossref gave the first author's name as one string, so the derived id
+  took "te-sun". The citation reads "Te Sun Han". Ids are not renamed; the
+  record's evidence says so.
+
+## 22. Applied 2026-10-15: the first read-for-claims slice (Sprint 9 Task G, F80)
+
+- **The slice** is recorded in `manifests/sprint9_f80_slice.json` by
+  `scripts/sprint9_f80_slice.py` (team lead, plan Q7 = 2): the 26 records at
+  `seen` or `screened` under `hsbc-2026`, `platform:dirac-3` and
+  `platform:dirac-3s`, none in the ceiling group, and the 50 most-cited
+  `qml` records at `seen` or `screened`. It is a record of what this sprint
+  chose, not an intake list: it adds no record, and its citation counts are
+  never written to the store (they change).
+- **Counts.** OpenAlex, queried by each record's arXiv DOI, then by the
+  journal DOI the store's probes recorded (`version_of`): 1,146 of 1,521
+  candidates counted. Semantic Scholar's unauthenticated batch endpoint
+  answered 429 to every attempt on 2026-10-15 and is not used. The 375
+  uncounted records are the selection's stated limit.
+- **Copies.** `scripts/sprint9_f80_downloads.py` saved the free arXiv
+  version of the 21 slice papers stored by journal DOI only, each checked
+  for its arXiv stamp on the first page. One repository was shallow-cloned
+  into `GitHubRepos\` (plan Q2 = 2's rule).
+- From Sprint 10, F57 releases 74 records per sprint until none remain at
+  `seen` or `screened` (team lead, 2026-10-15).
+
+## 23. Applied 2026-10-15: the slice read and entered (Sprint 9 Task G, F80)
+
+- **Reads.** Ten Sonnet 5.5 first-pass readers, kept verbatim in
+  `manifests/sprint9_f80_reads/group_*.json` (J1 to J3 the submission's
+  sources, Q1 to Q7 the QML papers). Some entries name a `quote_file` or
+  `quote_file_default` in the session's scratch folder: those were the
+  readers' text extracts and no longer exist. `scripts/sprint9_f80_reading.py`
+  ignores them and resolves every quote to the real source file, and the
+  quote test checks it there.
+- **Entered** (as a snapshot on 2026-10-15): 65 of the 76 records promoted to
+  `read`, 233 assertions (234 first; the review dropped one that restated a
+  determinate fact), each read with a subagent row and the coordinator's
+  `partial` row (ADR-0005 A4). Local copies were added to `access` where
+  missing, each with its SHA-256. The two clones carry the commit they were
+  read at instead. eqc-models carries SHA-256s for the wheel and the PyPI
+  metadata it was read from, beside the stored sdist.
+- **Refused** (11, kept at `seen`, each with its reason in the record's
+  history): eight QCi application pages and one QCi article name Dirac-1
+  while the store tags them `platform:dirac-3` (F84). The space-logistics
+  page has no body text. The trade magazine PDF has no text layer.
+
+## 24. Applied 2026-10-15: the F62 discovery candidates at `seen` (Sprint 9 Task J, Manual Validation Q4 = 1)
+
+- **What entered.** The team lead chose all 100 candidates in the four
+  top-25 lists of `f62_review_2026-10-15.md` except 13 named off-topic.
+  `scripts/sprint9_f62_enter_seen.py` pins each exclusion to its title,
+  so a re-ranked file stops the run instead of excluding the wrong paper.
+  All 87 entered at `seen` (as a snapshot on 2026-10-15): 50 `ml`, 16 `qc`,
+  11 `world`, 10 `qml`.
+- **Through the door, never from OpenAlex.** Id, title and citation come
+  from the identifier: the arXiv id where OpenAlex or Semantic Scholar gave
+  one (57, paced 18 s apart), the DOI otherwise. OpenAlex's DOI can be a
+  mirror's ("Attention Is All You Need" carries a preprint server's DOI).
+- **A title check refused 5 at first.** Each arXiv preprint has a title
+  other than the published paper's (nnU-Net's preprint is "Automated Design
+  of Deep Learning Methods for Biomedical Image Segmentation"). They are
+  the same works; they entered by the journal DOI, whose title matched. A
+  wrong identifier attaches a different paper with no error, so the check
+  stays.
+- **Context** is the stream's (the fraud stream enters as `ml`: the HSBC
+  context holds the submission's own facts), except where it was plainly
+  wrong: quantum simulation and chemistry papers in the qml stream are
+  `qc`, condensed-matter and tensor-method physics in the tensor stream are
+  `world`, and three tensor decomposition papers are `ml`. Screening
+  refines it.
+- **Reading** comes later, from F57's 74-per-sprint release.
+
+## 25. Applied 2026-10-16: Task E's two closed papers (Sprint 9 Task E, F78; Manual Validation item 7 and Q6 = 1)
+
+- **Chen et al. 2025 arrived** as the team lead's hand download,
+  `Papers\2025-MM_Chen_An-efficient-Bayes-error-rate-estimation-method.pdf`
+  (the "MM" placeholder was left in the name; the paper was published
+  online 11 April 2025; the record points at the file as named). It was
+  read in the Task E shape: a first-pass subagent read the whole paper
+  (`manifests/sprint9_f78_reads/group_g.json`, kept verbatim), then the
+  coordinator read the opening and every quoted passage in context. 12
+  assertions entered, as a snapshot on 2026-10-16. The coordinator cut five
+  reader judgments (a critique of the proof, a reading of Table 4's spread,
+  a judgment on the validity criterion, a contradiction phrased as the
+  reader's, a relevance clause) and restored one space a quote had lost.
+- **Han and Verdu 1994 has no free copy** (team lead, 2026-10-16). It
+  stays at `seen` with that reason. Team lead Q6 = 1: its content is
+  covered by free sources instead.
+  - Scarlett and Cevher 2019 (already `read`), section 7.2, equation
+    (108): the data-processing form of Fano holds for a non-uniform prior;
+    entered as a coordinator assertion from a re-read of pp. 35-36.
+  - Chen, Guntuboyina and Zhang 2016, "On Bayes Risk Lower Bounds", JMLR
+    17 (open access; arXiv:1410.0503), whose Corollary 5 is a generalized
+    Fano inequality for any prior and any zero-one loss. Downloaded from
+    jmlr.org to `Papers\2016-12_Chen_On-Bayes-Risk-Lower-Bounds.pdf` and
+    entered through the door by
+    `manifests/sprint9_q6_chen_guntuboyina_zhang.json`, then read in the
+    Task E shape (group H): sections 1 to 4 and 8 in full, so the subagent
+    row says "in part". 9 assertions entered, two clauses narrowed to what
+    the quoted passages say.
+- **Quote check fixes.** The shared normalizer in the quote tests now
+  expands the "ff", "ffi" and "ffl" ligatures, as it already did "fi" and
+  "fl" (the JMLR text sets "affirmative" with one). Five Chen quotes had
+  lost a space the PDF carries ("Theorem 1 (", "O(n2) ."); restored by
+  `QUOTE_EDITS`. The Task E sync now compares quotes too, so a corrected
+  quote reaches the store.
+
+## 26. Rule from 2026-10-17: a reading script checks quotes before it writes, and syncs every field (Sprint 9 retrospective I3 and I4)
+
+- **Check before the write.** A script that enters assertions with quotes
+  calls `store.quotes.require_verbatim(record_id, citation_context, text)`
+  for every assertion, with `text` from `store.quotes.source_text(path)`,
+  before it writes anything. A quote not in its local source stops the run,
+  so it never reaches the store. The live-store quote tests stay as the
+  backstop. `scripts/sprint9_f78_ceiling_reading.py` (`check_quotes`) is
+  the first script to do this.
+- **One normalizer.** `store.quotes.plain` applies Unicode NFKC, then makes
+  the typographic quotes plain. Ligatures, the micro sign and other
+  compatibility forms fold in one step, not one hand-added character per
+  new source. Compare `plain(quote)` with the plain source text, never the
+  raw quote.
+- **Sync every field.** A script that corrects an assertion it already
+  entered calls `store.ingest.sync_assertion(conn, wanted, note, today)`,
+  never its own UPDATE over a hand-named list of columns. The field list is
+  checked against `AssertionRecord` on every call, so a field cannot be left
+  out (Task E's list left out the quotes). Documents and relations are only
+  added to, never removed: other steps add them later. A corrected context
+  replaces the stored ones (review of 3a455ce). `sprint9_f78` and
+  `sprint9_f80` both use it.

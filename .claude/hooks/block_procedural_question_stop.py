@@ -26,6 +26,17 @@ Blocks a stop only when ALL of these hold:
      criterion ("Criterion N", the "STOP:" template, "Class 1|2|3
      decision", "BLOCKED", "Manual Validation").
 
+Separately, on every branch and in every phase (Sprint 9 retrospective I1):
+a last line shaped like the status footer ("MM/DD/YYYY h:mmam | ...") is
+blocked when its time is more than 5 minutes from the clock. Payload key
+now_override sets the clock for tests.
+
+And on a sprint branch in Phases 5 to 7 (Sprint 9 retrospective I7): a stop
+is blocked while any check on the PR named in sprint_status.json is failing
+or still running (`gh pr checks`). Checks that cannot be read allow the stop,
+and so does a message citing a stopping criterion, a "STOP:" line or BLOCKED.
+Payload key ci_checks_override supplies the checks for tests.
+
 Outside the window the hook is silent: pre-approval and Phase 5+ questions
 are correct, and a message that cites a criterion is a legitimate stop.
 
@@ -40,6 +51,7 @@ import json
 import re
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 BRANCH_PATTERN = re.compile(r"^feature/\d+_Sprint_(\d+)")
@@ -82,6 +94,74 @@ QUESTION_PATTERNS = [
 ]
 
 NUMBERED_LINE = re.compile(r"^\s*\d+[.)]\s+")
+
+# Sprint 9 retrospective I1: the status footer. Two footers in Sprint 9
+# (about 3:48 and 3:58) were typed by hand and wrong; the script said 3:37.
+# The rule and the script both existed; the failure was not running it. So
+# any footer-shaped last line is checked against the clock, on every branch
+# and in every phase (the footer rule is global). A message with no footer
+# passes: this checks the footer's truth, not its presence.
+FOOTER = re.compile(r"^(\d{2})/(\d{2})/(\d{4}) (\d{1,2}):(\d{2})(am|pm) \| ")
+FOOTER_TOLERANCE_MINUTES = 5
+
+
+def footer_error(message: str, now: datetime) -> str | None:
+    """A reason when the message's last line is a footer whose time is more
+    than FOOTER_TOLERANCE_MINUTES from `now`; None otherwise."""
+    lines = [ln.strip().strip("`").strip() for ln in message.splitlines() if ln.strip()]
+    if not lines:
+        return None
+    m = FOOTER.match(lines[-1])
+    if not m:
+        return None
+    month, day, year, hour, minute, half = m.groups()
+    hour_24 = int(hour) % 12 + (12 if half == "pm" else 0)
+    try:
+        stamped = datetime(int(year), int(month), int(day), hour_24, int(minute))
+    except ValueError:
+        return f"the footer {lines[-1]!r} is not a real date and time"
+    off = abs((now - stamped).total_seconds()) / 60
+    if off <= FOOTER_TOLERANCE_MINUTES:
+        return None
+    return (f"the footer says {stamped:%m/%d/%Y %I:%M%p}, the clock says "
+            f"{now:%m/%d/%Y %I:%M%p} ({off:.0f} minutes apart)")
+
+
+# Sprint 9 retrospective I7 (team lead, 2026-10-18, Q1 = 2): CI on PR #88 was
+# red for three days, through the Manual Validation hand-over, and no step
+# read it. From Phase 5 (hand-over) to Phase 7 (gh pr ready), a stop is
+# blocked while any check on the sprint's PR is failing or still running.
+CI_PHASES = (5, 6, 7)
+CI_NOT_GREEN = ("fail", "pending", "cancel")
+
+# A failure Claude cannot fix (an Actions outage, a cancelled run, a fix that
+# needs the team lead) must still be reportable (PR #88 review, 2026-10-18:
+# without this the only way out was renaming the branch). A stop that cites a
+# stopping criterion by number, a "STOP:" line or BLOCKED is allowed. The
+# wider CRITERION_PATTERNS are not used: "Manual Validation" would excuse
+# every hand-over, which is the case this check exists for.
+CI_ESCAPE_PATTERNS = CRITERION_PATTERNS[:4]
+
+
+def ci_error(checks: list[dict]) -> str | None:
+    """A reason when any check is not green; None otherwise."""
+    bad = [f"{c.get('name', '?')} ({c.get('bucket')})" for c in checks if c.get("bucket") in CI_NOT_GREEN]
+    return ", ".join(bad) if bad else None
+
+
+def _pr_checks(payload: dict, pr: int, cwd: str) -> list[dict] | None:
+    """The PR's checks, or None when they cannot be read. Payload key
+    ci_checks_override supplies them for tests. A failure to read them (gh
+    missing, offline, no checks yet) ALLOWS the stop: this control must not
+    trap a session that cannot reach GitHub."""
+    if "ci_checks_override" in payload:
+        return payload["ci_checks_override"]
+    code, out = _run(["gh", "pr", "checks", str(pr), "--json", "name,bucket"], cwd)
+    try:
+        checks = json.loads(out)
+    except (json.JSONDecodeError, ValueError):
+        return None
+    return checks if isinstance(checks, list) else None
 
 
 def _run(args: list[str], cwd: str) -> tuple[int, str]:
@@ -138,6 +218,15 @@ def ends_in_procedural_question(message: str) -> bool:
     return any(p.search(joined) for p in QUESTION_PATTERNS)
 
 
+def _current_sprint(repo: Path) -> dict:
+    """current_sprint from sprint_status.json, or {} when it cannot be read."""
+    try:
+        current = json.loads((repo / ".claude" / "sprint_status.json").read_text(encoding="utf-8"))["current_sprint"]
+    except Exception:
+        return {}
+    return current if isinstance(current, dict) else {}
+
+
 def _in_window(repo: Path) -> tuple[bool, str]:
     """(inside_window, reason). Every failure to establish the window is an
     allow: the hook fires only on a state it can positively read."""
@@ -182,6 +271,28 @@ def main() -> int:
     if not message:
         return 0
 
+    try:
+        now = datetime.fromisoformat(str(payload["now_override"])) if payload.get("now_override") \
+            else datetime.now()
+    except ValueError:
+        now = datetime.now()
+    wrong = footer_error(message, now)
+    if wrong:
+        print(
+            "[BLOCKED by block_procedural_question_stop hook: status footer]\n"
+            "\n"
+            f"The last line is a status footer, and {wrong}.\n"
+            "\n"
+            "Run the script and end the message with its output, unchanged\n"
+            "(global CLAUDE.md, Status Footer; Sprint 9 retrospective I1):\n"
+            "\n"
+            '    powershell -NoProfile -ExecutionPolicy Bypass -File "C:/Users/kimme/.claude/scripts/status-footer.ps1"\n'
+            "\n"
+            "Never type a footer by hand or carry one forward from an earlier message.",
+            file=sys.stderr,
+        )
+        return 2
+
     branch_override = payload.get("branch_override")
     if branch_override:
         branch = str(branch_override).strip()
@@ -194,6 +305,29 @@ def main() -> int:
         return 0
     if not BRANCH_PATTERN.match(branch):
         return 0
+
+    status = _current_sprint(repo)
+    pr = status.get("pr")
+    if phase_number(str(status.get("status") or "")) in CI_PHASES and isinstance(pr, int):
+        checks = _pr_checks(payload, pr, cwd)
+        failing = ci_error(checks) if checks else None
+        if failing and not any(p.search(message) for p in CI_ESCAPE_PATTERNS):
+            print(
+                "[BLOCKED by block_procedural_question_stop hook: CI]\n"
+                "\n"
+                f"PR #{pr} has checks that are not green: {failing}.\n"
+                "\n"
+                "From the Manual Validation hand-over to gh pr ready, nothing reaches the\n"
+                "team lead while CI is red or still running (Sprint 9 retrospective I7).\n"
+                f"Wait with `gh pr checks {pr} --watch`; fix a failure first, then reply.\n"
+                "A failure you cannot fix is reported as a stop: cite the criterion\n"
+                "(\"Criterion 2: BLOCKED -- CI ...\") and name the failing check.\n"
+                "\n"
+                "Bypass (team-lead-sanctioned only): rename the branch to include\n"
+                "allow_stop_hook_bypass.",
+                file=sys.stderr,
+            )
+            return 2
 
     inside, reason = _in_window(repo)
     if not inside:

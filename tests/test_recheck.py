@@ -91,16 +91,41 @@ def _mini_store() -> sqlite3.Connection:
 
 
 def test_last_check_skips_hand_readings_and_falls_back_to_updated():
-    """Q4: a record with no probe takes its `updated` date, by the same rule."""
+    """Q4: a record with no probe takes its `updated` date, by the same rule.
+    Since ADR-0005 A9 (2026-10-15) the HTTP probe of an arXiv paper's page
+    is not its primary source, so it no longer moves the clock: the arXiv
+    answer of 10-03 does (this test asserted 10-05 before A9)."""
     conn = _mini_store()
     conn.executemany("INSERT INTO records VALUES (?, ?)", [("a", "2026-09-20"), ("b", "2026-09-21")])
-    conn.executemany("INSERT INTO paper_fields VALUES (?, ?, NULL)", [("a", "arXiv:1"), ("b", "D:\\x.pdf")])
+    conn.executemany("INSERT INTO paper_fields VALUES (?, ?, NULL)", [("a", "arXiv:2407.04512"), ("b", "D:\\x.pdf")])
     conn.executemany("INSERT INTO paper_probes VALUES (?, ?, ?, ?, ?)", [
         ("a", "publication_status", "preprint", "arXiv", "2026-10-03"),
         ("a", "access_status", "open (HTTP 200)", "HTTP probe", "2026-10-05"),
         ("a", "affiliations", "QCi", "hand", "2026-10-09")])
-    assert recheck.last_check(conn, "a") == date(2026, 10, 5)
+    assert recheck.last_check(conn, "a") == date(2026, 10, 3)
     assert recheck.last_check(conn, "b") == date(2026, 9, 21)
+
+
+def test_only_the_primary_source_resets_the_clock():
+    """F74 (Sprint 9 Task C; ADR-0005 A9, team lead Q4 = 1). DataCite
+    answered and arXiv did not: the paper keeps its old date and stays due.
+    A local file check that found the file missing does not count either.
+
+    Proven to fail by injection, 2026-10-15: with is_primary_answer
+    returning True for every provider, both records took the 2027 date."""
+    conn = _mini_store()
+    conn.executemany("INSERT INTO records VALUES (?, ?)", [("x", "2025-09-01"), ("l", "2025-09-01")])
+    conn.executemany("INSERT INTO paper_fields VALUES (?, ?, NULL)",
+                     [("x", "arXiv:2407.04512"), ("l", "D:\\gone.pdf")])
+    conn.executemany("INSERT INTO paper_probes VALUES (?, ?, ?, ?, ?)", [
+        ("x", "version_of", "10.48550/arXiv.2407.04512", "DataCite", "2027-08-01"),
+        ("l", "access_status", "local copy missing", recheck.LOCAL_FILE_PROVIDER, "2027-08-01")])
+    assert recheck.last_check(conn, "x") == date(2025, 9, 1)
+    assert recheck.last_check(conn, "l") == date(2025, 9, 1)
+    assert {r[0] for r in recheck.due(conn, date(2027, 8, 2))} == {"x", "l"}
+    conn.execute("INSERT OR REPLACE INTO paper_probes VALUES ('l', 'access_status', 'local copy present (SHA-256 unchanged)', "
+                 "?, '2027-08-01')", (recheck.LOCAL_FILE_PROVIDER,))
+    assert recheck.last_check(conn, "l") == date(2027, 8, 1)
 
 
 def test_due_selects_only_records_past_their_date():
@@ -189,6 +214,65 @@ def test_an_unreadable_local_stamp_and_a_bad_local_file_are_reported():
                          {"local": ("local copy missing", "D:\\x.pdf not found")})
     assert lists["version unread"] == ["r1: the local copy's first page has no readable stamp"]
     assert lists["local copy missing or changed"] == ["r2: local copy missing (D:\\x.pdf not found)"]
+
+
+def test_a_tool_failure_is_the_tools_fault_not_the_papers(monkeypatch):
+    """F74 (Sprint 9 Task C, ADR-0005 A9). With pdftotext missing, the empty
+    text used to read as "no readable stamp" against the paper.
+
+    Proven to fail by injection, 2026-10-15: with local_version's OSError
+    handler removed, FileNotFoundError escaped (first assertion red); with
+    recheck_findings no longer catching PdfToolError, the sort raised."""
+    def missing(*a, **k):
+        raise FileNotFoundError("pdftotext")
+    monkeypatch.setattr(recheck.subprocess, "run", missing)
+    with pytest.raises(recheck.PdfToolError):
+        recheck.local_version("2407.04512", path=Path("x.pdf"))
+    prf = _probe_script()
+    lists = {name: [] for name in prf.FINDING_LISTS}
+    prf.recheck_findings(lists, "r1", "arXiv:2407.04512", "arxiv", [("publication_status", "preprint", "arXiv")],
+                         "preprint", {"latest_version": 3}, local_copy_of=lambda ident: Path("x.pdf"))
+    assert lists["tool failure"] and lists["tool failure"][0].startswith("r1: pdftotext could not run")
+    assert lists["version unread"] == [] and lists["re-pull"] == []
+
+
+def test_a_silent_primary_source_is_listed_for_manual_validation():
+    """Q4 = 1 (2026-10-15): the team lead sees every paper left due because
+    its own source did not answer. Proven to fail by injection, 2026-10-15:
+    with the primary-source check removed from recheck_findings, r1 was in
+    no list."""
+    prf = _probe_script()
+    lists = {name: [] for name in prf.FINDING_LISTS}
+    prf.recheck_findings(lists, "r1", "arXiv:2407.04512", "arxiv", [("version_of", "10.48550/x", "DataCite")],
+                         "preprint", {"latest_version": None}, local_copy_of=lambda ident: None)
+    prf.recheck_findings(lists, "r2", "arXiv:2407.04512", "arxiv", [("publication_status", "preprint", "arXiv")],
+                         "preprint", {"latest_version": 1}, local_version_of=lambda ident: 1,
+                         local_copy_of=lambda ident: None)
+    assert lists["primary source did not answer (stays due)"] == [
+        "r1: arxiv, no answer from arXiv or arXiv abstract page; others answered: DataCite"]
+
+
+def test_a_probe_that_raised_is_a_probe_failure(monkeypatch):
+    """F74: a record whose probe raised used to be listed as "the abstract
+    page showed no version". Proven to fail by injection, 2026-10-15: with
+    the probe_error branch removed from _run, the record landed in
+    "version unread"."""
+    prf = _probe_script()
+    conn = sqlite3.connect(":memory:")
+    conn.executescript("CREATE TABLE paper_fields (record_id TEXT PRIMARY KEY, access TEXT, evidence TEXT);"
+                       "CREATE TABLE paper_probes (record_id TEXT, field TEXT, value TEXT, provider TEXT, "
+                       "probed_on TEXT, PRIMARY KEY (record_id, field))")
+    conn.execute("INSERT INTO paper_fields VALUES ('r1', 'arXiv:2407.04512', NULL)")
+
+    def broken(*a, **k):
+        raise RuntimeError("parser broke")
+    monkeypatch.setattr(prf, "probe", broken)
+    monkeypatch.setattr(prf.citations, "assume_recent_arxiv_request", lambda: None)
+    findings = {name: [] for name in prf.FINDING_LISTS}
+    prf._run(conn, [("r1", "arXiv:2407.04512", "arxiv")], object(), apply=False, sessions=False, progress=None,
+             heartbeat=None, force_site=True, findings=findings)
+    assert findings["probe failure"] == ["r1: the probe raised RuntimeError: parser broke"]
+    assert findings["version unread"] == []
 
 
 def test_a_due_run_passes_the_state_through_and_keeps_its_report(tmp_path, monkeypatch):

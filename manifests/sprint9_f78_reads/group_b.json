@@ -1,0 +1,587 @@
+{
+ "papers": [
+  {
+   "record_id": "ishida-2023",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2022-02_Ishida_Is-the-Performance-of-My-Deep-Network-Too-Good-to-Be-True.pdf",
+   "pages": 22,
+   "read_extent": "full",
+   "what_it_is": "Proposes a model-free, instance-free Bayes error estimator for binary classification that averages the smaller class posterior over soft labels, with variants for noisy soft labels and positive-confidence data.",
+   "title_on_page_1": "IS THE PERFORMANCE OF MY DEEP NETWORK TOO GOOD TO BE TRUE? A DIRECT APPROACH TO ESTIMATING THE BAYES ERROR IN BINARY CLASSIFICATION",
+   "venue_or_status_on_page_1": "Published as a conference paper at ICLR 2023 (arXiv:2202.00395v2)",
+   "assertions": [
+    {
+     "id_suggestion": "ishida-soft-label-mean-min-unbiased",
+     "value": "With clean soft labels c_i = p(y=+1|x_i), the Bayes error estimate is the sample mean of min(c_i, 1-c_i) (Eq. 4). It needs no model and no instances. Proposition 3.1 proves it unbiased and Proposition 3.2 gives a Hoeffding-type bound of order 1/sqrt(n) on its error that does not contain the instance dimension d. The result assumes the soft labels are the exact class posteriors.",
+     "anchor": "Section 3, Eq. 3-4, Props 3.1-3.2",
+     "quotes": [
+      "In fact, Eq. (4) is just the empirical version of Eq. (3).",
+      "We are also free from the curse of dimensionality since the instance dimension d does not appear in the bound."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Stated as propositions with proofs in App. C.1 and C.2; the clean-posterior assumption is the scope limit.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "ishida-naive-noisy-soft-labels-biased",
+     "value": "If the soft labels carry zero-mean noise, plugging them into the min estimator is generally biased (Theorem 3.3), because the noise sits inside the nonlinear min. The estimator that uses extra sign labels (which side of 0.5 the posterior is on) is unbiased (Prop. 3.4). Without sign labels, the bias is bounded in terms of the number m of labellers per instance (Prop. 3.6). Hard labels are treated as a special case of noisy soft labels.",
+     "anchor": "Section 3 (Noisy soft labels, Hard labels)",
+     "quotes": [
+      "This is basically due to the noise inside the nonlinear min operation.",
+      "In practice, one idea of obtaining soft labels is to ask many labellers to give a hard label for each instance and then use the proportion of the hard labels as a noisy soft label."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The bias result is a theorem (App. C.3) but the quotes support only its cause and the practical recipe; the exact bound is not quoted.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "ishida-synthetic-estimate-accurate-few-samples",
+     "value": "On synthetic Gaussian setups (2, 10 and 20 dimensions, true posteriors used as soft labels, 10 trials), the soft-label estimator was close to the true Bayes error with few samples. An MLP trained on hard labels needed many more samples before its test error approached the Bayes error. Plug-in estimates from a hard-label classifier tended to underestimate the Bayes error, which the authors attribute to overconfidence. The synthetic labels are exact posteriors, so this tests the estimator in its best case.",
+     "anchor": "Section 5.1, Fig. 1",
+     "quotes": [
+      "We can see how the estimated Bayes error is relatively accurate even when we have few samples."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Empirical, synthetic Gaussians with analytic posteriors, 10 trials; no class-imbalanced setup is reported.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "ishida-vit-below-estimated-bayes-error-cifar10",
+     "value": "On binarized CIFAR-10 variants, the test error of a Vision Transformer fell below the Bayes error estimated from CIFAR-10H human soft labels in all four binarizations, which should not happen for a true Bayes error. The authors trace this to different labeling procedures: CIFAR-10H labelers saw downscaled images and chose among ten classes, which raises label entropy and inflates the estimate. After resampling test labels from CIFAR-10H, ViT error was on par with or slightly above the estimate, so they conclude it has reached or nearly reached the Bayes error for CIFAR-10H.",
+     "anchor": "Section 5.2, Fig. 4",
+     "quotes": [
+      "An interesting observation is that the test error of ViT has exceeded the estimated Bayes error in all four setups, which theoretically should not take place.",
+      "This implies that we have reached (or is about to reach) the Bayes error for C10H."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Shows the estimate depends on how the soft labels were collected; the reached-the-Bayes-error conclusion is the authors' own interpretation for one dataset.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "ishida-fashion-mnist-gap-small",
+     "value": "On Fashion-MNIST-H (a new set of multiple human labels for the 10,000 test images, binarized), ResNet-18 error was 3.852 percent against an estimated Bayes error of 3.478 percent. The authors say a small improvement may still be possible. They note the estimate is higher than for CIFAR-10H, so Fashion-MNIST is harder.",
+     "anchor": "Section 5.3",
+     "quotes": [
+      "The ResNet-18 error is approaching the estimated Bayes error, but may still have room for small improvement."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "One architecture, one binarization; error and estimate are given with standard error and 95 percent CI respectively.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "ishida-pconf-needs-class-prior",
+     "value": "A Bayes error estimator exists for positive-confidence data (only positive instances with their confidence r_i, Eq. 8), but it requires the class prior pi+ (Theorem 4.1; Prop. 4.2 shows it unbiased). The paper says pi+ must come from other sources such as market share or government statistics. The Pconf experiment generated data with pi+ = 0.5 and assumed it known. No class-imbalanced experiment is reported.",
+     "anchor": "Section 4 and Section 5.1",
+     "quotes": [
+      "The data is generated so that the class prior π+ is 0.5, and we assume this information is available.",
+      "Fortunately, this is available from other sources depending on the task, e.g., market share, government statistics, or other domain knowledge"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The theoretical bound depends on pi+ squared and is stated; the absence of an imbalance experiment is an observation about the reported setups, not a stated finding.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Soft-label mean-min estimator (Eq. 4)",
+     "what_it_bounds": "Point estimate of the binary Bayes error (unbiased)",
+     "inputs_needed": "Soft labels c_i = p(y=+1|x_i) for n instances; no instances, no model, no hyperparameters",
+     "fails_when": "Soft labels are not true posteriors (noisy or from a different labeling process): biased upward, as with CIFAR-10H against CIFAR-10",
+     "quote": "Note that we can further weaken the supervision by sampling uncertainty labels, i.e., ci = miny∈{±1} p(y | xi)."
+    },
+    {
+     "name": "Noisy soft labels with sign labels (Eq. 6)",
+     "what_it_bounds": "Unbiased Bayes error from noisy soft labels",
+     "inputs_needed": "Noisy soft labels in [0,1] with zero-mean noise plus a sign label per instance",
+     "fails_when": "Sign labels unavailable: falls back to the biased naive estimator",
+     "quote": "This is the main idea which we use later on in Sec. 5.2 with CIFAR-10H (Peterson et al., 2019)."
+    },
+    {
+     "name": "Positive-confidence estimator (Eq. 8)",
+     "what_it_bounds": "Unbiased Bayes error from positive-only confidence data",
+     "inputs_needed": "Confidences r_i for positive samples and the class prior pi+",
+     "fails_when": "pi+ is unknown or wrong; the bound grows with pi+ squared over n+",
+     "quote": "Fortunately, this is available from other sources depending on the task, e.g., market share, government statistics, or other domain knowledge"
+    }
+   ],
+   "facts": []
+  },
+  {
+   "record_id": "theisen-2021",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2021-06_Theisen_Evaluating-State-of-the-Art-Classification-Models-Against-Bayes-Optimality.pdf",
+   "pages": 16,
+   "read_extent": "full",
+   "what_it_is": "Computes the exact Bayes error of a normalizing-flow (Glow) approximation of an image dataset by using Bayes-error invariance under invertible maps and Gaussian base distributions, then benchmarks SOTA models on synthetic datasets of known Bayes error.",
+   "title_on_page_1": "Evaluating State-of-the-Art Classification Models Against Bayes Optimality",
+   "venue_or_status_on_page_1": "arXiv:2106.03357v1 [stat.ML] 7 Jun 2021; footer says Preprint. Under review (NeurIPS 2021 per team lead)",
+   "assertions": [
+    {
+     "id_suggestion": "theisen-bayes-error-invariant-invertible-map",
+     "value": "The Bayes error is unchanged when the features are passed through any invertible map (Proposition 1, proved in the paper). This lets the Bayes error of a learned flow model be computed exactly on its Gaussian base distributions, using Holmes-Diaconis-Ross integration. The exactness applies to the fitted flow model, not to the real data distribution.",
+     "anchor": "Abstract and Section 3.1, Proposition 1",
+     "quotes": [
+      "Our technique relies on a fundamental result, which states that the Bayes error is invariant under invertible transformation."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Proposition 1 has a proof; scope is the model distribution, which the authors state they cannot yet tie to the true one.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "theisen-no-guarantee-flow-matches-true-bayes",
+     "value": "The authors state there is no obvious way to assess how well the Bayes error of the fitted flow distribution estimates the true Bayes error, and they call this a major limitation. Table 1 values are therefore model-dependent. For CIFAR-10, CIFAR-100 and SVHN they suspect the flow fits poorly because of too few training samples.",
+     "anchor": "Section 5 (Conclusion/limitations) and Section 4.3",
+     "quotes": [
+      "Second, a major limitation of our approach is that there isn’t an immediately obvious way to assess how well the Bayes error of the approximate distribution",
+      "However corpora such as CIFAR-10, CIFAR-100, and SVHN may suffer from a lack of training samples."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct statements by the authors about their own method.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "theisen-sota-near-optimal-only-when-easy",
+     "value": "On synthetic MNIST and Fashion-MNIST generated from trained flows at varying temperature (60,000 training samples), Wide-ResNet and ConvNet reached close-to-optimal error when the Bayes error was small (temperature below 1 for MNIST, below 0.5 for Fashion-MNIST). The gap grew as the task got harder. At temperature 1 on synthetic Fashion-MNIST a substantial gap remained between the Wide-ResNet and Bayes optimality.",
+     "anchor": "Section 4.2, Figs. 3-4",
+     "quotes": [
+      "It can be observed that Wide-ResNet and ConvNet are able to achieve close-to-optimal performance when the dataset is relatively easy, e.g., τ < 1 for MNIST and τ < 0.5 for Fashion-MNIST.",
+      "there is still a reasonably large gap between the performance of the SOTA Wide-ResNet and Bayes optimality."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Results are on synthetic data whose Bayes error is exact by construction; transfer to real tabular data is not shown.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "theisen-table1-estimates-exceed-sota-some-corpora",
+     "value": "Table 1 reports estimated Bayes errors for 11 image corpora next to SOTA errors. In 6 of the 11 rows the listed SOTA error is already below the estimated Bayes error (for example CIFAR-10: estimate 2.46e-2, SOTA 3e-3), which a true Bayes error cannot exceed. This row-by-row reading is the coordinator-derived from Table 1 (read with pdftotext -layout), not a statement in the paper. The paper itself says only that SOTA and estimate are roughly the same order of magnitude for most corpora, and it blames poor flow fit from too few samples for the large-NLL corpora.",
+     "anchor": "Section 4.3, Table 1",
+     "quotes": [
+      "for datasets such as MNIST, EMNIST (digits, letters, balanced), SVHN, Fashion-MNIST, Kuzushiji-MNIST, CIFAR-10, and CIFAR-100 the SOTA numbers are roughly the same order of magnitude as the Bayes error.",
+      "However corpora such as CIFAR-10, CIFAR-100, and SVHN may suffer from a lack of training samples."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "consequence",
+     "certainty_suggestion": "low",
+     "certainty_reason": "The row-by-row comparison is derived from Table 1 numbers, not quoted; the quotes support only the paper's own gloss.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "theisen-high-dimension-divergence-samples-and-size-cap",
+     "value": "The paper says divergence-based Bayes error estimators (for example f-divergence estimators with an epsilon-ball approach) need a number of samples on the order of (1/epsilon)^d in d dimensions, which makes them inadequate for large image datasets. Its own HDR integration was only run on inputs no larger than 32 by 32 by 3 because of memory use. Image data only; no tabular or imbalanced dataset is tested.",
+     "anchor": "Section 1 and Section 4.1",
+     "quotes": [
+      "For example, most estimators of f -divergences rely on some type of ε-ball approach, which requires a number of samples on the order of (1/ε)d in d dimensions [26, 30].",
+      "As a consequence, in our experiments we only work on datasets of dimension no larger than 32-by-32-by-3."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The sample-complexity statement is attributed to cited works [26, 30]; the dimension cap is the authors' own practical limit.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "theisen-bayes-error-not-reachable-with-finite-n",
+     "value": "The Bayes error is a limit of the distribution, not a promise for a finite training set. The authors note a task with a known Bayes error may still be unreachable by a model trained on only N samples, and they leave the relation between N and the SOTA-to-Bayes gap to future work.",
+     "anchor": "Section 1",
+     "quotes": [
+      "Indeed, even if the Bayes error of a particular task is known to be a particular value EBayes, it may be highly unlikely that this error is achievable given a model trained on only N samples from p."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct author statement; no quantification given.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Flow-model exact Bayes error (Glow + HDR integration)",
+     "what_it_bounds": "Exact Bayes error of the fitted flow approximation (point value, not a bound on the true value)",
+     "inputs_needed": "Labeled instances to fit a class-conditional normalizing flow; images up to 32x32x3 in the paper",
+     "fails_when": "Flow fits poorly (large test NLL, few samples), input larger than 32x32x3 (memory), or tabular or NLP data (not tested)",
+     "quote": "As a consequence, in our experiments we only work on datasets of dimension no larger than 32-by-32-by-3."
+    },
+    {
+     "name": "Closed form for equal-covariance Gaussians (Eq. 4)",
+     "what_it_bounds": "Exact binary Bayes error for equal-covariance Gaussians with equal priors",
+     "inputs_needed": "Class means and shared covariance",
+     "fails_when": "Unequal covariances (no efficient integration scheme) or unequal priors in the closed form",
+     "quote": "When K > 2 and/or the covariances are different between classes, there is no closed-form expression for the Bayes error."
+    }
+   ],
+   "facts": []
+  },
+  {
+   "record_id": "renggli-2021-evaluating-bayes-error-estimators-real",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2021-08_Renggli_Evaluating-Bayes-Error-Estimators-on-Real-World-Datasets.pdf",
+   "pages": 19,
+   "read_extent": "full",
+   "what_it_is": "FeeBee, a framework that evaluates Bayes error rate estimators on real datasets by injecting known amounts of label noise and checking whether the estimate tracks the provable rise in Bayes error, applied to 7 estimators on 6 vision and text datasets.",
+   "title_on_page_1": "Evaluating Bayes Error Estimators on Real-World Datasets with FeeBee",
+   "venue_or_status_on_page_1": "35th Conference on Neural Information Processing Systems (NeurIPS 2021) Track on Datasets and Benchmarks (arXiv:2108.13034v2)",
+   "assertions": [
+    {
+     "id_suggestion": "renggli-feebee-label-noise-lemma",
+     "value": "Randomly replacing a fraction rho of labels with a uniformly random class raises the Bayes error by a known amount: R_rho = R + rho(1 - 1/C - R) for C classes (Lemma 3.1, proved). FeeBee uses this known evolution, plus a SOTA error as an upper bound, to score whether an estimator tracks the Bayes error without knowing its true value. The noise must be applied to both training and test data.",
+     "anchor": "Section 3, Lemma 3.1",
+     "quotes": [
+      "In order to overcome the above limitation, FeeBee injects different levels of label noise and measures how an estimator follows the evolution of the BER",
+      "Notice that our evaluation framework needs to change the label on all the data points (i.e. in both the training and test sets)."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Lemma with a proof in the paper; quotes support the use of the lemma and its data requirement, the formula is described in the value.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "renggli-knn-ghp-best-lower-bound-estimators",
+     "value": "Across 6 datasets (MNIST, CIFAR10, CIFAR100, IMDB, SST2, YELP), 7 estimators and many feature transformations, 1NN, kNN, kNN-LOO and GHP were consistently the best lower-bound estimators, with kNN or kNN-LOO best on each dataset. No estimator was consistently best on the upper bound. Scores come from the best transformation and hyperparameters per method.",
+     "anchor": "Section 4.2, Table 3",
+     "quotes": [
+      "For LD(m) we observe that 1NN, kNN, kNN-LOO and GHP are consistently outperforming all the other methods, with either kNN or kNN-LOO being the best choice on each dataset."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Empirical ranking on 6 benchmark datasets; hyperparameters and transformations were chosen per dataset.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "renggli-feature-transformation-required",
+     "value": "On real datasets every estimator needed a feature transformation (pre-trained embedding or dimension reduction) to work. On raw pixels, kNN and GHP over-estimated both bounds and the other methods became non-informative. Transformations may raise the Bayes error slightly while improving convergence, so estimates depend on the embedding chosen.",
+     "anchor": "Section 4.1 and Appendix B.1",
+     "quotes": [
+      "By testing each estimator on raw data, we observe that on real-world datasets having a transformation that adequately transforms the space and/or reduces the dimension is necessary for every method."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Observed on image datasets; the raw-pixel detail is in the appendix and the quote supports the main-text statement only.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "renggli-no-estimator-wins-both-bounds",
+     "value": "The authors report no existing estimator outperforms the others on both lower and upper bounds, and say that tests on synthetic data (Gaussians, at most 8 dimensions in cited work) do not transfer to real datasets, where predicting the true Bayes error is notoriously hard.",
+     "anchor": "Section 2 and Section 5 (Conclusion)",
+     "quotes": [
+      "We also observe that currently there does not exist an estimator that is able to simultaneously outperform other estimators on both lower and upper bound.",
+      "since they perform well on synthetic datasets, whereas in practice, predicting the true BER is notoriously hard."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct author statements in the discussion and conclusion.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "renggli-framework-needs-strong-sota",
+     "value": "FeeBee itself only gives meaningful scores when the SOTA error is close to the Bayes error. On YELP (SOTA error 27.80 percent) kNN scored a lower-bound LD of 0.0 while visibly failing to follow the Bayes error, whereas the other datasets have SOTA errors of at most 3.92 percent. With a weak SOTA the check cannot expose estimator failure.",
+     "anchor": "Section 3 (Limitations) and Section 4.2",
+     "quotes": [
+      "The main limitation we see in FeeBee is the need of having a relatively strong SOTA value.",
+      "In general, we observe that our framework works when the SOTA value is not too weak."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Stated limitation plus an empirical illustration on YELP.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "renggli-estimator-compute-and-sample-limits",
+     "value": "Of 2376 estimator-dataset-transformation-hyperparameter combinations, 103 ran out of memory (45 GB) and 60 ran out of time (24 h), mostly high-dimensional representations such as bag of words and large test sets. kNN-Extrapolate needs a number of samples exponential in the input dimension.",
+     "anchor": "Section 4.1 (Computational feasibility, kNN-Extrapolate)",
+     "quotes": [
+      "Out of 2376 combinations, 103 ran out of memory and 60 ran out of time (e.g., for high dimensional representations such as BoW, or large datasets such as the test sets of IMDB or YELP).",
+      "However, this requires the number of samples to be exponential in the input dimension and, hence, is challenging to generalize it to representations of higher dimension on real-world datasets."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Resource counts are measured; the exponential-sample statement is a property of the extrapolation method cited from Snapp and Xu.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "kNN / 1NN / kNN-LOO lower bound (Cover-Hart)",
+     "what_it_bounds": "Lower bound on Bayes error from kNN classifier error",
+     "inputs_needed": "Labeled instances, ideally in a pre-trained or reduced feature space; hyperparameter k",
+     "fails_when": "Few samples (bound is asymptotic); k>1 with more than 2 classes has no bound as strong as k=1; raw high-dimensional pixels",
+     "quote": "One major caveat of bounding the BER by any kNN accuracy method lies in the fact that the bounds hold only in the asymptotic regime."
+    },
+    {
+     "name": "GHP (generalized Henze-Penrose divergence via minimum spanning tree)",
+     "what_it_bounds": "Upper and lower bounds on multi-class Bayes error",
+     "inputs_needed": "Labeled instances, Euclidean distances; no hyperparameters",
+     "fails_when": "Raw features (over-estimates both bounds); high-dimensional representations hit time limits",
+     "quote": "GHP and kNN-LOO (introduced below) have similar computational complexity."
+    },
+    {
+     "name": "FeeBee label-noise evaluation",
+     "what_it_bounds": "Scores an estimator for lower and upper bound quality (not a Bayes error estimate itself)",
+     "inputs_needed": "Dataset, a SOTA error, an estimator, label flipping at 11 noise levels with at least 5 repeats",
+     "fails_when": "SOTA error is weak relative to the Bayes error (YELP case)",
+     "quote": "The main limitation we see in FeeBee is the need of having a relatively strong SOTA value."
+    }
+   ],
+   "facts": []
+  },
+  {
+   "record_id": "wheat-2025-bayes-error-rate-estimation-difficult",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2025-06_Wheat_Bayes-Error-Rate-Estimation-in-Difficult-Situations.pdf",
+   "pages": 23,
+   "read_extent": "full",
+   "what_it_is": "Monte Carlo study (2500 runs per scenario, synthetic binary data, equal samples per class, BER 1 to 49 percent) of kNN, GHP and kernel-density Bayes error estimators, reporting 95 percent error bounds and the samples per class needed for a 5 percent range.",
+   "title_on_page_1": "Bayes Error Rate Estimation in Difficult Situations",
+   "venue_or_status_on_page_1": "Submitted for publication (IEEE Access DOI 10.1109/ACCESS.2025.3609630); arXiv:2506.03159v3, 22 Sep 2025",
+   "assertions": [
+    {
+     "id_suggestion": "wheat-samples-per-class-for-5pct-range",
+     "value": "In the authors' simulations, a 95 percent error range under 5 percentage points of BER required at least 1000 samples per class. The need rose with feature count to 2500 samples per class at only 4 features, taking the worst case over four scenario types. Errors are in BER percentage points over a BER range of 1 to 49 percent, so the 5 percent target is wide relative to a BER near 0.2 percent (that last remark is an inference, not in the paper).",
+     "anchor": "Abstract and Section VIII (Conclusion)",
+     "quotes": [
+      "In order to reach the target of an under 5% range for the 95% confidence bounds, the minimum number of required samples per class is 1000.",
+      "As more features are added, more samples are needed, so that 2500 samples per class are required at only 4 features."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Empirical Monte Carlo on synthetic Gaussian-mixture and sphere scenarios with equal class sizes.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "wheat-requirement-depends-on-scenario",
+     "value": "The feature count at which the 5 percent target stops being met depends on the data structure. For simple Gaussian clusters without Naive Bayes, 1000 samples per class sufficed up to 4 features and 2500 per class at 10 features. For mixtures (TvT) the limit was 8 features, for a sphere with clusters (TvS) 6 features, and for concentric spheres (SvS) 4 features. Accuracy fell off more abruptly in the spherical scenarios.",
+     "anchor": "Section VI-A and VII, Tables VI-IX",
+     "quotes": [
+      "In this case, 1000 samples per class are only sufficient for up to 4 features. At 10 features, a minimum of 2500 samples per class is required.",
+      "While TvT has estimators that meet the criteria at a maximum of 8 features, TvS only goes to 6 features and SvS goes to 4 features."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Taken directly from the results text; synthetic scenarios only.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "wheat-knn-best-no-estimator-meets-all-goals",
+     "value": "Among kNN, GHP and kernel density methods, kNN variants were the most accurate non-parametric estimators, but no estimator met all the authors' requirements. Other estimators (GHP lower bound, the new CLAKDE and a combination) beat kNN at higher feature counts yet still missed the 5 percent range. The authors say a large gap remains between the best and usable estimators.",
+     "anchor": "Abstract, Section VII and VIII",
+     "quotes": [
+      "Unfortunately, none of the estimators under consideration met all the objectives.",
+      "Other estimators do become more accurate than kNN as more features are added, but continuously fail to meet the target range."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Stated in abstract and conclusion on the basis of the simulation tables.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "wheat-estimators-can-report-below-true-ber",
+     "value": "An estimator or classifier can report an error below the true BER on a finite sample, and several estimators have a non-linear, scenario-dependent bias that more samples do not remove. All the estimators also assume all data follow one distribution, so domain shift or drift breaks them.",
+     "anchor": "Section VI-B, VII and VIII",
+     "quotes": [
+      "An estimator or classifier can report results lower than the BER on a dataset (Section VI-A).",
+      "In any case, all of these estimators do require that all of the data follows the same probability distribution."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The first quote is a stated takeaway of the simulations; the second is the authors' stated assumption and discussion.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "wheat-equal-class-sizes-no-imbalance-tested",
+     "value": "All simulations drew the same number of points per class, and the new CLAKDE estimator explicitly assumes equal probability of drawing from either class. The paper reports no experiment on unequal class priors. The BER values simulated were 1 to 49 percent, so a rare-event BER near 0.2 percent was not covered. This describes what the study did, not a finding about imbalance.",
+     "anchor": "Section IV-C and Section V-A",
+     "quotes": [
+      "The same number of points is generated for each class.",
+      "Note the assumption that the probability of drawing from either class is the same.",
+      "A large BER range (1% - 49%) was used to create these simulations"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "consequence",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Design facts are quoted; the conclusion that imbalance and very low BER were untested is an absence inference from them.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "kNN-LOO bounds (best k over 1..199)",
+     "what_it_bounds": "kNN_H upper bound, kNN_L lower bound, kNN_M midpoint of the two, binary classes",
+     "inputs_needed": "Labeled instances; at least 1000 samples per class for 2 features and 2500 per class for 4 features to reach the 5 percent range in the hardest scenario",
+     "fails_when": "Many features or complex structure (SvS above 4 features), a distribution shift in the data, high true BER for kNN_L",
+     "quote": "The tendency of kNN to approach, but not undershoot, the BER turns out to be key trait."
+    },
+    {
+     "name": "GHP divergence (upper, lower, midpoint)",
+     "what_it_bounds": "Henze-Penrose-based bounds on binary BER",
+     "inputs_needed": "Labeled instances; no user parameters",
+     "fails_when": "Wide error bounds at 20 features; only the lower bound ever was best estimator and it often over-estimates",
+     "quote": "Interestingly, GHPL is the only GHP estimator that ever appears in these tables, and it often overestimates the BER."
+    },
+    {
+     "name": "CLAKDE (new, comparative locally adaptive kernel density)",
+     "what_it_bounds": "Binary BER estimate = J/2 from a leave-one-out comparison of class densities",
+     "inputs_needed": "Labeled instances, GPU for speed; no parameters",
+     "fails_when": "Equal class draw probability is assumed; sigmoid-like non-linear relation to true BER that more samples do not fix",
+     "quote": "CLAKDE was limited by it’s noisy output and nonlinear relationship with the BER."
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-701",
+     "verdict": "partly",
+     "explanation": "Sample sizes are supported: the abstract and conclusion give 1000 samples per class (2 features), 2000 (3) and 2500 (4) for an under 5 percent range of the 95 percent bounds, as minimum guidelines over all scenarios. 'Beyond 4 features accuracy collapses' is overstated: the 4-feature figure is the worst case over four scenarios (SvS), the same study shows 2500 per class still meets the target at 10 features for simple Gaussian clusters and up to 8 features for mixtures (TvT), and in the harder scenarios no estimator met the target beyond 4 to 6 features. 'Published estimators assume equal priors and few features' is not stated as a general claim: the paper generated equal samples per class and CLAKDE assumes equal draw probability; it says most past tests used few features, which is a different statement. No imbalance test appears in the paper.",
+     "quote": "2 Features: 1000 samples per class • 3 Features: 2000 samples per class • 4 Features: 2500 samples per class"
+    }
+   ]
+  },
+  {
+   "record_id": "ushio-2026-practical-estimation-optimal-classification-error",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2025-05_Ushio_Practical-estimation-of-the-optimal-classification-error-with.pdf",
+   "pages": 40,
+   "read_extent": "full",
+   "what_it_is": "Extends the soft-label Bayes error estimator of Ishida et al. with a tighter bias bound for averaged hard labels and a consistent estimator for corrupted soft labels using isotonic calibration, tested on synthetic data, CIFAR-10H, Fashion-MNIST-H, ChaosNLI and ICLR peer review.",
+   "title_on_page_1": "PRACTICAL ESTIMATION OF THE OPTIMAL CLASSIFICATION ERROR WITH SOFT LABELS AND CALIBRATION",
+   "venue_or_status_on_page_1": "Published as a conference paper at ICLR 2026 (arXiv:2505.20761v4, 12 May 2026)",
+   "assertions": [
+    {
+     "id_suggestion": "ushio-bias-bound-adaptive-to-separation",
+     "value": "For the hard-label-averaging estimator, Ushio et al. prove the bias decays at a rate that adapts to class separation, as fast as 1/m when the classes are well separated and at the slower 1/sqrt(m) rate otherwise (m hard labels per instance). Corollary 2 needs only an upper bound E on the Bayes error. For binarized CIFAR-10 (n = 10,000, m about 50, E = 0.0005) it bounds the bias by 0.00276, over 200 times tighter than the earlier bound of 0.557.",
+     "anchor": "Section 2.2, Theorem 1, Corollaries 1-2, Fig. 2",
+     "quotes": [
+      "We reveal that the decay rate of the bias is adaptive to how well the two class-conditional distributions are separated, and it can decay significantly faster than the previous result suggested as the number of hard labels per instance grows.",
+      "our bound reveals the estimator is not that bad; indeed, it implies the bias is never larger than 0.00276."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Theorem and corollaries with proofs in App. B; the numeric example uses the ViT error from Ishida et al. as E.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "ushio-calibration-guarantee-not-enough",
+     "value": "A perfectly calibrated soft label is not necessarily accurate enough to estimate the Bayes error: a constant predictor equal to the base rate is perfectly calibrated yet gives a badly wrong estimate (Example 2: true Bayes error 0, estimate min(theta, 1-theta) = 0.5). So calibration alone gives no guarantee on the estimate.",
+     "anchor": "Section 1 and Section 3.2, Example 2",
+     "quotes": [
+      "However, we reveal that calibration guarantee is not enough, i.e., even perfectly calibrated soft labels can result in a substantially inaccurate Bayes error estimate"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Shown by an explicit counterexample in Example 2.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "ushio-isotonic-calibration-consistent-if-ordered",
+     "value": "If corrupted soft labels are an increasing function of the clean ones, isotonic calibration of the corrupted labels against the observed hard labels, then plugging into the soft-label estimator, is statistically consistent for the Bayes error (Theorem 2). Theorem 3 extends this to added zero-mean noise but needs the corruption function to have a derivative bounded below. The guarantee needs the soft-label order to be right, not their values, and it is for binary classification only.",
+     "anchor": "Section 3.3, Theorems 2-3",
+     "quotes": [
+      "The use of isotonic regression allows us to provide a solid theoretical guarantee without making parametric assumptions on how corruption occurs.",
+      "A limitation of Theorem 3 is that it cannot be applied to f whose derivative can be arbitrarily small."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Theorems with proofs in App. C; scope conditions are the monotonic corruption and the binary setting.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "ushio-corrupted-soft-labels-overestimate",
+     "value": "Using uncalibrated, under-confident soft labels (a synthetic Gaussian mixture with 0.6 and 0.4 priors, and CIFAR-10H against CIFAR-10) gave a severe over-estimate of the Bayes error. Calibration methods removed most of this. Histogram binning could still fail (hist-25 on Fashion-MNIST) and was sensitive to the number of bins. Isotonic and Platt scaling were among the best on the FeeBee score for most datasets.",
+     "anchor": "Section 4.2-4.3, Fig. 4, Table 1",
+     "quotes": [
+      "As expected, the underconfidence of the corrupted soft labels resulted in a severe overestimation of the Bayes error.",
+      "Histogram binning (hist-*) performed well if the number of bins was appropriately chosen, but its performance was quite sensitive to this choice",
+      "isotonic calibration (isotonic) and Platt scaling (platt) were among the best-performing algorithms in most datasets."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Synthetic plus a few real datasets; FeeBee scoring needs a SOTA error E, and for ICLR the acceptance rate was used as E.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "ushio-needs-soft-labels-and-quality-assumption",
+     "value": "The estimator takes soft labels (class probabilities from annotators, experts or LLMs) and does not use instances, so it does not suffer from the curse of dimensionality. Its guarantee is impossible without some assumption on soft-label quality. The paper covers binary classification only and lists multi-class as future work. No class-imbalance experiment is reported; the synthetic mixture used a 0.4 positive share.",
+     "anchor": "Section 1, Section 3.1 and Section 5 (Conclusion)",
+     "quotes": [
+      "Estimation with a provable guarantee will be impossible without some assumption on the quality of the soft labels.",
+      "An important one is the extension to multi-class problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The two quotes are author statements; the no-imbalance remark is an observation on the reported setups.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Soft-label estimator with isotonic calibration",
+     "what_it_bounds": "Consistent point estimate of the binary Bayes error from corrupted soft labels",
+     "inputs_needed": "Corrupted soft label per instance in [0,1] and one hard label per instance for calibration; no instances needed",
+     "fails_when": "Soft-label order is wrong (monotonicity violated); Theorem 3 case with a nearly flat corruption function; multi-class tasks",
+     "quote": "The use of isotonic regression allows us to provide a solid theoretical guarantee without making parametric assumptions on how corruption occurs."
+    },
+    {
+     "name": "Averaged hard labels (m annotators per instance)",
+     "what_it_bounds": "Bayes error estimate with a bias bound that depends on m and class separation",
+     "inputs_needed": "m independent hard labels per instance (about 50 for CIFAR-10H)",
+     "fails_when": "Few labels per instance with poorly separated classes (slow 1/sqrt(m) bias decay); labels from a different labeling process than the benchmark labels",
+     "quote": "We reveal that the decay rate of the bias is adaptive to how well the two class-conditional distributions are separated"
+    }
+   ],
+   "facts": []
+  }
+ ]
+}

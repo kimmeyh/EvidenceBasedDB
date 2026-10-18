@@ -41,7 +41,7 @@ _SPINE = {"id", "class", "value", "provenance", "evidence_tag", "contexts", "cer
 # DERIVED keys: computed by store/export.py from stored facts on every export
 # (ADR-0004 A6 (e)). Known, so the rebuild accepts them; never written back,
 # so a rebuilt store recomputes them and the round trip stays byte-identical.
-DERIVED_KEYS = {"assertion": {"certainty_cap", "certainty_cap_reason"}}
+DERIVED_KEYS = {"assertion": {"certainty_cap", "certainty_cap_reason", "corroborated_by"}}  # A9: corroborated_by
 PROBE_KEYS = ("publication_status", "version_of", "access_status", "affiliations")
 KNOWN_KEYS = {
     "assertion": _SPINE | {"units", "rounding", "citation_context", "documents", "supports", "contradicts",

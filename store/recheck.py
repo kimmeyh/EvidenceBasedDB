@@ -54,15 +54,54 @@ def next_recheck(last_check: date, section: int) -> date:
     return start if start >= earliest else section_start(earliest.year + 1, section)
 
 
+# ADR-0005 A9 (Sprint 9 Task C, F74; team lead Q4 = 1, 2026-10-15): a
+# re-check is complete only when the paper's OWN primary source answered.
+# Before this, any provider's answer reset the 12-month clock, so a DataCite
+# answer for an arXiv paper whose abstract page failed hid an unread version
+# for about 10 months, and a "local copy missing" result counted as a check.
+PRIMARY_PROVIDERS = {
+    "arxiv": ("arXiv", "arXiv abstract page"),
+    "doi": ("Crossref", "DataCite"),  # the DOI's registration agency, either one
+    "github": ("HTTP probe",),
+    "hand-url": ("HTTP probe",),
+    "hand-local": (LOCAL_FILE_PROVIDER,),
+}
+LOCAL_PRESENT = "local copy present"
+
+
+def access_kind(access: str) -> str:
+    """The same kinds `scripts/probe_reference_fields.py` probes by."""
+    from store import citations
+    from store.probes import landing_url
+    parsed = citations.parse_access(access or "")
+    if parsed:
+        return parsed[0]
+    return "hand-url" if landing_url(access or "") else "hand-local"
+
+
+def is_primary_answer(kind: str, provider: str, value: str) -> bool:
+    """Does this probe row count as a completed re-check (ADR-0005 A9)? A
+    local file check counts only when it found the file."""
+    if provider not in PRIMARY_PROVIDERS.get(kind, ()):
+        return False
+    return kind != "hand-local" or value.startswith(LOCAL_PRESENT)
+
+
 def last_check(conn, record_id: str) -> date | None:
-    """The latest probe date, leaving out hand-recorded readings (never
-    refreshed, ADR-0005 A6 (c)); a record with no probe takes its `updated`
-    date (plan Q4: the same rule, from the date it was last written). None
-    when neither holds a date."""
-    row = conn.execute("SELECT MAX(probed_on) FROM paper_probes WHERE record_id = ? AND provider <> 'hand'",
-                       (record_id,)).fetchone()
-    if row and row[0]:
-        return date.fromisoformat(row[0])
+    """The latest date the paper's own primary source answered (ADR-0005
+    A9), leaving out hand-recorded readings (never refreshed, A6 (c)) and
+    any other provider's answer. A record with no primary answer takes its
+    `updated` date (plan Q4 of Sprint 8: the same rule, from the date it
+    was last written), so a failed check never moves the clock. None when
+    neither holds a date."""
+    access = (conn.execute("SELECT access FROM paper_fields WHERE record_id = ?", (record_id,)).fetchone()
+              or [""])[0]
+    kind = access_kind(access)
+    answered = [d for provider, value, d in conn.execute(
+        "SELECT provider, value, probed_on FROM paper_probes WHERE record_id = ? AND provider <> 'hand'",
+        (record_id,)) if is_primary_answer(kind, provider, value)]
+    if answered:
+        return date.fromisoformat(max(answered))
     updated = (conn.execute("SELECT updated FROM records WHERE id = ?", (record_id,)).fetchone() or [""])[0] or ""
     try:
         return date.fromisoformat(updated[:10])
@@ -154,13 +193,23 @@ def local_pdf(access: str, ident: str, root: Path = QMLPAPERS) -> Path | None:
     return hits[0] if hits else None
 
 
+class PdfToolError(RuntimeError):
+    """pdftotext is missing or failed: a fault of the tool, not of the paper
+    (F74, ADR-0005 A9). Before this, the empty text read as "the local
+    copy's first page has no readable stamp"."""
+
+
 def local_version(ident: str, root: Path = QMLPAPERS, path: Path | None = None) -> int | None:
     path = path or local_copy(ident, root)
     if path is None:
         return None
-    text = subprocess.run(["pdftotext", "-l", "1", str(path), "-"], capture_output=True,
-                          check=False).stdout.decode("utf-8", "replace")
-    return stamp_version(text, ident)
+    try:
+        done = subprocess.run(["pdftotext", "-l", "1", str(path), "-"], capture_output=True, check=False)
+    except OSError as err:  # FileNotFoundError when pdftotext is not installed
+        raise PdfToolError(f"pdftotext could not run ({type(err).__name__})") from err
+    if done.returncode != 0:
+        raise PdfToolError(f"pdftotext exited {done.returncode} on {path.name}")
+    return stamp_version(done.stdout.decode("utf-8", "replace"), ident)
 
 
 # -------------------------------------------------------------- local files

@@ -1,0 +1,545 @@
+{
+ "papers": [
+  {
+   "record_id": "fraud-detection-handbook-fraud-detection-handbook-github-repo",
+   "file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/fraud-detection-handbook (Chapter_3_GettingStarted/SimulatedDataset.ipynb, README.md)",
+   "commit": "81cf7d1",
+   "read_extent": "partial",
+   "partial_detail": "Read the simulator notebook SimulatedDataset.ipynb (design text and add_frauds code) and the README; shared_functions.py searched for label logic (evaluation only). Chapters 4 to 7 not read.",
+   "what_it_is": "The Jupyter Book source for a card-fraud handbook, whose Chapter 3 notebook defines a transaction simulator with three rule-based fraud scenarios.",
+   "assertions": [
+    {
+     "id_suggestion": "fdh-sim-scenario1-amount-over-220",
+     "value": "In the handbook simulator, scenario 1 labels every transaction with amount above 220 as fraud; the add_frauds code sets TX_FRAUD to 1 on that condition, so this part of the label is a known function of the amount.",
+     "anchor": "SimulatedDataset.ipynb add_frauds (line 1735); scenario text line 1710",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/fraud-detection-handbook/Chapter_3_GettingStarted/SimulatedDataset.ipynb",
+     "quotes": [
+      "Any transaction whose amount is more than 220 is a fraud.",
+      "transactions_df.loc[transactions_df.TX_AMOUNT>220, 'TX_FRAUD']=1"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The rule is stated in the prose and implemented in the code on the same condition.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "fdh-sim-scenario2-two-terminals-28-days",
+     "value": "In the handbook simulator, scenario 2 draws two terminals per day with a seeded sample and marks all transactions on them as fraud for the following 28 days.",
+     "anchor": "SimulatedDataset.ipynb add_frauds (lines 1743 to 1747); scenario text line 1712",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/fraud-detection-handbook/Chapter_3_GettingStarted/SimulatedDataset.ipynb",
+     "quotes": [
+      "All transactions on these terminals in the next 28 days will be marked as fraudulent.",
+      "compromised_terminals = terminal_profiles_table.TERMINAL_ID.sample(n=2, random_state=day)"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Prose and code agree: sample(n=2) per day and a window ending at day+28.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "fdh-sim-scenario3-random-third-times-five",
+     "value": "In the handbook simulator, scenario 3 draws three customers per day and, within a 14-day window, picks one third of their transactions at random, multiplies those amounts by 5 and labels them fraud.",
+     "anchor": "SimulatedDataset.ipynb add_frauds (lines 1758 to 1770); scenario text line 1714",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/fraud-detection-handbook/Chapter_3_GettingStarted/SimulatedDataset.ipynb",
+     "quotes": [
+      "In the next 14 days, 1/3 of their transactions have their amounts multiplied by 5 and marked as fraudulent.",
+      "index_fauds = random.sample(list(compromised_transactions.index.values),k=int(nb_compromised_transactions/3))"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The code uses random.sample with k equal to int of one third of the window transactions, as the prose says.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "fdh-sim-scenario3-label-not-function-of-features",
+     "value": "In scenario 3 the choice of which compromised-customer transactions become fraud is a random sample, so two transactions of the same customer in the same window with the same features can carry different labels. Under that rule the Bayes error on observable columns alone is not shown to be zero.",
+     "anchor": "SimulatedDataset.ipynb add_frauds (line 1768)",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/fraud-detection-handbook/Chapter_3_GettingStarted/SimulatedDataset.ipynb",
+     "quotes": [
+      "index_fauds = random.sample(list(compromised_transactions.index.values),k=int(nb_compromised_transactions/3))",
+      "Every day, a list of 3 customers is drawn at random."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "consequence",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "This is an inference from the code (random subset selection); the source does not compute a Bayes error.",
+     "context": "hsbc-2026"
+    }
+   ],
+   "methods": [],
+   "facts": [
+    {
+     "fact_id": "F-707",
+     "verdict": "partly",
+     "explanation": "Scenario descriptions are supported by the code. Scenario 1: amount>220 sets TX_FRAUD=1 (line 1735). Scenario 2: two terminals per day via sample(n=2), window day to day+28 (lines 1743 to 1747). Scenario 3: three customers per day via sample(n=3), window day to day+14, int(n/3) of their transactions chosen by random.sample, amounts times 5 (lines 1758 to 1770). The windows overlap across days, so a transaction can be drawn more than once. The corollary (Bayes error zero given complete state) is not stated by the source. It holds only if state includes the seeded random draws (random_state=day, random.seed(day)). The scenario 3 label is not a function of the transaction columns, so zero error does not hold for models limited to those columns plus derived features. Suggest rewording the fact to separate the scenario rules (supported) from the zero-error corollary (an inference).",
+     "quote": "Every day, a list of two terminals is drawn at random.",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/fraud-detection-handbook/Chapter_3_GettingStarted/SimulatedDataset.ipynb"
+    }
+   ]
+  },
+  {
+   "record_id": "github-nd-reproducible-machine-learning-for-credit",
+   "file": "D:/Data/Harold/EvidenceBasedDB/References/2026_CE-14_github_Reproducible-Machine-Learning-for-Credit-Card-Fraud.html",
+   "commit": "",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "The rendered Foreword page of the same handbook (table of contents, foreword, license, authors); it is not the Chapter 3 simulator page.",
+   "assertions": [
+    {
+     "id_suggestion": "fdh-foreword-no-public-card-data",
+     "value": "The handbook foreword states that payment card transaction data cannot be publicly shared for confidentiality reasons, and gives this as a cause of poor reproducibility in card-fraud research.",
+     "anchor": "Foreword paragraph on reproducibility",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/References/2026_CE-14_github_Reproducible-Machine-Learning-for-Credit-Card-Fraud.html",
+     "quotes": [
+      "there is a lack of availability of payment card transaction data, which cannot be publicly shared for confidentiality reasons"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct statement by the authors in the foreword.",
+     "context": "hsbc-2026"
+    }
+   ],
+   "methods": [],
+   "facts": [
+    {
+     "fact_id": "F-707",
+     "verdict": "not addressed",
+     "explanation": "The saved HTML is only the Foreword page. It adds nothing over the repository about the simulator scenarios or Bayes error; it holds the table of contents, foreword, license and author list.",
+     "quote": "",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/References/2026_CE-14_github_Reproducible-Machine-Learning-for-Credit-Card-Fraud.html"
+    }
+   ]
+  },
+  {
+   "record_id": "ibm-amlsim-github-repo",
+   "file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/AMLSim/",
+   "commit": "7338a4b",
+   "read_extent": "partial",
+   "partial_detail": "Read README, Account.java, AbstractTransactionModel.java, Alert.java, AMLSim.java label code, FanInTypology.java, and scripts/transaction_graph_generator.py label code. Not read: other typologies, validation scripts, wiki.",
+   "what_it_is": "A Java multi-agent (MASON) simulator with Python parameter generation that produces synthetic bank transactions carrying an isSAR label.",
+   "assertions": [
+    {
+     "id_suggestion": "amlsim-purpose-synthetic-aml-data",
+     "value": "AMLSim is a multi-agent simulator of anti-money laundering whose synthetic data is shared so researchers can test algorithms on unified data.",
+     "anchor": "README.md (introduction)",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/AMLSim/README.md",
+     "quotes": [
+      "This project aims at building a multi-agent simulator of anti-money laundering - namely AML, and sharing synthetically generated data"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct statement in the README.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "amlsim-label-set-by-alert-flag",
+     "value": "In AMLSim, a transaction produced by the fan-in AML typology model takes the isSAR value of its alert. Account.setSAR is fed from the alert parameter data at load time (AMLSim.java:376). The label is a known function of simulator state (which alert generated the transaction, and its SAR flag).",
+     "anchor": "FanInTypology.java:87; AMLSim.java:376; transaction_graph_generator.py:867",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/AMLSim/src/main/java/amlsim/model/aml/FanInTypology.java",
+     "quotes": [
+      "boolean isSAR = alert.isSAR();"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Code shows the flag flows from the alert; only FanInTypology was read in full, other typologies matched the same pattern in grep output.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "amlsim-normal-transactions-always-false",
+     "value": "In AMLSim, transactions from the normal (non-typology) models are created with isSAR false and alert id -1.",
+     "anchor": "AbstractTransactionModel.java:143",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/AMLSim/src/main/java/amlsim/model/AbstractTransactionModel.java",
+     "quotes": [
+      "makeTransaction(step, amount, orig, dest, false, -1);"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Single code line in the base transaction model.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "amlsim-false-alerts-exist",
+     "value": "AMLSim parameter generation allows an alerted transaction set to be a false alert instead of a SAR, so alert-shaped transaction sets exist with label false. A ceiling on detection from structure alone depends on how separable those are from SAR sets, which the code does not compute.",
+     "anchor": "transaction_graph_generator.py:867",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/AMLSim/scripts/transaction_graph_generator.py",
+     "quotes": [
+      "Whether the alerted transaction set is SAR (True) or false-alert (False)"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "consequence",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The docstring shows false alerts exist; the separability remark is an inference.",
+     "context": "hsbc-2026"
+    }
+   ],
+   "methods": [],
+   "facts": []
+  },
+  {
+   "record_id": "namebrandon-sparkov-data-generation-github-repo",
+   "file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/Sparkov_Data_Generation/",
+   "commit": "b5eb45c",
+   "read_extent": "partial",
+   "partial_detail": "Read README, datagen_transaction.py label logic and one fraud profile JSON header. Not read: profile_weights.py in full, customer generation.",
+   "what_it_is": "A Python generator of fake credit-card transactions with fraudulent transactions, parallelized over customers.",
+   "assertions": [
+    {
+     "id_suggestion": "sparkov-label-is-generation-path",
+     "value": "In Sparkov, the fraud label is the path taken during generation: transactions drawn from the separate fraud profile get is_fraud 1 and those from the normal profile get 0. The label is not computed from the transaction features.",
+     "anchor": "datagen_transaction.py:145",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/Sparkov_Data_Generation/datagen_transaction.py",
+     "quotes": [
+      "temp_tx_data = fraud_profile.sample_from(is_fraud)"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Code shows is_fraud is set before sampling and passed to the sampler.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "sparkov-fraud-episode-probability",
+     "value": "In Sparkov, a customer gets a fraud episode when a random integer from 0 to 100 is below 99, with a one-day fraud window; so the fraud rate is set by this code and the profile weights.",
+     "anchor": "datagen_transaction.py:130-147",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/Sparkov_Data_Generation/datagen_transaction.py",
+     "quotes": [
+      "if fraud_flag < 99: #11->25"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The condition is read from one line; the one-day interval is at line 135 (randint(1,1)). Effective transaction-level rate depends on profiles and was not computed.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "sparkov-normal-tx-removed-on-fraud-dates",
+     "value": "In Sparkov, normal transactions on the fraud dates of that customer are dropped from output, so fraud days contain only fraud-profile transactions for that customer.",
+     "anchor": "datagen_transaction.py:69",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/Sparkov_Data_Generation/datagen_transaction.py",
+     "quotes": [
+      "if (is_fraud == 0 and t[1] not in fraud_dates) or is_fraud == 1:"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "One code line implements the filter.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "sparkov-ceiling-needs-profile-overlap",
+     "value": "Because Sparkov labels follow the sampling path, the best achievable accuracy depends on how much the fraud-profile and normal-profile feature distributions overlap; the code does not compute this overlap.",
+     "anchor": "datagen_transaction.py:145-155",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/Sparkov_Data_Generation/datagen_transaction.py",
+     "quotes": [
+      "temp_tx_data = profile.sample_from(is_fraud)",
+      "temp_tx_data = fraud_profile.sample_from(is_fraud)"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "consequence",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Inference from the two sampling calls; no overlap or Bayes error is computed in the repository.",
+     "context": "hsbc-2026"
+    }
+   ],
+   "methods": [],
+   "facts": []
+  },
+  {
+   "record_id": "ryotaushio-bayes-error-estimation-github-repo",
+   "file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayes-error-estimation/",
+   "commit": "bb7ed54",
+   "read_extent": "partial",
+   "partial_detail": "Read README, bestperf README and all bestperf source (estimator.py, calibrate.py, feebee/feebee.py). Not read: bayes-error-paper experiments.",
+   "what_it_is": "Code for an arXiv paper plus the bestperf library that estimates the Bayes error of binary classification from calibrated soft labels.",
+   "assertions": [
+    {
+     "id_suggestion": "bestperf-bayes-error-mean-min-p",
+     "value": "bestperf computes the Bayes error as the mean over samples of min(p, 1-p), where p is the posterior probability of the positive class given as a soft label.",
+     "anchor": "estimator.py:16 bayes_error",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayes-error-estimation/packages/bestperf/src/bestperf/estimator.py",
+     "quotes": [
+      "return float(np.mean(np.minimum(soft_labels, 1 - soft_labels)))"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "One-line implementation; correctness as a Bayes error estimate needs the soft labels to be true posteriors.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "bestperf-isotonic-calibration",
+     "value": "bestperf can calibrate soft labels by fitting isotonic regression of hard labels on soft labels; the paper abstract claims this gives a statistically consistent estimator under a weaker assumption than earlier work.",
+     "anchor": "calibrate.py:14-15; README.md abstract",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayes-error-estimation/README.md",
+     "quotes": [
+      "we show that isotonic calibration can provide a statistically consistent estimator under an assumption weaker than that of the previous work"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Claim is from the authors abstract; the code only shows isotonic fitting, consistency is not checked here.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "bestperf-calibration-not-enough",
+     "value": "The authors state that perfectly calibrated soft labels can still give a substantially inaccurate Bayes error estimate.",
+     "anchor": "README.md abstract",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayes-error-estimation/README.md",
+     "quotes": [
+      "even perfectly calibrated soft labels can result in a substantially inaccurate estimate"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Authors claim in the abstract; proof lives in the paper, not read here.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "bestperf-feebee-bounds-formula",
+     "value": "bestperf scores a Bayes error estimator on noise-injected labels, using lower bound 0.5*noise and upper bound 0.5*noise + (1-noise)*sota, where sota is a known upper bound on the clean-data Bayes error.",
+     "anchor": "feebee/feebee.py:71-72",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayes-error-estimation/packages/bestperf/src/bestperf/feebee/feebee.py",
+     "quotes": [
+      "upper_bounds = 0.5 * noise_levels + (1 - noise_levels) * sota"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct code; sota is described in the docstring as a known upper bound.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Soft-label Bayes error",
+     "what_it_bounds": "Estimates Bayes error (an error floor) as mean of min(p,1-p)",
+     "inputs_needed": "Soft labels: posterior probability of the positive class for each sample; no input features needed",
+     "fails_when": "Soft labels are not true posteriors; the abstract says calibration alone is not enough",
+     "quote": "return float(np.mean(np.minimum(soft_labels, 1 - soft_labels)))",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayes-error-estimation/packages/bestperf/src/bestperf/estimator.py"
+    },
+    {
+     "name": "FeeBee score for an estimator",
+     "what_it_bounds": "Checks an estimator against bounds on Bayes error under label noise",
+     "inputs_needed": "Clean labels, an estimator callable, number of noise levels, sota error rate",
+     "fails_when": "sota is not a valid upper bound on the clean Bayes error",
+     "quote": "upper_bounds = 0.5 * noise_levels + (1 - noise_levels) * sota",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayes-error-estimation/packages/bestperf/src/bestperf/feebee/feebee.py"
+    }
+   ],
+   "facts": []
+  },
+  {
+   "record_id": "lesleywheat-bayeserrorrate-estimatortester-github-repo",
+   "file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayesErrorRate-estimatorTester/",
+   "commit": "db00042",
+   "read_extent": "partial",
+   "partial_detail": "Read README, config.py header, CKDE.py (CLAKDE), _classifer.py, _monteCarlo.py docstrings, app/_estimators.py (GHP and kNN parts). Not read: lakde package, distributions, display code.",
+   "what_it_is": "A Monte Carlo test harness that compares Bayes error rate estimators (kNN, GHP, KDE, CLAKDE) on synthetic datasets with known true Bayes error.",
+   "assertions": [
+    {
+     "id_suggestion": "berester-purpose-monte-carlo-evaluation",
+     "value": "The program evaluates Bayes error rate estimators on different synthetic datasets with Monte Carlo simulation.",
+     "anchor": "README.md line 2",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayesErrorRate-estimatorTester/README.md",
+     "quotes": [
+      "The purpose of this program is to evaluate Bayes Error Rate (BER) estimators on different synthetic datasets with Monte Carlo simulation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct README statement.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "berester-true-ber-by-monte-carlo",
+     "value": "The harness gets ground-truth Bayes error for its synthetic data by Monte Carlo over the known class distributions, assuming balanced classes.",
+     "anchor": "_monteCarlo.py:29 _mcBerClasses; _classifer.py bayesClassifierError",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayesErrorRate-estimatorTester/bayesErrorRate/_monteCarlo.py",
+     "quotes": [
+      "Estimates the true Bayes Error over a set of class distributions"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Docstring; balanced-class assumption is stated in the same docstring (Assumes classes are balanced).",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "berester-clakde-binary-two-class",
+     "value": "CLAKDE estimates Bayes error from features X and integer labels Y with exactly two classes, by training a KDE per class; it raises an error for other class counts, and works best with similar class sizes.",
+     "anchor": "CKDE.py:22 CLAKDE",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayesErrorRate-estimatorTester/bayesErrorRate/CKDE.py",
+     "quotes": [
+      "Number of points for each class should be similar for best results.",
+      "Runs the CKDE estimator using LAKDE."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Docstring and class-count check in the function body.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "berester-ghp-returns-upper-lower",
+     "value": "The harness runs GHP and records GHP_H (upper), GHP_L (lower) and GHP_M (their mean) as outputs.",
+     "anchor": "app/_estimators.py:117-121",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayesErrorRate-estimatorTester/app/_estimators.py",
+     "quotes": [
+      "results.update({'GHP_M': (GHP_UB+GHP_LB)/2})"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct code.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "CLAKDE (class-conditional LAKDE KDE estimate)",
+     "what_it_bounds": "Point estimate of binary Bayes error",
+     "inputs_needed": "Feature matrix X (n by m), two-class integer labels Y",
+     "fails_when": "More or fewer than two classes (raises ValueError); very unequal class sizes",
+     "quote": "Number of points for each class should be similar for best results.",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayesErrorRate-estimatorTester/bayesErrorRate/CKDE.py"
+    },
+    {
+     "name": "GHP (via feebee_methods.ghp)",
+     "what_it_bounds": "Upper and lower bounds on Bayes error",
+     "inputs_needed": "Feature matrix X and labels Y",
+     "fails_when": "Not stated in the files read",
+     "quote": "results.update({'GHP_M': (GHP_UB+GHP_LB)/2})",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayesErrorRate-estimatorTester/app/_estimators.py"
+    },
+    {
+     "name": "kNN leave-one-out (feebee_methods.knn)",
+     "what_it_bounds": "kNN error as an upper bound and a derived lower bound, for several odd k",
+     "inputs_needed": "Feature matrix X, labels Y, distance measure, list of k",
+     "fails_when": "Not stated in the files read",
+     "quote": "knn_r = knn.eval_from_matrix_loo(",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/bayesErrorRate-estimatorTester/app/_estimators.py"
+    }
+   ],
+   "facts": []
+  },
+  {
+   "record_id": "ds3lab-feebee-github-repo",
+   "file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/feebee/",
+   "commit": "6c6851d",
+   "read_extent": "partial",
+   "partial_detail": "Read README, estimate.py header, methods/ghp.py, methods/knn.py (signatures), calculate_areas.py bound lines, transformations/label_noise.py. Not read: kde, onenn, lr_model, knn_extrapolate bodies; analysis notebook.",
+   "what_it_is": "The FeeBee framework: it tests Bayes error estimators on real datasets with unknown distribution by injecting label noise and checking estimates against derived bounds.",
+   "assertions": [
+    {
+     "id_suggestion": "feebee-estimator-contract-upper-lower",
+     "value": "A FeeBee method returns a dictionary of variants, each a two-element list with the upper bound estimate first and the lower bound second; a method that estimates Bayes error directly returns the same value twice.",
+     "anchor": "README.md How-To: Contribute",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/feebee/README.md",
+     "quotes": [
+      "If a method estimates the BER directly, and not any lower or upper bound, the value in the dictionary should contain a list with twice the same element in it."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct README specification.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "feebee-methods-available",
+     "value": "FeeBee estimate.py imports six method modules: knn, knn_extrapolate, ghp, kde, onenn and lr_model.",
+     "anchor": "estimate.py:12-18",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/feebee/estimate.py",
+     "quotes": [
+      "import methods.ghp as ghp",
+      "import methods.knn_extrapolate as knn_extrapolate"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Import lines; the full list is read from the six imports in the file header.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "feebee-ghp-bounds",
+     "value": "FeeBee GHP method builds a minimum spanning tree on pairwise distances, counts edges joining different classes, and returns an upper bound of 2*delta_sum and a lower bound derived from delta_sum.",
+     "anchor": "methods/ghp.py:10-90",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/feebee/methods/ghp.py",
+     "quotes": [
+      "upper = 2.0 * delta_sum"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Formula read from the code; the paper theory behind the bounds was not read.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "feebee-bound-corridor-under-noise",
+     "value": "FeeBee scores estimates against a corridor at each noise level: upper = sota + noise*(max_c - sota), lower = noise*max_c, with sota a per-dataset configured error (default 0.00 in the file read).",
+     "anchor": "calculate_areas.py:18,121-122",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/feebee/calculate_areas.py",
+     "quotes": [
+      "upper = sota_value + noise*(max_c - sota_value)"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Direct code; sota values in config are inputs, not computed.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "GHP (MST edge count, Friedman-Rafsky style)",
+     "what_it_bounds": "Upper and lower bound on Bayes error",
+     "inputs_needed": "Feature matrix and labels; optional nearest-distance approximation flag",
+     "fails_when": "Not stated in the files read (the code builds a full pairwise distance matrix)",
+     "quote": "upper = 2.0 * delta_sum",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/feebee/methods/ghp.py"
+    },
+    {
+     "name": "FeeBee noise-injection evaluation",
+     "what_it_bounds": "Tests whether an estimator tracks known bounds as label noise grows",
+     "inputs_needed": "Features, labels, a known state-of-the-art error (sota) for the clean data",
+     "fails_when": "sota left at the 0.00 default is not a real bound",
+     "quote": "upper = sota_value + noise*(max_c - sota_value)",
+     "quote_file": "D:/Data/Harold/EvidenceBasedDB/GitHubRepos/feebee/calculate_areas.py"
+    }
+   ],
+   "facts": []
+  }
+ ]
+}

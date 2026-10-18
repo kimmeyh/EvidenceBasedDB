@@ -1,0 +1,386 @@
+{
+ "papers": [
+  {
+   "record_id": "butt-2026-bernoulli-cusum-bayes-optimal-detection",
+   "file": "D:/Data/Harold/EvidenceBasedDB/Papers/2026-06_Butt_Bernoulli-CUSUM-and-Bayes-Optimal-Detection-Ceilings-for.pdf",
+   "pages": 10,
+   "read_extent": "full",
+   "what_it_is": "A preprint that derives a Bayes-optimal F1 ceiling for per-node count-based detectors on Bernoulli observations and tests a Bernoulli CUSUM trust detector on Bitcoin-OTC and Bitcoin-Alpha with injected attacks.",
+   "title_on_page_1": "Bernoulli CUSUM and Bayes-Optimal Detection Ceilings for Trust Fraud in Sparse Rating Networks",
+   "venue_or_status_on_page_1": "PREPRINT; arXiv:2606.05090v1 [cs.CR] 3 Jun 2026; manuscript not yet submitted (Manuscript received XXXX)",
+   "assertions": [
+    {
+     "id_suggestion": "butt-theorem1-ceiling-scope",
+     "value": "Theorem 1 gives the F1 of the MAP classifier as the ceiling for per-node detectors that use only the count of positive ratings S, under four conditions: i.i.d. Bernoulli observations with known p0 (honest) and p1 (adversary), independent node labels, per-node evidence only (no graph structure), and known pre-change and post-change parameters. It is a bound for that detector class, not for all detectors.",
+     "anchor": "Section III, Theorem 1, p.3",
+     "quotes": [
+      "observations are i.i.d. Bernoulli with parameter p0 under the honest hypothesis and p1 under the adversary hypothesis, (ii) node labels are independent, (iii) the detector uses only per-node evidence (no graph structure), and (iv)",
+      "and the resulting F1 score is the ceiling for any per-node detector whose decision function depends on the observations only through the count sufficient statistic S"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The result is a standard Bayes-decision calculation, but the text gives no formal proof, no value of the prior pi, and the condition list in prose differs slightly from the theorem statement (any per-node detector versus count-only detectors).",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "butt-0451-is-strategic-n2-only",
+     "value": "The 0.451 figure is the ceiling for strategic attacks at n = 2 observations per node (the median in-degree of Bitcoin-OTC), computed with empirically measured p0 and p1. The abstract states it as 'this ceiling' for Bitcoin-OTC without the attack-type scope. For bad_mouth the same method gives 0.414. A node with more ratings has a higher ceiling.",
+     "anchor": "Section III, p.3 and Figure 1; abstract, p.1",
+     "quotes": [
+      "At this observation level, the ceiling sits at 0.451 for strategic attacks.",
+      "All ceiling computations in this paper use empirical parameters.",
+      "At Bitcoin-OTC’s median in-degree of 2, this ceiling falls to 0.451 for strategic attacks"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The number is a computed value that depends on n, on the injected-attack parameters (empirical p1 = 0.699 for strategic) and on an adversary prior the text does not state; it is a single point on the n curve, not a dataset-wide ceiling.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "butt-table4-ceiling-rises-with-n",
+     "value": "Table IV (mean across 8 injected attacks, empirical parameters, bin-specific thresholds) lists ceilings of 0.487, 0.573, 0.640, 0.723 and 0.883 for in-degree bins n=1, n=2, n=3-5, n=6-10 and n>10. The mean ceiling at n=2 is 0.573, which differs from the 0.451 strategic-only value. The ceiling rises with evidence per node.",
+     "anchor": "Table IV, p.8",
+     "quotes": [
+      "Ceiling 0.487 0.573 0.640 0.723 0.883 Achieved F1 0.494 0.545 0.576 0.589 0.672 Efficiency 101.6% 95.1% 90.0% 81.4% 76.2%",
+      "TABLE IV DETECTION EFFICIENCY BY IN-DEGREE BIN (MEAN ACROSS 8 ATTACKS, EMPIRICAL OBSERVATION PARAMETERS, BIN-SPECIFIC THRESHOLDS)."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Values are read from a table whose columns extract cleanly, but the method for the bin ceiling (median n per bin, mixture over attacks) is not given in the text.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "butt-table4-n1-achieved-exceeds-ceiling",
+     "value": "In Table IV the n=1 bin shows achieved F1 0.494 against a ceiling of 0.487, an efficiency of 101.6%. A measured result above a claimed Bayes ceiling is evidence that the ceiling, as estimated, is not a strict bound in practice. Possible causes (not stated by the paper): parameter estimation error, a detector that uses more than the count statistic, or bin-specific threshold tuning. The paper does not comment on the 101.6% value.",
+     "anchor": "Table IV, p.8",
+     "quotes": [
+      "Ceiling 0.487 0.573 0.640 0.723 0.883 Achieved F1 0.494 0.545 0.576 0.589 0.672 Efficiency 101.6% 95.1% 90.0% 81.4% 76.2%"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "consequence",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The numbers are in the paper's own table; the interpretation that the ceiling is not strict is an inference by the reader, and the cause is unverified.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "butt-abstract-explains-0.4-claimed",
+     "value": "The paper claims the ceiling explains why unsupervised methods cluster near F1 of about 0.4 on Bitcoin-OTC (body says 0.3 to 0.4, abstract says about 0.4). The paper cites no F1 values for those methods, and its own pooled F1 values exceed 0.451 (GaaSTrust at its optimal threshold 0.524, BernoulliCUSUM 0.496), so the explanation is an argument by comparison, not a proof.",
+     "anchor": "Abstract p.1; Section III p.3; Section VII-A p.8; Conclusion p.9",
+     "quotes": [
+      "Unsupervised methods on Bitcoin-OTC have clustered at F 1 ≈ 0.3–0.4 for years.",
+      "At its own optimal threshold, GaaSTrust reaches 0.524, above BernoulliCUSUM’s 0.496.",
+      "at median in-degree 2, the per-node Bayesian error rate leaves no headroom for an algorithmic fix."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "The explanatory claim rests on a ceiling whose scope is count-only detectors with known parameters on injected attacks, and pooled F1 values above the quoted 0.451 are reported in the same paper.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "butt-ceiling-lifted-by-evidence-and-gap",
+     "value": "The paper states that widening the gap between p0 and p1 (for example, interfaces that elicit strong negative ratings) would directly lift the ceiling, and that empirical community amplification raised KL divergence up to 37 times over specification values. The ceiling is therefore a property of the data-collection process, not a fixed property of the task.",
+     "anchor": "Section VII-C, p.9; Section III, p.3",
+     "quotes": [
+      "Platforms that encourage evaluators to express strong negative opinions when warranted would widen the gap between p0 and p1, directly lifting the ceiling.",
+      "This community amplification increases the KL divergence from 0.003 nats (specification parameters) to 0.111 nats (empirical), a 37-fold increase in per-observation discriminability."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The 37-fold figure is a computed number for the bad_mouth attack only; the lifting claim is a discussion statement supported by the form of the theorem but not tested.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Bayes-optimal MAP F1 ceiling for count-statistic detectors (Theorem 1)",
+     "what_it_bounds": "Maximum F1 of a per-node classifier that sees n i.i.d. Bernoulli observations per node and uses only their count.",
+     "inputs_needed": "Honest rate p0, adversary rate p1 (empirical, after injection), adversary prior pi, number of observations n per node.",
+     "fails_when": "Observations are not i.i.d. Bernoulli; p0 or p1 are unknown or estimated badly; the detector uses graph structure, rater identity or order; labels are not independent; the pooled population mixes nodes with different n (Table IV shows the ceiling changes by bin, and the n=1 bin result exceeds it).",
+     "quote": "and the resulting F1 score is the ceiling for any per-node detector whose decision function depends on the observations only through the count sufficient statistic S"
+    }
+   ],
+   "facts": []
+  },
+  {
+   "record_id": "dhama-2026-fundamental-limits-fraud-detection-card",
+   "file": "D:/Data/Harold/EvidenceBasedDB/Papers/2026-05_Dhama_The-Fundamental-Limits-of-Fraud-Detection-in-Card.pdf",
+   "pages": 16,
+   "read_extent": "full",
+   "what_it_is": "A theory-only preprint (no data, no experiments) that states a minimax regret lower bound for card authorization under delayed, censored, corrupted and counterfactually missing feedback.",
+   "title_on_page_1": "The Fundamental Limits of Fraud Detection in Card Payment Networks",
+   "venue_or_status_on_page_1": "arXiv:2605.27557v2 [cs.LG] 29 May 2026; author affiliation Mastercard; dated June 1, 2026; no venue stated",
+   "assertions": [
+    {
+     "id_suggestion": "dhama-theorem9-regret-floor-form",
+     "value": "Theorem 9 states a minimax regret lower bound of the form c times the square root of [(KT + D) log N divided by ((1 - gamma)(1 - delta)(1 - e10 - e01)^2)], where gamma is the average censorship rate, delta the average decline rate, e10 and e01 the label corruption rates, D the cumulative finite delay, N the policy-class complexity and K = 3 actions. Censorship, decline rate and corruption sit in the denominator as a product; delay enters through D in the numerator; N enters as log N in the numerator. The whole ratio is under a square root (visible on the typeset page 8; the text extraction drops the root sign).",
+     "anchor": "Theorem 9 and Remark 10, p.8",
+     "quotes": [
+      "Then there exists a universal constant c > 0 such that for any learning algorithm,",
+      "The numerator contains the familiar online-learning growth term in horizon and action complexity, augmented by cumulative delay.",
+      "The factors enter multiplicatively. This is the key qualitative result."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "The text gives only a proof sketch (Fano or Assouad machinery named, not carried out), the universal constant c is unspecified, and the paper reports no numerical example; the bound is on regret against the best policy in a class, not on accuracy or F1.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "dhama-abstract-four-in-denominator-vs-theorem",
+     "value": "The abstract and conclusion say all four impairments enter the denominator. Theorem 9 puts only three there (censorship, decline rate, corruption squared); delay appears in the numerator as D. The abstract wording is looser than the theorem.",
+     "anchor": "Abstract p.1; Remark 10 p.8",
+     "quotes": [
+      "derive a minimax regret lower bound showing that the four impairments enter multiplicatively in the denominator of the achievable learning rate.",
+      "The denominator contains the three information-loss channels:"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "consequence",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Both quoted sentences are in the paper and directly differ in count (four versus three); the reading that delay is in the numerator follows from Remark 10.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "dhama-not-a-forecast-no-numbers",
+     "value": "The paper says the bound is a structural floor, not an engineering forecast, and that it does not claim any production system is near the minimax frontier. It reports no estimates of censorship, decline, corruption or delay rates and uses no dataset, so it cannot say whether a given fraud model can still improve.",
+     "anchor": "Section 1 p.2; Section 7.1 p.14; abstract p.1",
+     "quotes": [
+      "The result is not intended as a precise engineering performance forecast for any given production system.",
+      "The lower bound does not assert that any given production system is near the minimax frontier.",
+      "it is designed to stand independently of proprietary transaction data"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The limitations are stated by the author in the paper itself.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "dhama-heterogeneity-jensen-worse",
+     "value": "Proposition 12 and Proposition 16 state that variation in delay and reporting quality across issuers and transaction types raises the lower bound above the value computed from average impairment rates, by Jensen's inequality on 1/q. The proofs given are one-paragraph sketches.",
+     "anchor": "Proposition 12 p.9; Proposition 16 and Remark 17 p.12",
+     "quotes": [
+      "Thus heterogeneity in delay and reporting quality across transaction types and issuers makes the problem strictly harder than the same average impairment applied uniformly.",
+      "variation across issuers can worsen networklevel learnability beyond what average impairment rates alone would suggest."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "The Jensen step is sound for convex 1/q, but the surrounding bound inherits the sketch-level proof of Theorem 9 and the quoted result is stated for the same unspecified constant.",
+     "context": "hsbc-2026"
+    },
+    {
+     "id_suggestion": "dhama-investment-priority-corollary",
+     "value": "Corollary 15 argues that improving a denominator factor such as the censorship rate can reduce the regret floor more than increasing model complexity N, because N enters only as log N. The abstract adds 'under realistic parameter ranges', but the paper never gives parameter ranges or numbers. The corollary says 'can dominate', not 'does'.",
+     "anchor": "Corollary 15, p.11; abstract p.1",
+     "quotes": [
+      "The marginal effect of improving any denominator impairment factor can dominate the marginal effect of increasing model complexity, because the regret lower bound depends logarithmically on N but polynomially on information-quality terms.",
+      "under realistic parameter ranges, improving issuer reporting quality or reducing censorship yields substantially larger reductions in the regret floor than increasing model complexity."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "The proof is a heuristic derivative comparison, no parameter values are supplied, and the statement concerns a worst-case lower bound rather than the performance of any model.",
+     "context": "hsbc-2026"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Minimax regret lower bound under impaired feedback (Theorem 9)",
+     "what_it_bounds": "Lower bound on worst-case regret of any learning algorithm against the best policy in a class, for card authorization with delayed, censored, corrupted and counterfactually missing labels.",
+     "inputs_needed": "Horizon T, action count K, cumulative delay D, policy-class size N, average censorship rate, average decline rate, corruption rates e10 and e01, all of which the paper leaves unmeasured.",
+     "fails_when": "Used as a floor on error rate or F1 (it bounds regret, not accuracy); applied to a stochastic setting where worst-case adversarial contexts are pessimistic; the impairment rates are unknown; the universal constant c is needed for any numeric use and is not given.",
+     "quote": "Then there exists a universal constant c > 0 such that for any learning algorithm,"
+    }
+   ],
+   "facts": [
+    {
+     "fact_id": "F-708",
+     "verdict": "supported",
+     "explanation": "Theorem 9 and Remark 10 match the fact: censorship (1 - gamma), decline rate (1 - delta) and label corruption (1 - e10 - e01)^2 form a product in the denominator, and policy-class complexity enters as log N. Refinements: the ratio is under a square root; delay D enters the numerator, so the abstract claim of four impairments in the denominator is looser than the theorem; N is in the numerator as log N; the proof is a sketch and the constant c is unspecified.",
+     "quote": "The factors enter multiplicatively. This is the key qualitative result."
+    }
+   ]
+  },
+  {
+   "record_id": "tschirschwitz-2025-label-convergence-defining-upper-performance",
+   "file": "D:/Data/Harold/EvidenceBasedDB/Papers/2024-09_Tschirschwitz_Label-Convergence-Defining-an-Upper-Performance-Bound-in.pdf",
+   "pages": 13,
+   "read_extent": "full",
+   "what_it_is": "An empirical paper that estimates an upper performance bound ('label convergence') for object detection from disagreement between two human annotators, using a modified mAP and bootstrapping on five datasets.",
+   "title_on_page_1": "Label Convergence: Defining an Upper Performance Bound in Object Recognition through Contradictory Annotations",
+   "venue_or_status_on_page_1": "arXiv:2409.09412v2 [cs.CV] 21 Jan 2025; no venue stated on page 1",
+   "assertions": [
+    {
+     "id_suggestion": "tschirschwitz-lvis-label-convergence-interval",
+     "value": "For the LVIS doubly annotated 5,000-image subset the paper estimates label convergence (the upper bound on mAP set by contradictory annotations) as 62.64 to 67.52 mAP at IoU thresholds 0.5 to 0.95 (abstract prints 62.63; body and Table 3 print 62.64). The best model, Co-DETR, reaches 66.8, inside the interval. The authors conclude model capacity is sufficient for LVIS.",
+     "anchor": "Abstract p.1; Section 4.1 p.6; Table 3 p.7",
+     "quotes": [
+      "We approximate that label convergence is between 62.63-67.52 mAP@[0.5:0.95:0.05] for LVIS with 95% confidence",
+      "a convergence threshold interval between 62.64 and 67.52 mAP for the LVIS consistency subset, with Co-DETR"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "It is an empirical estimate from one 5,000-image subset with an abstract-versus-body rounding mismatch, and the paper calls it an approximation.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "tschirschwitz-derivation-interannotator-map",
+     "value": "The bound is derived by scoring one annotator's boxes against the other's as if they were model predictions (all confidence set to 0.99, ground truth and prediction roles switched at random), computing mAP, and bootstrapping 1,000 subsets of 10% of the images. The 95% interval of the subset mAP distribution is called the convergence threshold interval (Table 3: mean 65.08, std 1.25 for LVIS detection). It is a measure of human-human agreement, not a derived theoretical limit.",
+     "anchor": "Section 4.1, p.6; Table 3 caption, p.7",
+     "quotes": [
+      "We randomly switch which annotator is considered ground truth and which is considered prediction, repeating the evaluation several times to account for variability.",
+      "To statistically estimate the convergence threshold, we use bootstrapping, sampling 1,000 subsets, each with 10% of the available images of the respective dataset"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The procedure is described clearly, but the interval spans the spread of 10%-subsample scores, so it is not a confidence interval on the full-dataset value in the usual sense.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "tschirschwitz-bound-fails-with-dominant-convention",
+     "value": "The bound is not a hard limit. A model can exceed it if one labeling convention dominates the annotations, because the model can learn that convention. The estimate also extrapolates from the repeated-label subset to the whole dataset and may suffer a domain gap.",
+     "anchor": "Section 4.1 Considerations for Extrapolation, p.6; Section 5, p.7",
+     "quotes": [
+      "It is reasonable to assume that if such a dominant labeling convention exists within the dataset, then following that labeling convention would allow a model to exceed the convergence threshold.",
+      "Label convergence was estimated for a subset of the dataset, as only some images contain repeated labels."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The authors state these limits themselves; they are qualitative cautions, not measured effects.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "tschirschwitz-headroom-differs-by-dataset",
+     "value": "Table 3 shows the best leaderboard result is near the interval only for LVIS (66.8 against 62.64 to 67.52). For TexBiG detection the SOTA is 49.84 against an interval of 80.28 to 83.50, and for VinDr-CXR 31.4 against 44.12 to 50.05, so the estimate implies large headroom there. The TexBiG and VinDr-CXR intervals are inferred through a linear regression, not measured directly. The paper stresses 'at least for LVIS'.",
+     "anchor": "Table 3, p.7; Figure 1 caption, p.1; Section 4.2, p.6-7",
+     "quotes": [
+      "mAP = 0.836 · α + 0.197",
+      "However, these thresholds may be less reliable than directly evaluating mAP.",
+      "highlighting how close the data points are to the upper performance bound – at least for LVIS."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "consequence",
+     "certainty_suggestion": "low",
+     "certainty_reason": "The headroom numbers come from reading Table 3 against the SOTA column, and the TexBiG and VinDr-CXR bounds depend on a linear fit (R squared 0.85) that the authors flag as less reliable.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Label convergence via inter-annotator modified mAP (and K-alpha regression for 3 or more annotators)",
+     "what_it_bounds": "Expected best mAP on a test set whose labels contain annotator disagreement, as the agreement score between independent annotators of the same images.",
+     "inputs_needed": "A subset of images each annotated independently by 2 or more annotators under the same guideline; bootstrap resampling; for 3 or more annotators, Krippendorff alpha for object detection and a mAP-to-alpha regression.",
+     "fails_when": "Repeated-label subset is unrepresentative; annotators follow different guidelines (the COCO and Open Images reannotations were excluded for this reason); one labeling convention dominates; the task is not detection with IoU-matched boxes; only tested in computer vision (the authors say NLP may differ).",
+     "quote": "Label convergence was estimated for a subset of the dataset, as only some images contain repeated labels."
+    }
+   ],
+   "facts": []
+  },
+  {
+   "record_id": "boyd-2012-unachievable-region-precision-recall-space",
+   "file": "D:/Data/Harold/EvidenceBasedDB/Papers/2012-06_Boyd_Unachievable-Region-in-Precision-Recall-Space-and-Its.pdf",
+   "pages": 8,
+   "read_extent": "full",
+   "what_it_is": "A conference paper that proves a skew-dependent lower bound on precision for each recall and the resulting closed-form minimum AUCPR, and recommends a normalized AUCNPR.",
+   "title_on_page_1": "Unachievable Region in Precision-Recall Space and Its Effect on Empirical Evaluation",
+   "venue_or_status_on_page_1": "Proceedings of the 29th International Conference on Machine Learning (ICML), Edinburgh, 2012; arXiv:1206.4667v2 [cs.LG] 18 Jul 2012",
+   "assertions": [
+    {
+     "id_suggestion": "boyd-theorem1-min-precision-given-recall",
+     "value": "Theorem 1 proves that at recall r and positive-class fraction pi, precision cannot fall below pi*r / (1 - pi + pi*r). The bound holds for any model on a given dataset, depends only on the skew and not on dataset size, and is tight: the worst possible ranking reaches it.",
+     "anchor": "Theorem 1 and Section 2.2, p.3",
+     "quotes": [
+      "since the false positives cannot be greater than the number of negatives.",
+      "This is the equality case from Theorem 1, so Eq. (1) is a tight lower bound on precision."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "It is a short, complete proof from the confusion-matrix identities.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "boyd-theorem2-min-aucpr-formula",
+     "value": "Theorem 2 gives the minimum area under the PR curve for skew pi as AUCPR_MIN = 1 + (1 - pi) ln(1 - pi) / pi, computed over recall 0 to 1 with Davis-Goadrich interpolation. At pi = 0.1 it is about 0.05; it rises toward 0.31 at pi = 0.5. Corollary 4 gives the version for a recall range [a, b]. This is a floor on what any model scores, not a ceiling.",
+     "anchor": "Theorem 2, p.3-4; Section 4, p.5; Corollary 4, p.4",
+     "quotes": [
+      "The area of the unachievable region in PR space and the minimum AUCPR, for skew π, is",
+      "With π = 0.1, AUCPRMIN ≈ 0.05, and it increases as π approaches 0.5.",
+      "The area under the minimum PR curve constitutes a portion of AUCPR that any algorithm, no matter how poor, is guaranteed to obtain"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The proof is an explicit integral; the 0.05 value agrees with the formula (0.0518), and the formula is checked against the paper's gender-predicate range of 0.31.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "boyd-conditions-ap-f1-and-no-ceiling",
+     "value": "The minimum average precision depends on the count of positives (Theorem 3), not only on the skew. The paper states that the unachievable region puts no skew-based bound on F1. The paper gives no maximum below 1 for AUCPR, so it does not answer how good a model can get; the paper notes only that precision has a minimum at every recall.",
+     "anchor": "Theorem 3 p.4; Section 4 p.5; Section 4.4 p.7",
+     "quotes": [
+      "Unlike AUCPR, which is calculated from interpolated curves, the minimum AP depends on the number of positive examples because that controls the number of terms in the summation.",
+      "While the unachievable region of PR space does not put any bounds on F1 score based on skew, there is still a subtle interaction between skew and F1.",
+      "Every recall has a minimum precision, while there is a maximum recall for low precision, and no constraints for most levels of precision."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Each statement is either a theorem or a direct remark in the paper; the 'no ceiling below 1' reading is the paper's AUCPRMAX = 1 definition for the full curve.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "boyd-downsampling-shifts-aucpr-without-model-change",
+     "value": "Changing the positive fraction by subsampling negatives, for example from 0.01 to 0.5, raises the minimum AUCPR by about 0.3, so AUCPR gains can appear with no change to the learning algorithm. The paper proposes AUCNPR = (AUCPR - AUCPR_MIN) / (AUCPR_MAX - AUCPR_MIN) to compare across skews, and notes AUCNPR still depends on skew (an empirical SAYU example shows a more than twofold gap at 1:1).",
+     "anchor": "Section 2.2 p.4; Section 3 p.5; Section 4.3 p.7",
+     "quotes": [
+      "This leads to an automatic jump of 0.3 in AUCPR simply by changing the data set and with absolutely no change to the learning algorithm.",
+      "We propose the normalized area under the PR curve (AUCNPR)."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "consequence",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The 0.3 figure follows from Theorem 2 (0.005 to 0.307); the claim that AUCNPR reduces but does not remove the skew effect is supported by one SAYU experiment in Table 3.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Minimum PR curve and AUCPR_MIN (worst-case floor)",
+     "what_it_bounds": "The lowest precision at each recall, and the lowest AUCPR, that any classifier can obtain on a dataset with positive fraction pi. It is a floor, not a ceiling.",
+     "inputs_needed": "Only the positive-class fraction pi (and the number of positives for minimum average precision).",
+     "fails_when": "Used to claim a limit on how well a model can do (it only gives the worst case); pi is 0 or 1 (undefined); metric is F1 (no skew-based bound); the evaluation set was downsampled so its skew differs from deployment.",
+     "quote": "This is the equality case from Theorem 1, so Eq. (1) is a tight lower bound on precision."
+    }
+   ],
+   "facts": []
+  }
+ ]
+}
