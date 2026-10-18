@@ -255,8 +255,8 @@ develop to main).
 - **Released copies of the permanent items**: F88 (F39 release for
   Sprint 10) and F89 (F57 release for Sprint 10, 74 records). F39 and F57
   stay.
-- **Plan**: `docs/sprints/SPRINT_10_PLAN.md`, drafted 2026-10-18 with Q1
-  to Q3; awaiting approval.
+- **Plan**: `docs/sprints/SPRINT_10_PLAN.md`, approved 2026-10-18 with
+  Q1 = 1, Q2 = 1, Q3 = 1; issues #102 to #111; draft PR #101.
 
 ## Next Sprint Candidates
 
