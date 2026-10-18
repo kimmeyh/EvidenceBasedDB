@@ -185,4 +185,23 @@ message opened: "Manual Validation complete".
 ## Improvement Decisions
 
 Proposed 2026-10-16 (I1 to I6, prevention first, extending an existing
-prevention where one is connected). Awaiting the team lead's disposition.
+prevention where one is connected). Team lead, 2026-10-17, first reply:
+"do not imp 1, 3-5 - 2 an 6 are not needed"; asked which reading was meant,
+then: "apply imp1, 3-5 now (do not apply imp2 and 6)". Applied 2026-10-17
+on the Sprint 9 branch.
+
+| # | Improvement | Type | Disposition | Commit |
+|---|---|---|---|---|
+| I1 | The existing Stop hook (`block_procedural_question_stop.py`) blocks a status-footer last line more than 5 minutes off the clock, on every branch and phase | Control (extends an existing hook) | Now, applied | 202478f |
+| I2 | A trigger refuses moving a record's `updated` date backward | Prevention | Skip (team lead: not needed) | none |
+| I3 | `store/quotes.py`: one normalizer (NFKC) and one verbatim check, run by the reading script before it writes | Prevention | Now, applied | 3a455ce |
+| I4 | `store.ingest.sync_assertion` compares every `AssertionRecord` field; contexts, documents and relations only added | Prevention | Now, applied | 3a455ce |
+| I5 | The metacharacter hook's message leads with the `rc=$?` form when it blocks `${PIPESTATUS}` | Prevention (extends an existing hook) | Now, applied | 8c94ef4 |
+| I6 | Estimates split into build and review | Prevention | Skip (team lead: not needed) | none |
+
+Found while applying I3 and I4, both fixed in 3a455ce: four quote tests
+(f45, f65, f71, f79) compared the raw quote with the normalized source, so
+NFKC broke one Dirac-3 quote with a micro sign until both sides were
+normalized; and a sync that replaced relations would have deleted `supports`
+links that other steps add, so the sync only adds them. Category 13's item
+(I6) is withdrawn with I6.
