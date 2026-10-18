@@ -31,6 +31,17 @@ and command names built from strings or variables can still get past a
 regex. Those forms are carded as F82 for the team lead to weigh; the real
 boundary against a determined writer is the operating system's permissions.
 
+DECIDED 2026-10-18 (F82, Sprint 10 Task E, team lead Q2 = 1): the threat
+model stays accidental writes. Blocked since then, because a session could
+type them by accident: an abbreviated long option (`--outp`, `--ext`), a
+short-option cluster with O (`-nO`), `--ext-diff` and `--textconv`.
+Outside the model, by decision, because typing them takes intent: pager,
+editor and config environment variables (GIT_PAGER, GIT_EDITOR,
+GIT_CONFIG_*, a `$env:` assignment), and command names built from strings
+or variables (`iex`, `& (...)`, `$cmd`). Option 2 (refuse every command
+naming a guarded path unless it is on a short read list) was declined: it
+would block ordinary reads of Phase 2 that work today.
+
 Covers two tool shapes:
   1. Write / Edit / NotebookEdit -- tool_input.file_path is the target,
      read directly, no parsing needed.
@@ -100,6 +111,27 @@ _GIT_OPTION_WITH_VALUE = frozenset({"-C", "--git-dir", "--work-tree", "--namespa
 # program, and `-c`/`--config-env` can set a pager, an editor or a hook
 # path. With a guarded path present, any of them blocks.
 _GIT_WRITING_OPTION = re.compile(r"^(?:-c|--config-env.*|--output.*|-O.*|--open-files-in-pager.*)$")
+# F82 (Sprint 10 Task E, team lead Q2 = 1, 2026-10-18): forms a session
+# could type by accident. Git takes any unambiguous prefix of a long option
+# (`--outp` is --output), so a prefix of a writing option blocks unless it
+# is itself a complete read option (`--text`). `--ext-diff` and
+# `--textconv` run a program the guarded repository's own config names.
+# A short-option cluster with O (`-nO`) is git grep's -O.
+_GIT_WRITING_LONG = ("output", "open-files-in-pager", "config-env", "ext-diff", "textconv")
+_GIT_COMPLETE_READ_LONG = frozenset({"text", "oneline", "ours"})
+_GIT_SHORT_CLUSTER_WITH_O = re.compile(r"^-[A-Za-z0-9]*O")
+
+
+def _git_option_writes(tok: str) -> bool:
+    tok = tok.strip("\"'")
+    if _GIT_WRITING_OPTION.match(tok) or _GIT_SHORT_CLUSTER_WITH_O.match(tok):
+        return True
+    if not tok.startswith("--"):
+        return False
+    name = tok[2:].split("=", 1)[0].lower()
+    if len(name) < 2 or name in _GIT_COMPLETE_READ_LONG:
+        return False
+    return any(full.startswith(name) for full in _GIT_WRITING_LONG)
 # `git` after any non-word character (a quote, a backtick, a brace, a path
 # separator), not only after whitespace or a shell operator.
 _GIT_CALL = re.compile(r"(?:^|[^\w.-])git(?:\.exe)?(?=[\s\"'`)}]|$)", re.IGNORECASE)
@@ -113,7 +145,7 @@ def _git_writes(command: str) -> bool:
     for call in _GIT_CALL.finditer(command):
         tokens = _TOKEN.findall(command[call.end():])
         tokens = tokens[:next((n for n, t in enumerate(tokens) if t in (";", "&", "|", "(", ")")), len(tokens))]
-        if any(_GIT_WRITING_OPTION.match(t.strip("\"'")) for t in tokens):
+        if any(_git_option_writes(t) for t in tokens):
             return True
         i = 0
         while i < len(tokens):

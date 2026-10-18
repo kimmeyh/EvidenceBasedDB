@@ -213,6 +213,39 @@ def test_read_forms_of_phase2_stay_allowed(command):
     assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 0, command
 
 
+@pytest.mark.parametrize("command", [
+    f"git -C {P2} log --outp={P2}/x.txt",
+    f"git -C {P2} log --out {P2}/x.txt",
+    f"git -C {P2} grep --open x",
+    f"git -C {P2} grep -nO x",
+    f"git -C {P2} diff --ext-diff HEAD~1",
+    f"git -C {P2} diff --ext HEAD~1",
+    f"git -C {P2} log -p --textconv",
+    f"git -C {P2} show --textc HEAD",
+])
+def test_accidental_option_forms_into_phase2_are_blocked(command):
+    """F82 (Sprint 10 Task E, team lead Q2 = 1): forms a session could type
+    by accident. Each passed (exit 0) against the hook as committed before
+    this task (run 2026-10-18 with a copy of that version). Proven by
+    injection, 2026-10-18: with _git_option_writes reduced to the old
+    _GIT_WRITING_OPTION match, every case went red. Restored."""
+    assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 2, command
+
+
+@pytest.mark.parametrize("command", [
+    f"git -C {P2} diff --text HEAD~1 -- docs",
+    f"git -C {P2} log --oneline --stat -3",
+    f"git -C {P2} grep -n -i x",
+    f"git -C {P2} show --no-ext-diff HEAD",
+])
+def test_read_options_that_look_like_writing_ones_stay_allowed(command):
+    """`--text` is a complete option, not a prefix of --textconv;
+    `--no-ext-diff` turns the external program off. Proven by injection,
+    2026-10-18: with the complete-option exception removed, the --text
+    case was blocked. Restored."""
+    assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 0, command
+
+
 def test_reading_phase2_stays_allowed():
     """The other half of F79: reads need no prompt and no bypass."""
     payload = {

@@ -58,6 +58,14 @@ this project keeps having to replace with a step.
   reset (next re-check 2028-04-16). Snapshot as of 2026-10-18: 157 of 256
   DOI records hold no primary answer, none due before mid-2027. Two
   tests, proven by two injections
+- **process**: Task E (F82, #106; Class 1, team lead Q2 = 1) -- the
+  never-write hook's threat model stays accidental writes. Now blocked
+  with a guarded path: an abbreviated long option of a writing one
+  (`--outp`, `--ext`), a short cluster with O (`-nO`), `--ext-diff` and
+  `--textconv`. Pager, editor and config variables and command names
+  built from variables are named in the docstring as outside the model.
+  Eight blocked and four allowed cases; each blocked case passed against
+  the previous hook; two injections
 
 - **docs**: Sprint 10 Phases 1.5 to 3 (2026-10-18) -- scope selected (all
   ten non-HOLD items; F88 and F89 released from F39 and F57); Phase 2
