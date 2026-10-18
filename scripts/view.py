@@ -146,7 +146,10 @@ def cmd_paper(conn, paper_id: str) -> dict:
             "SELECT assertion_id FROM paper_yields WHERE paper_id = ? ORDER BY assertion_id", (paper_id,)
         )
     ]
-    yields = [cmd_assertion(conn, aid) for aid in yield_ids]
+    # The corroboration map is computed once per view, not once per yielded
+    # assertion (PR #88 Copilot review: it scans the whole store each time).
+    corroboration = resolvers.corroboration(conn) if yield_ids else {}
+    yields = [cmd_assertion(conn, aid, corroboration) for aid in yield_ids]
     # ADR-0005 A10: one stored row per link, read here from both ends.
     links = links_of(conn, paper_id)
 
@@ -175,10 +178,12 @@ def cmd_paper(conn, paper_id: str) -> dict:
     }
 
 
-def cmd_assertion(conn, assertion_id: str) -> dict:
+def cmd_assertion(conn, assertion_id: str, corroboration: dict | None = None) -> dict:
     """`view.py assertion <id>` -- the full assertion record plus its
     supports/contradicts relations resolved to the OTHER assertion's
-    value (not just the bare id), and which paper (if any) yields it."""
+    value (not just the bare id), and which paper (if any) yields it.
+    `corroboration` is the whole-store map when the caller already has it
+    (a paper view); otherwise it is computed here."""
     record = conn.execute(
         "SELECT * FROM records WHERE id = ? AND class = 'assertion'", (assertion_id,)
     ).fetchone()
@@ -214,7 +219,9 @@ def cmd_assertion(conn, assertion_id: str) -> dict:
     ).fetchone()
     # ADR-0004 A9 (F56): computed on every view, never stored; it never
     # changes the certainty above it.
-    corr = resolvers.corroboration(conn).get(assertion_id, {"by": [], "not_counted": []})
+    if corroboration is None:
+        corroboration = resolvers.corroboration(conn)
+    corr = corroboration.get(assertion_id, {"by": [], "not_counted": []})
 
     return {
         "id": record["id"],

@@ -41,7 +41,7 @@ Every count below is a snapshot as of 2026-10-17.
 - **Retrospective I1, I3, I4 and I5** applied (team lead); I2 and I6 skipped.
 
 Store: 2,093 -> 2,190 papers (148 at `read`); 105 -> 557 assertions;
-5,620 `cites` links. Suite: 759 -> 914.
+5,620 `cites` links. Suite: 759 -> 925.
 
 ## Manual Validation decisions
 
@@ -85,10 +85,21 @@ and subagents ran in parallel. Plan estimate: 780 minutes.
 
 ## PR reviews
 
-To be recorded when the Copilot and Claude reviews of PR #88 complete.
+- **Copilot** (at e0b580d): one medium finding. `view.py paper` recomputed
+  the whole-store corroboration map once per yielded assertion. Fixed: the
+  map is computed once per view; test proven by injection. Thread answered
+  and resolved.
+- **Claude (pr-review-toolkit, fresh eyes)** on the commits after the
+  hand-over: three findings, all verified and fixed in 7a0d32d. A corrected
+  context was added beside the wrong one; the F80 script kept its own
+  six-field sync; the sync tests covered 5 of 13 fields and did not pin the
+  not-compared group. Two low notes left as they are: a re-run could move
+  `updated` backward (the skipped I2), and NFKC folds superscripts.
+- Every task's own fresh-eyes review ran during Phase 4; findings fixed
+  before the Manual Validation hand-over.
 
 ## Verification
 
-- Suite 914 passed at 3a455ce, including the `live_store` tests.
+- Suite 925 passed at the last commit, including the `live_store` tests.
 - Issues #89 to #99 are open and close by PR #88's `Closes` lines on the
   merge into develop.

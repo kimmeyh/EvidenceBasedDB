@@ -15,6 +15,9 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **fix**: PR #88 Copilot review (2026-10-18) -- `view.py paper` computes
+  the whole-store corroboration map once, not once per yielded assertion;
+  test proven by injection
 - **fix**: Review of the post-hand-over commits (2026-10-18) -- a corrected
   context now replaces the stored ones (added beside them, the wrong one
   stayed); the F80 script uses `sync_assertion` too (its own list compared
