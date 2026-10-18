@@ -87,6 +87,44 @@ def test_crossref_posted_content_is_a_preprint_and_an_unknown_type_is_not_guesse
     assert "publication_status" not in r.values and "peer-review" in r.notes[0]
 
 
+def _datacite(general: str, relations=(), affiliation=None) -> bytes:
+    """Shaped like DataCite's answer for DOI:10.5281/zenodo.19985473 on
+    2026-10-18 (affiliation a list of names, as there)."""
+    return json.dumps({"data": {"attributes": {
+        "types": {"resourceTypeGeneral": general},
+        "relatedIdentifiers": [{"relationType": t, "relatedIdentifier": i} for t, i in relations],
+        "creators": [{"name": "Sepulveda-Jimenez, Alfredo", "affiliation": affiliation or []}]}}}).encode()
+
+
+def test_a_doi_crossref_does_not_know_is_asked_of_datacite_regression():
+    """F86 (Sprint 10 Task D): after a Crossref 404 the probe labeled its
+    result DataCite without sending a DataCite request, so a DataCite DOI
+    never recorded a primary answer and stayed due forever (ADR-0005 A9).
+    Zenodo's IsVersionOf (its all-versions DOI) is the same work and is not
+    a version_of. Proven to fail by injection, 2026-10-18: with the branch
+    restored to return without a request, this test went red; a second,
+    with IsVersionOf added to the version relations, also went red."""
+    r = probes.probe_doi("p", "10.5281/zenodo.19985473", _fetcher({
+        "api.crossref.org": _http(404),
+        "api.datacite.org/dois/10.5281/zenodo.19985473": _datacite(
+            "Preprint", [("IsVersionOf", "10.5281/zenodo.19985472")], ["QDR Labs"])}))
+    assert r.provider == "DataCite"
+    assert r.values == {"publication_status": "preprint", "affiliations": "QDR Labs"}
+    assert any("no retraction notices" in n for n in r.notes)
+
+
+def test_datacite_states_only_what_it_says():
+    """A preprint relation names the other version; an unmapped resource
+    type is not guessed; a DOI neither registry knows says so."""
+    r = probes.probe_doi("p", "10.1/a", _fetcher({"api.crossref.org": _http(404), "api.datacite.org": _datacite(
+        "Preprint", [("IsPreprintOf", "10.1/published")])}))
+    assert r.values == {"publication_status": "preprint", "version_of": "10.1/published"}
+    r = probes.probe_doi("p", "10.1/a", _fetcher({"api.crossref.org": _http(404), "api.datacite.org": _datacite("Dataset")}))
+    assert "publication_status" not in r.values and any("'Dataset'" in n for n in r.notes)
+    r = probes.probe_doi("p", "10.1/a", _fetcher({"api.crossref.org": _http(404), "api.datacite.org": _http(404)}))
+    assert r.values == {} and "not in DataCite" in r.notes[0]
+
+
 class _Resp:
     def __init__(self, body: bytes, ctype: str = "text/html"):
         self.body, self.headers = body, {"Content-Type": ctype}

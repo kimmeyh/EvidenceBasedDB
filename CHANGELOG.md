@@ -48,6 +48,16 @@ this project keeps having to replace with a step.
   (`removal_modules_lookup.java`, line 84, re-read in the engine source);
   a stored count is allowed here only beside its data, updated with it,
   and checked by a test that recomputes it
+- **fix**: Task D (F86, #105) -- the DOI probe never asked DataCite:
+  after a Crossref 404 it labeled its result DataCite and returned empty,
+  so a DataCite DOI could never record a primary answer under ADR-0005
+  A9. It now sends the DataCite request and records status (from
+  resourceTypeGeneral), a preprint relation as `version_of` (not Zenodo's
+  all-versions IsVersionOf) and affiliations. The Zenodo record
+  (DOI:10.5281/zenodo.19985473) answered: preprint, QDR Labs; its clock
+  reset (next re-check 2028-04-16). Snapshot as of 2026-10-18: 157 of 256
+  DOI records hold no primary answer, none due before mid-2027. Two
+  tests, proven by two injections
 
 - **docs**: Sprint 10 Phases 1.5 to 3 (2026-10-18) -- scope selected (all
   ten non-HOLD items; F88 and F89 released from F39 and F57); Phase 2
