@@ -44,6 +44,10 @@ class ProbeResult:
     # The latest version the abstract page shows (ADR-0005 A7 (d)); None =
     # not read. Set only by the site probe.
     latest_version: int | None = None
+    # The DOI registry answered, even if it stated nothing the store records
+    # (Task D review, 2026-10-18), so the re-check report can say so instead
+    # of "no answer". Set only by probe_doi.
+    answered: bool = False
 
 
 def _arxiv_entry(ident: str, fetcher) -> tuple[str, str, str, list[str]] | None:
@@ -135,6 +139,7 @@ def probe_doi(record_id: str, doi: str, fetcher) -> ProbeResult:
         if err.code != 404:
             raise
         return _probe_datacite(r, quoted, fetcher)
+    r.answered = True
     kind = msg.get("type", "")
     if kind == "posted-content":
         r.values["publication_status"] = "preprint"
@@ -181,6 +186,7 @@ def _probe_datacite(r: ProbeResult, quoted: str, fetcher) -> ProbeResult:
             raise
         r.notes.append("not in Crossref and not in DataCite")
         return r
+    r.answered = True
     general = (attrs.get("types") or {}).get("resourceTypeGeneral", "")
     if general in _DATACITE_STATUS:
         r.values["publication_status"] = _DATACITE_STATUS[general]
@@ -190,7 +196,7 @@ def _probe_datacite(r: ProbeResult, quoted: str, fetcher) -> ProbeResult:
         if rel.get("relationType") in _DATACITE_VERSION and rel.get("relatedIdentifier"):
             r.values["version_of"] = rel["relatedIdentifier"]
             break
-    affs = sorted({" ".join((a if isinstance(a, str) else a.get("name", "")).split())
+    affs = sorted({" ".join((a if isinstance(a, str) else a.get("name") or "").split())
                    for c in attrs.get("creators") or [] for a in c.get("affiliation") or []} - {""})
     if affs:
         r.values["affiliations"] = "; ".join(affs)

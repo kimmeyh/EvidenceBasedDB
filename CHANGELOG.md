@@ -58,6 +58,12 @@ this project keeps having to replace with a step.
   reset (next re-check 2028-04-16). Snapshot as of 2026-10-18: 157 of 256
   DOI records hold no primary answer, none due before mid-2027. Two
   tests, proven by two injections
+- **fix**: Task D review (2026-10-18) -- a DOI registry that answered with
+  nothing the store records (an unmapped type such as "Text", no relation,
+  no affiliation) was reported as "no answer"; the re-check report now
+  says it answered. It still stays due: no `publication_status` value
+  means "the registry states none" (raised for Manual Validation). A null
+  DataCite affiliation name no longer raises. Two tests, two injections
 - **process**: Task E (F82, #106; Class 1, team lead Q2 = 1) -- the
   never-write hook's threat model stays accidental writes. Now blocked
   with a guarded path: an abbreviated long option of a writing one

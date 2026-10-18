@@ -122,7 +122,16 @@ def test_datacite_states_only_what_it_says():
     r = probes.probe_doi("p", "10.1/a", _fetcher({"api.crossref.org": _http(404), "api.datacite.org": _datacite("Dataset")}))
     assert "publication_status" not in r.values and any("'Dataset'" in n for n in r.notes)
     r = probes.probe_doi("p", "10.1/a", _fetcher({"api.crossref.org": _http(404), "api.datacite.org": _http(404)}))
-    assert r.values == {} and "not in DataCite" in r.notes[0]
+    assert r.values == {} and "not in DataCite" in r.notes[0] and not r.answered
+
+
+def test_datacite_affiliation_objects_are_read_and_a_null_name_is_skipped():
+    """Task D review (2026-10-18): the object form ({"name": ...}) had no
+    test, and a null name raised. Proven to fail by injection, 2026-10-18:
+    with `or ""` back to the default argument, this test raised."""
+    r = probes.probe_doi("p", "10.1/a", _fetcher({"api.crossref.org": _http(404), "api.datacite.org": _datacite(
+        "Preprint", affiliation=[{"name": "QDR Labs"}, {"name": None}])}))
+    assert r.values["affiliations"] == "QDR Labs" and r.answered
 
 
 class _Resp:
