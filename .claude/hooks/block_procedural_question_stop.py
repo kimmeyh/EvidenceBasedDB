@@ -26,6 +26,11 @@ Blocks a stop only when ALL of these hold:
      criterion ("Criterion N", the "STOP:" template, "Class 1|2|3
      decision", "BLOCKED", "Manual Validation").
 
+Separately, on every branch and in every phase (Sprint 9 retrospective I1):
+a last line shaped like the status footer ("MM/DD/YYYY h:mmam | ...") is
+blocked when its time is more than 5 minutes from the clock. Payload key
+now_override sets the clock for tests.
+
 Outside the window the hook is silent: pre-approval and Phase 5+ questions
 are correct, and a message that cites a criterion is a legitimate stop.
 
@@ -40,6 +45,7 @@ import json
 import re
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 BRANCH_PATTERN = re.compile(r"^feature/\d+_Sprint_(\d+)")
@@ -82,6 +88,37 @@ QUESTION_PATTERNS = [
 ]
 
 NUMBERED_LINE = re.compile(r"^\s*\d+[.)]\s+")
+
+# Sprint 9 retrospective I1: the status footer. Two footers in Sprint 9
+# (about 3:48 and 3:58) were typed by hand and wrong; the script said 3:37.
+# The rule and the script both existed; the failure was not running it. So
+# any footer-shaped last line is checked against the clock, on every branch
+# and in every phase (the footer rule is global). A message with no footer
+# passes: this checks the footer's truth, not its presence.
+FOOTER = re.compile(r"^(\d{2})/(\d{2})/(\d{4}) (\d{1,2}):(\d{2})(am|pm) \| ")
+FOOTER_TOLERANCE_MINUTES = 5
+
+
+def footer_error(message: str, now: datetime) -> str | None:
+    """A reason when the message's last line is a footer whose time is more
+    than FOOTER_TOLERANCE_MINUTES from `now`; None otherwise."""
+    lines = [ln.strip().strip("`").strip() for ln in message.splitlines() if ln.strip()]
+    if not lines:
+        return None
+    m = FOOTER.match(lines[-1])
+    if not m:
+        return None
+    month, day, year, hour, minute, half = m.groups()
+    hour_24 = int(hour) % 12 + (12 if half == "pm" else 0)
+    try:
+        stamped = datetime(int(year), int(month), int(day), hour_24, int(minute))
+    except ValueError:
+        return f"the footer {lines[-1]!r} is not a real date and time"
+    off = abs((now - stamped).total_seconds()) / 60
+    if off <= FOOTER_TOLERANCE_MINUTES:
+        return None
+    return (f"the footer says {stamped:%m/%d/%Y %I:%M%p}, the clock says "
+            f"{now:%m/%d/%Y %I:%M%p} ({off:.0f} minutes apart)")
 
 
 def _run(args: list[str], cwd: str) -> tuple[int, str]:
@@ -181,6 +218,28 @@ def main() -> int:
     message = _last_message(payload)
     if not message:
         return 0
+
+    try:
+        now = datetime.fromisoformat(str(payload["now_override"])) if payload.get("now_override") \
+            else datetime.now()
+    except ValueError:
+        now = datetime.now()
+    wrong = footer_error(message, now)
+    if wrong:
+        print(
+            "[BLOCKED by block_procedural_question_stop hook: status footer]\n"
+            "\n"
+            f"The last line is a status footer, and {wrong}.\n"
+            "\n"
+            "Run the script and end the message with its output, unchanged\n"
+            "(global CLAUDE.md, Status Footer; Sprint 9 retrospective I1):\n"
+            "\n"
+            '    powershell -NoProfile -ExecutionPolicy Bypass -File "C:/Users/kimme/.claude/scripts/status-footer.ps1"\n'
+            "\n"
+            "Never type a footer by hand or carry one forward from an earlier message.",
+            file=sys.stderr,
+        )
+        return 2
 
     branch_override = payload.get("branch_override")
     if branch_override:

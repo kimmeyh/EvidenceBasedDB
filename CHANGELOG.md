@@ -15,6 +15,11 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **process**: Sprint 9 retrospective I1 (2026-10-17) -- the Stop hook
+  `block_procedural_question_stop.py` also blocks a status-footer last line
+  whose time is more than 5 minutes from the clock, on every branch and in
+  every phase; it reads `last_assistant_message`, which the Stop input
+  carries. Tests proven by injection
 - **process**: Sprint 9 retrospective I5 (2026-10-17) -- the
   shell-metacharacter hook's block message leads with the exit-code form
   (`> log 2>&1; rc=$?`) when the blocked expansion is `${PIPESTATUS[...]}`,

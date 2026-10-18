@@ -259,3 +259,43 @@ def test_malformed_payload_fails_open():
 def test_empty_message_fails_open(tmp_path):
     repo = _scratch_repo(tmp_path, _status())
     assert _run_hook(repo, SPRINT_BRANCH, "").returncode == 0
+
+
+# Sprint 9 retrospective I1: a footer-shaped last line must match the clock.
+NOW = "2026-10-15T15:37:00"
+
+
+def _run_footer(repo: Path, message: str, branch: str = "develop") -> subprocess.CompletedProcess:
+    payload = {"repo_override": str(repo), "branch_override": branch,
+               "last_assistant_message": message, "now_override": NOW}
+    return subprocess.run([sys.executable, str(HOOK)], input=json.dumps(payload),
+                          capture_output=True, text=True)
+
+
+@pytest.mark.parametrize("footer", [
+    "10/15/2026 3:58pm | Sprint 9 Phase 5.3 Manual Validation",  # Sprint 9's own case
+    "10/15/2026 3:37am | Sprint 9 Phase 5.3 Manual Validation",  # am for pm
+    "10/14/2026 3:37pm | Sprint 9 Phase 5.3 Manual Validation",  # carried forward a day
+    "`10/15/2026 2:46pm | Sprint 9 Phase 5.3 Manual Validation`",
+])
+def test_blocks_a_footer_off_the_clock_on_any_branch(tmp_path, footer):
+    """Proven to fail by injection, 2026-10-17: with the footer check's
+    `return 2` made `pass`, all four cases were allowed (exit 0) and went
+    red; restored, green. The Sprint 9 footers at 3:48 and 3:58 against the
+    script's 3:37 are the first case."""
+    repo = _scratch_repo(tmp_path, None)
+    proc = _run_footer(repo, f"Report.\n\n{footer}")
+    assert proc.returncode == 2, proc.stderr
+    assert "status-footer.ps1" in proc.stderr
+
+
+@pytest.mark.parametrize("message", [
+    "Report.\n\n10/15/2026 3:37pm | Sprint 9 Phase 5.3 Manual Validation",
+    "Report.\n\n10/15/2026 3:41pm | Sprint 9 Phase 5.3 Manual Validation",  # inside tolerance
+    "Report with no footer at all.",
+    "A footer quoted mid-message, 10/01/2026 1:00pm | Sprint 9, is not the last line.\n\nDone.",
+])
+def test_allows_a_true_footer_or_none(tmp_path, message):
+    repo = _scratch_repo(tmp_path, None)
+    proc = _run_footer(repo, message)
+    assert proc.returncode == 0, proc.stderr
