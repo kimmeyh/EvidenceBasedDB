@@ -70,7 +70,10 @@ backups in `store\backups\`. `store.script_paths` resolves it; the environment
 variable `EBDB_STORE_DIR` overrides it. No database and no export is committed:
 git holds code and documents only. Tests that check the real data are marked
 `live_store` (local only; a missing store fails them; CI deselects them by
-their marker, `-m "not live_store"`).
+their marker, `-m "not live_store"`). A test without the marker finds
+pdftotext, this folder and the sibling repositories missing even locally,
+as on CI (`tests/conftest.py`, Sprint 9 retrospective I7), so a missing
+marker fails at the desk instead of turning CI red.
 
 Every repository on this machine lives under `D:\Data\Harold\github\`. The
 first attempt at seeding this one put the git repository inside the non-repo

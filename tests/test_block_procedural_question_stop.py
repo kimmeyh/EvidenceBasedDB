@@ -299,3 +299,40 @@ def test_allows_a_true_footer_or_none(tmp_path, message):
     repo = _scratch_repo(tmp_path, None)
     proc = _run_footer(repo, message)
     assert proc.returncode == 0, proc.stderr
+
+
+# Sprint 9 retrospective I7: from the hand-over to gh pr ready, CI must be green.
+GREEN = [{"name": "test", "bucket": "pass"}, {"name": "lint", "bucket": "skipping"}]
+
+
+def _run_ci(repo: Path, checks, branch: str = SPRINT_BRANCH) -> subprocess.CompletedProcess:
+    payload = {"repo_override": str(repo), "branch_override": branch,
+               "last_assistant_message": "Manual Validation hand-over.", "ci_checks_override": checks}
+    return subprocess.run([sys.executable, str(HOOK)], input=json.dumps(payload),
+                          capture_output=True, text=True)
+
+
+@pytest.mark.parametrize("phase", ["Phase 5.3 Manual Validation", "Phase 6.3 PR", "Phase 7.7 Retrospective"])
+@pytest.mark.parametrize("bucket", ["fail", "pending", "cancel"])
+def test_blocks_a_stop_while_ci_is_not_green_from_phase_5_to_7(tmp_path, phase, bucket):
+    """Proven to fail by injection, 2026-10-18: with the CI block's `return 2`
+    made `pass`, all nine cases were allowed (exit 0) and went red; restored,
+    green. Sprint 9's case: CI was red through the Manual Validation hand-over."""
+    repo = _scratch_repo(tmp_path, _status(status=phase))
+    proc = _run_ci(repo, [GREEN[0], {"name": "test (3.12)", "bucket": bucket}])
+    assert proc.returncode == 2, proc.stderr
+    assert "gh pr checks 30 --watch" in proc.stderr
+
+
+@pytest.mark.parametrize("phase,checks,branch", [
+    ("Phase 5.3 Manual Validation", GREEN, SPRINT_BRANCH),  # green
+    ("Phase 5.3 Manual Validation", None, SPRINT_BRANCH),  # unreadable: never trap the session
+    ("Phase 5.3 Manual Validation", [], SPRINT_BRANCH),  # no checks yet
+    ("Phase 4.1 Execution", [{"name": "test", "bucket": "fail"}], SPRINT_BRANCH),  # before hand-over
+    ("Phase 8.1 Delivery", [{"name": "test", "bucket": "fail"}], SPRINT_BRANCH),  # after merge
+    ("Phase 5.3 Manual Validation", [{"name": "test", "bucket": "fail"}], "develop"),  # not a sprint branch
+])
+def test_allows_a_stop_when_ci_is_green_unreadable_or_out_of_scope(tmp_path, phase, checks, branch):
+    repo = _scratch_repo(tmp_path, _status(status=phase))
+    proc = _run_ci(repo, checks, branch)
+    assert proc.returncode == 0, proc.stderr

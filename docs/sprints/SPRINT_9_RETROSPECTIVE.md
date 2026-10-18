@@ -217,3 +217,14 @@ Every local run was green, and nothing in the workflow read CI's result
 before the hand-over. Fixed in deb726d (the three marked); CI green. The
 workflow's Manual Validation rule ("CI ... resolved before hand-over") was
 broken. Proposed to the team lead as I7.
+
+I7, team lead 2026-10-18: asked whether CI should fail at all on tests
+that do not affect production. Answer given: no, those tests belong off CI
+(the marker's purpose), but a CI left red by them hides real failures.
+Then "q1 2": prevention and a control. Applied 2026-10-18 on the Sprint 9
+branch.
+
+| # | Improvement | Type | Disposition | Commit |
+|---|---|---|---|---|
+| I7a | `tests/conftest.py`: a test without `live_store` finds pdftotext and every path under the data folder or a sibling repository missing, as on CI, so a missing marker fails locally. Found a fourth unmarked local read at once (`test_resolvers.py`, skipped on CI), now marked | Prevention (extends the existing live-fixture marker check) | Now, applied | this commit |
+| I7b | The Stop hook (`block_procedural_question_stop.py`) blocks a stop in Phases 5 to 7 while a check on the sprint's PR is failing or running; unreadable checks allow the stop | Control (extends an existing hook) | Now, applied | this commit |

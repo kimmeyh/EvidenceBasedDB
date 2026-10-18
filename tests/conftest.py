@@ -19,6 +19,8 @@ Two kinds of test follow from that:
 """
 from __future__ import annotations
 
+import os
+import shlex
 import sqlite3
 import stat
 import sys
@@ -27,7 +29,8 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from store import citations, connect, create_store, store_dir  # noqa: E402
+import store  # noqa: E402
+from store import citations, connect, create_store, quotes, store_dir  # noqa: E402
 from store.export import regenerate  # noqa: E402
 from store.ingest import (  # noqa: E402
     AssertionRecord, PaperRecord, add_found_via, add_read, add_source_link, insert_assertion, insert_paper,
@@ -39,6 +42,95 @@ def pytest_configure(config):
     config.addinivalue_line(
         "markers", "live_store: reads the real store outside the repository (ADR-0004 A7); "
                    "fails locally when it is missing; deselected on CI")
+    if not getattr(sys, "_ebdb_local_only_hook", False):
+        sys.addaudithook(_refuse_local_only)
+        sys._ebdb_local_only_hook = True
+
+
+# ------------------------------------------------------------------ local-only resources
+
+# Sprint 9 retrospective I7 (team lead, 2026-10-18, Q1 = 2): CI was red for
+# three days because three tests read local PDFs (pdftotext) or the local
+# Phase 2 repository without the live_store marker, and every local run was
+# green. An unmarked test now finds these resources missing on this machine
+# too, exactly as CI does: pdftotext and every path under the data folder or
+# a sibling repository raise FileNotFoundError. So the mislabel fails at the
+# desk, not on CI. Reaches this process only (opens, directory listings,
+# sqlite connects, subprocess launches); a child process is not watched.
+_ROOT = Path(__file__).resolve().parents[1]
+_LOCAL_ONLY_ROOTS = (str(store.DEFAULT_STORE_DIR.parent), _ROOT.parent)  # data folder; sibling repos
+_local_only = {"refuse": False}
+
+
+def _norm(p) -> str:
+    return os.path.normcase(os.path.abspath(p))
+
+
+def is_local_only(path) -> bool:
+    """True for a path CI cannot have: under the data folder, or under a
+    sibling repository (the folder holding this repository, minus this
+    repository)."""
+    if isinstance(path, bytes):
+        path = os.fsdecode(path)
+    if not isinstance(path, (str, os.PathLike)):
+        return False
+    text = str(path)
+    if text.startswith("file:"):  # a sqlite URI
+        text = text[5:].split("?", 1)[0]
+    if not text or text == ":memory:":
+        return False
+    target, repo = _norm(text), _norm(_ROOT)
+    if target == repo or target.startswith(repo + os.sep):
+        return False
+    return any(target == _norm(r) or target.startswith(_norm(r) + os.sep) for r in _LOCAL_ONLY_ROOTS)
+
+
+def _refuse_local_only(event: str, args: tuple) -> None:
+    if not _local_only["refuse"]:
+        return
+    paths: list = []
+    if event in ("open", "os.listdir", "os.scandir", "sqlite3.connect"):
+        paths = [args[0]] if args else []
+    elif event == "subprocess.Popen":
+        executable, argv, cwd = args[0], args[1], args[2]
+        if isinstance(argv, (str, bytes, os.PathLike)):
+            # On Windows the event carries the list already joined into one
+            # command line (first injection, 2026-10-18: pdftotext and a
+            # Phase 2 `git -C` both passed until this split was added).
+            line = os.fsdecode(argv)
+            try:
+                argv = [a.strip('"') for a in shlex.split(line, posix=False)]
+            except ValueError:  # an unbalanced quote; the hook must never fail on its own parsing
+                argv = [a.strip('"') for a in line.split()]
+        else:
+            argv = list(argv or [])
+        program = executable or (argv[0] if argv else "")
+        if Path(os.fsdecode(program)).stem.lower() == "pdftotext":
+            raise FileNotFoundError("pdftotext is not available to a test without @pytest.mark.live_store "
+                                    "(CI has none; Sprint 9 retrospective I7)")
+        paths = [cwd, *argv]
+    else:
+        return
+    for p in paths:
+        if p is not None and is_local_only(p):
+            raise FileNotFoundError(f"{p} is outside the repository and not on CI; mark the test "
+                                    "@pytest.mark.live_store (Sprint 9 retrospective I7)")
+
+
+@pytest.fixture(autouse=True)
+def _local_only_resources(request):
+    """Unmarked tests see the machine CI sees. The quote caches are cleared
+    first, so a PDF read by an earlier live_store test cannot hide the read."""
+    if request.node.get_closest_marker("live_store") is not None:
+        yield
+        return
+    quotes.pdf_text.cache_clear()
+    quotes.html_text.cache_clear()
+    _local_only["refuse"] = True
+    try:
+        yield
+    finally:
+        _local_only["refuse"] = False
 
 
 @pytest.fixture(autouse=True)

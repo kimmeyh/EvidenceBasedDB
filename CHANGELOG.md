@@ -15,11 +15,21 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **process**: Sprint 9 retrospective I7 (team lead, 2026-10-18, Q1 = 2).
+  Prevention: `tests/conftest.py` gives every test without `live_store`
+  the machine CI sees -- pdftotext and any path under the data folder or a
+  sibling repository raise FileNotFoundError -- so a missing marker fails
+  locally, not on CI. It found a fourth such test at once
+  (`test_resolvers.py`, a sibling-repository read that skipped on CI),
+  now marked. Control: the Stop hook blocks a stop in Phases 5 to 7 while
+  any check on the sprint's PR is failing or running. Both proven by
+  injection (`tests/test_local_only_guard.py`,
+  `tests/test_block_procedural_question_stop.py`) (Issue #99 / PR #88)
 - **fix**: CI red on PR #88 since 2026-10-15 00:31 (070137e), on every push
   including the Manual Validation hand-over, unnoticed until 2026-10-18:
   three "every number is in the source" tests (F46, F78, F79) read local
   PDFs with pdftotext or the local Phase 2 repository without the
-  `live_store` marker CI deselects. Marked
+  `live_store` marker CI deselects. Marked; CI green at deb726d (Issue #94)
 - **fix**: PR #88 Copilot review (2026-10-18) -- `view.py paper` computes
   the whole-store corroboration map once, not once per yielded assertion;
   test proven by injection

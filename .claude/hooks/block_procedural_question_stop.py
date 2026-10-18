@@ -31,6 +31,11 @@ a last line shaped like the status footer ("MM/DD/YYYY h:mmam | ...") is
 blocked when its time is more than 5 minutes from the clock. Payload key
 now_override sets the clock for tests.
 
+And on a sprint branch in Phases 5 to 7 (Sprint 9 retrospective I7): a stop
+is blocked while any check on the PR named in sprint_status.json is failing
+or still running (`gh pr checks`). Checks that cannot be read allow the stop.
+Payload key ci_checks_override supplies the checks for tests.
+
 Outside the window the hook is silent: pre-approval and Phase 5+ questions
 are correct, and a message that cites a criterion is a legitimate stop.
 
@@ -121,6 +126,35 @@ def footer_error(message: str, now: datetime) -> str | None:
             f"{now:%m/%d/%Y %I:%M%p} ({off:.0f} minutes apart)")
 
 
+# Sprint 9 retrospective I7 (team lead, 2026-10-18, Q1 = 2): CI on PR #88 was
+# red for three days, through the Manual Validation hand-over, and no step
+# read it. From Phase 5 (hand-over) to Phase 7 (gh pr ready), a stop is
+# blocked while any check on the sprint's PR is failing or still running.
+CI_PHASES = (5, 6, 7)
+CI_NOT_GREEN = ("fail", "pending", "cancel")
+
+
+def ci_error(checks: list[dict]) -> str | None:
+    """A reason when any check is not green; None otherwise."""
+    bad = [f"{c.get('name', '?')} ({c.get('bucket')})" for c in checks if c.get("bucket") in CI_NOT_GREEN]
+    return ", ".join(bad) if bad else None
+
+
+def _pr_checks(payload: dict, pr: int, cwd: str) -> list[dict] | None:
+    """The PR's checks, or None when they cannot be read. Payload key
+    ci_checks_override supplies them for tests. A failure to read them (gh
+    missing, offline, no checks yet) ALLOWS the stop: this control must not
+    trap a session that cannot reach GitHub."""
+    if "ci_checks_override" in payload:
+        return payload["ci_checks_override"]
+    code, out = _run(["gh", "pr", "checks", str(pr), "--json", "name,bucket"], cwd)
+    try:
+        checks = json.loads(out)
+    except (json.JSONDecodeError, ValueError):
+        return None
+    return checks if isinstance(checks, list) else None
+
+
 def _run(args: list[str], cwd: str) -> tuple[int, str]:
     try:
         proc = subprocess.run(args, cwd=cwd, capture_output=True, text=True, timeout=15)
@@ -173,6 +207,15 @@ def ends_in_procedural_question(message: str) -> bool:
         return True
     joined = "\n\n".join(tail)
     return any(p.search(joined) for p in QUESTION_PATTERNS)
+
+
+def _current_sprint(repo: Path) -> dict:
+    """current_sprint from sprint_status.json, or {} when it cannot be read."""
+    try:
+        current = json.loads((repo / ".claude" / "sprint_status.json").read_text(encoding="utf-8"))["current_sprint"]
+    except Exception:
+        return {}
+    return current if isinstance(current, dict) else {}
 
 
 def _in_window(repo: Path) -> tuple[bool, str]:
@@ -253,6 +296,27 @@ def main() -> int:
         return 0
     if not BRANCH_PATTERN.match(branch):
         return 0
+
+    status = _current_sprint(repo)
+    pr = status.get("pr")
+    if phase_number(str(status.get("status") or "")) in CI_PHASES and isinstance(pr, int):
+        checks = _pr_checks(payload, pr, cwd)
+        failing = ci_error(checks) if checks else None
+        if failing:
+            print(
+                "[BLOCKED by block_procedural_question_stop hook: CI]\n"
+                "\n"
+                f"PR #{pr} has checks that are not green: {failing}.\n"
+                "\n"
+                "From the Manual Validation hand-over to gh pr ready, nothing reaches the\n"
+                "team lead while CI is red or still running (Sprint 9 retrospective I7).\n"
+                f"Wait with `gh pr checks {pr} --watch`; fix a failure first, then reply.\n"
+                "\n"
+                "Bypass (team-lead-sanctioned only): rename the branch to include\n"
+                "allow_stop_hook_bypass.",
+                file=sys.stderr,
+            )
+            return 2
 
     inside, reason = _in_window(repo)
     if not inside:

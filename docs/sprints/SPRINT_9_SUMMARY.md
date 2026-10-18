@@ -39,9 +39,11 @@ Every count below is a snapshot as of 2026-10-17.
   at `seen` (Q4 = 1); a hand-download list.
 - **F51 (Task K, #99).** Hold checked; stays HOLD.
 - **Retrospective I1, I3, I4 and I5** applied (team lead); I2 and I6 skipped.
+  I7 (Q1 = 2, 2026-10-18): unmarked tests see CI's machine locally, and
+  the Stop hook holds Phases 5 to 7 while CI is not green.
 
 Store: 2,093 -> 2,190 papers (148 at `read`); 105 -> 557 assertions;
-5,620 `cites` links. Suite: 759 -> 925.
+5,620 `cites` links. Suite: 759 -> 945.
 
 ## Manual Validation decisions
 
@@ -100,7 +102,8 @@ and subagents ran in parallel. Plan estimate: 780 minutes.
 
 ## Verification
 
-- Suite 925 passed at the last commit, including the `live_store` tests.
+- Suite 945 passed at the last commit, including the `live_store` tests;
+  the CI selection 862 passed, 83 deselected.
 - CI green at deb726d. It was red from 070137e (2026-10-15 00:31) to
   52a439a, unnoticed until 2026-10-18: three tests that read local files
   lacked the `live_store` marker (retrospective addendum).
