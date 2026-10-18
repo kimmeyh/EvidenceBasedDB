@@ -70,3 +70,26 @@ def test_skill_uses_task_a_phase_numbering_not_phase_8():
 
 def test_skill_has_no_em_dashes():
     assert chr(8212) not in _body(), "SKILL.md contains an em dash (QUALITY_STANDARDS.md)"
+
+
+def test_format_puts_the_recommendation_first_caps_at_20_and_keeps_details_ungrouped():
+    """Team lead, 2026-10-14: the recommendation for the sprint comes before
+    the list, the list holds at most 20 items, and the details follow the
+    index's order with no phase-group headers (the group goes in each item's
+    Phase line). Both the format doc and the skill must say so, and neither
+    may still tell the presenter to group under `### <Phase Name>`.
+
+    Verified by injection: restoring the old rule "Group items under
+    `### <Phase Name>` section headers" in the format doc fails this test;
+    deleting "Recommended for Sprint" from the skill fails it. Each restored
+    and green again."""
+    fmt = FORMAT_DOC.read_text(encoding="utf-8")
+    skill = _body()
+    for name, text in (("docs/BACKLOG_REFINEMENT.md", fmt), ("SKILL.md", skill)):
+        assert "Recommended for Sprint" in text, f"{name}: the recommendation block is missing"
+        assert re.search(r"at most 20", text), f"{name}: the 20-item cap is missing"
+        assert not re.search(r"^- Group items under `### <Phase Name>`", text, re.M), (
+            f"{name}: still groups the details under phase headers")
+        assert not re.search(r"items grouped under `### <Phase Name>`", text), (
+            f"{name}: still groups the details under phase headers")
+    assert re.search(r"Summary Index's order", fmt), "the format doc must say details follow the index's order"

@@ -19,6 +19,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 HOOK = Path(__file__).resolve().parents[1] / ".claude" / "hooks" / "block_sibling_repo_writes.py"
 
 
@@ -124,6 +126,102 @@ def test_notebook_edit_to_a_guarded_path_is_blocked():
         "tool_input": {"notebook_path": r"D:\Data\Harold\github\hsbc-quantum-fraud-2026\analysis.ipynb"},
     }
     assert _run(payload).returncode == 2
+
+
+def test_writes_into_phase2_and_its_memory_directory_are_blocked():
+    """F79 (Sprint 9 Task A, 2026-10-15). Team lead, 2026-10-14: the two
+    repositories read each other freely and never write to each other.
+
+    Verified by injection, 2026-10-15: deleting the hsbc-qfraud-phase2
+    repository line from GUARDED_ROOTS let the Write case through (exit 0,
+    test red); deleting the project-directory line instead let the memory
+    Edit case through (test red). Each restored and green again."""
+    write = {
+        "tool_name": "Write",
+        "tool_input": {"file_path": r"D:\Data\Harold\github\hsbc-qfraud-phase2\docs\NOTE.md"},
+    }
+    commit = {
+        "tool_name": "Bash",
+        "tool_input": {"command": 'cd "D:/Data/Harold/github/hsbc-qfraud-phase2" && git commit -m x'},
+    }
+    memory = {
+        "tool_name": "Edit",
+        "tool_input": {
+            "file_path": r"C:\Users\kimme\.claude\projects\D--Data-Harold-github-hsbc-qfraud-phase2\memory\x.md"
+        },
+    }
+    for payload in (write, commit, memory):
+        assert _run(payload).returncode == 2, payload
+
+
+P2 = "D:/Data/Harold/github/hsbc-qfraud-phase2"
+
+
+@pytest.mark.parametrize("command", [
+    f'git -C "{P2}" commit -am x',
+    f"git -C {P2} push",
+    f'git -C "{P2}" checkout -- docs/x.md',
+    f"cd {P2}; git restore docs/x.md",
+    f"cd {P2} && git stash",
+    rf'Remove-Item "D:\Data\Harold\github\hsbc-qfraud-phase2\x.md"',
+    rf'Copy-Item a.md "D:\Data\Harold\github\hsbc-qfraud-phase2\x.md"',
+    f"echo x | tee {P2}/x.md",
+    f"sed -i 's/a/b/' {P2}/x.md",
+    # Git is fail-closed: any subcommand outside the read list blocks,
+    # whatever global options come first (automated security review).
+    f'git --no-pager -C "{P2}" commit -m x',
+    f"git -C {P2} pull",
+    f"git -C {P2} config user.name x",
+    f"git -C {P2} update-ref HEAD abc",
+    f"git -c core.x=y -C {P2} revert HEAD",
+    # A read subcommand that writes through an option, and git after a quote
+    # or backtick (second security review, 2026-10-15).
+    f"git -C {P2} log --output={P2}/x.txt",
+    f"git -C {P2} -c core.pager=evil log",
+    f"git -C {P2} grep --open-files-in-pager=vi x",
+    f'"git" -C {P2} commit -m x',
+    f"echo `git -C {P2} commit -m x`",
+])
+def test_write_forms_into_phase2_are_blocked(command):
+    """Sprint 9 Task A review (2026-10-15): each of these returned exit 0.
+    `git -C <phase2> <write>` matters most, because INTAKE_WORKFLOW.md
+    section 19 reads Phase 2 with `git -C`.
+
+    Verified by injection, 2026-10-15: with Remove-Item, Copy-Item, tee and
+    sed -i removed from the verbs, those four went red; with _git_writes
+    made to return False, every git case went red. Restored and green
+    again. (An earlier injection, against the first, denylist version of
+    the git check, removed its `-C` option group and turned the git -C
+    cases red.) Second security review, same day: with the writing-option
+    check disabled, the --output and --open-files-in-pager cases went red;
+    with _GIT_CALL back to whitespace-only boundaries, the quoted and
+    backticked git cases went red. Restored and green again."""
+    assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 2, command
+
+
+@pytest.mark.parametrize("command", [
+    f'git -C "{P2}" show 139fa13:docs/B4_B5_HARDWARE_RESULT.md',
+    f"git -C {P2} log --oneline -3",
+    f"git --no-pager -C {P2} diff HEAD~1 -- docs",
+    f'git -C "{P2}" rev-parse HEAD && git status --short',
+    f"sed -n 1,20p {P2}/CLAUDE.md",
+])
+def test_read_forms_of_phase2_stay_allowed(command):
+    """Known over-block, accepted by the hook's design (module docstring): a
+    read whose pattern is a bare write verb, such as `grep tee <phase2
+    file>`, is blocked; quote the pattern or use the Grep tool."""
+    assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 0, command
+
+
+def test_reading_phase2_stays_allowed():
+    """The other half of F79: reads need no prompt and no bypass."""
+    payload = {
+        "tool_name": "Bash",
+        "tool_input": {
+            "command": 'git -C "D:/Data/Harold/github/hsbc-qfraud-phase2" log --oneline -1'
+        },
+    }
+    assert _run(payload).returncode == 0
 
 
 def test_malformed_payload_fails_open():

@@ -1,6 +1,12 @@
-"""PreToolUse hook blocking writes into spamfilter-multi or
-hsbc-quantum-fraud-2026 -- their repos, their .claude directories, and
-their Claude Code memory directories.
+"""PreToolUse hook blocking writes into spamfilter-multi,
+hsbc-quantum-fraud-2026 or hsbc-qfraud-phase2 -- their repos, their .claude
+directories, and their Claude Code memory directories.
+
+hsbc-qfraud-phase2 added 2026-10-15 (Sprint 9 Task A, F79). Team lead,
+2026-10-14: "they are both consumers of each other and reads are permitted
+without direct prompts from the other - so each could read from each
+other, but cannot write to each other". A change wanted in Phase 2 goes as
+a prompt the team lead pastes into a Phase 2 session.
 
 Team lead, 2026-09-15: "from here on out, the activities in this repo
 should not write/update files in either spamfilter-multi or hsbc repo...
@@ -16,6 +22,14 @@ Bypass: literal token allow_sibling_repo_write, for the rare case where the
 team lead explicitly asks for a change to be made in one of those
 repositories from an EvidenceBasedDB session rather than switching to a
 session already working there.
+
+THREAT MODEL (stated 2026-10-15, after three automated security reviews):
+this hook stops ACCIDENTAL writes by this repository's own sessions, the
+failure it was written for. It is not a sandbox against a session trying to
+evade it: abbreviated git options, pager or editor environment variables,
+and command names built from strings or variables can still get past a
+regex. Those forms are carded as F82 for the team lead to weigh; the real
+boundary against a determined writer is the operating system's permissions.
 
 Covers two tool shapes:
   1. Write / Edit / NotebookEdit -- tool_input.file_path is the target,
@@ -41,6 +55,9 @@ GUARDED_ROOTS = (
     r"D:\Data\Harold\github\hsbc-quantum-fraud-2026",
     r"C:\Users\kimme\.claude\projects\D--Data-Harold-github-spamfilter-multi",
     r"C:\Users\kimme\.claude\projects\D--Data-Harold-github-hsbc-quantum-fraud-2026",
+    r"D:\Data\Harold\github\hsbc-qfraud-phase2",
+    r"C:\Users\kimme\.claude\projects\D--Data-Harold-github-hsbc-qfraud-phase2",
+    r"C:\Users\kimme\.claude\projects\D--Data-Harold-hsbc-quantum-fraud-2026-Phase-2-Planning",
 )
 
 # Matched case-insensitively and with either slash direction, since a Bash
@@ -58,11 +75,67 @@ _GUARDED_PATTERNS = [
 # routine research (which motivated this hook in the first place) into a
 # constant bypass-token exercise, training the same disable-by-friction
 # failure this project's other hooks are written to avoid.
+#
+# Widened 2026-10-15 (Sprint 9 Task A review): `git -C <repo> commit` passed,
+# because `commit` had to follow `git` directly, and INTAKE_WORKFLOW.md
+# section 19 tells sessions to read Phase 2 with `git -C`, which makes that
+# the likeliest slip. Git's global options (-C <path>, -c <key=value>) may
+# now come first, and the git verbs that change a working tree or history
+# (checkout, restore, stash, apply, tag, switch, clean, cherry-pick) count.
+# Remove-Item, Copy-Item, Move-Item, Rename-Item, tee and sed -i passed too.
+#
+# Git is FAIL-CLOSED since the same day (automated security review of that
+# fix): a list of git write verbs is never complete (pull, revert, am,
+# config, update-ref, worktree, gc...), and global options such as
+# --no-pager could sit before the verb. So when a guarded path appears,
+# every git invocation must name a read subcommand from _GIT_READS; any
+# other subcommand blocks. See _git_writes.
+_GIT_READS = frozenset({
+    "show", "log", "diff", "status", "grep", "ls-files", "ls-tree", "rev-parse", "blame",
+    "cat-file", "describe", "shortlog", "rev-list", "help", "version",
+})
+_GIT_OPTION_WITH_VALUE = frozenset({"-C", "--git-dir", "--work-tree", "--namespace", "--exec-path"})
+# A read subcommand can still write through these (second security review,
+# 2026-10-15): `--output`/`-O` write a file, `--open-files-in-pager` runs a
+# program, and `-c`/`--config-env` can set a pager, an editor or a hook
+# path. With a guarded path present, any of them blocks.
+_GIT_WRITING_OPTION = re.compile(r"^(?:-c|--config-env.*|--output.*|-O.*|--open-files-in-pager.*)$")
+# `git` after any non-word character (a quote, a backtick, a brace, a path
+# separator), not only after whitespace or a shell operator.
+_GIT_CALL = re.compile(r"(?:^|[^\w.-])git(?:\.exe)?(?=[\s\"'`)}]|$)", re.IGNORECASE)
+_TOKEN = re.compile(r"\"[^\"]*\"|'[^']*'|[^\s;&|()]+|[;&|()]")
+
+
+def _git_writes(command: str) -> bool:
+    """True when some git invocation in the command names a subcommand that
+    is not a known read. Global options (and their values) before the
+    subcommand are skipped."""
+    for call in _GIT_CALL.finditer(command):
+        tokens = _TOKEN.findall(command[call.end():])
+        tokens = tokens[:next((n for n, t in enumerate(tokens) if t in (";", "&", "|", "(", ")")), len(tokens))]
+        if any(_GIT_WRITING_OPTION.match(t.strip("\"'")) for t in tokens):
+            return True
+        i = 0
+        while i < len(tokens):
+            tok = tokens[i]
+            if tok in _GIT_OPTION_WITH_VALUE:
+                i += 2
+                continue
+            if tok.startswith("-"):
+                i += 1
+                continue
+            if tok.strip("\"'").lower() not in _GIT_READS:
+                return True
+            break
+    return False
+
+
 _WRITE_VERBS = re.compile(
-    r"(?:^|[\s;&|])(?:"
-    r"git\s+(?:commit|push|add|rm|mv|checkout\s+-b|reset|merge|rebase)"
-    r"|rm|mv|cp|copy|del|erase|ren|rename"
+    r"(?:^|[\s;&|(])(?:"
+    r"rm|mv|cp|copy|del|erase|ren|rename|tee"
+    r"|sed(?:\s+-\S+)*\s+-i\S*"
     r"|touch|mkdir|New-Item|Set-Content|Add-Content|Out-File"
+    r"|Remove-Item|Copy-Item|Move-Item|Rename-Item|Clear-Content"
     r"|>|>>"
     r")(?:\s|$)",
     re.IGNORECASE,
@@ -114,7 +187,7 @@ def main() -> int:
             return 0
         if not _matches_guarded_root(command):
             return 0
-        if not _WRITE_VERBS.search(command):
+        if not _WRITE_VERBS.search(command) and not _git_writes(command):
             return 0  # a guarded path appears, but nothing in the command writes
         _block(f"{tool_name} command referencing a guarded path and a write verb: {command!r}")
         return 2
@@ -124,8 +197,9 @@ def main() -> int:
 
 def _block(detail: str) -> None:
     print(
-        "[BLOCKED] This session must not write into spamfilter-multi or "
-        "hsbc-quantum-fraud-2026 (team lead, 2026-09-15).\n"
+        "[BLOCKED] This session must not write into spamfilter-multi, "
+        "hsbc-quantum-fraud-2026 (team lead, 2026-09-15) or "
+        "hsbc-qfraud-phase2 (team lead, 2026-10-14).\n"
         "\n"
         f"Detail: {detail}\n"
         "\n"
@@ -138,7 +212,8 @@ def _block(detail: str) -> None:
         "If the team lead has explicitly asked for a change to be made in "
         "one of those repositories from here, re-run with the literal token "
         "allow_sibling_repo_write in the command or file path. Otherwise, "
-        "make the change from a session already working in that repository.",
+        "make the change from a session already working in that repository; "
+        "for hsbc-qfraud-phase2, draft a prompt the team lead pastes there.",
         file=sys.stderr,
     )
 

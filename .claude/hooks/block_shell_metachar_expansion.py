@@ -127,6 +127,21 @@ def main() -> int:
             seen.append(item)
     sample = "\n    ".join(seen[:3])
 
+    # Sprint 9 retrospective I5: ${PIPESTATUS[...]} was blocked here in
+    # Sprints 8 and 9 alike, each time while gating a commit on pytest. Show
+    # the prescribed form first, so the right command is the first one seen.
+    if "PIPESTATUS" in cmd:
+        print(
+            "[BLOCKED] ${PIPESTATUS[...]} in a python command. To gate on a test\n"
+            "result, capture the exit code without a pipe (Sprint 9 retrospective I5):\n"
+            "\n"
+            "    python -m pytest -q > <log file> 2>&1; rc=$?; tail -3 <log file>; echo rc=$rc\n"
+            "\n"
+            "Never pipe pytest into tail or grep before reading $?: the pipe's exit\n"
+            "code is the last command's, not pytest's (block_commit_with_piped_tests.py).\n",
+            file=sys.stderr,
+        )
+
     print(
         "[BLOCKED] Shell metacharacter in a python command; bash expands it BEFORE\n"
         "python runs (F48, Sprint 11 retrospective improvement 4).\n"

@@ -278,3 +278,24 @@ def test_primary_context_paper_is_not_listed_again_via_applicability_regression(
     assert "test-paper-one" in direct
     assert not (direct & via), f"listed twice: {sorted(direct & via)}"
     assert "test-paper-one" in {r["id"] for r in mod.cmd_contexts_detail(store_conn, "qc")["papers_via_applicability"]}
+
+
+def test_a_paper_view_computes_corroboration_once(synthetic_store, monkeypatch):
+    """PR #88 Copilot review: `cmd_paper` called `cmd_assertion` per yielded
+    assertion and each recomputed the whole-store corroboration map. The
+    synthetic paper alpha-2024-first-paper yields two assertions. Proven to
+    fail by injection, 2026-10-18: with `cmd_paper` passing no map, the
+    count was 3 (its own, then one per assertion) and this test went red;
+    restored, green."""
+    from store import connect
+    mod = _load_view_module()
+    calls = []
+    real = mod.resolvers.corroboration
+    monkeypatch.setattr(mod.resolvers, "corroboration", lambda conn: calls.append(1) or real(conn))
+    conn = connect(synthetic_store)
+    try:
+        data = mod.cmd_paper(conn, "alpha-2024-first-paper")
+    finally:
+        conn.close()
+    assert len(data["yields"]) == 2
+    assert len(calls) == 1

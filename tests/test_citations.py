@@ -97,6 +97,44 @@ def test_parse_access_recognises_only_resolvable_ids(access, expected):
     assert citations.parse_access(access) == expected
 
 
+@pytest.mark.parametrize("access,expected", [
+    ("arXiv:quant-ph/0405098", ("arxiv", "quant-ph/0405098")),
+    ("https://arxiv.org/abs/quant-ph/0107012v2", ("arxiv", "quant-ph/0107012")),
+    ("arXiv:math.PR/0601001", ("arxiv", "math.PR/0601001")),
+    ("arXiv:cs/0112017", ("arxiv", "cs/0112017")),
+    # Without the word arXiv, a slash-and-seven-digits string is not an id.
+    ("https://example.org/files/1234567", None),
+    ("10.1016/s0020-0255(00)00055-4", ("doi", "10.1016/s0020-0255(00)00055-4")),
+    ("https://doi.org/10.1016/0304-4149(89)90040-9", ("doi", "10.1016/0304-4149(89)90040-9")),
+    # A closing parenthesis that belongs to the prose around the DOI is dropped.
+    ("(see doi:10.1145/3007651)", ("doi", "10.1145/3007651")),
+    ("(doi:10.1016/0304-4149(89)90040-9).", ("doi", "10.1016/0304-4149(89)90040-9")),
+])
+def test_parse_access_reads_old_style_arxiv_ids_and_dois_with_parentheses(access, expected):
+    """F68 (Sprint 9 Task B): the Massoli list's three old-style arXiv ids
+    were refused as hand-origin, and its two parenthesized DOIs were cut at
+    the "(" and refused as unregistered.
+
+    Proven to fail by injection, 2026-10-15: with the old-style alternative
+    removed from _ARXIV_ID, the four arXiv cases failed (and the Atom test);
+    with ")" put back into _DOI's excluded characters, the three
+    parenthesized DOI cases failed; with _doi_ident's loop removed, the two
+    prose cases failed. Each restored and green again."""
+    assert citations.parse_access(access) == expected
+
+
+def test_the_atom_parser_reads_an_old_style_entry_id():
+    """F68: arXiv's API answers an old-style id with an entry whose <id> is
+    http://arxiv.org/abs/quant-ph/0405098v1; the parser skipped it as "no
+    results" before."""
+    body = (b'<feed xmlns="http://www.w3.org/2005/Atom"><entry>'
+            b'<id>http://arxiv.org/abs/quant-ph/0405098v1</id><title>T</title>'
+            b'<published>2004-05-17T00:00:00Z</published><author><name>A B</name></author>'
+            b'</entry></feed>')
+    [md] = citations.parse_arxiv_atom(body)
+    assert (md.ident, md.version) == ("quant-ph/0405098", "v1")
+
+
 GITHUB_JSON = json.dumps({
     "full_name": "merlinquantum/merlin",
     "description": "MerLin enables researchers to build, train, and benchmark photonic quantum machine learning models using familiar ML tools.",

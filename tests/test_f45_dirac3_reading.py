@@ -2,18 +2,17 @@
 read directly and promoted, and the quote is in that source's local copy."""
 from __future__ import annotations
 
-import html
 import importlib.util
 import re
-import subprocess
 import sys
-from functools import lru_cache
 from pathlib import Path
 
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+
+from store import quotes  # noqa: E402
 
 pytestmark = pytest.mark.live_store
 
@@ -24,7 +23,10 @@ NO_LOCAL_COPY = {
     "energies.",
     "B. E., W. D., D. H., J. R. and L. N. hold shares or options in Quantum Computing Inc.",
 }
-_QUOTE = re.compile(r'(?:^|; )"(.+?)" \(')
+# One implementation since Sprint 9 retrospective I3 (store/quotes.py);
+# these names stay because six other tests import them from here.
+_QUOTE = quotes.QUOTE
+_plain = quotes.plain
 
 
 def _script():
@@ -34,25 +36,10 @@ def _script():
     return mod
 
 
-def _plain(text: str) -> str:
-    """The typographic forms the anchors name made plain, page-number lines
-    dropped (a quote may cross a page break), whitespace collapsed."""
-    for typographic, plain in (("’", "'"), ("‘", "'"), ("“", '"'), ("”", '"'),
-                               ("ﬁ", "fi"), ("ﬂ", "fl"), ("​", "")):
-        text = text.replace(typographic, plain)
-    text = re.sub(r"(?m)^\s*\d+\s*$", " ", text)
-    return re.sub(r"\s+", " ", text)
-
-
-@lru_cache(maxsize=None)
 def _text(path: str) -> str:
-    if path.lower().endswith(".pdf"):
-        modes = (["pdftotext", "-enc", "UTF-8", path, "-"], ["pdftotext", "-enc", "UTF-8", "-layout", path, "-"])
-        return " || ".join(_plain(subprocess.run(m, capture_output=True, check=True).stdout.decode("utf-8", "replace"))
-                           for m in modes)
-    page = Path(path).read_text(encoding="utf-8", errors="replace")
-    page = re.sub(r"<script.*?</script>|<style.*?</style>", " ", page, flags=re.S)
-    return _plain(html.unescape(re.sub(r"<[^>]+>", " ", page)))
+    """A PDF's text, or any other file read as a saved page (this test's
+    sources are PDFs and HTML pages)."""
+    return quotes.pdf_text(path) if path.lower().endswith(".pdf") else quotes.html_text(path)
 
 
 def test_every_quote_is_in_a_yielding_source(live_conn):
@@ -65,13 +52,16 @@ def test_every_quote_is_in_a_yielding_source(live_conn):
     for assertion, yielded_by in f45.ASSERTIONS:
         stored = live_conn.execute("SELECT citation_context FROM assertion_fields WHERE record_id = ?",
                                    (assertion.id,)).fetchone()[0]
-        quotes = _QUOTE.findall(stored)
-        assert quotes, f"{assertion.id}: no quote found"
+        found = _QUOTE.findall(stored)
+        assert found, f"{assertion.id}: no quote found"
         texts = [_text(f45.LOCAL[r]) for r in yielded_by if r in f45.LOCAL]
-        for q in quotes:
+        for q in found:
             if q in NO_LOCAL_COPY:
                 continue
-            assert any(q in t for t in texts), f"{assertion.id}: not verbatim in its sources: {q[:70]}"
+            # Both sides normalized (Sprint 9 retrospective I3: NFKC makes
+            # the source's micro sign the Greek mu, so a raw quote no longer
+            # matched).
+            assert any(_plain(q) in t for t in texts), f"{assertion.id}: not verbatim in its sources: {q[:70]}"
             checked += 1
     assert checked >= 20
 

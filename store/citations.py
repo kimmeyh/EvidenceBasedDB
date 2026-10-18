@@ -63,8 +63,16 @@ ARXIV_MIN_INTERVAL_S = 18.0
 ARXIV_SESSION_CAP = 240
 MAX_AUTHORS = 10  # rendered before "et al."; see render_citation
 
-_ARXIV_ID = re.compile(r"(?<![\d.])(\d{4}\.\d{4,5})(v\d+)?")
-_DOI = re.compile(r"\b(10\.\d{4,9}/[^\s\"'<>,;)]+)")
+# New-style ids (2303.05509) and, since F68 (Sprint 9 Task B), old-style ids
+# from before April 2007 (quant-ph/0405098, math.PR/0601001). The Massoli
+# list's three old-style entries were refused as hand-origin before this.
+# Read a match through _arxiv_ident, never by group number.
+_ARXIV_ID = re.compile(r"(?<![\d.])(\d{4}\.\d{4,5})(v\d+)?"
+                       r"|(?<![\w.-])([a-z]+(?:-[a-z]+)?(?:\.[A-Z]{2})?/\d{7})(v\d+)?")
+# Parentheses are legal in a DOI (10.1016/0304-4149(89)90040-9); F68 found
+# two cut at the "(" and refused. A closing parenthesis with no opening one
+# inside the DOI is the surrounding prose's, and _doi_ident drops it.
+_DOI = re.compile(r"\b(10\.\d{4,9}/[^\s\"'<>,;]+)")
 _GITHUB = re.compile(r"github\.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+?)(?:\.git)?(?=[/\s|#?]|$)")
 GITHUB_API = "https://api.github.com/repos/"
 _ATOM = {"a": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/atom"}
@@ -92,6 +100,20 @@ class Metadata:
     journal_ref: str = ""         # arXiv-supplied journal reference, if any
     source_url: str = ""
     extra: dict = field(default_factory=dict)
+
+
+def _arxiv_ident(m: re.Match) -> tuple[str, str]:
+    """(id, version) from an _ARXIV_ID match, whichever form matched."""
+    return (m.group(1) or m.group(3)), (m.group(2) or m.group(4) or "")
+
+
+def _doi_ident(raw: str) -> str:
+    """A DOI with trailing punctuation that belongs to the prose removed: a
+    final "." and any unbalanced closing parenthesis."""
+    doi = raw.rstrip(".")
+    while doi.endswith(")") and doi.count(")") > doi.count("("):
+        doi = doi[:-1].rstrip(".")
+    return doi
 
 
 def parse_access(access: str) -> tuple[str, str] | None:
@@ -128,7 +150,7 @@ def parse_access(access: str) -> tuple[str, str] | None:
 
     m = _DOI.search(searchable)
     if m:
-        return ("doi", m.group(1).rstrip("."))
+        return ("doi", _doi_ident(m.group(1)))
     gh = _GITHUB.search(searchable)
     # An arXiv id INSIDE a GitHub repository name is part of that name
     # (github.com/salvatore-lorenzo/arXiv-2502.18361-QELMWITNESS; Sprint 6
@@ -137,7 +159,7 @@ def parse_access(access: str) -> tuple[str, str] | None:
     m = next((x for x in _ARXIV_ID.finditer(searchable)
               if not (gh and gh.start() <= x.start() < gh.end())), None)
     if m and ("arxiv" in searchable.lower() or "/abs/" in searchable):
-        return ("arxiv", m.group(1))
+        return ("arxiv", _arxiv_ident(m)[0])
     if gh:
         return ("github", f"{gh.group(1)}/{gh.group(2)}")  # Sprint 4 Task G: a repository is a source of record too
     return None
@@ -251,7 +273,7 @@ def parse_arxiv_atom(body: bytes) -> list[Metadata]:
         m = _ARXIV_ID.search(raw_id)
         if not m:
             continue  # arXiv's "no results" entry has no id of that shape
-        ident, version = m.group(1), (m.group(2) or "")
+        ident, version = _arxiv_ident(m)
         title = " ".join((e.findtext("a:title", default="", namespaces=_ATOM) or "").split())
         authors = [
             _render_author(*_split_arxiv_name(a.findtext("a:name", default="", namespaces=_ATOM) or ""))

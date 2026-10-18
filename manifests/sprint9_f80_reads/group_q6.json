@@ -1,0 +1,439 @@
+{
+ "papers": [
+  {
+   "record_id": "schuld-2018-quantum-machine-learning-feature-hilbert",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2018\\Schuld-Killoran_2018_Quantum-machine-learning-in-feature-Hilbert-spaces__1803.07128.pdf",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, introduction, Sections II-IV, conclusion and Appendices A, B and the start of C read in full; the remainder of the Appendix C proof and the Appendix D proof of Proposition 2 were not read.",
+   "what_it_is": "Theory paper that treats encoding classical inputs into quantum states as a feature map, and builds a quantum kernel (implicit) classifier and a variational (explicit) classifier on that view, illustrated with a squeezing feature map simulated on toy 2D datasets.",
+   "bears_on_context": "qml",
+   "assertions": [
+    {
+     "id_suggestion": "qml-feature-map-kernel-equivalence",
+     "value": "Every feature map into a Hilbert space gives rise to a kernel through the inner product of the mapped inputs (Theorem 1, proved by showing the Gram matrix is positive semidefinite). The paper applies this to quantum state encoding: a quantum feature map defines a kernel as an inner product of quantum states.",
+     "anchor": "Section II.A, Theorem 1 and its proof, p. 2; Section II.C, p. 3-4",
+     "quotes": [
+      "The connection between feature maps and kernels means that every feature map corresponds to a distance measure in input space by means of the inner product of feature vectors."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Short standard proof given in the paper; the quantum reading is a direct application.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-implicit-explicit-quantum-classifiers",
+     "value": "The paper proposes two ways to build a quantum classifier from a quantum feature map: an implicit approach that uses the quantum device only to evaluate the kernel for a classical kernel method, and an explicit approach that trains a variational circuit as a linear model in the feature Hilbert space.",
+     "anchor": "Section I (p. 1-2) and Section III.B, p. 4",
+     "quotes": [
+      "The explicit approach uses the quantum device to directly learn a linear decision boundary in feature space by optimising a variational quantum circuit."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "This is a definitional proposal of the paper, not an empirical or proved performance result.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-squeezing-map-linearly-separable",
+     "value": "For the squeezing feature map with phase encoding, any dataset with distinct inputs becomes linearly separable in Fock space (shown through linear independence of the feature states, Proposition 2 in Appendix D, plus a Mathematica rank check up to M = 10 points and a 40-dimension Fock cutoff). Separability alone gives a perfect training fit and does not imply good test performance.",
+     "anchor": "Section III.D p. 6 and Appendix B p. 10-11",
+     "quotes": [
+      "the feature mapped data vectors in D are always linearly separable, which means any assignment of two classes of labels to the data can be separated by a hyperplane in F"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The proof sits in Appendix D which was not read here; only the statement and the numerical check were read.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-squeezing-example-not-classically-hard",
+     "value": "The squeezing example is built from Gaussian states, which the paper says a classical computer can simulate efficiently, so the example itself shows no quantum advantage; the paper leaves open which classically intractable feature maps give powerful kernels.",
+     "anchor": "Section III.D, p. 6",
+     "quotes": [
+      "In order to do something more interesting, one needs non-Gaussian elements to the circuit.",
+      "what type of feature map circuits Vφ are classically intractable, but at the same time lead to powerful kernels for classical models such as support vector machines."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper states the limitation about itself; the Gaussian simulability is cited as well known (ref 29).",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "montanaro-2015-quantum-algorithms-overview",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2007-2017\\Montanaro-2016_Quantum-algorithms-an-overview__1511.04206.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Short survey of known quantum algorithms (hidden subgroup, search, simulation, walks, linear systems) with notes on near-term implementations and an outlook on limits.",
+   "bears_on_context": "qml",
+   "assertions": [
+    {
+     "id_suggestion": "qml-grover-quadratic-speedup-optimal",
+     "value": "Grover search gives a quadratic speedup for unstructured search and, via NP certificates, a nearly quadratic speedup over exhaustive search for NP problems. The query count of Grover's algorithm is optimal (cited lower bound). The speedup is polynomial, not exponential.",
+     "anchor": "Section 3 p. 3-4; Section 9 Outlook p. 12",
+     "quotes": [
+      "This (nearly) quadratic speedup is less dramatic than the super-polynomial speedup achieved by Shor’s algorithm, but can still be rather substantial.",
+      "the complexity achieved by Grover’s algorithm cannot be improved by even one query while maintaining the same success probability"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Survey statement of well-established results, each with a cited primary proof (Grover; Zalka).",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-hhl-input-output-caveats",
+     "value": "The HHL linear-systems algorithm needs a sparse matrix with a small condition number and oracle-style access, and it outputs a quantum state, not the vector x; reading out all of x takes time of order N in general. These caveats carry over to the machine learning tasks built on it.",
+     "anchor": "Section 6, p. 9-10",
+     "quotes": [
+      "First, it should be sparse – each row should contain at most d elements",
+      "to output the solution x itself would then involve making many measurements to completely characterise the state, requiring time of order N in general."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Stated plainly by the survey, with cited sources (HHL; Ambainis; Aaronson fine print).",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-exponential-speedup-needs-promise",
+     "value": "In the query complexity model an exponential quantum speedup requires a promise on the input, so some inputs must be disallowed. Montanaro gives this as one reason few exponential speedups are known.",
+     "anchor": "Section 9 Outlook, p. 12",
+     "quotes": [
+      "More generally, in order to achieve an exponential speedup over classical computation in the query complexity model there has to be a promise on the input, i.e. some possible inputs must be disallowed [11]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Cites the polynomial-method lower-bound paper of Beals et al.; stated here without proof.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-2015-experiments-proofs-of-principle",
+     "value": "As of December 2015, quantum algorithm experiments were proofs of principle, not genuine speedups, since circuits of 20 to 30 qubits can be simulated classically.",
+     "anchor": "Section 7, p. 10",
+     "quotes": [
+      "Any quantum computation operating on at most 20-30 qubits in the standard quantum circuit model can be readily simulated on a modern classical computer.",
+      "existing implementations of quantum algorithms should usually be seen as proofs of principle rather than demonstrating genuine speedups over the classical state-of-the-art."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Accurate for its December 2015 date; hardware has changed since, so the claim is time-bound.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "schuld-2021-effect-data-encoding-expressive-power",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2020\\Schuld_Sweke_Meyer_2020_The-effect-of-data-encoding-on-the-expressive-power-of-variational__2008.08605.pdf",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Sections I-V, and the start of Appendix A read in full; the proofs in Appendices A to C (including the full universality proof) and the CO2 table were not read.",
+   "what_it_is": "Theory paper showing that variational quantum models with data re-encoding are partial Fourier series whose frequencies are set by the encoding gates, and proving asymptotic universality under strong assumptions.",
+   "bears_on_context": "qml",
+   "assertions": [
+    {
+     "id_suggestion": "qml-frequency-spectrum-set-by-encoding",
+     "value": "A quantum model f(x) = <0|U(x)^dagger M U(x)|0> built from data-encoding gates e^(-ixH) and arbitrary trainable blocks is a Fourier-type sum; its frequency spectrum is set only by the eigenvalues of the encoding generators, while the Fourier coefficients depend on the whole circuit.",
+     "anchor": "Section I, Eqs. 3-12, p. 3-4",
+     "quotes": [
+      "a quantum model’s frequency spectrum is solely determined by the eigenvalues of the data encoding gates"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Derived in the paper by direct algebra (Eqs. 6 to 12).",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-pauli-encoding-repetition-degree",
+     "value": "A single Pauli-rotation data encoding limits the model to a sine function of one frequency, whatever the width, depth or measurement. Repeating the encoding r times, in series or in parallel, gives a truncated Fourier series of degree r. Numerical fits (Figs. 3 and 4) agree.",
+     "anchor": "Section II.A-B, p. 4-6",
+     "quotes": [
+      "the expressivity of the corresponding quantum model is fundamentally limited by the data encoding strategy",
+      "Hence, a univariate quantum model with r parallel Pauli-rotation encodings can be expressed as a truncated Fourier series of degree r."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Closed-form derivation of the spectrum with small numerical confirmation.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-asymptotic-universality-exponential-depth",
+     "value": "There is an L = 1 quantum model family that can approximate any square-integrable function to arbitrary accuracy as the number of subsystems grows. The proof assumes the trainable blocks can be arbitrary global unitaries, which may need exponential circuit depth, and leaves open universality for constant, logarithmic or polynomial depth.",
+     "anchor": "Section III, Theorem, p. 8-9",
+     "quotes": [
+      "then such a quantum model can approximate, to arbitrary accuracy, any square-integrable function on a suitable domain",
+      "which may require exponential circuit depth when decomposed into natural primitive gate sets",
+      "the asymptotic universality of quantum models with either constant, logarithmic or polynomial circuit depth trainable blocks remains an interesting open question"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Theorem is proved in Appendix C (not read here) and depends on an assumption the authors flag as impractical.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-preprocessing-confounds-comparisons",
+     "value": "Claims about a quantum model's power are a result of the quantum algorithm plus its classical pre-processing; fair comparison with classical models must give the classical model the same pre-processed features. Expressivity results are not design recommendations because generalisation is not analysed.",
+     "anchor": "Section IV.A, p. 9; Section IV.B, p. 10",
+     "quotes": [
+      "comparisons to classical machine learning models should identify the pre-processing strategy and consider feeding the same pre-processed features to the classical model."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Methodological advice stated by the authors, not a proved or measured result.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "liu-2021-rigorous-robust-quantum-speed-up",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2020-10_Liu_A-rigorous-and-robust-quantum-speed-up-in-supervised.pdf",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, main text and conclusion read in full; the appendices were read only up to the start of Appendix A (definitions and the Blum-Micali lemma); the proofs in Appendices B to E were not read.",
+   "what_it_is": "Theory paper proving that a quantum-kernel support vector machine learns a discrete-logarithm-based concept class that no efficient classical learner can beat random guessing on, under the DLP hardness assumption.",
+   "bears_on_context": "qml",
+   "assertions": [
+    {
+     "id_suggestion": "qml-dlp-concept-class-classically-hard",
+     "value": "Assuming the discrete logarithm problem is hard for classical algorithms, no efficient classical learner achieves test accuracy of 1/2 + 1/poly(n) on the paper's concept class (Theorem 1, proved by reduction from the Blum-Micali average-case hardness result).",
+     "anchor": "Abstract; Theorem 1, p. 3",
+     "quotes": [
+      "show that no classical learner can classify the data inverse-polynomially better than random guessing, assuming the widely-believed hardness of the discrete logarithm problem."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Conditional proof by reduction to a standard cryptographic assumption; proof in Appendix B not read.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-svm-qke-learns-dlp-concept-class",
+     "value": "The SVM with quantum kernel estimation (SVM-QKE) learns the same concept class with test accuracy at least 0.99 in polynomial time with probability at least 2/3, and the guarantee holds with finite-shot additive kernel noise (Theorem 2). It needs a fault-tolerant quantum computer, since the feature map circuit calls Shor's algorithm.",
+     "anchor": "Abstract; Theorem 2, p. 6; Section on QKE, p. 4-6",
+     "quotes": [
+      "test accuracy at least 0.99 in polynomial time, with probability at least 2/3 over the choice of random training samples and over noise in QKE estimation",
+      "that uses a fault-tolerant quantum computer to estimate a kernel function"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Theorem stated with proof sketch in the main text; full proof in Appendices D and E (not read).",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-liu-speedup-problem-not-practical",
+     "value": "The exponential speedup is shown on a constructed problem that the authors state is not practically motivated. The result makes no additional data-access assumption beyond classical access, but it does not show an advantage on any practical learning task.",
+     "anchor": "Conclusions and outlook, p. 7",
+     "quotes": [
+      "While the learning problem we have presented here that demonstrates an exponential quantum speed-up is not practically motivated, our result sets a positive theoretical foundation for the search of practical quantum advantage in machine learning.",
+      "This idea leads to a simple quantum machine learning algorithm that makes no additional assumptions on data access and has rigorous and robust performance guarantees."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The authors state both the limitation and the data-access property directly.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "zoufal-2019-quantum-generative-adversarial-networks-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2019\\Zoufal_Lucchi-and-Werner_2019_Quantum-Generative-Adversarial-Networks-for-learning-and__1904.00043.pdf",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Sections I-V and Appendices A to C read; Appendices D to G (gradients, statistics, QAE description, hardware details) not read.",
+   "what_it_is": "Applied method paper that trains a quantum generator against a classical discriminator (qGAN) to load an approximate probability distribution into a quantum state, tested on 3-qubit examples, on a 20-qubit IBM chip and in a QAE option-pricing demo.",
+   "bears_on_context": "qml",
+   "assertions": [
+    {
+     "id_suggestion": "qml-qgan-loader-gate-count",
+     "value": "The qGAN generator is a variational circuit of depth k on n qubits, using (k+1)n single-qubit and kn two-qubit gates, so approximate loading is poly(n) gates for poly(n) depth, against O(2^n) for exact loading of a generic state. Whether a shallow circuit can fit a given distribution is not proved and is tested only numerically.",
+     "anchor": "Section III, p. 3; Abstract",
+     "quotes": [
+      "If such a variational circuit acts on n qubits it uses in total (k+1)n parametrized single-qubit gates and kn two-qubit gates"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Gate count follows by construction from the circuit definition; the poly(n) claim holds only for k polynomial in n.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-qgan-3qubit-simulation-results",
+     "value": "In noise-free simulation on n = 3 qubits (8 grid values) with log-normal, triangular and bimodal targets, 10 runs per setting, depth k >= 2 generators usually reached an accepted Kolmogorov-Smirnov test at 95% confidence, and the authors call the approach robust. The test cases are tiny and the targets are simple.",
+     "anchor": "Section III.A, Table I, p. 4-5",
+     "quotes": [
+      "We consider a quantum generator acting on n = 3 qubits, which can represent 23 = 8 values",
+      "we conclude that the presented approach is quite robust and applicable also to more complicated distributions."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Small simulation study; the extension to complicated distributions is the authors' inference, not tested.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-qgan-option-pricing-qae-simulated",
+     "value": "The qGAN was trained on a 20-qubit IBM chip (random initialization, noisy hardware) and used for European call option pricing, but the amplitude estimation step was run on a classical simulator, not on hardware. With 256 quantum samples, the QAE interval was comparable to Monte Carlo with 1024 samples; both intervals missed the exact value because the distribution was approximated.",
+     "anchor": "Section IV.B, Table IV, p. 8",
+     "quotes": [
+      "the QAE evaluation uses the generator parameters trained with IBM Q Boeblingen but is run with a quantum simulator, whereas the Monte Carlo simulation is solely run on actual quantum hardware.",
+      "Since the distribution is approximated, both CIs are close to the exact value but do not actually contain it."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Single illustrative run on a Black-Scholes toy model; the quadratic QAE advantage is cited from earlier work and not measured on hardware here.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "amin-2018-quantum-boltzmann-machine",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2016-01_Amin_Quantum-Boltzmann-Machine.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Paper proposing a Boltzmann machine whose energy function is a transverse-field Ising Hamiltonian, with a Golden-Thompson upper bound that makes sampling-based training possible, and toy exact-diagonalization examples.",
+   "bears_on_context": "qml",
+   "assertions": [
+    {
+     "id_suggestion": "qml-qbm-gradient-needs-bound",
+     "value": "With a transverse field the exact log-likelihood gradient of a quantum Boltzmann machine contains a term that cannot be estimated by sampling. The paper trains a Golden-Thompson upper bound on the negative log-likelihood instead. Under that bound the transverse field cannot be learned (it is driven to zero for visible qubits).",
+     "anchor": "Section II, Eqs. 18-34, p. 3-4",
+     "quotes": [
+      "Due to the non-commutative nature of quantum mechanics, the training process of the Quantum Boltzmann Machine (QBM) can become nontrivial.",
+      "Therefore, vanishing Γν is an artifact of the upper bound minimization."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Derived in the text from the operator identities and the Golden-Thompson inequality.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-qbm-beats-bm-small-examples",
+     "value": "On toy Bernoulli-mixture data with exact diagonalization (10 fully visible qubits), the QBM reached KL near 0.42 against about 0.62 for the classical Boltzmann machine, and the bound-trained model came close to the QBM. The paper says larger sizes are untested.",
+     "anchor": "Section IV.A, Fig. 2, p. 6-7; Conclusion, p. 9",
+     "quotes": [
+      "converges to a point with Γ = 2.5 and KL ≈ 0.42, which is better than classical BM value.",
+      "We have shown small-size examples in which QBM learned the data distribution better than BM."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Numerical result on artificial 10-qubit data; the authors explicitly leave larger sizes and generalisation open.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-qbm-clamping-fails-conditionals",
+     "value": "Clamping input qubits does not give the true conditional distribution in a quantum Boltzmann machine when the Hamiltonian has a transverse field, because the clamped Hamiltonian does not commute. In the paper's 11-qubit generative example the clamped distribution diverged far from the true conditional.",
+     "anchor": "Section III.A, p. 5; Section IV.C, Fig. 4; Conclusion, p. 9",
+     "quotes": [
+      "For example, as we have shown in Sec. III A, sampling from a conditional distribution cannot be performed by clamping in QBM, as it is commonly done in classical BM."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Argued analytically in Section III.A and illustrated numerically in Section IV.C.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-qbm-annealer-not-boltzmann-sampler",
+     "value": "A quantum annealer with a linear schedule does not in general return a Boltzmann distribution, so current D-Wave hardware cannot train a QBM as designed. Controlled freeze-out would be needed, which the paper says is limited by hardware bandwidth.",
+     "anchor": "Section V, p. 8-9",
+     "quotes": [
+      "In general, a quantum annealer with linear annealing schedule s = t/ta does not return a Boltzmann distribution."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Argued from the cited annealer-dynamics paper (ref 32), not tested in this paper.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "tacchino-2018-artificial-neuron-implemented-actual-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2019\\Tacchino-et-al._2019_An-artificial-neuron-implemented-on-an-actual-quantum-processor__1811.02266.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Paper proposing a quantum circuit that mimics a binary Rosenblatt perceptron, encoding 2^N weights and inputs in N qubits via hypergraph states, tested for N = 2 on an IBM 5-qubit chip and N = 4 in simulation.",
+   "bears_on_context": "qml",
+   "assertions": [
+    {
+     "id_suggestion": "qml-qperceptron-exponential-encoding",
+     "value": "A binary perceptron with m = 2^N inputs is encoded in N qubits, and the inner product w.i is read from one amplitude, giving activation probability |c_(m-1)|^2. The advantage claimed is in encoding resources; the paper itself says the state preparation circuit still costs exponentially in the worst case.",
+     "anchor": "Introduction and Section on the circuit model, p. 2-3",
+     "quotes": [
+      "First, the equivalent of m-dimensional classical input and weight vectors is encoded on the quantum hardware by using N qubits, where m = 2N .",
+      "by measuring the state of the ancilla qubit in the computational basis produces the output |1 a (i.e., an activated perceptron) with probability |cm−1|2"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Follows from the circuit definition; the exponential claim is about storage, not runtime.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-qperceptron-hardware-2qubit",
+     "value": "On the 5-qubit IBM Tenerife chip, the N = 2 perceptron with hypergraph-state preparation gave outputs above 0.75 or below 0.3 for all 16 x 16 input and weight pairs, close to the ideal values. The brute-force sign-flip version degraded as blocks were added.",
+     "anchor": "Numerical results section, Fig. 3, p. 5-6",
+     "quotes": [
+      "All combinations of i and w yield results either larger than 0.75 or smaller than 0.3, in very good quantitative agreement with the expected results plotted in panel 3d."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Single-device experiment at 2 qubits; no repeat runs or error bars are described in the text.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qml-qperceptron-exponential-cost-limit",
+     "value": "The exponential cost of exact state preparation is not removed: the hypergraph-state method reduces resources against brute force but still has exponential circuit depth in the worst case. Scalability would need approximate encoding, which the paper proposes and does not test.",
+     "anchor": "Implementation section, p. 5; Conclusions, p. 7",
+     "quotes": [
+      "even if it still involves an exponential cost in terms of circuit depth or clock cycles on the quantum processor in the worst case",
+      "This currently represents a general problem of most quantum machine learning algorithms."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The authors state the limitation themselves; approximate-encoding scalability is cited, not shown.",
+     "context": "qml"
+    }
+   ]
+  }
+ ]
+}

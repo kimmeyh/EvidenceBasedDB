@@ -1,0 +1,435 @@
+{
+ "papers": [
+  {
+   "record_id": "northcutt-2022-confident-learning-estimating-uncertainty-dataset",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2019-11_Northcutt_Confident-Learning-Estimating-Uncertainty-in-Dataset-Labels.pdf",
+   "pages": 39,
+   "read_extent": "full",
+   "what_it_is": "Confident learning estimates the joint distribution of noisy and true labels from out-of-sample predicted probabilities, to find label errors under class-conditional noise.",
+   "title_on_page_1": "Confident Learning: Estimating Uncertainty in Dataset Labels",
+   "venue_or_status_on_page_1": "Published in the Journal of Artificial Intelligence Research (JAIR); arXiv:1911.00068v6 [stat.ML] 22 Aug 2022",
+   "assertions": [
+    {
+     "id_suggestion": "cl-estimates-joint-noisy-true-labels-by-counting",
+     "value": "Confident learning (CL) estimates the joint distribution of observed noisy labels and latent true labels by counting examples whose out-of-sample predicted probability for another class exceeds a per-class threshold (the average self-confidence of that class), then calibrating the counts so rows sum to the observed noisy-label counts. Off-diagonal mass of the estimated joint is the estimated fraction of label errors. The result is ESTIMATED from model outputs, not measured against ground truth, except in synthetic-noise experiments.",
+     "anchor": "Sec. 3.1 Count, p. 1377-1380",
+     "quotes": [
+      "we count examples that are likely to belong to another class and calibrate those counts so that they sum to the given count of noisy labels in each class",
+      "only the joint can directly estimate the number of label errors for each pair of true and noisy classes"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Both quotes state the counting-and-calibration method and what the joint is for; accuracy of the result depends on the model probabilities.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "cl-assumes-class-conditional-noise",
+     "value": "CL assumes class-conditional label noise: the chance a label is flipped depends only on the latent true class, not on the example features, so the noise transition p(noisy|true) is data-independent. Noise that depends on the features (for example, harder-to-label fraud cases being labeled wrong more often) is outside this assumption.",
+     "anchor": "Sec. 2 Assumptions and Goal, p. 1375-1376",
+     "quotes": [
+      "Our assumption of a class-conditional noise process implies the label noise transitions are data-independent"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The quote states the assumption directly; the feature-dependent-noise example is a reader consequence, not in the paper.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "cl-must-separate-model-error-from-label-noise",
+     "value": "Estimating label noise is hard because it needs model error (epistemic uncertainty from predicted probabilities) to be told apart from intrinsic label noise (aleatoric uncertainty). The paper states that without some condition on the predicted probabilities one cannot disambiguate label noise from model noise, so any CL noise estimate is only as good as the out-of-sample probabilities that feed it.",
+     "anchor": "Sec. 1 p. 1375 and Sec. 4.1 p. 1382",
+     "quotes": [
+      "Estimating the joint distribution is challenging as it requires disambiguation of epistemic uncertainty (model predicted probabilities) from aleatoric uncertainty (noisy labels)",
+      "one cannot disambiguate label noise from model noise"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Both quotes are statements by the authors; the last clause of the value is a direct reading of them.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "cl-exact-recovery-sufficient-condition-per-example-error",
+     "value": "PROVED (in the paper's appendix) under stated conditions: CL exactly finds the label errors and consistently estimates the noisy-true joint if the model's predicted-probability error for each example stays within a bounded residual range around the ideal probability and the class threshold (Theorem 2), with no label collisions and each diagonal entry of the noise transition matrix the maximum of its row. The proof also needs n to go to infinity and ignores discretization error. This is a sufficient condition on the model, not a guarantee for any real model.",
+     "anchor": "Sec. 4.2 Theorem 2, p. 1383; proof App. A p. 1405-1407",
+     "quotes": [
+      "predicted probability resides within the residual range of the ideal probability and the threshold, then CL exactly"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The theorem is proved but its premise (bounded, symmetric per-example probability error) is idealized and untested for real models; the quote is cut before a ligature word.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "cl-threshold-design-targets-class-imbalance",
+     "value": "CL uses per-class thresholds (average self-confidence per class) instead of an argmax so that the noise estimate is robust to class imbalance and to classes with differently scaled probabilities. The paper demonstrates imbalance only on Amazon Reviews with three classes (9, 12 and 79 percent given labels) and uses balanced CIFAR-10 and ImageNet elsewhere. It does not test a rare-positive binary case such as 0.2 percent fraud, and it reports no precision or recall of error finding there.",
+     "anchor": "Sec. 3.1 p. 1378 and Sec. 5.3 p. 1390",
+     "quotes": [
+      "CL overcomes these shortcomings using thresholding and collision handling to enable robustness to class imbalance and heterogeneity in predicted probability distributions across classes",
+      "Theorem 2 shows that CL is robust to class-imbalance, but datasets like ImageNet and CIFAR-10 are balanced by construction: the Amazon Reviews dataset, however, is naturally and extremely imbalanced"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Robustness to imbalance is argued by theory and shown on one 3-class text set; the fraud-rate gap is a reader note from the experiment list, not a paper statement.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "cl-estimated-joint-close-to-truth-on-synthetic-cifar",
+     "value": "ESTIMATED on CIFAR-10 with synthetic class-conditional noise whose true joint is known: CL's estimated joint has an RMSE of .004 relative to the true joint at 20 and 40 percent noise, averaged over sparsities. This accuracy is shown only where the noise follows the assumed class-conditional process and classes are balanced.",
+     "anchor": "Sec. 5.1 p. 1386",
+     "quotes": [
+      "CL achieves an RMSE of .004 relative to the true joint"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "One synthetic benchmark with the assumption built in; real datasets have no ground-truth joint to compare against.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "cl-real-data-issues-are-not-all-label-errors",
+     "value": "On ImageNet, the examples CL flags are a mixture of multi-label images, ontological issues and actual label errors, and a human check of 500 flagged examples found that 58 percent were multi-label, ontological issues or errors. So a CL flag count overstates pure label error and is not a direct estimate of an accuracy ceiling.",
+     "anchor": "Sec. 5.2 p. 1387-1388",
+     "quotes": [
+      "We use the term issue versus error because examples found by CL consist of a mixture of multi-label images, ontological issues, and actual label errors",
+      "found 58% were either multi-label, ontological issues, or errors"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The 58 percent is a small human check on one dataset; the final sentence of the value is a reader consequence.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Confident learning (confident joint, cleanlab)",
+     "what_it_bounds": "Estimates the fraction and class-pair pattern of mislabeled examples (off-diagonals of the noisy-true joint); the implied cap on achievable accuracy is a reader consequence, not stated by the paper.",
+     "inputs_needed": "Out-of-sample predicted probabilities for every example (cross-validation or a pre-trained model) and the observed noisy labels.",
+     "fails_when": "Noise depends on features; model probabilities are poorly ranked; flagged items include multi-label or ambiguous cases; not tested at 0.2 percent positive rate.",
+     "quote": "we compute out-of-sample predicted probabilities Pˆk,j using four-fold cross-validation and ResNet architectures."
+    }
+   ],
+   "facts": []
+  },
+  {
+   "record_id": "blanchard-2016-classification-asymmetric-label-noise-consistency",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2013-03_Blanchard_Classification-with-Asymmetric-Label-Noise-Consistency-and-Maximal.pdf",
+   "pages": 47,
+   "read_extent": "full",
+   "what_it_is": "Gives necessary and sufficient conditions to identify asymmetric two-class label noise, shows the identified solution is maximal denoising, and gives consistent noise-rate and classifier estimators.",
+   "title_on_page_1": "Classification with Asymmetric Label Noise: Consistency and Maximal Denoising",
+   "venue_or_status_on_page_1": "arXiv:1303.1208v3 [stat.ML] 5 Aug 2016 (no journal named on page 1)",
+   "assertions": [
+    {
+     "id_suggestion": "blanchard-identifiability-two-conditions",
+     "value": "PROVED (Theorem 12 and Corollary 10): for two-class contaminated data with unknown asymmetric flip rates, the true class-conditional distributions and noise proportions are uniquely identified under two conditions: (A) the total noise is below 1 (a majority of labels correct on average) and (C) the two true distributions are mutually irreducible (neither can be written as a nontrivial mixture involving the other). The paper also argues these are necessary under natural requirements (Theorem 11). Without them the decomposition is not unique, for example classes 0 and 1 could be swapped.",
+     "anchor": "Sec. 1 p. 2-3, Sec. 5 p. 14-18",
+     "quotes": [
+      "This condition states, in a certain sense, that a majority of the labels are correct on average.",
+      "It is not possible to write P0 as a nontrivial mixture of P1 and some other distribution, and vice versa.",
+      "swapping the role of classes 0 and 1 would also be a solution (with complementary contamination probabilities)"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Sufficiency is proved in Sec. 5.1 and necessity is argued under conditions (i) to (iv) in Theorem 11; the swap example is stated in the introduction.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "blanchard-solution-is-maximal-denoising",
+     "value": "PROVED (Theorem 12): among all decompositions consistent with the observed contaminated distributions, the mutually irreducible solution has the maximum total label noise (pi0 + pi1) and the maximum total variation distance between the true class distributions. So the identified noise level is the largest noise the data can support. The zero-noise trivial solution is always feasible. If mutual irreducibility fails, the estimate can exceed the true noise; this last point is a reader consequence.",
+     "anchor": "Sec. 3 p. 11, Sec. 5.3 Theorem 12 p. 17-18",
+     "quotes": [
+      "the mutually irreducible solution can also be interpreted as maximal label denoising or maximal source separation of the observed contaminated distributions.",
+      "the unique maximizer of (π0 + π1) over Λ;",
+      "Obviously, (0, 0, P˜1, P˜0) is a trivial solution"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "consequence",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Maximality is proved; the claim that the estimate over-states noise when irreducibility fails follows from the feasible-set structure but is not stated in those words.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "blanchard-noise-estimated-by-roc-slope-mixture-proportion",
+     "value": "ESTIMATED: the paper estimates the noise proportions through mixture proportion estimation, using the minimum slope of line segments from points on a conservative ROC curve to the point (1, 1), with exact binomial tail bounds. A universally consistent estimator exists, but the paper cites a no free lunch result: no estimator of the mixture proportion can converge at a fixed rate for all distributions. A rate of order sqrt(log n / n) is proved only under a stronger support condition (D).",
+     "anchor": "Sec. 6 p. 18-21, Sec. 10 p. 31-32",
+     "quotes": [
+      "we then compute the minimum slope of all line segments joining points on the ROC to the point (1, 1)",
+      "no estimator of κ∗(F |H) can converge at",
+      "We now introduce an assumption on F and H that will ensure a certain rate of convergence"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Consistency and the rate under (D) are proved in the paper; the no-free-lunch statement is a citation, and its quote ends before a ligature word, so the fixed-rate wording rests on the surrounding sentence.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "blanchard-roc-estimate-accurate-cpe-estimate-unreliable-empirical",
+     "value": "ESTIMATED on waveform and MNIST 3-vs-8 data with injected asymmetric noise of known size (balanced samples of 1000 to 2000 per class): the ROC-based noise estimates were reasonably accurate, while the class-probability-estimation (min and max of the posterior) variant was sometimes accurate and sometimes had considerable error, and could over- or under-estimate noise. No test with a rare positive class.",
+     "anchor": "Sec. 11 p. 32-34, Tables 1-2",
+     "quotes": [
+      "the results indicate that this method provides reasonably accurate estimates of the label noise proportions in the four experimental settings where the true proportions are known.",
+      "the results indicate that the method is sometime accurate, but other times incurs considerable error."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Four settings with known truth and balanced samples; the paper itself says the CPE variant needs further development.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "blanchard-class-overlap-separate-from-label-noise",
+     "value": "CLAIMED: the paper separates two noise types. Class overlap (supports of P0 and P1 overlap, so the label is not a deterministic function of the features) limits even an optimal classifier; label noise is a second, additional corruption. The consistent classifier converges to the optimal performance for the maximally denoised distributions, so overlap-driven error remains as the floor after label noise is removed. In the waveform data set the classes overlap, with a Bayes risk of about 10 percent.",
+     "anchor": "Sec. 1 p. 2, Sec. 12 p. 36, Sec. 11 p. 32",
+     "quotes": [
+      "P0 and P1 have overlapping supports, meaning that the label is not a deterministic function of the feature vector",
+      "our discrimination rule is universally consistent in the sense that its performance tends to the optimal performance corresponding to the maximally denoised P0, P1",
+      "The classes are overlapping, as the Bayes risk for this data set is known to be around 10 %."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The two-type distinction and the consistency target are stated; reading the floor as remaining overlap error is a mild consequence.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "blanchard-ignoring-noise-biases-metrics-and-unequal-priors",
+     "value": "PROVED (Sec. 2): treating contaminated labels as clean is suboptimal whenever the a priori class probabilities are unequal, because the contaminated and true likelihood-ratio thresholds coincide only at threshold 1. Contaminated error rates also differ from true ones: on a nuclear particle data set the corrected ROC showed the classifier is much more accurate than the uncorrected test labels suggested. A 0.2 percent positive fraud set has very unequal priors, so this applies; the paper does not test it.",
+     "anchor": "Sec. 2 p. 7-9, Sec. 11 p. 34",
+     "quotes": [
+      "Thus, treating the contaminated data as if it were clean is suboptimal whenever the a priori class probabilities are unequal.",
+      "much more accurately than one would expect if label noise was not accounted for"
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The unequal-priors result is a short algebraic argument; the fraud application is a reader consequence.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Mixture proportion estimation via ROC slope (kappa-star)",
+     "what_it_bounds": "Maximal fraction of one contaminated class distribution that can be explained as the other; gives the unique maximally denoised noise rates (pi0, pi1).",
+     "inputs_needed": "Two samples, one per observed label, and a classifier giving an ROC (kernel logistic regression in the paper).",
+     "fails_when": "Mutual irreducibility fails (then noise is over-estimated); total noise at or above 1; no fixed convergence rate without extra conditions; binary labels only, noise independent of features; not tested at 0.2 percent positive.",
+     "quote": "we then compute the minimum slope of all line segments joining points on the ROC to the point (1, 1)"
+    }
+   ],
+   "facts": []
+  },
+  {
+   "record_id": "toner-2024-label-noise-correcting-forward-correction",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2023-07_Toner_Label-Noise-Correcting-the-Forward-Correction.pdf",
+   "pages": 26,
+   "read_extent": "full",
+   "what_it_is": "Shows label noise implies a lower bound on achievable noisy loss and uses an entropy-based floor, set from the average noise rate, to limit overfitting in forward-corrected losses.",
+   "title_on_page_1": "Label Noise: Correcting the Forward-Correction",
+   "venue_or_status_on_page_1": "arXiv:2307.13100v2 [cs.LG] 22 Aug 2024; marked Preliminary work",
+   "assertions": [
+    {
+     "id_suggestion": "toner-label-noise-implies-risk-lower-bound",
+     "value": "PROVED (Lemma 4.2, Lemma C.4): for a generalised forward-corrected loss with a strictly proper base loss, the noisy risk of any probability estimator is at least the expected entropy of the noisy label distribution, and the bound is tight when the correction equals the true noise model. This bounds proper-loss risk (for example cross-entropy), not accuracy; an accuracy ceiling is a separate step the paper does not take.",
+     "anchor": "Abstract, Sec. 4.1 Lemma 4.2 p. 5, App. C Lemma C.4 p. 16",
+     "quotes": [
+      "We observe that the presence of label noise implies a lower bound on the noisy generalised risk.",
+      "This bound is tight when f is equal to the true noise model.",
+      "Our analysis in Section 4.1 demonstrates that an estimator cannot achieve a noisy risk below the mean noisy label entropy."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "A short proof is given in App. C; the quotes cover the bound and its tightness; the loss-versus-accuracy caveat is a reader note.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "toner-loss-floor-worked-example-40pct-symmetric",
+     "value": "Worked example (binary, separable data, 40 percent symmetric label noise, noise model known and corrected for): the lowest possible training loss for an optimal model without label access is 0.673, while a network that peeks at the labels can reach 0.511. A training loss below the floor therefore signals overfitting to noisy labels. The numbers are cross-entropy loss values, not accuracy.",
+     "anchor": "App. D.1 p. 19-20, Table 1 and Table 5",
+     "quotes": [
+      "Therefore, while an over-parameterised neural network model trained for sufficient epochs may achieve a training loss of 0.511, the lowest possible training loss for an optimal model without label access is 0.673."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "This is a closed-form calculation in the appendix for one stated noise setting.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "toner-noise-bound-from-average-noise-rate-only",
+     "value": "CLAIMED with empirical support: when only the average noise rate eta is known, the paper sets the loss floor to the entropy of uniform symmetric noise at that rate, which is the highest entropy among noise models with that average rate (Corollary 4.4). Using this floor as a training-loss bound improved test accuracy in most of the synthetic-noise settings, and CIFAR-10 and EMNIST accuracy peaked when the assumed rate matched the true 0.4: underestimating the rate gave overfitting and overestimating gave underfitting. The floor is exact only for symmetric uniform noise; otherwise it is too high.",
+     "anchor": "Sec. 4.2-4.3 p. 5-7, Sec. 5.3 p. 8, Fig. 2",
+     "quotes": [
+      "the noise model with the highest entropy is uniform symmetric label noise",
+      "both graphs show a bump with a peak near this line demonstrating that underestimating the noise rate causes overfitting while overestimating causes underfitting"
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Corollary 4.4 is proved; the benefit of the bound is shown on synthetic noise in image data, with noted exceptions for asymmetric and feature-dependent noise.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "toner-bound-needs-separable-clean-labels",
+     "value": "Assumption and failure condition: the practical noise-bound assumes the clean label distribution is approximately separable, meaning no randomness in the true label given the features. The authors say the bounds depend on this and may be insufficient for domains with high inherent randomness such as medical diagnostics. A fraud task with irreducible class overlap breaks this assumption, so the floor would then understate the true loss floor.",
+     "anchor": "Sec. 4.2 p. 6, Sec. 6.1 p. 9",
+     "quotes": [
+      "The key simplifying assumption which we employ is assuming that the clean label distribution is (approximately) separable.",
+      "The reliability of the derived bounds depends on the dataset being well-approximated as separable."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Both quotes state the assumption and its limit; the fraud implication is a reader consequence.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "toner-bound-needs-noise-rate-and-balanced-classes-for-asymmetric",
+     "value": "Two further conditions: the method relies on an approximate average noise rate being known, and the lower bound for general asymmetric class-conditional noise is derived for balanced classes (Lemma C.5). The paper does not derive a bound for a heavily imbalanced case such as 0.2 percent positives.",
+     "anchor": "Sec. 6.1 p. 9, App. C Lemma C.5 p. 16",
+     "quotes": [
+      "Additionally, our approach relies on approximating the average noise rate, which limits its applicability to scenarios where the noise rate is approximately known.",
+      "When the classes are balanced and label noise is asymmetric and given by transition matrix T"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The first quote is the authors' own limitation; the imbalance gap is read from Lemma C.5's stated premise, not from a statement about imbalance.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Noise-bound (entropy lower bound on noisy risk)",
+     "what_it_bounds": "Minimum achievable noisy proper-loss risk (not accuracy) given an average noise rate, assuming separable clean labels.",
+     "inputs_needed": "Average label noise rate eta and number of classes c; strictly proper base loss.",
+     "fails_when": "Clean labels not separable (high inherent randomness); noise not symmetric (bound too high); classes imbalanced (Lemma C.5 stated for balanced); noise rate unknown.",
+     "quote": "The reliability of the derived bounds depends on the dataset being well-approximated as separable."
+    }
+   ],
+   "facts": []
+  },
+  {
+   "record_id": "jimenez-2026-position-epistemic-uncertainty-estimation-methods",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2025-05_Jimenez_Position-Epistemic-uncertainty-estimation-methods-are-fundamentally-incomplete.pdf",
+   "pages": 24,
+   "read_extent": "full",
+   "what_it_is": "Position paper arguing that second-order epistemic uncertainty estimators ignore bias and capture only part of the variance, so they inflate aleatoric and understate epistemic uncertainty.",
+   "title_on_page_1": "Position: Epistemic uncertainty estimation methods are fundamentally incomplete",
+   "venue_or_status_on_page_1": "arXiv:2505.23506v4 [cs.LG] 6 Feb 2026; Preprint, February 9, 2026",
+   "assertions": [
+    {
+     "id_suggestion": "jimenez-aleatoric-irreducible-epistemic-reducible-definition",
+     "value": "Definition used by the paper: if the data-generating process is a conditional distribution p(y|x), aleatoric uncertainty is that distribution's inherent randomness and is irreducible; epistemic uncertainty arises because p(y|x) must be estimated from data. In the decomposition of expected risk the first term is the intrinsic noise, aleatoric and irreducible with more training data, plus a generalized bias term and a generalized variance term.",
+     "anchor": "Sec. 1 p. 1, Sec. 3.1 Eq. 7 p. 4",
+     "quotes": [
+      "Assuming that the ground truth data-generating process can be described by a conditional probability distribution p(y|x), aleatoric uncertainty reflects the inherent randomness of this distribution, and is hence irreducible.",
+      "The first term in Eqn. 7 represents the intrinsic noise of the data-generating process, and therefore corresponds to aleatoric uncertainty, which is irreducible with more training data."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Standard definition and a bias-variance identity stated by the authors with citations, not re-proved here; the floor holds for the given features and loss.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "jimenez-bias-inflates-aleatoric-and-hides-epistemic",
+     "value": "CLAIMED, shown on synthetic and one real regression data set: unaccounted model bias (from regularization and finite data) is absorbed into the learned aleatoric term, so the aleatoric (irreducible) estimate is too high and the epistemic (reducible) estimate too low. Bias in the estimated mean makes the learned aleatoric noise larger than the true noise. Scope is regression with a Gaussian variance head; classification is not tested.",
+     "anchor": "Abstract, Sec. 3.1 p. 4-5, App. B.1 p. 13",
+     "quotes": [
+      "unaccounted bias contaminates uncertainty estimates by overestimating aleatoric (data-related) uncertainty and underestimating the epistemic (model-related) counterpart",
+      "Bias in the estimation of the mean will result in an overestimation of aleatoric noise."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The expectation identity is taken from Zhang et al. 2024 and shown on regression examples; the paper presents a position, not a classification result.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "jimenez-epistemic-estimates-are-lower-bounds-incomplete",
+     "value": "CLAIMED: because second-order methods have no access to the true conditional distribution, model uncertainty (bias) cannot be put into the epistemic estimate, so a complete epistemic uncertainty representation is unattainable. The authors recommend treating epistemic uncertainty estimates as lower bounds on reducible uncertainty. For the fraud question this means an ensemble or Bayesian estimate that says the model has little left to learn understates how far the model could still improve.",
+     "anchor": "Sec. 3 p. 3, Sec. 5 p. 8",
+     "quotes": [
+      "Since second-order representations do not have access to the ground truth conditional class distribution, it is not possible to incorporate model uncertainty into epistemic uncertainty estimates.",
+      "treating epistemic uncertainty estimates as lower bounds on reducible uncertainty rather than complete characterizations"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Both quotes are the authors' position; the fraud sentence is a reader consequence and the paper gives no classification or imbalance experiment.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "jimenez-ensembles-capture-only-procedural-variance",
+     "value": "ESTIMATED in regression: Deep Ensembles capture only procedural uncertainty (seed-to-seed) and omit data uncertainty (resampling the dataset), so their epistemic estimate falls below a reference distribution that includes both; across all evaluated methods the epistemic estimates were systematically below the reference. Bootstrap ensembles also underestimated it. Evidence is on a one-dimensional synthetic problem and a real regression data set (Taxi), not on classification.",
+     "anchor": "Sec. 3.2 p. 6-7, Fig. 4 and Fig. 9, App. C",
+     "quotes": [
+      "Figure 4 illustrates that Deep Ensembles capture only procedural uncertainty, underestimating the variance from the reference distribution.",
+      "Figure 9 demonstrates that across all evaluated methods, epistemic uncertainty estimates fall systematically below the estimate of the reference distribution.",
+      "To illustrate our arguments, we will focus on the estimation of uncertainty in a regression setting."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Empirical illustrations on small regression setups the authors chose; the scope sentence limits generalization.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "jimenez-completeness-check-needs-simulation-and-bias-check",
+     "value": "CLAIMED method note: separately quantifying procedural and data uncertainty is possible only by statistical simulation (repeated sampling from the data-generating process, or disjoint partitioning of a large real data set as an approximation). The authors also advise assessing model bias separately through held-out validation or domain expertise. So a held-out check of the model, not the uncertainty method alone, is needed to learn whether the model is biased and can still improve.",
+     "anchor": "Sec. 3.2 p. 6, Sec. 5 p. 8, App. C.1 p. 14",
+     "quotes": [
+      "We argue that separately quantifying procedural and data uncertainty is only possible through statistical simulation, where repeated sampling from the data-generating process can be performed or approximated.",
+      "assessing model bias separately through held-out validation or domain expertise"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Both quotes are the authors' recommendation; the last sentence is a reader reading of them.",
+     "context": "ml"
+    }
+   ],
+   "methods": [
+    {
+     "name": "Reference distribution (resampling data and seeds)",
+     "what_it_bounds": "Reference estimate of total estimation variance (data plus procedural) for comparing against any second-order epistemic estimate; does not capture bias.",
+     "inputs_needed": "Many independent datasets from the generating process (or 100 disjoint partitions of a big real set) times several random initializations.",
+     "fails_when": "Cannot sample the data-generating process (only an approximation via disjoint partitions); bias remains unmeasured; shown only for regression; second-order estimates omit bias so they understate reducible uncertainty.",
+     "quote": "We argue that separately quantifying procedural and data uncertainty is only possible through statistical simulation, where repeated sampling from the data-generating process can be performed or approximated."
+    }
+   ],
+   "facts": []
+  }
+ ]
+}

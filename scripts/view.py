@@ -25,7 +25,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import connect, recheck, script_paths  # noqa: E402
+from store import connect, recheck, resolvers, script_paths  # noqa: E402
+from store.links import links_of  # noqa: E402
 
 # Windows consoles commonly default to cp1252, which cannot encode most
 # citation text (accents, math symbols). Reconfigure stdout to UTF-8 so
@@ -145,7 +146,12 @@ def cmd_paper(conn, paper_id: str) -> dict:
             "SELECT assertion_id FROM paper_yields WHERE paper_id = ? ORDER BY assertion_id", (paper_id,)
         )
     ]
-    yields = [cmd_assertion(conn, aid) for aid in yield_ids]
+    # The corroboration map is computed once per view, not once per yielded
+    # assertion (PR #88 Copilot review: it scans the whole store each time).
+    corroboration = resolvers.corroboration(conn) if yield_ids else {}
+    yields = [cmd_assertion(conn, aid, corroboration) for aid in yield_ids]
+    # ADR-0005 A10: one stored row per link, read here from both ends.
+    links = links_of(conn, paper_id)
 
     return {
         "id": paper["id"],
@@ -165,13 +171,19 @@ def cmd_paper(conn, paper_id: str) -> dict:
         # showed the string "None").
         "recheck": _schedule(recheck.schedule(conn, paper_id)),
         "yields": yields,
+        "cites": [lk["other"] for lk in links["out"] if lk["type"] == "cites"],
+        "cited_by": [lk["other"] for lk in links["in"] if lk["type"] == "cites"],
+        "other_links": [{"type": lk["type"], "direction": d, "other": lk["other"]}
+                        for d in ("out", "in") for lk in links[d] if lk["type"] != "cites"],
     }
 
 
-def cmd_assertion(conn, assertion_id: str) -> dict:
+def cmd_assertion(conn, assertion_id: str, corroboration: dict | None = None) -> dict:
     """`view.py assertion <id>` -- the full assertion record plus its
     supports/contradicts relations resolved to the OTHER assertion's
-    value (not just the bare id), and which paper (if any) yields it."""
+    value (not just the bare id), and which paper (if any) yields it.
+    `corroboration` is the whole-store map when the caller already has it
+    (a paper view); otherwise it is computed here."""
     record = conn.execute(
         "SELECT * FROM records WHERE id = ? AND class = 'assertion'", (assertion_id,)
     ).fetchone()
@@ -205,6 +217,11 @@ def cmd_assertion(conn, assertion_id: str) -> dict:
     yielding_paper = conn.execute(
         "SELECT paper_id FROM paper_yields WHERE assertion_id = ?", (assertion_id,)
     ).fetchone()
+    # ADR-0004 A9 (F56): computed on every view, never stored; it never
+    # changes the certainty above it.
+    if corroboration is None:
+        corroboration = resolvers.corroboration(conn)
+    corr = corroboration.get(assertion_id, {"by": [], "not_counted": []})
 
     return {
         "id": record["id"],
@@ -213,6 +230,8 @@ def cmd_assertion(conn, assertion_id: str) -> dict:
         "evidence_tag": record["evidence_tag"],
         "certainty": record["certainty"],
         "certainty_reasons": record["certainty_reasons"],
+        "corroborated_by": [{"id": y, "why": why} for y, why in corr["by"]],
+        "supporters_not_counted": [{"id": y, "why": why} for y, why in corr["not_counted"]],
         "fidelity": record["fidelity"],
         "reading_level": record["reading_level"],
         "units": fields["units"] if fields else None,
@@ -259,6 +278,14 @@ def _print_text(data: dict, mode: str) -> None:
             print("  Applicability:")
             for a in data["applicability"]:
                 print(f"    - {a['context']}: {a['rationale']}")
+        for label, key in (("Cites (papers in the store)", "cites"), ("Cited by (papers in the store)", "cited_by")):
+            if data[key]:
+                print(f"  {label}: {len(data[key])}")
+                for other in data[key]:
+                    print(f"    - {other}")
+        for lk in data["other_links"]:
+            arrow = "->" if lk["direction"] == "out" else "<-"
+            print(f"  Link: {lk['type']} {arrow} {lk['other']}")
         if data["yields"]:
             print(f"  Yields ({len(data['yields'])} assertion(s)):")
             for y in data["yields"]:
@@ -273,6 +300,14 @@ def _print_text(data: dict, mode: str) -> None:
         print(f"  Provenance: {data['provenance']}")
         print(f"  Evidence tag: {data['evidence_tag']}")
         print(f"  Certainty:  {data['certainty']}  ({data['certainty_reasons']})")
+        if data["corroborated_by"]:
+            print("  Corroborated (computed; the stored certainty is unchanged until an assessor decides):")
+            for c in data["corroborated_by"]:
+                print(f"    - by [{c['id']}]: {c['why']}")
+        if data["supporters_not_counted"]:
+            print("  Supporters not counted as corroboration:")
+            for c in data["supporters_not_counted"]:
+                print(f"    - [{c['id']}]: {c['why']}")
         print(f"  Fidelity:   {data['fidelity']}   Reading level: {data['reading_level']}")
         if data["units"] or data["rounding"]:
             print(f"  Units: {data['units']}  Rounding: {data['rounding']}")

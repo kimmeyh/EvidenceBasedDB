@@ -330,6 +330,35 @@ CLASSED = {
     "dirac3-matches-exact-optimum-on-convex-cvqboost": ("not addressed", None),
     "dirac3-stratification-falls-short-ballin-2026": ("not addressed", None),
     "favorable-dirac3-papers-are-qci-authored": ("not addressed", None),
+    # Added 2026-10-15 (Sprint 9 Task A, F79): Phase 2's B4 and B5 hardware
+    # runs, which the Dirac-3S guide does not address.
+    "dirac3-matches-classical-proxy-in-pocket-spectra-b4": ("not addressed", None),
+    "cvqboost-in-segment-edge-negative-on-device-spectra-b4": ("not addressed", None),
+    "qsvm-on-dirac3-weak-on-ulb-b5": ("not addressed", None),
+    # Added 2026-10-15 (Sprint 9 Task G, F80): the slice's QCi pages, packages
+    # and the postquantum article, classed against the guide's text. The guide
+    # gives the device 2nd to 5th order (not the package), a sum constraint R
+    # of 1 to 10,000, eqc-direct on Python 3.8 to 3.10 (p.34; p.11 gives
+    # 3.10.6), and per-sample times of 1.093 s for schedule 3 against 1.278 s
+    # for 4 on its own problem: a 15% gap, which only weakly supports the
+    # portfolio page's "significantly improved runtime".
+    "eqc-models-dirac3-sum-constraint": ("confirmed in part", "dirac3s-sum-constraint-1-to-10000"),
+    "eqc-models-polynomial-fifth-order": ("confirmed in part", "dirac3s-variable-ceiling-by-configuration"),
+    "dirac3-portfolio-relaxation-schedule-3-vs-4": ("confirmed in part", "dirac3s-time-per-sample-by-schedule"),
+    "eqc-models-direct-solver-python-limit": ("confirmed in part", None),
+    "eqc-models-dirac3-cloud-solvers": ("not addressed", None),
+    "eqc-direct-package-v2-0-2": ("not addressed", None),
+    "qci-client-package-v5-0-0": ("not addressed", None),
+    "dirac3-portfolio-255-monthly-problems-21y": ("not addressed", None),
+    "dirac3-portfolio-outperforms-ndx-vendor-claim": ("not addressed", None),
+    "dirac3-portfolio-vs-localsolver-energies-similar": ("not addressed", None),
+    "dirac3-qap-5x5-found-optimum": ("not addressed", None),
+    "dirac3-qap-spread-optimal-to-166pct": ("not addressed", None),
+    "qci-fraud-qboost-vs-xgboost-table": ("not addressed", None),
+    "qci-fraud-qboost-speed-power-claim": ("not addressed", None),
+    "postquantum-qubit-counts-are-variables": ("not addressed", None),
+    "postquantum-no-independent-advantage-2025": ("not addressed", None),
+    "postquantum-eqc-heuristic-view": ("not addressed", None),
 }
 
 # Admission-against-interest candidates, for the team lead at Manual

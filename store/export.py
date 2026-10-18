@@ -28,7 +28,7 @@ import sqlite3
 from collections import defaultdict
 from pathlib import Path
 
-from store.resolvers import certainty_caps
+from store.resolvers import certainty_caps, corroboration
 
 
 def _copy_nonnull(record: dict, row: sqlite3.Row, *columns: str) -> None:
@@ -114,6 +114,7 @@ def _export_assertions(conn: sqlite3.Connection, rows: list[sqlite3.Row], contex
         conn, "assertion_fields",
         "f.units, f.rounding, f.citation_context, f.derivation, f.claim_type, f.search_scope", "assertion")
     caps = certainty_caps(conn)
+    corr = corroboration(conn)
     documents = _grouped(
         conn,
         "SELECT d.record_id, d.document FROM assertion_documents d "
@@ -151,6 +152,10 @@ def _export_assertions(conn: sqlite3.Connection, rows: list[sqlite3.Row], contex
             # DERIVED keys (A6 (e)): computed here from stored facts on every
             # export; store/rebuild.py knows them and never writes them back.
             record["certainty_cap"], record["certainty_cap_reason"] = caps[row["id"]]
+        if corr.get(row["id"], {}).get("by"):
+            # DERIVED (ADR-0004 A9): independent supporters at equal or higher
+            # certainty; the stored certainty above is not changed by them.
+            record["corroborated_by"] = [{"id": y, "why": why} for y, why in corr[row["id"]]["by"]]
         out.append(record)
     return out
 

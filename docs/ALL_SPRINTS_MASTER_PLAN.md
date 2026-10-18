@@ -43,14 +43,13 @@ repository exists. No other F# from either source repository applies here.
 | 5 | docs/sprints/SPRINT_5_SUMMARY.md | [OK] Complete | 2026-09-23 to 2026-09-25 |
 | 6 | docs/sprints/SPRINT_6_SUMMARY.md | [OK] Complete | 2026-09-27 to 2026-10-05 |
 | 7 | docs/sprints/SPRINT_7_SUMMARY.md | [OK] Complete | 2026-10-06 to 2026-10-10 |
-| 8 | docs/sprints/SPRINT_8_SUMMARY.md | [OK] Complete, merge pending | 2026-10-10 to 2026-10-13 |
+| 8 | docs/sprints/SPRINT_8_SUMMARY.md | [OK] Complete | 2026-10-10 to 2026-10-14 |
 
 ## Last Completed Sprint
 
-Sprint 8 is below (its PRs await the team lead's merge); Sprint 7 follows it
-for continuity.
+Sprint 8 is below; Sprint 7 follows it for continuity.
 
-### Sprint 8: Read QCi's Newest Guide, Then Build the Yearly Re-check (2026-10-10 to 2026-10-13, PR #77 and PR #84 into develop, merge pending)
+### Sprint 8: Read QCi's Newest Guide, Then Build the Yearly Re-check (2026-10-10 to 2026-10-14, PR #77 and PR #84, merged to develop and to main via PR #86 and PR #87 on 2026-10-14; tagged sprint-8)
 
 Seven tasks, seven issues (#78-#83, #85; Task G added at Phase 7). **QCi's
 newest material**: the Dirac-3S guide under its own context (ADR-0004 A8,
@@ -226,19 +225,20 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 8** (branch `feature/20261010_Sprint_8`, cut 2026-10-10 at the
-Sprint 7 carry-forward, after PR #68 merged to develop and PR #76 merged
-develop to main). **Scope (DEFINED, team lead 2026-10-10)**: F65, F63,
-F64, F60, F61, and an F39 release (registered as F67: "Haiku 5.5 was
-released and we will want to include in the list of models"). F66, carded
-the same day with a Sprint 8 target, is not in the selection list; it is
-asked as a question at plan approval, never planned in by inference. Plan:
-`docs/sprints/SPRINT_8_PLAN.md`. **Added 2026-10-13** (team lead, Phase 7,
-Q1 = 2): F71, F65's four recovered items, as Task G.
+**Sprint 9** (branch `feature/20261014_Sprint_9`, cut 2026-10-14 at the
+Sprint 8 carry-forward, after PR #77 merged to develop and PR #87 merged
+develop to main). **Scope (DEFINED, team lead 2026-10-14)**: F78, F79,
+F74, F68, F69, F62, F57, F55, F56, F48, F46, F51. F51 is a HOLD item
+selected while its hold stands; planning checks whether the Phase 2
+repository now holds the re-run it waits on. Priorities renumbered at
+selection in steps of 10, 2 for items that sprint together (the slate's
+numbers, which the team lead's selection used): F78 10, F79 20, F74 30,
+F68 40, F69 42, F39 50, F62 60, F57 70, F55 80, F56 82, F48 90, F50 100,
+F46 110. F57 released as F80. Plan: `docs/sprints/SPRINT_9_PLAN.md`.
 
 ## Next Sprint Candidates
 
-Refined 2026-10-10 after Sprint 7 (Sprint 8 Phase 1.2); Sprint 7's shipped
+Refined 2026-10-14 after Sprint 8 (Sprint 9 Phase 1.2); Sprint 8's shipped
 cards pruned BY HAND (Edit tool, card by card) the same day.
 Shipped and pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint
 2); F2 Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25,
@@ -247,7 +247,8 @@ F26, F27 (Sprint 4); F5, F28, F30, F31 (Sprint 5); F32-F38, F40-F43, F47
 F51); F44, F45, F52, F53, F54, F58, F59 (Sprint 7; F53's per-cycle refresh
 replaced by F64's 12-month re-check; F54's 10 "unsure" and 140 third-party
 repository candidates stay held back in `sprint7_f35_screen.json` and
-`QMLPapers\Repos\REVIEW.md`). F39 is permanent and stays. Closed without
+`QMLPapers\Repos\REVIEW.md`); F60, F61, F63, F64, F65, F66, F67, F71
+(Sprint 8). F39 is permanent and stays. Closed without
 implementation: F19, F29 (Sprint 5 scope selection, reasons under Sprint 5
 in "Last Completed Sprint"); F49 (Sprint 8 scope selection, Q3 = 1: moot
 under ADR-0004 A7, since no committed export exists to drop a context, and
@@ -260,7 +261,7 @@ and in git. Remaining items below.
 
 ### Permanent items
 
-**F39. Evaluate the available models and update the model-assignment heuristics -- PERMANENT (~1h per release) Priority 10** (NEW 2026-09-29)
+**F39. Evaluate the available models and update the model-assignment heuristics -- PERMANENT (~1h per release) Priority 50** (NEW 2026-09-29)
 - Phase: Process (recurring)
 - Platform: `.claude/model_assignment_heuristics.json`,
   `docs/SPRINT_PLANNING.md` (team roles table),
@@ -342,6 +343,13 @@ estimates are `[no-history]`.
   referenced".
 - The record's authorship (decision 1 in the handoff) is settled by the
   re-run's own provenance, not by attribution.
+- Hold checked 2026-10-15 (Sprint 9 Task K): all three copies
+  (`References\2026-08_Kimmey_CVQBoost-Findings.md`, FourierWall2's
+  `docs\CVQBoost_Findings.md`, the consumer repository's
+  `fourierwall2\CVQBoost_Findings.md`) hash to SHA-256 `425358a7b4cec71f...`
+  and say "Last updated 2026-08-04". Phase 2 has newer Dirac runs (B4 and
+  B5 on 2026-10-06; F142 on Dirac-3S on 2026-10-15), read only, but none
+  rewrites the findings document. Stays HOLD.
 - Depends on: the hsbc repository's re-run of the experiment.
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
@@ -397,71 +405,19 @@ estimates are `[no-history]`.
   reason.
 - Acceptance per release: the slice screened, the ranking recorded, every
   promoted record read and yielding, every refused one with its reason.
+- **Release size: 74 records per sprint, every sprint, until no record is
+  left at `seen` or `screened`** (team lead, 2026-10-15, Sprint 9 approval
+  Q7: "we need to read all that have not been read, so backlog a repeated
+  item to read in chunck of 74 until they have all been read"). Sprint 9's
+  release (F80) is 76 records, as approved at Q7 = 2; from Sprint 10 each
+  release is 74. Snapshot as of 2026-10-14: 2,055 records at `seen` or
+  `screened`, so about 27 more releases at 74 each. The item closes when
+  the count is 0, not before. Refresh the count at each release, because
+  intake adds records.
 
 ### Carded during Sprint 7 (2026-10-06 to 2026-10-10)
 
-**F60. A mislabeled QMLPapers file: the "Asfaw 2108.0131" PDF is another paper (~30m) Priority 50** (NEW 2026-10-06, found in Sprint 7 Task E)
-- Phase: Sourcing / collection hygiene
-- Platform: `D:\Data\Harold\EvidenceBasedDB\QMLPapers\2021\manifest.tsv`
-  (outside the repository; read only from here), `scripts/intake.py`
-- Found reading the PDF for F54: the file
-  `Asfaw-et-al._2021_Building-a-Quantum-Engineering-Undergraduate-Program__2108.0131.pdf`
-  begins "arXiv:2108.00131v2 [cs.LG] 22 Feb 2022" and is Radhakrishnan,
-  Stefanakis, Belkin and Uhler on infinite-width neural networks for matrix
-  completion, the paper whose code its repository note names
-  (`uhlerlab/ntk_matrix_`). The manifest row's title (Asfaw et al.) and its
-  id (`2108.0131`, one digit short) do not match the file. The Asfaw paper
-  itself was never downloaded; its real arXiv id is not yet verified.
-- Sprint 7 Task E enters `2108.00131` (the paper on disk) and links its
-  repository; this card is the rest: find the Asfaw paper's real id, decide
-  whether it belongs in the collection, and look for other rows whose file
-  is not the paper the row names (a first-page id check against the
-  manifest id, all folders).
-- Acceptance: every manifest row's id matches its file's first-page id, or
-  the mismatch is listed; the Asfaw paper entered or recorded as out of
-  scope with the reason.
-
-**F61. Mine the Massoli et al. survey's curated paper list for candidates (~2h plus runtime) Priority 60** (NEW 2026-10-06, team lead during Sprint 7)
-- Phase: Sourcing / collections
-- Platform: `github.com/fvmassoli/survey-quantum-computation`
-  (`allPapers.md`, `LeapIntoQuantumComputationsPaperList.xlsx`), the
-  companion list of arXiv:2107.03313 ("A Leap among Quantum Computing and
-  Quantum Neural Networks: A Survey"); `scripts/intake.py`
-- Team lead, 2026-10-06, on the F35 screen holding this repository back as
-  "neither code nor data": "this repository may contain papers that we are
-  interested in (although there likely could be duplicates of what we
-  already have)".
-- **Facts at carding (snapshot as of 2026-10-06)**: 184 entries, each a
-  link plus a BibTeX record, tagged by topic (Quantum Perceptrons, QNNs,
-  gate model and adiabatic). 25 titles already match a store record exactly
-  (an undercount: punctuation and subtitle variants miss); 31 entries carry
-  an arXiv id, 9 of them already in the store. Most link to publishers (APS
-  29, Nature 26, Springer 14, IOP 12, IEEE 11), so the door's DOI path, not
-  arXiv, carries most of them; several BibTeX records have no DOI.
-- Scope: duplicates are found before anything is entered (arXiv id, DOI,
-  then normalized title and first author); new entries go through the door
-  at `seen` with `found_via` naming this list and the entry's topic tags as
-  the collection locator; the survey itself (2107.03313, already in the
-  store) gets the list as its companion repository.
-- Acceptance: every entry classed as already in the store (with the record
-  it matched), entered, or refused with the door's reason.
-- Depends on: arXiv entries share F52's cap; run outside its sessions.
-- Timing (team lead, 2026-10-06, Q10 = 1): Sprint 8 backlog refinement, not
-  added to Sprint 7.
-- IEEE entries (team lead asked 2026-10-06; checked that day): IEEE papers
-  carry Crossref DOIs (prefix 10.1109), so their RECORDS enter through the
-  door's DOI path with no IEEE account; Crossref title search resolved the
-  list's first IEEE-linked entry to its DOI. Many also have an arXiv
-  preprint (IEEE's policy allows posting the accepted version). Only the PDF
-  needs the team lead's IEEE account, and only by hand: IEEE Xplore's
-  license allows individual downloads for personal research but prohibits
-  systematic downloading "using a robot, spider, crawler, screen scraping or
-  similar", and the Xplore API's personal key covers metadata and open
-  access content only. So a PDF is fetched only when a paper is to be READ:
-  its arXiv version first, else a list (DOI, Xplore link, target file name)
-  the team lead downloads by hand into `D:\Data\Harold\EvidenceBasedDB\Papers`.
-
-**F62. Discover, rank and triage candidate papers from open metadata, with a hand-download list (~4h plus review) Priority 62** (NEW 2026-10-06, team lead during Sprint 7, Q11 = 1 and 3)
+**F62. Discover, rank and triage candidate papers from open metadata, with a hand-download list (~4h plus review) Priority 60** (NEW 2026-10-06, team lead during Sprint 7, Q11 = 1 and 3)
 - Phase: Sourcing / discovery
 - Platform: `scripts/discover_candidates.py` (pilot built in Sprint 7),
   OpenAlex (abstracts, topics, citations, open-access copies), Semantic
@@ -503,143 +459,34 @@ estimates are `[no-history]`.
   single-DOI lookups free); the team lead has an OpenAlex key, read from
   `OPENALEX_API_KEY` (user environment) and sent only in the Authorization
   header. Semantic Scholar: 1 request per second with a free key.
+- **Sprint 9 Task J run (snapshot as of 2026-10-15; key in the header)**:
+  rubric approved at plan Q8 = 1 (citations per year, Semantic Scholar's
+  count where it answers, x1.5 for a store-context match; unchecked counts
+  listed apart; no bonus for a stream's own context; a Semantic Scholar
+  answer counts only for the same title). 100 fetched per stream; already
+  held: ml 2, qml 41, tensor 1, fraud 1; of 192 requests, 179 answered
+  for the same title, 2 named a different paper, the rest stayed refused
+  after a second pass; 22 counts disagree by more than 2x. Earlier runs the
+  same day drew 52 Semantic Scholar refusals, let a wrong-paper answer win,
+  and gave every fraud and qml record the bonus; the fresh-eyes review
+  found these and they are fixed and tested. Lists and an 8-entry
+  hand-download list in `D:\Data\Harold\EvidenceBasedDB\discovery\`
+  (`f62_review_2026-10-15.md`, `f62_hand_download_2026-10-15.md`), for
+  the team lead's review at Manual Validation. Precision note: the stream
+  filters still admit off-topic records (ml: software libraries such as
+  Tidyverse, NumPy and SciPy, and nature-inspired metaheuristics; tensor:
+  knowledge-graph tensor factorization, a 1969 density-estimation paper,
+  equivariant potentials; qml: quantum chemistry and hardware papers and a
+  brain-tumor survey). Tightening the filters is a candidate for the next
+  release of this card.
 - Acceptance: a ranking rubric approved by the team lead; per stream, a
   reviewed top list; the chosen papers entered; a hand-download list with
   every entry's free-copy search recorded.
 - Depends on: F52's cap for arXiv; F61 (shared discovery input).
 
-**F63. Two Dirac-3 admissions in arXiv:2407.04512 as assertions (~1h) Priority 32** (NEW 2026-10-08, found in Sprint 7 Task G; team lead approved as a Sprint 8 candidate at Manual Validation)
-- Phase: Content / assertions
-- Platform: the store; record `nguyen-2025-entropy-computing-paradigm-optimization-open`
-  (read partially in Sprint 7 Task G); a script in the pattern of
-  `scripts/sprint7_f45_dirac3_reading.py`
-- Two statements by QCi's own authors, found while reading for F45 and not
-  entered (outside Task G's planned assertions). Both checked verbatim
-  against the local copy with pdftotext on 2026-10-08:
-  - p.15: "Our current Dirac-3 hybrid implementation does not utilize
-    quantum entanglement."
-  - p.6: the optical parts "do not involve large scale non-Gaussian quantum
-    superpositions, they could in principle be instead classically
-    simulated, as has been argued in the coherent Ising machine setting".
-- Both are candidates for the admission-against-interest upgrade: a vendor
-  stating a limit of its own product. Each upgrade must say why the
-  statement is costly to the vendor.
-- Acceptance: each entered with its page anchor and a verbatim-quote test;
-  relations to the existing Dirac-3 assertions (for example
-  `dirac3-per-loop-measurement-rules-out-quantum-advantage`) recorded.
-- Depends on: none.
-
-**F64. Staggered 12-month re-check, with revised-version detection and a re-pull list (~4h) Priority 40** (NEW 2026-10-09, team lead at Sprint 7 Manual Validation, Q12 = 1, Q15 = 2, Q16 = 1)
-- Phase: Sourcing / currency
-- Platform: `scripts/probe_reference_fields.py`, `store/probes.py`,
-  `scripts/view.py`, Phase 1.3 of `docs/SPRINT_EXECUTION_WORKFLOW.md`,
-  ADR-0005 (a new amendment)
-- Team lead, 2026-10-09: a re-check "every 6-12 months (most do not change
-  after first upload) and only a brief check to ensure the paper has not
-  been replaced, withdrawn or updated. If updated, then we can re-pull the
-  paper"; "we can't have it do 1,000+ papers in one sprint as we loaded all
-  the current papers in the last month"; split them into 24 sections, the
-  first about 10 months out, then 1/24th every 2 weeks, picked up by the
-  next sprint that passes the date.
-- Proposed process (presented 2026-10-09; the team lead approves it at
-  Sprint 8 refinement):
-  - Section: every record belongs to one of 24 half-month sections of the
-    calendar year (1 = January 1-15, 2 = January 16-31, ... 24 = December
-    16-31), computed from its id (a stable hash, mod 24). Computed, never
-    stored; an id never changes, so the section never does. About 1/24 of
-    the records fall in each.
-  - Next re-check date: the first start of the record's section that is
-    at least 10 months after its last check. Computed from the stored
-    check date, never stored itself. For the papers checked in October
-    2026 that gives mid-August 2027 to early August 2028, 1/24th every
-    two weeks;
-    after that, each record comes due once a year in its own section. A
-    paper entered later falls into its section too, so a bulk load never
-    bunches into one sprint.
-  - Phase 1.3: re-check every record whose next re-check date is on or
-    before the sprint's start. About 65 arXiv papers per section, one
-    request each (the abstract page): about 20 minutes, well inside F52's
-    cap. A sprint that spans two sections takes both.
-  - The brief check: withdrawn; published with a DOI (replaced by the
-    journal version); a newer arXiv version than the local copy (the page
-    shows the latest version; the local PDF's first page carries a stamp
-    such as "arXiv:2407.04512v4"); the link still opens.
-  - Output: three lists for the team lead: newer version, to re-pull;
-    withdrawn; newly published. Nothing is downloaded automatically.
-  - `view.py paper <id>` shows the section and the next re-check date.
-- Replaces `--stale` against the cycle start as the Phase 1.3 check:
-  "stale" becomes "past its next re-check date".
-- Acceptance: the section and the date computed and shown; Phase 1.3 picks
-  up only due records; a bulk load spreads over the 24 sections (a test
-  over synthetic ids); a revised version on a test record is reported for
-  re-pull; ADR-0005 amended.
-- Depends on: F52's cap (built).
-
-**F65. Deep research into the Dirac-3S, QCi's upgraded Dirac-3 (~3h) Priority 30** (NEW 2026-10-10, team lead during Sprint 7 Phase 7; TARGET: Sprint 8)
-- Phase: Content / platform research
-- Platform: `D:\Data\Harold\EvidenceBasedDB\References\QCi-site\systems\Dirac_3S_Users_Guide_Rev_A-1.pdf`
-  (outside the repository; "Dirac-3S User Guide, September 2026, Revision
-  A", QCi-QMS-900-000001, 38 pp., created 2026-09-24, SHA-256
-  0ddbc5339966a42ab67c44988d7a12a599724c462839ecc2848189f048af5971);
-  the store's Dirac-3 assertions from F45; a script in the pattern of
-  `scripts/sprint7_f45_dirac3_reading.py`
-- Team lead, 2026-10-10: "Add to backlog and target NEXT sprint: deep
-  research into the new Dirac-3S (upgraded Dirac-3 system)", with a list
-  of further items. **The list did not arrive** (the message held a paste
-  placeholder, not its text); it is added here when the team lead re-sends
-  it, before Sprint 8 planning.
-  - **Recovered 2026-10-13** from the team lead's own Claude Code input
-    history (the paste was first made on 2026-10-10 in another project's
-    session, with the same request, and only its placeholder was carried
-    here). Its 11 lines are three links and one instruction, with blank
-    lines between: the PR Newswire release "Quantum Computing Inc.
-    Announces Dirac-3S Scaling to Nearly 10,000 Variables"
-    (`https://www.prnewswire.com/news-releases/quantum-computing-inc-announces-dirac-3s-scaling-to-nearly-10-000-variables-302895913.html`);
-    QCi's "Dirac-3S technical reference" learning module
-    (`https://quantumcomputinginc.com/learn/module/dirac-3s-technical-reference`);
-    QCi's Dirac-3 product page
-    (`https://quantumcomputinginc.com/products/systems/dirac-3`); and "Do
-    a deep dive on quantumcomputinginc.com for anything new since last
-    scrape." The original request also said the research comes "before any
-    further usage of Dirac-3 qpu seconds". Sprint 8 Task C read the guide
-    only. The four items are carded as F71 (team lead, Q1 = 2; F70 is skipped because the
-    workflow quotes the consumer repository's F70) and run as
-    Sprint 8 Task G.
-- Scope: read the guide in full and enter it as a source; for each
-  Dirac-3 assertion from F45 (the variable ceiling, the 200-to-1 analog
-  resolution, the 0-to-16 integer bound and the 949 / 954 level count,
-  the summation constraint, the measurement loop), record whether the
-  Dirac-3S guide confirms, changes or supersedes it, as a relation to the
-  existing assertion, never an edit of it; new Dirac-3S claims as
-  `vendor-self-claim` with page anchors; the team lead's listed items.
-- Acceptance: the guide read in full (read row and SHA-256); every F45
-  Dirac-3 assertion classed against the guide (confirmed, changed,
-  superseded, or not addressed); every quote verified verbatim against the
-  local copy by test; the team lead's items each answered or carded.
-- Depends on: F63 (same QCi source family; can run in the same task).
-
 ### Carded during Sprint 8 (2026-10-10 onward)
 
-**F67. F39 release for Sprint 8: add Haiku 5.5 and re-verify the tiers (~30m) Priority 10** (NEW 2026-10-10, team lead at Sprint 8 scope selection)
-- Phase: Process (released copy of the permanent F39)
-- Platform: `.claude/model_assignment_heuristics.json`,
-  `docs/SPRINT_PLANNING.md` (team roles table),
-  `tests/test_model_assignment_heuristics.py`; Anthropic's models page
-- Team lead, 2026-10-10: "F39 as Haiku 5.5 was released and we will want
-  to include in the list of models".
-- **Facts at carding (snapshot as of 2026-10-10, models page)**: Claude
-  Haiku 5.5, `claude-haiku-5-5`, "for high-volume, latency-sensitive tasks
-  such as classification, extraction, and routing"; pricing "From $0.10 /
-  input MTok, From $0.50 / output MTok" (Sonnet 5.5: $2 / $10); 1M context,
-  128K output; retirement not sooner than 2027-10-07. The heuristics file's
-  haiku tier still names Haiku 4.5 (retiring not before 2026-10-15), and the
-  Developers role has been on Sonnet 5.5 since F59.
-- Acceptance: F39's five release steps; the haiku tier names Haiku 5.5 with
-  the date checked; the Developers role per the plan's decision; the test
-  green on evidence.
-- Depends on: nothing
-
-**F68. The door misses two identifier forms: old-style arXiv ids and DOIs with parentheses (~1h) Priority 64** (NEW 2026-10-12, found in Sprint 8 Task F)
+**F68. The door misses two identifier forms: old-style arXiv ids and DOIs with parentheses (~1h) Priority 40** (NEW 2026-10-12, found in Sprint 8 Task F)
 - Phase: Sourcing / intake
 - Platform: `store/citations.py` (`parse_access`), `scripts/intake.py`
 - Found running F61 against the Massoli list (2026-10-12): `arXiv:quant-ph/0405098`,
@@ -652,7 +499,7 @@ estimates are `[no-history]`.
   injection; the five Massoli entries re-run through F61's script.
 - Depends on: none
 
-**F69. Enter the Cerezo NonArxiv paper, "Key questions for the quantum machine learner to ask themselves" (~20m) Priority 66** (NEW 2026-10-13, team lead at Sprint 8 Manual Validation, Q8 = 1; found in Sprint 8 Task E)
+**F69. Enter the Cerezo NonArxiv paper, "Key questions for the quantum machine learner to ask themselves" (~20m) Priority 42** (NEW 2026-10-13, team lead at Sprint 8 Manual Validation, Q8 = 1; found in Sprint 8 Task E)
 - Phase: Sourcing / intake
 - Platform: `scripts/intake.py`; the local file
   `D:\Data\Harold\EvidenceBasedDB\QMLPapers\NonArxiv\Cerezo_2020_Key-questions-for-the-quantum-machine-learner-to-ask-themselves.pdf`
@@ -663,6 +510,112 @@ estimates are `[no-history]`.
   search, or the record entered by local path plus SHA-256; entered at
   `seen` through the door with `found_via` naming the QMLPapers folder; or
   recorded as out of scope, with the reason.
+- Depends on: none
+
+**F78. Ceiling estimation: read the whole CE group in full and enter it, so the store answers "can this dataset or problem be done better?" (~7h) Priority 10** (NEW 2026-10-14, team lead EDB query, Q1 = 1, Q3 = 2 everything in full, Q4 = 1 first task of Sprint 9; TARGET: Sprint 9)
+- Phase: Content / reading
+- Platform: the 31 records whose disposition names `[CE-n]` (the HSBC
+  Phase 2 bibliography's "Ceiling estimation / Bayes error" group); local
+  copies in `D:\Data\Harold\EvidenceBasedDB\Papers\` and `References\`;
+  a new `scripts/sprint9_f78_ceiling_reading.py` (dry run by default,
+  verified backup on `--apply`, idempotent)
+- Team lead, 2026-10-13: "did we find the paper that proposes/finds a
+  theoretical optimum for any ML ... cannot be any more than X ... confusion
+  matrix, AUPUC or other", then "it might not have been ML, but an
+  optimization problem"; 2026-10-14: "add all of them to the store, read
+  them all and update the database", and "is there a way to find the
+  maximum, near maximum predictions or can't be better than... on any ML
+  dataset and/or any optimization problem. This will be helpful at least on
+  wether further improvement can be done on a dataset or if a better
+  dataset is needed."
+- **Facts at carding (snapshot as of 2026-10-14, read only)**: 31 CE
+  records; 1 read (McDermott, CE-5); 6 read on 2026-10-13 and not yet
+  recorded (Boyd, Dhama, Butt and Tschirschwitz in full; Zhao, CE-7, and
+  Ushio in part); 14 unread ceiling or Bayes-error papers (11 with local
+  copies; Chen 2025, Te Sun 1994 and Thanh 2026 publisher-only); 3
+  synthetic-data papers (Allen, Altman, Ostman); 7 repositories or a
+  handbook. Not in the store: Ishida et al., ICLR 2023 (arXiv:2202.00395)
+  and Theisen et al., NeurIPS 2021 (arXiv:2106.03357).
+- Scope: every item read in full (Q3 = 2), repositories by README and
+  code; each read recorded in `paper_reads`; Zhao and Ushio finished; the
+  ceiling, bound and method claims entered as assertions with section
+  anchors (Butt's 0.451 F1 ceiling with the gap between its abstract and
+  its Theorem 1 and its Table IV exceedance; Tschirschwitz's LVIS bound;
+  Zhao's F-score and BER bounds; Boyd's AUPRC minimum); `access` pointed
+  at the local copy plus the identifier; Ishida and Theisen entered
+  through the door (two serial arXiv requests inside the cap); each
+  publisher-only paper tried once and recorded if unobtainable.
+- **Local copies (team lead, 2026-10-14: "also include adding any papers
+  that are not downloaded as PDF's to the local repository in an
+  appropriate folder")**: every paper in the group with no local PDF is
+  downloaded into `D:\Data\Harold\EvidenceBasedDB\Papers\` (outside git;
+  the folder that already holds the group's 11 local copies) under its
+  `YYYY-MM_Author_Title.pdf` convention, with its SHA-256 recorded and
+  `access` naming both the identifier and the path. Expected: Ishida,
+  Theisen, Chen 2025, Te Sun 1994, Thanh 2026, Allen 2025; a paywalled one
+  is recorded as such, not downloaded around the paywall. The 7
+  repositories are read on GitHub; a clone into `GitHubRepos\` is asked at
+  planning.
+- Acceptance: every CE record at `read` or carrying a recorded reason it
+  is not; every quote verified verbatim against its local copy by test;
+  a short answer document for the team lead's question (ML ceilings and
+  optimization bounds, each method with its source), with verified and
+  inferred kept apart.
+- Depends on: none
+
+**F79. hsbc-qfraud-phase2 and this repository read each other freely and never write to each other; anything to be written goes as a pasted prompt (~30m) Priority 20** (NEW 2026-10-14, team lead "yes" to carding it, scope stated the same day and corrected the same day; TARGET: Sprint 9)
+- Phase: Process / repository
+- Platform: `CLAUDE.md`, `.claude/hooks/block_sibling_repo_writes.py`, its
+  test, the read-but-never-write memory file, `docs/INTAKE_WORKFLOW.md`
+- **Facts at carding (snapshot as of 2026-10-14)**: `kimmeyh/hsbc-quantum-fraud-2026`
+  (Phase 1) is archived; the active consumer is `kimmeyh/hsbc-qfraud-phase2`
+  (Sprint 26, PR 21 open; private, like this repository). CLAUDE.md still
+  names the archived repository as the first consumer, and the
+  sibling-write rule and hook list only `spamfilter-multi` and
+  `hsbc-quantum-fraud-2026`.
+- Team lead, 2026-10-14: "hsbc-qfraud-phase2 will be on ongoing consumer
+  of the EvidenceBasedDB - it will read it and reference the library/store
+  of papers, but never write to this repository - any transfer will be via
+  prompt (it will write a prompt and I will copy/paste it into this
+  session)). The EvidenceBasedDB is also a consumer of hsbc-qfraud-phase2,
+  in that it will run QML tests/experiments against
+  QC/photonic/entropy/reservior simulators and devices and those could be
+  valuable additions to the EvidenceBasedDB. But this session cannot write
+  to hsbc-qfraud-phase2 - any transfers to hsbc-qfraud-phase2 would be via
+  prompts developed here and then pasted into the hsbc-qfraud-phase2
+  claude session." Corrected the same day: "they are both consumers of
+  each other and reads are permitted without direct prompts from the
+  other - so each could read from each other, but cannot write to each
+  other".
+- Scope: (1) CLAUDE.md names Phase 2 as the consumer, keeps Phase 1 as
+  history, and states the rule: each repository reads the other
+  directly, with no prompt needed; neither writes to the other; a change
+  wanted in the other repository goes as a prompt the team lead pastes; (2) the hook and
+  the rule cover `hsbc-qfraud-phase2` (read freely, never write); (3)
+  inbound: an intake path for Phase 2 experiment results, read directly
+  from the Phase 2 repository (a pasted prompt may point at them, but the
+  files at the named commit are the evidence), each entered with
+  provenance naming the repository, commit and run, and certainty from
+  that evidence;
+  (4) outbound: a prompt shape for answers sent to Phase 2, with each
+  claim's provenance inline (ADR-0005: no citation may depend on this
+  private store resolving); (5) Phase 2's own read-only guard is that
+  repository's change, so a prompt asking for it is drafted here for the
+  team lead to paste.
+- Acceptance: a hook test that a write into the Phase 2 path is blocked,
+  proven to fail by injection; the intake path tried on one real Phase 2
+  result.
+- Depends on: none
+
+**F80. F57 release for Sprint 9: read for claims, first slice of 76 (~3.5h) Priority 70** (NEW 2026-10-14, released from the permanent F57 at Sprint 9 scope selection; slice widened 2026-10-15 at approval, Q7 = 2)
+- Phase: Sourcing / extraction (released copy of the permanent F57)
+- Platform: the store; the 26 records at `seen` or `screened` under
+  `hsbc-2026`, `platform:dirac-3` and `platform:dirac-3s` (snapshot as of
+  2026-10-14), none in the CE group, plus the 50 most-cited `qml` records
+  at `seen` or `screened`
+- Scope per F57's release steps, the slice per Sprint 9 plan Q7 = 2.
+- Acceptance: the slice screened; every promoted record read and
+  yielding; every refused one with its reason.
 - Depends on: none
 
 **F74. Re-check correctness: a partial answer must not reset the 12-month clock, and a tool failure must not read as the paper's fault (~1.5h) Priority 30** (NEW 2026-10-13, PR #77 silent-failure review; TARGET: Sprint 9)
@@ -689,87 +642,106 @@ estimates are `[no-history]`.
   paper; both proven to fail by injection.
 - Depends on: F64 (done)
 
-**F71. F65's four items: the Dirac-3S release, technical reference and product page, and what is new on QCi's site since the 2026-09-24 scrape (~3h) Priority 25** (NEW 2026-10-13, team lead at Sprint 8 Phase 7, Q1 = 2: "add as backlog item, fully plan, sprint card, execute"; TARGET: Sprint 8, Task G)
-- Phase: Content / platform research
-- Platform: the three links from F65's recovered list; QCi's sitemap
-  (`https://quantumcomputinginc.com/sitemap.xml`, 2,854 URLs on
-  2026-10-13; robots.txt allows all); the 2026-09-24 scrape at
-  `D:\Data\Harold\EvidenceBasedDB\References\QCi-site\` (546 files) as the
-  baseline; new copies under `References\QCi-site_2026-10-13\` (outside
-  the repository)
-- Team lead, 2026-10-10 (recovered 2026-10-13, see F65): the three links,
-  and "Do a deep dive on quantumcomputinginc.com for anything new since
-  last scrape", before any further use of Dirac-3 QPU seconds.
-- Scope: (1) the PR Newswire release, (2) the Dirac-3S technical reference
-  module, (3) the Dirac-3 product page, each saved locally, entered as a
-  source (local path plus URL) and read in full; (4) the site diff:
-  pages in the sitemap and not in the scrape (new), pages in both whose
-  visible text changed (changed), scraped pages no longer listed (gone),
-  and new software-package versions; the Dirac-related new or changed
-  pages read in full, the rest listed with their date. New Dirac-3S claims
-  as `vendor-self-claim` under `platform:dirac-3s` with section anchors,
-  each relation to an existing assertion recorded, never an edit of it.
-- Acceptance: the four items each answered in a dated report
-  (`docs/sprints/SPRINT_8_F71_QCI_SITE_CHECK.md`) with the three computed
-  lists; every quote verified verbatim against its local copy by test; any
-  admission-against-interest candidate held for the team lead (Class 2).
-- Depends on: F65 (done)
+### Carded during Sprint 9 (2026-10-14 onward)
 
-**F66. Make develop the default branch: a git-flow model with main as the release branch (~1h) Priority 20** (NEW 2026-10-10, team lead at Sprint 8 Phase 1.4; TARGET: Sprint 8)
-- Phase: Process / repository
-- Platform: GitHub repository settings (`gh repo edit`),
-  `.github/workflows/ci.yml`, the sprint docs and scripts that name a
-  branch
-- Team lead, 2026-10-10: "add to backlog and target for next sprint -
-  switch the default branch from main to develop". The model: develop is
-  the GitHub default, where feature work is integrated, and feature and
-  sprint branches open PRs into it; main is the release branch, changed
-  only by a PR from develop to main that the team lead merges, and each
-  release merge is tagged.
-- **Facts at carding (snapshot as of 2026-10-10, read only)**: the default
-  branch is `main`; `develop` and `main` both exist on origin; the one CI
-  workflow runs on `pull_request` into `develop` only, so a release PR into
-  `main` is not tested today; no `dependabot.yml`.
-- The team lead's instructions, kept in their three phases:
-  - Phase A, inspect and report, change nothing: the default branch;
-    whether `develop` exists locally and on origin; commits on each side
-    the other lacks (`git rev-list --count` both ways), and whether main's
-    extra commits change any file (`git diff --stat <merge-base>
-    origin/main`); open PRs and their bases; CI workflows and their
-    triggers, noting any that start or stop running when the default
-    changes; `dependabot.yml`'s `target-branch`, branch protection or
-    rulesets (a 403 on a private free repository means none), CODEOWNERS;
-    every branch name in scripts, hooks, docs and tests ("main", "master",
-    "develop", "default branch", "--base", "origin/HEAD"), each classed as
-    must change, fine as is, or history (records of past events are never
-    edited). Findings as bullets, then a numbered list of proposed
-    changes; stop for approval.
-  - Phase B, approved changes only: create `develop` from main only if it
-    is missing; if main has commits with real file changes that develop
-    lacks, stop and ask (never merge main into develop without approval);
-    `gh repo edit --default-branch develop`, then `git remote set-head
-    origin -a`, verified with `gh repo view`; CI on `pull_request` into
-    develop AND main, so release PRs are tested; Dependabot (if present)
-    `target-branch: develop`; open PRs into main that are feature work are
-    listed and retargeted only with approval (`gh pr edit N --base
-    develop`); fix the "must change" hits and write down the release step:
-    "PR develop -> main, merged by the owner, then tag the merge." Edits on
-    a feature branch with a PR into develop; the suite runs before each
-    commit; commit messages state no test results.
-  - Phase C, verify and report: the default is develop (`gh repo view
-    --json defaultBranchRef`); `gh pr create` with no `--base` targets
-    develop; CI triggers include develop and main; a note that "Closes
-    #N" now closes issues when a PR merges into develop, since GitHub
-    reads the keyword only on PRs into the default branch. Report as
-    bullets: what changed, what was left alone and why, any decision
-    still open.
-- Standing limits: no PR merged and no branch deleted by Claude; every
-  decision a plain numbered list answered by one digit.
-- Acceptance: Phase C's checks all pass; the release step written in the
-  workflow docs; a test that fails if `ci.yml` stops triggering on either
-  branch, proven by injection.
-- Depends on: none. Best done first in the sprint: the sprint PR's base
-  and its "Closes #N" behavior both follow the default.
+**F81. The code-edit hook blocks read-only `sed -n` commands (~30m) Priority 120** (NEW 2026-10-15, Sprint 9 Task A)
+- Phase: Process / hooks
+- Platform: `.claude/hooks/block_unraw_escape.py` (`_shell_edits_code`)
+- Found 2026-10-15: two read-only commands were blocked as code edits. Each
+  was `sed -n <range>p <code file>; ... | grep -i ...`. The hook's own
+  message says "Reading with sed -n, cat or grep is fine." The likely cause
+  (inferred, not yet tested): the in-place flag search runs over the rest of
+  the command past `;`, so a later `grep -i` reads as `sed -i`.
+- Cost: friction only. The Read and Grep tools work around it. But a guard
+  that blocks correct work trains bypass.
+- Acceptance: the two blocked shapes pass; `sed -i` on a code file is still
+  blocked; both proven by injection.
+- Depends on: none
+
+**F82. Decide how far the never-write hook should go against evasive command forms (~1h) Priority 130** (NEW 2026-10-15, Sprint 9 Task A, third automated security review)
+- Phase: Process / hooks
+- Platform: `.claude/hooks/block_sibling_repo_writes.py`
+- Three automated security reviews of the Phase 2 extension (2026-10-15)
+  each found more forms a regex misses. Fixed the same day: `git -C`
+  writes, PowerShell write cmdlets, `tee`, `sed -i`, a fail-closed git read
+  list, write-capable options on reads, and `git` after a quote or
+  backtick. Still open: abbreviated long options (`--outp`) and short-option
+  clusters containing `O`; pager, editor and config environment variables
+  (`GIT_PAGER`, `GIT_CONFIG_*`, `$env:` assignments); `--ext-diff` and
+  `--textconv`; command names built from strings or variables (`iex`,
+  `& (...)`, `$cmd`).
+- The decision (Class 1): the hook's stated threat model is accidental
+  writes by this repository's own sessions, not evasion. Option 1 keeps
+  that model and closes only forms a session might type by accident.
+  Option 2 makes every shell command that names a guarded path
+  fail-closed unless it matches a short read allowlist, which blocks more
+  legitimate reads.
+- Depends on: none
+
+**F83. Source per-instance bounds for optimization problems (~1h) Priority 140** (NEW 2026-10-15, Sprint 9 Task E answer document, section 5)
+- Phase: Sourcing / reading
+- Platform: the store; `docs/research/ceilings-ml-and-optimization.md`
+- The answer document's optimization section has two verified routes
+  (minimax lower bounds over a class; instances with a known or best-known
+  optimum). The standard per-instance certificate (a relaxation or dual
+  bound, and the gap an exact solver reports) is stated there as general
+  practice with no source in the store.
+- Acceptance: primary sources for relaxation and duality bounds (for
+  example a linear or semidefinite relaxation text and a solver's gap
+  definition) entered and read; section 5 point 5 rewritten as verified,
+  with the store ids, as a dated amendment.
+- Depends on: none
+
+**F84. Nine QCi records name Dirac-1 but are tagged Dirac-3 (~1h) Priority 150** (NEW 2026-10-15, Sprint 9 Task G)
+- Phase: Store correction
+- Platform: the store (`record_contexts`, `contexts`)
+- Eight QCi application pages name Dirac-1: seven state "Device: Dirac-1"
+  in their header (dimensionality reduction, feature selection, graph
+  partitioning, max-cut, portfolio optimization, set partitioning,
+  traveling salesman), and the risk-based UAS trajectory page names Dirac-1
+  throughout its body (Dirac-3 only as future work). The QC-7 article names
+  Dirac 1 and never Dirac-3. All nine are
+  tagged `platform:dirac-3`. The store has no Dirac-1 context, so Task G
+  refused their figures and left them at `seen`.
+- Acceptance: a decision on a Dirac-1 context (add `platform:dirac-1`, or
+  retag to a general QCi context), the nine records retagged with the
+  reason, and their first-pass assertions
+  (`manifests/sprint9_f80_reads/group_j2.json` and `group_j3.json`)
+  re-checked and entered against the right context.
+- Depends on: none
+
+**F85. Enter Phase 2's Dirac-3S verification (F142 there) (~45m) Priority 160** (NEW 2026-10-15, Sprint 9 Manual Validation Q5 = 2)
+- Phase: Inbound evidence (F79)
+- Platform: the store; `hsbc-qfraud-phase2` read only
+- Phase 2 shared back on 2026-10-15: the store's B4 records cover Dirac-3
+  only, and Phase 2's `docs/phase2/F142_DIRAC3S_VERIFY.md` (read at commit
+  c141a57) shows Dirac-3S returning B4's reference optimum in all 8
+  samples on seeds 42 and 43 (weight cosine 0.999993 and 0.9999999,
+  against Dirac-3's 0.895 and 0.901), returned weights far finer than the
+  0.005 step that 200:1 implies (the cause inferred as post-processing,
+  marked unverified there), test AUPRC unchanged, and per-sample cost at
+  relaxation schedule 2 for 91, 560 and 833 variables. Two fits: Phase 2
+  calls the result descriptive, not a test.
+- Acceptance: the document re-read at the commit current when the work
+  starts (it was revised after review the day it was written); 3 or 4 HW
+  assertions entered by the inbound path of Sprint 9 Task A, every quote
+  checked by a test against the file at that commit; each related to
+  `dirac3s-analog-resolution-about-200-to-1`,
+  `dirac3s-error-correction-is-a-post-processing-step` and
+  `dirac3s-time-per-sample-by-schedule` as the text supports.
+- Depends on: none
+
+**F86. One paper's primary source never answered: the Zenodo record (~15m) Priority 170** (NEW 2026-10-15, Sprint 9 Manual Validation Q2 = 2)
+- Phase: Re-check (ADR-0005 A9)
+- Platform: the store; `store/recheck.py`
+- `sepulveda-jimenez-2026-optimality-generalization-quantum-oracle-sketching`
+  (DOI:10.5281/zenodo.19985473) has probes, but only the HTTP probe
+  answered; DataCite, its primary source, never did, so under A9 it stays
+  due.
+- Acceptance: one DataCite request for the DOI; if it answers, the probe
+  is recorded and the clock resets; if not, the reason is recorded and the
+  record's access or provider routing is corrected.
+- Depends on: none
 
 ## Design documents governing this repository
 

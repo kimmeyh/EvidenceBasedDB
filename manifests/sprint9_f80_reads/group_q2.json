@@ -1,0 +1,434 @@
+{
+ "papers": [
+  {
+   "record_id": "harrow-2009-quantum-algorithm-linear-systems-equations",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2008-11_Harrow_Quantum-Algorithm-for-Linear-Systems-of-Equations.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "The HHL quantum algorithm that prepares a state proportional to the solution of a sparse linear system Ax=b, with a BQP-completeness argument for its optimality.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "hhl-runtime-kappa2-logn-over-eps",
+     "value": "For an s-sparse, efficiently row-computable N x N matrix with condition number kappa and an efficiently preparable |b>, the algorithm outputs a state |x> approximating A^-1 |b> to additive error epsilon in time roughly kappa^2 log(N)/epsilon (times s^2 and polylog factors). The paper presents this as an exponential speedup over classical methods only when kappa and 1/epsilon are polylog(N), and only for estimating an expectation value of x, not for reading out x.",
+     "anchor": "Introduction (p.2) and Section II Algorithm (p.3-4); error bounds proved as Theorem 1 in Appendix A (p.6-7)",
+     "quotes": [
+      "In this case, our runtime will scale as κ2 log(N )/ǫ, where ǫ is the additive error achieved in the output state |x .",
+      "Alternatively, our algorithm could be a subroutine in a larger quantum algorithm of which some other component is responsible for producing |b ."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Runtime and error bound are derived in the appendix (Theorem 1); the advantage rests on sparsity, cheap preparation of |b>, small kappa and loose epsilon, none of which is shown to hold for typical ML data.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "hhl-output-is-state-not-vector",
+     "value": "The algorithm returns a quantum state |x> encoding the solution, not the classical vector x. Reading out all N components would need at least N repetitions, so the speedup applies to estimating a feature such as an expectation value of x with an operator M.",
+     "anchor": "Introduction (p.2-3)",
+     "quotes": [
+      "Clearly, to read out all the components of x would require one to perform the procedure at least N times.",
+      "However, often one is interested not in x itself, but in some expectation value xT M x, where M is some linear operator"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Stated directly by the authors as the scope of the task the algorithm addresses.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "hhl-matrix-inversion-bqp-complete-no-big-improvement",
+     "value": "Matrix inversion of this form is BQP-complete: a poly(n)-gate quantum circuit on n qubits can be simulated by inverting an O(1)-sparse matrix. Under standard complexity assumptions this means the kappa dependence cannot be made polylogarithmic (that would give BQP=PSPACE) and the algorithm cannot be substantially improved.",
+     "anchor": "Section III Optimality and the reduction (p.4)",
+     "quotes": [
+      "If the run-time could be made polylogarithmic in κ, then any problem solvable on n qubits could be solved in poly(n) time (i.e. BQP=PSPACE), a highly unlikely possibility.",
+      "The reduction from a general quantum circuit to a matrix inversion problem also implies that our algorithm cannot be substantially improved (under standard assumptions)."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The reduction is given in the paper; the consequences depend on unproven complexity-theoretic conjectures such as BQP not equal to PSPACE.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "cao-2018-quantum-chemistry-age-quantum-computing",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2018\\Cao-et-al._2022_Quantum-Chemistry-in-the-Age-of-Quantum-Computing__1812.09976.pdf",
+   "read_extent": "partial",
+   "partial_detail": "About 157 pages. Read in full: abstract, table of contents, Section 1 Introduction, Section 3 Computational complexity (3.1-3.3 up to the vibronics motivation), Section 5 opening and 5.1 opening, 5.1.1 first part, 5.1.2 opening, 5.1.3 optimization methods, 5.3.1 opening, and Section 6 Summary and outlook. Read only the opening of Sections 2.3 and 4. Skipped the detailed bodies of Sections 2.1-2.2, 4.1-4.2, most of 5.1.1-5.2 and Appendices A-C and the reference list.",
+   "what_it_is": "A pedagogical review of quantum algorithms for quantum chemistry covering phase estimation, Hamiltonian simulation, VQE and related NISQ methods.",
+   "bears_on_context": "none",
+   "why_not": "Subject is quantum chemistry; only the VQE and variational-ansatz material touches variational quantum machine learning, so the assertions are limited to those transferable points.",
+   "assertions": [
+    {
+     "id_suggestion": "cao-unstructured-ansatz-poor-convergence-hha-no-theory",
+     "value": "The review states that, citing McClean et al., sufficiently random parameterized circuits have barren plateaus, so unstructured ansatze give poor optimizer convergence. It also states that there is no theoretical evidence either way on whether hardware heuristic ansatze can efficiently approximate many-electron wave functions.",
+     "anchor": "Section 5.1.1 Ansatze for state preparation (p.78-80)",
+     "quotes": [
+      "This implies that using arbitrary or unstructured ansatze will lead to poor convergence of the optimization routine.",
+      "to date, there lacks theoretical evidence one way or the other regarding their ability to"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Review statement that restates a cited result and an acknowledged gap; no new proof here.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "cao-worst-case-hardness-does-not-preclude-heuristics",
+     "value": "Complexity classes describe worst-case hardness. Problems such as Hartree-Fock (NP-complete) and the ground state of local Hamiltonians (QMA-complete) are hard in the worst case, yet heuristics work in practice, and the authors note chemistry Hamiltonians are more restricted than the general case in the hardness results.",
+     "anchor": "Section 3 Computational complexity, intro, 3.1 and 3.2 (p.35-40)",
+     "quotes": [
+      "Complexity classes account for the worst-case instances of a problem, even if these instances may rarely occur in practice.",
+      "Another cause for optimism in light of the QMA-completeness of the ground state problem for general local Hamiltonians is that the Hamiltonians occurring in quantum chemistry problems are more restricted than the general setting considered in the computational complexity results"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "The hardness results are cited from other papers; the optimism about restricted instances is the authors' opinion.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "cao-phase-estimation-needs-qec-not-near-term",
+     "value": "Quantum phase estimation for ground-state energies needs quantum error correction and is therefore not feasible on near-term devices; VQE-type hybrid methods are the NISQ alternative.",
+     "anchor": "Section 6 Summary and outlook (p.128)",
+     "quotes": [
+      "Although promising, this method requires the use of quantum error correction to properly function, and is therefore not feasible using near-term quantum devices."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Authors' summary judgement; hardware-dependent and time-sensitive as of the 2018 submission.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "cao-quantum-utility-timing-forecasts-wide",
+     "value": "The authors report that forecasts of when quantum computers solve useful problems range from 2 to 5 years (most optimistic) to 15 to 20 years (more conservative), as of the 2018 submission, and call any forecast uncertain.",
+     "anchor": "Section 6 Summary and outlook (p.130)",
+     "quotes": [
+      "The more conservative estimates predict that this crossover will occur in 15 to 20 years",
+      "However, the most optimistic estimates predict that quantum computers will solve useful problems in 2 to 5 years"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Forecasts are cited secondhand and dated; the 2018 horizon has since been overtaken by events.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "cerezo-2021-cost-function-dependent-barren-plateaus",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2020-01_Cerezo_Cost-function-dependent-barren-plateaus-in-shallow-parametrized-quantum.pdf",
+   "read_extent": "full",
+   "partial_detail": "Read abstract, results, discussion and methods in full; the supplementary proofs are not in the file beyond the sketch in Methods.",
+   "what_it_is": "Proves that global cost functions give barren plateaus even for shallow alternating-layered ansatze while local cost functions keep gradients at worst polynomially small for O(log n) depth, with quantum autoencoder simulations up to 100 qubits.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "cerezo-global-cost-barren-plateau-shallow",
+     "value": "For an alternating layered ansatz whose blocks form local 2-designs, the variance of the gradient of a global cost function is upper bounded by a quantity that decays exponentially in the number of qubits n even for shallow circuits (depth polylog in n), for block size m at least 2.",
+     "anchor": "Main results: Theorem 1 and Corollary 1 (p.4-5); Discussion (p.8)",
+     "quotes": [
+      "Theorem 1 presented a universal upper bound on the variance of the gradient for global cost functions, i.e., when O is a global operator.",
+      "Corollary 1 stated the asymptotic scaling of this upper bound for shallow ansatzes as being exponentially decaying in n, indicating a barren plateau."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Theorem with proof in the paper, but it assumes exact local 2-design blocks, random initialization and the stated operator forms.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "cerezo-local-cost-polynomial-gradient-log-depth",
+     "value": "For the same ansatz and an m-local cost function, the gradient variance is lower bounded by a term that decays only polynomially in n when the depth is O(log n), provided at least one cost term has a non-vanishing overlap with the input state. No guarantee holds if the input state is maximally mixed on the relevant qubits.",
+     "anchor": "Main results: Theorem 2 and Corollary 2 (p.5)",
+     "quotes": [
+      "Conversely, Theorem 2 presented a universal lower bound on the variance of the gradient for local cost functions, i.e., when O is a sum of local operators.",
+      "Corollary 2 notes that for shallow ansatzes this lower bound decays polynomially in n."
+     ],
+     "kind": "proved",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Theorem with proof; it is a lower bound on variance at initialization, not a guarantee that training converges or beats classical methods.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "cerezo-autoencoder-global-untrainable-above-20-qubits",
+     "value": "In simulations of the quantum autoencoder with two layers of a hardware-efficient ansatz, the global cost could be trained only up to about 20 trash qubits, while the proposed local cost trained at all sizes tested, up to 100 qubits. The ansatz used does not satisfy the theorems exactly.",
+     "anchor": "Numerical results, Fig. 4-5 (p.6-8)",
+     "quotes": [
+      "When nB > 20 we are unable to train the global cost function, while always being able to train our proposed local cost function.",
+      "While each block in this ansatz will not form an exact local 2-design, and hence does not fall under our theorems, one can still obtain a cost-function-dependent barren plateau."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Single simulated task family with finite-shot gradient-free training; results outside the exact scope of the theorems.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "orus-2019-quantum-computing-finance-overview-prospects",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2019\\Orus_Mugel_Lizaso_2019_Quantum-computing-for-finance-Overview-and-prospects__1807.03890.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "A survey of how quantum annealing, quantum machine learning subroutines and amplitude-estimation Monte Carlo might apply to financial problems such as portfolio optimization, credit scoring and derivative pricing.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "orus-hhl-exponential-improvement-claimed-qram-missing",
+     "value": "The review says HHL gives an exponential improvement over the best classical alternative and underpins many QML methods, but also states that no quantum RAM exists to encode large data efficiently, which it calls among the largest hardware challenges.",
+     "anchor": "Section II.D (p.4-5) and Section II.F (p.6)",
+     "quotes": [
+      "The Harrow, Hassidim and Lloyd (HHL) algorithm, which solves linear systems of equations, shows an exponential improvement relative to the best classical alternative [32].",
+      "At present, we do not have a quantum RAM (qRAM) capable of",
+      "This is among the largest hardware challenges for quantum computing."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Restates a cited speedup and flags the data-loading assumption; the survey does not test either claim.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "orus-montanaro-near-quadratic-monte-carlo-speedup",
+     "value": "Via quantum amplitude estimation, Monte Carlo estimation of an expectation value can reach the same accuracy with almost quadratically fewer samples, which the review applies to derivative pricing and risk analysis.",
+     "anchor": "Section V (p.9-10)",
+     "quotes": [
+      "Building upon this result, Montanaro showed that Monte Carlo simulations can run on a quantum computer, obtaining the same accuracy as predicted by Eq. (8) but with almost quadratically less samples k [10]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Cited result from Montanaro; a quadratic speedup assumes a quantum oracle for the sampling distribution and fault-tolerant hardware.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "orus-annealer-finance-small-instances-classical-parity",
+     "value": "For optimal trading trajectory, the cited D-Wave experiments solved only small instances, with performance similar to classical hardware; the review's expectation that future chips will overtake classical methods is a prospect, not a result.",
+     "anchor": "Section III.A (p.6)",
+     "quotes": [
+      "While only small instances were implemented, the performance of the quantum annealers was similar to that of classical hardware."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Secondhand report of a prior experiment; the forward-looking sentence is opinion.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "orus-experimental-breakthroughs-needed",
+     "value": "The authors caution that experimental breakthroughs are still needed before a universal quantum processor can surpass present-day supercomputers, and that qubit quality must improve vastly for some of the algorithms surveyed.",
+     "anchor": "Section VI Conclusions (p.10)",
+     "quotes": [
+      "We caution the reader that a number of experimental breakthroughs will be necessary before we can construct a universal quantum processor capable of surpassing present-day supercomputers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Plain statement of limitation by the authors, consistent with 2018-2019 hardware.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "henriet-2020-quantum-computing-neutral-atoms",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\Reviews\\Henriet-et-al._2020_Quantum-computing-with-neutral-atoms__2006.12326.pdf",
+   "read_extent": "full",
+   "partial_detail": "Hardware sections 2.1-2.2 read for content; Boxes and figure vector data skimmed; reference list not read.",
+   "what_it_is": "A review by Pasqal authors of neutral-atom quantum processors, their digital and analog modes, and NISQ applications including optimization and simulation.",
+   "bears_on_context": "none",
+   "why_not": "Mainly a hardware and quantum simulation review from a vendor; only a short paragraph and two statements concern ML or variational algorithms, and the assertions are limited to those.",
+   "assertions": [
+    {
+     "id_suggestion": "henriet-no-proof-variational-speedup-mis-prospect",
+     "value": "The authors state that no clear proof of a speed-up of variational algorithms over the best classical algorithms exists, and that for Maximum Independent Set with several hundred sites neutral-atom devices could outperform the best classical algorithms. The second statement is a prospect, not a measured result.",
+     "anchor": "Section 3.2.1 (p.21-23)",
+     "quotes": [
+      "Even though no clear proof of a speed-up with respect to the best classical algorithms exists",
+      "By solving the MIS problem for several hundreds sites, neutral atom devices could outperform the best existing classical algorithms for this task [72, 74]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Vendor-authored prospective claim with citations; no benchmark in this paper.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "henriet-hhl-ml-resource-requirements-prohibitive",
+     "value": "The review says quantum linear-algebra routines for machine learning (the MIT line of work including HHL) need qubit counts and gate fidelities that are prohibitive for devices available in the short term.",
+     "anchor": "Section 3.2.2 Machine Learning tasks (p.23-24)",
+     "quotes": [
+      "is unfortunately prohibitive for devices that are and will be available in the short term."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Short qualitative statement without numbers; consistent with other reviews but time-sensitive as of 2020.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "henriet-connectivity-lowers-gate-overhead-5-10x",
+     "value": "In Google Cirq routing experiments on random 48-qubit circuits (average of 64 circuits per point), neutral-atom connectivity (2D and 3D with a Rydberg blockade radius) cut the gate-count overhead by a factor of 5 to 10 compared with nearest-neighbor connectivity.",
+     "anchor": "Section 2.2.1, Fig. 8 (p.11-12)",
+     "quotes": [
+      "is 5 to 10 times lower than the one obtained with a device with nearest-neighbor connectivity."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Numerical routing study on random circuits only; says nothing about circuit fidelity or real hardware.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "blekos-2023-review-quantum-approximate-optimization-algorithm",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\Reviews\\Blekos-et-al._2023_A-Review-on-Quantum-Approximate-Optimization-Algorithm-and-its-Variants__2306.09198.pdf",
+   "read_extent": "partial",
+   "partial_detail": "About 75 pages. Read in full: abstract, Section 1, Section 3.3 (speedup and obstacles), 3.4 opening, 3.4.3 empirical evidence, 3.5.1-3.5.2 noise, all of Section 5 Discussion (5.1-5.4) and the opening of Section 6. Read the opening of Sections 2, 3, 3.1, 3.2, 3.4.2, 3.6, 4 and 4.3. Skipped the bodies of 2.1-2.4, 3.1 variant subsections, 3.2.2-3.2.5, 3.4.1-3.4.2 theorem catalogue, 3.5.3, 3.6, 4.3 tables, the Section 6 guide details and references.",
+   "what_it_is": "A review of the Quantum Approximate Optimization Algorithm and its variants, covering ansatz variants, parameter optimization, speedup evidence, solution quality bounds, noise, hardware, and small MaxCut experiments.",
+   "bears_on_context": "qml",
+   "why_not": "QAOA is a variational algorithm for combinatorial optimization rather than learning, so it bears on QML mainly through variational training, barren plateaus and quantum-advantage evidence.",
+   "assertions": [
+    {
+     "id_suggestion": "blekos-qaoa-general-advantage-open-question",
+     "value": "The review concludes that classical solvers remain highly competitive across a wide range of optimization problems and that a general and definitive quantum advantage with QAOA remains an open question.",
+     "anchor": "Section 5.1 Summary of Analysis (p.54)",
+     "quotes": [
+      "classical solvers remain highly competitive in solving a wide range of optimization problems, making it challenging to achieve quantum advantage with QAOA.",
+      "Therefore, attaining a general and definitive quantum advantage with QAOA remains an open question."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Authors' synthesis of the literature they surveyed; matches the hedged findings reported across sections.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "blekos-near-term-speedup-unlikely-parameter-optimization",
+     "value": "The review reports, citing Guerreschi and Matsuura among others, that quantum speedup with QAOA on near-term devices is unlikely, mainly because optimizing the variational parameters of large QAOA circuits is hard. Barren plateaus compound this.",
+     "anchor": "Section 5.1 Efficiency and performance (p.53); Section 3.3.2 (p.29-30)",
+     "quotes": [
+      "Despite this, quantum speedup with QAOA on near-term devices is unlikely [151], primarily due to challenges in optimizing the variational parameters in large QAOA circuits"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Review statement resting on cited resource estimates for a minute-scale runtime budget; not re-derived here.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "blekos-noise-limits-qaoa-depth-and-advantage",
+     "value": "The review states that, with noise at constant error rate, QAOA circuits with more than logarithmic depth are unlikely to give any quantum advantage without significantly improved hardware or error correction, and that theoretical and empirical studies suggest advantage is unlikely at current noise levels.",
+     "anchor": "Section 3.5.2 Quantum advantage in the presence of noise (p.42-43); Section 5.1 Hardware considerations (p.54)",
+     "quotes": [
+      "Therefore, it is unlikely that QAOA circuits with more than logarithmic depth could lead to any quantum advantage without significantly improved quantum hardware or error correction."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Heuristic argument combining cited depth-scaling and noise-decay results; not a theorem in this paper.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "blekos-ebadi-rydberg-superlinear-speedup-limited-scope",
+     "value": "Citing Ebadi et al., QAOA on 2D Rydberg atom arrays (up to 289 qubits, 115 random graphs) showed a superlinear speedup over simulated annealing for Maximum Independent Set, but only for graph instances in the deep-circuit regime, and whether it generalizes is open.",
+     "anchor": "Section 3.3.1 Speedup potential (p.28-29)",
+     "quotes": [
+      "QAOA exhibited a superlinear quantum speedup compared to SA.",
+      "However, it should be noted that the observed speedup is specific to graph instances in the deep-circuit regime, and it remains an open question whether this advantage can be extended to more general cases."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Experimental result reported secondhand against simulated annealing only, with the authors' own scope caveat.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "grant-2018-hierarchical-quantum-classifiers",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2018-04_Grant_Hierarchical-quantum-classifiers.pdf",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "Tree tensor network and MERA quantum circuits are trained as binary classifiers on Iris, 8-component PCA MNIST and synthetic entangled quantum data, with a noise study and an ibmqx4 deployment.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "grant-mera-outperforms-ttn-classifiers",
+     "value": "In simulations of 8-qubit circuits on binary MNIST tasks (images reduced to 8 PCA components), MERA classifiers achieved higher accuracy than TTN classifiers in every case reported, and general or complex-valued unitaries beat the simple gate set. The paper claims no quantum advantage on these classical-data tasks; the experiments are limited to 1D circuits that can be simulated.",
+     "anchor": "Section 2.5 and Table 3 (p.7-8); Conclusion (p.13)",
+     "quotes": [
+      "Circuits based on the Multi-Scale Entanglement Renormalization Ansatz (MERA) outperform simpler tree-like circuits known as Tree Tensor Networks (TTN).",
+      "Because we cannot simulate large 2D MERA circuits, we restrict our experiments to the 1D case."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Five random initializations on small simulated binary tasks; accuracy gaps are modest on some tasks and the data were heavily reduced by PCA.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "grant-quantum-data-needs-ancilla-gates",
+     "value": "On synthetic quantum-state classification (8 qubits, classes defined by circuit depth), a TTN with general two-qubit gates performed no better than random, while a TTN with ancilla-augmented three-qubit gates reached about 58 to 64 percent accuracy. A logistic regression on state amplitudes was near 50 percent, but needs full tomography to be applied.",
+     "anchor": "Section 2.6, Table 4 (p.9-10)",
+     "quotes": [
+      "Results for the TTN with general two-qubit gates are no better than random class assignment in all tasks, indicating the need for a more expressive model.",
+      "The test accuracy was close to 50%, that is, no better than random."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Small synthetic task evaluated in simulation; accuracy is modest and the classical baseline is deliberately handicapped by the tomography requirement.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "grant-noise-resilience-and-ibmqx4-deployment",
+     "value": "A TTN Iris classifier (classes 1 and 2) simulated with a depolarizing channel kept mean test accuracy above 95 percent up to noise parameter lambda 0.07 with 401 shots per point, and a classically trained version was run on the ibmqx4 device on 34 unseen examples. Training used no circuit noise.",
+     "anchor": "Sections 2.7-2.8 (p.10-12)",
+     "quotes": [
+      "but it remained above 95% for depolarizing noise up to λ = 0.07 showing some level of resilience.",
+      "A test set of 34 unseen examples was used to determine accuracy."
+     ],
+     "kind": "estimated",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Single small Iris task, tiny test set, shot-noise sensitive; the model is classically simulable, so it is a proof of principle only.",
+     "context": "qml"
+    }
+   ]
+  }
+ ]
+}

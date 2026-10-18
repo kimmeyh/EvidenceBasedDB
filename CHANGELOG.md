@@ -13,21 +13,293 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-13 (F66, Sprint 8 Task A, PR #84)
+### 2026-10-14 onward (Sprint 9, in progress)
 
-- **process**: F66 (Sprint 8 Task A, #78, PR #84 into develop,
-  2026-10-13) -- develop set as the GitHub default branch; `Closes #N`
-  now closes issues on a merge into develop; the release step (PR
-  develop -> main, merged by the team lead, then tag the merge `sprint-N`)
-  written into workflow 8.1 and SPRINT_PROCESS.md; ADR-0001 A2; CI stays
-  on PRs into develop only (team lead decision); tags `sprint-1` to
-  `sprint-7` pushed on the seven past main merges
-- **docs**: PR #84 review fixes (2026-10-13) -- "team lead", not "owner",
-  merges develop -> main, as everywhere else in the process docs (Copilot);
-  ADR-0001 A2's lead-in now matches its two changes and one decision not
-  to change (Claude code review)
+- **fix**: Review of the I7 commit (2026-10-18) -- the CI stop check could
+  trap a session on a failure it cannot fix; a stop citing a criterion, a
+  "STOP:" line or BLOCKED now reports it. The local-only guard also watches
+  os-level launches and an option's value (`--in=PATH`); its limits
+  (existence checks, collection time, a moved store) are documented. Tests
+  added for the data folder, cwd and arguments, and gh's real fail-open
+  path; injection-proven (Issue #99 / PR #88)
 
-### 2026-10-10 onward (Sprint 8, in progress)
+- **process**: Sprint 9 retrospective I7 (team lead, 2026-10-18, Q1 = 2).
+  Prevention: `tests/conftest.py` gives every test without `live_store`
+  the machine CI sees -- pdftotext and any path under the data folder or a
+  sibling repository raise FileNotFoundError -- so a missing marker fails
+  locally, not on CI. It found a fourth such test at once
+  (`test_resolvers.py`, a sibling-repository read that skipped on CI),
+  now marked. Control: the Stop hook blocks a stop in Phases 5 to 7 while
+  any check on the sprint's PR is failing or running. Both proven by
+  injection (`tests/test_local_only_guard.py`,
+  `tests/test_block_procedural_question_stop.py`) (Issue #99 / PR #88)
+- **fix**: CI red on PR #88 since 2026-10-15 00:31 (070137e), on every push
+  including the Manual Validation hand-over, unnoticed until 2026-10-18:
+  three "every number is in the source" tests (F46, F78, F79) read local
+  PDFs with pdftotext or the local Phase 2 repository without the
+  `live_store` marker CI deselects. Marked; CI green at deb726d (Issue #94)
+- **fix**: PR #88 Copilot review (2026-10-18) -- `view.py paper` computes
+  the whole-store corroboration map once, not once per yielded assertion;
+  test proven by injection
+- **fix**: Review of the post-hand-over commits (2026-10-18) -- a corrected
+  context now replaces the stored ones (added beside them, the wrong one
+  stayed); the F80 script uses `sync_assertion` too (its own list compared
+  six fields); the sync tests cover every compared column and pin the
+  not-compared group (moving a field there turned nothing red); a missing
+  `assertion_fields` row is a named error. Injection-proven
+- **process**: Sprint 9 retrospective I3 and I4 (2026-10-17) -- I3:
+  `store/quotes.py` is the one quote normalizer and check (moved out of a
+  test module); `plain` applies Unicode NFKC, so ligatures and the micro
+  sign fold in one step; the Task E script checks every quote before it
+  writes. Three quote tests compared raw quotes and now normalize both
+  sides. I4: `store.ingest.sync_assertion` compares every `AssertionRecord`
+  field (the list checked against the dataclass on every call) and only
+  adds contexts, documents and relations; the Task E script uses it for
+  both of its syncs (its coordinator sync also skipped the quotes).
+  INTAKE section 26. Tests proven by injection
+- **process**: Sprint 9 retrospective I1 (2026-10-17) -- the Stop hook
+  `block_procedural_question_stop.py` also blocks a status-footer last line
+  whose time is more than 5 minutes from the clock, on every branch and in
+  every phase; it reads `last_assistant_message`, which the Stop input
+  carries. Tests proven by injection
+- **process**: Sprint 9 retrospective I5 (2026-10-17) -- the
+  shell-metacharacter hook's block message leads with the exit-code form
+  (`> log 2>&1; rc=$?`) when the blocked expansion is `${PIPESTATUS[...]}`,
+  blocked in Sprints 8 and 9 alike; behavior tests added, proven by injection
+- **docs**: Sprint 9 retrospective recorded (2026-10-16); team lead: apply
+  I1 and I3 to I5 now, I2 and I6 not needed. PR #88 body carries Closes #89
+  to #99
+- **feat**: Task E's closed papers (Sprint 9 Task E, Issue #93,
+  2026-10-16) -- Chen et al. 2025 read from the team lead's download (12
+  assertions); Han and Verdu 1994 recorded not obtainable; team lead Q6 = 1:
+  its content entered from free sources, Scarlett's equation (108) as a
+  coordinator assertion and Chen, Guntuboyina and Zhang 2016 (JMLR, open
+  access) entered through the door and read in part (9 assertions); the
+  answer document gains a dated addendum. The Task E sync now compares
+  quotes; the quote normalizer expands three more ligatures. INTAKE
+  section 25
+- **feat**: Manual Validation decisions applied (Sprint 9, 2026-10-15) --
+  ADRs approved as proposed; Q1 = 1 recorded on ADR-0004 A9 (an
+  unrecorded-organization pair still counts, labeled; no code change); Q3
+  = 1: the three QCi admission-against-interest assertions upgraded low ->
+  moderate with their cost and the decision (Task G, Issue #95); Q4 = 1:
+  87 F62 candidates entered at `seen` through the door by
+  `scripts/sprint9_f62_enter_seen.py`, 5 retitled preprints by journal DOI
+  after the title check refused them (Task J, Issue #98; INTAKE section
+  24); Q2 = 2 and Q5 = 2 carded as F86 (the Zenodo record) and F85 (Phase
+  2's Dirac-3S verification). Tests injection-proven
+- **fix**: F62 review (Sprint 9 Task J, Issue #98) -- a Semantic Scholar
+  answer counts only for the same title (a wrong-paper answer had won); a
+  second pass for refusals; refused candidates listed apart so a refusal
+  cannot hide a paper; no bonus for a stream's own context, `dirac` and
+  `braket` anchored; books routed to `Books\` under that folder's naming;
+  particles and hyphens kept in file names; the key dropped on a redirect
+  to another host; tests for each, injection-proven, and a vacuous key
+  assertion replaced by an output-file check. Re-run recorded on the F62
+  card
+- **feat**: `view.py paper` shows cites and cited-by (Sprint 9, F55, Issue
+  #96, daf1fa8)
+- **feat**: F62 discovery with the approved rubric (Sprint 9 Task J, Issue
+  #98) -- `scripts/discover_candidates.py` now ranks by citations per year
+  cross-checked against Semantic Scholar (paced, backoff on 429, arXiv
+  fallback), x1.5 for a store-context match, duplicate titles collapsed,
+  unchecked counts after checked ones; writes 25 per stream for review and
+  a hand-download list with every free-copy search; the pilot stays behind
+  `--pilot`. Run of 2026-10-15 recorded on the F62 card. Tests
+  injection-proven
+- **fix**: F55 and F56 review (Sprint 9, Issues #96 and #97) -- the
+  corroboration parser read "Name, I. (Affiliation)" and accented names
+  wrongly, both toward independence: fixed and tested, with organization
+  names matched by leading words; a non-vendor pair with no recorded
+  organizations now says "not compared" (dated corrections to ADR-0004 A9
+  and ADR-0005 A10); a CI round trip exports `corroborated_by`; a rollback
+  test for the migration; injection proofs recorded for nine more tests;
+  one test that could not fail removed
+- **docs**: F51 hold checked (Sprint 9 Task K, Issue #99) -- all three
+  copies of the CVQBoost findings document unchanged (SHA-256
+  `425358a7b4cec71f...`, "Last updated 2026-08-04"); stays HOLD; recorded on
+  the F51 card
+- **feat**: F56, the computed "corroborated" flag (Sprint 9 Task I, Issue
+  #97) -- ADR-0004 A9; `store/resolvers.py` `corroboration`: a supporter at
+  equal or higher certainty that is independent (different papers, named
+  authors, organizations by name and initials; a vendor's own claim needs
+  both organizations named); shown in `scripts/view.py` and exported as the
+  derived `corroborated_by`, never stored and never moving certainty. Two
+  same-source pairs the first build counted on the live store (QCi under
+  two names; two project documents cited by repository name) are now
+  tested cases. 1 of 17 supported assertions flagged (snapshot,
+  2026-10-15). `tests/test_f56_corroboration.py`, injection-proven
+- **feat**: F55, `cites` links (Sprint 9 Task H, Issue #96) -- ADR-0005
+  A10; `cites` added to `source_links` by a table rebuild
+  (`scripts/migrate_sprint9_cites_link_type.py`, backup first) with a
+  `to_id` index; `store/links.py` reads a link from both ends;
+  `scripts/sprint9_f55_cites.py` asked Crossref for 807 DOIs (750 answers
+  carried a reference list; cached outside git) and wrote 5,620 links, 793 of 2,102 papers at an end
+  (snapshot, 2026-10-15); tests for the migration, matching, the cache and
+  a live recompute of every stored link, injection-proven
+- **fix**: F80 review (Sprint 9 Task G, Issue #95) -- fresh-eyes review
+  of 9f71f19: five values corrected (one contradicted its source, one
+  carried a figure from another experiment); vendor descriptions graded
+  MODERATE (only one of seven was); three grades set by what the claim is;
+  Henriet's routing result typed as the vendor's own; Cao and Henriet
+  applicability moved to `qc`, Miri's rationale corrected; Miri and Wang
+  conflicts of interest recorded; the Kaggle dataset-size assertion dropped
+  (a determinate fact already held); a re-apply now syncs quotes, contexts,
+  claim types and provenance, with a live test that the store matches the
+  script; admission-against-interest candidates listed for Manual
+  Validation; F84 card, F65 comment and INTAKE section 23 corrected.
+  233 assertions (snapshot, 2026-10-15)
+- **feat**: F80 slice read and entered (Sprint 9 Task G, Issue #95) --
+  `scripts/sprint9_f80_reading.py`: ten first-pass readers
+  (`manifests/sprint9_f80_reads/`), then the coordinator read every quoted
+  passage in context; 65 of 76 records promoted to `read`, 234 assertions
+  (snapshot, 2026-10-15). The coordinator's read corrected seven values and
+  stripped an unsupported clause from eqc-models. 11 records refused with
+  reasons; the nine that name Dirac-1 are carded as F84. Vendor claims about
+  their own product are graded LOW (see the review fix above for descriptions). The
+  17 new Dirac-3 assertions are classed against the Dirac-3S guide
+  (F65 `CLASSED`). `tests/test_f80_slice_reading.py`, each test proven red
+  by injection
+- **feat**: F80 slice selected and its copies fetched (Sprint 9 Task G,
+  Issue #95) -- `scripts/sprint9_f80_slice.py` records the 76-record slice
+  in `manifests/sprint9_f80_slice.json` (the 26 consumer-context records
+  and the 50 most-cited `qml` records, 263 to 4,662 citations); counts from
+  OpenAlex by arXiv DOI, then by the store's probed journal DOI (1,146 of
+  1,521 counted; Semantic Scholar's unauthenticated batch refused every
+  attempt and is not used; the 375 uncounted are recorded as a limit);
+  `scripts/sprint9_f80_downloads.py` fetched 21 free arXiv copies into
+  `Papers\`, each stamp-checked; one repository shallow-cloned
+- **feat**: F46, the 20 remaining pending facts (Sprint 9 Task F, Issue
+  #94) -- each checked against its primary source and entered, merged or
+  refused with the reason (`FACT_DISPOSITIONS` in
+  `scripts/sprint9_f46_pending_facts.py`): 15 entered (most corrected: the
+  handoff wording overstated its source in 10: nine corrected, one entered in part), 2 merged into assertions
+  already read (F-402, F-604), 3 not entered (F-001: the cited restatement
+  of Holevo does not exist; F-008: the handoff's own arithmetic, Han and
+  Verdu pending; F-603: the repository was never identified). 12 sources
+  promoted to `read` with a subagent row and the coordinator's partial row
+  (Zhao et al. read in part even at first pass; its absence claim carries
+  the search as its scope); 53 assertions; two arXiv PDFs downloaded by
+  `scripts/sprint9_f46_downloads.py` (committed with d14520a); tests check
+  quotes, figures, dispositions, read rows and idempotence, each proven by
+  injection. The answer document's family counts refreshed after the
+  "samples" fix
+- **fix**: F78 fresh-eyes review (Sprint 9 Task E, Issue #93) -- the
+  answer document's false "lowest Bayes error simulated was 1 percent" is
+  replaced by the positive-rate gap it meant (Theisen reports flow-model
+  Bayes errors down to 1.07e-4, checked in Table 1); its verified section no
+  longer restates ideas cut from the values ("its ceiling is knowable",
+  noise "caps accuracy"), which moved to section 5 as inference; one false
+  stored sentence removed (Butt's abstract does give the attack scope);
+  proved results now keep the first-pass reader's stated downgrade (11
+  assertions; Butt's Theorem 1 is moderate), Tschirschwitz's hedge restored
+  (low), Butt's unlike comparison dropped, three unlabeled reader
+  conclusions cut; read-row details now say which papers were re-read after
+  a full read and that absences rest on the first-pass read; the script
+  corrects stored values and read details; the family sort no longer reads
+  "samples" as sampling
+- **docs**: the F78 answer document,
+  `docs/research/ceilings-ml-and-optimization.md` (Sprint 9 Task E, Issue
+  #93) -- the ways to find a ceiling for an ML dataset, each with what it
+  needs and when it fails, citing store assertions; two verified routes
+  for optimization bounds; a computed sort of the store's QML-advantage
+  claims into families (`scripts/qml_advantage_families.py`: optimization
+  is 16 of 85, snapshot 2026-10-15); F46's nine ceiling facts; inferred
+  steps for HSBC kept apart; a test that every cited id is in the store;
+  F83 carded (per-instance optimization bounds have no source yet)
+- **feat**: F78, the ceiling-estimation group read and entered (Sprint 9
+  Task E, Issue #93) -- 28 CE records plus Ishida and Theisen promoted to
+  `read` (29 of the 31 CE records are now at `read`, with McDermott), each with two read rows: a Sonnet 5.5 first-pass read of the
+  whole source (`subagent`) and the coordinator's `partial` read of the
+  opening and every quoted passage in context; Boyd, Dhama, Butt and
+  Tschirschwitz also carry Claude's full reads of 2026-10-13. 140
+  assertions from 257 verbatim quotes, certainty by the GRADE convention
+  (73 high, 3 moderate, 64 low); 2 reader assertions dropped and the
+  readers' own inferences cut from 36 values, each with its reason in
+  `scripts/sprint9_f78_ceiling_reading.py`; 26 local paths added with
+  SHA-256; F46's nine ceiling facts each entered, merged or refused with
+  the reason; Chen 2025 and Han and Verdu 1994 stay `seen`, awaiting the
+  team lead's hand download. Tests check every quote, every figure in a
+  value, the cuts, the read rows and idempotence, each proven by injection
+- **feat**: F48, honest local paths (Sprint 9 Task D, Issue #92) --
+  `scripts/check_local_sources.py` lists every local source that is
+  missing, changed or unhashed (the re-check's own `check_local`, so the
+  two agree) and records a SHA-256 where none was; 112 hashes recorded, so
+  124 of 127 local-access records carry one and 3 are folders (snapshot
+  2026-10-15); a moved-file test and a never-overwrite test, each proven
+  by injection, and a live test that no local file lacks a hash. Found on
+  the way: Task A's Phase 2 record held only the committed blob's hash (LF)
+  while the working copy is CRLF, so it read as changed; its evidence now
+  leads with the working copy's hash
+- **feat**: F74, re-check correctness (Sprint 9 Task C, Issue #91) --
+  ADR-0005 A9: a re-check counts only when the paper's own primary source
+  answered (arXiv for arXiv, Crossref or DataCite for a DOI, the page for a
+  URL, a present file for a local copy); `pdftotext` failures are "tool
+  failure" and a probe that raised is "probe failure", never findings about
+  the paper; each run lists "primary source did not answer (stays due)" for
+  Manual Validation; five tests, each proven by injection. Snapshot
+  2026-10-15: 1 of 2,100 papers has probes but no primary answer
+- **process**: the never-write hook states its threat model (accidental
+  writes, not evasion); F82 carded for the remaining evasive forms the third
+  automated security review listed
+- **fix**: second automated security review of the never-write hook
+  (2026-10-15, Issue #89) -- a git read subcommand that writes through an
+  option (`--output`, `-O`, `--open-files-in-pager`, `-c`, `--config-env`)
+  now blocks when a guarded path appears, and `git` is found after a quote,
+  backtick or brace, not only after whitespace; each proven by injection
+- **fix**: the never-write hook's git check is fail-closed (automated
+  security review of 2b90897, 2026-10-15) -- when a guarded path appears,
+  every git invocation must name a read subcommand (show, log, diff,
+  status, grep, rev-parse and a few more); any other subcommand blocks,
+  whatever global options come first; proven by injection (Issue #89)
+- **feat**: F68 and F69 (Sprint 9 Task B, Issue #90, 070137e) -- the door
+  reads old-style arXiv ids (`quant-ph/0405098`) and DOIs with parentheses,
+  tests proven by injection; the five Massoli entries refused on 2026-10-12
+  entered at `seen` by `scripts/sprint9_f68_massoli_rerun.py` (their
+  `updated_reason` names F61's script, whose entry builder it reuses, with
+  the Sprint 9 tag); the "Cerezo" PDF in QMLPapers\NonArxiv is Nathan
+  Wiebe's New J. Phys. perspective, entered by DOI with its SHA-256
+  (INTAKE_WORKFLOW.md section 20)
+- **fix**: F79 fresh-eyes review (Sprint 9 Task A, Issue #89) -- the
+  never-write hook now blocks `git -C <repo> <write>` and the git verbs
+  that change a tree (checkout, restore, stash, apply, tag), plus
+  Remove-Item, Copy-Item, Move-Item, Rename-Item, tee and `sed -i`, each
+  proven by injection; two inbound assertions corrected ("exact" dropped;
+  the computed means and the unchecked bar basis stated); the inbound
+  script now corrects an existing record whose text changed; a test checks
+  every number in a value against the source; the Phase 2 prompt names
+  the gap as Edit/Write only
+- **feat**: F79, the Phase 2 exchange (Sprint 9 Task A, Issue #89) --
+  `hsbc-qfraud-phase2` named as the active consumer; the never-write hook,
+  its memory file and CLAUDE.md cover Phase 2's repository and Claude Code
+  project directories, test proven by injection; INTAKE_WORKFLOW.md
+  section 19 sets the inbound path (read at a named commit via `git show`)
+  and the outbound prompt shape; first inbound record
+  `hsbc-qfraud-phase2-b4-b5-hardware-result` with four HW assertions, quotes
+  verified against the pinned blob; a prompt drafted for Phase 2 to close
+  its guard's gap on this repository's memory directory; F81 carded (the
+  code-edit hook blocks read-only `sed -n`)
+- **docs**: Sprint 9 plan approved (2026-10-15, team lead) with Q1 to Q9
+  answered; F78's repositories shallow-cloned (Q2 = 2); re-check failures
+  reported at Manual Validation (Q4); the first read-for-claims slice
+  widened to 76 records (Q7 = 2); F57 now releases 74 records per sprint
+  until none remain at `seen` or `screened` (PR #88)
+- **docs**: Sprint 9 Phase 1 (2026-10-14) -- the team lead merged PR #84
+  and PR #77 into develop and PR #86 and PR #87 to main; `sprint-8` tagged
+  on PR #87's merge commit; carry-forward cut `feature/20261014_Sprint_9`
+  from the Sprint 8 branch; sprint status advanced; CHANGELOG reconciled
+- **process**: every PR title starts `Sprint N: ` (team lead,
+  2026-10-14): `Sprint N: <sprint name>`, `Sprint N: F<n> <title>`,
+  `Sprint N: Develop to Main`; workflow 3.3.1 and the release step
+- **docs**: F78 and F79 carded (2026-10-14, team lead) -- F78 reads the
+  whole ceiling-estimation (CE) group in full, enters it, downloads every
+  paper with no local PDF into `Papers\` outside the repository, and
+  answers whether a dataset or optimization problem can be done better;
+  F79 records that hsbc-qfraud-phase2 and this repository consume each
+  other by pasted prompt only, and extends the never-write rule and hook
+  to Phase 2
+
+### 2026-10-10 to 2026-10-14 (Sprint 8, PR #77, merged to develop 2026-10-14 and to main via PR #87 the same day; tagged sprint-8)
 
 - **docs**: Sprint 8 Phase 1 (2026-10-10) -- carry-forward cut
   `feature/20261010_Sprint_8` from the Sprint 7 branch after PR #68
@@ -203,6 +475,29 @@ this project keeps having to replace with a step.
 - **docs**: Sprint 8 close-out (2026-10-13) -- `SPRINT_8_SUMMARY.md` with
   Actuals; master plan Last Completed Sprint and summary row; checklist
   reconciled; retrospective notes Task G
+- **chore**: sprint status note (2026-10-13) -- times corrected to the
+  commit times; the merge-readiness message's omitted F71 question
+  disclosed and recorded; the team lead's EDB query (a proved performance
+  ceiling) answered from six papers read locally, nothing written to the
+  store; Zhao et al.'s JMLR PDF saved beside its CE-7 reference, outside
+  the repository
+- **docs**: F71 Class 2 decided (2026-10-14, team lead = 6) -- none of the
+  four admission-against-interest candidates upgraded; all stay at
+  moderate; the F71 report says so
+
+### 2026-10-13 (F66, Sprint 8 Task A, PR #84)
+
+- **process**: F66 (Sprint 8 Task A, #78, PR #84 into develop,
+  2026-10-13) -- develop set as the GitHub default branch; `Closes #N`
+  now closes issues on a merge into develop; the release step (PR
+  develop -> main, merged by the team lead, then tag the merge `sprint-N`)
+  written into workflow 8.1 and SPRINT_PROCESS.md; ADR-0001 A2; CI stays
+  on PRs into develop only (team lead decision); tags `sprint-1` to
+  `sprint-7` pushed on the seven past main merges
+- **docs**: PR #84 review fixes (2026-10-13) -- "team lead", not "owner",
+  merges develop -> main, as everywhere else in the process docs (Copilot);
+  ADR-0001 A2's lead-in now matches its two changes and one decision not
+  to change (Claude code review)
 
 ### 2026-10-06 to 2026-10-10 (Sprint 7, PR #68, merged to develop 2026-10-10 and to main via PR #76 the same day)
 
