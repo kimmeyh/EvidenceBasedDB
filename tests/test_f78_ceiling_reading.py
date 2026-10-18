@@ -183,9 +183,10 @@ def test_apply_restores_a_quote_that_drifted_in_the_store(live_copy):
     fail by injection, 2026-10-17: with "citation_context" removed from
     store.ingest._SYNC_FIELD_COLUMNS, this test went red (the sync refused
     the record: it no longer knew where that field is stored). LIMIT: that
-    injection proves the refusal, not a silent skip; the silent skip is no
-    longer constructible, because the field list is checked against the
-    dataclass on every call."""
+    injection proves the refusal of an UNGROUPED field. A field moved into
+    the not-compared group is caught instead by
+    tests/test_quotes_and_sync.py, which pins that group and tests every
+    compared column (review of 3a455ce)."""
     from store import connect
     f78 = _script()
     _, a, _ = f78.assertions()[0]

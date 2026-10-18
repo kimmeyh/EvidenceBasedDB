@@ -743,5 +743,7 @@ pastes into a Phase 2 session. Never write the change from here (hook:
   entered calls `store.ingest.sync_assertion(conn, wanted, note, today)`,
   never its own UPDATE over a hand-named list of columns. The field list is
   checked against `AssertionRecord` on every call, so a field cannot be left
-  out (Task E's list left out the quotes). Contexts, documents and
-  relations are only added to, never removed: other steps add them later.
+  out (Task E's list left out the quotes). Documents and relations are only
+  added to, never removed: other steps add them later. A corrected context
+  replaces the stored ones (review of 3a455ce). `sprint9_f78` and
+  `sprint9_f80` both use it.

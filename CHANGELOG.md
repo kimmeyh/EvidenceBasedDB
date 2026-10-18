@@ -15,6 +15,12 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **fix**: Review of the post-hand-over commits (2026-10-18) -- a corrected
+  context now replaces the stored ones (added beside them, the wrong one
+  stayed); the F80 script uses `sync_assertion` too (its own list compared
+  six fields); the sync tests cover every compared column and pin the
+  not-compared group (moving a field there turned nothing red); a missing
+  `assertion_fields` row is a named error. Injection-proven
 - **process**: Sprint 9 retrospective I3 and I4 (2026-10-17) -- I3:
   `store/quotes.py` is the one quote normalizer and check (moved out of a
   test module); `plain` applies Unicode NFKC, so ligatures and the micro

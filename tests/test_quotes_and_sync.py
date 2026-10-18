@@ -11,7 +11,10 @@ Proven to fail by injection, 2026-10-17:
   test (7) and the f78 live-copy drift test went red with "does not know
   where these AssertionRecord fields are stored" -- the Task E gap, now
   refused on the first call instead of passing silently.
-Each restored, green.
+Each restored, green. Review of 3a455ce, injected 2026-10-18: with "units"
+moved from `_SYNC_FIELD_COLUMNS` to `_SYNC_NOT_COMPARED`, the coverage test
+and the units case went red; with the context DELETE removed, the context
+test went red. Restored, green.
 """
 from __future__ import annotations
 
@@ -66,20 +69,41 @@ def test_sync_writes_nothing_when_the_record_matches(synthetic_store):
         conn.close()
 
 
-@pytest.mark.parametrize("change, table, column", [
-    ({"citation_context": '"a corrected sentence" (p.2)'}, "assertion_fields", "citation_context"),
-    ({"value": "a corrected value"}, "records", "value"),
-    ({"provenance": "alpha-2024-first-paper, p.2"}, "records", "provenance"),
-    ({"fidelity": "exact"}, "records", "fidelity"),
-    ({"search_scope": "arXiv listing, 2026-10-17"}, "assertion_fields", "search_scope"),
-])
-def test_sync_brings_every_field_to_the_script(synthetic_store, change, table, column):
+# One corrected value per compared column. test_every_compared_column_is_tested
+# fails when a column is added to, or moved out of, the compared groups
+# without a case here (review of 3a455ce: moving a field into
+# _SYNC_NOT_COMPARED turned nothing red, and only 5 of 13 were tested).
+CHANGES = {
+    "value": "a corrected value",
+    "provenance": "alpha-2024-first-paper, p.2",
+    "evidence_tag": "SIM",
+    "certainty": "moderate",
+    "certainty_reasons": "corrected reasons",
+    "fidelity": "exact",
+    "reading_level": 14,
+    "units": "percent",
+    "rounding": "two decimals",
+    "citation_context": '"a corrected sentence" (p.2)',
+    "derivation": "project",
+    "claim_type": "vendor-self-claim",
+    "search_scope": "arXiv listing, 2026-10-17",
+}
+
+
+def test_every_compared_column_is_tested_and_only_history_is_not_compared():
+    assert set(CHANGES) == set(ingest._SYNC_RECORD_COLUMNS + ingest._SYNC_FIELD_COLUMNS)
+    assert ingest._SYNC_NOT_COMPARED == ("id", "updated", "updated_reason")
+
+
+@pytest.mark.parametrize("column", sorted(CHANGES))
+def test_sync_brings_every_field_to_the_script(synthetic_store, column):
     conn = connect(synthetic_store)
     try:
-        wanted = replace(_stored(conn), **change)
+        wanted = replace(_stored(conn), **{column: CHANGES[column]})
         assert sync_assertion(conn, wanted, "2026-10-17 (test): corrected", "2026-10-17") == [column]
-        key = "record_id" if table == "assertion_fields" else "id"
-        assert conn.execute(f"SELECT {column} FROM {table} WHERE {key} = 'claim-one'").fetchone()[0] == change[column]
+        table, key = (("assertion_fields", "record_id") if column in ingest._SYNC_FIELD_COLUMNS
+                      else ("records", "id"))
+        assert conn.execute(f"SELECT {column} FROM {table} WHERE {key} = 'claim-one'").fetchone()[0] == CHANGES[column]
         updated, reason = conn.execute("SELECT updated, updated_reason FROM records WHERE id = 'claim-one'").fetchone()
         assert updated == "2026-10-17" and reason.endswith(f"corrected (fields: {column})")
     finally:
@@ -97,6 +121,20 @@ def test_sync_adds_relations_and_documents_and_never_removes_them(synthetic_stor
         links = set(tuple(r) for r in conn.execute("SELECT to_assertion_id, relation FROM assertion_relations "
                                  "WHERE from_assertion_id = 'claim-one'"))
         assert links == {("learning-fixture", "supports"), ("claim-two", "contradicts")}
+    finally:
+        conn.close()
+
+
+def test_a_corrected_context_replaces_the_wrong_one(synthetic_store):
+    """Review of 3a455ce: adding the corrected context beside the wrong one
+    left the wrong one in place for good. Proven to fail by injection,
+    2026-10-18: with the DELETE before the context INSERT removed, the
+    stored contexts were {'qml', 'ml'} and this test went red."""
+    conn = connect(synthetic_store)
+    try:
+        assert sync_assertion(conn, replace(_stored(conn), context="ml"), "note", "2026-10-18") == ["context"]
+        stored = {r[0] for r in conn.execute("SELECT context_id FROM record_contexts WHERE record_id = 'claim-one'")}
+        assert stored == {"ml"}
     finally:
         conn.close()
 

@@ -49,7 +49,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from store import connect, recheck, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
 from store.ingest import (AssertionRecord, add_read, admission_upgrade_reason, append_updated_reason,  # noqa: E402
-                          insert_assertion, set_tier)
+                          insert_assertion, set_tier, sync_assertion)
 
 _spec = importlib.util.spec_from_file_location("f78", Path(__file__).with_name("sprint9_f78_ceiling_reading.py"))
 f78 = importlib.util.module_from_spec(_spec)
@@ -396,32 +396,20 @@ def apply_changes(conn) -> list[str]:
     for g, a, rid in assertions():
         if a.context not in contexts:
             raise ValueError(f"{a.id}: context {a.context!r} is not a context")
-        stored = conn.execute(
-            "SELECT r.value, r.certainty, r.certainty_reasons, r.provenance, f.citation_context, f.claim_type "
-            "FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()
+        stored = conn.execute("SELECT certainty FROM records WHERE id = ?", (a.id,)).fetchone()
         if not stored:
             insert_assertion(conn, a, yielded_by=rid)
             log.append(f"assert {a.id} <- {rid} [{a.certainty}]")
             continue
-        # Every field the script sets is compared, so a changed quote, context
-        # or claim type is synced too (review of 9f71f19: only three were).
-        stored_ctx = sorted(r[0] for r in conn.execute(
-            "SELECT context_id FROM record_contexts WHERE record_id = ?", (a.id,)))
-        want = (a.value, a.certainty, a.certainty_reasons, a.provenance, a.citation_context, a.claim_type)
-        if tuple(stored) == want and stored_ctx == [a.context]:
+        # Every field is compared by the one shared sync (Sprint 9
+        # retrospective I4; this script's own list compared six fields).
+        upgraded = stored[0] == "low" and a.certainty == "moderate" and a.id in UPGRADES_APPROVED
+        changed = sync_assertion(conn, a, UPGRADE_NOTE if upgraded else
+                                 f"{TODAY} ({TAG}): corrected to the script's current text", TODAY)
+        if changed:
+            log.append(f"{'upgrade' if upgraded else 'update'} {a.id} [{', '.join(changed)}]")
+        else:
             log.append(f"exists {a.id}")
-            continue
-        conn.execute("UPDATE records SET value = ?, certainty = ?, certainty_reasons = ?, provenance = ? WHERE id = ?",
-                     (a.value, a.certainty, a.certainty_reasons, a.provenance, a.id))
-        conn.execute("UPDATE assertion_fields SET citation_context = ?, claim_type = ? WHERE record_id = ?",
-                     (a.citation_context, a.claim_type, a.id))
-        if stored_ctx != [a.context]:
-            conn.execute("DELETE FROM record_contexts WHERE record_id = ?", (a.id,))
-            conn.execute("INSERT INTO record_contexts (record_id, context_id) VALUES (?, ?)", (a.id, a.context))
-        upgraded = stored[1] == "low" and a.certainty == "moderate" and a.id in UPGRADES_APPROVED
-        append_updated_reason(conn, a.id, UPGRADE_NOTE if upgraded else
-                              f"{TODAY} ({TAG}): corrected to the script's current text", TODAY)
-        log.append(f"{'upgrade' if upgraded else 'update'} {a.id}")
     return log
 
 

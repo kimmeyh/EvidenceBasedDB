@@ -647,11 +647,11 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
     own sync over a hand-named list of columns, and Task E's lists left out
     citation_context, so a corrected quote never reached the store. The list
     here is derived from the dataclass, so a field cannot be left out.
-    `context`, `documents`, `supports` and `contradicts` are ADDED to, never
-    removed from: a record may carry more contexts than its primary one, and
-    other scripts add relations and documents later (F46's merges, the
+    `documents`, `supports` and `contradicts` are ADDED to, never removed
+    from: other scripts add relations and documents later (F46's merges, the
     synthesis links), which a reading script does not know about and must
-    not delete."""
+    not delete. `context`: when the wanted context is not among the stored
+    ones, it replaces them; when it is, any others are kept."""
     _sync_groups_cover_every_field()
     validate_assertion(wanted)
     rid = wanted.id
@@ -664,6 +664,8 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
         conn.execute(f"UPDATE records SET {column} = ? WHERE id = ?", (getattr(wanted, column), rid))
     row = conn.execute(f"SELECT {', '.join(_SYNC_FIELD_COLUMNS)} FROM assertion_fields WHERE record_id = ?",
                        (rid,)).fetchone()
+    if row is None:
+        raise ValueError(f"{rid}: no assertion_fields row to sync")
     for column, have in zip(_SYNC_FIELD_COLUMNS, row):
         if have != getattr(wanted, column):
             conn.execute(f"UPDATE assertion_fields SET {column} = ? WHERE record_id = ?", (getattr(wanted, column), rid))
@@ -685,6 +687,11 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
             changed.append(relation)
     if not conn.execute("SELECT 1 FROM record_contexts WHERE record_id = ? AND context_id = ?",
                         (rid, wanted.context)).fetchone():
+        # A corrected context replaces the stored ones: adding it beside the
+        # wrong one would leave the wrong one in place for good (review of
+        # 3a455ce). A record already carrying the wanted context keeps any
+        # others it was given.
+        conn.execute("DELETE FROM record_contexts WHERE record_id = ?", (rid,))
         conn.execute("INSERT INTO record_contexts (record_id, context_id) VALUES (?, ?)", (rid, wanted.context))
         changed.append("context")
     if changed:
