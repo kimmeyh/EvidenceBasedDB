@@ -15,6 +15,13 @@ this project keeps having to replace with a step.
 
 ### 2026-10-18 onward (Sprint 10, in progress)
 
+- **fix**: Task A (F81, #102) -- the code-edit hook no longer blocks a read
+  of a code file followed by another command's `-i` (`sed -n 1,5p x.py;
+  grep -i y z`): the flag and target search stops at the editor's own
+  `;`, `&` or `|`, outside quotes. A second `sed -i` on the same line is
+  now found on its own (it was hidden inside the first match). Nine tests,
+  proven by three injections
+
 - **docs**: Sprint 10 Phases 1.5 to 3 (2026-10-18) -- scope selected (all
   ten non-HOLD items; F88 and F89 released from F39 and F57); Phase 2
   gates passed; `CHECKLIST-Phase2-pre.md` back-filled for Sprint 9, which

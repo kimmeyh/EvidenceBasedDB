@@ -218,6 +218,25 @@ def _in_repository(path: str, outside_cwd: bool = False) -> bool:
     return not outside_cwd and not _absolute(p)
 
 
+def _own_command(rest: str) -> str:
+    """The editor's own command: `rest` up to the first `;`, `&` or `|`
+    outside quotes. F81 (Sprint 10 Task A): the flag and target search ran
+    over the whole line, so `sed -n 1,5p x.py; grep -i y z` read the later
+    `grep -i` as `sed -i` and blocked a read. Quotes are tracked so a
+    separator inside a sed or perl script (`'s/a/b/; s/c/d/'`) does not
+    cut the command before its file."""
+    quote = ""
+    for i, ch in enumerate(rest):
+        if quote:
+            if ch == quote:
+                quote = ""
+        elif ch in "'\"":
+            quote = ch
+        elif ch in ";&|":
+            return rest[:i]
+    return rest
+
+
 def _shell_edits_code(text: str) -> list[str]:
     # Each `cd` sets whether relative paths after it point outside the
     # repository, in command order.
@@ -234,8 +253,15 @@ def _shell_edits_code(text: str) -> list[str]:
         return [m["path"]] if _in_repository(m["path"], outside_at(m.start())) else []
 
     hits = []
-    for tool in IN_PLACE_TOOL.finditer(text):
-        rest = tool["rest"]
+    # Each match's `rest` runs to the end of the line, so a second editor on
+    # the same line (`sed -n 1p a; sed -i ... x.py`) is searched for from
+    # inside the first one's text, not after it (F81).
+    tools, pos = [], 0
+    while (m := IN_PLACE_TOOL.search(text, pos)):
+        tools.append(m)
+        pos = m.start("rest")
+    for tool in tools:
+        rest = _own_command(tool["rest"])
         if not IN_PLACE_FLAG.search(rest) or (tool["tool"].endswith("awk") and "inplace" not in rest):
             continue
         targets = [p for m in CODE_ARG.finditer(rest) for p in keep(m)]

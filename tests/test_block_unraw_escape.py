@@ -229,5 +229,41 @@ def test_the_python_checks_cover_the_launcher_and_sql(command):
     assert run(command).returncode == 2, command
 
 
+@pytest.mark.parametrize("command", [
+    "sed -n 1,5p store/recheck.py; grep -i foo README.md",
+    "sed -n 221,260p .claude/hooks/block_unraw_escape.py; echo ---; grep -n -i def store/recheck.py | head",
+    "sed -n 1,5p store/recheck.py && perl -i -pe 's/a/b/' notes.txt",
+    "awk '{print}' store/recheck.py | grep -i x",
+])
+def test_a_read_followed_by_another_commands_i_flag_is_allowed(command):
+    """F81 (Sprint 10 Task A): the in-place flag search ran past `;`, `&&`
+    and `|`, so a later command's `-i` made a read of a code file look like
+    `sed -i`. Reproduced live at planning, 2026-10-18. Proven to fail by
+    injection, 2026-10-18: with _own_command returning `rest` whole, the
+    first three cases were blocked (exit 2). The awk case passed even then
+    (awk needs `inplace` to count); it guards that rule against the cut."""
+    proc = run(command)
+    assert proc.returncode == 0, f"{command}\n{proc.stderr}"
+
+
+@pytest.mark.parametrize("command", [
+    "sed -n 1p a.txt; sed -i 's/a/b/' store/x.py",
+    "grep -i x README.md && sed -i 's/a/b/' store/x.py",
+    "sed -i 's/a/b/; s/c/d/' store/x.py",
+    "sed -i 's|a|b|' store/x.py",
+    "perl -pi -e 's/a/b/ && 1' store/x.py",
+])
+def test_an_in_place_edit_after_or_with_a_separator_is_still_blocked(command):
+    """F81's other half: the cut at a separator must not free a real edit.
+    A separator inside the quoted script does not cut the command before
+    its file. Proven to fail by injection, 2026-10-18: with _own_command
+    cutting at every separator, quoted or not, the third to fifth cases
+    passed (exit 0). A second: with the tool search back to one
+    non-overlapping `finditer`, the first case passed, because the first
+    `sed`'s text ran to the end of the line and hid the second `sed`."""
+    proc = run(command)
+    assert proc.returncode == 2, command
+
+
 def test_shell_code_edit_bypass_token():
     assert run("git show HEAD:store/ingest.py > store/ingest.py  # allow_shell_code_edit").returncode == 0
