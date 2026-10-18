@@ -15,6 +15,12 @@ this project keeps having to replace with a step.
 
 ### 2026-10-18 onward (Sprint 10, in progress)
 
+- **docs**: Sprint 10 Phases 1.5 to 3 (2026-10-18) -- scope selected (all
+  ten non-HOLD items; F88 and F89 released from F39 and F57); Phase 2
+  gates passed; `CHECKLIST-Phase2-pre.md` back-filled for Sprint 9, which
+  Phase 1.2 missed; `SPRINT_10_PLAN.md` drafted with Q1 to Q3 and the
+  draft PR opened
+
 - **docs**: Sprint 10 Phase 1 (2026-10-18) -- the team lead merged PR #88
   into develop and PR #100 to main; `sprint-9` tagged on PR #100's merge
   commit (270961e); carry-forward cut `feature/20261018_Sprint_10` from

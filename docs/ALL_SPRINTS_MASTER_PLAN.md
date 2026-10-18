@@ -252,6 +252,11 @@ develop to main).
   items, as recommended (about 375 calibrated minutes): F39 (Sprint 10
   release), F57 (Sprint 10 release, 74 records), F50, F81, F82, F83, F84,
   F85, F86 and F87. F51 stays HOLD.
+- **Released copies of the permanent items**: F88 (F39 release for
+  Sprint 10) and F89 (F57 release for Sprint 10, 74 records). F39 and F57
+  stay.
+- **Plan**: `docs/sprints/SPRINT_10_PLAN.md`, drafted 2026-10-18 with Q1
+  to Q3; awaiting approval.
 
 ## Next Sprint Candidates
 
