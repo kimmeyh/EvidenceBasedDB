@@ -58,6 +58,7 @@ def test_every_quote_is_in_its_local_copy(live_conn):
     assert checked >= 250
 
 
+@pytest.mark.live_store  # reads local PDFs with pdftotext; neither is on CI (red there from 2026-10-15)
 def test_every_number_in_a_paper_value_is_in_the_paper():
     """Task A's review rule, applied here: a figure outside every quote must
     still be in the source. Repositories are excluded (their values name

@@ -57,6 +57,7 @@ def test_the_record_names_the_commit_it_was_read_at(live_conn):
     assert f79.SHA256 in evidence
 
 
+@pytest.mark.live_store  # reads the local Phase 2 repository; not on CI (red there from 2026-10-15)
 def test_every_number_in_a_value_is_in_the_source():
     """Sprint 9 Task A review: only the quotes were checked, and figures
     such as "11 of 12" sat outside every quote. Every number in each value

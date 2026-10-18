@@ -15,6 +15,11 @@ this project keeps having to replace with a step.
 
 ### 2026-10-14 onward (Sprint 9, in progress)
 
+- **fix**: CI red on PR #88 since 2026-10-15 00:31 (070137e), on every push
+  including the Manual Validation hand-over, unnoticed until 2026-10-18:
+  three "every number is in the source" tests (F46, F78, F79) read local
+  PDFs with pdftotext or the local Phase 2 repository without the
+  `live_store` marker CI deselects. Marked
 - **fix**: PR #88 Copilot review (2026-10-18) -- `view.py paper` computes
   the whole-store corroboration map once, not once per yielded assertion;
   test proven by injection

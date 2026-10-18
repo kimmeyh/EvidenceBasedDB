@@ -52,6 +52,7 @@ def test_every_quote_is_in_its_local_copy(live_conn):
     assert checked >= 70
 
 
+@pytest.mark.live_store  # reads local PDFs with pdftotext; neither is on CI (red there from 2026-10-15)
 def test_every_number_in_a_value_is_in_its_source():
     """Absence claims are excepted: their point is that a figure is absent.
     Proven to fail by injection, 2026-10-15: with the REMOVE entry that
