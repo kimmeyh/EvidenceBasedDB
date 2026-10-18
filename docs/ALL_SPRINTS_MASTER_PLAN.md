@@ -44,10 +44,29 @@ repository exists. No other F# from either source repository applies here.
 | 6 | docs/sprints/SPRINT_6_SUMMARY.md | [OK] Complete | 2026-09-27 to 2026-10-05 |
 | 7 | docs/sprints/SPRINT_7_SUMMARY.md | [OK] Complete | 2026-10-06 to 2026-10-10 |
 | 8 | docs/sprints/SPRINT_8_SUMMARY.md | [OK] Complete | 2026-10-10 to 2026-10-14 |
+| 9 | docs/sprints/SPRINT_9_SUMMARY.md | [OK] Complete | 2026-10-14 to 2026-10-18 |
 
 ## Last Completed Sprint
 
-Sprint 8 is below; Sprint 7 follows it for continuity.
+Sprint 9 is below; Sprint 8 follows it for continuity.
+
+### Sprint 9: Read the Ceiling Papers, Then Open the Phase 2 Exchange (2026-10-14 to 2026-10-18, PR #88, merged to develop and to main via PR #100 on 2026-10-18; tagged sprint-9)
+
+Eleven tasks, eleven issues (#89-#99), all closed. **Ceilings**: the
+ceiling-estimation group read and entered with an answer document (F78);
+the 20 remaining handoff facts dispositioned (F46). **The Phase 2
+exchange**: free reads both ways, no writes, hook-enforced, with the first
+inbound record (F79). **Reading at scale**: the first 76-record F57 slice,
+65 read (F80); discovery ranked and triaged, 87 candidates at `seen`
+(F62). **Store**: `cites` links (F55, ADR-0005 A10), a computed
+corroborated flag (F56, ADR-0004 A9), primary-source re-checks (F74,
+ADR-0005 A9), local-file hashes (F48), two identifier forms at the door
+(F68, F69). F51 stays HOLD. Store 2,093 -> 2,190 papers, 105 -> 557
+assertions; suite 759 -> 950. CI was red unnoticed from 2026-10-15 to
+2026-10-18 (three tests lacked `live_store`); fixed, and retrospective I7
+now prevents it. Retrospective: team lead all "Very Good"; I1, I3 to I5
+and I7 applied, I2 and I6 skipped. Full detail:
+`docs/sprints/SPRINT_9_SUMMARY.md`.
 
 ### Sprint 8: Read QCi's Newest Guide, Then Build the Yearly Re-check (2026-10-10 to 2026-10-14, PR #77 and PR #84, merged to develop and to main via PR #86 and PR #87 on 2026-10-14; tagged sprint-8)
 
@@ -225,20 +244,13 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 9** (branch `feature/20261014_Sprint_9`, cut 2026-10-14 at the
-Sprint 8 carry-forward, after PR #77 merged to develop and PR #87 merged
-develop to main). **Scope (DEFINED, team lead 2026-10-14)**: F78, F79,
-F74, F68, F69, F62, F57, F55, F56, F48, F46, F51. F51 is a HOLD item
-selected while its hold stands; planning checks whether the Phase 2
-repository now holds the re-run it waits on. Priorities renumbered at
-selection in steps of 10, 2 for items that sprint together (the slate's
-numbers, which the team lead's selection used): F78 10, F79 20, F74 30,
-F68 40, F69 42, F39 50, F62 60, F57 70, F55 80, F56 82, F48 90, F50 100,
-F46 110. F57 released as F80. Plan: `docs/sprints/SPRINT_9_PLAN.md`.
+**Sprint 10** (branch `feature/20261018_Sprint_10`, cut 2026-10-18 at the
+Sprint 9 carry-forward, after PR #88 merged to develop and PR #100 merged
+develop to main). Scope: not yet selected (Phase 1.4).
 
 ## Next Sprint Candidates
 
-Refined 2026-10-14 after Sprint 8 (Sprint 9 Phase 1.2); Sprint 8's shipped
+Refined 2026-10-18 after Sprint 9 (Sprint 10 Phase 1.2); Sprint 9's shipped
 cards pruned BY HAND (Edit tool, card by card) the same day.
 Shipped and pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint
 2); F2 Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25,
@@ -248,7 +260,9 @@ F51); F44, F45, F52, F53, F54, F58, F59 (Sprint 7; F53's per-cycle refresh
 replaced by F64's 12-month re-check; F54's 10 "unsure" and 140 third-party
 repository candidates stay held back in `sprint7_f35_screen.json` and
 `QMLPapers\Repos\REVIEW.md`); F60, F61, F63, F64, F65, F66, F67, F71
-(Sprint 8). F39 is permanent and stays. Closed without
+(Sprint 8); F46, F48, F55, F56, F62, F68, F69, F74, F78, F79, F80
+(Sprint 9; F62's open precision note carried as F87). F39 and F57 are
+permanent and stay. Closed without
 implementation: F19, F29 (Sprint 5 scope selection, reasons under Sprint 5
 in "Last Completed Sprint"); F49 (Sprint 8 scope selection, Q3 = 1: moot
 under ADR-0004 A7, since no committed export exists to drop a context, and
@@ -284,38 +298,7 @@ and in git. Remaining items below.
   (5) a failing test guards whatever the release adds.
 - Depends on: nothing
 
-### Cyc and CVQBoost intake (proposed 2026-10-03)
-
-Registered 2026-10-03 at the team lead's request from
-`D:\Data\Harold\EvidenceBasedDB\Handoff-2026-10\ebdb-handoff\12-backlog-cards-proposed.md`,
-prepared outside the repository; card text as drafted there. File names
-`01` to `12` (`03-manifest-sources.json`, `07-assertion-candidates-pending.md`,
-`11-decisions-2026-10-03.md`, and so on) refer to that folder;
-`FACTS-WITH-CERTAINTY.md` is in its parent, `Handoff-2026-10\`. All
-estimates are `[no-history]`.
-
-**F46. Remaining reading pass: the other pending facts, split at selection (~large, no-history) Priority 110**
-- Phase: Sourcing / extraction
-- Platform: N/A
-- The rest of `07`: World (8), entanglement (1), the April 2026 claim (4),
-  classical fraud detection (7), ceiling estimation (9). Too large for one
-  card; split by source group when a sprint selects it.
-- Depends on: F45 (shipped in Sprint 7; its actual, 14 assertions from
-  seven sources, calibrates this estimate).
-
 ### Store and process lessons from Cyc (proposed 2026-10-03)
-
-**F48. Keep local source paths honest (~2h) Priority 90**
-- Phase: Tooling
-- Platform: `store/ingest.py`, a new check script
-- A local `access` path breaks silently when a file moves. Seen during the
-  Cyc work: three archives moved to the Recycle Bin; the hsbc repository
-  exists at two paths, and only one has `docs\`.
-- Acceptance: SHA-256 recorded for every local-access source; a check that
-  reports a missing file or a changed hash; a test with one moved file that
-  the check catches.
-- Depends on: none. F41 adds nine local-access sources, so earlier is
-  better.
 
 **F50. Qualify "compute, never store" with Cyc's stored counts (~30m) Priority 100**
 - Phase: Process
@@ -354,42 +337,6 @@ estimates are `[no-history]`.
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
 
-**F55. Record which papers cite which, as a computed link (~2h) Priority 80** (NEW 2026-10-05, Sprint 6 MV Q10 = 1)
-- Phase: Sourcing / computed fields
-- Platform: Crossref reference lists (`works/<doi>`, field `reference`),
-  arXiv-to-DOI via `version_of`; `source_links`
-- A `cites` link between two SOURCE records in the store, computed from the
-  publisher's reference list (probe rule: last result, date, provider),
-  never typed by hand. Recorded once, readable from both ends.
-- Not a certainty input (Q10 = 1): a citation is not corroboration, since a
-  citing paper may criticize. Its use is to FIND candidate corroboration
-  for F56: the papers that cite A are where to look for evidence on A's
-  claims.
-- Needs an ADR-0005 amendment (a new link type, computed). Coverage is
-  partial: many arXiv preprints have no Crossref reference list.
-- Acceptance: links for every pair both in the store where a reference list
-  answers; coverage reported; no link typed by hand.
-
-**F56. Should corroboration raise an assertion's certainty, and how? (~1h decision, then build) Priority 82** (NEW 2026-10-05, team lead at Sprint 6 MV)
-- Phase: Design / ADR (Class 1)
-- Team lead, 2026-10-05: "if we have a paper who's assertions scores very
-  high and with verifiable evidence and it is linke to another paper that
-  verifies the claims of the first paper or otherwise increases the
-  confidance of the assertions of the other paper, shoudn't that affect the
-  assertions/claims in some way" ... "Think it is important and could be
-  used, but not sure how".
-- Today only downward caps are computed (ADR-0004 A6); `supports` between
-  assertions is recorded but never moves certainty. GRADE does raise
-  certainty for consistent results across independent studies.
-- Options to decide: (1) a computed "corroborated" flag beside the stored
-  certainty when an assertion is supported by an INDEPENDENT assertion
-  (different authors, not the same vendor) at equal or higher certainty;
-  the assessor then decides an upgrade, with the reason; (2) a computed
-  upward cap, symmetric to A6's; (3) leave it to judgment, as now.
-- Independence is the hard part: same lab, same dataset, or the same vendor
-  is not corroboration (the admission-against-interest rule's logic).
-- Depends on: F55 helps find candidates; not required.
-
 **F57. Read for claims: the records still at `seen` and `screened` (permanent, released in slices) Priority 70** (NEW 2026-10-05, team lead at Sprint 6 MV)
 - Phase: Sourcing / extraction (permanent item, like F39)
 - Team lead, 2026-10-05: "what else has not been read for claims - if not
@@ -414,233 +361,6 @@ estimates are `[no-history]`.
   `screened`, so about 27 more releases at 74 each. The item closes when
   the count is 0, not before. Refresh the count at each release, because
   intake adds records.
-
-### Carded during Sprint 7 (2026-10-06 to 2026-10-10)
-
-**F62. Discover, rank and triage candidate papers from open metadata, with a hand-download list (~4h plus review) Priority 60** (NEW 2026-10-06, team lead during Sprint 7, Q11 = 1 and 3)
-- Phase: Sourcing / discovery
-- Platform: `scripts/discover_candidates.py` (pilot built in Sprint 7),
-  OpenAlex (abstracts, topics, citations, open-access copies), Semantic
-  Scholar (cross-check: arXiv id, citations, free PDF), `scripts/intake.py`
-- Team lead, 2026-10-06: "is there a way to get enough of the papers
-  related to QML and ML (targeting and prioritizing around what we think
-  are valuable) to evaluate the papers we would be interested, then check
-  all the other sources and develop a prioritized sub-list of papers we may
-  want to download by hand"; "... and tensors"; "we are interested in the
-  best of Machine Learning (ML) even if it is unrelated to Quantum
-  Computing and Credit Card Fraud and Fraud".
-- Pipeline: discover by stream; drop what the store holds (DOI, arXiv id,
-  normalized title); rank (computed each run, never stored); the team lead
-  reviews the top of each stream on title and abstract; chosen papers enter
-  through the door by DOI at `seen`; for papers chosen for READING, the
-  free copy (arXiv first, inside F52's cap; then other open copies); the
-  rest form the hand-download list (rank, title, DOI, publisher link, why,
-  target file name). F61's survey list is one more discovery input. IEEE
-  PDFs by hand only (F61's note: Xplore's license bars automated downloads).
-- **Pilot facts (snapshot as of 2026-10-06; 25 per stream, keyless)**:
-  - Streams: ml (the most-cited works in OpenAlex's Artificial
-    Intelligence and Computer Vision subfields since 2012), qml, tensor,
-    fraud.
-  - Already in the store: qml 14 of 25; ml, tensor and fraud 0 of 25.
-  - Abstract present: ml 21, qml 17, tensor 21, fraud 20 (of 25 each).
-  - No free copy, so hand-download candidates: ml 6, qml 1, tensor 4,
-    fraud 12. Fraud is where an account matters most.
-  - Precision findings: OpenAlex's `search` parameter matched far too
-    broadly (a sentiment-analysis survey for QML, YOLO for tensor
-    networks); the `title_and_abstract.search` filter fixed qml and
-    tensor, and fraud needed "fraud" in the TITLE plus an ML term in the
-    abstract.
-  - Data-quality finding in the ml stream: OpenAlex merged-record errors
-    distort citation ranks (a tutoring-systems paper credited with 78,458
-    citations; "Attention Is All You Need" as a 2025 record under an
-    unknown DOI prefix). Before ranking, cross-check citations against
-    Semantic Scholar and collapse duplicate titles to the canonical record.
-- Budget: OpenAlex meters a daily budget (keyless about 100 searches;
-  single-DOI lookups free); the team lead has an OpenAlex key, read from
-  `OPENALEX_API_KEY` (user environment) and sent only in the Authorization
-  header. Semantic Scholar: 1 request per second with a free key.
-- **Sprint 9 Task J run (snapshot as of 2026-10-15; key in the header)**:
-  rubric approved at plan Q8 = 1 (citations per year, Semantic Scholar's
-  count where it answers, x1.5 for a store-context match; unchecked counts
-  listed apart; no bonus for a stream's own context; a Semantic Scholar
-  answer counts only for the same title). 100 fetched per stream; already
-  held: ml 2, qml 41, tensor 1, fraud 1; of 192 requests, 179 answered
-  for the same title, 2 named a different paper, the rest stayed refused
-  after a second pass; 22 counts disagree by more than 2x. Earlier runs the
-  same day drew 52 Semantic Scholar refusals, let a wrong-paper answer win,
-  and gave every fraud and qml record the bonus; the fresh-eyes review
-  found these and they are fixed and tested. Lists and an 8-entry
-  hand-download list in `D:\Data\Harold\EvidenceBasedDB\discovery\`
-  (`f62_review_2026-10-15.md`, `f62_hand_download_2026-10-15.md`), for
-  the team lead's review at Manual Validation. Precision note: the stream
-  filters still admit off-topic records (ml: software libraries such as
-  Tidyverse, NumPy and SciPy, and nature-inspired metaheuristics; tensor:
-  knowledge-graph tensor factorization, a 1969 density-estimation paper,
-  equivariant potentials; qml: quantum chemistry and hardware papers and a
-  brain-tumor survey). Tightening the filters is a candidate for the next
-  release of this card.
-- Acceptance: a ranking rubric approved by the team lead; per stream, a
-  reviewed top list; the chosen papers entered; a hand-download list with
-  every entry's free-copy search recorded.
-- Depends on: F52's cap for arXiv; F61 (shared discovery input).
-
-### Carded during Sprint 8 (2026-10-10 onward)
-
-**F68. The door misses two identifier forms: old-style arXiv ids and DOIs with parentheses (~1h) Priority 40** (NEW 2026-10-12, found in Sprint 8 Task F)
-- Phase: Sourcing / intake
-- Platform: `store/citations.py` (`parse_access`), `scripts/intake.py`
-- Found running F61 against the Massoli list (2026-10-12): `arXiv:quant-ph/0405098`,
-  `quant-ph/0107012` and `quant-ph/0001106` were refused as hand-origin ("needs
-  --id"), because `parse_access` reads only new-style ids; and
-  `10.1016/s0020-0255(00)00055-4` and `10.1016/0304-4149(89)90040-9` were cut at
-  the parenthesis and refused as unregistered. Both are real, registered
-  identifiers.
-- Acceptance: both forms resolve through the door; a test for each, proven by
-  injection; the five Massoli entries re-run through F61's script.
-- Depends on: none
-
-**F69. Enter the Cerezo NonArxiv paper, "Key questions for the quantum machine learner to ask themselves" (~20m) Priority 42** (NEW 2026-10-13, team lead at Sprint 8 Manual Validation, Q8 = 1; found in Sprint 8 Task E)
-- Phase: Sourcing / intake
-- Platform: `scripts/intake.py`; the local file
-  `D:\Data\Harold\EvidenceBasedDB\QMLPapers\NonArxiv\Cerezo_2020_Key-questions-for-the-quantum-machine-learner-to-ask-themselves.pdf`
-- F60's check (2026-10-12) found this PDF in `QMLPapers\NonArxiv` with no
-  manifest row and no store record (by id, access or title). It has no
-  arXiv id in its file name.
-- Acceptance: its identifier (DOI or arXiv id) found from the PDF or a
-  search, or the record entered by local path plus SHA-256; entered at
-  `seen` through the door with `found_via` naming the QMLPapers folder; or
-  recorded as out of scope, with the reason.
-- Depends on: none
-
-**F78. Ceiling estimation: read the whole CE group in full and enter it, so the store answers "can this dataset or problem be done better?" (~7h) Priority 10** (NEW 2026-10-14, team lead EDB query, Q1 = 1, Q3 = 2 everything in full, Q4 = 1 first task of Sprint 9; TARGET: Sprint 9)
-- Phase: Content / reading
-- Platform: the 31 records whose disposition names `[CE-n]` (the HSBC
-  Phase 2 bibliography's "Ceiling estimation / Bayes error" group); local
-  copies in `D:\Data\Harold\EvidenceBasedDB\Papers\` and `References\`;
-  a new `scripts/sprint9_f78_ceiling_reading.py` (dry run by default,
-  verified backup on `--apply`, idempotent)
-- Team lead, 2026-10-13: "did we find the paper that proposes/finds a
-  theoretical optimum for any ML ... cannot be any more than X ... confusion
-  matrix, AUPUC or other", then "it might not have been ML, but an
-  optimization problem"; 2026-10-14: "add all of them to the store, read
-  them all and update the database", and "is there a way to find the
-  maximum, near maximum predictions or can't be better than... on any ML
-  dataset and/or any optimization problem. This will be helpful at least on
-  wether further improvement can be done on a dataset or if a better
-  dataset is needed."
-- **Facts at carding (snapshot as of 2026-10-14, read only)**: 31 CE
-  records; 1 read (McDermott, CE-5); 6 read on 2026-10-13 and not yet
-  recorded (Boyd, Dhama, Butt and Tschirschwitz in full; Zhao, CE-7, and
-  Ushio in part); 14 unread ceiling or Bayes-error papers (11 with local
-  copies; Chen 2025, Te Sun 1994 and Thanh 2026 publisher-only); 3
-  synthetic-data papers (Allen, Altman, Ostman); 7 repositories or a
-  handbook. Not in the store: Ishida et al., ICLR 2023 (arXiv:2202.00395)
-  and Theisen et al., NeurIPS 2021 (arXiv:2106.03357).
-- Scope: every item read in full (Q3 = 2), repositories by README and
-  code; each read recorded in `paper_reads`; Zhao and Ushio finished; the
-  ceiling, bound and method claims entered as assertions with section
-  anchors (Butt's 0.451 F1 ceiling with the gap between its abstract and
-  its Theorem 1 and its Table IV exceedance; Tschirschwitz's LVIS bound;
-  Zhao's F-score and BER bounds; Boyd's AUPRC minimum); `access` pointed
-  at the local copy plus the identifier; Ishida and Theisen entered
-  through the door (two serial arXiv requests inside the cap); each
-  publisher-only paper tried once and recorded if unobtainable.
-- **Local copies (team lead, 2026-10-14: "also include adding any papers
-  that are not downloaded as PDF's to the local repository in an
-  appropriate folder")**: every paper in the group with no local PDF is
-  downloaded into `D:\Data\Harold\EvidenceBasedDB\Papers\` (outside git;
-  the folder that already holds the group's 11 local copies) under its
-  `YYYY-MM_Author_Title.pdf` convention, with its SHA-256 recorded and
-  `access` naming both the identifier and the path. Expected: Ishida,
-  Theisen, Chen 2025, Te Sun 1994, Thanh 2026, Allen 2025; a paywalled one
-  is recorded as such, not downloaded around the paywall. The 7
-  repositories are read on GitHub; a clone into `GitHubRepos\` is asked at
-  planning.
-- Acceptance: every CE record at `read` or carrying a recorded reason it
-  is not; every quote verified verbatim against its local copy by test;
-  a short answer document for the team lead's question (ML ceilings and
-  optimization bounds, each method with its source), with verified and
-  inferred kept apart.
-- Depends on: none
-
-**F79. hsbc-qfraud-phase2 and this repository read each other freely and never write to each other; anything to be written goes as a pasted prompt (~30m) Priority 20** (NEW 2026-10-14, team lead "yes" to carding it, scope stated the same day and corrected the same day; TARGET: Sprint 9)
-- Phase: Process / repository
-- Platform: `CLAUDE.md`, `.claude/hooks/block_sibling_repo_writes.py`, its
-  test, the read-but-never-write memory file, `docs/INTAKE_WORKFLOW.md`
-- **Facts at carding (snapshot as of 2026-10-14)**: `kimmeyh/hsbc-quantum-fraud-2026`
-  (Phase 1) is archived; the active consumer is `kimmeyh/hsbc-qfraud-phase2`
-  (Sprint 26, PR 21 open; private, like this repository). CLAUDE.md still
-  names the archived repository as the first consumer, and the
-  sibling-write rule and hook list only `spamfilter-multi` and
-  `hsbc-quantum-fraud-2026`.
-- Team lead, 2026-10-14: "hsbc-qfraud-phase2 will be on ongoing consumer
-  of the EvidenceBasedDB - it will read it and reference the library/store
-  of papers, but never write to this repository - any transfer will be via
-  prompt (it will write a prompt and I will copy/paste it into this
-  session)). The EvidenceBasedDB is also a consumer of hsbc-qfraud-phase2,
-  in that it will run QML tests/experiments against
-  QC/photonic/entropy/reservior simulators and devices and those could be
-  valuable additions to the EvidenceBasedDB. But this session cannot write
-  to hsbc-qfraud-phase2 - any transfers to hsbc-qfraud-phase2 would be via
-  prompts developed here and then pasted into the hsbc-qfraud-phase2
-  claude session." Corrected the same day: "they are both consumers of
-  each other and reads are permitted without direct prompts from the
-  other - so each could read from each other, but cannot write to each
-  other".
-- Scope: (1) CLAUDE.md names Phase 2 as the consumer, keeps Phase 1 as
-  history, and states the rule: each repository reads the other
-  directly, with no prompt needed; neither writes to the other; a change
-  wanted in the other repository goes as a prompt the team lead pastes; (2) the hook and
-  the rule cover `hsbc-qfraud-phase2` (read freely, never write); (3)
-  inbound: an intake path for Phase 2 experiment results, read directly
-  from the Phase 2 repository (a pasted prompt may point at them, but the
-  files at the named commit are the evidence), each entered with
-  provenance naming the repository, commit and run, and certainty from
-  that evidence;
-  (4) outbound: a prompt shape for answers sent to Phase 2, with each
-  claim's provenance inline (ADR-0005: no citation may depend on this
-  private store resolving); (5) Phase 2's own read-only guard is that
-  repository's change, so a prompt asking for it is drafted here for the
-  team lead to paste.
-- Acceptance: a hook test that a write into the Phase 2 path is blocked,
-  proven to fail by injection; the intake path tried on one real Phase 2
-  result.
-- Depends on: none
-
-**F80. F57 release for Sprint 9: read for claims, first slice of 76 (~3.5h) Priority 70** (NEW 2026-10-14, released from the permanent F57 at Sprint 9 scope selection; slice widened 2026-10-15 at approval, Q7 = 2)
-- Phase: Sourcing / extraction (released copy of the permanent F57)
-- Platform: the store; the 26 records at `seen` or `screened` under
-  `hsbc-2026`, `platform:dirac-3` and `platform:dirac-3s` (snapshot as of
-  2026-10-14), none in the CE group, plus the 50 most-cited `qml` records
-  at `seen` or `screened`
-- Scope per F57's release steps, the slice per Sprint 9 plan Q7 = 2.
-- Acceptance: the slice screened; every promoted record read and
-  yielding; every refused one with its reason.
-- Depends on: none
-
-**F74. Re-check correctness: a partial answer must not reset the 12-month clock, and a tool failure must not read as the paper's fault (~1.5h) Priority 30** (NEW 2026-10-13, PR #77 silent-failure review; TARGET: Sprint 9)
-- Phase: Store / re-check (ADR-0005 A7)
-- Platform: `store/recheck.py` (`last_check`), `scripts/probe_reference_fields.py`
-  (the probe writes and `recheck_findings`)
-- Found by the PR #77 review, 2026-10-13, read only:
-  - **A partial answer resets the clock.** `last_check` is the latest
-    `probed_on` over every provider except hand readings. If arXiv's
-    abstract page fails and DataCite answers, the DataCite field is written
-    with today's date, so the paper leaves `--due` for about 10 months with
-    its version unread and its withdrawal unchecked. A `local file check`
-    that records "local copy missing" does the same.
-  - **A tool failure blames the paper.** When `pdftotext` is missing or
-    fails, the first page reads as empty and the paper is listed as "no
-    readable stamp"; a record whose probe raised is listed as "the abstract
-    page showed no version".
-- Scope: decide (ADR-0005 amendment) which probe answers count as a
-  completed check, and count only those in `last_check`; report a tool
-  failure as a tool failure. Both are design decisions about what the
-  stored dates mean, so they are carded rather than patched in the review.
-- Acceptance: a test where DataCite answers and arXiv does not leaves the
-  paper due; a test with `pdftotext` unavailable reports the tool, not the
-  paper; both proven to fail by injection.
-- Depends on: F64 (done)
 
 ### Carded during Sprint 9 (2026-10-14 onward)
 
@@ -741,6 +461,23 @@ estimates are `[no-history]`.
 - Acceptance: one DataCite request for the DOI; if it answers, the probe
   is recorded and the clock resets; if not, the reason is recorded and the
   record's access or provider routing is corrected.
+- Depends on: none
+
+### Carded at Sprint 10 Phase 1.2 (2026-10-18)
+
+**F87. Tighten the discovery stream filters so off-topic records stop reaching review (~1h) Priority 180** (NEW 2026-10-18, carried from F62's precision note when F62 was pruned)
+- Phase: Sourcing / discovery
+- Platform: `scripts/discover_candidates.py`, OpenAlex filters
+- F62's Sprint 9 run (snapshot as of 2026-10-15) still admitted off-topic
+  records: ml (software libraries such as Tidyverse, NumPy and SciPy;
+  nature-inspired metaheuristics), tensor (knowledge-graph tensor
+  factorization, a 1969 density-estimation paper, equivariant
+  potentials), qml (quantum chemistry and hardware papers, a brain-tumor
+  survey). The team lead excluded 13 off-topic candidates by hand at
+  Sprint 9 Manual Validation (Q4 = 1).
+- Acceptance: per stream, a filter change with the records it now drops
+  named; a re-run's top 25 per stream with the off-topic count before and
+  after; no on-topic record lost from the Sprint 9 accepted list.
 - Depends on: none
 
 ## Design documents governing this repository
