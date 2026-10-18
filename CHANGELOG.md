@@ -27,7 +27,9 @@ this project keeps having to replace with a step.
   file). The cut now models those, and the search fails closed: when the
   editor's own text has the flag but names no code file, the whole line
   is searched. A read inside `bash -c "..."` followed by `grep -i` passes.
-  Eleven cases, each proven against 021d2a8 or by injection
+  Eleven cases, each proven against 021d2a8 or by injection. A second
+  security review found `bash -c "sed "'-i ...'` still passed (a quote
+  closed mid-word continues the word); fixed, proven by two injections
 - **process**: Task B (F88, the F39 release for Sprint 10, #103) -- models
   and pricing pages read 2026-10-18: no change since F67 (same four ids,
   prices, context, output and retirement dates); every tier re-verified.

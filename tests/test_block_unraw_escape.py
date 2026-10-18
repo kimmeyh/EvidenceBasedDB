@@ -268,6 +268,8 @@ def test_a_read_followed_by_another_commands_i_flag_is_allowed(command):
     # A shape the cut does not model (process substitution) is caught by
     # the fail-closed search of the whole line
     "sed -i s/a/b/ <(echo|cat) store/x.py",
+    # Second security review: a quote closed mid-word continues the word
+    "bash -c \"sed \"'-i s/a/b/ store/x.py'",
 ])
 def test_an_in_place_edit_after_or_with_a_separator_is_still_blocked(command):
     """F81's other half: the cut at a separator must not free a real edit.
@@ -284,7 +286,12 @@ def test_an_in_place_edit_after_or_with_a_separator_is_still_blocked(command):
     process-substitution case passed. Restored. Known cost of failing
     closed: an in-place edit of a text file followed on the same line by a
     command naming a code file (`sed -i ... a.txt; cat store/x.py`) is
-    blocked; the bypass token covers it."""
+    blocked; the bypass token covers it. Second security review, the same
+    day: `bash -c "sed "'-i ...'` passed against 10f7741 (a quote closed
+    mid-word was taken as the end of the command, and the quote before
+    `-i` hid the flag). Proven by two injections: with either the
+    word-end check or the quote strip before the flag search removed, that
+    case passed. Restored."""
     proc = run(command)
     assert proc.returncode == 2, command
 

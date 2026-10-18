@@ -244,8 +244,12 @@ def _own_command(rest: str, opened: str = "") -> str:
             continue
         if quote:
             if ch == quote:
-                if opened:
+                # The opened quote's close ends the editor's command only
+                # where the shell word ends; `"sed "'-i ...'` is one word
+                # (second security review of the Task A fix).
+                if opened and rest[i + 1:i + 2] in ("", " ", "\t", ";", "&", "|", "\n"):
                     return rest[:i]
+                opened = ""
                 quote = ""
         elif ch in "'\"":
             quote = ch
@@ -293,7 +297,8 @@ def _shell_edits_code(text: str) -> list[str]:
     for tool in tools:
         lead = text[tool.start():tool.start("tool")].strip()
         rest = _own_command(tool["rest"], '"' if lead.endswith('"') else "")
-        if not IN_PLACE_FLAG.search(rest) or (tool["tool"].endswith("awk") and "inplace" not in rest):
+        # Quotes join words in the shell, so `"'-i` is the flag -i.
+        if not IN_PLACE_FLAG.search(re.sub(r"""["']""", "", rest)) or (tool["tool"].endswith("awk") and "inplace" not in rest):
             continue
         targets = [p for m in CODE_ARG.finditer(rest) for p in keep(m)]
         if not targets:
