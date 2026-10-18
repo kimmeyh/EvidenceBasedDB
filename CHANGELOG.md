@@ -28,6 +28,12 @@ this project keeps having to replace with a step.
   editor's own text has the flag but names no code file, the whole line
   is searched. A read inside `bash -c "..."` followed by `grep -i` passes.
   Eleven cases, each proven against 021d2a8 or by injection
+- **process**: Task B (F88, the F39 release for Sprint 10, #103) -- models
+  and pricing pages read 2026-10-18: no change since F67 (same four ids,
+  prices, context, output and retirement dates); every tier re-verified.
+  Sprint 9's reader outcomes logged (accurate quotes and numbers; added
+  conclusions the main defect); the reading protocol now requires a
+  separate `reader_inference` field. Two tests, each proven by injection
 
 - **docs**: Sprint 10 Phases 1.5 to 3 (2026-10-18) -- scope selected (all
   ten non-HOLD items; F88 and F89 released from F39 and F57); Phase 2
