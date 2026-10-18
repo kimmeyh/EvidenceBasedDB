@@ -205,3 +205,15 @@ NFKC broke one Dirac-3 quote with a micro sign until both sides were
 normalized; and a sync that replaced relations would have deleted `supports`
 links that other steps add, so the sync only adds them. Category 13's item
 (I6) is withdrawn with I6.
+
+**Addendum, 2026-10-18: CI was red from 2026-10-15 00:31 to 2026-10-18.**
+Found while waiting on PR #88's checks for Phase 7.7. CI failed on every
+push from 070137e (Task B) on, including the Manual Validation hand-over
+(c04450c), and the Development Team lines above (categories 1, 2 and 10)
+were written without knowing it. Cause: three "every number is in the
+source" tests (F46, F78, F79) read local PDFs with pdftotext or the local
+Phase 2 repository but did not carry the `live_store` marker CI deselects.
+Every local run was green, and nothing in the workflow read CI's result
+before the hand-over. Fixed in deb726d (the three marked); CI green. The
+workflow's Manual Validation rule ("CI ... resolved before hand-over") was
+broken. Proposed to the team lead as I7.

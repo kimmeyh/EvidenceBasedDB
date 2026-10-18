@@ -101,5 +101,8 @@ and subagents ran in parallel. Plan estimate: 780 minutes.
 ## Verification
 
 - Suite 925 passed at the last commit, including the `live_store` tests.
+- CI green at deb726d. It was red from 070137e (2026-10-15 00:31) to
+  52a439a, unnoticed until 2026-10-18: three tests that read local files
+  lacked the `live_store` marker (retrospective addendum).
 - Issues #89 to #99 are open and close by PR #88's `Closes` lines on the
   merge into develop.
