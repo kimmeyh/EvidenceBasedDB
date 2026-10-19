@@ -990,3 +990,44 @@ not recorded on one side still counts as corroborated, and its reason keeps
 the label "organizations not recorded on one side, so not compared". The
 code already behaved this way, so nothing changed; the flagged count stays
 1 of 17 (a snapshot as of 2026-10-15).
+
+**2026-10-18 (A10): `platform:dirac-1` beside `platform:dirac-3` and
+`platform:dirac-3s`.** Sprint 10 Task F (F84), decided at plan approval
+(Q1 = 1, team lead, 2026-10-18).
+
+**Every count below is a snapshot as of 2026-10-18.**
+
+*(a) Why a new context passes section 3b's rule, as A8 did.* Nine QCi
+sources in the store describe Dirac-1, not Dirac-3: seven application
+pages whose header reads "Device: Dirac-1" (dimensionality reduction,
+feature selection, graph partitioning, max-cut, portfolio optimization,
+set partitioning, traveling salesman), the risk-based UAS trajectory
+case study, which ran on Dirac-1 and names Dirac-3 only as future work
+("We will continue to improve the results of this case study using
+Dirac-3"), and the QC-7 article, which names Dirac 1 as "the company's
+quantum photonic computing system" and never names Dirac-3 or Dirac-3S.
+All nine were tagged `platform:dirac-3`, so a query for Dirac-3 returned
+claims about another machine, and Sprint 9 Task G (F80) refused their
+figures for that reason. A claim run on Dirac-1 shares an assumption the
+Dirac-3 claims do not (that machine), which is the case a context
+factors out.
+
+*(b) A8's "Revisit when", answered.* A8 named a third Dirac generation as
+the moment to ask whether a computed intersection should replace sibling
+contexts. That question arises when a claim must hold for every Dirac
+system. None of the nine does: each reports one run or one design on
+Dirac-1. So a third sibling is the right shape now, and the intersection
+question waits for a claim that spans the systems.
+
+*(c) What was considered (Q1).* One shared QCi context for all nine was
+declined: it would separate them from Dirac-3 but record nothing about
+which system each result came from. Leaving them tagged and refused was
+declined: their twelve drafted results would never be entered.
+
+*Consequence for section 3b.* The domain-scale context list gains
+`platform:dirac-1`, seeded in `store/seed_contexts.sql` and added to the
+live store by `scripts/sprint10_f84_dirac1.py`, which also retags the nine
+records and enters their assertions. A8 (b)'s rule for relating the
+systems applies unchanged: a Dirac-1 assertion that states the same fact
+as a Dirac-3 assertion is linked `supports` only when the whole claim is
+confirmed.

@@ -64,6 +64,16 @@ this project keeps having to replace with a step.
   says it answered. It still stays due: no `publication_status` value
   means "the registry states none" (raised for Manual Validation). A null
   DataCite affiliation name no longer raises. Two tests, two injections
+- **feat**: Task F (F84, #107; Class 1, Q1 = 1, Q3 = 1) -- ADR-0004 A10
+  adds `platform:dirac-1` (A8's rule: one context per QCi system; A8's
+  "revisit" answered: no claim spans the systems). The nine QCi sources
+  Sprint 9 refused (seven "Device: Dirac-1" pages, the UAS case study,
+  the QC-7 article) are retagged from `platform:dirac-3`, read and
+  entered: 12 assertions, 6 vendor descriptions MODERATE and 6 vendor
+  results LOW. The coordinator's read cut two reader conclusions the
+  pages do not state ("scales better than cubic"; "64 binary variables").
+  Every quote and stated figure checked by test; seven tests, four
+  injections; F80's refused-stays-seen test narrowed to the other two
 - **process**: Task E (F82, #106; Class 1, team lead Q2 = 1) -- the
   never-write hook's threat model stays accidental writes. Now blocked
   with a guarded path: an abbreviated long option of a writing one
