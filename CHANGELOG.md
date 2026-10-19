@@ -89,7 +89,12 @@ this project keeps having to replace with a step.
   COMMITMENT from the approved Task E line): git runs the guarded
   repository's own configured programs on a plain `git diff` by default,
   so that block guarded nothing, and such a program is that repository's
-  configuration, not this session writing. Two injections
+  configuration, not this session writing. Two injections. A security
+  review of that fix found one shared list of value-taking options let
+  `grep -n -O x`, `grep -LO`, `grep -GO`, `grep -3O` and `diff -M
+  --output=...` through; the lists are now per subcommand, digits continue
+  the scan, and a bare closing quote after `"git"` is not read as the
+  subcommand. Five cases; one injection
 
 - **docs**: Sprint 10 Phases 1.5 to 3 (2026-10-18) -- scope selected (all
   ten non-HOLD items; F88 and F89 released from F39 and F57); Phase 2

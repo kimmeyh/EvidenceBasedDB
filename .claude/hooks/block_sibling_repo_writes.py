@@ -130,27 +130,35 @@ _GIT_WRITING_OPTION = re.compile(r"^(?:-c|--config-env(?:=.*)?|--output(?:=.*)?|
 # writing, which is the model above.
 _GIT_WRITING_LONG = ("output", "open-files-in-pager", "config-env")
 _GIT_COMPLETE_READ_LONG = frozenset({"oneline", "ours"})
-_GIT_SHORT_WITH_VALUE = "SGeULCMAB0123456789"
-# A separate word after one of these is its value, not an option
-# (`grep -e -Option`, `log -S -Oops`).
-_GIT_VALUE_OPTIONS = frozenset({"-e", "-S", "-G", "-L", "-U", "-A", "-B", "-C", "-M", "-n", "-f",
-                                "--grep", "--author", "--committer", "--format", "--pretty"})
+# Which short options take a value depends on the subcommand (second
+# security review of the Task E fix, 2026-10-18: one shared list let
+# `grep -n -O x` and `grep -LO x` through, since -n and -L take no value in
+# grep). In a cluster, the letters after one of these are its value, so an
+# O there is not -O; digits are a count (`-3`) and the scan goes on. A
+# separate word after one of the second set is its value (`grep -e -Option`).
+_GIT_SHORT_WITH_VALUE = {"grep": "efABCm"}
+_GIT_SHORT_WITH_VALUE_DEFAULT = "SGLUMCBn"  # log, show, diff, blame, shortlog, rev-list
+_GIT_VALUE_WORD = {"grep": frozenset({"-e", "-f", "-A", "-B", "-C", "-m"})}
+_GIT_VALUE_WORD_DEFAULT = frozenset({"-S", "-G", "-L", "-n", "--grep", "--author", "--committer"})
 
 
-def _short_cluster_has_o(tok: str) -> bool:
+def _short_cluster_has_o(tok: str, sub: str) -> bool:
     if not tok.startswith("-") or tok.startswith("--"):
         return False
+    with_value = _GIT_SHORT_WITH_VALUE.get(sub, _GIT_SHORT_WITH_VALUE_DEFAULT)
     for ch in tok[1:]:
         if ch == "O":
             return True
-        if ch in _GIT_SHORT_WITH_VALUE or not ch.isalnum():
+        if ch.isdigit():
+            continue
+        if ch in with_value or not ch.isalnum():
             return False
     return False
 
 
-def _git_option_writes(tok: str) -> bool:
+def _git_option_writes(tok: str, sub: str = "") -> bool:
     tok = tok.strip("\"'")
-    if _GIT_WRITING_OPTION.match(tok) or _short_cluster_has_o(tok):
+    if _GIT_WRITING_OPTION.match(tok) or _short_cluster_has_o(tok, sub):
         return True
     if not tok.startswith("--"):
         return False
@@ -171,21 +179,25 @@ def _git_writes(command: str) -> bool:
     for call in _GIT_CALL.finditer(command):
         tokens = _TOKEN.findall(command[call.end():])
         tokens = tokens[:next((n for n, t in enumerate(tokens) if t in (";", "&", "|", "(", ")")), len(tokens))]
-        if any(_git_option_writes(t) for n, t in enumerate(tokens)
-               if not (n and tokens[n - 1].strip("\"'") in _GIT_VALUE_OPTIONS)):
-            return True
-        i = 0
+        i, sub = 0, ""
         while i < len(tokens):
             tok = tokens[i]
             if tok in _GIT_OPTION_WITH_VALUE:
                 i += 2
                 continue
-            if tok.startswith("-"):
-                i += 1
+            if tok.startswith("-") or not tok.strip("\"'`"):
+                i += 1  # an option, or the bare quote that closed `"git"`
                 continue
-            if tok.strip("\"'").lower() not in _GIT_READS:
-                return True
+            sub = tok.strip("\"'").lower()
             break
+        value_word = _GIT_VALUE_WORD.get(sub, _GIT_VALUE_WORD_DEFAULT)
+        # Before the subcommand only git's own options; after it, a word
+        # that is the value of the option before it is not an option.
+        if any(_git_option_writes(t, sub if n > i else "") for n, t in enumerate(tokens)
+               if not (n > i + 1 and tokens[n - 1].strip("\"'") in value_word)):
+            return True
+        if sub and sub not in _GIT_READS:
+            return True
     return False
 
 

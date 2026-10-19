@@ -219,6 +219,12 @@ def test_read_forms_of_phase2_stay_allowed(command):
     f"git -C {P2} grep --open x",
     f"git -C {P2} grep -nO x",
     f"git -C {P2} grep -iO x",
+    # Second security review of the Task E fix: each passed at 6c37e83
+    f"git -C {P2} grep -n -O x",
+    f"git -C {P2} grep -LO x",
+    f"git -C {P2} grep -GO x",
+    f"git -C {P2} grep -3O x",
+    f"git -C {P2} diff -M --output={P2}/x.txt",
 ])
 def test_accidental_option_forms_into_phase2_are_blocked(command):
     """F82 (Sprint 10 Task E, team lead Q2 = 1): forms a session could type
@@ -228,7 +234,13 @@ def test_accidental_option_forms_into_phase2_are_blocked(command):
     _GIT_WRITING_OPTION match, every case went red. Restored. The first
     version also blocked --ext-diff and --textconv; its review showed git
     runs those programs on a plain diff by default, so they were removed
-    (module docstring)."""
+    (module docstring). The second security review's five cases each
+    passed at 6c37e83 (one shared list of value-taking options made -n,
+    -L, -G and -M look like they took a value in grep and diff); proven by
+    injection, 2026-10-18: with the grep entries removed from
+    _GIT_SHORT_WITH_VALUE and _GIT_VALUE_WORD (so grep used the log list),
+    -nO, -n -O, -LO and -GO passed, and the allowed `grep -e -Option` was
+    blocked. Restored. (-3O and the diff case block under either list.)"""
     assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 2, command
 
 
