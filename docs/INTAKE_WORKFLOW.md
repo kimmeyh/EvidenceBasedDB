@@ -811,3 +811,25 @@ Every count is a snapshot as of 2026-10-18.
 - **F57's count after this release:** 1,969 records at `seen` or
   `screened`, of which 1,966 have no read row (the other 3 are read and
   refused: two by F80, one here).
+
+## 30. Applied 2026-10-19: the live discovery re-run's candidates at `seen` (Sprint 10 Task J, F87; Manual Validation Q4 = 2 and Q6)
+
+Every count is a snapshot as of 2026-10-19.
+
+- **What entered.** The live re-run (`f62_review_2026-10-19.md`) listed 99
+  candidates in its four top lists, after the F87 filters dropped 14
+  off-topic records before ranking. The team lead excluded 6 more as
+  off-topic; 2 were Sprint 9 exclusions back at the top. The team lead
+  moved 2 qml-stream papers that apply classical ML to molecules (FCHL
+  revisited; the alchemical representation paper) to `ml`: "do these
+  better fit in ml and can be switched there". `scripts/sprint10_f87_enter_seen.py`
+  pins every exclusion and both switches to their titles. All 91 entered
+  at `seen`: 55 `ml`, 19 `qc`, 11 `world`, 6 `qml`.
+- **The door and the title check are section 24's.** The check refused 5
+  at first, each an arXiv preprint titled other than the published paper
+  (qml 5's preprint is "Robust determination of molecular spectra on a
+  quantum processor"). They entered by the journal DOI, whose title
+  matched.
+- **F57's count after this release:** 2,060 records at `seen` or
+  `screened`, of which 2,057 have no read row. The store holds 2,284
+  papers.

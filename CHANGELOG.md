@@ -15,6 +15,16 @@ this project keeps having to replace with a step.
 
 ### 2026-10-18 onward (Sprint 10, in progress)
 
+- **feat**: Task J (F87, #111), Manual Validation Q4 = 2 and Q6
+  (2026-10-19) -- the live discovery re-run's candidates enter at `seen`:
+  91 of the 99 top-listed (6 excluded by the team lead, 2 Sprint 9
+  exclusions back at the top), two classical-ML-on-molecules papers moved
+  from the qml stream to `ml` at the team lead's request. 5 preprints
+  retitled at publication entered by journal DOI. Store 2,284 papers;
+  F57 count 2,060 at `seen` or `screened` (snapshot 2026-10-19).
+  `scripts/sprint10_f87_enter_seen.py`, `tests/test_f87_enter_seen.py`,
+  intake section 30
+
 - **process**: Sprint 10 Manual Validation decisions recorded (2026-10-19):
   ADR-0004 A10 approved as written (Q1 = 1); a registry answer with nothing
   recordable stays due (Q2 = 1); ML libraries stay in review (Q3 = 1); live
