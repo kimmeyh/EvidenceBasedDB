@@ -524,6 +524,42 @@ and in git. Remaining items below.
   still missing stays `seen` with that reason. These count toward F57.
 - Depends on: the team lead's downloads
 
+### Carded 2026-10-19, after Sprint 10 Manual Validation
+
+**F91. Enter and read Google Quantum AI's magic state cultivation experiment, Science 2026 (~1h) Priority 65** (NEW 2026-10-19, team lead request)
+- Phase: Sourcing / intake, then reading
+- Platform: `scripts/intake.py`; `D:\Data\Harold\EvidenceBasedDB\Papers\`
+- Team lead, 2026-10-19: "Can you add this paper to the backlog for the
+  next sprint", with a screenshot of `DOI: 10.1126/science.aee7961`.
+- **Facts at carding (snapshot as of 2026-10-19, from Crossref and arXiv,
+  read only)**: Rosenfeld, Gidney, Roberts et al. (Google Research, with
+  NASA Ames co-authors), "Magic state cultivation on a superconducting
+  quantum processor", Science, published online 2026-10-15, article
+  eaee7961, 65 references. Crossref lists the license as starting
+  2027-10-15, so the publisher's copy is likely paywalled until then (not
+  checked). The free preprint is arXiv:2512.13908 (v1). The abstracts
+  differ: the Science abstract says the state fidelity is "at least"
+  0.9999(1); the arXiv v1 abstract omits "at least". Data:
+  DOI:10.5281/zenodo.17872003. The theory it tests,
+  Gidney, Shutty and Jones, arXiv:2409.17595, is a reference.
+- Not found in the repository's manifests or scripts by either
+  identifier (code search, 2026-10-19). The store itself is local and
+  was not checked; the door skips an id already present.
+- Context by intake section 8: `qc` (a device demonstration of quantum
+  error correction; no ML workload, and not a `world` result).
+- Scope: (1) enter by `DOI:10.1126/science.aee7961`, with the arXiv
+  preprint linked as `version_of` and its free PDF saved to `Papers\`
+  under section 3's convention (inside the arXiv cap); (2) read it and
+  enter the headline claims as assertions (error reduction factor,
+  fidelity bound, acceptance rate), each quote checked before the write
+  (intake section 26) against the preprint, with every place the
+  published wording differs recorded; (3) optionally enter
+  arXiv:2409.17595 at `seen` as the protocol it tests.
+- Acceptance: the record at `read` with its assertions, or at `seen`
+  with the reason it was not read; the abstract difference above
+  recorded in the record's evidence.
+- Depends on: none
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
