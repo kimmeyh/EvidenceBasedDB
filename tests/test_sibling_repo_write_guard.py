@@ -225,6 +225,9 @@ def test_read_forms_of_phase2_stay_allowed(command):
     f"git -C {P2} grep -GO x",
     f"git -C {P2} grep -3O x",
     f"git -C {P2} diff -M --output={P2}/x.txt",
+    # Third security review: a long writing option after a value-taking flag
+    f"git -C {P2} shortlog -n --output={P2}/x.txt",
+    f"git -C {P2} log -S --outp={P2}/x.txt",
 ])
 def test_accidental_option_forms_into_phase2_are_blocked(command):
     """F82 (Sprint 10 Task E, team lead Q2 = 1): forms a session could type
@@ -240,7 +243,10 @@ def test_accidental_option_forms_into_phase2_are_blocked(command):
     injection, 2026-10-18: with the grep entries removed from
     _GIT_SHORT_WITH_VALUE and _GIT_VALUE_WORD (so grep used the log list),
     -nO, -n -O, -LO and -GO passed, and the allowed `grep -e -Option` was
-    blocked. Restored. (-3O and the diff case block under either list.)"""
+    blocked. Restored. (-3O and the diff case block under either list.)
+    Third security review: the shortlog and `log -S --outp` cases passed
+    at 08f5510; proven by injection, 2026-10-18: with the long-option
+    exception removed from the value-word skip, both passed again."""
     assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 2, command
 
 

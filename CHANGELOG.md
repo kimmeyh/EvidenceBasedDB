@@ -105,7 +105,10 @@ this project keeps having to replace with a step.
   `grep -n -O x`, `grep -LO`, `grep -GO`, `grep -3O` and `diff -M
   --output=...` through; the lists are now per subcommand, digits continue
   the scan, and a bare closing quote after `"git"` is not read as the
-  subcommand. Five cases; one injection
+  subcommand. Five cases; one injection. A third review: a long writing
+  option after a value-taking flag was skipped as its value
+  (`shortlog -n --output=...`); such a word is now never skipped (fail
+  closed). Two cases; one injection
 
 - **docs**: Sprint 10 Phases 1.5 to 3 (2026-10-18) -- scope selected (all
   ten non-HOLD items; F88 and F89 released from F39 and F57); Phase 2

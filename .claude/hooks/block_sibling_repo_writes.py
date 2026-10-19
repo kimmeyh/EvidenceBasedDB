@@ -193,8 +193,12 @@ def _git_writes(command: str) -> bool:
         value_word = _GIT_VALUE_WORD.get(sub, _GIT_VALUE_WORD_DEFAULT)
         # Before the subcommand only git's own options; after it, a word
         # that is the value of the option before it is not an option.
+        # Fail closed (third security review): a long writing option is
+        # never taken as a value, since the per-subcommand lists can be wrong
+        # (`shortlog -n --output=...`, where -n takes no value).
         if any(_git_option_writes(t, sub if n > i else "") for n, t in enumerate(tokens)
-               if not (n > i + 1 and tokens[n - 1].strip("\"'") in value_word)):
+               if t.strip("\"'").startswith("--")
+               or not (n > i + 1 and tokens[n - 1].strip("\"'") in value_word)):
             return True
         if sub and sub not in _GIT_READS:
             return True
