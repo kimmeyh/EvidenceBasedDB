@@ -15,6 +15,14 @@ this project keeps having to replace with a step.
 
 ### 2026-10-18 onward (Sprint 10, in progress)
 
+- **chore**: Sprint 10 Phase 5.3 Manual Validation handed over
+  (2026-10-18). Tasks A to J done with every fresh-eyes review answered;
+  suite 1,053 passed locally; CI green. Three changed commitments restated
+  (Task E's `--ext-diff`/`--textconv`; Task I's 9 unread records; Task J
+  measured on Sprint 9's pool, 13 to 3). Aimeur 2007 kept on the
+  hand-download list (ICML's archived link no longer resolves); Q1 to Q5
+  asked
+
 - **fix**: Task A (F81, #102) -- the code-edit hook no longer blocks a read
   of a code file followed by another command's `-i` (`sed -n 1,5p x.py;
   grep -i y z`): the flag and target search stops at the editor's own

@@ -69,7 +69,10 @@ NO_COPY = {  # no free copy known to OpenAlex or found by an arXiv title search,
     "narayanan-2000-quantum-artificial-neural-network-architectures": "Elsevier, closed; no arXiv version found",
     "aimeur-2006-machine-learning-quantum-world": "Springer conference paper, closed; no arXiv version found",
     "ruan-2017-quantum-algorithm-k-nearest-neighbors": "Springer, closed; no arXiv version found by title",
-    "aimeur-2007-quantum-clustering-algorithms": "ACM, closed; no arXiv version found by title",
+    "aimeur-2007-quantum-clustering-algorithms": (
+        "ICML 2007 lists a free paper link, but the archived proceedings link no longer resolves (checked "
+        "2026-10-18, Task I review); no arXiv version found by title; its 2013 journal version "
+        "(aimeur-2013-quantum-speed-up-unsupervised-learning, read this sprint) covers the same algorithms"),
     "duan-2020-survey-hhl-algorithm-theory-application": "Elsevier, closed; no arXiv version found by title",
     "panella-2011-neural-networks-quantum-architecture-quantum": "Wiley, closed; no arXiv version found by title",
     "valdez-2023-retracted-article-review-quantum-computing": ("Springer, a RETRACTED article (title); no free copy "
