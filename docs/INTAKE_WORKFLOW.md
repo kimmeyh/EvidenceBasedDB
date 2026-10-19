@@ -785,3 +785,29 @@ Every count is a snapshot as of 2026-10-18.
   citations.
 - **F57's count, refreshed:** 2,033 records at `seen` or `screened`, of
   which 2,031 have no read row.
+
+## 29. Applied 2026-10-18: the second slice read and entered (Sprint 10 Task I, F89)
+
+Every count is a snapshot as of 2026-10-18.
+
+- **Copies.** `scripts/sprint10_f89_downloads.py` fetched free copies of the
+  slice papers with none (arXiv through the paced fetcher; open-access PDFs
+  OpenAlex lists), into `Papers\`; two more by their direct open-access
+  links, one by an arXiv title search, and Dunjko 2020's Quantum Views page
+  into `References\QuantumViews\`. Nine papers have no free copy (NO_COPY in
+  the reading script): each stays `seen` with that reason and goes on the
+  hand-download list.
+- **Reads.** Nine Sonnet 5.5 first-pass readers, kept verbatim in
+  `manifests/sprint10_f89_reads/group_r1.json` to `group_r9.json`, under
+  the protocol F88 tightened (a reader's own conclusions in
+  `reader_inference`, never in a value). `scripts/sprint10_f89_reading.py`
+  enters them after the coordinator's read: every quote checked before the
+  write (section 26), nine quotes corrected to the source's exact
+  characters, two values rewritten, three contexts corrected, one record
+  refused (a workforce review that bears on no context).
+- **Result.** 64 of the 74 records read and yielding 216 assertions (42
+  HIGH, 2 MODERATE, 172 LOW, by the grading Sprint 9's reads used); 1 refused; 9 with no
+  copy. The store holds 224 records at `read` and 793 assertions.
+- **F57's count after this release:** 1,969 records at `seen` or
+  `screened`, of which 1,966 have no read row (the other 3 are read and
+  refused: two by F80, one here).

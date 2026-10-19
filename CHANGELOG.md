@@ -64,6 +64,17 @@ this project keeps having to replace with a step.
   says it answered. It still stays due: no `publication_status` value
   means "the registry states none" (raised for Manual Validation). A null
   DataCite affiliation name no longer raises. Two tests, two injections
+- **feat**: Task I (F89, #110; the F57 release for Sprint 10) -- the 74
+  most-cited unread `qml` records: 65 with a free copy read by nine Sonnet
+  5.5 readers under the `reader_inference` rule, then the coordinator's
+  read of every value against its quoted passages. 64 entered at `read`
+  with 216 assertions (42 HIGH, 2 MODERATE, 172 LOW); 1 refused (a
+  workforce review); 9 with no free copy stay `seen` for the hand-download
+  list. Nine quotes corrected to the source's exact characters, two values
+  rewritten (Innan's two AUCs are different curves; Aimeur's bound as
+  printed), three contexts corrected. Snapshot as of 2026-10-18: 224
+  records at `read`, 793 assertions, 1,969 at `seen` or `screened`. Eight
+  tests, three injections; intake section 29
 - **process**: Sprint 10 Tasks F, G and H missed INTAKE_WORKFLOW.md
   section 26 (Sprint 9 retrospective I3): their scripts wrote before
   checking quotes, which only the live-store tests then did. Each now runs
