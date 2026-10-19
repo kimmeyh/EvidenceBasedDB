@@ -50,7 +50,10 @@ def test_every_quote_is_in_its_page():
 def test_every_figure_in_a_value_is_on_its_page():
     """The read that found "64 binary variables", a figure the page never
     states. Proven to fail by injection, 2026-10-18: with that VALUE_EDITS
-    entry removed, this test named dirac1-tsp-8-cities-qap-formulation (64)."""
+    entry removed, this test named dirac1-tsp-8-cities-qap-formulation (64).
+    LIMIT (review of 9781f9f): a figure anywhere on the page passes, so a
+    wrong figure that appears elsewhere on it (430 made 441) is not caught;
+    the coordinator's read is what checks that."""
     f84 = _script()
     text, missing = _sources(f84), []
     for a, rid in f84.assertions():
@@ -62,27 +65,45 @@ def test_every_figure_in_a_value_is_on_its_page():
     assert not missing, missing
 
 
-def test_the_reader_conclusions_the_pages_do_not_state_are_gone():
-    """Sprint 9's main reader defect (F88): a conclusion the source does not
-    state. Proven to fail by injection, 2026-10-18: with the UAS VALUE_EDITS
-    entry removed, this test named dirac1-uas-10364-vars-13852s-polynomial-claim."""
+def test_the_values_say_what_the_pages_say():
+    """The coordinator's read, and the fresh-eyes review of 9781f9f that
+    corrected it. Cut: "64 binary variables", a figure the TSP page never
+    states. Kept, with its quote: the UAS page's own "better than O(n^3)"
+    conclusion, which the first version cut as the reader's (a search for
+    the word "cubic" missed the notation). Corrected: the portfolio run's
+    dates (the backtest ran 2022-01-13 to 2022-12-30; 2020 to 2023 is the
+    page's example) and the reader's "(modes)" gloss. Proven to fail by
+    injection, 2026-10-18: with the TSP VALUE_EDITS entry removed, the 64
+    check went red; with the portfolio entry removed, the date check did."""
     f84 = _script()
     values = {a.id: a.value for a, _ in f84.assertions()}
-    assert "cubic" not in values["dirac1-uas-10364-vars-13852s-polynomial-claim"]
-    assert "within polynomial time" in values["dirac1-uas-10364-vars-13852s-polynomial-claim"]
     assert "64 binary" not in values["dirac1-tsp-8-cities-qap-formulation"]
+    uas = values["dirac1-uas-10364-vars-13852s-polynomial-claim"]
+    assert "better than O(n^3)" in uas and "within polynomial time" in uas
+    assert "backtest the page ran covers 2022-01-13 to 2022-12-30" in values["dirac1-portfolio-select-30-stocks-binary"]
+    assert "(modes)" not in values["qci-web-eqc-30000-qubit-limit-estimate"]
+
+
+_DESCRIPTIONS = {  # the tutorial's setup or scope, read 2026-10-18; held here, not read from the script
+    "dirac1-pca-qubo-medicare-93-to-3", "dirac1-pca-not-np-hard-demo", "dirac1-feature-selection-10-of-93",
+    "dirac1-graph-partition-two-small-graphs", "dirac1-portfolio-select-30-stocks-binary",
+    "dirac1-tsp-8-cities-qap-formulation",
+}
 
 
 def test_vendor_descriptions_are_moderate_and_vendor_results_low():
-    """No vendor claim about its own product is HIGH. Proven to fail by
-    injection, 2026-10-18: with DESCRIPTIONS emptied, this test named the
-    six descriptions."""
+    """No vendor claim about its own product is HIGH. The six descriptions
+    are listed in this test, so emptying the script's set cannot also
+    empty the expectation (fresh-eyes review of 9781f9f: the first version
+    compared against the script's own set). Proven to fail by injection,
+    2026-10-18: with the script's DESCRIPTIONS emptied, this test named
+    the six."""
     f84 = _script()
     got = {a.id: a.certainty for a, _ in f84.assertions()}
     assert all(a.claim_type == "vendor-self-claim" for a, _ in f84.assertions())
-    wrong = [i for i, c in got.items() if c != ("moderate" if i in f84.DESCRIPTIONS else "low")]
+    wrong = [i for i, c in got.items() if c != ("moderate" if i in _DESCRIPTIONS else "low")]
     assert not wrong, wrong
-    assert f84.DESCRIPTIONS <= set(got) and len(got) == 12
+    assert len(_DESCRIPTIONS) == 6 and _DESCRIPTIONS <= set(got) and len(got) == 12
 
 
 def _nine_problems(conn, nine) -> list[str]:

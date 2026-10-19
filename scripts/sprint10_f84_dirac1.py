@@ -13,11 +13,20 @@ HOW THE SOURCES WERE READ: a Sonnet 5.5 first-pass reader read each whole
 saved page in Sprint 9 (its row is already stored). On 2026-10-18 the
 coordinator read each page's opening, every quoted passage with about 300
 characters each side, and the passage behind every figure a value states
-(sample counts, instance sizes, the BMW constraints). That read found two
-reader conclusions the sources do not state (VALUE_EDITS): "scales better
-than cubic" (the page fits polynomials of order 2, 3 and 4 and says
-"within polynomial time"; "cubic" is not on the page), and "64 binary
-variables" (the reader's own 8 x 8; the page states no count).
+(sample counts, instance sizes, the BMW constraints). That read found one
+figure the source does not state, "64 binary variables" (the reader's own
+8 x 8; the page states no count), cut by VALUE_EDITS.
+
+CORRECTED after the fresh-eyes review of 9781f9f (2026-10-18). The first
+version also cut the UAS value's "scales better than cubic" as a reader
+conclusion. It was QCi's own: the page says "Dirac-1 scales performance
+better than O ( n 3 )". The coordinator's check searched for the word
+"cubic" and missed the notation. The value now states the page's
+conclusion with its quote. The review also found the portfolio value gave
+the page's example period (2020-01-15 to 2023-12-30) as the run; the
+backtest that ran covers 2022-01-13 to 2022-12-30. And "(modes)" in the
+30,000-qubit value was the reader's gloss; the page ties the limit to
+energy levels. All three corrected.
 
 CERTAINTY follows F80's rule for a vendor's claim about its own product:
 it starts MODERATE as vendor primary documentation; a description of the
@@ -76,15 +85,20 @@ WHY_DIRAC1["quantumcomputinginc-nd-entropy-quantum-computing-offers-an"] = (
 VALUE_EDITS = {  # (exact reader text, replacement), from the coordinator's read
     "dirac1-uas-10364-vars-13852s-polynomial-claim": [(
         "and concludes from polynomial fits that time-to-solution scales better than cubic.",
-        "fits polynomials of order 2, 3 and 4 through its timings, and concludes that Dirac-1 solved this "
-        "NP-complete problem within polynomial time.")],
+        "fits polynomials of order 2, 3 and 4 through its timings, says the fit lies between n^2 and n^3 so "
+        "Dirac-1 scales better than O(n^3), and concludes that Dirac-1 solved this NP-complete problem within "
+        "polynomial time.")],
+    "dirac1-portfolio-select-30-stocks-binary": [(
+        "over rolling windows from 2020-01-15 to 2023-12-30;",
+        "over rolling windows; the backtest the page ran covers 2022-01-13 to 2022-12-30 (its text names "
+        "2020-01-15 to 2023-12-30 only as an example period);")],
     "dirac1-tsp-8-cities-qap-formulation": [("(64 binary variables, 5 samples, penalty multiplier 20)",
                                              "(5 samples, penalty multiplier 20)")],
     "dirac1-graph-partition-two-small-graphs": [(
         "it states no objective value or optimality check.",
         "it states no objective value or optimality check, although its introduction calls the plotted split "
         "optimal.")],
-    "qci-web-eqc-30000-qubit-limit-estimate": [(
+    "qci-web-eqc-30000-qubit-limit-estimate": [("about 30,000 qubits (modes)", "about 30,000 qubits"), (
         "This is a vendor estimate, not a measured result.",
         "This is a vendor estimate, not a measured result; the article names Dirac 1 as the system EQC runs on.")],
     "qci-web-bmw-sensor-six-minutes": [(
@@ -93,6 +107,9 @@ VALUE_EDITS = {  # (exact reader text, replacement), from the coordinator's read
         "device ran these tests.")],
 }
 EXTRA_QUOTES = {  # a quote the coordinator's read adds for an edited value
+    "dirac1-uas-10364-vars-13852s-polynomial-claim": ["indicating that Dirac-1 scales performance better than "
+                                                      "O ( n 3 )"],
+    "dirac1-portfolio-select-30-stocks-binary": ["Processing curr date: 2022-01-13"],
     "dirac1-graph-partition-two-small-graphs": ["we aim to execute and plot the optimal split of two small graph "
                                                 "instances"],
     "qci-web-eqc-30000-qubit-limit-estimate": ["The technology is the engineering marvel behind Dirac 1"],

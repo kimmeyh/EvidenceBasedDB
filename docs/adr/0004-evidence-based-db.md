@@ -1031,3 +1031,17 @@ records and enters their assertions. A8 (b)'s rule for relating the
 systems applies unchanged: a Dirac-1 assertion that states the same fact
 as a Dirac-3 assertion is linked `supports` only when the whole claim is
 confirmed.
+
+*A10 correction, 2026-10-18 (fresh-eyes review of 9781f9f, the same
+day).* A10 (b) says each of the nine "reports one run or one design on
+Dirac-1". That holds for the eight application pages, which name Dirac-1
+as their device. It does not hold for the QC-7 article's two claims: the
+BMW sensor-placement result is credited to EQC ("Tests of EQC for this
+problem") with no device named, and the 30,000-qubit figure is the
+estimated limit of the EQC approach. The article's only link to a device
+is "The technology is the engineering marvel behind Dirac 1". Filing
+those two claims under `platform:dirac-1` is therefore an inference from
+that sentence, not a statement in the article. The BMW value says the
+article does not say which device ran the tests; the 30,000-qubit value
+names the sentence that links EQC to Dirac 1. Both are graded LOW. A8's revisit
+question is unaffected: neither claim spans the Dirac systems.

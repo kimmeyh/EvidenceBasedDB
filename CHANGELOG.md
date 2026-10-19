@@ -64,6 +64,17 @@ this project keeps having to replace with a step.
   says it answered. It still stays due: no `publication_status` value
   means "the registry states none" (raised for Manual Validation). A null
   DataCite affiliation name no longer raises. Two tests, two injections
+- **fix**: Task F review (2026-10-18) -- the entry below was WRONG on one
+  point: "scales better than cubic" was QCi's own conclusion (the page
+  says "better than O ( n 3 )"; the coordinator's check searched for the
+  word "cubic" and missed the notation). The value now states it with its
+  quote. Also corrected: the portfolio value gave the page's example
+  period as the run (the backtest ran 2022-01-13 to 2022-12-30), and the
+  reader's "(modes)" gloss is cut. ADR-0004 A10 correction: filing the
+  QC-7 article's two claims under `platform:dirac-1` is an inference from
+  its one Dirac 1 sentence. The descriptions test now holds its own list
+  (its first version compared against the script's set, so it could not
+  fail as claimed). Two injections
 - **feat**: Task F (F84, #107; Class 1, Q1 = 1, Q3 = 1) -- ADR-0004 A10
   adds `platform:dirac-1` (A8's rule: one context per QCi system; A8's
   "revisit" answered: no claim spans the systems). The nine QCi sources
