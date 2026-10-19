@@ -15,6 +15,16 @@ this project keeps having to replace with a step.
 
 ### 2026-10-18 onward (Sprint 10, in progress)
 
+- **process**: Sprint 10 Manual Validation decisions recorded (2026-10-19):
+  ADR-0004 A10 approved as written (Q1 = 1); a registry answer with nothing
+  recordable stays due (Q2 = 1); ML libraries stay in review (Q3 = 1); live
+  discovery re-run now (Q4 = 2); F57 closing rule at the retrospective
+  (Q5 = 1). The team lead rejected a validation step that asked them to run
+  a shell command to check the code-edit hook: a hook fires only on
+  Claude's own tool calls, so the step proved nothing. The workflow's
+  Manual Validation rule now says so; Claude ran the check itself (not
+  blocked)
+
 - **chore**: Sprint 10 Phase 5.3 Manual Validation handed over
   (2026-10-18). Tasks A to J done with every fresh-eyes review answered;
   suite 1,053 passed locally; CI green. Three changed commitments restated

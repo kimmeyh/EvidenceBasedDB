@@ -1045,3 +1045,7 @@ that sentence, not a statement in the article. The BMW value says the
 article does not say which device ran the tests; the 30,000-qubit value
 names the sentence that links EQC to Dirac 1. Both are graded LOW. A8's revisit
 question is unaffected: neither claim spans the Dirac systems.
+
+*A10 decision, 2026-10-19 (Sprint 10 Manual Validation).* The team lead
+approved A10 and its correction as written (Q1 = 1). Nothing changed: the
+nine records stay under `platform:dirac-1`.
