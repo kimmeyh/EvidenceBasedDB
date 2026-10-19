@@ -89,6 +89,40 @@ STREAMS = {
     "fraud": {"filter": 'title.search:fraud,title_and_abstract.search:"machine learning"|"deep learning"|'
                         '"neural network"|"anomaly detection"', "sort": "cited_by_count:desc"},
 }
+# F87 (Sprint 10 Task J): off-topic kinds the team lead excluded at Sprint 9
+# Manual Validation (Q4 = 1, 13 records), dropped before ranking by
+# OpenAlex primary topic, plus one title rule. Each topic was checked against
+# the Sprint 9 pool: none drops a record the team lead accepted. A record
+# that shares its topic with an accepted one is NOT filterable this way and
+# stays for review (the single-photon platform paper in qml; the black-hole
+# paper in tensor, beside an accepted holography paper). Dropped records are
+# listed in the review, never silently removed.
+OFF_TOPIC_TOPICS = {
+    "ml": {"Computational Physics and Python Applications",  # SciPy, NumPy: software libraries
+           "Data Analysis with R",                            # the Tidyverse
+           "Metaheuristic Optimization Algorithms Research"},  # Grey Wolf and kin
+    "qml": {"Quantum and electron transport phenomena",       # spin-qubit hardware
+            "Brain Tumor Detection and Classification"},
+    "tensor": {"Machine Learning in Materials Science",       # interatomic potentials
+               "Physics of Superconductivity and Magnetism",
+               "Probability and Statistical Research",         # 1969 density estimation
+               "Machine Learning and Algorithms"},             # pseudo-ensembles
+    "fraud": set(),
+}
+OFF_TOPIC_TITLE = {"tensor": re.compile(r"^Codebase release\b", re.IGNORECASE)}  # a release note of a held library
+
+
+def off_topic(c: dict) -> str | None:
+    """Why a candidate is dropped before ranking, or None."""
+    topic = c.get("topic") or ""
+    if topic in OFF_TOPIC_TOPICS.get(c["stream"], set()):
+        return f"topic: {topic}"
+    rule = OFF_TOPIC_TITLE.get(c["stream"])
+    if rule and rule.search(c.get("title") or ""):
+        return "title: a software release note"
+    return None
+
+
 _ARXIV_URL = re.compile(r"arxiv\.org/(?:abs|pdf)/(\d{4}\.\d{4,5})", re.IGNORECASE)
 _ARXIV_ID = re.compile(r"(\d{4}\.\d{4,5})")
 
@@ -315,8 +349,9 @@ def free_copy_search(c: dict) -> str:
 
 
 def render_review(top: dict[str, list[dict]], counts: dict, today: date,
-                  unchecked: dict[str, list[dict]] | None = None) -> str:
-    unchecked = unchecked or {}
+                  unchecked: dict[str, list[dict]] | None = None,
+                  dropped: dict[str, list[dict]] | None = None) -> str:
+    unchecked, dropped = unchecked or {}, dropped or {}
     lines = [f"# F62 candidates for review, {today.isoformat()}", "",
              "Sprint 9 Task J. Every count is a snapshot as of this date. Score = citations per year since "
              f"publication (Semantic Scholar's count where it answered for the same title), times {CONTEXT_BONUS} "
@@ -346,6 +381,11 @@ def render_review(top: dict[str, list[dict]], counts: dict, today: date,
                 lines.append(f"- **{c['title']}** ({c['rank_year']}). OpenAlex {c['rank_cites']} citations; "
                              f"{c.get('s2_status', 'not asked')}. DOI {c['doi'] or 'none'}. Copy: "
                              f"{free_copy(c) or 'NONE: by hand'}.")
+        if dropped.get(stream):
+            lines += ["", f"### {stream}: dropped as off-topic before ranking (F87)", ""]
+            for c in dropped[stream]:
+                lines.append(f"- {c['title']} ({c['rank_year'] if 'rank_year' in c else c.get('year')}): "
+                             f"{c['dropped']}")
     return "\n".join(lines) + "\n"
 
 
@@ -474,7 +514,8 @@ def main(argv: list[str] | None = None, s2_fetch=None, sleep=time.sleep) -> int:
         rows = [candidate(w, stream, today) for w in fetch_stream(stream, per, key)]
         for c in rows:
             c["held"] = held_by_store(c, keys)
-        new = [c for c in rows if not c["held"]]
+            c["dropped"] = off_topic(c)
+        new = [c for c in rows if not c["held"] and not c["dropped"]]
         new.sort(key=lambda c: -score(c, today)["score"])
         fetched[stream] = (rows, new)
         to_check += new[:n_check]
@@ -492,7 +533,7 @@ def main(argv: list[str] | None = None, s2_fetch=None, sleep=time.sleep) -> int:
         for c in refused:
             sleep(S2_INTERVAL_S)
             c.update(s2_check(c, s2_fetch, sleep))
-    top, unchecked, counts, everything = {}, {}, {}, []
+    top, unchecked, counts, everything, dropped = {}, {}, {}, [], {}
     for stream, (rows, new) in fetched.items():
         new, dupes = collapse_duplicates(new)
         for c in new:
@@ -502,8 +543,9 @@ def main(argv: list[str] | None = None, s2_fetch=None, sleep=time.sleep) -> int:
         unchecked[stream] = [c for c in new if c["citation_check"] == "unchecked" and "s2_status" in c][
             :UNCHECKED_SHOWN]
         sent = [c for c in new if "s2_status" in c and c["s2_status"] != "no identifier"]
+        dropped[stream] = [c for c in rows if not c["held"] and c["dropped"]]
         counts[stream] = {"fetched": len(rows), "held": len(rows) - len([c for c in rows if not c["held"]]),
-                          "dupes": dupes, "checked": len(sent),
+                          "dropped": len(dropped[stream]), "dupes": dupes, "checked": len(sent),
                           "answered": sum(c["s2_status"] == "answered" for c in sent),
                           "mismatch": sum(c["s2_status"].startswith("mismatch") for c in sent),
                           "disagree": sum(c["citation_check"].startswith("DISAGREE") for c in sent),
@@ -513,7 +555,7 @@ def main(argv: list[str] | None = None, s2_fetch=None, sleep=time.sleep) -> int:
     out.mkdir(parents=True, exist_ok=True)
     stem = f"f62_review_{today.isoformat()}"
     (out / f"{stem}.json").write_text(json.dumps(everything, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    (out / f"{stem}.md").write_text(render_review(top, counts, today, unchecked), encoding="utf-8")
+    (out / f"{stem}.md").write_text(render_review(top, counts, today, unchecked, dropped), encoding="utf-8")
     (out / f"f62_hand_download_{today.isoformat()}.md").write_text(render_hand_list(top, today), encoding="utf-8")
     print(f"wrote {out / (stem + '.md')}, .json and the hand-download list")
     return 0

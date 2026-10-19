@@ -64,6 +64,17 @@ this project keeps having to replace with a step.
   says it answered. It still stays due: no `publication_status` value
   means "the registry states none" (raised for Manual Validation). A null
   DataCite affiliation name no longer raises. Two tests, two injections
+- **feat**: Task J (F87, #111) -- the discovery streams drop, before
+  ranking, the off-topic kinds the team lead excluded at Sprint 9 Manual
+  Validation: OpenAlex topics per stream (software libraries and
+  metaheuristics in ml; spin-qubit hardware and a medical survey in qml;
+  materials, superconductivity, density estimation and pseudo-ensembles in
+  tensor) and a codebase release note. Measured on Sprint 9's own pool
+  (`scripts/sprint10_f87_filter_check.py`, no request): 13 excluded records
+  in the top 25 lists before, 2 after (the single-photon platform paper and
+  the black-hole paper share a topic with accepted ones); no accepted record
+  lost; 11 move up for review. Dropped records are listed in the review,
+  never hidden. Fourteen tests, two injections
 - **feat**: Task I (F89, #110; the F57 release for Sprint 10) -- the 74
   most-cited unread `qml` records: 65 with a free copy read by nine Sonnet
   5.5 readers under the `reader_inference` rule, then the coordinator's
