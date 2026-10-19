@@ -15,6 +15,12 @@ this project keeps having to replace with a step.
 
 ### 2026-10-18 onward (Sprint 10, in progress)
 
+- **process**: Sprint 10 Manual Validation complete (2026-10-19); the
+  eight-paper hand-download list moved to Sprint 11 as F90 (Priority 60)
+  at the team lead's request. Retrospective written
+  (`docs/sprints/SPRINT_10_RETROSPECTIVE.md`, the team lead's words
+  verbatim, Very Good in every category); improvements I1 to I3 proposed
+
 - **feat**: Task J (F87, #111), Manual Validation Q4 = 2 and Q6
   (2026-10-19) -- the live discovery re-run's candidates enter at `seen`:
   91 of the 99 top-listed (6 excluded by the team lead, 2 Sprint 9

@@ -490,6 +490,40 @@ and in git. Remaining items below.
   after; no on-topic record lost from the Sprint 9 accepted list.
 - Depends on: none
 
+### Carded at Sprint 10 Manual Validation (2026-10-19)
+
+**F90. Read the eight F89 papers with no free copy, once the team lead has downloaded them (~45m) Priority 60** (NEW 2026-10-19, Sprint 10 Manual Validation step 5)
+- Phase: Reading
+- Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\`, a Sprint 11 reading script
+- Team lead, 2026-10-19: "can you push the download list of #5 to the
+  next sprint." Sprint 10 Task I (F89) selected 74 records; 9 had no free
+  copy. Valdez 2023 is retracted and stays out. The other 8 stay `seen`
+  with that reason (snapshot as of 2026-10-19):
+  - Schuld 2018, Supervised Learning with Quantum Computers.
+    https://doi.org/10.1007/978-3-319-96424-9
+  - Li 2020, A quantum deep convolutional neural network for image
+    recognition. https://doi.org/10.1088/2058-9565/ab9f93
+  - Narayanan 2000, Quantum artificial neural network architectures and
+    components. https://doi.org/10.1016/s0020-0255(00)00055-4
+  - Aimeur 2006, Machine Learning in a Quantum World.
+    https://doi.org/10.1007/11766247_37
+  - Ruan 2017, Quantum Algorithm for K-Nearest Neighbors Classification
+    Based on the Metric of Hamming Distance.
+    https://doi.org/10.1007/s10773-017-3514-4
+  - Aimeur 2007, Quantum clustering algorithms (ICML). ICML lists it as
+    free, but its archived link no longer resolves; Sprint 10 read the
+    2013 journal version. https://doi.org/10.1145/1273496.1273497
+  - Duan 2020, A survey on HHL algorithm.
+    https://doi.org/10.1016/j.physleta.2020.126595
+  - Panella 2011, Neural networks with quantum architecture and quantum
+    learning. https://doi.org/10.1002/cta.619
+- Acceptance: the team lead's step first (the eight PDFs in `Papers\`,
+  any file name; the team lead's files are never renamed). Then each
+  paper's access points at its file; each is read and entered under F89's
+  rules (quotes checked before any write, intake section 26); a paper
+  still missing stays `seen` with that reason. These count toward F57.
+- Depends on: the team lead's downloads
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
