@@ -119,11 +119,14 @@ ASSERTIONS: list[AssertionRecord] = [
     A(id="dirac3s-returned-b4-reference-optimum-two-seeds",
       value=("On Phase 2's B4 twin (CVQBoost, oilgas_gasturbine, 560 variables), Dirac-3S returned the reference QP "
              "optimum in every sample: weight cosine 0.999993 and 0.9999999 on seeds 42 and 43, the same in all 8 "
-             "samples of each job, against Dirac-3's 0.895 and 0.901, both outside the band [0.8832, 0.9095] set "
-             "before the call. Phase 2 calls this descriptive, not a test (2 fits); the Dirac-3 figures come from "
+             "samples of each job, against Dirac-3's 0.895 and 0.901. Both Dirac-3S cosines fall outside the band "
+             "[0.8832, 0.9095] set before the call, so Phase 2's falsifier fires: \"Dirac-3S behaves as Dirac-3 on "
+             "B4\" is contradicted. Phase 2 calls this descriptive, not a test (2 fits); the Dirac-3 figures come from "
              "different, unseeded pools, and seed 42's cosine is limited by the reference solve, not the device"),
       provenance=f"{SRC}, Bottom line items 1 and 5; {RUN}",
-      citation_context=('"On B4, Dirac-3S returned the reference optimum in every sample; Dirac-3 did not." '
+      citation_context=('"Both fall outside the band set before the call, [0.8832, 0.9095], so the falsifier fires" '
+                        '(Bottom line 1, markdown bold dropped); '
+                        '"On B4, Dirac-3S returned the reference optimum in every sample; Dirac-3 did not." '
                         '(Bottom line 1, markdown bold dropped); "0.999993 and 0.9999999 on seeds 42 and 43, the same '
                         'in all 8 samples of each job, against Dirac-3\'s 0.895 and 0.901." (Bottom line 1); '
                         '"With 2 fits this is descriptive, not a test." (Bottom line 1); "Seed 42\'s 0.999993 is '
@@ -135,13 +138,16 @@ ASSERTIONS: list[AssertionRecord] = [
              "reference, far finer than the 0.005 output step Phase 2 had derived from 200:1; samples agreed to "
              "0.0000005 or better on all five jobs and every value sat on a 0.0000001 grid. Phase 2 infers a "
              "post-processing step (such as normalization, or QCi's stated error correction) rather than an analog "
-             "output resolution of 1 part in 10 million, and marks the cause unverified. The guide's 200:1 "
+             "output resolution of about 1 part in 10 million, and marks the cause unverified: QCi states raw "
+             "values come back too, but this cloud response had no raw-values field to check against. The guide's "
+             "200:1 "
              "(dirac3s-analog-resolution-about-200-to-1) concerns input coefficients, which this does not test"),
       provenance=f"{SRC}, Bottom line item 3 and the introduction's 'Two kinds of resolution'; {RUN}",
       citation_context=('"The returned weights are far finer than the 0.005 output step." (Bottom line 3, markdown '
                         'bold dropped); "every returned value on all five jobs is a multiple of 0.0000001" (Bottom '
                         'line 3); "these weigh toward post-processing" (Bottom line 3); "Unverified which." (Bottom '
-                        'line 3, markdown bold dropped)'),
+                        'line 3, markdown bold dropped); "QCi states raw values come back too; this cloud response has '
+                        'no raw-values field" (Bottom line 3)'),
       certainty_reasons=(OWN + ". HIGH for the measured fineness only; the cause is Phase 2's inference, stated as "
                          "unverified, and is not asserted here")),
     A(id="dirac3s-b4-twin-auprc-unchanged",

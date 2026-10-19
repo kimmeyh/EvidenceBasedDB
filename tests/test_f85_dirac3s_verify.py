@@ -107,7 +107,25 @@ def test_phase_2s_own_limits_are_carried():
     v = {a.id: a.value for a in f85.ASSERTIONS}
     assert "descriptive, not a test" in v["dirac3s-returned-b4-reference-optimum-two-seeds"]
     assert "unverified" in v["dirac3s-returned-weights-finer-than-0005-step"]
+    assert "no raw-values field" in v["dirac3s-returned-weights-finer-than-0005-step"]
     assert "not a rate for other schedules" in v["dirac3s-time-per-sample-schedule-2-by-size"]
+
+
+def test_the_band_is_attributed_to_the_device_that_left_it():
+    """Fresh-eyes review of 7ddc2e1: the value said Dirac-3's 0.895 and
+    0.901 fell outside the band [0.8832, 0.9095]; both lie inside it, and
+    the source's "Both fall outside the band" is about the Dirac-3S
+    cosines. The number and quote tests could not see it (every figure is
+    in the document). This test computes it: each cosine the value gives
+    for Dirac-3 must be inside the band, each for Dirac-3S outside, and the
+    band clause must name Dirac-3S. Proven to fail by injection,
+    2026-10-18: with the first committed wording restored, this test went
+    red."""
+    f85 = _script()
+    value = {a.id: a.value for a in f85.ASSERTIONS}["dirac3s-returned-b4-reference-optimum-two-seeds"]
+    low, high = 0.8832, 0.9095
+    assert all(low <= x <= high for x in (0.895, 0.901)) and not any(low <= x <= high for x in (0.999993, 0.9999999))
+    assert "Both Dirac-3S cosines fall outside the band [0.8832, 0.9095]" in value
 
 
 def test_a_second_apply_writes_nothing(live_copy):

@@ -64,6 +64,15 @@ this project keeps having to replace with a step.
   says it answered. It still stays due: no `publication_status` value
   means "the registry states none" (raised for Manual Validation). A null
   DataCite affiliation name no longer raises. Two tests, two injections
+- **fix**: Task G review (2026-10-18) -- the entry below put a WRONG
+  statement in the store for about 15 minutes: the B4 value said
+  Dirac-3's 0.895 and 0.901 fell outside the band [0.8832, 0.9095]; both
+  lie inside it, and it is the Dirac-3S cosines that fall outside (so
+  Phase 2's falsifier fires). Corrected and re-applied, with the band
+  quote added; a test now computes which cosines lie in the band. The
+  fineness value also gains Phase 2's caveat that the cloud response had
+  no raw-values field to check the post-processing inference against.
+  One injection
 - **feat**: Task G (F85, #108) -- Phase 2's Dirac-3S verification
   (`docs/phase2/F142_DIRAC3S_VERIFY.md`) entered by the inbound path at
   Phase 2 commit e126dbd (revised after the card's c141a57; the same blob
