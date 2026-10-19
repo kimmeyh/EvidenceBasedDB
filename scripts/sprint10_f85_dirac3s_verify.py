@@ -37,6 +37,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from store import connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
 from store.ingest import AssertionRecord, insert_assertion, insert_paper, sync_assertion  # noqa: E402
+from store.quotes import plain, require_verbatim  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location("intake", Path(__file__).with_name("intake.py"))
 intake = importlib.util.module_from_spec(_spec)
@@ -177,7 +178,17 @@ ASSERTIONS: list[AssertionRecord] = [
 ]
 
 
+def check_quotes() -> None:
+    """Every quote verbatim in the document at COMMIT BEFORE anything is
+    written (INTAKE_WORKFLOW.md section 26). Markdown bold is dropped first,
+    as each quote that crosses it says."""
+    text = plain(source_text().replace("**", ""))
+    for a in ASSERTIONS:
+        require_verbatim(a.id, a.citation_context, text)
+
+
 def apply_changes(conn) -> list[str]:
+    check_quotes()
     log = []
     if conn.execute("SELECT 1 FROM paper_fields WHERE record_id = ?", (SRC,)).fetchone() is None:
         insert_paper(conn, intake.build_record(SOURCE, today=TODAY))

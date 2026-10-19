@@ -64,6 +64,23 @@ this project keeps having to replace with a step.
   says it answered. It still stays due: no `publication_status` value
   means "the registry states none" (raised for Manual Validation). A null
   DataCite affiliation name no longer raises. Two tests, two injections
+- **process**: Sprint 10 Tasks F, G and H missed INTAKE_WORKFLOW.md
+  section 26 (Sprint 9 retrospective I3): their scripts wrote before
+  checking quotes, which only the live-store tests then did. Each now runs
+  `check_quotes()` before any write, and a test plants a quote not in the
+  source and expects the refusal. No stored quote was wrong. Intake
+  section 27 records the three tasks' entries
+- **fix**: Task H review (2026-10-18) -- no wrong figure, but four
+  overstatements corrected: the inferred link to Dirac named "the
+  instances sent to Dirac devices", while Phase 2's Dirac-3 work uses its
+  continuous and integer solvers, where the 1-or-minus-1 bound does not
+  apply as written (a same-day correction in the answer document); the
+  two-way partitioning value gains "W symmetric" and "in general";
+  Gurobi's value drops "exact" and adds the second stopping rule
+  (MIPGapAbs, default 1e-10); the verified sentence's "relaxation or dual
+  bound" is a dual bound. The figure test reads only Gurobi's two entries
+  and treats 1e-4 as one token; the store test compares every field. One
+  injection
 - **feat**: Task H (F83, #109) -- per-instance optimization bounds
   sourced: Boyd and Vandenberghe's Convex Optimization (the authors' free
   copy, downloaded to Papers with SHA-256; sections 5.1.5, 5.2.2 and

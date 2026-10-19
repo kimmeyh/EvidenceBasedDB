@@ -37,7 +37,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.ingest import AssertionRecord, insert_assertion, insert_paper, sync_assertion  # noqa: E402
+from store.ingest import (AssertionRecord, append_updated_reason, insert_assertion, insert_paper,  # noqa: E402
+                          sync_assertion)
+from store.quotes import plain, require_verbatim, source_text  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location("intake", Path(__file__).with_name("intake.py"))
 intake = importlib.util.module_from_spec(_spec)
@@ -98,8 +100,9 @@ SOURCES = [
                      "version 13.0 that day); a living page, so the local copy is the record of what was read"),
         "found_via": "Sprint 10 Task H (F83): a solver's own definition of its reported gap",
         "cited_as": "Gurobi Optimizer Reference Manual 13.0, MIPGap",
-        "checked_against_source": f"{TODAY}, Claude, read the MIPGap entry in full in the local copy",
-        "reads": [["Claude", TODAY, "partial", "the MIPGap entry in full; the other parameters not read"]],
+        "checked_against_source": f"{TODAY}, Claude, read the MIPGap and MIPGapAbs entries in full in the local copy",
+        "reads": [["Claude", TODAY, "partial", "the MIPGap and MIPGapAbs entries in full; the other parameters not "
+                                               "read"]],
         "applicability": [["world", "How an exact MIP solver states the gap between its incumbent and its proven "
                                     "bound -- the MIPGap entry"]],
         "updated_reason": f"{TODAY}: added by scripts/sprint10_f83_optimization_bounds.py ({TAG}); read in part",
@@ -138,8 +141,9 @@ ASSERTIONS: list[tuple[AssertionRecord, str]] = [
                          'is always convex" (section 5.2.2, p. 226); "The optimal duality gap is always nonnegative." '
                          '(section 5.2.2, p. 226)')), BOYD),
     (A(id="two-way-partitioning-dual-sdp-lower-bound",
-       value=("For the two-way partitioning problem (minimize x^T W x with every x_i equal to 1 or -1; nonconvex, and "
-              "very difficult to solve beyond about 50 variables), the Lagrange dual gives lower bounds on the "
+       value=("For the two-way partitioning problem (minimize x^T W x, W symmetric, with every x_i equal to 1 or -1; "
+              "nonconvex, and in general very difficult to solve beyond about 50 variables), the Lagrange dual gives "
+              "lower bounds on the "
               "optimal value: a simple one is n times the smallest eigenvalue of W, and the best Lagrange dual "
               "bound is the optimal value of a semidefinite program (SDP) that can be solved efficiently even for "
               "n around 1000, and is always at least as good as the simple one"),
@@ -160,28 +164,55 @@ ASSERTIONS: list[tuple[AssertionRecord, str]] = [
                          'knowing the exact value of" (section 5.5.1, p. 241); "the width of which is the duality '
                          'gap." (section 5.5.1, p. 241)')), BOYD),
     (A(id="gurobi-mipgap-relative-gap-definition",
-       value=("Gurobi's exact MIP solver reports a relative optimality gap |z_P - z_D| / |z_P|, where z_P is the "
+       value=("Gurobi's MIP solver reports a relative optimality gap |z_P - z_D| / |z_P|, where z_P is the "
               "incumbent objective (the upper bound when minimizing) and z_D the dual objective bound (the lower "
-              "bound), and stops with an optimal result when the gap falls below the MIPGap parameter (default "
-              "1e-4); when z_P and z_D have opposite signs the relative gap can rise after a new incumbent, even "
-              "though the absolute gap fell (Gurobi 13.0)"),
+              "bound), and stops with an optimal result when that gap falls below the MIPGap parameter (default "
+              "1e-4), or when the absolute gap falls below MIPGapAbs (default 1e-10); when z_P and z_D have "
+              "opposite signs the relative gap can rise after a new incumbent, even though the absolute gap fell "
+              "(Gurobi 13.0)"),
        provenance=f"{GUROBI}, parameter MIPGap",
        citation_context=('"The MIP solver will terminate (with an optimal result) when the gap between the lower '
                          'and upper objective bound is less than MIPGap times the absolute value of the incumbent '
                          'objective value." (MIPGap); "the relative gap may increase after finding a new incumbent '
-                         'solution, even though the absolute gap" (MIPGap)'),
+                         'solution, even though the absolute gap" (MIPGap); "The MIP solver will terminate (with an '
+                         'optimal result) when the gap between the lower and upper objective bound is less than '
+                         'MIPGapAbs ." (MIPGapAbs)'),
        certainty_reasons=DEFINITION), GUROBI),
 ]
 
 
+def check_quotes() -> None:
+    """Every quote verbatim in its local copy BEFORE anything is written
+    (INTAKE_WORKFLOW.md section 26)."""
+    text = {BOYD: plain(source_text(str(BOYD_PDF))), GUROBI: plain(source_text(str(GUROBI_HTML)))}
+    for a, src in ASSERTIONS:
+        require_verbatim(a.id, a.citation_context, text[src])
+
+
 def apply_changes(conn) -> list[str]:
+    check_quotes()
     log = []
     for src in SOURCES:
         if conn.execute("SELECT 1 FROM paper_fields WHERE record_id = ?", (src["id"],)).fetchone() is None:
             insert_paper(conn, intake.build_record(src, today=TODAY))
             log.append(f"paper  {src['id']} [read]")
         else:
-            log.append(f"exists {src['id']}")
+            # The read's extent and the check are the script's text too (Task H
+            # review widened Gurobi's read to MIPGapAbs).
+            reader, day, extent, detail = src["reads"][0]
+            row = conn.execute("SELECT detail FROM paper_reads WHERE record_id = ? AND reader = ? AND read_on = ? "
+                               "AND extent = ?", (src["id"], reader, day, extent)).fetchone()
+            check = conn.execute("SELECT checked_against_source FROM paper_fields WHERE record_id = ?",
+                                 (src["id"],)).fetchone()[0]
+            if (row and row[0] != detail) or check != src["checked_against_source"]:
+                conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND reader = ? AND read_on = ? "
+                             "AND extent = ?", (detail, src["id"], reader, day, extent))
+                conn.execute("UPDATE paper_fields SET checked_against_source = ? WHERE record_id = ?",
+                             (src["checked_against_source"], src["id"]))
+                append_updated_reason(conn, src["id"], f"{TODAY} ({TAG}, review): read detail corrected", TODAY)
+                log.append(f"update {src['id']} (read)")
+            else:
+                log.append(f"exists {src['id']}")
     for a, src_id in ASSERTIONS:
         if not conn.execute("SELECT 1 FROM records WHERE id = ?", (a.id,)).fetchone():
             insert_assertion(conn, a, yielded_by=src_id)

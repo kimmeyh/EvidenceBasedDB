@@ -128,6 +128,15 @@ def test_the_band_is_attributed_to_the_device_that_left_it():
     assert "Both Dirac-3S cosines fall outside the band [0.8832, 0.9095]" in value
 
 
+def test_the_script_refuses_a_quote_not_in_its_source_before_writing():
+    """INTAKE_WORKFLOW.md section 26: a planted quote must stop check_quotes()."""
+    import dataclasses
+    f85 = _script()
+    f85.ASSERTIONS[0] = dataclasses.replace(f85.ASSERTIONS[0], citation_context='"Dirac-3 did better" (item 1)')
+    with pytest.raises(ValueError, match="not verbatim"):
+        f85.check_quotes()
+
+
 def test_a_second_apply_writes_nothing(live_copy):
     from store import connect
     f85 = _script()

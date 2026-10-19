@@ -162,6 +162,15 @@ def test_the_store_holds_exactly_what_the_script_sets(live_conn):
 
 
 @pytest.mark.live_store
+def test_the_script_refuses_a_quote_not_in_its_source_before_writing(monkeypatch):
+    """INTAKE_WORKFLOW.md section 26: a planted quote must stop check_quotes()."""
+    f84 = _script()
+    monkeypatch.setitem(f84.EXTRA_QUOTES, "dirac1-tsp-8-cities-qap-formulation", ["Dirac-1 found the optimal tour"])
+    with pytest.raises(ValueError, match="not verbatim"):
+        f84.check_quotes()
+
+
+@pytest.mark.live_store
 def test_a_second_apply_writes_nothing(live_copy):
     from store import connect
     f84 = _script()

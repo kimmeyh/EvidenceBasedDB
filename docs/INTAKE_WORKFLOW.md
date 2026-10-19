@@ -747,3 +747,41 @@ pastes into a Phase 2 session. Never write the change from here (hook:
   added to, never removed: other steps add them later. A corrected context
   replaces the stored ones (review of 3a455ce). `sprint9_f78` and
   `sprint9_f80` both use it.
+
+## 27. Applied 2026-10-18: Sprint 10's sourced entries (Tasks F, G and H: F84, F85, F83)
+
+Every count is a snapshot as of 2026-10-18.
+
+- **F84** (`scripts/sprint10_f84_dirac1.py`): no new source. The nine QCi
+  records F80 refused are retagged to `platform:dirac-1` (ADR-0004 A10)
+  and read; their 12 assertions come from F80's read groups
+  (`manifests/sprint9_f80_reads/group_j3.json`, `group_j2.json`).
+- **F85** (`scripts/sprint10_f85_dirac3s_verify.py`): the second Phase 2
+  result by section 19's inbound path, read through `git show` at Phase 2
+  commit e126dbd; a reference record and four HW assertions.
+- **F83** (`scripts/sprint10_f83_optimization_bounds.py`): two hand-entered
+  sources. Boyd and Vandenberghe's Convex Optimization, downloaded from the
+  authors' free copy into `Papers\` with its SHA-256; Gurobi 13.0's
+  parameter reference, saved into `References\Gurobi\`.
+- **Section 26 was missed, then applied.** None of the three scripts called
+  `require_verbatim` before writing on its first apply; only the
+  live-store tests checked the quotes, after the write. Each now runs
+  `check_quotes()` first, and a test plants a quote that is not in the
+  source and expects the refusal. No stored quote was wrong (the tests had
+  passed on every apply).
+
+## 28. Applied 2026-10-18: the second read-for-claims slice (Sprint 10 Task I, F89)
+
+- **The slice** is recorded in `manifests/sprint10_f89_slice.json` by
+  `scripts/sprint10_f89_slice.py`: the 74 most-cited `qml` records at
+  `seen` or `screened` with no read row. Nothing unread remains under
+  `hsbc-2026` or the Dirac platforms (the script refuses to run if any
+  does). The nine Dirac-1 records do not count (plan Q3 = 1). Like
+  section 22's file, it records what the sprint chose and adds no record;
+  counts are never written to the store.
+- **Counts.** Taken as F80's were (OpenAlex by arXiv DOI, then by a probed
+  journal DOI): 1,098 of 1,481 candidates counted (605 and 493); 383
+  uncounted, the selection's stated limit. The top 74 run from 732 to 65
+  citations.
+- **F57's count, refreshed:** 2,033 records at `seen` or `screened`, of
+  which 2,031 have no read row.

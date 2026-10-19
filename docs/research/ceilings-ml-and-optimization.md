@@ -254,3 +254,18 @@ devices, against which a device's best sample could be measured. Not
 tried on any instance.
 
 **Open gaps now:** no source tests a positive rate near 0.2 percent.
+
+*Correction, 2026-10-18 (fresh-eyes review of the amendment above, the
+same day).* Three statements above were stronger than the sources. (1)
+"a relaxation or dual bound": the sources read hold the dual bound; only
+a remark in Boyd's section 5.1.5 touches relaxation, so read "a dual
+bound". (2) Gurobi stops with an optimal result on either of two rules:
+the relative gap below MIPGap (default 1e-4), or the absolute gap below
+MIPGapAbs (default 1e-10); "on which it stops as optimal" named only the
+first. (3) The inferred paragraph's last sentence is too wide. The SDP
+bound fits a formulation whose variables are 1 or -1 (an Ising form; a
+QUBO with 0 or 1 variables needs the substitution x = (1 + s) / 2 and a
+constant offset first). Phase 2's Dirac-3 work uses the device's
+continuous solver (non-negative weights on a sum constraint) and its
+integer solver, and the bound does not apply to those as written. So it
+would serve only an instance posed in Ising or QUBO form.

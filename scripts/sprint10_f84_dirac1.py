@@ -46,6 +46,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
+from store.quotes import plain, require_verbatim, source_text  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
 from store.ingest import (AssertionRecord, add_read, append_updated_reason, insert_assertion,  # noqa: E402
                           set_tier, sync_assertion)
@@ -168,7 +169,18 @@ def assertions() -> list[tuple[AssertionRecord, str]]:
     return out
 
 
+def check_quotes() -> None:
+    """Every quote verbatim in its saved page BEFORE anything is written
+    (INTAKE_WORKFLOW.md section 26, Sprint 9 retrospective I3). Added after
+    the first apply: the Task I intake section's review found the rule
+    missed here."""
+    text = {p["record_id"]: plain(source_text(p["file"])) for _, p in papers()}
+    for a, rid in assertions():
+        require_verbatim(a.id, a.citation_context, text[rid])
+
+
 def apply_changes(conn) -> list[str]:
+    check_quotes()
     log = []
     if conn.execute("SELECT 1 FROM contexts WHERE id = ?", (CTX,)).fetchone() is None:
         conn.execute("INSERT INTO contexts (id, description) VALUES (?, ?)", (CTX, CTX_DESCRIPTION))
