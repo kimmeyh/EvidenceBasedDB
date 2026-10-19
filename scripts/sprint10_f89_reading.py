@@ -75,6 +75,7 @@ NO_COPY = {  # no free copy known to OpenAlex or found by an arXiv title search,
     "valdez-2023-retracted-article-review-quantum-computing": ("Springer, a RETRACTED article (title); no free copy "
                                                               "listed by OpenAlex"),
 }
+RETRACTED = {"valdez-2023-retracted-article-review-quantum-computing"}
 REFUSE = {  # read at first pass and NOT entered
     "kaur-2022-defining-quantum-workforce-landscape-review": (
         "a review of quantum education and the job market (QURECA); it bears on no context of this store, and its "
@@ -90,13 +91,19 @@ QUOTE_EDITS = {
         "using a number of steps sublinear in the number of data points N")],
     "cerezo-bp-free-models-classically-simulable": [("evidence--on a case-by-case basis--that",
                                                      "evidence—on a case-by-case basis—that")],
+    # The text layer drops the root sign of "R ≥ √2" (it lands inside another
+    # word), so the quotes stop before the threshold; the value states √2
+    # as read from the page (Task I review, 2026-10-18).
     "quadratic-ode-lower-bound-strong-nonlinearity": [
         ("We also provide a lower bound on the worst-case complexity of quantum algorithms for general quadratic "
          "differential equations, showing that the problem is intractable for",
-         "for general quadratic differential equations, showing that the problem is intractable for R ≥ 2"),
+         "for general quadratic differential equations, showing that the problem is intractable for"),
         ("Whereas there is an efficient quantum algorithm for R < 1 (as shown in Theorem 1), we show here that the "
          "problem is intractable for",
-         "for R < 1 (as shown in Theorem 1), we show here that the problem is intractable for R ≥ 2")],
+         "for R < 1 (as shown in Theorem 1), we show here that the problem is intractable for")],
+    "zuchongzhi-vqe-processor-insufficient-for-larger-molecules": [(
+        "Our findings indicate that readout errors dominate for small molecules, while gate errors become more "
+        "serious when the system size increases.", None)],  # a measured result, cut from a HIGH value
     "dwave-mps-extrapolation-millions-of-years": [("applies to MPS--the only", "applies to MPS—the only"),
                                                   ("quench times--and is", "quench times—and is")],
     "qrnn-outclassed-by-classical-rnns": [("models--even simple RNNs--outclass", "models—even simple RNNs—outclass")],
@@ -108,6 +115,17 @@ EXTRA_QUOTES = {
     "aimeur-mst-quantum-optimal-n32": ["can build the minimum spanning tree of a graph in Θ(n3/2) time, where n is "
                                        "the number of vertices of the graph"],
     "qgnn-pr-auc-085": ["and the false positive rate (FPR) for the GraphSAGE model"],
+    # Task I review, 2026-10-18
+    "carleman-quadratic-ode-exponential-improvement-in-T": [
+        "this algorithm has complexity T 2q poly(log T, log n, log 1/ε)/ε, where T is the evolution time"],
+    "zuchongzhi-vqe-f2-above-chemical-accuracy": ["The average absolute energy error for F2 is 0.0174±0.0417 Hartree."],
+    "martin-tensor-network-gradient-variance-vs-distance": [
+        "The cases k = 1 and k = 2 are already shown in Theorem 3 and Theorem 4",
+        "Numerically we find that the upper bound scales as O(N −1.2)"],
+    "qaoa-rl-kde-gap-reduction-vs-nelder-mead": ["Table 2: Median optimality gap reduction factor w.r.t Nelder-Mead."],
+    "qrnn-mnist-reduced-input": ["we first crop the images to 20 × 20 pixels, downscale them to size 10 × 10"],
+    "c2q-cnn-setup": ["was trained on 60,000 Fashion-MNIST data for multinomial classification",
+                      "we conduct numerical simulations on the MNIST data classification task using PennyLane"],
 }
 VALUE_REPLACE = {  # the coordinator's read; each replacement says only what its quotes say
     "aimeur-mst-quantum-optimal-n32": (
@@ -117,6 +135,45 @@ VALUE_REPLACE = {  # the coordinator's read; each replacement says only what its
     "qgnn-pr-auc-085": (
         "The authors state the precision-recall AUC for the QGNN is estimated to be roughly 0.85; for the GraphSAGE "
         "model they report an AUC of 0.77 from its true positive and false positive rates (a ROC curve)."),
+    # Task I review (2026-10-18): each verified against the source.
+    "carleman-quadratic-ode-exponential-improvement-in-T": (
+        "For dissipative quadratic n-dimensional ODEs, assuming R < 1 (R characterizes the ratio of the nonlinearity "
+        "and forcing to the linear dissipation), the paper gives a quantum algorithm with complexity "
+        "T^2 q poly(log T, log n, log 1/epsilon)/epsilon, where T is the evolution time, epsilon the allowed error "
+        "and q a measure of the solution's decay, and calls it an exponential improvement over the best previous "
+        "quantum algorithms, whose complexity is exponential in T."),
+    "quadratic-ode-lower-bound-strong-nonlinearity": (
+        "The paper gives a lower bound on the worst-case complexity of quantum algorithms for general quadratic "
+        "differential equations, showing the problem is intractable for R of at least the square root of 2; the "
+        "range from R = 1 up to the square root of 2 is stated as open. The root sign is read from the page: the "
+        "text layer drops it."),
+    "zuchongzhi-vqe-processor-insufficient-for-larger-molecules": (
+        "The authors state the current processor is insufficient for larger molecules because of non-negligible "
+        "hardware errors."),
+    "zuchongzhi-vqe-f2-above-chemical-accuracy": (
+        "For F2 (12 qubits) the energy errors are around 10^-2 to 10^-1 (an average absolute energy error of "
+        "0.0174 +/- 0.0417 Hartree), above the chemical accuracy threshold; the raw errors for LiH and F2 are above "
+        "0.1 Hartree and 1 Hartree respectively, and accuracy is lower for larger systems."),
+    "martin-tensor-network-gradient-variance-vs-distance": (
+        "For randomly chosen variational parameters and a Hamiltonian that is a sum of local terms, the paper states "
+        "that the gradient variance decreases exponentially with the distance of a Hamiltonian term from the "
+        "canonical centre, giving exponential decrease in qubit count for most qMPS gradient variances and "
+        "polynomial decrease for qTTN and qMERA. It proves the cases of terms on one and two qubits (k = 1 and k = "
+        "2), states the general k-local case as conjectures, and finds the qMERA upper bound's O(N^-1.2) scaling "
+        "numerically."),
+    "qaoa-rl-kde-gap-reduction-vs-nelder-mead": (
+        "In noiseless Qiskit Aer simulation on a test set of 94 Max-Cut graph instances with a budget of 192 quantum "
+        "circuit evaluations, the RL- and KDE-based approaches reduce the median optimality gap by factors up to "
+        "30.15 compared with Nelder-Mead (the largest median factor in Table 2), with the paper stating the gap "
+        "reduction factor is consistently larger than 1."),
+    "lvqe-simulation-scope-classical": (
+        "The simulations used a matrix product state representation in MATLAB, and the paper also studied L-VQE on a "
+        "simulator of a noisy trapped-ion quantum computer; the results are classical simulation."),
+    "fraud-mixed-quantum-classical-ensemble-accuracy": (
+        "On the balanced data set (10 trials each), accuracy was 77.7% for XGBoost, 80.0% for optimized XGBoost and "
+        "78.8% for QSVM-ZZ; the metaclassifier ensembles reached 79.9% (QSVM + XGBoost) and 81.0% (QSVM + "
+        "optimized XGBoost) (Tables 8 and 9). Quantum and classical classifiers disagreed on 5.2% of training data "
+        "and 5.5% of test data at threshold 0.5."),
 }
 CONTEXT_FIX = {  # an assertion's context where the reader's did not fit
     "qumolgan-scope-qm9": "qml",
@@ -124,7 +181,6 @@ CONTEXT_FIX = {  # an assertion's context where the reader's did not fit
     "krenn-review-scope-selective": "qml",
 }
 VENDOR_DESCRIPTIONS = {"pennylane-core-feature-autodiff-hybrid", "pennylane-gradient-method-fallback-order"}
-EMPIRICAL_OVERRIDE = {"zuchongzhi-vqe-f2-above-chemical-accuracy"}  # a measured figure the reader marked high
 
 PROVED_OR_OWN = ("Started HIGH: a result proved in the paper, or the paper's own statement of its setup, scope or "
                  "limits, read in context")
@@ -151,25 +207,59 @@ def quotes_of(a: dict) -> list[str]:
         hits = [i for i, q in enumerate(qs) if old in q]
         if not hits:
             raise ValueError(f"{a['id_suggestion']}: the quote text to replace is not there: {old[:60]!r}")
-        qs[hits[0]] = qs[hits[0]].replace(old, new)
+        if new is None:  # the quote is dropped with the clause it supported
+            del qs[hits[0]]
+        else:
+            qs[hits[0]] = qs[hits[0]].replace(old, new)
     return qs + EXTRA_QUOTES.get(a["id_suggestion"], [])
 
 
+# Every HIGH grade, named and checked by the coordinator against its source
+# (Task I review, 2026-10-18: the first version passed the reader's "high"
+# through for every shown or claimed assertion, so a physics claim a survey
+# makes and two values resting partly on conjectures were graded HIGH).
+HIGH_REVIEWED = {
+    "aiforscience-survey-scope", "c2q-cnn-advantage-unexplained", "c2q-cnn-setup",
+    "carleman-ode-efficiency-needs-non-decaying-solution", "carleman-quadratic-ode-exponential-improvement-in-T",
+    "cerezo-no-proof-always-simulable", "cerezo-scope-excludes-some-protocols", "cutqc-100-qubit-runtime-only",
+    "fontana-lasa-gradient-variance-inverse-dla-dim", "fontana-rapid-mixing-polynomial-dla",
+    "fraud-dataset-and-qubit-driven-reduction", "hva-incoherent-noise-not-considered",
+    "hva-local-hamiltonian-gradients-not-exponentially-small", "hva-proof-short-time-numerics-long-time",
+    "krenn-review-scope-selective", "lvqe-simulation-scope-classical", "oliviero-magic-protocol-demonstrated-ibm-falcon",
+    "pqwgan-noiseless-simulation-and-small-training-set", "qbdl-not-proof-of-scaling",
+    "qgnn-fraud-dataset-and-undersampling", "qperceptron-margin-scaling", "qperceptron-sublinear-in-data-points",
+    "qrnn-mnist-reduced-input", "qrnn-outclassed-by-classical-rnns",
+    "qsvc-virtual-screening-not-direct-quantum-advantage", "quadratic-ode-lower-bound-strong-nonlinearity",
+    "quantum-perceptron-proof-neglects-quantum-fluctuations", "quantum-perceptron-universal-approximator",
+    "qumolgan-scope-qm9", "ragone-lie-algebra-exact-loss-variance", "ragone-limit-non-design-circuits-not-covered",
+    "ragone-variance-inverse-dla-dimension", "schuld-kernel-training-finds-global-optimum",
+    "schuld-quantum-models-are-kernel-methods", "sn-equivariant-qnn-guarantees",
+    "sn-equivariant-qnn-noise-and-datasets-caveats", "sn-equivariant-qnn-poly-overparam", "vqc-qsvm-solve-k-forrelation",
+    "zuchongzhi-vqe-processor-insufficient-for-larger-molecules",
+}
+CONJECTURE = ("Started LOW: the general statement rests partly on conjectures and numerics in the paper (only the "
+              "one- and two-qubit cases are proved). NOT upgraded")
+CERTAINTY_OVERRIDES = {
+    "martin-tensor-network-gradient-variance-vs-distance": ("low", CONJECTURE),
+    "martin-qttn-qmera-recommended-over-qmps": ("low", CONJECTURE),
+}
+
+
 def certainty(aid: str, a: dict) -> tuple[str, str]:
-    kind, ctype, sugg = a["kind"], a["claim_type"], a["certainty_suggestion"]
+    kind, ctype = a["kind"], a["claim_type"]
+    if aid in CERTAINTY_OVERRIDES:
+        return CERTAINTY_OVERRIDES[aid]
     if ctype == "vendor-self-claim":
         if aid in VENDOR_DESCRIPTIONS:
             return "moderate", f"{f80.VENDOR_START}. Not upgraded: a description of the product, not a result"
         return "low", (f"{f80.VENDOR_START}. DOWNGRADED one level: a result or claim the vendor reports about its "
                        "own product, not independently checked")
+    if aid in HIGH_REVIEWED:
+        return "high", PROVED_OR_OWN
     if kind == "cited":
         return "low", CITED
     if kind == "shown":
-        if sugg == "high" and aid not in EMPIRICAL_OVERRIDE:
-            return "high", PROVED_OR_OWN
         return "low", EMPIRICAL
-    if sugg == "high":  # claimed: the authors' own stated scope or limits (each checked 2026-10-18)
-        return "high", PROVED_OR_OWN
     return "low", AUTHOR_CLAIM
 
 
@@ -212,7 +302,10 @@ def apply_changes(conn) -> list[str]:
     contexts = {r[0] for r in conn.execute("SELECT id FROM contexts")}
     for rid, why in sorted(NO_COPY.items()):
         reason = f"{TODAY} ({TAG}): selected for reading and NOT read: {why}; on the hand-download list"
-        stored = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()[0]
+        if rid in RETRACTED:
+            reason = (f"{TODAY} ({TAG}, review): NOT read and NOT for the hand-download list: {why}; a retracted "
+                      "article yields no claims (publication_status retracted, Crossref, 2026-10-04)")
+        stored = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()[0] or ""
         if reason not in stored:
             append_updated_reason(conn, rid, reason, TODAY)
             log.append(f"no copy {rid}")

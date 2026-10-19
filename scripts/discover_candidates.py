@@ -105,17 +105,25 @@ OFF_TOPIC_TOPICS = {
             "Brain Tumor Detection and Classification"},
     "tensor": {"Machine Learning in Materials Science",       # interatomic potentials
                "Physics of Superconductivity and Magnetism",
-               "Probability and Statistical Research",         # 1969 density estimation
-               "Machine Learning and Algorithms"},             # pseudo-ensembles
+               "Probability and Statistical Research"},        # 1969 density estimation
     "fraud": set(),
 }
+# "Machine Learning and Algorithms" was dropped from tensor after the Task J
+# review: it is a generic topic a tensor-network learning paper could carry,
+# so "Learning with Pseudo-Ensembles" stays for review instead.
 OFF_TOPIC_TITLE = {"tensor": re.compile(r"^Codebase release\b", re.IGNORECASE)}  # a release note of a held library
+# A topic match is overridden by a learning term in the title (Task J review):
+# the Python-applications topic also tags "Scikit-learn: Machine Learning in
+# Python" and "Automatic differentiation in PyTorch", which the team lead
+# never excluded.
+OFF_TOPIC_KEEP_TITLE = {"ml": re.compile(r"learn|neural|deep|pytorch|tensorflow|differentiation", re.IGNORECASE)}
 
 
 def off_topic(c: dict) -> str | None:
     """Why a candidate is dropped before ranking, or None."""
     topic = c.get("topic") or ""
-    if topic in OFF_TOPIC_TOPICS.get(c["stream"], set()):
+    keep = OFF_TOPIC_KEEP_TITLE.get(c["stream"])
+    if topic in OFF_TOPIC_TOPICS.get(c["stream"], set()) and not (keep and keep.search(c.get("title") or "")):
         return f"topic: {topic}"
     rule = OFF_TOPIC_TITLE.get(c["stream"])
     if rule and rule.search(c.get("title") or ""):
@@ -550,7 +558,7 @@ def main(argv: list[str] | None = None, s2_fetch=None, sleep=time.sleep) -> int:
                           "mismatch": sum(c["s2_status"].startswith("mismatch") for c in sent),
                           "disagree": sum(c["citation_check"].startswith("DISAGREE") for c in sent),
                           "no_copy": sum(1 for c in top[stream] if not free_copy(c))}
-        everything += new
+        everything += new + dropped[stream]  # dropped ones too, so a later check can see them (Task J review)
         print(f"{stream}: {counts[stream]}")
     out.mkdir(parents=True, exist_ok=True)
     stem = f"f62_review_{today.isoformat()}"

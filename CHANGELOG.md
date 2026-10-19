@@ -64,6 +64,26 @@ this project keeps having to replace with a step.
   says it answered. It still stays due: no `publication_status` value
   means "the registry states none" (raised for Manual Validation). A null
   DataCite affiliation name no longer raises. Two tests, two injections
+- **fix**: Task I review (2026-10-18) -- two values I passed in my own
+  read were WRONG: Carleman's complexity is T^2 q poly(log T, log n,
+  log 1/epsilon)/epsilon, not "polylogarithmic in T, n and 1/error"; the
+  lower bound's threshold is R of at least the square root of 2 (the text
+  layer drops the root sign; my quote edit then cut the quotes at "R ≥ 2",
+  so both checks passed a wrong value). Also: the readout-versus-gate
+  measurement cut from a HIGH limit statement; a survey's physics claim and
+  Martin's two values (proved only for one- and two-qubit terms) to LOW;
+  Zuchongzhi's F2 errors with their Hartree average; Khairy's median;
+  three quotes for stated figures; HIGH is now an explicit reviewed list
+  (39), tested. Valdez is retracted: not for the hand-download list.
+  Re-applied; 13 assertions corrected. Two injections
+- **fix**: Task J review (2026-10-18) -- the ml topic rule also dropped
+  scikit-learn and PyTorch, and the generic tensor topic "Machine Learning
+  and Algorithms" could drop a tensor-network learning paper: a learning
+  term in the title now keeps an ml record, and that tensor topic is
+  removed (13 excluded records now fall to 3, not 2; none accepted lost).
+  Dropped records are kept in the saved JSON; the check script states that
+  its "moved up" list is an approximation; a test runs main with an
+  off-topic work. One injection
 - **feat**: Task J (F87, #111) -- the discovery streams drop, before
   ranking, the off-topic kinds the team lead excluded at Sprint 9 Manual
   Validation: OpenAlex topics per stream (software libraries and

@@ -81,6 +81,22 @@ def test_grades_follow_the_mapping():
     assert {a.id for _, a, _, _ in f89.assertions() if a.certainty == "moderate"} == f89.VENDOR_DESCRIPTIONS
 
 
+def test_every_high_grade_is_one_the_coordinator_named():
+    """Task I review (2026-10-18): the first version passed the reader's
+    "high" through for every shown or claimed assertion, and the grade test
+    never looked at HIGH. Now HIGH is exactly HIGH_REVIEWED, none of it
+    cited or vendor, and the three the review downgraded are LOW. Proven to
+    fail by injection, 2026-10-18: with aiforscience-hamiltonian-exponential-size
+    added back to HIGH_REVIEWED, this test named it."""
+    f89 = _script()
+    raw = {a["id_suggestion"]: a for _, p in f89.load_groups() for a in p["assertions"]}
+    high = {a.id for _, a, _, _ in f89.assertions() if a.certainty == "high"}
+    assert high == f89.HIGH_REVIEWED
+    assert not [i for i in high if raw[i]["kind"] == "cited" or raw[i]["claim_type"] == "vendor-self-claim"]
+    assert not high & {"aiforscience-hamiltonian-exponential-size", "martin-tensor-network-gradient-variance-vs-distance",
+                       "martin-qttn-qmera-recommended-over-qmps", "zuchongzhi-vqe-f2-above-chemical-accuracy"}
+
+
 def test_the_reads_and_the_no_copy_list_partition_the_slice():
     f89 = _script()
     slice_ids = {r["record_id"] for r in json.loads(
@@ -98,6 +114,11 @@ def test_the_coordinator_corrections_hold():
     v = {a.id: a.value for _, a, _, _ in f89.assertions()}
     assert "a ROC curve" in v["qgnn-pr-auc-085"]
     assert "Theta(n^(3/2))" in v["aimeur-mst-quantum-optimal-n32"]
+    # Task I review: the source's complexity and threshold, not the reader's
+    assert "polylogarithmic" not in v["carleman-quadratic-ode-exponential-improvement-in-T"]
+    assert "T^2 q poly" in v["carleman-quadratic-ode-exponential-improvement-in-T"]
+    assert "square root of 2" in v["quadratic-ode-lower-bound-strong-nonlinearity"]
+    assert "readout errors" not in v["zuchongzhi-vqe-processor-insufficient-for-larger-molecules"]
     assert "kaur-vacancies-62-percent-phd" not in v
 
 

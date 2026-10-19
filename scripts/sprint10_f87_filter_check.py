@@ -12,6 +12,11 @@ the team lead's excluded records still in the top 25, any accepted record
 the filters would lose (must be none), and the records that move up into
 the top 25 for review. `--report <file>` also writes it as Markdown,
 outside the repository.
+
+LIMIT (Task J review): the first three are measured exactly; "moved up" is
+an approximation. A real run drops records before its Semantic Scholar
+cut, which frees check slots for lower-ranked candidates; this check only
+re-filters candidates Sprint 9 already checked.
 """
 from __future__ import annotations
 
