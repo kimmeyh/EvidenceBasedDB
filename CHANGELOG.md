@@ -64,6 +64,16 @@ this project keeps having to replace with a step.
   says it answered. It still stays due: no `publication_status` value
   means "the registry states none" (raised for Manual Validation). A null
   DataCite affiliation name no longer raises. Two tests, two injections
+- **feat**: Task G (F85, #108) -- Phase 2's Dirac-3S verification
+  (`docs/phase2/F142_DIRAC3S_VERIFY.md`) entered by the inbound path at
+  Phase 2 commit e126dbd (revised after the card's c141a57; the same blob
+  at HEAD 98f9671): a reference record and four HW assertions (B4 twin
+  optimum on two seeds, returned weights finer than the 0.005 step with
+  the cause unverified, AUPRC unchanged, per-sample cost at schedule 2).
+  Phase 2's own limits carried in each value. No relation linked: by
+  A8 (b) none confirms or contradicts a whole existing claim (output
+  versus input resolution; different problem sizes); each value names the
+  related assertion. Seven tests, three injections
 - **fix**: Task F review (2026-10-18) -- the entry below was WRONG on one
   point: "scales better than cubic" was QCi's own conclusion (the page
   says "better than O ( n 3 )"; the coordinator's check searched for the
