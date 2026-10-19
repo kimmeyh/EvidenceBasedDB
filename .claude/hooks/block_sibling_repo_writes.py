@@ -33,8 +33,12 @@ boundary against a determined writer is the operating system's permissions.
 
 DECIDED 2026-10-18 (F82, Sprint 10 Task E, team lead Q2 = 1): the threat
 model stays accidental writes. Blocked since then, because a session could
-type them by accident: an abbreviated long option (`--outp`, `--ext`), a
-short-option cluster with O (`-nO`), `--ext-diff` and `--textconv`.
+type them by accident: an abbreviated long option of a writing one
+(`--outp`) and a short-option cluster with O (`-nO`). `--ext-diff` and
+`--textconv` were blocked in the first version and removed after its
+review: git runs the guarded repository's own configured programs on a
+plain `git diff` anyway, so that block guarded nothing, and such a program
+is that repository's configuration, not this session writing.
 Outside the model, by decision, because typing them takes intent: pager,
 editor and config environment variables (GIT_PAGER, GIT_EDITOR,
 GIT_CONFIG_*, a `$env:` assignment), and command names built from strings
@@ -110,21 +114,43 @@ _GIT_OPTION_WITH_VALUE = frozenset({"-C", "--git-dir", "--work-tree", "--namespa
 # 2026-10-15): `--output`/`-O` write a file, `--open-files-in-pager` runs a
 # program, and `-c`/`--config-env` can set a pager, an editor or a hook
 # path. With a guarded path present, any of them blocks.
-_GIT_WRITING_OPTION = re.compile(r"^(?:-c|--config-env.*|--output.*|-O.*|--open-files-in-pager.*)$")
+_GIT_WRITING_OPTION = re.compile(r"^(?:-c|--config-env(?:=.*)?|--output(?:=.*)?|-O.*|--open-files-in-pager(?:=.*)?)$")
 # F82 (Sprint 10 Task E, team lead Q2 = 1, 2026-10-18): forms a session
 # could type by accident. Git takes any unambiguous prefix of a long option
 # (`--outp` is --output), so a prefix of a writing option blocks unless it
-# is itself a complete read option (`--text`). `--ext-diff` and
-# `--textconv` run a program the guarded repository's own config names.
-# A short-option cluster with O (`-nO`) is git grep's -O.
-_GIT_WRITING_LONG = ("output", "open-files-in-pager", "config-env", "ext-diff", "textconv")
-_GIT_COMPLETE_READ_LONG = frozenset({"text", "oneline", "ours"})
-_GIT_SHORT_CLUSTER_WITH_O = re.compile(r"^-[A-Za-z0-9]*O")
+# is itself a complete read option (`--text`). A short-option cluster with
+# O (`-nO`) is git grep's -O, unless the O belongs to the value of an
+# option before it (`-SOAuth`, `-GOne`; Task E review).
+#
+# Not blocked, by decision (Task E review, 2026-10-18): programs the
+# guarded repository's OWN config names (diff drivers, textconv, smudge
+# filters). Git runs them on a plain `git diff` or `git log -p` by
+# default, so blocking `--ext-diff` or `--textconv` would only look like a
+# guard; and a program that repository configured is not this session
+# writing, which is the model above.
+_GIT_WRITING_LONG = ("output", "open-files-in-pager", "config-env")
+_GIT_COMPLETE_READ_LONG = frozenset({"oneline", "ours"})
+_GIT_SHORT_WITH_VALUE = "SGeULCMAB0123456789"
+# A separate word after one of these is its value, not an option
+# (`grep -e -Option`, `log -S -Oops`).
+_GIT_VALUE_OPTIONS = frozenset({"-e", "-S", "-G", "-L", "-U", "-A", "-B", "-C", "-M", "-n", "-f",
+                                "--grep", "--author", "--committer", "--format", "--pretty"})
+
+
+def _short_cluster_has_o(tok: str) -> bool:
+    if not tok.startswith("-") or tok.startswith("--"):
+        return False
+    for ch in tok[1:]:
+        if ch == "O":
+            return True
+        if ch in _GIT_SHORT_WITH_VALUE or not ch.isalnum():
+            return False
+    return False
 
 
 def _git_option_writes(tok: str) -> bool:
     tok = tok.strip("\"'")
-    if _GIT_WRITING_OPTION.match(tok) or _GIT_SHORT_CLUSTER_WITH_O.match(tok):
+    if _GIT_WRITING_OPTION.match(tok) or _short_cluster_has_o(tok):
         return True
     if not tok.startswith("--"):
         return False
@@ -145,7 +171,8 @@ def _git_writes(command: str) -> bool:
     for call in _GIT_CALL.finditer(command):
         tokens = _TOKEN.findall(command[call.end():])
         tokens = tokens[:next((n for n, t in enumerate(tokens) if t in (";", "&", "|", "(", ")")), len(tokens))]
-        if any(_git_option_writes(t) for t in tokens):
+        if any(_git_option_writes(t) for n, t in enumerate(tokens)
+               if not (n and tokens[n - 1].strip("\"'") in _GIT_VALUE_OPTIONS)):
             return True
         i = 0
         while i < len(tokens):

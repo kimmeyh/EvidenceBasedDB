@@ -218,17 +218,17 @@ def test_read_forms_of_phase2_stay_allowed(command):
     f"git -C {P2} log --out {P2}/x.txt",
     f"git -C {P2} grep --open x",
     f"git -C {P2} grep -nO x",
-    f"git -C {P2} diff --ext-diff HEAD~1",
-    f"git -C {P2} diff --ext HEAD~1",
-    f"git -C {P2} log -p --textconv",
-    f"git -C {P2} show --textc HEAD",
+    f"git -C {P2} grep -iO x",
 ])
 def test_accidental_option_forms_into_phase2_are_blocked(command):
     """F82 (Sprint 10 Task E, team lead Q2 = 1): forms a session could type
     by accident. Each passed (exit 0) against the hook as committed before
     this task (run 2026-10-18 with a copy of that version). Proven by
     injection, 2026-10-18: with _git_option_writes reduced to the old
-    _GIT_WRITING_OPTION match, every case went red. Restored."""
+    _GIT_WRITING_OPTION match, every case went red. Restored. The first
+    version also blocked --ext-diff and --textconv; its review showed git
+    runs those programs on a plain diff by default, so they were removed
+    (module docstring)."""
     assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 2, command
 
 
@@ -237,12 +237,21 @@ def test_accidental_option_forms_into_phase2_are_blocked(command):
     f"git -C {P2} log --oneline --stat -3",
     f"git -C {P2} grep -n -i x",
     f"git -C {P2} show --no-ext-diff HEAD",
+    # Task E review, 2026-10-18: each was blocked at 6cd9002
+    f"git -C {P2} log -SOAuth",
+    f"git -C {P2} log -GOne",
+    f"git -C {P2} grep -e -Option",
+    f"git -C {P2} log -p --output-indicator-new=+",
 ])
 def test_read_options_that_look_like_writing_ones_stay_allowed(command):
-    """`--text` is a complete option, not a prefix of --textconv;
-    `--no-ext-diff` turns the external program off. Proven by injection,
-    2026-10-18: with the complete-option exception removed, the --text
-    case was blocked. Restored."""
+    """`--no-ext-diff` turns the external program off; an O inside the
+    value of -S, -G or -e is not -O; --output-indicator-new is not
+    --output. The four review cases were each blocked at 6cd9002 (the
+    --output-indicator case also before Task E). Proven by injection,
+    2026-10-18: with the value-option stop removed from
+    _short_cluster_has_o, the -SOAuth and -GOne cases were blocked; with
+    the separate-value-word skip removed, the `-e -Option` case was
+    blocked. Restored."""
     assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 0, command
 
 
