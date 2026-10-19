@@ -64,6 +64,17 @@ this project keeps having to replace with a step.
   says it answered. It still stays due: no `publication_status` value
   means "the registry states none" (raised for Manual Validation). A null
   DataCite affiliation name no longer raises. Two tests, two injections
+- **feat**: Task H (F83, #109) -- per-instance optimization bounds
+  sourced: Boyd and Vandenberghe's Convex Optimization (the authors' free
+  copy, downloaded to Papers with SHA-256; sections 5.1.5, 5.2.2 and
+  5.5.1 read) and Gurobi 13.0's MIPGap entry (saved to References). Four
+  assertions: weak duality without convexity, the two-way partitioning
+  dual and SDP bound, the duality gap as a certificate, and Gurobi's
+  relative gap. The ceilings answer document gains a dated amendment
+  making section 5 point 5 verified; applying the SDP bound to Dirac's
+  Ising and QUBO instances is marked inferred. Four tests, two
+  injections; the figure check reads only the pages read (a whole-book
+  check passed an injected figure)
 - **fix**: Task G review (2026-10-18) -- the entry below put a WRONG
   statement in the store for about 15 minutes: the B4 value said
   Dirac-3's 0.895 and 0.901 fell outside the band [0.8832, 0.9095]; both

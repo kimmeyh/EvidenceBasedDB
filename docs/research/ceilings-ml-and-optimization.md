@@ -218,3 +218,39 @@ are left as written on 2026-10-15. Counts are a snapshot as of 2026-10-16.
   through mutual information.
 - **Open gaps now:** no source tests a positive rate near 0.2 percent; per-
   instance optimization bounds (F83).
+
+## Amendment, 2026-10-18: section 5 point 5 is now sourced (Sprint 10 Task H, F83)
+
+The sections above stay as written. Section 5 point 5 said the
+per-instance certificate for an optimization problem was general practice
+with no source in the store. Two primary sources now hold it, both read
+directly on 2026-10-18 (Boyd and Vandenberghe's free copy, chapter 5;
+Gurobi's reference manual, version 13.0):
+
+- **A dual gives a lower bound on any minimization, convex or not**
+  (`weak-duality-lower-bound-holds-without-convexity`). The dual problem
+  is always convex, so it can bound a problem that is hard to solve.
+- **The bound applies to two-way partitioning**, minimize x^T W x with
+  every x_i equal to 1 or -1 (`two-way-partitioning-dual-sdp-lower-bound`):
+  n times the smallest eigenvalue of W, or better, the optimal value of an
+  SDP that solves efficiently for n around 1000.
+- **The gap certifies a solution** (`duality-gap-certifies-suboptimality`):
+  a feasible solution and a dual feasible point place the optimum in an
+  interval whose width is the gap, without knowing the optimum.
+- **An exact solver reports that gap** (`gurobi-mipgap-relative-gap-definition`):
+  Gurobi's relative gap |z_P - z_D| / |z_P| between its incumbent and its
+  proven bound, on which it stops as optimal (default 1e-4).
+
+So point 5 now reads, verified: for one instance, a relaxation or dual
+bound and the gap to the best solution found tell how far that solution
+can be from optimal; an exact solver reports the gap directly.
+
+**Inferred (coordinator, not in either source):** an Ising problem with
+spins of 1 or -1 and no linear term is the two-way partitioning form, so
+the SDP bound applies to it as written; a linear term can be absorbed by
+one extra spin (a standard step, not sourced here). That would give a
+per-instance lower bound for the Ising and QUBO instances sent to Dirac
+devices, against which a device's best sample could be measured. Not
+tried on any instance.
+
+**Open gaps now:** no source tests a positive rate near 0.2 percent.
