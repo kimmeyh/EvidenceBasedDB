@@ -29,7 +29,8 @@ from store import create_store  # noqa: E402
 from store.ingest import AssertionRecord, insert_verified_assertion, sync_verified_assertion  # noqa: E402
 from store.quotes import Verified, plain, require_edit_basis, require_verbatim  # noqa: E402
 
-SOURCE = plain("We show that the problem is intractable for R ≥ √2. The budget is B = 192 circuit evaluations.")
+SOURCE = plain("We show that the problem is intractable for R ≥ √2. The budget is B = 192 circuit evaluations. "
+                "Errors are around 10−2 to 10−1.")
 
 
 def _assertion(context: str = '"the problem is intractable for R" (p.3)') -> AssertionRecord:
@@ -74,50 +75,68 @@ def test_a_sync_is_refused_without_the_check(conn):
         sync_verified_assertion(conn, _assertion('"the problem is intractable" (p.3)'), None, "note", "2026-10-21")
 
 
-# Each problem a Sprint 11+ script can have, by the rule it breaks
-_DIRECT_WRITE = re.compile(r"\b(insert|sync)_assertion\(")
-_MADE_TOKEN = re.compile(r"\bVerified\(")
+# Each problem a new script can have, by the rule it breaks. Names, not
+# calls, so an aliased import (`import insert_assertion as ins`) or an
+# attribute reference is caught too (fresh-eyes review, 2026-10-21);
+# `insert_verified_assertion` does not match. Comments are not code.
+_DIRECT_WRITE = re.compile(r"\b(insert|sync)_assertion\b")
+_TOKEN_NAME = re.compile(r"\bVerified\b")
+_WRITES = re.compile(r"\b(insert|sync)_(verified_)?assertion\b")
 _EDIT_TABLE = re.compile(r"(?m)^(VALUE|QUOTE|CONTEXT)_[A-Z_]+\s*[:=]")
+
+# The scripts written before this rule (Sprint 10 and earlier). They have
+# run, and stay as they are; every other script in scripts/ is held to it,
+# whatever its name.
+LEGACY = {
+    "ingest_hsbc_b1_variable_count.py", "ingest_lenat_marcus.py", "sprint4_task_h_extraction.py",
+    "sprint5_task_i_pilot.py", "sprint6_mv_dirac3_fidelity.py", "sprint6_task_g_cyc_and_facts.py",
+    "sprint7_f44_cycorp_papers.py", "sprint7_f45_dirac3_reading.py", "sprint8_f65_dirac3s_reading.py",
+    "sprint8_f71_qci_dirac3s_reading.py", "sprint9_f46_pending_facts.py", "sprint9_f78_ceiling_reading.py",
+    "sprint9_f79_phase2_b4_b5_inbound.py", "sprint9_f80_reading.py", "sprint10_f83_optimization_bounds.py",
+    "sprint10_f84_dirac1.py", "sprint10_f85_dirac3s_verify.py", "sprint10_f89_reading.py",
+}
 
 
 def script_problems(text: str) -> list[str]:
+    code = re.sub(r"#.*", "", text)
     out = []
-    if _DIRECT_WRITE.search(text):
+    if _DIRECT_WRITE.search(code):
         out.append("writes an assertion without the quote check (use insert_verified_assertion)")
-    if _MADE_TOKEN.search(text):
-        out.append("makes its own Verified (only require_verbatim makes one)")
-    if _EDIT_TABLE.search(text) and "require_edit_basis(" not in text:
+    if _TOKEN_NAME.search(code):
+        out.append("names Verified (only require_verbatim makes one; pass on what it returns)")
+    if _WRITES.search(code) and _EDIT_TABLE.search(code) and "require_edit_basis(" not in code:
         out.append("edits readers' values, quotes or contexts without require_edit_basis")
     return out
 
 
-def _sprint(path: Path) -> int:
-    m = re.match(r"sprint(\d+)_", path.name)
-    return int(m.group(1)) if m else 0
-
-
-def test_scripts_from_sprint_11_on_write_only_through_the_checked_path():
-    """Sprint 10 and earlier scripts have run and stay as they are."""
+def test_new_scripts_write_only_through_the_checked_path():
     problems = {p.name: script_problems(p.read_text(encoding="utf-8"))
-                for p in sorted((ROOT / "scripts").glob("sprint*.py")) if _sprint(p) >= 11}
+                for p in sorted((ROOT / "scripts").glob("*.py")) if p.name not in LEGACY}
     assert not {k: v for k, v in problems.items() if v}
 
 
 @pytest.mark.parametrize("planted, expected", [
     ("insert_assertion(conn, a, yielded_by=rid)", "without the quote check"),
     ("changed = sync_assertion(conn, a, note, TODAY)", "without the quote check"),
-    ("v = Verified(a.id, a.citation_context)", "makes its own Verified"),
-    ("VALUE_REPLACE = {'x': 'a new value'}", "without require_edit_basis"),
+    ("from store.ingest import insert_assertion as ins\nins(conn, a)", "without the quote check"),
+    ("write = ingest.sync_assertion", "without the quote check"),
+    ("v = Verified(a.id, a.citation_context)", "names Verified"),
+    ("from store.quotes import Verified as V", "names Verified"),
+    ("insert_verified_assertion(conn, a, v)\nVALUE_REPLACE = {'x': 'a new value'}\n"
+     "# require_edit_basis( is only mentioned here", "without require_edit_basis"),
 ])
 def test_the_script_rule_names_each_planted_problem(planted, expected):
     """Proven to fail by injection, 2026-10-21: with script_problems()
-    returning [] the four cases went red; and a planted Sprint 11 script
-    that called insert_assertion turned the test above red until it was
-    removed."""
+    returning [] every case went red; and a planted
+    scripts/sprint11_injected_probe.py that called insert_assertion, and
+    later a planted scripts/ingest_injected_probe.py that imported it under
+    an alias, each turned the scan of scripts/ red until removed."""
     assert any(expected in p for p in script_problems(planted))
     clean = ("insert_verified_assertion(conn, a, require_verbatim(a.id, a.citation_context, text))\n"
-             "VALUE_REPLACE = {}\nrequire_edit_basis(aid, value, basis, text)\n")
+             "VALUE_REPLACE = {}\nrequire_edit_basis(aid, value, basis, text)\n"
+             "CONTEXT_BY_RANK = {}  # an entry script's table, with no assertion written\n")
     assert script_problems(clean) == []
+    assert script_problems("CONTEXT_BY_RANK = {}\ninsert_paper(conn, paper)\n") == []
 
 
 # ------------------------------------------------------------------ I1
@@ -134,17 +153,24 @@ def test_an_edit_resting_on_its_passage_passes():
     ("Intractable for R of at least the square root of 2.", ["the problem is intractable for R"], "states 2"),
     ("Intractable for R ≥ √2.", ["the problem is intractable for R"], "√"),
     ("The budget is 190 circuit evaluations.", ["B = 192 circuit evaluations"], "states 190"),
+    # Fresh-eyes review, 2026-10-21: a value that is only a number, a
+    # flipped exponent, a flipped inequality
+    ("190", ["B = 192 circuit evaluations"], "states 190"),
+    ("errors around 10^2", ["around 10−2 to 10−1"], "states 2"),
+    ("intractable for R > 1", ["the problem is intractable for R"], "states .*>"),
 ])
 def test_an_edit_without_its_basis_is_refused(value, basis, match):
     """Proven to fail by injection, 2026-10-21: with the number and sign
-    comparison removed from require_edit_basis, the last three cases went
-    red."""
+    comparison removed from require_edit_basis, every case from the root
+    sign on went red."""
     with pytest.raises(ValueError, match=match):
         require_edit_basis("e1", value, basis, SOURCE)
 
 
 def test_a_figure_read_from_the_page_passes_only_when_listed():
     value = "Intractable for R of at least the square root of 2; the root sign is read from the page."
+    with pytest.raises(ValueError, match="states 2"):
+        require_edit_basis("e1", value, ["the problem is intractable for R"], SOURCE)
     require_edit_basis("e1", value, ["the problem is intractable for R"], SOURCE, read_from_page=("2",))
 
 

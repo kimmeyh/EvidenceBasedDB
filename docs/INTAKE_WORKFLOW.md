@@ -836,10 +836,11 @@ Every count is a snapshot as of 2026-10-19.
 
 ## 31. Rule from 2026-10-21: the quote check is in the write path, and the coordinator's edits name their passages (Sprint 10 retrospective I1 and I2)
 
-Extends section 26. Scripts from Sprint 11 on; Sprint 10 and earlier
-scripts have run and stay as they are. `tests/test_verified_writes.py`
-holds every new `scripts/sprint<N>_*.py` with N of 11 or more to both
-rules.
+Extends section 26. The 18 scripts that wrote assertions before this
+rule (Sprint 10 and earlier) have run and stay as they are, listed by name
+in `tests/test_verified_writes.py`; every other script in `scripts/`,
+whatever its name, is held to both rules. The scan matches names, not
+calls, so an aliased import is caught too.
 
 - **Write only through the check (I2).** `require_verbatim` returns a
   `Verified`. A script writes assertions with

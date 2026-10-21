@@ -129,8 +129,8 @@ instruction during Manual Validation (c0e8c22) and needed no decision.
 
 | # | Improvement | Type | Disposition | Commit |
 |---|---|---|---|---|
-| I1 | `store.quotes.require_edit_basis`: each coordinator edit to a reader's work names its source passages, verbatim; a replaced value's numbers and math signs must be in them, or listed as read from the page | Prevention (extends the quote check, intake rule 26) | Now, applied | this commit |
-| I2 | `require_verbatim` returns a `Verified`; `store.ingest.insert_verified_assertion` and `sync_verified_assertion` refuse a write without the matching one; a test holds Sprint 11+ scripts to them | Prevention (extends `store.ingest` and rule 26) | Now, applied | this commit |
+| I1 | `store.quotes.require_edit_basis`: each coordinator edit to a reader's work names its source passages, verbatim; a replaced value's numbers and math signs must be in them, or listed as read from the page | Prevention (extends the quote check, intake rule 26) | Now, applied | 74049f0 and the review fix after it |
+| I2 | `require_verbatim` returns a `Verified`; `store.ingest.insert_verified_assertion` and `sync_verified_assertion` refuse a write without the matching one; a test holds every script but the 18 earlier writers to them | Prevention (extends `store.ingest` and rule 26) | Now, applied | 74049f0 and the review fix after it |
 | I3 | F57's closing rule rewritten to "no record left without a read row" | Prevention | Skip (team lead) | none |
 | (rule) | A hook check is never a Manual Validation step | Prevention (extends the Manual Validation rule) | Applied during Manual Validation | c0e8c22 |
 

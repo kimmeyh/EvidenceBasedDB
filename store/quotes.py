@@ -107,9 +107,24 @@ def require_verbatim(record_id: str, citation_context: str | None, text: str) ->
     return Verified(record_id, citation_context)
 
 
-_NUMBER = re.compile(r"\d+(?:\.\d+)?")
+# A number with its sign: a minus sign (U+2212) is always a sign; a hyphen
+# is one only where it does not follow a letter, digit or point, so
+# "0.974-0.976" is a range, while "10^-2" and " -0.5" are negative.
+_NUMBER = re.compile(r"(?:(?<![\w.])-)?\d+(?:\.\d+)?")
 _THOUSANDS = re.compile(r"(?<=\d),(?=\d{3}(?!\d))")
-_MATH_SIGNS = "√≥≤±×∞≈≠∑∏∫∂"
+_SUPERSCRIPT = str.maketrans({"⁰": "^0", "¹": "^1", "²": "^2", "³": "^3", "⁴": "^4", "⁵": "^5", "⁶": "^6",
+                              "⁷": "^7", "⁸": "^8", "⁹": "^9", "⁻": "^-"})
+_MATH_SIGNS = "√≥≤±×∞≈≠∑∏∫∂<>"
+
+
+def _fold(text: str) -> str:
+    """`plain` without its page-number rule, which would delete a value or
+    passage that is only a number (fresh-eyes review, 2026-10-21);
+    superscripts become ^n before NFKC can merge "10²" into "102"."""
+    text = unicodedata.normalize("NFKC", text.translate(_SUPERSCRIPT))
+    for typographic, ascii_form in _TYPOGRAPHIC:
+        text = text.replace(typographic, ascii_form)
+    return re.sub(r"\s+", " ", text.replace("−", " -"))
 
 
 def _numbers(text: str) -> set[str]:
@@ -117,10 +132,11 @@ def _numbers(text: str) -> set[str]:
 
 
 def unsupported_by_basis(value: str, basis: list[str]) -> list[str]:
-    """The numbers and math signs in `value` that no passage in `basis`
-    holds."""
-    joined = plain(" ".join(basis))
-    value = plain(value)
+    """The numbers (with their sign) and math signs in `value` that no
+    passage in `basis` holds. A digit inside a word counts ("F2" holds a 2):
+    that makes the check weaker, never wrong."""
+    joined = _fold(" ".join(basis))
+    value = _fold(value)
     return sorted((_numbers(value) - _numbers(joined)) | {s for s in _MATH_SIGNS if s in value and s not in joined})
 
 
