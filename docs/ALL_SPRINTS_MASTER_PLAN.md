@@ -45,10 +45,27 @@ repository exists. No other F# from either source repository applies here.
 | 7 | docs/sprints/SPRINT_7_SUMMARY.md | [OK] Complete | 2026-10-06 to 2026-10-10 |
 | 8 | docs/sprints/SPRINT_8_SUMMARY.md | [OK] Complete | 2026-10-10 to 2026-10-14 |
 | 9 | docs/sprints/SPRINT_9_SUMMARY.md | [OK] Complete | 2026-10-14 to 2026-10-18 |
+| 10 | docs/sprints/SPRINT_10_SUMMARY.md | [OK] Complete (awaiting merge) | 2026-10-18 to 2026-10-21 |
 
 ## Last Completed Sprint
 
-Sprint 9 is below; Sprint 8 follows it for continuity.
+Sprint 10 is below; Sprint 9 follows it for continuity.
+
+### Sprint 10: Fix the Hooks and the Dirac Records, Then Read the Next 74 (2026-10-18 to 2026-10-21, PR #101, awaiting merge)
+
+Ten tasks, ten issues (#102-#111). **Hooks**: the code-edit hook stops
+blocking read-only commands (F81); the never-write hook covers abbreviated
+and program-running git options (F82). **Dirac records**:
+`platform:dirac-1` (F84, ADR-0004 A10, approved); Phase 2's Dirac-3S
+verification entered (F85). **Sources**: per-instance optimization bounds
+(F83); Cyc's stored counts (F50); the DOI probe asks DataCite (F86).
+**Reading**: the 74-record F57 release, 64 read with 216 assertions (F89);
+the 8 papers with no free copy carded as F90. **Discovery**: off-topic
+kinds dropped before ranking (F87); a live re-run entered 91 candidates at
+`seen`. Store 2,190 -> 2,284 papers, 557 -> 793 assertions; suite 950 ->
+1,084. Retrospective: team lead all "Very Good"; I1 and I2 applied (the
+quote check in the write path; the coordinator's edits name their
+passages), I3 skipped. Full detail: `docs/sprints/SPRINT_10_SUMMARY.md`.
 
 ### Sprint 9: Read the Ceiling Papers, Then Open the Phase 2 Exchange (2026-10-14 to 2026-10-18, PR #88, merged to develop and to main via PR #100 on 2026-10-18; tagged sprint-9)
 

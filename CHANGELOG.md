@@ -15,6 +15,10 @@ this project keeps having to replace with a step.
 
 ### 2026-10-18 onward (Sprint 10, in progress)
 
+- **docs**: `docs/sprints/SPRINT_10_SUMMARY.md` written (with `##
+  Actuals`); master plan's Past Sprint Summary and Last Completed Sprint
+  rolled for Sprint 10 (awaiting merge)
+
 - **process**: Sprint 10 retrospective I1 and I2 applied (2026-10-21; team
   lead: "do now i1 and i2. do not do i3"). I2: `require_verbatim` returns
   a `Verified`, and `store.ingest.insert_verified_assertion` /
