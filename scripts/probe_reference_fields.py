@@ -252,6 +252,8 @@ def probe(record_id: str, access: str, kind: str, fetcher, mode: str = "api", ex
         r = probe_doi(record_id, citations.parse_access(access)[1], fetcher)
         found += [(f, v, r.provider) for f, v in sorted(r.values.items())]
         notes += r.notes
+        if extra is not None and r.answered and not r.values:
+            extra["answered_without_value"] = r.provider
     url = landing_url(access)
     if url:
         # Paced and counted like every request that lands on arXiv: the
@@ -286,8 +288,14 @@ def recheck_findings(findings: dict[str, list[str]], rid: str, access: str, kind
     local_version_of = local_version_of or (lambda ident: recheck.local_version(ident, path=local_copy_of(ident)))
     if not any(recheck.is_primary_answer(kind, p, v) for _, v, p in found):
         sources = " or ".join(recheck.PRIMARY_PROVIDERS.get(kind, ("its source",)))
+        # Task D review (2026-10-18): a registry that answered with nothing
+        # the store records (an unmapped type, no relation, no affiliation)
+        # is not silent; it is said so. The paper still stays due: no
+        # publication_status value exists for "the registry states none".
+        said = (f"{extra['answered_without_value']} answered but stated nothing the store records"
+                if extra.get("answered_without_value") else f"no answer from {sources}")
         findings["primary source did not answer (stays due)"].append(
-            f"{rid}: {kind}, no answer from {sources}" + (f"; others answered: "
+            f"{rid}: {kind}, {said}" + (f"; others answered: "
             f"{', '.join(sorted({p for _, _, p in found}))}" if found else ""))
     status = next((v for f, v, _ in found if f == "publication_status"), None)
     if status in TERMINAL and before not in TERMINAL:

@@ -31,6 +31,21 @@ and command names built from strings or variables can still get past a
 regex. Those forms are carded as F82 for the team lead to weigh; the real
 boundary against a determined writer is the operating system's permissions.
 
+DECIDED 2026-10-18 (F82, Sprint 10 Task E, team lead Q2 = 1): the threat
+model stays accidental writes. Blocked since then, because a session could
+type them by accident: an abbreviated long option of a writing one
+(`--outp`) and a short-option cluster with O (`-nO`). `--ext-diff` and
+`--textconv` were blocked in the first version and removed after its
+review: git runs the guarded repository's own configured programs on a
+plain `git diff` anyway, so that block guarded nothing, and such a program
+is that repository's configuration, not this session writing.
+Outside the model, by decision, because typing them takes intent: pager,
+editor and config environment variables (GIT_PAGER, GIT_EDITOR,
+GIT_CONFIG_*, a `$env:` assignment), and command names built from strings
+or variables (`iex`, `& (...)`, `$cmd`). Option 2 (refuse every command
+naming a guarded path unless it is on a short read list) was declined: it
+would block ordinary reads of Phase 2 that work today.
+
 Covers two tool shapes:
   1. Write / Edit / NotebookEdit -- tool_input.file_path is the target,
      read directly, no parsing needed.
@@ -99,7 +114,58 @@ _GIT_OPTION_WITH_VALUE = frozenset({"-C", "--git-dir", "--work-tree", "--namespa
 # 2026-10-15): `--output`/`-O` write a file, `--open-files-in-pager` runs a
 # program, and `-c`/`--config-env` can set a pager, an editor or a hook
 # path. With a guarded path present, any of them blocks.
-_GIT_WRITING_OPTION = re.compile(r"^(?:-c|--config-env.*|--output.*|-O.*|--open-files-in-pager.*)$")
+_GIT_WRITING_OPTION = re.compile(r"^(?:-c|--config-env(?:=.*)?|--output(?:=.*)?|-O.*|--open-files-in-pager(?:=.*)?)$")
+# F82 (Sprint 10 Task E, team lead Q2 = 1, 2026-10-18): forms a session
+# could type by accident. Git takes any unambiguous prefix of a long option
+# (`--outp` is --output), so a prefix of a writing option blocks unless it
+# is itself a complete read option (`--text`). A short-option cluster with
+# O (`-nO`) is git grep's -O, unless the O belongs to the value of an
+# option before it (`-SOAuth`, `-GOne`; Task E review).
+#
+# Not blocked, by decision (Task E review, 2026-10-18): programs the
+# guarded repository's OWN config names (diff drivers, textconv, smudge
+# filters). Git runs them on a plain `git diff` or `git log -p` by
+# default, so blocking `--ext-diff` or `--textconv` would only look like a
+# guard; and a program that repository configured is not this session
+# writing, which is the model above.
+_GIT_WRITING_LONG = ("output", "open-files-in-pager", "config-env")
+_GIT_COMPLETE_READ_LONG = frozenset({"oneline", "ours"})
+# Which short options take a value depends on the subcommand (second
+# security review of the Task E fix, 2026-10-18: one shared list let
+# `grep -n -O x` and `grep -LO x` through, since -n and -L take no value in
+# grep). In a cluster, the letters after one of these are its value, so an
+# O there is not -O; digits are a count (`-3`) and the scan goes on. A
+# separate word after one of the second set is its value (`grep -e -Option`).
+_GIT_SHORT_WITH_VALUE = {"grep": "efABCm"}
+_GIT_SHORT_WITH_VALUE_DEFAULT = "SGLUMCBn"  # log, show, diff, blame, shortlog, rev-list
+_GIT_VALUE_WORD = {"grep": frozenset({"-e", "-f", "-A", "-B", "-C", "-m"})}
+_GIT_VALUE_WORD_DEFAULT = frozenset({"-S", "-G", "-L", "-n", "--grep", "--author", "--committer"})
+
+
+def _short_cluster_has_o(tok: str, sub: str) -> bool:
+    if not tok.startswith("-") or tok.startswith("--"):
+        return False
+    with_value = _GIT_SHORT_WITH_VALUE.get(sub, _GIT_SHORT_WITH_VALUE_DEFAULT)
+    for ch in tok[1:]:
+        if ch == "O":
+            return True
+        if ch.isdigit():
+            continue
+        if ch in with_value or not ch.isalnum():
+            return False
+    return False
+
+
+def _git_option_writes(tok: str, sub: str = "") -> bool:
+    tok = tok.strip("\"'")
+    if _GIT_WRITING_OPTION.match(tok) or _short_cluster_has_o(tok, sub):
+        return True
+    if not tok.startswith("--"):
+        return False
+    name = tok[2:].split("=", 1)[0].lower()
+    if len(name) < 2 or name in _GIT_COMPLETE_READ_LONG:
+        return False
+    return any(full.startswith(name) for full in _GIT_WRITING_LONG)
 # `git` after any non-word character (a quote, a backtick, a brace, a path
 # separator), not only after whitespace or a shell operator.
 _GIT_CALL = re.compile(r"(?:^|[^\w.-])git(?:\.exe)?(?=[\s\"'`)}]|$)", re.IGNORECASE)
@@ -113,20 +179,29 @@ def _git_writes(command: str) -> bool:
     for call in _GIT_CALL.finditer(command):
         tokens = _TOKEN.findall(command[call.end():])
         tokens = tokens[:next((n for n, t in enumerate(tokens) if t in (";", "&", "|", "(", ")")), len(tokens))]
-        if any(_GIT_WRITING_OPTION.match(t.strip("\"'")) for t in tokens):
-            return True
-        i = 0
+        i, sub = 0, ""
         while i < len(tokens):
             tok = tokens[i]
             if tok in _GIT_OPTION_WITH_VALUE:
                 i += 2
                 continue
-            if tok.startswith("-"):
-                i += 1
+            if tok.startswith("-") or not tok.strip("\"'`"):
+                i += 1  # an option, or the bare quote that closed `"git"`
                 continue
-            if tok.strip("\"'").lower() not in _GIT_READS:
-                return True
+            sub = tok.strip("\"'").lower()
             break
+        value_word = _GIT_VALUE_WORD.get(sub, _GIT_VALUE_WORD_DEFAULT)
+        # Before the subcommand only git's own options; after it, a word
+        # that is the value of the option before it is not an option.
+        # Fail closed (third security review): a long writing option is
+        # never taken as a value, since the per-subcommand lists can be wrong
+        # (`shortlog -n --output=...`, where -n takes no value).
+        if any(_git_option_writes(t, sub if n > i else "") for n, t in enumerate(tokens)
+               if t.strip("\"'").startswith("--")
+               or not (n > i + 1 and tokens[n - 1].strip("\"'") in value_word)):
+            return True
+        if sub and sub not in _GIT_READS:
+            return True
     return False
 
 

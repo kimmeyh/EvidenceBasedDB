@@ -20,11 +20,14 @@ sys.path.insert(0, str(ROOT))
 from tests.test_f45_dirac3_reading import _QUOTE, _plain, _text  # noqa: E402
 
 
-def _script():
-    spec = importlib.util.spec_from_file_location("f80", ROOT / "scripts" / "sprint9_f80_reading.py")
+def _load(spec):
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
+
+
+def _script():
+    return _load(importlib.util.spec_from_file_location("f80", ROOT / "scripts" / "sprint9_f80_reading.py"))
 
 
 def _source_text(f80, paper: dict, a: dict | None = None) -> str:
@@ -164,9 +167,13 @@ def test_refused_records_yield_nothing_and_each_has_a_reason():
 def test_refused_records_stay_seen_with_the_reason(live_conn):
     """Proven to fail by injection, 2026-10-15: with a read record
     (cao-2018-quantum-chemistry-age-quantum-computing) added to REFUSE, this
-    test named it."""
+    test named it. From 2026-10-18 the nine Dirac-1 records are Sprint 10
+    Task F's (F84, ADR-0004 A10): read and entered under platform:dirac-1,
+    and checked by tests/test_f84_dirac1.py."""
     f80 = _script()
-    for rid in f80.REFUSE:
+    f84 = importlib.util.spec_from_file_location("f84", ROOT / "scripts" / "sprint10_f84_dirac1.py")
+    taken = set(_load(f84).NINE)
+    for rid in set(f80.REFUSE) - taken:
         tier, = live_conn.execute("SELECT tier FROM paper_fields WHERE record_id = ?", (rid,)).fetchone()
         reason, = live_conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()
         assert tier == "seen", rid

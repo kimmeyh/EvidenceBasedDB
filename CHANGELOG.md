@@ -13,7 +13,260 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-14 onward (Sprint 9, in progress)
+### 2026-10-18 onward (Sprint 10, in progress)
+
+- **test**: Copilot review of PR #101 -- the F87 pool test renamed to
+  "three excluded remain", which is what it asserts (#111)
+
+- **docs**: `docs/sprints/SPRINT_10_SUMMARY.md` written (with `##
+  Actuals`); master plan's Past Sprint Summary and Last Completed Sprint
+  rolled for Sprint 10 (awaiting merge)
+
+- **process**: Sprint 10 retrospective I1 and I2 applied (2026-10-21; team
+  lead: "do now i1 and i2. do not do i3"). I2: `require_verbatim` returns
+  a `Verified`, and `store.ingest.insert_verified_assertion` /
+  `sync_verified_assertion` refuse a write without the matching one. I1:
+  `store.quotes.require_edit_basis` makes each coordinator edit name its
+  source passages, and a replaced value's numbers and math signs must be
+  in them. `tests/test_verified_writes.py` holds every new script to
+  both; intake section 31. I3 (F57's closing rule) skipped. Fresh-eyes
+  review fixed: a value that was only a number skipped the check (the
+  page-number rule deleted it); sign flips and flipped inequalities
+  passed; the scan missed aliased imports and scripts not named
+  `sprint*`
+
+- **process**: Sprint 10 Manual Validation complete (2026-10-19); the
+  eight-paper hand-download list moved to Sprint 11 as F90 (Priority 60)
+  at the team lead's request. Retrospective written
+  (`docs/sprints/SPRINT_10_RETROSPECTIVE.md`, the team lead's words
+  verbatim, Very Good in every category); improvements I1 to I3 proposed
+
+- **feat**: Task J (F87, #111), Manual Validation Q4 = 2 and Q6
+  (2026-10-19) -- the live discovery re-run's candidates enter at `seen`:
+  91 of the 99 top-listed (6 excluded by the team lead, 2 Sprint 9
+  exclusions back at the top), two classical-ML-on-molecules papers moved
+  from the qml stream to `ml` at the team lead's request. 5 preprints
+  retitled at publication entered by journal DOI. Store 2,284 papers;
+  F57 count 2,060 at `seen` or `screened` (snapshot 2026-10-19).
+  `scripts/sprint10_f87_enter_seen.py`, `tests/test_f87_enter_seen.py`,
+  intake section 30
+
+- **process**: Sprint 10 Manual Validation decisions recorded (2026-10-19):
+  ADR-0004 A10 approved as written (Q1 = 1); a registry answer with nothing
+  recordable stays due (Q2 = 1); ML libraries stay in review (Q3 = 1); live
+  discovery re-run now (Q4 = 2); F57 closing rule at the retrospective
+  (Q5 = 1). The team lead rejected a validation step that asked them to run
+  a shell command to check the code-edit hook: a hook fires only on
+  Claude's own tool calls, so the step proved nothing. The workflow's
+  Manual Validation rule now says so; Claude ran the check itself (not
+  blocked)
+
+- **chore**: Sprint 10 Phase 5.3 Manual Validation handed over
+  (2026-10-18). Tasks A to J done with every fresh-eyes review answered;
+  suite 1,053 passed locally; CI green. Three changed commitments restated
+  (Task E's `--ext-diff`/`--textconv`; Task I's 9 unread records; Task J
+  measured on Sprint 9's pool, 13 to 3). Aimeur 2007 kept on the
+  hand-download list (ICML's archived link no longer resolves); Q1 to Q5
+  asked
+
+- **fix**: Task A (F81, #102) -- the code-edit hook no longer blocks a read
+  of a code file followed by another command's `-i` (`sed -n 1,5p x.py;
+  grep -i y z`): the flag and target search stops at the editor's own
+  `;`, `&` or `|`, outside quotes. A second `sed -i` on the same line is
+  now found on its own (it was hidden inside the first match). Nine tests,
+  proven by three injections
+- **fix**: Task A review (2026-10-18; fresh-eyes and automated security
+  review) -- the cut in 021d2a8 let seven in-place edits through (a
+  backslash escape, a `2>&1` redirect, `$(...)` or backticks before the
+  file). The cut now models those, and the search fails closed: when the
+  editor's own text has the flag but names no code file, the whole line
+  is searched. A read inside `bash -c "..."` followed by `grep -i` passes.
+  Eleven cases, each proven against 021d2a8 or by injection. A second
+  security review found `bash -c "sed "'-i ...'` still passed (a quote
+  closed mid-word continues the word); fixed, proven by two injections.
+  A third found quotes inside a file name or the awk keyword
+  (`store/x'.py'`, `in"place"`) passed, a gap older than Task A; every
+  check now reads the text with quotes removed. That exposed an older
+  offset bug: a path inside an editor's, copy's or tee's own text was
+  placed against the `cd`s by its offset in that text, so an edit of a
+  scratch file after a `cd` out of the repository was blocked. Fixed;
+  six cases, each proven against 6690c39
+- **process**: Task B (F88, the F39 release for Sprint 10, #103) -- models
+  and pricing pages read 2026-10-18: no change since F67 (same four ids,
+  prices, context, output and retirement dates); every tier re-verified.
+  Sprint 9's reader outcomes logged (accurate quotes and numbers; added
+  conclusions the main defect); the reading protocol now requires a
+  separate `reader_inference` field. Two tests, each proven by injection
+- **docs**: Task C (F50, #104) -- dated amendment to the Cyc research
+  document's point 7: Cyc stores a count at every index layer
+  (`removal_modules_lookup.java`, line 84, re-read in the engine source);
+  a stored count is allowed here only beside its data, updated with it,
+  and checked by a test that recomputes it
+- **fix**: Task D (F86, #105) -- the DOI probe never asked DataCite:
+  after a Crossref 404 it labeled its result DataCite and returned empty,
+  so a DataCite DOI could never record a primary answer under ADR-0005
+  A9. It now sends the DataCite request and records status (from
+  resourceTypeGeneral), a preprint relation as `version_of` (not Zenodo's
+  all-versions IsVersionOf) and affiliations. The Zenodo record
+  (DOI:10.5281/zenodo.19985473) answered: preprint, QDR Labs; its clock
+  reset (next re-check 2028-04-16). Snapshot as of 2026-10-18: 157 of 256
+  DOI records hold no primary answer, none due before mid-2027. Two
+  tests, proven by two injections
+- **fix**: Task D review (2026-10-18) -- a DOI registry that answered with
+  nothing the store records (an unmapped type such as "Text", no relation,
+  no affiliation) was reported as "no answer"; the re-check report now
+  says it answered. It still stays due: no `publication_status` value
+  means "the registry states none" (raised for Manual Validation). A null
+  DataCite affiliation name no longer raises. Two tests, two injections
+- **fix**: Task I review (2026-10-18) -- two values I passed in my own
+  read were WRONG: Carleman's complexity is T^2 q poly(log T, log n,
+  log 1/epsilon)/epsilon, not "polylogarithmic in T, n and 1/error"; the
+  lower bound's threshold is R of at least the square root of 2 (the text
+  layer drops the root sign; my quote edit then cut the quotes at "R ≥ 2",
+  so both checks passed a wrong value). Also: the readout-versus-gate
+  measurement cut from a HIGH limit statement; a survey's physics claim and
+  Martin's two values (proved only for one- and two-qubit terms) to LOW;
+  Zuchongzhi's F2 errors with their Hartree average; Khairy's median;
+  three quotes for stated figures; HIGH is now an explicit reviewed list
+  (39), tested. Valdez is retracted: not for the hand-download list.
+  Re-applied; 13 assertions corrected. Two injections
+- **fix**: Task J review (2026-10-18) -- the ml topic rule also dropped
+  scikit-learn and PyTorch, and the generic tensor topic "Machine Learning
+  and Algorithms" could drop a tensor-network learning paper: a learning
+  term in the title now keeps an ml record, and that tensor topic is
+  removed (13 excluded records now fall to 3, not 2; none accepted lost).
+  Dropped records are kept in the saved JSON; the check script states that
+  its "moved up" list is an approximation; a test runs main with an
+  off-topic work. One injection
+- **feat**: Task J (F87, #111) -- the discovery streams drop, before
+  ranking, the off-topic kinds the team lead excluded at Sprint 9 Manual
+  Validation: OpenAlex topics per stream (software libraries and
+  metaheuristics in ml; spin-qubit hardware and a medical survey in qml;
+  materials, superconductivity, density estimation and pseudo-ensembles in
+  tensor) and a codebase release note. Measured on Sprint 9's own pool
+  (`scripts/sprint10_f87_filter_check.py`, no request): 13 excluded records
+  in the top 25 lists before, 2 after (the single-photon platform paper and
+  the black-hole paper share a topic with accepted ones); no accepted record
+  lost; 11 move up for review. Dropped records are listed in the review,
+  never hidden. Fourteen tests, two injections
+- **feat**: Task I (F89, #110; the F57 release for Sprint 10) -- the 74
+  most-cited unread `qml` records: 65 with a free copy read by nine Sonnet
+  5.5 readers under the `reader_inference` rule, then the coordinator's
+  read of every value against its quoted passages. 64 entered at `read`
+  with 216 assertions (42 HIGH, 2 MODERATE, 172 LOW); 1 refused (a
+  workforce review); 9 with no free copy stay `seen` for the hand-download
+  list. Nine quotes corrected to the source's exact characters, two values
+  rewritten (Innan's two AUCs are different curves; Aimeur's bound as
+  printed), three contexts corrected. Snapshot as of 2026-10-18: 224
+  records at `read`, 793 assertions, 1,969 at `seen` or `screened`. Eight
+  tests, three injections; intake section 29
+- **process**: Sprint 10 Tasks F, G and H missed INTAKE_WORKFLOW.md
+  section 26 (Sprint 9 retrospective I3): their scripts wrote before
+  checking quotes, which only the live-store tests then did. Each now runs
+  `check_quotes()` before any write, and a test plants a quote not in the
+  source and expects the refusal. No stored quote was wrong. Intake
+  section 27 records the three tasks' entries
+- **fix**: Task H review (2026-10-18) -- no wrong figure, but four
+  overstatements corrected: the inferred link to Dirac named "the
+  instances sent to Dirac devices", while Phase 2's Dirac-3 work uses its
+  continuous and integer solvers, where the 1-or-minus-1 bound does not
+  apply as written (a same-day correction in the answer document); the
+  two-way partitioning value gains "W symmetric" and "in general";
+  Gurobi's value drops "exact" and adds the second stopping rule
+  (MIPGapAbs, default 1e-10); the verified sentence's "relaxation or dual
+  bound" is a dual bound. The figure test reads only Gurobi's two entries
+  and treats 1e-4 as one token; the store test compares every field. One
+  injection
+- **feat**: Task H (F83, #109) -- per-instance optimization bounds
+  sourced: Boyd and Vandenberghe's Convex Optimization (the authors' free
+  copy, downloaded to Papers with SHA-256; sections 5.1.5, 5.2.2 and
+  5.5.1 read) and Gurobi 13.0's MIPGap entry (saved to References). Four
+  assertions: weak duality without convexity, the two-way partitioning
+  dual and SDP bound, the duality gap as a certificate, and Gurobi's
+  relative gap. The ceilings answer document gains a dated amendment
+  making section 5 point 5 verified; applying the SDP bound to Dirac's
+  Ising and QUBO instances is marked inferred. Four tests, two
+  injections; the figure check reads only the pages read (a whole-book
+  check passed an injected figure)
+- **fix**: Task G review (2026-10-18) -- the entry below put a WRONG
+  statement in the store for about 15 minutes: the B4 value said
+  Dirac-3's 0.895 and 0.901 fell outside the band [0.8832, 0.9095]; both
+  lie inside it, and it is the Dirac-3S cosines that fall outside (so
+  Phase 2's falsifier fires). Corrected and re-applied, with the band
+  quote added; a test now computes which cosines lie in the band. The
+  fineness value also gains Phase 2's caveat that the cloud response had
+  no raw-values field to check the post-processing inference against.
+  One injection
+- **feat**: Task G (F85, #108) -- Phase 2's Dirac-3S verification
+  (`docs/phase2/F142_DIRAC3S_VERIFY.md`) entered by the inbound path at
+  Phase 2 commit e126dbd (revised after the card's c141a57; the same blob
+  at HEAD 98f9671): a reference record and four HW assertions (B4 twin
+  optimum on two seeds, returned weights finer than the 0.005 step with
+  the cause unverified, AUPRC unchanged, per-sample cost at schedule 2).
+  Phase 2's own limits carried in each value. No relation linked: by
+  A8 (b) none confirms or contradicts a whole existing claim (output
+  versus input resolution; different problem sizes); each value names the
+  related assertion. Seven tests, three injections
+- **fix**: Task F review (2026-10-18) -- the entry below was WRONG on one
+  point: "scales better than cubic" was QCi's own conclusion (the page
+  says "better than O ( n 3 )"; the coordinator's check searched for the
+  word "cubic" and missed the notation). The value now states it with its
+  quote. Also corrected: the portfolio value gave the page's example
+  period as the run (the backtest ran 2022-01-13 to 2022-12-30), and the
+  reader's "(modes)" gloss is cut. ADR-0004 A10 correction: filing the
+  QC-7 article's two claims under `platform:dirac-1` is an inference from
+  its one Dirac 1 sentence. The descriptions test now holds its own list
+  (its first version compared against the script's set, so it could not
+  fail as claimed). Two injections
+- **feat**: Task F (F84, #107; Class 1, Q1 = 1, Q3 = 1) -- ADR-0004 A10
+  adds `platform:dirac-1` (A8's rule: one context per QCi system; A8's
+  "revisit" answered: no claim spans the systems). The nine QCi sources
+  Sprint 9 refused (seven "Device: Dirac-1" pages, the UAS case study,
+  the QC-7 article) are retagged from `platform:dirac-3`, read and
+  entered: 12 assertions, 6 vendor descriptions MODERATE and 6 vendor
+  results LOW. The coordinator's read cut two reader conclusions the
+  pages do not state ("scales better than cubic"; "64 binary variables").
+  Every quote and stated figure checked by test; seven tests, four
+  injections; F80's refused-stays-seen test narrowed to the other two
+- **process**: Task E (F82, #106; Class 1, team lead Q2 = 1) -- the
+  never-write hook's threat model stays accidental writes. Now blocked
+  with a guarded path: an abbreviated long option of a writing one
+  (`--outp`, `--ext`), a short cluster with O (`-nO`), `--ext-diff` and
+  `--textconv`. Pager, editor and config variables and command names
+  built from variables are named in the docstring as outside the model.
+  Eight blocked and four allowed cases; each blocked case passed against
+  the previous hook; two injections
+- **fix**: Task E review (2026-10-18) -- the O rule blocked reads whose
+  search value held an O (`log -SOAuth`, `-GOne`, `grep -e -Option`), and
+  the older `--output.*` rule blocked `--output-indicator-new`; all now
+  pass. `--ext-diff` and `--textconv` are no longer blocked (a CHANGED
+  COMMITMENT from the approved Task E line): git runs the guarded
+  repository's own configured programs on a plain `git diff` by default,
+  so that block guarded nothing, and such a program is that repository's
+  configuration, not this session writing. Two injections. A security
+  review of that fix found one shared list of value-taking options let
+  `grep -n -O x`, `grep -LO`, `grep -GO`, `grep -3O` and `diff -M
+  --output=...` through; the lists are now per subcommand, digits continue
+  the scan, and a bare closing quote after `"git"` is not read as the
+  subcommand. Five cases; one injection. A third review: a long writing
+  option after a value-taking flag was skipped as its value
+  (`shortlog -n --output=...`); such a word is now never skipped (fail
+  closed). Two cases; one injection
+
+- **docs**: Sprint 10 Phases 1.5 to 3 (2026-10-18) -- scope selected (all
+  ten non-HOLD items; F88 and F89 released from F39 and F57); Phase 2
+  gates passed; `CHECKLIST-Phase2-pre.md` back-filled for Sprint 9, which
+  Phase 1.2 missed; `SPRINT_10_PLAN.md` drafted with Q1 to Q3 and the
+  draft PR opened
+
+- **docs**: Sprint 10 Phase 1 (2026-10-18) -- the team lead merged PR #88
+  into develop and PR #100 to main; `sprint-9` tagged on PR #100's merge
+  commit (270961e); carry-forward cut `feature/20261018_Sprint_10` from
+  the Sprint 9 branch; sprint status advanced; CHANGELOG reconciled (three
+  Sprint 9 entries added below: the slate, the plan draft and the Manual
+  Validation hand-over)
+
+### 2026-10-14 to 2026-10-18 (Sprint 9, PR #88, merged to develop 2026-10-18 and to main via PR #100 the same day; tagged sprint-9)
 
 - **fix**: Review of the I7 commit (2026-10-18) -- the CI stop check could
   trap a session on a failure it cannot fix; a stop citing a criterion, a
@@ -22,7 +275,6 @@ this project keeps having to replace with a step.
   (existence checks, collection time, a moved store) are documented. Tests
   added for the data folder, cwd and arguments, and gh's real fail-open
   path; injection-proven (Issue #99 / PR #88)
-
 - **process**: Sprint 9 retrospective I7 (team lead, 2026-10-18, Q1 = 2).
   Prevention: `tests/conftest.py` gives every test without `live_store`
   the machine CI sees -- pdftotext and any path under the data folder or a
@@ -88,6 +340,9 @@ this project keeps having to replace with a step.
   after the title check refused them (Task J, Issue #98; INTAKE section
   24); Q2 = 2 and Q5 = 2 carded as F86 (the Zenodo record) and F85 (Phase
   2's Dirac-3S verification). Tests injection-proven
+- **docs**: Sprint 9 Manual Validation handed over (2026-10-15, c04450c,
+  reconciled 2026-10-18) -- ADR-0005 A9 and A10 and ADR-0004 A9 for
+  review, and questions Q1 to Q5 with a recommendation each
 - **fix**: F62 review (Sprint 9 Task J, Issue #98) -- a Semantic Scholar
   answer counts only for the same title (a wrong-paper answer had won); a
   second pass for refusals; refused candidates listed apart so a refusal
@@ -284,6 +539,10 @@ this project keeps having to replace with a step.
   reported at Manual Validation (Q4); the first read-for-claims slice
   widened to 76 records (Q7 = 2); F57 now releases 74 records per sprint
   until none remain at `seen` or `screened` (PR #88)
+- **docs**: Sprint 9 scope selected and plan drafted (2026-10-14, 27c9d94
+  and 81b87e2, reconciled 2026-10-18) -- 12 items selected at refinement,
+  F79 corrected to free reads both ways and no writes; Tasks A to K drafted
+  with decisions Q1 to Q9; F80 released from F57
 - **docs**: Sprint 9 Phase 1 (2026-10-14) -- the team lead merged PR #84
   and PR #77 into develop and PR #86 and PR #87 to main; `sprint-8` tagged
   on PR #87's merge commit; carry-forward cut `feature/20261014_Sprint_9`

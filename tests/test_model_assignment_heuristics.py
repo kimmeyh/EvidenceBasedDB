@@ -143,3 +143,27 @@ def test_planning_role_table_names_the_verified_versions_regression():
     for t in MODEL_TIERS:
         version = tiers[t]["model"].removeprefix("Claude ")
         assert version in joined, f"role table does not name {version!r} (tier {t})"
+
+
+def test_every_tier_was_verified_at_the_latest_release_regression():
+    """F88 (Sprint 10 Task B): each F39 release re-reads every tier on the
+    models page, so each tier's `verified` date is the latest release's
+    date. A release that logs outcomes but skips a tier leaves it older.
+    Proven to fail by injection, 2026-10-18: setting the opus tier's
+    verified date back to 2026-10-12 turned this red. Restored."""
+    d = _load()
+    latest = max(r["date"] for r in d["release_notes"])
+    stale = {t: d["tiers"][t]["verified"] for t in MODEL_TIERS if d["tiers"][t]["verified"] != latest}
+    assert not stale, f"tiers not verified at the latest release ({latest}): {stale}"
+
+
+def test_readers_keep_their_own_conclusions_out_of_values_regression():
+    """F88 (Sprint 10 Task B): Sprint 9's first-pass readers were accurate
+    on quotes and numbers, and their main defect was conclusions the source
+    does not state (learning_log, Sprint 9 row). The reading protocol
+    requires a separate reader_inference field. Proven to fail by
+    injection, 2026-10-18: removing that sentence from the protocol turned
+    this red. Restored."""
+    d = _load()
+    assert "reader_inference" in d["protocols"]["read-only-evidence-gathering"]["description"]
+    assert any(e["sprint"] == 9 and "conclusions" in e["outcomes"][0]["findings"] for e in d["learning_log"])

@@ -18,6 +18,10 @@ Nine QCi pages name Dirac-1 while the store tags them platform:dirac-3; there
 is no Dirac-1 context, so their figures cannot be entered against the device
 they describe (carded as F84). The space-logistics page has no body text. The
 trade magazine PDF has no text layer, so no quote in it can be checked.
+From 2026-10-18 the nine Dirac-1 records are read and entered under
+platform:dirac-1 by `scripts/sprint10_f84_dirac1.py` (F84, ADR-0004 A10);
+REFUSE keeps them so this script's record of Sprint 9 is unchanged, and a
+re-run writes nothing for them.
 
 CERTAINTY follows Task E's GRADE mapping (scripts/sprint9_f78_ceiling_reading.py),
 with one addition: a vendor's claim about its own product starts MODERATE as
