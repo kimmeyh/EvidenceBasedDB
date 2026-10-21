@@ -15,6 +15,15 @@ this project keeps having to replace with a step.
 
 ### 2026-10-18 onward (Sprint 10, in progress)
 
+- **process**: Sprint 10 retrospective I1 and I2 applied (2026-10-21; team
+  lead: "do now i1 and i2. do not do i3"). I2: `require_verbatim` returns
+  a `Verified`, and `store.ingest.insert_verified_assertion` /
+  `sync_verified_assertion` refuse a write without the matching one. I1:
+  `store.quotes.require_edit_basis` makes each coordinator edit name its
+  source passages, and a replaced value's numbers and math signs must be
+  in them. `tests/test_verified_writes.py` holds Sprint 11+ scripts to
+  both; intake section 31. I3 (F57's closing rule) skipped
+
 - **process**: Sprint 10 Manual Validation complete (2026-10-19); the
   eight-paper hand-download list moved to Sprint 11 as F90 (Priority 60)
   at the team lead's request. Retrospective written

@@ -122,4 +122,25 @@ Validation complete".
 
 ## Improvement Decisions
 
-Proposed 2026-10-19 (I1 to I4). Awaiting the team lead's disposition.
+Proposed 2026-10-19 (I1 to I3, prevention first, extending an existing
+prevention where one is connected). Team lead, 2026-10-21: "do now i1 and
+i2. do not do i3". The hook-check rule was applied at the team lead's
+instruction during Manual Validation (c0e8c22) and needed no decision.
+
+| # | Improvement | Type | Disposition | Commit |
+|---|---|---|---|---|
+| I1 | `store.quotes.require_edit_basis`: each coordinator edit to a reader's work names its source passages, verbatim; a replaced value's numbers and math signs must be in them, or listed as read from the page | Prevention (extends the quote check, intake rule 26) | Now, applied | this commit |
+| I2 | `require_verbatim` returns a `Verified`; `store.ingest.insert_verified_assertion` and `sync_verified_assertion` refuse a write without the matching one; a test holds Sprint 11+ scripts to them | Prevention (extends `store.ingest` and rule 26) | Now, applied | this commit |
+| I3 | F57's closing rule rewritten to "no record left without a read row" | Prevention | Skip (team lead) | none |
+| (rule) | A hook check is never a Manual Validation step | Prevention (extends the Manual Validation rule) | Applied during Manual Validation | c0e8c22 |
+
+I3 skipped: the F57 card keeps "The item closes when the count is 0". Its
+count (records at `seen` or `screened`) includes refused records, which
+stay `seen`, so the rule as written cannot be met while any refused record
+exists (3 as of 2026-10-19). This changes Manual Validation Q5 = 1 ("fix at
+the retrospective"); the card stays as it is.
+
+Measured while applying I1 (snapshot as of 2026-10-21): on Sprint 10's F89
+coordinator edits, the rule flags the root-2 value and four more whose
+figures are in the source but not in their quotes. No stored value is
+wrong; under I1 each would have named one more passage.

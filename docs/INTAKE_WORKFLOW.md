@@ -833,3 +833,32 @@ Every count is a snapshot as of 2026-10-19.
 - **F57's count after this release:** 2,060 records at `seen` or
   `screened`, of which 2,057 have no read row. The store holds 2,284
   papers.
+
+## 31. Rule from 2026-10-21: the quote check is in the write path, and the coordinator's edits name their passages (Sprint 10 retrospective I1 and I2)
+
+Extends section 26. Scripts from Sprint 11 on; Sprint 10 and earlier
+scripts have run and stay as they are. `tests/test_verified_writes.py`
+holds every new `scripts/sprint<N>_*.py` with N of 11 or more to both
+rules.
+
+- **Write only through the check (I2).** `require_verbatim` returns a
+  `Verified`. A script writes assertions with
+  `store.ingest.insert_verified_assertion(conn, a, verified)` and
+  `sync_verified_assertion(conn, a, verified, note, today)`, never
+  `insert_assertion` or `sync_assertion`. Each refuses a write whose
+  `Verified` is missing or names another record or other quotes. Sprint
+  10's Tasks F, G and H wrote before checking; with this path they could
+  not have.
+- **Name the passage behind every edit (I1).** When the coordinator
+  replaces a reader's value, drops a quote or moves a context, the script
+  calls `store.quotes.require_edit_basis(record_id, value, basis, text)`
+  first. `basis` is the passage or passages the edit rests on, each
+  verbatim in the source. For a replaced value, every number and math sign
+  in it must be in those passages; a figure read from the page image
+  because the text layer lost it (the root sign in F89's "R >= sqrt 2")
+  goes in `read_from_page`, and the value says so. The check does not test
+  meaning: a wrong word with the right numbers passes, so the fresh-eyes
+  review stays.
+- **Measured on Sprint 10's F89 edits** (snapshot as of 2026-10-21): the
+  rule flags the root-2 value and four more whose numbers are in the
+  source but not in their quotes. No stored value is wrong.

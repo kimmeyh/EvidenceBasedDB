@@ -13,6 +13,13 @@ the curly quotes alone, so that mapping stays.
 
 A reading script calls `require_verbatim` on every assertion BEFORE it writes;
 the tests stay as the backstop on what is already in the store.
+
+Sprint 10 retrospective (2026-10-21). I2: `require_verbatim` returns a
+`Verified` record, and the verified write helpers in `store.ingest` refuse a
+write without the one that matches it, so the check cannot be forgotten
+(Tasks F, G and H forgot it at first apply). I1: `require_edit_basis`
+checks the coordinator's own edits to a reader's work, which were wrong four
+times in Sprint 10 and caught only by review.
 """
 from __future__ import annotations
 
@@ -21,6 +28,7 @@ import json
 import re
 import subprocess
 import unicodedata
+from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
@@ -77,7 +85,16 @@ def missing_quotes(citation_context: str | None, text: str) -> list[str]:
     return [q for q in QUOTE.findall(citation_context or "") if plain(q) not in text]
 
 
-def require_verbatim(record_id: str, citation_context: str | None, text: str) -> None:
+@dataclass(frozen=True)
+class Verified:
+    """What `require_verbatim` returns: this record's quotes, exactly as
+    checked against its source. Made only by `require_verbatim`; the
+    verified write helpers compare it with the record they write."""
+    record_id: str
+    citation_context: str
+
+
+def require_verbatim(record_id: str, citation_context: str | None, text: str) -> Verified:
     """Refuse an assertion whose quotes are not all in its source, or that
     carries none. Called before the write, so a bad quote never reaches the
     store."""
@@ -87,3 +104,46 @@ def require_verbatim(record_id: str, citation_context: str | None, text: str) ->
     if missing:
         raise ValueError(f"{record_id}: not verbatim in its source: {missing[0][:80]!r}"
                          + (f" (and {len(missing) - 1} more)" if len(missing) > 1 else ""))
+    return Verified(record_id, citation_context)
+
+
+_NUMBER = re.compile(r"\d+(?:\.\d+)?")
+_THOUSANDS = re.compile(r"(?<=\d),(?=\d{3}(?!\d))")
+_MATH_SIGNS = "√≥≤±×∞≈≠∑∏∫∂"
+
+
+def _numbers(text: str) -> set[str]:
+    return set(_NUMBER.findall(_THOUSANDS.sub("", text)))
+
+
+def unsupported_by_basis(value: str, basis: list[str]) -> list[str]:
+    """The numbers and math signs in `value` that no passage in `basis`
+    holds."""
+    joined = plain(" ".join(basis))
+    value = plain(value)
+    return sorted((_numbers(value) - _numbers(joined)) | {s for s in _MATH_SIGNS if s in value and s not in joined})
+
+
+def require_edit_basis(record_id: str, value: str | None, basis: list[str], text: str,
+                       read_from_page: tuple[str, ...] = ()) -> None:
+    """Refuse a coordinator edit (a replaced value, a dropped quote, a moved
+    context) that names no source passage, names one not verbatim in the
+    source, or, for a replaced `value`, states a number or math sign none of
+    its passages holds (Sprint 10 retrospective I1).
+
+    `read_from_page` lists what was read from the page image because the
+    text layer lost it (the root sign of "R >= sqrt 2" in Sprint 10's F89):
+    each item is exempt, and the value itself should say so. It cannot check
+    meaning: a wrong word with the right numbers still passes, so reviews
+    stay."""
+    if not basis:
+        raise ValueError(f"{record_id}: a coordinator edit names no source passage")
+    missing = [q for q in basis if plain(q) not in text]
+    if missing:
+        raise ValueError(f"{record_id}: an edit's passage is not verbatim in its source: {missing[0][:80]!r}")
+    if value is not None:
+        unsupported = [t for t in unsupported_by_basis(value, basis) if t not in read_from_page]
+        if unsupported:
+            raise ValueError(f"{record_id}: the edited value states {', '.join(unsupported)}, which no named "
+                             "passage holds; correct the value, or read it from the page and list it in "
+                             "read_from_page")
