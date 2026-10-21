@@ -45,15 +45,15 @@ repository exists. No other F# from either source repository applies here.
 | 7 | docs/sprints/SPRINT_7_SUMMARY.md | [OK] Complete | 2026-10-06 to 2026-10-10 |
 | 8 | docs/sprints/SPRINT_8_SUMMARY.md | [OK] Complete | 2026-10-10 to 2026-10-14 |
 | 9 | docs/sprints/SPRINT_9_SUMMARY.md | [OK] Complete | 2026-10-14 to 2026-10-18 |
-| 10 | docs/sprints/SPRINT_10_SUMMARY.md | [OK] Complete (awaiting merge) | 2026-10-18 to 2026-10-21 |
+| 10 | docs/sprints/SPRINT_10_SUMMARY.md | [OK] Complete | 2026-10-18 to 2026-10-21 |
 
 ## Last Completed Sprint
 
 Sprint 10 is below; Sprint 9 follows it for continuity.
 
-### Sprint 10: Fix the Hooks and the Dirac Records, Then Read the Next 74 (2026-10-18 to 2026-10-21, PR #101, awaiting merge)
+### Sprint 10: Fix the Hooks and the Dirac Records, Then Read the Next 74 (2026-10-18 to 2026-10-21, PR #101, merged to develop and to main via PR #112 on 2026-10-21; tagged sprint-10)
 
-Ten tasks, ten issues (#102-#111). **Hooks**: the code-edit hook stops
+Ten tasks, ten issues (#102-#111), all closed. **Hooks**: the code-edit hook stops
 blocking read-only commands (F81); the never-write hook covers abbreviated
 and program-running git options (F82). **Dirac records**:
 `platform:dirac-1` (F84, ADR-0004 A10, approved); Phase 2's Dirac-3S
@@ -261,23 +261,15 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 10** (branch `feature/20261018_Sprint_10`, cut 2026-10-18 at the
-Sprint 9 carry-forward, after PR #88 merged to develop and PR #100 merged
+**Sprint 11** (branch `feature/20261021_Sprint_11`, cut 2026-10-21 at the
+Sprint 10 carry-forward, after PR #101 merged to develop and PR #112 merged
 develop to main).
 
-- **Scope selected 2026-10-18 (team lead, DEFINED)**: all ten non-HOLD
-  items, as recommended (about 375 calibrated minutes): F39 (Sprint 10
-  release), F57 (Sprint 10 release, 74 records), F50, F81, F82, F83, F84,
-  F85, F86 and F87. F51 stays HOLD.
-- **Released copies of the permanent items**: F88 (F39 release for
-  Sprint 10) and F89 (F57 release for Sprint 10, 74 records). F39 and F57
-  stay.
-- **Plan**: `docs/sprints/SPRINT_10_PLAN.md`, approved 2026-10-18 with
-  Q1 = 1, Q2 = 1, Q3 = 1; issues #102 to #111; draft PR #101.
+- **Scope**: not yet selected (Phase 1.4).
 
 ## Next Sprint Candidates
 
-Refined 2026-10-18 after Sprint 9 (Sprint 10 Phase 1.2); Sprint 9's shipped
+Refined 2026-10-21 after Sprint 10 (Sprint 11 Phase 1.2); Sprint 10's shipped
 cards pruned BY HAND (Edit tool, card by card) the same day.
 Shipped and pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint
 2); F2 Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25,
@@ -288,7 +280,9 @@ replaced by F64's 12-month re-check; F54's 10 "unsure" and 140 third-party
 repository candidates stay held back in `sprint7_f35_screen.json` and
 `QMLPapers\Repos\REVIEW.md`); F60, F61, F63, F64, F65, F66, F67, F71
 (Sprint 8); F46, F48, F55, F56, F62, F68, F69, F74, F78, F79, F80
-(Sprint 9; F62's open precision note carried as F87). F39 and F57 are
+(Sprint 9; F62's open precision note carried as F87); F50, F81-F87 and
+the released copies F88 and F89 (Sprint 10; F89's 8 papers with no free
+copy carried as F90). F39 and F57 are
 permanent and stay. Closed without
 implementation: F19, F29 (Sprint 5 scope selection, reasons under Sprint 5
 in "Last Completed Sprint"); F49 (Sprint 8 scope selection, Q3 = 1: moot
@@ -324,19 +318,6 @@ and in git. Remaining items below.
   the SPRINT_PLANNING.md role table, with each change naming its evidence;
   (5) a failing test guards whatever the release adds.
 - Depends on: nothing
-
-### Store and process lessons from Cyc (proposed 2026-10-03)
-
-**F50. Qualify "compute, never store" with Cyc's stored counts (~30m) Priority 100**
-- Phase: Process
-- Platform: `docs/research/cyc-knowledge-representation.md` (dated amendment)
-- Point 7 says counts should be computed, never stored. Cyc stores a count at
-  every index layer and the planner reads it as the lookup cost
-  (`removal_modules_lookup.java`, line 84). The difference: Cyc keeps the
-  count beside the data and updates both together.
-- Acceptance: a dated amendment to point 7. A stored count is allowed only
-  with a test that recomputes and compares it.
-- Depends on: none.
 
 ### HOLD Items (waiting on an external event)
 
@@ -388,124 +369,10 @@ and in git. Remaining items below.
   `screened`, so about 27 more releases at 74 each. The item closes when
   the count is 0, not before. Refresh the count at each release, because
   intake adds records.
-
-### Carded during Sprint 9 (2026-10-14 onward)
-
-**F81. The code-edit hook blocks read-only `sed -n` commands (~30m) Priority 120** (NEW 2026-10-15, Sprint 9 Task A)
-- Phase: Process / hooks
-- Platform: `.claude/hooks/block_unraw_escape.py` (`_shell_edits_code`)
-- Found 2026-10-15: two read-only commands were blocked as code edits. Each
-  was `sed -n <range>p <code file>; ... | grep -i ...`. The hook's own
-  message says "Reading with sed -n, cat or grep is fine." The likely cause
-  (inferred, not yet tested): the in-place flag search runs over the rest of
-  the command past `;`, so a later `grep -i` reads as `sed -i`.
-- Cost: friction only. The Read and Grep tools work around it. But a guard
-  that blocks correct work trains bypass.
-- Acceptance: the two blocked shapes pass; `sed -i` on a code file is still
-  blocked; both proven by injection.
-- Depends on: none
-
-**F82. Decide how far the never-write hook should go against evasive command forms (~1h) Priority 130** (NEW 2026-10-15, Sprint 9 Task A, third automated security review)
-- Phase: Process / hooks
-- Platform: `.claude/hooks/block_sibling_repo_writes.py`
-- Three automated security reviews of the Phase 2 extension (2026-10-15)
-  each found more forms a regex misses. Fixed the same day: `git -C`
-  writes, PowerShell write cmdlets, `tee`, `sed -i`, a fail-closed git read
-  list, write-capable options on reads, and `git` after a quote or
-  backtick. Still open: abbreviated long options (`--outp`) and short-option
-  clusters containing `O`; pager, editor and config environment variables
-  (`GIT_PAGER`, `GIT_CONFIG_*`, `$env:` assignments); `--ext-diff` and
-  `--textconv`; command names built from strings or variables (`iex`,
-  `& (...)`, `$cmd`).
-- The decision (Class 1): the hook's stated threat model is accidental
-  writes by this repository's own sessions, not evasion. Option 1 keeps
-  that model and closes only forms a session might type by accident.
-  Option 2 makes every shell command that names a guarded path
-  fail-closed unless it matches a short read allowlist, which blocks more
-  legitimate reads.
-- Depends on: none
-
-**F83. Source per-instance bounds for optimization problems (~1h) Priority 140** (NEW 2026-10-15, Sprint 9 Task E answer document, section 5)
-- Phase: Sourcing / reading
-- Platform: the store; `docs/research/ceilings-ml-and-optimization.md`
-- The answer document's optimization section has two verified routes
-  (minimax lower bounds over a class; instances with a known or best-known
-  optimum). The standard per-instance certificate (a relaxation or dual
-  bound, and the gap an exact solver reports) is stated there as general
-  practice with no source in the store.
-- Acceptance: primary sources for relaxation and duality bounds (for
-  example a linear or semidefinite relaxation text and a solver's gap
-  definition) entered and read; section 5 point 5 rewritten as verified,
-  with the store ids, as a dated amendment.
-- Depends on: none
-
-**F84. Nine QCi records name Dirac-1 but are tagged Dirac-3 (~1h) Priority 150** (NEW 2026-10-15, Sprint 9 Task G)
-- Phase: Store correction
-- Platform: the store (`record_contexts`, `contexts`)
-- Eight QCi application pages name Dirac-1: seven state "Device: Dirac-1"
-  in their header (dimensionality reduction, feature selection, graph
-  partitioning, max-cut, portfolio optimization, set partitioning,
-  traveling salesman), and the risk-based UAS trajectory page names Dirac-1
-  throughout its body (Dirac-3 only as future work). The QC-7 article names
-  Dirac 1 and never Dirac-3. All nine are
-  tagged `platform:dirac-3`. The store has no Dirac-1 context, so Task G
-  refused their figures and left them at `seen`.
-- Acceptance: a decision on a Dirac-1 context (add `platform:dirac-1`, or
-  retag to a general QCi context), the nine records retagged with the
-  reason, and their first-pass assertions
-  (`manifests/sprint9_f80_reads/group_j2.json` and `group_j3.json`)
-  re-checked and entered against the right context.
-- Depends on: none
-
-**F85. Enter Phase 2's Dirac-3S verification (F142 there) (~45m) Priority 160** (NEW 2026-10-15, Sprint 9 Manual Validation Q5 = 2)
-- Phase: Inbound evidence (F79)
-- Platform: the store; `hsbc-qfraud-phase2` read only
-- Phase 2 shared back on 2026-10-15: the store's B4 records cover Dirac-3
-  only, and Phase 2's `docs/phase2/F142_DIRAC3S_VERIFY.md` (read at commit
-  c141a57) shows Dirac-3S returning B4's reference optimum in all 8
-  samples on seeds 42 and 43 (weight cosine 0.999993 and 0.9999999,
-  against Dirac-3's 0.895 and 0.901), returned weights far finer than the
-  0.005 step that 200:1 implies (the cause inferred as post-processing,
-  marked unverified there), test AUPRC unchanged, and per-sample cost at
-  relaxation schedule 2 for 91, 560 and 833 variables. Two fits: Phase 2
-  calls the result descriptive, not a test.
-- Acceptance: the document re-read at the commit current when the work
-  starts (it was revised after review the day it was written); 3 or 4 HW
-  assertions entered by the inbound path of Sprint 9 Task A, every quote
-  checked by a test against the file at that commit; each related to
-  `dirac3s-analog-resolution-about-200-to-1`,
-  `dirac3s-error-correction-is-a-post-processing-step` and
-  `dirac3s-time-per-sample-by-schedule` as the text supports.
-- Depends on: none
-
-**F86. One paper's primary source never answered: the Zenodo record (~15m) Priority 170** (NEW 2026-10-15, Sprint 9 Manual Validation Q2 = 2)
-- Phase: Re-check (ADR-0005 A9)
-- Platform: the store; `store/recheck.py`
-- `sepulveda-jimenez-2026-optimality-generalization-quantum-oracle-sketching`
-  (DOI:10.5281/zenodo.19985473) has probes, but only the HTTP probe
-  answered; DataCite, its primary source, never did, so under A9 it stays
-  due.
-- Acceptance: one DataCite request for the DOI; if it answers, the probe
-  is recorded and the clock resets; if not, the reason is recorded and the
-  record's access or provider routing is corrected.
-- Depends on: none
-
-### Carded at Sprint 10 Phase 1.2 (2026-10-18)
-
-**F87. Tighten the discovery stream filters so off-topic records stop reaching review (~1h) Priority 180** (NEW 2026-10-18, carried from F62's precision note when F62 was pruned)
-- Phase: Sourcing / discovery
-- Platform: `scripts/discover_candidates.py`, OpenAlex filters
-- F62's Sprint 9 run (snapshot as of 2026-10-15) still admitted off-topic
-  records: ml (software libraries such as Tidyverse, NumPy and SciPy;
-  nature-inspired metaheuristics), tensor (knowledge-graph tensor
-  factorization, a 1969 density-estimation paper, equivariant
-  potentials), qml (quantum chemistry and hardware papers, a brain-tumor
-  survey). The team lead excluded 13 off-topic candidates by hand at
-  Sprint 9 Manual Validation (Q4 = 1).
-- Acceptance: per stream, a filter change with the records it now drops
-  named; a re-run's top 25 per stream with the off-topic count before and
-  after; no on-topic record lost from the Sprint 9 accepted list.
-- Depends on: none
+- **Snapshot as of 2026-10-21** (Sprint 11 Phase 1.2): 2,284 papers; 224
+  at `read`; 2,060 at `seen` or `screened`, of which 2,057 have no read row
+  (3 are read and refused). Sprint 10's discovery re-run added 91 at
+  `seen`. About 28 more releases at 74 each.
 
 ### Carded at Sprint 10 Manual Validation (2026-10-19)
 

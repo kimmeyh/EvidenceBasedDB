@@ -13,7 +13,21 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-18 onward (Sprint 10, in progress)
+### 2026-10-21 onward (Sprint 11, in progress)
+
+- **chore**: Sprint 11 opened (2026-10-21). The team lead merged PR #101
+  into develop (45883ef) and PR #112 to main (5a98c36); `sprint-10`
+  tagged on 5a98c36; branch `feature/20261021_Sprint_11` cut from the
+  Sprint 10 branch (6.6 carry-forward). Phase 1.1 reconciliation: every
+  day with commits since 2026-10-18 has entries; one commit lacked its
+  own, added below under Sprint 10 (F91, 2026-10-19)
+
+### 2026-10-18 to 2026-10-21 (Sprint 10, PR #101, merged to develop 2026-10-21 and to main via PR #112 the same day; tagged sprint-10)
+
+- **docs**: F91 carded for Sprint 11 (2026-10-19, team lead's commit
+  f99a9a2): the magic state cultivation paper (Science, DOI
+  10.1126/science.aee7961). Entry added at Sprint 11 Phase 1.1; the
+  commit carried none
 
 - **test**: Copilot review of PR #101 -- the F87 pool test renamed to
   "three excluded remain", which is what it asserts (#111)
