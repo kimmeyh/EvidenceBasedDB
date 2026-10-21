@@ -1,7 +1,7 @@
 {
   "_comment": "Model-assignment heuristics for this repository (Sprint 4 Task K, F18, 2026-09-19). Data-driven complement to the static role table in docs/SPRINT_PLANNING.md: which model tier AND which review protocol a task pattern gets, with the outcomes that justify it. Modeled on spamfilter-multi's .claude/model_assignment_heuristics.json (read-only survey, Sprint 3 Task A), rewritten for this repository. Every number in learning_log names its source document; a success_rate is null until sample_size is at least 1 real outcome, never estimated. Update at every retrospective (Category 5, Model Assignments) and whenever a delegated task's report is verified against repository state. Guarded by tests/test_model_assignment_heuristics.py.",
   "version": 1,
-  "updated": "2026-10-12",
+  "updated": "2026-10-18",
   "tiers": {
     "haiku": {
       "role": "Developers (subagents)",
@@ -18,7 +18,7 @@
       "retirement_not_before": "2027-10-07",
       "successor": null,
       "retirement_plan": "Sprint 6 Task A (F40), 2026-10-03: Haiku 4.5 retires not sooner than 2026-10-15. Until then it is usable for small mechanical work; from that date the Developers role moves to the sonnet tier (Sonnet 5.5) unless a successor Haiku is listed on the models page by the next F39 release. No Haiku-tier outcome exists in the learning_log beyond Sprint 3's F7 review, so nothing measured is lost. | Sprint 7 Task A (F59), 2026-10-06: the models page re-read; every tier's id, price, context, maximum output and retirement date unchanged; no successor Haiku listed. The Developers role moves to Sonnet 5.5 NOW, nine days ahead of the date, so no Sprint 7 work is assigned to a tier that may retire mid-sprint. | Sprint 8 Task B (F67), 2026-10-12: Claude Haiku 5.5 (claude-haiku-5-5) is listed on the models page, 'for high-volume, latency-sensitive tasks such as classification, extraction, and routing'. The haiku tier now names it, and the Developers role returns to it (Sprint 8 plan Q6 = 1): 20 times lower prices than Sonnet 5.5 for short prompts. Task patterns whose rationale names a measured Sonnet outcome stay on Sonnet. No Haiku 5.5 outcome is in the learning_log yet; the first one is recorded when it exists. Haiku 4.5's own retirement (not before 2026-10-15) no longer affects any role.",
-      "verified": "2026-10-12",
+      "verified": "2026-10-18",
       "source_note": "fetched 2026-10-12: the old about-claude/models/overview path redirects to models/overview (HTTP 200); prices from https://platform.claude.com/docs/en/about-claude/pricing the same day. The page gives no release date for Haiku 5.5.",
       "price_note": "Anthropic's pricing page, 2026-10-12: Haiku 5.5 is priced by prompt length. $0.10 input and $0.50 output per MTok for prompts up to 100,000 tokens; $0.50 input and $2.50 output for prompts over 100,000 tokens (the first tier's prices are recorded above, since Developers tasks are small)."
     },
@@ -36,7 +36,7 @@
       "max_output_tokens": 128000,
       "retirement_not_before": "2027-09-28",
       "successor": null,
-      "verified": "2026-10-12",
+      "verified": "2026-10-18",
       "source_note": "re-read 2026-10-12 (Sprint 8 Task B, F67): id, price, context, maximum output and retirement date unchanged since 2026-10-06"
     },
     "opus": {
@@ -54,7 +54,7 @@
       "retirement_not_before": "2027-09-22",
       "successor": null,
       "page_guidance": "Anthropic's page: 'start with Claude Opus 5.5 for most workloads. Use Claude Fable 5.1 for demanding reasoning and long-horizon agentic work'",
-      "verified": "2026-10-12",
+      "verified": "2026-10-18",
       "source_note": "re-read 2026-10-12 (Sprint 8 Task B, F67): id, price, context, maximum output and retirement date unchanged since 2026-10-06"
     },
     "fable": {
@@ -71,7 +71,7 @@
       "max_output_tokens": 128000,
       "retirement_not_before": "2027-09-01",
       "successor": null,
-      "verified": "2026-10-12",
+      "verified": "2026-10-18",
       "source_note": "re-read 2026-10-12 (Sprint 8 Task B, F67): id, price, context, maximum output and retirement date unchanged since 2026-10-06"
     },
     "team_lead": {
@@ -85,6 +85,12 @@
       "date": "2026-10-12",
       "changed": "New: Claude Haiku 5.5 (claude-haiku-5-5), now the haiku tier; tiered by prompt length ($0.10/$0.50 per MTok up to 100,000 prompt tokens, $0.50/$2.50 above). Also new on the pricing page: Claude Mythos 5.1 under 'Additional models', not assigned to any role. Unchanged since 2026-10-06: Fable 5.1, Opus 5.5, Sonnet 5.5 (id, price, context, maximum output, retirement date). Retired from use: Haiku 4.5 (no role since F59).",
       "learning_log_since_last_release": "the last outcome row is Sprint 5 (2026-09-24); Sprint 7's delegated work (two read-only fresh-eyes reviews, SPRINT_7_SUMMARY.md Actuals) was not logged as a row, so no tier change rests on new evidence. The Developers move rests on price and the page's stated use, and its first outcome is to be logged."
+    },
+    {
+      "release": "F88 (F39 release for Sprint 10)",
+      "date": "2026-10-18",
+      "changed": "Nothing, on Anthropic's models and pricing pages read 2026-10-18: Fable 5.1, Opus 5.5, Sonnet 5.5 and Haiku 5.5 keep their ids, prices (Haiku 5.5 still tiered at 100,000 prompt tokens), 1M context, 128K maximum output and retirement dates. Legacy models listed as still available (Fable 5, Opus 5, Opus 4.8, 4.7, 4.6 and 4.5, Sonnet 5, Sonnet 4.6, Haiku 4.5); none holds a role.",
+      "learning_log_since_last_release": "Sprint 9's row added (the readers' added conclusions); the read-only-evidence-gathering protocol now requires a separate reader_inference field. No tier change: no new model, and the protocol fixes the defect."
     }
   ],
   "protocols": {
@@ -115,7 +121,7 @@
       "cross_record": true
     },
     "read-only-evidence-gathering": {
-      "description": "Collect VERBATIM source material with an anchor per item (page, section, abstract) into one structured output file, and make no judgment calls. The coordinator re-reads the specific pages any judgment will rest on before using them. Read-only: the agent writes nothing but its own output file.",
+      "description": "Collect VERBATIM source material with an anchor per item (page, section, abstract) into one structured output file, and make no judgment calls. The coordinator re-reads the specific pages any judgment will rest on before using them. Read-only: the agent writes nothing but its own output file. A reader's own conclusion never goes into a value or a quote: the output carries it in a separate field named reader_inference, and the coordinator either drops it or enters it marked as inference, never as the source's statement (F88, Sprint 10 Task B; evidence: learning_log, Sprint 9 row, where the readers' added conclusions were the main defect class).",
       "primary_source_access": true,
       "cross_record": false
     },
@@ -224,7 +230,7 @@
       ],
       "recommended_tier": "sonnet",
       "required_protocol": "read-only-evidence-gathering",
-      "rationale": "Sprint 4 Tasks F and H: two Sonnet agents gathered source evidence for 46 papers and 5 papers respectively while the coordinator wrote the scripts, and both returned the exact shape requested with anchors. The judgment (context tests, certainty levels) stayed with the top tier; the READING parallelised cleanly. Both reports were spot-checked against the PDFs before use, and one contained a self-flagged gap (it could not reach two reference-list pages), which the coordinator then read directly.",
+      "rationale": "Sprint 4 Tasks F and H: two Sonnet agents gathered source evidence for 46 papers and 5 papers respectively while the coordinator wrote the scripts, and both returned the exact shape requested with anchors. The judgment (context tests, certainty levels) stayed with the top tier; the READING parallelised cleanly. Both reports were spot-checked against the PDFs before use, and one contained a self-flagged gap (it could not reach two reference-list pages), which the coordinator then read directly. Sprint 9 (F78, F46, F80; learning_log, Sprint 9 row): Sonnet 5.5 readers were accurate on quotes and numbers, but wrote conclusions the sources do not state; the protocol now requires those in a separate reader_inference field. The tier stays: the defect was in where the reader wrote its conclusions, which the protocol fixes, not in its reading.",
       "success_rate": 1.0,
       "sample_size": 2,
       "source": "learning_log[2]"
@@ -421,6 +427,23 @@
         }
       ],
       "lesson": "Same finding as Sprint 3 and 4, from a new direction: protocol, not tier, produced the value. Sonnet evidence agents were exact on 22 of 23 quotes because the protocol required a page per quote and the coordinator checked each. The code reviewer found what the author's own injection-proven tests could not, because the tests were written by the same mind that wrote the defects. Launch it at the task's commit, not at Phase 5 (Sprint 5 retrospective improvement 5)."
+    },
+    {
+      "date": "2026-10-17",
+      "sprint": 9,
+      "task": "Sonnet 5.5 first-pass readers on Tasks E (F78), F (F46) and G (F80), every quote checked by the coordinator; a fresh-eyes review at each task's commit",
+      "records": null,
+      "source": "docs/sprints/SPRINT_9_RETROSPECTIVE.md categories 5 and 15; commits d14520a (Task E review) and 9d5b4c9 (Task G review); docs/sprints/SPRINT_9_SUMMARY.md Actuals. Tokens and seconds per reader were not recorded in Sprint 9.",
+      "outcomes": [
+        {
+          "tier": "sonnet",
+          "protocol": "read-only-evidence-gathering",
+          "findings": "accurate on quotes and numbers; the main defect class was the reader's own conclusions written as the source's: the Task E review cut false and unlabeled reader text (18 assertions and 30 read details corrected), the Task G review cut a reader's conclusion from a timing value and reset three grades taken from the reader's suggestion, and the Chen read lost five reader judgments",
+          "scope": "Task E: 31 ceiling-group sources; Task F: 20 pending facts; Task G: 65 records read of a 76-record slice"
+        }
+      ],
+      "lesson": "The reading parallelises well and its quotes hold after the coordinator's check; its conclusions do not. Keep Sonnet 5.5 for first-pass reading and keep inference out of the fields that become values (protocol updated, F88). The fresh-eyes reviews found real defects on every structural task; their tier was not recorded, so no row is written for them.",
+      "status": "recorded 2026-10-18 (F88, Sprint 10 Task B)"
     }
   ]
 }

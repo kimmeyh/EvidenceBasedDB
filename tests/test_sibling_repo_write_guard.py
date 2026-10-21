@@ -213,6 +213,66 @@ def test_read_forms_of_phase2_stay_allowed(command):
     assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 0, command
 
 
+@pytest.mark.parametrize("command", [
+    f"git -C {P2} log --outp={P2}/x.txt",
+    f"git -C {P2} log --out {P2}/x.txt",
+    f"git -C {P2} grep --open x",
+    f"git -C {P2} grep -nO x",
+    f"git -C {P2} grep -iO x",
+    # Second security review of the Task E fix: each passed at 6c37e83
+    f"git -C {P2} grep -n -O x",
+    f"git -C {P2} grep -LO x",
+    f"git -C {P2} grep -GO x",
+    f"git -C {P2} grep -3O x",
+    f"git -C {P2} diff -M --output={P2}/x.txt",
+    # Third security review: a long writing option after a value-taking flag
+    f"git -C {P2} shortlog -n --output={P2}/x.txt",
+    f"git -C {P2} log -S --outp={P2}/x.txt",
+])
+def test_accidental_option_forms_into_phase2_are_blocked(command):
+    """F82 (Sprint 10 Task E, team lead Q2 = 1): forms a session could type
+    by accident. Each passed (exit 0) against the hook as committed before
+    this task (run 2026-10-18 with a copy of that version). Proven by
+    injection, 2026-10-18: with _git_option_writes reduced to the old
+    _GIT_WRITING_OPTION match, every case went red. Restored. The first
+    version also blocked --ext-diff and --textconv; its review showed git
+    runs those programs on a plain diff by default, so they were removed
+    (module docstring). The second security review's five cases each
+    passed at 6c37e83 (one shared list of value-taking options made -n,
+    -L, -G and -M look like they took a value in grep and diff); proven by
+    injection, 2026-10-18: with the grep entries removed from
+    _GIT_SHORT_WITH_VALUE and _GIT_VALUE_WORD (so grep used the log list),
+    -nO, -n -O, -LO and -GO passed, and the allowed `grep -e -Option` was
+    blocked. Restored. (-3O and the diff case block under either list.)
+    Third security review: the shortlog and `log -S --outp` cases passed
+    at 08f5510; proven by injection, 2026-10-18: with the long-option
+    exception removed from the value-word skip, both passed again."""
+    assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 2, command
+
+
+@pytest.mark.parametrize("command", [
+    f"git -C {P2} diff --text HEAD~1 -- docs",
+    f"git -C {P2} log --oneline --stat -3",
+    f"git -C {P2} grep -n -i x",
+    f"git -C {P2} show --no-ext-diff HEAD",
+    # Task E review, 2026-10-18: each was blocked at 6cd9002
+    f"git -C {P2} log -SOAuth",
+    f"git -C {P2} log -GOne",
+    f"git -C {P2} grep -e -Option",
+    f"git -C {P2} log -p --output-indicator-new=+",
+])
+def test_read_options_that_look_like_writing_ones_stay_allowed(command):
+    """`--no-ext-diff` turns the external program off; an O inside the
+    value of -S, -G or -e is not -O; --output-indicator-new is not
+    --output. The four review cases were each blocked at 6cd9002 (the
+    --output-indicator case also before Task E). Proven by injection,
+    2026-10-18: with the value-option stop removed from
+    _short_cluster_has_o, the -SOAuth and -GOne cases were blocked; with
+    the separate-value-word skip removed, the `-e -Option` case was
+    blocked. Restored."""
+    assert _run({"tool_name": "Bash", "tool_input": {"command": command}}).returncode == 0, command
+
+
 def test_reading_phase2_stays_allowed():
     """The other half of F79: reads need no prompt and no bypass."""
     payload = {

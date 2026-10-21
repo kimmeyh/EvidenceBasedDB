@@ -72,6 +72,7 @@ def test_pilot_and_domain_scale_contexts_are_seeded(db):
         "ml", "qc", "qml",
         "platform:dirac-3", "platform:braket", "platform:classiq",
         "platform:dirac-3s",  # ADR-0004 A8, 2026-10-12
+        "platform:dirac-1",  # ADR-0004 A10, 2026-10-18
     }
 
 

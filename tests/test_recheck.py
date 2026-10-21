@@ -252,6 +252,35 @@ def test_a_silent_primary_source_is_listed_for_manual_validation():
         "r1: arxiv, no answer from arXiv or arXiv abstract page; others answered: DataCite"]
 
 
+def test_a_registry_that_answered_with_nothing_recordable_is_not_called_silent(monkeypatch):
+    """Task D review (2026-10-18): DataCite answering with an unmapped type
+    and no relation or affiliation wrote no row, and the report said "no
+    answer from Crossref or DataCite", which was false. The paper still
+    stays due (no status value exists for "the registry states none"; that
+    is a question for the team lead). Proven to fail by injection,
+    2026-10-18: with probe() no longer setting answered_without_value, the
+    entry read "no answer from Crossref or DataCite"."""
+    import io
+    import json
+    import urllib.error
+    prf = _probe_script()
+
+    monkeypatch.setattr(prf, "SITE_OPEN", lambda req, timeout: (_ for _ in ()).throw(
+        urllib.error.HTTPError(req.full_url, 503, "x", {}, io.BytesIO(b""))))
+
+    def fetch(url, accept):
+        if "api.crossref.org" in url:
+            raise urllib.error.HTTPError(url, 404, "x", {}, io.BytesIO(b""))
+        return json.dumps({"data": {"attributes": {"types": {"resourceTypeGeneral": "Text"}}}}).encode()
+    extra: dict = {}
+    found, _, _ = prf.probe("r1", "DOI:10.5281/zenodo.1", "doi", fetch, extra=extra)
+    assert not [f for f in found if f[0] == "access_status"]  # the stubbed landing page gave no answer (503)
+    lists = {name: [] for name in prf.FINDING_LISTS}
+    prf.recheck_findings(lists, "r1", "DOI:10.5281/zenodo.1", "doi", found, None, extra)
+    assert lists["primary source did not answer (stays due)"] == [
+        "r1: doi, DataCite answered but stated nothing the store records"]
+
+
 def test_a_probe_that_raised_is_a_probe_failure(monkeypatch):
     """F74: a record whose probe raised used to be listed as "the abstract
     page showed no version". Proven to fail by injection, 2026-10-15: with

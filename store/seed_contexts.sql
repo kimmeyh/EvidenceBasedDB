@@ -27,5 +27,6 @@ INSERT OR IGNORE INTO contexts (id, description) VALUES
     ('qml',               'The intersection of ml and qc, which is NOT their union -- a fact can hold in qml without holding in either alone'),
     ('platform:dirac-3', 'QCi''s continuous-variable optimizer'),
     ('platform:dirac-3s', 'QCi''s Dirac-3S modular optimization system (ADR-0004 A8, 2026-10-12)'),
+    ('platform:dirac-1', 'QCi''s Dirac-1 system, named as the device on its earlier application pages (ADR-0004 A10, 2026-10-18)'),
     ('platform:braket',  'AWS gate-based quantum access'),
     ('platform:classiq', 'Circuit synthesis platform');

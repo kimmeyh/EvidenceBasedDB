@@ -747,3 +747,119 @@ pastes into a Phase 2 session. Never write the change from here (hook:
   added to, never removed: other steps add them later. A corrected context
   replaces the stored ones (review of 3a455ce). `sprint9_f78` and
   `sprint9_f80` both use it.
+
+## 27. Applied 2026-10-18: Sprint 10's sourced entries (Tasks F, G and H: F84, F85, F83)
+
+Every count is a snapshot as of 2026-10-18.
+
+- **F84** (`scripts/sprint10_f84_dirac1.py`): no new source. The nine QCi
+  records F80 refused are retagged to `platform:dirac-1` (ADR-0004 A10)
+  and read; their 12 assertions come from F80's read groups
+  (`manifests/sprint9_f80_reads/group_j3.json`, `group_j2.json`).
+- **F85** (`scripts/sprint10_f85_dirac3s_verify.py`): the second Phase 2
+  result by section 19's inbound path, read through `git show` at Phase 2
+  commit e126dbd; a reference record and four HW assertions.
+- **F83** (`scripts/sprint10_f83_optimization_bounds.py`): two hand-entered
+  sources. Boyd and Vandenberghe's Convex Optimization, downloaded from the
+  authors' free copy into `Papers\` with its SHA-256; Gurobi 13.0's
+  parameter reference, saved into `References\Gurobi\`.
+- **Section 26 was missed, then applied.** None of the three scripts called
+  `require_verbatim` before writing on its first apply; only the
+  live-store tests checked the quotes, after the write. Each now runs
+  `check_quotes()` first, and a test plants a quote that is not in the
+  source and expects the refusal. No stored quote was wrong (the tests had
+  passed on every apply).
+
+## 28. Applied 2026-10-18: the second read-for-claims slice (Sprint 10 Task I, F89)
+
+- **The slice** is recorded in `manifests/sprint10_f89_slice.json` by
+  `scripts/sprint10_f89_slice.py`: the 74 most-cited `qml` records at
+  `seen` or `screened` with no read row. Nothing unread remains under
+  `hsbc-2026` or the Dirac platforms (the script refuses to run if any
+  does). The nine Dirac-1 records do not count (plan Q3 = 1). Like
+  section 22's file, it records what the sprint chose and adds no record;
+  counts are never written to the store.
+- **Counts.** Taken as F80's were (OpenAlex by arXiv DOI, then by a probed
+  journal DOI): 1,098 of 1,481 candidates counted (605 and 493); 383
+  uncounted, the selection's stated limit. The top 74 run from 732 to 65
+  citations.
+- **F57's count, refreshed:** 2,033 records at `seen` or `screened`, of
+  which 2,031 have no read row.
+
+## 29. Applied 2026-10-18: the second slice read and entered (Sprint 10 Task I, F89)
+
+Every count is a snapshot as of 2026-10-18.
+
+- **Copies.** `scripts/sprint10_f89_downloads.py` fetched free copies of the
+  slice papers with none (arXiv through the paced fetcher; open-access PDFs
+  OpenAlex lists), into `Papers\`; two more by their direct open-access
+  links, one by an arXiv title search, and Dunjko 2020's Quantum Views page
+  into `References\QuantumViews\`. Nine papers have no free copy (NO_COPY in
+  the reading script): each stays `seen` with that reason and goes on the
+  hand-download list.
+- **Reads.** Nine Sonnet 5.5 first-pass readers, kept verbatim in
+  `manifests/sprint10_f89_reads/group_r1.json` to `group_r9.json`, under
+  the protocol F88 tightened (a reader's own conclusions in
+  `reader_inference`, never in a value). `scripts/sprint10_f89_reading.py`
+  enters them after the coordinator's read: every quote checked before the
+  write (section 26), nine quotes corrected to the source's exact
+  characters, two values rewritten, three contexts corrected, one record
+  refused (a workforce review that bears on no context).
+- **Result.** 64 of the 74 records read and yielding 216 assertions (42
+  HIGH, 2 MODERATE, 172 LOW, by the grading Sprint 9's reads used); 1 refused; 9 with no
+  copy. The store holds 224 records at `read` and 793 assertions.
+- **F57's count after this release:** 1,969 records at `seen` or
+  `screened`, of which 1,966 have no read row (the other 3 are read and
+  refused: two by F80, one here).
+
+## 30. Applied 2026-10-19: the live discovery re-run's candidates at `seen` (Sprint 10 Task J, F87; Manual Validation Q4 = 2 and Q6)
+
+Every count is a snapshot as of 2026-10-19.
+
+- **What entered.** The live re-run (`f62_review_2026-10-19.md`) listed 99
+  candidates in its four top lists, after the F87 filters dropped 14
+  off-topic records before ranking. The team lead excluded 6 more as
+  off-topic; 2 were Sprint 9 exclusions back at the top. The team lead
+  moved 2 qml-stream papers that apply classical ML to molecules (FCHL
+  revisited; the alchemical representation paper) to `ml`: "do these
+  better fit in ml and can be switched there". `scripts/sprint10_f87_enter_seen.py`
+  pins every exclusion and both switches to their titles. All 91 entered
+  at `seen`: 55 `ml`, 19 `qc`, 11 `world`, 6 `qml`.
+- **The door and the title check are section 24's.** The check refused 5
+  at first, each an arXiv preprint titled other than the published paper
+  (qml 5's preprint is "Robust determination of molecular spectra on a
+  quantum processor"). They entered by the journal DOI, whose title
+  matched.
+- **F57's count after this release:** 2,060 records at `seen` or
+  `screened`, of which 2,057 have no read row. The store holds 2,284
+  papers.
+
+## 31. Rule from 2026-10-21: the quote check is in the write path, and the coordinator's edits name their passages (Sprint 10 retrospective I1 and I2)
+
+Extends section 26. The 18 scripts that wrote assertions before this
+rule (Sprint 10 and earlier) have run and stay as they are, listed by name
+in `tests/test_verified_writes.py`; every other script in `scripts/`,
+whatever its name, is held to both rules. The scan matches names, not
+calls, so an aliased import is caught too.
+
+- **Write only through the check (I2).** `require_verbatim` returns a
+  `Verified`. A script writes assertions with
+  `store.ingest.insert_verified_assertion(conn, a, verified)` and
+  `sync_verified_assertion(conn, a, verified, note, today)`, never
+  `insert_assertion` or `sync_assertion`. Each refuses a write whose
+  `Verified` is missing or names another record or other quotes. Sprint
+  10's Tasks F, G and H wrote before checking; with this path they could
+  not have.
+- **Name the passage behind every edit (I1).** When the coordinator
+  replaces a reader's value, drops a quote or moves a context, the script
+  calls `store.quotes.require_edit_basis(record_id, value, basis, text)`
+  first. `basis` is the passage or passages the edit rests on, each
+  verbatim in the source. For a replaced value, every number and math sign
+  in it must be in those passages; a figure read from the page image
+  because the text layer lost it (the root sign in F89's "R >= sqrt 2")
+  goes in `read_from_page`, and the value says so. The check does not test
+  meaning: a wrong word with the right numbers passes, so the fresh-eyes
+  review stays.
+- **Measured on Sprint 10's F89 edits** (snapshot as of 2026-10-21): the
+  rule flags the root-2 value and four more whose numbers are in the
+  source but not in their quotes. No stored value is wrong.

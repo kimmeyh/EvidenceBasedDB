@@ -13,6 +13,7 @@ from dataclasses import dataclass, field, fields, replace
 from pathlib import Path
 
 from store import citations
+from store.quotes import Verified
 
 HAND_MARKER = "hand-transcribed from"
 NOT_YET_SCREENED = "; not yet screened"  # bulk-intake disposition suffix; set_tier removes it on promotion
@@ -636,6 +637,31 @@ def _sync_groups_cover_every_field() -> None:
     missing = [f.name for f in fields(AssertionRecord) if f.name not in grouped]
     if missing:
         raise TypeError(f"sync_assertion does not know where these AssertionRecord fields are stored: {missing}")
+
+
+def _require_verified(assertion: AssertionRecord, verified: Verified) -> None:
+    if not (isinstance(verified, Verified) and verified.record_id == assertion.id
+            and verified.citation_context == assertion.citation_context):
+        raise ValueError(f"{assertion.id}: its quotes were not checked against its source "
+                         "(store.quotes.require_verbatim) before this write")
+
+
+def insert_verified_assertion(conn: sqlite3.Connection, assertion: AssertionRecord, verified: Verified,
+                              yielded_by: str | None = None) -> None:
+    """`insert_assertion`, refused unless `verified` is what
+    `require_verbatim` returned for this record's quotes as written (Sprint
+    10 retrospective I2). Scripts from Sprint 11 on write assertions only
+    through this and `sync_verified_assertion`
+    (tests/test_verified_writes.py)."""
+    _require_verified(assertion, verified)
+    insert_assertion(conn, assertion, yielded_by=yielded_by)
+
+
+def sync_verified_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, verified: Verified, note: str,
+                            today: str) -> list[str]:
+    """`sync_assertion`, refused as `insert_verified_assertion` is."""
+    _require_verified(wanted, verified)
+    return sync_assertion(conn, wanted, note, today)
 
 
 def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str, today: str) -> list[str]:

@@ -1,0 +1,461 @@
+{
+ "papers": [
+  {
+   "record_id": "barkoutsos-2020-improving-variational-quantum-optimization-cvar",
+   "file": "D:/Data/Harold/EvidenceBasedDB/Papers/2019-07_Barkoutsos_Improving-Variational-Quantum-Optimization-using-CVaR.pdf",
+   "title_in_file": "Improving Variational Quantum Optimization using CVaR",
+   "version_note": "File is arXiv:1907.04769v3 (Quantum 2020 accepted version); title matches the record.",
+   "read_extent": "partial",
+   "partial_detail": "Abstract and Secs. 1-6 (including 6.1 and 6.2) read; the text of Sec. 7 (QAOA analysis), Sec. 8 and appendices not read.",
+   "what_it_is": "Method paper proposing Conditional Value-at-Risk as the aggregation function in VQE and QAOA for combinatorial optimization, with simulation and one IBM hardware experiment.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "cvar-aggregation-faster-convergence-tested-problems",
+     "value": "The authors state that aggregating measurement samples with CVaR instead of the sample mean leads to faster convergence to better solutions for all combinatorial optimization problems tested in their study, shown by classical simulation and on quantum hardware. The tested problems are six: maximum stable set, maximum 3-satisfiability, number partitioning, maximum cut, market split and portfolio optimization.",
+     "anchor": "Abstract, p. 1; Sec. 6, p. 6",
+     "quotes": [
+      "this leads to faster convergence to better solutions for all combinatorial optimization problems tested in our study",
+      "we test the proposed on multiple random instances of six CO problems: maximum stable set, maximum 3-satisfiability, number partitioning, maximum cut, market split, and portfolio optimization"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Empirical result on randomly generated small instances (6 to 16 qubits, simulated) plus one hardware instance; the authors' own summary of their experiments.",
+     "context": "qml",
+     "reader_inference": "The instances are at most 16 qubits; the paper does not show behavior beyond that size."
+    },
+    {
+     "id_suggestion": "cvar-qaoa-weaker-than-vqe-equal-depth",
+     "value": "In the simulations, the authors report that QAOA performance appears significantly worse than VQE performance at equivalent depth (depth p for VQE compared to p+1 for QAOA). They conjecture the cause is the limited number of variational parameters in QAOA.",
+     "anchor": "Sec. 6.1, p. 7",
+     "quotes": [
+      "Comparing VQE and QAOA, we observe that QAOA's performance appears significantly worse than that of VQE for equivalent depth",
+      "We conjecture that this is due to the limited number of variational parameters in QAOA"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Measured on the paper's simulated instances; the cause is a stated conjecture, formalized later in the paper (Sec. 7, not read by this reader).",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "cvar-vqe-hardware-ibm-poughkeepsie-six-qubit-portfolio",
+     "value": "The authors tested CVaR-VQE on the IBM Q Poughkeepsie 20-qubit quantum computer using one portfolio optimization instance with 6 assets mapped to 6 qubits, gathering 8,192 samples from each trial wavefunction and repeating each experiment five times. They chose portfolio optimization because its problems are some of the most difficult of their testbed.",
+     "anchor": "Sec. 6.2, p. 7",
+     "quotes": [
+      "consider an instance of the portfolio optimization problem with 6 assets mapped to 6 qubits",
+      "We test CVaR-VQE on the IBM Q Poughkeepsie 20-qubit quantum computer, with COBYLA as the classical optimizer.",
+      "We gather 8,192 samples from each trial wavefunction, studying the probability of measuring a ground state with respect to the number of iterations of the classical optimization algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "A single 6-qubit instance on one device; the quotes here cover the setup only, not the outcome figures.",
+     "context": "qc",
+     "reader_inference": "The hardware evidence is one instance of six qubits."
+    }
+   ]
+  },
+  {
+   "record_id": "willsch-2020-support-vector-machines-d-wave",
+   "file": "D:/Data/Harold/EvidenceBasedDB/Papers/2019-06_Willsch_Support-vector-machines-on-the-D-Wave-quantum-annealer.pdf",
+   "title_in_file": "Support vector machines on the D-Wave quantum annealer",
+   "version_note": "File is arXiv:1906.06283v3 (dated Jan 2021); title matches the record.",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Secs. I, II (method, embedding), III (results through the calibration and training/test phases), IV Conclusion; appendices and reference list skimmed only.",
+   "what_it_is": "Empirical paper formulating kernel SVM training as a QUBO, running it on a D-Wave 2000Q annealer and comparing to a classical SVM on synthetic data and DNA-binding data.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "qsvm-ensemble-generalizes-better-limited-data",
+     "value": "The authors report that the D-Wave 2000Q produces an ensemble of different solutions that often generalizes better to unseen data than the single global minimum of an SVM trained on a conventional computer, especially where only limited training data is available.",
+     "anchor": "Abstract, p. 1",
+     "quotes": [
+      "the quantum annealer produces an ensemble of different solutions that often generalizes better to unseen data than the single global minimum of an SVM trained on a conventional computer",
+      "especially in cases where only limited training data is available"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Measured results on synthetic data and nine biology datasets on one annealer; stated as 'often', not always.",
+     "context": "qml",
+     "reader_inference": "The comparison is to a classical SVM with the same hyperparameters; the paper does not compare against other classical learners."
+    },
+    {
+     "id_suggestion": "qsvm-small-training-set-size-limit",
+     "value": "For hyperparameter calibration the quantum SVM was trained on 2% of the training data (about 30 points) because of the size limitations of the annealer. On this little data, the authors observed that qSVM can produce significantly stronger classifiers than the classical SVM for the same parameters.",
+     "anchor": "Sec. III.B.1, p. 7",
+     "quotes": [
+      "The small fraction of 2% was chosen because of the size limitations of the quantum annealer",
+      "In these tests, we observed that qSVM can produce significantly stronger classifiers than cSVM for the same little training data and parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Measured on the paper's datasets (N between 1584 and 1655 points each, 40-dimensional binary features); the size limit is a stated condition.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qsvm-embedding-qubit-counts-dw2000q",
+     "value": "The authors state that typical numbers of strongest couplers embedded on the DW2000Q were between 1600 and 2500, and that the number of required qubits ranged from 28 to 114 with peaks at 56, 58, 84, and 87.",
+     "anchor": "Sec. II.D, p. 5",
+     "quotes": [
+      "Typical values for ncpl for the applications discussed in Sec. III are between 1600 and 2500, while the number of required qubits ranges from 28 to 114 with peaks at 56, 58, 84, and 87."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Reported resource figures from the authors' own runs.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qsvm-accuracy-vs-auroc-disagreement-bias",
+     "value": "On the larger-training-set experiment the authors state that accuracy alone would suggest the classical SVM outperforms the quantum SVM, but the AUROC and AUPRC metrics show the classifiers from the quantum-annealer version are superior. They attribute this to a suboptimally chosen bias in the final decision function.",
+     "anchor": "Sec. III.B.2, p. 9",
+     "quotes": [
+      "Based on the resulting accuracy shown in Fig. 5(c), one could conclude that cSVM outperforms qSVM",
+      "from the metrics AUROC and AUPRC reported in Fig. 5(a) and (b), we find that the resulting classifiers from the QA version are in fact superior"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Measured on the paper's datasets; the bias explanation is the authors' interpretation.",
+     "context": "qml",
+     "reader_inference": "This is a condition on how the result is reported: the accuracy result goes against the quantum version while the two threshold-free metrics favor it."
+    }
+   ]
+  },
+  {
+   "record_id": "sajjan-2022-quantum-machine-learning-chemistry-physics",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2022/Sajjan-et-al._2022_Quantum-machine-learning-for-chemistry-and-physics__2111.00851.pdf",
+   "title_in_file": "Quantum Machine Learning for Chemistry and Physics",
+   "version_note": "File is arXiv:2111.00851v2 (19 Jul 2022); title matches the record.",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, table of contents, Sec. 1 opening, Sec. 6.4.4 (barren plateaus) and Sec. 7 (Conclusions); the body Secs. 2 to 6.4.3 (about 80 pages) not read in full.",
+   "what_it_is": "About 99-page review of classical and quantum-computing-enhanced machine learning for chemistry and physics applications.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "sajjan-barren-plateaus-cited-results",
+     "value": "The review describes barren plateaus as vanishing variance of sample gradients, and cites McClean (2018) as showing that the gradient variance vanishes exponentially in the number of qubits for any t-design circuit, and Samson et al. as showing rigorously that gradients in a noisy circuit vanish exponentially in the number of qubits with increasing depth.",
+     "anchor": "Sec. 6.4.4, p. 81",
+     "quotes": [
+      "Barren plateaus are characterized by vanishing variance of sample gradients, causing the optimizer to perform random walks in regions on diminishing gradients",
+      "McClean 728 in 2018 first showed that on an average the variance of the gradient is exponentially vanishing in the number of qubits for any t-design circuit leading to barren plateaus anytime the gradient vanishes.",
+      "Samson et. al. 732 show rigorously that for a noisy circuit the gradients vanish exponentially in the number of qubits with increasing depth."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Review summarizing other authors' results; the review itself proves nothing here.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "sajjan-data-loading-challenge-qram",
+     "value": "The review states that efficient protocols for loading entries from a high-dimensional classical vector onto a quantum state without smarter preprocessing remain a significant challenge, and cites recent results claiming that the exponential speedup of a subset of early QML algorithms is only due to the assumption that data encoding is efficient.",
+     "anchor": "Sec. 7, p. 83",
+     "quotes": [
+      "Since machine learning tasks are data-intensive efficient protocols for loading entries from a high-dimensional classical vector onto a quantum state without smarter preprocessing for feature extraction continues to be a significant challenge.",
+      "recent results claims that the exponential speedup in a subset of such algorithms is only due to the assumption that the encoding of data is efficient 736"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Authors' conclusions summarizing the literature, with the dequantization claim attributed to reference 736.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "sajjan-retrosynthesis-quantum-not-explored",
+     "value": "The review states that, to the authors' knowledge, the role of quantum computing in ML-based computer-aided retrosynthesis and rational molecule design has not been explored.",
+     "anchor": "Sec. 7, p. 83",
+     "quotes": [
+      "To the best of our knowledge, the role of quantum computing in this area have not been explored."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Authors' knowledge statement as of the review (arXiv v2, July 2022); no search protocol is given.",
+     "context": "qml",
+     "reader_inference": "The sentence follows the discussion of retrosynthesis and rational design of molecules; 'this area' refers to that."
+    },
+    {
+     "id_suggestion": "sajjan-qml-nascent-stage",
+     "value": "The authors state that quantum-computing enhanced protocols are beginning to be recognized and that they anticipate the field is still at a nascent stage, scratching just the surface.",
+     "anchor": "Sec. 7, p. 82",
+     "quotes": [
+      "we anticipate that we are still at a nascent stage scratching just the surface"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Authors' opinion.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "nguyen-2024-theory-equivariant-quantum-neural-networks",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2022/Nguyen-et-al._2022_Theory-for-Equivariant-Quantum-Neural-Networks__2210.08566.pdf",
+   "title_in_file": "Theory for Equivariant Quantum Neural Networks",
+   "version_note": "File is arXiv:2210.08566v2 (11 May 2024), the published-version text; title matches the record.",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Sec. I (introduction), Sec. VII results (numerical demonstration), and the Discussion on barren plateaus and data requirements; the representation-theory Secs. II to VI and appendices not read in detail.",
+   "what_it_is": "Theory paper presenting a framework to build group-equivariant quantum neural networks, with a numerical test of an SU(2)-equivariant QCNN on a phase-classification task.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "eqnn-framework-methods-large-groups",
+     "value": "The authors state that their methods can find unitary or general equivariant quantum channels efficiently even when the symmetry group is exponentially large or continuous.",
+     "anchor": "Abstract, p. 1",
+     "quotes": [
+      "Our methods can find unitary or general equivariant quantum channels efficiently even when the symmetry group is exponentially large or continuous."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Authors' abstract claim backed by their constructions (not re-derived by this reader).",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "eqnn-su2-qcnn-vs-agnostic-bond-alternating-heisenberg",
+     "value": "The authors numerically demonstrate an SU(2)-equivariant QCNN against a symmetry-agnostic QCNN on classification of phases of matter in the bond-alternating Heisenberg model, using system sizes from N = 6 to N = 13.",
+     "anchor": "Abstract p. 1; Sec. VII, p. 14",
+     "quotes": [
+      "We then numerically demonstrate the effectiveness of a SU(2)-equivariant QCNN over symmetry-agnostic QCNN on a classification task of phases of matter in the bond-alternating Heisenberg model.",
+      "We considered system sizes ranging from N = 6 to N = 13"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Numerical (simulated) results on one task and up to 13 qubits.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "eqnn-equivariance-not-needed-can-hurt",
+     "value": "In the numerical study, the authors state that enforcing equivariance when it is not needed can be more detrimental than beneficial, while for the odd system sizes, where equivariance has a reason to be used, the equivariant QCNN needs only two training points to perform greatly and the non-equivariant model needs more data to generalize well.",
+     "anchor": "Sec. VII, p. 15",
+     "quotes": [
+      "enforcing equivariance when it is not needed can be more detrimental than beneficial",
+      "Already with only two training points the equivariant QCNN performs greatly, while the HEA-QCNN needs more training data to generalize well."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Statistical study on one task over even and odd sizes; stated by the authors as a result of Fig. 12.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "eqnn-barren-plateau-relief-not-proven-here",
+     "value": "The authors argue that symmetry constraints are expected to shrink expressibility and so alleviate barren plateaus, and state that these arguments do not constitute a proof that equivariance fulfills these promises, referring to separate work on Sn-equivariant models.",
+     "anchor": "Discussion on barren plateaus, local minima and data requirements, p. 22",
+     "quotes": [
+      "the imposition of symmetry constraints to the quantum neural network is expected to shrink",
+      "these do not constitute a proof that equivariance can indeed fulfill these promises"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Explicit authors' disclaimer; an argument, not a theorem.",
+     "context": "qml",
+     "reader_inference": "The page anchor is approximate; the passage is in the section titled Equivariance versus barren plateaus, local minima and data requirements."
+    }
+   ]
+  },
+  {
+   "record_id": "cherrat-2024-quantum-vision-transformers",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2022/Cherrat-et-al._2022_Quantum-Vision-Transformers__2209.08167.pdf",
+   "title_in_file": "Quantum Vision Transformers",
+   "version_note": "File is arXiv:2209.08167v2 (20 Feb 2024), the Quantum 2024 accepted version; title matches the record.",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Sec. 1, the start of the method sections, Sec. 4 (experiments and results on MedMNIST), Sec. 5 (conclusion); circuit-construction details and appendices not read in full.",
+   "what_it_is": "Paper proposing three quantum transformer architectures (orthogonal patch-wise, orthogonal, compound), with simulation on MedMNIST and small IBM hardware experiments.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "qvit-medmnist-simulation-competitive",
+     "value": "The authors report simulations of the quantum transformers on MedMNIST medical image datasets showing competitive, at times better performance than classical benchmarks, with the Orthogonal and Compound Transformers outperforming the benchmark methods on 7 out of 12 datasets. They state this was achieved while using fewer parameters, which they say shows potential to address over-fitting.",
+     "anchor": "Abstract p. 1; Sec. 4.1, p. 14",
+     "quotes": [
+      "We performed extensive simulations of the quantum transformers on standard medical image datasets that showed competitively, and at times better performance compared to the classical benchmarks",
+      "outperform the benchmark methods on 7 out of 12 MedMNIST datasets",
+      "while using fewer parameter, thereby showing potential of these quantum models to address over-fitting issues by using a smaller number of parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Simulated results on 12 small MedMNIST datasets, compared with a classical Vision Transformer and a quantum orthogonal FNN baseline.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qvit-runtime-advantage-hard-to-observe-small-data",
+     "value": "The authors state that although the quantum transformers have a theoretical guarantee on the asymptotic run time of the attention mechanism, this effect is hard to observe given the small data size, and that further validation is necessary as quantum computers scale up.",
+     "anchor": "Sec. 4.1, p. 14; abstract, p. 1",
+     "quotes": [
+      "While the quantum transformers do have theoretical guarantee on the asymptotic run time for the attention mechanism compared to the classical transformer, this effect is hard to observe given the small data size.",
+      "further validation is necessary to confirm these initial findings as quantum computers scale up"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Authors' explicit caveat on their own experiments.",
+     "context": "qml"
+    },
+    {
+     "id_suggestion": "qvit-hardware-noise-limit",
+     "value": "The authors report hardware experiments on superconducting quantum computers with encouraging results for up to six qubits, and state that results from current hardware become too noisy as the number of qubits or the circuit size increases.",
+     "anchor": "Abstract p. 1; Sec. 5, p. 17",
+     "quotes": [
+      "we implemented our quantum transformers on superconducting quantum computers and obtained encouraging results for up to six qubit experiments",
+      "From our hardware experiments, it can be observed that results from the current hardware become too noisy as soon as the number of qubits or the size of the quantum circuit increase."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Reported hardware observation by the authors; the hardware table covers a single dataset (RetinaMNIST) per the Table 4 caption.",
+     "context": "qml"
+    }
+   ]
+  },
+  {
+   "record_id": "kao-2023-exploring-advantages-quantum-generative-adversarial",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2022/Kao-et-al._2022_Quantum-Advantage-in-Small-Molecule-Drug-Discovery__2210.16823.pdf",
+   "title_in_file": "Exploring the Advantages of Quantum Generative Adversarial Networks in Generative Chemistry",
+   "version_note": "File is arXiv:2210.16823v3 (6 Feb 2023); the printed title matches the record. The file name uses the v1 title (Quantum Advantage in Small Molecule Drug Discovery).",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Sec. I (introduction), Sec. IV.A (quantum noise generator results), the quantum-discriminator comparison and Sec. V Conclusions; appendices and the patch-generator details not read in full.",
+   "what_it_is": "Empirical paper replacing the noise generator, generator and discriminator of MolGAN with variational quantum circuits and testing on the QM9 dataset.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "qumolgan-better-properties-fewer-molecules",
+     "value": "With a variational quantum circuit as the noise generator of MolGAN (QuMolGAN) trained on QM9 for 150 epochs, the authors report significantly (p < 0.05) better drug properties than classical MolGAN, particularly when the input noise dimension is small (z dim = 2 and 3), but fewer generated molecules and worse KL scores.",
+     "anchor": "Sec. IV.A, p. 12; Sec. V, p. 20",
+     "quotes": [
+      "However, the QuMolGAN can generate molecules with significantly (p < 0.05) better drug properties compared to the classical MolGAN particularly when the input noise dimension is small",
+      "The QuMolGAN is lacking in generating as many molecules as classical MolGAN which results in worse KL Scores."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Measured comparison on one dataset (QM9) with the same hyperparameters except learning rate; mixed result stated by the authors.",
+     "context": "qml",
+     "reader_inference": "The paper's wording of an advantage is based on drug-property scores, not on a hardware or runtime measure. I did not find in the sections read whether the circuits ran on a simulator or hardware."
+    },
+    {
+     "id_suggestion": "qumolgan-quantum-discriminator-fewer-parameters",
+     "value": "The authors report that a quantum discriminator with 50 training parameters outperformed a classical discriminator with 22,500 parameters in generated molecule properties and KL divergence.",
+     "anchor": "Sec. IV.C, p. 18; abstract p. 1",
+     "quotes": [
+      "found that quantum discriminator with 50 training parameters outperforms the classical discriminator with 22,500 parameters in terms of generated molecule properties and KL divergence."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Single reported comparison on QM9 between a 50-parameter quantum circuit and an MLP discriminator; no repeated-run statistics were read by this reader for this comparison.",
+     "context": "qml",
+     "reader_inference": "The classical comparator is an MLP-based discriminator (MolGAN-CC) adjusted to reduce parameters, not the original graph-based discriminator."
+    },
+    {
+     "id_suggestion": "qumolgan-scope-qm9",
+     "value": "The authors state that the training tasks were performed on the QM9 dataset using the classical and quantum GAN.",
+     "anchor": "Sec. I, p. 3",
+     "quotes": [
+      "In this work, we perform the training tasks on the QM9 dataset using the classical and quantum GAN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Plain statement of the experimental setting.",
+     "context": "method"
+    }
+   ]
+  },
+  {
+   "record_id": "zhang-2025-artificial-intelligence-science-quantum-atomistic",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Zhang-et-al._2023_Artificial-Intelligence-for-Science-in-Quantum_Atomistic_and-Continuum__2307.08423.pdf",
+   "title_in_file": "Artificial Intelligence for Science in Quantum, Atomistic, and Continuum Systems",
+   "version_note": "File is arXiv:2307.08423v6 (24 Jul 2025); title matches the record. The file is named for 2023 but holds the v6 text.",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, table of contents, Sec. 2.1 (symmetry overview), Sec. 3.1 (overview of AI for quantum mechanics) and Sec. 12 (Conclusion); the remaining roughly 220 pages not read.",
+   "what_it_is": "Very long survey of AI for science (equivariant networks, quantum mechanics, density functional theory, molecules, proteins, continuum systems). Its 'quantum' means physical quantum systems modeled by classical deep learning, not quantum computing.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "aiforscience-survey-scope",
+     "value": "The survey states it aims to give a technically thorough account of AI for quantum, atomistic, and continuum systems, and names capturing physics first principles, especially symmetries, by deep learning as a key common challenge.",
+     "anchor": "Abstract, p. 2",
+     "quotes": [
+      "This work aims to provide a technically thorough account of a subarea of AI4Science; namely, AI for quantum, atomistic, and continuum systems.",
+      "A key common challenge is how to capture physics first principles, especially symmetries, in natural systems by deep learning methods."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Authors' statement of the survey scope.",
+     "context": "ml",
+     "reader_inference": "The paper concerns classical deep learning applied to quantum systems; it does not treat quantum computing hardware."
+    },
+    {
+     "id_suggestion": "aiforscience-data-augmentation-drawbacks",
+     "value": "The survey lists drawbacks of data augmentation for symmetry-aware learning, including that extra model capacity is needed to represent patterns that would be simple in a fixed reference frame, and that translation produces infinitely many equivalent samples.",
+     "anchor": "Sec. 2.1, p. 14",
+     "quotes": [
+      "to account for the additional degree of freedom from choosing a reference frame, more model capacity would be needed to represent patterns that would be relatively simple in a fixed reference frame",
+      "many symmetry transformations, such as translation, can produce an infinite number of equivalent data samples, making it difficult for finite data augmentation operations to completely reflect the symmetries in data"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "certainty_reason": "Survey authors' argument in an overview section, not a measured result.",
+     "context": "ml"
+    },
+    {
+     "id_suggestion": "aiforscience-hamiltonian-exponential-size",
+     "value": "The survey states that the Hamiltonian matrix dimension grows exponentially with the size of the quantum system, so that direct eigendecomposition to obtain the ground state is not feasible even for relatively small systems.",
+     "anchor": "Sec. 3.1, p. 43",
+     "quotes": [
+      "The dimension of the Hamiltonian matrix grows exponentially with the size of the quantum systems, such as the number of particles in the system.",
+      "it is not feasible to obtain the ground state through direct eigendecomposition, even for relatively small systems"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Standard textbook background restated in an overview section.",
+     "context": "world"
+    }
+   ]
+  }
+ ]
+}

@@ -44,6 +44,10 @@ class ProbeResult:
     # The latest version the abstract page shows (ADR-0005 A7 (d)); None =
     # not read. Set only by the site probe.
     latest_version: int | None = None
+    # The DOI registry answered, even if it stated nothing the store records
+    # (Task D review, 2026-10-18), so the re-check report can say so instead
+    # of "no answer". Set only by probe_doi.
+    answered: bool = False
 
 
 def _arxiv_entry(ident: str, fetcher) -> tuple[str, str, str, list[str]] | None:
@@ -134,9 +138,8 @@ def probe_doi(record_id: str, doi: str, fetcher) -> ProbeResult:
     except urllib.error.HTTPError as err:
         if err.code != 404:
             raise
-        r.provider = "DataCite"
-        r.notes.append("not in Crossref; DataCite carries no publication status or retraction notices")
-        return r
+        return _probe_datacite(r, quoted, fetcher)
+    r.answered = True
     kind = msg.get("type", "")
     if kind == "posted-content":
         r.values["publication_status"] = "preprint"
@@ -155,6 +158,49 @@ def probe_doi(record_id: str, doi: str, fetcher) -> ProbeResult:
                    for a in au.get("affiliation", []) if a.get("name")})
     if affs:
         r.values["affiliations"] = "; ".join(affs)
+    return r
+
+
+# DataCite's resourceTypeGeneral values that say where a work stands. Any
+# other value (Text, Dataset, Software, ...) is not guessed.
+_DATACITE_STATUS = {"Preprint": "preprint", "JournalArticle": "published", "ConferencePaper": "published",
+                    "Book": "published", "BookChapter": "published", "Dissertation": "published",
+                    "Report": "published"}
+# Only a preprint relation names another version of the paper. Zenodo's
+# IsVersionOf names its all-versions ("concept") DOI, which is the same
+# work, so it is not a version_of.
+_DATACITE_VERSION = ("IsPreprintOf", "HasPreprint")
+
+
+def _probe_datacite(r: ProbeResult, quoted: str, fetcher) -> ProbeResult:
+    """A DOI Crossref does not know, asked of DataCite (F86, Sprint 10 Task
+    D). Until then this branch labeled the result DataCite without sending
+    the request, so a DataCite DOI never recorded a primary answer and
+    stayed due forever under ADR-0005 A9. DataCite carries no retraction
+    notices; that is said, not assumed away."""
+    r.provider = "DataCite"
+    try:
+        attrs = json.loads(fetcher(citations.DATACITE_API + quoted, "application/vnd.api+json"))["data"]["attributes"]
+    except urllib.error.HTTPError as err:
+        if err.code != 404:
+            raise
+        r.notes.append("not in Crossref and not in DataCite")
+        return r
+    r.answered = True
+    general = (attrs.get("types") or {}).get("resourceTypeGeneral", "")
+    if general in _DATACITE_STATUS:
+        r.values["publication_status"] = _DATACITE_STATUS[general]
+    else:
+        r.notes.append(f"DataCite resourceTypeGeneral {general!r} is not mapped to a status")
+    for rel in attrs.get("relatedIdentifiers") or []:
+        if rel.get("relationType") in _DATACITE_VERSION and rel.get("relatedIdentifier"):
+            r.values["version_of"] = rel["relatedIdentifier"]
+            break
+    affs = sorted({" ".join((a if isinstance(a, str) else a.get("name") or "").split())
+                   for c in attrs.get("creators") or [] for a in c.get("affiliation") or []} - {""})
+    if affs:
+        r.values["affiliations"] = "; ".join(affs)
+    r.notes.append("not in Crossref; DataCite answered (it carries no retraction notices)")
     return r
 
 

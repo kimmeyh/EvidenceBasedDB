@@ -218,6 +218,62 @@ def _in_repository(path: str, outside_cwd: bool = False) -> bool:
     return not outside_cwd and not _absolute(p)
 
 
+_UNQUOTE = re.compile(r"""["']""")
+
+
+def _own_command(rest: str, opened: str = "") -> str:
+    """The editor's own command: `rest` up to the first `;`, `&` or `|`
+    outside quotes. F81 (Sprint 10 Task A): the flag and target search ran
+    over the whole line, so `sed -n 1,5p x.py; grep -i y z` read the later
+    `grep -i` as `sed -i` and blocked a read. Quotes are tracked so a
+    separator inside a sed or perl script (`'s/a/b/; s/c/d/'`) does not
+    cut the command before its file.
+
+    Task A review (2026-10-18; a fresh-eyes reviewer and the automated
+    security review): a backslash escapes the next character outside single
+    quotes (`\\;`, `\\"`); the `&` of a redirect (`2>&1`, `>&2`) is not a
+    separator; nothing inside `$(...)` or backticks cuts. `opened` is the
+    quote the editor already stands inside (`bash -c "sed -n 1p x.py" |
+    ...`), so that quote's close ends the editor's command. A cut can still
+    misjudge a shape this does not model, so the caller fails closed: the
+    cut decides only whether the flag is present, never that no code file
+    is named."""
+    quote, depth, tick = opened, 0, False
+    i = 0
+    while i < len(rest):
+        ch = rest[i]
+        if ch == "\\" and quote != "'":
+            i += 2
+            continue
+        if quote:
+            if ch == quote:
+                # The opened quote's close ends the editor's command only
+                # where the shell word ends; `"sed "'-i ...'` is one word
+                # (second security review of the Task A fix).
+                if opened and rest[i + 1:i + 2] in ("", " ", "\t", ";", "&", "|", "\n"):
+                    return rest[:i]
+                opened = ""
+                quote = ""
+        elif ch in "'\"":
+            quote = ch
+        elif ch == "`":
+            tick = not tick
+        elif rest.startswith("$(", i):
+            depth += 1
+            i += 2
+            continue
+        elif ch == ")" and depth:
+            depth -= 1
+        elif depth or tick:
+            pass
+        elif ch == "&" and (rest[i - 1:i] in (">", "<") or rest[i + 1:i + 2] == ">"):
+            pass
+        elif ch in ";&|":
+            return rest[:i]
+        i += 1
+    return rest
+
+
 def _shell_edits_code(text: str) -> list[str]:
     # Each `cd` sets whether relative paths after it point outside the
     # repository, in command order.
@@ -230,30 +286,49 @@ def _shell_edits_code(text: str) -> list[str]:
                 state = out
         return state
 
-    def keep(m) -> list[str]:
-        return [m["path"]] if _in_repository(m["path"], outside_at(m.start())) else []
+    def keep(m, base: int = 0) -> list[str]:
+        # `base` places a match found inside an editor's own text back on the
+        # line, where the `cd` positions are (Task A third security review:
+        # they were compared as if both counted from the line's start).
+        return [m["path"]] if _in_repository(m["path"], outside_at(base + m.start())) else []
 
     hits = []
-    for tool in IN_PLACE_TOOL.finditer(text):
-        rest = tool["rest"]
+    # Each match's `rest` runs to the end of the line, so a second editor on
+    # the same line (`sed -n 1p a; sed -i ... x.py`) is searched for from
+    # inside the first one's text, not after it (F81).
+    tools, pos = [], 0
+    while (m := IN_PLACE_TOOL.search(text, pos)):
+        tools.append(m)
+        pos = m.start("rest")
+    for tool in tools:
+        lead = text[tool.start():tool.start("tool")].strip()
+        # Quotes join words in the shell (`"'-i` is the flag -i, `x'.py'` is
+        # x.py, `in"place"` is inplace), so every check below reads the
+        # command with its quote characters removed (Task A security reviews).
+        rest = _UNQUOTE.sub("", _own_command(tool["rest"], '"' if lead.endswith('"') else ""))
         if not IN_PLACE_FLAG.search(rest) or (tool["tool"].endswith("awk") and "inplace" not in rest):
             continue
-        targets = [p for m in CODE_ARG.finditer(rest) for p in keep(m)]
+        base = tool.start("rest")
+        targets = [p for m in CODE_ARG.finditer(rest) for p in keep(m, base)]
+        if not targets:
+            # Fail closed: the cut found the flag but no code file, so the
+            # whole line is searched (Task A review).
+            targets = [p for m in CODE_ARG.finditer(_UNQUOTE.sub("", tool["rest"])) for p in keep(m, base)]
         if not targets:
             # The code path can come before the editor: find ... -exec sed -i,
             # git ls-files '*.py' | xargs sed -i.
             line_start = text.rfind("\n", 0, tool.start()) + 1
             segment = re.split(r"&&|\|\||;", text[line_start:tool.start()])[-1]
-            targets = [p for m in CODE_GLOB_SOURCE.finditer(segment) for p in keep(m)]
+            targets = [p for m in CODE_GLOB_SOURCE.finditer(segment) for p in keep(m, tool.start() - len(segment))]
         hits += targets
     for cp in COPY_ONTO.finditer(text):
         operands = [m for m in CODE_ARG.finditer(cp["rest"])]
         tokens = [t for t in cp["rest"].split() if not t.startswith("-")]
         if operands and tokens and tokens[-1].strip("'\"").lower().endswith(operands[-1]["path"].lower()):
-            hits += keep(operands[-1])
+            hits += keep(operands[-1], cp.start("rest"))
     unquoted = SINGLE_QUOTED.sub(lambda m: " " * len(m.group(0)), text)
     hits += [p for m in REDIRECT_ONTO.finditer(unquoted) for p in keep(m)]
-    hits += [p for t in TEE.finditer(unquoted) for m in CODE_ARG.finditer(t["rest"]) for p in keep(m)]
+    hits += [p for t in TEE.finditer(unquoted) for m in CODE_ARG.finditer(t["rest"]) for p in keep(m, t.start("rest"))]
     hits += [p for m in _TRUNCATE.finditer(unquoted) for p in keep(m)]
     return list(dict.fromkeys(hits))
 

@@ -229,5 +229,88 @@ def test_the_python_checks_cover_the_launcher_and_sql(command):
     assert run(command).returncode == 2, command
 
 
+@pytest.mark.parametrize("command", [
+    "sed -n 1,5p store/recheck.py; grep -i foo README.md",
+    "sed -n 221,260p .claude/hooks/block_unraw_escape.py; echo ---; grep -n -i def store/recheck.py | head",
+    "sed -n 1,5p store/recheck.py && perl -i -pe 's/a/b/' notes.txt",
+    "awk '{print}' store/recheck.py | grep -i x",
+    # Task A review, 2026-10-18: still blocked after 021d2a8
+    'bash -c "sed -n 1p store/x.py" | grep -i foo',
+    'bash -c "sed -n 1,5p store/x.py"; grep -i y z',
+    "sed -n /don\\'t/p store/x.py | grep -i y",
+    # Third security review: a path found inside an editor's or copy's own
+    # text was placed against the `cd`s by its offset in that text, not on
+    # the line; after a `cd` out of the repository these are scratch files
+    "cd /d/Data/Harold/github/EvidenceBasedDB && cd /tmp && sed -i s/a/b/ x.py",
+    "cd /d/Data/Harold/github/EvidenceBasedDB && cd /tmp && cp a.txt b.py",
+    "cd /d/Data/Harold/github/EvidenceBasedDB && cd /tmp && echo x | tee b.py",
+])
+def test_a_read_followed_by_another_commands_i_flag_is_allowed(command):
+    """F81 (Sprint 10 Task A): the in-place flag search ran past `;`, `&&`
+    and `|`, so a later command's `-i` made a read of a code file look like
+    `sed -i`. Reproduced live at planning, 2026-10-18. Proven to fail by
+    injection, 2026-10-18: with _own_command returning `rest` whole, the
+    first three cases were blocked (exit 2). The awk case passed even then
+    (awk needs `inplace` to count); it guards that rule against the cut."""
+    proc = run(command)
+    assert proc.returncode == 0, f"{command}\n{proc.stderr}"
+
+
+@pytest.mark.parametrize("command", [
+    "sed -n 1p a.txt; sed -i 's/a/b/' store/x.py",
+    "grep -i x README.md && sed -i 's/a/b/' store/x.py",
+    "sed -i 's/a/b/; s/c/d/' store/x.py",
+    "sed -i 's|a|b|' store/x.py",
+    "perl -pi -e 's/a/b/ && 1' store/x.py",
+    # Task A review, 2026-10-18 (fresh-eyes and security review): each
+    # passed against 021d2a8, cut before its file
+    'sed -i "s/\\"/;/" store/x.py',
+    "sed -i s/a\\;b/c/ store/x.py",
+    "sed -i s/a/\\&/ store/x.py",
+    "sed -i s/a/b/ 2>&1 store/x.py",
+    "perl -pi -e s/a/b/ 2>&1 store/x.py",
+    "sed -i s/a/$(echo b|tr b c)/ store/x.py",
+    "sed -i s/a/`echo b|tr b c`/ store/x.py",
+    # A shape the cut does not model (process substitution) is caught by
+    # the fail-closed search of the whole line
+    "sed -i s/a/b/ <(echo|cat) store/x.py",
+    # Second security review: a quote closed mid-word continues the word
+    "bash -c \"sed \"'-i s/a/b/ store/x.py'",
+    # Third security review: quotes inside the file name or the awk keyword
+    "sed -i s/a/b/ store/x'.py'",
+    'sed -i s/a/b/ "store/x".py',
+    "awk -i in\"place\" '{}' store/x.py",
+])
+def test_an_in_place_edit_after_or_with_a_separator_is_still_blocked(command):
+    """F81's other half: the cut at a separator must not free a real edit.
+    A separator inside the quoted script does not cut the command before
+    its file. Proven to fail by injection, 2026-10-18: with _own_command
+    cutting at every separator, quoted or not, the third to fifth cases
+    passed (exit 0). A second: with the tool search back to one
+    non-overlapping `finditer`, the first case passed, because the first
+    `sed`'s text ran to the end of the line and hid the second `sed`.
+    Task A review, 2026-10-18: the seven review cases each passed (exit 0)
+    against the hook as committed in 021d2a8, and the three read cases
+    added to the allowed test were each blocked there (run with a copy of
+    that version). With the fail-closed whole-line search removed, the
+    process-substitution case passed. Restored. Known cost of failing
+    closed: an in-place edit of a text file followed on the same line by a
+    command naming a code file (`sed -i ... a.txt; cat store/x.py`) is
+    blocked; the bypass token covers it. Second security review, the same
+    day: `bash -c "sed "'-i ...'` passed against 10f7741 (a quote closed
+    mid-word was taken as the end of the command, and the quote before
+    `-i` hid the flag). Proven by two injections: with either the
+    word-end check or the quote strip before the flag search removed, that
+    case passed. Restored. Third security review: the three quote-in-name
+    cases passed against 6690c39 and against the hook before Task A (an
+    older gap); every check now reads the text with quotes removed. That
+    change broke the existing `cd /tmp && cd <repository> && sed -i`
+    case, which exposed an older offset bug in keep(); fixed, and the
+    three `cd`-out cases in the allowed test were each blocked at
+    6690c39."""
+    proc = run(command)
+    assert proc.returncode == 2, command
+
+
 def test_shell_code_edit_bypass_token():
     assert run("git show HEAD:store/ingest.py > store/ingest.py  # allow_shell_code_edit").returncode == 0

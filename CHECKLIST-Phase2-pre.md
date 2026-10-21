@@ -190,3 +190,26 @@ Evidence for each row is the commit named.
 - [x] **H+C**: Manual Validation Q1-Q8 decided and applied (88f2c7a, abadd7a, 56c6950)
 - [x] **H+C**: Retrospective, 16 x 4 (0182581), improvements I1-I6 applied (ec4da7b, 3bd964f, 204d228, 3dde5ef, 6a260ce, 08b0751), review fixes (91f508b, 301ea4c)
 - [x] **H**: The stored QPU-seconds balance removed (7e04efa)
+
+## Sprint 9: Read the Ceiling Papers, Then Open the Phase 2 Exchange (back-filled 2026-10-18 at Sprint 10 Phase 2)
+
+Not reconciled at Sprint 9's Phase 7, and Sprint 10's Phase 1.2 sweep
+missed the gap; found when this file was walked at Sprint 10 Phase 2.
+Evidence for each row is the commit named, each on develop
+(`git log origin/develop --grep "#N"`).
+
+- [x] **C**: Task A (F79) -- Phase 2 exchange, guard, inbound path, outbound prompt (8c30fe6); review fixes (2b90897, a996f83, 38c256f)
+- [x] **C**: Task B (F68, F69) -- old-style arXiv ids, parenthesized DOIs, Massoli and Wiebe (070137e)
+- [x] **C**: Task C (F74) -- ADR-0005 A9 (9f7e5fa)
+- [x] **C**: Task D (F48) -- SHA-256 and the local source check (7006739)
+- [x] **C**: Task E (F78) -- downloads and clones (44a8383); group read (801f234); answer document (b413fc4); review fixes (d14520a); closed papers after Manual Validation (8b6c8ca)
+- [x] **C**: Task F (F46) -- 20 pending facts dispositioned (cec5732)
+- [x] **C**: Task G (F80) -- slice selected (a4ec09c); read (9f71f19); review fixes (9d5b4c9)
+- [x] **C**: Task H (F55) -- cites links, ADR-0005 A10 (4c997a1, daf1fa8)
+- [x] **C**: Task I (F56) -- corroborated flag, ADR-0004 A9 (79ae0d4); review fixes (9fa268a, 53a0be0)
+- [x] **C**: Task J (F62) -- discovery and hand-download list (ea79e0e); review fixes (360bec4)
+- [x] **C**: Task K (F51) -- hold checked, stays HOLD (d283dfe)
+- [x] **C**: CI red from 2026-10-15 fixed (deb726d); Copilot finding fixed (52a439a)
+- [x] **H+C**: Manual Validation Q1-Q6 decided and applied (4530b35, 8b6c8ca)
+- [x] **H+C**: Retrospective, 16 x 4 (fdd8018), improvements I1, I3, I4, I5 applied (202478f, 3a455ce, 8c94ef4), I7 applied (d54d2c0, 47cbdc1); I2 and I6 skipped (team lead)
+- [x] **C**: Post-hand-over review fixes (7a0d32d)
