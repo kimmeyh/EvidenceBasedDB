@@ -21,6 +21,11 @@ this project keeps having to replace with a step.
   Sprint 10 branch (6.6 carry-forward). Phase 1.1 reconciliation: every
   day with commits since 2026-10-18 has entries; one commit lacked its
   own, added below under Sprint 10 (F91, 2026-10-19)
+- **docs**: Backlog refinement 2026-10-21 (Sprint 11 Phase 1.4): F92
+  (QCi's 2026-10-20 answers to Phase 2, Priority 40) and F93 (Phase 2's
+  F108 ceiling validation result, Priority 80) carded from Phase 2 read
+  at b074780 and eef3349; F91 moved from Priority 65 to 62 (step rule;
+  sprints with F90). F51's hold copy re-checked: hash unchanged
 
 ### 2026-10-18 to 2026-10-21 (Sprint 10, PR #101, merged to develop 2026-10-21 and to main via PR #112 the same day; tagged sprint-10)
 

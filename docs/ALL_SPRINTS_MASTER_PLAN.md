@@ -410,7 +410,7 @@ and in git. Remaining items below.
 
 ### Carded 2026-10-19, after Sprint 10 Manual Validation
 
-**F91. Enter and read Google Quantum AI's magic state cultivation experiment, Science 2026 (~1h) Priority 65** (NEW 2026-10-19, team lead request)
+**F91. Enter and read Google Quantum AI's magic state cultivation experiment, Science 2026 (~1h) Priority 62** (NEW 2026-10-19, team lead request; carded at Priority 65, moved to 62 at Sprint 11 Phase 1.4 to keep the step-of-10 rule, as a reading item that sprints with F90)
 - Phase: Sourcing / intake, then reading
 - Platform: `scripts/intake.py`; `D:\Data\Harold\EvidenceBasedDB\Papers\`
 - Team lead, 2026-10-19: "Can you add this paper to the backlog for the
@@ -442,6 +442,64 @@ and in git. Remaining items below.
 - Acceptance: the record at `read` with its assertions, or at `seen`
   with the reason it was not read; the abstract difference above
   recorded in the record's evidence.
+- Depends on: none
+
+### Carded at Sprint 11 Phase 1.4 (2026-10-21)
+
+**F92. Enter QCi's 2026-10-20 answers to Phase 2's Dirac-3S questions, and correct the records they change (~1h) Priority 40** (NEW 2026-10-21, read from Phase 2 at Sprint 11 Phase 1.4)
+- Phase: Inbound evidence (F79)
+- Platform: the store; `hsbc-qfraud-phase2` read only
+  (`docs/phase2/DIRAC_UNDERSTANDINGS.md` section 4 at commit b074780, and
+  the reply it files under `docs/qci_package/`)
+- A QCi field service engineer answered Phase 2's questions A1 to A12 and
+  P2 on 2026-10-20 (P1 still open). Several answers bear on records in
+  the store (read at b074780, snapshot as of 2026-10-21):
+  - A6b: raw values are not yet offered on the cloud; outputs are after
+    built-in error correction (A6a). Bears on
+    `dirac3s-error-correction-is-a-post-processing-step` and
+    `dirac3s-returned-weights-finer-than-0005-step`, which says "QCi
+    states raw values come back too".
+  - A9: every result in the Dirac-3S guide was measured on-premises on a
+    Dirac-3S, computation only. Bears on
+    `dirac3s-guide-reuses-dirac-3-text-and-figures` ("the guide does not
+    say whether those results were measured on a Dirac-3S").
+  - A4 (16 levels, values 0 to 15, hedged "I assume"); A11 (the cloud cap
+    is 100 samples per job); A12 (not seedable); A6 (resolution the same
+    as Dirac-3's about 200:1). Bear on
+    `dirac3s-guide-gives-two-integer-ranges`,
+    `dirac3s-on-premises-has-no-100-sample-cap` and
+    `dirac3s-analog-resolution-about-200-to-1`.
+- Grading: a vendor's own statement, by email, not a published document;
+  each answer's hedge kept (A4's "I assume").
+- Acceptance: the reply's primary copy located in Phase 2 and read at a
+  named commit; each answer that bears on a stored claim entered as a
+  vendor-statement assertion under `platform:dirac-3s` (or
+  `platform:dirac-3` for A2), related by ADR-0004 A8 (b) (`contradicts`
+  only where both cannot hold); every quote checked through the verified
+  write path (intake sections 26 and 31). Stored assertions are not
+  rewritten: a newer statement is related to them.
+- Depends on: none
+
+**F93. Enter Phase 2's F108 result: no ceiling method recovered a known ceiling on a simulator (~1h) Priority 80** (NEW 2026-10-21, read from Phase 2 at Sprint 11 Phase 1.4)
+- Phase: Inbound evidence (F79)
+- Platform: the store; `docs/research/ceilings-ml-and-optimization.md`;
+  `hsbc-qfraud-phase2` read only (`docs/phase2/F108_CEILING_VALIDATION.md`
+  at commit eef3349, 2026-10-18)
+- Phase 2 built a fraud simulator whose Bayes error is known exactly and
+  tested ceiling estimators against it (five seeds). Its BLUF: on the main,
+  no-noise arm no method recovered the known ceiling, so none is validated
+  for real data. The plug-in overstated the Bayes error by 5-12 percent;
+  the learning-curve floor did similarly; the AUPRC floor understated the
+  attainable AUPRC by about 0.04; the Cover-Hart interval held the truth
+  on 3 of 5. Phase 2 states its own caveat: the pass rule was read after
+  the run.
+- This answers, in part, what the ceilings answer document leaves open:
+  its learning-curve route (Ding) is one of the methods F108 tested.
+- Acceptance: the document read at the commit current when the work
+  starts; 3 or 4 assertions (context `ml`, with `hsbc-2026` where Phase
+  2's own data is meant) through the verified write path, Phase 2's
+  caveats carried into the values; a dated amendment to the answer
+  document naming them.
 - Depends on: none
 
 ## Design documents governing this repository
