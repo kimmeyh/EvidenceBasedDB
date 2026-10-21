@@ -100,7 +100,9 @@ and subagents ran in parallel. Plan estimate: 375 minutes.
   fixed in b45b2b5: a value that was only a number skipped the check;
   sign flips and flipped inequalities passed; the scan missed aliased
   imports and scripts not named `sprint*`.
-- **Copilot**: requested 2026-10-21; result recorded at Phase 7.7.
+- **Copilot** (at b45b2b5): one low finding. The F87 pool test was named
+  "two excluded remain" while it asserts three (the count changed after
+  Task J's review). Renamed; thread answered and resolved.
 
 ## Verification
 

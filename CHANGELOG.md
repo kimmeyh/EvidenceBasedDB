@@ -15,6 +15,9 @@ this project keeps having to replace with a step.
 
 ### 2026-10-18 onward (Sprint 10, in progress)
 
+- **test**: Copilot review of PR #101 -- the F87 pool test renamed to
+  "three excluded remain", which is what it asserts (#111)
+
 - **docs**: `docs/sprints/SPRINT_10_SUMMARY.md` written (with `##
   Actuals`); master plan's Past Sprint Summary and Last Completed Sprint
   rolled for Sprint 10 (awaiting merge)

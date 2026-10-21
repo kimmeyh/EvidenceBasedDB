@@ -56,7 +56,7 @@ def test_an_accepted_kind_is_kept(stream, topic, title):
 
 
 @pytest.mark.live_store  # reads Sprint 9's pool, outside the repository
-def test_on_sprint_9s_pool_no_accepted_record_is_lost_and_two_excluded_remain():
+def test_on_sprint_9s_pool_no_accepted_record_is_lost_and_three_excluded_remain():
     """Before: 13 excluded records in the four top-25 lists. After: 3 (the
     single-photon platform paper and the black-hole paper share a topic with
     accepted ones; the pseudo-ensembles paper carries a generic topic the
