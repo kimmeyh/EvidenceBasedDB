@@ -628,6 +628,41 @@ and in git. Remaining items below.
   that sprint's planning, and its overflow carries to the next release.
 - Depends on: none
 
+**F100. Make the full test suite faster, and run it only where it earns its time (~90m) Priority 25** (NEW 2026-10-22, team lead at Sprint 11 Manual Validation, for Sprint 12)
+- Phase: Process / testing
+- Platform: `tests/` and `tests/conftest.py`; pytest; the commit-gate
+  hooks in `.claude/hooks/`; `.github/workflows/ci.yml`
+- Value: this cuts the wait at each commit gate while keeping the gates
+  that caught real defects this sprint.
+- Team lead, 2026-10-22: "why does the testing taek > 15 minutes? Add to
+  backlog for next sprint: how can we optimize the full suite testing? Is
+  full suite needed several times per sprint? are there a set of tests
+  that take more time? Can we get timings of each test and then focus on
+  optimizing those tests? While we want to use testing best practices, we
+  want to be effective as efficiently as reasonbly possible."
+- **Known at carding (snapshot as of 2026-10-22, not yet measured per
+  test):** 1,134 tests ran in 692 s (11.5 min) on the last run; the
+  team lead has seen more than 15 min. 89 tests carry `live_store` and
+  read the real store (about 11 MB); 14 of them take a `live_copy`, a
+  full SQLite backup of the store for each test. Several Sprint scripts'
+  "second apply writes nothing" tests re-run whole applies, which
+  re-read PDFs' text. These are the likely heavy set; the timings decide.
+- Steps: (1) one run with `pytest --durations=0`, the slowest 30 tests
+  and the total by file recorded; (2) fix the top items: share one
+  store copy per session where a test only reads after writing, cache
+  extracted PDF text across tests, mark slow tests `slow`; (3) decide
+  where the full suite is required: today it gates every commit (Sprint
+  4 retrospective, after a red suite was committed). A proposal, for the
+  team lead's decision: the fast set (not `slow`) at each commit, the
+  full suite before the Manual Validation hand-over and before `gh pr
+  ready`, CI on every push as now; (4) record before and after.
+- Acceptance: per-test timings recorded with their date; the suite's
+  wall clock before and after; the commit-gate rule decided by the team
+  lead and written in `SPRINT_EXECUTION_WORKFLOW.md` and the hook that
+  enforces it; no guard removed, and every guard still fails by
+  injection.
+- Depends on: none
+
 **F92. Enter QCi's 2026-10-20 and 2026-10-21 answers to Phase 2's Dirac-3S questions, and correct the records they change (~55m) Priority 40** (NEW 2026-10-21, read from Phase 2 at Sprint 11 Phase 1.4; widened the same day by two later emails)
 - Phase: Inbound evidence (F79)
 - Value: this prevents the store's Dirac-3S claims from standing against

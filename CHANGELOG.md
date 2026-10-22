@@ -15,6 +15,10 @@ this project keeps having to replace with a step.
 
 ### 2026-10-21 onward (Sprint 11, in progress)
 
+- **docs**: F100 carded for Sprint 12 (2026-10-22, team lead at Manual
+  Validation): per-test timings, then a faster full suite and a decided
+  commit-gate rule
+
 - **feat**: Sprint 11 Manual Validation decisions (2026-10-22): the
   hand-download list is computed from the store in priority order
   (`scripts/hand_download_list.py`; 16 records as of 2026-10-22; Q2), and
