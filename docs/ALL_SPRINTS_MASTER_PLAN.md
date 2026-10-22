@@ -265,8 +265,12 @@ F25 D1-D3 so it measures adjudication of corrected records.
 Sprint 10 carry-forward, after PR #101 merged to develop and PR #112 merged
 develop to main).
 
-- **Scope**: selected in part (team lead, 2026-10-21): F94, F96 (F57's
-  release of 200) and F97 (F95's release). The rest awaits Q1 (Phase 1.4).
+- **Scope** (DEFINED, team lead 2026-10-21): F94, F92, F39, F91, F57,
+  F93 and F95. The permanent items are released as copies: F96 (F57,
+  200 records), F97 (F95) and F99 (F39). F90 is not selected; its 8
+  papers wait for the team lead's downloads, and F95 reads them once they
+  are in `Papers\`. F98 is carded for Sprint 12. F51 stays HOLD.
+- **Plan**: `docs/sprints/SPRINT_11_PLAN.md` (Phase 3, awaiting approval).
 
 ## Next Sprint Candidates
 
@@ -402,19 +406,25 @@ and in git. Remaining items below.
   at `read`; 2,060 at `seen` or `screened`, of which 2,057 have no read row
   (3 are read and refused). Sprint 10's discovery re-run added 91 at
   `seen`. About 28 more releases at 74 each.
-- **Release size raised to 200, newest paper first** (team lead,
-  2026-10-21, Sprint 11 Phase 1.4): "Re-add the F57 that reads an
-  additional 75 records each sprint ... should be copied from the backlog
-  to each sprint (don't duplicate if skipped in one sprint) and increase
-  the number to 200 each sprint. Continue until all records that are
-  marked as 'seen' and 'screened' are marked 'read' ... work in order from
-  newest to oldest papers by date of the paper."
+- **Release size raised to 200** (team lead, 2026-10-21, Sprint 11 Phase
+  1.4): "Re-add the F57 that reads an additional 75 records each sprint
+  ... should be copied from the backlog to each sprint (don't duplicate if
+  skipped in one sprint) and increase the number to 200 each sprint.
+  Continue until all records that are marked as 'seen' and 'screened' are
+  marked 'read'."
   - Each sprint gets ONE released copy with the next free F# (Sprint 10's
     was F89; Sprint 11's is F96). A skipped sprint does not leave a second
     copy waiting.
-  - Order: newest to oldest by the paper's own date (its publication
-    date in the provenance; the year where only a year is known). This
-    replaces the relevance ranking in step (2) above.
+  - **Order stays the relevance ranking in step (2).** The same message
+    asked for newest paper first; the team lead withdrew that the same
+    day: "sorry for F57 switch back to the relavance ranking".
+  - **Up to 5 reading agents in parallel** (team lead, 2026-10-21: "these
+    can run by up to 5 agents as everything else will likely not touch in
+    a way that would negatively affect this item"). The sprint's other
+    reading items (F95's release, a single-paper read card) run under the
+    same release, from one ledger that gives each record to exactly one
+    agent: "no 2 'read's should impact the same record." A test fails if
+    any record appears in two groups.
   - At 200 per sprint: about 11 releases from the 2026-10-21 count of
     2,060.
   - Known limit (Sprint 10 finding): a record with no free copy, or one
@@ -513,23 +523,64 @@ and in git. Remaining items below.
   Existing cards are converted by hand, re-deriving estimates.
 - Depends on: none
 
-**F96. F57 release for Sprint 11: read 200 records, newest paper first (~325m) Priority 70** (NEW 2026-10-21, released copy of F57)
+**F96. F57 release for Sprint 11: read 200 records, by relevance, up to 5 agents (~325m) Priority 70** (NEW 2026-10-21, released copy of F57)
 - Phase: Sourcing / extraction
-- Platform: the store; Sonnet 5.5 first-pass readers, every quote checked
-  in the write path (intake sections 26 and 31)
-- The 200 newest records at `seen` or `screened` by the paper's own date
-  (snapshot as of 2026-10-21: 2,060 such records). Papers read under F95
-  this sprint count here and are not read twice.
+- Platform: the store; up to 5 Sonnet 5.5 first-pass readers in parallel,
+  every quote checked in the write path (intake sections 26 and 31)
+- The top 200 records at `seen` or `screened` by F57's relevance ranking
+  (snapshot as of 2026-10-21: 2,060 such records). F97's and F91's reads
+  run from the same ledger, so no record is read twice.
 - Acceptance: each of the 200 at `read` with its assertions, or kept at
   `seen` with its reason (no free copy, refused); the count before and
   after recorded.
 - Depends on: none
 
-**F97. F95 release for Sprint 11: ingest and read the new papers in `Papers\` (~90m) Priority 20** (NEW 2026-10-21, released copy of F95)
+**F97. F95 release for Sprint 11: ingest and read the new papers in `Papers\` and the team lead's list (~120m) Priority 20** (NEW 2026-10-21, released copy of F95)
 - Phase: Sourcing / intake, then reading
 - Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\`; `scripts/intake.py`
-- The 37 PDFs no record names (snapshot as of 2026-10-21), plus any F90
-  or F91 adds this sprint. F95's steps (1) to (5).
+- The 37 PDFs no record names (snapshot as of 2026-10-21), plus any F91
+  adds this sprint. F95's steps (1) to (5).
+- **Named by the team lead for this release (2026-10-21)**, each paper
+  entered (or matched) and read, each repository entered as a GitHub
+  repository record (intake section 2) and linked to its paper:
+  - NVIDIA blog, "enterprise-platforms-agent-toolkit"
+    (https://blogs.nvidia.com/blog/enterprise-platforms-agent-toolkit/),
+    a reference with a local copy; repositories NVIDIA/auto-ontology and
+    NVIDIA/auto-ontology-eval.
+  - arXiv:2610.24426; repository jyryu98/margin-gen-qml-classical-encoding
+    (no license stated).
+  - NBER Working Paper 35905, Farboodi, Kondor and Kurlat, "Credit Markets
+    with New Screening Technologies", October 2026, from the team lead's
+    `D:\Data\Temp\Downloads\w35905.pdf` (copied into `Papers\`; the
+    original is left as is). Not peer reviewed (the paper says so).
+  - arXiv:2509.16410 (already in the store at `seen` as
+    `pere-2025-data-complexity-threshold-between-classical`: read, not
+    entered again); repository Christophe-pere/data_complexity_framework.
+  - arXiv:2610.10629; repository rav11l/cace-bench.
+  - arXiv:2610.00841 (v1).
+  - arXiv:2509.03505; repository limix-ldm-ai/LimiX, whose description
+    cites arXiv:2609.17488 instead: both ids checked at the task, and a
+    second LimiX paper entered at `seen` and linked if it is one.
+- Depends on: none
+
+**F98. Review Christophe Pere's QML paper repository for new papers, then ingest and read them -- PERMANENT (~60m per release) Priority 22** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4, for Sprint 12 onward)
+- Phase: Sourcing / intake, then reading (permanent item, like F39)
+- Platform: https://github.com/Christophe-pere/Roadmap-to-QML ("This
+  repository will contain the major papers, books and blog posts on QML";
+  last push 2026-10-20 at carding), GitHub REST, read only; the intake
+  door; the verified write path
+- Team lead, 2026-10-21: "add to backlog for next sprint: every sprint
+  review the christophe paper repository for new papers, ingest them and
+  read them". Read as Roadmap-to-QML, his paper list; the seed set once
+  held an empty "Christophere Pere QML Github Repo.txt" for it (removed in
+  Sprint 4). Correct the repository here if another was meant.
+- Released every sprint as one copy, like F95. Each release: (1) read the
+  list at its current commit, recording the commit; (2) diff it against
+  the commit the last release recorded (the first release takes the
+  whole list); (3) match each paper to the store by DOI or arXiv id;
+  (4) enter the new ones and read them under F57's rules and ledger.
+- The first release may be large; it is sized from the list's count at
+  that sprint's planning, and its overflow carries to the next release.
 - Depends on: none
 
 **F92. Enter QCi's 2026-10-20 and 2026-10-21 answers to Phase 2's Dirac-3S questions, and correct the records they change (~1h15m) Priority 40** (NEW 2026-10-21, read from Phase 2 at Sprint 11 Phase 1.4; widened the same day by two later emails)

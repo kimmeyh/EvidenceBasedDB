@@ -36,6 +36,12 @@ this project keeps having to replace with a step.
   raised from 74 to 200, newest paper first, one copy per sprint, and its
   Sprint 11 copy F96; F95 (permanent: ingest and read new PDFs in
   `Papers\`, 37 unnamed as of 2026-10-21) and its Sprint 11 copy F97
+- **docs**: Sprint 11 scope selected (team lead, 2026-10-21): F94, F92,
+  F39 (released as F99), F91, F57 (F96), F93, F95 (F97). F57's order back
+  to relevance (newest-first withdrawn), up to 5 readers from one ledger
+  with no record read twice. F97 carries the team lead's seven papers and
+  six repositories. F98 carded (permanent from Sprint 12: Christophe
+  Pere's Roadmap-to-QML list)
 
 ### 2026-10-18 to 2026-10-21 (Sprint 10, PR #101, merged to develop 2026-10-21 and to main via PR #112 the same day; tagged sprint-10)
 
