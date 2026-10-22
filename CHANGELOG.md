@@ -31,6 +31,11 @@ this project keeps having to replace with a step.
   solver raised to 954 levels on Dirac-3 and Dirac-3S, 9980 planned on
   3S). Provenance rule corrected: Phase 2 git-ignores `docs/qci_package/`,
   so the emails are named by file and SHA-256, not by commit
+- **docs**: Sprint 11 items added (team lead, 2026-10-21): F94 (backlog
+  cards redesigned from spamfilter-multi's practices); F57's release size
+  raised from 74 to 200, newest paper first, one copy per sprint, and its
+  Sprint 11 copy F96; F95 (permanent: ingest and read new PDFs in
+  `Papers\`, 37 unnamed as of 2026-10-21) and its Sprint 11 copy F97
 
 ### 2026-10-18 to 2026-10-21 (Sprint 10, PR #101, merged to develop 2026-10-21 and to main via PR #112 the same day; tagged sprint-10)
 

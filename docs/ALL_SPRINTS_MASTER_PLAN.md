@@ -265,7 +265,8 @@ F25 D1-D3 so it measures adjudication of corrected records.
 Sprint 10 carry-forward, after PR #101 merged to develop and PR #112 merged
 develop to main).
 
-- **Scope**: not yet selected (Phase 1.4).
+- **Scope**: selected in part (team lead, 2026-10-21): F94, F96 (F57's
+  release of 200) and F97 (F95's release). The rest awaits Q1 (Phase 1.4).
 
 ## Next Sprint Candidates
 
@@ -319,6 +320,34 @@ and in git. Remaining items below.
   (5) a failing test guards whatever the release adds.
 - Depends on: nothing
 
+**F95. Ingest and read the new papers in the Papers folder -- PERMANENT (~90m per release) Priority 20** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4)
+- Phase: Sourcing / intake, then reading (permanent item, like F39)
+- Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\` (the team lead's
+  folder: its files are never renamed or moved); `scripts/intake.py`; the
+  verified write path (intake sections 26 and 31)
+- Team lead, 2026-10-21: "Add a backlog item and assign to this sprint and
+  all future sprints - paper folders for new items that have not been
+  ingested or read - ingest them and then read them - in general new
+  papers are valuable."
+- **Released every sprint** as a copy with the next free F#, the same way
+  as F39. Copied from the backlog into each sprint once: a sprint that
+  skips it gets no second copy later, and the next sprint's copy simply
+  covers whatever is new by then.
+- Each release: (1) list every PDF in `Papers\` (and its subfolders) that
+  no record's `access` names; (2) match each to a record by DOI or arXiv
+  id first, so a paper already in the store is linked, not entered twice;
+  (3) enter the rest through the intake door; (4) read each one not yet
+  at `read` and enter its claims, every quote checked before the write;
+  (5) a paper that cannot be entered or read keeps the reason.
+- **Snapshot as of 2026-10-21**: 134 PDFs in `Papers\`; 37 are named by
+  no record's `access` (some may already be in the store under their
+  arXiv id). Read at a release, these count toward F57's total as well;
+  they are not read twice.
+- Acceptance per release: every unnamed PDF linked, entered or given a
+  reason; every entered paper at `read` with its assertions, or at `seen`
+  with its reason; the counts before and after recorded.
+- Depends on: none
+
 ### HOLD Items (waiting on an external event)
 
 **F51. The CVQBoost findings record and its six assertions (~45m) Priority HOLD** (NEW 2026-10-03)
@@ -345,7 +374,7 @@ and in git. Remaining items below.
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
 
-**F57. Read for claims: the records still at `seen` and `screened` (permanent, released in slices) Priority 70** (NEW 2026-10-05, team lead at Sprint 6 MV)
+**F57. Read for claims: the records still at `seen` and `screened` (permanent, released in slices) (~325m per 200-record release) Priority 70** (NEW 2026-10-05, team lead at Sprint 6 MV)
 - Phase: Sourcing / extraction (permanent item, like F39)
 - Team lead, 2026-10-05: "what else has not been read for claims - if not
   in backlog, add backlog item to do any missing 'read for claims' entries".
@@ -373,6 +402,24 @@ and in git. Remaining items below.
   at `read`; 2,060 at `seen` or `screened`, of which 2,057 have no read row
   (3 are read and refused). Sprint 10's discovery re-run added 91 at
   `seen`. About 28 more releases at 74 each.
+- **Release size raised to 200, newest paper first** (team lead,
+  2026-10-21, Sprint 11 Phase 1.4): "Re-add the F57 that reads an
+  additional 75 records each sprint ... should be copied from the backlog
+  to each sprint (don't duplicate if skipped in one sprint) and increase
+  the number to 200 each sprint. Continue until all records that are
+  marked as 'seen' and 'screened' are marked 'read' ... work in order from
+  newest to oldest papers by date of the paper."
+  - Each sprint gets ONE released copy with the next free F# (Sprint 10's
+    was F89; Sprint 11's is F96). A skipped sprint does not leave a second
+    copy waiting.
+  - Order: newest to oldest by the paper's own date (its publication
+    date in the provenance; the year where only a year is known). This
+    replaces the relevance ranking in step (2) above.
+  - At 200 per sprint: about 11 releases from the 2026-10-21 count of
+    2,060.
+  - Known limit (Sprint 10 finding): a record with no free copy, or one
+    refused at reading, cannot reach `read`. Each release reports those
+    separately, so the count that closes the item is visible.
 
 ### Carded at Sprint 10 Manual Validation (2026-10-19)
 
@@ -445,6 +492,45 @@ and in git. Remaining items below.
 - Depends on: none
 
 ### Carded at Sprint 11 Phase 1.4 (2026-10-21)
+
+**F94. Redesign this repository's backlog cards from spamfilter-multi's best practices (~45m) Priority 30** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4, targeted for Sprint 11)
+- Phase: Process
+- Platform: `docs/BACKLOG_REFINEMENT.md` (item format), this master
+  plan's cards, `.claude/skills/backlog-refinement/SKILL.md`;
+  `spamfilter-multi`, read only
+- Team lead, 2026-10-21: "look at the spamfilter-multi repo for how sprint
+  cards are designed and update how this repo does sprint cards based on
+  the best practices from spamfilter-multi and applicable to this repo."
+- Candidates seen at carding (spamfilter-multi `docs/BACKLOG_REFINEMENT.md`
+  at 20d2a7ab, to be confirmed in the sprint): a value statement on every
+  card ("This enables..." or "This prevents..."); a Definition of Ready
+  (scope, acceptance, estimate, no blockers, priority); effort always in
+  minutes, derived from step-types, never hours converted; an evidence
+  path for a card made from a screenshot; light detail for items 3 or
+  more sprints away. Also read its master plan's cards and planning docs.
+- Each practice is adopted, adapted or declined with a one-line reason.
+  A format rule that is adopted gets a test that fails on purpose first.
+  Existing cards are converted by hand, re-deriving estimates.
+- Depends on: none
+
+**F96. F57 release for Sprint 11: read 200 records, newest paper first (~325m) Priority 70** (NEW 2026-10-21, released copy of F57)
+- Phase: Sourcing / extraction
+- Platform: the store; Sonnet 5.5 first-pass readers, every quote checked
+  in the write path (intake sections 26 and 31)
+- The 200 newest records at `seen` or `screened` by the paper's own date
+  (snapshot as of 2026-10-21: 2,060 such records). Papers read under F95
+  this sprint count here and are not read twice.
+- Acceptance: each of the 200 at `read` with its assertions, or kept at
+  `seen` with its reason (no free copy, refused); the count before and
+  after recorded.
+- Depends on: none
+
+**F97. F95 release for Sprint 11: ingest and read the new papers in `Papers\` (~90m) Priority 20** (NEW 2026-10-21, released copy of F95)
+- Phase: Sourcing / intake, then reading
+- Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\`; `scripts/intake.py`
+- The 37 PDFs no record names (snapshot as of 2026-10-21), plus any F90
+  or F91 adds this sprint. F95's steps (1) to (5).
+- Depends on: none
 
 **F92. Enter QCi's 2026-10-20 and 2026-10-21 answers to Phase 2's Dirac-3S questions, and correct the records they change (~1h15m) Priority 40** (NEW 2026-10-21, read from Phase 2 at Sprint 11 Phase 1.4; widened the same day by two later emails)
 - Phase: Inbound evidence (F79)
