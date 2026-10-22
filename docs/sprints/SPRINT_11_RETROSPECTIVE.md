@@ -7,6 +7,32 @@ message opened: "Manual Validation complete". It carried this note, new in this 
 
 > Note: The overall goals of the Retrospective is for the entire team (Coding Agents and Non-Coding agents) to be long-term (many sprints) more effective while as efficient as reasonably possible in the context of long-term support of the repository and keeping in mind the Architecture, Software Engineering, Security, DevOps, Six Sigma (heavily weighting improvement that can prevent any current and future issues instead of responding to them), Agile standards and best practices.  To accomplish this we must base what we do on facts supported by references, honesty, objectivity while treating each other in a "tactfully honest way" (as opposed to "brutally honest").
 
+### Claude's feedback on the new wording (asked for: "Please be open with you feedback on the changes")
+
+Given 2026-10-22 12:25 in chat; recorded here because it was asked for as
+part of the retrospective.
+
+- **What it adds that helps.** It states the goal as long-term, and it names
+  security, which no earlier prompt did (no security finding arose this
+  sprint). "Facts supported by references" matches how the Development
+  Team section already works: each claim points at a commit, a test or an
+  intake section. "Tactfully honest" sets a clear tone.
+- **Repetition.** "Prevent rather than respond" now appears twice: in the
+  Six Sigma parenthetical and in "Ensure that all improvement suggestions
+  first attempt to prevent the problem from happening first". One copy is
+  enough.
+- **Name the Six Sigma practice.** If root-cause analysis is wanted (5
+  Whys, or DMAIC's Control step), naming it lets each proposal carry a
+  "Root cause" line. The proposals below carry one, as a trial.
+- **Grammar.** "The overall goals ... is" reads better as "The overall goal
+  ... is".
+- **On "Very Good" in every category.** This sprint's Development Team
+  section records real slips: a "suite passed" claim made before its
+  output was read, a write-path check skipped at first apply, and a wrong
+  context claim in a Manual Validation question. If "Very Good" means "the
+  process caught them before the team lead did", one line saying so would
+  make the record clearer for later sprints.
+
 ## Sprint 11 Retrospective Feedback
 
 ### 1. Effective while as Efficient as Reasonably Possible
@@ -124,12 +150,16 @@ message opened: "Manual Validation complete". It carried this note, new in this 
 ## Improvement Decisions
 
 Proposed 2026-10-22, prevention first, extending an existing prevention
-where one is connected. Awaiting the team lead's disposition.
+where one is connected. Detailed for the team lead the same day ("need
+more informaion on all the Improvements suggestions"); the closer look
+changed two recommendations (I4 and I5, from now to skip). Awaiting the
+team lead's disposition.
 
-| # | Improvement | Type | Disposition | Commit |
-|---|---|---|---|---|
-| I1 | The write path itself refuses what Sprint 11's `verify()` refuses: a quote that does not parse, a value changed from the reader's without `require_edit_basis`, and a figure not in the assertion's own quotes | Prevention (extends Sprint 10 I1 and I2: `store.quotes`, `insert_verified_assertion`) | pending | |
-| I2 | A suite runner that reports one verdict line from the exit code, records it with the commit, and marks the run invalid if the working tree changed during it | Prevention (extends the commit-gate hook; folds into F100) | pending | |
-| I3 | HIGH needs a stated basis per id (setup, scope, definition, proved result); a test refuses HIGH for a measured result | Prevention (extends HIGH_REVIEWED and its test) | pending | |
-| I4 | The code-edit check in `block_unraw_escape.py` (Sprint 8 I5) judges each command segment on its own and ignores text inside a search pattern, so a JSON edit beside a pytest call, or a read-only `grep` whose pattern contains "sed -i" (blocked 2026-10-22 while drafting this retrospective), is not blocked | Prevention of false blocks (extends the Sprint 8 I5 check) | pending | |
-| I5 | A section written before its apply takes every count from the dry run's printed line, never by hand | Prevention (extends intake rule 26's order: section, then apply) | pending | |
+| # | Improvement | Root cause | Type | Recommendation | Disposition |
+|---|---|---|---|---|---|
+| I1a | `require_verbatim` also refuses a quote mark that does not parse, and, given the value, a figure the assertion's own quotes do not hold | The checks lived in one script's `verify()`, so any other script could skip them | Prevention (extends Sprint 10 I2: `store.quotes`) | Now, 40m | pending |
+| I1b | `backup_before_write`, which every `--apply` already calls, first runs the static write-path scan (`test_verified_writes.py`'s `script_problems`) on the calling script and refuses on a problem | The scan ran only with the full suite, after the apply | Prevention (extends the mandatory backup call) | Now, 30m | pending |
+| I2 | A suite runner: one verdict line from the exit code, recorded with the commit, invalid if the tree changed during the run; the commit hook reads it | The verdict was read by eye from scrolling output | Prevention (extends `block_commit_with_piped_tests.py`) | Backlog, folded into F100 | pending |
+| I3 | A shared grading helper: HIGH only with a named basis per id (setup, scope, definition, proved result, stated limit), required of new reading scripts by the same static scan | Each reading script keeps its own HIGH_REVIEWED set with no reason per id | Prevention (extends HIGH_REVIEWED and the static scan) | Backlog, into Sprint 12's F57 release | pending |
+| I4 | The code-edit check in `block_unraw_escape.py` ignores text inside a search pattern | The check matches paths and verbs across a whole command | Prevention of false blocks | Skip | pending |
+| I5 | A section written before its apply takes its counts from the dry run's printed line | A count typed from memory | A written rule | Skip | pending |
