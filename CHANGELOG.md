@@ -26,6 +26,11 @@ this project keeps having to replace with a step.
   F108 ceiling validation result, Priority 80) carded from Phase 2 read
   at b074780 and eef3349; F91 moved from Priority 65 to 62 (step rule;
   sprints with F90). F51's hold copy re-checked: hash unchanged
+- **docs**: F92 widened 2026-10-21: two later QCi emails (Wes Dyk confirms
+  the classifierqboost Hamiltonian, answering P1; Charlotte Brown: integer
+  solver raised to 954 levels on Dirac-3 and Dirac-3S, 9980 planned on
+  3S). Provenance rule corrected: Phase 2 git-ignores `docs/qci_package/`,
+  so the emails are named by file and SHA-256, not by commit
 
 ### 2026-10-18 to 2026-10-21 (Sprint 10, PR #101, merged to develop 2026-10-21 and to main via PR #112 the same day; tagged sprint-10)
 

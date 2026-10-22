@@ -446,14 +446,30 @@ and in git. Remaining items below.
 
 ### Carded at Sprint 11 Phase 1.4 (2026-10-21)
 
-**F92. Enter QCi's 2026-10-20 answers to Phase 2's Dirac-3S questions, and correct the records they change (~1h) Priority 40** (NEW 2026-10-21, read from Phase 2 at Sprint 11 Phase 1.4)
+**F92. Enter QCi's 2026-10-20 and 2026-10-21 answers to Phase 2's Dirac-3S questions, and correct the records they change (~1h15m) Priority 40** (NEW 2026-10-21, read from Phase 2 at Sprint 11 Phase 1.4; widened the same day by two later emails)
 - Phase: Inbound evidence (F79)
 - Platform: the store; `hsbc-qfraud-phase2` read only
   (`docs/phase2/DIRAC_UNDERSTANDINGS.md` section 4 at commit b074780, and
-  the reply it files under `docs/qci_package/`)
+  the three replies under `docs/qci_package/`)
 - A QCi field service engineer answered Phase 2's questions A1 to A12 and
-  P2 on 2026-10-20 (P1 still open). Several answers bear on records in
-  the store (read at b074780, snapshot as of 2026-10-21):
+  P2 on 2026-10-20 (P1 still open at b074780). Two later emails, filed
+  2026-10-21 (team lead), add:
+  - **P1 answered.** Wes Dyk (QCi), 2026-10-21: "I can confirm that the
+    Hamiltonian constructed in eqc_models.ml.classifierqboost follows the
+    formula described" (J = HH^T + lambda*I, C = -2Hy, sum 1, w >= 0),
+    opening "I'm assuming you are referring to your eqc_submit module".
+    Bears on `dirac3-matches-exact-optimum-on-convex-cvqboost`, whose
+    "identical Hamiltonian" rests on that reading.
+  - **Integer levels raised.** Charlotte Brown (QCi), 2026-10-21: "We have
+    increased to 954 levels on the integer solver on both the 3 and 3S
+    systems. In the coming weeks, we will be also increasing the possible
+    levels on 3S to 9980 levels as well." It does not say whether 954 is
+    per variable or the total budget; record that gap, do not resolve it.
+    Bears on `dirac3-integer-variables-bounded-0-to-16`,
+    `dirac3s-guide-gives-two-integer-ranges` and A4's "16 levels". The
+    9980 is a plan, entered as a stated plan, not a capability.
+- Several answers bear on records in the store (read at b074780, snapshot
+  as of 2026-10-21):
   - A6b: raw values are not yet offered on the cloud; outputs are after
     built-in error correction (A6a). Bears on
     `dirac3s-error-correction-is-a-post-processing-step` and
@@ -471,8 +487,11 @@ and in git. Remaining items below.
     `dirac3s-analog-resolution-about-200-to-1`.
 - Grading: a vendor's own statement, by email, not a published document;
   each answer's hedge kept (A4's "I assume").
-- Acceptance: the reply's primary copy located in Phase 2 and read at a
-  named commit; each answer that bears on a stored claim entered as a
+- Acceptance: each email's primary copy read in Phase 2's
+  `docs/qci_package/`. Phase 2 git-ignores that folder, so no commit
+  names it: provenance names the file, its SHA-256 at read (the 2026-10-21
+  pair: Wes e79296e68a0d82bc..., Charlotte 6f9254b78b208df2...), the
+  sender and the send date. Each answer that bears on a stored claim entered as a
   vendor-statement assertion under `platform:dirac-3s` (or
   `platform:dirac-3` for A2), related by ADR-0004 A8 (b) (`contradicts`
   only where both cannot hold); every quote checked through the verified
