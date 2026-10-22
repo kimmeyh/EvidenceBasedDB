@@ -357,8 +357,9 @@ and in git. Remaining items below.
 - **The hand-download list** (team lead, 2026-10-22, Sprint 11 Manual
   Validation Q2: "Keep an on going list of these in relative priority
   order and will likely download in the future"): computed by
-  `python scripts/hand_download_list.py` (intake section 39), never kept
-  by hand. A listed paper the team lead has saved into `Papers\` is
+  `python scripts/hand_download_list.py` (intake sections 39 and 40),
+  never kept by hand, shown on request by the `hand-download-list` skill,
+  each entry with its target file name and why it matters. A listed paper the team lead has saved into `Papers\` is
   caught by step (1) and leaves the list once linked.
 - **Named for the next release (team lead, 2026-10-22):** repository
   https://github.com/wangy8205165/Quantum-NeuralNetwork-WhitePaper,

@@ -26,7 +26,13 @@ this project keeps having to replace with a step.
   the team lead's decision, which its evidence names (Q1 = 2; 7 links).
   F95 names the next release's repository
   (wangy8205165/Quantum-NeuralNetwork-WhitePaper). Intake section 39;
-  `tests/test_hand_download_list.py`, `tests/test_sprint11_f97_intake.py`
+  `tests/test_hand_download_list.py`, `tests/test_sprint11_f97_intake.py`.
+  Same day (Q3 = 1 and the team lead's follow-up): F62's 22 discovery
+  papers with no copy marked onto the list in the store
+  (`scripts/sprint11_q3_f62_hand_download.py`; 38 records); each entry
+  names its target file (intake section 3) and why it matters, in four
+  priority groups; the `hand-download-list` skill shows it on request.
+  Intake section 40
 
 - **feat**: F96 (Sprint 11 Task G, 2026-10-22, the F57 release): the
   200-record slice read: 192 records read by 24 first-pass readers (ledger

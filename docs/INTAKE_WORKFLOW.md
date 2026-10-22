@@ -1186,3 +1186,39 @@ Every count is a snapshot as of 2026-10-22. Written before the apply.
   source. ADR-0004 A8(b) governs `supports` links between assertions, so
   it does not apply; the evidence names the decision so a reader can
   tell the two kinds apart.
+
+## 40. Applied 2026-10-22: F62's discovery papers join the list; each entry names its file and why (Sprint 11 Manual Validation, Q3 = 1)
+
+Every count is a snapshot as of 2026-10-22. Written before the apply.
+
+- **One list (team lead, Q3 = 1).** The 22 store records named in
+  `D:\Data\Harold\EvidenceBasedDB\discovery\f62_hand_download_*.md` that
+  are not yet on the list get one updated-reason segment that puts them
+  on it, naming the discovery file. After that, the store alone decides
+  who is on the list (section 39's rule), and the discovery files are no
+  longer read. `scripts/sprint11_q3_f62_hand_download.py` (dry run,
+  `--apply` with a verified backup first; a second apply writes nothing).
+  Schuld 2018 is on both lists and gets no second segment; 2 entries are
+  not in the store and stay in the discovery files only.
+- **Correction to the Manual Validation message.** It said many of the 22
+  are `hsbc-2026` papers. In the store they are filed under `ml` (21) and
+  `qc` (1); 18 came from the fraud discovery stream.
+- **Each entry now shows (team lead, 2026-10-22: "include the best
+  practice naming suggestion for each of the papers and why we think the
+  paper is important. The list details need to be reproducible easily at
+  any time"):**
+  - the target path: `Papers\<YYYY-MM>_<First-author>_<Title-words>.pdf`
+    (section 3's convention, as F62 built it: the first 8 title words), or
+    `Books\Book - <Title> - <Publisher> <Year>.pdf` for a book;
+  - why it matters, computed from the store: the task that selected it,
+    its relevance group, its contexts, and its citation count.
+- **Priority order, revised.** (1) Named for a question the team lead set
+  (Te Sun 1994, the F78 ceiling question). (2) Fraud: the `hsbc-2026`
+  context or F62's fraud stream, since fraud detection is the active
+  consumer's domain. (3) `qml` or `qc`. (4) Everything else (`ml`,
+  tensor, `world`). Within a group, by citation count, highest first:
+  the count F57's ranking recorded, or the count in F62's disposition.
+  Both are OpenAlex counts at the date of selection.
+- **Shown on request** by the `hand-download-list` skill
+  (`.claude/skills/hand-download-list/`), which runs
+  `python scripts/hand_download_list.py` and shows its output as is.
