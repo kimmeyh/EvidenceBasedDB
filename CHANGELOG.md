@@ -15,6 +15,27 @@ this project keeps having to replace with a step.
 
 ### 2026-10-21 onward (Sprint 11, in progress)
 
+- **feat**: F96 (Sprint 11 Task G, 2026-10-22, the F57 release): the
+  200-record slice read: 192 records read by 24 first-pass readers (ledger
+  groups g01 to g24) and by the coordinator against every quoted passage;
+  649 assertions from 189 records (281 HIGH named one by one, 1 vendor
+  description MODERATE, 367 LOW); 3 records bear on no context; 8 with no
+  copy keep their tier with the reason (7 for hand download, Mezquita 2021
+  retracted). The coordinator replaced 13 values and added quotes for 16.
+  **fix**, same day: the first apply ran without `require_edit_basis` and
+  with the figure check only printed; both now refuse in `verify()`, and
+  the second apply corrected 7 values' quotes (F and G) and moved 5
+  measured results from HIGH to LOW. Intake section 38;
+  `tests/test_sprint11_reading.py` (Issue #120)
+- **feat**: F97 (Sprint 11 Task F, 2026-10-22): new papers in `Papers\`
+  and the team lead's list entered and read: 38 local files linked to 36
+  records, 7 new records (six preprints, NBER w35905, the NVIDIA blog), 6
+  repository records with 6 `code-of` links (`NVIDIA/auto-ontology-eval`
+  entered unlinked: no source names it as a paper's code); 38 records read
+  in ledger groups g25 to g29, 125 assertions from 37 records (54 HIGH, 4
+  vendor descriptions MODERATE). Intake sections 36 and 37;
+  `scripts/sprint11_f97_intake.py`, `scripts/sprint11_reading.py`;
+  `tests/test_sprint11_f97_intake.py` (Issue #119)
 - **feat**: F91 (Sprint 11 Task E, 2026-10-22): magic state cultivation
   (Rosenfeld et al., Science, DOI:10.1126/science.aee7961) entered by DOI
   and read in its free preprint arXiv:2512.13908v1 (the Science license

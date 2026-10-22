@@ -1018,3 +1018,126 @@ apply; corrected after the fresh-eyes review and the second apply.
   quote (the section 34 finding; on its first run it caught a label of
   this script's own that held quote marks), each digit string in a value
   in its own quotes, the abstracts' difference, and every stored field.
+
+## 36. Applied 2026-10-22: new papers in `Papers\` and the team lead's list, entered before reading (Sprint 11 Task F, F97)
+
+Every count is a snapshot as of 2026-10-22. Written before the apply.
+
+- **Before.** 2,289 paper-table records (229 `read`, 14 `screened`,
+  2,046 `seen`, repositories included); 821 assertions.
+- **Local copies linked.** 38 files in `Papers\` named by no record's
+  `access`, Task G's 9 copies held out (the planning snapshot said 37;
+  the difference is one file counted with G). Each matched its record by
+  the arXiv id in its name or first-page stamp, or by a DOI on its first
+  pages, and each record's title was checked against the PDF's first two
+  pages. Three differ in form only (Kerger's title is LaTeX; Dupont's
+  arXiv v1 title differs from the published one; RAND's DOI is printed as
+  a rand.org short link), and one first-page arXiv id was a citation, not
+  the paper's own (the QCi fraud paper cites arXiv:2407.04512), so it was
+  not matched. 38 files to 36 records (two pairs of duplicate files);
+  the path is appended to `access`, with the SHA-256 in `evidence`.
+- **The team lead's list.** Six preprints through the paced fetcher
+  (arXiv:2610.24426, 2610.10629, 2610.00841, 2509.03505, 2609.17488 and
+  Pere's 2509.16410, already in the store with no copy), NBER Working
+  Paper w35905 copied into `Papers\` (the original left in Downloads;
+  identical SHA-256), and the NVIDIA blog article saved to `References\`.
+  7 new records at `seen` (the blog's citation hand-transcribed from the
+  page's own tags). 6 repository records; 6 `code-of` links, each
+  carrying the sentence or title-page line that names the repository.
+  LimiX's repository is linked to both LimiX papers: both title pages
+  print it.
+- **Changed from the plan: one repository is not linked.**
+  `NVIDIA/auto-ontology-eval` is entered but linked to no paper: the blog
+  article never names it, and GitHub describes it as a Text-to-SQL
+  evaluation toolkit, so no source says it is the code of a paper here.
+- **Script.** `scripts/sprint11_f97_intake.py` (`--fetch`, dry run,
+  `--apply`). Reading follows by the ledger (section 32): the 30 matched
+  records not yet `read`, the 7 new records and Pere's, in Task F
+  groups.
+
+## 37. Applied 2026-10-22: Task F's 38 records read and entered (Sprint 11 Task F, F97)
+
+Every count is a snapshot as of 2026-10-22. Written before the apply.
+
+- **Reads.** Ledger groups g25 to g29 (section 32's ledger; no record in
+  two groups), one Sonnet 5.5 first-pass reader each, five at once, under
+  `manifests/sprint11_reads/READER_PROMPT.md`. Every reader's quotes passed
+  the repository's own extraction before it finished; the blog article was
+  read through `store.quotes.source_text`, which the checker now uses too.
+- **The coordinator's read.** Every value read against its quoted passages
+  with about 220 characters each side. It changed seven values (a table the
+  paper cites from its reference 2 presented as the paper's own; "lower
+  than GBDTs" where the quote says "comparatively low"; relabeled datasets
+  called "fully classical"; a machine and version outside the quotes; three
+  critical functions left unnamed; two results of a stylized economic
+  model not scoped to it) and added the quotes those changes rest on.
+- **Grades.** HIGH only for the 54 ids named in HIGH_REVIEWED (a paper's
+  own setup, scope, limits, definition or proved result); 4 vendor product
+  descriptions MODERATE; every other assertion LOW. The reader's own
+  suggestion is not used.
+- **Entered.** 125 assertions from 37 records, each record to `read` with
+  a subagent read row and the coordinator's partial read row. One record
+  (Li 2024, photon-counting Raman spectroscopy) bears on no context: read
+  rows and the reason, tier unchanged.
+- **Script.** `scripts/sprint11_reading.py --task F`, through the verified
+  write path (section 31); it refuses a reader file whose records are not
+  its ledger group's.
+
+## 38. Applied 2026-10-22: Task G's 192 records read and entered (Sprint 11 Task G, F96)
+
+Every count is a snapshot as of 2026-10-22. Written before the first apply;
+corrected after the fresh-eyes review and the second apply (below).
+
+- **Reads.** Ledger groups g01 to g24 (section 32's ledger), one Sonnet 5.5
+  first-pass reader each, at most five at once, under
+  `manifests/sprint11_reads/READER_PROMPT.md`, from local copies only.
+- **No copy: 8 records, not read, tier unchanged, the reason recorded on
+  each.** Six are closed (Elsevier, IEEE twice, Taylor & Francis, Springer
+  twice). Macaluso 2020's free host failed TLS certificate verification on
+  2026-10-21 and was not fetched around the check. Those 7 go on the
+  hand-download list. Mezquita 2021 is a RETRACTED chapter: not read and
+  NOT for the hand-download list.
+- **The coordinator's read.** Every value read against its quoted passages
+  with about 220 characters each side, group by group. It replaced 13
+  values: where the reader's text carried more than its quotes (a figure
+  number, a device or vendor name, a task name, "2D", an author's
+  employer, a connectivity property, a simulation scope the quotes do not
+  state, a footnote marker run into a year), or less (an error term left
+  out), or where the text layer flattened an exponent the value restores
+  (two complexity bounds); added quotes for 16 assertions whose
+  value rests on a sentence beside the reader's quote, and corrected 11
+  quotes to the source's exact characters.
+- **Mechanical checks, in `verify()`, before any write.** Every quote
+  verbatim in the source text (`require_verbatim`); every quote parses as
+  a quote; every replaced value and every quote edit rests on named
+  passages (`require_edit_basis`, section 31); every figure in a value
+  appears in that assertion's own quotes (stricter than section 29: the
+  paper as a whole is not enough). Each one refuses the apply.
+- **Slip, found by the full suite and the fresh-eyes review.** The first
+  apply of Tasks F and G ran without `require_edit_basis`, and the figure
+  check only printed in the dry run. `tests/test_verified_writes.py`
+  failed on the script. The review also found 7 replaced values (Tasks F
+  and G) still saying more than their quotes, and 3 measured results
+  graded HIGH. The second apply, with both checks in `verify()`: quotes
+  added for the 7 (or the extra words cut), and 5 measured negative
+  results moved to LOW (qudit-hardware-limit,
+  fischer-residual-bias-large-systems, qcbm-scaling-limit,
+  qsvr-hardware-auc-050, ewaniuk-weak-nonlinearity-trainability): a
+  measured result from one study is empirical, not a stated limit.
+- **Grades.** HIGH only for the 281 ids named in HIGH_REVIEWED (a paper's
+  own setup, scope, limits, definition or proved result); one vendor product
+  description MODERATE (IQM's description of its Spark prototype); every
+  other assertion LOW (367). A value that mixes the paper's own setup with
+  an empirical claim stays LOW.
+- **Entered.** 649 assertions from 189 records (qml 454, qc 156, world
+  20, method 10, ml 9), each record to `read` with a subagent read row and
+  the coordinator's partial read row. Three records bear on no context
+  (Ke 2023, tree tensor network states; Lawrie 2023, metamaterial design;
+  Avdonin 2023, quantum trees): read rows and the reason, tier unchanged.
+- **F57's count after this release** (with Tasks E and F applied, the
+  same query as section 32): 1,847 records at `seen` or `screened`, of
+  which 1,840 have no read row (2,060 and 2,057 before). The store: 455
+  `read`, 2 `screened`, 1,845 `seen`; 1,595 assertions.
+- **Script.** `scripts/sprint11_reading.py --task G`, through the verified
+  write path (section 31). `tests/test_sprint11_reading.py` covers Tasks F
+  and G; `tests/test_sprint11_f97_intake.py` covers section 36's intake.
