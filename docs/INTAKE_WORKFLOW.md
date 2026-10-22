@@ -863,3 +863,27 @@ calls, so an aliased import is caught too.
 - **Measured on Sprint 10's F89 edits** (snapshot as of 2026-10-21): the
   rule flags the root-2 value and four more whose numbers are in the
   source but not in their quotes. No stored value is wrong.
+
+## 32. Applied 2026-10-21: the third read-for-claims slice, 200 records (Sprint 11 Task G, F96)
+
+Every count is a snapshot as of 2026-10-21. **Written after the slice ran,
+not before** (a slip, disclosed in the sprint note: section 11's order puts
+the section first; `tests/test_intake.py` caught it at the next full run).
+
+- **The slice** is recorded in `manifests/sprint11_f96_slice.json` by
+  `scripts/sprint11_f96_slice.py`: the 200 most-cited `qml` records at
+  `seen` or `screened` with no read row, in F57's relevance order (team
+  lead, 2026-10-21: "switch back to the relavance ranking"). Nothing unread
+  remains under `hsbc-2026` or the Dirac platforms. Left out: the 15
+  records Task F reads (arXiv ids in the names of unlinked PDFs in
+  `Papers\`, and the team lead's list), so no record is read twice; and the
+  9 records of section 29's slice still unread for want of a free copy.
+- **Counts.** Taken as F89's were: 1,015 of 1,405 candidates counted (565
+  by arXiv DOI, 450 by a probed journal DOI); 390 uncounted, the
+  selection's stated limit. The top 200 run from 65 to 14 citations.
+- **Copies.** `scripts/sprint11_f96_downloads.py` (section 29's rules, with
+  a heartbeat file) saved 9 free copies into `Papers\`; one failed on an
+  SSL certificate error (Macaluso 2020); 7 have no free copy known to
+  OpenAlex. The rest of the 200 had local copies already.
+- **F57's count before this release:** 2,060 records at `seen` or
+  `screened`, of which 2,057 have no read row.
