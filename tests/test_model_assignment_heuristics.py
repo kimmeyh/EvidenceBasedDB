@@ -167,3 +167,18 @@ def test_readers_keep_their_own_conclusions_out_of_values_regression():
     d = _load()
     assert "reader_inference" in d["protocols"]["read-only-evidence-gathering"]["description"]
     assert any(e["sprint"] == 9 and "conclusions" in e["outcomes"][0]["findings"] for e in d["learning_log"])
+
+
+def test_parallel_readers_are_capped_and_never_share_a_record_regression():
+    """F99 (Sprint 11 Task A): team lead, 2026-10-21, "these can run by up
+    to 5 agents ... no 2 'read's should impact the same record". The
+    parallel-reading pattern caps readers at 5, names the one-ledger rule
+    and the single fetcher, and keeps the reader protocol. Proven to fail by
+    injection, 2026-10-21: setting max_parallel_readers to 6 turned this
+    red; so did deleting "exactly one" from the rationale. Both restored."""
+    d = _load()
+    pattern = next(p for p in d["task_patterns"] if p["pattern"].startswith("parallel first-pass reading"))
+    assert pattern["max_parallel_readers"] == 5
+    assert pattern["required_protocol"] == "read-only-evidence-gathering"
+    for rule in ("exactly one", "two groups", "one serial fetcher"):
+        assert rule in pattern["rationale"], f"parallel-reading rule missing: {rule!r}"
