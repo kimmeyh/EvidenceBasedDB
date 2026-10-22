@@ -359,6 +359,13 @@ CLASSED = {
     "postquantum-qubit-counts-are-variables": ("not addressed", None),
     "postquantum-no-independent-advantage-2025": ("not addressed", None),
     "postquantum-eqc-heuristic-view": ("not addressed", None),
+    # Added 2026-10-22 (Sprint 11 Task C, F92): QCi's emails of 2026-10-20
+    # and 2026-10-21, sent after the guide. The guide's 0 to 15 and 0 to 16
+    # integer ranges are already classed above; it does not mention 954
+    # levels, the cloud device after the 3S release, or eqc-models' Hamiltonian.
+    "qci-email-dirac3-integer-solver-954-levels": ("not addressed", None),
+    "qci-email-dirac3-cloud-unchanged-by-3s-release": ("not addressed", None),
+    "qci-email-eqc-models-cvqboost-hamiltonian-confirmed": ("not addressed", None),
 }
 
 # Admission-against-interest candidates, for the team lead at Manual

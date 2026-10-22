@@ -83,3 +83,16 @@ Readers run in parallel and share one scratchpad. Put every temporary file
 example `<scratchpad>/g07/`. Never use a generic name such as `t1.txt` at
 the scratchpad root: reader g02 found its files overwritten by another
 reader (Sprint 11, 2026-10-22).
+
+## Check with the repository's own checker before you finish
+
+The store checks quotes with `store.quotes.pdf_text` (plain and `-layout`
+pdftotext output, both, with whitespace collapsed). A quote that passes
+your own check can still fail there. Run this and fix every missing quote:
+
+    python C:\Users\kimme\AppData\Local\Temp\claude\D--Data-Harold-github-EvidenceBasedDB\bfb46eb3-be71-402d-a83e-00790add862d\scratchpad\check_groups.py <your group, e.g. g16>
+
+It must print "0 missing". Copy characters exactly as pdftotext prints them:
+never write an em dash as "--", a minus sign as "-", or a superscript as a
+plain digit. If a quote cannot be copied exactly, cut it before that
+character (Sprint 11: 10 of the first 700 quotes failed for this reason).

@@ -15,6 +15,41 @@ this project keeps having to replace with a step.
 
 ### 2026-10-21 onward (Sprint 11, in progress)
 
+- **feat**: F91 (Sprint 11 Task E, 2026-10-22): magic state cultivation
+  (Rosenfeld et al., Science, DOI:10.1126/science.aee7961) entered by DOI
+  and read in its free preprint arXiv:2512.13908v1 (the Science license
+  starts 2027-10-15): 1 paper at `read`, 6 assertions under `qc`, all LOW
+  (5 HW, 1 SIM projection). The abstracts' difference ("at least
+  0.9999(1)" in Science only) is carried. A fresh-eyes review corrected
+  three scope errors (the 8% filter, the 76(3)% baseline's circuit, the
+  distance-5 code not being a surface code) before commit. Intake section
+  35; `tests/test_f91_magic_state.py` (three injections run) (Issue #118)
+- **fix**: F92's three `platform:dirac-3` assertions classed "not
+  addressed" against the Dirac-3S guide in
+  `scripts/sprint8_f65_dirac3s_reading.py`; the F65 guard had failed the
+  full suite on them (Issue #116)
+- **feat**: F93 (Sprint 11 Task D, 2026-10-22): Phase 2's F108 ceiling
+  validation entered by the inbound path at commit eef3349: 1 source and 4
+  SIM assertions under `ml` (no method recovered the known ceiling,
+  MODERATE as the pass rule was read after the run; the plug-in's 5-12%
+  overstatement; the AUPRC floor tracking the model; default HGB missing a
+  rare threshold). Dated amendment to
+  `docs/research/ceilings-ml-and-optimization.md`; intake section 34;
+  `tests/test_f93_f108_ceiling.py` (three injections run) (Issue #117)
+- **feat**: F92 (Sprint 11 Task C, 2026-10-22): QCi's answers of 2026-10-20
+  and 2026-10-21 entered as vendor statements: 3 email source records
+  (file, SHA-256, sender, date; Phase 2 git-ignores the folder) and 18
+  assertions, hedges and plans at LOW, the 954 levels with the unit "not
+  stated". No relation: the fresh-eyes review found the first apply's one
+  `supports` link failed ADR-0004 A8 (b), and the script withdraws it by
+  name. Intake section 33; `tests/test_f92_qci_answers.py` (four
+  injections run) (Issue #116)
+- **process**: Sprint 11 readers (2026-10-22): each reader writes temp files
+  to its own scratch folder, after one reader's files were overwritten by
+  another; and checks its quotes with the repository's own extraction,
+  after 10 of the first 700 quotes failed it (dashes and minus signs
+  rewritten as ASCII) (Issue #120)
+
 - **chore**: Sprint 11 opened (2026-10-21). The team lead merged PR #101
   into develop (45883ef) and PR #112 to main (5a98c36); `sprint-10`
   tagged on 5a98c36; branch `feature/20261021_Sprint_11` cut from the

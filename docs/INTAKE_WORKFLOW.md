@@ -896,3 +896,125 @@ the section first; `tests/test_intake.py` caught it at the next full run).
   return `manifests/sprint11_reads/group_<g>.json`.
   `tests/test_sprint11_read_ledger.py` fails if a record is in two groups
   or a reader file holds a record outside its group.
+
+## 33. Applied 2026-10-22: QCi's answers of 2026-10-20 and 2026-10-21, as vendor statements (Sprint 11 Task C, F92)
+
+Every count is a snapshot as of 2026-10-22. Written before the script was
+applied.
+
+- **Sources.** Three replies filed by the team lead in Phase 2's
+  `docs/qci_package/` (read only, F79). Phase 2 git-ignores that folder,
+  so no commit names them; each source record names the file, its SHA-256
+  at read, the sender and the send date, and
+  `scripts/sprint11_f92_qci_answers.py` refuses to run when a hash
+  differs. Send dates come from the headers: the 2026-10-20 reply's date
+  and the first 2026-10-21 reply's time are read from the header each is
+  quoted under in the later reply.
+- **Text.** An Outlook `.msg` holds its body as UTF-16LE; the script
+  decodes the whole file at both byte alignments and matches each quote in
+  that text through `require_verbatim` before any write, then writes only
+  through `insert_verified_assertion` (section 31). Phase 2's
+  `docs/phase2/DIRAC_UNDERSTANDINGS.md` section 4 at b074780 was read for
+  the question numbering (the email's 3 to 14 are its A1 to A12).
+- **Grading.** A vendor's statement by email: `vendor-self-claim`,
+  evidence tag N/A, MODERATE; LOW where the answer is hedged ("I assume")
+  or states a plan (raw values on the cloud, Dirac-3S replacing Dirac-3,
+  9980 levels) or names no comparison ("much better results"). Values name
+  roles; citations name the sender.
+- **Relations.** Stored assertions are not rewritten, and no link is
+  made. Every bearing is named in the value with the reason no link is
+  made (ADR-0004 A8 (b)): the guide still says what the stored records say
+  it says, and the cloud answers add to it. The first apply linked the
+  answer to question 8 `supports`
+  `dirac3s-analog-resolution-about-200-to-1`; the fresh-eyes review the
+  same day found that it fails A8 (b) (that record states the guide's
+  text, the "yes" answered a two-part question, and the next answer
+  narrows the ratio to linear contributions). The script withdraws it by
+  name, since the sync adds relations and never removes them. The same
+  review corrected seven values, two citations' subject line, and one
+  inferred role; one finding (a "sum of levels 954" already documented)
+  was not adopted, as neither the store nor Phase 2's section 4 holds it. The 954 levels are entered twice (Dirac-3
+  and Dirac-3S) with the unit "not stated", as the email gives none.
+- **Count.** 3 source records at `read` and 18 assertions.
+  `tests/test_f92_qci_answers.py` checks the hashes, each quote in its own
+  email, each number in its own quotes, that no link remains, the hedges and
+  the stored values.
+- **Classed against the Dirac-3S guide.** Three of the 18 are under
+  `platform:dirac-3`, so the F65 guard
+  (`test_every_prior_dirac3_assertion_is_classed`) failed in the full suite
+  until they were classed. All three are "not addressed" in
+  `scripts/sprint8_f65_dirac3s_reading.py` CLASSED: the guide predates the
+  emails and mentions none of the three points. The guard did its job; the
+  F92 apply had not checked it.
+
+## 34. Applied 2026-10-22: Phase 2's F108 ceiling validation, by the inbound path (Sprint 11 Task D, F93)
+
+Every count is a snapshot as of 2026-10-22. Written after the first apply and
+before the commit (section 33 was written first; this one ran in the same
+pass and is recorded here at once).
+
+- **Source.** `docs/phase2/F108_CEILING_VALIDATION.md` at Phase 2 commit
+  eef3349, the last to touch it (HEAD dbfa4da holds the same blob), read
+  through `git show`, SHA-256 pinned (section 19's inbound rule).
+- **Entered.** 1 source record at `read` and 4 SIM assertions under `ml`
+  by `scripts/sprint11_f93_f108_ceiling.py`, through the verified write
+  path (section 31): the verdict at MODERATE (the pass rule was read after
+  the run), three measurements at HIGH with Phase 2's inferences and
+  unverified causes carried in the values. No relation: the learning-curve
+  result confirms only half of `ding-floor-c-is-model-and-config-specific`.
+- **Answer document.** `docs/research/ceilings-ml-and-optimization.md`
+  carries a dated amendment naming the four assertions.
+  `tests/test_f93_f108_ceiling.py` checks the hash, each quote at the
+  pinned commit, each number in its own quotes, the carried caveats and
+  the stored values.
+- **Fresh-eyes review, the same day.** It found the amendment named the
+  wrong method (section 5 point 2 is the soft-label estimator, which F108
+  did not test) and stated the coordinator's reading unlabeled; both
+  corrected. Two caveats added to the values (the reference arm passes
+  only through the absolute margin; the AUPRC floor understates by about
+  0.04 and is unstable), and a curation note moved from a value to its
+  certainty reasons. **Finding:** one quote had no space after its `;`,
+  so the quote pattern did not parse it and `require_verbatim` passed
+  without checking it; the number test caught it. Recorded for the
+  retrospective.
+
+## 35. Applied 2026-10-22: magic state cultivation, by DOI with the free preprint read (Sprint 11 Task E, F91)
+
+Every count is a snapshot as of 2026-10-22. Written before the first
+apply; corrected after the fresh-eyes review and the second apply.
+
+- **Source.** Rosenfeld et al., "Magic state cultivation on a
+  superconducting quantum processor", Science, DOI:10.1126/science.aee7961.
+  Crossref lists the publisher's license as starting 2027-10-15, so the
+  Science copy was not used. The free preprint arXiv:2512.13908v1 was
+  fetched through the paced fetcher into `Papers\` (SHA-256 642ec2da...,
+  pinned in the test) and every quote is checked against it. The version
+  link is recorded as a hand probe (`version_of` arXiv:2512.13908).
+- **The abstracts differ.** The Science abstract says the fidelity is "at
+  least 0.9999(1)"; the preprint v1 abstract does not say "at least". The
+  record's evidence names the difference, and the fidelity assertion
+  states the number as a lower bound, as the paper's conclusion does.
+- **Entered.** 1 paper record at `read` (read in part: abstract,
+  introduction, results, outlook, and three supplement sections) and 6
+  assertions under `qc`, all LOW: 5 HW (one study's hardware
+  measurement, by the device's maker, not replicated) and 1 SIM (the
+  authors' projection for halved noise), by
+  `scripts/sprint11_f91_magic_state.py` through the verified write path
+  (section 31). No relation: no stored assertion makes the same claim.
+- **Fresh-eyes review, the same day.** It found three values that
+  misstated scope: the 8% retention named the circuit's contents as the
+  filter (the filter is any detection event in the whole circuit); the
+  76(3)% came from a different, shorter circuit and read as a like-for-like
+  baseline; and "distance-5 surface code" is a distance-5 encoding
+  compatible with the surface code, not itself matchable. The 40x figure
+  is the full circuit's error, an upper bound on the state's. All four
+  corrected, with the device (Willow) and the starting code (distance-3
+  color code) named, and the paper's own caveats added: drift of about
+  1×10−4 an hour, no leakage removal units, a proof-of-principle
+  grafting. The projection to about 2 × 10−5 was added as its own SIM
+  assertion. The disposition was synced to the same scope.
+- **Test.** `tests/test_f91_magic_state.py` checks the preprint's hash,
+  each quote in the preprint, that every pair of quote marks is a parsed
+  quote (the section 34 finding; on its first run it caught a label of
+  this script's own that held quote marks), each digit string in a value
+  in its own quotes, the abstracts' difference, and every stored field.
