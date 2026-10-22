@@ -887,3 +887,12 @@ the section first; `tests/test_intake.py` caught it at the next full run).
   OpenAlex. The rest of the 200 had local copies already.
 - **F57's count before this release:** 2,060 records at `seen` or
   `screened`, of which 2,057 have no read row.
+- **The read ledger** (`manifests/sprint11_read_ledger.json`, built by
+  `scripts/sprint11_read_ledger.py`) gives every record Tasks E, F and G
+  read to exactly one group of at most 8, read by one first-pass reader;
+  at most 5 readers run at once (team lead, 2026-10-21). Task G's 200: 192
+  in groups g01 to g24, 8 in `no_copy` with the reason. Readers work from
+  local files only, under `manifests/sprint11_reads/READER_PROMPT.md`, and
+  return `manifests/sprint11_reads/group_<g>.json`.
+  `tests/test_sprint11_read_ledger.py` fails if a record is in two groups
+  or a reader file holds a record outside its group.
