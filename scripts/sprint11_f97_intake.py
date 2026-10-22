@@ -237,14 +237,20 @@ BLOG_ENTRY = {
     "disposition": "Vendor announcement: the NVIDIA Agent Toolkit and its new Auto-Ontology library, which maps "
                    "company data to business concepts; not yet read",
 }
+EVAL_DECISION = ("team lead, 2026-10-22, Sprint 11 Manual Validation Q1 = 2: link it to the blog record. No source "
+                 "names it as the article's code: the article does not mention it, and GitHub describes it as a "
+                 "Text-to-SQL evaluation toolkit. The link rests on the team lead's decision")
+EVAL_DISPOSITION = ("Code repository: named with the NVIDIA blog article in the team lead's list; the article does "
+                    "not name it; linked to the article on the team lead's decision (2026-10-22); not yet screened")
+EVAL_UNLINKED = "it is linked to no paper"
 REPOS = [  # (owner/name as the team lead gave it, the paper it is code of, evidence for the link)
     ("NVIDIA/auto-ontology", "blog",
      f"the blog article links https://github.com/NVIDIA/auto-ontology from \"the new Auto-Ontology library\" "
      f"(local copy {BLOG_COPY.name})"),
-    # Entered, NOT linked: the blog article never names it, and GitHub describes
-    # it as a Text-to-SQL evaluation toolkit, so no source says it is the
-    # code of any paper here (a change from the plan, disclosed 2026-10-22).
-    ("NVIDIA/auto-ontology-eval", None, None),
+    # Entered unlinked at first: the blog article never names it, and GitHub
+    # describes it as a Text-to-SQL evaluation toolkit. Linked at Manual
+    # Validation on the team lead's decision, which the evidence names.
+    ("NVIDIA/auto-ontology-eval", "blog", EVAL_DECISION),
     ("jyryu98/margin-gen-qml-classical-encoding", "2610.24426",
      "\"The code can be found in the following repository: https://github.com/jyryu98/margin-gen-qml-classical"
      "encoding\" (Code Availability; the hyphen falls at a line break)"),
@@ -325,11 +331,9 @@ def apply_changes(conn, apply: bool) -> list[str]:
             record = intake.build_record({"access": f"https://github.com/{owner_name}", "kind": "repo",
                                           "context": "ml" if paper_key in (None, "blog", "2610.10629", "2509.03505")
                                           else "qml",
-                                          "disposition": (f"Code repository: named with {paper_key} in the team "
-                                                          "lead's list; not yet screened" if paper_key else
-                                                          "Code repository: named with the NVIDIA blog article in "
-                                                          "the team lead's list; the article does not name it, so "
-                                                          "it is linked to no paper; not yet screened"),
+                                          "disposition": (EVAL_DISPOSITION if evidence == EVAL_DECISION else
+                                                          f"Code repository: named with {paper_key} in the team "
+                                                          "lead's list; not yet screened"),
                                           "found_via": FOUND_VIA, "cited_as": f"github.com/{owner_name}"}, today=TODAY)
             repo_ids[owner_name] = record.id
             if conn.execute("SELECT 1 FROM records WHERE id = ?", (record.id,)).fetchone():
@@ -338,10 +342,17 @@ def apply_changes(conn, apply: bool) -> list[str]:
                 if apply:
                     insert_paper(conn, record)
                 log.append(f"repo   {record.id}  ({record.value[:60]})")
-        if paper_key is None:
-            log.append(f"no link {repo_ids[owner_name]}: no source names it as a paper's code")
-            continue
         rid, paper = repo_ids[owner_name], ids[paper_key]
+        if evidence == EVAL_DECISION:
+            old = conn.execute("SELECT disposition FROM paper_fields WHERE record_id = ?", (rid,)).fetchone()
+            if old and EVAL_UNLINKED in (old[0] or ""):
+                if apply:
+                    conn.execute("UPDATE paper_fields SET disposition = ? WHERE record_id = ?",
+                                 (EVAL_DISPOSITION, rid))
+                    append_updated_reason(conn, rid, f"{TODAY} (Sprint 11 Manual Validation, Q1 = 2): linked "
+                                          "code-of the NVIDIA blog record on the team lead's decision; no source "
+                                          "names it as the article's code", TODAY)
+                log.append(f"disp   {rid}: linked on the team lead's decision")
         if conn.execute("SELECT 1 FROM source_links WHERE from_id = ? AND to_id = ? AND link_type = 'code-of'",
                         (rid, paper)).fetchone():
             log.append(f"exists link {rid} code-of {paper}")

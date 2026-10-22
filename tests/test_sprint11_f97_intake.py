@@ -1,9 +1,10 @@
 """Sprint 11 Task F (F97): new papers and the team lead's list entered before
 reading, by `scripts/sprint11_f97_intake.py`. Every local copy is in its
 record's `access`, each repository named as a paper's code is linked
-`code-of` to it with evidence, NVIDIA/auto-ontology-eval is entered and linked
-to nothing (no source names it as a paper's code), and a second apply
-writes nothing."""
+`code-of` to it with evidence, NVIDIA/auto-ontology-eval is linked to the
+blog record on the team lead's decision (Manual Validation Q1 = 2; no source
+names it as the article's code, and its evidence says so), and a second
+apply writes nothing."""
 from __future__ import annotations
 
 import importlib.util
@@ -23,13 +24,19 @@ def _script():
     return mod
 
 
-def test_only_the_eval_repository_is_unlinked():
-    """A change from the plan, disclosed 2026-10-22: a link needs a source
-    that names the repository as the paper's code."""
+def test_the_eval_link_names_the_team_leads_decision():
+    """Every repository is linked with evidence. The one link no source
+    supports (auto-ontology-eval, team lead 2026-10-22, Q1 = 2) says in its
+    evidence that it rests on the team lead's decision, and no other link
+    borrows that evidence. Proven to fail by injection, 2026-10-22: with
+    cace-bench's link given EVAL_DECISION as its evidence, this test named
+    both repositories."""
     f97 = _script()
-    unlinked = [o for o, paper, evidence in f97.REPOS if paper is None]
-    assert unlinked == ["NVIDIA/auto-ontology-eval"]
-    assert all(evidence and evidence.strip() for _, paper, evidence in f97.REPOS if paper)
+    assert all(paper and evidence and evidence.strip() for _, paper, evidence in f97.REPOS)
+    decided = [o for o, _, evidence in f97.REPOS if evidence == f97.EVAL_DECISION]
+    assert decided == ["NVIDIA/auto-ontology-eval"]
+    assert "rests on the team lead's decision" in f97.EVAL_DECISION
+    assert "No source names it" in f97.EVAL_DECISION
 
 
 @pytest.mark.live_store
@@ -44,7 +51,6 @@ def test_a_second_apply_writes_nothing(live_copy):
         log = f97.apply_changes(conn, apply=True)
     finally:
         conn.close()
-    changed = [x for x in log if not x.startswith(("exists", "no link", "before:", "after:"))]
+    changed = [x for x in log if not x.startswith(("exists", "before:", "after:"))]
     assert not changed, changed
-    assert sum(1 for x in log if x.startswith("exists link")) == 6
-    assert sum(1 for x in log if x.startswith("no link")) == 1
+    assert sum(1 for x in log if x.startswith("exists link")) == 7

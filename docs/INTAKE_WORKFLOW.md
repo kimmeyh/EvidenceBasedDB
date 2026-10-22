@@ -1144,3 +1144,45 @@ corrected after the fresh-eyes review and the second apply (below).
 - **Script.** `scripts/sprint11_reading.py --task G`, through the verified
   write path (section 31). `tests/test_sprint11_reading.py` covers Tasks F
   and G; `tests/test_sprint11_f97_intake.py` covers section 36's intake.
+
+## 39. Applied 2026-10-22: Sprint 11 Manual Validation decisions (F97 link, the hand-download list)
+
+Every count is a snapshot as of 2026-10-22. Written before the apply.
+
+- **`NVIDIA/auto-ontology-eval` linked `code-of` the NVIDIA blog record
+  (team lead, Q1 = 2).** Section 36 entered it unlinked, because no source
+  names it as the article's code. The team lead chose the link anyway. Its
+  evidence says so plainly: the link rests on the team lead's decision,
+  not on a sentence in a source. The repository record's disposition and
+  updated reason say the same. `scripts/sprint11_f97_intake.py --apply`;
+  7 `code-of` links after (6 before).
+- **The hand-download list is computed, never kept by hand (team lead,
+  Q2: "Keep an on going list of these in relative priority order").** A
+  record is on it when its updated reason puts it on the hand-download
+  list (and not "NOT for the hand-download list"), it is not `read`, and
+  its `access` names no local copy. A file dropped into `Papers\` and
+  linked, or a read, takes it off with no edit to any list.
+  `python scripts/hand_download_list.py` prints it.
+- **Priority order.** First the records named for a question the team
+  lead set (selected outside a ranked F57 release, so they carry no
+  count; today only Te Sun 1994, from the F78 ceiling group). Then the
+  rest by the OpenAlex citation count recorded when F57's relevance
+  ranking selected them (`manifests/*_slice.json`), highest first. The
+  order is a proposal: a record the team lead wants sooner can be moved up
+  by a named override in the script.
+- **On the list today: 16 records** (1 named, 15 ranked: 8 from Sprint
+  10's release, 7 from Sprint 11's). Off it: Chen
+  2025 (now `read`), and the two RETRACTED items (Valdez 2023, Mezquita
+  2021), which are never for the list.
+- **Not on it yet: F62's discovery candidates.** Sprint 9 and 10's F62
+  runs wrote their own hand-download files outside git
+  (`D:\Data\Harold\EvidenceBasedDB\discovery\f62_hand_download_*.md`). 22
+  of their entries are store records at `seen` with no copy and no list
+  segment, so the resolver does not see them (Schuld 2018 is on both; 2
+  are not in the store). Folding them in is the team lead's call, asked
+  at Manual Validation.
+- **A first for the store.** The `code-of` link above is the first
+  source link whose evidence is a decision rather than a sentence from a
+  source. ADR-0004 A8(b) governs `supports` links between assertions, so
+  it does not apply; the evidence names the decision so a reader can
+  tell the two kinds apart.

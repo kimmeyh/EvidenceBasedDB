@@ -15,6 +15,15 @@ this project keeps having to replace with a step.
 
 ### 2026-10-21 onward (Sprint 11, in progress)
 
+- **feat**: Sprint 11 Manual Validation decisions (2026-10-22): the
+  hand-download list is computed from the store in priority order
+  (`scripts/hand_download_list.py`; 16 records as of 2026-10-22; Q2), and
+  `NVIDIA/auto-ontology-eval` is linked `code-of` the NVIDIA blog record on
+  the team lead's decision, which its evidence names (Q1 = 2; 7 links).
+  F95 names the next release's repository
+  (wangy8205165/Quantum-NeuralNetwork-WhitePaper). Intake section 39;
+  `tests/test_hand_download_list.py`, `tests/test_sprint11_f97_intake.py`
+
 - **feat**: F96 (Sprint 11 Task G, 2026-10-22, the F57 release): the
   200-record slice read: 192 records read by 24 first-pass readers (ledger
   groups g01 to g24) and by the coordinator against every quoted passage;

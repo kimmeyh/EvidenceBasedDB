@@ -354,6 +354,16 @@ and in git. Remaining items below.
   no record's `access` (some may already be in the store under their
   arXiv id). Read at a release, these count toward F57's total as well;
   they are not read twice.
+- **The hand-download list** (team lead, 2026-10-22, Sprint 11 Manual
+  Validation Q2: "Keep an on going list of these in relative priority
+  order and will likely download in the future"): computed by
+  `python scripts/hand_download_list.py` (intake section 39), never kept
+  by hand. A listed paper the team lead has saved into `Papers\` is
+  caught by step (1) and leaves the list once linked.
+- **Named for the next release (team lead, 2026-10-22):** repository
+  https://github.com/wangy8205165/Quantum-NeuralNetwork-WhitePaper,
+  entered as a GitHub repository record (intake section 2) and linked to
+  a paper only where a source names it as that paper's code.
 - Acceptance per release: every unnamed PDF linked, entered or given a
   reason; every entered paper at `read` with its assertions, or at `seen`
   with its reason; the counts before and after recorded.
@@ -605,7 +615,7 @@ and in git. Remaining items below.
   last push 2026-10-20 at carding), GitHub REST, read only; the intake
   door; the verified write path
 - Team lead, 2026-10-21: "add to backlog for next sprint: every sprint
-  review the christophe paper repository for new papers, ingest them and
+  review the Christophe Pere paper repository for new papers, ingest them and
   read them". Read as Roadmap-to-QML, his paper list; the seed set once
   held an empty "Christophere Pere QML Github Repo.txt" for it (removed in
   Sprint 4). Correct the repository here if another was meant.
