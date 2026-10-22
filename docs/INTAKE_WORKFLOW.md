@@ -1021,7 +1021,8 @@ apply; corrected after the fresh-eyes review and the second apply.
 
 ## 36. Applied 2026-10-22: new papers in `Papers\` and the team lead's list, entered before reading (Sprint 11 Task F, F97)
 
-Every count is a snapshot as of 2026-10-22. Written before the apply.
+Every count is a snapshot as of 2026-10-22. Written before the apply;
+counts confirmed after it (`tests/test_sprint11_f97_intake.py`).
 
 - **Before.** 2,289 paper-table records (229 `read`, 14 `screened`,
   2,046 `seen`, repositories included); 821 assertions.
@@ -1057,7 +1058,9 @@ Every count is a snapshot as of 2026-10-22. Written before the apply.
 
 ## 37. Applied 2026-10-22: Task F's 38 records read and entered (Sprint 11 Task F, F97)
 
-Every count is a snapshot as of 2026-10-22. Written before the apply.
+Every count is a snapshot as of 2026-10-22. Written before the apply;
+counts confirmed after it. Section 38 records the second apply that
+corrected two of these values' quotes.
 
 - **Reads.** Ledger groups g25 to g29 (section 32's ledger; no record in
   two groups), one Sonnet 5.5 first-pass reader each, five at once, under
