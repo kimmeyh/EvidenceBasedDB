@@ -49,13 +49,53 @@ Every item carries a real registered ID: **F#** for features/process/tech-debt i
 
 **Item details** follow, one flat list in exactly the Summary Index's order (the top 20, then the HOLD items), with no group headers. Each recommended item is detailed once, in its priority place. An item's group is named in its own `Phase:` line, never as a header. **Item format** (verbatim):
 ```markdown
-**<ID>. <Title> (~<effort>) Priority <N>**
+**<ID>. <Title> (~<minutes>m) Priority <N>**
 - Phase: <phase/stage name; this is where the group is named>
+- Value: <"this enables ..." or "this prevents ...", one sentence>
 - Platform: <N/A, or the specific tool/service the item touches>
 - <description bullet>
 - <description bullet>
+- Acceptance: <quantifiable: what exists, or what count holds, when it is done>
 - Depends on: <dependencies if any>
 ```
+
+In the master plan the order of the bullets may vary; the five named ones
+(Phase, Platform, Value, Acceptance, Depends on) are required on every
+card. A permanent item states `Acceptance per release:`.
+`tests/test_backlog_cards.py` enforces them, and the minutes.
+
+**Card practices taken from spamfilter-multi (F94, Sprint 11 Task B,
+2026-10-22).** Read at spamfilter-multi 20d2a7ab (its
+`BACKLOG_REFINEMENT.md`, `SPRINT_PLANNING.md` and master plan cards),
+read only. Each practice and what this repository does with it:
+
+- **Effort in minutes, always** ("EFFORT IS IN MINUTES, ALWAYS"; an hour
+  figure invites rounding up). ADOPTED: `(~<n>m)` in every header; the
+  Sprint 11 cards that carried hours were re-derived from Sprint 10's
+  actuals, not multiplied.
+- **A value statement on every card** ("This enables... / This
+  prevents..."). ADOPTED as the `Value:` bullet. This file named it as an
+  anti-pattern to miss, but no card carried one and nothing checked it.
+- **Quantifiable acceptance criteria** (no "works well"). ADOPTED as the
+  `Acceptance:` bullet on every card; most cards had one, five did not.
+- **Definition of Ready.** ADAPTED: kept below as this repository already
+  had it; a card's Value and Acceptance bullets are now two of its
+  checks.
+- **Origin in the card** (spamfilter names the sprint, retro item and
+  Harold's words in the header). ADAPTED: this repository already writes
+  "(NEW <date>, <source>)" after the header and quotes the team lead in a
+  bullet; for a card made from a screenshot or an email, a bullet names
+  the file and its location, as spamfilter's Evidence field does.
+- **Audit first** ("Is X already true?"). ADAPTED: this repository runs it
+  at planning (SPRINT_EXECUTION_WORKFLOW.md 3.2.2.1, plan-to-branch
+  verification) rather than in the card.
+- **Light detail for items 3 or more sprints away.** DECLINED: this
+  backlog holds about a dozen cards, all near term; detail is cheap here
+  and the team lead selects from it.
+- **Per-requirement traceability (R-N, AC-N, T-N) and a "why not the
+  cheaper tier" note per task.** DECLINED for cards: these cards are small
+  and the plan's task table already names each task's owner and model by
+  `.claude/model_assignment_heuristics.json`.
 
 **Rules**:
 - Priorities are NUMERIC, increments of 10; items that should sprint together use increments of 2. Never ad-hoc groupings.
