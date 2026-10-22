@@ -95,15 +95,17 @@ work is a Class 3 decision and is never made unilaterally.
   yet; every selected F# is an open card in the master plan; F96, F97 and
   F99 are free numbers.
 
-## Decisions (team lead, at approval)
+## Decisions (team lead, 2026-10-21, at approval)
 
-**Q1. How many records does Sprint 11 read in all?**
-1. **About 250:** G reads 200 records, and E's and F's papers come on top
-   (about 45, of which 17 may already be in the store). Adds about 70
-   minutes, all in E and F. Sprint 10's Q3 = 1 set the same rule.
-2. **200:** E's and F's papers count toward the 200, so G reads about 155.
+The team lead answered "q1 1", then approved the plan as amended. Task G
+is restated to Q1 in this commit (Sprint 7 retrospective I2); no runtime
+changes, since Q1 = 1 was the option the estimates assumed.
 
-Recommend 1
+- **Q1 = 1.** G reads 200 records; E's and F's papers come on top and do
+  not count toward the 200 (about 250 records in all).
+
+Issues, one per task: A #114, B #115, C #116, D #117, E #118, F #119,
+G #120.
 
 ## Premise falsifier
 
@@ -163,7 +165,7 @@ before and after.
 - F: every unnamed PDF linked, entered or given a reason; the team lead's
   seven papers and six repositories entered or matched and linked; each
   paper read or kept with its reason; counts before and after
-- G: per Q1, the release read from the ledger; each record yielding or
+- G: 200 records (Q1 = 1, E's and F's not counted), read from the ledger; each record yielding or
   kept with its reason; the count refreshed; no record in two groups
 - Full suite green before every commit, gated on pytest's own exit code;
   CI green on the sprint PR before Manual Validation
