@@ -282,8 +282,13 @@ F25 D1-D3 so it measures adjudication of corrected records.
 Sprint 11 carry-forward, after PR #113 merged to develop and PR #121 merged
 develop to main).
 
-- **Scope**: to be selected at Phase 1.4 (2026-10-23).
-- **Plan**: none yet (Phase 3).
+- **Scope** (DEFINED, team lead 2026-10-23): F101, F95, F98, F100, F102,
+  F57 ("Can you do 400 total this sprint") and F51. The permanent items
+  are released as copies: F103 (F95), F104 (F98, its first) and F105
+  (F57, 400 records). F51's hold condition is not met; plan Q2 asks how it
+  runs. F39 and F90 are not selected.
+- **Plan**: `docs/sprints/SPRINT_12_PLAN.md` (drafted 2026-10-23, awaiting
+  approval).
 
 ## Next Sprint Candidates
 
@@ -715,6 +720,40 @@ and in git. Remaining items below.
   apply writes nothing.
 - Depends on: none (reads at a named commit; a later Phase 2 change is a
   later card)
+
+### Released for Sprint 12 (2026-10-23)
+
+**F103. F95 release for Sprint 12: new papers in `Papers\`, the named repository and the Classiq challenge pages (~45m) Priority 20** (NEW 2026-10-23, released copy of F95)
+- Phase: Sourcing / intake, then reading
+- Value: F95's, for the files and pages in hand on 2026-10-23.
+- Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\`; `scripts/intake.py`
+- F95's steps (1) to (5), plus the repository and the three web pages F95's
+  card names for its next release.
+- Acceptance: F95's per release, plus the repository entered and the three
+  pages entered with their authors' own measurements.
+- Depends on: none
+
+**F104. F98 release for Sprint 12: the first diff of Roadmap-to-QML (~60m) Priority 22** (NEW 2026-10-23, released copy of F98)
+- Phase: Sourcing / intake, then reading
+- Value: F98's, for the list at its commit on the task's day.
+- Platform: github.com/Christophe-pere/Roadmap-to-QML, read only; the intake door
+- The whole list, as the first release (about 21 of 1,402 arXiv ids new,
+  snapshot as of 2026-10-23).
+- Acceptance: F98's per release.
+- Depends on: none
+
+**F105. F57 release for Sprint 12: read 400 records, by relevance, up to 5 agents (~680m) Priority 70** (NEW 2026-10-23, released copy of F57)
+- Phase: Sourcing / extraction
+- Value: F57's, for this sprint's 400 (team lead, 2026-10-23: "Can you do
+  400 total this sprint").
+- Platform: the store; up to 5 Sonnet 5.5 first-pass readers, every quote
+  checked in the write path
+- The top 400 records at `seen` or `screened` by F57's relevance ranking,
+  with F57's I3 HIGH-basis helper built first (30m of the estimate).
+- Acceptance: each of the 400 at `read` with its assertions, or kept at
+  `seen` with its reason; HIGH grades carry their basis; the count before
+  and after recorded.
+- Depends on: none
 
 ## Design documents governing this repository
 
