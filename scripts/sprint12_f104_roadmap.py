@@ -41,7 +41,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import citations, connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.ingest import insert_paper  # noqa: E402
+from store.ingest import add_found_via, append_updated_reason, insert_paper  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location("intake", Path(__file__).with_name("intake.py"))
 intake = importlib.util.module_from_spec(_spec)
@@ -65,7 +65,10 @@ MANIFEST = ROOT / "manifests" / "sprint12_f104_roadmap.json"
 FOUND_VIA = f"Roadmap-to-QML ({REPO}) at commit {COMMIT[:10]}"
 
 _ARXIV = re.compile(r"arxiv\.org/(?:abs|pdf)/(\d{4}\.\d{4,5})", re.I)
-_HELD_ARXIV = re.compile(r"(?<![\d.])(\d{4}\.\d{4,5})(?!\d)")
+# Not after a digit, nor after "digit.", so a DOI's tail is not read as an id, but the DOI form
+# 10.48550/arXiv.2301.01234 is (fresh-eyes review of f99139e).
+_HELD_ARXIV = re.compile(r"(?<!\d)(?<!\d\.)(\d{4}\.\d{4,5})(?!\d)")
+_DOI = re.compile(r"10\.\d{4,9}/[^\s|;,()\"']+")
 _LINK = re.compile(r"\[([^\]]*)\]\((https?://[^)\s]+)\)")
 _NOT_A_PAPER = re.compile(r"arxiv\.org|github\.com|gitlab\.com|scirate\.com|airtable\.com|youtube\.com|youtu\.be", re.I)
 
@@ -129,9 +132,14 @@ def url_doi(url: str) -> str | None:
     m = re.search(r"(10\.\d{4,9}/[^?#\s]+)", url)
     if m:
         return re.sub(r"(\.pdf|/meta|/abstract|/full)$", "", m.group(1)).lower()
-    m = re.search(r"nature\.com/articles/([a-z0-9.\-]+?)(?:\.pdf)?$", url)
+    # Only Nature's current article ids (s41586-...) are their DOI suffix; a legacy id such as
+    # npjqi201523 is not (its DOI is dotted), so it is matched by its URL instead.
+    m = re.search(r"nature\.com/articles/(s[0-9a-z.\-]+?)(?:\.pdf)?$", url)
     if m:
         return f"10.1038/{m.group(1)}".lower()
+    m = re.search(r"pubs\.rsc\.org/\S*/([a-z]\d[a-z]{2}\d{5}[a-z])$", url, re.I)
+    if m:
+        return f"10.1039/{m.group(1)}".lower()
     m = re.search(r"quantum-journal\.org/papers/(q-[\d-]+)/?", url)
     return f"10.22331/{m.group(1)}".lower() if m else None
 
@@ -141,9 +149,14 @@ def held_text(conn) -> str:
         "SELECT f.access, f.evidence, r.provenance FROM paper_fields f JOIN records r ON r.id = f.record_id"))
 
 
+def held_dois(held: str) -> set[str]:
+    return {d.rstrip(".") for d in _DOI.findall(held)}
+
+
 def carried(held: str) -> list[dict]:
     """The non-arXiv links whose DOI the store does not hold, or that carry
     none: carried to the next release."""
+    dois = held_dois(held)
     out, seen = [], set()
     for name in FILES:
         for label, url in _LINK.findall(text_of(name)):
@@ -151,7 +164,7 @@ def carried(held: str) -> list[dict]:
                 continue
             doi = url_doi(url)
             key = doi or url
-            if key in seen or (doi and doi in held):
+            if key in seen or (doi and doi in dois):
                 continue
             seen.add(key)
             out.append({"file": name, "label": " ".join(label.split()), "url": url, "doi": doi})
@@ -230,6 +243,37 @@ def entry(ident: str, where: tuple[str, str]) -> dict:
             "updated_reason": f"{TODAY}: added by scripts/sprint12_f104_roadmap.py ({TAG})"}
 
 
+def holders(conn) -> dict[str, list[str]]:
+    """arXiv id -> the records whose access holds it."""
+    out: dict[str, list[str]] = {}
+    for rid, access in conn.execute("SELECT record_id, access FROM paper_fields"):
+        for ident in set(_HELD_ARXIV.findall(access or "")):
+            out.setdefault(ident, []).append(rid)
+    return out
+
+
+def route_held(conn, apply: bool, everything: dict, ids: list[str], bad: dict) -> tuple[int, list[str]]:
+    """A found_via route on each held paper the list links, as the earlier list release did
+    (scripts/qmlpapers_manifest.py, add_routes): the match is recorded on the record (fresh-eyes
+    review of f99139e). Returns (routes added, listed ids no record's access holds)."""
+    have = {r[0] for r in conn.execute("SELECT record_id FROM paper_found_via WHERE route LIKE ?",
+                                       (f"{FOUND_VIA}%",))}
+    hold, n, unplaced = holders(conn), 0, []
+    for ident, (name, label) in sorted(everything.items()):
+        if ident in ids:
+            continue
+        rids = [rid for i in (bad[ident] if ident in bad else [ident]) for rid in hold.get(i, [])]
+        if not rids:
+            unplaced.append(ident)
+        for rid in sorted(set(rids) - have):
+            if apply:
+                add_found_via(conn, rid, f"{FOUND_VIA}, {name}", label or f"arxiv.org/abs/{ident}")
+                append_updated_reason(conn, rid, f"{TODAY} ({TAG}): also listed in Roadmap-to-QML ({name})", TODAY)
+            have.add(rid)
+            n += 1
+    return n, unplaced
+
+
 def apply_changes(conn, apply: bool, fetcher) -> tuple[list[str], dict]:
     everything = listed()
     held = held_text(conn)
@@ -242,6 +286,11 @@ def apply_changes(conn, apply: bool, fetcher) -> tuple[list[str], dict]:
         entered.append({"arxiv": ident, "record_id": record.id, "listed_in": everything[ident][0],
                         "local_copy": arxiv_file(ident).name if arxiv_file(ident) else None})
         log.append(f"paper  {record.id} [seen]  {record.value[:70]}")
+    routes, unplaced = route_held(conn, apply, everything, ids, bad)
+    if routes:
+        log.append(f"route  {routes} held papers: {FOUND_VIA}, <file>")
+    if unplaced:
+        log.append(f"UNPLACED {len(unplaced)} listed ids held only outside access: {unplaced[:5]}")
     later = carried(held)
     manifest = {
         "release": TAG, "read_on": TODAY, "repository": REPO, "commit": COMMIT,
@@ -249,6 +298,7 @@ def apply_changes(conn, apply: bool, fetcher) -> tuple[list[str], dict]:
         "arxiv_ids_listed": len(everything), "arxiv_ids_new": len(ids), "entered": entered,
         "malformed_links": [{"listed_as": i, "listed_in": everything[i][0], "label": everything[i][1],
                              "held_as": held_ids} for i, held_ids in sorted(bad.items())],
+        "routes_added_to_held_papers": routes if apply else None,
         "carried_to_next_release": later,
         "carried_why": ("links that are not arXiv, matched by the DOI in the URL where it has one, and not in the "
                         "store; this release was sized to the arXiv ids at planning (plan Task F), and F98's next "
@@ -284,12 +334,17 @@ def main(argv: list[str] | None = None) -> int:
             conn.commit()
     finally:
         conn.close()
-    # The release's record: written by the dry run and by the apply that enters, never by a second apply,
-    # which finds nothing new and would overwrite the list of what was entered.
-    if manifest["arxiv_ids_new"] or not MANIFEST.exists():
-        MANIFEST.write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    # The release's record. A later run that enters nothing (or adds no route) keeps what the
+    # earlier apply wrote for it, so the list of what was entered is never lost; the rest is refreshed.
+    new_now = manifest["arxiv_ids_new"]
+    old = json.loads(MANIFEST.read_text(encoding="utf-8")) if MANIFEST.exists() else {}
+    if old and not manifest["arxiv_ids_new"]:
+        manifest["entered"], manifest["arxiv_ids_new"] = old["entered"], old["arxiv_ids_new"]
+    if old.get("routes_added_to_held_papers") and not manifest["routes_added_to_held_papers"]:
+        manifest["routes_added_to_held_papers"] = old["routes_added_to_held_papers"]
+    MANIFEST.write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     print("\n".join(log) or "nothing to enter")
-    print(f"listed {manifest['arxiv_ids_listed']} arXiv ids; new {manifest['arxiv_ids_new']}; carried "
+    print(f"listed {manifest['arxiv_ids_listed']} arXiv ids; new this run {new_now}; carried "
           f"{len(manifest['carried_to_next_release'])} other links; manifest {MANIFEST.relative_to(ROOT)}")
     print("APPLIED" if apply else "DRY RUN: nothing written to the store. Re-run with --apply.")
     return 0

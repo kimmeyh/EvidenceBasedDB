@@ -68,8 +68,8 @@ FOUND_VIA = ("the team lead, 2026-10-23, Sprint 12 Phase 1.4: \"add this to the 
              "determine how best to include\", then \"include with the above\" for Part 1")
 REPO_FOUND_VIA = "the team lead, 2026-10-22: named for the next F95 release (master plan, F95 card)"
 REASON = f"{TODAY} ({TAG}): extracted from the saved copy, read in full on {TODAY}"
-SYNC_REASON = (f"{TODAY} ({TAG}): corrected against the saved page (fresh-eyes review of c80c195; "
-               "INTAKE_WORKFLOW.md section 44, third apply)")
+SYNC_REASON = (f"{TODAY} ({TAG}): corrected against the saved page (fresh-eyes reviews of c80c195 and 77beaa0; "
+               "INTAKE_WORKFLOW.md section 44, third and fourth applies)")
 
 
 def sha(path: Path) -> str:
@@ -180,10 +180,11 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
     A("part1", id="wang-2026-compiler-winner-depends-on-cost-classiq-baseline",
       value=("Running Qiskit 2.5.2 (level 3), pytket 2.18.1 and PyZX 0.10.6 on his own reproduction of the "
              "Classiq challenge's 18-qubit baseline circuit (depth 5329, 3502 CNOTs; it scores the same), PoJen "
-             "Wang found that which tool wins depends on the cost: Qiskit and tket lowered depth by about 6 percent "
+             "Wang found that which tool wins depends on the cost: Qiskit at level 3, and tket followed by Qiskit, "
+             "lowered depth by about 6 percent "
              "and the CNOT count by about 4 percent, while PyZX cut the T-count, as PyZX counts T gates, from 4247 "
              "to about 3160 with either of two methods and its full_reduce raised the CNOTs to 8576. He notes that "
-             "merging one-qubit gates accounts for much of the T-count drop, and that a fault-tolerant compiler "
+             "merging one-qubit gates accounts for much of the T-count drop of the first rows of his chart, and that a fault-tolerant compiler "
              "would need more T gates than PyZX counts. He judges the tket result the one to run on today's noisy "
              "hardware, and a redesign of the same oracle was 56 times shorter than the baseline"),
       provenance="the cost-models section and its figure caption, and the introduction",
@@ -292,9 +293,11 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
                         'gates." (Second place); "the best depth of 95 represents approximately a 56-fold reduction '
                         'in depth relative to our deliberately unoptimized baseline" (participants)'),
       certainty="moderate",
-      certainty_reasons=(ORGANISER + ". The winner's depth and CX count agree with the entrant's own account "
-                         "(wang-2026-classiq-logo-oracle-depth-95-272-cnots), measured separately; not linked, "
-                         "ADR-0004 A8 (b)")),
+      certainty_reasons=("Started MODERATE: the organiser's own account of its own competition. Not upgraded: "
+                         "the winner's depth and CX count agree with the entrant's own account "
+                         "(wang-2026-classiq-logo-oracle-depth-95-272-cnots), but the entrant is an interested "
+                         "party, not an independent check, and the published circuit was not re-run here; not "
+                         "linked, ADR-0004 A8 (b)")),
 ]
 
 

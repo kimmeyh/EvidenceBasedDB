@@ -15,6 +15,19 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **fix**: F104 (Sprint 12 Task F) second apply, 2026-10-23: the
+  fresh-eyes review of f99139e. The 1,397 held papers the list links
+  get a `found_via` route naming it; the DOI form of an arXiv id counts
+  as held; DOIs match whole, not as substrings; a legacy Nature id is no
+  longer turned into a wrong DOI; 25 links carried, not 27. The tests
+  check every listed id is held and routed, and no longer pass on an
+  empty list (INTAKE_WORKFLOW.md section 46) (Issue #128 / PR #122)
+- **fix**: F103 (Sprint 12 Task E) fourth apply, 2026-10-23: the
+  fresh-eyes review of 77beaa0. Section 44's third-apply bullet
+  corrected (the pages' order is open; the PyZX error was Part 2's);
+  Part 1's value scoped to "the first rows" and the two depth-lowering
+  runs named as the page names them; the top-two counts' reason states
+  why it is not upgraded (Issue #127 / PR #122)
 - **feat**: F104 (Sprint 12 Task F, F98's first release, 2026-10-23):
   Roadmap-to-QML read at commit a239747648; 1,418 arXiv ids listed, 21
   new entered at `seen` under `qml` through the door, 20 with a free

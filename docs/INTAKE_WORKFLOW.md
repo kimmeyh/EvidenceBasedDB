@@ -1545,6 +1545,44 @@ Every count is a snapshot as of 2026-10-23. Written before the apply.
   - The script now syncs a held record's disposition, not only inserts
     it; the test compares each disposition and citation with the store
     and checks the repository record and its access.
+- **A fourth apply, the same day: the fresh-eyes review of 77beaa0.**
+  Written before the apply. Two statements in the third-apply bullet
+  above are wrong, and are corrected here, not edited there:
+  - **The order of the pages cannot be decided from them.** The bullet
+    says Part 2 (2026-10-08) came "after the organiser's 2026-10-06
+    wrap-up". The saved Classiq page carries two dates, "Date 06 Oct
+    2026" and "Date 9 October 2026", and its metadata gives
+    `datePublished` 2026-10-09. The 2026-10-01 date of Part 2's PDF is
+    its file metadata (CreationDate), not its text, and the PDF never
+    says "top five". So whether Part 2 was written before the wrap-up is
+    open. No store change: the depth-95 value already gives the placing
+    as the organiser's.
+  - **The PyZX error was in Part 2's assertion, not Part 1's.** The old
+    `wang-2026-depth-95-came-from-redesign-not-compilers` put PyZX's
+    depth 8950 and 8576 CNOTs inside "shortened ... by about 6 percent";
+    Part 1's old value already said full_reduce "raised the CNOTs to
+    8576". And Part 1's old disposition already said six compiler
+    versions; the third apply reworded it to three tools and six
+    versions of the circuit, which is no change in count.
+  - **Values.** Part 1's value now says the one-qubit merging explains
+    the T-count drop "of the first rows of his chart", as the page says,
+    and names the two runs that lowered depth as the page does (Qiskit
+    at level 3, and tket followed by Qiskit).
+  - **The top-two counts stay MODERATE, with the reason stated.** Part
+    2's depth 95 was upgraded because the organiser, the judge, scored it
+    independently of the entrant. The organiser's counts are not
+    upgraded on the entrant's agreement: the entrant is an interested
+    party, and the published circuit was not re-run here.
+  - **Not changed, with why.** The rules assertion keeps the organiser's
+    setup and its participation counts together at MODERATE (the
+    cautious grade of the two). The id prefix `classiq-2026-` stays:
+    renaming an id the export already carries costs more than the
+    inconsistency. The repository record's third-apply reason says
+    "against the saved page" where its source was a GitHub file listing;
+    that reason is history and stays, and this bullet records the
+    correction. `sync_disposition` syncs only the disposition; the test
+    compares citation and evidence, but not `transcribed_from`
+    (carried to the retrospective).
 
 ## 45. Rule from 2026-10-23: a reading script grades HIGH only with a named basis (Sprint 11 retrospective I3, Sprint 12 Task G)
 
@@ -1608,3 +1646,62 @@ Every count is a snapshot as of 2026-10-23. Written before the apply.
   default, which writes `manifests/sprint12_f104_roadmap.json`;
   `--apply` takes a verified backup; a second apply enters nothing and
   leaves the manifest as the first apply wrote it.
+- **A second apply, the same day: the fresh-eyes review of f99139e.**
+  Written before the apply.
+  - **The match is recorded on the held papers.** The first apply named
+    the list only on the 21 papers it entered. The 1,397 held papers the
+    list links now get a `found_via` route naming the list and the file,
+    as the earlier list release did (`scripts/qmlpapers_manifest.py`,
+    `add_routes`), each with an appended updated reason.
+  - **Matching.** An arXiv id in the DOI form `10.48550/arXiv.NNNN.NNNNN`
+    now counts as held (none in the store on 2026-10-23, so nothing
+    changes). A DOI counts as held only as a whole DOI, not as a
+    substring of the joined text. A legacy Nature article id
+    (`npjqi201523`) is no longer turned into a wrong DOI; an RSC article's
+    DOI is read from its URL. **25 links are carried, not 27**: the RSC
+    review by Sajjan et al. was listed twice and is held.
+  - **No copy, and why.** arXiv 2303.16318 is withdrawn on arXiv (its
+    abstract page, 2026-10-23), so it has no PDF. It enters the ledger's
+    `no_copy` when Task G builds the ledger (section 47).
+  - **1,418 against 1,402.** The F104 card counted the year files and
+    `Workforce.md` (1,402 ids, recounted from the saved copy on
+    2026-10-23); this release also reads `Reviews/Reviews.md` and the
+    README, which add 16.
+  - The manifest is rewritten by each run, keeping what an earlier apply
+    entered and routed; the tests check every listed id is held and its
+    records carry the route, and that the second apply still read the
+    list.
+
+## 47. Applied 2026-10-23: the F57 release for Sprint 12, read under the grading rule (Sprint 12 Task G, F105)
+
+Every count is a snapshot as of its own date. Written before the slice
+runs; each later step adds its bullet before it runs.
+
+- **The slice: 400 records.** F57's order (team lead, 2026-10-21):
+  `hsbc-2026`, then the Dirac platforms, then `qml`. Nothing is unread
+  under the earlier contexts (0 on 2026-10-23), so the release is the 400
+  most-cited `qml` records at `seen` or `screened` with no read row,
+  counted by OpenAlex exactly as F89 and F96 counted them.
+  `scripts/sprint12_f105_slice.py` writes
+  `manifests/sprint12_f105_slice.json`. Left out: Task F's 21 records
+  (they come on top of the 400, plan Q1 = 1), and the 17 records of the
+  earlier slices (F89, F96) still unread, which had no free copy. 1,205
+  candidates on 2026-10-23.
+- **Free copies.** `scripts/sprint12_f105_downloads.py` runs Sprint 10's
+  rules (`scripts/sprint10_f89_downloads.py`) on this slice: arXiv
+  through the one paced fetcher (18 s apart), else the open-access PDF
+  OpenAlex lists; a paywalled paper is listed, never fetched; an
+  existing file is never overwritten. F52's cap (240 arXiv requests a
+  session) counts per process, so `--session-count` starts the count at
+  the requests Task F already sent; at the cap the run stops, and a run
+  after the pause fetches what is still missing.
+- **The read ledger.** `manifests/sprint12_read_ledger.json`
+  (`scripts/sprint12_read_ledger.py`): Sprint 11's rule, one record, one
+  group, one first-pass reader, at most 5 readers at once. New:
+  `read_by_coordinator` holds Task E's three pages (section 44), read in
+  full before the ledger existed, so no group can take them again. Task
+  F's 20 records with a copy and the slice's records with a copy go into
+  groups; a record with no copy goes to `no_copy` with its reason.
+- **Readers.** `manifests/sprint12_reads/READER_PROMPT.md`, Sprint 11's
+  prompt with one rule added: a "high" suggestion names its basis
+  (section 45). The coordinator decides every grade.
