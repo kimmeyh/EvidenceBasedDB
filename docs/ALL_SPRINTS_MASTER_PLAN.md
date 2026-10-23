@@ -457,6 +457,15 @@ and in git. Remaining items below.
   - Known limit (Sprint 10 finding): a record with no free copy, or one
     refused at reading, cannot reach `read`. Each release reports those
     separately, so the count that closes the item is visible.
+- **From Sprint 12's release: HIGH needs a named basis (Sprint 11
+  retrospective I3; team lead, 2026-10-23: "i3 as recommended"; ~30m in
+  the release).** In Sprint 11 each reading script kept its own
+  `HIGH_REVIEWED` set with no reason per id, and the fresh-eyes review moved
+  5 measured results from HIGH to LOW after the first apply. A shared helper
+  in `store/` grades HIGH only with a basis named per id: setup, scope,
+  definition, proved result, or stated limit. `store/write_path.py`'s rule
+  requires every new reading script to use it. Acceptance: the release's
+  HIGH grades each carry their basis; the rule proven by injection.
 - Depends on: none
 
 ### Carded at Sprint 10 Manual Validation (2026-10-19)
@@ -669,6 +678,12 @@ and in git. Remaining items below.
   recorded verdict is FAILED or INVALID. It does not require a verdict.
   Step (3)'s decided rule can require one (for example: a PASSED full
   suite for this tree before `gh pr ready`) by changing that hook.
+- **Step (3) decided** (team lead, 2026-10-23): "we only need full suit
+  runs twice per sprint - before manual validation and if any improvements
+  are implemented from Sprint Retrospective. Can the I2 test be limited to
+  these or are there targed, minimal set of tests". Recorded in
+  `SPRINT_EXECUTION_WORKFLOW.md` Phase 4. The targeted set for every other
+  commit becomes a runner mode here, chosen from step (1)'s timings.
 - Depends on: none
 
 **F92. Enter QCi's 2026-10-20 and 2026-10-21 answers to Phase 2's Dirac-3S questions, and correct the records they change (~55m) Priority 40** (NEW 2026-10-21, read from Phase 2 at Sprint 11 Phase 1.4; widened the same day by two later emails)

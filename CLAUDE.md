@@ -213,6 +213,18 @@ once for exactly that reason.
   watching the test go red. The Inherited section below records this class as
   history; this entry is the rule.
 
+- **Don't edit any repository file with `sed -i`, `perl -i` or their kin.
+  Use the Edit tool (Write for a new file); read with the Read and Grep
+  tools.** The Edit tool takes the text verbatim and works every time;
+  shell edits failed on quoting and were blocked often. JSON data may be
+  changed by a python heredoc that uses the json module. Team lead,
+  2026-10-23 (Sprint 11 retrospective I4): "'sed -i' usage has been
+  eliminated as innefective and results in many errors". The same rule
+  stands in spamfilter-multi ("`sed` - Use the Edit tool instead") and
+  Phase 2 (TROUBLESHOOTING.md, Sprint 24 IMP-4). Hook-enforced:
+  `.claude/hooks/block_unraw_escape.py` blocks an in-place edit of any
+  repository file, and treats a search pattern that names sed as data.
+
 - **Don't stage a commit without reading what you are staging.** Run
   `git status --short` first and account for every entry. `git add -A` is fine
   once you have. It happened here: a review-findings commit swept in an

@@ -15,6 +15,14 @@ this project keeps having to replace with a step.
 
 ### 2026-10-21 onward (Sprint 11, in progress)
 
+- **process**: Sprint 11 retrospective I3 to I5 disposed (2026-10-23). I4:
+  every in-place edit of a repository file uses the Edit tool;
+  `block_unraw_escape.py` blocks `sed -i`, `perl -i` and their kin on any
+  repository file (not only code), treats a search pattern naming sed as
+  data, and catches a quoted `"sed"` name. CLAUDE.md rule. I3 carded on
+  F57 from Sprint 12's release; I5 skipped. Also: the commit hook loads the
+  suite runner only from its own repository (security review).
+
 - **process**: Sprint 11 retrospective I1a, I1b and I2 (2026-10-23, team
   lead: "apply now"). I1a: `store.quotes.require_verbatim` also refuses a
   quote mark the quote pattern does not parse and, given `value=`, a figure

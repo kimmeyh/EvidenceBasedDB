@@ -154,14 +154,20 @@ where one is connected. Detailed for the team lead the same day ("need
 more informaion on all the Improvements suggestions"); the closer look
 changed two recommendations (I4 and I5, from now to skip). Team lead,
 2026-10-23: "apply now: i1a, i1b, i2"; I2 moved from the recommended
-backlog to now. I3, I4 and I5 were re-presented the same day and await
-the team lead's disposition.
+backlog to now. I3, I4 and I5 were re-presented the same day. Team
+lead, 2026-10-23: "i3 as recommended | i4 "sed -i" usage has been
+eliminated as innefective and results in many errors. Suggest a way to do
+all of the "sed -i" items a way that works successfully every time and
+then implement it. ... | i5 skip until it has more evidence of value in
+future sprint". I4 changed from skip to a different fix: not loosening the
+hook, but the Edit tool for every in-place edit, enforced, with the false
+blocks removed.
 
 | # | Improvement | Root cause | Type | Recommendation | Disposition |
 |---|---|---|---|---|---|
 | I1a | `require_verbatim` also refuses a quote mark that does not parse, and, given the value, a figure the assertion's own quotes do not hold | The checks lived in one script's `verify()`, so any other script could skip them | Prevention (extends Sprint 10 I2: `store.quotes`) | Now, 40m | Now (2026-10-23): done; intake section 41. Found 2 stored quotes never fully checked: F92's (corrected) and a Sprint 7 Cyc quote (Sprint 12, section 13) |
 | I1b | `backup_before_write`, which every `--apply` already calls, first runs the static write-path scan (`test_verified_writes.py`'s `script_problems`) on the calling script and refuses on a problem | The scan ran only with the full suite, after the apply | Prevention (extends the mandatory backup call) | Now, 30m | Now (2026-10-23): done; `store/write_path.py` |
 | I2 | A suite runner: one verdict line from the exit code, recorded with the commit, invalid if the tree changed during the run; the commit hook reads it | The verdict was read by eye from scrolling output | Prevention (extends `block_commit_with_piped_tests.py`) | Backlog, folded into F100 | Now (2026-10-23, team lead): done; `scripts/run_suite.py`. The hook refuses a red or invalid verdict for the tree but does not require one; that rule stays F100's (card updated) |
-| I3 | A shared grading helper: HIGH only with a named basis per id (setup, scope, definition, proved result, stated limit), required of new reading scripts by the same static scan | Each reading script keeps its own HIGH_REVIEWED set with no reason per id | Prevention (extends HIGH_REVIEWED and the static scan) | Backlog, into Sprint 12's F57 release | pending |
-| I4 | The code-edit check in `block_unraw_escape.py` ignores text inside a search pattern | The check matches paths and verbs across a whole command | Prevention of false blocks | Skip | pending |
-| I5 | A section written before its apply takes its counts from the dry run's printed line | A count typed from memory | A written rule | Skip | pending |
+| I3 | A shared grading helper: HIGH only with a named basis per id (setup, scope, definition, proved result, stated limit), required of new reading scripts by the same static scan | Each reading script keeps its own HIGH_REVIEWED set with no reason per id | Prevention (extends HIGH_REVIEWED and the static scan) | Backlog, into Sprint 12's F57 release | Backlog (team lead, 2026-10-23, as recommended): F57 card, from Sprint 12's release |
+| I4 | The code-edit check in `block_unraw_escape.py` ignores text inside a search pattern | The check matches paths and verbs across a whole command | Prevention of false blocks | Skip | Now, as redirected by the team lead (2026-10-23): every in-place edit of any repository file uses the Edit tool (CLAUDE.md, hook-enforced, as in spamfilter-multi and Phase 2); a search pattern naming sed is data; a quoted `"sed"` name is now caught |
+| I5 | A section written before its apply takes its counts from the dry run's printed line | A count typed from memory | A written rule | Skip | Skip (team lead, 2026-10-23: "skip until it has more evidence of value in future sprint") |
