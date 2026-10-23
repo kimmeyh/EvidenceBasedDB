@@ -233,3 +233,16 @@ the commit named, each on develop (`git log origin/develop --grep "#N"`).
 - [x] **H+C**: Manual Validation Q1-Q6 decided and applied (c0e8c22, 672e982, e45c1c3); step 5 moved to Sprint 11 as F90
 - [x] **H+C**: Retrospective, 16 x 4 (9648c6d); I1 and I2 applied (74049f0) with review fixes (b45b2b5); I3 skipped (team lead)
 - [x] **C**: Summary and master plan roll (d0a1791); Copilot finding fixed (2c2e1b9); PR #101 ready (75f9ada)
+
+## Sprint 11: Enter QCi's Answers, Then Read 200 Records and Every New Paper (reconciled 2026-10-23 at Phase 7.7)
+
+Evidence for each row is the commit named, on the sprint branch
+(`feature/20261021_Sprint_11`, PR #113).
+
+- [x] **C**: Task A (F99, F39 release) -- models unchanged; Sprint 10 outcomes; parallel-reader pattern (a95b1a0)
+- [x] **C**: Task B (F94) -- backlog cards adopt spamfilter-multi's practices (462cc15)
+- [x] **C**: Tasks C, D, E (F92, F93, F91) -- QCi answers, F108 ceiling, magic state cultivation (a56b702)
+- [x] **C**: Tasks F and G (F97, F96) -- slice and copies (ffd68c7); read ledger (729e8c8); new papers entered and read, 200-record slice read (874527c)
+- [x] **H+C**: Manual Validation Q1-Q3 decided and applied (ae29cc1, bed6746); F100 carded (1844986)
+- [x] **H+C**: Retrospective, 16 x 4 (bed6746, a87112a); I1a, I1b, I2 applied (bc658b1) with a security fix (9046f08); I3 carded, I4 applied, I5 skipped (7db1e84)
+- [x] **C**: Summary, master plan roll and this section (this commit); Copilot review waived by the team lead; PR #113 ready

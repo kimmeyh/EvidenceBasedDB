@@ -46,10 +46,27 @@ repository exists. No other F# from either source repository applies here.
 | 8 | docs/sprints/SPRINT_8_SUMMARY.md | [OK] Complete | 2026-10-10 to 2026-10-14 |
 | 9 | docs/sprints/SPRINT_9_SUMMARY.md | [OK] Complete | 2026-10-14 to 2026-10-18 |
 | 10 | docs/sprints/SPRINT_10_SUMMARY.md | [OK] Complete | 2026-10-18 to 2026-10-21 |
+| 11 | docs/sprints/SPRINT_11_SUMMARY.md | [OK] Complete | 2026-10-21 to 2026-10-23 |
 
 ## Last Completed Sprint
 
-Sprint 10 is below; Sprint 9 follows it for continuity.
+Sprint 11 is below; Sprint 10 follows it for continuity.
+
+### Sprint 11: Enter QCi's Answers, Then Read 200 Records and Every New Paper (2026-10-21 to 2026-10-23, PR #113; awaiting the team lead's merge)
+
+Seven tasks, seven issues (#114-#120). **Inbound**: QCi's three emails
+(F92, 18 assertions) and Phase 2's F108 ceiling result (F93). **Papers**:
+magic state cultivation (F91); 38 new files and the team lead's list
+entered and read (F97); the 200-record F57 release read by up to 5 agents
+from one ledger (F96, 649 assertions). **Process**: backlog cards adopt
+spamfilter-multi's practices (F94); the F39 release (F99). Manual
+Validation: a decision-backed `code-of` link, and a computed hand-download
+list with a skill. Store 2,284 -> 2,302 papers (224 -> 455 `read`), 793 ->
+1,595 assertions; suite 1,084 -> 1,175. Retrospective: team lead all "Very
+Good"; I1a, I1b, I2 and I4 applied (quote-mark and figure checks in the
+write path; the backup gate; the verdict runner; the Edit tool for every
+in-place edit), I3 carded on F57, I5 skipped. Full detail:
+`docs/sprints/SPRINT_11_SUMMARY.md`.
 
 ### Sprint 10: Fix the Hooks and the Dirac Records, Then Read the Next 74 (2026-10-18 to 2026-10-21, PR #101, merged to develop and to main via PR #112 on 2026-10-21; tagged sprint-10)
 
@@ -270,7 +287,10 @@ develop to main).
   200 records), F97 (F95) and F99 (F39). F90 is not selected; its 8
   papers wait for the team lead's downloads, and F95 reads them once they
   are in `Papers\`. F98 is carded for Sprint 12. F51 stays HOLD.
-- **Plan**: `docs/sprints/SPRINT_11_PLAN.md` (Phase 3, awaiting approval).
+- **Plan**: `docs/sprints/SPRINT_11_PLAN.md` (approved 2026-10-21, Q1 = 1).
+- **Status** (2026-10-23): Phase 7.7 done; PR #113 ready for the team
+  lead's merge. Shipped cards (F91 to F94, F96, F97) are pruned by hand at
+  Sprint 12's Phase 1.2 sweep.
 
 ## Next Sprint Candidates
 
