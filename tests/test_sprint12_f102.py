@@ -38,20 +38,27 @@ def test_every_quote_and_figure_is_in_its_document():
     restatement's value, it named f151-cvqboost-proxy-below-stable-hgb-on-ulb.
     Restored."""
     checked = _script().verify_all()
-    assert len(checked) == 9
-    assert sum(len(QUOTE.findall(a.citation_context)) for _, a, _ in checked) >= 40
+    assert len(checked) == 12
+    # The number written (second apply, 2026-10-23): a dropped quote is a change to explain, not drift.
+    assert sum(len(QUOTE.findall(a.citation_context)) for _, a, _ in checked) == 99
 
 
 def test_the_store_holds_what_the_script_writes(live_conn):
     """Proven to fail by injection, 2026-10-23: run against the backup
-    taken before the apply, it named f151."""
+    taken before the apply, it named f151; run against the backup taken
+    before the second apply, it named f111 (not yet entered)."""
     f102 = _script()
     for key in f102.DOCS:
         tier = live_conn.execute("SELECT tier FROM paper_fields WHERE record_id = ?", (f102.src_id(key),)).fetchone()
         assert tier is not None and tuple(tier) == ("read",), key
     for key, a in f102.ASSERTIONS:
-        row = live_conn.execute("SELECT r.value, r.evidence_tag, f.citation_context FROM records r JOIN "
-                                "assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()
-        assert row is not None and tuple(row) == (a.value, "SIM", a.citation_context), a.id
+        row = live_conn.execute("SELECT r.value, r.evidence_tag, f.citation_context, r.certainty, "
+                                "r.certainty_reasons FROM records r JOIN assertion_fields f ON f.record_id = r.id "
+                                "WHERE r.id = ?", (a.id,)).fetchone()
+        assert row is not None and tuple(row) == (a.value, "SIM", a.citation_context, a.certainty,
+                                                  a.certainty_reasons), a.id
+        contexts = {c for (c,) in live_conn.execute("SELECT context_id FROM record_contexts WHERE record_id = ?",
+                                                     (a.id,))}
+        assert contexts == {a.context}, a.id
         assert live_conn.execute("SELECT 1 FROM paper_yields WHERE paper_id = ? AND assertion_id = ?",
                                  (f102.src_id(key), a.id)).fetchone(), a.id

@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Sprint 12 Task C (F102): Phase 2's Sprint 28 results, entered by the inbound path.
 
-Six result documents in hsbc-qfraud-phase2's `docs/phase2/`, read whole on
-2026-10-23 at Phase 2 commit 10086da (branch feature/20261019_Sprint_28,
+Seven result documents in hsbc-qfraud-phase2's `docs/phase2/`, read whole
+on 2026-10-23 at Phase 2 commit 10086da (branch feature/20261019_Sprint_28,
 PR #46 still draft), through `git show`, so a later edit in Phase 2 cannot
 change what is checked. One reference record per document, as F93 entered
-F108, and 9 SIM assertions. INTAKE_WORKFLOW.md section 43.
+F108, and 12 SIM assertions. INTAKE_WORKFLOW.md section 43. The second
+apply added F111, whose result the first missed, and corrected five values
+(fresh-eyes review of 5bcafe0).
 
 Certainty as F93's: the consumer project's own measurement, read directly,
 starts HIGH; each value carries Phase 2's own limits, and its inferences
@@ -48,6 +50,8 @@ PHASE2 = r"D:\Data\Harold\github\hsbc-qfraud-phase2"
 COMMIT = "10086da7246219c0c096de27417e2bb1f5dfb41d"
 REPO_URL = "https://github.com/kimmeyh/hsbc-qfraud-phase2"
 REASON = f"{TODAY} ({TAG}): extracted from hsbc-qfraud-phase2 at commit 10086da, read directly on {TODAY}"
+SYNC_REASON = (f"{TODAY} ({TAG}): corrected against the document at 10086da to carry what its source says "
+               "(fresh-eyes review of 5bcafe0; INTAKE_WORKFLOW.md section 43, second apply)")
 OWN = ("Started HIGH: the consumer project's own measurement, read directly at Phase 2 commit 10086da "
        "(PR #46 still draft)")
 
@@ -98,7 +102,17 @@ DOCS = {
              "Reference: the HSBC Phase 2 project's pairwise test of whether any stored model, classical, "
              "CVQBoost proxy or Dirac-3 hardware, is better than another on a subset of ULB",
              [["hsbc-2026", "every stored model pair on ULB, by amount and by day -- Bottom line"]]),
+    "f111": ("docs/phase2/F111_LOKE_PROTOCOL.md", "bf7b589",
+             "63fc82eb62f10d1cb5f0ebc8f617fc6c161d3abd2439d42df3f778f99bb1a570",
+             "Experiment 4 (F111): the CVQBoost-KNN lane, the result",
+             "Sprint 28 Task D (#51), 2026-10-22 (pilot) and 2026-10-23 (run)",
+             "experiments/phase2/results/f111_loke_protocol.json, seeds 42-51, two protocols",
+             "Reference: the HSBC Phase 2 project's re-run of the CVQBoost-KNN lane under Loke et al.'s protocol "
+             "and its own, against the published 0.8108 and the stable HGB",
+             [["hsbc-2026", "the CVQBoost-KNN lane under two protocols -- BLUF, Results and Reading"]]),
 }
+# The date of each document's last commit, for its citation.
+DATES = {"f111": "2026-10-23"}
 
 
 def src_id(key: str) -> str:
@@ -120,7 +134,8 @@ def source_entry(key: str) -> dict:
     return {
         "id": src_id(key), "kind": "reference", "context": applicability[0][0], "tier": "read",
         "title": heading,
-        "citation": (f'hsbc-qfraud-phase2, "{heading}," {file}, commit {last}, 2026-10-22; {first} '
+        "citation": (f'hsbc-qfraud-phase2, "{heading}," {file}, commit {last}, '
+                     f'{DATES.get(key, "2026-10-22")}; {first} '
                      "(hand-transcribed from the document's heading and first line and the repository's git log)"),
         "transcribed_from": f'the heading "{heading}" and the line "{first}"',
         "disposition": disposition,
@@ -156,9 +171,10 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
       value=("On deduplicated ULB (0.17% fraud; Phase 2's preparation, 13 features, seeds 42-46), scikit-learn's "
              "HistGradientBoostingClassifier with its default l2_regularization=0 was unstable: AUPRC mean "
              "0.375, SD 0.170, range 0.480. Setting l2_regularization=1.0 and nothing else gave mean 0.804, SD "
-             "0.022, range 0.055, within 0.03 of Phase 1's XGBoost reference (0.816). Phase 2's mechanism, "
-             "inferred: with no L2 term a leaf holding mostly frauds gets a very large value, and early stopping "
-             "halts after 10 or 11 iterations. A larger min_samples_leaf is not ruled out"),
+             "0.022, range 0.055, within 0.03 of Phase 1's XGBoost reference (0.816). The default ran 10 or 11 "
+             "iterations on every seed (measured). Phase 2's mechanism, inferred: with no L2 term a leaf holding "
+             "mostly frauds gets a very large value, so early stopping halts almost at once. A larger "
+             "min_samples_leaf is not ruled out"),
       provenance="Bottom line, The controlled changes and Mechanism",
       citation_context=('"The cause is HGB\'s default `l2_regularization=0`." (Bottom line, markdown bold dropped); '
                         '"Setting it to 1.0, and changing nothing else, closes the spread" (Bottom line); '
@@ -166,8 +182,10 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
                         '"At 0.17% prevalence a leaf holding mostly frauds" (Mechanism); '
                         '"mean 0.804, SD 0.022, range 0.055, within 0.03 of Phase 1\'s XGBoost matched13 (0.816)" '
                         '(Bottom line); "The default fails it: mean 0.375, SD 0.170, range 0.480." (Bottom line); '
-                        '"with no L2 term, a leaf\'s value is about -G / H" (Mechanism, "Inferred"); "it ran 10 or '
-                        '11 iterations on every seed" (Mechanism); "Leading alternative not ruled out: a larger '
+                        '"with no L2 term, a leaf\'s value is about -G / H" (Mechanism, "Inferred"); "The default\'s '
+                        'early stopping then halts almost at once" (Mechanism, "Inferred"); "it ran 10 or 11 '
+                        'iterations on every seed (`summary.default.n_iter`)" (Mechanism, measured: the run\'s '
+                        'field); "Leading alternative not ruled out: a larger '
                         '`min_samples_leaf`" (Mechanism, markdown bold dropped)'),
       certainty_reasons=(OWN + ". HIGH for the measured spread under the controlled change; the mechanism is Phase "
                          "2's inference, attributed as such. Scope: one data set, five seeds")),
@@ -202,28 +220,39 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
                          "lanes is secondary and uncorrected, and stated so")),
     A("f153", id="f153-learner-selection-formulation-fails-its-falsifier", context="hsbc-2026",
       value=("Phase 2's preregistered integer formulation for choosing weak learners (Experiment 3) failed its "
-             "own falsifier on all six instances: the gap between the best selection found and the floor was "
-             "0.0016 to 0.0026, below the required 0.01, and greedy selection equalled the best objective any "
-             "method found (SCIP stopped at its 300 s cap without improving on it). So no Dirac device quote was "
-             "carried forward on it; Phase 2: the limit is the formulation, not the solver"),
+             "own falsifier on all six instances: at ridge weight 0.002 (the rule's fallback; no weight met the "
+             "rule), the gap between the best selection found and the floor was 0.0016 to 0.0026, below the "
+             "required 0.01, and greedy selection equalled the best objective any method found (SCIP stopped at "
+             "its 300 s cap without improving on it). The device quote computed for it, 77 to 251 s on Dirac-3S "
+             "(an inferred bracket), was not carried forward as ready. Phase 2's reading: the limit is the "
+             "formulation, not the solver"),
       provenance="BLUF, Results and Reading",
       citation_context=('"Experiment 3 (F153): the proxy design, the result" (heading); '
                         '"the gap between the best selection found and the floor is 0.0016 to 0.0026, below the '
                         '0.01 the entry requires" (BLUF); "greedy equals the best objective found on all six '
                         'instances" (Results); "SCIP stopped at its 300 s cap on all six without improving on '
                         'greedy." (Results); "so no device quote is carried forward as ready" (BLUF, markdown bold '
-                        'dropped); "The limit is the formulation, not the solver." (Reading)'),
-      certainty_reasons=OWN + ". Scope: six instances of one formulation; no device run"),
+                        'dropped); "Controls at 0.002: greedy equals the best objective found" (Results, markdown '
+                        'bold dropped); "0.002, rule not met" (Results, markdown bold dropped); "Device quote: 77 '
+                        'to 251 s on Dirac-3S (inferred bracket from F139\'s two Dirac-3 integer probes). Not '
+                        'carried forward as ready (falsifier)." (Results, markdown bold dropped); "The limit is '
+                        'the formulation, not the solver." (Reading)'),
+      certainty_reasons=(OWN + ". HIGH for the measured falsifier. The device quote is Phase 2's inferred bracket, "
+                         "and \"Consistent with F94 ... the limit is the formulation\" is Phase 2's reading, both "
+                         "attributed as such. Scope: six instances of one formulation; no device run")),
     A("f153", id="f153-two-resolution-checks-disagree-in-kind", context="hsbc-2026",
       value=("On Phase 2's Experiment 3 Hamiltonians the max/min ratio of nonzero coefficients was about 2.01, far "
-             "inside Dirac's 200:1 limit as QCi's answer of 2026-10-20 places it, while only 2.9% to 6.2% of "
-             "coefficient pairs differed by at least max/200, failing F104's gate. Which of the two the device "
-             "honors is unverified"),
+             "inside Dirac's 200:1 limit as QCi's answer of 2026-10-20 places it, so that half of the guide's "
+             "check passes; but only 2.9% to 6.2% of coefficient pairs differed by at least max/200, so the "
+             "guide's pairwise half fails. F104's gate, a separate check, also fails on all six. Which of the two "
+             "the device honors is unverified"),
       provenance="Results and Reading",
       citation_context=('"Experiment 3 (F153): the proxy design, the result" (heading); '
                         '"the max/min ratio of the nonzero coefficients is about 2.01, far inside 200" (Results); '
                         '"only 2.9% (`mid`) to 6.2% (`free`) of coefficient pairs differ by at least max / 200" '
-                        '(Results); "QCi\'s answer of 2026-10-20 placed the 200:1 limit" (Reading); "F104\'s gate: '
+                        '(Results); "so that half passes" (Results, markdown bold dropped); "so the pairwise half '
+                        'fails" (Results, markdown bold dropped); "The guide\'s check" (Results, markdown bold '
+                        'dropped); "QCi\'s answer of 2026-10-20 placed the 200:1 limit" (Reading); "F104\'s gate: '
                         'fails on all six" (Results, markdown bold dropped); "Which of the two the device actually '
                         'honors is still unverified" (Reading, markdown bold dropped)'),
       certainty="moderate",
@@ -248,14 +277,20 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
       value=("In the same timing, the proxy solve at 833 variables was flat in rows at about 0.35 s (slope -0.03, "
              "interval inside the predicted band); at 91 variables the solve took 0 to 4 ms and could not be "
              "read (9 of 20 below the timer's resolution). Phase 2 infers, from the slope, about 650 s of training "
-             "at 150,000 rows and 833 variables against the 2 s QCi's paper reports, and states the comparison is "
-             "not like for like: the paper's pool, learners and hardware are not stated, and its 2 s may exclude "
-             "the pool build"),
+             "at 150,000 rows and 833 variables (about 50 s at 91) against the 2 s QCi's paper reports; even with "
+             "the build divided by the processor count (32), an ideal a real parallel build does not reach, about "
+             "20 s and about 2 s. Phase 2 states the comparison is not like for like: the paper's pool size, weak "
+             "learners and hardware are not stated in what Phase 2 holds, and its 2 s may exclude the pool build"),
       provenance="BLUF, Results and Beside the predictions",
       citation_context=('"At 833 variables the solve is flat in rows, at about 0.35 s." (BLUF); "833 variables: '
                         '-0.03 [-0.13, 0.07]. Inside." (Results); "At 91 variables it takes 0 to 4 ms, and 9 of 20 '
                         'solves are below the timer\'s resolution." (BLUF); "the full training is about 650 s at 833 '
-                        'variables" (Beside the predictions); "The paper\'s 2 s at 150,000 rows." (Beside the '
+                        'variables and about 50 s at 91 variables" (Beside the predictions); "If the build were '
+                        'divided by the processor count (32), an ideal that a real parallel build does not reach, '
+                        'the 833-variable training would still be about 20 s; the 91-variable training would be '
+                        'about 2 s." (Beside the predictions); "the paper\'s pool size, weak learners and hardware '
+                        'are not stated in what we hold" (Beside the predictions); "The paper\'s 2 s at 150,000 '
+                        'rows." (Beside the '
                         'predictions, markdown bold dropped); "That scaling is an inference from the fitted slope, '
                         'not a measurement." (Beside the predictions); "The comparison is not like for like" (Beside '
                         'the predictions); "its 2 s may exclude the pool build" (Beside the predictions)'),
@@ -265,23 +300,32 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
       value=("On F108's simulator, whose Bayes error is known, an isotonic-calibrated plug-in built on the stable "
              "HGB (l2_regularization=1.0, fit on 75% of training rows) recovered the ceiling on 2 of 5 seeds on "
              "the main arm, where 4 are needed, the same count as F108's default plug-in; every seed overestimated "
-             "the Bayes error by about 3% to 13%, and calibration moved the estimate by less than 0.0002. So F114 "
-             "stays blocked. Compare f108-hgb-plugin-overstates-bayes-error-5-to-12-percent (a different model "
+             "the Bayes error by about 3% to 13%, and calibration moved the estimate by less than 0.0002. On the "
+             "other two arms it did worse than F108's default plug-in, which recovered 5 of 5 on each: 3 of 5 on "
+             "the noise arm and 0 of 5 on the zero-ceiling arm. Two changes happened at once (the regularization "
+             "and the smaller fitting set), and this run cannot separate them. So F114 stays blocked. Compare f108-hgb-plugin-overstates-bayes-error-5-to-12-percent (a different model "
              "and fitting set; not linked, ADR-0004 A8 (b))"),
       provenance="BLUF, What ran and Results",
       citation_context=('"The calibrated plug-in does not recover the ceiling, so F114 stays blocked." (BLUF, '
                         'markdown bold dropped); "it is within the margin on 2 of 5 seeds; the rule needs 4" (BLUF); '
                         '"differ by less than 0.0002 on every seed" (BLUF); "Every seed\'s estimate is above the Bayes '
                         'error, by about 3% to 13%" (Results, markdown bold dropped); "fit on 75% of the training '
-                        'rows" (What ran); "(`l2_regularization=1.0`)" (What ran)'),
+                        'rows" (What ran); "(`l2_regularization=1.0`)" (What ran); "Noise arm: calibrated 3 of 5, '
+                        'uncalibrated 4 of 5. F108\'s default plug-in recovered 5 of 5 here." (Results, markdown '
+                        'bold dropped); "Zero-ceiling reference arm: calibrated 0 of 5, uncalibrated 1 of 5." '
+                        '(Results, markdown bold dropped); "Two changes happened at once: the regularization and '
+                        'the smaller fitting set (75% of train). This run cannot separate them" (Reading)'),
       certainty_reasons=OWN + ". Scope: one simulator, five seeds"),
     A("f154", id="f154-no-stored-model-better-on-a-ulb-subset", context="hsbc-2026",
       value=("Across 66 pairs of Phase 2's stored ULB models (classical lanes, three CVQBoost proxy setups, Dirac-3 "
              "hardware; ten seeds), none was reliably better than another on either subset tested (amount above "
              "the median, or day 1): no interaction interval excluded zero at the Bonferroni level over 132 "
-             "tests. In every pair both models flagged at least 776 of the 950 test frauds, and at most 34 were "
-             "caught by one and missed by the other. Phase 2 infers an ensemble routing on these subsets would not "
-             "help; a subset defined otherwise is not ruled out"),
+             "tests, and the verdict did not change with tied scores given a tie-neutral share. In every pair both "
+             "models flagged at least 776 of the 950 test frauds, and over all ten seeds at most 34 were caught by "
+             "one and missed by the other (the catch counts of the heavily tied families are inflated by the tied "
+             "rows). Phase 2's stated limit: one fraud moves a subset's recall by about 2-3 points, so a small "
+             "subset effect is below what the design can see. Phase 2 infers an ensemble routing on these subsets "
+             "would not help; a subset defined otherwise is not ruled out"),
       provenance="Bottom line, What was compared and Why the test is the interaction",
       citation_context=('"No stored model is reliably better than another on either subset." (Bottom line, '
                         'markdown bold dropped); "None of the 132 primary tests (66 pairs, 2 subsets) has an '
@@ -291,9 +335,60 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
                         'dropped); "day (`Time` below 86,400 s, or not)" (What was compared); "on day 1" (Why the '
                         'test is the interaction); "these files give an ensemble no subset to route on" (Bottom '
                         'line); "a subset '
-                        'defined by something other than amount or day" (Bottom line)'),
+                        'defined by something other than amount or day" (Bottom line); "With tied scores given a '
+                        'tie-neutral share instead of all being flagged, still none fires." (Bottom line); "Their '
+                        'catch counts are inflated by those extra rows." (Limits); "the verdict does not change" '
+                        '(Limits); "One fraud moves a subset\'s recall by about 2-3 points, so a small subset effect '
+                        'is below what this design can see." (Limits)'),
       certainty_reasons=(OWN + ". HIGH for the null as tested; the ensemble reading is Phase 2's inference, "
                          "attributed as such. Scope: stored predictions, two subsets, 95 frauds per seed")),
+    A("f111", id="f111-cvqboost-knn-lane-below-published-value-under-loke-protocol", context="hsbc-2026",
+      value=("Re-running the CVQBoost-KNN lane under Loke et al.'s protocol (no deduplication, a 70/30 stratified "
+             "split, SMOTETomek at 0.02; seeds 42-51; solved classically on the Hamiltonian eqc-models sends, no "
+             "device), Phase 2 measured mean AUC-PR 0.760 (range 0.683-0.829), 0.051 below the published 0.8108 "
+             "and outside its preregistered tolerance of 0.03. The paper's seeds cannot be recovered and settings "
+             "it leaves open may differ, so Phase 2 does not claim the published value is wrong"),
+      provenance="BLUF, Results, Reading and What was not done",
+      citation_context=('"The lane is not consistent with the published 0.8108." (BLUF, markdown bold dropped); '
+                        '"Its mean under A is 0.760, 0.051 below; the entry\'s tolerance is 0.03." (BLUF); '
+                        '"Protocol A (Loke et al.\'s: no deduplication, 70/30 stratified, SMOTETomek at 0.02)" '
+                        '(The pilot, markdown bold dropped); "Seeds 42-51, both protocols, both lanes" (Results); '
+                        '"KNN lane AUC-PR: A mean 0.760 (range 0.683-0.829)" (Results, markdown bold dropped); '
+                        '"The paper\'s seeds cannot be recovered, and settings it leaves open (feature count, '
+                        'resampling ratio) may differ." (Reading); "so it does not claim the published value is '
+                        'wrong" (Reading); "No device: the lane was solved classically on the Hamiltonian '
+                        'eqc-models sends." (What was not done)'),
+      certainty_reasons=(OWN + ". HIGH for the measured lane; the protocol is Phase 2's reading of Loke et al.'s "
+                         "paper and code. Scope: ten seeds, one data set, no device. Bears on "
+                         "cvqboost-knn-aucpr-0-8108-kaggle-fraud; not linked (ADR-0004 A8 (b)): Phase 2 cannot say "
+                         "why the published value is not reached")),
+    A("f111", id="f111-stable-hgb-beats-cvqboost-knn-lane-under-both-protocols", context="hsbc-2026",
+      value=("Under both protocols on ULB (seeds 42-51), Phase 2's stable HGB (F151's setting) scored higher AUC-PR "
+             "than the CVQBoost-KNN lane: by 0.082 (interval 0.061 to 0.104) under Loke et al.'s protocol and by "
+             "0.033 (0.014 to 0.053) under Phase 2's deduplicated one, with no resampling. Phase 2: for a QML claim "
+             "on ULB the comparison that matters is against a stable classical model on the same rows"),
+      provenance="BLUF, Results and Reading",
+      citation_context=('"The stable HGB beats the KNN lane under both protocols: by 0.082 [0.061, 0.104] under A '
+                        'and by 0.033 [0.014, 0.053] under B." (BLUF, markdown bold dropped); "HGB AUC-PR (F151\'s '
+                        'stable setting)" (Results, markdown bold dropped); "Seeds 42-51, both protocols, both '
+                        'lanes" (Results); "Protocol B (ours: deduplicated, 60/20/20, no resampling)" (The pilot, '
+                        'markdown bold dropped); "For a QML claim on ULB, the comparison that matters is against a '
+                        'stable classical model on the same rows" (Reading, markdown bold dropped)'),
+      certainty_reasons=OWN + ". Scope: ten seeds, one data set, the lane solved classically, no device"),
+    A("f111", id="f111-protocol-moves-hgb-not-measurably-the-knn-lane", context="hsbc-2026",
+      value=("Phase 2's primary result for the CVQBoost-KNN lane: Loke et al.'s protocol against Phase 2's did not "
+             "measurably change it (AUC-PR difference -0.014, 95% interval -0.046 to +0.019, 10 paired seeds), but "
+             "it did move the stable HGB (+0.035, +0.008 to +0.062). Under Loke et al.'s protocol 267 to 329 "
+             "evaluation rows per seed have an exact copy in the training rows; the protocols differ in more than "
+             "duplicates, so the run cannot say which part moves HGB"),
+      provenance="BLUF and What was not done",
+      citation_context=('"Primary result: the protocol does not measurably change the KNN lane." (BLUF, markdown '
+                        'bold dropped); "-0.014, 95% interval [-0.046, +0.019], 10 paired seeds" (BLUF); "The '
+                        'protocol does move HGB: A minus B is +0.035 [+0.008, +0.062]." (BLUF, markdown bold '
+                        'dropped); "under A, 267 to 329 evaluation rows per seed (mean 303.5) have an exact copy in '
+                        'the training rows" (BLUF); "A differs from B in more than duplicates" (BLUF); "so this run '
+                        'cannot say which part moves it" (BLUF)'),
+      certainty_reasons=OWN + ". Scope: ten paired seeds, one data set, the lane solved classically, no device"),
 ]
 
 
@@ -321,7 +416,7 @@ def apply_changes(conn) -> list[str]:
             insert_verified_assertion(conn, a, verified, yielded_by=src_id(key))
             log.append(f"assert {a.id}")
         else:
-            changed = sync_verified_assertion(conn, a, verified, REASON, TODAY)
+            changed = sync_verified_assertion(conn, a, verified, SYNC_REASON, TODAY)
             if changed:
                 log.append(f"synced {a.id}: {', '.join(changed)}")
     return log

@@ -15,6 +15,17 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **feat**: F102 second apply (Sprint 12 Task C, 2026-10-23), from the
+  fresh-eyes review of 5bcafe0. F111's result, which the first apply
+  missed (Phase 2's own validation file still said "No result yet"), is
+  entered as a seventh reference record with 3 SIM assertions: the
+  CVQBoost-KNN lane under Loke et al.'s protocol is 0.051 below the
+  published 0.8108, the stable HGB beats it under both protocols, and the
+  protocol moves HGB but not measurably the lane. Five values corrected
+  to carry what their source says (F110, F153 twice, F154, F114), and
+  F151's measured iteration count moved out of the inferred part. The
+  test checks certainty, reasons and context, and the quote count is
+  exact (99). Intake section 43 (Issue #125)
 - **fix**: F100 follow-up (Sprint 12 Task B, 2026-10-23), from the
   fresh-eyes review of fdedff9. A test's fake pdftotext version stayed in
   the version reader's cache and keyed every later quote check in the
