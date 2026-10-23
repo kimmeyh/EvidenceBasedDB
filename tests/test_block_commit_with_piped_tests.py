@@ -201,6 +201,19 @@ def test_a_commit_of_the_tree_a_red_or_invalid_run_checked_is_blocked(repo, verd
     assert f"suite verdict is {verdict}" in result.stderr
 
 
+def test_the_hook_never_runs_the_runner_of_the_repository_it_checks(repo):
+    """Security review, 2026-10-23: the hook loaded scripts/run_suite.py from
+    the command's repository, so a commit there ran that repository's code.
+    Proven to fail by injection, 2026-10-23: with the hook loading the runner
+    from the checked repository again, the planted marker file appeared."""
+    marker = repo / "ran.txt"
+    (repo / "scripts" / "run_suite.py").write_text(
+        f"from pathlib import Path\nPath({str(marker)!r}).write_text('x')\n", encoding="utf-8")
+    _record(repo, "FAILED", "0" * 40)
+    run("git commit -m x", cwd=repo)
+    assert not marker.exists()
+
+
 def test_an_invalid_run_blocks_its_tree_after_the_run_too(repo):
     """Proven to fail by the same injection, 2026-10-23."""
     _record(repo, "INVALID", "0" * 40, _runner().working_tree(repo))

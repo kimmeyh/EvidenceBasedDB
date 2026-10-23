@@ -144,7 +144,11 @@ def _red_verdict(payload: dict) -> dict | None:
         record = json.loads((top / ".claude" / "suite_verdict.json").read_text(encoding="utf-8"))
         if record.get("verdict") == "PASSED":
             return None
-        spec = importlib.util.spec_from_file_location("run_suite", top / "scripts" / "run_suite.py")
+        # The runner comes from this hook's own repository, never from the
+        # repository the command runs in: a commit elsewhere must not run
+        # that repository's code (security review, 2026-10-23).
+        own_runner = Path(__file__).resolve().parents[2] / "scripts" / "run_suite.py"
+        spec = importlib.util.spec_from_file_location("run_suite", own_runner)
         runner = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(runner)
         tree = runner.working_tree(top)
