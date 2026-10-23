@@ -1362,6 +1362,44 @@ Every count is a snapshot as of 2026-10-23. Written before the apply.
     line is p.146, and the preregistration is read at 7261e4e.
   - `store.citations` now also unescapes DataCite's venue, every author
     name and Crossref's publisher.
+- **A fourth apply, after the fresh-eyes review of 6d2bed4 (written
+  before it).**
+  - **The Elor correction was itself wrong for MLP.** MLP's threshold
+    was tuned: Table 3 (p.5) gives it F1 0.303 with the tuned threshold,
+    against 0.411 with SMOTE. Only SVM's could not be tuned. The value
+    now says balancing did better for both, quoting the "MLP & SVM"
+    paragraph (p.4).
+  - **Two values unchanged in the third apply carry a dropped qualifier
+    or a weaker word than the paper's own summary**: McDermott 2024 (the
+    two metrics differ "with respect to model-dependent parameters" only
+    in how they weight false positives; prevalence also enters AUPRC)
+    and Liu 2026 (back to "slightly", which the abstract's "real but
+    small" supports, now with the ECE figures). The third apply's
+    "small-to-moderate" was the paper's effect-size label, not its
+    reading.
+  - **One anchor named the wrong section**: De Lorenzis's qubit counts
+    are in section 3, not 4.
+  - **The record history now says what each sync changed.** The third
+    apply logged every change as "quote made whole"; each corrected
+    record gets a note naming the correction (the p.146 anchor, the
+    7261e4e pin, each value and why).
+  - **Two paper records' evidence text** still carried what the
+    assertions' corrections fixed (Kakavand: "9 UCI"; De Lorenzis: one
+    qubit range), and three ended ".;" where the hash note joined.
+    Corrected. The new test then found a fourth, Sweke 2025, also from
+    this script's first apply; corrected in a fifth apply. 13 more paper
+    records carry the same ".;" join, written by F48 and F97 (as of
+    2026-10-23); punctuation only, outside F101, and raised at the
+    retrospective rather than changed here.
+  - **A gap the guard still has**, not closed here: a context with one
+    parsed quote and unquoted text beside it (for example
+    `cvqboost-vs-xgboost-auc-under-balancing`) passes. 2 contexts as of
+    2026-10-23, both describing a table's rows or a byline in the
+    coordinator's words, with their figures outside any quote:
+    `cvqboost-vs-xgboost-auc-under-balancing` and
+    `favorable-dirac3-papers-are-qci-authored`. Raised at the
+    retrospective: whether such a description may stand beside quotes,
+    or must become quotes of the table cells.
 - `scripts/sprint12_f101_corrections.py`: dry run by default; `--apply`
   takes a verified backup first; a second apply writes nothing.
 
@@ -1402,3 +1440,74 @@ Every count is a snapshot as of 2026-10-23. Written before the apply.
   `require_verbatim`, with the value, against the blob at 10086da (markdown
   bold dropped first) before anything is written; dry run by default;
   `--apply` takes a verified backup; a second apply writes nothing.
+- **A second apply, after the fresh-eyes review of 5bcafe0 (written
+  before it).**
+  - **F111 has a result at 10086da; the line above saying it has none is
+    wrong.** `docs/phase2/F111_LOKE_PROTOCOL.md` ("Experiment 4 (F111):
+    the CVQBoost-KNN lane, the result") was committed at bf7b589, an
+    ancestor of 10086da. The error came from Phase 2's own
+    `docs/sprints/SPRINT_28_VALIDATION.md`, which at 10086da still says
+    "No result yet" for F111; the result document is the later word. It
+    is entered now as a seventh reference record with 3 SIM assertions
+    under `hsbc-2026`: the lane under Loke et al.'s protocol is 0.051
+    below the published 0.8108 (Phase 2 does not claim the published
+    value is wrong); the stable HGB beats the lane under both protocols;
+    the protocol moves HGB but not measurably the lane. The first bears
+    on `cvqboost-knn-aucpr-0-8108-kaggle-fraud`; not linked (ADR-0004
+    A8 (b)), since Phase 2 says it cannot tell why.
+  - **Five values carried less than their source said**, each corrected
+    with its passages as the edit's basis: F110's 2 s comparison (the
+    ideal-parallel bounds, about 20 s and about 2 s, and "not stated in
+    what we hold"); F153's resolution figures (the 2.9% to 6.2% is the
+    guide's pairwise check; F104's gate fails separately); F153's
+    falsifier (at ridge weight 0.002; the device quote of 77 to 251 s
+    was computed but not carried forward as ready; "the limit is the
+    formulation" is Phase 2's reading); F154's null (its power limit and
+    the tie-inflated catch counts); F114's miss (worse than F108's
+    plug-in on the other two arms, and the run cannot separate the two
+    changes). F151's "10 or 11 iterations" moves out of the inferred
+    part: it was measured.
+  - The store test now checks certainty and context, and the quote count
+    must stay at the number written.
+
+## 44. Applied 2026-10-23: the Classiq Quantum Circuit Challenge pages and the named repository (Sprint 12 Task E, F103)
+
+Every count is a snapshot as of 2026-10-23. Written before the apply.
+
+- **Papers with no record**: 0 at planning; on 2026-10-23 the only PDF
+  no record names is Part 2's write-up, saved by this task. Section 42's
+  three arXiv copies are named by their records.
+- **Three web source records under `qc`, entered as Sprint 11 entered
+  the NVIDIA blog**: a hand citation from each page's own title, author
+  and date, `tier` `read`, the saved copy in `References\` (Part 2's
+  19-page PDF in `Papers\` as its second copy; its QASM file and
+  notebook bundle named in `evidence`, not copied). PoJen Wang's Part 1
+  ("A field guide to quantum circuit compilers") and Part 2 ("A depth-95
+  phase oracle for the Classiq logo"), both 2026-10-08, and Alex
+  Gramolin's "Wrapping up the Classiq Quantum Circuit Challenge"
+  (Classiq, 2026-10-06).
+- **The series is stated, not linked (a change from the plan).** The
+  plan said Part 1 and Part 2 are "linked as a series". No link type
+  fits: `cites` is computed from Crossref reference lists only (ADR-0005
+  A10, and a test recomputes every `cites` link from that cache), and
+  `version-of`, `superseded-by` and `responds-to` say something else.
+  Each record's citation says "Part 1 of 2" or "Part 2 of 2" and its
+  disposition names the other record.
+- **Assertions: 5, each quoting only its own author's measurements**:
+  Part 1's run of three compilers on the baseline (MODERATE); Part 2's
+  depth 95 with 272 CNOTs (HIGH: the organiser scored the same circuit
+  and gives the same numbers) and where the reduction came from
+  (MODERATE); Classiq's rules and participation counts (MODERATE, the
+  organiser's own account) and its placings (HIGH, the organiser's to
+  decide). Part 1's survey of other work is not entered as its claims.
+  Both placings are kept: the blog says "top five" (written before the
+  ranking), Classiq says first. Evidence tag `N/A`: a circuit's counted
+  depth, not a hardware or simulator run.
+- **The repository the team lead named**,
+  `wangy8205165/Quantum-NeuralNetwork-WhitePaper`, as a GitHub
+  repository record (one REST call), linked to no paper: no source names
+  it as a paper's code.
+- `scripts/sprint12_f103_intake.py`: `--fetch` saves the pages (never
+  overwriting); every quote is checked by `require_verbatim` against the
+  saved page before anything is written; dry run by default; `--apply`
+  takes a verified backup; a second apply writes nothing.

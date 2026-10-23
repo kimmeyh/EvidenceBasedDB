@@ -15,6 +15,16 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **fix**: F101 fourth and fifth applies (Sprint 12 Task A, 2026-10-23),
+  from the fresh-eyes review of 6d2bed4. The Elor value now says
+  balancing beat threshold tuning for both MLP and SVM (p.4, Table 3 on
+  p.5); McDermott's value keeps "with respect to model-dependent
+  parameters"; Liu's says "slightly", which the abstract's "real but
+  small" supports, with the ECE figures; De Lorenzis's anchor is
+  section 3. Kakavand's and De Lorenzis's evidence text corrected, and
+  four ".;" joins this script wrote removed. Each sync now names what it
+  changed, and four earlier syncs get a history note. Intake section 42
+  (Issue #123)
 - **feat**: F100 (Sprint 12 Task B, 2026-10-23): the full suite runs in
   199 s with a warm text cache (602 s cold), from 781 s; 1,202 tests
   passed in each timed run (snapshot 2026-10-23). The cause was

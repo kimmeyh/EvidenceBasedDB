@@ -103,6 +103,26 @@ def test_each_corrected_quote_is_whole_and_holds_its_value(live_conn, rid):
         "SELECT f.citation_context, r.value FROM assertion_fields f JOIN records r ON r.id = f.record_id "
         "WHERE f.record_id = ?", (rid,)).fetchone()
     source, passages = F101.QUOTE_FIXES[rid]
+    assert ctx == F101.context_of(passages)
     assert len(QUOTE.findall(ctx)) == len(passages)
     assert value == F101.VALUE_FIXES.get(rid, value)
     require_verbatim(rid, ctx, F101.text_of(source), value=value)
+
+
+@pytest.mark.live_store
+def test_paper_evidence_is_corrected_and_the_history_says_what_changed(live_conn):
+    """The fourth apply (fresh-eyes review of 6d2bed4): each evidence fix
+    made, no ".;" join left on a local-copy note, and each history note
+    present. Proven to fail by injection, 2026-10-23: run against the
+    backup taken before the fourth apply, it named the Kakavand evidence."""
+    for paper, fixes in F101.EVIDENCE_FIXES.items():
+        evidence = live_conn.execute("SELECT evidence FROM paper_fields WHERE record_id = ?", (paper,)).fetchone()[0]
+        for old, new in fixes:
+            assert new in evidence and old not in evidence, paper
+    assert set(F101.EVIDENCE_FIXES) <= set(F101.LOCAL_COPIES)
+    for paper in F101.LOCAL_COPIES:
+        evidence = live_conn.execute("SELECT evidence FROM paper_fields WHERE record_id = ?", (paper,)).fetchone()[0]
+        assert F101.JOIN[0] not in evidence, paper
+    for rid, note in {**F101.ADDENDA, **F101.SYNC_REASONS}.items():
+        history = live_conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()[0]
+        assert note in history, rid
