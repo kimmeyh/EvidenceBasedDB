@@ -1250,3 +1250,42 @@ checked as real. "674 citing papers" counts records, so a paper held as
 both a preprint and a journal record is counted twice. The review
 recomputed every coverage figure from the cache and found them exact, and
 found every one of the 5,224 DOI-matched links in the citing paper's list.
+
+**2026-10-23 (A11): a source link may rest on the team lead's recorded
+decision.** Sprint 12 Task D (F106); found at Sprint 12 Phase 1.3, added to
+the sprint at plan approval, Q3 = 1. Every count below is a snapshot as of
+2026-10-23.
+
+*(a) What changed.* Field 6 says a stored `source_links` row carries "the
+evidence sentence": a sentence from a source that states the link (a
+paper's code-availability line, an arXiv comment), or, for `cites` (A10),
+the reference-list entry that matched. One link now rests on something
+else. At Sprint 11 Manual Validation (2026-10-22, Q1 = 2) the team lead
+chose to link `NVIDIA/auto-ontology-eval` `code-of` the NVIDIA blog record,
+although no source names it as the article's code. That link's evidence
+is the decision, and says so.
+
+*(b) The rule.* A link may rest on the team lead's decision when no source
+sentence states it and the team lead decides it should exist. Its
+evidence then names three things: who decided ("team lead"), the date,
+and where the decision is recorded (the sprint and question). It also
+says plainly that the link rests on that decision. Every other `code-of`
+or `dataset-of` link names its source: a URL or identifier the source
+prints, or the source's own sentence. A test
+(`tests/test_source_link_evidence.py`) checks that every link has
+evidence and that a decision-backed one names all three things. It cannot
+tell a source's own sentence from other text: 24 links quote a sentence
+such as "Code to reproduce our results can be found in Ref. [19]." with
+no quote marks or URL. That part is checked at intake, as before.
+
+*(c) Why not a separate link type.* A decision-backed `code-of` is still a
+code-of relation; a new type would split one relation in two and make
+every reader of field 6 check both. The evidence text already tells the
+two apart, and the test keeps a decision-backed link's text whole.
+
+*(d) Scope as of 2026-10-23.* 170 `code-of` links; 1 rests on a decision.
+`cites` (5,620) is computed (A10) and never decision-backed.
+
+*Revisit when* decision-backed links pass a handful, or when one is to be
+weighed in a certainty: then a stored marker, not a phrase in free text,
+should carry the distinction.

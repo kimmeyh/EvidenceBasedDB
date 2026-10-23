@@ -15,6 +15,16 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **docs**: F106 (Sprint 12 Task D, 2026-10-23): ADR-0005 amendment A11.
+  A source link may rest on the team lead's recorded decision when no
+  source states it; its evidence names who, the date, where it is
+  recorded, and says the link rests on that decision. 1 such link of 170
+  `code-of` links as of 2026-10-23 (the NVIDIA auto-ontology-eval
+  repository, Sprint 11 Q1 = 2). No restatement of field 6 in
+  `CLAUDE.md` or `docs/` needed a change. `tests/test_source_link_evidence.py`
+  checks that every stored link has evidence and that a decision-backed
+  one names all A11 asks; a source's own sentence cannot be told apart
+  mechanically, so that stays an intake check (injections run) (Issue #126)
 - **fix**: F101 (Sprint 12 Task A, 2026-10-23): HTML entities out of the
   store. `store.citations` now unescapes Crossref and DataCite titles,
   subtitles and venues; the 4 records that stored "&amp;" (Jeffery 2024,
