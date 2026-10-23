@@ -87,24 +87,71 @@ def missing_quotes(citation_context: str | None, text: str) -> list[str]:
 
 @dataclass(frozen=True)
 class Verified:
-    """What `require_verbatim` returns: this record's quotes, exactly as
-    checked against its source. Made only by `require_verbatim`; the
-    verified write helpers compare it with the record they write."""
+    """What `require_verbatim` returns: this record's quotes and value,
+    exactly as checked against its source. Made only by `require_verbatim`;
+    the verified write helpers compare it with the record they write, so a
+    check run without the value cannot license a write."""
     record_id: str
     citation_context: str
+    value: str | None
 
 
-def require_verbatim(record_id: str, citation_context: str | None, text: str) -> Verified:
-    """Refuse an assertion whose quotes are not all in its source, or that
-    carries none. Called before the write, so a bad quote never reaches the
-    store."""
+def stray_quote_marks(citation_context: str) -> list[int]:
+    """The positions of quote marks outside every parsed quote and its
+    anchor (Sprint 11 retrospective I1a). A quote QUOTE does not parse is
+    never checked: Sprint 11's F92 wrote `;"On which problem class?"` with
+    no space after the semicolon, and a Sprint 7 Cyc quote stops at its
+    inner `"split" (`. A quote mark inside a quote, or inside its anchor
+    (`(p.31; the source's spelling "statisitics" kept)`), is not stray."""
+    covered: set[int] = set()
+    for m in QUOTE.finditer(citation_context):
+        covered.update(range(m.start(), m.end()))
+        depth, i = 1, m.end()
+        while i < len(citation_context) and depth:
+            depth += {"(": 1, ")": -1}.get(citation_context[i], 0)
+            covered.add(i)
+            i += 1
+    return [i for i, ch in enumerate(citation_context) if ch == '"' and i not in covered]
+
+
+def unquoted_figures(value: str, citation_context: str, read_from_page: tuple[str, ...] = ()) -> list[str]:
+    """The figures in `value` that none of its own quotes holds. Moved from
+    Sprint 11's reading script, whose 649 values passed it. Lighter than
+    `unsupported_by_basis`, which checks a coordinator's replaced value
+    with its signs: a digit inside a word, or closing a hyphenated name
+    (LimiX-2, Dirac-3), is a name here, not a figure, and so is a phase
+    ("Phase 2's simulator", in F92's and F93's values)."""
+    quoted = " ".join(plain(q) for q in QUOTE.findall(citation_context))
+    value = re.sub(r"\bPhase \d+\b", "Phase", plain(value))
+    return [n for n in re.findall(r"(?<![\w.,])(?<![A-Za-z]-)\d+(?:[.,]\d+)?", value)
+            if not re.search(rf"(?<![\d.]){re.escape(n)}(?!\d)", quoted) and n not in read_from_page]
+
+
+def require_verbatim(record_id: str, citation_context: str | None, text: str, value: str | None = None,
+                     read_from_page: tuple[str, ...] = ()) -> Verified:
+    """Refuse an assertion whose quotes are not all in its source, that
+    carries none, that has a quote mark the quote pattern does not parse,
+    or whose `value` states a figure its own quotes do not hold. Called
+    before the write, so a bad quote never reaches the store.
+
+    Sprint 11 retrospective I1a (2026-10-23): the last two checks lived only
+    in one reading script's `verify()`, so the other scripts skipped them.
+    The write helpers refuse a `Verified` whose value is not the record's,
+    so the figure check cannot be left out by omitting `value`.
+    `read_from_page` lists figures read from the page image, as in
+    `require_edit_basis`."""
     if not QUOTE.findall(citation_context or ""):
         raise ValueError(f"{record_id}: no quote in citation_context")
+    if stray_quote_marks(citation_context):
+        raise ValueError(f"{record_id}: a quote mark the quote pattern does not parse, so its quote is never "
+                         "checked (separate quotes with '; ' and end each with ' (anchor)')")
     missing = missing_quotes(citation_context, text)
     if missing:
         raise ValueError(f"{record_id}: not verbatim in its source: {missing[0][:80]!r}"
                          + (f" (and {len(missing) - 1} more)" if len(missing) > 1 else ""))
-    return Verified(record_id, citation_context)
+    if value is not None and (figures := unquoted_figures(value, citation_context, read_from_page)):
+        raise ValueError(f"{record_id}: the value states {', '.join(figures)}, which its own quotes do not hold")
+    return Verified(record_id, citation_context, value)
 
 
 # A number with its sign: a minus sign (U+2212) is always a sign; a hyphen

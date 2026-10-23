@@ -213,3 +213,36 @@ Evidence for each row is the commit named, each on develop
 - [x] **H+C**: Manual Validation Q1-Q6 decided and applied (4530b35, 8b6c8ca)
 - [x] **H+C**: Retrospective, 16 x 4 (fdd8018), improvements I1, I3, I4, I5 applied (202478f, 3a455ce, 8c94ef4), I7 applied (d54d2c0, 47cbdc1); I2 and I6 skipped (team lead)
 - [x] **C**: Post-hand-over review fixes (7a0d32d)
+
+## Sprint 10: Fix the Hooks and the Dirac Records, Then Read the Next 74 (back-filled 2026-10-21 at Sprint 11 Phase 1.2)
+
+Not reconciled at Sprint 10's Phase 7 (retrospective step 7 names it; it
+was missed); found by Sprint 11's Phase 1.2 sweep. Evidence for each row is
+the commit named, each on develop (`git log origin/develop --grep "#N"`).
+
+- [x] **C**: Task A (F81) -- code-edit hook cuts at the editor's own command (021d2a8); review and three security-review fixes (10f7741, 6690c39, f1cb0bc)
+- [x] **C**: Task B (F88, F39 release) -- models verified, Sprint 9 reader rows, reader_inference rule (1c57ecd)
+- [x] **C**: Task C (F50) -- Cyc's stored counts qualify point 7 (69be67c)
+- [x] **C**: Task D (F86) -- DOI probe asks DataCite; Zenodo answered (250ede3); review fix (c634d00)
+- [x] **C**: Task E (F82) -- never-write hook, git options per subcommand (6cd9002); review and security fixes (6c37e83, 08f5510, d4d664c); `--ext-diff`/`--textconv` unblocked (changed commitment, disclosed)
+- [x] **C**: Task F (F84) -- ADR-0004 A10 platform:dirac-1, nine records, 12 assertions (9781f9f); review fix and A10 correction (826a189)
+- [x] **C**: Task G (F85) -- Phase 2's Dirac-3S verification, four assertions (7ddc2e1); review fix (596a1dc)
+- [x] **C**: Task H (F83) -- per-instance optimization bounds (15846d1); review fix and intake rule 26 applied to F, G, H (0a366e2)
+- [x] **C**: Task I (F89) -- slice (11744c1); copies (bae11ed); 64 read, 216 assertions (cc4d5c0); review fixes (3af3fd9); 8 with no free copy carded as F90 (9648c6d)
+- [x] **C**: Task J (F87) -- discovery filters (fb5c0ba); review fixes (3af3fd9); live re-run (672e982); 91 entered at seen (e45c1c3)
+- [x] **H+C**: Manual Validation Q1-Q6 decided and applied (c0e8c22, 672e982, e45c1c3); step 5 moved to Sprint 11 as F90
+- [x] **H+C**: Retrospective, 16 x 4 (9648c6d); I1 and I2 applied (74049f0) with review fixes (b45b2b5); I3 skipped (team lead)
+- [x] **C**: Summary and master plan roll (d0a1791); Copilot finding fixed (2c2e1b9); PR #101 ready (75f9ada)
+
+## Sprint 11: Enter QCi's Answers, Then Read 200 Records and Every New Paper (reconciled 2026-10-23 at Phase 7.7)
+
+Evidence for each row is the commit named, on the sprint branch
+(`feature/20261021_Sprint_11`, PR #113).
+
+- [x] **C**: Task A (F99, F39 release) -- models unchanged; Sprint 10 outcomes; parallel-reader pattern (a95b1a0)
+- [x] **C**: Task B (F94) -- backlog cards adopt spamfilter-multi's practices (462cc15)
+- [x] **C**: Tasks C, D, E (F92, F93, F91) -- QCi answers, F108 ceiling, magic state cultivation (a56b702)
+- [x] **C**: Tasks F and G (F97, F96) -- slice and copies (ffd68c7); read ledger (729e8c8); new papers entered and read, 200-record slice read (874527c)
+- [x] **H+C**: Manual Validation Q1-Q3 decided and applied (ae29cc1, bed6746); F100 carded (1844986)
+- [x] **H+C**: Retrospective, 16 x 4 (bed6746, a87112a); I1a, I1b, I2 applied (bc658b1) with a security fix (9046f08); I3 carded, I4 applied, I5 skipped (7db1e84)
+- [x] **C**: Summary, master plan roll and this section (this commit); Copilot review waived by the team lead; PR #113 ready

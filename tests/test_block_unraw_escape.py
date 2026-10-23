@@ -188,7 +188,6 @@ def test_blocks_a_shell_edit_of_a_repository_code_file(command):
     "python -m pytest -q > C:/Users/kimme/AppData/Local/Temp/pt.log 2>&1",
     "cat > /tmp/scratch.py <<'EOF'\nprint(1)\nEOF",        # a scratch file outside the repository
     "git commit -q -F - <<'EOF'\nfix: no more sed -i on scripts/x.py; > store/y.py\nEOF",  # a message is data
-    "sed -i 's/a/b/' CHANGELOG.md",                        # prose, not code
     # Fresh-eyes review, 2026-10-13: everyday commands the first version blocked
     "Get-Content a.txt | Out-File log.txt; python scripts/view.py",
     "Out-File -FilePath log.txt -InputObject (python store/recheck.py)",
@@ -232,7 +231,7 @@ def test_the_python_checks_cover_the_launcher_and_sql(command):
 @pytest.mark.parametrize("command", [
     "sed -n 1,5p store/recheck.py; grep -i foo README.md",
     "sed -n 221,260p .claude/hooks/block_unraw_escape.py; echo ---; grep -n -i def store/recheck.py | head",
-    "sed -n 1,5p store/recheck.py && perl -i -pe 's/a/b/' notes.txt",
+    "sed -n 1,5p store/recheck.py && perl -i -pe 's/a/b/' /tmp/notes.txt",  # outside: I4 blocks a repo file
     "awk '{print}' store/recheck.py | grep -i x",
     # Task A review, 2026-10-18: still blocked after 021d2a8
     'bash -c "sed -n 1p store/x.py" | grep -i foo',
@@ -310,6 +309,46 @@ def test_an_in_place_edit_after_or_with_a_separator_is_still_blocked(command):
     6690c39."""
     proc = run(command)
     assert proc.returncode == 2, command
+
+
+# ---- Sprint 11 retrospective I4 (2026-10-23): the Edit tool for every in-place edit,
+# and a search pattern that names sed is data
+
+@pytest.mark.parametrize("command", [
+    "sed -i 's/a/b/' CHANGELOG.md",  # allowed before I4: prose
+    "sed -i 's/a/b/' .claude/sprint_status.json",
+    "perl -pi -e 's/a/b/' docs/INTAKE_WORKFLOW.md",
+    "sed -i.bak 's/a/b/' .gitignore",
+    "grep -n x a.txt; sed -i 's/a/b/' docs/x.md",
+    # a quote that runs is still a command
+    'bash -c "sed -i s/a/b/ docs/x.md"',
+    'grep x "$(sed -i s/a/b/ store/x.py)"',
+    'xargs "sed" -i s/a/b/ store/x.py',
+])
+def test_an_in_place_edit_of_any_repository_file_is_blocked(command):
+    """Proven to fail by injection, 2026-10-23: with ANY_ARG back to the
+    code-only CODE_ARG, the six non-code cases passed (exit 0)."""
+    proc = run(command)
+    assert proc.returncode == 2, command
+    assert "Edit tool" in proc.stderr
+
+
+@pytest.mark.parametrize("command", [
+    # the command blocked live on 2026-10-23, a read of two sibling files
+    'grep -n -i -B2 -A6 "sed -i" docs/x.md | head -60; diff <(sed -n 1,400p a.py) '
+    "/d/Data/Harold/github/EvidenceBasedDB/.claude/hooks/block_unraw_escape.py | head -40",
+    'grep -rn "sed -i" .claude/hooks/block_unraw_escape.py',
+    'rg "sed -i s/a/b/" store/x.py',
+    'git log --grep "sed -i" -- store/x.py',
+    'git grep -n "perl -pi" store/x.py',
+    "cd C:/Users/kimme/AppData/Local/Temp && sed -i 's/a/b/' notes.md",  # outside the repository
+])
+def test_a_search_pattern_naming_sed_is_not_an_edit(command):
+    """Proven to fail by injection, 2026-10-23: with _searched_pattern()
+    returning False, the first five cases were blocked (exit 2). The first
+    is the shape blocked live that day."""
+    proc = run(command)
+    assert proc.returncode == 0, f"{command}\n{proc.stderr}"
 
 
 def test_shell_code_edit_bypass_token():

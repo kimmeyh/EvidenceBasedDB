@@ -13,7 +13,140 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-18 onward (Sprint 10, in progress)
+### 2026-10-21 onward (Sprint 11, in progress)
+
+- **process**: Sprint 11 retrospective I3 to I5 disposed (2026-10-23). I4:
+  every in-place edit of a repository file uses the Edit tool;
+  `block_unraw_escape.py` blocks `sed -i`, `perl -i` and their kin on any
+  repository file (not only code), treats a search pattern naming sed as
+  data, and catches a quoted `"sed"` name. CLAUDE.md rule. I3 carded on
+  F57 from Sprint 12's release; I5 skipped. Also: the commit hook loads the
+  suite runner only from its own repository (security review).
+
+- **process**: Sprint 11 retrospective I1a, I1b and I2 (2026-10-23, team
+  lead: "apply now"). I1a: `store.quotes.require_verbatim` also refuses a
+  quote mark the quote pattern does not parse and, given `value=`, a figure
+  its own quotes do not hold; `Verified` carries the value, so a check
+  without it licenses no write. It found F92's
+  `qci-email-dirac3s-much-better-results-no-comparison-named`, whose second
+  quote was never checked (corrected and re-applied; second apply writes
+  nothing), and a Sprint 7 Cyc quote cut short (proposed for Sprint 12).
+  I1b: the write-path scan moved to `store/write_path.py`, and
+  `backup_before_write` runs it on the calling script before the backup.
+  I2: `scripts/run_suite.py` prints one verdict from pytest's exit code
+  and records it with the tree it ran on; the commit hook refuses a commit
+  of a tree whose verdict is FAILED or INVALID. Intake section 41; every
+  new guard proven by injection.
+
+- **docs**: F100 carded for Sprint 12 (2026-10-22, team lead at Manual
+  Validation): per-test timings, then a faster full suite and a decided
+  commit-gate rule
+
+- **feat**: Sprint 11 Manual Validation decisions (2026-10-22): the
+  hand-download list is computed from the store in priority order
+  (`scripts/hand_download_list.py`; 16 records as of 2026-10-22; Q2), and
+  `NVIDIA/auto-ontology-eval` is linked `code-of` the NVIDIA blog record on
+  the team lead's decision, which its evidence names (Q1 = 2; 7 links).
+  F95 names the next release's repository
+  (wangy8205165/Quantum-NeuralNetwork-WhitePaper). Intake section 39;
+  `tests/test_hand_download_list.py`, `tests/test_sprint11_f97_intake.py`.
+  Same day (Q3 = 1 and the team lead's follow-up): F62's 22 discovery
+  papers with no copy marked onto the list in the store
+  (`scripts/sprint11_q3_f62_hand_download.py`; 38 records); each entry
+  names its target file (intake section 3) and why it matters, in four
+  priority groups; the `hand-download-list` skill shows it on request.
+  Intake section 40
+
+- **feat**: F96 (Sprint 11 Task G, 2026-10-22, the F57 release): the
+  200-record slice read: 192 records read by 24 first-pass readers (ledger
+  groups g01 to g24) and by the coordinator against every quoted passage;
+  649 assertions from 189 records (281 HIGH named one by one, 1 vendor
+  description MODERATE, 367 LOW); 3 records bear on no context; 8 with no
+  copy keep their tier with the reason (7 for hand download, Mezquita 2021
+  retracted). The coordinator replaced 13 values and added quotes for 16.
+  **fix**, same day: the first apply ran without `require_edit_basis` and
+  with the figure check only printed; both now refuse in `verify()`, and
+  the second apply corrected 7 values' quotes (F and G) and moved 5
+  measured results from HIGH to LOW. Intake section 38;
+  `tests/test_sprint11_reading.py` (Issue #120)
+- **feat**: F97 (Sprint 11 Task F, 2026-10-22): new papers in `Papers\`
+  and the team lead's list entered and read: 38 local files linked to 36
+  records, 7 new records (six preprints, NBER w35905, the NVIDIA blog), 6
+  repository records with 6 `code-of` links (`NVIDIA/auto-ontology-eval`
+  entered unlinked: no source names it as a paper's code); 38 records read
+  in ledger groups g25 to g29, 125 assertions from 37 records (54 HIGH, 4
+  vendor descriptions MODERATE). Intake sections 36 and 37;
+  `scripts/sprint11_f97_intake.py`, `scripts/sprint11_reading.py`;
+  `tests/test_sprint11_f97_intake.py` (Issue #119)
+- **feat**: F91 (Sprint 11 Task E, 2026-10-22): magic state cultivation
+  (Rosenfeld et al., Science, DOI:10.1126/science.aee7961) entered by DOI
+  and read in its free preprint arXiv:2512.13908v1 (the Science license
+  starts 2027-10-15): 1 paper at `read`, 6 assertions under `qc`, all LOW
+  (5 HW, 1 SIM projection). The abstracts' difference ("at least
+  0.9999(1)" in Science only) is carried. A fresh-eyes review corrected
+  three scope errors (the 8% filter, the 76(3)% baseline's circuit, the
+  distance-5 code not being a surface code) before commit. Intake section
+  35; `tests/test_f91_magic_state.py` (three injections run) (Issue #118)
+- **fix**: F92's three `platform:dirac-3` assertions classed "not
+  addressed" against the Dirac-3S guide in
+  `scripts/sprint8_f65_dirac3s_reading.py`; the F65 guard had failed the
+  full suite on them (Issue #116)
+- **feat**: F93 (Sprint 11 Task D, 2026-10-22): Phase 2's F108 ceiling
+  validation entered by the inbound path at commit eef3349: 1 source and 4
+  SIM assertions under `ml` (no method recovered the known ceiling,
+  MODERATE as the pass rule was read after the run; the plug-in's 5-12%
+  overstatement; the AUPRC floor tracking the model; default HGB missing a
+  rare threshold). Dated amendment to
+  `docs/research/ceilings-ml-and-optimization.md`; intake section 34;
+  `tests/test_f93_f108_ceiling.py` (three injections run) (Issue #117)
+- **feat**: F92 (Sprint 11 Task C, 2026-10-22): QCi's answers of 2026-10-20
+  and 2026-10-21 entered as vendor statements: 3 email source records
+  (file, SHA-256, sender, date; Phase 2 git-ignores the folder) and 18
+  assertions, hedges and plans at LOW, the 954 levels with the unit "not
+  stated". No relation: the fresh-eyes review found the first apply's one
+  `supports` link failed ADR-0004 A8 (b), and the script withdraws it by
+  name. Intake section 33; `tests/test_f92_qci_answers.py` (four
+  injections run) (Issue #116)
+- **process**: Sprint 11 readers (2026-10-22): each reader writes temp files
+  to its own scratch folder, after one reader's files were overwritten by
+  another; and checks its quotes with the repository's own extraction,
+  after 10 of the first 700 quotes failed it (dashes and minus signs
+  rewritten as ASCII) (Issue #120)
+
+- **chore**: Sprint 11 opened (2026-10-21). The team lead merged PR #101
+  into develop (45883ef) and PR #112 to main (5a98c36); `sprint-10`
+  tagged on 5a98c36; branch `feature/20261021_Sprint_11` cut from the
+  Sprint 10 branch (6.6 carry-forward). Phase 1.1 reconciliation: every
+  day with commits since 2026-10-18 has entries; one commit lacked its
+  own, added below under Sprint 10 (F91, 2026-10-19)
+- **docs**: Backlog refinement 2026-10-21 (Sprint 11 Phase 1.4): F92
+  (QCi's 2026-10-20 answers to Phase 2, Priority 40) and F93 (Phase 2's
+  F108 ceiling validation result, Priority 80) carded from Phase 2 read
+  at b074780 and eef3349; F91 moved from Priority 65 to 62 (step rule;
+  sprints with F90). F51's hold copy re-checked: hash unchanged
+- **docs**: F92 widened 2026-10-21: two later QCi emails (Wes Dyk confirms
+  the classifierqboost Hamiltonian, answering P1; Charlotte Brown: integer
+  solver raised to 954 levels on Dirac-3 and Dirac-3S, 9980 planned on
+  3S). Provenance rule corrected: Phase 2 git-ignores `docs/qci_package/`,
+  so the emails are named by file and SHA-256, not by commit
+- **docs**: Sprint 11 items added (team lead, 2026-10-21): F94 (backlog
+  cards redesigned from spamfilter-multi's practices); F57's release size
+  raised from 74 to 200, newest paper first, one copy per sprint, and its
+  Sprint 11 copy F96; F95 (permanent: ingest and read new PDFs in
+  `Papers\`, 37 unnamed as of 2026-10-21) and its Sprint 11 copy F97
+- **docs**: Sprint 11 scope selected (team lead, 2026-10-21): F94, F92,
+  F39 (released as F99), F91, F57 (F96), F93, F95 (F97). F57's order back
+  to relevance (newest-first withdrawn), up to 5 readers from one ledger
+  with no record read twice. F97 carries the team lead's seven papers and
+  six repositories. F98 carded (permanent from Sprint 12: Christophe
+  Pere's Roadmap-to-QML list)
+
+### 2026-10-18 to 2026-10-21 (Sprint 10, PR #101, merged to develop 2026-10-21 and to main via PR #112 the same day; tagged sprint-10)
+
+- **docs**: F91 carded for Sprint 11 (2026-10-19, team lead's commit
+  f99a9a2): the magic state cultivation paper (Science, DOI
+  10.1126/science.aee7961). Entry added at Sprint 11 Phase 1.1; the
+  commit carried none
 
 - **test**: Copilot review of PR #101 -- the F87 pool test renamed to
   "three excluded remain", which is what it asserts (#111)

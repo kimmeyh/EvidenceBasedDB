@@ -269,3 +269,49 @@ constant offset first). Phase 2's Dirac-3 work uses the device's
 continuous solver (non-negative weights on a sum constraint) and its
 integer solver, and the bound does not apply to those as written. So it
 would serve only an instance posed in Ising or QUBO form.
+
+## Amendment, 2026-10-22: the first test against a known ceiling failed (Sprint 11 Task D, F93)
+
+The sections above stay as written. Every count here is a snapshot as of
+2026-10-22. Section 5 point 2 said to check an estimator first "on a
+simulator with a known rule ... where the true answer can be computed".
+Phase 2 ran that kind of test, though not on point 2's soft-label
+estimator, for four other methods (its F108, read directly at commit
+eef3349 on 2026-10-22), on a fraud simulator written from the handbook's
+prose, whose Bayes error is exact, at a fraud rate of 0.83 percent:
+
+- **No method recovered the known ceiling on the main arm**
+  (`f108-no-ceiling-method-recovered-known-ceiling`): the plug-in on 2 of
+  5 seeds, the learning-curve floor on error 1 of 5, the AUPRC floor 1 of
+  5, the Cover-Hart interval 3 of 5; the entry needed 4 of 5. Phase 2
+  states that the rule requiring the main arm was read after the run; the
+  plug-in passes the noise and reference arms under the entry as written
+  (the reference pass only through the absolute margin). MODERATE for
+  that reason.
+- **The plug-in overstates the Bayes error by 5 to 12 percent**
+  (`f108-hgb-plugin-overstates-bayes-error-5-to-12-percent`). Phase 2
+  infers, without verifying, that the gap is the model's. Note the sign:
+  `ishida-synthetic-estimate-accurate-few-samples` reports a plug-in that
+  tended to underestimate, on Gaussian setups with an MLP; the setups
+  differ, so both can hold.
+- **Section 1's learning-curve route (Ding) tracked the model, not the
+  ceiling, on AUPRC** (`f108-auprc-learning-curve-floor-tracks-the-model`),
+  as `ding-floor-c-is-model-and-config-specific` warns; Phase 2 calls the
+  AUPRC floor not usable as specified.
+- **A default HGB missed a rare, sharp threshold entirely**
+  (`f108-default-hgb-misses-rare-sharp-threshold`): AUPRC 0.008 to 0.026
+  where the Bayes AUPRC is 1.0. The cause, and whether Phase 2's real-data
+  baselines contain such a threshold, are unverified.
+
+**What this changes (coordinator's reading, not stated by Phase 2):**
+F108 tested four model-based or neighbor-based methods, not point 2's
+soft-label estimator, and none passed on the main arm. Phase 2 infers,
+not verified, that the plug-in and the floors inherit the fitted model's
+gap. So the simulator test in point 2 is worth keeping, and point 2's
+estimator, which needs no fitted model, is still untested. Section 5 point 3
+(learning curves per model family) stands, with the caveat that its floor
+is a floor for that model, as section 1 already says.
+
+**Open gaps now:** no source tests a positive rate near 0.2 percent; F108
+tests 0.83 percent, one simulator, five seeds. No ceiling method is yet
+validated against a known ceiling at a fraud-like rate.
