@@ -15,6 +15,14 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **feat**: F105 (Sprint 12 Task G, second part, 2026-10-23): the slice
+  (`scripts/sprint12_f105_slice.py`, 400 `qml` records by OpenAlex
+  citations), the downloads wrapper with `--session-count` and a
+  heartbeat (4 saved, 2 withdrawn on arXiv), and the one read ledger
+  (`scripts/sprint12_read_ledger.py`: 53 groups, 413 records; Task E's
+  pages as read by the coordinator; `tests/test_sprint12_read_ledger.py`).
+  The Sprint 12 reader prompt asks a "high" suggestion for its basis
+  (INTAKE_WORKFLOW.md section 47) (Issue #129 / PR #122)
 - **fix**: F104 (Sprint 12 Task F) second apply, 2026-10-23: the
   fresh-eyes review of f99139e. The 1,397 held papers the list links
   get a `found_via` route naming it; the DOI form of an arXiv id counts

@@ -1705,3 +1705,13 @@ runs; each later step adds its bullet before it runs.
 - **Readers.** `manifests/sprint12_reads/READER_PROMPT.md`, Sprint 11's
   prompt with one rule added: a "high" suggestion names its basis
   (section 45). The coordinator decides every grade.
+- **What the slice and the fetch found (2026-10-23).** OpenAlex counted
+  815 of the 1,205 candidates; the 400 run from 14 citations down to 1
+  (the most-cited `qml` records were read by earlier releases). 389 of
+  the 400 already had a local copy (most in the QMLPapers folder); 6 were
+  planned from arXiv and 4 saved, each with its page-1 stamp; 2 are
+  withdrawn on arXiv (2308.08167, 2409.10932, their abstract pages read
+  the same day, as was 2303.16318's); 5 have no free copy known to
+  OpenAlex. The ledger: 53 groups, 413 records (Task F's 20 in g01 to
+  g03, the slice's 393 in g04 to g53), 8 in `no_copy` with their
+  reasons, Task E's 3 read by the coordinator.
