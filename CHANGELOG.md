@@ -15,6 +15,13 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **feat**: F104 (Sprint 12 Task F, F98's first release, 2026-10-23):
+  Roadmap-to-QML read at commit a239747648; 1,418 arXiv ids listed, 21
+  new entered at `seen` under `qml` through the door, 20 with a free
+  copy (2303.16318's PDF returned 404); one malformed link (2108.0131,
+  held as 2108.01311); 27 other links, 9 with a DOI, carried to the next
+  release in `manifests/sprint12_f104_roadmap.json`
+  (INTAKE_WORKFLOW.md section 46) (Issue #128 / PR #122)
 - **fix**: F103 (Sprint 12 Task E) third apply, 2026-10-23: the
   fresh-eyes review of c80c195. Grades follow the store's precedent (the
   author's own blog measurements LOW; depth 95 MODERATE, upgraded for the

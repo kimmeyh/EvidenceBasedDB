@@ -1568,3 +1568,43 @@ Extends sections 26, 31 and 41.
   from this rule only (it has run). An intake script that is not a
   reading script (F102, F103) keeps its literal grades, each with its
   own reasons.
+
+## 46. Applied 2026-10-23: Roadmap-to-QML's first release (Sprint 12 Task F, F104, F98's first release)
+
+Every count is a snapshot as of 2026-10-23. Written before the apply.
+
+- **The list, at one commit.** Christophe Pere's Roadmap-to-QML
+  (`github.com/Christophe-pere/Roadmap-to-QML`), read at commit
+  `a239747648` (the head at planning, pushed 2026-10-20). Its 13
+  markdown files (the year files, `Workforce.md`, `Reviews/Reviews.md`,
+  the README) are saved under
+  `References\Roadmap-to-QML_a239747648\`, outside git; the manifest
+  records each file's SHA-256.
+- **1,418 arXiv ids listed; 21 new.** Every arXiv id the files link is
+  matched to the store by the ids its records' `access`, `evidence` and
+  provenance hold. The 21 new ones enter through the door
+  (`scripts/intake.py`) at `seen` under `qml`, each naming the file that
+  lists it in `found_via` and `disposition`. Reading them is Task G's
+  machinery, through the shared ledger (section 47).
+- **One malformed link.** The 2021 file links Asfaw et al. 2021 as
+  `2108.0131`; an id from 2015 on has five digits after the dot. The
+  store already holds `2108.01311`, so nothing is entered for it; the
+  manifest lists it under `malformed_links`.
+- **Free copies: 20 of 21**, fetched by the one paced fetcher (18 s
+  apart), each named with its SHA-256 in `evidence`. arXiv 2303.16318
+  (Mahroo et al.) returned HTTP 404 for its PDF; the record enters at
+  `seen` with no local copy and goes to the ledger's `no_copy`. Three
+  copies carry no arXiv stamp on page 1 (2407.21062, 2609.23476,
+  2609.24381); each first page was checked by hand and its title
+  matches the arXiv metadata.
+- **27 other links carried to the next F98 release, 9 with a DOI.**
+  Links that are not arXiv are matched by the DOI in the URL where it has
+  one; those the store does not hold, and those with no DOI, are listed
+  in the manifest's `carried_to_next_release`. This release was sized to
+  the arXiv ids at planning.
+- `scripts/sprint12_f104_roadmap.py`: `--fetch` saves the list's files
+  and the PDFs (arXiv and DataCite answers cached beside the list's
+  copy, so the dry run and the apply send no arXiv request); dry run by
+  default, which writes `manifests/sprint12_f104_roadmap.json`;
+  `--apply` takes a verified backup; a second apply enters nothing and
+  leaves the manifest as the first apply wrote it.
