@@ -202,7 +202,7 @@ def build(fetcher=None):
 
 def verify_all(src: str) -> list:
     text = pdf_text(str(PDF))
-    return [(a, require_verbatim(a.id, a.citation_context, text)) for a in assertions(src)]
+    return [(a, require_verbatim(a.id, a.citation_context, text, value=a.value)) for a in assertions(src)]
 
 
 def apply_changes(conn, paper) -> list[str]:

@@ -37,7 +37,6 @@ from __future__ import annotations
 
 import importlib.util
 import json
-import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -488,25 +487,15 @@ def verify(task: str) -> list[tuple[AssertionRecord, str, dict, object]]:
     out = []
     for _, a, rid, p in assertions(task):
         quotes = QUOTE.findall(a.citation_context)
-        if a.citation_context.count('"') != 2 * len(quotes):
-            raise ValueError(f"{a.id}: a quote mark the quote pattern does not parse")
         text = texts.setdefault(p["file"], plain(source_text(p["file"])))
-        verified = require_verbatim(a.id, a.citation_context, text)
+        # The quote-mark and figure checks moved into require_verbatim (Sprint 11 retrospective I1a).
+        verified = require_verbatim(a.id, a.citation_context, text, value=a.value)
         if a.id in VALUE_REPLACE:  # the replaced value's passages are the quotes printed with it
             require_edit_basis(a.id, a.value, quotes, text)
         if a.id in QUOTE_EDITS:
             require_edit_basis(a.id, None, [n for _, n in QUOTE_EDITS[a.id] if n] or quotes, text)
-        if numbers := unquoted_numbers(a):
-            raise ValueError(f"{a.id}: figures {numbers} are not in its own quotes")
         out.append((a, rid, p, verified))
     return out
-
-
-def unquoted_numbers(a: AssertionRecord) -> list[str]:
-    # A digit closing a hyphenated name (LimiX-2) is a name, not a figure, as in F89's test.
-    quoted = " ".join(plain(q) for q in QUOTE.findall(a.citation_context))
-    return [n for n in re.findall(r"(?<![\w.,])(?<![A-Za-z]-)\d+(?:[.,]\d+)?", plain(a.value))
-            if not re.search(rf"(?<![\d.]){re.escape(n)}(?!\d)", quoted)]
 
 
 def read_detail(g: str, p: dict) -> str:

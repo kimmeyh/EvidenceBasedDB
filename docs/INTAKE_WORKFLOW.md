@@ -1222,3 +1222,49 @@ Every count is a snapshot as of 2026-10-22. Written before the apply.
 - **Shown on request** by the `hand-download-list` skill
   (`.claude/skills/hand-download-list/`), which runs
   `python scripts/hand_download_list.py` and shows its output as is.
+
+## 41. Rule from 2026-10-23: the quote-mark and figure checks are in `require_verbatim`, and the backup refuses a script that breaks section 31 (Sprint 11 retrospective I1a and I1b)
+
+Extends sections 26 and 31. Every count is a snapshot as of 2026-10-23.
+Written before the apply below.
+
+- **One quote check for every script (I1a).** In Sprint 11 two checks
+  lived only in `scripts/sprint11_reading.py`'s `verify()`, so F91, F92
+  and F93 never ran them. `store.quotes.require_verbatim` now also
+  refuses:
+  - a quote mark outside every parsed quote and its anchor
+    (`stray_quote_marks`). The quote pattern needs `; ` between quotes
+    and ` (anchor)` after each, and a quote it cannot parse is never
+    checked. A quote mark inside a quote, or inside its anchor, is
+    fine;
+  - given `value=`, a figure in the value that its own quotes do not
+    hold (`unquoted_figures`, moved from the reading script). A digit
+    in a word, closing a hyphenated name (Dirac-3, LimiX-2), or in
+    "Phase N" is a name; `read_from_page` lists figures read from the
+    page image, as in section 31.
+  `Verified` now carries the value, and the verified write helpers refuse
+  one whose value is not the record's. So a check run without `value=`
+  cannot license a write.
+- **The scan runs before the write (I1b).** Section 31's static rule
+  moved from `tests/test_verified_writes.py` to `store/write_path.py`.
+  `store.backup.backup_before_write`, which every `--apply` calls first,
+  runs it on each script in `scripts/` on the call stack and refuses
+  before the backup and the write. The 18 legacy scripts stay exempt. The
+  test still scans every script at the desk.
+- **What the new check found in the store: 2 of 1,595 assertions.**
+  - `qci-email-dirac3s-much-better-results-no-comparison-named` (F92,
+    Sprint 11): `;"On which problem class?"` had no space after the
+    semicolon, so that quote was never checked. It is verbatim in the
+    email (question 12). `scripts/sprint11_f92_qci_answers.py` now has
+    the space; `--apply` syncs the stored quote (dry run first, verified
+    backup). A second apply writes nothing.
+  - `cyc-2007-eight-tactic-types` (Sprint 7): the quote stops at its
+    inner `"split" (`, so the rest of it was never checked. Its script
+    is a legacy script and is not re-run here. Proposed for the Sprint 12
+    plan, as a correction with its own section.
+  - 10 more contexts hold quote marks inside a quote or an anchor, which
+    is not stray.
+- **Every Sprint 11 script passes the new checks.** The reading script
+  (F 125, G 649), F91 (6), F92 (18, after the fix above) and F93 (4).
+  F92's and F93's values name "Phase 2", which the reading script's
+  check never met; that is why the "Phase N" rule exists.

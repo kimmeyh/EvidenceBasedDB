@@ -15,6 +15,21 @@ this project keeps having to replace with a step.
 
 ### 2026-10-21 onward (Sprint 11, in progress)
 
+- **process**: Sprint 11 retrospective I1a, I1b and I2 (2026-10-23, team
+  lead: "apply now"). I1a: `store.quotes.require_verbatim` also refuses a
+  quote mark the quote pattern does not parse and, given `value=`, a figure
+  its own quotes do not hold; `Verified` carries the value, so a check
+  without it licenses no write. It found F92's
+  `qci-email-dirac3s-much-better-results-no-comparison-named`, whose second
+  quote was never checked (corrected and re-applied; second apply writes
+  nothing), and a Sprint 7 Cyc quote cut short (proposed for Sprint 12).
+  I1b: the write-path scan moved to `store/write_path.py`, and
+  `backup_before_write` runs it on the calling script before the backup.
+  I2: `scripts/run_suite.py` prints one verdict from pytest's exit code
+  and records it with the tree it ran on; the commit hook refuses a commit
+  of a tree whose verdict is FAILED or INVALID. Intake section 41; every
+  new guard proven by injection.
+
 - **docs**: F100 carded for Sprint 12 (2026-10-22, team lead at Manual
   Validation): per-test timings, then a faster full suite and a decided
   commit-gate rule

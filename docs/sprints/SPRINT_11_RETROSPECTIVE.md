@@ -124,7 +124,7 @@ part of the retrospective.
 - **Product Owner**: none
 - **Scrum Master**: none
 - **Lead Developer**: none
-- **Claude Code Development Team**: [Dev Team] Fix Pande 2020's citation, which carries "&amp;" from Crossref -- target: Sprint 12 plan, est: 10m.
+- **Claude Code Development Team**: [Dev Team] Fix Pande 2020's citation, which carries "&amp;" from Crossref -- target: Sprint 12 plan, est: 10m. [Dev Team] Correct `cyc-2007-eight-tactic-types`, whose quote stops at its inner `"split" (` so the rest was never checked (found by I1a, intake section 41) -- target: Sprint 12 plan, est: 15m.
 
 ### 14. Function Updates for the Future Backlog
 
@@ -152,14 +152,16 @@ part of the retrospective.
 Proposed 2026-10-22, prevention first, extending an existing prevention
 where one is connected. Detailed for the team lead the same day ("need
 more informaion on all the Improvements suggestions"); the closer look
-changed two recommendations (I4 and I5, from now to skip). Awaiting the
-team lead's disposition.
+changed two recommendations (I4 and I5, from now to skip). Team lead,
+2026-10-23: "apply now: i1a, i1b, i2"; I2 moved from the recommended
+backlog to now. I3, I4 and I5 were re-presented the same day and await
+the team lead's disposition.
 
 | # | Improvement | Root cause | Type | Recommendation | Disposition |
 |---|---|---|---|---|---|
-| I1a | `require_verbatim` also refuses a quote mark that does not parse, and, given the value, a figure the assertion's own quotes do not hold | The checks lived in one script's `verify()`, so any other script could skip them | Prevention (extends Sprint 10 I2: `store.quotes`) | Now, 40m | pending |
-| I1b | `backup_before_write`, which every `--apply` already calls, first runs the static write-path scan (`test_verified_writes.py`'s `script_problems`) on the calling script and refuses on a problem | The scan ran only with the full suite, after the apply | Prevention (extends the mandatory backup call) | Now, 30m | pending |
-| I2 | A suite runner: one verdict line from the exit code, recorded with the commit, invalid if the tree changed during the run; the commit hook reads it | The verdict was read by eye from scrolling output | Prevention (extends `block_commit_with_piped_tests.py`) | Backlog, folded into F100 | pending |
+| I1a | `require_verbatim` also refuses a quote mark that does not parse, and, given the value, a figure the assertion's own quotes do not hold | The checks lived in one script's `verify()`, so any other script could skip them | Prevention (extends Sprint 10 I2: `store.quotes`) | Now, 40m | Now (2026-10-23): done; intake section 41. Found 2 stored quotes never fully checked: F92's (corrected) and a Sprint 7 Cyc quote (Sprint 12, section 13) |
+| I1b | `backup_before_write`, which every `--apply` already calls, first runs the static write-path scan (`test_verified_writes.py`'s `script_problems`) on the calling script and refuses on a problem | The scan ran only with the full suite, after the apply | Prevention (extends the mandatory backup call) | Now, 30m | Now (2026-10-23): done; `store/write_path.py` |
+| I2 | A suite runner: one verdict line from the exit code, recorded with the commit, invalid if the tree changed during the run; the commit hook reads it | The verdict was read by eye from scrolling output | Prevention (extends `block_commit_with_piped_tests.py`) | Backlog, folded into F100 | Now (2026-10-23, team lead): done; `scripts/run_suite.py`. The hook refuses a red or invalid verdict for the tree but does not require one; that rule stays F100's (card updated) |
 | I3 | A shared grading helper: HIGH only with a named basis per id (setup, scope, definition, proved result, stated limit), required of new reading scripts by the same static scan | Each reading script keeps its own HIGH_REVIEWED set with no reason per id | Prevention (extends HIGH_REVIEWED and the static scan) | Backlog, into Sprint 12's F57 release | pending |
 | I4 | The code-edit check in `block_unraw_escape.py` ignores text inside a search pattern | The check matches paths and verbs across a whole command | Prevention of false blocks | Skip | pending |
 | I5 | A section written before its apply takes its counts from the dry run's printed line | A count typed from memory | A written rule | Skip | pending |

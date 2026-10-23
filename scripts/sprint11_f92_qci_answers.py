@@ -280,7 +280,7 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
             value=("Asked what comparison supports the claim of much better results, and on which problem class, "
                    "QCi named neither: it stated that Dirac-3S has improved speed, scale and solution quality"),
             provenance=f"{ANS}, answer to question 12",
-            citation_context=('"much better results" (question 12);"On which problem class?" '
+            citation_context=('"much better results" (question 12); "On which problem class?" '
                               '(question 12); "Dirac 3S features improved computation speed, improved scale '
                               '(supporting a higher number of variables), and improved solution quality." (answer 12)'
                               ))),
@@ -353,7 +353,7 @@ def verify_all() -> list:
     """Every quote verbatim in its email BEFORE anything is written
     (INTAKE_WORKFLOW.md sections 26 and 31)."""
     texts = {src: plain(source_text(src)) for src in FILES}
-    return [(src, a, require_verbatim(a.id, a.citation_context, texts[src])) for src, a in ASSERTIONS]
+    return [(src, a, require_verbatim(a.id, a.citation_context, texts[src], value=a.value)) for src, a in ASSERTIONS]
 
 
 # Relations this script wrote and withdrew. The sync adds relations and never

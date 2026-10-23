@@ -190,7 +190,7 @@ def verify_all() -> list:
     written (INTAKE_WORKFLOW.md sections 26 and 31). Markdown bold is
     dropped first, as each quote that crosses it says."""
     text = plain(source_text().replace("**", ""))
-    return [(a, require_verbatim(a.id, a.citation_context, text)) for a in ASSERTIONS]
+    return [(a, require_verbatim(a.id, a.citation_context, text, value=a.value)) for a in ASSERTIONS]
 
 
 def apply_changes(conn) -> list[str]:

@@ -662,6 +662,13 @@ and in git. Remaining items below.
   lead and written in `SPRINT_EXECUTION_WORKFLOW.md` and the hook that
   enforces it; no guard removed, and every guard still fails by
   injection.
+- Builds on (2026-10-23, Sprint 11 retrospective I2, done in Sprint 11):
+  `scripts/run_suite.py` runs pytest, prints one verdict line from the
+  exit code, and records the verdict with the git tree id it ran on;
+  `block_commit_with_piped_tests.py` refuses a commit of a tree whose
+  recorded verdict is FAILED or INVALID. It does not require a verdict.
+  Step (3)'s decided rule can require one (for example: a PASSED full
+  suite for this tree before `gh pr ready`) by changing that hook.
 - Depends on: none
 
 **F92. Enter QCi's 2026-10-20 and 2026-10-21 answers to Phase 2's Dirac-3S questions, and correct the records they change (~55m) Priority 40** (NEW 2026-10-21, read from Phase 2 at Sprint 11 Phase 1.4; widened the same day by two later emails)

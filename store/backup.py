@@ -38,6 +38,8 @@ import sqlite3
 from datetime import datetime, timedelta
 from pathlib import Path
 
+from store.write_path import require_clean_callers
+
 RETENTION_DAYS = 32
 KEEP_SPRINTS = 5
 KEEP_NEWEST = 10  # rule 3 since ADR-0004 A7: the ten newest always survive
@@ -170,9 +172,12 @@ def prune(backups_dir: str | Path, repo: Path | None = None, now: datetime | Non
 def backup_before_write(db_path: str | Path, reason: str, backups_dir: str | Path | None = None,
                         protect: tuple[Path, ...] = ()) -> Path:
     """The one call every write-shaped script makes inside --apply, before
-    its transaction. Takes a verified backup (raising if it does not check
-    out), then prunes by the retention rules, never touching `protect`.
-    Returns the backup's path."""
+    its transaction. First refuses a calling script that breaks the
+    write-path rule (`store.write_path`, Sprint 11 retrospective I1b). Then
+    takes a verified backup (raising if it does not check out), then prunes
+    by the retention rules, never touching `protect`. Returns the backup's
+    path."""
+    require_clean_callers()
     backups_dir = Path(backups_dir) if backups_dir is not None else default_backups_dir(db_path)
     path = backup_store(db_path, backups_dir, reason, current_sprint())
     prune(backups_dir, protect=protect)

@@ -28,6 +28,7 @@ sys.path.insert(0, str(ROOT))
 from store import create_store  # noqa: E402
 from store.ingest import AssertionRecord, insert_verified_assertion, sync_verified_assertion  # noqa: E402
 from store.quotes import Verified, plain, require_edit_basis, require_verbatim  # noqa: E402
+from store.write_path import LEGACY, script_problems  # noqa: E402
 
 SOURCE = plain("We show that the problem is intractable for R ≥ √2. The budget is B = 192 circuit evaluations. "
                 "Errors are around 10−2 to 10−1.")
@@ -50,14 +51,14 @@ def conn(tmp_path):
 
 def test_a_checked_assertion_is_written(conn):
     a = _assertion()
-    insert_verified_assertion(conn, a, require_verbatim(a.id, a.citation_context, SOURCE))
+    insert_verified_assertion(conn, a, require_verbatim(a.id, a.citation_context, SOURCE, value=a.value))
     assert conn.execute("SELECT 1 FROM records WHERE id = 'a1'").fetchone()
 
 
 @pytest.mark.parametrize("verified", [
     None,
-    Verified("a2", '"the problem is intractable for R" (p.3)'),  # another record's check
-    Verified("a1", '"the problem is intractable" (p.3)'),  # the quotes changed after the check
+    Verified("a2", '"the problem is intractable for R" (p.3)', "a claim"),  # another record's check
+    Verified("a1", '"the problem is intractable" (p.3)', "a claim"),  # the quotes changed after the check
 ])
 def test_an_unchecked_assertion_is_refused_before_anything_is_written(conn, verified):
     """Proven to fail by injection, 2026-10-21: with _require_verified's
@@ -70,45 +71,62 @@ def test_an_unchecked_assertion_is_refused_before_anything_is_written(conn, veri
 
 def test_a_sync_is_refused_without_the_check(conn):
     a = _assertion()
-    insert_verified_assertion(conn, a, require_verbatim(a.id, a.citation_context, SOURCE))
+    insert_verified_assertion(conn, a, require_verbatim(a.id, a.citation_context, SOURCE, value=a.value))
     with pytest.raises(ValueError, match="not checked against its source"):
         sync_verified_assertion(conn, _assertion('"the problem is intractable" (p.3)'), None, "note", "2026-10-21")
 
 
-# Each problem a new script can have, by the rule it breaks. Names, not
-# calls, so an aliased import (`import insert_assertion as ins`) or an
-# attribute reference is caught too (fresh-eyes review, 2026-10-21);
-# `insert_verified_assertion` does not match. Comments are not code.
-_DIRECT_WRITE = re.compile(r"\b(insert|sync)_assertion\b")
-_TOKEN_NAME = re.compile(r"\bVerified\b")
-_WRITES = re.compile(r"\b(insert|sync)_(verified_)?assertion\b")
-_EDIT_TABLE = re.compile(r"(?m)^(VALUE|QUOTE|CONTEXT)_[A-Z_]+\s*[:=]")
+# ------------------------------------------------------------------ Sprint 11 I1a
 
-# The scripts written before this rule (Sprint 10 and earlier). They have
-# run, and stay as they are; every other script in scripts/ is held to it,
-# whatever its name.
-LEGACY = {
-    "ingest_hsbc_b1_variable_count.py", "ingest_lenat_marcus.py", "sprint4_task_h_extraction.py",
-    "sprint5_task_i_pilot.py", "sprint6_mv_dirac3_fidelity.py", "sprint6_task_g_cyc_and_facts.py",
-    "sprint7_f44_cycorp_papers.py", "sprint7_f45_dirac3_reading.py", "sprint8_f65_dirac3s_reading.py",
-    "sprint8_f71_qci_dirac3s_reading.py", "sprint9_f46_pending_facts.py", "sprint9_f78_ceiling_reading.py",
-    "sprint9_f79_phase2_b4_b5_inbound.py", "sprint9_f80_reading.py", "sprint10_f83_optimization_bounds.py",
-    "sprint10_f84_dirac1.py", "sprint10_f85_dirac3s_verify.py", "sprint10_f89_reading.py",
-}
+@pytest.mark.parametrize("value", [None, "another claim"])
+def test_a_check_without_the_records_value_licenses_no_write(conn, value):
+    """Sprint 11 retrospective I1a: a check run without `value=`, or on
+    another value, skipped the figure check, so it cannot license the
+    write. Proven to fail by injection, 2026-10-23: with the value
+    comparison removed from _require_verified, both cases wrote the record
+    and went red."""
+    a = _assertion()
+    with pytest.raises(ValueError, match="value was not checked"):
+        insert_verified_assertion(conn, a, require_verbatim(a.id, a.citation_context, SOURCE, value=value))
+    assert not conn.execute("SELECT 1 FROM records WHERE id = 'a1'").fetchone()
 
 
-def script_problems(text: str) -> list[str]:
-    code = re.sub(r"#.*", "", text)
-    out = []
-    if _DIRECT_WRITE.search(code):
-        out.append("writes an assertion without the quote check (use insert_verified_assertion)")
-    if _TOKEN_NAME.search(code):
-        out.append("names Verified (only require_verbatim makes one; pass on what it returns)")
-    if _WRITES.search(code) and _EDIT_TABLE.search(code) and "require_edit_basis(" not in code:
-        out.append("edits readers' values, quotes or contexts without require_edit_basis")
-    return out
+@pytest.mark.parametrize("context", [
+    '"the problem is intractable for R" (p.3);"B = 192 circuit evaluations" (p.4)',  # F92's missing space
+    '"the problem is intractable for R" (p.3), "B = 192 circuit evaluations" (p.4)',  # a comma
+    '"We show that the "problem" (that is, R) is intractable" (p.3)',  # Sprint 7's Cyc quote, cut short
+])
+def test_a_quote_the_pattern_skips_is_refused(context):
+    """Proven to fail by injection, 2026-10-23: with the stray_quote_marks
+    call removed from require_verbatim, all three passed with their second
+    quote, or the rest of the first, never checked."""
+    with pytest.raises(ValueError, match="does not parse"):
+        require_verbatim("a1", context, SOURCE)
 
 
+def test_a_quote_mark_inside_a_quote_or_its_anchor_is_not_stray():
+    require_verbatim("a1", '"the problem is intractable for R" (p.3; the source\'s "R" kept)', SOURCE)
+
+
+@pytest.mark.parametrize("value, figures", [
+    ("The budget is 190 evaluations.", "190"),
+    ("Intractable for R in 3 of 5 cases.", "3, 5"),
+])
+def test_a_figure_its_own_quotes_do_not_hold_is_refused(value, figures):
+    """Proven to fail by injection, 2026-10-23: with the figure check
+    removed from require_verbatim, both values passed."""
+    with pytest.raises(ValueError, match=f"states {figures},"):
+        require_verbatim("a1", '"B = 192 circuit evaluations" (p.4)', SOURCE, value=value)
+
+
+def test_names_and_listed_page_figures_are_not_figures():
+    context = '"B = 192 circuit evaluations" (p.4)'
+    require_verbatim("a1", context, SOURCE, value="On Phase 2's Dirac-3, the budget is 192 evaluations.")
+    require_verbatim("a1", context, SOURCE, value="192 evaluations, 40 per seed", read_from_page=("40",))
+
+
+# The rule itself moved to store.write_path (Sprint 11 retrospective I1b),
+# so backup_before_write runs it before a write; this scan is the backstop.
 def test_new_scripts_write_only_through_the_checked_path():
     problems = {p.name: script_problems(p.read_text(encoding="utf-8"))
                 for p in sorted((ROOT / "scripts").glob("*.py")) if p.name not in LEGACY}
@@ -140,6 +158,47 @@ def test_the_script_rule_names_each_planted_problem(planted, expected):
 
 
 # ------------------------------------------------------------------ I1
+
+# ------------------------------------------------------------------ Sprint 11 I1b
+
+_CALLS_BACKUP = ("from store.backup import backup_before_write\n"
+                 "def apply(db, backups):\n"
+                 "    return backup_before_write(db, 'probe', backups)\n")
+
+
+def _run_from_script(scripts_dir: Path, name: str, body: str, db: Path, backups: Path, monkeypatch):
+    import store.write_path as wp
+    monkeypatch.setattr(wp, "SCRIPTS", scripts_dir.resolve())
+    script = scripts_dir / name
+    script.write_text(body + _CALLS_BACKUP, encoding="utf-8")
+    spec = importlib.util.spec_from_file_location(script.stem, script)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.apply(db, backups)
+
+
+@pytest.mark.parametrize("name, body, refused", [
+    ("sprint12_probe.py", "insert_assertion = None\n", True),
+    ("sprint12_probe.py", "VALUE_REPLACE = {}\ninsert_verified_assertion = None\n", True),
+    ("sprint12_probe.py", "insert_verified_assertion = None\n", False),
+    ("sprint10_f89_reading.py", "insert_assertion = None\n", False),  # LEGACY: has run, stays as it is
+])
+def test_the_backup_refuses_a_script_that_breaks_the_rule_before_anything_is_written(
+        tmp_path, monkeypatch, conn, name, body, refused):
+    """Sprint 11 retrospective I1b: the scan above ran only with the full
+    suite, after Tasks F and G had written. backup_before_write now runs it
+    on the calling script first. Proven to fail by injection, 2026-10-23:
+    with the require_clean_callers() call removed from backup_before_write,
+    both refused cases took a backup and went red."""
+    db, backups = tmp_path / "evidence.db", tmp_path / "backups"
+    (tmp_path / "scripts").mkdir()
+    if refused:
+        with pytest.raises(RuntimeError, match="refused before the backup"):
+            _run_from_script(tmp_path / "scripts", name, body, db, backups, monkeypatch)
+        assert not backups.exists() or not any(backups.iterdir())
+    else:
+        assert _run_from_script(tmp_path / "scripts", name, body, db, backups, monkeypatch).exists()
+
 
 def test_an_edit_resting_on_its_passage_passes():
     require_edit_basis("e1", "The budget is 192 circuit evaluations.", ["B = 192 circuit evaluations"], SOURCE)

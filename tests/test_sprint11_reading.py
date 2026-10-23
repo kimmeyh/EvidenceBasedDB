@@ -17,7 +17,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from store.quotes import QUOTE, plain, source_text  # noqa: E402
+from store.quotes import QUOTE, plain, source_text, stray_quote_marks, unquoted_figures  # noqa: E402
 
 TASKS = ("F", "G")
 
@@ -40,8 +40,7 @@ def test_every_quote_parses_as_a_quote(task):
     added quote holding a quote mark on neumann-dqml-proposal, this test
     named it."""
     s11 = _script()
-    bad = [a.id for _, a, _, _ in s11.assertions(task)
-           if a.citation_context.count('"') != 2 * len(QUOTE.findall(a.citation_context))]
+    bad = [a.id for _, a, _, _ in s11.assertions(task) if stray_quote_marks(a.citation_context)]
     assert not bad, bad
 
 
@@ -52,7 +51,7 @@ def test_every_figure_in_a_value_is_in_its_own_quotes(task):
     2026-10-22: with the VALUE_REPLACE entry for rydberg-fidelity-81-to-90
     removed, this test named it with '2' (the reader's "2D")."""
     s11 = _script()
-    bad = {a.id: n for _, a, _, _ in s11.assertions(task) if (n := s11.unquoted_numbers(a))}
+    bad = {a.id: n for _, a, _, _ in s11.assertions(task) if (n := unquoted_figures(a.value, a.citation_context))}
     assert not bad, bad
 
 

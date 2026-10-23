@@ -28,16 +28,32 @@ that invocation piped into something, and a `git commit` later in the same
 command. A commit with no test run, a test run with no commit, and a
 piped test run that does not commit are all untouched.
 
+SECOND CHECK (Sprint 11 retrospective I2, 2026-10-23): a commit of a tree
+whose recorded suite verdict is FAILED or INVALID. `scripts/run_suite.py`
+records the verdict and the git tree id it ran on in
+.claude/suite_verdict.json; when the working tree now is that tree, and
+the verdict was not PASSED, the commit is refused. Sprint 11 called a red
+suite passed by reading scrolling output, and ran a suite with an
+injection still in the code. No verdict, or a verdict for another tree,
+allows the commit: when a full suite must precede a commit is F100's
+decision, not this hook's.
+
 Exit 0 = allow. Exit 2 = block; stderr fed back to Claude.
-Bypass: literal token allow_piped_test_commit.
+Bypass: literal token allow_piped_test_commit (the pipe check),
+allow_red_suite_commit (the verdict check).
 """
 from __future__ import annotations
 
+import importlib.util
 import json
+import os
 import re
+import subprocess
 import sys
+from pathlib import Path
 
 BYPASS_TOKEN = "allow_piped_test_commit"
+RED_SUITE_BYPASS = "allow_red_suite_commit"
 
 # Strip heredoc bodies and quoted strings before matching, so a commit
 # MESSAGE that talks about pytest and pipes is not itself a match. Same
@@ -118,6 +134,25 @@ def _piped_test_segments(cmd: str) -> list[tuple[int, str]]:
     return out
 
 
+def _red_verdict(payload: dict) -> dict | None:
+    """The recorded verdict, when it is not PASSED and the working tree now
+    is the tree it ran on. None on anything missing: fail open."""
+    try:
+        cwd = payload.get("cwd") or os.getcwd()
+        top = Path(subprocess.run(["git", "-C", str(cwd), "rev-parse", "--show-toplevel"], capture_output=True,
+                                  text=True, check=True).stdout.strip())
+        record = json.loads((top / ".claude" / "suite_verdict.json").read_text(encoding="utf-8"))
+        if record.get("verdict") == "PASSED":
+            return None
+        spec = importlib.util.spec_from_file_location("run_suite", top / "scripts" / "run_suite.py")
+        runner = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(runner)
+        tree = runner.working_tree(top)
+        return record if tree in (record.get("tree"), record.get("tree_after")) else None
+    except Exception:  # noqa: BLE001 -- no verdict, no git, no runner: allow
+        return None
+
+
 def main() -> int:
     try:
         payload = _read_payload()
@@ -125,12 +160,33 @@ def main() -> int:
     except Exception:  # noqa: BLE001 -- fail open on a malformed payload
         return 0
 
-    if not cmd.strip() or BYPASS_TOKEN in cmd:
+    if not cmd.strip():
         return 0
 
     stripped = _strip_literals(cmd)
     commit = GIT_COMMIT.search(stripped)
     if not commit:
+        return 0
+
+    if RED_SUITE_BYPASS not in cmd and (red := _red_verdict(payload)):
+        print(
+            f"[BLOCKED] `git commit` of a tree whose suite verdict is {red.get('verdict')}\n"
+            "(Sprint 11 retrospective I2).\n"
+            "\n"
+            f"Recorded by scripts/run_suite.py at {red.get('finished')}: {red.get('summary')}, "
+            f"rc={red.get('rc')}.\n"
+            "The working tree now is the tree that run checked"
+            + (" (or its tree after the run; files changed during it)" if red.get("verdict") == "INVALID" else "")
+            + ".\n"
+            "\n"
+            "FIX: correct the failure, then `python scripts/run_suite.py`, and commit\n"
+            "once it prints SUITE PASSED. If this commit genuinely does not depend on\n"
+            "that run, re-run with the literal token allow_red_suite_commit.",
+            file=sys.stderr,
+        )
+        return 2
+
+    if BYPASS_TOKEN in cmd:
         return 0
 
     # ORDER MATTERS: only a piped test run BEFORE the commit can pretend to
