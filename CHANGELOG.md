@@ -28,6 +28,11 @@ this project keeps having to replace with a step.
   10086da; snapshots refreshed on F57 (1,847 unread), F95 (0 unnamed
   PDFs) and F98 (1,402 ids, about 21 new). Phase 1.3: 0 re-checks due;
   schema and ADRs unchanged by Sprint 11
+- **docs**: F95's next release names the Classiq Quantum Circuit Challenge
+  result (team lead, 2026-10-23): PoJen Wang's two-part blog (the
+  compiler field guide and the depth-95 write-up) and Classiq's wrap-up
+  page as three web source records with local copies; no
+  repository record (none is linked); the LinkedIn posts not entered
 
 ### 2026-10-21 to 2026-10-23 (Sprint 11, PR #113, merged to develop 2026-10-23 and to main via PR #121 the same day; tagged sprint-11)
 

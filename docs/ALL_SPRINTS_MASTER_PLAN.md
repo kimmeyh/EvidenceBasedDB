@@ -385,6 +385,56 @@ and in git. Remaining items below.
   https://github.com/wangy8205165/Quantum-NeuralNetwork-WhitePaper,
   entered as a GitHub repository record (intake section 2) and linked to
   a paper only where a source names it as that paper's code.
+- **Also named for the next release (team lead, 2026-10-23, Sprint 12
+  Phase 1.4: "add this to the papers/repo for this sprint ... determine
+  how best to include")**: the Classiq Quantum Circuit Challenge result,
+  from a LinkedIn post by PoJen Wang and one by Classiq (both 2026-10-15),
+  whose shortened links resolve to the two pages below (read only,
+  2026-10-23). How it is included:
+  - **Two web source records, entered like the Sprint 11 NVIDIA blog** (a
+    reference with a local copy in `Papers\`, under `qc`: circuit
+    synthesis, no ML workload):
+    - PoJen Wang, "A depth-95 phase oracle for the Classiq logo",
+      https://nez0b.github.io/blog/2026/classiq-logo-phase-oracle-depth-95/
+      ("Last updated: October 08, 2026"; "Part 2 of 2"; no license
+      stated, "(c) Copyright 2026 PoJen Wang"). The author's own account:
+      depth 95 with 272 CNOTs against the organisers' 5329 and 3502;
+      Qiskit and tket shorten the baseline "by about 6 percent"; 18
+      qubits. Its 19-page PDF is the local copy; its QASM file and
+      companion notebook zip are named in the record's evidence, not
+      copied.
+    - Alex Gramolin (Classiq), "Wrapping up the Classiq Quantum Circuit
+      Challenge",
+      https://www.classiq.io/insights/wrapping-up-the-classiq-quantum-circuit-challenge
+      (dated 06 Oct 2026 on the page; 9 October also appears). The
+      organiser's account: 387 registered, 40 countries, 6,091 circuits,
+      101 valid solutions, 25 below depth 200, "CX count broke ties";
+      PoJen Wang first at depth 95 with 272 CX, Daksh Shami at 95 with 410.
+  - **No repository record**: neither page links a GitHub repository; the
+    notebook is a zip on the blog site. Intake section 2 covers GitHub
+    repositories only.
+  - **The LinkedIn posts are not entered**: they restate the two pages.
+    One difference is carried in the evidence: the blog says "it finished
+    in the top five" (written before the ranking), the organiser's page
+    and the later post say first.
+  - **Part 1 as a third web source record** (team lead, 2026-10-23:
+    "include with the above"): PoJen Wang, "A field guide to quantum
+    circuit compilers",
+    https://nez0b.github.io/blog/2026/quantum-circuit-compilers-field-guide/
+    ("Quantum circuit optimization · Part 1 of 2"; "Last updated: October
+    08, 2026"; no license stated). Linked to Part 2 as the series' first
+    part. Only the author's own measurements enter as assertions: six
+    tool versions on the challenge baseline (tket then Qiskit best, depth
+    5004 and 3347 CNOTs; PyZX full_reduce worst, 8950 and 8576), and the
+    depth reached by each level (algorithm design 95, logic synthesis
+    1886, gate-level rescheduler 4665, tket 5004). Its survey claims about
+    other work (LightSABRE, GUOQ, Benchpress, Giallar, RSA resource
+    estimates, magic state cultivation) are second-hand: not entered as
+    its claims; a cited paper the store lacks may be entered at `seen`
+    from its own primary source. Its magic state cultivation passage
+    names the result F91 entered in Sprint 11.
+  - About 45m inside the release: 3 records, about 8 assertions, each
+    quote checked in the write path.
 - Acceptance per release: every unnamed PDF linked, entered or given a
   reason; every entered paper at `read` with its assertions, or at `seen`
   with its reason; the counts before and after recorded.
