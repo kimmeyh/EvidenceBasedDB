@@ -15,6 +15,19 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **feat**: F103 (Sprint 12 Task E, 2026-10-23): PoJen Wang's two posts
+  on the Classiq Quantum Circuit Challenge (Part 1, a field guide to
+  compilers; Part 2, his depth-95, 272-CNOT phase oracle) and Classiq's
+  wrap-up, entered as reference records at `read` from saved copies, with
+  5 assertions; the repository the team lead named
+  (wangy8205165/Quantum-NeuralNetwork-WhitePaper) entered and linked to
+  no paper. The two parts are stated as a series in their citations and
+  dispositions, not linked: no link type fits (a change from the plan).
+  Store as of 2026-10-23: 2,313 papers, 1,612 assertions. A second apply
+  added the applicability the first left out, found by the full suite
+  before the commit. Intake section 44;
+  `scripts/sprint12_f103_intake.py`; `tests/test_sprint12_f103.py`
+  (injections run) (Issue #127)
 - **feat**: F102 second apply (Sprint 12 Task C, 2026-10-23), from the
   fresh-eyes review of 5bcafe0. F111's result, which the first apply
   missed (Phase 2's own validation file still said "No result yet"), is

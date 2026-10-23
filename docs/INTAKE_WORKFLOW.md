@@ -1511,3 +1511,9 @@ Every count is a snapshot as of 2026-10-23. Written before the apply.
   overwriting); every quote is checked by `require_verbatim` against the
   saved page before anything is written; dry run by default; `--apply`
   takes a verified backup; a second apply writes nothing.
+- **A second apply, the same day: applicability.** The first apply
+  entered the three pages at `read` with no applicability, which every
+  screened or read paper must carry (`test_paper_applicability`). The
+  full suite run before the commit found it; the targeted run did not,
+  since a store write changes no file a test names. Each record now
+  carries one `qc` entry with its rationale.
