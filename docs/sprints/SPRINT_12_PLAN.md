@@ -9,14 +9,16 @@ from Sprint 11's branch, 2026-10-23, after PR #113 merged to develop and PR
 permanent, so each is released as a copy with the next free number: F103
 (F95 release for Sprint 12), F104 (F98 release for Sprint 12, its first)
 and F105 (F57 release for Sprint 12, 400 records). F51 is a HOLD card whose
-hold condition is not met (pre-flight below); Q2 asks how it runs. F39 and
-F90 are not selected.
+hold condition is not met (pre-flight below); Q2 = 2 keeps it on HOLD and
+out of this sprint. Q3 = 1 adds F106, the ADR-0005 amendment found at Phase
+1.3. F39 and F90 are not selected.
 
 ## Objective
 
 Correct the stored defects Sprint 11 found, then make the test suite fast
 enough that its gates stop costing a quarter hour each. Enter Phase 2's
-Sprint 28 results, and the CVQBoost findings record. Then read more than
+Sprint 28 results, and amend ADR-0005 for a link that rests on a recorded
+decision. Then read more than
 any sprint so far: the Classiq circuit challenge pages, the new papers in
 Christophe Pere's list, and the 400 most relevant unread records, by up to
 five agents from one ledger.
@@ -36,7 +38,7 @@ dominant term. Models follow `.claude/model_assignment_heuristics.json`.
 | A | **F101, the stored defects Sprint 11 found.** (1) Every stored "&amp;" corrected to "&": the card named Pande 2020; the store holds 4 records with it (pre-flight below), each corrected through the verified write path, the source of the correction (Crossref's escaped text) named in the evidence; record ids are keys and are not renamed (`dunjko-2018-machine-learning-amp-...` keeps its id). (2) `cyc-2007-eight-tactic-types`: the quote re-read in its source past the inner `"split" (`, the value re-checked against the whole quote. (3) A `live_store` test fails on any stored HTML entity, proven by injection. A second apply writes nothing; I1a's stray-quote check finds 0 | 30m | none (local store and one local source) | Claude, top tier (certainty) |
 | B | **F100, a faster suite and the targeted runner mode.** (1) One full run through `scripts/run_suite.py` with per-test timings (`--durations=0`), the slowest 30 tests and the total by file recorded with their date; (2) the top items fixed without removing a guard (one store copy per session where a test only reads after writing, extracted PDF text cached across tests, slow tests marked); (3) the targeted mode in `run_suite.py` (team lead's Q2 = 1, 2026-10-23): the changed test files, the tests of each changed script or module, and CI's set, chosen from step (1)'s timings; the workflow's Phase 4 rule names it; (4) the full suite's wall clock before and after. Every guard touched still fails by injection | 90m | about 30 min: two full runs of about 13 min each, plus targeted runs | Claude, top tier (hooks and test design); fresh-eyes review at its commit |
 | C | **F102, Phase 2's Sprint 28 results.** Phase 2's `docs/sprints/SPRINT_28_VALIDATION.md` and the result documents it names (F151, F152, F153, F110, F114, F154) read at the commit current when the task starts (10086da at planning, its PR #46 still draft). Each result entered as inbound evidence under `ml` (with `hsbc-2026` where Phase 2's own data is meant), Phase 2's stated limits carried into the values; F151's restatement of F130 and F114's miss related to the store's earlier claims by ADR-0004 A8 (b), `contradicts` only where both cannot hold. F111 (Experiment 4, running on 2026-10-23) entered only if its result is committed by then | 70m | none (local files) | Claude, top tier (certainty) |
-| D | **F51, the CVQBoost findings record and its six assertions** (Q2). Q2 = 1: the findings document entered at its current hash (`425358a7b4cec71f...`, "Last updated 2026-08-04"), the record and its six assertions written through the verified write path with provenance naming the version; when the re-run lands, a newer record is linked `superseded-by`. Q2 = 2: no work; F51 stays HOLD | 45m | none | Claude, top tier (certainty) |
+| D | **F106, ADR-0005 amendment: a source link may rest on a recorded team-lead decision** (Q3 = 1). ADR-0005's derived-field table says `source_links` carry "the evidence sentence"; Sprint 11's `NVIDIA/auto-ontology-eval` `code-of` link carries the team lead's decision (Sprint 11 Q1 = 2) instead. A dated amendment at the bottom of ADR-0005 (never an edit in place) states when a decision may stand in for a source sentence and that the evidence names the decision, its date and where it is recorded; the restatements in `CLAUDE.md` and `docs/` checked and kept in step (Sprint 7 retrospective I5); a test fails on a source link whose evidence is neither a source sentence nor a named decision, proven by injection | 15m | none | Claude, top tier (mandatory: ADR authoring) |
 | E | **F103, F95 release for Sprint 12.** (1) Every PDF in `Papers\` no record names (0 at planning; whatever the team lead saves before the task); (2) the repository the team lead named, `wangy8205165/Quantum-NeuralNetwork-WhitePaper`, as a GitHub repository record, linked only where a source names it as a paper's code; (3) the Classiq circuit challenge as three web source records under `qc`, as the F95 card states: PoJen Wang's Part 1 (compiler field guide) and Part 2 (depth-95 phase oracle), linked as a series, and Classiq's wrap-up page; Part 2's 19-page PDF the local copy; only each author's own measurements entered, Part 1's survey claims about other work not entered as its own; the "top five" and "first" placings both kept; (4) every entered paper read, or kept at `seen` with its reason; counts before and after | 45m | about 2 min: 3 web pages, one PDF, one GitHub REST call | Claude, top tier (certainty) |
 | F | **F104, F98's first release.** Roadmap-to-QML read at its current commit (a239747648 at planning; recorded), the arXiv ids in its year files and `Workforce.md` matched to the store: about 21 of 1,402 are new. Those entered through the door at `seen` and read under F57's rules from the shared ledger; each kept at `seen` with its reason where it cannot be read. The 1,142 already at `seen` stay F57's | 60m | about 15 min: about 21 arXiv metadata and PDF requests, serial at 18 s | Claude, top tier (certainty); Sonnet 5.5 first-pass readers |
 | G | **F105, F57 release for Sprint 12: 400 records** (Q1). F57's relevance order: nothing is unread under `hsbc-2026` or a Dirac context, so the release is the 400 most-cited `qml` records at `seen` or `screened` with no read row (OpenAlex counts, F89's rule), leaving out E's and F's records. Sprint 11's I3 first (card text on F57): a shared helper in `store/` grades HIGH only with a basis named per id (setup, scope, definition, proved result, stated limit), and `store/write_path.py`'s rule requires new reading scripts to use it, proven by injection. Read by up to 5 agents in parallel from the ledger; each record read and yielding, or kept at `seen` with its reason; the count refreshed | 680m (650 for 400 at the card's rate, 30 for I3) | about 2 hours: up to about 350 arXiv PDFs not held locally (1,199 of the 1,398 unread `qml` records carry an arXiv id), serial at 18 s inside F52's cap, heartbeat to a file; OpenAlex counts in a few requests | Claude, top tier (certainty); up to 5 Sonnet 5.5 first-pass readers, every quote checked in the write path |
@@ -52,8 +54,8 @@ agents, so five readers never make five arXiv streams.
 because its guard joins the suite B times. B second, so every later commit
 gates on the targeted mode. C and D are small and independent. E, F and G
 run in parallel from the ledger; G's fetcher starts in the background as
-soon as the slice is selected. Total about 1,020 minutes at the cards'
-estimates; at Sprints 10 and 11's ratios, about 290 to 540 minutes, plus
+soon as the slice is selected. Total about 990 minutes at the cards'
+estimates; at Sprints 10 and 11's ratios, about 280 to 525 minutes, plus
 about 2.5 hours of runtime, mostly in the background. No findings
 allowance: the scope is not dominated by verification. **If a Criterion 3
 stop becomes necessary, the cut line is inside G**: G stops at the count
@@ -89,7 +91,7 @@ targeted tests plus CI's set.
   2026-10-23, about 825 minutes projected.
 - **F51**: the hold condition is not met. Two copies hash to
   `425358a7b4cec71f...` and say "Last updated 2026-08-04", unchanged since
-  the 2026-10-15 check. The third copy the card names
+  the 2026-10-15 check (Q2 = 2: stays HOLD). The third copy the card names
   (`hsbc-quantum-fraud-2026\fourierwall2\CVQBoost_Findings.md`) is no
   longer present, and that repository's git history holds no file at that
   path. No re-run has rewritten the document.
@@ -101,31 +103,31 @@ targeted tests plus CI's set.
   1,381 in the store (1,142 `seen`, 239 `read`).
 - **Plan-to-branch verification** (3.2.2.1): no Task A to G artifact exists
   yet; every selected F# is an open card in the master plan; F103, F104 and
-  F105 are free numbers.
+  F105 are free numbers; F106 is the next (Q3 = 1).
 
-## Decisions (for approval)
+## Decisions (team lead, 2026-10-23)
 
-- **Q1. What "400 total" counts.** 1: G reads 400 from F57's ranking, and
-  E's and F's papers come on top (about 425 reads in all; G as estimated,
-  680m, about 2 hours of fetching). 2: 400 reads in all, E's and F's
-  included (G reads about 375; about 40 fewer minutes and 8 fewer of
-  fetching). Recommend 1.
-- **Q2. How F51 runs, its hold condition unmet.** 1: entered now from the
-  2026-08-04 document at its current hash, superseded by a newer record
-  when the re-run lands (45m). 2: kept on HOLD and out of this sprint
-  (scope drops 45m). Recommend 1.
-- **Q3. The ADR-0005 mismatch found at Phase 1.3** (not in the selection):
-  1: added to this sprint as a dated amendment saying a source link may
-  rest on a recorded team-lead decision, named in its evidence, with the
-  next free number (15m). 2: carded for a later sprint. 3: kept as a
-  finding only. Recommend 1.
+The team lead answered "q1 1 q2 2 (I thought it had been run, so wait) q3
+1". The plan absorbs them in this commit (Sprint 7 retrospective I2).
+
+- **Q1 = 1.** G reads 400 from F57's ranking; E's and F's papers come on
+  top (about 425 reads in all). G's estimate and runtime unchanged (the
+  option the estimates assumed).
+- **Q2 = 2.** F51 stays HOLD and out of this sprint, waiting on the
+  re-run; the former Task D (45m) is removed.
+- **Q3 = 1.** F106 carded and added as Task D (15m). Total 1,020 -> 990
+  minutes.
+
+The team lead then approved the plan as amended. Issues, one per task: A
+#123, B #124, C #125, D #126, E #127, F #128, G #129.
 
 ## Premise falsifier
 
 **The premises**: (a) "&amp;" is the only HTML entity stored; (b) a few
 tests dominate the suite's time; (c) Phase 2's Sprint 28 documents still
-state the results the card records; (d) the findings document is the
-version the six assertions were drafted from; (e) the Classiq pages state
+state the results the card records; (d) a recorded decision is the
+only kind of evidence a source link carries other than a source sentence
+(F106); (e) the Classiq pages state
 the figures the card quotes; (f) about 21 of Roadmap-to-QML's papers are
 new to the store; (g) the 400 most-cited unread `qml` records bear on a
 context often enough to yield.
@@ -134,9 +136,9 @@ context often enough to yield.
 corrected the same way, and the count is reported; (b) the timings are
 flat: the suite is then sped up by sharing setup, or the plan says no
 large gain exists, and the targeted mode carries the saving; (c) a file
-changed: the assertions follow the file at its commit; (d) the six
-assertions' quotes fail the write-path check against it: they are
-corrected or dropped by name; (e) a figure is absent from its page: it is
+changed: the assertions follow the file at its commit; (d) D's test finds
+other source links resting on neither: each is reported by name, and the
+amendment covers what they are or they are corrected; (e) a figure is absent from its page: it is
 not entered; (f) the match by id misses records held by DOI: the count is
 re-run by DOI and corrected; (g) more than half refused as not bearing on
 any context: the ranking is reported as wrong, not hidden.
@@ -155,7 +157,7 @@ ledger test fails on any record in two groups.
 | Two readers write the same record | One ledger, one group per record; a test fails on a duplicate |
 | Five readers multiply arXiv traffic | One serial fetcher at 18 s inside F52's cap; agents read local copies only |
 | A first-pass reader grades HIGH without a basis | G's I3 helper refuses HIGH without a named basis, proven by injection |
-| F51's record outlives the re-run silently | Its provenance names the version and hash; the re-run's record links `superseded-by` |
+| An ADR amendment silently rewrites the ADR | Dated amendment at the bottom only; restatements in `CLAUDE.md` and `docs/` searched and kept in step |
 | A blog's survey claim enters as its own | Only each author's own measurements are entered (E) |
 | Phase 2's draft results change after the read | Provenance names the commit; a later change is a later card |
 | A team-lead file in `Papers\` is renamed or moved | Never: matching reads names only |
@@ -174,8 +176,8 @@ ledger test fails on any record in two groups.
   still fails by injection
 - C: each named result entered at Phase 2's commit with its limits, and
   related where it bears on a stored claim
-- D: per Q2: the record and its six assertions entered at the named hash,
-  or F51 left HOLD
+- D: ADR-0005's dated amendment written; its restatements in step; the
+  source-link evidence test proven by injection
 - E: the unnamed PDFs and the named repository handled; the three
   challenge pages entered with their own measurements; counts before and
   after
@@ -190,6 +192,6 @@ ledger test fails on any record in two groups.
 
 ## Out of scope
 
-F39 and F90 (not selected). F57's, F95's and F98's later releases.
+F51 (HOLD, Q2 = 2: waiting on the re-run). F39 and F90 (not selected). F57's, F95's and F98's later releases.
 Downloading any paper around a paywall. Any write to `hsbc-qfraud-phase2`,
 `hsbc-quantum-fraud-2026` or `spamfilter-multi`.

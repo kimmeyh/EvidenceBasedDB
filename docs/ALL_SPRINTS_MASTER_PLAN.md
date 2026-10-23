@@ -285,10 +285,12 @@ develop to main).
 - **Scope** (DEFINED, team lead 2026-10-23): F101, F95, F98, F100, F102,
   F57 ("Can you do 400 total this sprint") and F51. The permanent items
   are released as copies: F103 (F95), F104 (F98, its first) and F105
-  (F57, 400 records). F51's hold condition is not met; plan Q2 asks how it
-  runs. F39 and F90 are not selected.
-- **Plan**: `docs/sprints/SPRINT_12_PLAN.md` (drafted 2026-10-23, awaiting
-  approval).
+  (F57, 400 records). Plan decisions (team lead, 2026-10-23): Q1 = 1 (400
+  from F57's ranking, F103's and F104's papers on top); Q2 = 2 (F51 stays
+  HOLD: "I thought it had been run, so wait"); Q3 = 1 (F106 added). F39
+  and F90 are not selected.
+- **Plan**: `docs/sprints/SPRINT_12_PLAN.md` (approved 2026-10-23 as
+  amended).
 
 ## Next Sprint Candidates
 
@@ -471,6 +473,10 @@ and in git. Remaining items below.
   and say "Last updated 2026-08-04". Phase 2 has newer Dirac runs (B4 and
   B5 on 2026-10-06; F142 on Dirac-3S on 2026-10-15), read only, but none
   rewrites the findings document. Stays HOLD.
+- Hold checked 2026-10-23 (Sprint 12 planning): two copies unchanged at
+  `425358a7b4cec71f...`; the consumer repository's copy is no longer at
+  its path. Selected for Sprint 12, then kept HOLD at plan Q2 = 2 (team
+  lead: "I thought it had been run, so wait").
 - Depends on: the hsbc repository's re-run of the experiment.
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
@@ -753,6 +759,20 @@ and in git. Remaining items below.
 - Acceptance: each of the 400 at `read` with its assertions, or kept at
   `seen` with its reason; HIGH grades carry their basis; the count before
   and after recorded.
+- Depends on: none
+
+**F106. ADR-0005 amendment: a source link may rest on a recorded team-lead decision (~15m) Priority 12** (NEW 2026-10-23, Sprint 12 Phase 1.3 finding; added to Sprint 12 at plan Q3 = 1)
+- Phase: Design documents
+- Value: this prevents ADR-0005 from describing every source link as
+  resting on a source sentence when one rests on the team lead's decision.
+- Platform: `docs/adr/0005-reference-library.md`; the store's
+  `source_links`; `CLAUDE.md` and `docs/` restatements
+- Found at Phase 1.3: ADR-0005's derived-field table says `source_links`
+  carry "the evidence sentence"; Sprint 11's `NVIDIA/auto-ontology-eval`
+  `code-of` link carries the team lead's decision (Sprint 11 Q1 = 2).
+- Acceptance: a dated amendment at the bottom of ADR-0005; restatements in
+  step; a test fails on a source link whose evidence is neither a source
+  sentence nor a named decision, proven by injection.
 - Depends on: none
 
 ## Design documents governing this repository

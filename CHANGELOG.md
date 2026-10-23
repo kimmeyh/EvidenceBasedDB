@@ -36,8 +36,10 @@ this project keeps having to replace with a step.
 - **docs**: Sprint 12 scope selected (team lead, 2026-10-23): F101, F95,
   F98, F100, F102, F57 at 400 records and F51; released copies F103 (F95),
   F104 (F98) and F105 (F57). Plan drafted
-  (`docs/sprints/SPRINT_12_PLAN.md`), awaiting approval; F101 widened at
-  planning from 1 record to the 4 that store "&amp;"
+  (`docs/sprints/SPRINT_12_PLAN.md`); F101 widened at planning from 1
+  record to the 4 that store "&amp;". Approved as amended (2026-10-23):
+  Q1 = 1 (400 from F57's ranking, others on top), Q2 = 2 (F51 stays
+  HOLD), Q3 = 1 (F106, the ADR-0005 amendment, carded and added)
 
 ### 2026-10-21 to 2026-10-23 (Sprint 11, PR #113, merged to develop 2026-10-23 and to main via PR #121 the same day; tagged sprint-11)
 
