@@ -30,7 +30,7 @@ def test_every_quote_and_figure_is_in_its_saved_page():
     """Proven to fail by injection, 2026-10-23: with "272" changed to
     "273" in the depth-95 value, verify_all named
     wang-2026-classiq-logo-oracle-depth-95-272-cnots. Restored."""
-    assert len(F103.verify_all()) == 5
+    assert len(F103.verify_all()) == len(F103.ASSERTIONS) == 6
 
 
 def test_the_store_holds_what_the_script_writes(live_conn):
@@ -41,18 +41,27 @@ def test_the_store_holds_what_the_script_writes(live_conn):
     injection, 2026-10-23: run against the backup taken before the apply,
     it named the first source; against the backup taken before the
     applicability was added, it named the first source's empty
-    applicability."""
+    applicability; against the backup taken before the third apply, it
+    named the first source's disposition; with the repository id
+    mistyped, it named the repository."""
     for _, entry in F103.entries():
-        row = live_conn.execute("SELECT tier, evidence, access FROM paper_fields WHERE record_id = ?",
+        row =live_conn.execute("SELECT f.tier, f.evidence, f.access, f.disposition, r.provenance "
+                                "FROM paper_fields f JOIN records r ON r.id = f.record_id WHERE f.record_id = ?",
                                 (entry["id"],)).fetchone()
         assert row is not None and row[0] == "read", entry["id"]
-        assert tuple(row[1:]) == (entry["evidence"], entry["access"]), entry["id"]
+        assert tuple(row[1:]) == (entry["evidence"], entry["access"], entry["disposition"],
+                                  entry["citation"]), entry["id"]
         applicability = [list(r) for r in live_conn.execute(
             "SELECT context_id, rationale FROM paper_applicability WHERE record_id = ?", (entry["id"],))]
         assert applicability == entry["applicability"], entry["id"]
     part1, part2 = F103.SOURCES["part1"]["id"], F103.SOURCES["part2"]["id"]
     assert part2 in F103.SOURCES["part1"]["disposition"] and part1 in F103.SOURCES["part2"]["disposition"]
     repo = "wangy8205165-quantum-neuralnetwork-whitepaper-github-repo"
+    held = live_conn.execute("SELECT tier, access, disposition FROM paper_fields WHERE record_id = ?",
+                             (repo,)).fetchone()
+    assert held is not None and tuple(held) == ("seen", F103.repo_entry()["access"],
+                                                F103.repo_entry()["disposition"]), repo
+    assert F103.repo_entry()["access"] == "https://github.com/wangy8205165/Quantum-NeuralNetwork-WhitePaper"
     for rid in (part1, part2, repo):
         assert not live_conn.execute("SELECT 1 FROM source_links WHERE from_id = ? OR to_id = ?",
                                      (rid, rid)).fetchone(), rid

@@ -15,6 +15,16 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **fix**: F103 (Sprint 12 Task E) third apply, 2026-10-23: the
+  fresh-eyes review of c80c195. Grades follow the store's precedent (the
+  author's own blog measurements LOW; depth 95 MODERATE, upgraded for the
+  organiser's scoring; placings HIGH); PyZX recorded as lengthening the
+  circuit; "top five" no longer called earlier than the ranking; the
+  organiser's top-two CX counts split into their own assertion; the
+  repository recorded as a white paper with no code. The script syncs a
+  held record's disposition; the test checks each disposition, citation
+  and the repository record (INTAKE_WORKFLOW.md section 44)
+  (Issue #127 / PR #122)
 - **feat**: Sprint 11 retrospective I3 (Sprint 12 Task G, first part,
   2026-10-23): `store/grading.py` grades HIGH only with a named basis
   (setup, scope, definition, proved result, stated limit) and its reason,

@@ -1517,6 +1517,34 @@ Every count is a snapshot as of 2026-10-23. Written before the apply.
   full suite run before the commit found it; the targeted run did not,
   since a store write changes no file a test names. Each record now
   carries one `qc` entry with its rationale.
+- **A third apply, the same day: the fresh-eyes review of c80c195.**
+  Written before the apply. The review found the values above wrong in
+  four places, and they are corrected here, not edited above:
+  - **Grades follow the store's precedent.** An author's own
+    measurement in a blog post, one study, starts LOW (Part 1's run and
+    the redesign, both MODERATE above). Part 2's depth 95 with 272 CNOTs
+    is MODERATE, not HIGH: LOW for the author's own claim, upgraded one
+    level because the organiser scored it independently. The placings
+    stay HIGH (the organiser's to decide). The organiser's CX counts for
+    the top two are split into their own assertion, MODERATE.
+  - **PyZX did not shorten the circuit.** Part 1's value listed it with
+    the tools that did; the page says it lengthened the circuit, to
+    depth 8950 with 8576 CNOTs, more than twice the baseline's CNOTs.
+    "56 times shorter" is now measured against the baseline, as the page
+    measures it. Part 1's run is "six versions of the circuit", not
+    three.
+  - **"Top five" was not written before the ranking.** The section
+    above said so; the Part 2 page is dated 2026-10-08, after the
+    organiser's 2026-10-06 wrap-up, and its PDF is dated 2026-10-01. The
+    depth-95 value now gives the placing as the organiser's and names
+    the placings record.
+  - **The repository holds no code.** Its files (GitHub contents API,
+    2026-10-23) are the LaTeX source and PDF of a white paper, "Quantum
+    Neural Networks: Theory, Architectures, and Applications". Its
+    disposition says so and keeps it at `seen` as a paper candidate.
+  - The script now syncs a held record's disposition, not only inserts
+    it; the test compares each disposition and citation with the store
+    and checks the repository record and its access.
 
 ## 45. Rule from 2026-10-23: a reading script grades HIGH only with a named basis (Sprint 11 retrospective I3, Sprint 12 Task G)
 
