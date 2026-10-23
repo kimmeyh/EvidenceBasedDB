@@ -1,0 +1,86 @@
+"""F101 (Sprint 12 Task A): no HTML entity anywhere in the store, the
+metadata parsers undo the escapes the providers send, and every stored
+quote parses (INTAKE_WORKFLOW.md section 42).
+
+The parser tests run on CI; the store tests are live_store."""
+from __future__ import annotations
+
+import importlib.util
+import json
+import re
+import sys
+from pathlib import Path
+
+import pytest
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from store.citations import parse_crossref, parse_datacite  # noqa: E402
+from store.quotes import QUOTE, require_verbatim, source_text, stray_quote_marks  # noqa: E402
+
+ENTITY = re.compile(r"&(?:[A-Za-z]+|#\d+|#x[0-9A-Fa-f]+);")
+
+
+def test_crossref_titles_and_venues_are_unescaped():
+    """Proven to fail by injection, 2026-10-23: with `_text` returning its
+    input without `html.unescape`, this test and the DataCite one below
+    showed "Machine learning &amp; AI" and "Divide &amp; Conquer".
+    Restored."""
+    body = json.dumps({"message": {"DOI": "10.1/x", "title": ["Machine learning &amp; AI"],
+                                   "container-title": ["Science &amp; Technology Libraries"],
+                                   "author": [{"family": "Pande", "given": "M."}],
+                                   "issued": {"date-parts": [[2020, 10, 1]]}}}).encode()
+    md = parse_crossref(body)
+    assert md.title == "Machine learning & AI"
+    assert md.venue == "Science & Technology Libraries"
+
+
+def test_datacite_titles_are_unescaped():
+    body = json.dumps({"data": {"attributes": {"doi": "10.1/y", "titles": [{"title": "Divide &amp; Conquer"}],
+                                               "creators": [], "publicationYear": 2024, "dates": []}}}).encode()
+    assert parse_datacite(body).title == "Divide & Conquer"
+
+
+@pytest.mark.live_store
+def test_no_html_entity_is_stored_anywhere(live_conn):
+    """Every text field of every table. Proven to fail by injection,
+    2026-10-23: run against the backup taken before the first apply, it
+    named the 4 records section 42 corrected (6 fields)."""
+    found = []
+    tables = [r[0] for r in live_conn.execute("SELECT name FROM sqlite_master WHERE type = 'table'")]
+    for table in tables:
+        cols = [c[1] for c in live_conn.execute(f"PRAGMA table_info({table})")]
+        for row in live_conn.execute(f"SELECT * FROM {table}"):
+            found += [f"{table}.{col}: {row[0]}" for col, v in zip(cols, row) if isinstance(v, str) and ENTITY.search(v)]
+    assert not found, found
+
+
+@pytest.mark.live_store
+def test_every_stored_quote_parses(live_conn):
+    """I1a's stray-quote check over the whole store: 0 after section 42.
+    Proven to fail by injection, 2026-10-23: run against the backup taken
+    before the first apply, it named the 4 assertions section 42 corrected
+    (the Cyc quote and 3 with no anchor). Restored to the live store."""
+    bad = [rid for rid, ctx in live_conn.execute("SELECT record_id, citation_context FROM assertion_fields")
+           if ctx and stray_quote_marks(ctx)]
+    assert not bad, bad
+
+
+@pytest.mark.live_store
+@pytest.mark.parametrize("rid", ["cyc-2007-eight-tactic-types", "cyc-general-prover-disabled",
+                                 "heuristics-over-general-reasoning", "hsbc-b1-variable-count"])
+def test_each_corrected_quote_is_whole_and_holds_its_value(live_conn, rid):
+    ctx, value = live_conn.execute(
+        "SELECT f.citation_context, r.value FROM assertion_fields f JOIN records r ON r.id = f.record_id "
+        "WHERE f.record_id = ?", (rid,)).fetchone()
+    source, passages = _script().QUOTE_FIXES[rid]
+    assert len(QUOTE.findall(ctx)) == len(passages)
+    require_verbatim(rid, ctx, source_text(source), value=value)
+
+
+def _script():
+    spec = importlib.util.spec_from_file_location("f101", ROOT / "scripts" / "sprint12_f101_corrections.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod

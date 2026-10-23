@@ -1268,3 +1268,94 @@ Written before the apply below.
   (F 125, G 649), F91 (6), F92 (18, after the fix above) and F93 (4).
   F92's and F93's values name "Phase 2", which the reading script's
   check never met; that is why the "Phase N" rule exists.
+
+## 42. Applied 2026-10-23: HTML entities out of stored citations, and the Cyc quote made whole (Sprint 12 Task A, F101)
+
+Every count is a snapshot as of 2026-10-23. Written before the apply.
+
+- **The entities came from the metadata providers.** Crossref and DataCite
+  return titles and venues with HTML escapes in them ("Science &amp;
+  Technology Libraries"), and `store.citations` copied them as they came.
+  A scan of every text field of every table finds one entity, "&amp;", in
+  4 records: the title (`value`) and citation (`provenance`) of
+  `jeffery-2024-multidimensional-quantum-walks-recursion-quantum` (DataCite)
+  and `dunjko-2018-machine-learning-amp-artificial-intelligence`
+  (Crossref), and the citation of
+  `pande-2020-bibliometric-survey-quantum-machine-learning` and
+  `yang-2023-survey-important-issues-quantum-computing` (Crossref venues).
+- **The generator is fixed first** (workflow invariant 7's corollary):
+  `parse_crossref` and `parse_datacite` unescape the title, subtitle and
+  venue, so a later intake or re-check renders "&". Then the 4 records
+  are corrected: each field unescaped, and nothing else changed. Record
+  ids are keys and are not renamed: the Dunjko id keeps its "amp". Each
+  record's updated reason names this section.
+- **A guard.** A `live_store` test fails on any HTML entity in any text
+  field of the store.
+- **The Cyc quote** (`cyc-2007-eight-tactic-types`, Sprint 7, section 41).
+  Its first quote held the source's own quoted word, `"split" (`, which
+  ends a quote in the quote pattern, so the words after it were never
+  checked. It is now quoted in two parts around that word: `"There are
+  eight tactic types which describes the kind of operation to be
+  performed, such as" (p.147)` and `"(i.e. split a conjunction into two
+  sub-problems)." (p.147; ...)`. A third quote, `"2007, American
+  Association for Artificial Intelligence" (p.147)`, holds the value's
+  year, which the figure check of section 41 now requires. The value is
+  not changed. The quotes are checked by `require_verbatim` with the value
+  and named as the edit's basis (`require_edit_basis`). Applied first, with
+  the entities.
+- **Three more quotes the pattern never parsed (found after that apply,
+  written before the second).** Run over the whole store, section 41's
+  stray-quote check names 3 more assertions, not the 2 section 41 counted:
+  their quotes carry no anchor, so the pattern found no quote in them at
+  all, and section 41's count looked only at contexts with at least one
+  parsed quote. `cyc-general-prover-disabled` and
+  `heuristics-over-general-reasoning` (Sprint 1, Lenat and Marcus 2023)
+  and `hsbc-b1-variable-count` (Sprint 2, the consumer repository's
+  preregistration, amendment A30, read only). Each is re-quoted from its
+  source with an anchor, and the figures each value states (2023; 20,
+  1989 and 1,100) are given quotes that hold them. The values are not
+  changed. The second Lenat quote's dashes are in the layout text layer
+  (`pdftotext -layout`), which the check reads alongside the plain one.
+- **Lenat and Marcus 2023 had no local copy.** Its free arXiv PDF
+  (arXiv:2308.04445) is saved to `Papers\` under section 3's convention,
+  by one paced request (`--fetch`), and added to the record's `access`.
+- `scripts/sprint12_f101_corrections.py`: dry run by default; `--apply`
+  takes a verified backup first; a second apply writes nothing.
+
+## 43. Applied 2026-10-23: Phase 2's Sprint 28 results, by the inbound path (Sprint 12 Task C, F102)
+
+Every count is a snapshot as of 2026-10-23. Written before the apply.
+
+- **What is read.** Six result documents in `hsbc-qfraud-phase2`'s
+  `docs/phase2/`, each read whole at Phase 2 commit 10086da (branch
+  `feature/20261019_Sprint_28`; its PR #46 is still a draft), with the
+  last commit that touched each: F151 (e9946f5), F152 (0b5ea6c), F153
+  (cfff1fe), F110 (7f5b3c0), F114 (74ce420), F154 (79fbe19). Read only
+  (F79), through `git show`, so a later edit in Phase 2 cannot change
+  what is checked. F111 (Experiment 4) has no result at 10086da and is
+  not entered.
+- **One reference record per document**, as F93 entered F108: `tier`
+  `read`, the citation hand-transcribed from the heading and first line
+  and named so, `access` the working-copy path and the commit URL,
+  `evidence` the SHA-256 of the committed blob.
+- **Assertions: 9, every one `SIM`** (Phase 2's own tag on each
+  document): F151's cause and the restated F130 reading (2), F152's
+  ordering (1), F153's failed falsifier and the two resolution checks
+  (2), F110's build slope and solve (2), F114's miss (1), F154's null
+  (1). Certainty as F93's: the consumer project's own measurement, read
+  directly, starts HIGH, and each value carries Phase 2's own limits;
+  Phase 2's inferences are attributed as inferences.
+- **Contexts.** `ml` for a result about a classical method on a public
+  data set or a simulator (F151's cause, F152, F114); `hsbc-2026` for a
+  result about the project's own CVQBoost and device lanes (F151's F130
+  restatement, F153, F110, F154).
+- **No relation is linked (ADR-0004 A8 (b)).** F114's calibrated plug-in
+  overstates the Bayes error as F108's default plug-in did, but by 3% to
+  13% with a different model and fitting set, so it confirms only part
+  of `f108-hgb-plugin-overstates-bayes-error-5-to-12-percent`; its value
+  names that record instead. F151's restatement of F130 has no stored
+  claim to contradict: F130's "beats HGB" was never entered.
+- `scripts/sprint12_f102_phase2_sprint28.py`: every quote checked by
+  `require_verbatim`, with the value, against the blob at 10086da (markdown
+  bold dropped first) before anything is written; dry run by default;
+  `--apply` takes a verified backup; a second apply writes nothing.

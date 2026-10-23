@@ -15,6 +15,18 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **fix**: F101 (Sprint 12 Task A, 2026-10-23): HTML entities out of the
+  store. `store.citations` now unescapes Crossref and DataCite titles,
+  subtitles and venues; the 4 records that stored "&amp;" (Jeffery 2024,
+  Dunjko 2018, Pande 2020, Yang 2023; 6 fields) corrected, ids kept.
+  Every stored quote now parses: the Cyc quote cut at its inner
+  `"split" (` and 3 Sprint 1 and 2 quotes with no anchor (found by
+  running the stray-quote check over the whole store; section 41 had
+  counted 2) re-quoted from their sources with anchors, values unchanged.
+  Lenat and Marcus 2023's free arXiv copy saved and linked. Intake
+  section 42; `scripts/sprint12_f101_corrections.py`;
+  `tests/test_sprint12_f101.py` (injections run) (Issue #123)
+
 - **chore**: Sprint 12 opened (2026-10-23). The team lead merged PR #113
   into develop (21e9550) and PR #121 to main (d83a623); `sprint-11`
   tagged on d83a623; branch `feature/20261023_Sprint_12` cut from the
