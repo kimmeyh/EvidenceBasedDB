@@ -1759,3 +1759,45 @@ runs; each later step adds its bullet before it runs.
   F104's entered papers may now be `read` when a ledger group read them,
   and the field round-trip test no longer adds a route its first `read`
   paper already holds.
+- **A third apply, the same day: the fresh-eyes review of 5744e2d.**
+  Written before the apply. Every count matched; the findings were
+  about meaning, which no check can see. Each was read against its
+  source before it was acted on.
+  - **Cuts that lost a condition (1 Critical, 3 Important).** A
+    replacement that cuts what a quote does not hold can cut too much:
+    `yang-simulator-limit` said the paper ran only on a simulator, but
+    the paper ran its examples on real hardware and simulated one
+    subsection's analysis for machine time; `aqnn-coherence-entanglement-no-help`
+    lost that its no-go rests on GIOs; Definition 1 of
+    `gilfuster-trainability-definition` lost "with high probability";
+    `gilfuster-bp-trainable` lost its cryptographic assumption. Each is
+    restored with the source sentence that holds it. The rule, sharper:
+    when the value says more than its quote, quote the rest of the
+    sentence before cutting the value.
+  - **18 HIGH grades moved to LOW.** 14 "stated limits" that are
+    statements about the field, its devices or its literature, not the
+    paper's own work; 4 that are conclusions from the paper's own
+    measurements. "We do not claim X" is a stated limit; "we found X" is
+    a result. A field statement now stores its own reason (a new FIELD
+    reason, 21 ids with the 7 the coordinator had kept LOW), not "an
+    empirical result".
+  - **Values trimmed or re-quoted (11).** A cited result taken out of a
+    HIGH limit's quotes; a Hamiltonian class narrowed to what the source
+    names, its lost Pauli letters said so; a lost superscript said so;
+    "restricted" applied to the class the source applies it to; words
+    the quotes do not hold ("cycle graph", "penalty parameter",
+    "standard", a dataset name, "good") cut or quoted.
+  - **Kept as it was, and why.** `gnn-ae-preliminary-future` stays HIGH:
+    after section 47's first cut its value is the future-work sentence
+    alone. The proved results that are LOW because their text was cut
+    short still store "an empirical result" as the reason (3 ids); the
+    reason is wrong in name only, and is carried to the retrospective.
+  - **The tables after the review.** 118 values replaced, 27 assertions
+    given source sentences, 3 quotes dropped (the first bullet's "2
+    quotes corrected" were 2 dropped; and of its 18 extra quotes, 6 were
+    text-layer stops and 12 added a missing subject or referent), 7
+    dropped assertions, 559 HIGH (Task F 34, Task G 525; Task G LOW 757).
+  - **A new guard for CI.** `unsupported_by_basis` checked replaced
+    values only inside `verify()`, which needs the source text, so CI
+    never ran it. A test now runs it on every replaced value from the
+    quotes alone.

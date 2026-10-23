@@ -20,7 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from store.grading import BASES  # noqa: E402
-from store.quotes import QUOTE, plain, source_text, stray_quote_marks, unquoted_figures  # noqa: E402
+from store.quotes import (QUOTE, plain, source_text, stray_quote_marks, unquoted_figures,  # noqa: E402
+                          unsupported_by_basis)
 
 TASKS = ("F", "G")
 
@@ -78,14 +79,40 @@ def test_every_high_grade_is_one_the_coordinator_named_with_its_basis(task):
     assert moderate == s12.VENDOR_DESCRIPTIONS & set(raw)
 
 
+def test_a_statement_about_the_field_is_low_and_says_so():
+    """The fresh-eyes review of 5744e2d: 14 statements about the field, its
+    devices or its literature were graded HIGH "stated limit", and the ones
+    kept LOW stored "an empirical result" as the reason. Proven to fail by
+    injection, 2026-10-23: with qcnn-scaling-limit put back in HIGH, this
+    test named it."""
+    s12 = _script()
+    both = sorted(s12.FIELD_STATEMENTS & set(s12.HIGH))
+    assert not both, both
+    got = {a.id: a for t in TASKS for _, a, _, _ in s12.assertions(t) if a.id in s12.FIELD_STATEMENTS}
+    assert set(got) == s12.FIELD_STATEMENTS
+    assert not [i for i, a in got.items() if a.certainty != "low" or a.certainty_reasons != s12.FIELD], got
+
+
+def test_every_replaced_value_states_only_signs_its_quotes_hold():
+    """`require_edit_basis` runs this inside verify(), which needs the source
+    text, so CI (live_store deselected) never reached it. The check needs
+    only the quotes. Proven to fail by injection, 2026-10-23: with "c → ∞"
+    written into dual-vqe-finite-c-estimate's replaced value (its quote stops
+    before the sign), this test named the "∞" and no other test failed."""
+    s12 = _script()
+    bad = {a.id: n for t in TASKS for _, a, _, _ in s12.assertions(t)
+           if a.id in s12.VALUE_REPLACE and (n := unsupported_by_basis(a.value, QUOTE.findall(a.citation_context)))}
+    assert not bad, bad
+
+
 def test_every_name_in_the_coordinator_tables_is_an_assertion():
     """A misspelled id in a table does nothing, silently: a HIGH not given,
     a value not replaced. Proven to fail by injection, 2026-10-23: with
     "coreset-limits" spelled "coreset-limit" in HIGH, this test named it."""
     s12 = _script()
     ids = set(_raw(s12, "F")) | set(_raw(s12, "G"))
-    for name in ("HIGH", "VENDOR_DESCRIPTIONS", "VALUE_REPLACE", "EXTRA_QUOTES", "QUOTE_EDITS", "CONTEXT_FIX",
-                 "DROP"):
+    for name in ("HIGH", "VENDOR_DESCRIPTIONS", "FIELD_STATEMENTS", "VALUE_REPLACE", "EXTRA_QUOTES", "QUOTE_EDITS",
+                 "CONTEXT_FIX", "DROP"):
         unknown = set(getattr(s12, name)) - ids
         assert not unknown, f"{name}: {sorted(unknown)}"
 
@@ -120,7 +147,12 @@ def test_the_coordinator_corrections_hold():
     s12 = _script()
     v = {a.id: a.value for t in TASKS for _, a, _, _ in s12.assertions(t)}
     assert "3-means" not in v["coreset-limits"]
-    assert "high probability" not in v["gilfuster-trainability-definition"]
+    # the fresh-eyes review of 5744e2d: a cut that dropped a definition's condition, a scope or an assumption
+    assert "high probability" in v["gilfuster-trainability-definition"]
+    assert "in this subsection" in v["yang-simulator-limit"]
+    assert "GIOs" in v["aqnn-coherence-entanglement-no-help"]
+    assert "cryptographic assumptions" in v["gilfuster-bp-trainable"]
+    assert "exponential separations" not in v["qaoa-qa-limitation-smooth-angles"]
     assert "Fig." not in v["drl-agent-average-fidelities"]
     assert "Result 1.1" not in v["st-connectivity-subsumes-learning-graph-wdt"]
     assert "regime" not in v["qaoa-no-general-guarantee"]

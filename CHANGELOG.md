@@ -15,6 +15,17 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **fix**: F105 and F104 (Sprint 12 Tasks G and F) third apply,
+  2026-10-23: the fresh-eyes review of 5744e2d. Four cuts that lost a
+  condition restored from their source sentences (one value had said a
+  paper ran only on a simulator; it ran on hardware). 18 HIGH grades
+  moved to LOW: 14 statements about the field, 4 conclusions from the
+  paper's own measurements; a field statement now stores its own
+  reason. 11 values trimmed or re-quoted. 42 records updated; a fourth
+  apply writes nothing. HIGH 559. A CI test now checks every replaced
+  value's signs against its quotes. The 5744e2d entry's "2 quotes
+  corrected" were 2 quotes dropped (INTAKE_WORKFLOW.md section 47)
+  (Issue #129 / PR #122)
 - **feat**: F105 and F104 (Sprint 12 Tasks G and F, the reads,
   2026-10-23): all 53 ledger groups read by first-pass readers and
   read again by the coordinator (`scripts/sprint12_reading.py`): 110

@@ -68,6 +68,8 @@ QUOTE_EDITS: dict[str, list[tuple[str, str | None]]] = {
     # g01: quotes for the parts of the value the coordinator cut (see VALUE_REPLACE)
     "qinn-simulated-nisq-scope": [("noisy intermediate-scale quantum computers (NISQ) cannot support", None)],
     "photonic-qrc-zero-bias-power-scope": [("The zero-bias state achieved an MSE", None)],
+    # review of 5744e2d: the second quote is a cited result ([39]), not the paper's own limit.
+    "qaoa-qa-limitation-smooth-angles": [("If this restriction is relaxed", None)],
 }
 EXTRA_QUOTES: dict[str, list[str]] = {
     # g15: the parts of the value the reader's quotes lost at a dash or a curly quote in the source.
@@ -106,7 +108,31 @@ EXTRA_QUOTES: dict[str, list[str]] = {
     "ppn-demo-speed-limited": ["In our demonstration of photonic probabilistic machine learning, the speed and "
                                "energy efficiency were limited by the"],
     # g37: which network.
-    "qwalk-limited-validation": ["Although the proposed quantum walk algorithm was only tested on Zachary"],
+    "qwalk-limited-validation": [
+        "Although the proposed quantum walk algorithm was only tested on Zachary",
+        "karate club network as a test case; however, it needs to be validated through various examples and "
+        "mathematical proof"],
+    # review of 5744e2d: the passages each corrected value rests on.
+    "yang-simulator-limit": [
+        "Due to the large amount of test data with interference between the SM and NP, which would consume too "
+        "much machine time,",
+        "so we choose the better-fitting SCA instead of pairwise in this subsection"],
+    "aqnn-coherence-entanglement-no-help": [
+        "a non-coherence-generating operation M is able to realize a coherent channel in this way only if it can "
+        "activate coherence",
+        "Noting that GIOs violate this condition [13], the following no-go result holds"],
+    "gilfuster-trainability-definition": [
+        "with high probability with respect to a training set S of polynomial size being sampled i.i.d. according "
+        "to D"],
+    "hamlearn-computational-basis": [
+        "but where state preparation and measurement are restricted to the computational basis",
+        "For nearest-neighbor Hamiltonians with only Pauli"],
+    "huggins-selective-teleportation-restricted": [
+        "Our scheme is likely generalizable to all diagonal unitaries that are members of the Clifford hierarchy"],
+    "fisher-bures-wy-factor-two": ["for an algorithm like natural gradient descent"],
+    "analog-vec-accuracy": ["on linearly inseparable datasets such as concentric circles and MNIST digits"],
+    "akpinar-glioma-low-performance": ["gives better results in terms of total processing time"],
+    "dqf-beats-nystrom-rqf-not": ["classification tasks using a dataset with"],
     # g47: the rest of the proof sentence, after the apostrophe that stopped the reader's quote.
     "watts-unconditional-sampling-separation": [
         "be reproduced by constantdepth bounded fan-in classical circuits, even up to additive error"],
@@ -202,10 +228,10 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
     "noisy-lossy-platform": (
         "The authors state that the photonic platform is noisy and lossy, with system losses of approximately 20%."),
     # g16: the limit without the result beside it; the open question the quote does not hold, cut.
+    # review of 5744e2d: "restricted" refers to the generalization, not the family the scheme reduces.
     "huggins-selective-teleportation-restricted": (
-        "The authors state that the family of diagonal unitaries from the Clifford hierarchy for which selective "
-        "teleportation achieves a quadratic reduction in complexity is still a relatively restricted class of "
-        "unitaries."),
+        "The authors state that their scheme is likely generalizable to all diagonal unitaries that are members of "
+        "the Clifford hierarchy, but that this is still a relatively restricted class of unitaries."),
     "jerbi-no-classical-lower-bound": (
         "The authors state that, to strengthen their results, one would ideally prove matching lower bounds for the "
         "classical complexity of this task."),
@@ -238,7 +264,7 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
     # g21: the scope without the recommendation beside it.
     "tsp-encoding-results-limited-to-6-nodes": (
         "The authors state that their results were obtained for instances up to 6 nodes, and that it remains an open "
-        "question whether the good performance of the permutation encoding is due to the small problem size."),
+        "question whether the performance of the permutation encoding is due to the small problem size."),
     # g20: the study's own limit, without the general runtime claim beside it.
     "nadim-limit-qsvc-scalability": (
         "The authors state that they encountered significant challenges in training QSVC with datasets containing "
@@ -292,9 +318,12 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
     "aqnn-scope-maximal-storage": (
         "The authors state that throughout the work they only consider aQNNs with maximal storage capacity, that "
         "is, those whose evolution is given by Eq.(1)."),
+    # review of 5744e2d: the no-go rests on the paper's model, whose operations are GIOs (its faulty-aQNN section
+    # says other errors may not keep it); the condition restored from the sentence before the proposition.
     "aqnn-coherence-entanglement-no-help": (
-        "The paper states, as propositions, that coherence cannot be used to enhance the performance of aQNNs, and "
-        "that initial entanglement cannot be used to reduce the depth of aQNNs."),
+        "The paper states, noting that GIOs violate the condition that a non-coherence-generating operation can "
+        "activate coherence, that coherence cannot be used to enhance the performance of aQNNs, and that initial "
+        "entanglement cannot be used to reduce the depth of aQNNs."),
     "fermionic-hubbard-class-scope": (
         "The authors state that they provide an algorithm to learn a class of fermionic Hubbard Hamiltonians at the "
         "Heisenberg limit, allowing complex hopping amplitudes and nonzero chemical potentials in addition to the "
@@ -369,11 +398,16 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
     "pqk-noiseless-simulator": (
         "The authors state that their current analysis employs a noiseless simulator, which is adequate for "
         "initial tests on shallow circuits and shot noise."),
-    # g42: the definition and the setup as their quotes give them ("with high probability" and "randomly
-    # initialised" are not in them).
+    # g42: the setup as its quote gives it ("randomly initialised" is not in it). Review of 5744e2d: the
+    # definition whole, its probability condition quoted (EXTRA_QUOTES), not cut; the proposition's assumption kept.
     "gilfuster-trainability-definition": (
         "The paper defines a learning model as trainable if, for each task, the empirical risk of the hypothesis "
-        "produced by the learning algorithm is close to the optimal one within the class."),
+        "produced by the learning algorithm is close to the optimal one within the class, with high probability "
+        "with respect to a training set of polynomial size sampled i.i.d. according to D."),
+    "gilfuster-bp-trainable": (
+        "The paper proves that QML models exist that have barren plateaus under the uniform distribution of "
+        "parameters and are trainable for learning tasks that are classically intractable under standard "
+        "cryptographic assumptions."),
     "hoffmann-random-data-setup": (
         "The authors state that one test task is a binary classification task on 100 generated datapoints."),
     # g46: the scope and setups as their quotes give them (the other encodings, "real industrial" and PDBbind
@@ -412,8 +446,12 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
     "wang-qiml-offline-fixed-generator": (
         "The authors state that the limited scalability and noise of NISQ superconducting devices make full "
         "end-to-end quantum training infeasible at present."),
+    # review of 5744e2d: the cut lost the scope. The paper ran its examples on real hardware; only this
+    # subsection's analysis was simulated, for machine time (the sentence quoted whole in EXTRA_QUOTES).
     "yang-simulator-limit": (
-        "The authors state that they only performed the simulation of quantum computation on a simulator."),
+        "The authors state that, because the large amount of test data would consume too much machine time, they "
+        "only performed the simulation of quantum computation on a simulator for the analysis in this "
+        "subsection."),
     # g49: each as its quotes give it; the theorem number to the anchor; each limit without the result or the
     # unquoted part mixed into it.
     "chicano-theorem1-exponential": (
@@ -507,6 +545,33 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
     "photonic-qrc-zero-bias-power-scope": (
         "The authors state that the zero-bias power figure characterizes the power required to maintain the "
         "reservoir configuration, but not the total system power."),
+    # review of 5744e2d: each value says only what its quotes say (the Pauli letters the text layer lost, the
+    # cited separation, "cycle graph", "penalty parameter", "standard", the dataset name, the lost superscript).
+    "hamlearn-computational-basis": (
+        "The authors show that, with state preparation and measurement restricted to the computational basis, for "
+        "nearest-neighbor Hamiltonians with only Pauli interactions of the two kinds the source names (their "
+        "letters are lost in the text layer), a class which captures contemporary Rydberg atom platforms, all of "
+        "the parameters can be reconstructed over 1D and 2D rectangular lattices up to unavoidable gauges."),
+    "qaoa-qa-limitation-smooth-angles": (
+        "The authors state that an important limitation of their findings is their restriction to gradually "
+        "varying QAOA angles."),
+    "dtqw-qnn-universal": (
+        "The paper proves that the DTQW-QNN is universal for all unitary operations on the overall Hilbert space."),
+    "dual-vqe-finite-c-estimate": (
+        "The authors state that Theorem 1 guarantees that dual-VQE provides a rigorous lower bound on the "
+        "ground-state energy in a limit of c, and that for finite c the value provided by dual-VQE is technically "
+        "an estimate rather than a strict bound."),
+    "tqnn-mnist-setup": (
+        "The authors state that the test uses the MNIST dataset of 60000 images of handwritten digits of shape "
+        "28×28, divided into training and testing sets with an 80-20 ratio, and that the two perceptrons are "
+        "trained for 10 epochs."),
+    "akpinar-glioma-low-performance": (
+        "The authors state that, although one rotational gate used as a feature map gives better results in terms "
+        "of total processing time, its classification performance value is too low to be generalized."),
+    "qsvm-complexity-cited": (
+        "The authors state that the overall complexity of the quantum SVM is O (log(NM)), whereas classical "
+        "complexity of the SVM is O M2 (M + N) (as the text layer prints it; the superscript layout is lost), where "
+        "N is the dimension of the feature space and M is the number of training vectors."),
 }
 CONTEXT_FIX: dict[str, str] = {}  # an assertion's context where the reader's did not fit
 DROP: dict[str, str] = {  # an assertion not entered, with the reason
@@ -526,9 +591,25 @@ DROP: dict[str, str] = {  # an assertion not entered, with the reason
 VENDOR_DESCRIPTIONS: set[str] = {  # a vendor's description of its own product (MODERATE), not a result
     "dou-qpanda-scope",
 }
+# A statement about the field, its devices or its literature, not about the paper's own work: LOW, with that
+# reason rather than "an empirical result". The first group the coordinator kept LOW; the rest were graded HIGH
+# "stated limit" and moved here by the fresh-eyes review of 5744e2d.
+FIELD_STATEMENTS: set[str] = {
+    "gonon-no-learning-advantage-established", "advantage-immature", "quantum-game-learning-infancy",
+    "cv-encoding-overhead-limit", "classical-can-outperform-large-scale", "qnlp-limited-small-datasets",
+    "casas-no-experimental-realization",
+    "qubo-precision-limits-quality", "radio-measurement-reencode-limit", "qtm-comparable-libraries-caveat",
+    "backprop-unavailable-on-hardware", "qcnn-scaling-limit", "liao-open-coherence-question",
+    "nisq-tda-few-high-betti-examples", "pulsar-qsvm-scaling-limit", "hybrid-interaction-open",
+    "jaderberg-fair-comparison-open", "qaoa-hardware-demand-limit", "qsvm-device-limit", "infoqgan-minelimit",
+    "mironowicz-challenges-remain",
+}
 # Every HIGH grade: (basis, where the paper settles it), after the coordinator's read. A measured result,
 # even a negative one, is empirical and stays LOW (Sprint 11's fresh-eyes review): g05's
-# transmon-reuploading-not-beating-linear and transmon-reuploading-slow-training.
+# transmon-reuploading-not-beating-linear and transmon-reuploading-slow-training. The fresh-eyes review of
+# 5744e2d moved 18 out of HIGH: 14 statements about the field (FIELD_STATEMENTS), and 4 conclusions drawn from
+# the paper's own measurements (qhpo-not-worth-short-searches, qals-tsp-solution-not-valid,
+# smpp-cannot-compete-yet, vqsd-zero-povm-limit). "We do not claim X" is a stated limit; "we found X" is a result.
 HIGH = high_grades({
     # g05
     "sc-circuit-review-scope": ("scope", "abstract, p.1: a short review, a starter document"),
@@ -536,7 +617,6 @@ HIGH = high_grades({
     "bosonic-classifier-setup": ("setup", "conclusion, p.6: data sizes, classes and components"),
     "bosonic-classifier-no-entanglement": ("stated limit", "conclusion, p.6: the states are not entangled"),
     "transmon-reuploading-setup": ("setup", "abstract and conclusion: four transmons, one qubit measured"),
-    "nisq-tda-few-high-betti-examples": ("stated limit", "section 3, the remark after Theorem 1"),
     "qise-define-quantum-engineering": ("definition", "section I"),
     "qise-recommendations-scope": ("scope", "section VII, p.22: the recommendations are the authors'"),
     "q3drism-qubit-count-limit": ("stated limit", "conclusion and perspectives: 14 qubits"),
@@ -584,7 +664,6 @@ HIGH = high_grades({
                                                                     "conditional on a low-energy ground state"),
     "hamiltonian-embedding-open-advantage-question": ("stated limit", "section V, p.20"),
     # g04 (zhu-heterogeneity-needed stays LOW: an observed decline is a measurement)
-    "vqsd-zero-povm-limit": ("stated limit", "section V, p.9: a label may be lost"),
     "gqw-noise-untested": ("stated limit", "section V, p.16: noise and other spectra untested"),
     "bentellis-no-generalization": ("scope", "section V, p.7: two processors and one algorithm only"),
     "giuliani-poly-resources": ("proved result", "Theorem 1 and Corollary 1, under the efficient-learning "
@@ -596,7 +675,6 @@ HIGH = high_grades({
     "ikeda-definition-qefg": ("definition", "Definition II.1, section II.B, p.5"),
     "ikeda-scope-1d": ("scope", "section IV, p.9: a one-dimensional lattice"),
     "liao-setup-models": ("setup", "abstract and section I: the unitary TTN and the MERA"),
-    "liao-open-coherence-question": ("stated limit", "section VII, p.9"),
     "oh-setup-simulation": ("setup", "section 4 and conclusion: 20 instances, eight input qubits"),
     "ren-review-scope": ("scope", "conclusions"),
     "sahin-setup-datasets": ("setup", "abstract: synthetic data and a breast cancer dataset"),
@@ -648,10 +726,8 @@ HIGH = high_grades({
     "quenc-setup-simulation-and-qpu": ("setup", "abstract: simulations and a superconducting processor"),
     "quenc-measurements-linear": ("setup", "section 7 conclusion, p.20: the encoding's measurement count"),
     "smpp-noise-aware-14": ("setup", "section V, p.5: 21 and 14 locations"),
-    "smpp-cannot-compete-yet": ("stated limit", "section V, p.5"),
     "httn-sizes-tested": ("scope", "section V, p.12: the system sizes"),
     "httn-scaling-limit": ("stated limit", "section V, p.12"),
-    "pulsar-qsvm-scaling-limit": ("stated limit", "section V, p.12"),
     "tang-no-exponential-speedup": ("proved result", "Theorem 1, and the abstract's consequence"),
     "tang-input-assumption": ("scope", "abstract: under strong input assumptions"),
     "tang-impractical-exponents": ("stated limit", "section 1.4, p.7"),
@@ -676,7 +752,6 @@ HIGH = high_grades({
     "benchmark-attributes-hard-together": ("stated limit", "conclusion, p.35"),
     "hintons-theoretical-scope": ("scope", "introduction, pp.1-2: a theoretical contribution"),
     "hintons-no-benchmark": ("stated limit", "conclusion, p.9: no benchmark against classical models"),
-    "radio-measurement-reencode-limit": ("stated limit", "conclusion, p.9"),
     "noise-sim-train-real-test": ("setup", "conclusions, p.12: trained on simulated, tested on real data"),
     "qrnn-rc-setup": ("setup", "abstract: random weights, only the linear layer trained"),
     "course-design": ("scope", "abstract: the lecture and exercise series"),
@@ -685,7 +760,6 @@ HIGH = high_grades({
     "lu-da-construction-requirements": ("setup", "abstract: single-qubit operations and global Rydberg driving"),
     "lu-da-noise-model-scope": ("scope", "section II, pp.4-5: coherent errors only"),
     "mironowicz-review-scope": ("scope", "abstract: an overview"),
-    "mironowicz-challenges-remain": ("stated limit", "section 6 conclusions"),
     "moussa-refoqus-geometric-convergence": ("proved result", "appendix, Proposition 4, under its assumptions"),
     "moussa-refoqus-tested-only-two-tasks": ("stated limit", "section VIII: two tasks, no real device"),
     "qin-mbhva-no-errors-considered": ("stated limit", "section 4"),
@@ -809,7 +883,6 @@ HIGH = high_grades({
     # g22
     "qng-study-scope-toy-model": ("scope", "section I, p.2: a toy model, not state of the art"),
     "qng-qfim-cost-limit": ("stated limit", "section VII, p.14"),
-    "qcnn-scaling-limit": ("stated limit", "section III, p.9"),
     "qml-survey-scope": ("scope", "abstract: applications on quantum hardware"),
     "qml-survey-excludes-qrl": ("scope", "section 1, p.1: reinforcement learning not addressed"),
     "cvqe-qpu-cpu-split": ("setup", "abstract: the QPU and CPU roles"),
@@ -833,7 +906,6 @@ HIGH = high_grades({
     "bondarenko-universal-def": ("definition", "introduction, p.2"),
     "bondarenko-scope-product": ("scope", "discussion, p.5: product inputs, classically simulated"),
     # g26
-    "hybrid-interaction-open": ("stated limit", "section 4, p.19"),
     "napa-nongradient-setup": ("setup", "the NAPA framework section: a non-gradient optimizer"),
     "napa-open-question": ("stated limit", "section VIII"),
     "dtqw-qnn-universal": ("proved result", "Theorem 1, section III, p.4"),
@@ -950,7 +1022,6 @@ HIGH = high_grades({
     "hamiltonian-learning-exponentially-hard-average-case": ("proved result", "abstract: the learning lower bound"),
     "hamiltonian-testing-no-inverse-evolution": ("setup", "section 1.1, footnote 1, p.2"),
     "qals-implementation-setup": ("setup", "section 6, p.24: C++ and Python, D-Wave, Hybrid baseline"),
-    "qals-tsp-solution-not-valid": ("stated limit", "section 6, p.24"),
     "tree-unitarity-solvable-dynamics": ("proved result", "abstract and section VII"),
     "tree-circuits-scope-spacelike-tree": ("scope", "section I, p.2: spacelike trees only"),
     "muta-proposed-universal-qnn": ("proved result", "section IV.A, Property 2"),
@@ -1001,7 +1072,6 @@ HIGH = high_grades({
     # g38
     "gsp-analysis-setup-adiabatic": ("setup", "abstract and section IV: the adiabatic recasting"),
     "portfolio-simulator-15-qubits": ("setup", "experimental setup: 100 problems, 15 qubits"),
-    "qaoa-hardware-demand-limit": ("stated limit", "section VI"),
     "tn-search-limits": ("stated limit", "section V"),
     "wazni-setup-simulator-small-dataset": ("stated limit", "abstract and section 7: simulation, a small dataset"),
     "dual-vqe-proposal": ("definition", "abstract: the dual-VQE"),
@@ -1014,9 +1084,7 @@ HIGH = high_grades({
     "fermionic-proper-pac-hard": ("proved result", "Corollary 1, section 1.2"),
     "fermionic-improper-pac-open": ("stated limit", "section 1.3, p.9"),
     "vqe-scope-hydrogen-pauli-sim": ("setup", "sections III and V"),
-    "qubo-precision-limits-quality": ("stated limit", "section IV"),
     "adaptive-synthetic-data-scope": ("scope", "abstract"),
-    "qhpo-not-worth-short-searches": ("stated limit", "section VI"),
     "qhpo-proprietary-vueling-data": ("setup", "section II"),
     "pqk-single-dataset-limit": ("stated limit", "section 6"),
     "pqk-noiseless-simulator": ("setup", "section 6"),
@@ -1046,7 +1114,6 @@ HIGH = high_grades({
     "hoffmann-random-data-setup": ("setup", "section 4.1"),
     "iaconis-approximate-encoding": ("definition", "abstract: the approximate amplitude encoding"),
     "jaderberg-scale-limit": ("stated limit", "section IV"),
-    "jaderberg-fair-comparison-open": ("stated limit", "sections III.D and IV"),
     # g43 (orbit-qaoa-shot-setup stays LOW: the shot count is given as an empirical observation)
     "krylov-search-range": ("scope", "Fig. 1 caption, p.1"),
     "joch-scope": ("scope", "abstract"),
@@ -1057,7 +1124,6 @@ HIGH = high_grades({
     "kundu-sok-scope": ("scope", "abstract"),
     "lee-binary-only": ("scope", "section 6"),
     "infoqgan-setup": ("setup", "2-dimensional data generation section"),
-    "infoqgan-minelimit": ("stated limit", "Discussion, p.9"),
     # g46 (pathmatters-resources-limit stays LOW: a measured result)
     "autoqml-statevector-simulation-only": ("setup", "section V, p.8"),
     "autoqml-supervised-only": ("scope", "section V, p.8"),
@@ -1079,7 +1145,6 @@ HIGH = high_grades({
     "ftql-constant-regret": ("proved result", "abstract and section 7"),
     "ftql-only-pure-equilibria-stable": ("proved result", "abstract and section 7, p.14"),
     "qtm-scope-single-machine-simulation": ("scope", "abstract and sections III and IV"),
-    "qtm-comparable-libraries-caveat": ("stated limit", "section IV, p.4"),
     "eqbm-info-matrices": ("proved result", "abstract and section VII, p.19"),
     "fisher-bures-wy-factor-two": ("proved result", "section VII.A and Corollary 8"),
     "eqbm-no-simulation-yet": ("stated limit", "section VII.B, p.20"),
@@ -1155,7 +1220,6 @@ HIGH = high_grades({
     "scope-simulated-no-full-docking": ("stated limit", "sections 8.2 and 12"),
     "embedding-bottleneck": ("stated limit", "section 13, p.16"),
     "setup-dataset-and-model": ("setup", "sections 4 and 5.1"),
-    "backprop-unavailable-on-hardware": ("stated limit", "section 7, p.9"),
     "scope-small-stage-numerical": ("scope", "section V, p.7"),
     "future-work-classical-comparison": ("stated limit", "section VII, p.12"),
     "pqc-can-fit-arbitrary-labels-theorem": ("proved result", "Theorem 2, section II.E"),
@@ -1166,7 +1230,6 @@ HIGH = high_grades({
     "noiseless-emulation-only": ("setup", "section V"),
     "gsqas-method": ("definition", "abstract: the pre-training and the predictor"),
     "gsqas-scope": ("scope", "section 6"),
-    "qsvm-device-limit": ("stated limit", "abstract and section 5, p.15"),
     "weather-no-advantage": ("stated limit", "section VI, p.9"),
     "path-edge-query-complexity": ("proved result", "abstract and section 4"),
     "witness-state-algorithm": ("proved result", "abstract: the main technical contribution"),
@@ -1178,6 +1241,8 @@ HIGH = high_grades({
 EMPIRICAL = "Started LOW: an empirical result from one study. NOT upgraded"
 AUTHOR_CLAIM = "Started LOW: the authors' own claim, not tested in the paper. NOT upgraded"
 CITED = "Started LOW: a claim the source cites from other work, not tested in it. NOT upgraded"
+FIELD = ("Started LOW: a statement about the field, its devices or its literature, not about the paper's own work. "
+         "NOT upgraded")
 
 
 def ledger() -> dict:
@@ -1230,7 +1295,8 @@ def certainty(aid: str, a: dict) -> tuple[str, str]:
             return "moderate", f"{f80.VENDOR_START}. Not upgraded: a description of the product, not a result"
         return "low", (f"{f80.VENDOR_START}. DOWNGRADED one level: a result or claim the vendor reports about its "
                        "own product, not independently checked")
-    otherwise = {"cited": CITED, "shown": EMPIRICAL}.get(a["kind"], AUTHOR_CLAIM)
+    otherwise = FIELD if aid in FIELD_STATEMENTS else {"cited": CITED, "shown": EMPIRICAL}.get(a["kind"],
+                                                                                                AUTHOR_CLAIM)
     return grade(aid, HIGH, otherwise=("low", otherwise))
 
 
