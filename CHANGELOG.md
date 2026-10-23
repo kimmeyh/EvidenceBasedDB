@@ -13,7 +13,34 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-21 onward (Sprint 11, in progress)
+### 2026-10-23 onward (Sprint 12, in progress)
+
+- **chore**: Sprint 12 opened (2026-10-23). The team lead merged PR #113
+  into develop (21e9550) and PR #121 to main (d83a623); `sprint-11`
+  tagged on d83a623; branch `feature/20261023_Sprint_12` cut from the
+  Sprint 11 branch (6.6 carry-forward). Phase 1.1 reconciliation: every
+  day with commits since 2026-10-21 has entries; two commits lacked their
+  own, added below under Sprint 11 (a87112a, 53cfe45)
+- **docs**: Backlog refinement 2026-10-23 (Sprint 12 Phase 1.2 to 1.4):
+  Sprint 11's shipped cards pruned by hand (F91 to F94, F96, F97); F101
+  carded from the retrospective's Category 13 (Pande 2020's "&amp;", the
+  Cyc quote); F102 carded from Phase 2's Sprint 28 results, read at
+  10086da; snapshots refreshed on F57 (1,847 unread), F95 (0 unnamed
+  PDFs) and F98 (1,402 ids, about 21 new). Phase 1.3: 0 re-checks due;
+  schema and ADRs unchanged by Sprint 11
+
+### 2026-10-21 to 2026-10-23 (Sprint 11, PR #113, merged to develop 2026-10-23 and to main via PR #121 the same day; tagged sprint-11)
+
+- **docs**: `docs/sprints/SPRINT_11_SUMMARY.md` written (with `##
+  Actuals`); master plan's Past Sprint Summary and Last Completed Sprint
+  rolled for Sprint 11; `CHECKLIST-Phase2-pre.md` Sprint 11 section
+  (2026-10-23, 53cfe45). Entry added at Sprint 12 Phase 1.1; the commit
+  carried none
+
+- **docs**: Sprint 11 retrospective recorded (2026-10-22, a87112a): team
+  lead feedback, the feedback on the prompt's new wording, improvements
+  I1a to I5 with root causes, the hand-download list order confirmed
+  (Q2 = 1). Entry added at Sprint 12 Phase 1.1; the commit carried none
 
 - **process**: Sprint 11 retrospective I3 to I5 disposed (2026-10-23). I4:
   every in-place edit of a repository file uses the Edit tool;
