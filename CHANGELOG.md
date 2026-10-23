@@ -15,6 +15,18 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **feat**: F100 (Sprint 12 Task B, 2026-10-23): the full suite runs in
+  199 s with a warm text cache (602 s cold), from 781 s; 1,202 tests
+  passed in each timed run (snapshot 2026-10-23). The cause was
+  `tests/conftest.py` clearing the PDF text cache before every unmarked
+  test, so each quote check ran pdftotext again. `store/quotes.py` now
+  keeps a disk cache under the store folder, keyed by the file's SHA-256,
+  the layout mode and the pdftotext version, and a `READ_GUARD` hook
+  takes the place of the cache clearing, so an unmarked test still cannot
+  read a local file. The F97 second apply no longer calls the network for
+  records already held (79 s to 0.04 s). `scripts/run_suite.py --changed`
+  runs the tests for what changed. `tests/test_f100_text_cache.py`,
+  `tests/test_run_suite_targeted.py` (injections run) (Issue #124)
 - **feat**: F102 (Sprint 12 Task C, 2026-10-23): Phase 2's Sprint 28
   results entered by the inbound path. Six documents read at Phase 2
   commit 10086da through `git show` (F151, F152, F153, F110, F114, F154),

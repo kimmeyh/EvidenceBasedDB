@@ -20,6 +20,17 @@ before a commit is the team lead's decision, under F100.
 
     python scripts/run_suite.py                 # the full suite
     python scripts/run_suite.py tests/test_x.py # any pytest arguments
+    python scripts/run_suite.py --changed       # the tests for what changed (F100)
+    python scripts/run_suite.py --changed --since origin/develop
+
+`--changed` is the per-commit set (workflow Phase 4, F100, Sprint 12):
+the changed test files; every test file that names a changed module (its
+stem, as a word) or a changed non-Python file (its name); and the document
+guards when a document changed. A change to `tests/conftest.py` touches
+every test, so it runs the full suite. The changes are the working tree's
+against HEAD, plus the commits since `--since REF` when given. CI's set
+(`-m "not live_store"`) still runs on the PR; the full suite runs twice a
+sprint.
 """
 from __future__ import annotations
 
@@ -57,6 +68,46 @@ def working_tree(repo: Path) -> str:
         return _git(repo, "write-tree", env=env)
 
 
+# Run whenever a document changes: they read every document, so no file
+# name ties them to the one that changed.
+DOC_GUARDS = ("tests/test_no_em_dashes.py", "tests/test_changelog_currency.py", "tests/test_sprint_documents.py")
+DOC_SUFFIXES = (".md", ".json")
+EVERYTHING = "tests/conftest.py"
+
+
+def changed_files(repo: Path, since: str | None = None) -> list[str]:
+    """Repository paths changed in the working tree (staged, unstaged or
+    untracked) against HEAD, plus those changed since `since` if given."""
+    out = set()
+    status = subprocess.run(["git", "-C", str(repo), "status", "--porcelain", "--untracked-files=all"],
+                            capture_output=True, text=True, check=True).stdout  # not _git: its strip eats " M"
+    for line in status.splitlines():
+        path = line[3:].split(" -> ")[-1].strip().strip('"')
+        out.add(path.replace("\\", "/"))
+    if since:
+        out.update(p for p in _git(repo, "diff", "--name-only", f"{since}...HEAD").splitlines() if p)
+    return sorted(out)
+
+
+def targeted_tests(repo: Path, changed: list[str]) -> list[str] | None:
+    """The test files for `changed`, or None when the full suite is due."""
+    if EVERYTHING in changed:
+        return None
+    tests = {p: (repo / p).read_text(encoding="utf-8", errors="replace")
+             for p in (f"tests/{f.name}" for f in sorted((repo / "tests").glob("test_*.py")))}
+    picked = {p for p in changed if p in tests}
+    for path in changed:
+        name = Path(path).name
+        if path.startswith("tests/") or not (repo / path).is_file():
+            continue
+        needle = (re.compile(rf"\b{re.escape(Path(path).stem)}\b") if path.endswith(".py")
+                  else re.compile(re.escape(name)))
+        picked.update(t for t, text in tests.items() if needle.search(text))
+        if path.endswith(DOC_SUFFIXES):
+            picked.update(DOC_GUARDS)
+    return sorted(picked)
+
+
 def verdict(rc: int, before: str, after: str) -> str:
     if before != after:
         return "INVALID"
@@ -64,6 +115,23 @@ def verdict(rc: int, before: str, after: str) -> str:
 
 
 def main(argv: list[str]) -> int:
+    if "--changed" in argv:
+        argv = list(argv)
+        argv.remove("--changed")
+        since = None
+        if "--since" in argv:
+            i = argv.index("--since")
+            since = argv[i + 1]
+            del argv[i:i + 2]
+        picked = targeted_tests(ROOT, changed_files(ROOT, since))
+        if picked == []:
+            print("SUITE SKIPPED: no test covers what changed")
+            return 0
+        if picked is None:
+            print(f"--changed: {EVERYTHING} changed, so the full suite runs")
+        else:
+            print(f"--changed: {len(picked)} test files: {' '.join(Path(p).stem for p in picked)}")
+        argv = [*(picked or []), *argv]
     before = working_tree(ROOT)
     started = datetime.now()
     log = ROOT / LOG
