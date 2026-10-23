@@ -25,10 +25,15 @@ before a commit is the team lead's decision, under F100.
 
 `--changed` is the per-commit set (workflow Phase 4, F100, Sprint 12):
 the changed test files; every test file that names a changed module (its
-stem, as a word) or a changed non-Python file (its name); and the document
-guards when a document changed. A change to `tests/conftest.py` touches
-every test, so it runs the full suite. The changes are the working tree's
-against HEAD, plus the commits since `--since REF` when given. CI's set
+stem, as a word), a script that imports a changed `store/` module, or a
+changed non-Python file (its name); and the document guards when a
+document changed. A deleted or renamed file counts under its old name
+too. A change to a file every test depends on (`tests/conftest.py`, any
+other non-test file under `tests/`, `store/__init__.py`, the pytest and
+requirements files) runs the full suite, and so does a change no test
+names: an empty pick is not proof that nothing reads it. The changes are
+the working tree's against HEAD, plus the commits since `--since REF`
+when given. CI's set
 (`-m "not live_store"`) still runs on the PR; the full suite runs twice a
 sprint.
 """
@@ -72,40 +77,62 @@ def working_tree(repo: Path) -> str:
 # name ties them to the one that changed.
 DOC_GUARDS = ("tests/test_no_em_dashes.py", "tests/test_changelog_currency.py", "tests/test_sprint_documents.py")
 DOC_SUFFIXES = (".md", ".json")
-EVERYTHING = "tests/conftest.py"
+# Files every test depends on, so a change to one runs the full suite.
+EVERYTHING = ("tests/conftest.py", "store/__init__.py", "pytest.ini", "pyproject.toml", "setup.cfg")
 
 
 def changed_files(repo: Path, since: str | None = None) -> list[str]:
     """Repository paths changed in the working tree (staged, unstaged or
-    untracked) against HEAD, plus those changed since `since` if given."""
-    out = set()
-    status = subprocess.run(["git", "-C", str(repo), "status", "--porcelain", "--untracked-files=all"],
-                            capture_output=True, text=True, check=True).stdout  # not _git: its strip eats " M"
-    for line in status.splitlines():
-        path = line[3:].split(" -> ")[-1].strip().strip('"')
-        out.add(path.replace("\\", "/"))
+    untracked) against HEAD, plus those changed since `since` if given.
+    A deleted file counts, and a rename counts as both of its names
+    (`--no-renames`); `-z` keeps every path unquoted and whole."""
+    def names(*args: str) -> set[str]:
+        out = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, check=True).stdout
+        return {p.decode("utf-8") for p in out.split(b"\0") if p}
+
+    out = {entry[3:] for entry in names("status", "--porcelain=v1", "-z", "--no-renames", "--untracked-files=all")}
     if since:
-        out.update(p for p in _git(repo, "diff", "--name-only", f"{since}...HEAD").splitlines() if p)
+        out |= names("diff", "--name-only", "-z", "--no-renames", f"{since}...HEAD")
     return sorted(out)
 
 
+def full_suite_due(changed: list[str]) -> str | None:
+    """Why `changed` needs the full suite, or None when a targeted set will do."""
+    for path in changed:
+        if path in EVERYTHING or Path(path).name.startswith("requirements"):
+            return f"{path} changed"
+        if path.startswith("tests/") and not re.fullmatch(r"tests/test_[^/]*\.py", path):
+            return f"{path} changed: a helper or fixture that tests may read"
+    return None
+
+
 def targeted_tests(repo: Path, changed: list[str]) -> list[str] | None:
-    """The test files for `changed`, or None when the full suite is due."""
-    if EVERYTHING in changed:
+    """The test files for `changed`, or None when the full suite is due:
+    a shared file changed (`full_suite_due`), or nothing was picked, since
+    a change no test names is not proof that no test reads it."""
+    if full_suite_due(changed):
         return None
     tests = {p: (repo / p).read_text(encoding="utf-8", errors="replace")
              for p in (f"tests/{f.name}" for f in sorted((repo / "tests").glob("test_*.py")))}
     picked = {p for p in changed if p in tests}
+    scripts = {f.stem: f.read_text(encoding="utf-8", errors="replace")
+               for f in sorted((repo / "scripts").glob("*.py"))}
     for path in changed:
-        name = Path(path).name
-        if path.startswith("tests/") or not (repo / path).is_file():
-            continue
-        needle = (re.compile(rf"\b{re.escape(Path(path).stem)}\b") if path.endswith(".py")
-                  else re.compile(re.escape(name)))
+        if path.startswith("tests/"):
+            continue  # a test file picks itself above; a deleted one has nothing to run
+        stem = Path(path).stem
+        if path.endswith(".py"):
+            # The tests that name the module, or name a script that imports it.
+            word = re.compile(rf"\b{re.escape(stem)}\b")
+            stems = [stem, *(s for s, text in scripts.items() if path.startswith("store/") and word.search(text))]
+            needle = re.compile(rf"\b(?:{'|'.join(map(re.escape, stems))})\b")
+        else:
+            needle = re.compile(re.escape(Path(path).name))
         picked.update(t for t, text in tests.items() if needle.search(text))
         if path.endswith(DOC_SUFFIXES):
             picked.update(DOC_GUARDS)
-    return sorted(picked)
+    picked &= set(tests)  # a deleted test file is not run
+    return sorted(picked) or None
 
 
 def verdict(rc: int, before: str, after: str) -> str:
@@ -123,12 +150,11 @@ def main(argv: list[str]) -> int:
             i = argv.index("--since")
             since = argv[i + 1]
             del argv[i:i + 2]
-        picked = targeted_tests(ROOT, changed_files(ROOT, since))
-        if picked == []:
-            print("SUITE SKIPPED: no test covers what changed")
-            return 0
+        changed = changed_files(ROOT, since)
+        picked = targeted_tests(ROOT, changed)
         if picked is None:
-            print(f"--changed: {EVERYTHING} changed, so the full suite runs")
+            why = full_suite_due(changed) or "no test names what changed"
+            print(f"--changed: {why}, so the full suite runs")
         else:
             print(f"--changed: {len(picked)} test files: {' '.join(Path(p).stem for p in picked)}")
         argv = [*(picked or []), *argv]

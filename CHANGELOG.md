@@ -15,6 +15,19 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **fix**: F100 follow-up (Sprint 12 Task B, 2026-10-23), from the
+  fresh-eyes review of fdedff9. A test's fake pdftotext version stayed in
+  the version reader's cache and keyed every later quote check in the
+  run; the fakes now patch the reader, and a test proves a new version
+  extracts again. The cache key holds pdftotext's options too, each
+  writer gets its own temporary file, and the text is stored as bytes.
+  `run_suite.py --changed` counted a deleted or renamed file as nothing,
+  dropped quoted paths and test helpers, and said "SUITE SKIPPED" with
+  exit 0 when nothing was picked; it now reads `git status -z
+  --no-renames`, searches every changed name, follows a `store/` module
+  into the scripts that import it, and runs the full suite for a shared
+  file or an empty pick. A unit test for F97's `existing()`. Injections
+  run (Issue #124)
 - **fix**: F101 fourth and fifth applies (Sprint 12 Task A, 2026-10-23),
   from the fresh-eyes review of 6d2bed4. The Elor value now says
   balancing beat threshold tuning for both MLP and SVM (p.4, Table 3 on

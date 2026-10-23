@@ -24,6 +24,14 @@ def repo(tmp_path):
         "store/quotes.py": "x = 1\n",
         "store/quotes_extra.py": "y = 1\n",
         "scripts/sprint9_x.py": "z = 1\n",
+        "scripts/sprint9_y.py": "from store import quotes_extra\n",
+        "store/gone.py": "g = 1\n",
+        "store/café.py": "c = 1\n",
+        "tests/helpers.py": "\n",
+        "tests/test_gone.py": "from store import gone\n",
+        "tests/test_cafe.py": "import importlib; importlib.import_module('store.café')\n",
+        "tests/test_y.py": "# runs scripts/sprint9_y.py\n",
+        "docs/UNREAD.md": "nobody reads this\n",
         "docs/GUIDE.md": "guide\n",
         "tests/conftest.py": "\n",
         "tests/test_quotes.py": "from store.quotes import x\n",
@@ -79,3 +87,50 @@ def test_since_adds_committed_changes(repo):
     assert rs.changed_files(repo) == []
     assert rs.changed_files(repo, base) == ["scripts/sprint9_x.py"]
     assert rs.targeted_tests(repo, rs.changed_files(repo, base)) == ["tests/test_x.py"]
+
+
+def test_a_deleted_or_renamed_module_picks_the_tests_that_still_name_it(repo):
+    """The review of fdedff9: a deleted file was skipped before its name
+    was searched, so the tests it breaks never ran. Proven to fail by
+    injection, 2026-10-23: with the deleted-file skip put back, test_gone
+    was not picked. Restored."""
+    rs = _runner()
+    (repo / "store" / "gone.py").unlink()
+    assert rs.changed_files(repo) == ["store/gone.py"]
+    assert rs.targeted_tests(repo, rs.changed_files(repo)) == ["tests/test_gone.py"]
+    subprocess.run(["git", "-C", str(repo), "checkout", "-q", "--", "store/gone.py"], check=True)
+    subprocess.run(["git", "-C", str(repo), "mv", "store/gone.py", "store/kept.py"], check=True)  # staged rename
+    assert rs.changed_files(repo) == ["store/gone.py", "store/kept.py"]
+    assert rs.targeted_tests(repo, rs.changed_files(repo)) == ["tests/test_gone.py"]
+
+
+def test_a_non_ascii_path_is_read_whole(repo):
+    """Porcelain without -z quotes and escapes it, so it was dropped."""
+    rs = _runner()
+    (repo / "store" / "café.py").write_text("c = 2\n", encoding="utf-8")
+    assert rs.changed_files(repo) == ["store/café.py"]
+    assert rs.targeted_tests(repo, rs.changed_files(repo)) == ["tests/test_cafe.py"]
+
+
+def test_a_store_module_picks_the_tests_of_the_scripts_that_import_it(repo):
+    rs = _runner()
+    (repo / "store" / "quotes_extra.py").write_text("y = 2\n", encoding="utf-8")
+    assert rs.targeted_tests(repo, rs.changed_files(repo)) == ["tests/test_extra.py", "tests/test_y.py"]
+
+
+def test_a_helper_or_an_unnamed_change_runs_the_full_suite(repo):
+    """Never "nothing to run": the runner said SUITE SKIPPED and exited 0
+    for a change no test named (review of fdedff9). Proven to fail by
+    injection, 2026-10-23: with `or None` removed from the return, the
+    new data file gave []. Restored."""
+    rs = _runner()
+    (repo / "docs" / "UNREAD.md").write_text("changed\n", encoding="utf-8")
+    assert rs.targeted_tests(repo, rs.changed_files(repo)) == sorted(rs.DOC_GUARDS)
+    (repo / "docs" / "UNREAD.md").write_text("nobody reads this\n", encoding="utf-8")
+    (repo / "data.txt").write_text("new\n", encoding="utf-8")
+    assert rs.targeted_tests(repo, rs.changed_files(repo)) is None
+    (repo / "data.txt").unlink()
+    (repo / "tests" / "helpers.py").write_text("# changed\n", encoding="utf-8")
+    assert rs.full_suite_due(rs.changed_files(repo)) == (
+        "tests/helpers.py changed: a helper or fixture that tests may read")
+    assert rs.targeted_tests(repo, rs.changed_files(repo)) is None

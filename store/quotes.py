@@ -28,6 +28,7 @@ import html
 import json
 import re
 import subprocess
+import tempfile
 import unicodedata
 from dataclasses import dataclass
 from functools import lru_cache
@@ -85,22 +86,26 @@ def _pdftotext(path: str, layout: bool) -> str:
     layout and pdftotext's version, so a changed file or a new pdftotext
     extracts again; `plain` is applied after the cache, so a change to it
     is never hidden. The cache lives in the store folder (`text_cache\\`),
-    outside git; a folder that cannot be written is simply not used."""
+    outside git; a folder that cannot be written is simply not used. The
+    text is stored as bytes, so it comes back exactly as extracted, and a
+    file that does not decode is extracted again."""
     cmd = ["pdftotext", "-enc", "UTF-8", *(["-layout"] if layout else []), path, "-"]
     digest = hashlib.sha256(Path(path).read_bytes()).hexdigest()
-    version = hashlib.sha256(_pdftotext_version().encode()).hexdigest()[:12]
+    # The options as well as the version: an option added later extracts again (review of fdedff9).
+    tool = hashlib.sha256(" ".join([_pdftotext_version(), *cmd[:-2]]).encode()).hexdigest()[:12]
+    name = f"{digest}-{'layout' if layout else 'plain'}-{tool}.txt"
     try:
-        cached = store_dir() / "text_cache" / f"{digest}-{'layout' if layout else 'plain'}-{version}.txt"
-        return cached.read_text(encoding="utf-8")
-    except (OSError, RuntimeError):  # RuntimeError: no store folder off Windows
+        return (store_dir() / "text_cache" / name).read_bytes().decode("utf-8")
+    except (OSError, RuntimeError, UnicodeDecodeError):  # RuntimeError: no store folder off Windows
         pass
     text = subprocess.run(cmd, capture_output=True, check=True).stdout.decode("utf-8", "replace")
     try:
-        cached = store_dir() / "text_cache" / f"{digest}-{'layout' if layout else 'plain'}-{version}.txt"
+        cached = store_dir() / "text_cache" / name
         cached.parent.mkdir(exist_ok=True)
-        partial = cached.with_suffix(".partial")
-        partial.write_text(text, encoding="utf-8")
-        partial.replace(cached)
+        # A name of its own per writer, so two processes never share a half-written file.
+        with tempfile.NamedTemporaryFile(dir=cached.parent, suffix=".partial", delete=False) as partial:
+            partial.write(text.encode("utf-8"))
+        Path(partial.name).replace(cached)
     except (OSError, RuntimeError):
         pass
     return text
