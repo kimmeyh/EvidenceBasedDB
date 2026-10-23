@@ -15,6 +15,17 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **fix**: F101 follow-up (Sprint 12 Task A, 2026-10-23), from the
+  fresh-eyes review of 5466953. 7 Sprint 5 contexts held a passage with
+  no quote marks, which no check could read; each is re-quoted from its
+  PDF, and 4 values the source did not fully support are corrected
+  (Elor 2022, De Lorenzis 2026, Kakavand 2026, Liu 2026). The quote guard
+  now also fails on a context with no parsed quote. Three free arXiv
+  copies saved; every local copy's SHA-256 in `evidence` (F48's test found
+  Lenat's missing). The Cyc copyright anchor is p.146; the preregistration
+  is read at commit 7261e4e. `store.citations` also unescapes DataCite's
+  venue, author names and Crossref's publisher. Intake section 42, third
+  apply (injections run) (Issue #123)
 - **docs**: F106 (Sprint 12 Task D, 2026-10-23): ADR-0005 amendment A11.
   A source link may rest on the team lead's recorded decision when no
   source states it; its evidence names who, the date, where it is

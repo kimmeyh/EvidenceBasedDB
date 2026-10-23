@@ -1285,7 +1285,10 @@ Every count is a snapshot as of 2026-10-23. Written before the apply.
   `yang-2023-survey-important-issues-quantum-computing` (Crossref venues).
 - **The generator is fixed first** (workflow invariant 7's corollary):
   `parse_crossref` and `parse_datacite` unescape the title, subtitle and
-  venue, so a later intake or re-check renders "&". Then the 4 records
+  venue, so a later intake or re-check renders "&". (The first commit,
+  5466953, missed DataCite's venue, every author name and Crossref's
+  publisher; the fresh-eyes review found it, and they are unescaped too
+  now.) Then the 4 records
   are corrected: each field unescaped, and nothing else changed. Record
   ids are keys and are not renamed: the Dunjko id keeps its "amp". Each
   record's updated reason names this section.
@@ -1296,11 +1299,15 @@ Every count is a snapshot as of 2026-10-23. Written before the apply.
   ends a quote in the quote pattern, so the words after it were never
   checked. It is now quoted in two parts around that word: `"There are
   eight tactic types which describes the kind of operation to be
-  performed, such as" (p.147)` and `"(i.e. split a conjunction into two
-  sub-problems)." (p.147; ...)`. A third quote, `"2007, American
-  Association for Artificial Intelligence" (p.147)`, holds the value's
-  year, which the figure check of section 41 now requires. The value is
-  not changed. The quotes are checked by `require_verbatim` with the value
+  performed, such as" (p.147; ...)`, whose anchor says why it is in two
+  parts, and `"(i.e. split a conjunction into two sub-problems)."
+  (p.147)`. The p.148 quote ("... only handles five.") is kept as it was.
+  A further quote, `"2007, American Association for Artificial
+  Intelligence" (p.146, the copyright line; ...)`, holds the value's
+  year, which the figure check of section 41 now requires. (The first
+  apply anchored it p.147; the copyright line is on printed page 146, the
+  PDF's first page. The third apply below corrects it.) The value is not
+  changed. The quotes are checked by `require_verbatim` with the value
   and named as the edit's basis (`require_edit_basis`). Applied first, with
   the entities.
 - **Three more quotes the pattern never parsed (found after that apply,
@@ -1311,7 +1318,9 @@ Every count is a snapshot as of 2026-10-23. Written before the apply.
   parsed quote. `cyc-general-prover-disabled` and
   `heuristics-over-general-reasoning` (Sprint 1, Lenat and Marcus 2023)
   and `hsbc-b1-variable-count` (Sprint 2, the consumer repository's
-  preregistration, amendment A30, read only). Each is re-quoted from its
+  preregistration, amendment A30, read only; read by `git show` at that
+  file's last commit, 7261e4e, from the third apply on, as section 43
+  reads Phase 2). Each is re-quoted from its
   source with an anchor, and the figures each value states (2023; 20,
   1989 and 1,100) are given quotes that hold them. The values are not
   changed. The second Lenat quote's dashes are in the layout text layer
@@ -1319,6 +1328,40 @@ Every count is a snapshot as of 2026-10-23. Written before the apply.
 - **Lenat and Marcus 2023 had no local copy.** Its free arXiv PDF
   (arXiv:2308.04445) is saved to `Papers\` under section 3's convention,
   by one paced request (`--fetch`), and added to the record's `access`.
+- **A third apply, after the fresh-eyes review of 5466953 (written before
+  it).** The review found what the stray-quote check cannot see: 7
+  contexts with no quote marks at all, so no check had ever read them
+  (Sprint 5 Task I: `auprc-not-generally-superior-under-imbalance`,
+  `oversampling-helps-weak-not-strong-boosters`,
+  `qelm-local-dynamics-match-haar-classically-simulable`,
+  `qksvm-classical-kernels-better-on-uci-tabular`,
+  `resampling-degrades-calibration-recalibration-repairs`,
+  `rff-not-generic-dequantizer-but-matches-some-pqcs`,
+  `wilcoxon-n5-floor-is-not-parity`). The "every stored quote parses"
+  claim above was a count this check could not produce. Now:
+  - **The guard** also fails on a non-empty context with no parsed quote.
+  - **Each of the 7 is re-quoted** from its PDF with anchors (PDF page
+    indexes, the printed page where there is one), every figure in its
+    value quoted, and the old sentence kept as a passage. Three papers had
+    no local copy (De Lorenzis 2026, Kakavand 2026, Sweke 2025); their
+    free arXiv PDFs are saved by the same paced `--fetch` and added to
+    `access`.
+  - **Four values are corrected** where re-quoting showed them to say
+    more or less than the source, each with its passages as the edit's
+    basis: Elor 2022 (the SVM exception is that its threshold could not
+    be tuned); De Lorenzis 2026 (6 to 10 qubits for MNIST and
+    Fashion-MNIST, 6 to 11 for CIFAR-10; the authors "suggest", with
+    larger studies needed); Kakavand 2026 (datasets from UCI and OpenML;
+    "8 of 9" is balanced accuracy, with none of the 29 five-fold
+    comparisons significant); Liu 2026 (oversampling's effect is
+    "small-to-moderate", not slight). Certainty is not changed.
+  - **Every local copy carries its SHA-256** in `evidence` (F48's test
+    found Lenat's missing after the first apply), including the three new
+    copies.
+  - **The anchor and pin corrections** noted above: the Cyc copyright
+    line is p.146, and the preregistration is read at 7261e4e.
+  - `store.citations` now also unescapes DataCite's venue, every author
+    name and Crossref's publisher.
 - `scripts/sprint12_f101_corrections.py`: dry run by default; `--apply`
   takes a verified backup first; a second apply writes nothing.
 
