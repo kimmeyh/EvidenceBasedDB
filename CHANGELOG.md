@@ -15,6 +15,13 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **feat**: Sprint 11 retrospective I3 (Sprint 12 Task G, first part,
+  2026-10-23): `store/grading.py` grades HIGH only with a named basis
+  (setup, scope, definition, proved result, stated limit) and its reason,
+  and `store/write_path.py` refuses, before the backup, a new reading
+  script that writes assertions without it or with a literal "high" of
+  its own. Intake section 45. `tests/test_verified_writes.py` (injections
+  run) (Issue #129)
 - **feat**: F103 (Sprint 12 Task E, 2026-10-23): PoJen Wang's two posts
   on the Classiq Quantum Circuit Challenge (Part 1, a field guide to
   compilers; Part 2, his depth-95, 272-CNOT phase oracle) and Classiq's

@@ -1517,3 +1517,26 @@ Every count is a snapshot as of 2026-10-23. Written before the apply.
   full suite run before the commit found it; the targeted run did not,
   since a store write changes no file a test names. Each record now
   carries one `qc` entry with its rationale.
+
+## 45. Rule from 2026-10-23: a reading script grades HIGH only with a named basis (Sprint 11 retrospective I3, Sprint 12 Task G)
+
+Extends sections 26, 31 and 41.
+
+- **The gap.** Until Sprint 12 each reading script kept its own set of
+  assertion ids the coordinator had judged HIGH, with no reason per id.
+  A later reader could not tell why one empirical-looking value was HIGH
+  and its neighbor LOW.
+- **The helper.** `store/grading.py`: `high_grades` takes each HIGH with
+  its basis and why, and refuses a basis that is not one of the five a
+  paper itself settles: its own setup, its own scope, a definition, a
+  result it proves, or a limit it states. `grade` returns HIGH with that
+  basis in the certainty reasons, or the script's other grade, and
+  refuses "high" as the other grade, so HIGH has one door.
+- **The rule.** `store/write_path.py`: a script whose name contains
+  "reading" and that writes assertions must call `high_grades` and must
+  hold no literal "high" of its own. `backup_before_write` refuses it
+  before the backup, as section 41's rule does. Sprint 10's and earlier
+  reading scripts are already legacy; `sprint11_reading.py` is exempt
+  from this rule only (it has run). An intake script that is not a
+  reading script (F102, F103) keeps its literal grades, each with its
+  own reasons.
