@@ -1,0 +1,601 @@
+{
+ "group": "g25",
+ "papers": [
+  {
+   "record_id": "hoppner-2020-instance-dependent-cost-sensitive-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2020-05_Hoppner_Instance-Dependent-Cost-Sensitive-Learning-for-Detecting-Transfer.pdf",
+   "title_in_file": "Instance-Dependent Cost-Sensitive Learning for Detecting Transfer Fraud",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "Abstract, introduction, method, results and conclusion read from the pdftotext output.",
+   "what_it_is": "A 2020 arXiv preprint that derives a per-transaction decision threshold for card fraud and proposes cost-minimizing lasso logistic regression (cslogit) and gradient boosting (csboost).",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "hoppner-instance-threshold",
+     "value": "The authors derive that, with a fixed investigation cost cf and a transaction amount Ai, the optimal prediction for a transaction with score si is fraud if and only if si exceeds the threshold cf/Ai.",
+     "anchor": "Section 3, equation (2), p. 5",
+     "quotes": [
+      "However, in the case of a false negative, in which a fraudulent transfer is not detected, the cost is defined to be the amount Ci(0|1) = Ai of the transaction i.",
+      "the optimal prediction for transaction i with score si is class 1 (fraud) if and only if si > ti∗ = cf /Ai"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "A derivation from the paper's own cost matrix (Table 1), so the result holds under that matrix.",
+     "context": "ml",
+     "reader_inference": "A larger transaction amount lowers the score at which blocking is optimal."
+    },
+    {
+     "id_suggestion": "hoppner-calibration-assumption",
+     "value": "The authors state that the threshold rule assumes the scores si estimated by the classification model are true calibrated probabilities rather than only scores that rank transactions.",
+     "anchor": "Section 3, p. 5",
+     "quotes": [
+      "Note that the si, as estimated by the classification model, are assumed to be true calibrated probabilities rather than just scores that rank"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's own statement of the condition under which its threshold is optimal.",
+     "context": "ml",
+     "reader_inference": "Uncalibrated model scores would break the cost-optimality of the threshold."
+    },
+    {
+     "id_suggestion": "hoppner-benchmark-results",
+     "value": "The authors report that cslogit and csboost outperform their cost-ignorant counterparts in cost savings, outperform them in expected savings on the credit card data, and on the Bank data set cslogit has the highest cost savings while having the worst F1 values.",
+     "anchor": "Sections 7.3 and 8, pp. 19-21",
+     "quotes": [
+      "In terms of expected savings, cslogit outperforms logistic regression and csboost outperforms gradient boosted trees (xgboost)",
+      "This is clearly demonstrated by the fact that cslogit has the highest cost savings while simultaneously has the worst F1 values.",
+      "In our benchmark study, cslogit and csboost outperform their classical counterpart models, which are ignorant of any classification costs, in terms of the costs saved due to detecting fraud."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from one study on two data sets, one of them proprietary.",
+     "context": "ml",
+     "reader_inference": "Model selection by F1 or precision and recall can pick a model with higher fraud cost."
+    },
+    {
+     "id_suggestion": "hoppner-datasets-design",
+     "value": "The authors report two data sets: a public Kaggle card data set with 492 frauds out of 284,807 transactions, and a proprietary Bank data set of 31,763 transactions with 506 (1.6%) fraud labels, evaluated with 5 replications of two-fold cross validation.",
+     "anchor": "Sections 7.1 and 7.2, p. 18-19",
+     "quotes": [
+      "492 frauds out of 284,807 transactions.",
+      "The data contains 31,763 transactions made between September 2018 and July 2019. In total there are 506 (1.6%) transactions labeled as fraudulent.",
+      "For each data set, we perform 5 replications of two-fold cross validation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's statement of its own experimental setup.",
+     "context": "ml",
+     "reader_inference": "The Bank data set is not available, so that result cannot be reproduced."
+    }
+   ]
+  },
+  {
+   "record_id": "alves-2023-fifar-fraud-detection-dataset-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2023-12_Alves_FiFAR-A-Fraud-Detection-Dataset-for-Learning-to.pdf",
+   "title_in_file": "FiFAR: A Fraud Detection Dataset for Learning to Defer",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "Abstract, introduction, method, results and conclusion read from the pdftotext output.",
+   "what_it_is": "A 2023 Feedzai paper that releases a synthetic bank account fraud dataset with 50 synthetic analysts and capacity constraints, and benchmarks learning to defer baselines.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "alves-fifar-dataset",
+     "value": "The authors introduce FiFAR, a synthetic bank account fraud detection dataset with the predictions of a team of 50 synthetic fraud analysts, built on a public one million row bank account opening fraud dataset that was generated from a real-world dataset by tabular data generation techniques.",
+     "anchor": "Abstract; Section 3.1, pp. 1, 3",
+     "quotes": [
+      "we introduce the Financial Fraud Alert Review Dataset (FiFAR), a synthetic bank account fraud detection dataset, containing the predictions of a team of 50 highly complex and varied synthetic fraud analysts, with varied bias and feature dependence",
+      "As the base dataset, we choose to use the publicly available bankaccount-fraud tabular dataset [23]. This dataset is sizeable (one million rows)",
+      "The data was generated by applying tabular data generation techniques on an anonymized, real-world bank account opening fraud detection dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The authors' statement of their own dataset and its scope.",
+     "context": "ml",
+     "reader_inference": "Every human prediction in the data is simulated; the labels come from a synthetic base dataset."
+    },
+    {
+     "id_suggestion": "alves-baseline-results",
+     "value": "The authors report that, across the scenarios they tested, rejection learning performed best among their baselines, despite their attempts to model human behavior; they tested three L2D baselines under 300 different scenarios.",
+     "anchor": "Sections 4.3 and 5, pp. 7-9",
+     "quotes": [
+      "We observe that, throughout all the considered scenarios, rejection learning performs best, despite our attempts to model human behavior.",
+      "we provide three L2D baselines tested under 300 different scenarios"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from one study on one synthetic dataset.",
+     "context": "ml",
+     "reader_inference": "The proposed human-modeling methods did not beat the simple baseline in this benchmark."
+    },
+    {
+     "id_suggestion": "alves-baseline-limitation",
+     "value": "The authors state that the main limitation of their work is that their baselines include no established method from the L2D literature, because those methods do not consider capacity constraints.",
+     "anchor": "Section 5, p. 9",
+     "quotes": [
+      "The main limitation of our work is that our baselines do not include any established methods in the L2D literature, as these do not currently consider the existence of capacity constraints."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's own statement of a limit.",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alves-synthetic-experts-limit",
+     "value": "The authors state that their synthetic experts cannot replace humans in human-AI collaboration systems and may amplify biases.",
+     "anchor": "Section 5, p. 9",
+     "quotes": [
+      "We emphasize that our synthetic experts can not replace, in any way, humans involved in HAIC systems",
+      "our synthetic experts may amplify biases"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's own statement of a limit.",
+     "context": "ml",
+     "reader_inference": "Conclusions about human reviewers drawn from this data are conclusions about simulated reviewers."
+    }
+   ]
+  },
+  {
+   "record_id": "fey-2023-relational-deep-learning-graph-representation",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2023-12_Fey_Relational-Deep-Learning-Graph-Representation-Learning-on-Relational.pdf",
+   "title_in_file": "Relational Deep Learning: Graph Representation Learning on Relational Databases",
+   "version_note": "arXiv v1 (Dec 2023). Later versions add RelBench with more databases and experiments; this file does not.",
+   "read_extent": "full",
+   "partial_detail": "Abstract, introduction, method, results and conclusion read from the pdftotext output.",
+   "what_it_is": "A December 2023 position and blueprint paper (arXiv v1) that proposes Relational Deep Learning and releases the RelBench benchmark; it reports no experimental results.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "fey-rdl-blueprint",
+     "value": "The authors state that the core idea of Relational Deep Learning is to view a relational database as a temporal, heterogeneous graph with a node for each row in each table and edges given by primary-foreign key links.",
+     "anchor": "Abstract, p. 1",
+     "quotes": [
+      "The core idea is to view relational databases as a temporal, heterogeneous graph, with a node for each row in each table, and edges specified by primary-foreign key links."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The authors' statement of their own method design.",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fey-rdl-benefit-claim",
+     "value": "The authors state that Relational Deep Learning leads to more accurate models that can be built much faster.",
+     "anchor": "Abstract, p. 1",
+     "quotes": [
+      "Relational Deep Learning leads to more accurate models that can be built much faster.",
+      "We believe that Relational Deep Learning will make it possible to achieve superior performance on various prediction problems spanning the breadth of human activity"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An author claim; this version of the paper contains no experiment that supports it.",
+     "context": "ml",
+     "reader_inference": "The paper has no results section, so the accuracy and speed claim is not tested within it."
+    },
+    {
+     "id_suggestion": "fey-relbench-scope",
+     "value": "The authors state that the initial RelBench release contains two databases, each with two predictive tasks, and provides node-level tasks only.",
+     "anchor": "Sections 1 and 4, pp. 3 and 8",
+     "quotes": [
+      "For the initial release, RELBENCH contains two databases, each with two predictive tasks.",
+      "RELBENCH provides node-level tasks only."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The authors' statement of their own benchmark scope and limits.",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "cheng-2024-graph-neural-networks-financial-fraud",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2024-11_Cheng_Graph-Neural-Networks-for-Financial-Fraud-Detection-A.pdf",
+   "title_in_file": "Graph Neural Networks for Financial Fraud Detection: A Review",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "Abstract, introduction, method, results and conclusion read from the pdftotext output.",
+   "what_it_is": "A 2024 review article (Frontiers of Computer Science) that organizes over 100 studies on graph neural networks for financial fraud detection.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "cheng-review-scope",
+     "value": "The authors state that the review covers over 100 studies on graph neural networks for financial fraud detection and proposes a unified framework that categorizes them.",
+     "anchor": "Abstract, p. 1",
+     "quotes": [
+      "Through a structured review of over 100 studies, this review paper contributes to the understanding of GNN applications in financial fraud detection"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The review's statement of its own scope.",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cheng-gnn-outperform-claim",
+     "value": "The authors state that their review reveals that GNNs are exceptionally adept at capturing complex relational patterns in financial networks and significantly outperform traditional fraud detection methods.",
+     "anchor": "Abstract, p. 1",
+     "quotes": [
+      "This review reveals that GNNs are exceptionally adept at capturing complex relational patterns and dynamics within financial networks, significantly outperforming traditional fraud detection methods."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "A summary of results the review attributes to other studies; the review runs no experiment of its own.",
+     "context": "ml",
+     "reader_inference": "No pooled effect size or common benchmark is given in the quoted statement, so it is a literature impression."
+    },
+    {
+     "id_suggestion": "cheng-gnn-scalability",
+     "value": "The authors state that GNNs face significant scalability challenges on large financial networks, because of GPU memory limits and computational demands on a single machine.",
+     "anchor": "Section 6, p. 11",
+     "quotes": [
+      "Despite their efficacy, GNNs encounter significant scalability challenges when scaling up to large financial networks.",
+      "The high memory and computational demands on a single machine primarily stem from GPU memory constraints"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "A limitation the review reports from the literature.",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cheng-cafc-loss",
+     "value": "The paper cites a Canadian AntiFraud Centre report that fraud losses in 2023 reached 554 million, a 4.3% increase over the previous year; the currency symbol is not preserved in the extracted text.",
+     "anchor": "Section 1, p. 1",
+     "quotes": [
+      "According to a report by the Canadian AntiFraud Centre (CAFC), fraud losses in 2023 alone reached 554 million, marking a 4.3% increase compared to the previous year"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "A figure the paper attributes to another source.",
+     "context": "world",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "kabane-2024-impact-sampling-techniques-data-leakage",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2024-12_Kabane_Impact-of-Sampling-Techniques-and-Data-Leakage-on.pdf",
+   "title_in_file": "Impact of Sampling Techniques and Data Leakage on XGBoost Performance in Credit Card Fraud Detection",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "Abstract, introduction, method, results and conclusion read from the pdftotext output.",
+   "what_it_is": "A December 2024 arXiv preprint on how the timing of resampling relative to the train-test split affects XGBoost results on the Kaggle card fraud data.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "kabane-dataset",
+     "value": "The author states the study uses the Kaggle credit card data set of 284,807 transactions by European cardholders over two days, of which only 0.172% are labeled fraudulent.",
+     "anchor": "Section 6, p. 6",
+     "quotes": [
+      "This dataset contains a total of 284,807 credit card transactions made by European cardholders over a two-day period. Among these transactions, only 0.172% are labeled as fraudulent"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's statement of its own data.",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kabane-presplit-inflation",
+     "value": "The paper reports XGBoost with sampling before the train-test split reaching accuracy 99.969%, precision 99.938%, recall 100%, F1-score 99.969% and AUC 99.969%, and states the near-perfect performance is likely influenced by data leakage.",
+     "anchor": "Section 9.1, Table 1, p. 12",
+     "quotes": [
+      "the XGBoost model achieves near-perfect scores in all metrics, with an accuracy of 99.969%, precision of 99.938%, recall of 100%, F1-score of 99.969%, and AUC of 99.969%.",
+      "However, the near-perfect performance is likely influenced by data leakage due to applying sampling before the train-test split."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "The text introduces Table 1 as 'Table 1[2]', which points to reference 2; the author attributes the inflation to leakage by reasoning and does not isolate it with a controlled rerun.",
+     "context": "method",
+     "reader_inference": "The paper does not run the same pipeline with and without leakage, so the size of the inflation is not measured within it."
+    },
+    {
+     "id_suggestion": "kabane-postsplit-results",
+     "value": "The author reports that XGBoost with sampling applied only after the train-test split gave results close to the earlier pre-split models (figures are in a table), and concludes XGBoost can detect card fraud with high performance without pre-split sampling.",
+     "anchor": "Sections 9.2 and Conclusion, pp. 13-14",
+     "quotes": [
+      "As we will see these results are quite descent results compared to Random Forest and aren't really that far either from the results of the previously shown models which did sampling pre the train-test split.",
+      "This study showed that the XGBoost model can detect credit card fraud with high performance without using pre-split sampling"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from one study on one public data set.",
+     "context": "ml",
+     "reader_inference": "The body says post-split results are not far from pre-split results, while the abstract says they were significantly lower."
+    },
+    {
+     "id_suggestion": "kabane-abstract-lower-claim",
+     "value": "The abstract states that models trained with sampling applied solely to the training set demonstrated significantly lower results than those with pre-split sampling, while preserving the integrity of the evaluation process.",
+     "anchor": "Abstract, p. 1",
+     "quotes": [
+      "Surprisingly, models trained with sampling techniques applied solely to the training set demonstrated significantly lower results than those with pre-split sampling, all the while preserving the integrity of the evaluation process."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An author claim in the abstract that the body text does not quantify in one table.",
+     "context": "method",
+     "reader_inference": "This conflicts in tone with the body statement that post-split results are not far from pre-split results; treat the size of the gap as unmeasured."
+    }
+   ]
+  },
+  {
+   "record_id": "lyu-2025-statistical-theory-overfitting-imbalanced-classification",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2025-02_Lyu_A-statistical-theory-of-overfitting-for-imbalanced-classification.pdf",
+   "title_in_file": "A statistical theory of overfitting for imbalanced classification",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "Abstract, introduction, method, results and conclusion read from the pdftotext output.",
+   "what_it_is": "A February 2025 statistics paper that proves how high dimensionality shapes the training logit distribution of SVM and logistic regression on imbalanced two-component Gaussian mixture data.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "lyu-rectified-logits",
+     "value": "The paper states that for linearly separable data from a two-component Gaussian mixture, each class's logits follow a normal distribution N(0, 1) on the testing set but asymptotically follow a rectified normal distribution on the training set.",
+     "anchor": "Abstract and Theorem 1.1, pp. 1, 8",
+     "quotes": [
+      "the logits from each class follow a normal distribution N(0, 1) on the testing set, but asymptotically follow a rectified normal distribution"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "A proved result under high-dimensional asymptotics for the stylized model.",
+     "context": "ml",
+     "reader_inference": "The rectification explains why the minority class overfits more under this model."
+    },
+    {
+     "id_suggestion": "lyu-margin-rebalancing",
+     "value": "The authors state that they show margin rebalancing, which incorporates class sizes into the loss function, is crucial for mitigating the accuracy drop for the minority class, and that it is crucial in the moderate signal phase of their high-imbalance theorem.",
+     "anchor": "Abstract and Theorem 1.3, pp. 1, 13",
+     "quotes": [
+      "Further, we show that margin rebalancing, which incorporates class sizes into the loss function, is crucial for mitigating the accuracy drop for the minority class.",
+      "Moderate signal (margin rebalancing is crucial)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "A proved result under the stylized model and stated regimes.",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lyu-empirical-checks",
+     "value": "The authors report that the training-set logit pattern also appears on tabular data (single-cell RNA-seq), image data (CIFAR-10 with ResNet-18 features) and text data (IMDb with BERT features).",
+     "anchor": "Abstract and Figure 2, pp. 1, 8",
+     "quotes": [
+      "which is a pervasive phenomenon we verified on tabular data, image data, and text data",
+      "Left: IFNB single-cell RNA-seq dataset (tabular data). Middle: CIFAR-10 dataset preprocessed by pretrained ResNet-18 model for feature extraction (image data)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "Empirical illustration in one paper; none of the data sets is a fraud data set.",
+     "context": "ml",
+     "reader_inference": "Application to fraud data is by analogy only."
+    },
+    {
+     "id_suggestion": "lyu-scope-limits",
+     "value": "The authors state that the analysis focuses on a stylized model of linear classification and that the theory does not cover classification with K > 2 classes.",
+     "anchor": "Sections 1 and 7, pp. 4, 26",
+     "quotes": [
+      "In this paper, we focus on linear classification",
+      "our analysis focuses on a stylized model",
+      "Our theory does not cover classification with K > 2 classes."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's own statement of scope and limits.",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "qu-2025-tabicl-tabular-foundation-model-context",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2025-02_Qu_TabICL-A-Tabular-Foundation-Model-for-In-Context.pdf",
+   "title_in_file": "TabICL: A Tabular Foundation Model for Large Data",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "Abstract, introduction, method, results and conclusion read from the pdftotext output.",
+   "what_it_is": "A 2025 ICML paper that introduces TabICL, a pretrained tabular foundation model for classification using in-context learning with a column-then-row attention design.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "qu-tabicl-benchmark",
+     "value": "The authors report that across 200 classification datasets from the TALENT benchmark TabICL is on par with TabPFNv2 while being up to 10 times faster, and that on 53 datasets with over 10K samples TabICL surpasses both TabPFNv2 and CatBoost.",
+     "anchor": "Abstract, p. 1",
+     "quotes": [
+      "Across 200 classification datasets from the TALENT benchmark, TabICL is on par with TabPFNv2 while being systematically faster (up to 10 times), and significantly outperforms all other approaches.",
+      "On 53 datasets with over 10K samples, TabICL surpasses both TabPFNv2 and CatBoost"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from one study on one benchmark.",
+     "context": "ml",
+     "reader_inference": "The experiments section says it focuses mainly on 171 datasets with at most 10 classes, so the abstract's 200 is the wider count."
+    },
+    {
+     "id_suggestion": "qu-tabicl-speed",
+     "value": "The authors report that TabICL is 1.5x faster than TabPFNv2 on small datasets and 3-10x faster on large datasets.",
+     "anchor": "Section 5.2, p. 7",
+     "quotes": [
+      "Figure 6 shows that TabICL is 1.5× faster than TabPFNv2 on small datasets and 3-10× faster on large datasets."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from one study.",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qu-tabicl-capacity",
+     "value": "The authors state that in practice TabICL handles up to 500K samples and 500 features with around 20GB of GPU memory, and that they evaluated it on datasets with up to 100K training samples.",
+     "anchor": "Section 1 and Section 6, pp. 2, 9",
+     "quotes": [
+      "In practice, TabICL handles up to 500K samples and 500 features with around 20GB of GPU memory",
+      "Evaluated on datasets with up to 100K training samples"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "A capacity claim; the conclusion states evaluation only up to 100K training samples.",
+     "context": "ml",
+     "reader_inference": "The 500K capacity is stated as a hardware capability, not a benchmarked accuracy result."
+    },
+    {
+     "id_suggestion": "qu-tabicl-limitations",
+     "value": "The authors state that TabICL is currently limited to classification, suffers from slow inference like other foundation models, violates column-permutation invariance because of RoPE, and cannot natively handle classification problems with more than 10 classes.",
+     "anchor": "Section 6 Limitations and Appendix E.3, pp. 9, 26",
+     "quotes": [
+      "Currently, TabICL is limited to classification",
+      "Like other foundation models, TabICL suffers from slow inference speed",
+      "However, TabICL violates this invariance due to the use of RoPE.",
+      "Due to pretraining limitations, TabICL cannot natively handle classification problems with more than 10 classes."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's own statement of its limits.",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "lachi-2025-boosting-relational-deep-learning-pretrained",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2025-04_Lachi_Boosting-Relational-Deep-Learning-with-Pretrained-Tabular-Models.pdf",
+   "title_in_file": "Boosting Relational Deep Learning with Pretrained Tabular Models",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "Abstract, introduction, method, results and conclusion read from the pdftotext output.",
+   "what_it_is": "An April 2025 arXiv preprint that proposes LightRdl, which distills a pretrained LightGBM tabular model into a relational GNN to speed up inference on RelBench tasks.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "lachi-lightrdl-accuracy",
+     "value": "The authors report that on RelBench regression tasks LightRdl achieves an average relative gain of +9.5% over Rdl and +3.9% over LightGBM, reaching a maximum gain of +33.9%.",
+     "anchor": "Section 5, Table 2, p. 7",
+     "quotes": [
+      "Table 2 shows that, for the regression tasks,",
+      "of +9.5% over Rdl and +3.9% over LightGBM,",
+      "reaching a maximum gain of +33.9%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from one study on one benchmark.",
+     "context": "ml",
+     "reader_inference": "Classification gains are reported as smaller in the same section, and one task (user-badge) is worse than Rdl by a small margin; those figures were not copyable as a single quote."
+    },
+    {
+     "id_suggestion": "lachi-lightrdl-speed",
+     "value": "The authors report that LightRdl achieves inference speedups of 28x to 526x over Rdl and is up to 72x faster in training.",
+     "anchor": "Section 5, Figure 4, p. 8",
+     "quotes": [
+      "LightRdl achieves speedups in inference, ranging from 28× to 526× compared to Rdl. Similarly, LightRdl is up to 72× faster than Rdl in training."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from one study.",
+     "context": "ml",
+     "reader_inference": "The paper counts distillation time in the total inference time for the fair comparison of inference speed."
+    },
+    {
+     "id_suggestion": "lachi-lightrdl-scope",
+     "value": "The authors state that they focus only on RelBench tasks that include a feature engineering strategy, and that Table 2 results are averaged over five runs.",
+     "anchor": "Section 5, p. 7",
+     "quotes": [
+      "We focus exclusively on the tasks in RelBench that include a feature engineering strategy.",
+      "Table 2: Comparison of MAE and ROCAUC for LightGBM, Rdl, and LightRdl across Relbench tasks, averaged over five runs."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's own statement of its evaluation scope.",
+     "context": "ml",
+     "reader_inference": "Tasks without expert-crafted features were not tested, so the method's value there is unmeasured."
+    },
+    {
+     "id_suggestion": "lachi-lightrdl-distillation",
+     "value": "The authors state that the distillation process is essential, based on an ablation in which LightRdl significantly outperforms LightRdl w P.",
+     "anchor": "Section 5 ablation, p. 8",
+     "quotes": [
+      "Second, the distillation process is also essential.",
+      "LightRdl significantly outperforms LightRdl w"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An ablation from one study.",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

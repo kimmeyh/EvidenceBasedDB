@@ -1,0 +1,596 @@
+{
+ "papers": [
+  {
+   "record_id": "wiedmann-2023-empirical-comparison-optimizers-quantum-machine",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Wiedmann-et-al.-2023_An-Empirical-Comparison-of-Optimizers-for-Quantum-Machine-Learning-with__2305.00224.pdf",
+   "title_in_file": "An Empirical Comparison of Optimizers for Quantum Machine Learning with SPSA-based Gradients",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "A simulation study that combines SPSA-estimated gradients with Adam, AMSGrad, RMSProp and SGD for training variational quantum circuits on regression tasks.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "spsa-gradient-vs-parameter-shift",
+     "value": "The authors report that, in noiseless simulations on simple regression tasks, using the SPSA-approximated gradient improves the convergence rate by a factor of three and the final absolute error by a factor of more than two compared to the parameter-shift rule.",
+     "anchor": "Section VI Conclusion",
+     "quotes": [
+      "We demonstrate with noiseless simulations on simple regression tasks that using the SPSA-approximated gradient improves both the convergence rate by a factor of three and the final absolute error by a factor of more than two compared to the parameter-shift rule."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from one simulation study on five small regression datasets.",
+     "context": "qml",
+     "reader_inference": "The comparison is on simulators with hyperparameters tuned on 50 points, so it does not carry to hardware or to larger problems."
+    },
+    {
+     "id_suggestion": "adaptive-optimizers-beat-sgd-under-noise",
+     "value": "The authors report that Adam, AMSGrad and RMSProp clearly outperform SGD for SPSA-inferred gradients under shot and hardware noise, with the performance gap growing to a factor of 1.5 for the full noise model, and that the performance boost between methods remains the same when error mitigation addresses the hardware noise.",
+     "anchor": "Section VI Conclusion",
+     "quotes": [
+      "Adam, AMSGrad, and RMSProp clearly outperform SGD for SPSA-inferred gradients when considering shot- and hardware noise. The gap in performance grows to a factor of 1.5 for the full noise model.",
+      "The performance boost between methods remains the same even when error mitigation addresses the hardware noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "setup-simulator-only-small-vqc",
+     "value": "The authors state that the experiments ran on the IBM qasm simulator, ideal and with a noise model mimicking the ibmq ehningen device, using a variational circuit of four to five qubits, with 500 training, 50 validation and 100 test points per dataset.",
+     "anchor": "Section I Introduction; Section IV Methods",
+     "quotes": [
+      "Numerical experiments were done on the qasm simulator offered by the IBM Quantum services [18].",
+      "For each dataset, 500 data points were used for training, 50 for validation, and 100 for model testing.",
+      "The function approximator used for these regression tasks is a VQC consisting of four to five qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's statement of its own setup and scope.",
+     "context": "qml",
+     "reader_inference": "No result in the paper comes from quantum hardware."
+    },
+    {
+     "id_suggestion": "error-mitigation-worsened-results",
+     "value": "The authors report that with zero-noise extrapolation error mitigation all methods performed significantly worse than in the noisy case without it, and offer as a possible explanation that a global observable was used for the circuit output.",
+     "anchor": "Section V Results",
+     "quotes": [
+      "it is striking that with the use of error mitigation all methods perform significantly worse than even in the noisy case. A possible explanation for this is the fact that a global observable"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from one study, with an explanation the authors give as possible, not tested.",
+     "context": "qml",
+     "reader_inference": "The abstract says error mitigation does not significantly affect the results; the results text says it made all methods worse. The two statements read differently."
+    }
+   ]
+  },
+  {
+   "record_id": "berberich-2025-training-robust-generalizable-quantum-models",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Berberich-et-al._2023_Training-robust-and-generalizable-quantum-models__2311.11871.pdf",
+   "title_in_file": "Training robust and generalizable quantum models",
+   "version_note": "File is arXiv v4 dated 22 Dec 2025; the record id carries 2025.",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, Section III (robustness), Section IV (generalization, first part and numerical results), Section V, Section VI; appendices with proofs not read.",
+   "what_it_is": "A theory paper that derives Lipschitz bounds for quantum models with trainable data encoding and uses them for robustness and generalization bounds and a regularized training scheme.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "lipschitz-bound-trainable-encoding",
+     "value": "The authors derive parameter-dependent Lipschitz bounds for quantum models with trainable encoding and show that the norm of the data encoding has a crucial impact on robustness against data perturbations.",
+     "anchor": "Abstract",
+     "quotes": [
+      "We derive parameter-dependent Lipschitz bounds for quantum models with trainable encoding, showing that the norm of the data encoding has a crucial impact on the robustness against data perturbations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "A derived bound, proved in the paper's appendices.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generalization-bound-involves-encoding",
+     "value": "The authors derive a bound on the generalization error that explicitly involves the parameters of the data encoding.",
+     "anchor": "Abstract; Section IV",
+     "quotes": [
+      "Further, we derive a bound on the generalization error which explicitly involves the parameters of the data encoding."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "A derived bound.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fixed-encoding-lipschitz-not-tunable",
+     "value": "The authors state that for fixed and non-trainable encodings, as those frequently employed in quantum machine learning, the Lipschitz bound cannot be influenced by tuning the parameters.",
+     "anchor": "Abstract; Section V",
+     "quotes": [
+      "Moreover, we show that, for fixed and non-trainable encodings, as those frequently employed in quantum machine learning, the Lipschitz bound cannot be influenced by tuning the parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "A limitation shown by the paper's own derivation.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "circle-classification-sweet-spot",
+     "value": "The authors report, on a circle classification problem, that increasing the regularization parameter lowers the Lipschitz bound, with maximum test accuracy at a regularization value of 0.15, and that beyond it the bound becomes too small, limiting expressivity and lowering accuracy. They state the numerical results are mainly for illustration.",
+     "anchor": "Section IV numerical results; Section VI",
+     "quotes": [
+      "this reduction of LΘ improves generalization performance with the maximum test accuracy at λ = 0.15.",
+      "Beyond this value, the regularization causes a too small Lipschitz bound, limiting expressivity and, therefore, decreasing the training accuracy.",
+      "these numerical results with specific choices of rotation and entangling gates are mainly used for illustration"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "A numerical illustration on one synthetic problem.",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "de-oliveira-2024-demonstration-weighted-graph-optimization-rydberg",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2024/de-Oliveira-et-al._2024_Demonstration-of-weighted-graph-optimization-on-a-Rydberg-atom-array__2404.02658.pdf",
+   "title_in_file": "Demonstration of weighted graph optimization on a Rydberg atom array using local light-shifts",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "An experiment on a neutral-atom Rydberg array that solves small maximum weighted independent set problems by annealing with local light-shifts.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "1d-weighted-graph-ground-state",
+     "value": "The authors report that, using a common annealing profile on nine-atom 1D graphs, the correct ground state was the most probable output for both the uniform and the weighted graph, each with probability 19(1)%.",
+     "anchor": "Section V.A 1D Weighted Graphs",
+     "quotes": [
+      "Using a common annealing profile, we observe the correct ground states as the most probable state outputs in both cases, with probabilities of 19(1)% in both cases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An experimental result from one apparatus.",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "2d-non-udg-embedding",
+     "value": "The authors report embedding a 5-qubit non-UDG weighted graph using 9 physical qubits, and observe the correct MWIS solution with 11(1)% probability from 1000 experimental realizations, with all other output strings observed with no more than 2.5% probability.",
+     "anchor": "Section I; Figure 3 caption",
+     "quotes": [
+      "including embedding a 5-qubit non-UDG using 9 physical qubits.",
+      "Final output state probability distribution from 1000 experimental realizations showing the correct MWIS solution is observed with 11(1)% probability, with all other output strings observed with ≤ 2.5% probability."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An experimental result from one apparatus and one graph instance.",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "success-probability-limited",
+     "value": "The authors state that measured output state probabilities are limited to 10-20% by several factors, while numerical simulations predict target output probabilities between 50-60% for the graphs used.",
+     "anchor": "Section VI Discussion and Outlook",
+     "quotes": [
+      "The measured output state probabilities in the current experiments are limited to 10-20% by a number of factors.",
+      "numerical simulations predicting target output probabilities between 50-60% for the graphs used here"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's statement of its own limits.",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scalability-open-question",
+     "value": "The authors state that the quadratic overhead of the UDG-MWIS encoding raises open questions about the scalability of the approach.",
+     "anchor": "Section VI Discussion and Outlook",
+     "quotes": [
+      "the quadratic overhead introduced by the UDG-MWIS encoding [46] introduces interesting open questions around scalability of this approach"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's statement of its own scope limit.",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "ding-2022-evolutionary-quantum-architecture-search-parametrized",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2022/Ding-Spector_2022_Evolutionary-Quantum-Architecture-Search-for-Parametrized-Quantum-Circuits__2208.11167.pdf",
+   "title_in_file": "Evolutionary Quantum Architecture Search for Parametrized Quantum Circuits",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "A short GECCO companion paper that uses a genetic algorithm to search parametrized quantum circuit architectures for reinforcement learning policies.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "eqas-pqc-beats-alternating-layer",
+     "value": "The authors conclude that EQAS-PQC finds PQC architectures that significantly outperform the standard alternating-layer PQC on the two benchmark reinforcement learning tasks.",
+     "anchor": "Section 4.3 Results",
+     "quotes": [
+      "Thus, we can conclude that our method is able to find PQC architectures that significantly outperform the standard alternating-layer PQC."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from simulation on two classical benchmarks.",
+     "context": "qml",
+     "reader_inference": "The paper reports no statistical test; the comparison is the best searched architecture against one baseline over 10 trials."
+    },
+    {
+     "id_suggestion": "evaluation-setup",
+     "value": "The authors state that they used the CartPole and MountainCar environments, evaluated the best architecture for each over 10 trials, and compared with a Softmax-PQC baseline of depth 6 giving an architecture of length 19.",
+     "anchor": "Section 4.1 and 4.2, 4.3",
+     "quotes": [
+      "we consider two classical RL benchmark environments from the OpenAI Gym [4]: CartPole and MountainCar.",
+      "we take the best performing architecture for each environment and evaluate it for 10 trials",
+      "for Softmax-PQC, we use the depth of 6, resulting in an architecture with length 19"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "simulation-only-limitation",
+     "value": "The authors state that a limitation of the work is that the experiments are conducted using a simulation backend for quantum circuits.",
+     "anchor": "Section 5 Conclusion and Future Work",
+     "quotes": [
+      "One limitation to our work is that the experiments are conducted using a simulation backend for quantum circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's statement of its own limit.",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "garcia-martin-2024-effects-noise-overparametrization-quantum-neural",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Garci__2302.05059.pdf",
+   "title_in_file": "Effects of noise on the overparametrization of quantum neural networks",
+   "version_note": "File is arXiv v2 dated 26 Feb 2024.",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, Section III.B opening, Section IV opening, Section V, Section VI; proofs not read.",
+   "what_it_is": "A theory and numerics paper on how hardware noise changes the rank and eigenvalues of the quantum Fisher information matrix of quantum neural networks.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "noise-suppresses-qfim-eigenvalues",
+     "value": "The authors prove that as the magnitude of noise increases, all eigenvalues of the quantum Fisher information matrix become exponentially suppressed, indicating that the state becomes insensitive to any change in the parameters.",
+     "anchor": "Abstract",
+     "quotes": [
+      "Then, we prove that as the magnitude of noise increases all the eigenvalues of the QFIM become exponentially suppressed, indicating that the state becomes insensitive to any change in the parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "A proved result.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noise-turns-on-null-eigenvalues",
+     "value": "The authors report that noise can turn null eigenvalues of a noiseless-state QFIM into nonnull eigenvalues, so that noise can potentially render an overparametrized QNN underparametrized.",
+     "anchor": "Abstract; Section I",
+     "quotes": [
+      "That is, noise can turn null eigenvalues of a noiseless-state QFIM into nonnull eigenvalues of the corresponding noisy-state QFIM.",
+      "This enables the parametrized state to explore directions that were otherwise inaccessible, thus potentially turning an overparametrized QNN into an underparametrized one."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "Shown by a toy-model example and analytic results in the paper.",
+     "context": "qml",
+     "reader_inference": "The numerical examples use a Hamiltonian variational ansatz built from transverse-field Ising model generators."
+    },
+    {
+     "id_suggestion": "some-noise-cannot-raise-rank",
+     "value": "The authors prove that certain types of noise, specifically global depolarizing noise or measurement noise, cannot increase the rank of the QFIM.",
+     "anchor": "Section I Introduction; Section VI",
+     "quotes": [
+      "Additionally, we prove that certain types of noise, specifically global depolarizing noise or measurement noise [42, 47], cannot increase the rank of the QFIM."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "A proved result that limits the first effect.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "capacity-measures-ill-defined",
+     "value": "The authors state that their results imply current QNN capacity measures are ill-defined when hardware noise is present, because rank-based measures count nonzero eigenvalues but not their magnitude.",
+     "anchor": "Abstract; Section V; Section VI",
+     "quotes": [
+      "Finally, our results imply that current QNN capacity measures are ill-defined when hardware noise is present.",
+      "This dissonance arises from the fact that the eigenvalue magnitude is not accounted for in rank-based measures, only the number of strictly non-zero eigenvalues."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An implication the authors draw by argument, not a separate test.",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "kreplin-2024-reduction-finite-sampling-noise-quantum",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Kreplin-Roth_2023_Reduction-of-finite-sampling-noise-in-quantum-neural-networks__2306.01639.pdf",
+   "title_in_file": "Reduction of finite sampling noise in quantum neural networks",
+   "version_note": "File is arXiv v3 dated 21 Jun 2024.",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, Section 2 opening, Sections 4 to 7 skimmed for results, appendix A.3 hardware note.",
+   "what_it_is": "A paper that adds a variance term to the training loss of quantum neural networks to cut finite-sampling noise and the shots needed, tested in simulation and on IBM hardware.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "variance-regularization-order-of-magnitude",
+     "value": "The authors report that in their examples variance regularization lowers the variance by an order of magnitude on average and leads to a significantly reduced noise level of the QNN.",
+     "anchor": "Abstract",
+     "quotes": [
+      "We show that in our examples, it lowers the variance by an order of magnitude on average and leads to a significantly reduced noise level of the QNN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from function regression and one potential energy surface.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-extra-circuits-condition",
+     "value": "The authors state that when the cost operator is diagonal in the computational basis, the variance and its derivative can be computed from the same circuit evaluations as the function values and gradients.",
+     "anchor": "Section 7 Conclusion; Abstract",
+     "quotes": [
+      "When the cost operator of the QNN is chosen to be diagonal in the computational basis (e.g. only using Pauli I and Z operators), the variance and its derivative can be computed from the same circuit evaluations as the function values and gradients.",
+      "This technique requires no additional circuit evaluations if the QNN is properly constructed."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's statement of the condition of its own method.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-run-not-converged",
+     "value": "The authors report that the optimization on the real IBM backend ibmq_montreal was terminated at 95 iterations after running for several weeks, that they were not able to run it until convergence, and that it was the longest cohesive optimization they could run on real hardware.",
+     "anchor": "Appendix A.3",
+     "quotes": [
+      "The optimization on the real backend was terminated at 95 iterations after running for several weeks.",
+      "Although we were not able to run the optimization until convergence"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's statement of its own limit.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zne-no-strong-influence",
+     "value": "The authors report that zero-noise extrapolation has no strong influence on the reduced variance of the output.",
+     "anchor": "Section 7 Conclusion",
+     "quotes": [
+      "Additionally, we observed that zero-noise extrapolation has no strong influence on the reduced variance of the output."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from one device and one function.",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "kyriienko-2022-unsupervised-quantum-machine-learning-fraud",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2022/Kyriienko-Magnusson_2022_Unsupervised-quantum-machine-learning-for-fraud-detection__2208.01203.pdf",
+   "title_in_file": "Unsupervised quantum machine learning for fraud detection",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "A simulation study of quantum-kernel one-class SVMs for credit card fraud detection, compared with classical RBF-kernel baselines, with a hardware timing discussion.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "quantum-kernel-ap-separation",
+     "value": "The authors report that in simulations with registers up to 20 qubits, quantum kernels with re-uploading show better average precision than classical equivalents, with the advantage increasing with system size, reaching a quantum-classical separation of average precision equal to 15% at 20 qubits.",
+     "anchor": "Abstract; Section III",
+     "quotes": [
+      "Performing simulations with registers up to 20 qubits, we find that quantum kernels with re-uploading demonstrate better average precision, with the advantage increasing with system size. Specifically, at 20 qubits we reach the quantum-classical separation of average precision being equal to 15%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from noiseless state vector simulation on one subsampled dataset.",
+     "context": "qml",
+     "reader_inference": "The comparison uses one dataset, 25 fraud examples, and a classical baseline the authors describe as fine-tuned; the quantum kernel was not tuned."
+    },
+    {
+     "id_suggestion": "dataset-and-simulation-setup",
+     "value": "The authors state that they used a credit card fraud dataset from Kaggle with 492 fraud cases in 284,807 transactions, subsampled to 500 samples including 25 fraud examples (a figure caption says 525 total), and evaluated kernels with state vector simulation.",
+     "anchor": "Section II; Figure 1 caption; Section III",
+     "quotes": [
+      "we use a credit card fraud dataset from Kaggle [56]",
+      "The dataset contains 492 fraud cases from the total of 284,807 transactions, and is highly imbalanced.",
+      "We select 500 samples including 25 fraud examples",
+      "subsampled to include 25 fraud cases for Ns = 525 total",
+      "The kernels are evaluated using return probabilities, and we use state vector simulation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "context": "qml",
+     "reader_inference": "The text gives 500 samples and the Figure 1 caption gives 525 total. The paper does not reconcile the two."
+    },
+    {
+     "id_suggestion": "hardware-scope-limits",
+     "value": "The authors state that advantageous quantum fraud detection requires going beyond 20-qubit calculations (reaching 50-100 qubits for strong separation) and deep quantum kernels, and that QC-based fraud detection may be not well-suited for en masse testing of transactions, but rather checks of highly prioritised cases.",
+     "anchor": "Section IV Discussion; Section V Conclusions",
+     "quotes": [
+      "advantageous implementation of quantum FD requires going beyond calculations performed for 20-qubit registers (reaching 50-100 qubits for strong separation), as well as deep quantum kernels.",
+      "Thus, QC-based fraud detection may be not well-suited for en masse testing of transactions, but rather checks of highly prioritised cases."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's statement of its own scope limits.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "labels-used-for-tuning",
+     "value": "The authors state that hyperparameters were tuned by random search for the highest cross-validation average precision, and that this can be troublesome in the unsupervised setting because target labels are not supposed to be available.",
+     "anchor": "Section II",
+     "quotes": [
+      "Hyperparameter tuning is performed by random search and choosing the parameter values that yield the highest cross-validation AP score.",
+      "this can be troublesome in the unsupervised setting, as target labels are not supposed to be available."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's statement of its own method and its caveat.",
+     "context": "method",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "miao-2023-neural-network-encoded-variational-quantum",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Miao-Hsieh-Zhang_2023_Neural-network-encoded-variational-quantum-algorithms__2308.01068.pdf",
+   "title_in_file": "Neural network encoded variational quantum algorithms",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "Main text read; Supplemental Materials not read.",
+   "what_it_is": "A letter that feeds Hamiltonian parameters into a classical neural network whose outputs set the parameters of a variational quantum circuit, tested in simulation on XXZ spin chains.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "nn-vqe-ground-state-without-finetuning",
+     "value": "The authors report that NN-VQE is able to estimate ground-state energies of parameterized Hamiltonians with high precision without fine-tuning.",
+     "anchor": "Abstract; Results",
+     "quotes": [
+      "NN-VQE is able to estimate the ground-state energies of parameterized Hamiltonians with high precision without fine-tuning"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from noiseless numerical simulation on XXZ spin chains.",
+     "context": "qml",
+     "reader_inference": "The testbed is a physics ground-state problem; the neural network is a tool to set circuit parameters, so the ML workload is indirect."
+    },
+    {
+     "id_suggestion": "simulation-setup",
+     "value": "The authors state that the demonstrations use numerical simulation with TensorCircuit on a one-dimensional antiferromagnetic XXZ model, with 20 equispaced training values of the anisotropy parameter and 201 equispaced test values over a wider interval.",
+     "anchor": "Results",
+     "quotes": [
+      "we demonstrate the effectiveness of our framework using numerical simulation with TensorCircuit [50].",
+      "The training set of ∆ is composed of 20 equispaced points in the interval of [−3.0, 3.0].",
+      "evaluated on an expanded test set consisting of 201 equispaced values of ∆ in the interval of [−4.0, 4.0]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "context": "qml",
+     "reader_inference": "All results are simulation; the paper reports no hardware run."
+    },
+    {
+     "id_suggestion": "active-learning-fewer-points",
+     "value": "The authors report that active learning gave a training set of 11 points, about half of the earlier set, and that the model still gives a reliable estimation of the ground-state energy.",
+     "anchor": "Results",
+     "quotes": [
+      "By this method, we obtain a training set consisting of 11 points.",
+      "Remarkably, even with a training set size that is only half of the previous set, the model still gives a reliable estimation of the ground-state energy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result on one model family.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nn-vqe-optimization-speedup",
+     "value": "The authors report that NN-VQE has a significant speedup in the optimization procedure compared with plain VQE, shown for a 12-site XXZ spin chain.",
+     "anchor": "Results, Figure 4",
+     "quotes": [
+      "As shown in Fig. 4 (a)(c), NNVQE has a significant speedup in the optimization procedure compared with plain VQE.",
+      "The ground-state energy relative errors for an n = 12 XXZ spin chain"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "certainty_reason": "An empirical result from simulation at two parameter values.",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

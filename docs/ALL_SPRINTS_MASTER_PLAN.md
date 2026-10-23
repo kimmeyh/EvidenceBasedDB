@@ -45,15 +45,32 @@ repository exists. No other F# from either source repository applies here.
 | 7 | docs/sprints/SPRINT_7_SUMMARY.md | [OK] Complete | 2026-10-06 to 2026-10-10 |
 | 8 | docs/sprints/SPRINT_8_SUMMARY.md | [OK] Complete | 2026-10-10 to 2026-10-14 |
 | 9 | docs/sprints/SPRINT_9_SUMMARY.md | [OK] Complete | 2026-10-14 to 2026-10-18 |
-| 10 | docs/sprints/SPRINT_10_SUMMARY.md | [OK] Complete (awaiting merge) | 2026-10-18 to 2026-10-21 |
+| 10 | docs/sprints/SPRINT_10_SUMMARY.md | [OK] Complete | 2026-10-18 to 2026-10-21 |
+| 11 | docs/sprints/SPRINT_11_SUMMARY.md | [OK] Complete | 2026-10-21 to 2026-10-23 |
 
 ## Last Completed Sprint
 
-Sprint 10 is below; Sprint 9 follows it for continuity.
+Sprint 11 is below; Sprint 10 follows it for continuity.
 
-### Sprint 10: Fix the Hooks and the Dirac Records, Then Read the Next 74 (2026-10-18 to 2026-10-21, PR #101, awaiting merge)
+### Sprint 11: Enter QCi's Answers, Then Read 200 Records and Every New Paper (2026-10-21 to 2026-10-23, PR #113; awaiting the team lead's merge)
 
-Ten tasks, ten issues (#102-#111). **Hooks**: the code-edit hook stops
+Seven tasks, seven issues (#114-#120). **Inbound**: QCi's three emails
+(F92, 18 assertions) and Phase 2's F108 ceiling result (F93). **Papers**:
+magic state cultivation (F91); 38 new files and the team lead's list
+entered and read (F97); the 200-record F57 release read by up to 5 agents
+from one ledger (F96, 649 assertions). **Process**: backlog cards adopt
+spamfilter-multi's practices (F94); the F39 release (F99). Manual
+Validation: a decision-backed `code-of` link, and a computed hand-download
+list with a skill. Store 2,284 -> 2,302 papers (224 -> 455 `read`), 793 ->
+1,595 assertions; suite 1,084 -> 1,175. Retrospective: team lead all "Very
+Good"; I1a, I1b, I2 and I4 applied (quote-mark and figure checks in the
+write path; the backup gate; the verdict runner; the Edit tool for every
+in-place edit), I3 carded on F57, I5 skipped. Full detail:
+`docs/sprints/SPRINT_11_SUMMARY.md`.
+
+### Sprint 10: Fix the Hooks and the Dirac Records, Then Read the Next 74 (2026-10-18 to 2026-10-21, PR #101, merged to develop and to main via PR #112 on 2026-10-21; tagged sprint-10)
+
+Ten tasks, ten issues (#102-#111), all closed. **Hooks**: the code-edit hook stops
 blocking read-only commands (F81); the never-write hook covers abbreviated
 and program-running git options (F82). **Dirac records**:
 `platform:dirac-1` (F84, ADR-0004 A10, approved); Phase 2's Dirac-3S
@@ -261,23 +278,23 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 10** (branch `feature/20261018_Sprint_10`, cut 2026-10-18 at the
-Sprint 9 carry-forward, after PR #88 merged to develop and PR #100 merged
+**Sprint 11** (branch `feature/20261021_Sprint_11`, cut 2026-10-21 at the
+Sprint 10 carry-forward, after PR #101 merged to develop and PR #112 merged
 develop to main).
 
-- **Scope selected 2026-10-18 (team lead, DEFINED)**: all ten non-HOLD
-  items, as recommended (about 375 calibrated minutes): F39 (Sprint 10
-  release), F57 (Sprint 10 release, 74 records), F50, F81, F82, F83, F84,
-  F85, F86 and F87. F51 stays HOLD.
-- **Released copies of the permanent items**: F88 (F39 release for
-  Sprint 10) and F89 (F57 release for Sprint 10, 74 records). F39 and F57
-  stay.
-- **Plan**: `docs/sprints/SPRINT_10_PLAN.md`, approved 2026-10-18 with
-  Q1 = 1, Q2 = 1, Q3 = 1; issues #102 to #111; draft PR #101.
+- **Scope** (DEFINED, team lead 2026-10-21): F94, F92, F39, F91, F57,
+  F93 and F95. The permanent items are released as copies: F96 (F57,
+  200 records), F97 (F95) and F99 (F39). F90 is not selected; its 8
+  papers wait for the team lead's downloads, and F95 reads them once they
+  are in `Papers\`. F98 is carded for Sprint 12. F51 stays HOLD.
+- **Plan**: `docs/sprints/SPRINT_11_PLAN.md` (approved 2026-10-21, Q1 = 1).
+- **Status** (2026-10-23): Phase 7.7 done; PR #113 ready for the team
+  lead's merge. Shipped cards (F91 to F94, F96, F97) are pruned by hand at
+  Sprint 12's Phase 1.2 sweep.
 
 ## Next Sprint Candidates
 
-Refined 2026-10-18 after Sprint 9 (Sprint 10 Phase 1.2); Sprint 9's shipped
+Refined 2026-10-21 after Sprint 10 (Sprint 11 Phase 1.2); Sprint 10's shipped
 cards pruned BY HAND (Edit tool, card by card) the same day.
 Shipped and pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint
 2); F2 Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25,
@@ -288,7 +305,9 @@ replaced by F64's 12-month re-check; F54's 10 "unsure" and 140 third-party
 repository candidates stay held back in `sprint7_f35_screen.json` and
 `QMLPapers\Repos\REVIEW.md`); F60, F61, F63, F64, F65, F66, F67, F71
 (Sprint 8); F46, F48, F55, F56, F62, F68, F69, F74, F78, F79, F80
-(Sprint 9; F62's open precision note carried as F87). F39 and F57 are
+(Sprint 9; F62's open precision note carried as F87); F50, F81-F87 and
+the released copies F88 and F89 (Sprint 10; F89's 8 papers with no free
+copy carried as F90). F39 and F57 are
 permanent and stay. Closed without
 implementation: F19, F29 (Sprint 5 scope selection, reasons under Sprint 5
 in "Last Completed Sprint"); F49 (Sprint 8 scope selection, Q3 = 1: moot
@@ -302,8 +321,10 @@ and in git. Remaining items below.
 
 ### Permanent items
 
-**F39. Evaluate the available models and update the model-assignment heuristics -- PERMANENT (~1h per release) Priority 50** (NEW 2026-09-29)
+**F39. Evaluate the available models and update the model-assignment heuristics -- PERMANENT (~30m per release) Priority 50** (NEW 2026-09-29; effort re-derived from Sprint 10's release at Sprint 11 Task B, F94)
 - Phase: Process (recurring)
+- Value: this prevents agent work being assigned to a retired model or a
+  tier whose measured outcomes no longer support it.
 - Platform: `.claude/model_assignment_heuristics.json`,
   `docs/SPRINT_PLANNING.md` (team roles table),
   `tests/test_model_assignment_heuristics.py`; Anthropic's model
@@ -323,25 +344,60 @@ and in git. Remaining items below.
   release; (4) update tiers, task patterns and escalation triggers, and
   the SPRINT_PLANNING.md role table, with each change naming its evidence;
   (5) a failing test guards whatever the release adds.
+- Acceptance per release: every tier's facts verified on Anthropic's
+  pages that day; the outcomes since the last release logged; each rule
+  change names its evidence; its test proven to fail by injection.
 - Depends on: nothing
 
-### Store and process lessons from Cyc (proposed 2026-10-03)
-
-**F50. Qualify "compute, never store" with Cyc's stored counts (~30m) Priority 100**
-- Phase: Process
-- Platform: `docs/research/cyc-knowledge-representation.md` (dated amendment)
-- Point 7 says counts should be computed, never stored. Cyc stores a count at
-  every index layer and the planner reads it as the lookup cost
-  (`removal_modules_lookup.java`, line 84). The difference: Cyc keeps the
-  count beside the data and updates both together.
-- Acceptance: a dated amendment to point 7. A stored count is allowed only
-  with a test that recomputes and compares it.
-- Depends on: none.
+**F95. Ingest and read the new papers in the Papers folder -- PERMANENT (~90m per release) Priority 20** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4)
+- Phase: Sourcing / intake, then reading (permanent item, like F39)
+- Value: this enables every paper the team lead saves to reach the store
+  and be read within a sprint ("in general new papers are valuable").
+- Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\` (the team lead's
+  folder: its files are never renamed or moved); `scripts/intake.py`; the
+  verified write path (intake sections 26 and 31)
+- Team lead, 2026-10-21: "Add a backlog item and assign to this sprint and
+  all future sprints - paper folders for new items that have not been
+  ingested or read - ingest them and then read them - in general new
+  papers are valuable."
+- **Released every sprint** as a copy with the next free F#, the same way
+  as F39. Copied from the backlog into each sprint once: a sprint that
+  skips it gets no second copy later, and the next sprint's copy simply
+  covers whatever is new by then.
+- Each release: (1) list every PDF in `Papers\` (and its subfolders) that
+  no record's `access` names; (2) match each to a record by DOI or arXiv
+  id first, so a paper already in the store is linked, not entered twice;
+  (3) enter the rest through the intake door; (4) read each one not yet
+  at `read` and enter its claims, every quote checked before the write;
+  (5) a paper that cannot be entered or read keeps the reason.
+- **Snapshot as of 2026-10-21**: 134 PDFs in `Papers\`; 37 are named by
+  no record's `access` (some may already be in the store under their
+  arXiv id). Read at a release, these count toward F57's total as well;
+  they are not read twice.
+- **The hand-download list** (team lead, 2026-10-22, Sprint 11 Manual
+  Validation Q2: "Keep an on going list of these in relative priority
+  order and will likely download in the future"): computed by
+  `python scripts/hand_download_list.py` (intake sections 39 and 40),
+  never kept by hand, shown on request by the `hand-download-list` skill,
+  each entry with its target file name and why it matters. A listed paper the team lead has saved into `Papers\` is
+  caught by step (1) and leaves the list once linked.
+- **Named for the next release (team lead, 2026-10-22):** repository
+  https://github.com/wangy8205165/Quantum-NeuralNetwork-WhitePaper,
+  entered as a GitHub repository record (intake section 2) and linked to
+  a paper only where a source names it as that paper's code.
+- Acceptance per release: every unnamed PDF linked, entered or given a
+  reason; every entered paper at `read` with its assertions, or at `seen`
+  with its reason; the counts before and after recorded.
+- Depends on: none
 
 ### HOLD Items (waiting on an external event)
 
 **F51. The CVQBoost findings record and its six assertions (~45m) Priority HOLD** (NEW 2026-10-03)
 - Phase: Sourcing / intake
+- Value: this enables the store to cite the CVQBoost findings by record
+  once the re-run settles them, instead of by a document that may change.
+- Acceptance: the re-run's findings document read at its new hash; the
+  record and its six assertions entered with the re-run's provenance.
 - Platform: the Cyc and CVQBoost handoff
   (`D:\Data\Harold\EvidenceBasedDB\Handoff-2026-10\ebdb-handoff\`): the
   manifest entry `kimmey-2026-maximizing-predictions-cvqboost-cumulative-findings`,
@@ -364,8 +420,13 @@ and in git. Remaining items below.
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
 
-**F57. Read for claims: the records still at `seen` and `screened` (permanent, released in slices) Priority 70** (NEW 2026-10-05, team lead at Sprint 6 MV)
+**F57. Read for claims: the records still at `seen` and `screened` (permanent, released in slices) (~325m per 200-record release) Priority 70** (NEW 2026-10-05, team lead at Sprint 6 MV)
 - Phase: Sourcing / extraction (permanent item, like F39)
+- Platform: the store; first-pass readers under the parallel-reading
+  pattern (`.claude/model_assignment_heuristics.json`), every quote checked
+  in the write path
+- Value: this enables the store's claims to cover the papers it already
+  holds, not only the 224 read by 2026-10-21.
 - Team lead, 2026-10-05: "what else has not been read for claims - if not
   in backlog, add backlog item to do any missing 'read for claims' entries".
 - **Snapshot as of 2026-10-05**: 1,875 papers; 24 at `read`, all with
@@ -388,129 +449,51 @@ and in git. Remaining items below.
   `screened`, so about 27 more releases at 74 each. The item closes when
   the count is 0, not before. Refresh the count at each release, because
   intake adds records.
-
-### Carded during Sprint 9 (2026-10-14 onward)
-
-**F81. The code-edit hook blocks read-only `sed -n` commands (~30m) Priority 120** (NEW 2026-10-15, Sprint 9 Task A)
-- Phase: Process / hooks
-- Platform: `.claude/hooks/block_unraw_escape.py` (`_shell_edits_code`)
-- Found 2026-10-15: two read-only commands were blocked as code edits. Each
-  was `sed -n <range>p <code file>; ... | grep -i ...`. The hook's own
-  message says "Reading with sed -n, cat or grep is fine." The likely cause
-  (inferred, not yet tested): the in-place flag search runs over the rest of
-  the command past `;`, so a later `grep -i` reads as `sed -i`.
-- Cost: friction only. The Read and Grep tools work around it. But a guard
-  that blocks correct work trains bypass.
-- Acceptance: the two blocked shapes pass; `sed -i` on a code file is still
-  blocked; both proven by injection.
-- Depends on: none
-
-**F82. Decide how far the never-write hook should go against evasive command forms (~1h) Priority 130** (NEW 2026-10-15, Sprint 9 Task A, third automated security review)
-- Phase: Process / hooks
-- Platform: `.claude/hooks/block_sibling_repo_writes.py`
-- Three automated security reviews of the Phase 2 extension (2026-10-15)
-  each found more forms a regex misses. Fixed the same day: `git -C`
-  writes, PowerShell write cmdlets, `tee`, `sed -i`, a fail-closed git read
-  list, write-capable options on reads, and `git` after a quote or
-  backtick. Still open: abbreviated long options (`--outp`) and short-option
-  clusters containing `O`; pager, editor and config environment variables
-  (`GIT_PAGER`, `GIT_CONFIG_*`, `$env:` assignments); `--ext-diff` and
-  `--textconv`; command names built from strings or variables (`iex`,
-  `& (...)`, `$cmd`).
-- The decision (Class 1): the hook's stated threat model is accidental
-  writes by this repository's own sessions, not evasion. Option 1 keeps
-  that model and closes only forms a session might type by accident.
-  Option 2 makes every shell command that names a guarded path
-  fail-closed unless it matches a short read allowlist, which blocks more
-  legitimate reads.
-- Depends on: none
-
-**F83. Source per-instance bounds for optimization problems (~1h) Priority 140** (NEW 2026-10-15, Sprint 9 Task E answer document, section 5)
-- Phase: Sourcing / reading
-- Platform: the store; `docs/research/ceilings-ml-and-optimization.md`
-- The answer document's optimization section has two verified routes
-  (minimax lower bounds over a class; instances with a known or best-known
-  optimum). The standard per-instance certificate (a relaxation or dual
-  bound, and the gap an exact solver reports) is stated there as general
-  practice with no source in the store.
-- Acceptance: primary sources for relaxation and duality bounds (for
-  example a linear or semidefinite relaxation text and a solver's gap
-  definition) entered and read; section 5 point 5 rewritten as verified,
-  with the store ids, as a dated amendment.
-- Depends on: none
-
-**F84. Nine QCi records name Dirac-1 but are tagged Dirac-3 (~1h) Priority 150** (NEW 2026-10-15, Sprint 9 Task G)
-- Phase: Store correction
-- Platform: the store (`record_contexts`, `contexts`)
-- Eight QCi application pages name Dirac-1: seven state "Device: Dirac-1"
-  in their header (dimensionality reduction, feature selection, graph
-  partitioning, max-cut, portfolio optimization, set partitioning,
-  traveling salesman), and the risk-based UAS trajectory page names Dirac-1
-  throughout its body (Dirac-3 only as future work). The QC-7 article names
-  Dirac 1 and never Dirac-3. All nine are
-  tagged `platform:dirac-3`. The store has no Dirac-1 context, so Task G
-  refused their figures and left them at `seen`.
-- Acceptance: a decision on a Dirac-1 context (add `platform:dirac-1`, or
-  retag to a general QCi context), the nine records retagged with the
-  reason, and their first-pass assertions
-  (`manifests/sprint9_f80_reads/group_j2.json` and `group_j3.json`)
-  re-checked and entered against the right context.
-- Depends on: none
-
-**F85. Enter Phase 2's Dirac-3S verification (F142 there) (~45m) Priority 160** (NEW 2026-10-15, Sprint 9 Manual Validation Q5 = 2)
-- Phase: Inbound evidence (F79)
-- Platform: the store; `hsbc-qfraud-phase2` read only
-- Phase 2 shared back on 2026-10-15: the store's B4 records cover Dirac-3
-  only, and Phase 2's `docs/phase2/F142_DIRAC3S_VERIFY.md` (read at commit
-  c141a57) shows Dirac-3S returning B4's reference optimum in all 8
-  samples on seeds 42 and 43 (weight cosine 0.999993 and 0.9999999,
-  against Dirac-3's 0.895 and 0.901), returned weights far finer than the
-  0.005 step that 200:1 implies (the cause inferred as post-processing,
-  marked unverified there), test AUPRC unchanged, and per-sample cost at
-  relaxation schedule 2 for 91, 560 and 833 variables. Two fits: Phase 2
-  calls the result descriptive, not a test.
-- Acceptance: the document re-read at the commit current when the work
-  starts (it was revised after review the day it was written); 3 or 4 HW
-  assertions entered by the inbound path of Sprint 9 Task A, every quote
-  checked by a test against the file at that commit; each related to
-  `dirac3s-analog-resolution-about-200-to-1`,
-  `dirac3s-error-correction-is-a-post-processing-step` and
-  `dirac3s-time-per-sample-by-schedule` as the text supports.
-- Depends on: none
-
-**F86. One paper's primary source never answered: the Zenodo record (~15m) Priority 170** (NEW 2026-10-15, Sprint 9 Manual Validation Q2 = 2)
-- Phase: Re-check (ADR-0005 A9)
-- Platform: the store; `store/recheck.py`
-- `sepulveda-jimenez-2026-optimality-generalization-quantum-oracle-sketching`
-  (DOI:10.5281/zenodo.19985473) has probes, but only the HTTP probe
-  answered; DataCite, its primary source, never did, so under A9 it stays
-  due.
-- Acceptance: one DataCite request for the DOI; if it answers, the probe
-  is recorded and the clock resets; if not, the reason is recorded and the
-  record's access or provider routing is corrected.
-- Depends on: none
-
-### Carded at Sprint 10 Phase 1.2 (2026-10-18)
-
-**F87. Tighten the discovery stream filters so off-topic records stop reaching review (~1h) Priority 180** (NEW 2026-10-18, carried from F62's precision note when F62 was pruned)
-- Phase: Sourcing / discovery
-- Platform: `scripts/discover_candidates.py`, OpenAlex filters
-- F62's Sprint 9 run (snapshot as of 2026-10-15) still admitted off-topic
-  records: ml (software libraries such as Tidyverse, NumPy and SciPy;
-  nature-inspired metaheuristics), tensor (knowledge-graph tensor
-  factorization, a 1969 density-estimation paper, equivariant
-  potentials), qml (quantum chemistry and hardware papers, a brain-tumor
-  survey). The team lead excluded 13 off-topic candidates by hand at
-  Sprint 9 Manual Validation (Q4 = 1).
-- Acceptance: per stream, a filter change with the records it now drops
-  named; a re-run's top 25 per stream with the off-topic count before and
-  after; no on-topic record lost from the Sprint 9 accepted list.
+- **Snapshot as of 2026-10-21** (Sprint 11 Phase 1.2): 2,284 papers; 224
+  at `read`; 2,060 at `seen` or `screened`, of which 2,057 have no read row
+  (3 are read and refused). Sprint 10's discovery re-run added 91 at
+  `seen`. About 28 more releases at 74 each.
+- **Release size raised to 200** (team lead, 2026-10-21, Sprint 11 Phase
+  1.4): "Re-add the F57 that reads an additional 75 records each sprint
+  ... should be copied from the backlog to each sprint (don't duplicate if
+  skipped in one sprint) and increase the number to 200 each sprint.
+  Continue until all records that are marked as 'seen' and 'screened' are
+  marked 'read'."
+  - Each sprint gets ONE released copy with the next free F# (Sprint 10's
+    was F89; Sprint 11's is F96). A skipped sprint does not leave a second
+    copy waiting.
+  - **Order stays the relevance ranking in step (2).** The same message
+    asked for newest paper first; the team lead withdrew that the same
+    day: "sorry for F57 switch back to the relavance ranking".
+  - **Up to 5 reading agents in parallel** (team lead, 2026-10-21: "these
+    can run by up to 5 agents as everything else will likely not touch in
+    a way that would negatively affect this item"). The sprint's other
+    reading items (F95's release, a single-paper read card) run under the
+    same release, from one ledger that gives each record to exactly one
+    agent: "no 2 'read's should impact the same record." A test fails if
+    any record appears in two groups.
+  - At 200 per sprint: about 11 releases from the 2026-10-21 count of
+    2,060.
+  - Known limit (Sprint 10 finding): a record with no free copy, or one
+    refused at reading, cannot reach `read`. Each release reports those
+    separately, so the count that closes the item is visible.
+- **From Sprint 12's release: HIGH needs a named basis (Sprint 11
+  retrospective I3; team lead, 2026-10-23: "i3 as recommended"; ~30m in
+  the release).** In Sprint 11 each reading script kept its own
+  `HIGH_REVIEWED` set with no reason per id, and the fresh-eyes review moved
+  5 measured results from HIGH to LOW after the first apply. A shared helper
+  in `store/` grades HIGH only with a basis named per id: setup, scope,
+  definition, proved result, or stated limit. `store/write_path.py`'s rule
+  requires every new reading script to use it. Acceptance: the release's
+  HIGH grades each carry their basis; the rule proven by injection.
 - Depends on: none
 
 ### Carded at Sprint 10 Manual Validation (2026-10-19)
 
-**F90. Read the eight F89 papers with no free copy, once the team lead has downloaded them (~45m) Priority 60** (NEW 2026-10-19, Sprint 10 Manual Validation step 5)
+**F90. Read the eight F89 papers with no free copy, once the team lead has downloaded them (~30m) Priority 60** (NEW 2026-10-19, Sprint 10 Manual Validation step 5)
 - Phase: Reading
+- Value: this enables the eight most-cited unread papers (F89's top of
+  the ranking) to be read once a copy exists.
 - Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\`, a Sprint 11 reading script
 - Team lead, 2026-10-19: "can you push the download list of #5 to the
   next sprint." Sprint 10 Task I (F89) selected 74 records; 9 had no free
@@ -543,8 +526,10 @@ and in git. Remaining items below.
 
 ### Carded 2026-10-19, after Sprint 10 Manual Validation
 
-**F91. Enter and read Google Quantum AI's magic state cultivation experiment, Science 2026 (~1h) Priority 65** (NEW 2026-10-19, team lead request)
+**F91. Enter and read Google Quantum AI's magic state cultivation experiment, Science 2026 (~40m) Priority 62** (NEW 2026-10-19, team lead request; carded at Priority 65, moved to 62 at Sprint 11 Phase 1.4 to keep the step-of-10 rule, as a reading item that sprints with F90)
 - Phase: Sourcing / intake, then reading
+- Value: this enables the store to state a 2026 hardware result on
+  fault-tolerance cost from its primary source, with its published wording.
 - Platform: `scripts/intake.py`; `D:\Data\Harold\EvidenceBasedDB\Papers\`
 - Team lead, 2026-10-19: "Can you add this paper to the backlog for the
   next sprint", with a screenshot of `DOI: 10.1126/science.aee7961`.
@@ -575,6 +560,229 @@ and in git. Remaining items below.
 - Acceptance: the record at `read` with its assertions, or at `seen`
   with the reason it was not read; the abstract difference above
   recorded in the record's evidence.
+- Depends on: none
+
+### Carded at Sprint 11 Phase 1.4 (2026-10-21)
+
+**F94. Redesign this repository's backlog cards from spamfilter-multi's best practices (~45m) Priority 30** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4, targeted for Sprint 11)
+- Phase: Process
+- Value: this prevents cards that cannot be judged at selection: each
+  says what it is worth, how it is accepted, and its effort in minutes.
+- Acceptance: each practice adopted, adapted or declined with a reason
+  in `docs/BACKLOG_REFINEMENT.md`; an adopted rule tested and proven by
+  injection; the open cards converted by hand.
+- Platform: `docs/BACKLOG_REFINEMENT.md` (item format), this master
+  plan's cards, `.claude/skills/backlog-refinement/SKILL.md`;
+  `spamfilter-multi`, read only
+- Team lead, 2026-10-21: "look at the spamfilter-multi repo for how sprint
+  cards are designed and update how this repo does sprint cards based on
+  the best practices from spamfilter-multi and applicable to this repo."
+- Candidates seen at carding (spamfilter-multi `docs/BACKLOG_REFINEMENT.md`
+  at 20d2a7ab, to be confirmed in the sprint): a value statement on every
+  card ("This enables..." or "This prevents..."); a Definition of Ready
+  (scope, acceptance, estimate, no blockers, priority); effort always in
+  minutes, derived from step-types, never hours converted; an evidence
+  path for a card made from a screenshot; light detail for items 3 or
+  more sprints away. Also read its master plan's cards and planning docs.
+- Each practice is adopted, adapted or declined with a one-line reason.
+  A format rule that is adopted gets a test that fails on purpose first.
+  Existing cards are converted by hand, re-deriving estimates.
+- Depends on: none
+
+**F96. F57 release for Sprint 11: read 200 records, by relevance, up to 5 agents (~325m) Priority 70** (NEW 2026-10-21, released copy of F57)
+- Phase: Sourcing / extraction
+- Value: F57's, for this sprint's 200.
+- Platform: the store; up to 5 Sonnet 5.5 first-pass readers in parallel,
+  every quote checked in the write path (intake sections 26 and 31)
+- The top 200 records at `seen` or `screened` by F57's relevance ranking
+  (snapshot as of 2026-10-21: 2,060 such records). F97's and F91's reads
+  run from the same ledger, so no record is read twice.
+- Acceptance: each of the 200 at `read` with its assertions, or kept at
+  `seen` with its reason (no free copy, refused); the count before and
+  after recorded.
+- Depends on: none
+
+**F97. F95 release for Sprint 11: ingest and read the new papers in `Papers\` and the team lead's list (~120m) Priority 20** (NEW 2026-10-21, released copy of F95)
+- Phase: Sourcing / intake, then reading
+- Value: F95's, for the PDFs and the list in hand on 2026-10-21.
+- Acceptance: F95's per release, plus each of the team lead's seven papers
+  and six repositories entered or matched and linked.
+- Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\`; `scripts/intake.py`
+- The 37 PDFs no record names (snapshot as of 2026-10-21), plus any F91
+  adds this sprint. F95's steps (1) to (5).
+- **Named by the team lead for this release (2026-10-21)**, each paper
+  entered (or matched) and read, each repository entered as a GitHub
+  repository record (intake section 2) and linked to its paper:
+  - NVIDIA blog, "enterprise-platforms-agent-toolkit"
+    (https://blogs.nvidia.com/blog/enterprise-platforms-agent-toolkit/),
+    a reference with a local copy; repositories NVIDIA/auto-ontology and
+    NVIDIA/auto-ontology-eval.
+  - arXiv:2610.24426; repository jyryu98/margin-gen-qml-classical-encoding
+    (no license stated).
+  - NBER Working Paper 35905, Farboodi, Kondor and Kurlat, "Credit Markets
+    with New Screening Technologies", October 2026, from the team lead's
+    `D:\Data\Temp\Downloads\w35905.pdf` (copied into `Papers\`; the
+    original is left as is). Not peer reviewed (the paper says so).
+  - arXiv:2509.16410 (already in the store at `seen` as
+    `pere-2025-data-complexity-threshold-between-classical`: read, not
+    entered again); repository Christophe-pere/data_complexity_framework.
+  - arXiv:2610.10629; repository rav11l/cace-bench.
+  - arXiv:2610.00841 (v1).
+  - arXiv:2509.03505; repository limix-ldm-ai/LimiX, whose description
+    cites arXiv:2609.17488 instead: both ids checked at the task, and a
+    second LimiX paper entered at `seen` and linked if it is one.
+- Depends on: none
+
+**F98. Review Christophe Pere's QML paper repository for new papers, then ingest and read them -- PERMANENT (~60m per release) Priority 22** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4, for Sprint 12 onward)
+- Phase: Sourcing / intake, then reading (permanent item, like F39)
+- Value: this enables the store to keep pace with a curated QML paper
+  list maintained by an author whose papers it already holds.
+- Acceptance per release: the list's commit recorded; every paper new
+  since the last release matched, entered or given a reason; each read
+  under F57's rules or kept at `seen` with its reason.
+- Platform: https://github.com/Christophe-pere/Roadmap-to-QML ("This
+  repository will contain the major papers, books and blog posts on QML";
+  last push 2026-10-20 at carding), GitHub REST, read only; the intake
+  door; the verified write path
+- Team lead, 2026-10-21: "add to backlog for next sprint: every sprint
+  review the Christophe Pere paper repository for new papers, ingest them and
+  read them". Read as Roadmap-to-QML, his paper list; the seed set once
+  held an empty "Christophere Pere QML Github Repo.txt" for it (removed in
+  Sprint 4). Correct the repository here if another was meant.
+- Released every sprint as one copy, like F95. Each release: (1) read the
+  list at its current commit, recording the commit; (2) diff it against
+  the commit the last release recorded (the first release takes the
+  whole list); (3) match each paper to the store by DOI or arXiv id;
+  (4) enter the new ones and read them under F57's rules and ledger.
+- The first release may be large; it is sized from the list's count at
+  that sprint's planning, and its overflow carries to the next release.
+- Depends on: none
+
+**F100. Make the full test suite faster, and run it only where it earns its time (~90m) Priority 25** (NEW 2026-10-22, team lead at Sprint 11 Manual Validation, for Sprint 12)
+- Phase: Process / testing
+- Platform: `tests/` and `tests/conftest.py`; pytest; the commit-gate
+  hooks in `.claude/hooks/`; `.github/workflows/ci.yml`
+- Value: this cuts the wait at each commit gate while keeping the gates
+  that caught real defects this sprint.
+- Team lead, 2026-10-22: "why does the testing taek > 15 minutes? Add to
+  backlog for next sprint: how can we optimize the full suite testing? Is
+  full suite needed several times per sprint? are there a set of tests
+  that take more time? Can we get timings of each test and then focus on
+  optimizing those tests? While we want to use testing best practices, we
+  want to be effective as efficiently as reasonbly possible."
+- **Known at carding (snapshot as of 2026-10-22, not yet measured per
+  test):** 1,134 tests ran in 692 s (11.5 min) on the last run; the
+  team lead has seen more than 15 min. 89 tests carry `live_store` and
+  read the real store (about 11 MB); 14 of them take a `live_copy`, a
+  full SQLite backup of the store for each test. Several Sprint scripts'
+  "second apply writes nothing" tests re-run whole applies, which
+  re-read PDFs' text. These are the likely heavy set; the timings decide.
+- Steps: (1) one run with `pytest --durations=0`, the slowest 30 tests
+  and the total by file recorded; (2) fix the top items: share one
+  store copy per session where a test only reads after writing, cache
+  extracted PDF text across tests, mark slow tests `slow`; (3) decide
+  where the full suite is required: today it gates every commit (Sprint
+  4 retrospective, after a red suite was committed). A proposal, for the
+  team lead's decision: the fast set (not `slow`) at each commit, the
+  full suite before the Manual Validation hand-over and before `gh pr
+  ready`, CI on every push as now; (4) record before and after.
+- Acceptance: per-test timings recorded with their date; the suite's
+  wall clock before and after; the commit-gate rule decided by the team
+  lead and written in `SPRINT_EXECUTION_WORKFLOW.md` and the hook that
+  enforces it; no guard removed, and every guard still fails by
+  injection.
+- Builds on (2026-10-23, Sprint 11 retrospective I2, done in Sprint 11):
+  `scripts/run_suite.py` runs pytest, prints one verdict line from the
+  exit code, and records the verdict with the git tree id it ran on;
+  `block_commit_with_piped_tests.py` refuses a commit of a tree whose
+  recorded verdict is FAILED or INVALID. It does not require a verdict.
+  Step (3)'s decided rule can require one (for example: a PASSED full
+  suite for this tree before `gh pr ready`) by changing that hook.
+- **Step (3) decided** (team lead, 2026-10-23): "we only need full suit
+  runs twice per sprint - before manual validation and if any improvements
+  are implemented from Sprint Retrospective. Can the I2 test be limited to
+  these or are there targed, minimal set of tests". Recorded in
+  `SPRINT_EXECUTION_WORKFLOW.md` Phase 4. The targeted set for every other
+  commit becomes a runner mode here, chosen from step (1)'s timings.
+- Depends on: none
+
+**F92. Enter QCi's 2026-10-20 and 2026-10-21 answers to Phase 2's Dirac-3S questions, and correct the records they change (~55m) Priority 40** (NEW 2026-10-21, read from Phase 2 at Sprint 11 Phase 1.4; widened the same day by two later emails)
+- Phase: Inbound evidence (F79)
+- Value: this prevents the store's Dirac-3S claims from standing against
+  the vendor's own later answers unlinked.
+- Platform: the store; `hsbc-qfraud-phase2` read only
+  (`docs/phase2/DIRAC_UNDERSTANDINGS.md` section 4 at commit b074780, and
+  the three replies under `docs/qci_package/`)
+- A QCi field service engineer answered Phase 2's questions A1 to A12 and
+  P2 on 2026-10-20 (P1 still open at b074780). Two later emails, filed
+  2026-10-21 (team lead), add:
+  - **P1 answered.** Wes Dyk (QCi), 2026-10-21: "I can confirm that the
+    Hamiltonian constructed in eqc_models.ml.classifierqboost follows the
+    formula described" (J = HH^T + lambda*I, C = -2Hy, sum 1, w >= 0),
+    opening "I'm assuming you are referring to your eqc_submit module".
+    Bears on `dirac3-matches-exact-optimum-on-convex-cvqboost`, whose
+    "identical Hamiltonian" rests on that reading.
+  - **Integer levels raised.** Charlotte Brown (QCi), 2026-10-21: "We have
+    increased to 954 levels on the integer solver on both the 3 and 3S
+    systems. In the coming weeks, we will be also increasing the possible
+    levels on 3S to 9980 levels as well." It does not say whether 954 is
+    per variable or the total budget; record that gap, do not resolve it.
+    Bears on `dirac3-integer-variables-bounded-0-to-16`,
+    `dirac3s-guide-gives-two-integer-ranges` and A4's "16 levels". The
+    9980 is a plan, entered as a stated plan, not a capability.
+- Several answers bear on records in the store (read at b074780, snapshot
+  as of 2026-10-21):
+  - A6b: raw values are not yet offered on the cloud; outputs are after
+    built-in error correction (A6a). Bears on
+    `dirac3s-error-correction-is-a-post-processing-step` and
+    `dirac3s-returned-weights-finer-than-0005-step`, which says "QCi
+    states raw values come back too".
+  - A9: every result in the Dirac-3S guide was measured on-premises on a
+    Dirac-3S, computation only. Bears on
+    `dirac3s-guide-reuses-dirac-3-text-and-figures` ("the guide does not
+    say whether those results were measured on a Dirac-3S").
+  - A4 (16 levels, values 0 to 15, hedged "I assume"); A11 (the cloud cap
+    is 100 samples per job); A12 (not seedable); A6 (resolution the same
+    as Dirac-3's about 200:1). Bear on
+    `dirac3s-guide-gives-two-integer-ranges`,
+    `dirac3s-on-premises-has-no-100-sample-cap` and
+    `dirac3s-analog-resolution-about-200-to-1`.
+- Grading: a vendor's own statement, by email, not a published document;
+  each answer's hedge kept (A4's "I assume").
+- Acceptance: each email's primary copy read in Phase 2's
+  `docs/qci_package/`. Phase 2 git-ignores that folder, so no commit
+  names it: provenance names the file, its SHA-256 at read (the 2026-10-21
+  pair: Wes e79296e68a0d82bc..., Charlotte 6f9254b78b208df2...), the
+  sender and the send date. Each answer that bears on a stored claim entered as a
+  vendor-statement assertion under `platform:dirac-3s` (or
+  `platform:dirac-3` for A2), related by ADR-0004 A8 (b) (`contradicts`
+  only where both cannot hold); every quote checked through the verified
+  write path (intake sections 26 and 31). Stored assertions are not
+  rewritten: a newer statement is related to them.
+- Depends on: none
+
+**F93. Enter Phase 2's F108 result: no ceiling method recovered a known ceiling on a simulator (~40m) Priority 80** (NEW 2026-10-21, read from Phase 2 at Sprint 11 Phase 1.4)
+- Phase: Inbound evidence (F79)
+- Value: this prevents the ceilings answer document from recommending a
+  method that failed its only test against a known ceiling, unqualified.
+- Platform: the store; `docs/research/ceilings-ml-and-optimization.md`;
+  `hsbc-qfraud-phase2` read only (`docs/phase2/F108_CEILING_VALIDATION.md`
+  at commit eef3349, 2026-10-18)
+- Phase 2 built a fraud simulator whose Bayes error is known exactly and
+  tested ceiling estimators against it (five seeds). Its BLUF: on the main,
+  no-noise arm no method recovered the known ceiling, so none is validated
+  for real data. The plug-in overstated the Bayes error by 5-12 percent;
+  the learning-curve floor did similarly; the AUPRC floor understated the
+  attainable AUPRC by about 0.04; the Cover-Hart interval held the truth
+  on 3 of 5. Phase 2 states its own caveat: the pass rule was read after
+  the run.
+- This answers, in part, what the ceilings answer document leaves open:
+  its learning-curve route (Ding) is one of the methods F108 tested.
+- Acceptance: the document read at the commit current when the work
+  starts; 3 or 4 assertions (context `ml`, with `hsbc-2026` where Phase
+  2's own data is meant) through the verified write path, Phase 2's
+  caveats carried into the values; a dated amendment to the answer
+  document naming them.
 - Depends on: none
 
 ## Design documents governing this repository

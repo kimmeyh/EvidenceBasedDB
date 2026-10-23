@@ -10,8 +10,11 @@ disabled test_allows_piped_tests_without_a_commit went red.
 from __future__ import annotations
 
 import json
+import importlib.util
+import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -25,8 +28,11 @@ THE_REAL_MISTAKE = (
 )
 
 
-def run(command: str) -> subprocess.CompletedProcess:
-    payload = json.dumps({"tool_name": "Bash", "tool_input": {"command": command}})
+def run(command: str, cwd: Path | None = None) -> subprocess.CompletedProcess:
+    # Outside any repository by default, so a verdict this desk recorded
+    # (the second check) cannot change the pipe check's results.
+    payload = json.dumps({"tool_name": "Bash", "tool_input": {"command": command},
+                          "cwd": str(cwd or Path(tempfile.gettempdir()))})
     return subprocess.run([sys.executable, str(HOOK)], input=payload,
                           capture_output=True, text=True, encoding="utf-8")
 
@@ -135,3 +141,98 @@ def test_a_long_command_that_commits_first_is_still_allowed(n):
     """The fix must not reintroduce the false positive at length."""
     command = "\n".join(["git status --short"] * n + ["git commit -m x", "pytest -q | tail -5"])
     assert run(command).returncode == 0
+
+
+# ------------------------------------------------------------------ Sprint 11 I2: the recorded verdict
+
+def _runner():
+    spec = importlib.util.spec_from_file_location("run_suite", ROOT / "scripts" / "run_suite.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+@pytest.fixture
+def repo(tmp_path):
+    """A small repository with the runner in it, as the hook finds it."""
+    git = ["git", "-C", str(tmp_path), "-c", "user.name=t", "-c", "user.email=t@t"]
+    subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
+    (tmp_path / "scripts").mkdir()
+    shutil.copyfile(ROOT / "scripts" / "run_suite.py", tmp_path / "scripts" / "run_suite.py")
+    # As the real .gitignore: the hook's import of the runner writes __pycache__.
+    (tmp_path / ".gitignore").write_text(".claude/suite_verdict.json\nignored.txt\n__pycache__/\n", encoding="utf-8")
+    (tmp_path / "a.py").write_text("x = 1\n", encoding="utf-8")
+    subprocess.run([*git, "add", "-A"], check=True)
+    subprocess.run([*git, "commit", "-q", "-m", "init"], check=True)
+    (tmp_path / ".claude").mkdir()
+    return tmp_path
+
+
+def _record(repo: Path, verdict: str, tree: str, tree_after: str | None = None) -> None:
+    (repo / ".claude" / "suite_verdict.json").write_text(json.dumps(
+        {"verdict": verdict, "rc": 0 if verdict == "PASSED" else 1, "tree": tree, "tree_after": tree_after or tree,
+         "summary": "1 failed, 9 passed", "finished": "2026-10-23T10:00:00"}), encoding="utf-8")
+
+
+def test_the_tree_id_sees_untracked_files_ignores_ignored_ones_and_leaves_the_index_alone(repo):
+    tree = _runner().working_tree(repo)
+    (repo / "ignored.txt").write_text("x", encoding="utf-8")
+    assert _runner().working_tree(repo) == tree
+    (repo / "new_test.py").write_text("y = 2\n", encoding="utf-8")
+    assert _runner().working_tree(repo) != tree
+    staged = subprocess.run(["git", "-C", str(repo), "diff", "--cached", "--name-only"], capture_output=True,
+                            text=True, check=True).stdout
+    assert staged == ""
+
+
+def test_the_verdict_comes_from_the_exit_code_and_a_still_tree():
+    v = _runner().verdict
+    assert (v(0, "t1", "t1"), v(1, "t1", "t1"), v(0, "t1", "t2"), v(1, "t1", "t2")) == (
+        "PASSED", "FAILED", "INVALID", "INVALID")
+
+
+@pytest.mark.parametrize("verdict", ["FAILED", "INVALID"])
+def test_a_commit_of_the_tree_a_red_or_invalid_run_checked_is_blocked(repo, verdict):
+    """Proven to fail by injection, 2026-10-23: with _red_verdict() returning
+    None, both cases were allowed and went red."""
+    _record(repo, verdict, _runner().working_tree(repo))
+    result = run("git add -A && git commit -m x", cwd=repo)
+    assert result.returncode == 2
+    assert f"suite verdict is {verdict}" in result.stderr
+
+
+def test_the_hook_never_runs_the_runner_of_the_repository_it_checks(repo):
+    """Security review, 2026-10-23: the hook loaded scripts/run_suite.py from
+    the command's repository, so a commit there ran that repository's code.
+    Proven to fail by injection, 2026-10-23: with the hook loading the runner
+    from the checked repository again, the planted marker file appeared."""
+    marker = repo / "ran.txt"
+    (repo / "scripts" / "run_suite.py").write_text(
+        f"from pathlib import Path\nPath({str(marker)!r}).write_text('x')\n", encoding="utf-8")
+    _record(repo, "FAILED", "0" * 40)
+    run("git commit -m x", cwd=repo)
+    assert not marker.exists()
+
+
+def test_an_invalid_run_blocks_its_tree_after_the_run_too(repo):
+    """Proven to fail by the same injection, 2026-10-23."""
+    _record(repo, "INVALID", "0" * 40, _runner().working_tree(repo))
+    assert run("git commit -m x", cwd=repo).returncode == 2
+
+
+@pytest.mark.parametrize("case", ["passed", "another tree", "no verdict", "bypass", "no commit"])
+def test_the_verdict_check_allows_everything_else(repo, case):
+    tree = _runner().working_tree(repo)
+    command = "git commit -m x"
+    if case == "passed":
+        _record(repo, "PASSED", tree)
+    elif case == "another tree":
+        _record(repo, "FAILED", tree)
+        (repo / "a.py").write_text("x = 2  # the fix\n", encoding="utf-8")
+    elif case == "bypass":
+        _record(repo, "FAILED", tree)
+        command += "  # allow_red_suite_commit"
+    elif case == "no commit":
+        _record(repo, "FAILED", tree)
+        command = "git status --short"
+    assert run(command, cwd=repo).returncode == 0

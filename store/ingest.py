@@ -644,6 +644,9 @@ def _require_verified(assertion: AssertionRecord, verified: Verified) -> None:
             and verified.citation_context == assertion.citation_context):
         raise ValueError(f"{assertion.id}: its quotes were not checked against its source "
                          "(store.quotes.require_verbatim) before this write")
+    if verified.value != assertion.value:  # Sprint 11 retrospective I1a
+        raise ValueError(f"{assertion.id}: its value was not checked against its quotes "
+                         "(pass value= to store.quotes.require_verbatim) before this write")
 
 
 def insert_verified_assertion(conn: sqlite3.Connection, assertion: AssertionRecord, verified: Verified,

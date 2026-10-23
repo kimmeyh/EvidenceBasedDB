@@ -30,7 +30,8 @@ The escape check inspects only commands that run python.
 
 Also blocks, on any command, a shell edit of a repository code file
 (`sed -i`, `perl -i`, a redirect or `tee`, PowerShell Set-Content and its
-kin onto a .py or .sql file; Sprint 8 retrospective I5). Bypass: the
+kin onto a .py or .sql file; Sprint 8 retrospective I5), and an in-place
+edit of ANY repository file (Sprint 11 retrospective I4). Bypass: the
 literal token allow_shell_code_edit.
 """
 from __future__ import annotations
@@ -150,7 +151,8 @@ _EXT = r"\.(?:py|sql|ya?ml|ini|toml|ps1|sh)"
 CODE_PATH = rf"""['"]?(?P<path>[^\s'"<>|;&]+{_EXT})['"]?(?=$|[\s;&|),])"""
 CODE_ARG = re.compile(r"(?:^|[\s=])" + CODE_PATH, re.I)
 _LEAD = r"(?:^|[;&|(\"`\n]|\{\}|\b(?:xargs|env|sudo|exec|command|nice|time)\s+(?:-\S+\s+|\S+=\S*\s+)*|-exec(?:dir)?\s+)"
-IN_PLACE_TOOL = re.compile(_LEAD + r"\s*(?P<tool>sed|perl|ruby|g?awk)\s(?P<rest>[^\n]*)")
+# A quoted name runs too (`xargs "sed" -i`; Sprint 11 I4 edge case).
+IN_PLACE_TOOL = re.compile(_LEAD + r"\s*(?P<tool>sed|perl|ruby|g?awk)[\"']?\s(?P<rest>[^\n]*)")
 # -M and -I are perl's module and include switches (-Mstrict is not -i).
 IN_PLACE_FLAG = re.compile(r"""(?:^|\s)(?:-(?![MI])[A-Za-z0-9]*i[A-Za-z0-9.'"]*|--in-place\S*)(?=\s|$)""")
 COPY_ONTO = re.compile(_LEAD + r"\s*(?:cp|mv|install|Copy-Item|Move-Item|copy|move)\s(?P<rest>[^\n;&|]*)", re.I)
@@ -173,6 +175,32 @@ SINGLE_QUOTED = re.compile(r"'[^'\n]*[\s>][^'\n]*'")
 CD_TO = re.compile(r"""(?:^|[;&|(\n])\s*(?:cd|Set-Location|sl|pushd|Push-Location)\s+['"]?(?P<dir>[^\s'";&|)]+)""")
 CODE_GLOB_SOURCE = re.compile(r"\b(?:find|ls-files|grep\s+-\w*l\w*|rg\s+-\w*l\w*|ls|dir|Get-ChildItem)\b[^\n;&]*?"
                               + CODE_PATH, re.I)
+
+
+# Sprint 11 retrospective I4 (team lead, 2026-10-23: "'sed -i' usage has
+# been eliminated as innefective and results in many errors. Suggest a way
+# to do all of the 'sed -i' items a way that works successfully every
+# time"). The way is the Edit tool, for every repository file, as
+# spamfilter-multi's CLAUDE.md ("`sed` - Use the Edit tool instead") and
+# Phase 2's TROUBLESHOOTING.md (Sprint 24 IMP-4) already say. So an
+# in-place sed, perl, ruby or awk edit is blocked on ANY repository file,
+# not only code; and the false blocks stop: a double-quoted search pattern
+# of a search command (`grep -n "sed -i" docs/x.md; cat store/x.py`) is
+# data, where before it opened an editor whose fail-closed search found the
+# later .py. A quote opened by `bash -c`, `$(` or a backtick still runs.
+ANY_ARG = re.compile(r"""(?:^|[\s=])['"]?(?P<path>(?!-)[^\s'"<>|;&]*\.[A-Za-z0-9]+)['"]?(?=$|[\s;&|),])""")
+SEARCH_COMMANDS = {"grep", "egrep", "fgrep", "rg", "ag", "findstr", "select-string", "sls"}
+
+
+def _searched_pattern(text: str, quote_at: int) -> bool:
+    """Whether the double quote at `quote_at` opens an argument of a search
+    command, whose text is a pattern and never runs."""
+    line_start = text.rfind("\n", 0, quote_at) + 1
+    segment = re.split(r"&&|\|\||[;|\n]|\$\(|`|\(", text[line_start:quote_at])[-1].split()
+    if not segment:
+        return False
+    word = segment[0].lower().rsplit("/", 1)[-1].removesuffix(".exe")
+    return word in SEARCH_COMMANDS or (word == "git" and len(segment) > 1 and segment[1] in ("grep", "log"))
 
 
 SHELL_READS_HEREDOC = re.compile(r"(?:^|[\s;&|(])(?:bash|sh|zsh|dash|ksh|pwsh|powershell)(?:\.exe)?(?:\s+-\S+)*\s*$",
@@ -302,6 +330,9 @@ def _shell_edits_code(text: str) -> list[str]:
         pos = m.start("rest")
     for tool in tools:
         lead = text[tool.start():tool.start("tool")].strip()
+        quote_at = tool.start() + text[tool.start():tool.start("tool")].rfind('"')
+        if lead.endswith('"') and _searched_pattern(text, quote_at):
+            continue  # a search pattern that mentions sed (I4)
         # Quotes join words in the shell (`"'-i` is the flag -i, `x'.py'` is
         # x.py, `in"place"` is inplace), so every check below reads the
         # command with its quote characters removed (Task A security reviews).
@@ -309,11 +340,12 @@ def _shell_edits_code(text: str) -> list[str]:
         if not IN_PLACE_FLAG.search(rest) or (tool["tool"].endswith("awk") and "inplace" not in rest):
             continue
         base = tool.start("rest")
-        targets = [p for m in CODE_ARG.finditer(rest) for p in keep(m, base)]
+        # Any repository file, not only code (I4).
+        targets = [p for m in ANY_ARG.finditer(rest) for p in keep(m, base)]
         if not targets:
-            # Fail closed: the cut found the flag but no code file, so the
+            # Fail closed: the cut found the flag but no file, so the
             # whole line is searched (Task A review).
-            targets = [p for m in CODE_ARG.finditer(_UNQUOTE.sub("", tool["rest"])) for p in keep(m, base)]
+            targets = [p for m in ANY_ARG.finditer(_UNQUOTE.sub("", tool["rest"])) for p in keep(m, base)]
         if not targets:
             # The code path can come before the editor: find ... -exec sed -i,
             # git ls-files '*.py' | xargs sed -i.
@@ -377,12 +409,15 @@ def _check(cmd: str) -> int:
     edited = [] if "allow_shell_code_edit" in command_text else _shell_edits_code(command_text)
     if edited:
         print(
-            "[BLOCKED] A shell command editing a repository code file (Sprint 8 retrospective I5):\n"
+            "[BLOCKED] A shell command editing a repository code file, or any repository\n"
+            "file in place (Sprint 8 retrospective I5; Sprint 11 retrospective I4):\n"
             f"    {', '.join(edited[:3])}\n"
             "\n"
-            "Code files change only through the Edit tool (or Write for a new file), which\n"
-            "shows the change and takes the text verbatim. Sprint 8 changed two code lines\n"
-            "with sed -i against that rule. Reading with sed -n, cat or grep is fine.\n"
+            "Edit with the Edit tool (or Write for a new file), which shows the change and\n"
+            "takes the text verbatim, every time, in any file. sed -i, perl -i and their kin\n"
+            "are not used in this repository: their quoting failed and was blocked often.\n"
+            "For JSON data, a python heredoc using the json module is fine. Read with the\n"
+            "Read and Grep tools.\n"
             "\n"
             "If a shell write to a code file is genuinely needed (restoring a file for a\n"
             "test injection, say), re-run with the literal token allow_shell_code_edit in\n"

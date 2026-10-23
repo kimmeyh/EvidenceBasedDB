@@ -863,3 +863,408 @@ calls, so an aliased import is caught too.
 - **Measured on Sprint 10's F89 edits** (snapshot as of 2026-10-21): the
   rule flags the root-2 value and four more whose numbers are in the
   source but not in their quotes. No stored value is wrong.
+
+## 32. Applied 2026-10-21: the third read-for-claims slice, 200 records (Sprint 11 Task G, F96)
+
+Every count is a snapshot as of 2026-10-21. **Written after the slice ran,
+not before** (a slip, disclosed in the sprint note: section 11's order puts
+the section first; `tests/test_intake.py` caught it at the next full run).
+
+- **The slice** is recorded in `manifests/sprint11_f96_slice.json` by
+  `scripts/sprint11_f96_slice.py`: the 200 most-cited `qml` records at
+  `seen` or `screened` with no read row, in F57's relevance order (team
+  lead, 2026-10-21: "switch back to the relavance ranking"). Nothing unread
+  remains under `hsbc-2026` or the Dirac platforms. Left out: the 15
+  records Task F reads (arXiv ids in the names of unlinked PDFs in
+  `Papers\`, and the team lead's list), so no record is read twice; and the
+  9 records of section 29's slice still unread for want of a free copy.
+- **Counts.** Taken as F89's were: 1,015 of 1,405 candidates counted (565
+  by arXiv DOI, 450 by a probed journal DOI); 390 uncounted, the
+  selection's stated limit. The top 200 run from 65 to 14 citations.
+- **Copies.** `scripts/sprint11_f96_downloads.py` (section 29's rules, with
+  a heartbeat file) saved 9 free copies into `Papers\`; one failed on an
+  SSL certificate error (Macaluso 2020); 7 have no free copy known to
+  OpenAlex. The rest of the 200 had local copies already.
+- **F57's count before this release:** 2,060 records at `seen` or
+  `screened`, of which 2,057 have no read row.
+- **The read ledger** (`manifests/sprint11_read_ledger.json`, built by
+  `scripts/sprint11_read_ledger.py`) gives every record Tasks E, F and G
+  read to exactly one group of at most 8, read by one first-pass reader;
+  at most 5 readers run at once (team lead, 2026-10-21). Task G's 200: 192
+  in groups g01 to g24, 8 in `no_copy` with the reason. Readers work from
+  local files only, under `manifests/sprint11_reads/READER_PROMPT.md`, and
+  return `manifests/sprint11_reads/group_<g>.json`.
+  `tests/test_sprint11_read_ledger.py` fails if a record is in two groups
+  or a reader file holds a record outside its group.
+
+## 33. Applied 2026-10-22: QCi's answers of 2026-10-20 and 2026-10-21, as vendor statements (Sprint 11 Task C, F92)
+
+Every count is a snapshot as of 2026-10-22. Written before the script was
+applied.
+
+- **Sources.** Three replies filed by the team lead in Phase 2's
+  `docs/qci_package/` (read only, F79). Phase 2 git-ignores that folder,
+  so no commit names them; each source record names the file, its SHA-256
+  at read, the sender and the send date, and
+  `scripts/sprint11_f92_qci_answers.py` refuses to run when a hash
+  differs. Send dates come from the headers: the 2026-10-20 reply's date
+  and the first 2026-10-21 reply's time are read from the header each is
+  quoted under in the later reply.
+- **Text.** An Outlook `.msg` holds its body as UTF-16LE; the script
+  decodes the whole file at both byte alignments and matches each quote in
+  that text through `require_verbatim` before any write, then writes only
+  through `insert_verified_assertion` (section 31). Phase 2's
+  `docs/phase2/DIRAC_UNDERSTANDINGS.md` section 4 at b074780 was read for
+  the question numbering (the email's 3 to 14 are its A1 to A12).
+- **Grading.** A vendor's statement by email: `vendor-self-claim`,
+  evidence tag N/A, MODERATE; LOW where the answer is hedged ("I assume")
+  or states a plan (raw values on the cloud, Dirac-3S replacing Dirac-3,
+  9980 levels) or names no comparison ("much better results"). Values name
+  roles; citations name the sender.
+- **Relations.** Stored assertions are not rewritten, and no link is
+  made. Every bearing is named in the value with the reason no link is
+  made (ADR-0004 A8 (b)): the guide still says what the stored records say
+  it says, and the cloud answers add to it. The first apply linked the
+  answer to question 8 `supports`
+  `dirac3s-analog-resolution-about-200-to-1`; the fresh-eyes review the
+  same day found that it fails A8 (b) (that record states the guide's
+  text, the "yes" answered a two-part question, and the next answer
+  narrows the ratio to linear contributions). The script withdraws it by
+  name, since the sync adds relations and never removes them. The same
+  review corrected seven values, two citations' subject line, and one
+  inferred role; one finding (a "sum of levels 954" already documented)
+  was not adopted, as neither the store nor Phase 2's section 4 holds it. The 954 levels are entered twice (Dirac-3
+  and Dirac-3S) with the unit "not stated", as the email gives none.
+- **Count.** 3 source records at `read` and 18 assertions.
+  `tests/test_f92_qci_answers.py` checks the hashes, each quote in its own
+  email, each number in its own quotes, that no link remains, the hedges and
+  the stored values.
+- **Classed against the Dirac-3S guide.** Three of the 18 are under
+  `platform:dirac-3`, so the F65 guard
+  (`test_every_prior_dirac3_assertion_is_classed`) failed in the full suite
+  until they were classed. All three are "not addressed" in
+  `scripts/sprint8_f65_dirac3s_reading.py` CLASSED: the guide predates the
+  emails and mentions none of the three points. The guard did its job; the
+  F92 apply had not checked it.
+
+## 34. Applied 2026-10-22: Phase 2's F108 ceiling validation, by the inbound path (Sprint 11 Task D, F93)
+
+Every count is a snapshot as of 2026-10-22. Written after the first apply and
+before the commit (section 33 was written first; this one ran in the same
+pass and is recorded here at once).
+
+- **Source.** `docs/phase2/F108_CEILING_VALIDATION.md` at Phase 2 commit
+  eef3349, the last to touch it (HEAD dbfa4da holds the same blob), read
+  through `git show`, SHA-256 pinned (section 19's inbound rule).
+- **Entered.** 1 source record at `read` and 4 SIM assertions under `ml`
+  by `scripts/sprint11_f93_f108_ceiling.py`, through the verified write
+  path (section 31): the verdict at MODERATE (the pass rule was read after
+  the run), three measurements at HIGH with Phase 2's inferences and
+  unverified causes carried in the values. No relation: the learning-curve
+  result confirms only half of `ding-floor-c-is-model-and-config-specific`.
+- **Answer document.** `docs/research/ceilings-ml-and-optimization.md`
+  carries a dated amendment naming the four assertions.
+  `tests/test_f93_f108_ceiling.py` checks the hash, each quote at the
+  pinned commit, each number in its own quotes, the carried caveats and
+  the stored values.
+- **Fresh-eyes review, the same day.** It found the amendment named the
+  wrong method (section 5 point 2 is the soft-label estimator, which F108
+  did not test) and stated the coordinator's reading unlabeled; both
+  corrected. Two caveats added to the values (the reference arm passes
+  only through the absolute margin; the AUPRC floor understates by about
+  0.04 and is unstable), and a curation note moved from a value to its
+  certainty reasons. **Finding:** one quote had no space after its `;`,
+  so the quote pattern did not parse it and `require_verbatim` passed
+  without checking it; the number test caught it. Recorded for the
+  retrospective.
+
+## 35. Applied 2026-10-22: magic state cultivation, by DOI with the free preprint read (Sprint 11 Task E, F91)
+
+Every count is a snapshot as of 2026-10-22. Written before the first
+apply; corrected after the fresh-eyes review and the second apply.
+
+- **Source.** Rosenfeld et al., "Magic state cultivation on a
+  superconducting quantum processor", Science, DOI:10.1126/science.aee7961.
+  Crossref lists the publisher's license as starting 2027-10-15, so the
+  Science copy was not used. The free preprint arXiv:2512.13908v1 was
+  fetched through the paced fetcher into `Papers\` (SHA-256 642ec2da...,
+  pinned in the test) and every quote is checked against it. The version
+  link is recorded as a hand probe (`version_of` arXiv:2512.13908).
+- **The abstracts differ.** The Science abstract says the fidelity is "at
+  least 0.9999(1)"; the preprint v1 abstract does not say "at least". The
+  record's evidence names the difference, and the fidelity assertion
+  states the number as a lower bound, as the paper's conclusion does.
+- **Entered.** 1 paper record at `read` (read in part: abstract,
+  introduction, results, outlook, and three supplement sections) and 6
+  assertions under `qc`, all LOW: 5 HW (one study's hardware
+  measurement, by the device's maker, not replicated) and 1 SIM (the
+  authors' projection for halved noise), by
+  `scripts/sprint11_f91_magic_state.py` through the verified write path
+  (section 31). No relation: no stored assertion makes the same claim.
+- **Fresh-eyes review, the same day.** It found three values that
+  misstated scope: the 8% retention named the circuit's contents as the
+  filter (the filter is any detection event in the whole circuit); the
+  76(3)% came from a different, shorter circuit and read as a like-for-like
+  baseline; and "distance-5 surface code" is a distance-5 encoding
+  compatible with the surface code, not itself matchable. The 40x figure
+  is the full circuit's error, an upper bound on the state's. All four
+  corrected, with the device (Willow) and the starting code (distance-3
+  color code) named, and the paper's own caveats added: drift of about
+  1×10−4 an hour, no leakage removal units, a proof-of-principle
+  grafting. The projection to about 2 × 10−5 was added as its own SIM
+  assertion. The disposition was synced to the same scope.
+- **Test.** `tests/test_f91_magic_state.py` checks the preprint's hash,
+  each quote in the preprint, that every pair of quote marks is a parsed
+  quote (the section 34 finding; on its first run it caught a label of
+  this script's own that held quote marks), each digit string in a value
+  in its own quotes, the abstracts' difference, and every stored field.
+
+## 36. Applied 2026-10-22: new papers in `Papers\` and the team lead's list, entered before reading (Sprint 11 Task F, F97)
+
+Every count is a snapshot as of 2026-10-22. Written before the apply;
+counts confirmed after it (`tests/test_sprint11_f97_intake.py`).
+
+- **Before.** 2,289 paper-table records (229 `read`, 14 `screened`,
+  2,046 `seen`, repositories included); 821 assertions.
+- **Local copies linked.** 38 files in `Papers\` named by no record's
+  `access`, Task G's 9 copies held out (the planning snapshot said 37;
+  the difference is one file counted with G). Each matched its record by
+  the arXiv id in its name or first-page stamp, or by a DOI on its first
+  pages, and each record's title was checked against the PDF's first two
+  pages. Three differ in form only (Kerger's title is LaTeX; Dupont's
+  arXiv v1 title differs from the published one; RAND's DOI is printed as
+  a rand.org short link), and one first-page arXiv id was a citation, not
+  the paper's own (the QCi fraud paper cites arXiv:2407.04512), so it was
+  not matched. 38 files to 36 records (two pairs of duplicate files);
+  the path is appended to `access`, with the SHA-256 in `evidence`.
+- **The team lead's list.** Six preprints through the paced fetcher
+  (arXiv:2610.24426, 2610.10629, 2610.00841, 2509.03505, 2609.17488 and
+  Pere's 2509.16410, already in the store with no copy), NBER Working
+  Paper w35905 copied into `Papers\` (the original left in Downloads;
+  identical SHA-256), and the NVIDIA blog article saved to `References\`.
+  7 new records at `seen` (the blog's citation hand-transcribed from the
+  page's own tags). 6 repository records; 6 `code-of` links, each
+  carrying the sentence or title-page line that names the repository.
+  LimiX's repository is linked to both LimiX papers: both title pages
+  print it.
+- **Changed from the plan: one repository is not linked.**
+  `NVIDIA/auto-ontology-eval` is entered but linked to no paper: the blog
+  article never names it, and GitHub describes it as a Text-to-SQL
+  evaluation toolkit, so no source says it is the code of a paper here.
+- **Script.** `scripts/sprint11_f97_intake.py` (`--fetch`, dry run,
+  `--apply`). Reading follows by the ledger (section 32): the 30 matched
+  records not yet `read`, the 7 new records and Pere's, in Task F
+  groups.
+
+## 37. Applied 2026-10-22: Task F's 38 records read and entered (Sprint 11 Task F, F97)
+
+Every count is a snapshot as of 2026-10-22. Written before the apply;
+counts confirmed after it. Section 38 records the second apply that
+corrected two of these values' quotes.
+
+- **Reads.** Ledger groups g25 to g29 (section 32's ledger; no record in
+  two groups), one Sonnet 5.5 first-pass reader each, five at once, under
+  `manifests/sprint11_reads/READER_PROMPT.md`. Every reader's quotes passed
+  the repository's own extraction before it finished; the blog article was
+  read through `store.quotes.source_text`, which the checker now uses too.
+- **The coordinator's read.** Every value read against its quoted passages
+  with about 220 characters each side. It changed seven values (a table the
+  paper cites from its reference 2 presented as the paper's own; "lower
+  than GBDTs" where the quote says "comparatively low"; relabeled datasets
+  called "fully classical"; a machine and version outside the quotes; three
+  critical functions left unnamed; two results of a stylized economic
+  model not scoped to it) and added the quotes those changes rest on.
+- **Grades.** HIGH only for the 54 ids named in HIGH_REVIEWED (a paper's
+  own setup, scope, limits, definition or proved result); 4 vendor product
+  descriptions MODERATE; every other assertion LOW. The reader's own
+  suggestion is not used.
+- **Entered.** 125 assertions from 37 records, each record to `read` with
+  a subagent read row and the coordinator's partial read row. One record
+  (Li 2024, photon-counting Raman spectroscopy) bears on no context: read
+  rows and the reason, tier unchanged.
+- **Script.** `scripts/sprint11_reading.py --task F`, through the verified
+  write path (section 31); it refuses a reader file whose records are not
+  its ledger group's.
+
+## 38. Applied 2026-10-22: Task G's 192 records read and entered (Sprint 11 Task G, F96)
+
+Every count is a snapshot as of 2026-10-22. Written before the first apply;
+corrected after the fresh-eyes review and the second apply (below).
+
+- **Reads.** Ledger groups g01 to g24 (section 32's ledger), one Sonnet 5.5
+  first-pass reader each, at most five at once, under
+  `manifests/sprint11_reads/READER_PROMPT.md`, from local copies only.
+- **No copy: 8 records, not read, tier unchanged, the reason recorded on
+  each.** Six are closed (Elsevier, IEEE twice, Taylor & Francis, Springer
+  twice). Macaluso 2020's free host failed TLS certificate verification on
+  2026-10-21 and was not fetched around the check. Those 7 go on the
+  hand-download list. Mezquita 2021 is a RETRACTED chapter: not read and
+  NOT for the hand-download list.
+- **The coordinator's read.** Every value read against its quoted passages
+  with about 220 characters each side, group by group. It replaced 13
+  values: where the reader's text carried more than its quotes (a figure
+  number, a device or vendor name, a task name, "2D", an author's
+  employer, a connectivity property, a simulation scope the quotes do not
+  state, a footnote marker run into a year), or less (an error term left
+  out), or where the text layer flattened an exponent the value restores
+  (two complexity bounds); added quotes for 16 assertions whose
+  value rests on a sentence beside the reader's quote, and corrected 11
+  quotes to the source's exact characters.
+- **Mechanical checks, in `verify()`, before any write.** Every quote
+  verbatim in the source text (`require_verbatim`); every quote parses as
+  a quote; every replaced value and every quote edit rests on named
+  passages (`require_edit_basis`, section 31); every figure in a value
+  appears in that assertion's own quotes (stricter than section 29: the
+  paper as a whole is not enough). Each one refuses the apply.
+- **Slip, found by the full suite and the fresh-eyes review.** The first
+  apply of Tasks F and G ran without `require_edit_basis`, and the figure
+  check only printed in the dry run. `tests/test_verified_writes.py`
+  failed on the script. The review also found 7 replaced values (Tasks F
+  and G) still saying more than their quotes, and 3 measured results
+  graded HIGH. The second apply, with both checks in `verify()`: quotes
+  added for the 7 (or the extra words cut), and 5 measured negative
+  results moved to LOW (qudit-hardware-limit,
+  fischer-residual-bias-large-systems, qcbm-scaling-limit,
+  qsvr-hardware-auc-050, ewaniuk-weak-nonlinearity-trainability): a
+  measured result from one study is empirical, not a stated limit.
+- **Grades.** HIGH only for the 281 ids named in HIGH_REVIEWED (a paper's
+  own setup, scope, limits, definition or proved result); one vendor product
+  description MODERATE (IQM's description of its Spark prototype); every
+  other assertion LOW (367). A value that mixes the paper's own setup with
+  an empirical claim stays LOW.
+- **Entered.** 649 assertions from 189 records (qml 454, qc 156, world
+  20, method 10, ml 9), each record to `read` with a subagent read row and
+  the coordinator's partial read row. Three records bear on no context
+  (Ke 2023, tree tensor network states; Lawrie 2023, metamaterial design;
+  Avdonin 2023, quantum trees): read rows and the reason, tier unchanged.
+- **F57's count after this release** (with Tasks E and F applied, the
+  same query as section 32): 1,847 records at `seen` or `screened`, of
+  which 1,840 have no read row (2,060 and 2,057 before). The store: 455
+  `read`, 2 `screened`, 1,845 `seen`; 1,595 assertions.
+- **Script.** `scripts/sprint11_reading.py --task G`, through the verified
+  write path (section 31). `tests/test_sprint11_reading.py` covers Tasks F
+  and G; `tests/test_sprint11_f97_intake.py` covers section 36's intake.
+
+## 39. Applied 2026-10-22: Sprint 11 Manual Validation decisions (F97 link, the hand-download list)
+
+Every count is a snapshot as of 2026-10-22. Written before the apply.
+
+- **`NVIDIA/auto-ontology-eval` linked `code-of` the NVIDIA blog record
+  (team lead, Q1 = 2).** Section 36 entered it unlinked, because no source
+  names it as the article's code. The team lead chose the link anyway. Its
+  evidence says so plainly: the link rests on the team lead's decision,
+  not on a sentence in a source. The repository record's disposition and
+  updated reason say the same. `scripts/sprint11_f97_intake.py --apply`;
+  7 `code-of` links after (6 before).
+- **The hand-download list is computed, never kept by hand (team lead,
+  Q2: "Keep an on going list of these in relative priority order").** A
+  record is on it when its updated reason puts it on the hand-download
+  list (and not "NOT for the hand-download list"), it is not `read`, and
+  its `access` names no local copy. A file dropped into `Papers\` and
+  linked, or a read, takes it off with no edit to any list.
+  `python scripts/hand_download_list.py` prints it.
+- **Priority order.** First the records named for a question the team
+  lead set (selected outside a ranked F57 release, so they carry no
+  count; today only Te Sun 1994, from the F78 ceiling group). Then the
+  rest by the OpenAlex citation count recorded when F57's relevance
+  ranking selected them (`manifests/*_slice.json`), highest first. The
+  order is a proposal: a record the team lead wants sooner can be moved up
+  by a named override in the script.
+- **On the list today: 16 records** (1 named, 15 ranked: 8 from Sprint
+  10's release, 7 from Sprint 11's). Off it: Chen
+  2025 (now `read`), and the two RETRACTED items (Valdez 2023, Mezquita
+  2021), which are never for the list.
+- **Not on it yet: F62's discovery candidates.** Sprint 9 and 10's F62
+  runs wrote their own hand-download files outside git
+  (`D:\Data\Harold\EvidenceBasedDB\discovery\f62_hand_download_*.md`). 22
+  of their entries are store records at `seen` with no copy and no list
+  segment, so the resolver does not see them (Schuld 2018 is on both; 2
+  are not in the store). Folding them in is the team lead's call, asked
+  at Manual Validation.
+- **A first for the store.** The `code-of` link above is the first
+  source link whose evidence is a decision rather than a sentence from a
+  source. ADR-0004 A8(b) governs `supports` links between assertions, so
+  it does not apply; the evidence names the decision so a reader can
+  tell the two kinds apart.
+
+## 40. Applied 2026-10-22: F62's discovery papers join the list; each entry names its file and why (Sprint 11 Manual Validation, Q3 = 1)
+
+Every count is a snapshot as of 2026-10-22. Written before the apply.
+
+- **One list (team lead, Q3 = 1).** The 22 store records named in
+  `D:\Data\Harold\EvidenceBasedDB\discovery\f62_hand_download_*.md` that
+  are not yet on the list get one updated-reason segment that puts them
+  on it, naming the discovery file. After that, the store alone decides
+  who is on the list (section 39's rule), and the discovery files are no
+  longer read. `scripts/sprint11_q3_f62_hand_download.py` (dry run,
+  `--apply` with a verified backup first; a second apply writes nothing).
+  Schuld 2018 is on both lists and gets no second segment; 2 entries are
+  not in the store and stay in the discovery files only.
+- **Correction to the Manual Validation message.** It said many of the 22
+  are `hsbc-2026` papers. In the store they are filed under `ml` (21) and
+  `qc` (1); 18 came from the fraud discovery stream.
+- **Each entry now shows (team lead, 2026-10-22: "include the best
+  practice naming suggestion for each of the papers and why we think the
+  paper is important. The list details need to be reproducible easily at
+  any time"):**
+  - the target path: `Papers\<YYYY-MM>_<First-author>_<Title-words>.pdf`
+    (section 3's convention, as F62 built it: the first 8 title words), or
+    `Books\Book - <Title> - <Publisher> <Year>.pdf` for a book;
+  - why it matters, computed from the store: the task that selected it,
+    its relevance group, its contexts, and its citation count.
+- **Priority order, revised.** (1) Named for a question the team lead set
+  (Te Sun 1994, the F78 ceiling question). (2) Fraud: the `hsbc-2026`
+  context or F62's fraud stream, since fraud detection is the active
+  consumer's domain. (3) `qml` or `qc`. (4) Everything else (`ml`,
+  tensor, `world`). Within a group, by citation count, highest first:
+  the count F57's ranking recorded, or the count in F62's disposition.
+  Both are OpenAlex counts at the date of selection.
+- **Shown on request** by the `hand-download-list` skill
+  (`.claude/skills/hand-download-list/`), which runs
+  `python scripts/hand_download_list.py` and shows its output as is.
+
+## 41. Rule from 2026-10-23: the quote-mark and figure checks are in `require_verbatim`, and the backup refuses a script that breaks section 31 (Sprint 11 retrospective I1a and I1b)
+
+Extends sections 26 and 31. Every count is a snapshot as of 2026-10-23.
+Written before the apply below.
+
+- **One quote check for every script (I1a).** In Sprint 11 two checks
+  lived only in `scripts/sprint11_reading.py`'s `verify()`, so F91, F92
+  and F93 never ran them. `store.quotes.require_verbatim` now also
+  refuses:
+  - a quote mark outside every parsed quote and its anchor
+    (`stray_quote_marks`). The quote pattern needs `; ` between quotes
+    and ` (anchor)` after each, and a quote it cannot parse is never
+    checked. A quote mark inside a quote, or inside its anchor, is
+    fine;
+  - given `value=`, a figure in the value that its own quotes do not
+    hold (`unquoted_figures`, moved from the reading script). A digit
+    in a word, closing a hyphenated name (Dirac-3, LimiX-2), or in
+    "Phase N" is a name; `read_from_page` lists figures read from the
+    page image, as in section 31.
+  `Verified` now carries the value, and the verified write helpers refuse
+  one whose value is not the record's. So a check run without `value=`
+  cannot license a write.
+- **The scan runs before the write (I1b).** Section 31's static rule
+  moved from `tests/test_verified_writes.py` to `store/write_path.py`.
+  `store.backup.backup_before_write`, which every `--apply` calls first,
+  runs it on each script in `scripts/` on the call stack and refuses
+  before the backup and the write. The 18 legacy scripts stay exempt. The
+  test still scans every script at the desk.
+- **What the new check found in the store: 2 of 1,595 assertions.**
+  - `qci-email-dirac3s-much-better-results-no-comparison-named` (F92,
+    Sprint 11): `;"On which problem class?"` had no space after the
+    semicolon, so that quote was never checked. It is verbatim in the
+    email (question 12). `scripts/sprint11_f92_qci_answers.py` now has
+    the space; `--apply` syncs the stored quote (dry run first, verified
+    backup). A second apply writes nothing.
+  - `cyc-2007-eight-tactic-types` (Sprint 7): the quote stops at its
+    inner `"split" (`, so the rest of it was never checked. Its script
+    is a legacy script and is not re-run here. Proposed for the Sprint 12
+    plan, as a correction with its own section.
+  - 10 more contexts hold quote marks inside a quote or an anchor, which
+    is not stray.
+- **Every Sprint 11 script passes the new checks.** The reading script
+  (F 125, G 649), F91 (6), F92 (18, after the fix above) and F93 (4).
+  F92's and F93's values name "Phase 2", which the reading script's
+  check never met; that is why the "Phase N" rule exists.

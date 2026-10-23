@@ -82,8 +82,9 @@ non-HOLD items by priority, Priority 10 first (the rest counted in one
 line), then the HOLD items one line each in the same full shape. The
 item details follow as one flat list in exactly that order, with no
 group headers: each item's `Phase:` line names its group. Each item in
-the verbatim item format (Phase, Platform, description bullets, Depends
-on). Estimates in minutes calibrated from the actuals gathered in Step
+the verbatim item format (Phase, Value, Platform, description bullets,
+Acceptance, Depends on; F94, 2026-10-22). Estimates in minutes, never
+hours, calibrated from the actuals gathered in Step
 3, `[no-history]` plus a timebox where none exist.
 
 ### Step 5: record the selection
