@@ -15,6 +15,17 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **feat**: F105 and F104 (Sprint 12 Tasks G and F, the reads,
+  2026-10-23): all 53 ledger groups read by first-pass readers and
+  read again by the coordinator (`scripts/sprint12_reading.py`): 110
+  values replaced, 18 given their source sentence, 2 quotes corrected,
+  7 assertions dropped with their reasons. HIGH through `high_grades`
+  only, each of 577 ids with its basis. Entered: 74 assertions from
+  Task F's 20 records and 1,283 from Task G's 393 (9 bear on no
+  context); 404 records to `read`; 8 with no copy keep their tier with
+  the reason. A second apply writes nothing.
+  `tests/test_sprint12_reading.py`, each guard proven to fail by
+  injection (INTAKE_WORKFLOW.md section 47) (Issue #129 / PR #122)
 - **feat**: F105 (Sprint 12 Task G, second part, 2026-10-23): the slice
   (`scripts/sprint12_f105_slice.py`, 400 `qml` records by OpenAlex
   citations), the downloads wrapper with `--session-count` and a

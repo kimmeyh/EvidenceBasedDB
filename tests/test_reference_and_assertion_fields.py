@@ -176,7 +176,12 @@ def test_new_fields_round_trip_byte_identically(conn, tmp_path):
     back-fills them), so the CI rebuild test alone would pass without the
     rebuild knowing how to restore them. Populate one of each, export,
     and rebuild that export: it must come back byte-identical."""
-    paper = conn.execute("SELECT record_id FROM paper_fields WHERE tier = 'read' ORDER BY record_id").fetchone()[0]
+    # A read paper that does not already hold the fixture's routes: Sprint 12's reads made the first read paper
+    # one the QMLPapers manifest found, and adding its route again broke the unique key, not the round trip.
+    paper = conn.execute(
+        "SELECT record_id FROM paper_fields WHERE tier = 'read' AND record_id NOT IN (SELECT record_id FROM "
+        "paper_found_via WHERE route IN ('QMLPapers/2024/manifest.tsv', 'a second fixture route')) "
+        "ORDER BY record_id").fetchone()[0]
     other = conn.execute("SELECT record_id FROM paper_fields WHERE record_id <> ? ORDER BY record_id",
                          (paper,)).fetchone()[0]
     add_found_via(conn, paper, "QMLPapers/2024/manifest.tsv", "a cited-as string")

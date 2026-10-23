@@ -38,11 +38,14 @@ def test_the_manifest_names_the_copy_it_read():
 
 
 def test_every_entered_paper_is_in_the_store_once(live_conn):
-    """Each entered id is one record at `seen` under `qml`, its access the
-    id, and no other record holds the id. Proven to fail by injection,
-    2026-10-23: run against the backup taken before the apply, it named
-    the first entered record."""
+    """Each entered id is one record under `qml`, its access the id, and no
+    other record holds the id. It entered at `seen` and stays there unless
+    a Sprint 12 ledger group read it (section 47 then moved it to `read`).
+    Proven to fail by injection, 2026-10-23: run against the backup taken
+    before the apply, it named the first entered record."""
     assert MANIFEST["entered"] and MANIFEST["arxiv_ids_new"] == len(MANIFEST["entered"])
+    ledger = json.loads((ROOT / "manifests" / "sprint12_read_ledger.json").read_text(encoding="utf-8"))
+    read = {r["record_id"] for g in ledger["groups"].values() for r in g["records"]}
     holders: dict[str, list[str]] = {}
     for rid, a, e, p in live_conn.execute("SELECT f.record_id, f.access, f.evidence, r.provenance "
                                           "FROM paper_fields f JOIN records r ON r.id = f.record_id"):
@@ -51,7 +54,7 @@ def test_every_entered_paper_is_in_the_store_once(live_conn):
     for e in MANIFEST["entered"]:
         row = live_conn.execute("SELECT tier, access FROM paper_fields WHERE record_id = ?",
                                 (e["record_id"],)).fetchone()
-        assert row is not None and row[0] == "seen", e["record_id"]
+        assert row is not None and row[0] == ("read" if e["record_id"] in read else "seen"), e["record_id"]
         assert [r[0] for r in live_conn.execute("SELECT context_id FROM record_contexts WHERE record_id = ?",
                                                 (e["record_id"],))] == ["qml"], e["record_id"]
         assert re.match(rf"arXiv:{re.escape(e['arxiv'])}(?: \| |$)", row[1]), e["record_id"]

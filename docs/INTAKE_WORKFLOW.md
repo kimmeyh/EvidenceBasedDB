@@ -1715,3 +1715,47 @@ runs; each later step adds its bullet before it runs.
   OpenAlex. The ledger: 53 groups, 413 records (Task F's 20 in g01 to
   g03, the slice's 393 in g04 to g53), 8 in `no_copy` with their
   reasons, Task E's 3 read by the coordinator.
+- **The reads, and the coordinator's read (2026-10-23).** Written before
+  the apply. All 53 groups read, one Sonnet 5.5 first-pass reader each,
+  at most five at once, from local copies only; each group's checker
+  printed "0 missing". The coordinator read every value against its
+  quoted passages group by group and recorded the read in
+  `scripts/sprint12_reading.py`: 110 values replaced (each says only
+  what its quotes say: a result, a theorem or figure number, a device,
+  a dataset name or a reader's inference cut, or the passage added);
+  18 assertions given the source sentence beside the reader's quote
+  (most stopped at a curly quote, an apostrophe or a dash the text
+  layer prints oddly); 2 quotes corrected; 7 assertions dropped, each
+  with its reason (among them a bound whose square root the text layer
+  lost, so the value would store a wrong complexity).
+- **Grades, under section 45.** HIGH for 577 ids, each with its basis
+  and where the paper settles it (Task F 34, Task G 543). Kept LOW
+  against a reader's "high": a measured result, even a negative one;
+  a statement about the field or the literature rather than the paper
+  itself; a label that is not a limit. A future-work sentence that
+  names something the paper did not do is a stated limit. One vendor
+  product description MODERATE. Every other assertion LOW.
+- **What the apply enters (dry run, 2026-10-23).** Task F: 74
+  assertions from 20 records (34 HIGH, 40 LOW); 1 record with no copy
+  (2303.16318, withdrawn). Task G: 1,283 assertions from 393 records
+  (543 HIGH, 1 MODERATE, 739 LOW; qml 744, qc 464, ml 55, world 16,
+  method 4); 9 records read that bear on no context (read rows and the
+  reason, tier unchanged); 7 with no copy (2 withdrawn, not for the
+  hand-download list; 5 with no free copy, on it). Before the apply the
+  store held 465 `read`, 2 `screened`, 1,867 `seen`; 1,613 assertions.
+- **The apply.** `python scripts/sprint12_reading.py --task F --apply`,
+  then `--task G --apply`, each after a verified backup, through the
+  verified write path (sections 31 and 41); a second apply of each
+  writes nothing new. `tests/test_sprint12_reading.py` checks the store
+  against the script.
+- **Applied (2026-10-23).** 74 and 1,283 assertions entered, as the dry
+  run said; 404 records to `read` (20 and 384). The second apply of each
+  took its backup and wrote nothing. The store after: 869 `read`, 2
+  `screened`, 1,463 `seen`; 2,970 assertions.
+- **F57's count after this release (2026-10-23).** 1,465 records at
+  `seen` or `screened`, of which 1,449 have no read row. 9 of the 393
+  records read bore on no context, well under premise (g)'s half: the
+  ranking held. Two tests assumed the pre-read store and were corrected:
+  F104's entered papers may now be `read` when a ledger group read them,
+  and the field round-trip test no longer adds a route its first `read`
+  paper already holds.
