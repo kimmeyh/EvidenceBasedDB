@@ -15,6 +15,14 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **feat**: F102 (Sprint 12 Task C, 2026-10-23): Phase 2's Sprint 28
+  results entered by the inbound path. Six documents read at Phase 2
+  commit 10086da through `git show` (F151, F152, F153, F110, F114, F154),
+  one reference record each at `read` with its blob's SHA-256, and 9 SIM
+  assertions, every quote checked with its value in the write path; no
+  relation linked (ADR-0004 A8 (b)). Intake section 43;
+  `scripts/sprint12_f102_phase2_sprint28.py`; `tests/test_sprint12_f102.py`
+  (injections run) (Issue #125)
 - **fix**: F101 follow-up (Sprint 12 Task A, 2026-10-23), from the
   fresh-eyes review of 5466953. 7 Sprint 5 contexts held a passage with
   no quote marks, which no check could read; each is re-quoted from its
