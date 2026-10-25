@@ -28,6 +28,10 @@ _DIRECT_WRITE = re.compile(r"\b(insert|sync)_assertion\b")
 _TOKEN_NAME = re.compile(r"\bVerified\b")
 _WRITES = re.compile(r"\b(insert|sync)_(verified_)?assertion\b")
 _EDIT_TABLE = re.compile(r"(?m)^(VALUE|QUOTE|CONTEXT)_[A-Z_]+\s*[:=]")
+# A reading script's HIGH comes only from store.grading, with its basis
+# (Sprint 11 retrospective I3, built in Sprint 12 Task G): no literal
+# "high" of its own, in a grade table or a certainty argument.
+_HIGH_LITERAL = re.compile(r"""["']high["']""")
 
 # The scripts written before this rule (Sprint 10 and earlier). They have
 # run, and stay as they are; every other script in scripts/ is held to it,
@@ -40,11 +44,18 @@ LEGACY = {
     "sprint9_f79_phase2_b4_b5_inbound.py", "sprint9_f80_reading.py", "sprint10_f83_optimization_bounds.py",
     "sprint10_f84_dirac1.py", "sprint10_f85_dirac3s_verify.py", "sprint10_f89_reading.py",
 }
+# Reading scripts written before the grading rule: they have run, and stay
+# as they are. Every other script whose name says it reads is held to it.
+GRADING_LEGACY = {"sprint11_reading.py"}
 
 
-def script_problems(text: str) -> list[str]:
+def script_problems(text: str, name: str = "") -> list[str]:
     code = re.sub(r"#.*", "", text)
     out = []
+    if "reading" in name and name not in GRADING_LEGACY and _WRITES.search(code):
+        if "high_grades(" not in code or _HIGH_LITERAL.search(code):
+            out.append("grades HIGH outside store.grading (a reading script names each HIGH's basis through "
+                       "high_grades and grade, and holds no literal \"high\")")
     if _DIRECT_WRITE.search(code):
         out.append("writes an assertion without the quote check (use insert_verified_assertion)")
     if _TOKEN_NAME.search(code):
@@ -71,7 +82,7 @@ def require_clean_callers() -> None:
     for script in sorted(calling_scripts()):
         if script.name in LEGACY:
             continue
-        problems = script_problems(script.read_text(encoding="utf-8"))
+        problems = script_problems(script.read_text(encoding="utf-8"), script.name)
         if problems:
             raise RuntimeError(f"{script.name}: refused before the backup and the write "
                                f"(store.write_path, Sprint 11 retrospective I1b): {'; '.join(problems)}")

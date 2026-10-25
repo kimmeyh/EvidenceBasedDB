@@ -33,6 +33,7 @@ it; `default_fetcher` is the only function here that touches a socket.
 """
 from __future__ import annotations
 
+import html
 import http.client
 import json
 import os
@@ -233,8 +234,8 @@ def _initials(given: str) -> str:
 
 
 def _render_author(family: str, given: str) -> str:
-    family = family.strip()
-    given = given.strip()
+    family = _text(family)
+    given = _text(given)
     if not given:
         return family
     return f"{family}, {_initials(given)}"
@@ -366,16 +367,25 @@ def _date_parts(msg: dict) -> str:
     return ""
 
 
+def _text(raw: str | None) -> str:
+    """Whitespace collapsed and HTML escapes undone: Crossref and DataCite
+    return "Science &amp; Technology Libraries", and 4 stored citations
+    carried the "&amp;" until Sprint 12 Task A (F101)."""
+    return " ".join(html.unescape(raw or "").split())
+
+
 def parse_crossref(body: bytes) -> Metadata:
     msg = json.loads(body)["message"]
-    title = " ".join((msg.get("title") or [""])[0].split())
-    subtitle = " ".join(((msg.get("subtitle") or [""])[0] or "").split())
+    title = _text((msg.get("title") or [""])[0])
+    subtitle = _text((msg.get("subtitle") or [""])[0])
     if subtitle and subtitle.lower() not in title.lower():
         title = f"{title}: {subtitle}"  # Crossref keeps a book's subtitle apart (freericks-2026, Task C)
     authors = [_render_author(a.get("family", ""), a.get("given", "")) for a in msg.get("author", []) if a.get("family") or a.get("name")]
     date = _date_parts(msg)
-    venue = (msg.get("container-title") or [""])[0]
-    extra = {k: msg.get(k) for k in ("volume", "issue", "page", "article-number", "type", "publisher") if msg.get(k)}
+    venue = _text((msg.get("container-title") or [""])[0])
+    extra = {k: msg.get(k) for k in ("volume", "issue", "page", "article-number", "type") if msg.get(k)}
+    if msg.get("publisher"):
+        extra["publisher"] = _text(msg["publisher"])  # rendered for a book or report, so unescaped too
     return Metadata(kind="doi", ident=msg.get("DOI", ""), title=title, authors=authors,
                     year=date[:4], date=date, venue=venue, doi=msg.get("DOI", ""),
                     source_url=msg.get("URL", ""), extra=extra)
@@ -383,13 +393,13 @@ def parse_crossref(body: bytes) -> Metadata:
 
 def parse_datacite(body: bytes) -> Metadata:
     attrs = json.loads(body)["data"]["attributes"]
-    title = " ".join(((attrs.get("titles") or [{}])[0].get("title") or "").split())
+    title = _text((attrs.get("titles") or [{}])[0].get("title"))
     authors = []
     for c in attrs.get("creators", []):
         if c.get("familyName"):
             authors.append(_render_author(c["familyName"], c.get("givenName", "")))
         elif c.get("name"):
-            authors.append(c["name"])
+            authors.append(_text(c["name"]))
     year = str(attrs.get("publicationYear") or "")
     date = ""
     for d in attrs.get("dates", []):
@@ -397,7 +407,7 @@ def parse_datacite(body: bytes) -> Metadata:
             date = str(d["date"])[:10]
             break
     return Metadata(kind="doi", ident=attrs.get("doi", ""), title=title, authors=authors,
-                    year=year, date=date or year, venue=attrs.get("publisher", "") or "",
+                    year=year, date=date or year, venue=_text(attrs.get("publisher")),
                     doi=attrs.get("doi", ""), source_url=attrs.get("url", "") or "",
                     extra={"provider": "DataCite"})
 

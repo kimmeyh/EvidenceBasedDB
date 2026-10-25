@@ -128,7 +128,7 @@ def test_names_and_listed_page_figures_are_not_figures():
 # The rule itself moved to store.write_path (Sprint 11 retrospective I1b),
 # so backup_before_write runs it before a write; this scan is the backstop.
 def test_new_scripts_write_only_through_the_checked_path():
-    problems = {p.name: script_problems(p.read_text(encoding="utf-8"))
+    problems = {p.name: script_problems(p.read_text(encoding="utf-8"), p.name)
                 for p in sorted((ROOT / "scripts").glob("*.py")) if p.name not in LEGACY}
     assert not {k: v for k, v in problems.items() if v}
 
@@ -157,6 +157,46 @@ def test_the_script_rule_names_each_planted_problem(planted, expected):
     assert script_problems("CONTEXT_BY_RANK = {}\ninsert_paper(conn, paper)\n") == []
 
 
+_GRADED = ("from store.grading import grade, high_grades\n"
+           "HIGH = high_grades({'a1': ('proved result', 'Theorem 2, p.6')})\n"
+           "certainty, reasons = grade('a1', HIGH, otherwise=('low', 'Started LOW'))\n"
+           "insert_verified_assertion(conn, a, v)\n")
+
+
+@pytest.mark.parametrize("name, body, flagged", [
+    ("sprint12_reading.py", _GRADED, False),
+    ("sprint12_reading.py", "insert_verified_assertion(conn, a, v)\nGRADE = {'proved': 'high'}\n", True),
+    ("sprint12_reading.py", _GRADED + "a.certainty = \"high\"\n", True),
+    ("sprint12_reading.py", "insert_verified_assertion(conn, a, v)\n", True),  # no grading at all
+    ("sprint12_reading.py", "insert_paper(conn, p)\nGRADE = {'proved': 'high'}\n", False),  # writes no assertion
+    ("sprint12_f102_intake.py", "insert_verified_assertion(conn, a, v)\ncertainty='high'\n", False),  # not reading
+    ("sprint11_reading.py", "insert_verified_assertion(conn, a, v)\nGRADE = {'proved': 'high'}\n", False),
+])
+def test_a_reading_script_grades_high_only_through_store_grading(name, body, flagged):
+    """Sprint 11 retrospective I3 (Sprint 12 Task G): a reading script's
+    HIGH names its basis through store.grading. Proven to fail by
+    injection, 2026-10-23: with the reading rule removed from
+    script_problems, the three flagged cases went red. Restored."""
+    problems = script_problems(body, name)
+    assert any("grades HIGH outside store.grading" in p for p in problems) == flagged, problems
+
+
+def test_the_grading_helper_refuses_high_without_a_named_basis():
+    """Proven to fail by injection, 2026-10-23: with the BASES check
+    removed from high_grades, the "seems right" basis was accepted."""
+    from store.grading import grade, high_grades
+    high = high_grades({"a1": ("proved result", "Theorem 2, p.6")})
+    assert grade("a1", high, ("low", "Started LOW")) == (
+        "high", "Started HIGH: the paper's own proved result (Theorem 2, p.6), read in context by the coordinator")
+    assert grade("a2", high, ("low", "Started LOW")) == ("low", "Started LOW")
+    with pytest.raises(ValueError, match="is not one of"):
+        high_grades({"a1": ("seems right", "the reader liked it")})
+    with pytest.raises(ValueError, match="names why"):
+        high_grades({"a1": ("setup", "  ")})
+    with pytest.raises(ValueError, match="only from high_grades"):
+        grade("a2", high, ("high", "Started HIGH: the reader said so"))
+
+
 # ------------------------------------------------------------------ I1
 
 # ------------------------------------------------------------------ Sprint 11 I1b
@@ -182,6 +222,7 @@ def _run_from_script(scripts_dir: Path, name: str, body: str, db: Path, backups:
     ("sprint12_probe.py", "VALUE_REPLACE = {}\ninsert_verified_assertion = None\n", True),
     ("sprint12_probe.py", "insert_verified_assertion = None\n", False),
     ("sprint10_f89_reading.py", "insert_assertion = None\n", False),  # LEGACY: has run, stays as it is
+    ("sprint12_reading.py", "insert_verified_assertion = None\nGRADE = {'proved': 'high'}\n", True),
 ])
 def test_the_backup_refuses_a_script_that_breaks_the_rule_before_anything_is_written(
         tmp_path, monkeypatch, conn, name, body, refused):

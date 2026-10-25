@@ -1,0 +1,500 @@
+{
+ "papers": [
+  {
+   "record_id": "lee-2023-variational-quantum-state-discriminator-supervised",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Lee-et-al._2023_Variational-quantum-state-discriminator-for-supervised-machine-learning__2303.03588.pdf",
+   "title_in_file": "Variational quantum state discriminator for supervised machine learning",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Sections I, IV and V (Conclusions) via plain-text extraction; appendices skimmed only.",
+   "what_it_is": "Proposes a variational quantum algorithm (VQSD) for minimum-error quantum state discrimination and uses it as a multi-class classifier, tested in simulation on Iris.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "vqsd-matches-sdp",
+     "value": "The authors report that the VQSD, trained without prior knowledge of the target states, is as effective as the semidefinite programming approach in their numerical simulations of minimum-error discrimination.",
+     "anchor": "Abstract and Sec. V, p.1 and p.9",
+     "quotes": [
+      "Our numerical simulations and comparisons with semidefinite programming demonstrate the effectiveness of the VQSD in finding optimal POVMs for minimum-error QSD of both pure and mixed states.",
+      "Our results indicate that this method is as effective as the semidefinite programming approach."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical simulations in one study; the authors' claim of equivalence with SDP.",
+     "context": "qml",
+     "reader_inference": "Simulation only; no hardware run is reported in the parts read."
+    },
+    {
+     "id_suggestion": "vqsd-iris-auc",
+     "value": "The authors report that in 5-fold cross-validation on the Iris dataset the mean AUC ranges from 0.97 to 1 with an average of 0.985, and the mean accuracy is 0.893 for the single-qubit POVM circuit and 0.920 for the two-qubit POVM circuit.",
+     "anchor": "Sec. IV, p.7-8",
+     "quotes": [
+      "show excellent classification performance as the mean AUC ranges from 0.97 to 1 with an average of 0.985.",
+      "In the 5-fold cross-validation, the mean accuracy is 0.893 for the single-qubit POVM circuit and 0.920 for the two-qubit POVM circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical simulation result on one small dataset.",
+     "context": "qml",
+     "reader_inference": "Iris is a small toy dataset, so the result does not show scaling."
+    },
+    {
+     "id_suggestion": "vqsd-zero-povm-limit",
+     "value": "The authors state that the VQSD can produce a zero-valued POVM element in its implementation, and that the VQSD-based multi-class classifier may lose a data label as a result.",
+     "anchor": "Sec. V, p.9",
+     "quotes": [
+      "This problem can also occur in the implementation of the VQSD, as demonstrated in Fig. 4(b).",
+      "As a result, the VQSD-based multi-class classifier may lose a data label."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of their own method in Sec. V, p.9.",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "schulz-2024-guided-quantum-walk",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Schultz-Welsch-Michielsen_2023_Guided-quantum-walk__2308.05418.pdf",
+   "title_in_file": "Guided quantum walk",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, Sections IV and V (Conclusion) via plain-text extraction; derivations and appendices not read.",
+   "what_it_is": "Uses local amplitude transfer theory to introduce the guided quantum walk, a time-dependent hopping-rate schedule between quantum walk and quantum annealing, evaluated by classical simulation.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "gqw-outperforms-qa-qw",
+     "value": "The authors report that, in simulations of exact cover, traveling salesperson and garden optimization problems, the guided quantum walk outperformed both the quantum walk and quantum annealing, by up to four (three) orders of magnitude on 30 qubit problems compared to QA (QW) at intermediate timescales.",
+     "anchor": "Sec. V, p.16",
+     "quotes": [
+      "Across all investigated problem instances and evolution times T , the GQW outperformed both the QW and QA significantly.",
+      "our data reveals an up to four (three) orders of magnitude better performance on 30 qubit problems compared to QA (QW)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical simulation on a few problem classes; an empirical result from one study.",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqw-linear-scaling-cost",
+     "value": "The authors report linear scaling of the evolution time with problem size for the GQW, and state that this is made possible by shifting the exponential scaling to the classical optimization phase of the hyperparameters.",
+     "anchor": "Sec. V, p.16",
+     "quotes": [
+      "the GQW demonstrates a linear scaling, strongly indicating the existence of optimal quantum evolutions that solve combinatorial optimization problems in linear time T",
+      "It is worth noting that the achieved linear scaling is made possible by shifting the exponential scaling to the classical optimization phase of the hyperparameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical scaling over small simulated sizes, with the authors' own caveat on the classical tuning cost.",
+     "context": "qc",
+     "reader_inference": "The scaling claim covers the quantum evolution time only, not the total cost including hyperparameter tuning."
+    },
+    {
+     "id_suggestion": "gqw-noise-untested",
+     "value": "The authors state that further investigation is needed to determine how their observations translate to real quantum devices with environmental noise and to problems with non-canonical energy spectra.",
+     "anchor": "Sec. V, p.16",
+     "quotes": [
+      "While further investigation is needed to determine how these observations translate to real quantum devices in the presence of environmental noise and on problems with non-canonical energy spectra"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of their own study in Sec. V, p.16.",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "verdel-2024-data-driven-discovery-statistically-relevant",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Verdel-et-al._2023_Data-driven-discovery-of-relevant-information-in-quantum-simulators__2307.10040.pdf",
+   "title_in_file": "Data-driven discovery of statistically relevant information in quantum simulators",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction and Section VI (Conclusions) via plain-text extraction; methods and results sections not read in full.",
+   "what_it_is": "Presents an assumption-free unsupervised-learning framework (principal components, information imbalance, intrinsic dimension) to rank relevant operators in quantum simulator data, shown on a spinor Bose-Einstein condensate quench.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "verdel-ranks-operators",
+     "value": "The authors report that their method identified the most relevant operators describing the dynamics of Bose Einstein condensates, confirming previous heuristic approaches.",
+     "anchor": "Sec. VI, p.8",
+     "quotes": [
+      "We have successfully identified the most relevant operators describing the dynamics of Bose Einstein condensates, confirming previous heuristic approaches"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result on one experimental dataset.",
+     "context": "ml",
+     "reader_inference": "The tools are classical unsupervised learning applied to quantum-simulator data; the paper does not run a quantum learning algorithm."
+    },
+    {
+     "id_suggestion": "verdel-intrinsic-dimension-plateaus",
+     "value": "The authors report stable plateaus of the intrinsic dimension of the data sets at different times, which they say provides bounds on the time frame of universal quantum dynamics.",
+     "anchor": "Sec. VI, p.8",
+     "quotes": [
+      "we have also found stable plateaus of the intrinsic dimension of the data sets corresponding to different times, thus providing bounds on the time frame realizing universal quantum dynamics."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result on one experiment.",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "verdel-scope-assumption-free",
+     "value": "The authors state that their approach can be extended to other classes of quantum simulators, including fermion gases and lattice spin models, as an assumption-free framework.",
+     "anchor": "Sec. VI, p.8",
+     "quotes": [
+      "Our approach is immediately extended to other classes of quantum simulators"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated extension without demonstration in the parts read.",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "zhu-2025-practical-few-atom-quantum-reservoir",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2024/Zhu-et-al._2024_Practical-and-Scalable-Quantum-Reservoir-Computing__2405.04799.pdf",
+   "title_in_file": "Practical Few-Atom Quantum Reservoir Computing",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, Section III (Mackey-Glass part) and Section IV (Discussion) via plain-text extraction; sine-square task and appendices not read in full.",
+   "what_it_is": "Proposes a quantum reservoir of a few two-level atoms in an optical cavity and simulates it on the Mackey-Glass prediction and sine-square classification tasks against classical reservoir computing.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "zhu-qrc-beats-crc",
+     "value": "The authors report that their quantum reservoir outperforms traditional classical reservoir computing in both memory retention and nonlinear data processing.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "We demonstrate that the quantum reservoir outperforms traditional classical reservoir computing in both memory retention and nonlinear data processing"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulation results on two benchmark tasks from one study.",
+     "context": "qml",
+     "reader_inference": "The comparison is by numerical simulation, not hardware."
+    },
+    {
+     "id_suggestion": "zhu-nrmse-vs-atoms",
+     "value": "The authors report that the NRMSE on the Mackey-Glass task decreases as the number of atoms increases from 1 to 5, with the number of features rising from 4 to 12.",
+     "anchor": "Sec. III A, Fig. 3(a)",
+     "quotes": [
+      "The blue and green solid lines in Fig. 3(a) shows the decrease in NRMSE as the number of atoms increases from 1 to 5, where measurements of the cavity field and all atoms lead to a corresponding increase in the number of features from 4 to 12."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulated result for up to five atoms.",
+     "context": "qml",
+     "reader_inference": "Only a few atoms are simulated, so scaling beyond that is not shown."
+    },
+    {
+     "id_suggestion": "zhu-heterogeneity-needed",
+     "value": "The authors state that it is essential to vary the detuning, the coupling strength, or both to induce non-identical memory states in the atoms, and that they observed a decline in performance when both were fixed.",
+     "anchor": "Sec. IV, p.9",
+     "quotes": [
+      "it is essential to vary either the detuning",
+      "We observed a decline in QRC performance when both parameters were fixed."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this condition of their own framework in Sec. IV, p.9.",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "bentellis-2023-benchmarking-variational-quantum-eigensolver-different",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Bentellis-et-al._2023_Benchmarking-the-Variational-Quantum-Eigensolver-using-different__2305.07092.pdf",
+   "title_in_file": "Benchmarking the Variational Quantum Eigensolver using different quantum hardware",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, results section with Table II and Section V (Conclusion) via plain-text extraction; appendices skimmed.",
+   "what_it_is": "Runs VQE for the hydrogen molecule on a superconducting processor (ibmq manila) and an ion-trap processor (aqt marmot) with a standardized ansatz and optimizer, and compares results.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "bentellis-table2-hardware",
+     "value": "The authors report final energies of −0.975 Ha on ibmq manila and −1.059 Ha on aqt marmot, with quantum run times of 334 and 13297 seconds respectively.",
+     "anchor": "Table II, p.5",
+     "quotes": [
+      "Final energy (Ha) −0.975 ± 0.032 −1.059 ± 0.028",
+      "Time taken (quantum) (seconds) 334 ± 40 13297 ± 625"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from nine runs on two specific processors.",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bentellis-iterations",
+     "value": "The authors report that ibmq manila takes an average of 7 iterations to find the ground state, whereas aqt marmot requires approximately 4 iterations.",
+     "anchor": "Results, Fig. 6",
+     "quotes": [
+      "We see that the processor ibmq manila takes an average of 7 iterations to find the ground state, whereas the aqt marmot requires approximately 4 iterations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from several parameter seeds.",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bentellis-no-generalization",
+     "value": "The authors state that their results apply only to the two specific processor types and the specific quantum algorithm considered, and cannot directly be generalized to other quantum processors.",
+     "anchor": "Sec. V, p.7",
+     "quotes": [
+      "Results reported in this paper exclusivly apply to these two specific processor types and the specific quantum algorithm considered, and cannot directly be generalized to other quantum processors."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of their own study in the Conclusion.",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "bermejo-2024-improving-gradient-methods-coordinate-transformations",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Bermejo-Aizpurua-Orus_2023_Improving-Gradient-Methods-via-Coordinate-Transformations__2304.06768.pdf",
+   "title_in_file": "Improving Gradient Methods via Coordinate Transformations: Applications to Quantum Machine Learning",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, Section III (Results) and Section IV (Conclusions) via plain-text extraction; Section II method derivation skimmed.",
+   "what_it_is": "Proposes adding the cost function as an extra coordinate (hyperspherical coordinates or frame rotations) to gradient-based training and benchmarks it on PennyLane-based quantum machine learning examples.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "bermejo-fewer-iterations",
+     "value": "The authors report that, for the function-fitting example, their hyperspherical coordinates reduced the number of iterations for convergence from 90 in the original implementation to 54, a reduction of 40% of iterations.",
+     "anchor": "Sec. III, p.5",
+     "quotes": [
+      "we were able to reduce the number of iterations for convergence from 90 in the original implementation to 54 in ours, this is, a reduction of 40% of iterations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-example empirical result from the authors' own benchmarks.",
+     "context": "qml",
+     "reader_inference": "One example among those reported, run by the authors against their chosen baselines."
+    },
+    {
+     "id_suggestion": "bermejo-18-algorithms",
+     "value": "The authors report that they revisited 18 different algorithms and claim significant advantages (faster convergence or lower cost function values) for 15 of them.",
+     "anchor": "Sec. III, p.4",
+     "quotes": [
+      "we have revisited 18 different algorithms, claiming significant advantages (i.e., faster convergence or lower cost function values) for 15 of them."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own summary claim; per-algorithm evidence is in tables not read in full.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bermejo-extra-coordinate-essential",
+     "value": "The authors state that extending the coordinate space without adding the cost function as an extra coordinate gave no significant advantage in convergence.",
+     "anchor": "Sec. II, p.4",
+     "quotes": [
+      "we have seen no significant advantage in convergence, in stark contrast with the two methods presented above."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Authors' ablation statement without a detailed table in the text read.",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "giuliani-2023-learning-ground-states-gapped-quantum",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Giuliani-et-al._2023_Learning-ground-states-of-gapped-quantum-Hamiltonians-with-Kernel-Methods__2303.08902.pdf",
+   "title_in_file": "Learning ground states of gapped quantum Hamiltonians with Kernel Methods",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, statement of Theorem 1 and Corollary 1, Sections 5 and 6 (Discussion) via plain-text extraction; appendix proofs not checked.",
+   "what_it_is": "Introduces a self-learning power method that uses kernel ridge regression to learn ground states of gapped Hamiltonians, with a convergence proof under a learning-efficiency assumption and numerical tests on Ising and Heisenberg models.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "giuliani-poly-resources",
+     "value": "The authors state that the ground state properties of arbitrary gapped quantum hamiltonians can be reached with polynomial resources under the assumption that the supervised learning is efficient.",
+     "anchor": "Abstract, p.1; Theorem 1 and Corollary 1",
+     "quotes": [
+      "We show that the ground state properties of arbitrary gapped quantum hamiltonians can be reached with polynomial resources under the assumption that the supervised learning is efficient."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Convergence result proved as Theorem 1 and Corollary 1, with proof in Appendix A.",
+     "context": "ml",
+     "reader_inference": "The result is conditional: it depends on the learning-efficiency assumption, which is tested only numerically."
+    },
+    {
+     "id_suggestion": "giuliani-numerical-verification",
+     "value": "The authors report that for the TFI and AFH models in one and two dimensions they numerically verified that the efficient-learning assumption holds for kernel ridge regression, at least for the small system sizes where exact infidelity computation is tractable.",
+     "anchor": "Sec. 6, p.8",
+     "quotes": [
+      "we have numerically verified that the efficient-learning assumption is valid for kernel ridge regression using this kernel, at least for the small system sizes for which the exact infidelity computation is tractable."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical evidence on small systems only.",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "giuliani-sample-limit",
+     "value": "The authors state that the approach is limited by the number of samples, because kernel matrix cost scales quadratically with data-set size and the linear solve scales cubically, so hardware limits the number of samples in practice.",
+     "anchor": "Sec. 6, p.8",
+     "quotes": [
+      "Our kernel ridge regression approach is ultimately limited by the number of samples",
+      "Therefore, in practice the number of samples is at most of the order of"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of their own method in Sec. 6.",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "heredge-2024-non-unitary-quantum-machine-learning",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2024/Heredge-et-al._2024_Non-Unitary-Quantum-Machine-Learning__2405.17388.pdf",
+   "title_in_file": "Non-Unitary Quantum Machine Learning",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, Theorem 1 and its success-probability discussion, pooling results, Conclusion start via plain-text extraction; the rest not read in full.",
+   "what_it_is": "Introduces probabilistic quantum ML building blocks based on Linear Combination of Unitaries: quantum ResNet, quantum average pooling, and amplified irreducible-subspace projections for permutation-invariant encodings.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "heredge-resnet-possible",
+     "value": "The paper states that it is possible to probabilistically implement a quantum ResNet architecture on a quantum circuit where each layer of the variational circuit permits a residual connection.",
+     "anchor": "Theorem 1, p.7-8",
+     "quotes": [
+      "It is possible to probabilistically implement a quantum ResNet architecture on"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1, p.7-8.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "heredge-exponential-success-decay",
+     "value": "The authors state that the probability of overall success decays exponentially in the number of residual connections.",
+     "anchor": "Sec. II, p.12",
+     "quotes": [
+      "We also noted that the probability of overall success decays exponentially in the number of residual connections L."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this cost of their own construction in Sec. II.",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "heredge-pooling-mnist",
+     "value": "The authors report that the LCU success probability of their quantum average pooling remains stable for the MNIST database.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "show that the LCU success probability remains stable for the MNIST database."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical simulation result on MNIST image samples.",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

@@ -39,6 +39,23 @@ def test_the_eval_link_names_the_team_leads_decision():
     assert "No source names it" in f97.EVAL_DECISION
 
 
+def test_a_held_record_is_matched_by_whole_access_token():
+    """`existing` skips the network for records already held (F100), so a
+    wrong match would skip a new record. Proven to fail by injection,
+    2026-10-23: with the whole-token check made a substring check,
+    auto-ontology found the -eval record. Restored."""
+    import sqlite3
+    f97 = _script()
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE paper_fields (record_id TEXT, access TEXT)")
+    conn.execute("INSERT INTO paper_fields VALUES ('eval', 'https://github.com/NVIDIA/auto-ontology-eval')")
+    conn.execute("INSERT INTO paper_fields VALUES ('p', 'arXiv:2401.00001 | D:\\Papers\\a.pdf')")
+    assert f97.existing(conn, "https://github.com/NVIDIA/auto-ontology") is None
+    assert f97.existing(conn, "https://github.com/nvidia/AUTO-ontology-eval/") == "eval"
+    assert f97.existing(conn, "arXiv:2401.00001") == "p"
+    assert f97.existing(conn, "arXiv:2401.0000") is None
+
+
 @pytest.mark.live_store
 def test_a_second_apply_writes_nothing(live_copy):
     """Proven to fail by injection, 2026-10-22: with Hoppner 2020's file

@@ -23,14 +23,18 @@ times in Sprint 10 and caught only by review.
 """
 from __future__ import annotations
 
+import hashlib
 import html
 import json
 import re
 import subprocess
+import tempfile
 import unicodedata
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
+
+from store import store_dir
 
 # A quote inside citation_context: "<quote>" (<anchor>), joined by "; ".
 QUOTE = re.compile(r'(?:^|; )"(.+?)" \(')
@@ -49,16 +53,72 @@ def plain(text: str) -> str:
     return re.sub(r"\s+", " ", text)
 
 
-@lru_cache(maxsize=None)
+# Set by the test harness for a test without @pytest.mark.live_store: called
+# with the path before any read, cached or not, so a read an earlier live
+# test cached cannot hide that CI has no such file (Sprint 9 retrospective
+# I7). Until F100 (Sprint 12) the harness emptied the caches instead, which
+# made every live test extract its PDFs again.
+READ_GUARD = None
+
+
 def pdf_text(path: str) -> str:
     """Both pdftotext layouts, joined: a quote may survive one and not the other."""
-    modes = (["pdftotext", "-enc", "UTF-8", path, "-"], ["pdftotext", "-enc", "UTF-8", "-layout", path, "-"])
-    return " || ".join(plain(subprocess.run(m, capture_output=True, check=True).stdout.decode("utf-8", "replace"))
-                       for m in modes)
+    if READ_GUARD is not None:
+        READ_GUARD(path)
+    return _pdf_text(path)
 
 
 @lru_cache(maxsize=None)
+def _pdf_text(path: str) -> str:
+    return " || ".join(plain(_pdftotext(path, layout)) for layout in (False, True))
+
+
+@lru_cache(maxsize=1)
+def _pdftotext_version() -> str:
+    out = subprocess.run(["pdftotext", "-v"], capture_output=True)
+    return " ".join((out.stdout + out.stderr).decode("utf-8", "replace").split()[:3])
+
+
+def _pdftotext(path: str, layout: bool) -> str:
+    """pdftotext's raw output, through a disk cache (F100, Sprint 12): the
+    suite extracted the same PDFs on every run, about 0.6 s a layout, 13 of
+    its 13 minutes in quote checks. The key is the file's SHA-256, the
+    layout and pdftotext's version, so a changed file or a new pdftotext
+    extracts again; `plain` is applied after the cache, so a change to it
+    is never hidden. The cache lives in the store folder (`text_cache\\`),
+    outside git; a folder that cannot be written is simply not used. The
+    text is stored as bytes, so it comes back exactly as extracted, and a
+    file that does not decode is extracted again."""
+    cmd = ["pdftotext", "-enc", "UTF-8", *(["-layout"] if layout else []), path, "-"]
+    digest = hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    # The options as well as the version: an option added later extracts again (review of fdedff9).
+    tool = hashlib.sha256(" ".join([_pdftotext_version(), *cmd[:-2]]).encode()).hexdigest()[:12]
+    name = f"{digest}-{'layout' if layout else 'plain'}-{tool}.txt"
+    try:
+        return (store_dir() / "text_cache" / name).read_bytes().decode("utf-8")
+    except (OSError, RuntimeError, UnicodeDecodeError):  # RuntimeError: no store folder off Windows
+        pass
+    text = subprocess.run(cmd, capture_output=True, check=True).stdout.decode("utf-8", "replace")
+    try:
+        cached = store_dir() / "text_cache" / name
+        cached.parent.mkdir(exist_ok=True)
+        # A name of its own per writer, so two processes never share a half-written file.
+        with tempfile.NamedTemporaryFile(dir=cached.parent, suffix=".partial", delete=False) as partial:
+            partial.write(text.encode("utf-8"))
+        Path(partial.name).replace(cached)
+    except (OSError, RuntimeError):
+        pass
+    return text
+
+
 def html_text(path: str) -> str:
+    if READ_GUARD is not None:
+        READ_GUARD(path)
+    return _html_text(path)
+
+
+@lru_cache(maxsize=None)
+def _html_text(path: str) -> str:
     page = Path(path).read_text(encoding="utf-8", errors="replace")
     page = re.sub(r"<script.*?</script>|<style.*?</style>", " ", page, flags=re.S)
     return plain(html.unescape(re.sub(r"<[^>]+>", " ", page)))
