@@ -102,6 +102,13 @@ this project keeps having to replace with a step.
   copy), and one read ledger: 795 records in 100 groups, 11 in `no_copy`
   each with its own reason. The reader prompt gains `result_type`. New
   `tests/test_sprint13_read_ledger.py`, 2 injections (Issue #137)
+- **fix**: the fresh-eyes review of e621771 (2026-10-25): the slice is
+  every `qml` record with an arXiv id or a DOI, not "every readable" one;
+  the 166 GitHub repositories and 11 local-file records left out are
+  carded on F57. Section 51's citation buckets corrected (362 arXiv DOIs
+  and 2 journal DOIs by their own identifier, 53 by a journal version). A
+  fetch failure no longer says "paced" (the log's FAILED covers both
+  fetch paths). farrelly-2019's unstamped file checked by hand (Issue #137)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

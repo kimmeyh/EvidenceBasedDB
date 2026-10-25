@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
-"""Sprint 13 Task F (F112, the F57 release for Sprint 13): every readable
-`qml` record, in citation order.
+"""Sprint 13 Task F (F112, the F57 release for Sprint 13): every `qml`
+record with an arXiv id or a DOI, in citation order.
 
 Plan Q1 = 1 (team lead, 2026-10-25): all of them, not 800. F57's order
 (relevance, team lead 2026-10-21): `hsbc-2026`, then the Dirac platforms,
 then `qml`; nothing is unread under the earlier contexts (refreshed here).
 The candidates are every `qml` record at `seen` or `screened` with no read
-row, counted by OpenAlex exactly as F89, F96 and F105 counted them
+row whose access names an arXiv id or a DOI (`sprint9_f80_slice.qml_candidates`;
+the plan's 806 is this count), counted by OpenAlex exactly as F89, F96 and F105 counted them
 (`scripts/sprint10_f89_slice.py`), most cited first, so a stop inside the
 task cuts the least cited. Records OpenAlex does not count come last, by
 id: the release reads them too.
 
 Left out: the records of the three earlier slices still unread, which had
 no free copy (Sprint 10's F89, Sprint 11's F96, Sprint 12's F105; reading
-them waits on a copy, F90 and the hand-download list). The ledger
+them waits on a copy, F90 and the hand-download list). Not candidates
+(the fresh-eyes review of e621771, 2026-10-25): 166 GitHub repositories
+and 11 records whose access names only a local file; carded on F57. The ledger
 (`manifests/sprint13_read_ledger.json`) is the final word on who reads
 what.
 

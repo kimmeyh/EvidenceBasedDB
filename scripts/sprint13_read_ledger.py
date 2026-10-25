@@ -44,7 +44,8 @@ def fetch_reasons(log: Path) -> dict[str, str]:
     out = {}
     for line in log.read_text(encoding="utf-8").splitlines():
         if m := _FAILED.match(line):
-            out[m.group(1)] = f"no local copy: the paced fetch failed on 2026-10-25 ({m.group(2)})"
+            # The log's FAILED covers the paced arXiv fetch and the plain open-access fetch alike.
+            out[m.group(1)] = f"no local copy: the fetch failed on 2026-10-25 ({m.group(2)})"
         elif m := _NO_FREE.match(line):
             out[m.group(1)] = f"no local copy: no free copy known to OpenAlex ({m.group(2)})"
     return out

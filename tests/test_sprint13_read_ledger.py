@@ -11,7 +11,10 @@ Proven to fail by injection, 2026-10-25: with the first slice record
 added to `no_copy` in a copy of the ledger, test_no_record_is_held_twice
 went red; with one no-copy reason set back to Sprint 11's one reason for
 all ("no free copy known to OpenAlex, or the fetch failed (section 32)"),
-test_every_no_copy_record_says_why went red. Both restored.
+test_every_no_copy_record_says_why went red. Both restored. Once
+group_g01.json existed, with g02's first paper appended to it,
+test_every_reader_file_holds_only_its_groups_records named that paper.
+Restored.
 """
 from __future__ import annotations
 

@@ -10,6 +10,12 @@ showed that "low" alone hid 36 theoretical results among the empirical
 ones. `result_type` is the reader's suggestion of that reason; the
 coordinator decides it, as it decides every grade.
 
+Changed 2026-10-25, after g01 to g13 were launched: a reader writes its
+file to the scratchpad's `s13_reads` folder, and the coordinator copies
+it here, unchanged, at the review of its wave. A reader writing into the
+repository changed the tree under `scripts/run_suite.py`, which then
+reported every commit gate run INVALID. g01 to g13 wrote here directly.
+
 ---
 
 You are a first-pass reader for the Evidence Based DB (repository
@@ -23,8 +29,8 @@ For each paper, extract its text with
 `pdftotext -layout "<file>" -` (Bash), and read at least the abstract,
 introduction, results and conclusion. Then return the paper's claims in the
 JSON shape below. Write ONE file only:
-`D:\Data\Harold\github\EvidenceBasedDB\manifests\sprint13_reads\group_{GROUP}.json`.
-Write nothing else anywhere.
+`C:\Users\kimme\AppData\Local\Temp\claude\D--Data-Harold-github-EvidenceBasedDB\bfb46eb3-be71-402d-a83e-00790add862d\scratchpad\s13_reads\group_{GROUP}.json`.
+Write nothing else anywhere, and nothing at all in the repository.
 
 Rules (these are checked by script after you finish; a broken rule costs a
 rewrite):

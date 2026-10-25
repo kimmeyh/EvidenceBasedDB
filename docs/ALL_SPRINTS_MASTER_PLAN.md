@@ -517,6 +517,16 @@ and in git. Remaining items below.
   - Known limit (Sprint 10 finding): a record with no free copy, or one
     refused at reading, cannot reach `read`. Each release reports those
     separately, so the count that closes the item is visible.
+  - **Not in any slice so far (the fresh-eyes review of e621771; snapshot
+    as of 2026-10-25)**: every release's candidates came from
+    `sprint9_f80_slice.qml_candidates`, which keeps only records whose
+    access names an arXiv id or a DOI. Of 1,007 `qml` records at `seen`
+    or `screened` with no read row, Sprint 13's 806 are those; 24 are
+    earlier no-copy records; 166 are GitHub repositories; 11 name only a
+    local file that exists (among them neven-2012's QBoost paper,
+    aaronson's "read the fine print", four kawchak-2023 records). A later
+    release reads the 11 (they need no fetch) and decides how a GitHub
+    repository is read for claims, or that it is refused with a reason.
 - **From Sprint 12's release: HIGH needs a named basis (Sprint 11
   retrospective I3; team lead, 2026-10-23: "i3 as recommended"; ~30m in
   the release).** In Sprint 11 each reading script kept its own

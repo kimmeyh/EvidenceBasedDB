@@ -1981,10 +1981,15 @@ the read's own bullets follow before its apply.
 
 - **The slice** (`scripts/sprint13_f112_slice.py`, written to
   `manifests/sprint13_f112_slice.json`): plan Q1 = 1, all 806 `qml`
-  records at `seen` or `screened` with no read row, nothing being unread
-  under `hsbc-2026` or the Dirac platforms. The 24 records of the three
-  earlier slices with no free copy are left out. OpenAlex counted 417
-  (364 by arXiv DOI, 53 by journal DOI), every one at 0 or 1 citations:
+  records at `seen` or `screened` with no read row whose access names an
+  arXiv id or a DOI, nothing being unread under `hsbc-2026` or the Dirac
+  platforms. The 24 records of the three earlier slices with no free copy
+  are left out. Not candidates, and NOT read this sprint (the fresh-eyes
+  review of e621771): 166 GitHub repositories and 11 records whose access
+  names only a local file that exists; both are carded on F57. OpenAlex
+  counted 417 (364 by the record's own identifier: 362 arXiv DOIs and 2
+  journal DOIs; 53 by the journal version of an arXiv record), every one
+  at 0 or 1 citations:
   Sprint 12 took the slice down to 1. The other 389 are not counted and
   come last, by id; the release reads them too, so a stop cuts the
   uncounted first and then the least cited.
@@ -1993,7 +1998,9 @@ the read's own bullets follow before its apply.
   fetcher; 6 papers have no free copy OpenAlex knows (two closed, four
   Zenodo records), and go to the ledger's `no_copy` with that reason.
   The fetch saved 28; arXiv returned 404 for 5 (one of them
-  mahroo-2023, the paper section 46 found withdrawn).
+  mahroo-2023, the paper section 46 found withdrawn). One saved file had
+  no arXiv stamp (farrelly-2019); its first page, read by the
+  coordinator 2026-10-25, carries the record's title and authors.
 - **The ledger** (`scripts/sprint13_read_ledger.py`, written to
   `manifests/sprint13_read_ledger.json`, Sprint 11's rules): 795 records
   in 100 groups of at most 8 (g01 to g100), and 11 in `no_copy`, each with
