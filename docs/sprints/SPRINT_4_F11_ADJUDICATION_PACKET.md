@@ -30,10 +30,6 @@ the minutes-per-record number and the protocol in `.claude/model_assignment_heur
 
 ## The 18 records F10 reviewed (snapshot as of 2026-09-19; tier shown per record)
 
-Screened records added since F10 ran, **not part of the timed comparison** (adjudicate
-them afterwards if you wish; they went through the Task B door, so they are also a
-test of the door): `notton-2026-merlin-discovery-engine-photonic-hybrid`.
-
 ### 1. `arute-2019-quantum-supremacy-google-nature`
 
 - **Title**: Quantum supremacy using a programmable superconducting processor

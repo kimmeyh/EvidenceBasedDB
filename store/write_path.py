@@ -39,7 +39,8 @@ _HIGH_LITERAL = re.compile(r"""["']high["']""")
 # The fresh-eyes review of cec6020: matching the bare name let the import line alone pass, so a CALL is required,
 # of low_grade or of the name it is imported as. Known limits, not closed: a LOW built by concatenation with no
 # quoted "low" ('LO' + 'W', or 'LOW'.lower()) passes; a reading script that compares a literal 'low' (a
-# count) is refused.
+# count) is refused. The fresh-eyes review of f782e53 found two more, also not closed: "low_grade(" inside a
+# string or a docstring counts as a call, and so does a call to a low_grade the script defines for itself.
 _LOW_LITERAL = re.compile(r"""Started LOW|["']low["']""")
 _LOW_ALIAS = re.compile(r"\blow_grade\s+as\s+(\w+)")
 

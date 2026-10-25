@@ -124,6 +124,17 @@ this project keeps having to replace with a step.
   alone had passed), and section 49 no longer claims the concatenation
   case is closed. Section 51's three false claims retracted. Injections
   run (Issue #137)
+- **feat**: F112 half 2 (Sprint 13 Task F, 2026-10-25): g51 to g100 read
+  and applied, 1350 assertions from 395 records (462 HIGH, 888 LOW); g82's
+  duplicate id renamed; one assertion dropped with its reason.
+  `tests/test_sprint13_reading.py` lands, with the garbled-figure guard
+  and the vendor LOW case, each proven red by injection (Issue #137)
+- **fix**: the fresh-eyes review of f782e53 (2026-10-25): 14 more of half
+  1's HIGH are LOW (8 theorems quoted only from an abstract, 5 measured
+  "limits", 1 cited definition) and 7 of g51 to g69's; 7 limits lose a
+  measured clause; four flat exponents said in words; the garble guard no
+  longer flags "(H2)" or "(B0)"; two write-path bypasses recorded, not
+  closed; "7 of the 113" corrected to 8 (Issue #137)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

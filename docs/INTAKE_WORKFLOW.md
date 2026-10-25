@@ -2097,3 +2097,91 @@ the read's own bullets follow before its apply.
   389 uncounted records (no OpenAlex count at selection) sort after every
   counted one in their group, not among the zeros, and a slice's
   uncounted row no longer hides another slice's count.
+- **Corrections after the fresh-eyes review of f782e53** (snapshot
+  2026-10-25; written before the apply that makes them). The review found
+  the first correction pass still uneven, and the coordinator checked
+  each case in the text layer before acting:
+  - **14 more of half 1's HIGH are LOW** (now 502 HIGH, 858 LOW):
+    - 8 theorems whose quotes are only the abstract's or introduction's
+      "we prove", "we show" or "we find": `pbtmax-breaks-classical-threshold`,
+      `damped-oscillator-bqp-hard`, `vqa-constrained-loss-global-minimum`,
+      `classical-verification-sparse`, `not-random-generatable`,
+      `kcm-succinctness-incomparable`, `kcm-fidelity-intractable`,
+      `robust-training-query-cost`. The rule is now applied the same way
+      everywhere: a theorem's own statement, formal or informal, quoted
+      with its conditions is HIGH; an abstract's sentence about it is not.
+      By that rule `coyle-density-qnn-gradient-overhead` (Corollary 1),
+      `shah-quantum-kmeanspp-guarantee` (Theorem 1, checked in the text),
+      `qgp-no-gp-gaussian-pauli`, `graph-stabilizer-code-bijection` and
+      `shadow-advantage-theorem` keep HIGH.
+    - 5 "stated limits" that are measured results: `qenn-stated-limitations`,
+      `radar-cost-limit`, `hyperparameter-sensitivity`,
+      `quso-qaoa-not-near-optimal`, `vdd-struggles-tfim-disordered`.
+    - `qaoa-hybrid-definition`, a definition that lecture notes cite: HIGH
+      is never given to a cited claim. The review did not find it; the
+      test that bars it did, the first time the held test file ran.
+  - **4 half 1 limits keep HIGH without their measured clause**
+    (`qpinn-limits-transfer-generality`, `variational-symmetry-and-depth-limits`,
+    `preliminary-evidence-limit`, `singh-pokhrel-preliminary`): the
+    clause's quote is dropped or cut to the limit, and the value trimmed.
+  - **Values.** `open-problem-limit` no longer says "unknown ... matrix";
+    `hamiltonian-paths-4n-minus-6` no longer names a proof by induction;
+    four flat-printed exponents are said in words (`mm-vqe-ising-speedup`
+    N squared, `lejarza-clustering` N cubed to N squared log N,
+    `galvis-gpq-classical-baseline` M cubed, `fonseca-vqe-complexity` k
+    times N cubed and N to the 7th), with "printed flat in the text
+    layer"; "the exponent is lost" is kept only where the flat print has
+    more than one reading (`tqnn-kjunta-query-complexity`'s "n22k").
+  - **The garbled-figure guard's pattern** flagged "(H2)" and "(B0)", a
+    molecule and a field; a lower-case letter and digit now count only
+    inside O(...). "R2" and "D2-sampling" are left on purpose: each is
+    the field's usual flat spelling of a name (R squared, D squared
+    sampling), not a figure. Proven red again by injection, 2026-10-25.
+  - **Corrected: "At least 7 of the 113"** above: 8 say the whole paper
+    was read.
+  - **`store/write_path.py` has two more known bypasses**, recorded in its
+    comment and not closed: `low_grade(` inside a string or a docstring
+    counts as a call, and so does a call to a `low_grade` the script
+    defines for itself.
+  - **Half 2's g51 to g69, by the same rules**: 7 more out of HIGH
+    (`caro-classical-verification-parity` to `THEORY_LOW`; the measured
+    `galvis-variance-distant`, `galvis-time-parameter-sensitivity`,
+    `cimini-limits-quantumness-simulability`, `qopf-hardware-limits`,
+    `chaudhary-mode-collapse`; and `photonic-classifier-limit-below-10-photons`,
+    whose limit is its measured drop, so it keeps both quotes as a
+    measured result); 3 trimmed (`quantumgep-quantum-chemistry-limit`,
+    `qite-classically-simulable`, `altgraph-mse-limit`); 3 values fixed
+    (`oliveira-setup-simulator-two-devices` gains its simulator,
+    `qcdge-calculation-levels` loses an orphan quote,
+    `halder-rbm-ansatz-accuracy` names what "the accuracy" is).
+  - **The LOW test was wrong for vendors.** A vendor's result starts
+    MODERATE and is downgraded one level through `low_grade("vendor
+    claim")`, so its reason does not start "Started LOW". The test now
+    holds each vendor LOW to that text and every other LOW to "Started
+    LOW" (proven red by injection, 2026-10-25).
+- **Half 2, the read (g51 to g100, 395 records; written before its
+  apply).** The same readers and the same rules as half 1, with the
+  corrections above applied throughout. The dry run of 2026-10-25: 1350
+  assertions from 395 records (2 with none: `beggs-2023` and
+  `yusupov-2023` study quantum graphs in mathematics, with no computing
+  or learning workload), 462 HIGH and 888 LOW, contexts 958 `qml`, 340
+  `qc`, 37 `ml` and 15 `world`; every quote verbatim in its source, every
+  figure in its own quotes, no value carrying a flat-printed figure.
+  - **The coordinator's tables, half 2's share**: 127 values trimmed, 26
+    quote edits, 11 added quotes, 9 contexts fixed (a reader wrote
+    "method" or "setup"), 57 statements about the field, 132 theoretical
+    results kept LOW with their cause, 51 measured results whose words
+    name a proof or a bound, each with why.
+  - **What a read covered.** 315 records are `partial` with the sections
+    read; 80 `full`. 46 files are another version or title of the
+    record's paper, named in the read's `version_note`.
+  - **One id renamed.** g65 and g82 both returned
+    `noiseless-simulation-only`; g82's file copy names it
+    `nagano-noiseless-simulation-only`, as g42's was renamed in half 1.
+  - **One assertion not entered.** `qwiener-advantage-open` (g56): its
+    quotes do not hold the open question its value states (`DROP`).
+  - **Reader-flagged figures and conflicts** (g88 Renaud's lost figures,
+    g90 Sanavio's and Schetakis's, g91 Shaydulin's and Shang's, g94
+    Tibaldi's inconsistency, g95 and g96 Wang's conflicts, g98 Yang's,
+    g100 Ziiatdinov's) stay in the reader's inference; where one reached
+    a value, the value is trimmed or the figure said in words.
