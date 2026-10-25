@@ -26,8 +26,10 @@ SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 # attribute reference is caught too (fresh-eyes review, 2026-10-21);
 # `insert_verified_assertion` does not match.
 # Since Sprint 13 Phase 5.3 (team lead, 2026-10-25: "q2 fix now before reading any more papers") the rule reads
-# the parsed code (ast), not its text: a name in a string, a docstring or a comment is not code, and a "#" inside a
-# string hides nothing. That closes the three bypasses the fresh-eyes reviews of f782e53 and ce2412e found.
+# the parsed code (ast), not its text: a comment is not code, a call is a call node (a "low_grade(" in a string is
+# not one), and a "#" inside a string hides nothing. That closes the three bypasses the fresh-eyes reviews of f782e53
+# and ce2412e found. Names and quoted grades inside string and bytes constants still count, as the text rule
+# counted them (the reviews of ed53933, 6173bad and b6cdcd0), so a docstring naming insert_assertion is refused.
 _DIRECT_WRITE = re.compile(r"^(insert|sync)_assertion$")
 _TOKEN_NAME = re.compile(r"^Verified$")
 _WRITES = re.compile(r"^(insert|sync)_(verified_)?assertion$")
@@ -46,6 +48,8 @@ _EDIT_TABLE = re.compile(r"^(VALUE|QUOTE|CONTEXT)_[A-Z_]+$")
 # concatenation with no quoted "low" ('LO' + 'W', or 'LOW'.lower()) passes; a reading script that compares a
 # literal 'low' (a count) is refused.
 _GRADING = "store.grading"
+# A grade quoted inside a string (exec("g='high'")), as the 1980406 text rule read it (the review of b6cdcd0).
+_QUOTED = re.compile(r"""["'](high|low)["']""")
 
 
 class _Code:
@@ -80,6 +84,8 @@ class _Code:
                     self.names.add(node.asname)
             elif isinstance(node, ast.Constant) and isinstance(node.value, str):
                 self.strings.append(node.value)
+            elif isinstance(node, ast.Constant) and isinstance(node.value, bytes):
+                self.strings.append(node.value.decode("latin-1"))  # the review of b6cdcd0: eval(b'...') too
             if isinstance(node, ast.ImportFrom):
                 for alias in node.names:
                     local = alias.asname or alias.name
@@ -151,10 +157,12 @@ def script_problems(text: str, name: str = "") -> list[str]:
     named = code.names | {w for s in code.strings for w in re.findall(r"[A-Za-z_]\w*", s)}
     writes = any(_WRITES.match(n) for n in named)
     if "reading" in name and name not in GRADING_LEGACY and writes:
-        if not code.calls_grading("high_grades") or "high" in code.strings:
+        if not code.calls_grading("high_grades") or "high" in code.strings \
+                or any("high" in _QUOTED.findall(s) for s in code.strings):
             out.append("grades HIGH outside store.grading (a reading script names each HIGH's basis through "
                        "high_grades and grade, and holds no literal \"high\")")
         if not code.calls_grading("low_grade") or "low" in code.strings \
+                or any("low" in _QUOTED.findall(s) for s in code.strings) \
                 or any("Started LOW" in s for s in code.strings):
             out.append("grades LOW outside store.grading (a reading script names each LOW's reason through "
                        "low_grade, and holds no \"Started LOW\" text of its own)")

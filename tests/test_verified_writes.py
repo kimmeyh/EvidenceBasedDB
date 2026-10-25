@@ -146,6 +146,8 @@ def test_new_scripts_write_only_through_the_checked_path():
     # the fresh-eyes review of 6173bad: a dotted name or a call inside a string
     ("eval('store.ingest.insert_assertion')(conn, a)", "without the quote check"),
     ("exec('insert_assertion(conn, a)')", "without the quote check"),
+    # the fresh-eyes review of b6cdcd0: bytes constants
+    ("eval(b'insert_assertion')(conn, a)", "without the quote check"),
     ("insert_verified_assertion(conn, a, v)\nVALUE_REPLACE = {'x': 'a new value'}\n"
      "# require_edit_basis( is only mentioned here", "without require_edit_basis"),
 ])
@@ -180,6 +182,9 @@ _GRADED = ("from store.grading import grade, high_grades, low_grade\n"
     ("sprint12_reading.py", "insert_paper(conn, p)\nGRADE = {'proved': 'high'}\n", False),  # writes no assertion
     # the fresh-eyes review of ed53933: a write named as a string still makes the script a writer
     ("sprint12_reading.py", "getattr(d, 'insert_verified_assertion')(conn, a, v)\nGRADE = {'x': 'high'}\n", True),
+    # the fresh-eyes review of b6cdcd0: a grade quoted inside a string, or a bytes literal
+    ("sprint12_reading.py", _GRADED + "exec(\"g = 'high'\")\n", True),
+    ("sprint12_reading.py", _GRADED + "x = b'high'\n", True),
     ("sprint12_f102_intake.py", "insert_verified_assertion(conn, a, v)\ncertainty='high'\n", False),  # not reading
     ("sprint11_reading.py", "insert_verified_assertion(conn, a, v)\nGRADE = {'proved': 'high'}\n", False),
 ])
@@ -229,6 +234,7 @@ def test_the_grading_helper_refuses_high_without_a_named_basis():
     ("sprint13_reading.py", _GRADED + "def low_grade(reason):\n    return my_tuple(reason)\n", True),
     ("sprint13_reading.py", _GRADED + "low_grade = lambda reason: my_tuple(reason)\n", True),
     ("sprint13_reading.py", _GRADED + "x = ('#', 'Started LOW: hidden after the hash')\n", True),
+    ("sprint13_reading.py", _GRADED + "exec(b\"g = 'low'\")\n", True),  # the review of b6cdcd0
     ("sprint13_reading.py", "import store.grading as g\nfrom store.grading import grade, high_grades\n"
      "HIGH = high_grades({'a1': ('proved result', 'Theorem 2, p.6')})\n"
      "c = grade('a1', HIGH, otherwise=g.low_grade('measured result'))\ninsert_verified_assertion(conn, a, v)\n", False),

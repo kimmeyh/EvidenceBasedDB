@@ -87,8 +87,14 @@ def working_tree(repo: Path) -> str:
 DOC_GUARDS = ("tests/test_no_em_dashes.py", "tests/test_changelog_currency.py", "tests/test_sprint_documents.py",
               "tests/test_us_english.py")
 DOC_SUFFIXES = (".md", ".json")
-# Run whenever a manifest changes: test_intake reads every manifests/*.json (the fresh-eyes review of b0b41a3).
-MANIFEST_GUARDS = ("tests/test_intake.py",)
+# Tests that read every file of a kind, so no file name ties them to the one that changed (the fresh-eyes reviews of
+# b0b41a3 and b6cdcd0). A manifest: test_intake reads every manifests/*.json, each read-ledger test every reader
+# file. A script: these scan every scripts/*.py. A test file: test_guard_discipline reads every test.
+MANIFEST_GUARDS = ("tests/test_intake.py", "tests/test_sprint11_read_ledger.py", "tests/test_sprint12_read_ledger.py",
+                   "tests/test_sprint13_read_ledger.py", "tests/test_reader_prompts.py")
+SCRIPT_GUARDS = ("tests/test_verified_writes.py", "tests/test_schema.py", "tests/test_store_durability.py",
+                 "tests/test_qpu_balance_not_stored.py")
+TEST_GUARDS = ("tests/test_guard_discipline.py",)
 # Files every test depends on, so a change to one runs the full suite.
 EVERYTHING = ("tests/conftest.py", "store/__init__.py", "pytest.ini", "pyproject.toml", "setup.cfg")
 
@@ -127,6 +133,8 @@ def targeted_tests(repo: Path, changed: list[str]) -> list[str] | None:
     tests = {p: (repo / p).read_text(encoding="utf-8", errors="replace")
              for p in (f"tests/{f.name}" for f in sorted((repo / "tests").glob("test_*.py")))}
     picked = {p for p in changed if p in tests}
+    if picked:
+        picked.update(TEST_GUARDS)
     scripts = {f.stem: f.read_text(encoding="utf-8", errors="replace")
                for f in sorted((repo / "scripts").glob("*.py"))}
     for path in changed:
@@ -145,6 +153,8 @@ def targeted_tests(repo: Path, changed: list[str]) -> list[str] | None:
             picked.update(DOC_GUARDS)
         if path.startswith("manifests/"):
             picked.update(MANIFEST_GUARDS)
+        if path.startswith("scripts/") and path.endswith(".py"):
+            picked.update(SCRIPT_GUARDS)
     picked &= set(tests)  # a deleted test file is not run
     return sorted(picked) or None
 

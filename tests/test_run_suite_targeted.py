@@ -84,6 +84,13 @@ def test_a_document_change_in_this_repository_runs_the_spelling_and_dash_guards(
     # the fresh-eyes review of b0b41a3: test_intake reads every manifest. Proven to fail by injection,
     # 2026-10-25: with the manifests/ branch removed from targeted_tests, a new manifest picked no test_intake.
     assert "tests/test_intake.py" in rs.targeted_tests(ROOT, ["manifests/a_new_manifest.json"])
+    # the fresh-eyes review of b6cdcd0: the other tests that read every file of a kind. Proven to fail by
+    # injection, 2026-10-25: with each of the three branches removed in turn, its assertion went red.
+    reader_file = rs.targeted_tests(ROOT, ["manifests/sprint13_reads/group_g09.json"])
+    assert "tests/test_sprint13_read_ledger.py" in reader_file, reader_file
+    script = set(rs.targeted_tests(ROOT, ["scripts/sprint13_read_ledger.py"]))
+    assert set(rs.SCRIPT_GUARDS) <= script, script
+    assert "tests/test_guard_discipline.py" in rs.targeted_tests(ROOT, ["tests/test_reader_prompts.py"])
 
 
 def test_a_new_test_file_runs_itself_and_conftest_runs_everything(repo):

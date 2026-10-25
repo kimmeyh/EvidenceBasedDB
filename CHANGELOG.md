@@ -177,6 +177,14 @@ this project keeps having to replace with a step.
   still passed; every identifier inside a string now counts. A changed
   manifest did not run `test_intake`, which reads every manifest; it does
   now. Each proven red. Every script keeps its verdict (Issue #137)
+- **fix**: the fresh-eyes review of b6cdcd0 (2026-10-25): bytes literals
+  and a grade quoted inside a string (`exec("g = 'high'")`, `b'high'`)
+  still passed the write-path rule though the 1980406 text rule refused
+  them; both count now. `--changed` now also runs the tests that read
+  every file of a kind: the read-ledger tests and the reader-prompt guard
+  on a manifest change, the four script scanners on a script change, and
+  the guard-discipline test on a test change. Each proven red; every
+  script keeps its verdict (Issue #137)
 - **process**: No reading budget (team lead, 2026-10-25, at Manual
   Validation: "remove the budget ... ensure that all future paper reads
   have no budget"). F57's card drops its per-record rate; the new reader
