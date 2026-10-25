@@ -13,7 +13,227 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-21 onward (Sprint 11, in progress)
+### 2026-10-23 onward (Sprint 12, in progress)
+
+- **process**: Sprint 12 retrospective, 2026-10-24 (team lead: "q1 1 q2
+  1 q3 1"). I1: `run_suite.py` records the store's stamp at each PASSED
+  run that covered the store's tests, and `--changed` adds every
+  `live_store` test file when the store changed since. I3: `intake.make_id`
+  slugs a family that drops to nothing with its stop words kept (the
+  first author "An" gave an id starting with "-"); every earlier id is
+  unchanged, a non-alphanumeric start is refused, and the bulk manifest
+  pins the known id. I2 carded on F57 from Sprint 13's release. Both
+  guards proven by injection (PR #122)
+- **fix**: the review of 7b65d12: a `--changed` run with a pytest filter
+  (`-k`, `-m`) no longer records the store as checked, since the filter
+  may deselect the store's tests; proven by injection (PR #122)
+- **docs**: Sprint 12 retrospective, summary and Development Team draft,
+  2026-10-24; Copilot review requested on #122 (PR #122)
+- **fix**: F105 and F104 (Sprint 12 Tasks G and F) third apply,
+  2026-10-23: the fresh-eyes review of 5744e2d. Four cuts that lost a
+  condition restored from their source sentences (one value had said a
+  paper ran only on a simulator; it ran on hardware). 18 HIGH grades
+  moved to LOW: 14 statements about the field, 4 conclusions from the
+  paper's own measurements; a field statement now stores its own
+  reason. 11 values trimmed or re-quoted. 42 records updated; a fourth
+  apply writes nothing. HIGH 559. A CI test now checks every replaced
+  value's signs against its quotes. The 5744e2d entry's "2 quotes
+  corrected" were 2 quotes dropped (INTAKE_WORKFLOW.md section 47)
+  (Issue #129 / PR #122)
+- **feat**: F105 and F104 (Sprint 12 Tasks G and F, the reads,
+  2026-10-23): all 53 ledger groups read by first-pass readers and
+  read again by the coordinator (`scripts/sprint12_reading.py`): 110
+  values replaced, 18 given their source sentence, 2 quotes corrected,
+  7 assertions dropped with their reasons. HIGH through `high_grades`
+  only, each of 577 ids with its basis. Entered: 74 assertions from
+  Task F's 20 records and 1,283 from Task G's 393 (9 bear on no
+  context); 404 records to `read`; 8 with no copy keep their tier with
+  the reason. A second apply writes nothing.
+  `tests/test_sprint12_reading.py`, each guard proven to fail by
+  injection (INTAKE_WORKFLOW.md section 47) (Issue #129 / PR #122)
+- **feat**: F105 (Sprint 12 Task G, second part, 2026-10-23): the slice
+  (`scripts/sprint12_f105_slice.py`, 400 `qml` records by OpenAlex
+  citations), the downloads wrapper with `--session-count` and a
+  heartbeat (4 saved, 2 withdrawn on arXiv), and the one read ledger
+  (`scripts/sprint12_read_ledger.py`: 53 groups, 413 records; Task E's
+  pages as read by the coordinator; `tests/test_sprint12_read_ledger.py`).
+  The Sprint 12 reader prompt asks a "high" suggestion for its basis
+  (INTAKE_WORKFLOW.md section 47) (Issue #129 / PR #122)
+- **fix**: F104 (Sprint 12 Task F) second apply, 2026-10-23: the
+  fresh-eyes review of f99139e. The 1,397 held papers the list links
+  get a `found_via` route naming it; the DOI form of an arXiv id counts
+  as held; DOIs match whole, not as substrings; a legacy Nature id is no
+  longer turned into a wrong DOI; 25 links carried, not 27. The tests
+  check every listed id is held and routed, and no longer pass on an
+  empty list (INTAKE_WORKFLOW.md section 46) (Issue #128 / PR #122)
+- **fix**: F103 (Sprint 12 Task E) fourth apply, 2026-10-23: the
+  fresh-eyes review of 77beaa0. Section 44's third-apply bullet
+  corrected (the pages' order is open; the PyZX error was Part 2's);
+  Part 1's value scoped to "the first rows" and the two depth-lowering
+  runs named as the page names them; the top-two counts' reason states
+  why it is not upgraded (Issue #127 / PR #122)
+- **feat**: F104 (Sprint 12 Task F, F98's first release, 2026-10-23):
+  Roadmap-to-QML read at commit a239747648; 1,418 arXiv ids listed, 21
+  new entered at `seen` under `qml` through the door, 20 with a free
+  copy (2303.16318's PDF returned 404); one malformed link (2108.0131,
+  held as 2108.01311); 27 other links, 9 with a DOI, carried to the next
+  release in `manifests/sprint12_f104_roadmap.json`
+  (INTAKE_WORKFLOW.md section 46) (Issue #128 / PR #122)
+- **fix**: F103 (Sprint 12 Task E) third apply, 2026-10-23: the
+  fresh-eyes review of c80c195. Grades follow the store's precedent (the
+  author's own blog measurements LOW; depth 95 MODERATE, upgraded for the
+  organiser's scoring; placings HIGH); PyZX recorded as lengthening the
+  circuit; "top five" no longer called earlier than the ranking; the
+  organiser's top-two CX counts split into their own assertion; the
+  repository recorded as a white paper with no code. The script syncs a
+  held record's disposition; the test checks each disposition, citation
+  and the repository record (INTAKE_WORKFLOW.md section 44)
+  (Issue #127 / PR #122)
+- **feat**: Sprint 11 retrospective I3 (Sprint 12 Task G, first part,
+  2026-10-23): `store/grading.py` grades HIGH only with a named basis
+  (setup, scope, definition, proved result, stated limit) and its reason,
+  and `store/write_path.py` refuses, before the backup, a new reading
+  script that writes assertions without it or with a literal "high" of
+  its own. Intake section 45. `tests/test_verified_writes.py` (injections
+  run) (Issue #129)
+- **feat**: F103 (Sprint 12 Task E, 2026-10-23): PoJen Wang's two posts
+  on the Classiq Quantum Circuit Challenge (Part 1, a field guide to
+  compilers; Part 2, his depth-95, 272-CNOT phase oracle) and Classiq's
+  wrap-up, entered as reference records at `read` from saved copies, with
+  5 assertions; the repository the team lead named
+  (wangy8205165/Quantum-NeuralNetwork-WhitePaper) entered and linked to
+  no paper. The two parts are stated as a series in their citations and
+  dispositions, not linked: no link type fits (a change from the plan).
+  Store as of 2026-10-23: 2,313 papers, 1,612 assertions. A second apply
+  added the applicability the first left out, found by the full suite
+  before the commit. Intake section 44;
+  `scripts/sprint12_f103_intake.py`; `tests/test_sprint12_f103.py`
+  (injections run) (Issue #127)
+- **feat**: F102 second apply (Sprint 12 Task C, 2026-10-23), from the
+  fresh-eyes review of 5bcafe0. F111's result, which the first apply
+  missed (Phase 2's own validation file still said "No result yet"), is
+  entered as a seventh reference record with 3 SIM assertions: the
+  CVQBoost-KNN lane under Loke et al.'s protocol is 0.051 below the
+  published 0.8108, the stable HGB beats it under both protocols, and the
+  protocol moves HGB but not measurably the lane. Five values corrected
+  to carry what their source says (F110, F153 twice, F154, F114), and
+  F151's measured iteration count moved out of the inferred part. The
+  test checks certainty, reasons and context, and the quote count is
+  exact (99). Intake section 43 (Issue #125)
+- **fix**: F100 follow-up (Sprint 12 Task B, 2026-10-23), from the
+  fresh-eyes review of fdedff9. A test's fake pdftotext version stayed in
+  the version reader's cache and keyed every later quote check in the
+  run; the fakes now patch the reader, and a test proves a new version
+  extracts again. The cache key holds pdftotext's options too, each
+  writer gets its own temporary file, and the text is stored as bytes.
+  `run_suite.py --changed` counted a deleted or renamed file as nothing,
+  dropped quoted paths and test helpers, and said "SUITE SKIPPED" with
+  exit 0 when nothing was picked; it now reads `git status -z
+  --no-renames`, searches every changed name, follows a `store/` module
+  into the scripts that import it, and runs the full suite for a shared
+  file or an empty pick. A unit test for F97's `existing()`. Injections
+  run (Issue #124)
+- **fix**: F101 fourth and fifth applies (Sprint 12 Task A, 2026-10-23),
+  from the fresh-eyes review of 6d2bed4. The Elor value now says
+  balancing beat threshold tuning for both MLP and SVM (p.4, Table 3 on
+  p.5); McDermott's value keeps "with respect to model-dependent
+  parameters"; Liu's says "slightly", which the abstract's "real but
+  small" supports, with the ECE figures; De Lorenzis's anchor is
+  section 3. Kakavand's and De Lorenzis's evidence text corrected, and
+  four ".;" joins this script wrote removed. Each sync now names what it
+  changed, and four earlier syncs get a history note. Intake section 42
+  (Issue #123)
+- **feat**: F100 (Sprint 12 Task B, 2026-10-23): the full suite runs in
+  199 s with a warm text cache (602 s cold), from 781 s; 1,202 tests
+  passed in each timed run (snapshot 2026-10-23). The cause was
+  `tests/conftest.py` clearing the PDF text cache before every unmarked
+  test, so each quote check ran pdftotext again. `store/quotes.py` now
+  keeps a disk cache under the store folder, keyed by the file's SHA-256,
+  the layout mode and the pdftotext version, and a `READ_GUARD` hook
+  takes the place of the cache clearing, so an unmarked test still cannot
+  read a local file. The F97 second apply no longer calls the network for
+  records already held (79 s to 0.04 s). `scripts/run_suite.py --changed`
+  runs the tests for what changed. `tests/test_f100_text_cache.py`,
+  `tests/test_run_suite_targeted.py` (injections run) (Issue #124)
+- **feat**: F102 (Sprint 12 Task C, 2026-10-23): Phase 2's Sprint 28
+  results entered by the inbound path. Six documents read at Phase 2
+  commit 10086da through `git show` (F151, F152, F153, F110, F114, F154),
+  one reference record each at `read` with its blob's SHA-256, and 9 SIM
+  assertions, every quote checked with its value in the write path; no
+  relation linked (ADR-0004 A8 (b)). Intake section 43;
+  `scripts/sprint12_f102_phase2_sprint28.py`; `tests/test_sprint12_f102.py`
+  (injections run) (Issue #125)
+- **fix**: F101 follow-up (Sprint 12 Task A, 2026-10-23), from the
+  fresh-eyes review of 5466953. 7 Sprint 5 contexts held a passage with
+  no quote marks, which no check could read; each is re-quoted from its
+  PDF, and 4 values the source did not fully support are corrected
+  (Elor 2022, De Lorenzis 2026, Kakavand 2026, Liu 2026). The quote guard
+  now also fails on a context with no parsed quote. Three free arXiv
+  copies saved; every local copy's SHA-256 in `evidence` (F48's test found
+  Lenat's missing). The Cyc copyright anchor is p.146; the preregistration
+  is read at commit 7261e4e. `store.citations` also unescapes DataCite's
+  venue, author names and Crossref's publisher. Intake section 42, third
+  apply (injections run) (Issue #123)
+- **docs**: F106 (Sprint 12 Task D, 2026-10-23): ADR-0005 amendment A11.
+  A source link may rest on the team lead's recorded decision when no
+  source states it; its evidence names who, the date, where it is
+  recorded, and says the link rests on that decision. 1 such link of 170
+  `code-of` links as of 2026-10-23 (the NVIDIA auto-ontology-eval
+  repository, Sprint 11 Q1 = 2). No restatement of field 6 in
+  `CLAUDE.md` or `docs/` needed a change. `tests/test_source_link_evidence.py`
+  checks that every stored link has evidence and that a decision-backed
+  one names all A11 asks; a source's own sentence cannot be told apart
+  mechanically, so that stays an intake check (injections run) (Issue #126)
+- **fix**: F101 (Sprint 12 Task A, 2026-10-23): HTML entities out of the
+  store. `store.citations` now unescapes Crossref and DataCite titles,
+  subtitles and venues; the 4 records that stored "&amp;" (Jeffery 2024,
+  Dunjko 2018, Pande 2020, Yang 2023; 6 fields) corrected, ids kept.
+  Every stored quote now parses: the Cyc quote cut at its inner
+  `"split" (` and 3 Sprint 1 and 2 quotes with no anchor (found by
+  running the stray-quote check over the whole store; section 41 had
+  counted 2) re-quoted from their sources with anchors, values unchanged.
+  Lenat and Marcus 2023's free arXiv copy saved and linked. Intake
+  section 42; `scripts/sprint12_f101_corrections.py`;
+  `tests/test_sprint12_f101.py` (injections run) (Issue #123)
+
+- **chore**: Sprint 12 opened (2026-10-23). The team lead merged PR #113
+  into develop (21e9550) and PR #121 to main (d83a623); `sprint-11`
+  tagged on d83a623; branch `feature/20261023_Sprint_12` cut from the
+  Sprint 11 branch (6.6 carry-forward). Phase 1.1 reconciliation: every
+  day with commits since 2026-10-21 has entries; two commits lacked their
+  own, added below under Sprint 11 (a87112a, 53cfe45)
+- **docs**: Backlog refinement 2026-10-23 (Sprint 12 Phase 1.2 to 1.4):
+  Sprint 11's shipped cards pruned by hand (F91 to F94, F96, F97); F101
+  carded from the retrospective's Category 13 (Pande 2020's "&amp;", the
+  Cyc quote); F102 carded from Phase 2's Sprint 28 results, read at
+  10086da; snapshots refreshed on F57 (1,847 unread), F95 (0 unnamed
+  PDFs) and F98 (1,402 ids, about 21 new). Phase 1.3: 0 re-checks due;
+  schema and ADRs unchanged by Sprint 11
+- **docs**: F95's next release names the Classiq Quantum Circuit Challenge
+  result (team lead, 2026-10-23): PoJen Wang's two-part blog (the
+  compiler field guide and the depth-95 write-up) and Classiq's wrap-up
+  page as three web source records with local copies; no
+  repository record (none is linked); the LinkedIn posts not entered
+- **docs**: Sprint 12 scope selected (team lead, 2026-10-23): F101, F95,
+  F98, F100, F102, F57 at 400 records and F51; released copies F103 (F95),
+  F104 (F98) and F105 (F57). Plan drafted
+  (`docs/sprints/SPRINT_12_PLAN.md`); F101 widened at planning from 1
+  record to the 4 that store "&amp;". Approved as amended (2026-10-23):
+  Q1 = 1 (400 from F57's ranking, others on top), Q2 = 2 (F51 stays
+  HOLD), Q3 = 1 (F106, the ADR-0005 amendment, carded and added)
+
+### 2026-10-21 to 2026-10-23 (Sprint 11, PR #113, merged to develop 2026-10-23 and to main via PR #121 the same day; tagged sprint-11)
+
+- **docs**: `docs/sprints/SPRINT_11_SUMMARY.md` written (with `##
+  Actuals`); master plan's Past Sprint Summary and Last Completed Sprint
+  rolled for Sprint 11; `CHECKLIST-Phase2-pre.md` Sprint 11 section
+  (2026-10-23, 53cfe45). Entry added at Sprint 12 Phase 1.1; the commit
+  carried none
+
+- **docs**: Sprint 11 retrospective recorded (2026-10-22, a87112a): team
+  lead feedback, the feedback on the prompt's new wording, improvements
+  I1a to I5 with root causes, the hand-download list order confirmed
+  (Q2 = 1). Entry added at Sprint 12 Phase 1.1; the commit carried none
 
 - **process**: Sprint 11 retrospective I3 to I5 disposed (2026-10-23). I4:
   every in-place edit of a repository file uses the Edit tool;

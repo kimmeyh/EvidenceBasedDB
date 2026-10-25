@@ -84,19 +84,29 @@ def _ascii(s: str) -> str:
     return unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
 
 
-def _slug(text: str, words: int) -> str:
-    toks = [t for t in re.sub(r"[^a-z0-9]+", " ", _ascii(text).lower()).split() if t not in _STOP]
+def _slug(text: str, words: int, stop: bool = True) -> str:
+    toks = [t for t in re.sub(r"[^a-z0-9]+", " ", _ascii(text).lower()).split() if not stop or t not in _STOP]
     return "-".join(toks[:words])
 
 
 def make_id(md: citations.Metadata) -> str:
     """Deterministic id from the source of record: <family>-<year>-<five title words>;
-    for a repository <owner>-<name>-github-repo."""
+    for a repository <owner>-<name>-github-repo.
+
+    Sprint 12 retrospective I3: the first author "An" (arXiv:2405.13582)
+    was dropped as a stop word, so the id began with "-". A family that
+    slugs to nothing is now slugged with its stop words kept; every id that
+    was derived before stays the same. An id that still does not begin
+    with a letter or digit is refused."""
     if md.kind == "github":
         owner, _, name = md.ident.partition("/")
-        return f"{_slug(owner, 3)}-{_slug(name, 3)}-github-repo"
-    family = md.authors[0].split(",")[0] if md.authors else (md.extra.get("publisher") or "unattributed")
-    return f"{_slug(family, 2)}-{md.year or 'nd'}-{_slug(md.title, 5)}"
+        rid = f"{_slug(owner, 3)}-{_slug(name, 3)}-github-repo"
+    else:
+        family = md.authors[0].split(",")[0] if md.authors else (md.extra.get("publisher") or "unattributed")
+        rid = f"{_slug(family, 2) or _slug(family, 2, stop=False)}-{md.year or 'nd'}-{_slug(md.title, 5)}"
+    if not re.match(r"[a-z0-9]", rid):
+        raise ValueError(f"derived id {rid!r} does not begin with a letter or digit; give the entry an id")
+    return rid
 
 
 def _parse_applicability(items) -> list[tuple[str, str]]:

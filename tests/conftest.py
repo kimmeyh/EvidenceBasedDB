@@ -138,18 +138,25 @@ def _refuse_local_only(event: str, args: tuple) -> None:
 
 @pytest.fixture(autouse=True)
 def _local_only_resources(request):
-    """Unmarked tests see the machine CI sees. The quote caches are cleared
-    first, so a PDF read by an earlier live_store test cannot hide the read."""
+    """Unmarked tests see the machine CI sees. A source read through
+    `store.quotes` is refused before its cache is consulted, so a PDF read
+    by an earlier live_store test cannot hide the read. (Until F100 the
+    caches were emptied here instead, so every live test extracted its PDFs
+    again: about 10 of the suite's 13 minutes.)"""
     if request.node.get_closest_marker("live_store") is not None:
         yield
         return
-    quotes.pdf_text.cache_clear()
-    quotes.html_text.cache_clear()
+
+    def refuse(path):
+        raise FileNotFoundError(f"{path}: a source read needs @pytest.mark.live_store (Sprint 9 retrospective I7)")
+
+    quotes.READ_GUARD = refuse
     _local_only["refuse"] = True
     try:
         yield
     finally:
         _local_only["refuse"] = False
+        quotes.READ_GUARD = None
 
 
 @pytest.fixture(autouse=True)

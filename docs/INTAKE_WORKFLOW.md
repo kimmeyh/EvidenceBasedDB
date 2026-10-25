@@ -1268,3 +1268,536 @@ Written before the apply below.
   (F 125, G 649), F91 (6), F92 (18, after the fix above) and F93 (4).
   F92's and F93's values name "Phase 2", which the reading script's
   check never met; that is why the "Phase N" rule exists.
+
+## 42. Applied 2026-10-23: HTML entities out of stored citations, and the Cyc quote made whole (Sprint 12 Task A, F101)
+
+Every count is a snapshot as of 2026-10-23. Written before the apply.
+
+- **The entities came from the metadata providers.** Crossref and DataCite
+  return titles and venues with HTML escapes in them ("Science &amp;
+  Technology Libraries"), and `store.citations` copied them as they came.
+  A scan of every text field of every table finds one entity, "&amp;", in
+  4 records: the title (`value`) and citation (`provenance`) of
+  `jeffery-2024-multidimensional-quantum-walks-recursion-quantum` (DataCite)
+  and `dunjko-2018-machine-learning-amp-artificial-intelligence`
+  (Crossref), and the citation of
+  `pande-2020-bibliometric-survey-quantum-machine-learning` and
+  `yang-2023-survey-important-issues-quantum-computing` (Crossref venues).
+- **The generator is fixed first** (workflow invariant 7's corollary):
+  `parse_crossref` and `parse_datacite` unescape the title, subtitle and
+  venue, so a later intake or re-check renders "&". (The first commit,
+  5466953, missed DataCite's venue, every author name and Crossref's
+  publisher; the fresh-eyes review found it, and they are unescaped too
+  now.) Then the 4 records
+  are corrected: each field unescaped, and nothing else changed. Record
+  ids are keys and are not renamed: the Dunjko id keeps its "amp". Each
+  record's updated reason names this section.
+- **A guard.** A `live_store` test fails on any HTML entity in any text
+  field of the store.
+- **The Cyc quote** (`cyc-2007-eight-tactic-types`, Sprint 7, section 41).
+  Its first quote held the source's own quoted word, `"split" (`, which
+  ends a quote in the quote pattern, so the words after it were never
+  checked. It is now quoted in two parts around that word: `"There are
+  eight tactic types which describes the kind of operation to be
+  performed, such as" (p.147; ...)`, whose anchor says why it is in two
+  parts, and `"(i.e. split a conjunction into two sub-problems)."
+  (p.147)`. The p.148 quote ("... only handles five.") is kept as it was.
+  A further quote, `"2007, American Association for Artificial
+  Intelligence" (p.146, the copyright line; ...)`, holds the value's
+  year, which the figure check of section 41 now requires. (The first
+  apply anchored it p.147; the copyright line is on printed page 146, the
+  PDF's first page. The third apply below corrects it.) The value is not
+  changed. The quotes are checked by `require_verbatim` with the value
+  and named as the edit's basis (`require_edit_basis`). Applied first, with
+  the entities.
+- **Three more quotes the pattern never parsed (found after that apply,
+  written before the second).** Run over the whole store, section 41's
+  stray-quote check names 3 more assertions, not the 2 section 41 counted:
+  their quotes carry no anchor, so the pattern found no quote in them at
+  all, and section 41's count looked only at contexts with at least one
+  parsed quote. `cyc-general-prover-disabled` and
+  `heuristics-over-general-reasoning` (Sprint 1, Lenat and Marcus 2023)
+  and `hsbc-b1-variable-count` (Sprint 2, the consumer repository's
+  preregistration, amendment A30, read only; read by `git show` at that
+  file's last commit, 7261e4e, from the third apply on, as section 43
+  reads Phase 2). Each is re-quoted from its
+  source with an anchor, and the figures each value states (2023; 20,
+  1989 and 1,100) are given quotes that hold them. The values are not
+  changed. The second Lenat quote's dashes are in the layout text layer
+  (`pdftotext -layout`), which the check reads alongside the plain one.
+- **Lenat and Marcus 2023 had no local copy.** Its free arXiv PDF
+  (arXiv:2308.04445) is saved to `Papers\` under section 3's convention,
+  by one paced request (`--fetch`), and added to the record's `access`.
+- **A third apply, after the fresh-eyes review of 5466953 (written before
+  it).** The review found what the stray-quote check cannot see: 7
+  contexts with no quote marks at all, so no check had ever read them
+  (Sprint 5 Task I: `auprc-not-generally-superior-under-imbalance`,
+  `oversampling-helps-weak-not-strong-boosters`,
+  `qelm-local-dynamics-match-haar-classically-simulable`,
+  `qksvm-classical-kernels-better-on-uci-tabular`,
+  `resampling-degrades-calibration-recalibration-repairs`,
+  `rff-not-generic-dequantizer-but-matches-some-pqcs`,
+  `wilcoxon-n5-floor-is-not-parity`). The "every stored quote parses"
+  claim above was a count this check could not produce. Now:
+  - **The guard** also fails on a non-empty context with no parsed quote.
+  - **Each of the 7 is re-quoted** from its PDF with anchors (PDF page
+    indexes, the printed page where there is one), every figure in its
+    value quoted, and the old sentence kept as a passage. Three papers had
+    no local copy (De Lorenzis 2026, Kakavand 2026, Sweke 2025); their
+    free arXiv PDFs are saved by the same paced `--fetch` and added to
+    `access`.
+  - **Four values are corrected** where re-quoting showed them to say
+    more or less than the source, each with its passages as the edit's
+    basis: Elor 2022 (the SVM exception is that its threshold could not
+    be tuned); De Lorenzis 2026 (6 to 10 qubits for MNIST and
+    Fashion-MNIST, 6 to 11 for CIFAR-10; the authors "suggest", with
+    larger studies needed); Kakavand 2026 (datasets from UCI and OpenML;
+    "8 of 9" is balanced accuracy, with none of the 29 five-fold
+    comparisons significant); Liu 2026 (oversampling's effect is
+    "small-to-moderate", not slight). Certainty is not changed.
+  - **Every local copy carries its SHA-256** in `evidence` (F48's test
+    found Lenat's missing after the first apply), including the three new
+    copies.
+  - **The anchor and pin corrections** noted above: the Cyc copyright
+    line is p.146, and the preregistration is read at 7261e4e.
+  - `store.citations` now also unescapes DataCite's venue, every author
+    name and Crossref's publisher.
+- **A fourth apply, after the fresh-eyes review of 6d2bed4 (written
+  before it).**
+  - **The Elor correction was itself wrong for MLP.** MLP's threshold
+    was tuned: Table 3 (p.5) gives it F1 0.303 with the tuned threshold,
+    against 0.411 with SMOTE. Only SVM's could not be tuned. The value
+    now says balancing did better for both, quoting the "MLP & SVM"
+    paragraph (p.4).
+  - **Two values unchanged in the third apply carry a dropped qualifier
+    or a weaker word than the paper's own summary**: McDermott 2024 (the
+    two metrics differ "with respect to model-dependent parameters" only
+    in how they weight false positives; prevalence also enters AUPRC)
+    and Liu 2026 (back to "slightly", which the abstract's "real but
+    small" supports, now with the ECE figures). The third apply's
+    "small-to-moderate" was the paper's effect-size label, not its
+    reading.
+  - **One anchor named the wrong section**: De Lorenzis's qubit counts
+    are in section 3, not 4.
+  - **The record history now says what each sync changed.** The third
+    apply logged every change as "quote made whole"; each corrected
+    record gets a note naming the correction (the p.146 anchor, the
+    7261e4e pin, each value and why).
+  - **Two paper records' evidence text** still carried what the
+    assertions' corrections fixed (Kakavand: "9 UCI"; De Lorenzis: one
+    qubit range), and three ended ".;" where the hash note joined.
+    Corrected. The new test then found a fourth, Sweke 2025, also from
+    this script's first apply; corrected in a fifth apply. 13 more paper
+    records carry the same ".;" join, written by F48 and F97 (as of
+    2026-10-23); punctuation only, outside F101, and raised at the
+    retrospective rather than changed here.
+  - **A gap the guard still has**, not closed here: a context with one
+    parsed quote and unquoted text beside it (for example
+    `cvqboost-vs-xgboost-auc-under-balancing`) passes. 2 contexts as of
+    2026-10-23, both describing a table's rows or a byline in the
+    coordinator's words, with their figures outside any quote:
+    `cvqboost-vs-xgboost-auc-under-balancing` and
+    `favorable-dirac3-papers-are-qci-authored`. Raised at the
+    retrospective: whether such a description may stand beside quotes,
+    or must become quotes of the table cells.
+- `scripts/sprint12_f101_corrections.py`: dry run by default; `--apply`
+  takes a verified backup first; a second apply writes nothing.
+
+## 43. Applied 2026-10-23: Phase 2's Sprint 28 results, by the inbound path (Sprint 12 Task C, F102)
+
+Every count is a snapshot as of 2026-10-23. Written before the apply.
+
+- **What is read.** Six result documents in `hsbc-qfraud-phase2`'s
+  `docs/phase2/`, each read whole at Phase 2 commit 10086da (branch
+  `feature/20261019_Sprint_28`; its PR #46 is still a draft), with the
+  last commit that touched each: F151 (e9946f5), F152 (0b5ea6c), F153
+  (cfff1fe), F110 (7f5b3c0), F114 (74ce420), F154 (79fbe19). Read only
+  (F79), through `git show`, so a later edit in Phase 2 cannot change
+  what is checked. F111 (Experiment 4) has no result at 10086da and is
+  not entered.
+- **One reference record per document**, as F93 entered F108: `tier`
+  `read`, the citation hand-transcribed from the heading and first line
+  and named so, `access` the working-copy path and the commit URL,
+  `evidence` the SHA-256 of the committed blob.
+- **Assertions: 9, every one `SIM`** (Phase 2's own tag on each
+  document): F151's cause and the restated F130 reading (2), F152's
+  ordering (1), F153's failed falsifier and the two resolution checks
+  (2), F110's build slope and solve (2), F114's miss (1), F154's null
+  (1). Certainty as F93's: the consumer project's own measurement, read
+  directly, starts HIGH, and each value carries Phase 2's own limits;
+  Phase 2's inferences are attributed as inferences.
+- **Contexts.** `ml` for a result about a classical method on a public
+  data set or a simulator (F151's cause, F152, F114); `hsbc-2026` for a
+  result about the project's own CVQBoost and device lanes (F151's F130
+  restatement, F153, F110, F154).
+- **No relation is linked (ADR-0004 A8 (b)).** F114's calibrated plug-in
+  overstates the Bayes error as F108's default plug-in did, but by 3% to
+  13% with a different model and fitting set, so it confirms only part
+  of `f108-hgb-plugin-overstates-bayes-error-5-to-12-percent`; its value
+  names that record instead. F151's restatement of F130 has no stored
+  claim to contradict: F130's "beats HGB" was never entered.
+- `scripts/sprint12_f102_phase2_sprint28.py`: every quote checked by
+  `require_verbatim`, with the value, against the blob at 10086da (markdown
+  bold dropped first) before anything is written; dry run by default;
+  `--apply` takes a verified backup; a second apply writes nothing.
+- **A second apply, after the fresh-eyes review of 5bcafe0 (written
+  before it).**
+  - **F111 has a result at 10086da; the line above saying it has none is
+    wrong.** `docs/phase2/F111_LOKE_PROTOCOL.md` ("Experiment 4 (F111):
+    the CVQBoost-KNN lane, the result") was committed at bf7b589, an
+    ancestor of 10086da. The error came from Phase 2's own
+    `docs/sprints/SPRINT_28_VALIDATION.md`, which at 10086da still says
+    "No result yet" for F111; the result document is the later word. It
+    is entered now as a seventh reference record with 3 SIM assertions
+    under `hsbc-2026`: the lane under Loke et al.'s protocol is 0.051
+    below the published 0.8108 (Phase 2 does not claim the published
+    value is wrong); the stable HGB beats the lane under both protocols;
+    the protocol moves HGB but not measurably the lane. The first bears
+    on `cvqboost-knn-aucpr-0-8108-kaggle-fraud`; not linked (ADR-0004
+    A8 (b)), since Phase 2 says it cannot tell why.
+  - **Five values carried less than their source said**, each corrected
+    with its passages as the edit's basis: F110's 2 s comparison (the
+    ideal-parallel bounds, about 20 s and about 2 s, and "not stated in
+    what we hold"); F153's resolution figures (the 2.9% to 6.2% is the
+    guide's pairwise check; F104's gate fails separately); F153's
+    falsifier (at ridge weight 0.002; the device quote of 77 to 251 s
+    was computed but not carried forward as ready; "the limit is the
+    formulation" is Phase 2's reading); F154's null (its power limit and
+    the tie-inflated catch counts); F114's miss (worse than F108's
+    plug-in on the other two arms, and the run cannot separate the two
+    changes). F151's "10 or 11 iterations" moves out of the inferred
+    part: it was measured.
+  - The store test now checks certainty and context, and the quote count
+    must stay at the number written.
+
+## 44. Applied 2026-10-23: the Classiq Quantum Circuit Challenge pages and the named repository (Sprint 12 Task E, F103)
+
+Every count is a snapshot as of 2026-10-23. Written before the apply.
+
+- **Papers with no record**: 0 at planning; on 2026-10-23 the only PDF
+  no record names is Part 2's write-up, saved by this task. Section 42's
+  three arXiv copies are named by their records.
+- **Three web source records under `qc`, entered as Sprint 11 entered
+  the NVIDIA blog**: a hand citation from each page's own title, author
+  and date, `tier` `read`, the saved copy in `References\` (Part 2's
+  19-page PDF in `Papers\` as its second copy; its QASM file and
+  notebook bundle named in `evidence`, not copied). PoJen Wang's Part 1
+  ("A field guide to quantum circuit compilers") and Part 2 ("A depth-95
+  phase oracle for the Classiq logo"), both 2026-10-08, and Alex
+  Gramolin's "Wrapping up the Classiq Quantum Circuit Challenge"
+  (Classiq, 2026-10-06).
+- **The series is stated, not linked (a change from the plan).** The
+  plan said Part 1 and Part 2 are "linked as a series". No link type
+  fits: `cites` is computed from Crossref reference lists only (ADR-0005
+  A10, and a test recomputes every `cites` link from that cache), and
+  `version-of`, `superseded-by` and `responds-to` say something else.
+  Each record's citation says "Part 1 of 2" or "Part 2 of 2" and its
+  disposition names the other record.
+- **Assertions: 5, each quoting only its own author's measurements**:
+  Part 1's run of three compilers on the baseline (MODERATE); Part 2's
+  depth 95 with 272 CNOTs (HIGH: the organiser scored the same circuit
+  and gives the same numbers) and where the reduction came from
+  (MODERATE); Classiq's rules and participation counts (MODERATE, the
+  organiser's own account) and its placings (HIGH, the organiser's to
+  decide). Part 1's survey of other work is not entered as its claims.
+  Both placings are kept: the blog says "top five" (written before the
+  ranking), Classiq says first. Evidence tag `N/A`: a circuit's counted
+  depth, not a hardware or simulator run.
+- **The repository the team lead named**,
+  `wangy8205165/Quantum-NeuralNetwork-WhitePaper`, as a GitHub
+  repository record (one REST call), linked to no paper: no source names
+  it as a paper's code.
+- `scripts/sprint12_f103_intake.py`: `--fetch` saves the pages (never
+  overwriting); every quote is checked by `require_verbatim` against the
+  saved page before anything is written; dry run by default; `--apply`
+  takes a verified backup; a second apply writes nothing.
+- **A second apply, the same day: applicability.** The first apply
+  entered the three pages at `read` with no applicability, which every
+  screened or read paper must carry (`test_paper_applicability`). The
+  full suite run before the commit found it; the targeted run did not,
+  since a store write changes no file a test names. Each record now
+  carries one `qc` entry with its rationale.
+- **A third apply, the same day: the fresh-eyes review of c80c195.**
+  Written before the apply. The review found the values above wrong in
+  four places, and they are corrected here, not edited above:
+  - **Grades follow the store's precedent.** An author's own
+    measurement in a blog post, one study, starts LOW (Part 1's run and
+    the redesign, both MODERATE above). Part 2's depth 95 with 272 CNOTs
+    is MODERATE, not HIGH: LOW for the author's own claim, upgraded one
+    level because the organiser scored it independently. The placings
+    stay HIGH (the organiser's to decide). The organiser's CX counts for
+    the top two are split into their own assertion, MODERATE.
+  - **PyZX did not shorten the circuit.** Part 1's value listed it with
+    the tools that did; the page says it lengthened the circuit, to
+    depth 8950 with 8576 CNOTs, more than twice the baseline's CNOTs.
+    "56 times shorter" is now measured against the baseline, as the page
+    measures it. Part 1's run is "six versions of the circuit", not
+    three.
+  - **"Top five" was not written before the ranking.** The section
+    above said so; the Part 2 page is dated 2026-10-08, after the
+    organiser's 2026-10-06 wrap-up, and its PDF is dated 2026-10-01. The
+    depth-95 value now gives the placing as the organiser's and names
+    the placings record.
+  - **The repository holds no code.** Its files (GitHub contents API,
+    2026-10-23) are the LaTeX source and PDF of a white paper, "Quantum
+    Neural Networks: Theory, Architectures, and Applications". Its
+    disposition says so and keeps it at `seen` as a paper candidate.
+  - The script now syncs a held record's disposition, not only inserts
+    it; the test compares each disposition and citation with the store
+    and checks the repository record and its access.
+- **A fourth apply, the same day: the fresh-eyes review of 77beaa0.**
+  Written before the apply. Two statements in the third-apply bullet
+  above are wrong, and are corrected here, not edited there:
+  - **The order of the pages cannot be decided from them.** The bullet
+    says Part 2 (2026-10-08) came "after the organiser's 2026-10-06
+    wrap-up". The saved Classiq page carries two dates, "Date 06 Oct
+    2026" and "Date 9 October 2026", and its metadata gives
+    `datePublished` 2026-10-09. The 2026-10-01 date of Part 2's PDF is
+    its file metadata (CreationDate), not its text, and the PDF never
+    says "top five". So whether Part 2 was written before the wrap-up is
+    open. No store change: the depth-95 value already gives the placing
+    as the organiser's.
+  - **The PyZX error was in Part 2's assertion, not Part 1's.** The old
+    `wang-2026-depth-95-came-from-redesign-not-compilers` put PyZX's
+    depth 8950 and 8576 CNOTs inside "shortened ... by about 6 percent";
+    Part 1's old value already said full_reduce "raised the CNOTs to
+    8576". And Part 1's old disposition already said six compiler
+    versions; the third apply reworded it to three tools and six
+    versions of the circuit, which is no change in count.
+  - **Values.** Part 1's value now says the one-qubit merging explains
+    the T-count drop "of the first rows of his chart", as the page says,
+    and names the two runs that lowered depth as the page does (Qiskit
+    at level 3, and tket followed by Qiskit).
+  - **The top-two counts stay MODERATE, with the reason stated.** Part
+    2's depth 95 was upgraded because the organiser, the judge, scored it
+    independently of the entrant. The organiser's counts are not
+    upgraded on the entrant's agreement: the entrant is an interested
+    party, and the published circuit was not re-run here.
+  - **Not changed, with why.** The rules assertion keeps the organiser's
+    setup and its participation counts together at MODERATE (the
+    cautious grade of the two). The id prefix `classiq-2026-` stays:
+    renaming an id the export already carries costs more than the
+    inconsistency. The repository record's third-apply reason says
+    "against the saved page" where its source was a GitHub file listing;
+    that reason is history and stays, and this bullet records the
+    correction. `sync_disposition` syncs only the disposition; the test
+    compares citation and evidence, but not `transcribed_from`
+    (carried to the retrospective).
+
+## 45. Rule from 2026-10-23: a reading script grades HIGH only with a named basis (Sprint 11 retrospective I3, Sprint 12 Task G)
+
+Extends sections 26, 31 and 41.
+
+- **The gap.** Until Sprint 12 each reading script kept its own set of
+  assertion ids the coordinator had judged HIGH, with no reason per id.
+  A later reader could not tell why one empirical-looking value was HIGH
+  and its neighbor LOW.
+- **The helper.** `store/grading.py`: `high_grades` takes each HIGH with
+  its basis and why, and refuses a basis that is not one of the five a
+  paper itself settles: its own setup, its own scope, a definition, a
+  result it proves, or a limit it states. `grade` returns HIGH with that
+  basis in the certainty reasons, or the script's other grade, and
+  refuses "high" as the other grade, so HIGH has one door.
+- **The rule.** `store/write_path.py`: a script whose name contains
+  "reading" and that writes assertions must call `high_grades` and must
+  hold no literal "high" of its own. `backup_before_write` refuses it
+  before the backup, as section 41's rule does. Sprint 10's and earlier
+  reading scripts are already legacy; `sprint11_reading.py` is exempt
+  from this rule only (it has run). An intake script that is not a
+  reading script (F102, F103) keeps its literal grades, each with its
+  own reasons.
+
+## 46. Applied 2026-10-23: Roadmap-to-QML's first release (Sprint 12 Task F, F104, F98's first release)
+
+Every count is a snapshot as of 2026-10-23. Written before the apply.
+
+- **The list, at one commit.** Christophe Pere's Roadmap-to-QML
+  (`github.com/Christophe-pere/Roadmap-to-QML`), read at commit
+  `a239747648` (the head at planning, pushed 2026-10-20). Its 13
+  markdown files (the year files, `Workforce.md`, `Reviews/Reviews.md`,
+  the README) are saved under
+  `References\Roadmap-to-QML_a239747648\`, outside git; the manifest
+  records each file's SHA-256.
+- **1,418 arXiv ids listed; 21 new.** Every arXiv id the files link is
+  matched to the store by the ids its records' `access`, `evidence` and
+  provenance hold. The 21 new ones enter through the door
+  (`scripts/intake.py`) at `seen` under `qml`, each naming the file that
+  lists it in `found_via` and `disposition`. Reading them is Task G's
+  machinery, through the shared ledger (section 47).
+- **One malformed link.** The 2021 file links Asfaw et al. 2021 as
+  `2108.0131`; an id from 2015 on has five digits after the dot. The
+  store already holds `2108.01311`, so nothing is entered for it; the
+  manifest lists it under `malformed_links`.
+- **Free copies: 20 of 21**, fetched by the one paced fetcher (18 s
+  apart), each named with its SHA-256 in `evidence`. arXiv 2303.16318
+  (Mahroo et al.) returned HTTP 404 for its PDF; the record enters at
+  `seen` with no local copy and goes to the ledger's `no_copy`. Three
+  copies carry no arXiv stamp on page 1 (2407.21062, 2609.23476,
+  2609.24381); each first page was checked by hand and its title
+  matches the arXiv metadata.
+- **27 other links carried to the next F98 release, 9 with a DOI.**
+  Links that are not arXiv are matched by the DOI in the URL where it has
+  one; those the store does not hold, and those with no DOI, are listed
+  in the manifest's `carried_to_next_release`. This release was sized to
+  the arXiv ids at planning.
+- `scripts/sprint12_f104_roadmap.py`: `--fetch` saves the list's files
+  and the PDFs (arXiv and DataCite answers cached beside the list's
+  copy, so the dry run and the apply send no arXiv request); dry run by
+  default, which writes `manifests/sprint12_f104_roadmap.json`;
+  `--apply` takes a verified backup; a second apply enters nothing and
+  leaves the manifest as the first apply wrote it.
+- **A second apply, the same day: the fresh-eyes review of f99139e.**
+  Written before the apply.
+  - **The match is recorded on the held papers.** The first apply named
+    the list only on the 21 papers it entered. The 1,397 held papers the
+    list links now get a `found_via` route naming the list and the file,
+    as the earlier list release did (`scripts/qmlpapers_manifest.py`,
+    `add_routes`), each with an appended updated reason.
+  - **Matching.** An arXiv id in the DOI form `10.48550/arXiv.NNNN.NNNNN`
+    now counts as held (none in the store on 2026-10-23, so nothing
+    changes). A DOI counts as held only as a whole DOI, not as a
+    substring of the joined text. A legacy Nature article id
+    (`npjqi201523`) is no longer turned into a wrong DOI; an RSC article's
+    DOI is read from its URL. **25 links are carried, not 27**: the RSC
+    review by Sajjan et al. was listed twice and is held.
+  - **No copy, and why.** arXiv 2303.16318 is withdrawn on arXiv (its
+    abstract page, 2026-10-23), so it has no PDF. It enters the ledger's
+    `no_copy` when Task G builds the ledger (section 47).
+  - **1,418 against 1,402.** The F104 card counted the year files and
+    `Workforce.md` (1,402 ids, recounted from the saved copy on
+    2026-10-23); this release also reads `Reviews/Reviews.md` and the
+    README, which add 16.
+  - The manifest is rewritten by each run, keeping what an earlier apply
+    entered and routed; the tests check every listed id is held and its
+    records carry the route, and that the second apply still read the
+    list.
+
+## 47. Applied 2026-10-23: the F57 release for Sprint 12, read under the grading rule (Sprint 12 Task G, F105)
+
+Every count is a snapshot as of its own date. Written before the slice
+runs; each later step adds its bullet before it runs.
+
+- **The slice: 400 records.** F57's order (team lead, 2026-10-21):
+  `hsbc-2026`, then the Dirac platforms, then `qml`. Nothing is unread
+  under the earlier contexts (0 on 2026-10-23), so the release is the 400
+  most-cited `qml` records at `seen` or `screened` with no read row,
+  counted by OpenAlex exactly as F89 and F96 counted them.
+  `scripts/sprint12_f105_slice.py` writes
+  `manifests/sprint12_f105_slice.json`. Left out: Task F's 21 records
+  (they come on top of the 400, plan Q1 = 1), and the 17 records of the
+  earlier slices (F89, F96) still unread, which had no free copy. 1,205
+  candidates on 2026-10-23.
+- **Free copies.** `scripts/sprint12_f105_downloads.py` runs Sprint 10's
+  rules (`scripts/sprint10_f89_downloads.py`) on this slice: arXiv
+  through the one paced fetcher (18 s apart), else the open-access PDF
+  OpenAlex lists; a paywalled paper is listed, never fetched; an
+  existing file is never overwritten. F52's cap (240 arXiv requests a
+  session) counts per process, so `--session-count` starts the count at
+  the requests Task F already sent; at the cap the run stops, and a run
+  after the pause fetches what is still missing.
+- **The read ledger.** `manifests/sprint12_read_ledger.json`
+  (`scripts/sprint12_read_ledger.py`): Sprint 11's rule, one record, one
+  group, one first-pass reader, at most 5 readers at once. New:
+  `read_by_coordinator` holds Task E's three pages (section 44), read in
+  full before the ledger existed, so no group can take them again. Task
+  F's 20 records with a copy and the slice's records with a copy go into
+  groups; a record with no copy goes to `no_copy` with its reason.
+- **Readers.** `manifests/sprint12_reads/READER_PROMPT.md`, Sprint 11's
+  prompt with one rule added: a "high" suggestion names its basis
+  (section 45). The coordinator decides every grade.
+- **What the slice and the fetch found (2026-10-23).** OpenAlex counted
+  815 of the 1,205 candidates; the 400 run from 14 citations down to 1
+  (the most-cited `qml` records were read by earlier releases). 389 of
+  the 400 already had a local copy (most in the QMLPapers folder); 6 were
+  planned from arXiv and 4 saved, each with its page-1 stamp; 2 are
+  withdrawn on arXiv (2308.08167, 2409.10932, their abstract pages read
+  the same day, as was 2303.16318's); 5 have no free copy known to
+  OpenAlex. The ledger: 53 groups, 413 records (Task F's 20 in g01 to
+  g03, the slice's 393 in g04 to g53), 8 in `no_copy` with their
+  reasons, Task E's 3 read by the coordinator.
+- **The reads, and the coordinator's read (2026-10-23).** Written before
+  the apply. All 53 groups read, one Sonnet 5.5 first-pass reader each,
+  at most five at once, from local copies only; each group's checker
+  printed "0 missing". The coordinator read every value against its
+  quoted passages group by group and recorded the read in
+  `scripts/sprint12_reading.py`: 110 values replaced (each says only
+  what its quotes say: a result, a theorem or figure number, a device,
+  a dataset name or a reader's inference cut, or the passage added);
+  18 assertions given the source sentence beside the reader's quote
+  (most stopped at a curly quote, an apostrophe or a dash the text
+  layer prints oddly); 2 quotes corrected; 7 assertions dropped, each
+  with its reason (among them a bound whose square root the text layer
+  lost, so the value would store a wrong complexity).
+- **Grades, under section 45.** HIGH for 577 ids, each with its basis
+  and where the paper settles it (Task F 34, Task G 543). Kept LOW
+  against a reader's "high": a measured result, even a negative one;
+  a statement about the field or the literature rather than the paper
+  itself; a label that is not a limit. A future-work sentence that
+  names something the paper did not do is a stated limit. One vendor
+  product description MODERATE. Every other assertion LOW.
+- **What the apply enters (dry run, 2026-10-23).** Task F: 74
+  assertions from 20 records (34 HIGH, 40 LOW); 1 record with no copy
+  (2303.16318, withdrawn). Task G: 1,283 assertions from 393 records
+  (543 HIGH, 1 MODERATE, 739 LOW; qml 744, qc 464, ml 55, world 16,
+  method 4); 9 records read that bear on no context (read rows and the
+  reason, tier unchanged); 7 with no copy (2 withdrawn, not for the
+  hand-download list; 5 with no free copy, on it). Before the apply the
+  store held 465 `read`, 2 `screened`, 1,867 `seen`; 1,613 assertions.
+- **The apply.** `python scripts/sprint12_reading.py --task F --apply`,
+  then `--task G --apply`, each after a verified backup, through the
+  verified write path (sections 31 and 41); a second apply of each
+  writes nothing new. `tests/test_sprint12_reading.py` checks the store
+  against the script.
+- **Applied (2026-10-23).** 74 and 1,283 assertions entered, as the dry
+  run said; 404 records to `read` (20 and 384). The second apply of each
+  took its backup and wrote nothing. The store after: 869 `read`, 2
+  `screened`, 1,463 `seen`; 2,970 assertions.
+- **F57's count after this release (2026-10-23).** 1,465 records at
+  `seen` or `screened`, of which 1,449 have no read row. 9 of the 393
+  records read bore on no context, well under premise (g)'s half: the
+  ranking held. Two tests assumed the pre-read store and were corrected:
+  F104's entered papers may now be `read` when a ledger group read them,
+  and the field round-trip test no longer adds a route its first `read`
+  paper already holds.
+- **A third apply, the same day: the fresh-eyes review of 5744e2d.**
+  Written before the apply. Every count matched; the findings were
+  about meaning, which no check can see. Each was read against its
+  source before it was acted on.
+  - **Cuts that lost a condition (1 Critical, 3 Important).** A
+    replacement that cuts what a quote does not hold can cut too much:
+    `yang-simulator-limit` said the paper ran only on a simulator, but
+    the paper ran its examples on real hardware and simulated one
+    subsection's analysis for machine time; `aqnn-coherence-entanglement-no-help`
+    lost that its no-go rests on GIOs; Definition 1 of
+    `gilfuster-trainability-definition` lost "with high probability";
+    `gilfuster-bp-trainable` lost its cryptographic assumption. Each is
+    restored with the source sentence that holds it. The rule, sharper:
+    when the value says more than its quote, quote the rest of the
+    sentence before cutting the value.
+  - **18 HIGH grades moved to LOW.** 14 "stated limits" that are
+    statements about the field, its devices or its literature, not the
+    paper's own work; 4 that are conclusions from the paper's own
+    measurements. "We do not claim X" is a stated limit; "we found X" is
+    a result. A field statement now stores its own reason (a new FIELD
+    reason, 21 ids with the 7 the coordinator had kept LOW), not "an
+    empirical result".
+  - **Values trimmed or re-quoted (11).** A cited result taken out of a
+    HIGH limit's quotes; a Hamiltonian class narrowed to what the source
+    names, its lost Pauli letters said so; a lost superscript said so;
+    "restricted" applied to the class the source applies it to; words
+    the quotes do not hold ("cycle graph", "penalty parameter",
+    "standard", a dataset name, "good") cut or quoted.
+  - **Kept as it was, and why.** `gnn-ae-preliminary-future` stays HIGH:
+    after section 47's first cut its value is the future-work sentence
+    alone. The proved results that are LOW because their text was cut
+    short still store "an empirical result" as the reason (3 ids); the
+    reason is wrong in name only, and is carried to the retrospective.
+  - **The tables after the review.** 118 values replaced, 27 assertions
+    given source sentences, 3 quotes dropped (the first bullet's "2
+    quotes corrected" were 2 dropped; and of its 18 extra quotes, 6 were
+    text-layer stops and 12 added a missing subject or referent), 7
+    dropped assertions, 559 HIGH (Task F 34, Task G 525; Task G LOW 757).
+  - **A new guard for CI.** `unsupported_by_basis` checked replaced
+    values only inside `verify()`, which needs the source text, so CI
+    never ran it. A test now runs it on every replaced value from the
+    quotes alone.

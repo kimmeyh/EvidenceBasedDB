@@ -8,6 +8,7 @@ test_repository_kind_requires_its_disposition_prefix went red.
 """
 from __future__ import annotations
 
+import importlib.util
 import json
 import subprocess
 import sys
@@ -79,6 +80,40 @@ def test_apply_writes_an_api_origin_record_with_a_derived_id(store):
     assert not export_dir.exists(), "no export is written since ADR-0004 A7"
     again = _run(db_path, export_dir, ARXIV_ARGS + ["--apply"])
     assert again.returncode == 0 and f"PRESENT {DUPONT_ID}" in again.stdout
+
+
+def test_a_derived_id_begins_with_a_letter_or_digit():
+    """Sprint 12 retrospective I3: the first author "An" was dropped as a
+    stop word and the id began with "-". Ids derived before stay the same.
+    Proven to fail by injection, 2026-10-24: with the stop-word fallback
+    removed from make_id, the "An" case gave a refusal, not "an-2024-...";
+    with only the refusal removed, a family that slugs to nothing ("" from
+    ", Z.") was not refused. Restored."""
+    spec = importlib.util.spec_from_file_location("intake", SCRIPT)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    from store.citations import Metadata
+
+    def md(authors, title="Dual-Capability Machine Learning Models", **extra):
+        return Metadata(kind="arxiv", ident="2405.13582", title=title, authors=authors, year="2024",
+                        date="2024", extra=extra)
+
+    assert mod.make_id(md(["An, Z.", "Wu, J."])) == "an-2024-dual-capability-machine-learning-models"
+    assert mod.make_id(md(["Dupont, M."])) == "dupont-2024-dual-capability-machine-learning-models"
+    assert mod.make_id(md([], publisher="The Quantum Insider")).startswith("quantum-insider-2024-")  # unchanged
+    with pytest.raises(ValueError, match="does not begin with a letter or digit"):
+        mod.make_id(md([", Z."]))
+
+
+@pytest.mark.live_store
+def test_no_stored_id_begins_otherwise_but_the_known_one(live_conn):
+    """Ids are keys, so the one from before I3 keeps its id; its bulk
+    manifest entry names it, so a re-run finds it present. Proven to fail
+    by injection, 2026-10-24: with the known id removed from the allowed
+    set, this test named it. Restored."""
+    known = {"-2024-dual-capability-machine-learning-models"}
+    bad = {r[0] for r in live_conn.execute("SELECT id FROM records") if not r[0][:1].isalnum()} - known
+    assert not bad, sorted(bad)
 
 
 def test_dry_run_refuses_an_unanchored_rationale(store):

@@ -304,6 +304,18 @@ def link_copy(conn, rid: str, path: Path, log: list[str], apply: bool) -> None:
     log.append(f"copy   {rid}: {path.name}")
 
 
+def existing(conn, access: str) -> str | None:
+    """The record whose access holds this arXiv id or URL as a whole token,
+    if one does (case-insensitive: GitHub answers in its own case; whole,
+    so NVIDIA/auto-ontology never finds NVIDIA/auto-ontology-eval)."""
+    want = access.lower().rstrip("/")
+    for rid, held in conn.execute("SELECT record_id, access FROM paper_fields WHERE lower(access) LIKE ?",
+                                  (f"%{want}%",)):
+        if want in {token.strip().lower().rstrip("/") for token in held.split(" | ")}:
+            return rid
+    return None
+
+
 def apply_changes(conn, apply: bool) -> list[str]:
     log = [f"before: {counts(conn)}"]
     for name, rid in LOCAL_COPIES.items():
@@ -314,9 +326,17 @@ def apply_changes(conn, apply: bool) -> list[str]:
     link_copy(conn, pere, arxiv_file(PERE_ARXIV), log, apply)
     ids = {}
     for entry in entries():
-        record = intake.build_record(entry, today=TODAY)
         key = "blog" if entry.get("id") == BLOG_ENTRY["id"] else (
             entry["access"].split(" | ")[0].removeprefix("arXiv:"))
+        # An entry already in the store is found by its access before it is
+        # resolved: a second apply otherwise asked arXiv and GitHub again,
+        # 18 s apart, about 80 s of the suite (F100, Sprint 12).
+        held = existing(conn, entry["access"].split(" | ")[0])
+        if held:
+            ids[key] = held
+            log.append(f"exists {held}")
+            continue
+        record = intake.build_record(entry, today=TODAY)
         ids[key] = record.id
         if conn.execute("SELECT 1 FROM records WHERE id = ?", (record.id,)).fetchone():
             log.append(f"exists {record.id}")
@@ -327,6 +347,9 @@ def apply_changes(conn, apply: bool) -> list[str]:
     ids[PERE_ARXIV] = pere
     repo_ids = {}
     for owner_name, paper_key, evidence in REPOS:
+        if owner_name not in repo_ids and (held := existing(conn, f"https://github.com/{owner_name}")):
+            repo_ids[owner_name] = held
+            log.append(f"exists {held}")
         if owner_name not in repo_ids:
             record = intake.build_record({"access": f"https://github.com/{owner_name}", "kind": "repo",
                                           "context": "ml" if paper_key in (None, "blog", "2610.10629", "2509.03505")
