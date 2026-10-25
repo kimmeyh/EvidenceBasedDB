@@ -149,3 +149,21 @@ def test_a_field_with_no_storage_group_is_refused(synthetic_store, monkeypatch):
             sync_assertion(conn, _stored(conn), "note", "2026-10-17")
     finally:
         conn.close()
+
+
+def test_a_row_re_read_in_full_is_left_alone_by_an_older_script(synthetic_store):
+    """Sprint 13 Task G (F113): once a whole-paper re-read has synced a row,
+    an older reading script's sync (its second-apply test runs it again)
+    must not put the partial read's value back; Task G's own next sync still
+    goes through. Proven to fail, 2026-10-25: with the guard in
+    sync_assertion removed, the older script's value replaced Task G's."""
+    conn = connect(synthetic_store)
+    try:
+        task_g = replace(_stored(conn), value="the value from the whole paper")
+        assert "value" in sync_assertion(conn, task_g, f"Sprint 13 Task G: {ingest.FULL_READ_MARK}", "2026-10-25")
+        assert sync_assertion(conn, _stored(conn), "Sprint 12 reading", "2026-10-25") == []
+        assert conn.execute("SELECT value FROM records WHERE id = 'claim-one'").fetchone()[0] == task_g.value
+        again = replace(task_g, value="a corrected value from the whole paper")
+        assert sync_assertion(conn, again, f"Sprint 13 Task G: {ingest.FULL_READ_MARK}", "2026-10-26") == ["value"]
+    finally:
+        conn.close()

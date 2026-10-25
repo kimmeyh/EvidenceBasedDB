@@ -17,6 +17,8 @@ from store.common_names import with_common_names
 from store.quotes import Verified
 
 HAND_MARKER = "hand-transcribed from"
+# In the note of every Task G sync, so sync_assertion knows a row was re-read in full (Sprint 13 Task G, F113).
+FULL_READ_MARK = "re-read in full (Sprint 13 Task G, F113)"
 NOT_YET_SCREENED = "; not yet screened"  # bulk-intake disposition suffix; set_tier removes it on promotion
 MIN_VISIBLE_WORDS = 50  # below this a saved web page is a shell, not the content (Sprint 5 Task B)
 
@@ -687,6 +689,13 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
     wanted = replace(wanted, value=with_common_names(wanted.value))  # Sprint 13 MV Q4, so a second sync is a no-op
     validate_assertion(wanted)
     rid = wanted.id
+    reason = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()
+    if reason and FULL_READ_MARK in (reason[0] or "") and FULL_READ_MARK not in note:
+        # Sprint 13 Task G (F113): a re-read of the whole paper supersedes the
+        # partial read an older script entered. Without this, re-running that
+        # script (as its own second-apply test does) would put the older value
+        # back. The row is left as Task G wrote it, and no history is appended.
+        return []
     row = conn.execute(f"SELECT {', '.join(_SYNC_RECORD_COLUMNS)} FROM records WHERE id = ? AND class = 'assertion'",
                        (rid,)).fetchone()
     if row is None:
