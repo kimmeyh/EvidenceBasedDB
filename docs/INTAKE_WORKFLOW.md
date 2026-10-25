@@ -2258,3 +2258,13 @@ the read's own bullets follow before its apply.
   - **Half 2's share of the tables, corrected again:** 135 values, 31
     quote edits, 15 added quotes, 9 contexts, 57 statements about the
     field, 134 theoretical LOWs, 51 measured results; 5 anchors.
+- **Corrections after the fresh-eyes review of 7ea56e7** (2026-10-25;
+  written before half 2's re-apply). Grades unchanged.
+  - **One anchor "corrected" wrongly.** The reader's "Section III and
+    Section IV" for `ma-not-tested-on-hardware` was right; the bullet
+    above replaced it with "Section III, Results (Cases I and II)". In
+    reading order its first quote follows IV. CONCLUSION and its second
+    is in III.A (Case I). Anchor and HIGH location now say so.
+  - **`qnpg-outer-loop`** keeps the source's "likely".
+  - **The CHANGELOG's "3 HIGH locations made exact"** was 4: kqse and
+    zhang above, and qumode and stvqc, listed above with the anchors.

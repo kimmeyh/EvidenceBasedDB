@@ -151,6 +151,10 @@ this project keeps having to replace with a step.
   is not; 5 reader anchors corrected in the stored provenance (new
   `ANCHOR_FIX`), 3 HIGH locations made exact, 2 values worded to their
   quotes. Half 2 re-applied; grades unchanged (Issue #137)
+- **fix**: the fresh-eyes review of 7ea56e7 (2026-10-25): one of those 5
+  anchors was a wrong correction of a right one (`ma-not-tested-on-hardware`
+  is III.A and IV, Conclusion); "3 HIGH locations" above was 4; qnpg keeps
+  "likely". Half 2 re-applied; grades unchanged (Issue #137)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

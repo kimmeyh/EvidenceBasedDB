@@ -1290,9 +1290,10 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
                                  "network with QuCNN, that they believe this to be due to barren plateaus, and that "
                                  "mimicking classical machine learning techniques on quantum processors does not "
                                  "provide immediate computational advantage."),  # g92
-    "qnpg-outer-loop": ("The authors state that insights from the literature suggest a best achievable sample "
-                        "complexity for SGD-based approaches, and that this limitation arises because quantum "
-                        "computing can accelerate the inner loop but not the outer loop of such algorithms."),  # g97
+    "qnpg-outer-loop": ("The authors state that insights from the literature suggest a sample complexity that is "
+                        "likely the best achievable for SGD-based approaches, and that this limitation arises because "
+                        "quantum computing can accelerate the inner loop but not the outer loop of such "
+                        "algorithms."),  # g97
     "scala-lazy-regime-limit": ("The authors state that most of the formal results are obtained under specific "
                                 "assumptions, the so called lazy training regime, which are typically difficult to "
                                 "realize in practice."),  # g90: "most of the", the paper's own results
@@ -1320,9 +1321,11 @@ CONTEXT_FIX: dict[str, str] = {  # an assertion's context where the reader's did
 ANCHOR_FIX: dict[str, str] = {
     "qneuron-simulation-only": "Section III.B, Numerical results, p.5",  # g75: the reader wrote Section IV
     "slack-free-setup": "Section IV, Experimental Settings",  # g77: the reader wrote Section V
-    "qumode-benchmark-setup": "Section IV.A, System Setup; the Abstract",  # g73: the reader wrote Section III
+    "qumode-benchmark-setup": "Section IV.A, System Setup; the Abstract",  # g73: the reader wrote "Section III setup"
     "stvqc-device-setup": "the Introduction, its contributions",  # g77: the Abstract's sentence has no comma
-    "ma-not-tested-on-hardware": "Section III, Results (Cases I and II)",  # g79: the reader wrote III and IV
+    # g79: the reader's "Section III and Section IV" was right; 7ea56e7's "III, Cases I and II" was the error
+    # (review of 7ea56e7: in reading order the first quote follows IV. CONCLUSION, the second is in III.A)
+    "ma-not-tested-on-hardware": "Section III.A (Case I) and Section IV, Conclusion",
 }
 DROP: dict[str, str] = {  # an assertion not entered, with the reason
     "qwiener-advantage-open": "g56: the quotes do not hold the open question the value states",
@@ -2252,7 +2255,7 @@ HIGH = high_grades({
     "lv-dataset-scope": ("setup", "Section IV"),
     "lv-hardware-below-simulation": ("stated limit", "Section V, Conclusions"),
     "ma-adiabatic-learning-proposal": ("scope", "the Abstract"),
-    "ma-not-tested-on-hardware": ("stated limit", "Section III, Results (Cases I and II)"),
+    "ma-not-tested-on-hardware": ("stated limit", "Section III.A (Case I) and Section IV, Conclusion"),
     "macaluso-no-advantage-asserted": ("stated limit", "Sections I and V"),
     "macaluso-vision-scope": ("scope", "the Abstract and Section V"),
     # g80
