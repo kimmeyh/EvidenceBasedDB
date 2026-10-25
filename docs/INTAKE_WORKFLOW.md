@@ -2261,8 +2261,10 @@ the read's own bullets follow before its apply.
 - **Corrections after the fresh-eyes review of 7ea56e7** (2026-10-25;
   written before half 2's re-apply). Grades unchanged.
   - **One anchor "corrected" wrongly.** The reader's "Section III and
-    Section IV" for `ma-not-tested-on-hardware` was right; the bullet
-    above replaced it with "Section III, Results (Cases I and II)". In
+    Section IV" for `ma-not-tested-on-hardware` was right; 6cfc137 gave
+    it the HIGH location "Section III, Results (Cases I and II)" and
+    7ea56e7 wrote the same into `ANCHOR_FIX` (its bullet above says
+    "(III)"). In
     reading order its first quote follows IV. CONCLUSION and its second
     is in III.A (Case I). Anchor and HIGH location now say so.
   - **`qnpg-outer-loop`** keeps the source's "likely".
