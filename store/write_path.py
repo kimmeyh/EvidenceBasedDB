@@ -145,9 +145,10 @@ def script_problems(text: str, name: str = "") -> list[str]:
     except SyntaxError as e:
         return [f"does not parse, so the write-path rule cannot read it ({e.msg}, line {e.lineno})"]
     out = []
-    # A name spelled as a whole string counts as the name (the fresh-eyes review of ed53933:
-    # getattr(d, 'insert_assertion') passed the parse and the text rule refused it).
-    named = code.names | {s for s in code.strings if s.isidentifier()}
+    # A name spelled inside a string counts as the name (the fresh-eyes reviews of ed53933 and 6173bad:
+    # getattr(d, 'insert_assertion'), eval('store.ingest.insert_assertion') and exec('insert_assertion(...)')
+    # passed the parse, and the text rule had refused each).
+    named = code.names | {w for s in code.strings for w in re.findall(r"[A-Za-z_]\w*", s)}
     writes = any(_WRITES.match(n) for n in named)
     if "reading" in name and name not in GRADING_LEGACY and writes:
         if not code.calls_grading("high_grades") or "high" in code.strings:

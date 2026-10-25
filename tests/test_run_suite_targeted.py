@@ -81,6 +81,9 @@ def test_a_document_change_in_this_repository_runs_the_spelling_and_dash_guards(
     for doc in ("CHANGELOG.md", "docs/INTAKE_WORKFLOW.md"):
         picked = rs.targeted_tests(ROOT, [doc])
         assert {"tests/test_us_english.py", "tests/test_no_em_dashes.py"} <= set(picked), (doc, picked)
+    # the fresh-eyes review of b0b41a3: test_intake reads every manifest. Proven to fail by injection,
+    # 2026-10-25: with the manifests/ branch removed from targeted_tests, a new manifest picked no test_intake.
+    assert "tests/test_intake.py" in rs.targeted_tests(ROOT, ["manifests/a_new_manifest.json"])
 
 
 def test_a_new_test_file_runs_itself_and_conftest_runs_everything(repo):

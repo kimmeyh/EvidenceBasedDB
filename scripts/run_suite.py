@@ -87,6 +87,8 @@ def working_tree(repo: Path) -> str:
 DOC_GUARDS = ("tests/test_no_em_dashes.py", "tests/test_changelog_currency.py", "tests/test_sprint_documents.py",
               "tests/test_us_english.py")
 DOC_SUFFIXES = (".md", ".json")
+# Run whenever a manifest changes: test_intake reads every manifests/*.json (the fresh-eyes review of b0b41a3).
+MANIFEST_GUARDS = ("tests/test_intake.py",)
 # Files every test depends on, so a change to one runs the full suite.
 EVERYTHING = ("tests/conftest.py", "store/__init__.py", "pytest.ini", "pyproject.toml", "setup.cfg")
 
@@ -141,6 +143,8 @@ def targeted_tests(repo: Path, changed: list[str]) -> list[str] | None:
         picked.update(t for t, text in tests.items() if needle.search(text))
         if path.endswith(DOC_SUFFIXES):
             picked.update(DOC_GUARDS)
+        if path.startswith("manifests/"):
+            picked.update(MANIFEST_GUARDS)
     picked &= set(tests)  # a deleted test file is not run
     return sorted(picked) or None
 

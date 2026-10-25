@@ -171,6 +171,12 @@ this project keeps having to replace with a step.
   proven red" above is five; the sixth, a call through
   `import store.grading as g`, passes both rules by design. Four more
   cases, each proven red against ed53933 (Issue #137)
+- **fix**: the fresh-eyes review of b0b41a3 and 6173bad (2026-10-25): a
+  dotted name or a call inside a string
+  (`eval('store.ingest.insert_assertion')`, `exec('insert_assertion(...)')`)
+  still passed; every identifier inside a string now counts. A changed
+  manifest did not run `test_intake`, which reads every manifest; it does
+  now. Each proven red. Every script keeps its verdict (Issue #137)
 - **fix**: Manual Validation Q3 (team lead, 2026-10-25: "q3 do now"):
   `scripts/run_suite.py --changed` runs `test_us_english` on any
   document change, as it already ran the em dash guard. 6cfc137's

@@ -143,6 +143,9 @@ def test_new_scripts_write_only_through_the_checked_path():
     # the fresh-eyes review of ed53933: a name spelled as a string passed the parse
     ("getattr(d, 'insert_assertion')(conn, a)", "without the quote check"),
     ("V = getattr(q, 'Verified')", "names Verified"),
+    # the fresh-eyes review of 6173bad: a dotted name or a call inside a string
+    ("eval('store.ingest.insert_assertion')(conn, a)", "without the quote check"),
+    ("exec('insert_assertion(conn, a)')", "without the quote check"),
     ("insert_verified_assertion(conn, a, v)\nVALUE_REPLACE = {'x': 'a new value'}\n"
      "# require_edit_basis( is only mentioned here", "without require_edit_basis"),
 ])
