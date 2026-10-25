@@ -42,6 +42,14 @@ this project keeps having to replace with a step.
   result", through `sprint12_reading.py`'s `THEORY_LOW` table so its live
   test still holds; grades unchanged. INTAKE_WORKFLOW.md section 48;
   `tests/test_sprint13_f107.py` (injections run) (Issue #132)
+- **process**: F111 (Sprint 13 Task B, 2026-10-25): the F39 release.
+  Anthropic's models and pricing pages read 2026-10-25: every tier's id,
+  price, context, maximum output and retirement date unchanged; no new
+  model holds a role. Sprint 11's and Sprint 12's outcomes logged (Sprint
+  12 held no F39 release, so Sprint 11's row was missing). One rule added
+  with its evidence: a reader's certainty suggestion is never applied.
+  `test_a_reader_grade_suggestion_is_never_applied_regression` (two
+  injections run) (Issue #133)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 
