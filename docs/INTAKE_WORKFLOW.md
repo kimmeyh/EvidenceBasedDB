@@ -1910,6 +1910,15 @@ Every count is a snapshot as of its own date. Written before the apply.
     a bare `("low", reason)` passed. A literal `"low"` is now refused as a
     literal `"high"` is; the vendor LOW goes through `low_grade("vendor
     claim")`; an aliased import of `low_grade` counts.
+  - **Corrected 2026-10-25 (the fresh-eyes review of cec6020).** The
+    bullet above says more than the rule does. The concatenation case
+    was caught by the literal `"low"` beside it, not by the concatenation:
+    `"LO" + "W"` or `"LOW".lower()` with no quoted `"low"` still passes.
+    And the rule had got weaker: matching the bare name `low_grade` let
+    the import line alone pass. It now requires a call, of `low_grade` or
+    of the name it is imported as (proven by injection). A reading script
+    that compares a literal `"low"`, as a count would, is refused: a known
+    false positive, recorded in `store/write_path.py`.
   - **A count corrected**: of the 499 rows from Sprints 9 to 11, one
     (`kimmeyh-headline-null-cvqboost-trails`) does not hold the exact
     text, so 498 store it exactly. The classifier's 13 and 14 stand.
@@ -2043,3 +2052,48 @@ the read's own bullets follow before its apply.
   - **Kept out of values.** Figures the text layer garbled (an exponent
     lost, as in "217" for 2 to the 17th) and paper inconsistencies a
     reader flagged stay in the reader's inference, not in a value.
+- **Corrections after the fresh-eyes review of cec6020** (snapshot
+  2026-10-25; written before the apply that makes them). The review
+  checked the counts above and found them right, and found the store
+  matching the script. It found the grading applied unevenly, and two
+  claims above false:
+  - **26 of half 1's 542 HIGH are now LOW** (516 HIGH, 844 LOW):
+    - 18 theorems whose quotes are the abstract's "we prove" or a
+      paraphrase, not the statement with its conditions, now in
+      `THEORY_LOW` with the cause, like siblings in the same papers
+      already were (g30 Ma, g37 Pirnay, g29, g01, g05 and others).
+    - 8 "stated limits" that are the paper's own measured results ("Q-NAS
+      can achieve a higher accuracy", "did not improve robustness"); a
+      measured result, even a negative one, stays LOW.
+  - **7 stated limits keep HIGH without their measured clause**: the
+    clause's quote is dropped and the value trimmed (for example
+    `mcquack-stated-limitations` no longer carries "does not outperform
+    simple classical baselines").
+  - **Retracted: "Kept out of values."** 12 values carried an exponent the
+    text layer printed flat ("O(n2.455)" for n to the 2.455, "10−13" for
+    10 to the −13), and two (`patel-qbm-convergence-proof`,
+    `fonseca-vqe-complexity`) were the coordinator's own replacements. The figure check cannot see this: the
+    garble is the same in the quote and the value. Each now says the
+    figure in words or says the exponent is lost, and
+    `test_no_value_carries_a_figure_the_text_layer_garbled` fails on the
+    pattern. g38 Roga's "2k" and "2(n + 2k) + 6" are not garbled: the
+    paper's program register has 2k qubits for k training points.
+  - **5 HIGH values said more than their quotes** (`single-shot-definition`,
+    `exact-learning-definition-threshold`, `gross-memory-limit-large-n`,
+    `open-problem-limit`, `stationary-noise-breaks-exchangeability`); each
+    now has the passage it rests on, or is trimmed.
+  - **Retracted: "113 of the 164 also list a few sections."** At least 7
+    of the 113 say the whole paper was read ("Whole paper", "Read the full
+    paper (7 pages)", "Abstract through conclusion"). `read_detail` now
+    enters those as the whole source.
+  - **Retracted: "`tests/test_sprint13_reading.py` now fails on...".** The
+    tests were written and proven, but the file was not committed with
+    cec6020: it partitions the whole slice, so it waits for half 2. It
+    lands with half 2.
+  - The same rules, applied to half 2's g51 to g69 before its apply, take
+    2 more stated limits out of HIGH (`qcd-gym-insufficient-performance`,
+    `arceci-limits`) and trim 5.
+- **The hand-download list's order changed with half 1** (cec6020): the
+  389 uncounted records (no OpenAlex count at selection) sort after every
+  counted one in their group, not among the zeros, and a slice's
+  uncounted row no longer hides another slice's count.

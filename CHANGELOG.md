@@ -109,6 +109,21 @@ this project keeps having to replace with a step.
   and 2 journal DOIs by their own identifier, 53 by a journal version). A
   fetch failure no longer says "paced" (the log's FAILED covers both
   fetch paths). farrelly-2019's unstamped file checked by hand (Issue #137)
+- **feat**: F112 half 1 (Sprint 13 Task F, cec6020, 2026-10-25): g01 to
+  g50 read and applied, 1360 assertions from 400 records; the
+  hand-download list puts uncounted records after every counted one in
+  their group. This entry was missing from cec6020 and is added with the
+  review below (Issue #137)
+- **fix**: the fresh-eyes review of cec6020 (2026-10-25): 26 of half 1's
+  HIGH are LOW (18 theorems quoted without statement and conditions, 8
+  "stated limits" that are measured results); 7 limits lose a measured
+  clause; 12 values with an exponent the text layer printed flat say it
+  in words (new guard); 5 HIGH values given their passage; a "full" read
+  whose note says the whole paper is entered as the whole source; the
+  write-path LOW rule requires a call of `low_grade` again (the import
+  alone had passed), and section 49 no longer claims the concatenation
+  case is closed. Section 51's three false claims retracted. Injections
+  run (Issue #137)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

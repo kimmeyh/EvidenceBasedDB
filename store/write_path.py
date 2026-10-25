@@ -36,8 +36,17 @@ _HIGH_LITERAL = re.compile(r"""["']high["']""")
 # retrospective I2, built in Sprint 13 Task F): no "Started LOW" text of its own.
 # The fresh-eyes review of dd620c7: "Started " + "LOW" and a bare ("low", reason) passed; a literal "low" is
 # refused as a literal "high" is, and an aliased import of low_grade counts.
+# The fresh-eyes review of cec6020: matching the bare name let the import line alone pass, so a CALL is required,
+# of low_grade or of the name it is imported as. Known limits, not closed: a LOW built by concatenation with no
+# quoted "low" ('LO' + 'W', or 'LOW'.lower()) passes; a reading script that compares a literal 'low' (a
+# count) is refused.
 _LOW_LITERAL = re.compile(r"""Started LOW|["']low["']""")
-_LOW_NAME = re.compile(r"\blow_grade\b")
+_LOW_ALIAS = re.compile(r"\blow_grade\s+as\s+(\w+)")
+
+
+def _calls_low_grade(code: str) -> bool:
+    names = {"low_grade", *_LOW_ALIAS.findall(code)}
+    return any(re.search(rf"\b{n}\s*\(", code) for n in names)
 
 # The scripts written before this rule (Sprint 10 and earlier). They have
 # run, and stay as they are; every other script in scripts/ is held to it,
@@ -62,7 +71,7 @@ def script_problems(text: str, name: str = "") -> list[str]:
         if "high_grades(" not in code or _HIGH_LITERAL.search(code):
             out.append("grades HIGH outside store.grading (a reading script names each HIGH's basis through "
                        "high_grades and grade, and holds no literal \"high\")")
-        if not _LOW_NAME.search(code) or _LOW_LITERAL.search(code):
+        if not _calls_low_grade(code) or _LOW_LITERAL.search(code):
             out.append("grades LOW outside store.grading (a reading script names each LOW's reason through "
                        "low_grade, and holds no \"Started LOW\" text of its own)")
     if _DIRECT_WRITE.search(code):

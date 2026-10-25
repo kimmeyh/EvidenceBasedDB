@@ -206,6 +206,8 @@ def test_the_grading_helper_refuses_high_without_a_named_basis():
     ("sprint13_reading.py", _GRADED + "x = ('low', 'Started ' + 'LOW: the reader thinks so')\n", True),
     ("sprint13_reading.py", _GRADED.replace("import grade, high_grades, low_grade", "import grade, high_grades, "
                                             "low_grade as lg").replace("low_grade('measured", "lg('measured"), False),
+    # the fresh-eyes review of cec6020: the import line alone, with no call, passed
+    ("sprint13_reading.py", _GRADED.replace("otherwise=low_grade('measured result')", "otherwise=MY_LOW"), True),
     ("sprint13_reading.py", "insert_paper(conn, p)\nX = 'Started LOW'\n", False),  # writes no assertion
     ("sprint11_reading.py", "insert_verified_assertion(conn, a, v)\nX = 'Started LOW'\n", False),
 ])
@@ -213,7 +215,10 @@ def test_a_reading_script_grades_low_only_through_store_grading(name, body, flag
     """Sprint 12 retrospective I2 (Sprint 13 Task F): a reading script's
     LOW names its reason through low_grade, with no "Started LOW" text of
     its own. Proven to fail by injection, 2026-10-25: with the LOW rule
-    removed from script_problems, the two flagged cases went red. Restored."""
+    removed from script_problems, the two flagged cases went red. Restored.
+    And 2026-10-25 again: with the call rule put back to the bare name, the
+    import-only case went red. Not closed (store/write_path.py says so): a
+    LOW built by concatenation with no quoted "low"."""
     problems = script_problems(body, name)
     assert any("grades LOW outside store.grading" in p for p in problems) == flagged, problems
 
