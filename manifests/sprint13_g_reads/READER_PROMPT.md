@@ -24,6 +24,12 @@ coordinator's review grades their figure-only gaps as full where every
 page of text was read): what `not_read` is for, and which copy of the text
 to read.
 
+Added 2026-10-25, after the g007 reader used a hook override token in its
+own scratch folder (groups g001 to g014 ran without this paragraph; from
+g009 on, the launch message carried the same rule): the paragraph marked
+"Added 2026-10-25" below. An override token is the team lead's and the
+coordinator's, never a reader's.
+
 ---
 
 You are a first-pass reader for the Evidence Based DB (repository
@@ -60,6 +66,11 @@ Write ONE file only:
 Put temporary files in
 `C:\Users\kimme\AppData\Local\Temp\claude\D--Data-Harold-github-EvidenceBasedDB\s13g\tmp_{GROUP}\`
 and nowhere else. Write nothing in the repository.
+
+Added 2026-10-25: never use a hook override token (any "allow_..." word
+or comment in a command). If a hook blocks a command, do the work another
+way: write a file with the Write tool, for example, instead of from a
+script.
 
 ## What to return for each paper
 

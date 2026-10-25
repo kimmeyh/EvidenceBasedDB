@@ -62,3 +62,12 @@ def test_the_budget_check_names_each_budget():
     for budget in ("Return at most 5 assertions.", "Give up to 4 claims.", "Read the abstract and conclusion.",
                    "Spend about 2 minutes per paper.", "Skim the appendices."):
         assert budget_problems(f"{clean} {budget}"), budget
+
+
+def test_every_reader_prompt_from_task_g_on_forbids_hook_override_tokens():
+    """Sprint 13 Task G: the g007 reader used a hook override token in its
+    scratch folder. An override is the team lead's and the coordinator's,
+    never a reader's. Proven to fail, 2026-10-25: on the prompt as g001 to
+    g014 ran it, before the "never use a hook override token" paragraph."""
+    missing = [p for p in prompts() if "never use a hook override token" not in instructions(p).lower()]
+    assert missing == [], f"reader prompts that do not forbid hook override tokens: {missing}"
