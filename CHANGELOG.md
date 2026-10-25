@@ -163,6 +163,12 @@ this project keeps having to replace with a step.
   is refused, and a "#" in a string hides nothing. A script that does not
   parse is refused. Every script in `scripts/` gets the same verdict as
   before. Six new cases, proven red against the old rule (Issue #137)
+- **fix**: Manual Validation Q3 (team lead, 2026-10-25: "q3 do now"):
+  `scripts/run_suite.py --changed` runs `test_us_english` on any
+  document change, as it already ran the em dash guard. 6cfc137's
+  British spelling passed `--changed` and turned CI red. A test on this
+  repository's own selection fails if either guard leaves the list,
+  proven by injection (Issue #137)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

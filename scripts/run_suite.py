@@ -82,8 +82,10 @@ def working_tree(repo: Path) -> str:
 
 
 # Run whenever a document changes: they read every document, so no file
-# name ties them to the one that changed.
-DOC_GUARDS = ("tests/test_no_em_dashes.py", "tests/test_changelog_currency.py", "tests/test_sprint_documents.py")
+# name ties them to the one that changed. test_us_english joined on 2026-10-25 (Manual Validation Q3): without
+# it, 6cfc137's "whilst" passed --changed at the desk and turned CI red.
+DOC_GUARDS = ("tests/test_no_em_dashes.py", "tests/test_changelog_currency.py", "tests/test_sprint_documents.py",
+              "tests/test_us_english.py")
 DOC_SUFFIXES = (".md", ".json")
 # Files every test depends on, so a change to one runs the full suite.
 EVERYTHING = ("tests/conftest.py", "store/__init__.py", "pytest.ini", "pyproject.toml", "setup.cfg")
