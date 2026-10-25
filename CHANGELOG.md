@@ -257,6 +257,19 @@ this project keeps having to replace with a step.
   value ("R-squared value of 0.9959") was updated through its owner
   apply, and a second apply wrote nothing. The 18 values glossed before
   are unchanged under the new rule (Issue #138)
+- **fix**: the fresh-eyes review of that fix (8c869cc) found that its
+  40-character window still glossed labels with a number or a statistic
+  word anywhere near ("Cloudflare R2 storage costs below $0.01", "In R2,
+  accuracy was 0.9", "R2 = R1 + 0.5"), matched "train" inside
+  "constraint", missed "R2: 0.93", "r-squared", "R2_score", "R2-scores",
+  "coefficient of determination" and "D² sampling", and put the name
+  inside a token ("R^2 (R squared)_adj"). A bare R2, R^2 or R² now gains
+  the name only when a number follows through connecting words, a
+  statistic noun follows, or a statistic word comes before it; the name
+  goes after the whole token. Three of the four label tests had stayed
+  green with both label guards removed; each guarded case now removes its
+  own guard in the test and must turn glossed. No stored value changes
+  (Issue #138)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 
