@@ -38,6 +38,7 @@ Task B leaves it.
 | D | **F110, the F98 release.** Roadmap-to-QML's current commit recorded; the diff from a239747648 (no commit since, on 2026-10-25); any new paper matched, entered and read under F57's rules from F's ledger | 10m | one GitHub REST call | Claude, top tier |
 | E | **F108, Phase 2's later Sprint 28 work.** Phase 2's documents read at the commit current when the task starts (9993ab6 locally; PR #46 head fefd24b on GitHub, 2026-10-25). F162 entered under `ml` with its limits, related by ADR-0004 A8 (b) to the stored SPECTRA pocket claims (the three B4 assertions and `fourier-wall-incomplete-bar-manufactures-advantage`); each stored value from Phase 2's F111, F114, F151, F153, F154 and F110 compared with its changed document and corrected or confirmed by name | 60m | none (local files) | Claude, top tier (certainty) |
 | F | **F112, the F57 release: all 806 readable `qml` records** (Q1 = 1). First F57's I2 (30m): `store/grading.py` takes a named reason for every LOW (measured result, statement about the field, proved result not checked by the reader), required of new reading scripts by the write-path rule, proven by injection. Then the slice: every `qml` record at `seen` or `screened` with no read row (806 at planning), ordered by OpenAlex counts (F89's rule) so a stop cuts the least cited, leaving out the 24 records earlier slices found no copy for. Read by up to 5 agents from one ledger; each record read and yielding, or kept at `seen` with its reason; the count refreshed | 1340m (1310 for 806 at the card's rate, 30 for I2) | about 4 to 6 hours of reader time in the background: about 101 groups of 8, 5 at once; 32 arXiv PDFs not held locally, serial at 18 s (about 10 min) inside F52's cap; OpenAlex counts in a few requests | Claude, top tier (certainty); up to 5 first-pass readers at the tier B confirms (Sonnet 5.5 today), every quote checked in the write path |
+| G | **F113, added 2026-10-25 at Manual Validation (team lead: "fully read all the papers that are not marked 'read' and update all conclusions ... remove the budget"; "it is OK to re-read all the partially read papers" as a new task and card; "need these resolved before Manual Validation is complete").** First Manual Validation Q2 (the write path's three bypasses closed, "before reading any more papers"), Q3 (`--changed` runs the docs guards) and Q4 (the common name after a source's spelling, "R2 (R squared)"). Then the budget removed: F57's per-record rate and the reader prompt's "at least the abstract" and "2 to 4 assertions", with a guard test. Then every paper not read in full (1,991 of 2,335, snapshot as of 2026-10-25) read whole from one ledger by up to 5 agents: free copies fetched first, each stored assertion confirmed or corrected, every new claim entered, every theorem with its statement and conditions | no estimate as a limit (no reading budget). Forecast only: Task F's partial reads took about 4.5 hours of reader time for 795 records; whole papers with no cap are a multiple of that, about 20 to 40 hours [no-history], with usage-limit pauses waited out | 164 arXiv PDFs serial at 18 s (about 50 min) inside F52's cap; 46 open-access PDFs; 138 with no free copy listed | Claude, top tier (certainty); up to 5 first-pass readers at Sonnet 5.5 (B's tier), every quote checked in the write path |
 
 **The read ledger (C, D and F).** One ledger
 (`manifests/sprint13_read_ledger.json`) lists every record C, D and F will
@@ -161,6 +162,13 @@ two groups.
   ledger, each yielding or kept with its reason; HIGH and LOW grades carry
   their basis; both halves reviewed; the count refreshed; no record in two
   groups
+- G (added 2026-10-25): Q2's bypasses closed and proven red; Q3's
+  selection proven red; Q4's common names in every stored value that
+  needs one, a second apply writing nothing; no reading budget in F57 or
+  the reader prompt, guarded by a test proven red; every paper with a
+  copy read in full, its stored assertions confirmed or corrected and its
+  new claims entered under the grading rules; every paper without a copy
+  listed with its reason; the counts before and after
 - Full suite before Manual Validation, through `scripts/run_suite.py`;
   every other commit gated on `--changed` and CI's set; CI green on the
   sprint PR before Manual Validation

@@ -452,7 +452,7 @@ and in git. Remaining items below.
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
 
-**F57. Read for claims: the records still at `seen` and `screened` (permanent, released in slices) (~325m per 200-record release) Priority 70** (NEW 2026-10-05, team lead at Sprint 6 MV)
+**F57. Read for claims: the records still at `seen` and `screened`, each read in full (permanent; no reading budget since 2026-10-25) Priority 70** (NEW 2026-10-05, team lead at Sprint 6 MV)
 - Phase: Sourcing / extraction (permanent item, like F39)
 - Platform: the store; first-pass readers under the parallel-reading
   pattern (`.claude/model_assignment_heuristics.json`), every quote checked
@@ -461,6 +461,30 @@ and in git. Remaining items below.
   holds, not only the 224 read by 2026-10-21.
 - Team lead, 2026-10-05: "what else has not been read for claims - if not
   in backlog, add backlog item to do any missing 'read for claims' entries".
+- **No reading budget, and every read is full (team lead, 2026-10-25, at
+  Sprint 13 Manual Validation).** "fully read all the papers that are not
+  marked 'read' and update all conclusions ... remove the budget ... It is
+  far more important to read them all, get all the conclusions, profs,
+  assertions... than some budget ... ensure that all future paper reads
+  have no budget."
+  - Until then the reader prompt said "read at least the abstract,
+    introduction, results and conclusion" and "2 to 4 assertions per
+    paper", and releases were planned at a per-record rate (Sprint 13's
+    F112: 1,310 minutes for 806 records, about 1.6 minutes each). Of
+    Sprint 13's 795 reads, 551 said "in part" and 109 more listed only
+    some sections (snapshot as of 2026-10-25).
+  - From now on a reader reads every section, appendix and proof of the
+    paper; `read_extent` is `full` only then, and anything not read is
+    named with why (a page the text layer lost, not a choice of time).
+    There is no cap on assertions: every result, theorem with its
+    statement and conditions, definition, setup, stated limit and
+    conclusion is entered.
+  - An estimate in a plan is a forecast for the team lead, never a limit
+    on a read. A release is no longer a slice sized to a budget: the
+    remaining records are read in full (Sprint 13 Task G, F113), and a
+    usage-limit pause is waited out, not cut around.
+  - `tests/test_reader_prompts.py` fails on a reader prompt from Sprint 13
+    Task G onward that names a part-read or an assertion cap.
 - **Snapshot as of 2026-10-05**: 1,875 papers; 24 at `read`, all with
   yielded assertions; 14 `screened`; 1,837 `seen`. F45 and F46 cover only
   the handoff's pending facts, not these.
@@ -733,6 +757,40 @@ and in git. Remaining items below.
   `seen` with its reason; HIGH and LOW grades carry their basis; the count
   before and after recorded.
 - Depends on: none
+
+**F113. Read every unfinished paper in full, with no reading budget, and update every conclusion (no estimate: as long as the reads take) Priority 70** (NEW 2026-10-25, team lead at Sprint 13 Manual Validation; Sprint 13 Task G)
+- Phase: Sourcing / extraction
+- Value: the store's claims rest on whole papers, not on an abstract and
+  a conclusion. Team lead, 2026-10-25: "fully read all the papers that
+  are not marked 'read' and update all conclusions. That includes this
+  sprints 551 adn 109 and any from prior runs ... It is far more
+  important to read them all, get all the conclusions, profs,
+  assertions... than some budget"; "it is OK to re-read all the
+  partially read papers"; "need these resolved before Manual Validation
+  is complete".
+- Platform: the store; up to 5 first-pass readers at the tier Sprint 13
+  Task B confirmed (Sonnet 5.5), the coordinator at the top tier; every
+  quote checked in the write path; arXiv serial at 18 s inside F52's cap
+- **Snapshot as of 2026-10-25** (2,335 papers; a read counts as full when
+  a reader or the coordinator recorded the whole paper):
+  - 1,141 at `read` without a full read: 1,139 with a local copy, 1 with
+    only a DOI (`emami-2026`), 1 GitHub repository.
+  - 682 at `seen` or `screened`: 157 with a local copy, 142 with only an
+    arXiv id (free; fetched first), 205 with only a DOI or a URL, 173
+    GitHub repositories, and 5 already read in full.
+- What a full read is: every section, appendix and proof. Each theorem is
+  entered with its statement and conditions quoted, so a theoretical
+  result kept LOW for want of them (288 in Sprint 13's script) can be
+  graded on the statement. No cap on assertions. Each record's stored
+  assertions are given to its reader: each is confirmed, corrected,
+  widened or narrowed from the whole paper, and new ones are added.
+- Acceptance: every record with a copy read in full, its `paper_reads`
+  row `full`, its assertions updated or added under the grading rules;
+  every record without a copy listed with its reason and on the
+  hand-download list; the counts before and after; a second apply writes
+  nothing.
+- Depends on: Manual Validation Q2 (the write-path bypasses closed before
+  any more reads) and the reader prompt with no budget
 
 ## Design documents governing this repository
 

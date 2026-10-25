@@ -111,6 +111,14 @@ rather than a qualitative decision.
   can answer it, the database holds a resolver, not a copy. This is the rule the
   consumer repository learned the hard way: one value restated in five documents
   drifted in three of them.
+- **A paper is read in full, with no budget.** Every section, appendix and
+  proof; no cap on assertions; each theorem entered with its statement and
+  conditions quoted. A plan's estimate is a forecast, never a limit on a
+  read, and a usage-limit pause is waited out, not cut around. Team lead,
+  2026-10-25: "It is far more important to read them all, get all the
+  conclusions, profs, assertions... than some budget ... ensure that all
+  future paper reads have no budget." Enforced on reader prompts by
+  `tests/test_reader_prompts.py`; F57's card holds the history.
 - Reading level escalates ONE grade at a time from 8 toward a PhD ceiling, and
   the level achieved is recorded. Grades 13 to 16 are acceptable; a CLUSTER at
   17 or above is a finding about the source document, not about the glossary.

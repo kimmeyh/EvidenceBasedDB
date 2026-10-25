@@ -177,6 +177,22 @@ this project keeps having to replace with a step.
   still passed; every identifier inside a string now counts. A changed
   manifest did not run `test_intake`, which reads every manifest; it does
   now. Each proven red. Every script keeps its verdict (Issue #137)
+- **process**: No reading budget (team lead, 2026-10-25, at Manual
+  Validation: "remove the budget ... ensure that all future paper reads
+  have no budget"). F57's card drops its per-record rate; the new reader
+  prompt (`manifests/sprint13_g_reads/READER_PROMPT.md`) asks for every
+  page, appendix and proof, sets no cap on assertions, and gives each
+  reader the record's stored assertions to confirm or correct. CLAUDE.md
+  carries the rule; `tests/test_reader_prompts.py` fails on a prompt from
+  Task G on that names a part-read or a cap, proven red with Task F's
+  prompt in its place (Issue #138)
+- **feat**: Sprint 13 Task G (F113, issue #138, added at Manual
+  Validation): the slice of every paper not read in full (1,991 of 2,335,
+  snapshot as of 2026-10-25; a reader's "full" that listed parts does not
+  count), its downloads (Sprint 10's rules: 210 free copies planned, 138
+  with none), the ledger builder and the reader's own check. INTAKE
+  sections 52 (Q4's common names) and 53 (Task G) written before their
+  applies (Issue #138)
 - **fix**: Manual Validation Q3 (team lead, 2026-10-25: "q3 do now"):
   `scripts/run_suite.py --changed` runs `test_us_english` on any
   document change, as it already ran the em dash guard. 6cfc137's

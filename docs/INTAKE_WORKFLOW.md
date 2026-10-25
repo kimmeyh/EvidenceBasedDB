@@ -2270,3 +2270,68 @@ the read's own bullets follow before its apply.
   - **`qnpg-outer-loop`** keeps the source's "likely".
   - **The CHANGELOG's "3 HIGH locations made exact"** was 4: kqse and
     zhang above, and qumode and stvqc, listed above with the anchors.
+
+## 52. Applied 2026-10-25: the common name after a source's spelling (Sprint 13 Manual Validation Q4)
+
+Team lead, 2026-10-25: "keep how the paper does them and then put in
+parenthasses the more common name for them so that we can query the
+database and still find all occurances of R2, R squared". Written before
+the apply that makes it (snapshot as of 2026-10-25).
+
+- **The rule.** `store.common_names.with_common_names` adds the common
+  name in parentheses after a source's own spelling: "R2 (R squared)",
+  "D2-sampling (D squared sampling)". `store.ingest` applies it to every
+  value it inserts or syncs, so every reading script, past and future,
+  gets it with nothing of its own, and a second apply writes nothing.
+  Quotes are never touched; they stay verbatim.
+- **The 18 values.** 17 carry "R2" (15 LOW; `tn-state-r2-threshold` and
+  `shah-dequantized-qi-kmeanspp` HIGH) and 1 "D2-sampling" (the same
+  shah value). They belong to four scripts: `sprint9_f78_ceiling_reading.py`
+  (1), `sprint11_reading.py` (3), `sprint12_reading.py` (2) and
+  `sprint13_reading.py` (12). Each script is re-applied, first against a
+  copy of the store to show that these values are the only change.
+- **Left as is.** `otgonbaatar-cp-decomposition-hsi` spells "R-squared",
+  already the common name in words.
+
+## 53. Sprint 13 Task G (F113): every paper read in full, with no budget
+
+Team lead, 2026-10-25, at Manual Validation: "fully read all the papers
+that are not marked 'read' and update all conclusions. That includes this
+sprints 551 adn 109 and any from prior runs ... remove the budget ... It
+is far more important to read them all, get all the conclusions, profs,
+assertions... than some budget". Written before any read is applied
+(snapshot as of 2026-10-25).
+
+- **The slice** (`scripts/sprint13_g_slice.py`,
+  `manifests/sprint13_g_slice.json`): every paper record not read in
+  full. A read is full only when a `paper_reads` row says `full`, or a
+  first-pass reader marked the paper `full` and listed no parts (or said
+  the whole paper was read). A reader's `full` that listed sections is
+  not full: 161 such in Sprints 11 and 12 and 121 in Sprint 13, many
+  stored as "the whole source". Of 2,335 papers, 1,991 are not read in
+  full:
+  - 1,309 at `read` with a local copy; 1 at `read` with only a DOI
+    (`emami-2026`); 1 at `read` that is a GitHub repository;
+  - 160 at `seen` or `screened` with a local copy, 347 with only an
+    arXiv id or a DOI, 173 GitHub repositories.
+- **The downloads** (`scripts/sprint13_g_downloads.py`, Sprint 10's
+  rules): the dry run planned 210 free copies (164 from arXiv, serial at
+  18 s inside F52's cap, and 46 open-access PDFs OpenAlex lists) and
+  found no free copy for 138. A paywalled paper is listed, never
+  fetched; those go to the hand-download list with their reason.
+- **The ledger** (`scripts/sprint13_g_ledger.py`,
+  `manifests/sprint13_g_ledger.json`): one record, one group, one reader,
+  at most 5 readers at once; groups of 5 papers. First the records whose
+  stored assertions hold a theoretical result kept LOW for want of its
+  statement, then the records not yet at `read`, then the rest. Each
+  group's brief carries the record's stored assertions for its reader to
+  judge; the briefs are store content and stay outside git.
+- **The reader prompt** (`manifests/sprint13_g_reads/READER_PROMPT.md`):
+  every page, every appendix and proof; no cap on assertions; a verdict
+  on every stored assertion (confirmed, corrected, narrowed, widened,
+  contradicted, not in the paper); each theorem with its statement and
+  conditions quoted. `scripts/sprint13_g_check.py` is the reader's own
+  check (the write path's quote and figure checks, and the shape).
+- **GitHub repositories (174)** are not papers with a text layer; how
+  they are read is the team lead's decision, asked at the end of the
+  task.
