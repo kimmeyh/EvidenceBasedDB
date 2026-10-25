@@ -41,7 +41,8 @@ def test_each_correction_changes_only_what_phase2_changed():
     assert "0.829" not in v["f111-cvqboost-knn-lane-below-published-value-under-loke-protocol"]
 
 
-def test_f162_links_nothing_and_names_what_it_bears_on():
+def test_f162_names_what_it_bears_on():
+    """The links themselves are checked against the store in the live test."""
     f108 = _script()
     reasons = " ".join(a.certainty_reasons for a in f108.F162)
     for aid in ("dirac3-matches-classical-proxy-in-pocket-spectra-b4",
@@ -71,6 +72,14 @@ def test_the_store_holds_f162_and_a_second_apply_writes_nothing(live_conn, live_
                                  (f108.F162_ID, a.id)).fetchone(), a.id
     assert not live_conn.execute("SELECT 1 FROM assertion_relations WHERE from_assertion_id LIKE 'f162-%' OR "
                                  "to_assertion_id LIKE 'f162-%'").fetchone()
+    # The fresh-eyes review of 88bd065: each corrected value's paper points at the blob its quotes are read in.
+    for key, _ in f108.CORRECTED:
+        rid = f108.f102.src_id(key)
+        row = live_conn.execute("SELECT access, evidence, checked_against_source FROM paper_fields WHERE record_id = ?",
+                                (rid,)).fetchone()
+        want = f108.repointed(key)
+        assert tuple(row) == (want["access"], want["evidence"], want["checked_against_source"]), rid
+        assert f108.BLOBS[key][1] in row[1] and "9cbe5ba" in row[0], rid
     conn = connect(live_copy)
     try:
         assert f108.apply_changes(conn) == []

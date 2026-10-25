@@ -1930,8 +1930,11 @@ Every count is a snapshot as of 2026-10-25. Written before the apply.
   reliably below XGBoost on two; FourierWall2's single-run in-pocket wins
   do not repeat over ten seeds. **Context `hsbc-2026`, not the plan's
   `ml`**: section 43's rule files a result about the project's own
-  CVQBoost lanes under `hsbc-2026`, and the B4 device claims on the same
-  cells are there and under `platform:dirac-3`.
+  CVQBoost lanes under `hsbc-2026`; of the B4 device claims on the same
+  cells, `cvqboost-device-below-classical-bar-spectra-b4` is under
+  `hsbc-2026` and the other two under `platform:dirac-3` (this line first
+  said all three were under both; corrected after the fresh-eyes review
+  of 88bd065).
 - **No relation linked (ADR-0004 A8 (b)).** F162 measures the proxy, not
   the device, so it confirms none of the three B4 claims whole, and its
   FourierWall2 finding is about a different model and bar from
@@ -1956,6 +1959,20 @@ Every count is a snapshot as of 2026-10-25. Written before the apply.
 - `scripts/sprint13_f108_phase2.py` holds F162 and the corrections; the
   Sprint 12 script stays the record of the read at 10086da, and its store
   test takes the three corrected ids from the Sprint 13 script.
+- **A second apply, after the fresh-eyes review of 88bd065 (written
+  before it).**
+  - **The three paper records pointed at the old blob.** Their `access`,
+    `evidence` and `checked_against_source` named 10086da, whose text says
+    0.829, while the corrected values quote 9cbe5ba. Each is repointed at
+    9cbe5ba, with the earlier read and its blob SHA-256 kept in the
+    evidence. Every stored quote from these three documents is verbatim
+    at 9cbe5ba (the review ran the check on all of them).
+  - **F162's first value left out four qualifiers**, now carried: the
+    energy_steel HGB case (an interval excluding zero, but p = 0.0098
+    above the family level, so the rule reads no reliable difference),
+    the 46 to 58 frauds per seed, Phase 2's inference that a telecom-only
+    entry would decide telecom_churn, and the label limit. "Overall" now
+    says it means the whole test set.
 
 ## 51. The F57 release for Sprint 13: every readable `qml` record (Sprint 13 Task F, F112)
 

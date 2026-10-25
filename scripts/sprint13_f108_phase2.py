@@ -37,8 +37,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.ingest import (AssertionRecord, add_read, insert_paper, insert_verified_assertion,  # noqa: E402
-                          sync_verified_assertion, validate_assertion)
+from store.ingest import (AssertionRecord, add_read, append_updated_reason, insert_paper,  # noqa: E402
+                          insert_verified_assertion, sync_verified_assertion, validate_assertion)
 from store.quotes import plain, require_verbatim  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location("f102", Path(__file__).with_name("sprint12_f102_phase2_sprint28.py"))
@@ -126,11 +126,14 @@ F162 = [
       value=("Inside the SPECTRA pocket, over ten seeds (42-51) on three cells, Phase 2's CVQBoost proxy was not "
              "reliably better than HGB or XGBoost on any cell, so the entry's falsifier fires on all three. Where a "
              "difference was reliable the proxy was below: XGBoost beat it on energy_steel (by 0.024 AUPRC, "
-             "p = 0.0020) and oilgas_gasturbine (by 0.011, p = 0.0059), under the family level 0.0083. On "
-             "telecom_churn the proxy was ahead on average (+0.013 against HGB, p = 0.16; +0.033 against "
-             "XGBoost, p = 0.049), not reliably. Overall the proxy is below both classical models on every cell. "
-             "Phase 2: nothing here justifies a device run. Its limits: XGBoost at library defaults, one proxy "
-             "configuration, the proxy and not the device"),
+             "p = 0.0020) and oilgas_gasturbine (by 0.011, p = 0.0059), under the family level 0.0083. Against HGB "
+             "on energy_steel the proxy was lower by 0.020 with an interval excluding zero, but p = 0.0098 is above "
+             "0.0083, so the rule reads no reliable difference. On telecom_churn the proxy was ahead on average "
+             "(+0.013 against HGB, p = 0.16; +0.033 against XGBoost, p = 0.049), not reliably; the pocket holds 46 "
+             "to 58 frauds per seed, and Phase 2 infers that a telecom-only entry with more seeds would decide it. "
+             "Over the whole test set, outside the pocket too, the proxy is below both classical models on every "
+             "cell. Phase 2: nothing here justifies a device run. Its limits: XGBoost at library defaults, one "
+             "proxy configuration, the proxy and not the device, the label target only"),
       provenance="Bottom line, Results, Reading and Limits",
       citation_context=('"The proxy is not reliably better than either classical model inside the pocket on any '
                         'cell." (Bottom line, markdown bold dropped); "so the entry\'s falsifier fires on all three '
@@ -138,7 +141,12 @@ F162 = [
                         'energy_steel (by 0.024 AUPRC, Wilcoxon p = 0.0020) and on oilgas_gasturbine (by 0.011, '
                         'p = 0.0059), both under the family level 0.0083" (Bottom line); "Proxy minus HGB +0.013 '
                         '(p = 0.16), proxy minus XGBoost +0.033 (p = 0.049); both intervals span zero." (Bottom '
-                        'line); "Overall, the proxy is below both classical models on every cell" (Reading, '
+                        'line); "proxy minus HGB: -0.020, p = 0.0098, [-0.036, -0.003]. No reliable difference '
+                        'under the rule: the interval excludes zero but the Wilcoxon p is above 0.0083." (Results, '
+                        'markdown bold dropped); "The pocket holds 46 to 58 frauds per seed." (Bottom line); '
+                        '"Inferred: a telecom-only entry (m = 2, more seeds) is what would decide it" (Reading, '
+                        'markdown bold dropped); "Label `target` only." (Limits, markdown bold dropped); '
+                        '"Overall, the proxy is below both classical models on every cell" (Reading, '
                         'markdown bold dropped); "For a device run: nothing here justifies one." (Bottom line, '
                         'markdown bold dropped); "XGBoost at library defaults" (Limits, markdown bold dropped); '
                         '"One proxy configuration" (Limits, markdown bold dropped); "The proxy, not the device." '
@@ -216,6 +224,31 @@ CORRECTED: list[tuple[str, AssertionRecord]] = [
 ]
 
 
+# The fresh-eyes review of 88bd065: the three corrected values quote text their paper records did not point at
+# (access, evidence and checked_against_source named 10086da). Each is repointed at COMMIT, the earlier read kept in
+# the evidence. Every other stored quote from these three documents is verbatim at COMMIT too (that review ran
+# require_verbatim on all 9).
+LAST_COMMIT = "28bdbcd"
+REPOINT_NOTE = (f"{TODAY} ({TAG}): access, evidence and checked_against_source repointed at Phase 2 commit 9cbe5ba, "
+                "where the corrected values are read (the fresh-eyes review of 88bd065; INTAKE_WORKFLOW.md section 50)")
+F162_REVIEW = (f"{TODAY} ({TAG}): the value carries the energy_steel HGB case, the frauds per seed, the inferred "
+               "telecom-only entry and the label limit, and says what \"overall\" covers (the fresh-eyes review of "
+               "88bd065)")
+
+
+def repointed(key: str) -> dict[str, str]:
+    file, _, old_sha, _, _, run, _, _ = f102.DOCS[key]
+    return {
+        "access": f"{PHASE2}\\{file.replace('/', chr(92))} | {f102.REPO_URL}/blob/{COMMIT}/{file}",
+        "evidence": (f"Committed blob SHA-256 {BLOBS[key][1]} at Phase 2 commit 9cbe5ba (the last commit to touch "
+                     f"the file is {LAST_COMMIT}). Run: {run}. Read first on 2026-10-23 at commit 10086da (blob "
+                     f"SHA-256 {old_sha}); re-read whole on {TODAY} at 9cbe5ba after Phase 2 changed it, and the "
+                     "stored values corrected or confirmed by name (F108). The private repository's URL is the "
+                     "citation's pointer; the record depends on the commit. Read-only from this repository (F79)."),
+        "checked_against_source": f"{TODAY}, Claude, read the whole document at commit 9cbe5ba via git show",
+    }
+
+
 def check_hashes() -> list[str]:
     return [f"{k}: blob at {COMMIT[:7]} has changed" for k, (_, sha) in BLOBS.items()
             if hashlib.sha256(source_bytes(k)).hexdigest() != sha]
@@ -241,12 +274,21 @@ def apply_changes(conn) -> list[str]:
                             (rid, TODAY, READ_DETAIL)).fetchone():
             add_read(conn, rid, "Claude", TODAY, "full", READ_DETAIL)
             log.append(f"read   {rid}")
+        want = repointed(key)
+        row = conn.execute("SELECT access, evidence, checked_against_source FROM paper_fields WHERE record_id = ?",
+                           (rid,)).fetchone()
+        if tuple(row) != (want["access"], want["evidence"], want["checked_against_source"]):
+            conn.execute("UPDATE paper_fields SET access = ?, evidence = ?, checked_against_source = ? "
+                         "WHERE record_id = ?", (want["access"], want["evidence"], want["checked_against_source"], rid))
+            append_updated_reason(conn, rid, REPOINT_NOTE, TODAY)
+            log.append(f"repoint {rid}")
     for key, a, verified in checked:
         if conn.execute("SELECT 1 FROM records WHERE id = ?", (a.id,)).fetchone() is None:
             insert_verified_assertion(conn, a, verified, yielded_by=F162_ID)
             log.append(f"assert {a.id}")
         else:
-            changed = sync_verified_assertion(conn, a, verified, SYNC_REASON, TODAY)
+            changed = sync_verified_assertion(conn, a, verified, F162_REVIEW if key == "f162" else SYNC_REASON,
+                                              TODAY)
             if changed:
                 log.append(f"synced {a.id}: {', '.join(changed)}")
     return log

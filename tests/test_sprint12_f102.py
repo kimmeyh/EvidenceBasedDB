@@ -46,7 +46,10 @@ def test_every_quote_and_figure_is_in_its_document():
 def test_the_store_holds_what_the_script_writes(live_conn):
     """Proven to fail by injection, 2026-10-23: run against the backup
     taken before the apply, it named f151; run against the backup taken
-    before the second apply, it named f111 (not yet entered)."""
+    before the second apply, it named f111 (not yet entered). Since Sprint
+    13 Task E the three values Phase 2 later changed are compared with
+    `sprint13_f108_phase2.py`'s CORRECTED, not with this script; run
+    against the backup taken before that apply, it names f110."""
     f102 = _script()
     spec = importlib.util.spec_from_file_location("f108", ROOT / "scripts" / "sprint13_f108_phase2.py")
     f108 = importlib.util.module_from_spec(spec)

@@ -90,6 +90,13 @@ this project keeps having to replace with a step.
   calibration and range, F111's range) and the other 9 confirmed by name
   (`scripts/sprint13_f108_phase2.py`, INTAKE_WORKFLOW.md section 50,
   `tests/test_sprint13_f108.py`, two injections run) (Issue #136)
+- **fix**: the fresh-eyes review of 88bd065 (2026-10-25): the three
+  corrected values' paper records still pointed at 10086da's blob;
+  repointed at 9cbe5ba with the earlier read kept in the evidence. F162's
+  value now carries the energy_steel HGB case, the 46 to 58 frauds per
+  seed, the inferred telecom-only entry and the label limit, and says what
+  "overall" covers. Section 50's context line corrected. Injections run
+  (Issue #136)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 
