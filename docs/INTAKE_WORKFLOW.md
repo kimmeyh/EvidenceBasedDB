@@ -2351,3 +2351,22 @@ assertions... than some budget". Written before any read is applied
     saved copies are found through their log (they carry author and
     title, not the record id). 66 fetched records and the 6 above joined
     as groups g295 to g309.
+- **After the downloads finished** (2026-10-25; written before any Task
+  G read is applied; counts are a snapshot as of that date):
+  - **The run saved 165 copies and failed 45** (HTTP 403 or 404, two TLS
+    failures, and publisher pages that were not a PDF). No failure was
+    retried or fetched around. With the 138 that have no free copy, 183
+    fetch-bucket records have no local copy. They are listed with their
+    reason in `manifests/sprint13_g_no_copy.json`, and Task G's apply
+    marks each for the hand-download list.
+  - **The slice was re-run with the download log**: of 1,997 not read
+    in full, 1,315 are at `read` with a local copy, 325 are at `seen` or
+    `screened` with a local copy, 183 have no local copy (1 of them at
+    `read`), and 174 are GitHub repositories.
+  - **The ledger appended 99 records as groups g310 to g329**, which
+    makes 329 groups and 1,640 records, every one with a local copy.
+  - **The reader prompt was clarified** after groups g001 to g005 ran:
+    a plot or drawing whose caption and surrounding text were read is not
+    `not_read`, and a text layer that holds the paper twice is read from
+    its first copy. The coordinator grades the earlier groups'
+    figure-only gaps as `full` where every page of text was read.

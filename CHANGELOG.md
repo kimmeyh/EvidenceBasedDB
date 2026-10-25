@@ -235,6 +235,19 @@ this project keeps having to replace with a step.
   `*_slice.json` manifests, since that slice records no OpenAlex count. A
   slice row with no count is now read past, as an uncounted one was; a
   test with no store, proven red on the old script, holds it (Issue #138)
+- **chore**: Task G (F113) after its download run (snapshot as of
+  2026-10-25): 165 copies saved and 45 failed, none retried. The slice,
+  re-run with the download log, holds 1,997 records: 1,640 with a local
+  copy, 183 without one, 174 GitHub repositories. The 183 are listed
+  with their reason in `manifests/sprint13_g_no_copy.json` for the
+  hand-download list. The ledger appended 99 records as groups g310 to
+  g329. The reader prompt now says that a plot whose caption was read is
+  not `not_read`, and that a text layer holding the paper twice is read
+  from its first copy. `tests/test_backlog_cards.py` failed on F57's and
+  F113's headers, which carry no estimate since the budget was removed; a
+  reading card may now say "(no estimate: as long as the reads take ...)"
+  in exactly those words, and every other card still states its minutes
+  (Issue #138)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

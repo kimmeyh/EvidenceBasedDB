@@ -452,7 +452,7 @@ and in git. Remaining items below.
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
 
-**F57. Read for claims: the records still at `seen` and `screened`, each read in full (permanent; no reading budget since 2026-10-25) Priority 70** (NEW 2026-10-05, team lead at Sprint 6 MV)
+**F57. Read for claims: the records still at `seen` and `screened`, each read in full (no estimate: as long as the reads take; permanent, no reading budget since 2026-10-25) Priority 70** (NEW 2026-10-05, team lead at Sprint 6 MV)
 - Phase: Sourcing / extraction (permanent item, like F39)
 - Platform: the store; first-pass readers under the parallel-reading
   pattern (`.claude/model_assignment_heuristics.json`), every quote checked
@@ -777,9 +777,13 @@ and in git. Remaining items below.
   full.
   - 1,317 at `read`: 1,315 with a local copy, 1 with only a DOI
     (`emami-2026`), 1 GitHub repository.
-  - 680 at `seen` or `screened`: 226 with a local copy (66 of them
-    fetched by Task G so far), 281 with only an arXiv id or a DOI still
-    to fetch or to list, 173 GitHub repositories.
+  - 680 at `seen` or `screened`: 325 with a local copy (Task G's
+    download run saved 165), 182 with only an arXiv id or a DOI, 173
+    GitHub repositories. These 182 and `emami-2026` are the 183 with no
+    local copy: 45 failed downloads and 138 with no free copy, listed in
+    `manifests/sprint13_g_no_copy.json` for the hand-download list.
+  - Updated 2026-10-25 after the download run finished: the line above
+    first gave 226 with a local copy and 281 still to fetch or list.
   - Corrected 2026-10-25 (the fresh-eyes review of a3b8074): this card
     first gave 1,141 and 682 from an earlier count that did not treat a
     reader's "full" with listed parts as partial; the slice's own count

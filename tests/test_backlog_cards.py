@@ -20,7 +20,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PLAN = ROOT / "docs" / "ALL_SPRINTS_MASTER_PLAN.md"
 HEADER = re.compile(r"^\*\*(F\d+)\. (.+?)\*\*", re.M)
-MINUTES = re.compile(r"\(~\d+m\b[^)]*\) Priority (\d+|HOLD)$")
+# A reading card carries no estimate at all (team lead, 2026-10-25: "remove the budget ... It is far more important
+# to read them all ... than some budget"), in exactly these words; every other card states its minutes. Proven to
+# fail, 2026-10-25: before this alternative, F57 and F113 went red; "(no estimate) Priority 70" stays red.
+MINUTES = re.compile(r"\((?:~\d+m\b|no estimate: as long as the reads take)[^)]*\) Priority (\d+|HOLD)$")
 BULLETS = ("- Phase:", "- Platform:", "- Value:", "- Acceptance", "- Depends on:")
 
 

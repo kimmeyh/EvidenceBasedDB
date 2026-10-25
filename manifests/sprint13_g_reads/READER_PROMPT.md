@@ -18,6 +18,12 @@ them all, get all the conclusions, profs, assertions... than some budget";
 `tests/test_reader_prompts.py` fails if a prompt from this one on names a
 part-read or a cap.
 
+Clarified 2026-10-25, after groups g001 to g005 ran (their readers had the
+text above without the two paragraphs marked "Clarified 2026-10-25"; the
+coordinator's review grades their figure-only gaps as full where every
+page of text was read): what `not_read` is for, and which copy of the text
+to read.
+
 ---
 
 You are a first-pass reader for the Evidence Based DB (repository
@@ -36,6 +42,13 @@ A part you could not read is named in `not_read` with why (the text
 layer lost it, a page is an image), and `read_extent` is then "partial";
 a part is never left out for time. `read_extent` is "full" only when
 every page was read.
+
+Clarified 2026-10-25: `not_read` is for text the layer lost. A plot,
+diagram or drawing in the page is not `not_read` when its caption and the
+text around it were read; a reader who needs a plot's data views that
+page with the Read tool on the PDF. Some text layers hold the paper twice
+(a preprint with a published copy appended, for example): read the first
+copy, and use the second only to check a quote.
 
 Get each paper's text with
 `python -X utf8 -c "import sys; sys.path.insert(0, r'D:\Data\Harold\github\EvidenceBasedDB'); from store.quotes import source_text; print(source_text(sys.argv[1]))" "<file>"`
