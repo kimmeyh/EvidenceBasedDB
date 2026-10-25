@@ -40,7 +40,9 @@ _HIGH_LITERAL = re.compile(r"""["']high["']""")
 # of low_grade or of the name it is imported as. Known limits, not closed: a LOW built by concatenation with no
 # quoted "low" ('LO' + 'W', or 'LOW'.lower()) passes; a reading script that compares a literal 'low' (a
 # count) is refused. The fresh-eyes review of f782e53 found two more, also not closed: "low_grade(" inside a
-# string or a docstring counts as a call, and so does a call to a low_grade the script defines for itself.
+# string or a docstring counts as a call, and so does a call to a low_grade the script defines for itself. The
+# fresh-eyes review of ce2412e found a third, not closed: comments are stripped with "#.*" before the LOW checks,
+# so a "#" inside a string literal hides the rest of that line from them.
 _LOW_LITERAL = re.compile(r"""Started LOW|["']low["']""")
 _LOW_ALIAS = re.compile(r"\blow_grade\s+as\s+(\w+)")
 

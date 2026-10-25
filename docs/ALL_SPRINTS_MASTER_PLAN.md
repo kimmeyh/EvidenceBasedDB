@@ -514,6 +514,11 @@ and in git. Remaining items below.
     1,449 have no read row. About 8 more releases at 200, or 4 at
     Sprint 12's 400. Sprint 12's release of 400 ran inside a sprint
     that took about 24 percent of its estimate.
+  - **Snapshot as of 2026-10-25, after Sprint 13's release (F112)**:
+    2,335 papers; 1,653 at `read`; 682 at `seen` or `screened` (681 and
+    1), of which 654 have no read row. F112 read 795 records (12 refused
+    with no assertions, each with its reason) and listed 11 with no copy.
+    About 4 more releases at 200.
   - Known limit (Sprint 10 finding): a record with no free copy, or one
     refused at reading, cannot reach `read`. Each release reports those
     separately, so the count that closes the item is visible.

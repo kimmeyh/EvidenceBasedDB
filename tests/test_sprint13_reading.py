@@ -58,8 +58,10 @@ def test_every_figure_in_a_value_is_in_its_own_quotes():
 # An exponent the text layer printed flat: "O(N 2)" for N^2, "O(n3)", "10−13" for 10^-13, "ε−1". A
 # lower-case letter and digit only inside O(...): the fresh-eyes review of f782e53 found "(H2)" and "(B0)"
 # flagged, a molecule and a field. "R2" and "D2-sampling" are left: each is the field's usual flat spelling of
-# a name (R squared, D squared sampling), not a figure.
-GARBLED = re.compile(r"O\([^)]*\w \d|O\([^)]*[a-z]\d+(\.\d+)?\)|\b\d+−\d+\b|[A-Za-zε]−1\b|\bN \d\b")
+# a name (R squared, D squared sampling), not a figure. A decimal before N or n is a base printed without its
+# exponent, "1.46N" for 1.46 to the N (fresh-eyes review of ce2412e); "2D", "97K" and "STO-3G" are names and
+# sizes, so the branch stays that narrow.
+GARBLED = re.compile(r"O\([^)]*\w \d|O\([^)]*[a-z]\d+(\.\d+)?\)|\b\d+−\d+\b|[A-Za-zε]−1\b|\bN \d\b|\b\d+\.\d+[Nn]\b")
 
 
 def test_no_value_carries_a_figure_the_text_layer_garbled():
@@ -67,7 +69,8 @@ def test_no_value_carries_a_figure_the_text_layer_garbled():
     and the value, so "every figure in its quotes" passes (fresh-eyes review
     of cec6020 found 12 stored). Proven to fail by injection, 2026-10-25: with
     the simplex-4-algorithm replacement removed, "O(n2.455)" came back and
-    this test went red."""
+    this test went red. Again after the ce2412e review, in memory: with the
+    qaoa-qmf-best-empirical-scaling replacement removed, "1.46N" went red."""
     s13 = _script()
     bad = {a.id: m.group(0) for a in _all(s13) if (m := GARBLED.search(a.value))}
     assert not bad, bad
@@ -79,12 +82,22 @@ def test_every_high_grade_is_one_the_coordinator_named_with_its_basis():
     kept = _all(s13)
     high = {a.id: a for a in kept if a.certainty == "high"}
     assert set(high) == set(s13.HIGH) & set(raw)
-    for aid, a in high.items():
-        assert s13.HIGH[aid].basis in BASES
-        assert f"the paper's own {s13.HIGH[aid].basis}" in a.certainty_reasons, aid
-    assert not [i for i in high if raw[i]["kind"] == "cited" or raw[i]["claim_type"] == "vendor-self-claim"]
+    assert all(s13.HIGH[aid].basis in BASES for aid in high)
+    # The reason text is built from the basis, and certainty() grades a vendor claim before HIGH is consulted, so
+    # neither is checked here: a check that cannot fail is not a guard (fresh-eyes review of ce2412e). Proven to
+    # fail by injection, 2026-10-25, in memory: the cited sai-cited-5g-ids-accuracy added to HIGH went red.
+    assert not [i for i in high if raw[i]["kind"] == "cited"]
     moderate = {a.id for a in kept if a.certainty == "moderate"}
     assert moderate == s13.VENDOR_DESCRIPTIONS & set(raw)
+
+
+def test_no_id_is_both_high_and_named_low():
+    """certainty() consults HIGH first, so an id in HIGH and in THEORY_LOW or
+    MEASURED_DESPITE is HIGH, silently (fresh-eyes review of ce2412e). Proven
+    to fail by injection, 2026-10-25, in memory: scala-lazy-regime-limit (in
+    HIGH) added to THEORY_LOW went red, and to MEASURED_DESPITE went red."""
+    s13 = _script()
+    assert not set(s13.HIGH) & (set(s13.THEORY_LOW) | set(s13.MEASURED_DESPITE))
 
 
 def test_every_low_names_its_reason():
@@ -235,6 +248,18 @@ def test_each_read_is_qualified_and_the_store_matches_the_script(live_conn, half
                                      a.claim_type) or ctx != [a.context]:
             bad.append(a.id)
     assert not bad, bad
+
+
+@pytest.mark.live_store
+def test_the_store_holds_no_assertion_the_script_no_longer_makes(live_conn):
+    """The row-by-row check above starts from the script, so a row the script
+    stopped producing would pass it (fresh-eyes review of ce2412e). Proven to
+    fail by injection, 2026-10-25, in memory: with scala-lazy-regime-limit
+    left out of the script's assertions, this test went red naming it."""
+    s13 = _script()
+    stored = {r[0] for r in live_conn.execute("SELECT id FROM records WHERE updated_reason LIKE ?",
+                                               (f"%({s13.TAG}): extracted from %",))}
+    assert stored == {a.id for a in _all(s13)}, sorted(stored ^ {a.id for a in _all(s13)})[:20]
 
 
 @pytest.mark.live_store

@@ -2185,3 +2185,50 @@ the read's own bullets follow before its apply.
     Tibaldi's inconsistency, g95 and g96 Wang's conflicts, g98 Yang's,
     g100 Ziiatdinov's) stay in the reader's inference; where one reached
     a value, the value is trimmed or the figure said in words.
+- **Corrections after the fresh-eyes review of ce2412e** (snapshot as of
+  2026-10-25; written before half 2's re-apply). Half 1 is unchanged.
+  - **Two claims in the bullet above were false.** "No value carrying a
+    flat-printed figure": `qaoa-qmf-best-empirical-scaling` (g91) said
+    "grows as 1.46N", which is 1.46 to the power N; and g91 Shaydulin's
+    figure had reached that value without being said in words. It now
+    is, and the garble guard gains a branch for a decimal before N or n
+    (proven red by injection).
+  - **Out of HIGH:** `nghiem-exponential-copies-in-r` (a limit drawn
+    from Theorem 2, whose statement is not quoted) and
+    `dqnn-results-general-scope` (the generality of results whose own
+    entries are LOW) go to the theoretical LOWs;
+    `qnpg-outer-loop` (its "limitation" is the literature's) is a LOW
+    authors' claim. **Into HIGH:** `scala-lazy-regime-limit`, filed as a
+    field statement, is the paper's own stated limit on its own formal
+    results. Half 2 is now 460 HIGH and 890 LOW.
+  - **Cited or derived clauses left out of a HIGH:** a cited clause in
+    `bounds-scope-query-count-only` ("[80]") and
+    `schuld-speedup-caveat` ("[1, 9]"); the "almost all" clause of
+    `connectivity-1d-chain-no-overhead`, which rests on a cited lower
+    bound; the abstract's "we show" in `jeffery-subspace-graph`, a
+    definition.
+  - **A value that said the opposite of its quote:**
+    `qucnn-no-network-trained` quoted "providing immediate computational
+    advantage" without the "whilst not" before it. The quote now carries
+    it.
+  - **Values that said more than their quotes:**
+    `khoo-simulation-scope`, `facial-quantum-walk-model-scope`,
+    `nagano-noiseless-simulation-only`, `nghiem-exponential-copies-in-r`
+    and `qnpg-outer-loop` trimmed or given the passage; `wolf-field-state`
+    had dropped the paper's "or" alternative, now restored.
+  - **Locations:** 12 HIGH locations named no place in the paper, or the
+    wrong one (`grb-dataset-setup` and `grb-simulation-limit` named
+    Section V.C; the quotes are in VI). Each now names its section, read
+    in the source.
+  - **Half 2's share of the tables, corrected:** 134 values trimmed, 31
+    quote edits, 15 added quotes, 9 contexts fixed, 56 statements about
+    the field, 134 theoretical results kept LOW, 51 measured results.
+  - **Guards.** Two checks in the HIGH test could not fail (the reason
+    text is built from the basis; a vendor claim is graded before HIGH is
+    consulted) and are removed. New: no id in HIGH and in THEORY_LOW or
+    MEASURED_DESPITE (`certainty()` would let HIGH win silently); the
+    store holds no Sprint 13 assertion the script no longer makes. Each
+    proven red by an in-memory injection named in its docstring.
+  - **write_path:** a third bypass recorded, not closed: comments are
+    stripped with `#.*` before the LOW checks, so a `#` inside a string
+    hides the rest of its line.

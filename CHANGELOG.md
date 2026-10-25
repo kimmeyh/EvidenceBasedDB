@@ -135,6 +135,16 @@ this project keeps having to replace with a step.
   measured clause; four flat exponents said in words; the garble guard no
   longer flags "(H2)" or "(B0)"; two write-path bypasses recorded, not
   closed; "7 of the 113" corrected to 8 (Issue #137)
+- **fix**: the fresh-eyes review of ce2412e (2026-10-25): half 2 re-applied
+  at 460 HIGH and 890 LOW (3 out of HIGH, 1 field statement found to be the
+  paper's own stated limit and moved in); cited clauses and a show-result
+  left out of 4 HIGH values; a quote that had lost its "whilst not"
+  restored; 6 values trimmed to their quotes; "1.46N" said in words and
+  section 51's "no flat-printed figure" retracted; 12 HIGH locations named
+  by section; two test checks that could not fail removed, and three
+  guards added (a decimal before N, no id both HIGH and named LOW, no
+  stale store row), each proven red; a third write-path bypass recorded
+  (Issue #137)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

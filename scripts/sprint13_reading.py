@@ -213,6 +213,16 @@ QUOTE_EDITS: dict[str, list[tuple[str, str | None]]] = {
         ("we have successfully demonstrated the effectiveness of the VQS", None),
         ("While this paper has established the advantage of the VQS up to 26 qubits, we acknowledge",
          "up to 26 qubits, we acknowledge")],
+    # Fresh-eyes review of ce2412e: a cited clause, a cited bound and a show-result left out of their entries; a
+    # negation the quote had cut off restored
+    "bounds-scope-query-count-only": [("a substantial quantum advantage in computational complexity is possible",
+                                       None)],  # g71: "[80]" follows it
+    "schuld-speedup-caveat": [("If an efficient state preparation routine is known", None)],  # g90: "[1, 9]" follows
+    "jeffery-subspace-graph": [("we show how to combine a switching network", None)],  # g72: a result, not the definition
+    "connectivity-1d-chain-no-overhead": [("Therefore, the above theorem implies", None)],  # g98: rests on [STY+23]
+    "qucnn-no-network-trained": [("providing immediate computational advantage",
+                                  "chine learning techniques on quantum processors, whilst not providing immediate "
+                                  "computational advantage")],  # g92: "ma-" ends the line before
 }
 EXTRA_QUOTES: dict[str, list[str]] = {
     # g01: a proved result's conditions, which the reader's quotes left out
@@ -314,6 +324,11 @@ EXTRA_QUOTES: dict[str, list[str]] = {
     # g70
     "network-benchmarking-no-multiplicative-accuracy": ["for the estimation of fidelity when taking the number of "
                                                         "state transmissions as a cost metric"],
+    # Fresh-eyes review of ce2412e: what each corrected value says, quoted
+    "nghiem-exponential-copies-in-r": ["As provided in theorem 2, the number of copies of"],  # g83
+    "facial-quantum-walk-model-scope": ["The dynamics of the facial quantum walk is determined by the abstract graph"],
+    "wolf-field-state": ["scale noisy experiments and classical simulations"],  # g97: "small-" ends the line before
+    "qnpg-outer-loop": ["insights from the literature suggest"],  # g97: whose limitation it is
 }
 VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement says only what its quotes say
     # g01
@@ -764,16 +779,14 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
                                                         "state transmissions as a cost metric."),
     # g71
     "bounds-scope-query-count-only": ("The authors state that, for the purpose of the comparison, they disregard the "
-                                      "runtime of the classical or quantum ML models that generate the predictions, "
-                                      "and that a substantial quantum advantage in computational complexity is "
-                                      "possible."),
+                                      "runtime of the classical or quantum ML models that generate the "
+                                      "predictions."),  # review of ce2412e: the cited clause dropped
     "tn-noise-resilience-open": ("The authors state that additional empirical demonstrations, as well as a theoretical "
                                  "explanation of how generic the algorithms' tolerance of noise is, would be very "
                                  "useful."),
     # g72
     "jeffery-subspace-graph": ("The paper introduces an object called a subspace graph that formalizes the technique "
-                               "of multidimensional quantum walks, and shows how to combine a switching network with "
-                               "arbitrary quantum subroutines to compute a composed function."),
+                               "of multidimensional quantum walks."),  # review of ce2412e: the show-result dropped
     "jin-tetris-fidelity-simulator": ("The authors state that they use the Qiskit Aer simulator with a noise model to "
                                       "measure circuit fidelity."),
     # g73
@@ -910,9 +923,8 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
                                 "text layer) that return the last missing bit of a binary string for a specific "
                                 "distribution."),
     "scellier-no-simulation": "The author states that the next step would be to simulate QEP numerically.",
-    "schuld-speedup-caveat": ("The authors state that, if an efficient state preparation routine is known, the "
-                              "algorithm harvests the same logarithmic scaling, and that, by using only a single-qubit "
-                              "gate, this speedup is not necessarily based on quantum resources."),
+    "schuld-speedup-caveat": ("The authors state that, by using only a single-qubit gate, this speedup is not "
+                              "necessarily based on quantum resources."),  # review of ce2412e: the cited scaling dropped
     # g92
     "cffqnn-ideal-simulator-scope": ("The authors state that they predominantly employed the Statevector simulator "
                                      "from Qiskit, designed to emulate the ideal quantum states of a quantum system "
@@ -975,7 +987,8 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
                     "rules, and that for a general generator the frequencies will not be equidistant and R may scale "
                     "quadratically in the size of U."),
     "wolf-field-state": ("The author states that QML developments are currently limited to either theoretical "
-                         "statements and formal proofs."),
+                         "statements and formal proofs or small-scale noisy experiments and classical "
+                         "simulations."),  # review of ce2412e: the "or" alternative restored
     "hybrid-limit": ("The authors state that further developments are necessary in order to apply BDG-RNN to "
                      "large-scale strongly correlated systems."),
     "cutvqa-setup": ("The authors state that experiments ran on AMD EPYC 9654 CPUs (96 cores, 192 threads, 2.4GHz) "
@@ -992,9 +1005,7 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
     "connectivity-1d-chain-no-overhead": ("The paper states as a theorem that any n-qubit unitary can be implemented "
                                           "by a quantum circuit of depth of order 4 to the n over n and size of order 4 "
                                           "to the n under path constraint (the exponents are printed flat in the text "
-                                          "layer), so the qubit connectivity constraint does not increase the depth and "
-                                          "size complexity by more than a constant factor for almost all n-qubit "
-                                          "unitaries."),
+                                          "layer)."),  # review of ce2412e: the "almost all" clause rests on [STY+23]
     "connectivity-any-connected-graph-size": ("The paper states as a theorem that any n-qubit unitary matrix can be "
                                               "implemented by a quantum circuit of size of order 4 to the n under "
                                               "arbitrary connected graph constraints (the exponent is printed flat in "
@@ -1256,6 +1267,31 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
     "q2sar-auc-vs-gradient-boosting": ("The authors report that their QMKL-SVM approach achieved a superior AUC score "
                                        "(0.875 vs. 0.804) on the DYRK1A inhibitor dataset, and describe the comparison "
                                        "as against a strong classical baseline."),
+    # Fresh-eyes review of ce2412e: values that said more than their quotes, and one flat exponent missed
+    "nghiem-exponential-copies-in-r": ("The authors state that, as provided in their theorem 2, the number of copies "
+                                       "required (the state's symbol is lost in the text layer) has an exponential "
+                                       "scaling with respect to R, so their method only works well when R is very "
+                                       "small."),  # g83
+    "facial-quantum-walk-model-scope": ("The authors state that they treat a quantum walk model on the graph with tails "
+                                        "receiving the inflow and radiating the outflow, whose dynamics is determined by "
+                                        "the abstract graph, the rotation determined by the 2-cell embedding on the "
+                                        "orientable surface and the place of the tails, among other things."),  # g70
+    "khoo-simulation-scope": ("The authors state that system sizes of 4, 8, and 16 qubits were examined through "
+                              "simulation."),  # g74: the two models are not in the quote
+    "nagano-noiseless-simulation-only": ("The authors state that all results in the work are obtained from noiseless "
+                                         "numerical simulations, and that concrete advantages over classical "
+                                         "counterparts in practical learning tasks are yet to be demonstrated."),  # g82
+    "qaoa-qmf-best-empirical-scaling": ("The authors report that the combination of QAOA with quantum minimum-finding "
+                                        "gives the best empirical scaling of any algorithm for the LABS problem, and "
+                                        "that TTS of QAOA grows as 1.46 to the power N with problem size at constant "
+                                        "QAOA depth p = 12 (the exponent is printed flat in the text layer)."),  # g91
+    "qucnn-no-network-trained": ("The authors state that, due to the complexity of training, they do not train a "
+                                 "network with QuCNN, that they believe this to be due to barren plateaus, and that "
+                                 "mimicking classical machine learning techniques on quantum processors does not "
+                                 "provide immediate computational advantage."),  # g92
+    "qnpg-outer-loop": ("The authors state that the limitation the literature suggests for SGD-based approaches arises "
+                        "because quantum computing can accelerate the inner loop but not the outer loop of such "
+                        "algorithms."),  # g97: the bound itself is not quoted
 }
 CONTEXT_FIX: dict[str, str] = {  # an assertion's context where the reader's did not fit
     # g06: the reader wrote its result_type, "setup", in the context field; each takes its paper's context
@@ -1336,7 +1372,6 @@ FIELD_STATEMENTS: set[str] = {
     "rajput-state-prep-cost", "rajput-hardware-limits-timeline",  # g87: a survey on the field
     "riaz-hardware-limits",  # g88: on current hardware and variational training in general
     "sai-limited-real-world-testing", "sai-nisq-hardware-limits",  # g90: a survey on the field
-    "scala-lazy-regime-limit",  # g90: on the field's formal results, not the paper's own
     "qopt-no-advantage-yet", "qopt-small-qubit-regime",  # g93: a guide on the field
     "thakkar-hardware-not-ready",  # g94: on today's hardware in general; its measured clause is dropped below
     "thudumu-no-demonstrated-advantage", "thudumu-fault-tolerance-needed",  # g94: a review on the field
@@ -2139,7 +2174,7 @@ HIGH = high_grades({
     "pqc-chem-scope": ("scope", "the Abstract and Section 4"),
     "qiia-simulation-setup": ("setup", "pp.4-5"),
     "qrl-survey-scope": ("scope", "the Abstract"),
-    "qumode-benchmark-setup": ("setup", "the benchmark's own setup passage"),
+    "qumode-benchmark-setup": ("setup", "Section IV.A, System Setup"),
     "aircraft-loading-proof-of-principle": ("stated limit", "Section 5"),
     "aircraft-loading-simulator-parameters": ("setup", "the experimental procedure for the Aria instances"),
     "qrecsys-assumptions": ("setup", "Section 1.1, p.5"),
@@ -2158,15 +2193,15 @@ HIGH = high_grades({
     "koike-no-real-qpu": ("stated limit", "the Conclusion, Section IV, p.4"),
     # g75
     "weight-remap-setup": ("setup", "the Abstract"),
-    "ocsvm-setup-data": ("setup", "the paper's statement of its data sampling"),
+    "ocsvm-setup-data": ("setup", "Section 5, Experimental Setup"),
     "weight-remap-ext-setup": ("setup", "the Abstract"),
     "pqc-setup-eurosat": ("setup", "the Abstract"),
     "pqc-no-quantum-advantage": ("stated limit", "Section I"),
-    "qneuron-simulation-only": ("setup", "the paper's statement of its simulation tool"),
+    "qneuron-simulation-only": ("setup", "Section III.B, Numerical results"),
     "vqad-noise-bottleneck": ("stated limit", "Section 8.4, Outlook"),
     "vqad-device-five-qubits": ("setup", "Section 8.3"),
     "qcbm-scope-limit": ("scope", "Section IV"),
-    "vqnhite-setup": ("setup", "the paper's statement of its tests"),
+    "vqnhite-setup": ("setup", "the Abstract"),
     "vqnhite-scope-future": ("stated limit", "Section VI"),
     # g76
     "tn-state-r2-threshold": ("setup", "Section III, Numerical Results"),
@@ -2179,13 +2214,13 @@ HIGH = high_grades({
     "qpf-simulated-preliminary": ("setup", "the Abstract and Section VI"),
     # g77
     "fallen-angel-dataset-setup": ("setup", "Section I.A, Dataset"),
-    "slack-free-setup": ("setup", "the paper's statement of its experiments"),
+    "slack-free-setup": ("setup", "Section IV, Experimental Settings"),
     "bitbit-optimality-limit": ("stated limit", "Section 6, Discussion and Future Directions"),
-    "gbqhd-limits": ("stated limit", "the paper's limitations passage"),
+    "gbqhd-limits": ("stated limit", "Section 7, Conclusion and Future Work"),
     "hqpinn-small-quantum-subnetwork": ("stated limit", "Section 4, Conclusion"),
     "shallow-nn-hardness-scope": ("stated limit", "Section III, Discussion"),
     "shallow-nn-data-loading": ("stated limit", "Section III, Discussion"),
-    "stvqc-device-setup": ("setup", "the paper's statement of its evaluation"),
+    "stvqc-device-setup": ("setup", "the Abstract"),
     "qtailor-scope": ("scope", "Section 5, Discussion and Conclusion"),
     # g78
     "qitsa-setup-datasets": ("setup", "the Experiments section"),
@@ -2203,7 +2238,7 @@ HIGH = high_grades({
     "lv-dataset-scope": ("setup", "Section IV"),
     "lv-hardware-below-simulation": ("stated limit", "Section V, Conclusions"),
     "ma-adiabatic-learning-proposal": ("scope", "the Abstract"),
-    "ma-not-tested-on-hardware": ("stated limit", "the discussion of the paper's cases"),
+    "ma-not-tested-on-hardware": ("stated limit", "Section III, Results (Cases I and II)"),
     "macaluso-no-advantage-asserted": ("stated limit", "Sections I and V"),
     "macaluso-vision-scope": ("scope", "the Abstract and Section V"),
     # g80
@@ -2212,7 +2247,7 @@ HIGH = high_grades({
     "qfal-experiment-scope": ("scope", "Section A, Experimental Setup"),
     "qudit-vqc-simulated-only": ("stated limit", "the Discussion"),
     "qudit-vqc-needs-larger-tests": ("stated limit", "the Discussion"),
-    "kqse-bound-not-tight": ("stated limit", "the paper's statement of its bound"),
+    "kqse-bound-not-tight": ("stated limit", "the main text, p.2, after its inequality for arbitrary states"),
     "survey-scope-gate-adiabatic": ("scope", "the Abstract"),
     "survey-variational-focus": ("scope", "Section 2"),
     "transforms-definition": ("definition", "the Abstract and Section II A"),
@@ -2249,7 +2284,6 @@ HIGH = high_grades({
     "neira-test-train-setup": ("setup", "Section 4"),
     "neto-datasets-setup": ("setup", "Section 4.3"),
     "neto-hyperparameters-not-evaluated": ("stated limit", "Section 6, Conclusion and Future works"),
-    "nghiem-exponential-copies-in-r": ("stated limit", "the comparison to the original QPCA, after Theorem 2"),
     "nghiem-scope-small-pool-high-dimension": ("scope", "Section VI"),
     "ngo-setup-batteries-simulator": ("setup", "Sections III.B and IV.B"),
     "nguyen-noise-free-simulation-limit": ("stated limit", "Sections 6.1 and 8"),
@@ -2327,6 +2361,7 @@ HIGH = high_grades({
     "salmenpera-no-new-usefulness": ("scope", "the Introduction"),
     "salmon-oracle-access-assumption": ("setup", "Section 1 and Section 2, the model's definition"),
     "scala-rough-generalization": ("stated limit", "Section V"),
+    "scala-lazy-regime-limit": ("stated limit", "the Introduction"),  # review of ce2412e: on the paper's own results
     "scellier-no-simulation": ("stated limit", "Section 5, p.9"),
     "schuld-circuit-design": ("definition", "the Abstract and Fig. 3"),
     "schuld-speedup-caveat": ("stated limit", "the Introduction"),
@@ -2336,7 +2371,6 @@ HIGH = high_grades({
     "qpu-training-12-qubits-scope": ("stated limit", "the Conclusions"),
     "hybrid-qrc-platforms-and-realizations": ("setup", "the Abstract and Section III, Fig. 5 caption"),
     "mps-vqe-uccsd-only-limit": ("stated limit", "Section III, Discussions"),
-    "dqnn-results-general-scope": ("scope", "the Conclusions"),
     "qaoa-labs-evidence-limits": ("stated limit", "the Discussion"),
     "phytoplankton-dataset-setup": ("setup", "Section 4.1"),
     "dimred-generated-data-noise-free-sim-setup": ("setup", "Sections IV and V, Experimental setup"),
@@ -2392,7 +2426,6 @@ HIGH = high_grades({
     "cutvqa-setup": ("setup", "Sections 4.1 and 4.4"),
     "cutvqa-scope": ("scope", "Section 4"),
     "qnpg-oracle-setup": ("setup", "Section 1"),
-    "qnpg-outer-loop": ("stated limit", "Section 1.1"),
     "emsd-method": ("scope", "the Abstract"),
     # g98
     "qml-advantage-function-assumption": ("scope", "the Introduction, p.2"),
@@ -2411,14 +2444,14 @@ HIGH = high_grades({
     "zang-single-model-scope": ("stated limit", "Sections 2.3 and 4"),
     "zeng-classical-simulation-only": ("setup", "Section C, Numerical details"),
     "zhan-vqs-noise-free-26-qubit-limit": ("stated limit", "the Discussion and the Conclusion"),
-    "zhang-quantum-troenpy-not-developed": ("stated limit", "the quantum troenpy discussion"),
+    "zhang-quantum-troenpy-not-developed": ("stated limit", "p.13, the paragraph before the Discussion"),
     "zhao-bug-collection-scope": ("scope", "the Introduction and the data-collection description"),
     "zhao-threats-github-only-low-agreement": ("stated limit", "Threats to Validity"),
     # g100
     "qksan-experiment-scope": ("scope", "the Abstract"),
     "qcqp-random-instances": ("scope", "the text after Section V, on the test instances"),
-    "grb-dataset-setup": ("setup", "Section C, Assessment"),
-    "grb-simulation-limit": ("stated limit", "Section C, Assessment"),
+    "grb-dataset-setup": ("setup", "Section VI.A, Case Study"),
+    "grb-simulation-limit": ("stated limit", "Section VI.B.3, Case Study"),
 })
 
 # The LOW reasons, from store.grading.
@@ -2728,6 +2761,9 @@ THEORY_LOW: dict[str, str] = {
     "caro-classical-verification-parity": "g58, review: the abstract's 'we prove'; Theorem 2 is not quoted",
     "worst-case-error-exponential-decay": "g70, review: the abstract's 'we derive'; Theorem 1 is not quoted",
     "no-large-advantage-average-case": "g71, review: the abstract's 'we prove'; Theorem 1 is not quoted",
+    # Fresh-eyes review of ce2412e
+    "nghiem-exponential-copies-in-r": "g83, review: a limit drawn from Theorem 2, whose statement is not quoted",
+    "dqnn-results-general-scope": "g91, review: the generality of results whose own entries are LOW; no theorem quoted",
 }
 # A measured result whose words name a proof or a bound, or that a reader typed "theoretical", with why it is
 # measured.
