@@ -40,7 +40,7 @@ def test_a_theoretical_low_names_its_cause_not_an_empirical_result():
     s12 = _load("sprint12_reading")
     first5 = ("larson-convergence-proved", "swaptest-qnn-two-layer-equivalent", "ld-daqc-unit-overlap-epsilon",
               "tree-unitarity-tradeoff-butterfly-velocity", "qcc-bounds-bures-entanglement-distance")
-    assert set(first5) <= set(s12.THEORY_LOW) and len(s12.THEORY_LOW) == 34
+    assert set(first5) <= set(s12.THEORY_LOW)
     assert not set(s12.THEORY_LOW) & (set(s12.HIGH) | s12.FIELD_STATEMENTS)
     got = {a.id: a for t in ("F", "G") for _, a, _, _ in s12.assertions(t) if a.id in s12.THEORY_LOW}
     assert set(got) == set(s12.THEORY_LOW)

@@ -597,7 +597,7 @@ VENDOR_DESCRIPTIONS: set[str] = {  # a vendor's description of its own product (
 FIELD_STATEMENTS: set[str] = {
     "gonon-no-learning-advantage-established", "advantage-immature", "quantum-game-learning-infancy",
     "cv-encoding-overhead-limit", "classical-can-outperform-large-scale", "qnlp-limited-small-datasets",
-    "casas-no-experimental-realization",
+    "casas-no-experimental-realization", "pqc-gradient-cost-linear",
     "qubo-precision-limits-quality", "radio-measurement-reencode-limit", "qtm-comparable-libraries-caveat",
     "backprop-unavailable-on-hardware", "qcnn-scaling-limit", "liao-open-coherence-question",
     "nisq-tda-few-high-betti-examples", "pulsar-qsvm-scaling-limit", "hybrid-interaction-open",
@@ -1259,15 +1259,26 @@ THEORY_LOW: dict[str, str] = {
     # Sprint 13 Task F, I2: the fresh-eyes review of 6c6f0ac named 8, a classifier over the 604 stored as "an
     # empirical result" proposed 33, and the coordinator read each one's quotes. Kept as they were: the four whose
     # value joins analysis with numerics (tomesh-decomposition-on-scaling, iaconis-log-scaling,
-    # msqw-outperforms-qaoa-evidence, qnn-gp-wide-deep) and krylov-limiting-distribution, whose quote does not
-    # show how the relationship was established.
+    # msqw-outperforms-qaoa-evidence, qnn-gp-wide-deep). The fresh-eyes review of dd620c7 read the PDFs: 4 more
+    # are theoretical (below, each checked by the coordinator in the PDF's text layer), mohseni's resource estimate
+    # rests on simulation and benchmarking (back to a measured result), and pqc-gradient-cost-linear is a textbook's
+    # statement about the field (FIELD_STATEMENTS).
+    "apr-marking-equals-absorbing": ("an equivalence the authors prove for general graphs (the proof in the text), "
+                                     "not checked in full by the coordinator"),
+    "qkm-scalable-features": ("an approximation the authors show rigorously with an error bound (Theorems 1 to 3), "
+                              "not checked in full by the coordinator"),
+    "hintons-layers-as-unitaries": ("a construction the authors show (Theorem 6.2), not checked in full by the "
+                                    "coordinator"),
+    "krylov-limiting-distribution": ("an analytic relation (Section III), not checked in full by the coordinator; the "
+                                     "quote alone does not show the method"),
     "approx-design-bound-tighter": "a bound from Theorem 11, not checked by the coordinator",
     "verifiable-sampling-failure-probability-exponential": ("Theorem III.2, whose sketch proof defers to earlier "
                                                             "work, not checked by the coordinator"),
     "determinant-sampling-vs-classical": "a gate-complexity count after Theorem 1.3, not checked by the coordinator",
     "gyurik-theorem3-captures-known": ("the authors' showing that their Theorem 3 covers two known separations, not "
                                        "checked by the coordinator"),
-    "shot-noise-escapes-saddle-points": "convergence guarantees the authors prove, not checked by the coordinator",
+    "shot-noise-escapes-saddle-points": ("convergence guarantees the authors prove, not checked by the coordinator; "
+                                         "the paper's simulations and hardware runs are not this value"),
     "sequent-dqc-identity-vqc": "an argument from the universal approximation theorem, not checked by the coordinator",
     "coreset-qubit-scaling": "qubit counts the authors show and derive, not checked by the coordinator",
     "qfl-speedup-claim": "a complexity analysis that assumes QRAM, not checked by the coordinator",
@@ -1276,7 +1287,6 @@ THEORY_LOW: dict[str, str] = {
     "qgd-dissipative-sparse": "a result the authors prove, not checked by the coordinator",
     "qsgc-depth-space-tradeoff": "a time and space complexity analysis, not checked by the coordinator",
     "wossnig-no-exponential-speedup": "a scaling argument the author shows, not checked by the coordinator",
-    "pqc-gradient-cost-linear": "a gradient-cost scaling the author states, not checked by the coordinator",
     "certrand-min-entropy": "a bound that holds under hardness assumptions, not checked by the coordinator",
     "chan-pauli-gadget-cz-count": "a gate count from the circuit construction, not checked by the coordinator",
     "hamiltonian-embedding-classically-hard-task": ("a hardness result under cryptographic assumptions, in an "
@@ -1286,8 +1296,6 @@ THEORY_LOW: dict[str, str] = {
                                             "the coordinator"),
     "jerbi-quantum-policies-smooth": "a smoothness result the authors show, not checked by the coordinator",
     "lee-qkc-qae-speedup": "a speed-up from amplitude estimation, not checked by the coordinator",
-    "mohseni-resource-estimate-chemistry": ("a resource estimate computed under stated hardware assumptions, not "
-                                            "checked by the coordinator"),
     "mvqn-radix-three-cost": "a minimum under the paper's own hardware cost model, not checked by the coordinator",
     "photonic-psr-exact-linear-scaling": "a derived gradient formula and its scaling, not checked by the coordinator",
     "qnn-gp-finite-width-expansion": "an analytic 1/d expansion, not checked by the coordinator",
@@ -1297,6 +1305,16 @@ THEORY_LOW: dict[str, str] = {
                                    "coordinator"),
     "su4-u3-gates-fewer-parameters": "a parameter count the authors show, not checked by the coordinator",
 }
+# Ids the first I2 apply graded a theoretical result and its fresh-eyes review (dd620c7) moved back, with the note
+# each sync writes.
+THEORY_WITHDRAWN: dict[str, str] = {
+    "mohseni-resource-estimate-chemistry": (
+        f"{F107_DAY} (Sprint 13 Task F, I2, the fresh-eyes review of dd620c7): back to \"an empirical result\": the "
+        "estimate rests on simulation and benchmarking, not a proof (INTAKE_WORKFLOW.md section 49)"),
+    "pqc-gradient-cost-linear": (
+        f"{F107_DAY} (Sprint 13 Task F, I2, the fresh-eyes review of dd620c7): a statement about the field, from a "
+        "textbook's conclusions, not a theoretical result of its own (INTAKE_WORKFLOW.md section 49)"),
+}
 # Measured results whose value or quotes hold a word store.grading.theory_words reads as theory; the coordinator
 # read each and kept "an empirical result" (Sprint 13 Task F, I2).
 MEASURED_DESPITE: dict[str, str] = {
@@ -1304,6 +1322,37 @@ MEASURED_DESPITE: dict[str, str] = {
     "qrl-high-temperature-non-convergence": "asymptotic values read off simulated curves (Fig. 2)",
     "sqp-worse-than-simple-circuits": "the theorem is named, not used; the result is the numerical data",
     "tomesh-decomposition-on-scaling": "joins asymptotic gate counts with numerical constants; the value reports both",
+    # The wider theory_words of the dd620c7 review flagged these too; each read and kept as measured.
+    "buessen-local-ops-improve-fidelity": "'we show' with no proof named in the quotes; a reported result",
+    "dtqw-numerical-approx": "numerical simulation, as the value says",
+    "fidelity-spread-short-times-only": "spread complexity is a quantity measured on the task runs",
+    "ga-beats-gradient-on-noisy-qpu": "runs on quantum hardware",
+    "gga-vqe-emulator-noise": "an emulator run with statistical noise",
+    "hybrid-cnn-20-percent-less-complexity": "the network's complexity is its size, measured",
+    "hypothesis-testing-provable-advantage": "a measured success probability against a stated bound",
+    "iaconis-log-scaling": "the scaling is shown through numerical testing, as the second quote says",
+    "implicit-diff-hyperparam-qclassifier": "a validation comparison",
+    "iterated-qsp-method": "a method; 'analytically' names what it avoids",
+    "krylov-max-bound-not-attained": "a search result: the bound is never attained in it",
+    "lu-da-shorter-depth-more-robust": "a numerical study on two problems",
+    "msqw-outperforms-qaoa-evidence": "joins numerical and analytical evidence; the value reports both",
+    "noise-not-necessarily-harmful": "specific examples run, as the value says",
+    "noisy-ae-nearly-attains-qcrb": "shown numerically, as the quote says",
+    "qaoa-labs-scaling-simulation": "noiseless simulations; 'branch-and-bound' names a solver",
+    "qaoa-tree-params-numerics": "numerical evidence against conjectured bounds",
+    "qram-qnn-convergence": "training runs, counted in epochs",
+    "qrc-g3-family-optimal-design": "a performance comparison; complexity is the majorization criterion",
+    "qrnn-rc-comparable": "numerical simulations, as the quote says",
+    "qsnn-discrimination-helstrom": "a simulation reaching a known bound",
+    "quadratized-ansatz-better-under-noise": "simulations with variable noise strengths",
+    "robust-to-relaxation": "a parameter-estimation run",
+    "sadhu-concurrence-bounds-independent-of-init": "a range observed across initialisations",
+    "tancara-qsvm-vs-qkrr": "prediction accuracy compared",
+    "verdel-intrinsic-dimension-plateaus": "plateaus found in data; the bounds are the authors' reading of them",
+    "vqe-collapses-single-errors": "explicit simulation, as the quote says",
+    "vrp-qsvm-amplitude-encoding-accuracy": "accuracy measured; complexity is the simulation's cost",
+    "wiersema-better-on-noisy-toy-data": "toy data sets, observed",
+    "wiersema-entangled-xor": "XOR learned in a run (Fig. 3)",
 }
 
 
@@ -1355,14 +1404,12 @@ def certainty(aid: str, a: dict) -> tuple[str, str]:
     if a["claim_type"] == "vendor-self-claim":
         if aid in VENDOR_DESCRIPTIONS:
             return "moderate", f"{f80.VENDOR_START}. Not upgraded: a description of the product, not a result"
-        return "low", (f"{f80.VENDOR_START}. DOWNGRADED one level: a result or claim the vendor reports about its "
-                       "own product, not independently checked")
+        return low_grade("vendor claim")
     if aid in THEORY_LOW:
-        otherwise = low_grade("theoretical result", THEORY_LOW[aid])[1]
-    else:
-        otherwise = FIELD if aid in FIELD_STATEMENTS else {"cited": CITED, "shown": EMPIRICAL}.get(a["kind"],
-                                                                                                    AUTHOR_CLAIM)
-    return grade(aid, HIGH, otherwise=("low", otherwise))
+        return grade(aid, HIGH, otherwise=low_grade("theoretical result", THEORY_LOW[aid]))
+    basis = "field statement" if aid in FIELD_STATEMENTS else {"cited": "cited claim", "shown": "measured result"}.get(
+        a["kind"], "authors' claim")
+    return grade(aid, HIGH, otherwise=low_grade(basis))
 
 
 def anchor_safe(anchor: str) -> str:
@@ -1482,6 +1529,8 @@ def apply_changes(conn, task: str) -> list[str]:
             continue
         if a.id in THEORY_LOW:  # dated as the Sprint 13 correction, not as Sprint 12's
             changed = sync_verified_assertion(conn, a, verified, THEORY_NOTE, F107_DAY)
+        elif a.id in THEORY_WITHDRAWN:
+            changed = sync_verified_assertion(conn, a, verified, THEORY_WITHDRAWN[a.id], F107_DAY)
         else:
             changed = sync_verified_assertion(conn, a, verified, f"{TODAY} ({tag}): corrected to the script's "
                                               "current text", TODAY)

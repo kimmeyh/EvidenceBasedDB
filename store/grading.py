@@ -47,11 +47,21 @@ LOW_BASES = {
 # A theoretical result kept LOW says why it was not upgraded: what was not
 # checked, or what the value leaves out.
 LOW_NEEDS_WHY = {"theoretical result"}
+# A vendor's result about its own product starts one level down from vendor
+# documentation's MODERATE (sprint9_f80_reading.py's VENDOR_START); its text
+# is the one the store holds.
+VENDOR_LOW = ("Started MODERATE: vendor primary documentation of its own product. DOWNGRADED one level: a result or "
+              "claim the vendor reports about its own product, not independently checked")
 
 # Words in a value or its quotes that say a result was proved, derived or
 # counted analytically. "Proof of principle" and "proof of concept" are runs.
-_THEORY = re.compile(r"\b(theorems?|lemmas?|propositions?|corollar(?:y|ies)|we prove|proved|proves|provably|proofs?"
-                     r"|derived?|derivation|asymptotic(?:ally)?|(?:gate|time|query|sample) complexity|O\()", re.I)
+# The fresh-eyes review of dd620c7: the first pattern found 15 of the 34 stored theoretical results; "we show",
+# "analytic", "bound", "scales as", "closed-form", a bare "complexity" and Omega were missing.
+_THEORY = re.compile(r"\b(?:theorems?|lemmas?|propositions?|corollar(?:y|ies)|prove[ds]?|provably|proofs?"
+                     r"|derived?|derivation|asymptotic(?:ally)?|complexity|we (?:rigorously )?show|we have shown"
+                     r"|analytic(?:al(?:ly)?)?|theoretical(?:ly)?|bounds?|bounded|closed[- ]form"
+                     r"|scal(?:es|ing) (?:as|linearly|logarithmically|polynomially|exponentially|quadratically))\b"
+                     r"|\bO\(|[ΩΘ]\(", re.I)
 _RUN = re.compile(r"\bproofs?[- ]of[- ](?:principle|concept)", re.I)
 
 
@@ -90,7 +100,10 @@ def grade(aid: str, high: dict[str, HighBasis], otherwise: tuple[str, str]) -> t
 
 def low_grade(basis: str, why: str = "") -> tuple[str, str]:
     """("low", certainty_reasons) for a LOW with its named reason; refuses
-    a reason outside LOW_BASES, and a theoretical result with no why."""
+    a reason outside LOW_BASES (or "vendor claim"), and a theoretical
+    result with no why."""
+    if basis == "vendor claim" and not why.strip():
+        return "low", VENDOR_LOW
     if basis not in LOW_BASES:
         raise ValueError(f"LOW reason {basis!r} is not one of {', '.join(LOW_BASES)}")
     why = why.strip()

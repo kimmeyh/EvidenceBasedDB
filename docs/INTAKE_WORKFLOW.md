@@ -1885,6 +1885,34 @@ Every count is a snapshot as of its own date. Written before the apply.
   corrected here: their reading scripts have run and stay as they are
   (`store/write_path.py` LEGACY and GRADING_LEGACY), and the coordinator
   has not checked them. Carded on F57 for a later release.
+- **A second apply, after the fresh-eyes review of dd620c7 (written
+  before it).** The review read the PDFs; the coordinator checked each
+  claim in the text layer before acting.
+  - **4 more theoretical results**, each confirmed in its PDF:
+    `apr-marking-equals-absorbing` ("we make the proof for general
+    graphs"), `qkm-scalable-features` (Theorems 1 to 3),
+    `hintons-layers-as-unitaries` (Theorem 6.2) and
+    `krylov-limiting-distribution` (Section III). Keeping the last as
+    measured, above, was wrong on the paper: its quote alone hid the
+    method.
+  - **2 moved back**: `mohseni-resource-estimate-chemistry` rests on
+    simulation and benchmarking (a measured result again), and
+    `pqc-gradient-cost-linear` is a textbook's statement about the field.
+    Each sync writes its own dated note, not Sprint 12's.
+  - **The guard was weak.** `theory_words` found 15 of the 34; it now
+    reads "we show", "prove", "analytic", "theoretical", "bound" (as a
+    whole word, not "boundary"), "scales as", "closed-form", a bare
+    "complexity" and Omega, and finds 27 of the 36. The other 9 state a
+    count or a speed-up with no such word: the guard catches the words,
+    and the coordinator's read catches the rest. It flags 30 more stored
+    measured results, each read and named in `MEASURED_DESPITE` with why.
+  - **The write-path rule was easy to bypass**: `"Started " + "LOW"` and
+    a bare `("low", reason)` passed. A literal `"low"` is now refused as a
+    literal `"high"` is; the vendor LOW goes through `low_grade("vendor
+    claim")`; an aliased import of `low_grade` counts.
+  - **A count corrected**: of the 499 rows from Sprints 9 to 11, one
+    (`kimmeyh-headline-null-cvqboost-trails`) does not hold the exact
+    text, so 498 store it exactly. The classifier's 13 and 14 stand.
 
 ## 50. Applied 2026-10-25: Phase 2's later Sprint 28 work, F162 and three corrected values (Sprint 13 Task E, F108)
 

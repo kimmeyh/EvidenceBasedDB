@@ -34,7 +34,10 @@ _EDIT_TABLE = re.compile(r"(?m)^(VALUE|QUOTE|CONTEXT)_[A-Z_]+\s*[:=]")
 _HIGH_LITERAL = re.compile(r"""["']high["']""")
 # Its LOW names a reason through store.grading.low_grade too (Sprint 12
 # retrospective I2, built in Sprint 13 Task F): no "Started LOW" text of its own.
-_LOW_LITERAL = re.compile(r"Started LOW")
+# The fresh-eyes review of dd620c7: "Started " + "LOW" and a bare ("low", reason) passed; a literal "low" is
+# refused as a literal "high" is, and an aliased import of low_grade counts.
+_LOW_LITERAL = re.compile(r"""Started LOW|["']low["']""")
+_LOW_NAME = re.compile(r"\blow_grade\b")
 
 # The scripts written before this rule (Sprint 10 and earlier). They have
 # run, and stay as they are; every other script in scripts/ is held to it,
@@ -59,7 +62,7 @@ def script_problems(text: str, name: str = "") -> list[str]:
         if "high_grades(" not in code or _HIGH_LITERAL.search(code):
             out.append("grades HIGH outside store.grading (a reading script names each HIGH's basis through "
                        "high_grades and grade, and holds no literal \"high\")")
-        if "low_grade(" not in code or _LOW_LITERAL.search(code):
+        if not _LOW_NAME.search(code) or _LOW_LITERAL.search(code):
             out.append("grades LOW outside store.grading (a reading script names each LOW's reason through "
                        "low_grade, and holds no \"Started LOW\" text of its own)")
     if _DIRECT_WRITE.search(code):

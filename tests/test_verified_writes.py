@@ -202,6 +202,10 @@ def test_the_grading_helper_refuses_high_without_a_named_basis():
     ("sprint13_reading.py", _GRADED + "EMPIRICAL = 'Started LOW: an empirical result from one study. NOT upgraded'\n",
      True),
     ("sprint13_reading.py", _GRADED.replace("low_grade('measured result')", "('low', reason)"), True),
+    # the fresh-eyes review of dd620c7: both passed the first rule
+    ("sprint13_reading.py", _GRADED + "x = ('low', 'Started ' + 'LOW: the reader thinks so')\n", True),
+    ("sprint13_reading.py", _GRADED.replace("import grade, high_grades, low_grade", "import grade, high_grades, "
+                                            "low_grade as lg").replace("low_grade('measured", "lg('measured"), False),
     ("sprint13_reading.py", "insert_paper(conn, p)\nX = 'Started LOW'\n", False),  # writes no assertion
     ("sprint11_reading.py", "insert_verified_assertion(conn, a, v)\nX = 'Started LOW'\n", False),
 ])
@@ -228,13 +232,21 @@ def test_the_grading_helper_names_every_low_reason():
         low_grade("theoretical result", " ")
     with pytest.raises(ValueError, match="is not one of"):
         low_grade("probably fine")
+    assert low_grade("vendor claim")[1].startswith("Started MODERATE: vendor primary documentation")
 
 
 def test_theory_words_skip_a_proof_of_principle_run():
+    """The fresh-eyes review of dd620c7: the first pattern missed "we
+    show", Omega and a bare "prove", and "bounds?" also matched "boundary".
+    Proven to fail by injection, 2026-10-25: with the closing word
+    boundary removed from the pattern, "decision boundary" was read as
+    theory."""
     from store.grading import theory_words
     assert theory_words("a proof of principle run and a proof-of-concept demo on hardware") == []
-    assert theory_words("Theorem 3 gives gate complexity O(n2); we prove it") == [
-        "Theorem", "gate complexity", "O(", "we prove"]
+    assert theory_words("the decision boundary and open boundary conditions") == []
+    assert theory_words("Theorem 3 gives gate complexity O(n2); we prove it") == ["Theorem", "complexity", "O(",
+                                                                                  "prove"]
+    assert theory_words("we show they contain Ω(n) min-entropy") == ["we show", "Ω("]
 
 
 # ------------------------------------------------------------------ I1

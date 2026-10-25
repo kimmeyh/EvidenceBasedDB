@@ -69,6 +69,14 @@ this project keeps having to replace with a step.
   reworded (the old prefix fit 2 of them); grades unchanged. Sprints 9 to
   11: 27 candidates counted and carded on F57, not corrected.
   INTAKE_WORKFLOW.md section 49; four injections run (Issue #137)
+- **fix**: the fresh-eyes review of dd620c7 (2026-10-25): 4 more Sprint 12
+  theoretical results (each confirmed in its PDF), 2 moved back
+  (mohseni's estimate is measured; pqc-gradient-cost-linear is a field
+  statement), each with its own dated note; `theory_words` widened (27 of
+  the 36 found, was 15 of 34; "bound" no longer matches "boundary") and
+  30 more measured results named in `MEASURED_DESPITE`; the write-path
+  rule refuses a literal "low" and takes the vendor LOW through
+  `low_grade`; section 49's 499 is 498 exact. Injections run (Issue #137)
 - **process**: F109 (Sprint 13 Task C, 2026-10-25): `Papers\` holds 180
   PDFs, and every one is named by a record; nothing to enter (Issue #134)
 - **process**: F110 (Sprint 13 Task D, 2026-10-25): Roadmap-to-QML's
