@@ -13,7 +13,23 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-23 onward (Sprint 12, in progress)
+### 2026-10-24 onward (Sprint 13, in progress)
+
+- **chore**: Sprint 13 opened (2026-10-24). The team lead merged PR #122
+  into develop (0c554bb) and PR #130 to main (a3ad99a); `sprint-12`
+  tagged on a3ad99a; branch `feature/20261024_Sprint_13` cut from the
+  Sprint 12 branch (6.6 carry-forward). Phase 1.1 reconciliation: every
+  day with commits since 2026-10-23 has entries; one commit lacked its
+  own, added below under Sprint 12 (18e9f43)
+- **docs**: Backlog refinement 2026-10-25 (Sprint 13 Phase 1.2 to 1.4):
+  Sprint 12's shipped cards pruned by hand (F100 to F106); F107 carded
+  from the retrospective's Category 13 (the ".;" joins, the LOW proved
+  results' reason); F108 carded from Phase 2's Sprint 28 work at 9993ab6
+  (F162 and corrections to results F102 entered); snapshots refreshed on
+  F95, F98, F57 and F51. Phase 1.3: 0 re-checks due; schema unchanged;
+  ADR-0005 A11 the only ADR change
+
+### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 
 - **process**: Sprint 12 retrospective, 2026-10-24 (team lead: "q1 1 q2
   1 q3 1"). I1: `run_suite.py` records the store's stamp at each PASSED
@@ -27,6 +43,8 @@ this project keeps having to replace with a step.
 - **fix**: the review of 7b65d12: a `--changed` run with a pytest filter
   (`-k`, `-m`) no longer records the store as checked, since the filter
   may deselect the store's tests; proven by injection (PR #122)
+- **docs**: Sprint 12 Phase 5.3 (18e9f43, 2026-10-23): status to Manual
+  Validation once CI was green on #122 (PR #122)
 - **docs**: Sprint 12 retrospective, summary and Development Team draft,
   2026-10-24; Copilot review requested on #122 (PR #122)
 - **fix**: F105 and F104 (Sprint 12 Tasks G and F) third apply,

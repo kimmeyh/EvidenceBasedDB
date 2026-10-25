@@ -47,10 +47,26 @@ repository exists. No other F# from either source repository applies here.
 | 9 | docs/sprints/SPRINT_9_SUMMARY.md | [OK] Complete | 2026-10-14 to 2026-10-18 |
 | 10 | docs/sprints/SPRINT_10_SUMMARY.md | [OK] Complete | 2026-10-18 to 2026-10-21 |
 | 11 | docs/sprints/SPRINT_11_SUMMARY.md | [OK] Complete | 2026-10-21 to 2026-10-23 |
+| 12 | docs/sprints/SPRINT_12_SUMMARY.md | [OK] Complete | 2026-10-23 to 2026-10-24 |
 
 ## Last Completed Sprint
 
-Sprint 11 is below; Sprint 10 follows it for continuity.
+Sprint 12 is below; Sprint 11 follows it for continuity.
+
+### Sprint 12: Fix the Entities, Speed the Suite, Then Read 400 Records (2026-10-23 to 2026-10-24, PR #122, merged to develop and to main via PR #130 on 2026-10-24; tagged sprint-12)
+
+Seven tasks, seven issues (#123-#129). **Corrections**: every stored
+"&amp;" and the Cyc quote (F101). **Process**: the full suite in 199 s warm
+from 781 s, and the targeted runner mode (F100); ADR-0005 A11, a source
+link resting on a recorded team-lead decision (F106). **Inbound**: Phase
+2's Sprint 28 results at 10086da (F102). **Papers**: the Classiq challenge
+pages and the named repository (F103); Roadmap-to-QML's first release, 21
+entered and 20 read (F104); the F57 release of 400 records by up to 5
+readers, HIGH only with a named basis (F105). Store 2,302 -> 2,334 papers
+(455 -> 869 `read`), 1,595 -> 2,970 assertions; suite 1,175 -> 1,256.
+Retrospective: team lead all "Very Good"; I1 (the runner sees store
+writes) and I3 (no id starting with "-") applied, I2 carded on F57. Full
+detail: `docs/sprints/SPRINT_12_SUMMARY.md`.
 
 ### Sprint 11: Enter QCi's Answers, Then Read 200 Records and Every New Paper (2026-10-21 to 2026-10-23, PR #113, merged to develop and to main via PR #121 on 2026-10-23; tagged sprint-11)
 
@@ -278,26 +294,20 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 12** (branch `feature/20261023_Sprint_12`, cut 2026-10-23 at the
-Sprint 11 carry-forward, after PR #113 merged to develop and PR #121 merged
+**Sprint 13** (branch `feature/20261024_Sprint_13`, cut 2026-10-24 at the
+Sprint 12 carry-forward, after PR #122 merged to develop and PR #130 merged
 develop to main).
 
-- **Scope** (DEFINED, team lead 2026-10-23): F101, F95, F98, F100, F102,
-  F57 ("Can you do 400 total this sprint") and F51. The permanent items
-  are released as copies: F103 (F95), F104 (F98, its first) and F105
-  (F57, 400 records). Plan decisions (team lead, 2026-10-23): Q1 = 1 (400
-  from F57's ranking, F103's and F104's papers on top); Q2 = 2 (F51 stays
-  HOLD: "I thought it had been run, so wait"); Q3 = 1 (F106 added). F39
-  and F90 are not selected.
-- **Plan**: `docs/sprints/SPRINT_12_PLAN.md` (approved 2026-10-23 as
-  amended).
+- **Scope**: not yet selected (Phase 1.4 slate presented 2026-10-25).
+- **Plan**: none yet.
 
 ## Next Sprint Candidates
 
-Refined 2026-10-23 after Sprint 11 (Sprint 12 Phase 1.2); Sprint 11's shipped
-cards (F91, F92, F93, F94 and the released copies F96 and F97; F99 was
-never carded) pruned BY HAND (Edit tool, card by card) the same day. F101
-carded from Sprint 11's retrospective Category 13.
+Refined 2026-10-25 after Sprint 12 (Sprint 13 Phase 1.2); Sprint 12's shipped
+cards (F100, F101, F102, F106 and the released copies F103, F104 and F105)
+pruned BY HAND (Edit tool, card by card) the same day. F107 carded from
+Sprint 12's retrospective Category 13; F108 from Phase 2's Sprint 28 work
+after 10086da.
 Shipped and pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint
 2); F2 Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25,
 F26, F27 (Sprint 4); F5, F28, F30, F31 (Sprint 5); F32-F38, F40-F43, F47
@@ -310,7 +320,8 @@ repository candidates stay held back in `sprint7_f35_screen.json` and
 (Sprint 9; F62's open precision note carried as F87); F50, F81-F87 and
 the released copies F88 and F89 (Sprint 10; F89's 8 papers with no free
 copy carried as F90); F91-F94 and the released copies F96, F97 and F99
-(Sprint 11). F39, F57, F95 and F98 are
+(Sprint 11); F100, F101, F102, F106 and the released copies F103, F104
+and F105 (Sprint 12). F39, F57, F95 and F98 are
 permanent and stay. Closed without
 implementation: F19, F29 (Sprint 5 scope selection, reasons under Sprint 5
 in "Last Completed Sprint"); F49 (Sprint 8 scope selection, Q3 = 1: moot
@@ -381,6 +392,11 @@ and in git. Remaining items below.
   `Papers\`; 0 named by no record's `access` (file-name match). The next
   release holds the named repository below and any file saved after this
   date. The hand-download list holds 38 records.
+- **Snapshot as of 2026-10-25** (Sprint 13 Phase 1.2): 180 PDFs in
+  `Papers\` and its subfolders; 0 named by no record's `access`
+  (file-name match). The hand-download list holds 43 records. The
+  repository and the Classiq pages named for Sprint 12's release shipped
+  as F103; nothing is named for the next release.
 - **The hand-download list** (team lead, 2026-10-22, Sprint 11 Manual
   Validation Q2: "Keep an on going list of these in relative priority
   order and will likely download in the future"): computed by
@@ -388,60 +404,6 @@ and in git. Remaining items below.
   never kept by hand, shown on request by the `hand-download-list` skill,
   each entry with its target file name and why it matters. A listed paper the team lead has saved into `Papers\` is
   caught by step (1) and leaves the list once linked.
-- **Named for the next release (team lead, 2026-10-22):** repository
-  https://github.com/wangy8205165/Quantum-NeuralNetwork-WhitePaper,
-  entered as a GitHub repository record (intake section 2) and linked to
-  a paper only where a source names it as that paper's code.
-- **Also named for the next release (team lead, 2026-10-23, Sprint 12
-  Phase 1.4: "add this to the papers/repo for this sprint ... determine
-  how best to include")**: the Classiq Quantum Circuit Challenge result,
-  from a LinkedIn post by PoJen Wang and one by Classiq (both 2026-10-15),
-  whose shortened links resolve to the two pages below (read only,
-  2026-10-23). How it is included:
-  - **Two web source records, entered like the Sprint 11 NVIDIA blog** (a
-    reference with a local copy in `Papers\`, under `qc`: circuit
-    synthesis, no ML workload):
-    - PoJen Wang, "A depth-95 phase oracle for the Classiq logo",
-      https://nez0b.github.io/blog/2026/classiq-logo-phase-oracle-depth-95/
-      ("Last updated: October 08, 2026"; "Part 2 of 2"; no license
-      stated, "(c) Copyright 2026 PoJen Wang"). The author's own account:
-      depth 95 with 272 CNOTs against the organisers' 5329 and 3502;
-      Qiskit and tket shorten the baseline "by about 6 percent"; 18
-      qubits. Its 19-page PDF is the local copy; its QASM file and
-      companion notebook zip are named in the record's evidence, not
-      copied.
-    - Alex Gramolin (Classiq), "Wrapping up the Classiq Quantum Circuit
-      Challenge",
-      https://www.classiq.io/insights/wrapping-up-the-classiq-quantum-circuit-challenge
-      (dated 06 Oct 2026 on the page; 9 October also appears). The
-      organiser's account: 387 registered, 40 countries, 6,091 circuits,
-      101 valid solutions, 25 below depth 200, "CX count broke ties";
-      PoJen Wang first at depth 95 with 272 CX, Daksh Shami at 95 with 410.
-  - **No repository record**: neither page links a GitHub repository; the
-    notebook is a zip on the blog site. Intake section 2 covers GitHub
-    repositories only.
-  - **The LinkedIn posts are not entered**: they restate the two pages.
-    One difference is carried in the evidence: the blog says "it finished
-    in the top five" (written before the ranking), the organiser's page
-    and the later post say first.
-  - **Part 1 as a third web source record** (team lead, 2026-10-23:
-    "include with the above"): PoJen Wang, "A field guide to quantum
-    circuit compilers",
-    https://nez0b.github.io/blog/2026/quantum-circuit-compilers-field-guide/
-    ("Quantum circuit optimization · Part 1 of 2"; "Last updated: October
-    08, 2026"; no license stated). Linked to Part 2 as the series' first
-    part. Only the author's own measurements enter as assertions: six
-    tool versions on the challenge baseline (tket then Qiskit best, depth
-    5004 and 3347 CNOTs; PyZX full_reduce worst, 8950 and 8576), and the
-    depth reached by each level (algorithm design 95, logic synthesis
-    1886, gate-level rescheduler 4665, tket 5004). Its survey claims about
-    other work (LightSABRE, GUOQ, Benchpress, Giallar, RSA resource
-    estimates, magic state cultivation) are second-hand: not entered as
-    its claims; a cited paper the store lacks may be entered at `seen`
-    from its own primary source. Its magic state cultivation passage
-    names the result F91 entered in Sprint 11.
-  - About 45m inside the release: 3 records, about 8 assertions, each
-    quote checked in the write path.
 - Acceptance per release: every unnamed PDF linked, entered or given a
   reason; every entered paper at `read` with its assertions, or at `seen`
   with its reason; the counts before and after recorded.
@@ -477,6 +439,11 @@ and in git. Remaining items below.
   `425358a7b4cec71f...`; the consumer repository's copy is no longer at
   its path. Selected for Sprint 12, then kept HOLD at plan Q2 = 2 (team
   lead: "I thought it had been run, so wait").
+- Hold checked 2026-10-25 (Sprint 13 Phase 1.2): the `References\` and
+  FourierWall2 copies still hash to `425358a7b4cec71f...`. Phase 2's F162
+  (2026-10-23, at 9993ab6, read only) re-tested FourierWall2's single-run
+  in-pocket wins over ten seeds: none repeats reliably. That is a Phase 2
+  result (F108), not the findings document's re-run. Stays HOLD.
 - Depends on: the hsbc repository's re-run of the experiment.
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
@@ -538,6 +505,11 @@ and in git. Remaining items below.
   - **Snapshot as of 2026-10-23** (Sprint 12 Phase 1.2): 2,302 papers;
     455 at `read`; 1,847 at `seen` or `screened` (1,845 and 2). About 10
     more releases at 200.
+  - **Snapshot as of 2026-10-25** (Sprint 13 Phase 1.2): 2,334 papers;
+    869 at `read`; 1,465 at `seen` or `screened` (1,463 and 2), of which
+    1,449 have no read row. About 8 more releases at 200, or 4 at
+    Sprint 12's 400. Sprint 12's release of 400 ran inside a sprint
+    that took about 24 percent of its estimate.
   - Known limit (Sprint 10 finding): a record with no free copy, or one
     refused at reading, cannot reach `read`. Each release reports those
     separately, so the count that closes the item is visible.
@@ -626,161 +598,67 @@ and in git. Remaining items below.
   the store (1,142 at `seen`, 239 at `read`; matched by id in `access` or
   provenance), so the first release enters about 21. The 1,142 at `seen`
   are read under F57's releases, not twice.
+- **Snapshot as of 2026-10-25** (Sprint 13 Phase 1.2): the first release
+  (F104) recorded a239747648; the list has no commit since (GitHub REST,
+  read only). A release now confirms the commit and enters nothing unless
+  the list changes first.
 - Depends on: none
 
-**F100. Make the full test suite faster, and run it only where it earns its time (~90m) Priority 25** (NEW 2026-10-22, team lead at Sprint 11 Manual Validation, for Sprint 12)
-- Phase: Process / testing
-- Platform: `tests/` and `tests/conftest.py`; pytest; the commit-gate
-  hooks in `.claude/hooks/`; `.github/workflows/ci.yml`
-- Value: this cuts the wait at each commit gate while keeping the gates
-  that caught real defects this sprint.
-- Team lead, 2026-10-22: "why does the testing taek > 15 minutes? Add to
-  backlog for next sprint: how can we optimize the full suite testing? Is
-  full suite needed several times per sprint? are there a set of tests
-  that take more time? Can we get timings of each test and then focus on
-  optimizing those tests? While we want to use testing best practices, we
-  want to be effective as efficiently as reasonbly possible."
-- **Known at carding (snapshot as of 2026-10-22, not yet measured per
-  test):** 1,134 tests ran in 692 s (11.5 min) on the last run; the
-  team lead has seen more than 15 min. 89 tests carry `live_store` and
-  read the real store (about 11 MB); 14 of them take a `live_copy`, a
-  full SQLite backup of the store for each test. Several Sprint scripts'
-  "second apply writes nothing" tests re-run whole applies, which
-  re-read PDFs' text. These are the likely heavy set; the timings decide.
-- Steps: (1) one run with `pytest --durations=0`, the slowest 30 tests
-  and the total by file recorded; (2) fix the top items: share one
-  store copy per session where a test only reads after writing, cache
-  extracted PDF text across tests, mark slow tests `slow`; (3) decide
-  where the full suite is required: today it gates every commit (Sprint
-  4 retrospective, after a red suite was committed). A proposal, for the
-  team lead's decision: the fast set (not `slow`) at each commit, the
-  full suite before the Manual Validation hand-over and before `gh pr
-  ready`, CI on every push as now; (4) record before and after.
-- Acceptance: per-test timings recorded with their date; the suite's
-  wall clock before and after; the commit-gate rule decided by the team
-  lead and written in `SPRINT_EXECUTION_WORKFLOW.md` and the hook that
-  enforces it; no guard removed, and every guard still fails by
-  injection.
-- Builds on (2026-10-23, Sprint 11 retrospective I2, done in Sprint 11):
-  `scripts/run_suite.py` runs pytest, prints one verdict line from the
-  exit code, and records the verdict with the git tree id it ran on;
-  `block_commit_with_piped_tests.py` refuses a commit of a tree whose
-  recorded verdict is FAILED or INVALID. It does not require a verdict.
-  Step (3)'s decided rule can require one (for example: a PASSED full
-  suite for this tree before `gh pr ready`) by changing that hook.
-- **Step (3) decided** (team lead, 2026-10-23): "we only need full suit
-  runs twice per sprint - before manual validation and if any improvements
-  are implemented from Sprint Retrospective. Can the I2 test be limited to
-  these or are there targed, minimal set of tests". Recorded in
-  `SPRINT_EXECUTION_WORKFLOW.md` Phase 4. The targeted set for every other
-  commit becomes a runner mode here, chosen from step (1)'s timings.
-- Depends on: none
+### Carded at Sprint 13 Phase 1.2 (2026-10-25)
 
-### Carded at Sprint 12 Phase 1.2 (2026-10-23), from Sprint 11 retrospective Category 13
-
-**F101. Correct two stored defects found in Sprint 11: Pande 2020's "&amp;" citation and the Cyc quote cut short (~25m) Priority 10** (NEW 2026-10-23, Sprint 11 retrospective Category 13, targeted for the Sprint 12 plan)
+**F107. Correct two stored defects found in Sprint 12: the ".;" joins and the LOW proved results' reason (~35m) Priority 10** (NEW 2026-10-25, Sprint 12 retrospective Category 13, targeted for the Sprint 13 plan)
 - Phase: Data correction
-- Value: this prevents a stored citation from showing an HTML entity, and
-  a stored quote from standing with part of its text never checked.
-- Platform: the store; the verified write path (`store.quotes.require_verbatim`,
-  intake sections 26, 31 and 41)
+- Value: this prevents stored text from carrying a join error, and a LOW
+  grade from naming a reason that is not its own.
+- Platform: the store; the verified write path; `store/grading.py`
 - Two findings, one card, each named in the retrospective (Category 13,
   Claude Code Development Team):
-  - Pande 2020's citation carries "&amp;" from Crossref (est 10m): the
-    stored text is corrected to "&", with the source of the correction in
-    the record's evidence.
-  - `cyc-2007-eight-tactic-types` (Sprint 7): its quote stops at the inner
-    `"split" (`, so the rest was never checked (found by I1a, intake
-    section 41; est 15m). The quote re-read from the source and the value
-    re-checked against it.
-- Acceptance: both records corrected through the verified write path; I1a's
-  stray-quote check finds 0 of the stored quotes (it found 2 on
-  2026-10-23, one fixed then); a second apply writes nothing.
-- Depends on: none
+  - The ".;" joins (est 20m): where a hash note was appended to text that
+    already ended in a full stop. Snapshot as of 2026-10-25: 16 paper
+    records' `evidence`, 1 `paper_reads` detail and 1 `paper_probes`
+    value hold ".;". Each is read first: a join is corrected, punctuation
+    only; a ".;" the source itself prints stays.
+  - The LOW proved results (est 15m): 3 assertions from Sprint 12's reads
+    are proved results kept LOW because their quoted text was cut short,
+    yet store "an empirical result" as the reason (INTAKE_WORKFLOW.md
+    section 47; `larson-convergence-proved` is one). Each gets its own
+    reason; the grade stays LOW.
+- Acceptance: 0 ".;" joins left (any source-printed one named); the 3
+  reasons corrected through the verified write path; a guard proven to
+  fail by injection; a second apply writes nothing.
+- Depends on: none (F57's I2 builds the general rule from Sprint 13's
+  release; this card corrects the 3 already stored)
 
-**F102. Enter Phase 2's Sprint 28 results: the stable HGB yardstick, Experiments 2, 3 and 6, the calibrated plug-in, and where models win (~70m) Priority 30** (NEW 2026-10-23, read from Phase 2 at Sprint 12 Phase 1.2)
+**F108. Enter Phase 2's later Sprint 28 work: F162 in the SPECTRA pocket, and the corrections to four results already entered (~60m) Priority 30** (NEW 2026-10-25, read from Phase 2 at Sprint 13 Phase 1.2)
 - Phase: Inbound evidence (F79)
-- Value: this prevents the store from holding Phase 1's "the QML proxy
-  beats HGB" reading and an open ceiling question unlinked to the results
-  that now answer them.
+- Value: this prevents the store from holding values Phase 2 has since
+  corrected, and enables the in-pocket result to sit beside the pocket
+  claims it bears on.
 - Platform: the store; `hsbc-qfraud-phase2` read only, branch
-  `feature/20261019_Sprint_28` at 10086da (2026-10-23), its PR #46 still
-  draft: `docs/sprints/SPRINT_28_VALIDATION.md` and the result documents
-  it names under `docs/phase2/`
-- Results named in Phase 2's validation document (snapshot as of
-  2026-10-23, read only):
-  - F151: HGB's default `l2_regularization=0` caused the unstable ULB
-    comparator; at 1.0, AUC-PR mean 0.804, SD 0.022. F130's "proxy beats
-    HGB" restated: both proxy variants below the stable HGB.
-  - F152 (Experiment 2, IEEE-CIS by month): XGBoost above logistic
-    regression on months 4 and 5; LightGBM best every month.
-  - F153 (Experiment 3's design): fails its committed falsifier on all six
-    instances; greedy selection reaches the best found.
-  - F110 (Experiment 6): the pool build, not the solve, dominates time
-    (slope about 1.4 in rows); the solve flat at about 0.35 s at 833
-    variables.
-  - F114: the calibrated plug-in does not recover the known ceiling (2 of
-    5 seeds); bears on F93's assertions.
-  - F154: no model reliably better than another on any subset (66 pairs).
-  - Not yet: F111 (Experiment 4) was running on 2026-10-23, about 825
-    minutes projected; entered if its result is committed when the work
-    starts, else left for the next inbound card.
-- Acceptance: each result document read at the commit current when the
-  work starts (named in provenance); each result entered as assertions
-  under `ml` (with `hsbc-2026` where Phase 2's own data is meant) through
-  the verified write path, Phase 2's stated limits carried into the
-  values; F114 related to F93's assertions by ADR-0004 A8 (b); a second
+  `feature/20261019_Sprint_28` at 9993ab6 (2026-10-24): `docs/phase2/`
+- Changed since F102 read 10086da (snapshot as of 2026-10-25, read only):
+  - F162 (new, `SIM`): inside the SPECTRA pocket, over ten seeds, the
+    CVQBoost proxy is not reliably above HGB or XGBoost on any of three
+    cells; XGBoost is reliably above it on two. FourierWall2's single-run
+    in-pocket wins do not repeat. Phase 2: "nothing here justifies" a
+    device run.
+  - F111: the run time restated as 82.5 minutes of recorded lane time
+    (about 95 wall clock, not recorded in the file); the "not dominated
+    by an exact match" reason marked unverified.
+  - F114: calibration moves some estimates on two of the three arms;
+    every estimate above the Bayes error (calibrated 3 to 13 percent,
+    uncalibrated 4 to 14).
+  - F151, F153, F154, F110: smaller wording changes; each compared with
+    the stored value.
+- Acceptance: each document read at the commit current when the work
+  starts (named in provenance); F162 entered under `ml` through the
+  verified write path, with its limits, and related by ADR-0004 A8 (b)
+  to the stored SPECTRA pocket claims (the three B4 assertions such as
+  `dirac3-matches-classical-proxy-in-pocket-spectra-b4`, and
+  `fourier-wall-incomplete-bar-manufactures-advantage`); each stored F102
+  value whose source changed corrected or confirmed by name; a second
   apply writes nothing.
-- Depends on: none (reads at a named commit; a later Phase 2 change is a
-  later card)
-
-### Released for Sprint 12 (2026-10-23)
-
-**F103. F95 release for Sprint 12: new papers in `Papers\`, the named repository and the Classiq challenge pages (~45m) Priority 20** (NEW 2026-10-23, released copy of F95)
-- Phase: Sourcing / intake, then reading
-- Value: F95's, for the files and pages in hand on 2026-10-23.
-- Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\`; `scripts/intake.py`
-- F95's steps (1) to (5), plus the repository and the three web pages F95's
-  card names for its next release.
-- Acceptance: F95's per release, plus the repository entered and the three
-  pages entered with their authors' own measurements.
-- Depends on: none
-
-**F104. F98 release for Sprint 12: the first diff of Roadmap-to-QML (~60m) Priority 22** (NEW 2026-10-23, released copy of F98)
-- Phase: Sourcing / intake, then reading
-- Value: F98's, for the list at its commit on the task's day.
-- Platform: github.com/Christophe-pere/Roadmap-to-QML, read only; the intake door
-- The whole list, as the first release (about 21 of 1,402 arXiv ids new,
-  snapshot as of 2026-10-23).
-- Acceptance: F98's per release.
-- Depends on: none
-
-**F105. F57 release for Sprint 12: read 400 records, by relevance, up to 5 agents (~680m) Priority 70** (NEW 2026-10-23, released copy of F57)
-- Phase: Sourcing / extraction
-- Value: F57's, for this sprint's 400 (team lead, 2026-10-23: "Can you do
-  400 total this sprint").
-- Platform: the store; up to 5 Sonnet 5.5 first-pass readers, every quote
-  checked in the write path
-- The top 400 records at `seen` or `screened` by F57's relevance ranking,
-  with F57's I3 HIGH-basis helper built first (30m of the estimate).
-- Acceptance: each of the 400 at `read` with its assertions, or kept at
-  `seen` with its reason; HIGH grades carry their basis; the count before
-  and after recorded.
-- Depends on: none
-
-**F106. ADR-0005 amendment: a source link may rest on a recorded team-lead decision (~15m) Priority 12** (NEW 2026-10-23, Sprint 12 Phase 1.3 finding; added to Sprint 12 at plan Q3 = 1)
-- Phase: Design documents
-- Value: this prevents ADR-0005 from describing every source link as
-  resting on a source sentence when one rests on the team lead's decision.
-- Platform: `docs/adr/0005-reference-library.md`; the store's
-  `source_links`; `CLAUDE.md` and `docs/` restatements
-- Found at Phase 1.3: ADR-0005's derived-field table says `source_links`
-  carry "the evidence sentence"; Sprint 11's `NVIDIA/auto-ontology-eval`
-  `code-of` link carries the team lead's decision (Sprint 11 Q1 = 2).
-- Acceptance: a dated amendment at the bottom of ADR-0005; restatements in
-  step; a test fails on a source link whose evidence is neither a source
-  sentence nor a named decision, proven by injection.
-- Depends on: none
+- Depends on: none (reads at a named commit)
 
 ## Design documents governing this repository
 
