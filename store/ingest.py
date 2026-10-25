@@ -13,6 +13,7 @@ from dataclasses import dataclass, field, fields, replace
 from pathlib import Path
 
 from store import citations
+from store.common_names import with_common_names
 from store.quotes import Verified
 
 HAND_MARKER = "hand-transcribed from"
@@ -573,6 +574,7 @@ def insert_paper(
 
 
 def insert_assertion(conn: sqlite3.Connection, assertion: AssertionRecord, yielded_by: str | None = None) -> None:
+    assertion = replace(assertion, value=with_common_names(assertion.value))  # Sprint 13 MV Q4
     validate_assertion(assertion)
     conn.execute(
         "INSERT INTO records (id, class, value, provenance, evidence_tag, certainty, certainty_reasons, "
@@ -682,6 +684,7 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
     not delete. `context`: when the wanted context is not among the stored
     ones, it replaces them; when it is, any others are kept."""
     _sync_groups_cover_every_field()
+    wanted = replace(wanted, value=with_common_names(wanted.value))  # Sprint 13 MV Q4, so a second sync is a no-op
     validate_assertion(wanted)
     rid = wanted.id
     row = conn.execute(f"SELECT {', '.join(_SYNC_RECORD_COLUMNS)} FROM records WHERE id = ? AND class = 'assertion'",

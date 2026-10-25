@@ -21,6 +21,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from store.common_names import with_common_names  # noqa: E402
 from store.grading import BASES, theory_words  # noqa: E402
 from store.quotes import (QUOTE, plain, source_text, stray_quote_marks, unquoted_figures,  # noqa: E402
                           unsupported_by_basis)
@@ -245,7 +246,7 @@ def test_each_read_is_qualified_and_the_store_matches_the_script(live_conn, half
             "SELECT r.value, r.certainty, r.certainty_reasons, r.provenance, f.citation_context, f.claim_type "
             "FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()
         ctx = [r[0] for r in live_conn.execute("SELECT context_id FROM record_contexts WHERE record_id = ?", (a.id,))]
-        if not row or tuple(row) != (a.value, a.certainty, a.certainty_reasons, a.provenance, a.citation_context,
+        if not row or tuple(row) != (with_common_names(a.value), a.certainty, a.certainty_reasons, a.provenance, a.citation_context,
                                      a.claim_type) or ctx != [a.context]:
             bad.append(a.id)
     assert not bad, bad

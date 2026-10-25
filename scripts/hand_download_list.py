@@ -78,7 +78,8 @@ def slice_counts(manifests: Path) -> dict[str, int]:
     out: dict[str, int] = {}
     for path in sorted(manifests.glob("*_slice.json")):
         for row in json.loads(path.read_text(encoding="utf-8")).get("slice", []):
-            if row["cited_by_count"] is not None:  # an uncounted row never hides another slice's count
+            # An uncounted row never hides another slice's count; Task G's slice (F113) carries no count at all.
+            if row.get("cited_by_count") is not None:
                 out[row["record_id"]] = row["cited_by_count"]
     return out
 

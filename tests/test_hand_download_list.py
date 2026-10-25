@@ -6,6 +6,7 @@ citation count; each entry names its target file and why it matters."""
 from __future__ import annotations
 
 import importlib.util
+import json
 import sqlite3
 import sys
 from pathlib import Path
@@ -71,6 +72,18 @@ def test_a_newer_segment_takes_a_record_off():
     assert hdl.on_list("a; on the hand-download list | b; NOT for the hand-download list") is None
     assert hdl.on_list("added by intake") is None
     assert hdl.on_list("x | y; on the hand-download list").endswith("on the hand-download list")
+
+
+def test_a_slice_with_no_counts_is_read_past(tmp_path):
+    """Task G's slice (F113, Sprint 13) has no cited_by_count field and
+    matches the "*_slice.json" glob. Proven to fail, 2026-10-25: before the
+    fix, this test raised KeyError: 'cited_by_count'."""
+    hdl = _script()
+    (tmp_path / "a_slice.json").write_text(json.dumps({"slice": [{"record_id": "x", "cited_by_count": 7}]}),
+                                           encoding="utf-8")
+    (tmp_path / "b_slice.json").write_text(json.dumps({"slice": [{"record_id": "x"}, {"record_id": "y"}]}),
+                                           encoding="utf-8")
+    assert hdl.slice_counts(tmp_path) == {"x": 7}
 
 
 def test_target_names_follow_the_papers_convention():

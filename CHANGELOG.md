@@ -219,6 +219,22 @@ this project keeps having to replace with a step.
   British spelling passed `--changed` and turned CI red. A test on this
   repository's own selection fails if either guard leaves the list,
   proven by injection (Issue #137)
+- **fix**: Manual Validation Q4 (team lead, 2026-10-25: "keep how the
+  paper does them and then put in parenthasses the more common name").
+  `store/common_names.py` adds "(R squared)" after a paper's "R2" and
+  "(D squared sampling)" after "D2-sampling"; `store.ingest` applies it
+  on every insert and sync. The four owning reading scripts re-applied
+  (with verified backups) changed exactly 18 values, 17 with R2 and 1
+  with D2-sampling (snapshot as of 2026-10-25); a second apply wrote
+  nothing. `tests/test_common_names.py` named all 18 against the
+  pre-apply backup and passes on the live store. The three reading
+  scripts' store-match tests compare the value as ingest stores it
+  (Issue #138)
+- **fix**: the hand-download list failed with `KeyError:
+  'cited_by_count'` once Task G's slice (a3b8074) joined the
+  `*_slice.json` manifests, since that slice records no OpenAlex count. A
+  slice row with no count is now read past, as an uncounted one was; a
+  test with no store, proven red on the old script, holds it (Issue #138)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 
