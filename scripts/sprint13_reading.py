@@ -14,7 +14,7 @@ qualifies `read`): as Sprint 12 (`sprint12_reading.py`). The coordinator
 checked every quote against the source text by script
 (`require_verbatim`, with the value's figures) and read every value against
 its quoted passages in context. QUOTE_EDITS, EXTRA_QUOTES, VALUE_REPLACE,
-CONTEXT_FIX, DROP and HIGH record that read.
+CONTEXT_FIX, ANCHOR_FIX, DROP and HIGH record that read.
 
 CERTAINTY (INTAKE_WORKFLOW.md sections 45 and 49): HIGH only through
 `store.grading.high_grades`, each HIGH id with its basis and where the paper
@@ -325,10 +325,11 @@ EXTRA_QUOTES: dict[str, list[str]] = {
     "network-benchmarking-no-multiplicative-accuracy": ["for the estimation of fidelity when taking the number of "
                                                         "state transmissions as a cost metric"],
     # Fresh-eyes review of ce2412e: what each corrected value says, quoted
-    "nghiem-exponential-copies-in-r": ["As provided in theorem 2, the number of copies of"],  # g83
+    "nghiem-exponential-copies-in-r": ["As provided in theorem 2, the number of copies of ρ required"],  # g83
     "facial-quantum-walk-model-scope": ["The dynamics of the facial quantum walk is determined by the abstract graph"],
     "wolf-field-state": ["scale noisy experiments and classical simulations"],  # g97: "small-" ends the line before
-    "qnpg-outer-loop": ["insights from the literature suggest"],  # g97: whose limitation it is
+    "qnpg-outer-loop": ["insights from the literature suggest",  # g97: whose limitation it is
+                        "is likely the best achievable sample complexity for SGD-based approaches"],
 }
 VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement says only what its quotes say
     # g01
@@ -923,8 +924,9 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
                                 "text layer) that return the last missing bit of a binary string for a specific "
                                 "distribution."),
     "scellier-no-simulation": "The author states that the next step would be to simulate QEP numerically.",
-    "schuld-speedup-caveat": ("The authors state that, by using only a single-qubit gate, this speedup is not "
-                              "necessarily based on quantum resources."),  # review of ce2412e: the cited scaling dropped
+    "schuld-speedup-caveat": ("The authors state that what their algorithm gains by using only a single-qubit gate "
+                              "is not necessarily based on quantum resources (the source puts its word for it, "
+                              "speedup, in quotation marks)."),  # reviews of ce2412e and 6cfc137: cited scaling dropped
     # g92
     "cffqnn-ideal-simulator-scope": ("The authors state that they predominantly employed the Statevector simulator "
                                      "from Qiskit, designed to emulate the ideal quantum states of a quantum system "
@@ -1269,9 +1271,8 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
                                        "as against a strong classical baseline."),
     # Fresh-eyes review of ce2412e: values that said more than their quotes, and one flat exponent missed
     "nghiem-exponential-copies-in-r": ("The authors state that, as provided in their theorem 2, the number of copies "
-                                       "required (the state's symbol is lost in the text layer) has an exponential "
-                                       "scaling with respect to R, so their method only works well when R is very "
-                                       "small."),  # g83
+                                       "of ρ required has an exponential scaling with respect to R, so their method "
+                                       "only works well when R is very small."),  # g83
     "facial-quantum-walk-model-scope": ("The authors state that they treat a quantum walk model on the graph with tails "
                                         "receiving the inflow and radiating the outflow, whose dynamics is determined by "
                                         "the abstract graph, the rotation determined by the 2-cell embedding on the "
@@ -1289,9 +1290,12 @@ VALUE_REPLACE: dict[str, str] = {  # the coordinator's read; each replacement sa
                                  "network with QuCNN, that they believe this to be due to barren plateaus, and that "
                                  "mimicking classical machine learning techniques on quantum processors does not "
                                  "provide immediate computational advantage."),  # g92
-    "qnpg-outer-loop": ("The authors state that the limitation the literature suggests for SGD-based approaches arises "
-                        "because quantum computing can accelerate the inner loop but not the outer loop of such "
-                        "algorithms."),  # g97: the bound itself is not quoted
+    "qnpg-outer-loop": ("The authors state that insights from the literature suggest a best achievable sample "
+                        "complexity for SGD-based approaches, and that this limitation arises because quantum "
+                        "computing can accelerate the inner loop but not the outer loop of such algorithms."),  # g97
+    "scala-lazy-regime-limit": ("The authors state that most of the formal results are obtained under specific "
+                                "assumptions, the so called lazy training regime, which are typically difficult to "
+                                "realize in practice."),  # g90: "most of the", the paper's own results
 }
 CONTEXT_FIX: dict[str, str] = {  # an assertion's context where the reader's did not fit
     # g06: the reader wrote its result_type, "setup", in the context field; each takes its paper's context
@@ -1310,6 +1314,15 @@ CONTEXT_FIX: dict[str, str] = {  # an assertion's context where the reader's did
     "neira-benchmark-framework-proposal": "qc", "neira-scope-stochastic-optimization": "qc",
     "neira-test-train-setup": "qc", "neto-datasets-setup": "qml",
     "zhao-threats-github-only-low-agreement": "qml",  # g99: the reader wrote "method"; Zhao studies QML bugs
+}
+# A reader's anchor where it names the wrong place, read in the source (fresh-eyes reviews of ce2412e and 6cfc137):
+# the stored provenance and quotes carry the anchor, so a HIGH location corrected alone would contradict them.
+ANCHOR_FIX: dict[str, str] = {
+    "qneuron-simulation-only": "Section III.B, Numerical results, p.5",  # g75: the reader wrote Section IV
+    "slack-free-setup": "Section IV, Experimental Settings",  # g77: the reader wrote Section V
+    "qumode-benchmark-setup": "Section IV.A, System Setup; the Abstract",  # g73: the reader wrote Section III
+    "stvqc-device-setup": "the Introduction, its contributions",  # g77: the Abstract's sentence has no comma
+    "ma-not-tested-on-hardware": "Section III, Results (Cases I and II)",  # g79: the reader wrote III and IV
 }
 DROP: dict[str, str] = {  # an assertion not entered, with the reason
     "qwiener-advantage-open": "g56: the quotes do not hold the open question the value states",
@@ -1377,6 +1390,7 @@ FIELD_STATEMENTS: set[str] = {
     "thudumu-no-demonstrated-advantage", "thudumu-fault-tolerance-needed",  # g94: a review on the field
     "tnmp-problem-hardness",  # g96: the known complexity of the problem, on the field
     "wolf-field-state",  # g97
+    "qnpg-outer-loop",  # g97, review of 6cfc137: the literature's limitation, explained
 }
 # A reader's "field" the coordinator did not follow, with why.
 NOT_FIELD: dict[str, str] = {}
@@ -2174,7 +2188,7 @@ HIGH = high_grades({
     "pqc-chem-scope": ("scope", "the Abstract and Section 4"),
     "qiia-simulation-setup": ("setup", "pp.4-5"),
     "qrl-survey-scope": ("scope", "the Abstract"),
-    "qumode-benchmark-setup": ("setup", "Section IV.A, System Setup"),
+    "qumode-benchmark-setup": ("setup", "Section IV.A, System Setup, and the Abstract"),
     "aircraft-loading-proof-of-principle": ("stated limit", "Section 5"),
     "aircraft-loading-simulator-parameters": ("setup", "the experimental procedure for the Aria instances"),
     "qrecsys-assumptions": ("setup", "Section 1.1, p.5"),
@@ -2220,7 +2234,7 @@ HIGH = high_grades({
     "hqpinn-small-quantum-subnetwork": ("stated limit", "Section 4, Conclusion"),
     "shallow-nn-hardness-scope": ("stated limit", "Section III, Discussion"),
     "shallow-nn-data-loading": ("stated limit", "Section III, Discussion"),
-    "stvqc-device-setup": ("setup", "the Abstract"),
+    "stvqc-device-setup": ("setup", "the Introduction, its contributions"),
     "qtailor-scope": ("scope", "Section 5, Discussion and Conclusion"),
     # g78
     "qitsa-setup-datasets": ("setup", "the Experiments section"),
@@ -2247,7 +2261,7 @@ HIGH = high_grades({
     "qfal-experiment-scope": ("scope", "Section A, Experimental Setup"),
     "qudit-vqc-simulated-only": ("stated limit", "the Discussion"),
     "qudit-vqc-needs-larger-tests": ("stated limit", "the Discussion"),
-    "kqse-bound-not-tight": ("stated limit", "the main text, p.2, after its inequality for arbitrary states"),
+    "kqse-bound-not-tight": ("stated limit", "the main text, p.3, after Theorem 2"),
     "survey-scope-gate-adiabatic": ("scope", "the Abstract"),
     "survey-variational-focus": ("scope", "Section 2"),
     "transforms-definition": ("definition", "the Abstract and Section II A"),
@@ -2444,7 +2458,7 @@ HIGH = high_grades({
     "zang-single-model-scope": ("stated limit", "Sections 2.3 and 4"),
     "zeng-classical-simulation-only": ("setup", "Section C, Numerical details"),
     "zhan-vqs-noise-free-26-qubit-limit": ("stated limit", "the Discussion and the Conclusion"),
-    "zhang-quantum-troenpy-not-developed": ("stated limit", "p.13, the paragraph before the Discussion"),
+    "zhang-quantum-troenpy-not-developed": ("stated limit", "pp.13-14, the paragraph before the Discussion"),
     "zhao-bug-collection-scope": ("scope", "the Introduction and the data-collection description"),
     "zhao-threats-github-only-low-agreement": ("stated limit", "Threats to Validity"),
     # g100
@@ -2938,7 +2952,7 @@ def assertions(half: str) -> list[tuple[str, AssertionRecord, str, dict]]:
             if aid in DROP:
                 continue
             cert, reasons = certainty(aid, a)
-            anchor = anchor_safe(a["anchor"])
+            anchor = anchor_safe(ANCHOR_FIX.get(aid) or a["anchor"])
             out.append((g, AssertionRecord(
                 id=aid, value=" ".join((VALUE_REPLACE.get(aid) or a["value"]).split()),
                 provenance=f"{rid}, {anchor}",

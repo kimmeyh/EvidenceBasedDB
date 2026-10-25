@@ -2209,8 +2209,8 @@ the read's own bullets follow before its apply.
     definition.
   - **A value that said the opposite of its quote:**
     `qucnn-no-network-trained` quoted "providing immediate computational
-    advantage" without the "whilst not" before it. The quote now carries
-    it.
+    advantage" without the negation the source prints just before it.
+    The quote now carries it.
   - **Values that said more than their quotes:**
     `khoo-simulation-scope`, `facial-quantum-walk-model-scope`,
     `nagano-noiseless-simulation-only`, `nghiem-exponential-copies-in-r`
@@ -2232,3 +2232,29 @@ the read's own bullets follow before its apply.
   - **write_path:** a third bypass recorded, not closed: comments are
     stripped with `#.*` before the LOW checks, so a `#` inside a string
     hides the rest of its line.
+- **Corrections after the fresh-eyes review of 6cfc137** (snapshot as of
+  2026-10-25; written before half 2's re-apply). Grades unchanged at 460
+  HIGH and 890 LOW.
+  - **The bullet above was wrong twice.** `qnpg-outer-loop` was not a
+    LOW authors' claim: its kind made it "an empirical result". It
+    explains a limitation the literature suggests, so it is now a
+    statement about the field, with that passage quoted. And "6 values
+    trimmed" in the CHANGELOG was 5 trimmed and 1 restored (`wolf`).
+  - **`nghiem-exponential-copies-in-r`** said the state's symbol was
+    lost in the text layer; it is not ("copies of ρ required"), and the
+    quote now carries it.
+  - **Reader anchors corrected in the stored provenance (new table
+    `ANCHOR_FIX`):** a HIGH location corrected alone left the record
+    naming the reader's wrong section beside it. `qneuron-simulation-only`
+    (III.B), `slack-free-setup` (IV), `qumode-benchmark-setup` (IV.A and
+    the Abstract), `stvqc-device-setup` (the Introduction: only its
+    sentence has the quoted comma) and `ma-not-tested-on-hardware` (III).
+    HIGH locations: `kqse-bound-not-tight` is p.3, after Theorem 2;
+    `zhang-quantum-troenpy-not-developed` spans pp.13-14.
+  - **Values:** `scala-lazy-regime-limit` says "most of the formal
+    results", the paper's own, not "most formal results";
+    `schuld-speedup-caveat` no longer uses "speedup" as its own word (the
+    source puts it in quotation marks).
+  - **Half 2's share of the tables, corrected again:** 135 values, 31
+    quote edits, 15 added quotes, 9 contexts, 57 statements about the
+    field, 134 theoretical LOWs, 51 measured results; 5 anchors.

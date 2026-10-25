@@ -92,8 +92,9 @@ def test_every_high_grade_is_one_the_coordinator_named_with_its_basis():
 
 
 def test_no_id_is_both_high_and_named_low():
-    """certainty() consults HIGH first, so an id in HIGH and in THEORY_LOW or
-    MEASURED_DESPITE is HIGH, silently (fresh-eyes review of ce2412e). Proven
+    """certainty() consults HIGH before THEORY_LOW, so an id in both is HIGH,
+    silently; MEASURED_DESPITE names a result kept LOW as measured, which a
+    HIGH contradicts (fresh-eyes reviews of ce2412e and 6cfc137). Proven
     to fail by injection, 2026-10-25, in memory: scala-lazy-regime-limit (in
     HIGH) added to THEORY_LOW went red, and to MEASURED_DESPITE went red."""
     s13 = _script()
@@ -152,7 +153,7 @@ def test_every_name_in_the_coordinator_tables_is_an_assertion():
     s13 = _script()
     ids = set(_raw(s13))
     for name in ("HIGH", "VENDOR_DESCRIPTIONS", "FIELD_STATEMENTS", "NOT_FIELD", "THEORY_LOW", "MEASURED_DESPITE",
-                 "VALUE_REPLACE", "EXTRA_QUOTES", "QUOTE_EDITS", "CONTEXT_FIX", "DROP"):
+                 "VALUE_REPLACE", "EXTRA_QUOTES", "QUOTE_EDITS", "CONTEXT_FIX", "ANCHOR_FIX", "DROP"):
         unknown = set(getattr(s13, name)) - ids
         assert not unknown, f"{name}: {sorted(unknown)}"
 
