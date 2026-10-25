@@ -32,6 +32,9 @@ _EDIT_TABLE = re.compile(r"(?m)^(VALUE|QUOTE|CONTEXT)_[A-Z_]+\s*[:=]")
 # (Sprint 11 retrospective I3, built in Sprint 12 Task G): no literal
 # "high" of its own, in a grade table or a certainty argument.
 _HIGH_LITERAL = re.compile(r"""["']high["']""")
+# Its LOW names a reason through store.grading.low_grade too (Sprint 12
+# retrospective I2, built in Sprint 13 Task F): no "Started LOW" text of its own.
+_LOW_LITERAL = re.compile(r"Started LOW")
 
 # The scripts written before this rule (Sprint 10 and earlier). They have
 # run, and stay as they are; every other script in scripts/ is held to it,
@@ -56,6 +59,9 @@ def script_problems(text: str, name: str = "") -> list[str]:
         if "high_grades(" not in code or _HIGH_LITERAL.search(code):
             out.append("grades HIGH outside store.grading (a reading script names each HIGH's basis through "
                        "high_grades and grade, and holds no literal \"high\")")
+        if "low_grade(" not in code or _LOW_LITERAL.search(code):
+            out.append("grades LOW outside store.grading (a reading script names each LOW's reason through "
+                       "low_grade, and holds no \"Started LOW\" text of its own)")
     if _DIRECT_WRITE.search(code):
         out.append("writes an assertion without the quote check (use insert_verified_assertion)")
     if _TOKEN_NAME.search(code):

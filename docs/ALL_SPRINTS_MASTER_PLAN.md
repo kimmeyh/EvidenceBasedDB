@@ -533,6 +533,15 @@ and in git. Remaining items below.
   named reason for every LOW as well: measured result, statement about the
   field, or proved result not checked by the reader. Acceptance: no LOW in
   the release stores the default reason; the rule proven by injection.
+- **Earlier sprints' theoretical results kept LOW as "an empirical result"
+  (carded 2026-10-25, Sprint 13 Task F; INTAKE_WORKFLOW.md section 49).**
+  Sprint 13's I2 corrected Sprint 12's 29. A classifier over the 499 such
+  LOW assertions from Sprints 9 to 11 proposed 13 theoretical and 14 mixed
+  (snapshot 2026-10-25); none is checked by the coordinator, and their
+  reading scripts are legacy. Acceptance: each candidate's quotes read by
+  the coordinator; each confirmed one stores a theoretical result's reason
+  with its cause, through a correction that keeps the earlier live tests
+  holding. ~60m.
 - Depends on: none
 
 ### Carded at Sprint 10 Manual Validation (2026-10-19)

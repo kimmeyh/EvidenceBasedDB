@@ -1837,3 +1837,51 @@ Every count is a snapshot as of its own date. Written before the apply.
   its reason.
 - **The guard.** A `live_store` test fails on a ".;" join in
   `paper_fields.evidence`.
+
+## 49. Applied 2026-10-25: every LOW names its reason; Sprint 12's theoretical results corrected (Sprint 13 Task F, F112, I2)
+
+Every count is a snapshot as of its own date. Written before the apply.
+
+- **Section 48's premise was wrong.** It said the 5 were all the coordinator
+  named and others "are not found by this". The fresh-eyes review of
+  6c6f0ac found 8 more by reading, so the class is wider: a reader's kind
+  "shown" took "an empirical result" by default, whether the paper
+  measured the result or proved it.
+- **The rule (Sprint 12 retrospective I2).** `store/grading.py` names
+  every LOW reason (`low_grade`: measured result, theoretical result,
+  field statement, authors' claim, cited claim). The texts are the ones
+  the store already holds, so a script moved onto it writes nothing new. A
+  theoretical result must say why it was not upgraded. `store/write_path.py`
+  refuses a reading script that writes assertions without `low_grade` or
+  with a "Started LOW" text of its own. `theory_words` is a guard, not a
+  grader: a reading script's test requires every "measured result" whose
+  value or quotes name a theorem, a proof, a derivation or an analytic
+  count to be named by the coordinator, either as a theoretical result or
+  in `MEASURED_DESPITE` with why.
+- **Sprint 12, corrected.** On 2026-10-25 the store holds 604 Sprint 12
+  LOW assertions stored as "an empirical result". A Sonnet 5.5 classifier
+  read each one's value and quotes and proposed 33 as theoretical or
+  mixed; the review named 8 (7 of them among the 33). The coordinator read
+  every candidate's quotes and took 29: their reasons become "a
+  theoretical result (proof, derivation or proposition)" with a cause that
+  says only what the quotes show (for example "a bound from Theorem 11,
+  not checked by the coordinator"). Five stay as measured: four whose
+  value joins analysis with numerics (`tomesh-decomposition-on-scaling`,
+  `iaconis-log-scaling`, `msqw-outperforms-qaoa-evidence`,
+  `qnn-gp-wide-deep`) and `krylov-limiting-distribution`, whose quote does
+  not show how the relationship was established. Every grade stays LOW.
+  The classifier called 63 more "other" (the quotes do not show the
+  method); some may be theoretical in the paper, and are not checked here.
+- **Task A's 5, reworded.** Their reasons said "not checked in full by the
+  reader", which did not fit 3 of them (the review): the prefix now names
+  only the kind, and each cause carries the specific. The history note a
+  sync writes is now `THEORY_NOTE`, naming this correction, so no later
+  sync is dated as Task A's. `tree-unitarity-tradeoff-butterfly-velocity`
+  keeps fidelity "exact": fidelity is the quote's, which is verbatim; its
+  reason says the value is a fragment of the statement.
+- **Before Sprint 12: counted, not corrected.** The same classifier read
+  the 499 LOW assertions from Sprints 9 to 11 stored as "an empirical
+  result" and proposed 13 as theoretical and 14 as mixed. They are not
+  corrected here: their reading scripts have run and stay as they are
+  (`store/write_path.py` LEGACY and GRADING_LEGACY), and the coordinator
+  has not checked them. Carded on F57 for a later release.

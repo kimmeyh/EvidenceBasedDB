@@ -157,9 +157,9 @@ def test_the_script_rule_names_each_planted_problem(planted, expected):
     assert script_problems("CONTEXT_BY_RANK = {}\ninsert_paper(conn, paper)\n") == []
 
 
-_GRADED = ("from store.grading import grade, high_grades\n"
+_GRADED = ("from store.grading import grade, high_grades, low_grade\n"
            "HIGH = high_grades({'a1': ('proved result', 'Theorem 2, p.6')})\n"
-           "certainty, reasons = grade('a1', HIGH, otherwise=('low', 'Started LOW'))\n"
+           "certainty, reasons = grade('a1', HIGH, otherwise=low_grade('measured result'))\n"
            "insert_verified_assertion(conn, a, v)\n")
 
 
@@ -195,6 +195,46 @@ def test_the_grading_helper_refuses_high_without_a_named_basis():
         high_grades({"a1": ("setup", "  ")})
     with pytest.raises(ValueError, match="only from high_grades"):
         grade("a2", high, ("high", "Started HIGH: the reader said so"))
+
+
+@pytest.mark.parametrize("name, body, flagged", [
+    ("sprint13_reading.py", _GRADED, False),
+    ("sprint13_reading.py", _GRADED + "EMPIRICAL = 'Started LOW: an empirical result from one study. NOT upgraded'\n",
+     True),
+    ("sprint13_reading.py", _GRADED.replace("low_grade('measured result')", "('low', reason)"), True),
+    ("sprint13_reading.py", "insert_paper(conn, p)\nX = 'Started LOW'\n", False),  # writes no assertion
+    ("sprint11_reading.py", "insert_verified_assertion(conn, a, v)\nX = 'Started LOW'\n", False),
+])
+def test_a_reading_script_grades_low_only_through_store_grading(name, body, flagged):
+    """Sprint 12 retrospective I2 (Sprint 13 Task F): a reading script's
+    LOW names its reason through low_grade, with no "Started LOW" text of
+    its own. Proven to fail by injection, 2026-10-25: with the LOW rule
+    removed from script_problems, the two flagged cases went red. Restored."""
+    problems = script_problems(body, name)
+    assert any("grades LOW outside store.grading" in p for p in problems) == flagged, problems
+
+
+def test_the_grading_helper_names_every_low_reason():
+    """The texts are the ones the store holds, so moving a script onto
+    low_grade writes nothing new; a theoretical result needs its why.
+    Proven to fail by injection, 2026-10-25: with the LOW_NEEDS_WHY check
+    removed from low_grade, the bare theoretical result was accepted."""
+    from store.grading import low_grade
+    assert low_grade("measured result") == ("low", "Started LOW: an empirical result from one study. NOT upgraded")
+    assert low_grade("theoretical result", "Theorem 2, not checked by the coordinator") == (
+        "low", "Started LOW: a theoretical result (proof, derivation or proposition): Theorem 2, not checked by the "
+               "coordinator. NOT upgraded")
+    with pytest.raises(ValueError, match="names why"):
+        low_grade("theoretical result", " ")
+    with pytest.raises(ValueError, match="is not one of"):
+        low_grade("probably fine")
+
+
+def test_theory_words_skip_a_proof_of_principle_run():
+    from store.grading import theory_words
+    assert theory_words("a proof of principle run and a proof-of-concept demo on hardware") == []
+    assert theory_words("Theorem 3 gives gate complexity O(n2); we prove it") == [
+        "Theorem", "gate complexity", "O(", "we prove"]
 
 
 # ------------------------------------------------------------------ I1

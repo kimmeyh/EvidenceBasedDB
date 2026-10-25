@@ -39,7 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, recheck, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.grading import grade, high_grades  # noqa: E402
+from store.grading import grade, high_grades, low_grade  # noqa: E402
 from store.ingest import (AssertionRecord, add_read, append_updated_reason, insert_verified_assertion,  # noqa: E402
                           set_tier, sync_verified_assertion, validate_assertion)
 from store.quotes import QUOTE, plain, require_edit_basis, require_verbatim, source_text  # noqa: E402
@@ -1238,21 +1238,72 @@ HIGH = high_grades({
     "jing-qtrc-decoherence-limit": ("stated limit", "Discussion, the decoherence paragraph"),
 })
 
-EMPIRICAL = "Started LOW: an empirical result from one study. NOT upgraded"
-AUTHOR_CLAIM = "Started LOW: the authors' own claim, not tested in the paper. NOT upgraded"
-CITED = "Started LOW: a claim the source cites from other work, not tested in it. NOT upgraded"
-FIELD = ("Started LOW: a statement about the field, its devices or its literature, not about the paper's own work. "
-         "NOT upgraded")
-# A theoretical result (a proof, derivation or proposition) the coordinator kept LOW because it was not checked in
-# full; it stored EMPIRICAL until Sprint 13 Task A (F107), which names the cause the coordinator's notes give.
+# The LOW reasons, from store.grading (Sprint 13 Task F, I2); the texts are the ones Sprint 12 wrote.
+EMPIRICAL = low_grade("measured result")[1]
+AUTHOR_CLAIM = low_grade("authors' claim")[1]
+CITED = low_grade("cited claim")[1]
+FIELD = low_grade("field statement")[1]
+# A theoretical result (a proof, derivation or proposition) the coordinator kept LOW, with the cause. It stored
+# EMPIRICAL until Sprint 13: Task A (F107) named the 5 the coordinator's notes give; Task F's I2 the rest.
 F107_DAY = "2026-10-25"
-THEORY = "Started LOW: a theoretical result (proof, derivation or proposition) not checked in full by the reader"
+# The history note a THEORY_LOW sync writes. It names the latest correction; a later one changes it, so no sync is
+# dated as an earlier correction (the fresh-eyes review of 6c6f0ac).
+THEORY_NOTE = (f"{F107_DAY} (Sprint 13 Task F, I2): the LOW reason is a theoretical result's, through "
+               "store.grading.low_grade, with its cause, not \"an empirical result\" (INTAKE_WORKFLOW.md section 49)")
 THEORY_LOW: dict[str, str] = {
     "larson-convergence-proved": "the statement is cut short in the text layer and no theorem was read",
     "swaptest-qnn-two-layer-equivalent": "Proposition 6 holds only up to an error the value does not carry",
     "ld-daqc-unit-overlap-epsilon": "an unnumbered derivation the paper itself calls idealized",
     "tree-unitarity-tradeoff-butterfly-velocity": "the value is a fragment of the paper's statement",
     "qcc-bounds-bures-entanglement-distance": "the authors' interpretation of their Theorems 1 and 2",
+    # Sprint 13 Task F, I2: the fresh-eyes review of 6c6f0ac named 8, a classifier over the 604 stored as "an
+    # empirical result" proposed 33, and the coordinator read each one's quotes. Kept as they were: the four whose
+    # value joins analysis with numerics (tomesh-decomposition-on-scaling, iaconis-log-scaling,
+    # msqw-outperforms-qaoa-evidence, qnn-gp-wide-deep) and krylov-limiting-distribution, whose quote does not
+    # show how the relationship was established.
+    "approx-design-bound-tighter": "a bound from Theorem 11, not checked by the coordinator",
+    "verifiable-sampling-failure-probability-exponential": ("Theorem III.2, whose sketch proof defers to earlier "
+                                                            "work, not checked by the coordinator"),
+    "determinant-sampling-vs-classical": "a gate-complexity count after Theorem 1.3, not checked by the coordinator",
+    "gyurik-theorem3-captures-known": ("the authors' showing that their Theorem 3 covers two known separations, not "
+                                       "checked by the coordinator"),
+    "shot-noise-escapes-saddle-points": "convergence guarantees the authors prove, not checked by the coordinator",
+    "sequent-dqc-identity-vqc": "an argument from the universal approximation theorem, not checked by the coordinator",
+    "coreset-qubit-scaling": "qubit counts the authors show and derive, not checked by the coordinator",
+    "qfl-speedup-claim": "a complexity analysis that assumes QRAM, not checked by the coordinator",
+    "graph-phased-szegedy-sim-scaling": "an algorithm's stated time and memory scaling, not checked by the coordinator",
+    "pi-qml-nonlinearity-cost": "an analytic count of the system size, not checked by the coordinator",
+    "qgd-dissipative-sparse": "a result the authors prove, not checked by the coordinator",
+    "qsgc-depth-space-tradeoff": "a time and space complexity analysis, not checked by the coordinator",
+    "wossnig-no-exponential-speedup": "a scaling argument the author shows, not checked by the coordinator",
+    "pqc-gradient-cost-linear": "a gradient-cost scaling the author states, not checked by the coordinator",
+    "certrand-min-entropy": "a bound that holds under hardness assumptions, not checked by the coordinator",
+    "chan-pauli-gadget-cz-count": "a gate count from the circuit construction, not checked by the coordinator",
+    "hamiltonian-embedding-classically-hard-task": ("a hardness result under cryptographic assumptions, in an "
+                                                    "appendix the coordinator did not read"),
+    "hoffmann-constant-overhead": "a cost count for the gradient method, not checked by the coordinator",
+    "jerbi-quadratic-speedup-conditional": ("a speed-up that needs quantum access to the environment, not checked by "
+                                            "the coordinator"),
+    "jerbi-quantum-policies-smooth": "a smoothness result the authors show, not checked by the coordinator",
+    "lee-qkc-qae-speedup": "a speed-up from amplitude estimation, not checked by the coordinator",
+    "mohseni-resource-estimate-chemistry": ("a resource estimate computed under stated hardware assumptions, not "
+                                            "checked by the coordinator"),
+    "mvqn-radix-three-cost": "a minimum under the paper's own hardware cost model, not checked by the coordinator",
+    "photonic-psr-exact-linear-scaling": "a derived gradient formula and its scaling, not checked by the coordinator",
+    "qnn-gp-finite-width-expansion": "an analytic 1/d expansion, not checked by the coordinator",
+    "qregression-compressed-encoding-readout-error": "an analytic error expression, not checked by the coordinator",
+    "qsgc-potential-advantage": "a complexity analysis, not checked by the coordinator",
+    "shot-noise-ill-conditioned": ("an argument from the subspace of ideal feature vectors, not checked by the "
+                                   "coordinator"),
+    "su4-u3-gates-fewer-parameters": "a parameter count the authors show, not checked by the coordinator",
+}
+# Measured results whose value or quotes hold a word store.grading.theory_words reads as theory; the coordinator
+# read each and kept "an empirical result" (Sprint 13 Task F, I2).
+MEASURED_DESPITE: dict[str, str] = {
+    "kernel-diminishing-returns": "the asymptote is a fitted power law's, from measured AP",
+    "qrl-high-temperature-non-convergence": "asymptotic values read off simulated curves (Fig. 2)",
+    "sqp-worse-than-simple-circuits": "the theorem is named, not used; the result is the numerical data",
+    "tomesh-decomposition-on-scaling": "joins asymptotic gate counts with numerical constants; the value reports both",
 }
 
 
@@ -1307,7 +1358,7 @@ def certainty(aid: str, a: dict) -> tuple[str, str]:
         return "low", (f"{f80.VENDOR_START}. DOWNGRADED one level: a result or claim the vendor reports about its "
                        "own product, not independently checked")
     if aid in THEORY_LOW:
-        otherwise = f"{THEORY}: {THEORY_LOW[aid]}. NOT upgraded"
+        otherwise = low_grade("theoretical result", THEORY_LOW[aid])[1]
     else:
         otherwise = FIELD if aid in FIELD_STATEMENTS else {"cited": CITED, "shown": EMPIRICAL}.get(a["kind"],
                                                                                                     AUTHOR_CLAIM)
@@ -1429,10 +1480,8 @@ def apply_changes(conn, task: str) -> list[str]:
             insert_verified_assertion(conn, a, verified, yielded_by=rid)
             log.append(f"assert {a.id} <- {rid} [{a.certainty}]")
             continue
-        if a.id in THEORY_LOW:  # Sprint 13 Task A: dated as that correction, not as Sprint 12's
-            changed = sync_verified_assertion(conn, a, verified, f"{F107_DAY} (Sprint 13 Task A, F107): the LOW "
-                                              "reason names the theoretical result's cause, not \"an empirical "
-                                              "result\" (INTAKE_WORKFLOW.md section 48)", F107_DAY)
+        if a.id in THEORY_LOW:  # dated as the Sprint 13 correction, not as Sprint 12's
+            changed = sync_verified_assertion(conn, a, verified, THEORY_NOTE, F107_DAY)
         else:
             changed = sync_verified_assertion(conn, a, verified, f"{TODAY} ({tag}): corrected to the script's "
                                               "current text", TODAY)

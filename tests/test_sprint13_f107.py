@@ -33,12 +33,19 @@ def test_the_join_pattern_keeps_an_ellipsis_and_an_abbreviation():
 
 def test_a_theoretical_low_names_its_cause_not_an_empirical_result():
     """Proven to fail by injection, 2026-10-25: with the THEORY_LOW branch
-    removed from certainty(), this test named all 5."""
+    removed from certainty(), this test named all 5 (Task A). Task F's I2
+    added 29 more and moved the text to store.grading.low_grade; the
+    reasons begin with its "theoretical result" text."""
+    from store.grading import LOW_BASES
     s12 = _load("sprint12_reading")
-    assert len(s12.THEORY_LOW) == 5 and not set(s12.THEORY_LOW) & (set(s12.HIGH) | s12.FIELD_STATEMENTS)
-    got = {a.id: a for _, a, _, _ in s12.assertions("G") if a.id in s12.THEORY_LOW}
+    first5 = ("larson-convergence-proved", "swaptest-qnn-two-layer-equivalent", "ld-daqc-unit-overlap-epsilon",
+              "tree-unitarity-tradeoff-butterfly-velocity", "qcc-bounds-bures-entanglement-distance")
+    assert set(first5) <= set(s12.THEORY_LOW) and len(s12.THEORY_LOW) == 34
+    assert not set(s12.THEORY_LOW) & (set(s12.HIGH) | s12.FIELD_STATEMENTS)
+    got = {a.id: a for t in ("F", "G") for _, a, _, _ in s12.assertions(t) if a.id in s12.THEORY_LOW}
     assert set(got) == set(s12.THEORY_LOW)
-    bad = [i for i, a in got.items() if a.certainty != "low" or not a.certainty_reasons.startswith(s12.THEORY)
+    start = f"Started LOW: {LOW_BASES['theoretical result']}: "
+    bad = [i for i, a in got.items() if a.certainty != "low" or not a.certainty_reasons.startswith(start)
            or s12.THEORY_LOW[i] not in a.certainty_reasons]
     assert not bad, bad
 

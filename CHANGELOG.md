@@ -57,6 +57,18 @@ this project keeps having to replace with a step.
   with its evidence: a reader's certainty suggestion is never applied.
   `test_a_reader_grade_suggestion_is_never_applied_regression` (two
   injections run) (Issue #133)
+- **feat**: F112's I2 (Sprint 13 Task F, 2026-10-25): every LOW names its
+  reason through `store.grading.low_grade` (measured result, theoretical
+  result, field statement, authors' claim, cited claim; the texts the
+  store already holds), and `store/write_path.py` refuses a reading script
+  that writes without it. `theory_words` guards every "measured result"
+  that names a theorem, proof, derivation or analytic count. Section 48's
+  premise was wrong (the 6c6f0ac review found 8 more): 29 more Sprint 12
+  theoretical results now store their reason with a cause, from a
+  classifier's 33 candidates each checked by the coordinator; Task A's 5
+  reworded (the old prefix fit 2 of them); grades unchanged. Sprints 9 to
+  11: 27 candidates counted and carded on F57, not corrected.
+  INTAKE_WORKFLOW.md section 49; four injections run (Issue #137)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 
