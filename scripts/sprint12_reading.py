@@ -1243,6 +1243,17 @@ AUTHOR_CLAIM = "Started LOW: the authors' own claim, not tested in the paper. NO
 CITED = "Started LOW: a claim the source cites from other work, not tested in it. NOT upgraded"
 FIELD = ("Started LOW: a statement about the field, its devices or its literature, not about the paper's own work. "
          "NOT upgraded")
+# A theoretical result (a proof, derivation or proposition) the coordinator kept LOW because it was not checked in
+# full; it stored EMPIRICAL until Sprint 13 Task A (F107), which names the cause the coordinator's notes give.
+F107_DAY = "2026-10-25"
+THEORY = "Started LOW: a theoretical result (proof, derivation or proposition) not checked in full by the reader"
+THEORY_LOW: dict[str, str] = {
+    "larson-convergence-proved": "the statement is cut short in the text layer and no theorem was read",
+    "swaptest-qnn-two-layer-equivalent": "Proposition 6 holds only up to an error the value does not carry",
+    "ld-daqc-unit-overlap-epsilon": "an unnumbered derivation the paper itself calls idealized",
+    "tree-unitarity-tradeoff-butterfly-velocity": "the value is a fragment of the paper's statement",
+    "qcc-bounds-bures-entanglement-distance": "the authors' interpretation of their Theorems 1 and 2",
+}
 
 
 def ledger() -> dict:
@@ -1295,8 +1306,11 @@ def certainty(aid: str, a: dict) -> tuple[str, str]:
             return "moderate", f"{f80.VENDOR_START}. Not upgraded: a description of the product, not a result"
         return "low", (f"{f80.VENDOR_START}. DOWNGRADED one level: a result or claim the vendor reports about its "
                        "own product, not independently checked")
-    otherwise = FIELD if aid in FIELD_STATEMENTS else {"cited": CITED, "shown": EMPIRICAL}.get(a["kind"],
-                                                                                                AUTHOR_CLAIM)
+    if aid in THEORY_LOW:
+        otherwise = f"{THEORY}: {THEORY_LOW[aid]}. NOT upgraded"
+    else:
+        otherwise = FIELD if aid in FIELD_STATEMENTS else {"cited": CITED, "shown": EMPIRICAL}.get(a["kind"],
+                                                                                                    AUTHOR_CLAIM)
     return grade(aid, HIGH, otherwise=("low", otherwise))
 
 
@@ -1415,8 +1429,13 @@ def apply_changes(conn, task: str) -> list[str]:
             insert_verified_assertion(conn, a, verified, yielded_by=rid)
             log.append(f"assert {a.id} <- {rid} [{a.certainty}]")
             continue
-        changed = sync_verified_assertion(conn, a, verified, f"{TODAY} ({tag}): corrected to the script's current "
-                                          "text", TODAY)
+        if a.id in THEORY_LOW:  # Sprint 13 Task A: dated as that correction, not as Sprint 12's
+            changed = sync_verified_assertion(conn, a, verified, f"{F107_DAY} (Sprint 13 Task A, F107): the LOW "
+                                              "reason names the theoretical result's cause, not \"an empirical "
+                                              "result\" (INTAKE_WORKFLOW.md section 48)", F107_DAY)
+        else:
+            changed = sync_verified_assertion(conn, a, verified, f"{TODAY} ({tag}): corrected to the script's "
+                                              "current text", TODAY)
         log.append(f"update {a.id} [{', '.join(changed)}]" if changed else f"exists {a.id}")
     return log
 

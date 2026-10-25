@@ -1801,3 +1801,39 @@ runs; each later step adds its bullet before it runs.
     values only inside `verify()`, which needs the source text, so CI
     never ran it. A test now runs it on every replaced value from the
     quotes alone.
+
+## 48. Applied 2026-10-25: the ".;" joins, and the LOW reasons of theoretical results (Sprint 13 Task A, F107)
+
+Every count is a snapshot as of its own date. Written before the apply.
+
+- **The joins.** A script that appended "; Local copy ..." to evidence
+  text already ending in a full stop left ".;". Sprint 12 Task A
+  corrected the papers its own apply touched; on 2026-10-25 the store
+  holds 16 more in `paper_fields.evidence`, every one before "Local
+  copy". `scripts/sprint13_f107_joins.py` drops the full stop and keeps
+  the separator, as Sprint 12 did; its dry run printed each of the 16 in
+  context and all are sentence ends. Two ".;" elsewhere are the source's
+  own text and stay: a `paper_reads` detail quoting an arXiv title that
+  ends "...", and a `paper_probes` affiliation list after "Quantum
+  Computing Inc.".
+- **The LOW reasons: 5, not 3.** Sprint 12's section 47 counted 3
+  theoretical results kept LOW that stored "an empirical result"; it
+  named no ids. The reading script's own notes name 5 LOW grades whose
+  cause is not a measurement, and all 5 store that reason:
+  `larson-convergence-proved` (the statement cut short in the text layer,
+  no theorem read), `swaptest-qnn-two-layer-equivalent` (Proposition 6
+  holds only up to an error the value does not carry),
+  `ld-daqc-unit-overlap-epsilon` (an unnumbered derivation the paper calls
+  idealized), `tree-unitarity-tradeoff-butterfly-velocity` (a fragment of
+  the paper's statement) and `qcc-bounds-bures-entanglement-distance`
+  (the authors' interpretation of their Theorems 1 and 2). Each now
+  stores "a theoretical result (proof, derivation or proposition) not
+  checked in full by the reader" with its cause; every grade stays LOW.
+  The correction is a table in `scripts/sprint12_reading.py`
+  (`THEORY_LOW`), applied through its own path, so its live test, which
+  compares the store with the script, keeps holding. Other LOW grades
+  with a wrong reason type, if any, are not found by this: the coordinator
+  named only these. F57's I2 (Sprint 13 Task F) makes every new LOW name
+  its reason.
+- **The guard.** A `live_store` test fails on a ".;" join in
+  `paper_fields.evidence`.

@@ -34,6 +34,14 @@ this project keeps having to replace with a step.
   (`docs/sprints/SPRINT_13_PLAN.md`); pre-flight: 806 readable `qml`
   records remain, so Q1 asks 800 or all 806. Approved as amended
   (2026-10-25): Q1 = 1 (all 806). Issues #132 to #137; draft PR #131
+- **fix**: F107 (Sprint 13 Task A, 2026-10-25): the ".;" join before
+  "Local copy" corrected in 16 paper records' evidence
+  (`scripts/sprint13_f107_joins.py`); two source-printed ".;" kept. Five
+  theoretical results kept LOW (the card said 3; the reading script's
+  notes name 5) now store their own reason instead of "an empirical
+  result", through `sprint12_reading.py`'s `THEORY_LOW` table so its live
+  test still holds; grades unchanged. INTAKE_WORKFLOW.md section 48;
+  `tests/test_sprint13_f107.py` (injections run) (Issue #132)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

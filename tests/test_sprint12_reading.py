@@ -111,8 +111,8 @@ def test_every_name_in_the_coordinator_tables_is_an_assertion():
     "coreset-limits" spelled "coreset-limit" in HIGH, this test named it."""
     s12 = _script()
     ids = set(_raw(s12, "F")) | set(_raw(s12, "G"))
-    for name in ("HIGH", "VENDOR_DESCRIPTIONS", "FIELD_STATEMENTS", "VALUE_REPLACE", "EXTRA_QUOTES", "QUOTE_EDITS",
-                 "CONTEXT_FIX", "DROP"):
+    for name in ("HIGH", "VENDOR_DESCRIPTIONS", "FIELD_STATEMENTS", "THEORY_LOW", "VALUE_REPLACE", "EXTRA_QUOTES",
+                 "QUOTE_EDITS", "CONTEXT_FIX", "DROP"):
         unknown = set(getattr(s12, name)) - ids
         assert not unknown, f"{name}: {sorted(unknown)}"
 
