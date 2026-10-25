@@ -78,7 +78,8 @@ def slice_counts(manifests: Path) -> dict[str, int]:
     out: dict[str, int] = {}
     for path in sorted(manifests.glob("*_slice.json")):
         for row in json.loads(path.read_text(encoding="utf-8")).get("slice", []):
-            out[row["record_id"]] = row["cited_by_count"]
+            if row["cited_by_count"] is not None:  # an uncounted row never hides another slice's count
+                out[row["record_id"]] = row["cited_by_count"]
     return out
 
 
@@ -129,7 +130,9 @@ def ranked(conn, counts: dict[str, int]) -> list[dict]:
     def key(item):
         rid = item["id"]
         first = PRIORITY_FIRST.index(rid) if rid in PRIORITY_FIRST else len(PRIORITY_FIRST)
-        return (first, item["group"], -(item["cited_by_count"] or 0), rid)
+        n = item["cited_by_count"]
+        # A record no slice counted (Sprint 13's uncounted 389) comes after every counted one, not among the zeros.
+        return (first, item["group"], n is None, -(n or 0), rid)
     return sorted(items, key=key)
 
 

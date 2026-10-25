@@ -112,8 +112,11 @@ def test_the_live_list(live_conn):
     groups = [item["group"] for item in items]
     assert groups == sorted(groups)
     for g in set(groups) - {0}:
+        # Sprint 13's slice records 389 uncounted records (intake section 51); they come after every counted one.
         counts = [i["cited_by_count"] for i in items if i["group"] == g]
-        assert None not in counts and counts == sorted(counts, reverse=True)
+        counted = [n for n in counts if n is not None]
+        assert counts == counted + [None] * (len(counts) - len(counted)), g
+        assert counted == sorted(counted, reverse=True)
     assert all(i["target"].startswith(("Papers\\", "Books\\")) and i["target"].endswith(".pdf") for i in items)
 
 

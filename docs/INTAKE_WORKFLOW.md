@@ -2012,3 +2012,34 @@ the read's own bullets follow before its apply.
   Sprint 12's, with one new field, `result_type` (measured, theoretical,
   field, claim, cited, vendor, setup), the reader's suggestion of the LOW
   reason section 49 requires. The coordinator decides it.
+- **Half 1, the read (g01 to g50, 400 records; written before its
+  apply).** Sonnet 5.5 readers, at most 5 at once, each one group, each
+  writing its file outside the tree; the coordinator copied each file into
+  `manifests/sprint13_reads/` when it reviewed it. The dry run of
+  2026-10-25: 1360 assertions from 400 records (10 with none), 542 HIGH
+  and 818 LOW, contexts 934 `qml`, 346 `qc`, 57 `ml` and 23 `world`;
+  every quote verbatim in its source, every figure in its own quotes.
+  - **The coordinator's tables**, each entry read against its quotes:
+    155 values trimmed to what their quotes say (`VALUE_REPLACE`), 29
+    quote edits and 32 added quotes on named passages, 11 contexts fixed
+    (a reader wrote "method" or "setup", which are not contexts), 46
+    statements about the field, 128 theoretical results kept LOW with
+    their cause (a theorem is HIGH only when its statement and its
+    conditions are quoted) and 40 measured results whose words name a
+    proof or a bound, each with why it is measured.
+  - **What a read covered.** 236 records are marked `partial` with the
+    sections read; 164 `full`. 113 of the 164 also list a few sections
+    (abstract, introduction, results, conclusion), so the script enters
+    those as "the parts the reader lists" instead of "the whole source":
+    the reader's list, not its mark, is what the record says was read.
+    24 files are another version or title of the record's paper, named
+    in the read's `version_note`.
+  - **One id renamed.** g03 and g42 both returned `review-scope`. The
+    script refuses a duplicate id at run time, but a duplicate key in a
+    coordinator table is silently the last one, so g42's file copy names
+    it `singh-qml-review-scope`. `tests/test_sprint13_reading.py` now
+    fails on a table key held twice and on a listed read entered as the
+    whole source (both proven by injection, 2026-10-25).
+  - **Kept out of values.** Figures the text layer garbled (an exponent
+    lost, as in "217" for 2 to the 17th) and paper inconsistencies a
+    reader flagged stay in the reader's inference, not in a value.
