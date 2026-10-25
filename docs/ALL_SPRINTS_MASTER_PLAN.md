@@ -298,8 +298,12 @@ F25 D1-D3 so it measures adjudication of corrected records.
 Sprint 12 carry-forward, after PR #122 merged to develop and PR #130 merged
 develop to main).
 
-- **Scope**: not yet selected (Phase 1.4 slate presented 2026-10-25).
-- **Plan**: none yet.
+- **Scope** (DEFINED, team lead 2026-10-25): F107, F98, F95, F108, F39
+  and F57 at 800 records. The permanent items are released as copies:
+  F109 (F95), F110 (F98), F111 (F39) and F112 (F57, 800 records). F90
+  put on HOLD ("Can put this one on HOLD for now"). F51 stays HOLD.
+- **Plan**: `docs/sprints/SPRINT_13_PLAN.md` (drafted 2026-10-25, for
+  approval).
 
 ## Next Sprint Candidates
 
@@ -533,8 +537,11 @@ and in git. Remaining items below.
 
 ### Carded at Sprint 10 Manual Validation (2026-10-19)
 
-**F90. Read the eight F89 papers with no free copy, once the team lead has downloaded them (~30m) Priority 60** (NEW 2026-10-19, Sprint 10 Manual Validation step 5)
+**F90. Read the eight F89 papers with no free copy, once the team lead has downloaded them (~30m) Priority HOLD** (NEW 2026-10-19, Sprint 10 Manual Validation step 5; HOLD from 2026-10-25)
 - Phase: Reading
+- **On HOLD** (team lead, 2026-10-25, Sprint 13 scope selection: "Can
+  put this one on HOLD for now"). Was Priority 60. All 8 still at `seen`
+  with no copy on that date.
 - Value: this enables the eight most-cited unread papers (F89's top of
   the ranking) to be read once a copy exists.
 - Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\`, a Sprint 11 reading script
@@ -636,7 +643,9 @@ and in git. Remaining items below.
   claims it bears on.
 - Platform: the store; `hsbc-qfraud-phase2` read only, branch
   `feature/20261019_Sprint_28` at 9993ab6 (2026-10-24): `docs/phase2/`
-- Changed since F102 read 10086da (snapshot as of 2026-10-25, read only):
+- Changed since F102 read 10086da (snapshot as of 2026-10-25, read only).
+  The F numbers in this list are Phase 2's own backlog numbers, not this
+  repository's (this repository's F110 and F111 are Sprint 13 releases):
   - F162 (new, `SIM`): inside the SPECTRA pocket, over ten seeds, the
     CVQBoost proxy is not reliably above HGB or XGBoost on any of three
     cells; XGBoost is reliably above it on two. FourierWall2's single-run
@@ -659,6 +668,47 @@ and in git. Remaining items below.
   value whose source changed corrected or confirmed by name; a second
   apply writes nothing.
 - Depends on: none (reads at a named commit)
+
+### Released for Sprint 13 (2026-10-25)
+
+**F109. F95 release for Sprint 13: new papers in `Papers\` (~15m) Priority 20** (NEW 2026-10-25, released copy of F95)
+- Phase: Sourcing / intake, then reading
+- Value: F95's, for the files in hand when the task starts.
+- Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\`; `scripts/intake.py`
+- F95's steps (1) to (5). 0 unlinked PDFs on 2026-10-25; any file saved
+  before the task starts is included.
+- Acceptance: F95's per release.
+- Depends on: none
+
+**F110. F98 release for Sprint 13: Roadmap-to-QML since a239747648 (~10m) Priority 22** (NEW 2026-10-25, released copy of F98)
+- Phase: Sourcing / intake, then reading
+- Value: F98's, for the list at its commit on the task's day.
+- Platform: github.com/Christophe-pere/Roadmap-to-QML, read only; the intake door
+- The diff from a239747648 (no commit since, on 2026-10-25).
+- Acceptance: F98's per release.
+- Depends on: none
+
+**F111. F39 release for Sprint 13: the models and the heuristics (~30m) Priority 50** (NEW 2026-10-25, released copy of F39)
+- Phase: Process (recurring)
+- Value: F39's, with Sprint 12's reading and review outcomes logged.
+- Platform: `.claude/model_assignment_heuristics.json`; `docs/SPRINT_PLANNING.md`
+- F39's steps (1) to (5); the last release was Sprint 11's (learning log
+  last dated 2026-10-21).
+- Acceptance: F39's per release.
+- Depends on: none
+
+**F112. F57 release for Sprint 13: read 800 records, by relevance, up to 5 agents, with the LOW-reason rule first (~1330m) Priority 70** (NEW 2026-10-25, released copy of F57)
+- Phase: Sourcing / extraction
+- Value: F57's, for this sprint's 800 (team lead, 2026-10-25: "800
+  records").
+- Platform: the store; up to 5 Sonnet 5.5 first-pass readers, every quote
+  checked in the write path
+- F57's I2 first (a named reason for every LOW, 30m), then the 800 most
+  relevant records at `seen` or `screened` with no read row.
+- Acceptance: each of the 800 at `read` with its assertions, or kept at
+  `seen` with its reason; HIGH and LOW grades carry their basis; the count
+  before and after recorded.
+- Depends on: none
 
 ## Design documents governing this repository
 
