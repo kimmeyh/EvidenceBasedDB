@@ -37,7 +37,7 @@ Task B leaves it.
 | C | **F109, the F95 release.** Every PDF in `Papers\` no record names (0 on 2026-10-25; whatever the team lead saves before the task); each matched, entered or given a reason; each entered paper read or kept at `seen` with its reason; counts before and after | 15m | none (local files) | Claude, top tier (certainty) |
 | D | **F110, the F98 release.** Roadmap-to-QML's current commit recorded; the diff from a239747648 (no commit since, on 2026-10-25); any new paper matched, entered and read under F57's rules from F's ledger | 10m | one GitHub REST call | Claude, top tier |
 | E | **F108, Phase 2's later Sprint 28 work.** Phase 2's documents read at the commit current when the task starts (9993ab6 locally; PR #46 head fefd24b on GitHub, 2026-10-25). F162 entered under `ml` with its limits, related by ADR-0004 A8 (b) to the stored SPECTRA pocket claims (the three B4 assertions and `fourier-wall-incomplete-bar-manufactures-advantage`); each stored value from Phase 2's F111, F114, F151, F153, F154 and F110 compared with its changed document and corrected or confirmed by name | 60m | none (local files) | Claude, top tier (certainty) |
-| F | **F112, the F57 release: 800 records** (Q1). First F57's I2 (30m): `store/grading.py` takes a named reason for every LOW (measured result, statement about the field, proved result not checked by the reader), required of new reading scripts by the write-path rule, proven by injection. Then the slice: the 800 most-cited `qml` records at `seen` or `screened` with no read row (OpenAlex counts, F89's rule), leaving out the 24 records earlier slices found no copy for. Read by up to 5 agents from one ledger; each record read and yielding, or kept at `seen` with its reason; the count refreshed | 1330m (1300 for 800 at the card's rate, 30 for I2) | about 4 to 6 hours of reader time in the background: about 100 groups of 8, 5 at once; 32 arXiv PDFs not held locally, serial at 18 s (about 10 min) inside F52's cap; OpenAlex counts in a few requests | Claude, top tier (certainty); up to 5 first-pass readers at the tier B confirms (Sonnet 5.5 today), every quote checked in the write path |
+| F | **F112, the F57 release: all 806 readable `qml` records** (Q1 = 1). First F57's I2 (30m): `store/grading.py` takes a named reason for every LOW (measured result, statement about the field, proved result not checked by the reader), required of new reading scripts by the write-path rule, proven by injection. Then the slice: every `qml` record at `seen` or `screened` with no read row (806 at planning), ordered by OpenAlex counts (F89's rule) so a stop cuts the least cited, leaving out the 24 records earlier slices found no copy for. Read by up to 5 agents from one ledger; each record read and yielding, or kept at `seen` with its reason; the count refreshed | 1340m (1310 for 806 at the card's rate, 30 for I2) | about 4 to 6 hours of reader time in the background: about 101 groups of 8, 5 at once; 32 arXiv PDFs not held locally, serial at 18 s (about 10 min) inside F52's cap; OpenAlex counts in a few requests | Claude, top tier (certainty); up to 5 first-pass readers at the tier B confirms (Sonnet 5.5 today), every quote checked in the write path |
 
 **The read ledger (C, D and F).** One ledger
 (`manifests/sprint13_read_ledger.json`) lists every record C, D and F will
@@ -51,8 +51,8 @@ assigned), then F's I2 and slice, with the fetcher in the background. F's
 readers start as soon as the ledger exists; C, D and E run while they read.
 F's values are reviewed by two fresh-eyes reviewers, one per half of the
 groups, since Sprint 12's single review of 413 records found 1 Critical
-and 7 Important problems. Total about 1,480 minutes at the cards'
-estimates; at Sprints 11 and 12's ratios, about 355 to 415 active minutes,
+and 7 Important problems. Total about 1,490 minutes at the cards'
+estimates; at Sprints 11 and 12's ratios, about 360 to 420 active minutes,
 plus the reader time in the background. No findings allowance: the scope
 is not dominated by verification. **If a Criterion 3 stop becomes
 necessary, the cut line is inside F**: F stops at the groups it has
@@ -76,7 +76,7 @@ commit runs `python scripts/run_suite.py --changed`, which since Sprint
 - **F112**: 830 `qml` candidates; 24 left out (no copy in an earlier
   slice), leaving 806. Of the 806, 767 have a local copy, 32 only an arXiv
   id (one paced fetch each), 7 neither. 800 is 99 percent of what is left
-  under `qml` (Q1).
+  under `qml`; Q1 = 1 takes all 806.
 - **F107**: ".;" in 16 `paper_fields.evidence`, 1 `paper_reads.detail`, 1
   `paper_probes.value`; 0 in assertion values, provenance, reasons or
   citation contexts.
@@ -93,16 +93,15 @@ commit runs `python scripts/run_suite.py --changed`, which since Sprint
   exists yet; every selected F# is an open card in the master plan; F109
   to F112 are free numbers.
 
-## Questions for approval
+## Decisions (team lead, 2026-10-25)
 
-**Q1. How many records should F112 read?**
-1. All 806 readable `qml` records: the 800 asked for plus the 6 least
-   cited. It clears `qml` in one release for about 1 percent more reading
-   (one more reader group).
-2. 800, exactly as selected. The 6 least-cited `qml` records wait for the
-   next release.
+The team lead answered "q1 1" and approved the plan as amended. The plan
+absorbs it in this commit (Sprint 7 retrospective I2).
 
-Recommend 1
+- **Q1 = 1.** F112 reads all 806 readable `qml` records, clearing `qml`
+  in one release. F's estimate 1,330 -> 1,340 minutes; total about 1,490.
+
+Issues, one per task: A #132, B #133, C #134, D #135, E #136, F #137.
 
 ## Premise falsifier
 
@@ -158,7 +157,7 @@ two groups.
   a reason
 - E: F162 entered and related; each changed value corrected or confirmed
   by name; a second apply writes nothing
-- F: I2's rule proven by injection; the records per Q1 read from the
+- F: I2's rule proven by injection; the 806 records (Q1 = 1) read from the
   ledger, each yielding or kept with its reason; HIGH and LOW grades carry
   their basis; both halves reviewed; the count refreshed; no record in two
   groups

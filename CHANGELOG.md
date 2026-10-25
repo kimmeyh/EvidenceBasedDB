@@ -32,7 +32,8 @@ this project keeps having to replace with a step.
   F95, F108, F39 and F57 at 800 records; released copies F109 (F95), F110
   (F98), F111 (F39) and F112 (F57); F90 put on HOLD. Plan drafted
   (`docs/sprints/SPRINT_13_PLAN.md`); pre-flight: 806 readable `qml`
-  records remain, so Q1 asks 800 or all 806
+  records remain, so Q1 asks 800 or all 806. Approved as amended
+  (2026-10-25): Q1 = 1 (all 806). Issues #132 to #137; draft PR #131
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

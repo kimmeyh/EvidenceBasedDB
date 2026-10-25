@@ -302,8 +302,8 @@ develop to main).
   and F57 at 800 records. The permanent items are released as copies:
   F109 (F95), F110 (F98), F111 (F39) and F112 (F57, 800 records). F90
   put on HOLD ("Can put this one on HOLD for now"). F51 stays HOLD.
-- **Plan**: `docs/sprints/SPRINT_13_PLAN.md` (drafted 2026-10-25, for
-  approval).
+- **Plan**: `docs/sprints/SPRINT_13_PLAN.md` (approved 2026-10-25 as
+  amended: Q1 = 1, F112 reads all 806 readable `qml` records).
 
 ## Next Sprint Candidates
 
@@ -697,15 +697,15 @@ and in git. Remaining items below.
 - Acceptance: F39's per release.
 - Depends on: none
 
-**F112. F57 release for Sprint 13: read 800 records, by relevance, up to 5 agents, with the LOW-reason rule first (~1330m) Priority 70** (NEW 2026-10-25, released copy of F57)
+**F112. F57 release for Sprint 13: read all 806 readable `qml` records, up to 5 agents, with the LOW-reason rule first (~1340m) Priority 70** (NEW 2026-10-25, released copy of F57)
 - Phase: Sourcing / extraction
-- Value: F57's, for this sprint's 800 (team lead, 2026-10-25: "800
-  records").
+- Value: F57's, for this sprint's release (team lead, 2026-10-25: "800
+  records"; plan Q1 = 1 widened it to all 806 readable `qml` records).
 - Platform: the store; up to 5 Sonnet 5.5 first-pass readers, every quote
   checked in the write path
-- F57's I2 first (a named reason for every LOW, 30m), then the 800 most
-  relevant records at `seen` or `screened` with no read row.
-- Acceptance: each of the 800 at `read` with its assertions, or kept at
+- F57's I2 first (a named reason for every LOW, 30m), then every
+  readable `qml` record at `seen` or `screened` with no read row.
+- Acceptance: each of the 806 at `read` with its assertions, or kept at
   `seen` with its reason; HIGH and LOW grades carry their basis; the count
   before and after recorded.
 - Depends on: none
