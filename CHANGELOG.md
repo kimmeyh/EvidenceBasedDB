@@ -155,6 +155,14 @@ this project keeps having to replace with a step.
   anchors was a wrong correction of a right one (`ma-not-tested-on-hardware`
   is III.A and IV, Conclusion); "3 HIGH locations" above was 4; qnpg keeps
   "likely". Half 2 re-applied; grades unchanged (Issue #137)
+- **fix**: Manual Validation Q2 (team lead, 2026-10-25: "q2 fix now
+  before reading any more papers"): `store/write_path.py` reads each
+  script's parsed code instead of its text. The three known bypasses are
+  closed: "low_grade(" in a string or a docstring is not a call, a
+  `low_grade` or `high_grades` the script defines or assigns for itself
+  is refused, and a "#" in a string hides nothing. A script that does not
+  parse is refused. Every script in `scripts/` gets the same verdict as
+  before. Six new cases, proven red against the old rule (Issue #137)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

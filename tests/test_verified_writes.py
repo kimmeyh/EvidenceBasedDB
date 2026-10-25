@@ -210,6 +210,17 @@ def test_the_grading_helper_refuses_high_without_a_named_basis():
     ("sprint13_reading.py", _GRADED.replace("otherwise=low_grade('measured result')", "otherwise=MY_LOW"), True),
     ("sprint13_reading.py", "insert_paper(conn, p)\nX = 'Started LOW'\n", False),  # writes no assertion
     ("sprint11_reading.py", "insert_verified_assertion(conn, a, v)\nX = 'Started LOW'\n", False),
+    # the three bypasses the fresh-eyes reviews of f782e53 and ce2412e found, closed 2026-10-25 by the parse
+    ("sprint13_reading.py", _GRADED.replace("otherwise=low_grade('measured result')", "otherwise=MY_LOW")
+     + "NOTE = 'low_grade(is named here only)'\n", True),
+    ("sprint13_reading.py", _GRADED.replace("otherwise=low_grade('measured result')", "otherwise=MY_LOW")
+     + "def f():\n    \"\"\"low_grade('in a docstring')\"\"\"\n", True),
+    ("sprint13_reading.py", _GRADED + "def low_grade(reason):\n    return my_tuple(reason)\n", True),
+    ("sprint13_reading.py", _GRADED + "low_grade = lambda reason: my_tuple(reason)\n", True),
+    ("sprint13_reading.py", _GRADED + "x = ('#', 'Started LOW: hidden after the hash')\n", True),
+    ("sprint13_reading.py", "import store.grading as g\nfrom store.grading import grade, high_grades\n"
+     "HIGH = high_grades({'a1': ('proved result', 'Theorem 2, p.6')})\n"
+     "c = grade('a1', HIGH, otherwise=g.low_grade('measured result'))\ninsert_verified_assertion(conn, a, v)\n", False),
 ])
 def test_a_reading_script_grades_low_only_through_store_grading(name, body, flagged):
     """Sprint 12 retrospective I2 (Sprint 13 Task F): a reading script's
@@ -218,7 +229,12 @@ def test_a_reading_script_grades_low_only_through_store_grading(name, body, flag
     removed from script_problems, the two flagged cases went red. Restored.
     And 2026-10-25 again: with the call rule put back to the bare name, the
     import-only case went red. Not closed (store/write_path.py says so): a
-    LOW built by concatenation with no quoted "low"."""
+    LOW built by concatenation with no quoted "low".
+    The five bypass cases (a call named in a string, in a docstring, a
+    low_grade the script defines or assigns, a "#" in a string): proven to
+    fail by injection, 2026-10-25, against the text rule of 1980406 (each
+    passed it unflagged) and again with calls_grading's own-definition check
+    removed (the def and lambda cases went red). Restored."""
     problems = script_problems(body, name)
     assert any("grades LOW outside store.grading" in p for p in problems) == flagged, problems
 
