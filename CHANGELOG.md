@@ -248,6 +248,15 @@ this project keeps having to replace with a step.
   reading card may now say "(no estimate: as long as the reads take ...)"
   in exactly those words, and every other card still states its minutes
   (Issue #138)
+- **fix**: the fresh-eyes review of the Q4 fix (ce95e82) found that a
+  bare "R2" is also a label in the active consumer's documents ("R2:
+  exact weight below t", "research R2"), and the rule glossed every one
+  as R squared. A bare R2 now gains the name only beside a number, a
+  comparison or a statistic word, and never next to a label marker.
+  "R-squared", "R^2", "R²" and "R2-score" now gain it too; one stored
+  value ("R-squared value of 0.9959") was updated through its owner
+  apply, and a second apply wrote nothing. The 18 values glossed before
+  are unchanged under the new rule (Issue #138)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 
