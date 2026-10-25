@@ -179,6 +179,13 @@ def with_store_tests(repo: Path, picked: list[str], stamp: str | None, last: dic
     return sorted(set(picked) | added), len(added)
 
 
+def covers_the_store(picked: list[str] | None, extra: list[str], store_files: list[str]) -> bool:
+    """Whether a run of `picked` (None: the full suite) with pytest
+    arguments `extra` ran every store test. A filter (-k, -m) may deselect
+    them, so only a run with no extra arguments counts (review of 7b65d12)."""
+    return not extra and (picked is None or set(store_files) <= set(picked))
+
+
 def verdict(rc: int, before: str, after: str) -> str:
     if before != after:
         return "INVALID"
@@ -211,7 +218,7 @@ def main(argv: list[str]) -> int:
             if added:
                 print(f"--changed: the store changed since its tests last passed, so {added} more "
                       "test files with the live_store marker run too")
-        covers_store = picked is None or set(store_tests(ROOT)) <= set(picked)
+        covers_store = covers_the_store(picked, argv, store_tests(ROOT))
         argv = [*(picked or []), *argv]
     before = working_tree(ROOT)
     started = datetime.now()

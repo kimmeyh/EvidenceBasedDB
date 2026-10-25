@@ -24,6 +24,9 @@ this project keeps having to replace with a step.
   unchanged, a non-alphanumeric start is refused, and the bulk manifest
   pins the known id. I2 carded on F57 from Sprint 13's release. Both
   guards proven by injection (PR #122)
+- **fix**: the review of 7b65d12: a `--changed` run with a pytest filter
+  (`-k`, `-m`) no longer records the store as checked, since the filter
+  may deselect the store's tests; proven by injection (PR #122)
 - **docs**: Sprint 12 retrospective, summary and Development Team draft,
   2026-10-24; Copilot review requested on #122 (PR #122)
 - **fix**: F105 and F104 (Sprint 12 Tasks G and F) third apply,

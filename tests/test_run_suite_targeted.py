@@ -141,6 +141,20 @@ def test_a_store_write_adds_the_store_tests(repo, tmp_path_factory):
     assert rs.with_store_tests(repo, picked, None, None) == (picked, 0)  # no store, as on CI
 
 
+def test_a_filtered_run_does_not_mark_the_store_checked():
+    """The review of 7b65d12: `--changed -m "not live_store"` after a store
+    write added the store tests, pytest deselected them, and the PASSED run
+    recorded the store as checked. Proven to fail by injection, 2026-10-24:
+    with `not extra and` removed, the filtered run counted. Restored."""
+    rs = _runner()
+    store = ["tests/test_live.py"]
+    assert rs.covers_the_store(None, [], store)
+    assert rs.covers_the_store(["tests/test_live.py", "tests/test_x.py"], [], store)
+    assert not rs.covers_the_store(["tests/test_x.py"], [], store)
+    assert not rs.covers_the_store(["tests/test_live.py"], ["-m", "not live_store"], store)
+    assert not rs.covers_the_store(None, ["-k", "foo"], store)
+
+
 def test_a_helper_or_an_unnamed_change_runs_the_full_suite(repo):
     """Never "nothing to run": the runner said SUITE SKIPPED and exited 0
     for a change no test named (review of fdedff9). Proven to fail by
