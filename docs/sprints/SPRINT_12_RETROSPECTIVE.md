@@ -122,10 +122,11 @@ message opened: "Manual Validation complete".
 ## Improvement Decisions
 
 Proposed 2026-10-24, prevention first, each extending an existing
-prevention. Dispositions pending the team lead.
+prevention. Team lead, 2026-10-24: "q1 1 q2 1 q3 1" (I1 now, I2
+backlog into F57's next release, I3 now; each as recommended).
 
 | # | Improvement | Root cause | Type | Recommendation | Disposition |
 |---|---|---|---|---|---|
-| I1 | `run_suite.py --changed` also runs the `live_store` guards when the store changed since the last PASSED verdict | The targeted mode picks tests from changed repository files; a store write changes none | Prevention (extends F100's runner) | Now, 30m | pending |
-| I2 | `store/grading.py` names a basis for every LOW too (measured result, field statement, proved result not checked), so a LOW cannot store the wrong reason | A LOW took its reason from a default branch | Prevention (extends Sprint 11 I3's helper) | Backlog, into F57's next release, 30m | pending |
-| I3 | `make_id` keeps the family name whole (no stop-word removal) and refuses an id that does not begin with a letter or digit; a `live_store` test names any stored one beyond the known exception | `intake.make_id` builds `<family>-<year>-...`; its slug drops stop words, so the first author "An" (An, Z., arXiv:2405.13582) slugged to nothing and the id starts with "-" | Prevention | Now, 20m | pending |
+| I1 | `run_suite.py --changed` also runs the `live_store` guards when the store changed since the last PASSED verdict | The targeted mode picks tests from changed repository files; a store write changes none | Prevention (extends F100's runner) | Now, 30m | Now (2026-10-24): done; `run_suite.py` records `store_checked`, `--changed` adds every test file with the `live_store` marker after a store write |
+| I2 | `store/grading.py` names a basis for every LOW too (measured result, field statement, proved result not checked), so a LOW cannot store the wrong reason | A LOW took its reason from a default branch | Prevention (extends Sprint 11 I3's helper) | Backlog, into F57's next release, 30m | Backlog (2026-10-24): F57 card, from Sprint 13's release |
+| I3 | `make_id` keeps the family name whole (no stop-word removal) and refuses an id that does not begin with a letter or digit; a `live_store` test names any stored one beyond the known exception | `intake.make_id` builds `<family>-<year>-...`; its slug drops stop words, so the first author "An" (An, Z., arXiv:2405.13582) slugged to nothing and the id starts with "-" | Prevention | Now, 20m | Now (2026-10-24): done; a family that slugs to nothing is slugged with its stop words kept (every earlier id unchanged), a non-alphanumeric start is refused, the bulk manifest pins the known id, and a `live_store` test names any other |

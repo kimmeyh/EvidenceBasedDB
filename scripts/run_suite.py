@@ -36,6 +36,14 @@ the working tree's against HEAD, plus the commits since `--since REF`
 when given. CI's set
 (`-m "not live_store"`) still runs on the PR; the full suite runs twice a
 sprint.
+
+A store write changes no repository file, so `--changed` alone never saw
+one (Sprint 12 retrospective I1). The verdict file also records the
+store's stamp (`evidence.db` and its `-wal`, size and modification time)
+as of the last PASSED run that covered the store's tests: the full suite,
+or a `--changed` run that added them. When the store's stamp differs from
+that one, `--changed` adds every test file that carries the `live_store`
+marker.
 """
 from __future__ import annotations
 
@@ -135,6 +143,42 @@ def targeted_tests(repo: Path, changed: list[str]) -> list[str] | None:
     return sorted(picked) or None
 
 
+def store_stamp(folder: Path | None = None) -> str | None:
+    """Size and modification time of the store and its write-ahead log, or
+    None where there is no store (CI). Imported late: the commit hook loads
+    this file and must not import the store package."""
+    if folder is None:
+        sys.path.insert(0, str(ROOT))
+        from store import store_dir
+        try:
+            folder = store_dir()
+        except RuntimeError:
+            return None
+    parts = [f"{p.name}:{s.st_size}:{s.st_mtime_ns}" for p in (folder / "evidence.db", folder / "evidence.db-wal")
+             if p.exists() and (s := p.stat())]
+    return " ".join(parts) or None
+
+
+def store_tests(repo: Path) -> list[str]:
+    """The test files that carry the `live_store` marker."""
+    return sorted(f"tests/{f.name}" for f in (repo / "tests").glob("test_*.py")
+                  if "live_store" in f.read_text(encoding="utf-8", errors="replace"))
+
+
+def store_checked(record: dict | None) -> str | None:
+    """The store stamp the store's tests last passed on, from a verdict record."""
+    return (record or {}).get("store_checked")
+
+
+def with_store_tests(repo: Path, picked: list[str], stamp: str | None, last: dict | None) -> tuple[list[str], int]:
+    """`picked` plus the store's test files when the store changed since
+    they last passed, and how many were added."""
+    if not stamp or stamp == store_checked(last):
+        return picked, 0
+    added = set(store_tests(repo)) - set(picked)
+    return sorted(set(picked) | added), len(added)
+
+
 def verdict(rc: int, before: str, after: str) -> str:
     if before != after:
         return "INVALID"
@@ -142,6 +186,12 @@ def verdict(rc: int, before: str, after: str) -> str:
 
 
 def main(argv: list[str]) -> int:
+    try:
+        last = json.loads((ROOT / VERDICT).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        last = None
+    stamp = store_stamp()
+    covers_store = not argv
     if "--changed" in argv:
         argv = list(argv)
         argv.remove("--changed")
@@ -157,6 +207,11 @@ def main(argv: list[str]) -> int:
             print(f"--changed: {why}, so the full suite runs")
         else:
             print(f"--changed: {len(picked)} test files: {' '.join(Path(p).stem for p in picked)}")
+            picked, added = with_store_tests(ROOT, picked, stamp, last)
+            if added:
+                print(f"--changed: the store changed since its tests last passed, so {added} more "
+                      "test files with the live_store marker run too")
+        covers_store = picked is None or set(store_tests(ROOT)) <= set(picked)
         argv = [*(picked or []), *argv]
     before = working_tree(ROOT)
     started = datetime.now()
@@ -172,6 +227,7 @@ def main(argv: list[str]) -> int:
     result = verdict(rc, before, after)
     record = {"verdict": result, "rc": rc, "tree": before, "tree_after": after, "args": argv,
               "summary": summary, "head": _git(ROOT, "rev-parse", "HEAD"),
+              "store_checked": stamp if result == "PASSED" and covers_store else store_checked(last),
               "started": started.isoformat(timespec="seconds"),
               "finished": datetime.now().isoformat(timespec="seconds")}
     (ROOT / VERDICT).write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")

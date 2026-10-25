@@ -118,6 +118,29 @@ def test_a_store_module_picks_the_tests_of_the_scripts_that_import_it(repo):
     assert rs.targeted_tests(repo, rs.changed_files(repo)) == ["tests/test_extra.py", "tests/test_y.py"]
 
 
+def test_a_store_write_adds_the_store_tests(repo, tmp_path_factory):
+    """Sprint 12 retrospective I1: a store write changes no repository
+    file, so `--changed` never ran the store's tests after an apply.
+    Proven to fail by injection, 2026-10-24: with `with_store_tests`
+    returning `picked` unchanged, this test failed at the first `added`.
+    Restored."""
+    rs = _runner()
+    (repo / "tests" / "test_live.py").write_text("@pytest.mark.live_store\n", encoding="utf-8")
+    store = tmp_path_factory.mktemp("store")
+    assert rs.store_stamp(store) is None
+    (store / "evidence.db").write_bytes(b"one")
+    before = rs.store_stamp(store)
+    picked = ["tests/test_quotes.py"]
+    # never checked, then checked at this stamp, then written again
+    assert rs.with_store_tests(repo, picked, before, None) == (["tests/test_live.py", "tests/test_quotes.py"], 1)
+    assert rs.with_store_tests(repo, picked, before, {"store_checked": before}) == (picked, 0)
+    (store / "evidence.db-wal").write_bytes(b"a write")
+    after = rs.store_stamp(store)
+    assert after != before
+    assert rs.with_store_tests(repo, picked, after, {"store_checked": before})[1] == 1
+    assert rs.with_store_tests(repo, picked, None, None) == (picked, 0)  # no store, as on CI
+
+
 def test_a_helper_or_an_unnamed_change_runs_the_full_suite(repo):
     """Never "nothing to run": the runner said SUITE SKIPPED and exited 0
     for a change no test named (review of fdedff9). Proven to fail by

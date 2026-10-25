@@ -550,6 +550,13 @@ and in git. Remaining items below.
   definition, proved result, or stated limit. `store/write_path.py`'s rule
   requires every new reading script to use it. Acceptance: the release's
   HIGH grades each carry their basis; the rule proven by injection.
+- **From Sprint 13's release: LOW names its reason too (Sprint 12
+  retrospective I2; team lead, 2026-10-24: "q2 1"; ~30m in the release).**
+  In Sprint 12 a LOW took its stored reason from a default branch, so 3
+  proved results stored "an empirical result". `store/grading.py` takes a
+  named reason for every LOW as well: measured result, statement about the
+  field, or proved result not checked by the reader. Acceptance: no LOW in
+  the release stores the default reason; the rule proven by injection.
 - Depends on: none
 
 ### Carded at Sprint 10 Manual Validation (2026-10-19)

@@ -15,6 +15,17 @@ this project keeps having to replace with a step.
 
 ### 2026-10-23 onward (Sprint 12, in progress)
 
+- **process**: Sprint 12 retrospective, 2026-10-24 (team lead: "q1 1 q2
+  1 q3 1"). I1: `run_suite.py` records the store's stamp at each PASSED
+  run that covered the store's tests, and `--changed` adds every
+  `live_store` test file when the store changed since. I3: `intake.make_id`
+  slugs a family that drops to nothing with its stop words kept (the
+  first author "An" gave an id starting with "-"); every earlier id is
+  unchanged, a non-alphanumeric start is refused, and the bulk manifest
+  pins the known id. I2 carded on F57 from Sprint 13's release. Both
+  guards proven by injection (PR #122)
+- **docs**: Sprint 12 retrospective, summary and Development Team draft,
+  2026-10-24; Copilot review requested on #122 (PR #122)
 - **fix**: F105 and F104 (Sprint 12 Tasks G and F) third apply,
   2026-10-23: the fresh-eyes review of 5744e2d. Four cuts that lost a
   condition restored from their source sentences (one value had said a
