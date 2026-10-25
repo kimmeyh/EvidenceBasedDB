@@ -1992,3 +1992,16 @@ the read's own bullets follow before its apply.
   33 arXiv PDFs (the plan said 32), serial at 18 s through the paced
   fetcher; 6 papers have no free copy OpenAlex knows (two closed, four
   Zenodo records), and go to the ledger's `no_copy` with that reason.
+  The fetch saved 28; arXiv returned 404 for 5 (one of them
+  mahroo-2023, the paper section 46 found withdrawn).
+- **The ledger** (`scripts/sprint13_read_ledger.py`, written to
+  `manifests/sprint13_read_ledger.json`, Sprint 11's rules): 795 records
+  in 100 groups of at most 8 (g01 to g100), and 11 in `no_copy`, each with
+  its own reason read from the fetch log (the 5 fetch failures, the 6 with
+  no free copy) instead of Sprint 11's one reason for all.
+  `tests/test_sprint13_read_ledger.py` fails if a record is held twice
+  or a no-copy reason is that one reason.
+- **The reader prompt** (`manifests/sprint13_reads/READER_PROMPT.md`):
+  Sprint 12's, with one new field, `result_type` (measured, theoretical,
+  field, claim, cited, vendor, setup), the reader's suggestion of the LOW
+  reason section 49 requires. The coordinator decides it.

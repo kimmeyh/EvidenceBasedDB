@@ -97,6 +97,11 @@ this project keeps having to replace with a step.
   seed, the inferred telecom-only entry and the label limit, and says what
   "overall" covers. Section 50's context line corrected. Injections run
   (Issue #136)
+- **feat**: F112 (Sprint 13 Task F, 2026-10-25): the slice (806 `qml`
+  records), the paced fetch (28 saved, 5 arXiv 404s, 6 with no free
+  copy), and one read ledger: 795 records in 100 groups, 11 in `no_copy`
+  each with its own reason. The reader prompt gains `result_type`. New
+  `tests/test_sprint13_read_ledger.py`, 2 injections (Issue #137)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 
