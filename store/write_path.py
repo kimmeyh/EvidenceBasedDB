@@ -171,7 +171,9 @@ def script_problems(text: str, name: str = "") -> list[str]:
     if any(_TOKEN_NAME.match(n) for n in named):
         out.append("names Verified (only require_verbatim makes one; pass on what it returns)")
     edit_basis = any(c == "require_edit_basis" or c.endswith(".require_edit_basis") for c in code.called)
-    if writes and any(_EDIT_TABLE.match(t) for t in code.tables) and not edit_basis:
+    # A table name inside a string counts too (the review of a3b8074: exec('VALUE_A = {}') passed the parse).
+    tables = code.tables | {w for s in code.strings for w in re.findall(r"(?m)^\s*([A-Z_]+)\s*[:=]", s)}
+    if writes and any(_EDIT_TABLE.match(t) for t in tables) and not edit_basis:
         out.append("edits readers' values, quotes or contexts without require_edit_basis")
     return out
 

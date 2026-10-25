@@ -5,10 +5,12 @@ Team lead, 2026-10-25, at Manual Validation: "fully read all the papers that
 are not marked 'read' and update all conclusions. That includes this sprints
 551 adn 109 and any from prior runs." A record is read in full only when a
 read says so and lists no parts:
-- a `paper_reads` row of extent `full` (the coordinator's whole-paper read);
+- a `paper_reads` row of extent `full` (the coordinator's whole-paper read)
+  whose detail names no part left out;
 - a first-pass reader's file (manifests/*/group_*.json) that marked the
   paper `full` with no `partial_detail`, or with one that says the whole
-  paper was read ("whole paper", "every page", "full paper", "entire").
+  paper was read ("whole paper", "every page", "full paper", "entire")
+  and names no exception ("except", "not read", "skimmed", "skipped").
 A reader who marked `full` but listed sections (161 in Sprints 11 and 12,
 121 in Sprint 13, before any correction) is not a full read: the store
 entered many of those as "the whole source", and they are read again.
@@ -20,7 +22,7 @@ free copy for), `github` (a code repository) or `none` (no copy, no id).
 Read-only on the store. Writes `manifests/sprint13_g_slice.json`.
 
 Usage:
-  python scripts/sprint13_g_slice.py
+  python scripts/sprint13_g_slice.py [--download-log <the downloads' output>]
 """
 from __future__ import annotations
 
@@ -41,6 +43,9 @@ _, DB_PATH, _ = script_paths(__file__)
 OUT = ROOT / "manifests" / "sprint13_g_slice.json"
 LIBRARY = Path(r"D:\Data\Harold\EvidenceBasedDB")
 WHOLE = re.compile(r"whole paper|whole source|every page|full paper|entire", re.I)
+# A whole-paper note with an exception is not whole (the fresh-eyes review of a3b8074: "Whole paper read except
+# related-work equations"; three e-mail reads marked full whose older thread was "not read").
+PART = re.compile(r"\bexcept\b|not read|skimm|skipped", re.I)
 ARXIV = re.compile(r"(\d{4}\.\d{4,5})")
 
 
@@ -56,7 +61,7 @@ def reader_files() -> tuple[dict[str, str], set[str]]:
             if p.get("file"):
                 files.setdefault(rid, p["file"])
             detail = (p.get("partial_detail") or "").strip()
-            if p.get("read_extent") == "full" and (not detail or WHOLE.search(detail)):
+            if p.get("read_extent") == "full" and (not detail or (WHOLE.search(detail) and not PART.search(detail))):
                 whole.add(rid)
     return files, whole
 
@@ -70,9 +75,24 @@ def by_arxiv_id() -> dict[str, str]:
     return out
 
 
-def slice_rows(conn) -> list[dict]:
+def downloaded(log: Path | None) -> dict[str, str]:
+    """Each record's copy saved by `sprint13_g_downloads.py`, from its log ("saved   <record>  <file name> ...");
+    the saved names carry author and title, not the record id."""
+    out = {}
+    if log is None:
+        return out
+    for line in log.read_text(encoding="utf-8").splitlines():
+        m = re.search(r"saved\s+(\S+)\s+(\S+\.pdf)\s", line)
+        if m and (LIBRARY / "Papers" / m.group(2)).exists():
+            out[m.group(1)] = str(LIBRARY / "Papers" / m.group(2))
+    return out
+
+
+def slice_rows(conn, log: Path | None = None) -> list[dict]:
     files, whole = reader_files()
-    whole |= {r for (r,) in conn.execute("SELECT record_id FROM paper_reads WHERE extent = 'full'")}
+    files.update(downloaded(log))
+    whole |= {r for r, d in conn.execute("SELECT record_id, detail FROM paper_reads WHERE extent = 'full'")
+              if not PART.search(d or "")}
     arxiv_files = by_arxiv_id()
     rows = []
     for rid, tier, access in conn.execute("SELECT record_id, tier, access FROM paper_fields ORDER BY record_id"):
@@ -104,8 +124,10 @@ def slice_rows(conn) -> list[dict]:
 
 
 def main(argv: list[str] | None = None) -> int:
+    args = list(sys.argv[1:] if argv is None else argv)
+    log = Path(args[args.index("--download-log") + 1]) if "--download-log" in args else None
     with connect(DB_PATH) as conn:
-        rows = slice_rows(conn)
+        rows = slice_rows(conn, log)
         papers = conn.execute("SELECT count(*) FROM paper_fields").fetchone()[0]
     counts = Counter((r["tier"] == "read", r["bucket"]) for r in rows)
     out = {

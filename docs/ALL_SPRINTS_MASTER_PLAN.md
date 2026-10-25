@@ -771,13 +771,20 @@ and in git. Remaining items below.
 - Platform: the store; up to 5 first-pass readers at the tier Sprint 13
   Task B confirmed (Sonnet 5.5), the coordinator at the top tier; every
   quote checked in the write path; arXiv serial at 18 s inside F52's cap
-- **Snapshot as of 2026-10-25** (2,335 papers; a read counts as full when
-  a reader or the coordinator recorded the whole paper):
-  - 1,141 at `read` without a full read: 1,139 with a local copy, 1 with
-    only a DOI (`emami-2026`), 1 GitHub repository.
-  - 682 at `seen` or `screened`: 157 with a local copy, 142 with only an
-    arXiv id (free; fetched first), 205 with only a DOI or a URL, 173
-    GitHub repositories, and 5 already read in full.
+- **Snapshot as of 2026-10-25** (2,335 papers; a read counts as full only
+  when a reader or the coordinator recorded the whole paper and named no
+  part left out; `manifests/sprint13_g_slice.json`): 1,997 not read in
+  full.
+  - 1,317 at `read`: 1,315 with a local copy, 1 with only a DOI
+    (`emami-2026`), 1 GitHub repository.
+  - 680 at `seen` or `screened`: 226 with a local copy (66 of them
+    fetched by Task G so far), 281 with only an arXiv id or a DOI still
+    to fetch or to list, 173 GitHub repositories.
+  - Corrected 2026-10-25 (the fresh-eyes review of a3b8074): this card
+    first gave 1,141 and 682 from an earlier count that did not treat a
+    reader's "full" with listed parts as partial; the slice's own count
+    was then 1,991, and is 1,997 since a note with an exception ("Whole
+    paper read except ...") no longer counts as whole.
 - What a full read is: every section, appendix and proof. Each theorem is
   entered with its statement and conditions quoted, so a theoretical
   result kept LOW for want of them (288 in Sprint 13's script) can be

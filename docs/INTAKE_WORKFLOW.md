@@ -2335,3 +2335,19 @@ assertions... than some budget". Written before any read is applied
 - **GitHub repositories (174)** are not papers with a text layer; how
   they are read is the team lead's decision, asked at the end of the
   task.
+- **Corrections after the fresh-eyes review of a3b8074** (2026-10-25;
+  written before any Task G read is applied):
+  - **The slice is 1,997, not 1,991.** A whole-paper note with an
+    exception ("Whole paper read except related-work equations") and
+    three e-mail reads marked `full` whose older thread was "not read"
+    no longer count as full. F113's card had counts from an earlier run
+    (1,141 and 682); it now matches the slice.
+  - **The reader's check** now refuses a `full` read that names a part
+    not read, a changed verdict with no value, a paper bearing on no
+    context with no reason, a HIGH suggestion with no location or on a
+    measured result, and a file that is not the brief's.
+  - **The ledger only appends.** A re-run keeps every group a reader
+    already holds and writes briefs only for new groups; the downloads'
+    saved copies are found through their log (they carry author and
+    title, not the record id). 66 fetched records and the 6 above joined
+    as groups g295 to g309.

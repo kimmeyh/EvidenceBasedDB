@@ -54,12 +54,16 @@ def assertion_problems(tag: str, a: dict, text: str) -> list[str]:
         out.append(f"{tag}: context {a.get('context')!r}")
     if a.get("certainty_suggestion") == "high" and a.get("high_basis") not in BASES:
         out.append(f"{tag}: a high suggestion needs high_basis, one of {sorted(BASES)}")
+    if a.get("certainty_suggestion") == "high" and not (a.get("certainty_reason") or "").strip():
+        out.append(f"{tag}: a high suggestion says where the paper settles it, in certainty_reason")
+    if a.get("certainty_suggestion") == "high" and a.get("result_type") == "measured":
+        out.append(f"{tag}: a measured result is never high")
     if not (a.get("anchor") or "").strip():
         out.append(f"{tag}: no anchor (section and page)")
     return out
 
 
-def paper_problems(p: dict, given: set[str]) -> list[str]:
+def paper_problems(p: dict, given: set[str], brief_file: str = "") -> list[str]:
     rid = p.get("record_id", "?")
     out = []
     path = p.get("file") or ""
@@ -70,6 +74,12 @@ def paper_problems(p: dict, given: set[str]) -> list[str]:
         out.append(f"{rid}: read_extent must be full or partial")
     if p.get("read_extent") == "partial" and not (p.get("not_read") or "").strip():
         out.append(f"{rid}: a partial read names each part not read and why, in not_read")
+    if p.get("read_extent") == "full" and (p.get("not_read") or "").strip():
+        out.append(f"{rid}: a part was not read, so read_extent is partial, not full")
+    if not p.get("bears_on_context") and not (p.get("why_not") or "").strip():
+        out.append(f"{rid}: bears on no context, so why_not says why")
+    if brief_file and Path(path).resolve() != Path(brief_file).resolve():
+        out.append(f"{rid}: file is not the brief's ({brief_file})")
     answered = {e.get("id") for e in p.get("existing", [])}
     for missing in sorted(given - answered):
         out.append(f"{rid}: no verdict on stored assertion {missing}")
@@ -82,6 +92,8 @@ def paper_problems(p: dict, given: set[str]) -> list[str]:
             if not (e.get("note") or "").strip():
                 out.append(f"{tag}: say in note what the paper says instead")
             continue
+        if e["verdict"] != "confirmed" and not (e.get("value") or "").strip():
+            out.append(f"{tag}: a {e['verdict']} verdict gives the new value")
         if e["verdict"] != "confirmed" or e.get("quotes"):
             out += assertion_problems(tag, e, text)
         if e["verdict"] != "confirmed" and not (e.get("note") or "").strip():
@@ -98,9 +110,11 @@ def main(argv: list[str] | None = None) -> int:
     data = json.loads(Path(args[0]).read_text(encoding="utf-8"))
     brief = json.loads(Path(args[1]).read_text(encoding="utf-8"))
     given = {r["record_id"]: {e["id"] for e in r.get("stored_assertions", [])} for r in brief["records"]}
+    files = {r["record_id"]: r["file"] for r in brief["records"]}
     problems = [f"{rid}: no entry for this record" for rid in sorted(set(given) - {p.get("record_id")
                                                                                    for p in data.get("papers", [])})]
-    problems += [x for p in data.get("papers", []) for x in paper_problems(p, given.get(p.get("record_id"), set()))]
+    problems += [x for p in data.get("papers", []) for x in paper_problems(p, given.get(p.get("record_id"), set()),
+                                                                           files.get(p.get("record_id"), ""))]
     for x in problems:
         print(x)
     print(f"{len(problems)} problems")

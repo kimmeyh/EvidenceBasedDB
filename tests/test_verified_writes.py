@@ -148,6 +148,8 @@ def test_new_scripts_write_only_through_the_checked_path():
     ("exec('insert_assertion(conn, a)')", "without the quote check"),
     # the fresh-eyes review of b6cdcd0: bytes constants
     ("eval(b'insert_assertion')(conn, a)", "without the quote check"),
+    # the fresh-eyes review of a3b8074: an edit table defined inside a string
+    ("insert_verified_assertion(conn, a, v)\nexec('''\nVALUE_A = {}\n''')\n", "without require_edit_basis"),
     ("insert_verified_assertion(conn, a, v)\nVALUE_REPLACE = {'x': 'a new value'}\n"
      "# require_edit_basis( is only mentioned here", "without require_edit_basis"),
 ])

@@ -15,7 +15,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RAN_BEFORE = {"sprint11_reads", "sprint12_reads", "sprint13_reads"}
-BUDGET = re.compile(r"at least the abstract|\b\d+ to \d+ assertions per paper|assertions per paper|skim",
+# The fresh-eyes review of a3b8074: "at most 5 assertions", "up to 4 assertions" and "read the abstract and
+# conclusion" passed the first pattern.
+BUDGET = re.compile(r"at least the abstract|assertions per paper|\b(at most|up to|no more than|\d+ to)\s+\w+\s+"
+                    r"(assertions|claims)|read (only )?the abstract|\bskim|minutes? (per|a|each) (paper|record)",
                     re.IGNORECASE)
 
 
@@ -48,8 +51,14 @@ def test_every_reader_prompt_from_task_g_on_reads_the_whole_paper_with_no_cap():
 
 
 def test_the_budget_check_names_each_budget():
-    """The check itself, on Task F's prompt, the last one with a budget."""
+    """The check itself, on Task F's prompt, the last one with a budget, and
+    on the wordings the fresh-eyes review of a3b8074 found passing."""
     old = instructions(ROOT / "manifests" / "sprint13_reads" / "READER_PROMPT.md")
     problems = budget_problems(old)
-    assert "at least the abstract" in problems and any("per paper" in p for p in problems), problems
+    assert "at least the abstract" in problems and "2 to 4 assertions" in problems, problems
     assert 'no "every page"' in problems and 'no "no cap" on assertions' in problems
+    clean = "Read every page. There is no cap on assertions."
+    assert budget_problems(clean) == []
+    for budget in ("Return at most 5 assertions.", "Give up to 4 claims.", "Read the abstract and conclusion.",
+                   "Spend about 2 minutes per paper.", "Skim the appendices."):
+        assert budget_problems(f"{clean} {budget}"), budget

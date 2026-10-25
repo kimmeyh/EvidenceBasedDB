@@ -6,6 +6,9 @@ reader, at most 5 readers at once. From `manifests/sprint13_g_slice.json`'s
 `local` bucket (re-run the slice after the downloads, so a fetched copy
 counts). Groups of 5 papers, since each paper is now read whole.
 
+A re-run only appends: records the ledger already holds keep their group,
+and an existing group's brief is never rewritten.
+
 Order: first the records whose stored assertions hold a theoretical result
 kept LOW for want of its statement (a full read can quote it), then the
 records not yet at `read`, then the rest; by record id inside each.
@@ -62,11 +65,17 @@ def main(argv: list[str] | None = None) -> int:
         theory = any("theoretical result" in (a["certainty_reasons"] or "") for a in stored[r["record_id"]])
         return (0 if theory else 1 if r["tier"] != "read" else 2, r["record_id"])
 
-    rows.sort(key=rank)
-    groups = {}
+    # A ledger already handed to readers is only ever appended to (the fresh-eyes review of a3b8074): a re-run after
+    # the downloads, or after reads land, must not renumber a group a reader file already answers.
+    groups = json.loads(LEDGER.read_text(encoding="utf-8"))["groups"] if LEDGER.exists() else {}
+    already = {r["record_id"] for g in groups.values() for r in g["records"]}
+    rows = sorted((r for r in rows if r["record_id"] not in already), key=rank)
+    start = len(groups)
+    new_names = []
     for i in range(0, len(rows), GROUP_SIZE):
-        name = f"g{i // GROUP_SIZE + 1:03d}"
+        name = f"g{start + i // GROUP_SIZE + 1:03d}"
         groups[name] = {"records": [{"record_id": r["record_id"], "file": r["file"]} for r in rows[i:i + GROUP_SIZE]]}
+        new_names.append(name)
     held = [r["record_id"] for g in groups.values() for r in g["records"]]
     if len(held) != len(set(held)):
         print("a record is held twice; nothing written")
@@ -76,13 +85,14 @@ def main(argv: list[str] | None = None) -> int:
                                   "groups": groups}, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     (WORK / "briefs").mkdir(parents=True, exist_ok=True)
     (WORK / "reads").mkdir(parents=True, exist_ok=True)
-    for name, g in groups.items():
+    for name in new_names:  # an existing group's brief is never rewritten
+        g = groups[name]
         brief = {"group": name, "records": [{**r, "stored_assertions": stored[r["record_id"]]} for r in g["records"]]}
         (WORK / "briefs" / f"{name}.json").write_text(json.dumps(brief, indent=1, ensure_ascii=False) + "\n",
                                                       encoding="utf-8")
     first = sum(1 for r in rows if rank(r)[0] == 0)
-    print(f"{len(rows)} records in {len(groups)} groups of up to {GROUP_SIZE}; {first} with a theoretical LOW first; "
-          f"briefs in {WORK / 'briefs'}")
+    print(f"{len(rows)} records added in {len(new_names)} new groups of up to {GROUP_SIZE} ({first} with a theoretical "
+          f"LOW first); {len(groups)} groups in all; briefs in {WORK / 'briefs'}")
     return 0
 
 

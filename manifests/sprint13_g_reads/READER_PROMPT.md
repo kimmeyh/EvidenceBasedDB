@@ -33,7 +33,9 @@ touch the store database).
 each paper: every section, every appendix, every proof, every table
 caption and footnote the text layer carries. Take as long as that takes.
 A part you could not read is named in `not_read` with why (the text
-layer lost it, a page is an image); it is never left out for time.
+layer lost it, a page is an image), and `read_extent` is then "partial";
+a part is never left out for time. `read_extent` is "full" only when
+every page was read.
 
 Get each paper's text with
 `python -X utf8 -c "import sys; sys.path.insert(0, r'D:\Data\Harold\github\EvidenceBasedDB'); from store.quotes import source_text; print(source_text(sys.argv[1]))" "<file>"`

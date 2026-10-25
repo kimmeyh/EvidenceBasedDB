@@ -185,6 +185,18 @@ this project keeps having to replace with a step.
   on a manifest change, the four script scanners on a script change, and
   the guard-discipline test on a test change. Each proven red; every
   script keeps its verdict (Issue #137)
+- **fix**: the fresh-eyes review of 745c6e6 and a3b8074 (2026-10-25):
+  Task G's slice is 1,997, not 1,991 (a whole-paper note with an
+  exception, and three e-mail reads with a part "not read", no longer
+  count as full); F113's card had an earlier run's counts and now
+  matches. The reader's check refuses a `full` read naming a part not
+  read, a changed verdict with no value, a HIGH suggestion with no
+  location or on a measured result, and a file not the brief's. The
+  ledger only appends (66 fetched records and 6 more joined as g295 to
+  g309). The budget guard catches "at most 5 assertions", "up to 4
+  claims", "read the abstract" and minutes per paper; the write-path
+  rule reads an edit table defined inside a string. Each proven red
+  (Issue #138)
 - **process**: No reading budget (team lead, 2026-10-25, at Manual
   Validation: "remove the budget ... ensure that all future paper reads
   have no budget"). F57's card drops its per-record rate; the new reader
