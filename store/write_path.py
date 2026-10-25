@@ -145,7 +145,10 @@ def script_problems(text: str, name: str = "") -> list[str]:
     except SyntaxError as e:
         return [f"does not parse, so the write-path rule cannot read it ({e.msg}, line {e.lineno})"]
     out = []
-    writes = any(_WRITES.match(n) for n in code.names)
+    # A name spelled as a whole string counts as the name (the fresh-eyes review of ed53933:
+    # getattr(d, 'insert_assertion') passed the parse and the text rule refused it).
+    named = code.names | {s for s in code.strings if s.isidentifier()}
+    writes = any(_WRITES.match(n) for n in named)
     if "reading" in name and name not in GRADING_LEGACY and writes:
         if not code.calls_grading("high_grades") or "high" in code.strings:
             out.append("grades HIGH outside store.grading (a reading script names each HIGH's basis through "
@@ -154,11 +157,12 @@ def script_problems(text: str, name: str = "") -> list[str]:
                 or any("Started LOW" in s for s in code.strings):
             out.append("grades LOW outside store.grading (a reading script names each LOW's reason through "
                        "low_grade, and holds no \"Started LOW\" text of its own)")
-    if any(_DIRECT_WRITE.match(n) for n in code.names):
+    if any(_DIRECT_WRITE.match(n) for n in named):
         out.append("writes an assertion without the quote check (use insert_verified_assertion)")
-    if any(_TOKEN_NAME.match(n) for n in code.names):
+    if any(_TOKEN_NAME.match(n) for n in named):
         out.append("names Verified (only require_verbatim makes one; pass on what it returns)")
-    if writes and any(_EDIT_TABLE.match(t) for t in code.tables) and "require_edit_basis" not in code.called:
+    edit_basis = any(c == "require_edit_basis" or c.endswith(".require_edit_basis") for c in code.called)
+    if writes and any(_EDIT_TABLE.match(t) for t in code.tables) and not edit_basis:
         out.append("edits readers' values, quotes or contexts without require_edit_basis")
     return out
 

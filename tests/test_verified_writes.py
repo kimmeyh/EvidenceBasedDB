@@ -140,6 +140,9 @@ def test_new_scripts_write_only_through_the_checked_path():
     ("write = ingest.sync_assertion", "without the quote check"),
     ("v = Verified(a.id, a.citation_context)", "names Verified"),
     ("from store.quotes import Verified as V", "names Verified"),
+    # the fresh-eyes review of ed53933: a name spelled as a string passed the parse
+    ("getattr(d, 'insert_assertion')(conn, a)", "without the quote check"),
+    ("V = getattr(q, 'Verified')", "names Verified"),
     ("insert_verified_assertion(conn, a, v)\nVALUE_REPLACE = {'x': 'a new value'}\n"
      "# require_edit_basis( is only mentioned here", "without require_edit_basis"),
 ])
@@ -155,6 +158,9 @@ def test_the_script_rule_names_each_planted_problem(planted, expected):
              "CONTEXT_BY_RANK = {}  # an entry script's table, with no assertion written\n")
     assert script_problems(clean) == []
     assert script_problems("CONTEXT_BY_RANK = {}\ninsert_paper(conn, paper)\n") == []
+    # the fresh-eyes review of ed53933: the basis called through a module is a call of it
+    assert script_problems("import store.quotes as sq\nVALUE_FIXES = {}\ninsert_verified_assertion(conn, a, v)\n"
+                           "sq.require_edit_basis(aid, value, basis, text)\n") == []
 
 
 _GRADED = ("from store.grading import grade, high_grades, low_grade\n"
@@ -169,6 +175,8 @@ _GRADED = ("from store.grading import grade, high_grades, low_grade\n"
     ("sprint12_reading.py", _GRADED + "a.certainty = \"high\"\n", True),
     ("sprint12_reading.py", "insert_verified_assertion(conn, a, v)\n", True),  # no grading at all
     ("sprint12_reading.py", "insert_paper(conn, p)\nGRADE = {'proved': 'high'}\n", False),  # writes no assertion
+    # the fresh-eyes review of ed53933: a write named as a string still makes the script a writer
+    ("sprint12_reading.py", "getattr(d, 'insert_verified_assertion')(conn, a, v)\nGRADE = {'x': 'high'}\n", True),
     ("sprint12_f102_intake.py", "insert_verified_assertion(conn, a, v)\ncertainty='high'\n", False),  # not reading
     ("sprint11_reading.py", "insert_verified_assertion(conn, a, v)\nGRADE = {'proved': 'high'}\n", False),
 ])

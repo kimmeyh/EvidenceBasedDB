@@ -163,6 +163,14 @@ this project keeps having to replace with a step.
   is refused, and a "#" in a string hides nothing. A script that does not
   parse is refused. Every script in `scripts/` gets the same verdict as
   before. Six new cases, proven red against the old rule (Issue #137)
+- **fix**: the fresh-eyes review of ed53933 (2026-10-25): a name spelled
+  as a whole string (`getattr(d, 'insert_assertion')`, `'Verified'`)
+  escaped the parse, though the text rule had refused it; it counts as
+  the name again. `sq.require_edit_basis(...)` through a module was
+  wrongly refused; it counts as the call. Corrected: "Six new cases,
+  proven red" above is five; the sixth, a call through
+  `import store.grading as g`, passes both rules by design. Four more
+  cases, each proven red against ed53933 (Issue #137)
 - **fix**: Manual Validation Q3 (team lead, 2026-10-25: "q3 do now"):
   `scripts/run_suite.py --changed` runs `test_us_english` on any
   document change, as it already ran the em dash guard. 6cfc137's
