@@ -42,6 +42,13 @@ this project keeps having to replace with a step.
   result", through `sprint12_reading.py`'s `THEORY_LOW` table so its live
   test still holds; grades unchanged. INTAKE_WORKFLOW.md section 48;
   `tests/test_sprint13_f107.py` (injections run) (Issue #132)
+- **fix**: the fresh-eyes review of 6c6f0ac (2026-10-25): the join pattern
+  missed a join after a capital, "%" or a quote mark, and its comment
+  credited the wrong part for keeping "Inc."; widened (no new join in the
+  store), and the live guard now reads every text column of the paper and
+  assertion tables, not only `paper_fields.evidence` (both injections run).
+  Its Important finding (more theoretical results kept LOW with "an
+  empirical result") goes to Task F's I2, as the plan's premise (b) says
 - **process**: F111 (Sprint 13 Task B, 2026-10-25): the F39 release.
   Anthropic's models and pricing pages read 2026-10-25: every tier's id,
   price, context, maximum output and retirement date unchanged; no new

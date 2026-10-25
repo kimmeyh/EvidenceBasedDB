@@ -38,9 +38,13 @@ if hasattr(sys.stdout, "reconfigure"):
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 TODAY = "2026-10-25"
 NOTE = f"{TODAY} (Sprint 13 Task A, F107): the \".;\" join before the local-copy note corrected (INTAKE_WORKFLOW.md section 48)"
-# A sentence's full stop with an appended note after it; "..." and an
-# abbreviation such as "Inc." are not matched.
-JOIN = re.compile(r"(?<=[a-z0-9)\]])\.; (?=Local copy)")
+# A full stop with the appended note after it, whatever ends the sentence
+# (a letter of either case, a digit, "%", a bracket or a quote mark). An
+# ellipsis "...; " is not matched; text with no "Local copy" after it, such
+# as "Inc.; Stevens", is not matched by the lookahead. The fresh-eyes review
+# of 6c6f0ac: the first pattern took only [a-z0-9)\]], so "AUC.; Local
+# copy" was missed, and its comment credited the lookbehind for "Inc.".
+JOIN = re.compile(r"(?<=[^.\s])\.; (?=Local copy)")
 
 
 def joined(conn: sqlite3.Connection) -> list[tuple[str, str, str]]:

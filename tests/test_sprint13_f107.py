@@ -20,8 +20,13 @@ def _load(name: str):
 
 
 def test_the_join_pattern_keeps_an_ellipsis_and_an_abbreviation():
+    """The fresh-eyes review of 6c6f0ac: the first pattern missed a join
+    after a capital, "%" or a quote mark. Proven to fail by injection,
+    2026-10-25: with the first pattern, `(?<=[a-z0-9)\\]])`, put back, this
+    test failed on "AUC.;"."""
     joins = _load("sprint13_f107_joins")
-    assert joins.JOIN.sub("; ", "not reported.; Local copy x") == "not reported; Local copy x"
+    for end in ("not reported", "AUC", "5%", 'the "x"'):
+        assert joins.JOIN.sub("; ", f"{end}.; Local copy x") == f"{end}; Local copy x", end
     assert joins.JOIN.sub("; ", "the title ...; Local copy x") == "the title ...; Local copy x"
     assert joins.JOIN.sub("; ", "Quantum Computing Inc.; Stevens") == "Quantum Computing Inc.; Stevens"
 
@@ -39,12 +44,20 @@ def test_a_theoretical_low_names_its_cause_not_an_empirical_result():
 
 
 @pytest.mark.live_store
-def test_no_paper_evidence_holds_a_join(live_conn):
-    """Proven to fail by injection, 2026-10-25: on the backup taken before
-    the apply, this test named the 16 records."""
+def test_no_stored_text_holds_a_join(live_conn):
+    """Every text column of the paper and assertion tables, not only
+    `paper_fields.evidence` (the fresh-eyes review of 6c6f0ac). Proven to
+    fail by injection, 2026-10-25: on the backup taken before the apply,
+    this test named the 16 records."""
     joins = _load("sprint13_f107_joins")
-    bad = [rid for rid, ev in live_conn.execute("SELECT record_id, evidence FROM paper_fields WHERE evidence LIKE "
-                                                "'%.;%'") if joins.JOIN.search(ev)]
+    bad = []
+    for table, key in (("paper_fields", "record_id"), ("paper_reads", "record_id"), ("paper_probes", "record_id"),
+                       ("records", "id"), ("assertion_fields", "record_id")):
+        for _, col, kind, *_ in live_conn.execute(f"PRAGMA table_info({table})"):
+            if kind.upper() not in ("TEXT", ""):
+                continue
+            bad += [f"{table}.{col}: {rid}" for rid, v in live_conn.execute(
+                f"SELECT {key}, {col} FROM {table} WHERE {col} LIKE '%.; Local copy%'") if joins.JOIN.search(v)]
     assert not bad, bad
 
 
