@@ -48,10 +48,16 @@ def test_the_store_holds_what_the_script_writes(live_conn):
     taken before the apply, it named f151; run against the backup taken
     before the second apply, it named f111 (not yet entered)."""
     f102 = _script()
+    spec = importlib.util.spec_from_file_location("f108", ROOT / "scripts" / "sprint13_f108_phase2.py")
+    f108 = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(f108)
+    # Sprint 13 Task E (F108): three values Phase 2 later changed are corrected by that script, at 9cbe5ba.
+    later = {a.id: a for _, a in f108.CORRECTED}
     for key in f102.DOCS:
         tier = live_conn.execute("SELECT tier FROM paper_fields WHERE record_id = ?", (f102.src_id(key),)).fetchone()
         assert tier is not None and tuple(tier) == ("read",), key
     for key, a in f102.ASSERTIONS:
+        a = later.get(a.id, a)
         row = live_conn.execute("SELECT r.value, r.evidence_tag, f.citation_context, r.certainty, "
                                 "r.certainty_reasons FROM records r JOIN assertion_fields f ON f.record_id = r.id "
                                 "WHERE r.id = ?", (a.id,)).fetchone()

@@ -69,6 +69,19 @@ this project keeps having to replace with a step.
   reworded (the old prefix fit 2 of them); grades unchanged. Sprints 9 to
   11: 27 candidates counted and carded on F57, not corrected.
   INTAKE_WORKFLOW.md section 49; four injections run (Issue #137)
+- **process**: F109 (Sprint 13 Task C, 2026-10-25): `Papers\` holds 180
+  PDFs, and every one is named by a record; nothing to enter (Issue #134)
+- **process**: F110 (Sprint 13 Task D, 2026-10-25): Roadmap-to-QML's
+  latest commit is still a239747648 (2026-10-20), read by one GitHub REST
+  call; no new paper (Issue #135)
+- **feat**: F108 (Sprint 13 Task E, 2026-10-25): Phase 2 read at 9cbe5ba
+  (PR #46 merged since planning; no `docs/phase2/` change from the plan's
+  9993ab6). F162 entered under `hsbc-2026` (the plan said `ml`; section
+  43's rule) with 2 SIM assertions, no relation linked (ADR-0004 A8 (b));
+  three F102 values corrected (F110's unreadable solve, F114's
+  calibration and range, F111's range) and the other 9 confirmed by name
+  (`scripts/sprint13_f108_phase2.py`, INTAKE_WORKFLOW.md section 50,
+  `tests/test_sprint13_f108.py`, two injections run) (Issue #136)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

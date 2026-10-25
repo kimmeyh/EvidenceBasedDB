@@ -1885,3 +1885,65 @@ Every count is a snapshot as of its own date. Written before the apply.
   corrected here: their reading scripts have run and stay as they are
   (`store/write_path.py` LEGACY and GRADING_LEGACY), and the coordinator
   has not checked them. Carded on F57 for a later release.
+
+## 50. Applied 2026-10-25: Phase 2's later Sprint 28 work, F162 and three corrected values (Sprint 13 Task E, F108)
+
+Every count is a snapshot as of 2026-10-25. Written before the apply.
+
+- **What is read, and at which commit.** The plan named 9993ab6. By the
+  task's start Phase 2 had merged PR #46, whose head is 9cbe5ba, now the
+  local HEAD; no file under `docs/phase2/` changed between the two, so
+  the read is at 9cbe5ba. Read only (F79): `git show` and the GitHub API,
+  no fetch. Changed since F102's read at 10086da: F110, F111, F114, F151,
+  F153, F154, `PHASE2_POC_PLAN.md`, and F162 (new).
+- **F162 entered**: one reference record and 2 SIM assertions, HIGH, the
+  project's own measurement: the proxy is not reliably above HGB or
+  XGBoost inside the SPECTRA pocket on any of three cells, and is
+  reliably below XGBoost on two; FourierWall2's single-run in-pocket wins
+  do not repeat over ten seeds. **Context `hsbc-2026`, not the plan's
+  `ml`**: section 43's rule files a result about the project's own
+  CVQBoost lanes under `hsbc-2026`, and the B4 device claims on the same
+  cells are there and under `platform:dirac-3`.
+- **No relation linked (ADR-0004 A8 (b)).** F162 measures the proxy, not
+  the device, so it confirms none of the three B4 claims whole, and its
+  FourierWall2 finding is about a different model and bar from
+  `fourier-wall-incomplete-bar-manufactures-advantage`. Each reason names
+  the claims it bears on.
+- **Three F102 values corrected**, each against its document at 9cbe5ba:
+  - `f110-proxy-solve-flat-paper-2s-not-like-for-like`: the 91-variable
+    solve could not be read because a separately timed J build was
+    subtracted and 9 of 20 solves clamp, not because of the timer's
+    resolution (Phase 2's own correction, 2026-10-23).
+  - `f114-calibrated-plugin-misses-known-ceiling`: calibration moved no
+    estimate on the main arm only; on the other two arms it moves some;
+    the overestimate is 3% to 13% calibrated and 4% to 14% uncalibrated.
+  - `f111-cvqboost-knn-lane-below-published-value-under-loke-protocol`:
+    the range's top is 0.828, not 0.829.
+  Each paper gets a second read row for the re-read.
+- **Confirmed by name, unchanged**: the other 9 F102 values. F111's run
+  time (now 82.5 minutes of recorded lane time) and its "not dominated by
+  an exact match" reason (now unverified) were never stored; F151's dose
+  wording and range-threshold note, F153's ridge-rule reading and F154's
+  closest-cell configuration change no stored value.
+- `scripts/sprint13_f108_phase2.py` holds F162 and the corrections; the
+  Sprint 12 script stays the record of the read at 10086da, and its store
+  test takes the three corrected ids from the Sprint 13 script.
+
+## 51. The F57 release for Sprint 13: every readable `qml` record (Sprint 13 Task F, F112)
+
+Every count is a snapshot as of 2026-10-25. Written before the apply;
+the read's own bullets follow before its apply.
+
+- **The slice** (`scripts/sprint13_f112_slice.py`, written to
+  `manifests/sprint13_f112_slice.json`): plan Q1 = 1, all 806 `qml`
+  records at `seen` or `screened` with no read row, nothing being unread
+  under `hsbc-2026` or the Dirac platforms. The 24 records of the three
+  earlier slices with no free copy are left out. OpenAlex counted 417
+  (364 by arXiv DOI, 53 by journal DOI), every one at 0 or 1 citations:
+  Sprint 12 took the slice down to 1. The other 389 are not counted and
+  come last, by id; the release reads them too, so a stop cuts the
+  uncounted first and then the least cited.
+- **The fetch** (`scripts/sprint13_f112_downloads.py`, Sprint 10's rules):
+  33 arXiv PDFs (the plan said 32), serial at 18 s through the paced
+  fetcher; 6 papers have no free copy OpenAlex knows (two closed, four
+  Zenodo records), and go to the ledger's `no_copy` with that reason.
