@@ -1,0 +1,1198 @@
+{
+ "papers": [
+  {
+   "record_id": "zhong-2024-advantage-quantum-neural-networks-as",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Zhong-Shtanko-Movassagh_2024_Advantage-of-Quantum-Neural-Networks-as-Quantum-Information__2401.06300.pdf",
+   "title_in_file": "Advantage of Quantum Neural Networks as Quantum Information Decoders",
+   "version_note": "arXiv:2401.06300v1 [quant-ph] 11 Jan 2024; main text pp.1-6 with the Supplementary Information (pp.S1-S19) in the same text.",
+   "pages": 25,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper with small simulations that proves scaling bounds on the decoding error of standard QEC and of an unrestricted QNN decoder for stabilizer codes perturbed by local disorder.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qnn-decoder-quadratic-improvement",
+     "verdict": "narrowed",
+     "note": "The improvement is narrower than the stored value says. It is for noisy inputs only; it is the existence of a QNN unitary with no restriction on its architecture (Theorem 3, proved in SI Section IV); and the paper's own 5-qubit noisy simulation (distance d = 3, p = 1) has the same lambda^4 scaling for the QNN as for standard QEC, so no exponent gain appears there.",
+     "value": "The authors state that they prove, for noisy inputs, that one can always find a QNN whose generalization error is of order lambda raised to four times the ceiling of (d - 2p) over k, as lambda goes to zero, which they call an almost quadratic error improvement over the standard QEC result in Theorem 2; the result is proved without any restriction on the unitary, and for the 5-qubit code with d = 3, p = 1 the lower bound predicts the same scaling as Theorem 2.",
+     "anchor": "Abstract, p.1; main text p.4; Theorem 3, SI Section IV, p.S11; discussion of Fig. 3(d), p.5",
+     "quotes": [
+      "We then prove that Quantum Neural Network (QNN) decoders provide an almost quadratic improvement on the readout error.",
+      "In the presence of noise, QNN provides an almost quadratic error improvement over the standard QEC result in Theorem 2, as detailed in the following theorem.",
+      "For noisy inputs, one could always find a QNN such that its generalization error for decoding is εQ(QQNN) = O(λ4⌈(d−2p)/k⌉).",
+      "This rigorous result, as well as Theorem 3, were proved without any restrictions on the unitary UQ.",
+      "for the 5-qubit code (d = 3, p = 1) simulation, the lower bound in Theorem 3 predicts the same λ4 scaling as in Theorem 2, which the present QNN saturates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 is stated informally (p.4) and formally (SI Section IV, p.S11) with its proof; its conditions are quoted. The comparison to Theorem 2 is the authors' own.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The exponent for the QNN, four times ceil((d-2p)/k), against the exponent for QEC, twice ceil((d+1-2p)/k) (Theorem 2, tight for noisy input and generic V), approaches a ratio of two only for large d. For d = 3, p = 1, k = 1 both are four (the paper says so). For d = 5, p = 1, k = 1 they are twelve and eight. The paper's text calls the Proposition 1 lower bound 'the lower bound in Theorem 3'. The proof assumes e_alpha > 0 'for small enough lambda' (SI p.S11), which is not a condition of the theorem as stated. The optimal unitary is built from the exact perturbed codewords, the error-state overlaps and the matrices epsilon and h, and may need many gates (main text p.4)."
+    },
+    {
+     "id": "qnn-decoder-scope-stabilizer-codes",
+     "verdict": "corrected",
+     "note": "Two details are wrong or loose in the stored value. (1) The Discussion's phrase 'distances ranging from 5 to 11 qubits' mixes two quantities: the SI lists [[5,1,3]], [[7,1,3]], [[9,1,3]] and [[11,1,5]], so 5 to 11 is the number of physical qubits and the code distances are 3 and 5. (2) The 5 to 11 qubit range covers the standard-decoding simulations (Fig. 2); the QNN simulations (Fig. 3, Fig. S1, Fig. S2) use the 5-qubit code only. The part on stabilizer codes and the open question is right.",
+     "value": "The authors state that their numerical simulations cover codes with 'various distances ranging from 5 to 11 qubits'; the supplement lists four codes, [[5,1,3]], [[7,1,3]], [[9,1,3]] and [[11,1,5]], so the range of 5 to 11 counts physical qubits and the code distances are 3 and 5; the QNN simulations use the 5-qubit code only; the authors focus on imperfect stabilizer codes and leave open whether their formalism extends beyond near-stabilizer codes.",
+     "anchor": "Discussion, p.6; SI Section VI.A, pp.S16-S17; SI Section VI.C.1, p.S18; Fig. 3 caption, p.4",
+     "quotes": [
+      "Our analytical work was confirmed and corroborated by numerical simulations of codes with various distances ranging from 5 to 11 qubits.",
+      "1. [[5,1,3]] code",
+      "2. [[7,1,3]] (Steane) code",
+      "3. [[9,1,3]] (Shor) code S1 = ZZIIIIIII,",
+      "4. [[11,1,5]] code",
+      "Specializing the general architecture in Fig.3(a) to 5-qubit code, we use the 5-qubit QNN architecture in Fig. S1.",
+      "While we focus on imperfect stabilizer codes, an immediate question is whether our formalism can be extended beyond near-stabilizer codes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the codes it simulated (SI Section VI.A) and of its scope (Discussion).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The Discussion's 'distances ... from 5 to 11 qubits' reads as a slip for the number of qubits. The advantage claim for QNNs at larger distance is not tested by any QNN run: the only code with a distance above three, [[11,1,5]], appears in the standard-decoding simulations only."
+    },
+    {
+     "id": "qnn-decoder-standard-qec-bound",
+     "verdict": "narrowed",
+     "note": "The paper's theorem is about the exponent of lambda, as lambda goes to zero, not a stated exponential decay in d. Noiseless input: an upper bound of order lambda^(2 ceil(d/k)). Noisy input with p-local Pauli errors and generic V: a tight (Theta) scaling lambda^(2 ceil((d+1-2p)/k)). The word 'exponentially' is the abstract's reading of that exponent growing with d. The Theta scaling holds under the condition that <W>_mu > 0 (SI Eq. S.64).",
+     "value": "The authors state in the abstract that they show the decoding error of standard stabilizer-based decoding diminishes exponentially in the distance of the underlying unperturbed code; Theorem 2 gives, as lambda goes to zero, an upper bound of order lambda raised to twice the ceiling of d over k for noiseless input, and a tight scaling of lambda raised to twice the ceiling of (d + 1 - 2p) over k for noisy input and generic V.",
+     "anchor": "Abstract, p.1; Theorem 2, main text p.3; Theorem 2 (Formal), SI Section III, p.S8",
+     "quotes": [
+      "showing that the decoding error diminishes exponentially in the distance of the underlying unperturbed code",
+      "For noiseless input, the generalization error for standard QEC is εQ(QQEC) = O(λ2⌈d/k⌉).",
+      "For noisy input (p > 1) and generic V , the generalization error is εQ(QQEC) = Θ(λ2⌈(d+1−2p)/k⌉).",
+      "where ξ = d if p = 0 and ξ = d − 2p + 1 if p > 0. Moreover, for p ≥ 1 if ⟨W (d−2p+1)⟩µ(θ,ϕ) > 0,",
+      "the generalization error is εQ(QQEC) = Θ(λ2⌈(d+1−2p)/k⌉)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 is stated informally (p.3) and formally (SI p.S8) with a proof; the statements and the condition W > 0 are quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The informal statement says 'noisy input (p > 1)', the formal statement says p >= 1 or p > 0 and the 5-qubit simulation uses p = 1, so 'p > 1' reads as a slip. The formal proof ends with a power lambda^(ceil(2(d-2p+1)/k)) in Eq. S.86, the informal statement has 2 ceil((d+1-2p)/k); these differ when (d+1-2p)/k is not an integer (they agree for k = 1). The statement in terms of lambda as lambda goes to zero leaves the constants hidden in the O and Theta, which may depend on d and n (the paper says Theta holds 'while holding everything else fixed (number'), so exponential decay in d at a fixed lambda is not shown by the theorem as stated. For noisy input the exponent shrinks by 4p, so p near d/2 removes the suppression."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "setup-code-and-perturbed-hamiltonian",
+     "value": "The authors set up a general stabilizer quantum code of distance d that encodes a single logical qubit using n physical qubits, with the Hamiltonian H = H0 + lambda V, where H0 is the unperturbed stabilizer Hamiltonian, V is a generic perturbation that is a sum of spatially local terms acting on at most k qubits with k smaller than d, and lambda is a small real parameter that sets the perturbation strength.",
+     "anchor": "Problem setup, pp.1-2, Eq. (1)",
+     "quotes": [
+      "We start our analysis with a general stabilizer quantum code [[n, 1, d]] of distance d, which encodes a single logical qubit using n physical qubits.",
+      "V as a generic k-local perturbation (k < d), which is a sum of spatially local terms acting on at most k qubits.",
+      "H = H0 + λV, H0 = − Sa,",
+      "where H0 is the non-perturbed stabilizer Hamiltonian, V is a k-local perturbation defined above, and λ is a small real parameter that sets the perturbation strength."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' statement of their own model, Problem setup, Eq. (1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "setup-approximate-code-and-encoding",
+     "value": "The authors state that for perturbation strength between zero and the gap of H0 the two near-degenerate lowest eigenstates of the perturbed Hamiltonian remain an approximate quantum code, and that a logical qubit is encoded in codewords that are a 2 × 2 unitary mixture of those two eigenstates, with amplitudes cos θ and e to the i ϕ times sin θ on the Bloch sphere.",
+     "anchor": "Problem setup, p.2, Eq. (2)",
+     "quotes": [
+      "If 0 < λ < ∆, where ∆ is the gap of the Hamiltonian H0, the two near-degenerate ground states remain an approximate quantum code.",
+      "This means we can encode information using the two lowest eigenstates |ψ0⟩ and |ψ1⟩ of the perturbed Hamiltonian, H|ψi⟩ = Ei|ψi⟩.",
+      "where |Ωi⟩ = j uij|ψj⟩ are the codewords, u is a Hamiltonian-dependent 2 × 2 unitary matrix, c0 = cos θ and c1 = eiϕ sin θ represent the amplitudes of the encoded logical state on the Bloch sphere, with θ ∈ [0, π]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' statement of their own encoding, Problem setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-energy-splitting-exponentially-small",
+     "value": "The authors state, citing Bravyi, Hastings and Michalakis, that the energy splitting between the two lowest eigenstates of the perturbed Hamiltonian is exponentially small in the stabilizer code's distance d.",
+     "anchor": "Problem setup, p.2, ref. [41]",
+     "quotes": [
+      "The energy splitting δ = |E1 − E0| is exponentially small in the stabilizer code’s distance d [41]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to reference [41]; not proved here.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "setup-noise-model-p-local-pauli",
+     "value": "The authors model input noise by stochastically applying p-local Pauli operators to the encoded states, and use the integer p, the locality of the noise error, as the measure of noise strength.",
+     "anchor": "Problem setup, p.2",
+     "quotes": [
+      "noise by stochastically applying p-local Pauli operators",
+      "p > 0, which describes the locality of the noise error,",
+      "serves here as a measure of the noise strength."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' statement of their noise model.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "definition-decoder-and-target-expectations",
+     "value": "The authors define a logical decoder as a procedure that takes the encoded state and returns 0 or 1 after measuring the qubit in a logical Pauli basis, and as target expectations the cos 2θ for the Z decoder and sin 2θ cos ϕ and sin 2θ sin ϕ for the X and Y decoders; they describe decoding as a general measurement of a certain non-local operator.",
+     "anchor": "Problem setup, p.2",
+     "quotes": [
+      "for the Z decoder, the expectation of the qubit output is fZ (θ, ϕ) := c20 − |c1|2 = cos 2θ.",
+      "Similarly, the X and Y decoders should return the expectations fX (θ, ϕ) = sin 2θ cos ϕ and fY (θ, ϕ) = sin 2θ sin ϕ, respectively.",
+      "From a mathematical point of view, the decoding is a general measurement of a certain (non-local) operator Oˆ.",
+      "takes |Ψ⟩ as input and returns either 0 or 1 after it has"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definitions of the decoder targets in Problem setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "definition-generalization-error",
+     "value": "The authors define the generalization error of a decoder as the mean square error between the decoder's expectation value and the target function, integrated over the input distribution µ on the Bloch sphere and averaged over the input Pauli errors.",
+     "anchor": "Problem setup, p.2, Eq. (3)",
+     "quotes": [
+      "we use the mean square error as a metric to measure the",
+      "deviation of the prediction from the ground truth,",
+      "where µ(ϕ, θ) is a measure that depends on the input distribution, Eα is expectation over input Pauli errors Pα, and fQ(θ, ϕ) is the function that describes the desired output expectation value for the measurement in the basis Q."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the error metric all theorems use.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "setup-standard-decoding-knowledge",
+     "value": "The authors define the conventional decoder by the information available: they first assume only the logical operators of the unperturbed stabilizer code are known, so the only accessible action is to measure the logical operator directly; they then add knowledge of the stabilizer operators of the unperturbed Hamiltonian, which permits measuring syndromes and applying error correction before the logical measurement.",
+     "anchor": "Limitations of standard decoding, pp.2-3",
+     "quotes": [
+      "First, we assume that we only know the logical operators QL ∈ {XL, YL, ZL} for the unperturbed stabilizer code.",
+      "Given this information, the only accessible action is to measure QL directly.",
+      "one also knows the stabilizer operators Sa from the unperturbed Hamil-",
+      "In this scenario, one could measure"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' statement of the two knowledge levels their standard decoders use.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thm1-naive-decoding-lambda4",
+     "value": "The paper states Theorem 1 (informal): for noiseless input and generic V, the generalization error of measuring the logical operator of the unperturbed code is of exact order lambda to the fourth power in the perturbation strength, holding everything else fixed.",
+     "anchor": "Theorem 1 (informal), main text p.3",
+     "quotes": [
+      "Theorem 1 (naive decoding, informal) For noiseless in-",
+      "the generalization error of measuring the logical operator is εQ(QL) = Θ(λ4).",
+      "indicate the exact scaling of the error with perturbation",
+      "strength λ, while holding everything else fixed (number"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Statement quoted, but the printed proof (SI Eq. S.59) ends in an upper bound; the lower-bound half of the Theta is not derived in the text.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The informal statement says 'generic V' without the explicit conditions of the formal one (r-local checks, N' non-commuting stabilizers)."
+    },
+    {
+     "id_suggestion": "thm1-formal-statement",
+     "value": "The paper states Theorem 1 (formal): for a stabilizer Hamiltonian with r-local parity check operators, a logical Pauli operator, and a perturbation that is a sum of k-local operators with k smaller than d, any V that does not commute with N' of the stabilizers gives, for noiseless input, a generalization error for measuring the logical operator of exact order lambda to the fourth power times N' squared over r to the fourth power.",
+     "anchor": "Theorem 1 (formal), SI Section II, p.S6",
+     "quotes": [
+      "Theorem 1 (formal) Let H0 be a [[n, 1, d]] stabilizer Hamiltonian with r-local parity check operators Sa, QL a logical",
+      "are k-local operators, k < d.",
+      "satisfying ∥[V, Sa]∥ > 0 for",
+      "N ′ operators Sa, the generalization error in Eq. (3) for noiseless input (p = 0) is εQ(QL) = Θ(λ4N ′2/r4)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Statement and conditions quoted, but the proof as printed gives only an upper bound (Eq. S.59).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof states the aim 'we must find the lower bound under the assumption that the choice of α can be arbitrary' but concludes with O(...), not a lower bound. The step from the sum over N' eigenstates to N'^2/r^4 uses the assumption that most local terms do not commute with about r stabilizers (SI p.S7)."
+    },
+    {
+     "id_suggestion": "thm1-proof-ends-in-upper-bound",
+     "value": "The printed proof of Theorem 1 states that the lower bound must be found for an arbitrary choice of the rotation alpha, assumes that the majority of local terms do not commute with a number of stabilizers proportional to r, and ends with an order-of (upper) bound on the error.",
+     "anchor": "Proof of Theorem 1, SI Section II, pp.S6-S7, Eq. (S.59)",
+     "quotes": [
+      "To prove the theorem, we must find the lower bound under the assumption that the choice of α can be arbitrary.",
+      "Furthermore, assuming that the majority of local terms do not commute with ∝ r stabilizers, the energy difference",
+      "εQ(QL) = O(λ4 max(M0, M1)) = O(λ4N ′2/r4)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of what the printed proof derives; the reader's reading of the gap is in reader_inference.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The statement is Theta; the proof as printed reaches O. The text does not derive the matching lower bound."
+    },
+    {
+     "id_suggestion": "thm1-consequence-distance-independent",
+     "value": "The authors state that Theorem 1 shows the error from measuring the unperturbed logical operator vanishes as lambda to the fourth power independent of the code distance d, so measuring logical operators does not help to reach fault tolerance by increasing distance, and that for noisy inputs it leads to a non-vanishing error for any lambda, including zero.",
+     "anchor": "Main text p.3, after Theorem 1",
+     "quotes": [
+      "Theorem 1 shows that the error vanishes as λ4, inde-",
+      "pendent of the distance d. Therefore, measuring logical",
+      "operators for the unperturbed code does not help if the",
+      "goal is to achieve fault tolerance by increasing the code",
+      "measuring logical operators for noisy inputs (Pα ≠ I)",
+      "will necessarily lead to a non-vanishing error for any λ,",
+      "including λ = 0."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Consequence drawn in the text from Theorem 1; the noisy-input statement has no separate proof.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Theorem 1 is for noiseless input; the noisy-input sentence is not covered by it."
+    },
+    {
+     "id_suggestion": "thm1-remark1-commuting-perturbation",
+     "value": "The authors state in Remark 1 that if the perturbation commutes with the unperturbed Hamiltonian, both conditions considered give a vanishing generalization error.",
+     "anchor": "Remark 1, SI Section II, p.S7",
+     "quotes": [
+      "Remark 1 Condition [H0, V ] = 0 break the notion of generality, both provide vanishing generalization error."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of a case that lies outside Theorem 1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thm1-remark3-exponent-from-mse",
+     "value": "The authors state in Remark 3 that the exponent four in Theorem 1 is due to the use of mean square loss to measure the generalization error, and that the exponent would be 2x for an Lx loss.",
+     "anchor": "Remark 3, SI Section II, p.S7",
+     "quotes": [
+      "Remark 3 The scaling exponent 4 in Theorem 1 is due to the fact that we use mean square loss to measure generalization error, the exponent would be 2x if we used Lx loss function."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A remark with no derivation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "This also means the exponents in Theorems 2 and 3 are for squared error; a statement about 'quadratic improvement' compares exponents of squared error, and the ratio of exponents does not change with the loss."
+    },
+    {
+     "id_suggestion": "thm1-numerics-fig2a",
+     "value": "The authors report simulating, for the five-qubit code, the Steane code and Shor's code (each of distance three) and the smallest distance-five code [[11, 1, 5]], the error of measuring the unperturbed logical operator under a perturbation that is a sum of single-qubit terms sampled from the Gaussian unitary ensemble with unit spectral norm, and that the dashed line in Fig. 2(a) with scaling exponent four is as predicted by Theorem 1.",
+     "anchor": "Main text p.3, Fig. 2(a) and its caption; SI Section VI.B.1, p.S18",
+     "quotes": [
+      "stabilizer codes of distance d = 3: the five-qubit code",
+      "also consider the smallest distance-5 code, [[11, 1, 5]] [43].",
+      "tary ensemble and normalized so that its spectral norm",
+      "is unity, ||Vi|| = 1. The results are shown in Fig. 2(a).",
+      "Dashed line has scaling exponent α = 4, as predicted by Theorem 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical illustration; the data points are in a figure the text layer does not carry.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "One random-perturbation ensemble; the statement is that the curves follow the exponent, not a fitted exponent with error bars."
+    },
+    {
+     "id_suggestion": "fig2-sim-details",
+     "value": "The authors report that for Fig. 2 the decoding loss was estimated on S = 103 samples (exponent printed flat, read as ten to the third power) of the input state, averaged over 105 different realizations (exponent printed flat, read as ten to the fifth power) of a single-qubit perturbation sampled from 2 × 2 GUE and normalized to unit norm.",
+     "anchor": "SI Section VI.B.1, p.S18",
+     "quotes": [
+      "In all cases, we estimate the decoding loss εQ on S = 103 samples of the input state",
+      "results are then averaged over 105 different realizations of the single-qubit perturbation, V =",
+      "correction Vi is acting on qubit i, sampled from 2 × 2 GUE, and normalized such that ||Vi|| = 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Details of a numerical protocol.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fig2-codeword-rotation-chosen-for-qec",
+     "value": "The authors state that the unitary mixing the two lowest perturbed eigenstates into codewords is chosen to optimize standard QEC performance, by maximizing the expectation of logical Z on the first codeword and of logical X on the plus state.",
+     "anchor": "SI Section VI.B, p.S17",
+     "quotes": [
+      "where αkk′ is a unitary matrix that we can choose to optimize standard QEC performance.",
+      "t1 and t2 by maximizing ⟨Ω0|ZL|Ω0⟩, and t3 by maximizing ⟨Ω+|XL|Ω+⟩"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' statement of their simulation setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The standard-QEC baseline is given the codeword basis that favors it; the text does not say a comparable choice is made for the QNN, which learns its own unitary."
+    },
+    {
+     "id_suggestion": "thm2-noiseless-upper-bound",
+     "value": "The paper states Theorem 2 for noiseless input: for any V, input distribution and Pauli error distribution, the generalization error of standard QEC (syndrome measurement, correction, then logical measurement) is bounded above by order lambda raised to twice the ceiling of d over k, as lambda goes to zero; the formal version uses a quantity xi equal to d when p = 0.",
+     "anchor": "Theorem 2, main text p.3; Theorem 2 (Formal), SI Section III, p.S8, Eq. (S.63)",
+     "quotes": [
+      "For noiseless input, the generalization error for standard QEC is εQ(QQEC) = O(λ2⌈d/k⌉).",
+      "Here we use O notation to indicate asymptotic upper bound as λ → 0 and ⌈x⌉ is a ceiling function that rounds up any non-integer x.",
+      "εQ(QQEC) = O(λ2⌈ξ/k⌉),",
+      "where ξ = d if p = 0 and ξ = d − 2p + 1 if p > 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from the informal and formal versions; proof in SI Section III.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "In the formal statement the same bound covers p > 0 with xi = d - 2p + 1. The proof is a case analysis of when matrix elements of products of Pauli operators can be nonzero (Scenarios 1 to 3, SI pp.S9-S10)."
+    },
+    {
+     "id_suggestion": "thm2-noisy-tight-scaling",
+     "value": "The paper states Theorem 2 for noisy input: for generic V, the generalization error of standard QEC is of exact order lambda raised to twice the ceiling of (d + 1 - 2p) over k; the formal version requires p at least one and a weighted squared expectation of the order-(d - 2p + 1) correction matrix W to be positive.",
+     "anchor": "Theorem 2 (informal), main text p.3; Theorem 2 (Formal), SI Section III, p.S8, Eqs. (S.64)-(S.65)",
+     "quotes": [
+      "For noisy input (p > 1) and generic V , the generalization error is εQ(QQEC) = Θ(λ2⌈(d+1−2p)/k⌉).",
+      "Moreover, for p ≥ 1 if ⟨W (d−2p+1)⟩µ(θ,ϕ) > 0,",
+      "the generalization error is εQ(QQEC) = Θ(λ2⌈(d+1−2p)/k⌉)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and its condition (positivity of the weighted expectation of W) are quoted; proof in SI Section III.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The informal text says p > 1; the formal text says p >= 1; the p = 1 simulations match the formal one. Eq. S.86 gives lambda to the ceiling of 2(d-2p+1)/k, which equals twice the ceiling only for k = 1 or when (d+1-2p)/k is an integer."
+    },
+    {
+     "id_suggestion": "thm2-remark4-genericity",
+     "value": "The authors state in Remark 4 that there is no reason to believe the condition on the weighted expectation of W is violated for more than a small family of finely tuned perturbations and noise distributions, and so call a perturbation that satisfies it general.",
+     "anchor": "Remark 4, SI Section III, p.S8",
+     "quotes": [
+      "Remark 4 For any given µ(θ, ϕ), there is no reason to believe that Eq. (S.64) is violated for more than a small family of finely tuned perturbations V and noise distributions."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A belief of the authors; no argument or measurement is given.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thm2-corollary-1local",
+     "value": "The authors state as a corollary that for states unaffected by noise, turning on error correction restores the dependence on the code distance in the error scaling, and that for 1-local perturbations the constant lambda to the fourth power scaling of Theorem 1 becomes of order lambda raised to twice d.",
+     "anchor": "Main text p.3, after Theorem 2",
+     "quotes": [
+      "As a corollary, for states unaffected by noise (p = 0), turning on error correction restores dependence on the code distance in the error scaling.",
+      "In particular, for 1-local perturbations, the Θ(λ4) constant scaling of Theorem 1 becomes O(λ2d)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Direct specialization of Theorem 2 with k = 1, p = 0.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The paper's own simulations find a steeper exponent, 2(d+1), than this bound."
+    },
+    {
+     "id_suggestion": "thm2-numerics-noiseless-fig2b",
+     "value": "The authors report that for the codes studied under noiseless input, all curves have the same lambda raised to 2(d+1) scaling, consistent with the O of lambda to the 2d upper bound in Theorem 2, and show the collapsed data, log of the error divided by (d + 1) against lambda.",
+     "anchor": "Main text p.3, Fig. 2(b) and caption",
+     "quotes": [
+      "For the noiseless case (Fig. 2(b)), we find that for the codes we study, all curves have the same λ2(d+1) scaling, consistent with the O(λ2d) upper bound in Theorem 2.",
+      "Dashed line has scaling exponent α = 2(d + 1), consistent with Theorem 2.",
+      "log(εQ(QQEC))/(d + 1) versus λ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical illustration for four small codes.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The observed exponent is one step of d above the proven bound, a gap the authors note in the Discussion."
+    },
+    {
+     "id_suggestion": "thm2-numerics-noisy-fig2c",
+     "value": "The authors report that for states affected by p one-qubit Pauli errors the values of log of the error divided by (d + 1 - 2p) collapse to the same slope, which agrees with their tight bound in Theorem 2, and that curves from different codes nearly collapse into a single universal shape in Fig. 2(a)-(c) after dividing by the scaling exponent.",
+     "anchor": "Main text pp.3-4, Fig. 2(c) and caption",
+     "quotes": [
+      "Dashed line has scaling exponent α = 2(d + 1 − 2p), as predicted by Theorem 2.",
+      "we show that the values of log(εQ(QQEC))/(d + 1 − 2p) collapse to the same slope, agrees with our tight bound in Theorem 2.",
+      "Note that all the curves from different codes nearly collapse into a single, universal shape in (a)-(c) after dividing by the scaling exponent of the dashed line."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical illustration; points are in a figure.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thm2-gap-open-question",
+     "value": "The authors report a minor gap between the O of lambda to the 2d upper bound of Theorem 2 and the empirical O of lambda to the 2(d+1) performance of standard QEC for noiseless input and 1-local perturbation, and state that whether the bound in Theorem 2 can be improved remains an open question.",
+     "anchor": "Discussion, p.6",
+     "quotes": [
+      "our study reveals a minor gap between the O(λ2d) upper bound scaling in Theorem 2 and the empirical O(λ2(d+1)) performance for standard quantum error correction with noiseless input states for k = 1 local perturbation.",
+      "Whether the bound in Theorem 2 can be improved remains an open question."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of an open problem in the Discussion.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "definition-qec-effective-logical-operator",
+     "value": "The authors define standard QEC decoding as syndrome measurement followed by correction with the smallest-weight Pauli corrections and a logical measurement, equal to measuring the adjoint of the error-correction map applied to the logical operator, written through Kraus operators that are the correction times the projector onto the codespace.",
+     "anchor": "Main text p.3, Eq. (4); SI Section III, p.S8, Eqs. (S.66)-(S.68)",
+     "quotes": [
+      "The combination of these two procedures is equivalent to measuring the operator",
+      "where EQEC(·) is the quantum error-correction map (see SI Section III), and A† denotes the adjacent map for a superoperator A",
+      "where Fβ are Kraus operators for error correction, P is the projector to the codespace.",
+      "The choice of each operator Cβ is not unique; we consider the set where each Cβ has the smallest possible weight."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definitions of the standard decoder used in Theorem 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "definition-weighted-squared-expectation",
+     "value": "The authors define a weighted squared expectation of a 2 × 2 operator, as the minimum over rotations of the Bloch-sphere integral of the input measure times the squared expectation, and use it in the condition for the tight scaling in Theorem 2.",
+     "anchor": "SI Section III, p.S8, Eq. (S.61)",
+     "quotes": [
+      "First, let us introduce the weighted squared expectation for a 2 × 2 operator O as"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition used in the condition of Theorem 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thm2-proof-weight-inequality",
+     "value": "The paper derives in the proof of Theorem 2 that for the nonzero terms in the case where both operators act as logical operators, the sum of the weights of the two perturbation operators is at least d + 1 - 2p, using that any correction operator has weight with twice the weight at most d - 1.",
+     "anchor": "Proof of Theorem 2, SI Section III, p.S10, Eq. (S.79)",
+     "quotes": [
+      "S(Kµ) + S(Kν) ≥ 2d − 2S(Cβ) − 2S(Pα) ≥ d + 1 − 2p,",
+      "i.e. 2S(Cβ) ≤ d − 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "An intermediate result of the proof of Theorem 2, stated with its conditions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "This step gives the d + 1 - 2p in the exponent. For Scenario 2 (one identity, one logical) the proof gives weight at least d only."
+    },
+    {
+     "id_suggestion": "si-knill-laflamme-and-uncorrectable-error",
+     "value": "The authors state that a stabilizer code has distance d = 2k + 1 if it can correct up to k-qubit Pauli errors, that for p-local Pauli errors with 2p + 1 at most d the code satisfies the Knill-Laflamme condition, and that above that distance they assume at least one weight-d Pauli operator makes the codewords non-orthogonal.",
+     "anchor": "SI Section I, p.S1, Eqs. (S.3)-(S.4)",
+     "quotes": [
+      "The stabilizer code {|Ω(i0)⟩} is said to have code distance d = 2k + 1 if it can be corrected up to k-qubit Pauli errors.",
+      "any p-local Pauli operator Pα such that 2p + 1 ≤ d, the stabilizer code satisfies the Knill-Laflamme (KL) condition,",
+      "Conversely, when 2p + 1 > d, we assume that there exist at least one Pauli operator Perr of weight d such that"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definitions and an assumption the SI lemmas rely on.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The SI uses k for the number of correctable errors in d = 2k + 1, while the main text uses k for the locality of V."
+    },
+    {
+     "id_suggestion": "claim1-pauli-maps-eigenstate-to-eigenstate",
+     "value": "The paper proves Claim 1: for any eigenstate of the unperturbed stabilizer Hamiltonian and any Pauli operator, the Pauli operator applied to the state is also an eigenstate of that Hamiltonian.",
+     "anchor": "Claim 1, SI Section I, p.S1-S2, Eq. (S.5)",
+     "quotes": [
+      "Claim 1 For any eigenstate |ψk(0)⟩ of the Hamiltonian H0 and any Pauli operator P , the state P |ψk(0)⟩ is also an eigenstate of H0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement quoted with a short complete proof (S.5).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "si-brillouin-wigner-setup-and-degeneracy-problem",
+     "value": "The authors use the Brillouin-Wigner perturbative expansion, which needs no separate formula for a degenerate unperturbed spectrum, and state that with an arbitrary choice of degenerate eigenstates the series cannot be treated as a Taylor series because the propagator denominator can be polynomially small in lambda.",
+     "anchor": "SI Section I, p.S2",
+     "quotes": [
+      "To find one, we use the Brillouin-Wigner (BW) perturbative expansion [46] of the form",
+      "However, with arbitrary choice of the degenerate eigenstates, the perturbation series in Eq. (S.8)-(S.9) cannot be treated as a Taylor series in the following sense.",
+      "This is because the denominator of the propagator Gk can be polynomially small in λ, thus potentially reducing the power of or even cancelling the λ-prefactor."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' statement of their method and the problem it solves.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma1-basis-with-order-d-remainder",
+     "value": "The paper states Lemma 1: there is a basis of the degenerate ground space, related to the unperturbed eigenstates by a 2 × 2 unitary, in which each perturbed eigenstate is a normalized series in the reduced propagator times the perturbation, plus a remainder of order lambda to the d; with the reduced propagator all denominators are of order one because of the gap.",
+     "anchor": "Lemma 1, SI Section I, p.S2, Eqs. (S.11)-(S.12); proof pp.S3-S4",
+     "quotes": [
+      "Lemma 1 There exists a basis |ϕk(0)⟩ = k′ βkk′ |ψk(0′)⟩, where β is a 2 × 2 unitary transformation, such that",
+      "where N > 0 and G˜0 takes the form",
+      "It is important to note that now, in the case of twofold groundspace degeneracy, all denominators in Eq. (S.12) have O(1) scaling due to the presence of a gap in the unperturbed Hamiltonian, see Eq. (S.10)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement quoted (its series is in an equation that the text layer splits); proof in SI Section I.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof states, without derivation in the text, that f1(lambda) = -f0*(lambda) + O(lambda^d) and that M0 = M1 + O(lambda^d) (SI p.S4, Eq. S.22 and the lines after it)."
+    },
+    {
+     "id_suggestion": "lemma2-perturbed-knill-laflamme",
+     "value": "The paper states Lemma 2: for codewords that are a unitary mixture of the two lowest perturbed eigenstates and p-local Pauli errors, the matrix element of a product of two Pauli errors between codewords equals an order-one matrix times the Kronecker delta plus lambda raised to q times a matrix h, with q equal to the ceiling of (d - 2p) over k, where the order-one matrix has unit diagonal and h has zero diagonal and is Hermitian-symmetric.",
+     "anchor": "Lemma 2, SI Section I, p.S3, Eq. (S.13); proof p.S5",
+     "quotes": [
+      "Lemma 2 Let |Ωk⟩ = k′ ukk′ |ψk′ ⟩ be the superposition of the two lowest eigenstates of the Hamiltonian H in Eq. (S.6) for some 2 × 2 unitary matrix u, and let Pα be p-local Pauli errors. Then",
+      "where q = ⌈(d − 2p)/k⌉, ϵαβ and hαa,βb are O(1) matrices satisfying ϵαα = 1, hαk,αk′ = 0 and hαk,βk′ = h∗βk′,αk."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted; proof in SI Section I.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Theorems 3 and Proposition 1 are built on this lemma."
+    },
+    {
+     "id_suggestion": "lemma3-nonvanishing-overlap-exists",
+     "value": "The paper states Lemma 3: under the uncorrectable-error condition there exist a k-local V and p-local Pauli operators for which a traceless-part norm of the order-(d - 2p) matrix T is greater than zero; the authors read it as showing that, for p = 0, the two lowest eigenstates become non-orthogonal at the d-th order of perturbation theory, and for p > 0 at order d - 2p.",
+     "anchor": "Lemma 3, SI Section I, p.S3, Eqs. (S.14)-(S.15); proof pp.S5-S6",
+     "quotes": [
+      "Lemma 3 Upon condition in Eq. (S.4), there exists k-local V and p-local Pauli operators Pα, Pβ such that",
+      "This Lemma for p = 0 shows that there exists a perturbation V such that the two lowest eigenstates become non-orthogonal at the d-th order of perturbation theory.",
+      "In the presence of noise affecting p > 0 qubits, the overlap becomes nonvanishing at the d − 2p order."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and the authors' reading quoted; proof in SI Section I.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The matrix T in Eq. S.15 and in Eq. S.115 sums powers of V up to d - 2p, while Lemma 2 and the lemma's own proof use the ceiling of (d-2p)/k powers; the two agree for k = 1 only. Also S.15 starts the sum at m = 0 and S.115 at m = 1."
+    },
+    {
+     "id_suggestion": "qnn-definition-unitary-output-qubit",
+     "value": "The authors define the QNN decoder as a unitary circuit that takes the encoded state as input and returns the result by measuring the output qubit, equivalent to measuring the operator U† Z0 U for a unitary U and the Pauli-Z operator on the output qubit.",
+     "anchor": "Decoding using QNN, main text p.3, Eq. (5)",
+     "quotes": [
+      "Essentially, QNN is a unitary circuit that takes the encoded state as input and returns the result by measuring the output qubit.",
+      "QQNN := UQ† Z0UQ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the QNN decoder.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-knowledge-assumed",
+     "value": "The authors state that the QNN decoder is used where standard decoding cannot be applied because there is no knowledge of the unperturbed code, and that they assume no knowledge of the perturbed Hamiltonian beyond access to the two spanning codewords of its ground space.",
+     "anchor": "Main text p.4",
+     "quotes": [
+      "The standard decoding approaches considered in Theorem 1-2 cannot be applied if one has no knowledge about the unperturbed code.",
+      "In the following, we do not assume any knowledge of the perturbed Hamiltonian H beyond the access to the two spanning codewords of its ground space."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' statement of their assumption.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The numerical QNN is trained on labeled states (next assertion); the optimal unitary of Theorem 3 uses exact codewords and the overlap matrices."
+    },
+    {
+     "id_suggestion": "qnn-noiseless-arbitrary-precision",
+     "value": "The authors state that in the absence of noise a QNN decoder, unlike standard QEC, can achieve arbitrary precision at sufficiently large depths, because for any pair of codewords there is a unitary mapping them to a product state with different states of the target qubit; Remark 6 states the same for the Theorem 3 QNN with no constraint on the architecture.",
+     "anchor": "Main text p.4; Remark 6, SI Section V, p.S16",
+     "quotes": [
+      "In the absence of noise in the input, QNN decoding, unlike standard QEC, can achieve arbitrary precision at sufficiently large depths.",
+      "This is because, for arbitrary pair of codewords, there exists a unitary UQ that transforms them into a product state with different states of the target qubit.",
+      "Remark 6 For noiseless input (p = 0), the QNN considered in Theorem 3 can decode input states with arbitrary accuracy, provided that there is no constraint on its architecture."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A one-sentence existence argument and a remark; no formal theorem.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Theorem 3 at p = 0 gives only the order lambda to four times ceil(d/k), so 'arbitrary accuracy' is a different statement, resting on the unitary being built from the exact codewords."
+    },
+    {
+     "id_suggestion": "thm3-formal-statement",
+     "value": "The paper states Theorem 3 (formal): for every Pauli observable among X, Y and Z there is a unitary U such that the generalization error of the QNN observable U† Z0 U is of order lambda raised to four times the ceiling of (d - 2p) over k.",
+     "anchor": "Theorem 3 (informal), main text p.4; Theorem 3 (Formal), SI Section IV, p.S11",
+     "quotes": [
+      "For noisy inputs, one could always find a QNN such that its generalization error for decoding is εQ(QQNN) = O(λ4⌈(d−2p)/k⌉).",
+      "Theorem 3 (Formal) Define the quantum neural network observable QQNN = UQ† Z0UQ, where UQ is a unitary transformation and Z0 is the Pauli Z operator on the target qubit.",
+      "Then for every Pauli observable Q ∈ {X, Y, Z} there exists a corresponding unitary UQ such that the error εQ(QQNN)) = O(λ4⌈(d−2p)/k⌉)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from the informal and formal versions; proof in SI Section IV.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "It is an existence result for an upper bound, with no bound on the number of gates and no training procedure."
+    },
+    {
+     "id_suggestion": "thm3-proof-construction-and-assumption",
+     "value": "The paper's proof of the QNN decoding theorem builds nearly orthonormal states from the error-corrupted codewords with a correction of order lambda to the q, with q the ceiling of (d - 2p) over k, and assumes that the eigenvalues of the matrix of overlaps are positive for small enough lambda; the optimal unitary follows by orthonormalizing these states.",
+     "anchor": "Proof of Theorem 3, SI Section IV, pp.S11-S14, Eqs. (S.88)-(S.94), (S.104)",
+     "quotes": [
+      "Assume D is the number of independent errors {Pα}. Assuming that eα > 0 for small enough λ, our goal is to find a set of (unnormalized) vectors |wαa⟩ such that states",
+      "Thus, we get the basis for the optimal unitary QNN by substituting Eq. (S.104) into Eq. (S.94).",
+      "where the last O(λ2q) term can be decided by the Gram-Schmidt orthonormalization procedure applied to the set of vectors {|vαk⟩}."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of the proof's construction and one assumption it adds; not a result of its own.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The positivity of e_alpha is not a condition of the theorem as stated."
+    },
+    {
+     "id_suggestion": "thm3-practicality-and-open-problem",
+     "value": "The authors state that achieving the optimal QNN may involve numerous gates and a complex optimization process, and that it is an interesting future direction to find whether logarithmic-depth QNNs such as convolutional networks can saturate the bound in Theorem 3.",
+     "anchor": "Main text p.4 and Discussion p.6",
+     "quotes": [
+      "In practice, achieving this optimal QNN may involve numerous gates and a complex optimization process.",
+      "An interesting future direction is to find whether it is possible to construct logarithmic-depth QNNs such as convolutional NNs that saturate the bound in Theorem 3."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of a limit and an open problem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "prop1-informal-lower-bound",
+     "value": "The paper states Proposition 1 (informal): for noisy inputs with a distribution that is symmetric under a shift of the phase by π and label values of plus or minus one, for generic V, every QNN unitary must have generalization error bounded below by order lambda raised to four times the ceiling of (d - 2p) over k.",
+     "anchor": "Proposition 1 (informal), main text p.4",
+     "quotes": [
+      "Proposition 1 (informal) Consider noisy inputs with distribution µ(θ, ϕ) = µ(θ, ϕ + π) and label values fQ(θ, ϕ) = ±1.",
+      "Then for generic V , all QNN unitaries UQ must satisfy εQ(QQNN) = Ω(λ4⌈(d−2p)/k⌉).",
+      "Here we use Ω notation to indicate asymptotic lower bound as λ → 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from the informal and formal versions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Together with Theorem 3 it makes the exponent of the best QNN exactly four times ceil((d-2p)/k). The label values of plus or minus one hold for the logical basis states of the Bloch sphere (poles and axes), not for a general input."
+    },
+    {
+     "id_suggestion": "prop1-formal-statement",
+     "value": "The paper states Proposition 1 (formal): under the conditions of Theorem 3, for any input distribution with label values of plus or minus one, symmetric under a π shift of the phase, and such that a weighted fourth-power expectation of the matrix T between a state and its phase-shifted partner is positive for all shifts, every QNN unitary has generalization error bounded below by order lambda raised to four times the ceiling of (d - 2p) over k.",
+     "anchor": "Proposition 1, SI Section V, p.S14, Eqs. (S.116)-(S.117)",
+     "quotes": [
+      "Proposition 1 Under conditions of Theorem 3, consider any distribution µ(θ, ϕ) such that f (θ, ϕ) = ±1, µ(θ, ϕ) = µ(θ, ϕ + π), and",
+      "EαEβ dθdϕ µ(θ + θ0, ϕ + ϕ0)|⟨ψk(θ, ϕ)|Tαβ|ψl(θ, ϕ + π)⟩|4 > 0.",
+      "Then, for all possible UQ the generalization error satisfies",
+      "εQ(QQNN) = Ω(λ4⌈(d−2p)/k⌉)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and its explicit condition (S.116) are quoted; proof in SI Section V.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The matrix T of Eq. S.115 is written with powers d - 2p of V and sums from m = 1, unlike the ceiling((d-2p)/k) used in Lemma 2 and in S.135; they agree for k = 1. The proof ends 'Finally, using Theorem 3, we arrive at the statement of the Proposition', i.e. the lower bound is stated to be matched by the upper bound."
+    },
+    {
+     "id_suggestion": "lemma4-orthogonal-state-opposite-expectation",
+     "value": "The paper states the last lemma of the SI: any code state of the unperturbed code and its orthogonal state in the codespace have expectation values of the same logical Pauli operator with opposite sign, and shows it by computing the expectation values for X, Y and Z.",
+     "anchor": "Lemma 4, SI Section V, p.S14, Eqs. (S.118)-(S.121)",
+     "quotes": [
+      "in the codespace |Ψ(⊥0)⟩ have opposite-sign expectation values in respect to QL ∈ {XL, YL, ZL}, i.e.",
+      "⟨Ψ(0)|QL|Ψ(0)⟩ = −⟨Ψ⊥(0)|QL|Ψ(⊥0)⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement quoted with a direct computation in the proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "prop1-remark5-generality-condition",
+     "value": "The authors state in Remark 5 that the assumption of the positive weighted fourth-power expectation is a generality condition, that the earlier technical lemma shows the matrix T is not trivial for some perturbations and noise, and that the condition fails only for a fine-tuned choice of input states.",
+     "anchor": "Remark 5, SI Section V, p.S16",
+     "quotes": [
+      "Remark 5 The assumption in Eq. (S.116) serves as a generality condition for the chosen input states and perturbation V .",
+      "More generally, there is no particular reason to believe that this expression vanishes for generic parameters of the problem."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A belief of the authors; the condition is not verified for any given code in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-architecture-and-parametrization",
+     "value": "The authors describe their QNN as two blocks: a correction circuit of local two-qubit gates in a brickwork pattern of depth dC, and a decoding circuit that is a convolutional network of O(log n) layers of two-qubit unitaries, discarding half the qubits after each layer; each two-qubit unitary is the exponential of a sum over Pauli products with trainable angles.",
+     "anchor": "Main text pp.4-5, Fig. 3(a), Eq. (6)",
+     "quotes": [
+      "Our network, trainable to sample in logical Q-basis, consists of two blocks shown in Fig. 3(a): correction circuit CQ (blue) and decoding circuit DQ (green).",
+      "The correction circuit is composed of local two-qubit gates forming the brickwork pattern of depth dC.",
+      "In turn, the decoding circuit is a convolutional network consisting of O(log n) layers of two-qubit unitaries, discarding half the qubits after each layer, similar to previous proposals [30, 39].",
+      "where φαkβ ∈ [0, 2π] are trainable angles and σα are single-qubit Pauli matrices."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' description of their architecture.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-training-data-and-labels",
+     "value": "The authors state that the QNN is trained on a limited set of training and validation states in the code space with the corresponding labels (θ, ϕ), that one can assume such access because the ground space can be prepared adiabatically in experimental settings, and that the QNN is optimized on the training data with the generalization error as the objective.",
+     "anchor": "Main text pp.4-5",
+     "quotes": [
+      "dation states in code space {|Ψµ⟩}, with equal probabilities affected by p-local Pauli errors, and the correspond-",
+      "ing labels (θµ, ϕµ). In practice, one can assume such access, as the groundspace can be prepared adiabatically",
+      "in experimental settings. We optimize the QNN with objective function εQ(QQNN) (Eq. (3)) on the training data."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The adiabatic-preparation justification is the authors' claim without support in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Training needs states with known logical labels; the QNN is Hamiltonian-agnostic but not label-agnostic."
+    },
+    {
+     "id_suggestion": "qnn-training-protocol-fig3",
+     "value": "The authors report that the QNN was trained on 1600 training examples and validated on ten times as many independently drawn samples; dC = 4 gave 255 parameters, each two-qubit unitary having 15 free angles; optimization used BFGS with a maximum of 105 iterations and tolerance 10−15 (exponents printed flat, read as ten to the fifth and ten to the minus fifteenth); for the noisy case one of 16 single-qubit Pauli errors including the identity was applied at random.",
+     "anchor": "SI Section VI.C and VI.C.1, pp.S18",
+     "quotes": [
+      "After training, we test our QNN on NV = 10 × NT samples withheld from the training but independently drawn from the same distribution.",
+      "In Fig.3(b)-(d), we have NT = 1600 training examples.",
+      "Each two-qubit unitary Uk (Eq. (6)) contains 42−1 = 15 independent parameters.",
+      "we chose dC = 4, which corresponds to 255 parameters. We optimize these parameters with BFGS method using the SciPy optimize library (maximum number of iterations is 105, tolerance for termination is 10−15).",
+      "we randomly apply one of the M = 16 possible single-qubit Pauli errors (including the identity) to each of the sample states in both training and validation set."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of the numerical protocol.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-bfgs-better-than-sgd",
+     "value": "The authors report that optimizing with stochastic gradient descent tends to yield larger decoding error, incompatible with the accuracy required by the comparison with perturbation theory, and so use BFGS.",
+     "anchor": "SI Section VI.C.1, p.S18",
+     "quotes": [
+      "We find that, however, optimizing with SGD tends to yield larger decoding error, incompatible with the accuracy required by the comparison with perturbation theory."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An unquantified observation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-fig3-perturbation-uniform",
+     "value": "The authors state that for the QNN simulations of Fig. 3 they use a uniform 1-local perturbation equal to the sum over qubits of X plus Z, in contrast to the random Gaussian-unitary-ensemble perturbations used for the standard-decoding simulations.",
+     "anchor": "Main text p.5, Fig. 3",
+     "quotes": [
+      "We provide numerical simulation results in Fig. 3, where we study a uniform 1-local perturbation Vi =",
+      "in=1(Xi + Zi)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' statement of the Fig. 3 setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "One fixed structured perturbation; the theorems are for generic V."
+    },
+    {
+     "id_suggestion": "qnn-fig3-noiseless-superior",
+     "value": "The authors report that the QNN architecture with dC = 4 can decode noiseless inputs of the five-qubit code and achieves superior performance compared to the standard decoding schemes of Theorems 1-2 regardless of the perturbation strength, outperforming them across nearly two orders of magnitude in lambda, and that deeper architectures reduce the error further at the cost of longer training.",
+     "anchor": "Main text p.5; Fig. 3(b)-(c) caption, p.4",
+     "quotes": [
+      "Fig. 3(b)-(c) suggest that our QNN architecture (C = 4) can decode noiseless inputs and achieves superior performance compared to standard decoding schemes discussed in Theorems 1-2, regardless of the perturbation strength.",
+      "Panels (b)-(c) demonstrate that QNN significantly outperforms the standard approaches across nearly two orders of magnitude in λ.",
+      "The QNN error can be further reduced by considering deeper architectures at the cost of longer training times."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical result for one code, one perturbation, one architecture; data points in a figure.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "'Regardless of the perturbation strength' is stated for the range simulated."
+    },
+    {
+     "id_suggestion": "qnn-fig3d-noisy-same-scaling",
+     "value": "The authors report for the noisy 5-qubit-code simulation (d = 3, p = 1) that the lower bound predicts the same lambda to the fourth scaling for QNN and standard QEC and the present QNN saturates it, that QNN performance is comparable to standard QEC for small lambda and becomes superior for large lambda, and that Fig. 3(d) confirms that the scalings agree with the analytical predictions of Theorems 2-3.",
+     "anchor": "Main text p.5; Fig. 3(d) caption, p.4",
+     "quotes": [
+      "Incidentally, for the 5-qubit code (d = 3, p = 1) simulation, the lower bound in Theorem 3 predicts the same λ4 scaling as in Theorem 2, which the present QNN saturates.",
+      "Intriguingly, while QNN performance is comparable to that of standard QEC for small λ, and becomes superior for large λ.",
+      "Panel (d) confirms that the scaling of standard QEC and QNN agree with our analytical predictions in Theorems 2-3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One code, one noise model, one architecture; data in a figure.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "No exponent advantage is observed in this run, by the paper's own account; the advantage is at large lambda, outside the lambda-to-zero regime of the theorems."
+    },
+    {
+     "id_suggestion": "qnn-no-qnn-simulation-beyond-five-qubit-code",
+     "value": "The paper reports no QNN simulation for any code other than the 5-qubit code: the QNN figures are titled for the 5-qubit code, and the authors state only that one can potentially achieve better scaling with a larger-distance code such as the [[11,1,5]] code.",
+     "anchor": "Fig. 3 caption p.4; main text p.5; SI Section VI.C.1, p.S18",
+     "quotes": [
+      "FIG. 3. QNN performance for 5-qubit code.",
+      "However, with QNN one can potentially achieve better scaling by considering larger code distances such as the [[11,1,5]] code.",
+      "Specializing the general architecture in Fig.3(a) to 5-qubit code, we use the 5-qubit QNN architecture in Fig. S1."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope: QNN simulations are for the 5-qubit code (caption and SI).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The QNN advantage at higher distance is a theoretical existence result; it is not tested by any QNN run in the paper."
+    },
+    {
+     "id_suggestion": "qnn-ancilla-free-qec-illustration",
+     "value": "The authors state that their result illustrates that sequential error correction and measurement of the logical operator at the end of the circuit can be implemented by applying a QNN unitary and a single-qubit measurement without any ancilla, and that the approach requires no knowledge of the Hamiltonian, which standard QEC methods need.",
+     "anchor": "Main text p.5",
+     "quotes": [
+      "Meanwhile, this approach does not require any knowledge of the Hamiltonian, as needed in standard QEC methods.",
+      "Also, this result illustrates that sequential error correction and measurement of the logical operator at the end of the circuit can be implemented by applying a QNN unitary and single-qubit measurement without using any ancilla."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' reading of a simulation result.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-depth-study-fig-s1",
+     "value": "The authors report that a shallow network (dC = 1) fails to learn noisy samples even for the ideal stabilizer code, that the generalization error decreases as dC grows with a critical depth at which the scatter plot suddenly falls on the diagonal, that at dC = 4 the QNN expectation matches the target, and that the correction circuit is not equivalent to standard QEC; for dC = 4 the typical optimization time is around one hour on a four-core CPU.",
+     "anchor": "SI Section VI.C.2, pp.S18-S19, Fig. S1",
+     "quotes": [
+      "We find that for a shallow network, e.g., dC = 1, even for ideal stabilizer code (λ = 0), the QNN fails to learn noisy samples (Fig. S1(b)).",
+      "We observe that at dC = 4 the scatter plot falls on the diagonal (⟨XQNN⟩ ≈ fX ) (Fig. S1(e)).",
+      "but we emphasis that CQ is not really performing the error-correction equivalent to the standarad QEC.",
+      "For dC = 4, the typical optimization time is around one hour on a intel i7 @ 1.90GHz 4 Cores CPU (without parallelization).",
+      "DQ consitst of a single 2-qubit unitary."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Observations on the 5-qubit code from scatter plots.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The decoding circuit in the 5-qubit QNN is a single two-qubit unitary, not a logarithmic-depth convolutional network. The section later says Fig. S2 is for noiseless inputs, so it is not clear which inputs Fig. S1 used."
+    },
+    {
+     "id_suggestion": "qnn-architecture-comparison-fig-s2",
+     "value": "The authors report that for noiseless inputs (the task of Fig. 3(c)) generalization performance improves with depth dC = 2, 3, 4, that a translationally invariant architecture with 75 parameters, sharing parameters within a layer, performs worse than the 255-parameter dC = 4 architecture, and that all depths and architectures have roughly the same constant scaling with lambda, which they say suggests a robust scaling behavior.",
+     "anchor": "SI Section VI.C.2, p.S19, Fig. S2",
+     "quotes": [
+      "In Fig. S2, we consider different depths dC = 2, 3, 4, and find the generalization performance improves as depth increases.",
+      "e.g., dC = 4 (Trans. Inv. ) has 75 parameters, less than the 255 parameters in dC = 4.",
+      "We find that the generalization performance of this architecture is worse than that of the dC = 4 architecture we used in Fig. S1",
+      "It is worth noticing that all the different depths and architectures considered in Fig. S1 has roughly the same constant scaling with λ, suggesting a robust scaling behavior regardless of the specific architecture used."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Observations from one code and one task.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-barren-plateau-and-convolutional-circumvention",
+     "value": "The authors state, citing McClean et al. and Cerezo et al., that training quantum neural networks is known to suffer from the barren plateau problem, where gradients become exponentially small in the system size, and that it has been recently demonstrated that this can be circumvented with logarithmic-depth convolutional networks with local output observables.",
+     "anchor": "Introduction, p.2, refs. [38], [39]",
+     "quotes": [
+      "training quantum neural networks is known to suffer from the barren plateau problem, where gradients become exponentially small in the system size",
+      "Nevertheless, it has been recently demonstrated that the barren plateau problem can be circumvented by utilizing logarithmic-depth convolutional networks with local output observables [39]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to references [38] and [39].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "Reference [39]'s title in this paper's list is 'Cost function dependent barren plateaus in shallow parametrized quantum circuits'."
+    },
+    {
+     "id_suggestion": "claimed-log-depth-avoids-barren-plateau",
+     "value": "The authors state that if the combined QNN has an overall logarithmic depth, they expect it does not suffer from the barren plateau problem and can be efficiently optimized.",
+     "anchor": "Main text p.4",
+     "quotes": [
+      "If the combined network has an overall logarithmic depth, we expect that it does not suffer from the barren plateau problem [38] and can be efficiently optimized."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An expectation stated without argument or measurement.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The simulated 5-qubit QNN has 255 parameters, was trained with BFGS, and needed about an hour; no scaling in n is measured."
+    },
+    {
+     "id_suggestion": "claim-simple-logical-measurement-insufficient",
+     "value": "The authors state that they show simple measurements of logical operators are not sufficient to achieve fault tolerance, and that a sequence of stabilizer measurements followed by error corrections are required to decode even noiseless input states.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "In particular, we show that simple measurements of logical operators are not sufficient to achieve fault tolerance, and that a sequence of stabilizer measurements followed by error corrections are required to decode even noiseless input states."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A summary sentence; Theorems 1 and 2 support the first half for the specific decoders they treat.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "'Required' is not proved: Theorem 3 and Remark 6 give a QNN decoder with better error that does not use syndrome measurements."
+    },
+    {
+     "id_suggestion": "cited-qnns-recognize-phases-and-perform-qec",
+     "value": "The authors state, citing Cong et al., Locher et al. and Cao et al., that parameterized quantum circuits, also called quantum neural networks, have been demonstrated to recognize quantum states in different phases and perform QEC.",
+     "anchor": "Introduction, pp.1-2, refs. [30], [36], [37]",
+     "quotes": [
+      "strated that parameterized quantum circuits [5, 34, 35], also called Quantum Neural Networks (QNNs), can recognize quantum states in different phases and perform QEC [30, 36, 37]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to references [30], [36], [37].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-provable-advantage-and-frame",
+     "value": "The authors conclude that they developed a theoretical framework for decoding stabilizer codes perturbed by disorder, proved general performance bounds for standard QEC versus QNN decoding, and that their results reveal universal scaling of the decoding error for arbitrary code distances and suggest a provable advantage of QNNs over standard QEC for decoding realistic codes with large code distances.",
+     "anchor": "Discussion, pp.5-6",
+     "quotes": [
+      "We proved general performance bounds regarding the decoding errors of standard QEC versus QNN decoding techniques for such codes.",
+      "Our results reveal universal scaling behaviors of the decoding error for arbitrary code distances, and suggests a provable advantage of using QNNs over standard QEC methods for",
+      "decoding realistic codes with large code distances."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion; its support is Theorems 1 to 3 and Proposition 1.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "'Universal' rests on constants hidden in the O and Theta and on generic V; the advantage is an exponent comparison as lambda goes to zero."
+    },
+    {
+     "id_suggestion": "open-problems-beyond-near-stabilizer-and-qnn-depth",
+     "value": "The authors state as open problems whether their formalism can be extended beyond near-stabilizer codes, and how the structure and depth of QNNs affect practical decoding performance.",
+     "anchor": "Discussion, p.6",
+     "quotes": [
+      "While we focus on imperfect stabilizer codes, an immediate question is whether our formalism can be extended beyond near-stabilizer codes.",
+      "In addition, how does the structure and depth of QNNs affect practical decoding performance remains an important open problem."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of open problems.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
