@@ -1,0 +1,356 @@
+{"papers": [{
+  "record_id": "yu-2024-quantum-federated-learning-distributed-quantum",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Yu-et-al._2022_Quantum-federated-learning-based-on-gradient-descent__2212.12913.pdf",
+  "title_in_file": "Quantum Federated Learning for Distributed Quantum Networks",
+  "version_note": "The text is arXiv:2212.12913v2 (26 Apr 2024), the journal-style revision of the 2022 preprint named in the file name; the record id carries 2024.",
+  "pages": 12,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A proposal for quantum federated learning based on gradient descent (QFLGD): a quantum gradient descent routine for local training, a quantum secure multi-party computation protocol for gradient aggregation, and a small Qiskit simulation on a two-client linear regression example.",
+  "bears_on_context": "qml",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "qfl-demo-simulated-steps",
+      "verdict": "confirmed",
+      "note": "Right as stored. Scope detail is entered as a separate assertion: only the estimation of F(x.w) for Bob1 is described as run on the simulator; the other gradient estimates are said to come from a similar experiment, and the aggregation error is said to come from theoretical analysis.",
+      "value": "The authors state that they showed how to apply the framework to train a federated linear regression model and simulated some steps on the IBM Qiskit simulator.",
+      "anchor": "Section VI Conclusions, p.9",
+      "quotes": ["Finally, we indicated how to apply it to train a federated linear regression model and simulated some steps with the help of the IBM Qiskit simulator."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "scope", "certainty_reason": "The paper states its own experimental scope in Section VI.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qfl-scope-ordinary-qc",
+      "verdict": "confirmed",
+      "note": "Right as stored. The conclusion adds that running the whole QFLGD process on NISQ devices is left for future work.",
+      "value": "The authors state that they focus on a quantum algorithm running on ordinary quantum computers and present a quantum federated learning based on gradient descent (QFLGD).",
+      "anchor": "Section I Introduction, p.2",
+      "quotes": ["In this paper, we focus on the quantum algorithm running on ordinary quantum computers and present a quantum federated learning based on gradient descent (QFLGD)."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "scope", "certainty_reason": "The paper states its own scope in Section I.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qfl-speedup-claim",
+      "verdict": "narrowed",
+      "note": "The stored value omits the conditions the paper attaches. The exponential gain in M is stated for the choice that one over epsilon equals log(M D), with the three tolerance errors set equal. The quadratic gain in D is stated only if the elements of w are timely written in QRAM; the stated runtime O(D squared polylog(M D)) has the same D-dependence as the classical O(M D squared) before that step. The paper gives the analysis, not a measured speedup.",
+      "value": "The authors state that the time complexity of training the gradient is O(D2polylog(M D)) when ϵ−1 = log(M D), achieving exponential acceleration on the number of data samples; and that if the elements of w are timely writing in QRAM, the proposed algorithm has exponential acceleration on the number M and the quadratic speedup in the dimensionality D, compared with the classical algorithm whose runtime is O(M D2). The text layer prints the squared dimension flat as D2.",
+      "anchor": "Section IV-A, p.7",
+      "quotes": [
+        "This means that the time complexity of training gradient is O(D2polylog(M D)) when ϵ−1 = log(M D), achieving exponential acceleration on the number of data samples.",
+        "In this case, the proposed algorithm has exponential acceleration on the number M and the quadratic speedup in the dimensionality D, compared with the classical algorithm whose runtime is O(M D2)."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A complexity analysis that assumes QRAM oracles and a logarithmic precision; it is not a theorem with a named proof and the conditions are only in the text around it.",
+      "result_type": "theoretical", "context": "qml",
+      "reader_inference": "The paper gives no lower bound for the classical task and does not compare against classical sampling-based methods; the comparison is to the plain O(M D squared) gradient cost only."
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "qfl-network-setup",
+      "value": "The authors state that the distributed quantum network typically consists of a server and several clients with quantum computing capabilities.",
+      "anchor": "Section III, p.3",
+      "quotes": ["This distributed quantum network typically consists of a server and several clients with quantum computing capabilities."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup", "certainty_reason": "The paper states its own system model in Section III.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qfl-classical-baseline-cost",
+      "value": "The authors state that, for the classical gradient-descent federated learning they review, a client takes O(M D2) time to calculate all the elements of the local gradient on a classical computer.",
+      "anchor": "Section II, p.3",
+      "quotes": [
+        "Therefore, Bobk takes O(M D2) time to calculate",
+        "all the elements of the local gradient on a classical computer."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A cost estimate by the authors for the baseline, reasoned in a few sentences; it is the baseline against which the speedup claim is made.",
+      "result_type": "claim", "context": "qml",
+      "reader_inference": "The text layer prints the squared dimension flat as D2."
+    },
+    {
+      "id": "qfl-oracle-qram-assumption",
+      "value": "The authors assume oracles OX and Oy that access the entries of the data and labels in time O(polylog(M D)) and O(polylog(M )) when the data are stored in QRAM with an appropriate data structure, and an operation Unf that returns the norm of a data vector.",
+      "anchor": "Section III-A, p.3",
+      "quotes": [
+        "These two oracles can respectively access the entries of xi, y in time O(polylog(M D)) and O(polylog(M )) [17], [30], when the data are stored in",
+        "tum random access memory (QRAM) [31] with an appropriate",
+        "In addition, the operation"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "setup", "certainty_reason": "The paper states the access model its algorithm and complexity analysis rest on.",
+      "result_type": "setup", "context": "qml",
+      "reader_inference": "Every complexity claim in the paper is conditional on this access model; the cost of loading classical data into QRAM is not counted."
+    },
+    {
+      "id": "qfl-unf-norm-oracle-cost",
+      "value": "The authors state that the norm operation Unf can be implemented in time O (polylog(D)/ϵm) employing controlled rotation and quantum phase estimation, with the steps given in appendix A.",
+      "anchor": "Section III-A and Appendix A, pp.3 and 10-11",
+      "quotes": [
+        "Unf can be implemented in time O (polylog(D)/ϵm) employing controlled rotation [34] and quantum phase estimation (QPE) [35]."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A construction with a runtime statement but no theorem; the authors say it is inspired by Ref. [33].",
+      "result_type": "theoretical", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qfl-data-state-prep-cost",
+      "value": "The authors state that the process Uxi, which generates the state |ϕ (xi)⟩, runs in time O(polylog(D) + q).",
+      "anchor": "Section III-A, step (A1), p.4",
+      "quotes": ["is denoted as Uxi , which generates the state |ϕ (xi)⟩ in time O(polylog(D) + q)."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A runtime statement for a construction, given under the QRAM oracle assumption.",
+      "result_type": "theoretical", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qfl-param-state-two-methods",
+      "value": "The authors give two ways to put the parameter vector w(n) into a quantum state: one assumes QRAM that is read and written frequently, the other uses angle rotations R(ϑ) and needs no QRAM write; the second state is generated in time O(D), and the authors choose the second method as more feasible.",
+      "anchor": "Section III-A, step (A2), pp.4-5",
+      "quotes": [
+        "One way is based on the assumption that QRAM is allowed to read and write frequently.",
+        "is generated in time O(D) by applying the operation U (ϑt) for t = 1, 2, · · · , L.",
+        "we choose the second method which is more feasible, and"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A construction with a stated runtime and a design choice by the authors; not a theorem.",
+      "result_type": "theoretical", "context": "qml",
+      "reader_inference": "The O(D) preparation of the parameter state is linear in D, so the quadratic-in-D speedup claimed later depends on the QRAM route, as the paper's own complexity discussion says."
+    },
+    {
+      "id": "qfl-gradient-swap-test-readout",
+      "value": "The authors state that each gradient element is obtained by a swap test whose success probability P gives the local gradient element gj(w(n)) = (2P − 1)/(c1c3), and that repeating the steps for every j gives the client's local gradient.",
+      "anchor": "Section III-B, step (B3.4), p.6",
+      "quotes": [
+        "According to Eq. (2), the gj (w(n)) = (2P − 1)/(c1c3) can be calculated.",
+        "of swap test [38] is utilized."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A construction and derivation by the authors; no theorem is stated.",
+      "result_type": "theoretical", "context": "qml",
+      "reader_inference": "The classical gradient is read out element by element, so the D repetitions the paper counts in the complexity are built into the design."
+    },
+    {
+      "id": "qfl-swap-test-repetitions",
+      "value": "The authors state that the swap test is applied O(1/ϵP2) times (the text layer prints the square flat) to get P within error ϵP, and that each swap test needs a copy of |χj⟩ and |ψ⟩.",
+      "anchor": "Section IV-A, p.7",
+      "quotes": [
+        "The swap test is applied O P (1 − P )/ϵP2 = O 1/ϵP2 times to get the result P within error ϵP in step (B3.4) [40].",
+        "And each swap test should prepare a copy of |χj⟩ and |ψ⟩."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A standard sampling-count argument stated in the text, using a cited result [40]; not a theorem with a proof in the paper.",
+      "result_type": "theoretical", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qfl-complexity-assumptions",
+      "value": "The authors state that, for the complexity analysis, they assume that wj and xji are O(1), so that ∥w∥ and max ∥xi∥ are O(sqrt D) and q = polylog(D) qubits suffice to store the data information.",
+      "anchor": "Section IV-A, p.7",
+      "quotes": [
+        "For convenience, w√e assume that wj, xji = O(1), then",
+        "Therefore, q = polylog(D) could",
+        "fulfill the number of qubit required to store data information."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "setup", "certainty_reason": "The paper states the regime its complexity analysis holds in.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qfl-per-iteration-complexity",
+      "value": "The authors state that, taking ϵm, ϵθ and ϵP equal to ϵ, the complexity of the entire quantum algorithm to get all gradient elements gj (w) in each iteration simplifies into O D (polylog (M D) + D) /ϵ3.",
+      "anchor": "Section IV-A, Eq. (40), p.7",
+      "quotes": [
+        "In addition, taking ϵm, ϵθ, and ϵP equaling to ϵ.",
+        "the complexity of the entire quantum algorithm to get gj (w)",
+        "O D (polylog (M D) + D) /ϵ3 ."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A complexity derivation by the authors that rests on the QRAM oracles; no theorem is stated.",
+      "result_type": "theoretical", "context": "qml",
+      "reader_inference": "The text layer prints the cube of epsilon flat as ϵ3. The additive D inside the bracket comes from the O(D) parameter-state preparation."
+    },
+    {
+      "id": "qfl-server-batch-assumption",
+      "value": "The authors state that they assume M1 ≤ M2 ≤ · · · ≤ MK ≤ M, so that the dataset scale is at most M, and that all clients must finish gradient training before the federated gradient is calculated.",
+      "anchor": "Section IV-A, p.7",
+      "quotes": [
+        "In the QFLGD framework, assuming that M1 ≤ M2 ≤ · · · ≤ MK ≤ M . Namely, the dataset scale is at most M ."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "setup", "certainty_reason": "The paper states the setup its timing analysis uses.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qsmc-semi-honest-crt-design",
+      "value": "The authors state that the server Alice is assumed to be semi-honest, who may misbehave on her own but cannot conspire with others, and that Alice uses the Chinese remainder theorem on the m modular sums she collects to compute the summation of the clients' scaled gradients.",
+      "anchor": "Section III-C, p.6-7",
+      "quotes": [
+        "To do it, the server Alice is assumed to be semi-honest who",
+        "may misbehave on her own but cannot conspire with others.",
+        "According to the Chinese remainder theorem, Alice compute the summation"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "setup", "certainty_reason": "The paper states its threat model and protocol design in Section III-C.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qsmc-outside-attack-analysis",
+      "value": "The authors state that decoy photons prevent eavesdropping, taking the intercept-resend attack as the example, and that an outside eavesdropper who intercepts the particles from Alice and replaces them with fake ones introduces extra error and is detected in step (C3).",
+      "anchor": "Section IV-B, pp.7-8",
+      "quotes": [
+        "unconditionally safe. Here, we take the intercept-resend attack",
+        "attempts to intercept the particles sent from Alice and replaces",
+        ". Therefore, Eve will be detected in step (C3)"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An informal security argument by the authors for a single attack; no formal security proof is given.",
+      "result_type": "theoretical", "context": "qml",
+      "reader_inference": "Only the intercept-resend attack is worked through; the abstract's phrase 'common external and internal attacks' covers more than the analysis shows."
+    },
+    {
+      "id": "qsmc-participant-attack-analysis",
+      "value": "The authors state that, if the dishonest clients share their information against one client, they cannot deduce ok without the help of Alice, and that the semi-honest Alice cannot learn a client's secret because she lacks the knowledge of ok.",
+      "anchor": "Section IV-B, p.8",
+      "quotes": [
+        "In this case, even if the dishonest clients share their information, they cannot deduce ok without the help of Alice.",
+        "However, she still cannot learn sjk,i due to the lack of knowledge about ok which from clients."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An informal security argument by the authors; no formal proof or simulation-based security definition is given.",
+      "result_type": "theoretical", "context": "qml",
+      "reader_inference": "Collusion between Alice and a client is excluded by the semi-honest assumption, not analysed."
+    },
+    {
+      "id": "qfl-linear-regression-cost-fn",
+      "value": "The authors state that for federated linear regression they implement the function F (xi · w) = xi · w + b − yi, and that the operations that produce the state |xi · w − yi + b⟩, labeled Us, are implemented in time O(log(M )+q2) (the text layer prints the square flat).",
+      "anchor": "Section V-A, Eq. (41), p.8",
+      "quotes": [
+        "In the training process, we need to implement the function",
+        "F (xi · w) = xi · w + b − yi.",
+        "The operations of these processes are labeled as Us, which are implemented in time O(log(M )+q2)."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A construction with a stated runtime; not a theorem.",
+      "result_type": "theoretical", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qfl-sim-setup",
+      "value": "The authors report a numerical simulation on the IBM Qiskit simulator in which two clients (Bob1, Bob2) train the quantum federated linear regression model with a server: initial weight w(0) = (0.866, 0.5), migration parameter b = 0, Bob1 with x = (2, 3.464) and y = 2.464, Bob2 with x′ = (2.5, 4.33) and y′ = 2.33.",
+      "anchor": "Section V-B, p.8",
+      "quotes": [
+        "In our simulation, two clients (Bob1, Bob2) trained the QFLR model with a sever (Alice). The experiment is implemented on the IBM Qiskit simulator.",
+        "The initial weight w(0) = (0.866, 0.5) and the migration parameter b = 0 are selected by Alice.",
+        "Bob1 chooses an input vector x = (2, 3.464) which corresponds the observation y = 2.464.",
+        "Another client Bob2 selects an input vector x′ = (2.5, 4.33) and the corresponding observation y′ = 2.33."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup", "certainty_reason": "The paper states its own experimental setup in Section V-B.",
+      "result_type": "setup", "context": "qml",
+      "reader_inference": "The experiment has two clients, one data sample each, and a two-dimensional parameter vector."
+    },
+    {
+      "id": "qfl-sim-f-estimate",
+      "value": "The authors report that, with the Bob1 data on the aer simulator, the QPE output |00110⟩ was selected with probability 0.510, giving F (x · w) ≈ 0.923 against a theoretical value of 1, an error of 0.077 that they call tolerable.",
+      "anchor": "Section V-B, Fig. 6(b), p.9",
+      "quotes": [
+        "the result F (x · w) = 1 could be obtained.",
+        "selecting result |00110⟩ with a high probability of 0.510. It means F (x · w) ≈ 0.923. Compared with the theoretical result (shown in Eq. (46)), the experimental result has an error of 0.077 which is tolerable."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A single simulated run on one two-element example; the measured result comes from one study.",
+      "result_type": "measured", "context": "qml",
+      "reader_inference": "From the stated inputs, x·w is 3.464 and F is 3.464 − 2.464 = 1, so the theoretical value of 1 checks. Simulator noise is not stated; the aer simulator is described without a noise model."
+    },
+    {
+      "id": "qfl-sim-gradient-estimates",
+      "value": "The authors report that Bob1 can estimate g11 ≈ 1.846 and g12 ≈ 3.197 by performing swap test, and that Bob2 estimates F (x′ · w) ≈ 2.115, g21 ≈ 3.197, and g22 ≈ 9.157 via a similar experiment.",
+      "anchor": "Section V-B, p.9",
+      "quotes": [
+        "Subsequently, Bob1 can estimate g11 ≈ 1.846 and g12 ≈ 3.197 by performing swap test. At same time, Bob2 estimates F (x′ · w) ≈ 2.115, g21 ≈ 3.197, and g22 ≈ 9.157 of his data via similar experiment."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A single run on a tiny example; the text says Bob1 'can estimate' and does not show the swap-test circuit results.",
+      "result_type": "measured", "context": "qml",
+      "reader_inference": "An internal check by the reader: g12 = 0.923 × 3.464 = 3.197 and g22 = 2.115 × 4.33 = 9.157 agree with F times the second feature. g21 = 2.115 × 2.5 = 5.29, not 3.197; the printed 3.197 for g21 looks like a typo, and the reported G first component 3.57 is 0.5 × (1.846 + 5.29), which fits 5.29."
+    },
+    {
+      "id": "qfl-sim-aggregate-error",
+      "value": "The authors report that Alice calculates the federated gradient G = (3.57, 6.18) via the QSMC protocol, and that theoretical analysis shows the error is within 2% of the actual solution (3.5, 6.06) obtained in the example.",
+      "anchor": "Section V-B, p.9",
+      "quotes": [
+        "Alice calculates the federated gradient G = (3.57, 6.18) via the QSMC protocol. Theoretical analysis shows that the error is within 2% of the actual solution (3.5, 6.06) which is obtained in the example."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A one-example result on a two-client, one-sample problem; the aggregation figure is stated as coming from theoretical analysis.",
+      "result_type": "measured", "context": "qml",
+      "reader_inference": "The 3.57 over 3.5 and 6.18 over 6.06 ratios are about 2.0% each. The quantum aggregation protocol is not shown as run on the simulator; only the analogy to the Appendix C example is given."
+    },
+    {
+      "id": "qfl-sim-scope-limit",
+      "value": "The paper reports one two-client example with a two-element parameter vector; the simulated part is the estimation of F (x · w) for Bob1, the other client's estimates come from a similar experiment, and the aggregation result is attributed to the Appendix C procedure and theoretical analysis.",
+      "anchor": "Section V-B and Section VI, p.9",
+      "quotes": [
+        "An experiment of this step is presented with the data of Bob1.",
+        "As the analogous process of the example shown in the appendix C, Alice calculates the federated gradient G = (3.57, 6.18) via the QSMC protocol."
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "scope", "certainty_reason": "The paper states which step it experimented on in Section V-B.",
+      "result_type": "setup", "context": "qml",
+      "reader_inference": "No scaling of the measured error or runtime with M, D or K is reported."
+    },
+    {
+      "id": "qsmc-appendix-c-example",
+      "value": "The authors give a worked aggregation example in which two clients have a 1-scale dataset each and gradients g11 = 2, g12 = 3.46, g21 = 5 and g22 = 8.66; the accuracy of parameters is γ−1 = 1/100; Alice chooses d1 = 23 and d2 = 29, and according to the Chinese remainder theorem the federated gradient is (3.5,6.06).",
+      "anchor": "Appendix C, pp.11-12",
+      "quotes": [
+        "The gradients g11 = 2, g12 = 3.46, g21 = 5, and g22 = 8.66 are assumed to be gained in",
+        "She chooses d1 = 23 and d2 = 29 with clients.",
+        "who respectively have a 1-scale dataset, with the help of a server (Alice).",
+        "Firstly, Alice announces the accuracy of parameters is γ−1 = 1/100",
+        "to the Chinese remainder theorem, the federated gradient",
+        "(3.5,6.06) is easy to get."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A hand-worked illustration with assumed gradient values, not an experiment.",
+      "result_type": "theoretical", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qfl-prior-work-cited",
+      "value": "The authors attribute earlier quantum federated learning work to others: Li et al. in 2021 on the security issue of FL, and Chen and Yoo with a hybrid quantum-classical machine learning model aimed at the efficiency of local training.",
+      "anchor": "Section I, pp.1-2",
+      "quotes": [
+        "In 2021, Li et al. focused on the security issue of FL [24].",
+        "Moreover, Chen and Yoo proposed a quantum FL scheme with a hybrid quantum-classical machine learning model, focusing on improving the efficiency of the local training [26]."
+      ],
+      "kind": "cited", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A description of other work, attributed to references [24] and [26].",
+      "result_type": "cited", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qfl-limit-nisq-future-work",
+      "value": "The authors state, as future work, that they hope the framework can be realized on a quantum platform, and that how to implement the whole QFLGD process on noisy intermediate-scale quantum (NISQ) devices is worth further exploration.",
+      "anchor": "Section VI Conclusions, p.9",
+      "quotes": [
+        "We hope the proposed framework can further be realized on a quantum platform with the gradual maturity of quantum technology.",
+        "how to implement the whole QFLGD process on the noisy intermediate-scale quantum (NISQ) devices is worth further exploration"
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "stated limit", "certainty_reason": "The paper states in Section VI that the whole process has not yet been implemented on NISQ devices.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qfl-conclusion-framework-potential",
+      "value": "The authors conclude that the presented framework demonstrates the intriguing potential of achieving large-scale private distributed learning with quantum technologies.",
+      "anchor": "Section VI Conclusions, p.9",
+      "quotes": [
+        "In summary, the presented framework demonstrates the intriguing potential of achieving large-scale private distributed learning with quantum technologies"
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An author conclusion that goes beyond the one small simulated example.",
+      "result_type": "claim", "context": "qml",
+      "reader_inference": "The evidence in the paper is a complexity analysis under QRAM assumptions plus one two-client simulation."
+    }
+  ]
+}]}
