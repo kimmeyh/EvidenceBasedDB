@@ -93,13 +93,15 @@ def launch(rid: str, model: str = "sonnet") -> str:
         # stderr goes to a log (stdin and stdout stay the console's), so a failed launch says why.
         (WORK / "logs").mkdir(parents=True, exist_ok=True)
         log = WORK / "logs" / f"{rid}.err.txt"
-        with log.open("w", encoding="utf-8") as err:
-            proc = subprocess.Popen(["claude", "--cloud", message(rid), "--model", model], cwd=ROOT, env=env,
-                                    stderr=err, creationflags=subprocess.CREATE_NEW_CONSOLE)
-            try:
-                rc = proc.wait(timeout=UPLOAD_WAIT)
-            except subprocess.TimeoutExpired:
-                rc = None
+        # cmd does the redirect: a handle passed by Popen would make claude's stdin and stdout this session's
+        # pipes too, and `--cloud` then refuses them.
+        line = subprocess.list2cmdline(["claude", "--cloud", message(rid), "--model", model])
+        proc = subprocess.Popen(f'cmd /c "{line} 2> "{log}""', cwd=ROOT, env=env,
+                                creationflags=subprocess.CREATE_NEW_CONSOLE)
+        try:
+            rc = proc.wait(timeout=UPLOAD_WAIT)
+        except subprocess.TimeoutExpired:
+            rc = None
     finally:
         git("checkout", "--", str(INBOX.relative_to(ROOT)))
     if rc not in (None, 0):
