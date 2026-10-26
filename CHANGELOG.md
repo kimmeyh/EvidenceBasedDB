@@ -291,7 +291,7 @@ this project keeps having to replace with a step.
   (Issue #138)
 - **feat**: Task G (F113, 2026-10-26): `scripts/sprint13_g_reading.py`
   enters the reviewed groups from `manifests/sprint13_g_reviews/` (one
-  coordinator review per group, g001 to g016 so far) and their reader
+  coordinator review per group, g001 to g028 so far) and their reader
   files; `ID_FIX` stores a new assertion under another id where the
   reader's suggestion is already another source's. Dry run only; nothing
   applied yet (Issue #138)

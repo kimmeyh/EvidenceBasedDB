@@ -1,0 +1,2848 @@
+{
+ "papers": [
+  {
+   "record_id": "liu-2025-stochastic-noise-can-be-helpful",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Liu-et-al._2022_Noise-can-be-helpful-for-variational-quantum-algorithms__2210.06723.pdf",
+   "title_in_file": "Stochastic noise can be helpful for variational quantum algorithms",
+   "version_note": "arXiv:2210.06723v3, 18 Apr 2025. The file name says 'Noise can be helpful'; the title in the file is 'Stochastic noise can be helpful for variational quantum algorithms'. The text layer holds the paper twice (plain and layout copies); the first copy was read in full and the second used only to check quotes.",
+   "pages": 15,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A paper that adapts perturbed-gradient-descent saddle-point theory to variational quantum algorithms, proves smoothness and Lipschitz-Hessian bounds for parametrised-circuit losses, and shows in simulation and on IBM hardware that shot or added noise can let gradient descent escape saddle points.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "saddle-trapping-305-of-1000-noiseless",
+     "verdict": "widened",
+     "note": "Widened: the main text adds that the 1000 initial angles were drawn in [0, 2pi), that this gives an estimated probability of about 30.5% of getting stuck near saddle points, and that the authors call this failure rate manageable by repeating the algorithm.",
+     "value": "The authors report that, of 1000 initial variational angles sampled randomly between [0, 2π) in a four-qubit setup, 305 led to saddle points rather than local minima without noise, an estimated probability of approximately 30.5% of getting stuck near saddle points, which they state is manageable by repeating the algorithm multiple times.",
+     "anchor": "Numerical and quantum experiments, p.6; Figure 7 caption, p.7",
+     "quotes": [
+      "we have studied 1000 initial variational angles",
+      "between [0, 2π) in the same setup of Fig. 3 of the main text with four qubits",
+      "we have observed that 305 initial points lead to saddle points rather than local minima in the absence of noise",
+      "the estimated probability of getting stuck near saddle points in our study is approximately 30.5%",
+      "a 30.5% failure rate in optimization is manageable by simply repeating the algorithm multiple times"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "shot-noise-escapes-saddle-points",
+     "verdict": "narrowed",
+     "note": "Narrowed: the convergence guarantee the paper states is Theorem 13, taken from Ref. [24] for perturbed gradient descent with added Gaussian noise, plus the paper's own Theorem 14 showing circuit losses meet its smoothness conditions. For shot noise the authors state they cannot control its distribution or variance and only expect it to be close to Gaussian for many shots, so the guarantee is not proved for shot noise itself.",
+     "value": "The authors state that they prove convergence guarantees and argue that natural stochasticity can help avoid strict saddle points; the guarantee rests on a perturbed-gradient-descent theorem from Ref. [24] with Gaussian noise, and for shot noise they state they cannot control the distribution or variance of the noise and only expect it, by the central limit theorem, to be close to Gaussian for many shots.",
+     "anchor": "Abstract, p.1; Theorem 13 and Statistical noise in variational quantum algorithms, pp.3-4",
+     "quotes": [
+      "We prove convergence guarantees and present practical examples in numerical simulations and on quantum hardware.",
+      "We argue that the natural stochasticity of variational algorithms can be beneficial for avoiding strict saddle points",
+      "This theorem has been proven in Ref. [24] for Gaussian distributions",
+      "we cannot control exactly the distribution of such random variable, nor the variance.",
+      "it is to be expected that in the limit of many measurement shots, by the central limit theorem, the noise encountered in practice will be close to the noise considered here, a Gaussian distribution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The guarantee is a cited theorem applied with a Gaussian-noise assumption; the shot-noise case is argued, not proved.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The step from Gaussian perturbations to shot noise is an expectation from the central limit theorem, not a proof."
+    },
+    {
+     "id": "shot-noise-scope-not-cptp-noise",
+     "verdict": "widened",
+     "note": "Widened: the introduction adds that the noise in the theorems includes zero-average fluctuations and that global depolarising noise is covered (Appendix 2), while the conclusion adds that contractive noise maps such as depolarizing noise may induce barren plateaus and do not help in avoiding saddle points.",
+     "value": "The authors state that the noise in their theorems is noise that adds stochasticity to gradient estimates, such as a finite number of measurements or zero-average fluctuations, that global depolarising noise is covered as discussed in Appendix 2, that it is not the generic quantum noise from interaction with the environment, which can be substantially detrimental, and that their results focus specifically on shot noise, distinct from contractive noise maps such as depolarizing noise, which may induce barren plateaus and does not help in avoiding saddle points.",
+     "anchor": "Introduction, p.2; Conclusion and outlook, p.6",
+     "quotes": [
+      "for noise we refer to in our theorems is the type of noise that adds stochasticity to the gradient estimations, such as the use of a finite number of measurements or the zero-average fluctuations that are involved in real experiments.",
+      "Also, instances of global depolarising noise are covered as discussed in Appendix 2.",
+      "noise does not mean the generic quantum noise that results from the interaction with the environment",
+      "which can be substantially detrimental to the performance of the algorithm",
+      "It is worth stressing that our results focus specifically on shot noise, which can help in overcoming saddle points.",
+      "This is fundamentally distinct from contractive noise maps, such as depolarizing noise, which may induce barren plateaus [35] in variational quantum algorithms and does not help in avoiding saddle points."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of scope, in the introduction (p.2) and the conclusion (p.6).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The introduction says global depolarising noise is covered while the conclusion says depolarizing noise does not help avoid saddle points; Appendix 2 reconciles these only in that global depolarising noise rescales and shifts the landscape without moving saddle points."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "theorem14-smoothness-lipschitz-hessian-bounds",
+     "value": "The paper proves (Theorem 14) that the loss ⟨0| U †(θ)OU (θ) |0⟩, with O Hermitian and U(θ) a product over l = 1 to p of fixed unitaries Wl times exp(iθlXl) with Hermitian Xl, is β-strongly smooth and has a ρ-Lipschitz Hessian, with β ≤ 2 squared times p times ∥O∥∞ times the square of max ∥Xj∥∞, and ρ ≤ 2 cubed times p to the power 3/2 times ∥O∥∞ times the cube of max ∥Xj∥∞.",
+     "anchor": "Theorem 14, Statistical noise in variational quantum algorithms, p.3; proof in Appendix 1, pp.9-11",
+     "quotes": [
+      "L (θ) := ⟨0| U †(θ)OU (θ) |0⟩ (10) where O is a Hermitian operator and U (θ) is a parameterised unitary of the form p U (θ) := Wl exp (iθlXl), (11) l=1",
+      "where Wl and Xl are, respectively, fixed unitaries and Hermitian operators.",
+      "Theorem 14 (Conditions for loss functions of parametrised quantum circuits). The loss function given in Eq. (10) with θ being a p-dimensional vector is β-strongly smooth and has a",
+      "ρ-Lipschitz Hessian. In particular, we have β ≤ 22p∥O∥∞ max j=1,...,p ∥Xj ∥∞ 2 , (12) ρ ≤ 23p 3 2 ∥O∥∞ max j=1,...,p ∥Xj ∥∞ 3 . (13)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 14 (p.3) is stated with its conditions (the loss form of Eqs. 10 and 11) and proved in Appendix 1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints the powers flat (22p, 23p 3 2); read as 2 squared and 2 cubed times p to the 3/2. The Appendix 1 restatement prints the rho bound as p 3 2 without the 23 factor, while the proof ends at 23p 3 2, so the restatement looks like a typo."
+    },
+    {
+     "id_suggestion": "lemma18-derivative-bound",
+     "value": "The paper proves (Lemma 18) that every k-th order partial derivative of the circuit loss is bounded in absolute value by 2 to the k times ∥O∥∞ times max ∥Xj∥∞ to the k.",
+     "anchor": "Lemma 18 and its proof, Appendix 1, pp.10-11",
+     "quotes": [
+      "Lemma 18. The loss function as defined in Eq. (20)",
+      "|∂αL| ≤ 2|α|∥O∥∞ max j=1,...,p ∥Xj ∥∞ |α| = 2k ∥O∥∞ max j=1,...,p ∥Xj ∥∞ k , (35) where we have used |α| = k."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 18 is proved in Appendix 1 (Eqs. 27 to 35) by the Leibniz formula and operator-norm bounds.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer interleaves the lemma statement with other lines; the bound is quoted from the proof's final line."
+    },
+    {
+     "id_suggestion": "lemma17-lipschitz-constant-bound",
+     "value": "The paper proves (Lemma 17) that a differentiable function g from Rp to RM with bounded gradient has a Lipschitz constant L at most the square root of pM times the largest supremum of its partial derivatives, using two lemmas whose proofs are given in Ref. [45].",
+     "anchor": "Lemmas 15 to 17, Appendix 1, pp.9-10",
+     "quotes": [
+      "Lemma 17. If g : Rp → RM is a differentiable function with bounded gradient, then its Lipschitz constant L satisfies L ≤ pM max sup ∂gi(θ) , (24)",
+      "The proof is given in Ref. [45] (Lemma 7).",
+      "The proof is given in Ref. [45] (Lemma 8)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The square root in the bound is lost in the text layer, so the statement cannot be quoted in full.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The square root over pM is inferred from Lemma 15's form and the use of M = p and M = p squared later; the text layer drops the root sign."
+    },
+    {
+     "id_suggestion": "theorem13-pgd-cited",
+     "value": "The paper cites (Theorem 13, from Ref. [24]) that for a β strongly smooth function with a ρ Lipschitz-Hessian, perturbed gradient descent with η = Θ̃(1/β) and r = Θ̃(ε) visits an ε-second-order stationary point at least once with probability at least 1 − δ within Õ(β(L(θ0) − L⋆)/ε squared) iterations, where Õ and Θ̃ hide poly-logarithmic factors in p, β, ρ, 1/ε, 1/δ and ∆L.",
+     "anchor": "Theorem 13, Preliminaries, p.3",
+     "quotes": [
+      "Theorem 13 ([24]). Let the function L : Rd → R be β strongly smooth and such that it has a ρ Lipschitz-Hessian.",
+      "will visit an ε−secondorder stationary point at least once in the following number of iterations, with probability at least 1 − δ",
+      "hide poly-logarithmic factors in p, β, ρ, 1/ε, 1/δ and ∆L := L (θ0) − L⋆."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [24].",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem8-gd-complexity-cited",
+     "value": "The paper cites (Theorem 8) from earlier work that for a β-strongly smooth function and learning rate 1/β, gradient descent visits an ε-approximate stationary point within O(β(L(θ0) − L⋆)/ε squared) iterations, independent of the number of free parameters, and that this point can be a saddle point rather than a local minimum.",
+     "anchor": "Theorem 8, Preliminaries, p.3",
+     "quotes": [
+      "Theorem 8 (Gradient descent complexity). Given a β-strongly smooth function L(·), for any ε > 0, if we set the learning rate as η = 1/β",
+      "It is important to note that this result does not depend on the number of free parameters.",
+      "the stationary point at which the algorithm will converge is not necessarily a local minimum, but can also be a saddle point."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [24].",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "definition-strict-saddle-point",
+     "value": "The paper defines a strict saddle point (Definition 9) as a stationary point where the minimum eigenvalue of the Hessian is negative, which excludes saddle points with zero minimum eigenvalue and includes local maxima, and focuses on avoiding strict saddle points.",
+     "anchor": "Definition 9, Preliminaries, p.3",
+     "quotes": [
+      "Definition 9 (Strict saddle point). θs is a strict saddle point for a twice differentiable function L if and only if θs is a stationary point and if the minimum eigenvalue of the Hessian is λmin(∂2L(θs)) < 0.",
+      "Adding the strict condition, we remove the case in which a saddle point satisfies λmin(∂2L(θs)) = 0.",
+      "note that a local maximum respects our definition of strict saddle point."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own Definition 9 (p.3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "definition-perturbed-gradient-descent",
+     "value": "The paper defines perturbed gradient descent (Definition 12) as gradient descent with a normally distributed random variable of mean μ = 0 and variance r squared over p added to the gradient at each step.",
+     "anchor": "Definition 12, Preliminaries, p.3",
+     "quotes": [
+      "Definition 12 (Perturbed gradient descent).",
+      "where η > 0 is the learning rate and ζt is a normally dis- tributed random variable with mean μ = 0 and variance σ2 = r2/p with r ∈ R."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own Definition 12 (p.3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Variance r squared over p, printed flat as r2/p."
+    },
+    {
+     "id_suggestion": "definition-second-order-stationary",
+     "value": "The paper defines an ε-second-order stationary point (Definition 11) of a ρ-Hessian Lipschitz function as a point where the gradient norm is at most ε and the minimum Hessian eigenvalue is at least minus the square root of ρε.",
+     "anchor": "Definition 11, Preliminaries, p.3",
+     "quotes": [
+      "Definition 11 (ε-second-order stationary point). For a ρHessian Lipschitz function L(·), θ∗ is an ε-second-order sta- tionary point if ∥∂L(θ∗)∥2 ≤ ε and λmin(∂2L(θ∗)) ≥ √ − ρε."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own Definition 11 (p.3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "beta-rho-polynomial-in-qubits",
+     "value": "The authors state that for typical variational quantum algorithms the operator norms of O and the Xi grow at most polynomially with the number of qubits, so β and ρ grow at most polynomially and the number of iterations in Theorem 13 does not grow exponentially in the number of qubits, given circuit depth p at most O(poly(n)).",
+     "anchor": "After Theorem 14, p.4",
+     "quotes": [
+      "for typical VQAs, the observable O associated to the loss function and the components Xi have an operator norm that grows at most polynomially with the number of qubits, so also β and ρ will grow at most polynomially.",
+      "the circuit depth p must be chosen to be at most O (poly(n)) for n qubits",
+      "Hence, the number of iterations in Theorem 13 does not grow exponentially in the number of qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument from Theorem 14 under informal conditions for typical circuits (Pauli-string generators, polynomial depth), not a stated theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "functions-of-expectation-values-lipschitz",
+     "value": "The authors state that the results generalize to differentiable bounded loss functions of expectation values, and that functions commonly used in machine learning such as the mean squared error satisfy the Lipschitz condition.",
+     "anchor": "Statistical noise in variational quantum algorithms, p.4",
+     "quotes": [
+      "The previous results can be easily generalized for the case of differentiable and bounded loss functions which are functions of expectation values",
+      "functions of expectation values commonly used in machine learning tasks, such as the mean squared error, satisfy the Lipschitz condition."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A short argument in the text (mean value theorem, composition of Lipschitz functions), not a stated theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shot-noise-zero-mean-gradient-noise",
+     "value": "The authors define the shot noise of a gradient estimate from Nshots measurements as the difference between the true partial derivative and its estimator, a random variable with zero expectation value that plays the role of the noise added by hand in perturbed gradient descent.",
+     "anchor": "Statistical noise in variational quantum algorithms, p.4",
+     "quotes": [
+      "is an estimator of the partial derivative ∂iL (θt) obtained by a finite number of measurements Nshots from the quantum device.",
+      "is a random variable with zero expectation value.",
+      "will play the role of the noise that is added by hand in the perturbed-gradient descent Algorithm 12."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the shot-noise term (Eq. 17, p.4).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "experiment-setup-selected-stuck-initial-points",
+     "value": "The authors state that their first experiments use the loss given by the Hamiltonian sum of Zi over four qubits on Pennylane's StronglyEntanglingLayers circuit with two layers, and that they select only initial points for which noiseless optimisation gets stuck at a suboptimal value, a loss they call trivial to begin with.",
+     "anchor": "Numerical and quantum experiments, p.4",
+     "quotes": [
+      "qml.StronglyEntanglingLayers implemented in Pennylane [17], where two layers of the circuit are used.",
+      "we select the ini- tial points for which the optimisation process gets stuck at a suboptimal loss-function value",
+      "This selection can be justified by the fact that the loss function defined by O is trivial to begin with.",
+      "we exclu- sively investigate these specifically selected initial points by subsequently initialising the noisy optimiser with them."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup and selection (p.4).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The experiments are conditioned on initial points already known to stall, so they show escape is possible, not how often noise helps over random starts."
+    },
+    {
+     "id_suggestion": "gaussian-noise-critical-value",
+     "value": "The authors report that in an exact simulation with Gaussian noise added manually at each gradient step, noisy runs from the same initial conditions escaped the saddle point (one shown with noise standard deviation r = 0.1), and that the performance 1/(L − Lopt) as a function of noise shows a critical value of noise leading to saddle-point avoidance (Figure 3).",
+     "anchor": "Numerical and quantum experiments, Figures 2 and 3, pp.4-5",
+     "quotes": [
+      "in which noise is added manually at each step of the gradient descent.",
+      "(b) Noiseless case and the noisy case with the standard deviation of the noise r = 0.1.",
+      "Figure 3 shows the performance of the experiment, defined as 1/(L − Lopt) as a function of the noise parameter. Here, we can find a critical value of noise, leading to saddle-point avoidance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study; the figure values are only in the plot.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shot-noise-70-vs-1000-shots",
+     "value": "The authors report that in 30 instances from the same initial condition, with 1000 shots most trajectories could not escape the saddle points, while with 70 shots there was a probability of jumping towards the global minimum, both with purely measurement noise and including simulated IBM device noise.",
+     "anchor": "Figure 4 caption, p.5",
+     "quotes": [
+      "We prepare 30 instances starting from the same initial condition.",
+      "with purely measurement noise, (b), including device noise, and shot number is 1000), most trajectories cannot jump out of the saddle points.",
+      "(c), with purely measurement noise, (d), including device noise, and shot number is 70), we have a probability to jump towards the global minimum."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "device-noise-model-still-improves",
+     "value": "The authors state that device noise means CPTP maps that can change the loss function, with new local minima, new saddle points and a flatter landscape, but that with the IBM Qiskit device noise model they still observe an improvement in performance from the same initial parameters.",
+     "anchor": "Numerical and quantum experiments, p.5",
+     "quotes": [
+      "including device noise generally also means dealing with completely positive trace preserving maps that can lead to a different loss function, with new local min- ima, new saddle points and a flatter landscape [35].",
+      "However, even in this case we observe an improvement in performance using the same initial parameters leading to the saddle point in the noiseless case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "h2-vqe-saddle-avoidance",
+     "value": "The authors report that for a 4-qubit hydrogen molecule VQE Hamiltonian, using Pennylane's h2.xyz circuit, adding Gaussian noise with standard deviation 0.2 from initial parameters that led to saddle points in the noiseless case can lead to saddle-point avoidance.",
+     "anchor": "Numerical and quantum experiments, Figure 5, p.5",
+     "quotes": [
+      "which is a 4-qubit Hamiltonian obtained by the fermionic one performing a Jordan-Wigner transformation.",
+      "We specifically use the same circuit from h2.xyz, the Hydrogen VQE example in Pennylane [18].",
+      "given initial parameters that led to saddle points in the noiseless case, we find that starting by the same parameters and adding noise can lead to saddle-point avoidance.",
+      "The noise is manually drawn from Gaussian distributions with the standard deviation 0.2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ibmq-jakarta-hardware-run",
+     "value": "The authors report that running the four-qubit, two-layer experiment on the IBMQ_Jakarta device with 10000 shots, from an initial condition that led to a saddle point in the noiseless case, reached a lower cost function value than the noiseless simulation stuck in the saddle point.",
+     "anchor": "Numerical and quantum experiments, Figure 6, p.6",
+     "quotes": [
+      "We use the IBMQ_Jakarta device with 10000 shots.",
+      "The result in Fig. 6 shows that it is possible to obtain a lower value of the cost function than that of the simulation without noise that has been stuck in a saddle point."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single hardware run from one initial condition.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noise-sweet-spot-log-depth",
+     "value": "The authors state, citing Ref. [40], that under constant local noise the maximum attainable depth scales like O(log(n)) and Pauli expectation values are exponentially suppressed in depth, so the logarithm of noise levels must be O(1/poly(d)) to be non-detrimental, and too high contractive device noise leads to noise-induced barren plateaus.",
+     "anchor": "Numerical and quantum experiments, p.6",
+     "quotes": [
+      "one can expect the maximum attainable circuit depth to scale like O(log(n)) [40].",
+      "This implies that the logarithm of the noise levels must be chosen as O(1/poly(d)) to be non-detrimental for read-out",
+      "Too high noise levels, in the form of contractive device noise, will eventually lead to noise-induced barren plateaus [35]"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Rests on results cited from Refs. [35] and [40].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "saddle-prevalence-two-to-minus-p",
+     "value": "The authors argue that, assuming equal chances of positive and negative Hessian eigenvalues, the probability of a positive semi-definite Hessian is exponentially small (2 to the minus p) in p parameters, so saddle points become increasingly prevalent as model size increases, and they anticipate that saddle-point trapping will be a general occurrence in quantum machine learning.",
+     "anchor": "Numerical and quantum experiments, p.6",
+     "quotes": [
+      "Assuming equal chances of positive and negative eigenvalues, the probability of obtaining a positive semi-definite Hessian becomes exponentially small (2−p).",
+      "Therefore, as the model size increases, saddle points become increasingly prevalent.",
+      "we anticipate that in quantum machine learning, getting trapped by saddle points will also be a general occurrence."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A heuristic argument under an independence assumption the authors state.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "global-depolarising-rescales-landscape",
+     "value": "The paper derives that under global depolarising noise with parameter q after each of p layers, the noisy loss is (1 − q) to the power p times L(θ), plus (1 − (1 − q) to the power p) times Tr(H) over 2 to the n, so the landscape is rescaled and shifted but keeps features such as the position of saddle points.",
+     "anchor": "Appendix 2, Discussion on more general noise, p.11",
+     "quotes": [
+      "In particular for the case of global depolarising noise with depolarising noise parameter q ∈ [0, 1]",
+      "the cost function will be Lnoisy(θ) = (1 − q)p L (θ) + (1 − (1 − q)p) Tr (H) 2n . (45)",
+      "the landscape of the cost function will be rescaled and shifted, but will preserve features of the noiseless-landscape like the position of saddle points."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix 2 (Eqs. 42 to 45) with its short proof, under the stated global depolarising model.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The exponents print flat: (1 − q) to the power p, and 2 to the power n."
+    },
+    {
+     "id_suggestion": "eight-qubit-extension",
+     "value": "The authors report that with eight qubits and two layers the loss landscape is richer, with convergence at −3, −4, −5 and −6 for different initial conditions, and that Gaussian noise again shows a critical value leading to saddle-point avoidance.",
+     "anchor": "Appendix 3, Figures 10 and 11, p.11",
+     "quotes": [
+      "Here, we consider eight qubits and two layers of quantum gates.",
+      "For instance, we find convergence at −3, −4, −5, −6 for different initial conditions.",
+      "one can again find a critical value of the noise which leads to the saddle-point avoidance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "saddle-avoidance-vs-shots-100-instances",
+     "value": "The authors report the estimated probability of avoiding the saddle point as a function of the number of shots, over 100 independent instances with the same initial conditions, for the four-qubit, two-layer Hamiltonian.",
+     "anchor": "Appendix 3, Figure 9, p.11",
+     "quotes": [
+      "we show the estimated probability of avoiding the saddle point as a function of the number of shots",
+      "We quantify the performance against the number of shots of the quantum noise by the probability of saddle-point avoidance for 100 different independent instances with the same initial conditions."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study; the values are only in the plot.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "convergence-time-fit-0-6",
+     "value": "The authors report that convergence time decays when more Gaussian noise is added, fit the scaling as T ∼ #/ε to the power 0.6 (∆ ≈ 0.6), and state this is consistent with the theoretical bound T ∼ #/ε squared.",
+     "anchor": "Appendix 3, Figure 13, pp.11-12",
+     "quotes": [
+      "We find that the convergence time indeed decays when we add more noise, and we fit the scaling and find where T ∼ #/ε0.6, which is consistent with the bound T ∼ #/ε2 in theory.",
+      "we fit the data using #/ε∆ in red, and we get ∆ ≈ 0.6."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical fit from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "An exponent of 0.6 against a bound with exponent 2 is consistent only in the sense of not exceeding the bound; the paper does not explain the gap."
+    },
+    {
+     "id_suggestion": "polya-random-walk-heuristic",
+     "value": "The authors give a heuristic from Polya's constant: a random walk in d dimensions returns to its start with probability 1 for d of 1 or 2 but below 1 for d ≥ 3, the value falling from 0.19 to 0.07 from d = 4 to d = 8, which suggests a noisy walk is less likely to return to a saddle point with many variational angles.",
+     "anchor": "Appendix 4a, Brownian motion and the Polya's constant, p.12",
+     "quotes": [
+      "It has been proven that [46], p(1) = p(2) = 1 , (46) but p(d ≥ 3) < 1 . (47)",
+      "From d = 4 to d = 8, it changes monotonically from 0.19 to 0.07.",
+      "it is less likely to return back when we have a large number of variational angles."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A heuristic the authors call physical and heuristic, resting on a cited lattice result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dimensional-analysis-one-over-eps-squared",
+     "value": "The authors argue by dimensional analysis, in the small learning-rate limit, that the convergence time scales as T ∼ 1/(KL times ε squared), and that quantum neural tangent kernel theory in the large-width limit gives the same one over ε squared dependence; they state the estimate only works in the small η limit.",
+     "anchor": "Appendix 4b and 4c, pp.12-13",
+     "quotes": [
+      "Thus, we immediately get, T ∼ 1/(KLε2). That is how we get the dependence T ∼ 1/ε2 by dimensional analysis.",
+      "Note that the estimation only works in the small η limit.",
+      "The dependence T ∼ 1/ε2 can also be made plausible using the quantum neural tangent kernel (QNTK) theory."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A heuristic derivation the authors describe as physical and heuristic, not a proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "critical-noise-estimate",
+     "value": "The authors estimate, from QNTK random-walk results and a linear model, a critical noise with εcri squared of order 4η∆L for small η, where ∆L is the loss gap from saddle point to minimum, and a phenomenological linear relation εcri ∼ η∆L when negative Hessian directions drive escape.",
+     "anchor": "Appendix 4d and 4e, pp.13-15",
+     "quotes": [
+      "εc2ri ∼ ∆L (2η(2 − ηK)) ∼ 4η∆L . (63)",
+      "Thus, the linear model result is consistent with the derivation using QNTK with the quadratic loss.",
+      "which leads to the linear relation εcri ∼ η∆L . (79)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A heuristic estimate; the authors note the random-walk assumption may not be real in practical landscapes.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "critical-noise-fit-and-optimal-shots",
+     "value": "The authors report a linear fit εcri = cεη∆L with cε = 0.0521404 in the four-qubit example, a fitted exponent ∆cri ≈ 0.8722, and, taking ∆cri = 1 and cη ≈ 1.19733 from Qiskit, an optimal number of shots Ncri = 131.8 for the Figure 3 experiment with pure measurement noise.",
+     "anchor": "Appendix 4e, Figure 14, p.15",
+     "quotes": [
+      "Here, we fit the dependence by the linear relation εcri = cεη∆L where cε = 0.0521404.",
+      "If we fit for the exponent of εcri ∼ (η∆L)∆cri we get ∆cri ≈ 0.8722.",
+      "with cη estimated as cη ≈ 1.19733 from Qiskit.",
+      "= 131.8 , (84) which is the optimal numbers of shots in this experiment with pure measurement noises.",
+      "In the situation of Fig. 3 of the main text"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical fit from one simulation study combined with a heuristic formula.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "not-universally-beneficial-limit",
+     "value": "The authors state that they do not claim noise is universally beneficial nor advocate intentionally adding extra classical noise, that the noise should not be too large, and that overly large noise levels of a certain type will worsen the performance of variational approaches.",
+     "anchor": "Conclusion and outlook, pp.6-7",
+     "quotes": [
+      "We do not claim that noise is universally beneficial nor advocate for intentionally adding extra classical noise.",
+      "This noise can be substantial, but should not be too large",
+      "for overly large noise levels of a certain type, the performance of variational approaches will also worsen [42]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit in the conclusion (pp.6-7).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shot-noise-barren-plateaus-global-only",
+     "value": "The authors state, citing Ref. [35], that shot noise leads to barren plateaus only for global observables, which is not the setting considered in their work.",
+     "anchor": "Conclusion and outlook, p.6",
+     "quotes": [
+      "It has been shown that shot noise leads to barren plateaus only in the case of global observables [35], which is not the setting considered in this work."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Ref. [35].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-stochastic-resonance",
+     "value": "The authors conclude that they have proposed small stochastic noise levels as an instrument to facilitate variational quantum algorithms, that the balance between escaping saddle points and harm is reminiscent of stochastic resonance, and that the aim is to identify an optimal level of inherent quantum noise.",
+     "anchor": "Conclusion and outlook, pp.6-7",
+     "quotes": [
+      "In this work, we have proposed small stochastic noise levels as an instrument to facilitate variational quantum algorithms.",
+      "is in some ways reminiscent of the phenomenon of stochastic resonance in statistical physics [41].",
+      "we emphasize the importance of identifying an optimal level of inherent quantum noise that balances performance and practicality."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion and framing.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noise-altered-landscape-alternative-view",
+     "value": "The authors state an alternative interpretation in which noise channels alter the variational landscape, for example breaking parameter symmetries in over-parameterised algorithms, and that the convergence guarantees are independent of the interpretation.",
+     "anchor": "Conclusion and outlook, p.6",
+     "quotes": [
+      "such quantum channels are known to be able to break parameter symmetries in over-parameterised variational algorithms.",
+      "the convergence guarantees are independent on the interpretation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim in the outlook.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gd-exponential-escape-cited",
+     "value": "The authors cite earlier work that although standard gradient descent almost always escapes saddle points asymptotically, there are non-pathological cases where escape requires exponential time.",
+     "anchor": "Preliminaries, p.3",
+     "quotes": [
+      "although the standard GD (without perturbations) almost always escapes the saddle points asymptotically [38], there are (non-pathological) cases in which the optimisation requires exponential time to escape."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Refs. [37] and [38].",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "liu-2025-you-only-measure-once-designing",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Liu-et-al._2025_You-Only-Measure-Once-On-Designing-Single-Shot-Quantum-Machine-Learning-Models__2509.20090.pdf",
+   "title_in_file": "You Only Measure Once: On Designing Single-Shot Quantum Machine Learning Models",
+   "version_note": "arXiv:2509.20090v1, 24 Sep 2025, preprint. The text layer holds the paper twice (plain and layout copies); the first copy was read in full and the layout copy was used to check the flattened theorem formulas.",
+   "pages": 21,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A Quantinuum-led preprint proposing Yomo, a hybrid quantum classifier that aggregates computational-basis probabilities into classes and trains with sharpening and entropy losses so that inference works from a single shot, with shot-complexity bounds against expectation-based models and MNIST and CIFAR-10 simulations, including depolarizing-noise models of four hardware platforms.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "yomo-mnist-single-shot",
+     "verdict": "widened",
+     "note": "Widened: the paper adds that this means roughly 10x fewer shots for the same accuracy, that results average 5 random seeds, and that both models use 4 qubits and 5 QNN blocks with tau = 0.6 for Yomo.",
+     "value": "The authors report that on MNIST in the single-shot regime the Vanilla model reached 26.59% test accuracy and Yomo reached 90.52%, that Vanilla reached 90.08% at 10 shots, indicating Yomo reaches the same accuracy with roughly 10× fewer shots; results are averaged over 5 runs with different random seeds, with nq = 4 qubits, Nb = 5 QNN blocks and threshold τ = 0.6.",
+     "anchor": "Section 6, Single-shot behavior of Yomo and Figure 2 caption, p.6",
+     "quotes": [
+      "under the single-shot regime (shots = 1) on MNIST, Vanilla achieves only 26.59% test accuracy, whereas Yomo attains 90.52%.",
+      "at shots = 10, its accuracy reaches 90.08%, comparable to Yomo's single-shot performance.",
+      "This indicates that Yomo can achieve the same level of accuracy with roughly 10× fewer shots.",
+      "Reported results are averaged over 5 runs with different random seeds to ensure robustness.",
+      "Both models use nq = 4 qubits and Nb = 5 QNN blocks. For Yomo, the threshold parameter is fixed at τ = 0.6."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "yomo-noise-robustness",
+     "verdict": "narrowed",
+     "note": "Narrowed: the hardware configurations are depolarizing-channel approximations built from publicly reported 1Q and 2Q error rates, which the authors say cannot capture all device-specific imperfections; connectivity and SWAP overhead are not modeled; and Yomo accuracy decreases monotonically with circuit depth under noise.",
+     "value": "The authors report that in simulations with depolarizing channels parameterized from publicly reported 1Q and 2Q error rates, Yomo performance in some hardware configurations, for example Quantinuum H1-1, closely tracked the noiseless baseline; they state these models cannot capture all device-specific imperfections, that limited qubit connectivity on devices such as IBM Pittsburgh or Google Willow would need additional SWAP gates, and that Yomo performance decreases monotonically with depth due to noise accumulation.",
+     "anchor": "Section 6, Noisy simulation with deeper QNN, p.8; Section 7, pp.9-10",
+     "quotes": [
+      "Moreover, Yomo remains robust on noisy settings, with performance in some hardware configurations (e.g., Quantinuum H1-1) closely tracking the noiseless baseline.",
+      "Noise model approximations for different quantum hardware platforms are constructed by mapping publicly reported 1Q and 2Q error rates to depolarizing error probabilities",
+      "While these models cannot capture all device-specific imperfections, they offer a reasonable proxy for the effects of hardware noise.",
+      "real devices such as IBM Pittsburgh or Google Willow have limited qubit connectivity, which would require additional SWAP gates",
+      "deeper circuits do not provide additional benefit, and performance decreases monotonically due to noise accumulation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study, under approximate noise models.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The authors are affiliated with Quantinuum, whose H1-1 is the configuration named as tracking the baseline; the ordering follows the published 2Q error rates the paper tabulates."
+    },
+    {
+     "id": "yomo-scope-sim-training",
+     "verdict": "widened",
+     "note": "Widened: the paper adds that training needs exact state-vector simulation to obtain all basis probabilities, that the Vanilla baseline is trained the same way for fairness, and that gradients are taken with autograd rather than the parameter-shift rule.",
+     "value": "The authors state that Yomo is not intended to be trained directly on quantum hardware, that obtaining all basis probabilities during training requires exact state-vector simulation (the Vanilla baseline is trained the same way for fairness), that in simulation both classical and quantum parameters are updated with PyTorch autograd, and that the main comparison uses 4 qubits and 5 QNN blocks.",
+     "anchor": "Section 4 footnote 2, p.4; Figure 2 caption, p.6; Section 7, p.9; Appendix D, p.18",
+     "quotes": [
+      "It is important to emphasize that Yomo is not intended to be trained directly on quantum hardware.",
+      "obtaining the full set of 2nq probabilities during training requires exact state-vector simulation. For fairness, the Vanilla baseline is also trained under exact simulation.",
+      "In our simulations, however, both θc and θ are updated using PyTorch's automatic differentiation engine (autograd).",
+      "Both models use nq = 4 qubits and Nb = 5 QNN blocks."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of scope and setup (Sections 4, 6, 7 and Appendix D).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Exact state-vector training limits Yomo training to classically simulable qubit counts."
+    },
+    {
+     "id": "yomo-shot-complexity-theory",
+     "verdict": "widened",
+     "note": "Widened: the concluding remark also says the Vanilla requirement grows with the Lipschitz constant L, both worsening with circuit size and noise, and that once p is moderately above 1/2 Yomo needs only a handful of shots.",
+     "value": "The authors state that for Vanilla the required number of shots scales inversely with the square of the classification margin and grows with the Lipschitz constant L, both of which typically worsen with circuit size and noise, while the Yomo requirement depends only on the single-shot correctness probability p, which training controls, so that once p is moderately above 1/2 Yomo achieves reliable inference with only a handful of shots.",
+     "anchor": "Appendix C, Concluding remark, p.17",
+     "quotes": [
+      "For Vanilla, the required number of shots scales inversely with the square of the classification margin ∆ and grows with the Lipschitz constant L, both of which typically worsen with circuit size and noise.",
+      "In contrast, Yomo's requirement depends only on the single-shot correctness probability p, which is directly controlled by training.",
+      "once training produces p moderately above 1/2, Yomo achieves reliable inference with only a handful of shots"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' summary of their bounds; that margins and L worsen with size is asserted, not proved.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The comparison is between sufficient shot bounds for each model, not between actual shot requirements."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "yomo-theorem-5-1-shot-requirement",
+     "value": "The paper states (Theorem 5.1, proved as Proposition C.3) that if p > 1/2 is the probability that a single shot yields the correct class in the trained Yomo model and prediction is by majority vote over N i.i.d. shots, the error probability is at most exp(−2N(p − 1/2) squared), so N ≥ ln(1/δ)/(2(p − 1/2) squared) shots suffice for error at most δ.",
+     "anchor": "Theorem 5.1, Section 5, p.5; Proposition C.3, Appendix C, p.16",
+     "quotes": [
+      "Theorem 5.1 (Shot requirement of Yomo). Let p > 1 2 denote the probability that a single-shot measurement yields the correct class in the trained Yomo model.",
+      "With N i.i.d. shots and majority vote, the number of correct votes follows SN ∼ Binomial(N, p).",
+      "Proposition C.3 (Binomial tail bound for majority vote). For odd N (ties can be handled analogously),",
+      "Thus, to ensure Pr(incorrect) ≤ δ, it suffices to take ln(1/δ) N ≥ 2(p − 1 2 )2 . (22)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5.1 (p.5) with its condition p > 1/2 and its proof as Proposition C.3 (p.16), a Hoeffding binomial tail bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints the squared term and the fraction flat; the layout copy shows the denominator as 2(p − 1/2) squared."
+    },
+    {
+     "id_suggestion": "yomo-theorem-5-2-vanilla-shot-requirement",
+     "value": "The paper states (Theorem 5.2, from Lemma C.1, Proposition C.2 and Corollary C.2.1) that for an expectation-based model with single-shot outcomes in [−1, 1], an L-Lipschitz score map and a top-two score margin ∆ in the infinite-shot limit over K classes, the error probability is at most 2K exp(−2N(∆/4L) squared), so N ≥ (8L squared/∆ squared) ln(2K/δ) shots suffice.",
+     "anchor": "Theorem 5.2, Section 5, p.5; Lemma C.1, Proposition C.2 and Corollary C.2.1, Appendix C, p.16",
+     "quotes": [
+      "Theorem 5.2 (Shot requirement of Vanilla QML). Let ∆ be the minimum margin between the top-two class scores in the infinite-shot limit, L be the Lipschitz constant of the score–expectation mapping, and K the number of classes.",
+      "Each single-shot outcome used to estimate μc lies in [−1, 1] (e.g., Pauli eigenvalues ±1).",
+      "Proposition C.2 (Argmax stability under margin). If ∥μˆ − μ∥∞ ≤ ∆/(4L), then the predicted class is preserved",
+      "Equivalently, to guarantee Pr(incorrect) ≤ δ, it suffices to take 8L2 2K N≥ ∆2 ln . δ (20)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5.2 (p.5) with its assumptions (bounded outcomes, Lipschitz scores, margin) and its proof via Hoeffding and a union bound in Appendix C (p.16).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The flat print 8L2 2K N≥ ∆2 ln . δ reads as N ≥ (8L squared / ∆ squared) ln(2K/δ)."
+    },
+    {
+     "id_suggestion": "yomo-theorem-5-3-fewer-shots-condition",
+     "value": "The paper proves (Theorem 5.3, Theorem C.4) that at a fixed target error δ, if the trained Yomo model's single-shot correctness p is at least 1/2 plus (∆/4L) times the square root of ln(1/δ)/ln(2K/δ), Yomo requires no more measurement shots than Vanilla, and strictly fewer when the inequality is strict.",
+     "anchor": "Theorem 5.3, p.5; Theorem C.4 and proof, Appendix C, p.17",
+     "quotes": [
+      "Theorem 5.3 (Condition for fewer shots at fixed δ). Fix δ. If the trained Yomo model achieves 1 ∆ ln(1/δ) p≥ + , (15) 2 4L ln(2K/δ)",
+      "Theorem C.4 (Condition for fewer shots at fixed δ). Fix a target error level δ ∈ (0, 1). If the trained Yomo model satisfies 1 ∆ ln(1/δ) p≥ +",
+      "then Yomo requires no more (and strictly fewer whenever the inequality is strict) measurement shots than Vanilla to reach error at most δ.",
+      "Taking square roots proves the claim."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem C.4 (p.17) states the condition and proves it by comparing the two sufficient bounds.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The square root is lost in the text layer and is read from the proof's last step. The theorem compares the two sufficient bounds, so it shows Yomo's bound is smaller, not that Vanilla needs more shots in fact. The main-text Theorem 5.3 says 'fewer'; the appendix weakens this to 'no more'."
+    },
+    {
+     "id_suggestion": "yomo-theorem-5-4-smaller-error-condition",
+     "value": "The paper proves (Theorem 5.4, Theorem C.5) that at a fixed shot budget N, if p is at least 1/2 plus the square root of (∆/4L) squared minus ln(2K)/(2N), Yomo attains a smaller error probability than Vanilla with the same N shots, the condition being non-vacuous only when the term under the root is nonnegative.",
+     "anchor": "Theorem 5.4, p.6; Theorem C.5 and proof, Appendix C, p.17",
+     "quotes": [
+      "Theorem 5.4 (Condition for smaller δ at fixed N ). Fix N . If the trained Yomo model achieves ∆ 2 ln(2K) p≥ + − , (16) 4L 2N",
+      "and hence (p − 1 2 )2 ≥ (∆/4L)2 − ln(2K) 2N",
+      "Theorem C.5 (Condition for smaller δ at fixed N ). Fix a shot budget N ∈ N.",
+      "then Yomo attains a smaller error probability than Vanilla with the same N shots.",
+      "Taking square roots gives the result (the condition is non-vacuous when the term under the square root is nonnegative)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The full inequality is garbled in the text layer and cannot be quoted; the condition is reconstructed from the proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The comparison is between Yomo's bound and Vanilla's bound, so 'smaller error than Vanilla' means smaller than Vanilla's upper bound."
+    },
+    {
+     "id_suggestion": "yomo-theorem-5-5-single-shot-condition",
+     "value": "The paper proves (Theorem 5.5, Theorem C.6) that with N = 1, if p ≥ 1 − 2K exp(−∆ squared/(8L squared)), Yomo's error probability, which is exactly 1 − p, is no larger than Vanilla's bound; the main text states it is guaranteed to be smaller than that of Vanilla QML.",
+     "anchor": "Theorem 5.5, p.6; Theorem C.6 and proof, Appendix C, p.17",
+     "quotes": [
+      "Theorem 5.5 (Single-shot condition). In the N = 1 regime, if the trained Yomo model achieves ∆2 p ≥ 1 − 2K exp − 8L2 , (17) then its incorrect probability δ is guaranteed to be smaller than that of Vanilla QML.",
+      "then Yomo's error probability is no larger than Vanilla's.",
+      "For N = 1, Yomo's error is exact: δyo = 1 − p."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem C.6 (p.17) states the condition and proves it directly from Vanilla's tail bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof compares 1 − p to Vanilla's upper bound, so the guarantee is against the bound, not Vanilla's actual error; when 2K exp(...) exceeds 1 the condition is trivially met and says nothing."
+    },
+    {
+     "id_suggestion": "yomo-vanilla-disadvantage-2k-and-margin",
+     "value": "The authors state that Vanilla is disadvantaged because its bound carries a multiplicative 2K factor from the union bound over K classes and depends on the margin ∆, which often shrinks exponentially with qubit count or under noise, citing McClean et al., while Yomo's requirement depends only on p, which can remain stable as qubit count increases.",
+     "anchor": "Section 5, after Theorem 5.5, p.6",
+     "quotes": [
+      "First, its bound carries a multiplicative 2K factor from the union bound over K classes, which directly inflates the shot requirement.",
+      "if ∆ shrinks, often exponentially with qubit count or under noise (McClean et al., 2018), then the required Nva in Eq. 14 grows exponentially as well.",
+      "which can remain stable as qubit count increases"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' interpretation; that p stays stable with qubit count is asserted, not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-typical-p-few-shots",
+     "value": "The authors state that in practice training typically yields p ≥ 0.85–0.95, in which case N = 3–5 shots already achieve > 99% reliability.",
+     "anchor": "Appendix C, after Proposition C.3, p.17",
+     "quotes": [
+      "In practice, training typically yields p ≥ 0.85–0.95, in which case N = 3–5 already achieves > 99% reliability."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim about typical training outcomes, not reported with measured values of p.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-probability-aggregation-definition",
+     "value": "The paper defines Yomo's output as computational-basis measurement on all qubits, with the 2 to the nq basis states partitioned by index order into K class groups, each class assigned the floor of 2 to the nq over K consecutive states and the remainder distributed one by one to the first r classes, so at inference a single measured bitstring maps directly to a class label.",
+     "anchor": "Section 4, Probability aggregation, pp.4-5",
+     "quotes": [
+      "Yomo performs computational basis measurement on all qubits",
+      "the 2nq computational basis states are partitioned into K groups according to their index order",
+      "each class is assigned ⌊2nq /K⌋ consecutive basis states, and the remaining r = 2nq − ⌊2nq /K⌋ · K, r ≤ K basis states are distributed one by one to the first r classes.",
+      "at inference a single measured bitstring can be directly mapped to a class label according to the pre-defined partition of basis states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its model (Section 4, Eqs. 7 to 9).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "2nq is 2 to the power nq, printed flat."
+    },
+    {
+     "id_suggestion": "yomo-loss-definition",
+     "value": "The paper defines the Yomo loss as LCE + γ LPS + ω LE: cross-entropy, a probability sharpening loss that rewards predictions whose probability exceeds a threshold τ in (0, 1) and equals 1 when none does, and an entropy regularization term that penalizes flat distributions; γ and ω were both fixed to 0.05.",
+     "anchor": "Section 4, Loss functions, p.5; Appendix D, p.18",
+     "quotes": [
+      "Lyomo = LCE + γ LPS + ω LE, (10)",
+      "LPS is a sharpening loss, and LE enforces low-entropy distributions.",
+      "surpasses a threshold τ ∈ (0, 1)",
+      "if there are no prediction pi larger than τ , then LPS is 1",
+      "The weighting coefficients γ and ω in the total loss function (Eq. 10) are both fixed to 0.05 throughout our experiments."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its loss (Section 4, Eqs. 10 to 12) and its stated settings (Appendix D).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-vanilla-baseline-definition",
+     "value": "The paper defines the Vanilla baseline as a softmax over Pauli expectation values with cross-entropy loss, using for 4 qubits and 10 classes the fixed observables ZIII, IZII, IIZI, IIIZ, ZZII, ZIZI, IZZI, IIZZ, YIYI and IYIY, extended by identities for more qubits so they act only on the first four qubits.",
+     "anchor": "Section 3, p.3; Appendix D, Pauli Observables in Vanilla QML, p.18",
+     "quotes": [
+      "These scores form the logits of a softmax classifier",
+      "For the case of nq = 4 qubits and 10-class, these are { ZIII, IZII, IIZI, IIIZ, ZZII, ZIZI, IZZI, IIZZ, Y IY I, IY IY }",
+      "the observables are extended by appending identity operators to the right, ensuring that they act nontrivially only on the first four qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its baseline (Section 3 and Appendix D).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "For larger qubit counts the Vanilla observables still act only on four qubits, which may contribute to its degradation with qubit count."
+    },
+    {
+     "id_suggestion": "yomo-architecture-setup",
+     "value": "The authors state that both models use a classical convolution-pooling and linear feature extractor, angle encoding with cyclic Ry, Rz, Rx rotations, and a variational circuit of CNOT entanglers and Ry rotations over Nb layers.",
+     "anchor": "Figure 1 caption, p.2; Section 3, Model design, p.3",
+     "quotes": [
+      "The input image is processed by two convolution–pooling layers and a linear layer before angle encoding into a parameterized quantum circuit (QNN) with Nb layers.",
+      "features are sequentially mapped to single-qubit rotations along all three axes (Ry, Rz, Rx) in a cyclic fashion",
+      "The encoded state is then processed by a variational circuit composed of multiple blocks of parameterized single-qubit rotations and entangling gates"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its architecture (Section 3 and Figure 1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-training-hyperparameters",
+     "value": "The authors state that experiments ran on 8 NVIDIA A100 GPUs with TorchQuantum, using Adam with learning rate 5 × 10 to the minus 3 for MNIST and 1 × 10 to the minus 3 for CIFAR-10, batch size 128 for MNIST and 64 for CIFAR-10, and 100 epochs, and that the code will be released publicly in the coming months.",
+     "anchor": "Appendix D, p.18",
+     "quotes": [
+      "All experiments were performed on a system equipped with 8 NVIDIA A100 GPUs. The implementation was based on the TorchQuantum framework",
+      "we used the Adam optimizer with a learning rate of 5 × 10−3 for MNIST and 1 × 10−3 for CIFAR-10.",
+      "Batch size was set to 128 for MNIST classification tasks and 64 for CIFAR10 classification tasks. All models were trained for 100 epochs.",
+      "The code for this study will be released publicly on GitHub in the coming months."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental settings (Appendix D, p.18).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-full-shot-range-and-cifar",
+     "value": "The authors report that across the full shot range up to exact state-vector simulation Yomo consistently outperformed Vanilla on MNIST, and that similar trends held on CIFAR-10 in both low- and high-shot settings.",
+     "anchor": "Section 6, Single-shot behavior of Yomo, Figure 2, p.6",
+     "quotes": [
+      "we further extend the evaluation up to shots → ∞, corresponding to exact state-vector simulation. Across the full shot regime, Yomo consistently outperforms Vanilla.",
+      "Similar trends are observed on the more challenging CIFAR-10 task, where Yomo maintains its advantage in both the low- and high-shot settings."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study; CIFAR-10 values are only in the figure.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-qubit-count-scaling",
+     "value": "The authors report that with qubit counts nq ∈ {4, 6, 8, 10, 12} and Nb = 5, Vanilla suffered significant performance degradation as nq increased while Yomo showed no comparable decay, which they call consistent with their theory.",
+     "anchor": "Section 6, Effects of qubit count, Figure 3(a,b), p.7",
+     "quotes": [
+      "we compare both models with increasing qubit counts, nq ∈ {4, 6, 8, 10, 12}, while fixing Nb = 5.",
+      "Results in Fig. 3(a,b) clearly show that Vanilla suffers significant performance degradation as nq increases.",
+      "Yomo, however, shows no comparable performance decay as nq grows, consistent with our theoretical findings in Sec. 5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The authors also note Vanilla would need deeper circuits to keep expressivity at more qubits, so the comparison at fixed Nb = 5 does not isolate the margin effect."
+    },
+    {
+     "id_suggestion": "yomo-threshold-tau-sensitivity",
+     "value": "The authors report that over thresholds τ from 0.4 to 0.8, results for more than 10 shots are relatively insensitive to τ, while single-shot accuracy peaks at τ = 0.6.",
+     "anchor": "Section 6, Is threshold τ important?, Figure 3(c), p.7",
+     "quotes": [
+      "Sensitivity to threshold τ ∈ 0.4, 0.5, 0.6, 0.7, 0.8.",
+      "While results for shots > 10 are relatively insensitive to τ , in the single-shot regime the accuracy peaks at τ = 0.6"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-sharpening-loss-ablation",
+     "value": "The authors report that including the sharpening loss LPS clearly improves single-shot test accuracy compared with training without it.",
+     "anchor": "Section 6, Probability sharpening mechanism, Figure 3(d,e), p.7",
+     "quotes": [
+      "The inclusion of LPS clearly improves single-shot test accuracy, as shown in Fig. 3(e)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical ablation from one simulation study; values only in the figure.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-hardware-ordering-2q-error",
+     "value": "The authors report that among the simulated noise models Quantinuum H1-1 gave performance closest to the noiseless baseline, followed by IBM Pittsburgh, Google Willow and IonQ Forte, an ordering that mirrors their reported 2Q error rates, indicating the 2Q error rate dominates accuracy as depth increases.",
+     "anchor": "Section 6, Noisy simulation with deeper QNN, Figures 4 and 5, p.8",
+     "quotes": [
+      "Among these, Quantinuum H1-1 exhibits performance closest to the noiseless baseline, followed by IBM Pittsburgh, Google Willow, and IonQ Forte.",
+      "This ordering mirrors their reported 2Q error rates, indicating that as circuit depth increases, the 2Q error rate becomes the dominant factor governing overall model accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study, under depolarizing approximations.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-depth-behavior-under-noise",
+     "value": "The authors report that under noise Vanilla at 100 or infinite shots first gains accuracy with more QNN blocks, reaching a sweet spot around 10–15 blocks before degrading, while Yomo already achieves strong accuracy at Nb = 5 and declines monotonically with depth.",
+     "anchor": "Section 6, Noisy simulation with deeper QNN, p.8",
+     "quotes": [
+      "at sufficiently large shot budgets (Nshot = 100, ∞), test accuracy initially increases with the number of QNN blocks, reaching a sweet spot around 10–15 blocks before degrading as noise accumulates.",
+      "Yomo already achieves strong accuracy at very low depth (Nb = 5), leaving little room for further improvement."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-table1-error-rates",
+     "value": "The authors tabulate published error rates used for their noise models: 1-qubit 0.0202%, 0.035%, 0.0018% and 0.02% and 2-qubit 0.169%, 0.33%, 0.097% and 0.4% for IBM Pittsburgh, Google Willow, Quantinuum H1-1 and IonQ Forte respectively, with IBM data recorded on August 28, 2025, IBM 1Q values medians and all other values averages.",
+     "anchor": "Table 1, p.9",
+     "quotes": [
+      "IBM Pittsburgh Google Willow Quantinuum H1-1 IonQ Forte 0.0202% 0.035% 0.0018% 0.02% 0.169% 0.33% 0.097% 0.4%",
+      "The data presented was recorded on August 28, 2025.",
+      "For IBM, the 1Q error rates reported are median values, while the 2Q error rates are average values."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values cited from vendor documentation; the table's column order is reconstructed from the text layer and the matching depolarizing parameters.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The text layer lists the devices then the eight rates; the pairing is inferred from the approximate depolarizing parameters printed next to them (for example p2 about 1.69 × 10−3 for IBM). These are time-varying vendor figures."
+    },
+    {
+     "id_suggestion": "yomo-depolarizing-noise-model",
+     "value": "The authors state that their noise model applies 1-qubit and 2-qubit depolarizing channels after each gate, with parameters chosen to match provider error rates, and that real hardware noise is typically biased and correlated so the depolarizing model is a first-order approximation.",
+     "anchor": "Appendix E, pp.18-19",
+     "quotes": [
+      "While real hardware noise is typically biased and correlated, the depolarizing approximation is a first-order approximation of the noise",
+      "In practice, depolarizing noise is typically applied after each gate, with separate parameters p1Q and p2Q for 1-qubit and 2-qubit operations, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own description and limit of its noise model (Appendix E).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-quantum-inference-crossover",
+     "value": "The authors state that in the intermediate qubit regime, for example 25–35 qubits, quantum inference with Yomo may even surpass classical simulation in runtime, as suggested by Chatterjee et al., and leave a systematic study of this crossover to future work.",
+     "anchor": "Section 7, Discussion and conclusion, p.9",
+     "quotes": [
+      "in the intermediate qubit regime (e.g., 25–35 qubits), quantum inference with Yomo may even surpass classical simulation in runtime, as suggested by (Chatterjee et al., 2025)",
+      "A systematic investigation of this crossover point, which we leave for future work"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A speculative claim attributed to other work and left open.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-cost-proportional-to-shots",
+     "value": "The authors state that quantum hardware providers typically charge in proportion to the number of shots or execution time, which itself scales linearly with shots, giving the IBM Quantum Platform and IonQ on AWS Braket pricing pages as examples, so reducing shots lowers usage costs.",
+     "anchor": "Appendix A footnote 3, p.15; Section 7, p.9",
+     "quotes": [
+      "Quantum hardware providers typically charge in proportion to the number of measurement shots or to execution time, which itself scales linearly with shots.",
+      "Since providers typically charge in proportion to the number of shots or runtime, reducing the required shots translates directly into lower usage costs."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim about pricing, pointing to vendor pages; pricing is time-sensitive.",
+     "result_type": "claim",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-inference-dominates-cost",
+     "value": "The authors state that classical scaling studies show the dominant cost of a deployed model often shifts from training to inference, and they expect the same for quantum machine learning once hardware is routinely accessible.",
+     "anchor": "Appendix A, p.15",
+     "quotes": [
+      "scaling studies in classical machine learning have shown that, once a model is deployed at scale, the dominant cost often shifts from training to inference (Sardana et al., 2023).",
+      "The same trend is expected for QML"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited classical result and an expectation for QML.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-single-shot-prior-work-cited",
+     "value": "The authors state that Recio-Armengol et al. introduced single-shot QML with a theoretical characterization, that training such models directly was shown to be challenging, and that follow-up has been limited for lack of a concrete architectural design.",
+     "anchor": "Appendix B, Shot-efficient QML, p.15",
+     "quotes": [
+      "Recio-Armengol et al. (2025b) introduced the concept of single-shot QML, providing a theoretical characterization of when a QML model can achieve reliable predictions with only a single measurement.",
+      "training such models directly is shown to be challenging.",
+      "there has been limited follow-up work, largely due to the absence of a concrete architectural design or implementation pathway."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-train-classical-deploy-quantum",
+     "value": "The authors state that Yomo is most naturally suited to training on classical simulators and deploying on quantum hardware, which is feasible for medium-scale circuits, and that scaling up requires advanced classical methods for simulating QNN outputs.",
+     "anchor": "Appendix F, pp.19-20; Section 7, p.9",
+     "quotes": [
+      "The design of Yomo is most naturally suited to the train-on-classical, deploy-on-quantum paradigm",
+      "which is feasible for medium-scale circuits with efficient simulators",
+      "an important future direction is to explore advanced classical methods for simulating QNN outputs."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the deployment scheme its design targets (Appendix F and Section 7).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-hoeffding-expectation-cost",
+     "value": "The authors state that expectation values cannot be extracted from a single run, and with eigenvalues bounded in [−1, 1] Hoeffding's inequality gives an estimation error decreasing at a rate of order one over the square root of N, so reliable predictions require a large shot budget, especially when the top-two margin is small.",
+     "anchor": "Section 3, Measurement considerations, p.4",
+     "quotes": [
+      "Since expectation values are ensemble quantities, they cannot be extracted precisely from a single run of the quantum circuit.",
+      "eigenvalues bounded in [−1, 1]",
+      "Thus, reliable predictions require a large shot budget, especially when the decision margin ∆ between the top-two class scores is small."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A standard concentration argument restated; the rate formula is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "yomo-conclusion-and-vqa-agenda",
+     "value": "The authors conclude that Yomo achieves competitive or superior performance with dramatically fewer shots, in some cases a single shot, and propose a broader agenda of reformulating VQE, QAOA and other variational algorithms for shot-efficient or single-shot output.",
+     "anchor": "Section 7, p.9; Appendix G, pp.20-21",
+     "quotes": [
+      "Our experiments demonstrate that Yomo achieves competitive or even superior performance with dramatically fewer measurement shots compared to Vanilla QML models.",
+      "In some cases, Yomo attains high test accuracy with only a single shot.",
+      "can other quantum methods be reformulated to operate in a shot-efficient or even single-shot regime?"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion and outlook.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "lotshaw-2023-approximate-boltzmann-distributions-quantum-approximate",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Lotshaw-et-al._2022_Approximate-Boltzmann-Distributions-in-Quantum-Approximate-Optimization__2212.01857.pdf",
+   "title_in_file": "Approximate Boltzmann Distributions in Quantum Approximate Optimization",
+   "version_note": "arXiv:2212.01857v3, dated November 9, 2023. The text layer holds the paper twice (plain and layout copies); the first copy was read in full and the second used only to check quotes. One abstract sentence on the temperature scaling is scrambled in both copies (overlapping glyphs); its content is restated in Section III E.",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A numerical study of optimized QAOA output on 7,200 random MaxCut instances (n = 14 to 23, p up to 12) showing that average basis-state probabilities follow approximate Boltzmann distributions with an empirical effective temperature, used to approximate performance metrics and extrapolate resource needs.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "lotshaw-approx-ratio-error",
+     "verdict": "widened",
+     "note": "Widened: Appendix C states the median relative error is at most 0.6% at each n and p (the main text says 'of 0.6%'), that 90% of cases have relative errors at most 1.5%, and that the worst case is 2.9%.",
+     "value": "The authors report that the approximation ratio computed from the exponential approximation with the empirical temperature slightly overestimates the true ratio, with median relative error at most 0.6% at each n and p, relative errors at most 1.5% for 90% of cases at each n and p, and a worst-case error of 2.9%.",
+     "anchor": "Section III F, p.8; Appendix C, p.14",
+     "quotes": [
+      "The rexp slightly overestimates the true r, with median relative error of 0.6% at each n and p, as shown in Appendix C.",
+      "The median error is ≤ 0.6% at each n and p, while 90% of cases at each n and p have relative errors ≤ 1.5%",
+      "The worst-case error is 2.9%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "lotshaw-boltzmann-scaling",
+     "verdict": "narrowed",
+     "note": "Narrowed: the exponential scaling is of the instance-averaged probability per basis state, for random Erdos-Renyi MaxCut graphs at n in {14, 17, 20, 23} with p up to 12, and the average plateaus at very small values for costs near zero; the paper calls the exponential view a good approximation of the average behavior.",
+     "value": "The authors report that across 7,200 QAOA MaxCut instances on random Erdős-Rényi-type graphs with n ∈ {14, 17, 20, 23} and depth p ≤ 12, the average probability per basis state scales exponentially with cost, similar to Boltzmann distributions, while plateauing at small values of about 10 to the minus 6 to 10 to the minus 10 near zero cost, so the average behavior is exponential to a good approximation.",
+     "anchor": "Introduction, p.1; Section III B, Fig. 4, pp.4-5; Section III E, p.8",
+     "quotes": [
+      "We find the average probability per basis state scales exponentially with costs in the MaxCut objective, similar to Boltzmann distributions in statistical mechanics",
+      "with sizes n ∈ {14, 17, 20, 23}, and with QAOA depth parameters p ≤ 12.",
+      "across the total set of 7,200 instances at varying n and p.",
+      "while they plateau to small values ≈ 10−6 − 10−10 at C",
+      "To a good approximation we can think of the average behavior as exponential, as solutions with C"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The value's 'Erdős-Rényi-type' paraphrases the paper's Erdos-Renyi graphs; the text layer mangles the accents so the name is not quoted. The plateau condition symbol after C is lost in the text layer (read as costs near or above zero)."
+    },
+    {
+     "id": "lotshaw-extrapolated-resources",
+     "verdict": "widened",
+     "note": "Widened: the paper estimates hundreds of layers at n of order 10^3 to 10^4 without noise, and qualifies the conclusion with 'unless the true large size scaling is more forgiving'.",
+     "value": "The authors state that extrapolating the scaling seen at small sizes gives estimates of hundreds of layers at sizes n of order a thousand to ten thousand in the absence of noise, that deep circuits would need very low noise levels, and that these extrapolations suggest demanding resource requirements for identifying optimal solutions with QAOA at scale unless the true large-size scaling is more forgiving than the fitted small-size trend.",
+     "anchor": "Section IV Discussion, Fig. 12, p.11",
+     "quotes": [
+      "We estimate hundreds of layers are expected at sizes of n ∼ 103 − 104, in the absence of noise.",
+      "Implementing these deep circuits with high fidelity would require very low noise levels.",
+      "Overall these extrapolations suggest demanding resource requirements for identifying optimal solutions with QAOA at scale, unless the true large size scaling is more forgiving than what is suggested by our fitted small-size trend."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An extrapolation of an empirical fit far beyond the measured sizes.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "n ∼ 103 − 104 is the text layer's flat print of 10 cubed to 10 to the fourth."
+    },
+    {
+     "id": "lotshaw-small-size-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Introduction p.2 and Section IV p.11).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "lotshaw-instance-set-setup",
+     "value": "The authors state that they consider sets of 300 random Erdős-Rényi-type graphs at each size n ∈ {14, 17, 20, 23}, each possible edge generated with probability 0.5, chosen to avoid non-generic symmetry-related behaviors, solving unweighted MaxCut with QAOA depths p = 2, 4, ..., 12.",
+     "anchor": "Section II, p.3; Fig. 1 caption, p.4",
+     "quotes": [
+      "We consider instance sets containing 300 random",
+      "at each size n ∈ {14, 17, 20, 23}",
+      "where in each instance each possible edge (i, j) is generated with probability 0.5.",
+      "to avoid the possibility of non-generic symmetry-related behaviors.",
+      "graphs at varying n and p = 2, 4, ..., 12"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its dataset (Section II, p.3).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lotshaw-approximation-ratio-definition",
+     "value": "The paper defines the approximation ratio as r = (Cmax − ⟨C⟩)/(Cmax − Cmin), with Cmin and Cmax computed by evaluating C(z) for every z, so that r = 1 means QAOA prepares an optimal solution and r = 0 is the worst case.",
+     "anchor": "Section II, Eq. (6), p.2",
+     "quotes": [
+      "imation ratio r = Cmax − Cˆ Cmax − Cmin (6) where Cmin and Cmax are the extremal values of the cost function; we computed these by evaluating C(z) for each z.",
+      "r = 1 signifies that QAOA prepares an optimal solution",
+      "while r = 0 is the worst case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (Eq. 6).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lotshaw-sk-angle-transfer",
+     "value": "The authors state that they rescale angles from the infinite-size Sherrington-Kirkpatrick model by the average graph degree d = 2|E|/n, keeping β and scaling γ by one over the square root of d, then optimize each instance with the NLOPT BFGS implementation, extending a rescaling approach studied at p ≤ 5 to p ≤ 12.",
+     "anchor": "Section III A, Eq. (10), pp.3-4",
+     "quotes": [
+      "to rescale the SK angles using the average graph degree d = 2|E|/n of a particular instance",
+      "We then perform a gradient-based optimization from these angles, using the NLOPT implementation of the BFGS optimization algorithm",
+      "graphs at p ≤ 5, and we extend their approach to p ≤ 12."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its method (Section III A).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The relation γ = γSK over the square root of d is printed flat in the text layer."
+    },
+    {
+     "id_suggestion": "lotshaw-transfer-vs-brute-force",
+     "value": "The authors report that against a brute-force baseline of 100 random initial angles per instance at n = 14, each locally optimized with BFGS and the best kept, the transferred angles gave equivalent approximation ratios at p = 2 and equivalent or better ratios in all cases at p ≥ 4; they state they do not have optimal angles to compare against.",
+     "anchor": "Section III A, p.4; Appendix A, Fig. 13, p.13",
+     "quotes": [
+      "We generated 100 random initial angles for each instance at n = 14 and p = 2, 4, ..., 12.",
+      "At p = 2, the results are equivalent for all cases, while at p ≥ 4 the transfer approach performs equivalently or better in all cases, rtr ≥ rbf .",
+      "We do not have optimal angles to compare against our transfer procedure, due to the computational expense of searching for optimal angles."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical comparison from one study against a limited-sampling baseline.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lotshaw-approx-ratio-increases-with-p",
+     "value": "The authors report that median approximation ratios increase with p and approach unity for each graph size, with similar performance at varying n.",
+     "anchor": "Section III A, Fig. 1, p.4",
+     "quotes": [
+      "The approximation ratios increase with p and approach unity for each graph, as expected for welloptimized angles in QAOA.",
+      "The transferred angles also give similar performance at varying sizes n, as seen in Fig. 1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study; values only in the figure.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lotshaw-optimal-probability-fit",
+     "value": "The authors report that the median probability of measuring an optimal solution fits a exp(−bn/p to the two-thirds) with a = 2.75 ± 0.09 and b = 0.502 ± 0.009, implying that for a fixed optimal-solution probability p should grow with size as p ∼ n to the three-halves, unlike the p ∼ n scaling observed for Max-2-SAT.",
+     "anchor": "Section III B, Fig. 3, p.4",
+     "quotes": [
+      "The medians are fit by a exp(−bn/p2/3), with a = 2.75 ± 0.09 and b = 0.502 ± 0.009",
+      "This indicates that to obtain a fixed probability for an optimal solution in the median case, p should increase with size as p ∼ n3/2.",
+      "This scaling differs from the scaling p ∼ n observed in optimized instances of Max2-SAT [12]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical fit from one simulation study at small sizes.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "p2/3 and n3/2 are the flat prints of p to the two-thirds and n to the three-halves."
+    },
+    {
+     "id_suggestion": "lotshaw-boltzmann-model-definition",
+     "value": "The paper models individual QAOA instances with Boltzmann distributions of the average basis-state probability, proportional to e to the minus C/T divided by a partition function Z, where T controls the rate of change, the distribution becomes uniform as T → ∞ (p = 0) and condenses to the ground state as T → 0.",
+     "anchor": "Section III C, Eq. (15), p.5",
+     "quotes": [
+      "We consider modeling individual QAOA instances with",
+      "As T → ∞ the distribution becomes uniform, giving the initial QAOA state distribution (p = 0), while the probabilities condense to the ground state as T → 0 (p → ∞).",
+      "T controls the rate of change in basis state probabilities with varying costs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own model definition (Eq. 15).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lotshaw-tvd-fit-quality",
+     "value": "The authors report that fitting the Boltzmann form to each instance at each p gave median total variation distance in the interval 0.034 − 0.095 at each n and p, with a worst instance at n = 23, p = 12 of TVD = 0.266 where the exponential approximation fails to capture individual probabilities per cost but keeps a qualitative similarity.",
+     "anchor": "Section III C, Fig. 6, p.6",
+     "quotes": [
+      "We find significant overlaps with median TVD in the interval 0.034 − 0.095 at each n and p.",
+      "distributions for n = 23 with p = 12.",
+      "the worst case instance with TVD = 0.266 is shown in (d) and (h).",
+      "The exponential approximation fails to capture the individual probabilities per cost in the worst case, but it maintains a qualitative similarity to the true distribution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lotshaw-entropy-near-boltzmann-fluctuation",
+     "value": "The authors report that at n = 23 and p = 2 QAOA state entropies are sub-Boltzmann but well above those of randomized states with the same expected cost, and approximately match the entropy expected for random complex Gaussian fluctuations about a Boltzmann distribution, lower by (1 − γEM)/ln(2) with γEM ≈ 0.577.",
+     "anchor": "Section III D, Fig. 7, p.7; Appendix B, pp.13-14",
+     "quotes": [
+      "entropies SQAOA at n = 23 and p = 2",
+      "The QAOA states obtain sub-Boltzmann entropies (below the upper diagonal line), but these significantly exceed the entropies from the randomly generated states.",
+      "Their expected entropy is SBoltzmann, fluc = SBoltzmann − (1 − γEM)/ ln(2), with γEM ≈ 0.577 the Euler-Mascheroni constant.",
+      "We conclude the QAOA entropy is close to what is expected for a class of states with fluctuations about average Boltzmann distributions."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study at one n and p.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lotshaw-empirical-temperature",
+     "value": "The authors report an empirical temperature Te = c Cmin/(n√p) + d with c = −2.738 ± 0.005 and d = −0.255 ± 0.003 that captures the typical behavior across the 7,200 instances, with individual instances scattered around it, and state that Te does not depend on the specific angles, so a general characterization would need angle dependence.",
+     "anchor": "Section III E, Eq. (20), Fig. 8, p.8",
+     "quotes": [
+      "We find good agreement across our 7,200 instances at varying n and p using the following empirical temperature relationship",
+      "with c = −2.738 ± 0.005 and d = −0.255 ± 0.003",
+      "it captures the typical behavior and trend, though individual instances show some deviations scattered around Te.",
+      "Notably Te does not depend on the specific angles γ and β for each instance. A general characterization would need to include γ and β dependence"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical fit from one simulation study; the formula itself is garbled in the text layer.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The form Cmin/(n√p) is read from the Fig. 8 axis label and the series expansion in Eq. (19); the text layer scrambles Eq. (20). Te holds for angles obtained from the SK transfer procedure, not for arbitrary angles."
+    },
+    {
+     "id_suggestion": "lotshaw-cdf-prediction-errors",
+     "value": "The authors report that predictions from Te of the probability of costs within 8% of optimal have median relative error ≤ 11% and ≤ 33% in 90% of cases, while for the cost threshold C0.04 the median relative error is ≤ 35% at p = 2 and ≤ 12% at p > 2.",
+     "anchor": "Section III F, p.9; Appendix C, Fig. 14, p.14",
+     "quotes": [
+      "if α = 0.08 then any cost C ≤ Cα is within 8% of optimal.",
+      "The median relative error in Pr(C ≤ C0.08) from the approximation with Te is ≤ 11% for median cases, and ≤ 33% in 90% of cases",
+      "At p = 2 the median relative error is ≤ 35%, when Pr(C ≤ C0.04) is small. At p > 2 the median relative error decreases to ≤ 12% across all n and p."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Fig. 14's panel labels say C0.92 and C0.96 while the text says C0.08 and C0.04; the text's labels are used here."
+    },
+    {
+     "id_suggestion": "lotshaw-optimal-probability-prediction-errors",
+     "value": "The authors report that Te predictions of the probability of an optimal solution correlate with the true values, with median relative errors as large as 65% at p = 2, attributed partly to small probabilities, and median errors ≤ 29% at p > 2; median errors tend to increase with n.",
+     "anchor": "Section III F, Fig. 9(d), p.9; Appendix C, p.14",
+     "quotes": [
+      "At p = 2 the median relative errors are as large as 65%, which we attribute in part to the small values of Pr(Cmin) at this p",
+      "The relative error decreases as p increases, with median errors ≤ 29% at p > 2 across all n",
+      "Overall, the median errors tend to increase with n, as do the spread of the errors"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lotshaw-larger-size-predictions",
+     "value": "The authors generate approximate QAOA metrics for 300 random graphs at each n ∈ {26, 29, 32, 35, 38} using Te and solution densities from exhaustive enumeration (time of order 2 to the n), predicting that the approximation-ratio behaviors and the optimal-solution scaling seen at n ≤ 23 extend to n ≤ 38, and state these predictions can be tested in future work.",
+     "anchor": "Section III G, Fig. 11, pp.10-11",
+     "quotes": [
+      "We computed approximate QAOA performance metrics for collections of 300 random",
+      "graphs at each n ∈ {26, 29, 32, 35, 38} with p = 2, 4, . . . , 12.",
+      "Exactly computing ̺(C) requires time ∼ 2n",
+      "Hence, we confirm the known scaling behavior of Pr(Cmin) for n ≤ 23 and predict similar scaling extends to n ≤ 38.",
+      "The predictions depicted in Fig. 11 can be tested in future work"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Model predictions without exact results for comparison at these sizes.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The density of solutions still needs exponential-time enumeration, so the approach avoids quantum simulation but not exponential cost."
+    },
+    {
+     "id_suggestion": "lotshaw-pure-state-thermal-analogy",
+     "value": "The authors state that the systematic Boltzmann behavior is surprising because the factor reflects global structure while QAOA is usually understood as local, and that unlike statistical mechanics the QAOA distribution arises from pure-state dynamics without any bath, resembling approximate thermal pure quantum states.",
+     "anchor": "Section IV Discussion, p.11",
+     "quotes": [
+      "The systematic behavior in the approximate QAOA Boltzmann probabilities is surprising.",
+      "while QAOA is usually understood as a local algorithm.",
+      "An important difference here is that the QAOA distribution arises from pure state dynamics alone, without any exterior system or bath."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' interpretation in the discussion.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lotshaw-open-derivation-from-ansatz",
+     "value": "The authors state that to use statistical-mechanics reasoning for concentration at large n it appears necessary to derive exponential distributions from the QAOA ansatz, which is left for future work, and that non-linear behaviors not detected in their dataset may dominate at larger n or p.",
+     "anchor": "Section IV Discussion, p.11",
+     "quotes": [
+      "it appears necessary to derive exponential distributions from the QAOA ansatz, to better assess their prevalence and limitations. This is an interesting topic for future work",
+      "There may also be non-linear behaviors that were not detected in our dataset but that become dominant at larger n or p, which may further limit performance."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open problem and limit (Section IV, p.11).",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lotshaw-worst-case-exponential",
+     "value": "The authors state that for worst-case instances exponential time is expected to reach exact solutions, for example if the number of layers or the angle-optimization time scales exponentially.",
+     "anchor": "Section IV Discussion, p.11",
+     "quotes": [
+      "For worst-case instances it is expected that exponential time will be needed to reach exact solutions, which could arise for example if the number of algorithmic layers or the time for angle optimization scales exponentially."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' expectation, not shown in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lotshaw-p1-boltzmann-cited",
+     "value": "The authors cite a derivation showing that p = 1 QAOA pure states have Boltzmann-distributed solution probabilities, based on correlations in the solution spectra of random Ising models, and state that it is not clear this should describe cases with p ≥ 2.",
+     "anchor": "Introduction, p.1; Section III C, p.5",
+     "quotes": [
+      "A derivation showing that p = 1 QAOA pure states have Boltzmanndistributed solution probabilities has been presented in Ref. [15]",
+      "Exponential distributions were shown to approximately characterize QAOA at p = 1 in Refs. [15, 19], though it is not clear if this should describe our cases with p ≥ 2."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lotshaw-data-availability",
+     "value": "The authors state that simulation results are available at an ORNL code repository.",
+     "anchor": "Data availability, p.11",
+     "quotes": [
+      "Simulation results are available at:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own data-availability statement (p.11).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lotshaw-boltzmann-sampling-use",
+     "value": "The authors state that if QAOA can quickly generate exponentially distributed samples it might find use in new quantum-classical algorithms, such as for thermodynamic properties of materials, simulated annealing and Boltzmann machines.",
+     "anchor": "Section IV Discussion, p.11",
+     "quotes": [
+      "If QAOA can quickly generate exponentially distributed samples then it might find use in new quantum-classical algorithms.",
+      "optimization with simulated annealing [46], and machine learning with"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A speculative outlook.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "ma-2024-classical-verification-quantum-learning-advantages",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Ma-Su-Deng_2024_Classical-Verification-of-Quantum-Learning-Advantages-with-Noises__2411.09210.pdf",
+   "title_in_file": "Classical Verification of Quantum Learning Advantages with Noises",
+   "version_note": "arXiv:2411.09210v1, 14 Nov 2024, with Supplementary Materials (pp.8-13). The text layer holds the paper twice (plain and layout copies); the first copy was read in full and the second used only to check quotes. Several main-text formulas (Theorem 1's list size, Theorem 3's step 2 threshold, Theorem S5's noise bound) are interleaved with other lines in the text layer; the supplementary restatements were used where they are cleaner.",
+   "pages": 13,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper giving a classical error-rectification algorithm that recovers heavy Fourier coefficients from noisy quantum Fourier sampling, and using it to show efficient agnostic parity learning on noisy quantum devices and a one-round classical verification protocol for it.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "agnostic-parity-noisy",
+     "verdict": "narrowed",
+     "note": "Narrowed: Theorem 2 needs noise strength at most epsilon squared over 10, so the tolerated noise shrinks with the target accuracy, and uses both noisy QFS samples and classical random examples; the polynomial-scaling sentence is stated after the theorem.",
+     "value": "The paper proves (Theorem 2) that for a boolean function f and ε, δ in (0, 1), a classical algorithm taking O(log(n/δ)/ε to the fourth) samples from a noisy QFS circuit with error strength η ≤ ε squared/10 and O(log(1/εδ)/ε squared) classical random examples outputs s0 whose parity loss is within ε of the best parity with probability at least 1−δ, under the uniform input distribution, with time Õ(n squared log(n/δ)/ε to the sixth) and space O(n log(n/δ)/ε to the fourth); the authors state the sample, time and space complexities scale at most polynomially with system size.",
+     "anchor": "Theorem 2, p.4; Theorem S4 and proof, Supplementary Sec. IV, p.12",
+     "quotes": [
+      "Theorem 2. Let f : Xn → {0, 1} be a boolean function and (ε, δ) ∈ (0, 1)2.",
+      "samples from noisy QFS cir- cuit with error strength η ≤ 1 10 ε2 and k′ = O log(1/εδ) ε2 classical random examples to output s0 ∈ Xn, such that Lf (s0·x) ≤ mins∈Xn Lf (s·x)+ε with success probability at least 1−δ.",
+      "The algorithm's time and space complexities are O ̃ n2 log(n/δ) ε6 and O n log(n/δ) ε4 , respectively.",
+      "There exists an efficient classical algorithm that takes k = O log(n/δ) ε4",
+      "we focus on the task of 1-agnostic (α = 1) parity learning under a uniform input distribution Un.",
+      "the sample, time, and space complexities scale at most polynomially with the system size, for both classical and quantum computers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 (p.4) is stated with its conditions (uniform inputs, noise bound, sample counts) and proved in Supplementary Sec. IV.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The noise bound η ≤ ε2/10 means 'constant-level noise' holds only for a fixed target accuracy; tighter accuracy needs quadratically lower noise. Exponents print flat in the text layer (ε4 is epsilon to the fourth)."
+    },
+    {
+     "id": "classical-verification-sparse",
+     "verdict": "narrowed",
+     "note": "Narrowed: Theorem 3's condition is that f has no non-zero Fourier coefficient smaller than tau (the abstract calls this sparse), the protocol uses one round of communication, and completeness needs the prover's noise below O(epsilon squared); soundness holds against any prover.",
+     "value": "The paper proves (Theorem 3) that for a boolean function with no non-zero Fourier coefficients smaller than τ, there is an interactive proof system between a classical verifier with the random example oracle and a noisy quantum prover with the quantum example oracle that achieves agnostic parity learning in one round of communication, complete when the prover's noise is below O(ε squared), with V correct with probability at least 1−δ, and sound against any prover, even one with unlimited computational power, with V wrong with probability at most δ.",
+     "anchor": "Theorem 3, p.4; Theorem S5 and proof, Supplementary Sec. V, pp.12-13",
+     "quotes": [
+      "Theorem 3. Let (ε, δ) ∈ (0, 1)2 and f : Xn → {0, 1} be a boolean function that has no non-zero Fourier coefficients smaller than τ .",
+      "There exists an interactive proof system (V, P ) that can achieve agnostic parity learning using only one round of communication",
+      "Completeness: If the noise strength of P is below O(ε2), the probability of V obtaining a correct answer after interacting with P is at least 1−δ.",
+      "Soundness: For any prover P ′, even with unlimited computational power and full information about the target function f , the probability of V obtaining an incorrect answer after interacting with P ′ is at most δ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 (p.4) is quoted with its condition and both properties, and proved in Supplementary Sec. V.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The supplementary Theorem S5 appears to state the prover's noise bound in terms of τ squared (garbled in the text layer), while the main text says O(ε2); the two statements may not match."
+    },
+    {
+     "id": "qfs-error-rectification",
+     "verdict": "narrowed",
+     "note": "Narrowed: Theorem 1 (restated as Theorem S1) holds for independent bit-flip noise with eta at most theta/10 and eta in (0, 1/2); the sample count O(log(n/delta)/theta squared) is logarithmic in n but grows with 1/theta squared; the output list has size at most 2/theta.",
+     "value": "The paper proves (Theorem 1, Theorem S1) that for a distribution p0 over n-bit strings seen through independent bit-flip noise of strength η ∈ (0, 1/2) with η ≤ θ/10, a classical algorithm taking O(log(n/δ)/θ squared) noisy samples finds a list L with |L| ≤ ⌊2/θ⌋ containing every s with p0(s) ≥ θ, with success probability at least 1 − δ, in time Õ(n squared log(n/δ)/θ cubed) and space O(n log(n/δ)/θ squared).",
+     "anchor": "Theorem 1, p.3; Theorem S1 and proof, Supplementary Sec. II, pp.9-10",
+     "quotes": [
+      "let (θ, δ, η) ∈ (0, 1)2 × (0, 1 2 ).",
+      "For η ≤ 1 10 θ, there exists an efficient classical algorithm that takes k = O log(n/δ) θ2 noisy samples from pη(s) and finds all possibly large components in p0(s)",
+      "In particular, such an algorithm produces a set L with |L| ≤ ⌊ 2 θ ⌋ satisfying H = {s ∈ Xn|p0(s) ≥ θ} ⊆ L with success probability no less than 1 − δ.",
+      "The algorithm's time and space complexities are O ̃ n2 log(n/δ) θ3 and O n log(n/δ) θ2 , respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem S1 (p.9) states the result with its conditions and proves it by induction with Lemmas S1 and S3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "rectification-noise-limit",
+     "verdict": "widened",
+     "note": "Widened: the paper adds that the independence condition can be relaxed (Theorem S2): if each bit is flipped with probability at most eta, allowing correlations and dependence on the sample, the same result holds with eta at most theta/20.",
+     "value": "The authors state that Theorem 1 requires bit flip errors to occur randomly and independently for each qubit, and that this can be relaxed: the paper proves (Theorem S2) that if each bit of a sample is flipped with probability at most η, allowing correlations between bits and dependence on the sample, the same guarantee holds for η ≤ θ/20 instead of η ≤ θ/10.",
+     "anchor": "After Theorem 1, p.3; Theorem S2, Supplementary Sec. II, p.11",
+     "quotes": [
+      "Theorem 1 requires that bit flip errors occur randomly and independently for each qubit.",
+      "This condition can be relaxed, as long as the error strength is smaller than a constant threshold value",
+      "This noise model allows for correlations between different bits and also permits the noise to depend on the original sample s.",
+      "(η ≤ 1 20 θ instead of η ≤ 1 10 θ)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated condition after Theorem 1 (p.3), with the relaxation proved as Theorem S2 (p.11).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "ma-corollary1-fourier-estimate",
+     "value": "The paper proves (Corollary 1, Theorem S3) that with O(log(n/δ)/ε to the fourth) samples from a noisy QFS circuit of strength η ≤ ε squared/10 and O(log(1/εδ)/ε squared) noiseless classical random examples, a classical algorithm finds a succinct estimate g̃ of the Fourier coefficients with at most 2/ε squared non-zero entries and l-infinity error at most ε, with probability at least 1 − δ.",
+     "anchor": "Corollary 1, p.3; Theorem S3, Supplementary Sec. III, pp.11-12",
+     "quotes": [
+      "Theorem S3 (Corollary 1 in the main text).",
+      "There exists an efficient classical algorithm that takes k = O log(n/δ) ε4 samples from a noisy QFS circuit with noise strength η ≤ 1 10 ε2 and k′ = O log(1/εδ) ε2 classical random examples",
+      "such that ||g ̃||0 ≤ 2 ε2 and ||gˆ − g ̃||∞ ≤ ε with success probability at least 1 − δ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem S3 (p.11) states the result with its conditions and proves it from Theorem S1 and Lemma S2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ma-lemma-s3-mismatch-bound",
+     "value": "The paper proves (Lemma S3) that for η ∈ (0, 1/2) the probability that independent bit-flip noise flips at least half of d differing bits (with ties split) is at most η, which bounds the chance of matching a noisy sample to the wrong list element.",
+     "anchor": "Lemma S3, Supplementary Sec. II, p.10",
+     "quotes": [
+      "Lemma S3. For η ∈ (0, 1 2 ) and d ∈ N∗, the",
+      "So for all d ∈ N∗, Pd(η) ≤ η.",
+      "the noise must flip at least half of the different bits between sm and s′m to make the algorithm mismatch"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma S3 (p.10) is proved by cases on even and odd d.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ma-lemma-s2-random-example-estimate",
+     "value": "The paper proves (Lemma S2) that classical random examples numbering O(log(|S|/δ)/ε squared) suffice to estimate the Fourier coefficients of g = 1 − 2f for all s in a given set S to within ε with probability at least 1 − δ, by Hoeffding's inequality.",
+     "anchor": "Lemma S2, Supplementary Sec. I, p.8",
+     "quotes": [
+      "There exists an efficient classical algorithm that given a set S ⊆ Xn, it takes k = O log(|S|/δ) ε2 classical random examples to produce an estimation g ̃(s) of",
+      "gˆ(s) for s ∈ S, such that the probability of |gˆ(s) − g ̃(s)| ≤ ε for all s ∈ S is at least 1 − δ.",
+      "Let gˆ be the Fourier coefficient of g = 1 − 2f ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma S2 (p.8) is stated and proved with Hoeffding's inequality.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ma-lemma-s1-empirical-distribution-cited",
+     "value": "The paper cites (Lemma S1, Lemma 3 in Caro et al.) that O(log(1/δ)/ε squared) i.i.d. samples give an empirical distribution within ε in l-infinity distance of the true distribution with probability at least 1 − δ.",
+     "anchor": "Lemma S1, Supplementary Sec. I, p.8",
+     "quotes": [
+      "Lemma S1 (Lemma 3 in Ref. [1]).",
+      "given k = O log(1/δ) ε2 i.i.d. samples from q, it outputs the succinctly represented empirical distribution",
+      "such that ||q − q ̃||∞ ≤ ε with probability at least 1 − δ."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A lemma the paper cites from other work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ma-noisy-qfs-model",
+     "value": "The paper models noisy quantum Fourier sampling as independent bit flips with probability η on the measurement result of each of the first n qubits, so that conditioned on the last qubit giving y = 1 (probability 1/2) the output distribution is the noiseless squared Fourier spectrum convolved with Hamming-distance flip weights.",
+     "anchor": "QFS with noises, Eq. (3), p.3; Fig. 1(b)",
+     "quotes": [
+      "We consider the independent bit flip noise model, where a random bit flip with probability η is applied independently on the measurement result for each of the first n qubits",
+      "surement result of the last qubit giving y = 1 with probability 1 2 , but due to noises, the probability distribution of the first n qubits conditioned on y = 1 becomes:",
+      "where dH (s, s′) = ||s−s′||1 denotes the Hamming distance between s and s′."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own noise model (p.3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Gate noise inside the circuit is reduced to readout-flip noise only through the depolarizing argument; other noise is not analyzed."
+    },
+    {
+     "id_suggestion": "ma-depolarizing-reduction",
+     "value": "The authors show that depolarizing noise of strength ηdep before measurement is equivalent to the bit-flip model with ηeff = ηdep − ηdep squared/2 and a modified noiseless distribution, so the same rectification methods apply, and state that more generally any single-qubit error can be equivalently considered as a measurement outcome flip error.",
+     "anchor": "After Corollary 1, Eqs. (5)-(6), p.4",
+     "quotes": [
+      "The above results can be readily extended to the depolariz- ing noise model for the QFS circuit as shown in Fig. 1 (c).",
+      "ηeff = ηdep− 1 2 ηd2ep , p0,eff = (1−ηeff )p0(s)+ηeff δs,0. (6)",
+      "Noting that this is exactly equivalent to the simplified noise model if we replace η and p0 by ηeff and p0,eff , respectively.",
+      "More generally, any single-qubit error can be equivalently considered as a measurement outcome flip error"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation in the text for depolarizing noise; the general single-qubit claim is asserted without proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The formula for ηeff is garbled in the text layer in one place and read from Eq. (6)."
+    },
+    {
+     "id_suggestion": "ma-qfs-resource-cost",
+     "value": "The authors state that each execution of the quantum Fourier sampling circuit requires one copy of the quantum example and O(n) single-qubit gates, and that the error-rectification method keeps the original circuit design without increasing the number of qubits or gates.",
+     "anchor": "Notations and framework, p.2; after Theorem 1, p.3",
+     "quotes": [
+      "Each execution of the QFS circuit requires one copy of the quantum example |ψf ⟩ and O(n) single-qubit gates.",
+      "this method preserves the original QFS circuit design and does not increase the required number of qubits or gates"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its circuit and method (pp.2-3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ma-parity-learning-hardness-cited",
+     "value": "The authors state that 1-agnostic parity learning is at least as hard as learning parity with noise, which is widely believed to be classically intractable from random examples, and that no efficient classical algorithms have been discovered for learning Fourier coefficients from the random example oracle.",
+     "anchor": "After Theorem 2, p.4; Notations and framework, p.2",
+     "quotes": [
+      "We note that 1-agnostic parity learning is at least as hard as learning parity with noise, which is widely believed to be classically intractable from random examples [47, 48].",
+      "However, no efficient classical algorithms have been discov- ered for the random example oracle so far."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A hardness belief cited from other work, not proved.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": "The quantum advantage claimed rests on this unproved classical hardness belief."
+    },
+    {
+     "id_suggestion": "ma-verification-protocol-steps",
+     "value": "The paper's protocol has the verifier ask the prover for O(log(n/δ)/τ to the fourth) noisy QFS samples to build a candidate list, check the list with O(log(1/τδ)/τ to the sixth) random examples by testing whether the estimated Fourier weight on the list is near one, and then estimate coefficients with O(log(1/τδ)/ε squared) random examples and output the best parity.",
+     "anchor": "Proof of Theorem 3, p.4; Theorem S5 proof, pp.12-13",
+     "quotes": [
+      "the ver- ifier V asks the prover P to provide k = O log(n/δ) τ4 samples from noisy QFS circuit",
+      "The verifier V checks the reliability of L by obtaining a 1 8 τ",
+      "using k2′ = O log(1/τ δ) τ6 sam- ples from the random example oracle.",
+      "with probability 1− δ 3 using k3′ = O log(1/τ δ) ε2 samples from the random exam- ple oracle."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own protocol definition (proof of Theorem 3 and Theorem S5).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The verifier's own random-example cost grows as 1/τ to the sixth, so the protocol is efficient only when τ is not too small."
+    },
+    {
+     "id_suggestion": "ma-agnostic-learning-definition",
+     "value": "The paper defines α-agnostic learning as finding a hypothesis h0 in a class H whose loss is at most α times the best loss in H plus ε, and focuses on 1-agnostic proper parity learning under the uniform input distribution with efficiency meaning poly(n, 1/ε, 1/δ) time and sample complexity.",
+     "anchor": "Notations and framework, p.2; Definition S1, p.12",
+     "quotes": [
+      "For the α-agnostic learning, the goal is to find a hypothesis h0 in a specific hypothesis class H such that Lf (h0) ≤ α·minh∈H Lf (h)+ε, where ε is some constant parameter.",
+      "The algorithm should be both efficient(i.e. poly(n, 1/ε, 1/δ) in time and sample complexity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (p.2 and Definition S1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ma-qec-impractical-claim",
+     "value": "The authors state that quantum error correction requires noise below a stringent threshold and a huge number of additional qubits, making it unfeasible for practical quantum learning on current noisy intermediate-scale devices, and that near-future quantum computers are likely noisy, expensive and mainly available on the cloud.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "Quantum error correction [27–30] may address general noise issues, but it requires that the noise strength is below a certain stringent threshold and a huge number of additional qubits",
+      "In the near future, quantum computers are most likely noisy, expensive and mainly available on the cloud [32–35]."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' motivating claim.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ma-rectification-general-applicability",
+     "value": "The authors state that the error-rectification algorithm is not limited to quantum Fourier sampling and applies generally to scenarios involving noise, quantum or classical, and can extend to other QFS-based tasks such as agnostic improper Fourier-sparse learning and quantum DNF learning.",
+     "anchor": "After Theorem 1, p.3; Discussion, p.5",
+     "quotes": [
+      "We note that this error-rectification algorithm is not limited to QFS and generally applicable to a variety of scenarios involving noises, regardless of whether the task is quantum or classical.",
+      "can be extended to other QFS-based learning tasks, including agnostic improper Fourier-sparse learning, quantum disjunctive-normal-form learning [15]"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim without proof in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ma-open-problems-and-no-experiment",
+     "value": "The authors state as open directions extending verification to unsupervised and reinforcement learning, whether quantum-memory exponential separations carry over to delegated noisy learning, and carrying out an experiment on current devices, which they call feasible because the verifier is fully classical.",
+     "anchor": "Discussion, p.5",
+     "quotes": [
+      "it is of both fundamental and practical interest to extend the classical verification protocol to these scenarios.",
+      "This gives rise to a natural question concerning whether these exponential separations carry over to the delegated noisy learning setting considered in this paper.",
+      "it would be interesting and important to carry out an experiment to demonstrate the classical verification of quantum learning advantages on current noisy intermediatescale quantum devices."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open problems (Discussion, p.5); no experiment is reported.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ma-caro-noise-free-assumption-cited",
+     "value": "The authors state that Caro et al. extended interactive proofs to quantum learning, showing a classical verifier can efficiently verify Fourier coefficients from a noise-free quantum prover, and that this idealized assumption does not hold in practical settings.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "demonstrating that a classical verifier could efficiently obtain a sufficiently good solution by verifying the correctness of the Fourier coefficients provided by the noise-free quantum prover.",
+      "However, this idealized assumption does not hold in practical settings, where noises are inevitable at the current stage."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "makarovskiy-2026-trainability-photonic-quantum-circuits",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Makarovskiy-et-al._2026_The-trainability-of-photonic-quantum-circuits__2607.21544.pdf",
+   "title_in_file": "The trainability of photonic quantum circuits",
+   "version_note": "arXiv:2607.21544v1, 23 Jul 2026. The text layer holds the paper twice (plain and layout copies); the first copy was read in full and the second used to check quotes. Pages 45 and 46 were viewed as images: the sentence 'Therefore, the classical complexity using one of the best out-of-the-box' breaks off mid-sentence in the PDF itself (p.46), not in the text layer.",
+   "pages": 53,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An ORCA Computing and Imperial College paper that defines trainability of passive linear-optical variational circuits by the ratio of sample variance to circuit variance, computes Haar moments of photon-number observables, identifies fixed-order photon-number polynomials as trainable and output-probability observables as not, compares with classical estimators, and trains simulated circuits and the ORCA PT-2.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "photonic-conjectured-scaling-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section 5, p.21).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "photonic-fixed-order-polynomial-trainable",
+     "verdict": "narrowed",
+     "note": "Narrowed: the polynomial-sample result rests on a numerically observed and conjectured polynomial decay of the circuit variance, is derived for Haar-random passive linear optics at constant photon density n = nu M with fixed-photon-number inputs, and for polynomials holds for typical coefficients drawn with zero mean; structured coefficients can cancel either variance.",
+     "value": "The authors report, supported by analytic results and a numerically observed polynomial decay of the circuit variance that they conjecture but do not prove, that fixed-order photon-number polynomials require only polynomially many samples as the system size grows at constant photon density n = νM in Haar-random passive linear optics, with typical fixed-order polynomials (random zero-mean coefficients) inheriting this, whereas high-order polynomials and observables based on output probabilities generally require exponentially many samples.",
+     "anchor": "Abstract, p.1; Sections 3.1-3.2, pp.8-13",
+     "quotes": [
+      "Supported by analytic results and a numerically observed polynomial decay of the circuit variance, we find that fixed-order photon-number polynomials require only polynomially many samples as the system size grows",
+      "We conjecture that this decay is polynomial with respect to M .",
+      "We will again consider the regime where n = νM .",
+      "A typical fixed-order PNP therefore inherits the poly(M ) variance ratio of",
+      "we note that highly structured PNPs can have coefficients that lead to cancellations that suppress either variance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Rests on a conjectured scaling the paper states is not established analytically.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "photonic-fixed-photon-number-scope",
+     "verdict": "widened",
+     "note": "Widened: the paper also restricts itself to passive linear optics, excluding mid-circuit measurement and feedforward, and to Haar-average (random initialisation) behavior.",
+     "value": "The authors state that they restricted their treatment to fixed-photon-number input states and focus exclusively on the dynamics of passive linear optics, excluding mid-circuit measurements and feedforward, averaging over Haar-random circuits.",
+     "anchor": "Section 2.1, p.3; Section 5, p.21",
+     "quotes": [
+      "We have also restricted our treatment to fixed-photon-number input states.",
+      "while parametrised photonic circuits may incorporate mid-circuit measurements and feedforward operations [40, 43– 45], we focus exclusively on the dynamics of passive linear optics.",
+      "We restrict our attention to input states with a fixed total photon number."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of scope (Sections 2.1 and 5).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "photonic-polynomial-speedup",
+     "verdict": "narrowed",
+     "note": "Narrowed: the speed-up is a suggested quadratic one in the number of polynomial terms |A| over term-wise Lim-Oh estimation, for polynomials with suitably many positive and negative coefficients; against boson-sampling emulators there is no sampling advantage, only a possible polynomial runtime gap from their per-sample cost, and those methods need modification for this setting.",
+     "value": "The authors state that for photon-number polynomials with balanced (suitably many positive and negative) coefficients, quantum sampling needs O(|A|) samples while term-wise or Monte-Carlo Lim-Oh classical estimation needs O(|A| squared/ε squared), which suggests a quadratic speed-up; against boson-sampling emulators reproducing low-order correlators there is no quantum sampling advantage, only a potential polynomial speed-up from their per-sample cost, and the authors therefore expect a polynomial runtime speed-up over currently available classical algorithms.",
+     "anchor": "Section 3.2.2, Comparison to classical estimation, pp.14-15; Appendix D.4, pp.44-46",
+     "quotes": [
+      "In Appendix D.4, we show that both strategies carry a complexity of O |A|2/εa2dditive .",
+      "This suggests a quadratic speed-up using quantum sampling versus Lim-Oh simulation methods for the task of estimating the loss function.",
+      "so there is no quantum sampling advantage with this approach.",
+      "leaving space for a potential polynomial quantum speed-up for sufficiently chosen a.",
+      "These results combined with those from Eq. (101) suggest that a quadratic speedup over the Lim-Oh algorithm is possible for a wide class of PNPs, namely those with suitably many positive and negative terms.",
+      "We therefore expect photonic variational circuits to exhibit a polynomial speed-up in the runtime of variational protocols on a large class of PNP observables when compared with the currently available classical algorithms."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A comparison of upper bounds against specific classical methods, stated as 'suggest' and 'expect'.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The speed-up is relative to named classical estimators, not a lower bound on all classical algorithms; the classical cost remains polynomial."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "photonic-trainability-definition",
+     "value": "The paper defines a circuit-observable pair as trainable if its gradients can be resolved to within proportional error with a number of samples growing at most polynomially with circuit size, and notes this notion is local: it does not address poor local minima, the number of optimisation steps or the training rate.",
+     "anchor": "Section 2.2, pp.5-6",
+     "quotes": [
+      "Throughout this work, we say a circuit–observable pair is trainable if its gradients can be resolved to within proportional error with the number of samples required to estimate them growing at most polynomially with the size of the circuit.",
+      "This notion of trainability is local",
+      "We do not address the global optimisation landscape, including the presence of poor local minima, the number of optimisation steps required for convergence, or the training rate needed to avoid overshooting minima."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition and scope (Section 2.2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-variance-ratio-framework",
+     "value": "The paper defines the sample variance as the parameter-averaged measurement variance and the circuit variance as the variance of the true loss over parameters, and takes their ratio Varsamp/Varcirc as the measure of trainability, noting that for unbounded photonic observables the sample variance can grow exponentially even without a barren plateau, so both variances must be considered.",
+     "anchor": "Section 2.2, pp.6-7",
+     "quotes": [
+      "The number of samples needed to estimate observables to resolve a loss minimising direction is then governed by the ratio of these two quantities, Varsamp/Varcirc.",
+      "Natural photonic observables, such as products of multiple photon numbers, are unbounded and can take exponentially large values in the number of photons, so the sample variance itself can grow exponentially even in the absence of a barren plateau.",
+      "Both variances must therefore be considered to conclude trainability in photonic circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its framework (Section 2.2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-proposition1-samples-from-ratio",
+     "value": "The paper proves (Proposition 1, Appendix A) that for θ, θ′ drawn independently, with probability at least 1 − 2/t, taking N ≥ t/(δ times ε squared) times Varsamp/Varcirc samples at each setting gives both loss estimates within ε times the square root of Varcirc simultaneously with probability at least 1 − 2δ, so any pair whose losses differ by more than twice that is correctly ordered.",
+     "anchor": "Proposition 1, Appendix A.3, p.28",
+     "quotes": [
+      "Proposition 1. Let ε > 0, δ ∈ (0, 1] and t > 0. Let θ, θ′ be drawn independently from a parameter distribution. With probability at least 1 − 2/t, taking N ≥ t δ ε2 Varsamp(Oˆ) Varcirc(Oˆ) (34) samples at each setting",
+      "simultaneously with probability at least 1 − 2δ. In particular, whenever |l(θ) − l(θ′)| > 2ε Varcirc(Oˆ), the loss-minimising direction is correctly identified."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 1 (p.28) is stated with its conditions and proved by Markov's and Chebyshev's inequalities.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The square root over Varcirc is lost in the text layer and read from the definition of the error scale."
+    },
+    {
+     "id_suggestion": "photonic-anticoncentration-assumption",
+     "value": "The authors state that Proposition 1 only resolves pairs differing at the landscape scale, and that guaranteeing such pairs are common needs an assumed anticoncentration of loss differences (an inverse-polynomial fraction of pairs) or Gaussian loss differences, under which about 0.48 of randomly drawn pairs are resolved.",
+     "anchor": "Appendix A.4, pp.28-29",
+     "quotes": [
+      "With proposition 1, we show that",
+      "However, we don't consider how regularly we can expect the difference of loss to be of this magnitude.",
+      "In words, this conjectures that for an inverse-polynomially large fraction of randomly drawn pairs, the loss difference is at least as large as Varcirc(Oˆ) up to a polynomial factor.",
+      "≈ 0.48, (37)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated assumption limiting Proposition 1 (Appendix A.4).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-theorem1-first-moment-pnm",
+     "value": "The paper proves (Theorem 1) that for a photon-number monomial with α = (α1, ..., αK) and an input with total photon number n, the Haar-average first moment is a finite sum involving Stirling numbers of the second kind, which at constant density n = νM approaches a product of ordered Bell polynomials up to O(1/M) corrections, so if K and |α| do not scale with M the first moment approaches a constant.",
+     "anchor": "Theorem 1, Section 3.1, p.8; proof in Appendix D.1-D.2, pp.37-41",
+     "quotes": [
+      "Theorem 1 (First moment of photon-number monomials). Let Mˆα be a PNM with α = (α1, . . . , αK), and let ρ be an input state with total photon number n.",
+      "where S(αi, pi) are Stirling numbers of the second kind. Furthermore, if the photon density is constant with n = νM , then in the large-M limit this approaches a product of ordered Bell polynomials",
+      "up to O(1/M ) corrections",
+      "Crucially, if K and |α| do not scale with M , then the first moment asymptotically approaches a constant value."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 (p.8) is stated with its conditions and proved in Appendix D using Theorem 3 and generating functions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-theorem3-haar-average-output",
+     "value": "The paper proves (Theorem 3, Appendix C) by Weingarten calculus that the Haar-averaged output of an M-mode linear optical network is the mixture over photon number n of maximally mixed n-photon states, weighted by the input's probability of holding n photons.",
+     "anchor": "Theorem 3, Appendix C, pp.37-38",
+     "quotes": [
+      "Theorem 3. For an M -mode linear optical network U , the Haar averaged output state of U ρU † is given by",
+      "where πM (n) is the maximally mixed state consisting of n photons in M modes",
+      "and pρ(n) is the trace of the projector onto the n photon subspace of ρ"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 (Appendix C) is stated and proved by Weingarten calculus.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-first-moment-factorial-growth",
+     "value": "The authors show, using ordered Bell polynomial asymptotics derived in Ref. [76], that at constant photon density the first moment of a monomial grows factorially in its order and exponentially in the number of supported modes, and plot a superexponential increase with total weight at M = 50 and K = 5.",
+     "anchor": "Section 3.1, Eq. (11), p.8; Appendix D.2, Figure 10, pp.40-41",
+     "quotes": [
+      "This grows factorially in the order and exponentially in the number of modes the PNM is supported on.",
+      "The ordered Bell polynomial asymptotics as αj grows were derived in Ref. [76]",
+      "The solid curve is Eq. (9) at M = 50",
+      "The support is fixed at K = 5",
+      "We see a superexponential increase in the first moment as the total weight of the PNMs increase"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Combines the paper's Theorem 1 with an asymptotic result cited from Ref. [76].",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-second-moment-bounds",
+     "value": "The paper shows by the law of total expectation and Jensen's inequality that the second moment of a monomial lies between the squared first moment and the first moment of the doubled monomial, so for fixed density and fixed K with |α| much smaller than M it approaches a constant.",
+     "anchor": "Section 3.1, p.9; Appendix D.2, Eq. (97), p.41",
+     "quotes": [
+      "Through the law of total expectation and Jensen's inequality, we can guarantee that",
+      "then the second moment is necessarily between two system-size independent constants, and thus itself approaches a constant."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A short proof from standard inequalities stated in Section 3.1 and Appendix D.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-circuit-variance-numerics",
+     "value": "The authors report numerics showing that the circuit variance of monomials (|α| = 6, K ≤ 3, at ν = 0.5 and ν = 1, and several α from input |1, 0⟩ at ν = 0.5) peaks at some Mmax that grows with α and then decays only very slowly with M, non-linearly on a log scale, from which they conjecture a polynomial decay Varcirc ∼ μ1(α) squared/poly(M).",
+     "anchor": "Section 3.1, Figures 3 and 4, pp.9-11",
+     "quotes": [
+      "Sample and circuit variances as functions of the number of modes M for PNMs satisfying |α| = 6 and K ≤ 3.",
+      "Panels (a) and (c) show the sample variance for photon densities ν = 0.5 and ν = 1 respectively.",
+      "The input state is |1, 0⟩ with photon density ν = 0.5.",
+      "We find all PNM first moments peak at some Mmax before slowly decaying, and the value of Mmax grows with α.",
+      "From the numerics alone we cannot perfectly distinguish the exact nature of the slow decay component",
+      "Varcirc(α) ∼ μ1(α)2 poly(M ) . (13)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical observation at limited system sizes, the basis of a conjecture.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-fixed-order-pnm-no-barren-plateau",
+     "value": "The authors conclude, using the conjectured polynomial circuit-variance decay, that for a fixed-order monomial at constant photon density the variance ratio is strictly polynomial in M, so fixed-order photon-number monomials exhibit no barren plateaus and variational photonic circuits can be efficiently trained on them, while monomials whose order grows linearly with M are not expected to be trainable.",
+     "anchor": "Section 3.2.1, p.11",
+     "quotes": [
+      "For a fixed-order monomial at constant photon density, the exponential factor in Eq. (14) is a system-size-independent constant, and the variance ratio is strictly polynomial in M .",
+      "This means fixed-order PNMs exhibit no barren plateaus as the system size scales",
+      "Monomials whose total order |α| grows linearly with the number of modes M behave differently.",
+      "so we do not expect such observables to be trainable."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Rests on the conjectured polynomial decay of the circuit variance.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-product-monomial-exponential-ratio",
+     "value": "The authors show that for the monomial taking a product of photon numbers over K modes, the circuit variance scales as ν to the 2K over poly(M) and can grow exponentially when ν > 1, but the sample variance is at least (2 to the K minus 1) times ν to the 2K, so the variance ratio is Ω(2 to the K), exponential when K ∝ M, and the circuit variance alone does not reveal this.",
+     "anchor": "Section 3.2.1, Eqs. (15)-(16), pp.11-12",
+     "quotes": [
+      "Just looking at the circuit variance, we find a scaling Varcirc(α) ≈ ν2K /poly(M ). (15)",
+      "However, the sample variance grows exponentially faster Varsamp(α) ≥ (2K − 1)ν2K (16) and hence the variance ratio scales as Ω(2K), which is also exponential in M when K ∝ M .",
+      "it is not sufficient to only study the circuit variance to identify this."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The circuit-variance part rests on the conjectured polynomial decay; the sample-variance bound is stated without a separate proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "2K and ν2K print flat: 2 to the K and ν to the 2K."
+    },
+    {
+     "id_suggestion": "photonic-pnp-sample-variance-bounds",
+     "value": "The paper derives that a photon-number polynomial with |A| terms of bounded constant order and bounded coefficients can be estimated to fixed additive precision with O(|A| squared) shots, and that for coefficients drawn with zero mean and size independent of M the expected sample variance improves to O(|A|).",
+     "anchor": "Section 3.2.2, Eqs. (17)-(19), p.13; Appendix D.3, pp.41-44",
+     "quotes": [
+      "so a PNP with polynomially many terms can be estimated to fixed additive precision εadditive with a number of shots scaling as O(|A|2)",
+      "Consider a set of random coefficients drawn from a distribution satisfying E[cα] = 0 and |cα| being independent of M for all α.",
+      "In this case, the expected sample variance improves from O(|A|2) to O(|A|)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 3.2.2 and Appendix D.3 from Cauchy-Schwarz and Chebyshev under the stated coefficient conditions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-pnp-numerics-fig5",
+     "value": "The authors report numerics on 20 random-coefficient photon-number polynomials per M: with all monomials of order ≤ 2 (coefficients uniform in [−1, 1]) the sample variance grew about quadratically and the circuit variance about linearly, and with |A| = 5M random monomials of order ≤ 4 the sample variance grew about linearly and the circuit variance increased, so the losses remained trainable over the sizes considered.",
+     "anchor": "Section 3.2.2, Figure 5, pp.12-13",
+     "quotes": [
+      "For each value of M , we generate 20 PNPs with independently sampled random coefficients.",
+      "In panels (a) and (b), the PNPs contain all photon-number monomials (PNMs) satisfying |α| ≤ 2, with coefficients sampled uniformly from [−1, 1].",
+      "In panels (c) and (d), we consider PNPs of order |α| ≤ 4, each containing |A| = 5M randomly selected PNMs",
+      "the absence of a decaying circuit variance and polynomially scaling sample variance indicates that the corresponding loss functions remain trainable over the system sizes considered."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical result at limited system sizes from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-lim-oh-classical-cost",
+     "value": "The authors show that the Lim-Oh algorithm estimates product-form observables in time of order the squared Hilbert-Schmidt norm of the observable over ε squared and, applied to a generic photon-number polynomial term by term or by Monte-Carlo importance sampling, needs O(|A| squared) samples, independent of coefficient signs, so fixed-order polynomials remain classically estimable in polynomial time; they state this motivates a train-on-classical, deploy-on-quantum regime.",
+     "anchor": "Section 3.2.2, pp.14-15; Appendix D.4, pp.44-46",
+     "quotes": [
+      "requiring a O ∥Oˆ∥22/ε2additive time-complexity to produce an estimate to additive error εadditive.",
+      "Notice that this is independent of the sign of the coefficients cα since only their squared value appeared.",
+      "the fact that the classical estimate remains polynomial-time motivates a train-on-classical, deploy-on-quantum regime [41, 55]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A complexity analysis of a cited algorithm under stated assumptions (uncorrelated term errors, constant per-term variance).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "This confirms the trainable class is classically simulable in polynomial time, so the claimed advantage is polynomial only."
+    },
+    {
+     "id_suggestion": "photonic-emulator-limits",
+     "value": "The authors state that boson-sampling emulators reproducing correlators up to order a give the same sample scaling as quantum sampling, with each classical sample costing O(M to the a), and that in their current form they require modification for photon-number-resolving observables and are formulated for Gaussian input states.",
+     "anchor": "Section 3.2.2, p.14",
+     "quotes": [
+      "However, generating each classical sample has a classical cost O(M a) for a = maxα{|α|} [54]",
+      "in their current form these methods require modification to accommodate photon-numberresolving observables and are formulated for Gaussian input states."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A characterization of cited classical methods.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-nn-observable",
+     "value": "The paper defines a neural network observable with L linear layers interleaved with quadratic activations and a single output, which equals a photon-number polynomial with all terms up to order 2 to the L, and whose forward pass on a sample costs O(L times M squared), so the polynomial never needs to be enumerated.",
+     "anchor": "Section 3.2.3, Eq. (20), p.15",
+     "quotes": [
+      "Consider a network with L linear layers, each interleaved with a quadratic activation function, whose final layer has a single output neuron.",
+      "In words, the NN observable is equal to a PNP including all possible PNM terms up to order 2L.",
+      "applying the forwards pass of a neural network to a sample has complexity O(LM 2)",
+      "it sidesteps the need to enumerate the full polynomial explicitly."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own construction and its direct algebraic consequence (Section 3.2.3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Order 2L prints flat; with quadratic activations over L layers the order is 2 to the L."
+    },
+    {
+     "id_suggestion": "photonic-projector-not-trainable",
+     "value": "The paper derives that for a single output-pattern projector the variance ratio is Θ(|H|/(n + n/M + 1)), exponential in n and M, using a collision-probability scaling from Ref. [51], so projector losses cannot be estimated to proportional error with polynomial resources, rescaling by a constant does not change the ratio, and this is the photonic analogue of fidelity losses producing barren plateaus.",
+     "anchor": "Section 3.2.4, Eqs. (21)-(23), pp.16-17; Appendix G.1, p.52",
+     "quotes": [
+      "P2(M, n) is the normalised average collision probability, shown to scale as Θ(n + n/M + 1) [51].",
+      "the difficulty of resolving the dif- ference between two loss functions governed by the projector grows exponentially with problem size, ruling out its use in trainable variational protocols at scale.",
+      "constant factors that increase the circuit variance also in- crease the sample variance by the same factor, resulting in no change in the variance ratio.",
+      "loss functions measuring fidelity to a target state produce barren plateaus even in shallow circuits [20]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in Appendix G.1 but relies on a collision-probability scaling cited from Ref. [51].",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-coarse-grained-not-trainable",
+     "value": "The paper derives that for a coarse-grained observable summing projectors over a bin holding a constant fraction 1/K of outcomes, sample plus circuit variance equals (1/K)(1 − 1/K), and the circuit variance averaged over random bins is exponentially small, so almost all binnings exhibit a barren plateau and proposals relying on coarse-grained estimates, including cryptographic one-way functions and proof-of-work schemes, are likely unscalable without careful bin selection; carefully structured binnings are not excluded.",
+     "anchor": "Section 3.2.4, Coarse-grained sampling, Eqs. (24)-(26), pp.17-18; Appendix G.2, pp.52-53",
+     "quotes": [
+      "the law of total variance gives the identity, 1 K 1− 1 K = Varsamp(OˆS) + Varcirc(OˆS).",
+      "Sample and circuit variance of a constant-fraction coarse-grained output observable sum to a constant.",
+      "only an exponentially small fraction of choices of sets S can have non-exponentially small circuit variance. As such, almost all choices of output aggregation concentrate around the mean and exhibit a barren plateau.",
+      "proposals for the use of coarse-grained boson sampling for cryptographic applications and proof-of-work schemes relying on resolving which set of output probabilities is larger are likely unscalable without careful circuit and observable selection.",
+      "This does not preclude carefully structured output binning from admitting polynomial variance ratios"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in Appendix G.2 but relies on the cited collision-probability scaling; the application claims are inferences.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-simulated-training",
+     "value": "The authors report simulated training of Clements-scheme circuits initialised at Haar-random unitaries on a randomly initialised 3-layer neural network observable (terms up to order 8), with n = M/2 photons: a 13-photon, 26-mode configuration for 6 iterations and a 10-photon, 20-mode configuration for 100 iterations, using 10,000 samples per gradient estimate with the generalized parameter shift rule; they state simulation cost limited runs to 20 and 26 modes.",
+     "anchor": "Section 4.1, Figure 7, pp.18-19",
+     "quotes": [
+      "Training of simulated photonic circuits on a 3-layer neural network observable.",
+      "with an input state of n = M/2 photons being propagated over M modes.",
+      "(a,c) a 13-photon, 26-mode configuration trained for 6 iterations, and (b,d) a 10-photon, 20-mode configuration trained for 100 iterations.",
+      "10,000 samples are taken for each gradient estimate using the generalized parameter shift rule (GPSR) taken up to the 8th frequency.",
+      "We train simulated photonic circuits arranged in a Clements scheme beam splitter configuration, initialised at a Haar-random unitary.",
+      "Due to the prohibitive simulation complexity of photonic circuits, we present training runs for only 20 and 26 modes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated proof of principle at two small sizes.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Six iterations at 26 modes shows the loss can be lowered, not convergence."
+    },
+    {
+     "id_suggestion": "photonic-pt2-hardware-training",
+     "value": "The authors report training the ORCA PT-2 time-bin photonic processor, run with 48 modes per sample and an alternating 1,0 input of 24 squeezed states, post-selected on exactly 6 photons, to minimise a 100-term photon-number polynomial up to order 2 with random weights in [−5, 5], using 1000 samples per gradient estimate via the parameter shift rule, with the loss converging smoothly towards a local minimum.",
+     "anchor": "Section 4.2, Figure 9, pp.19-20",
+     "quotes": [
+      "The PT-2 is run for 48 modes per sample, with an alternating 1,0 input state of 24 squeezed states generated. Samples are post-selected on having exactly 6 photons present.",
+      "The loss function is set with respect to minimise a 100-term photon-number polynomial up to order 2, with random weights chosen between [-5,5] for each term. 1000 samples are taken for each gradient estimate, which is done through the parameter shift rule.",
+      "Figure a) shows loss convergence smoothly towards a local minimum."
+     ],
+     "kind": "shown",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single hardware run reported by authors including ORCA Computing staff on ORCA's own processor.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Six post-selected photons over 48 modes is a dilute, small-photon regime; the run shows trainability of an order-2 polynomial at that size, not at scale."
+    },
+    {
+     "id_suggestion": "photonic-pt2-architecture-claims",
+     "value": "The authors state that the PT-2 samples from circuits with two cascading layers of beam splitters (two delay lines) that are not universal and cannot realise Haar-random unitaries, but whose sampling remains classically hard, that such shallower circuits are expected to be easier to train, and that under uniform loss post-selected Gaussian-input sampling is equivalent to a fixed-photon-number superposition input so the theory applies.",
+     "anchor": "Section 4.2, p.19",
+     "quotes": [
+      "It samples from circuits with two cascading layers of beam splitters, corresponding to two optical delay lines.",
+      "While such circuits are not universal and cannot realise arbitrary Haar-random unitaries, sampling from their output distribution remains classically hard [36, 62].",
+      "they are generally expected to be easier to train, with training complexity no greater than that of the deeper architectures considered in our analysis.",
+      "Under assumptions of uniform loss, even with Gaussian input states, such a sampling regime can be equivalently described through an input superposition state of fixed photon number."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor's description of its own hardware, with the hardness cited and the trainability expectation unproved.",
+     "result_type": "vendor",
+     "context": "qml",
+     "reader_inference": "The Haar-average theory does not strictly cover the non-universal PT-2 circuits or superposition inputs, which the paper elsewhere lists as an extension still needed."
+    },
+    {
+     "id_suggestion": "photonic-open-problems",
+     "value": "The authors state as open questions the effect of experimental imperfections such as errors and parameter jitter, photon losses (the dominant error channel) where post-selection on noise-free outputs is not possible, extension to superposition or indefinite-photon-number states such as Gaussian inputs, and optimisation challenges such as local minima, which the variance analysis does not address.",
+     "anchor": "Section 4.2, p.20; Section 5, p.21",
+     "quotes": [
+      "It remains an open question to quantify the effect of experimental imperfections such as errors and parameter jitter on the trainability of photonic circuits",
+      "Extending these results to superposition states or states with indefinite photon number would provide stronger theoretical foundations for experimentally relevant regimes such as Gaussian input states.",
+      "photon losses are the dominant error channel for linear optical networks",
+      "it does not address other optimisation challenges that arise during training, such as avoiding local minima or understanding the influence of hardware imperfections."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits and open problems (Sections 4.2 and 5).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-bp-second-moment-definition",
+     "value": "The authors state that in photonic circuits averaged over the Haar measure the average gradient can be non-zero, so they define a barren plateau for a parameter by an exponentially small gradient second moment (variance plus squared mean) rather than by the gradient variance alone.",
+     "anchor": "Appendix B.1, pp.30-32",
+     "quotes": [
+      "In qubit devices, the average gradient is zero [17–19]. In photonic devices, if averages are taken with respect to the Haar measure then this is not the case",
+      "In the case with potentially finite average gradient, it is more suitable to define barren plateaus with respect to the expected gradient second moments"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (Appendix B.1, Eq. 47).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-proposition2-concentration-implies-bp",
+     "value": "The paper proves (Proposition 2), via the linear-optics parameter shift rule with min{|α|, n} loss evaluations, that if a loss function is exponentially concentrated then all associated gradients have exponentially concentrated second moments and hence admit barren plateaus.",
+     "anchor": "Proposition 2, Appendix B.2, p.33",
+     "quotes": [
+      "Proposition 2. If a loss function l(θ) is exponentially concentrated, then this implies that all associated gradients Gk = ∂θk l(θ) have an exponentially concentrated second moment and hence admit barren plateaus.",
+      "In our photonic setup, the gradient can be written as a sum over min{|α|, n} loss evaluations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 2 (p.33) is stated and proved by the argument of Ref. [18] adapted to the photonic parameter shift rule.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-theorem2-variance-bound",
+     "value": "The paper proves (Theorem 2, Appendix B.3) that for parameters drawn from the Haar-dialling measure of Russell et al., the circuit variance is at most the sum over parameters of κj times the expected squared gradient, hence at most 3Lπ squared/2 times the largest gradient second moment, with κj = 1 for external and output phases and κj ≤ 3π squared/2 for internal phases, so barren plateaus in all parameters imply loss concentration.",
+     "anchor": "Theorem 2, Appendix B.3, p.34",
+     "quotes": [
+      "Theorem 2. For θ drawn from the Haar-dialling measure ν of Ref. [70], the circuit variance of the loss function is upper bounded by",
+      "where κj = 1 for external and output phases, and κj ≤ 3π2/2 for internal phases.",
+      "This therefore proves that barren plateaus imply loss concentration."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 (p.34) is stated with its measure and proved via the Efron-Stein, Wirtinger, Bobkov and Popoviciu inequalities.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The appendix 'Theorem 2' is distinct from any main-text theorem; the paper has a main-text Theorem 1 and appendix Theorems 2 and 3."
+    },
+    {
+     "id_suggestion": "photonic-proposition3-equal-gradient-moments",
+     "value": "The paper proves (Proposition 3) that when the parametrised network is sandwiched between Haar-random networks V1 and V2, parameters whose generators are equal up to a permutation of mode labels have equal expected gradient second moments, and states that with randomly chosen fixed phase shifters all beam-splitter parameters fall in the same trainability class, so a polynomially large loss variance rules out barren plateaus when the number of trainable parameters is polynomial.",
+     "anchor": "Proposition 3, Appendix B.4, pp.35-37",
+     "quotes": [
+      "We now state and prove the following proposition. Proposition 3. Let",
+      "If the two generators are equivalent up to a permutation of the mode labels, then their expected gradient second moments are equal.",
+      "Thus, averaged across this ensemble (φ, V1, V2), all loss function parameters belong to the same trainability class.",
+      "provided that the number of trainable parameters grows at most polynomially."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 3 is stated and proved by Haar invariance in Appendix B.4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-gpsr-gradient-cost",
+     "value": "The authors state that in linear optics with Fock inputs a generalised parameter-shift rule gives each gradient exactly as a fixed linear combination of 2R shifted loss values, with R = n photons in general and R equal to the highest monomial order for photon-number polynomials, so the number of loss evaluations per gradient is constant for fixed-order observables and the gradient sample variance scales with the loss sample variance by a factor at worst polynomial in n.",
+     "anchor": "Appendix F, pp.50-52",
+     "quotes": [
+      "The gradient of the loss with respect to any circuit parameter is therefore an exact, fixed linear combination of 2R loss values at shifted parameter settings.",
+      "For arbitrary observables, this holds where R = n: the number of photons in the circuit.",
+      "For loss governed by a photon number polynomial, it is sufficient to take R = |α| in (143)",
+      "This factor scales at worst polynomially as n2 and, for the case of fixed-order photon number observables, scales as a constant."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Rests on parameter shift rules cited from Refs. [68], [69], [77], [78] and a variance factor derived following Ref. [79].",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-large-scale-experiments-cited",
+     "value": "The authors cite recent photonic experiments beyond the scale implied by barren-plateau theory: MNIST image classification encoded in a photonic system with 8176 modes and over 2000 photons, and quantum reservoir computing with a 400-mode circuit and several hundred photons.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "recent experiments with photonic quantum circuits have successfully demonstrated quantum machine learning tasks at a scale significantly beyond the limitations implied by the theory around barren plateaus.",
+      "with 8176 modes and over 2000 photons and perform image classification.",
+      "In [34], the authors perform quantum reservoir computing with a 400-mode photonic circuit and several hundreds of photons."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-bp-free-simulable-cited",
+     "value": "The authors state that many architectures shown to be barren-plateau-free have turned out to be efficiently classically simulable, and that previous literature strongly suggests efficiently trainable variational circuits must admit efficient classical simulation.",
+     "anchor": "Introduction, p.2; Section 3.2.2, p.14",
+     "quotes": [
+      "many of the architectures shown to be barren-plateau-free have also turned out to be efficiently classically simulable [30–32].",
+      "Previous literature has strongly suggested that efficiently trainable variational quantum circuits must admit efficient classical simulation, trading quantum advantage for trainability [30]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-qubo-order-two",
+     "value": "The authors state that many relevant observables, such as those from quadratic unconstrained binary optimisation (QUBO) problems, can be described as order-two photon-number polynomials.",
+     "anchor": "Section 4.2, p.20",
+     "quotes": [
+      "many relevant classes of observables, such as those arising from quadratic unconstrained binary optimisation (QUBO) problems, can be described as order two photon-number polynomials"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-conclusion",
+     "value": "The authors conclude that their results provide formal support for the empirical scalability of recent photonic quantum machine learning experiments and identify a broad family of observables for which variational photonic circuits remain trainable at large sizes, and expect them to support photonic QML capable of practical quantum advantage.",
+     "anchor": "Section 5, Discussion and conclusion, pp.20-21",
+     "quotes": [
+      "Together, these results provide formal support for the empirical scalability of recent photonic quantum machine learning experiments and identify a broad family of observables for which variational photonic quantum circuits remain trainable at large system sizes.",
+      "We expect these results to provide a promising direction for the development of photonic quantum machine learning algorithms capable of delivering practical quantum advantage."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion, resting on a conjecture and small-scale demonstrations.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The cited large experiments used Gaussian boson sampling inputs, which the paper's fixed-photon-number theory does not cover."
+    },
+    {
+     "id_suggestion": "photonic-related-work-note",
+     "value": "The authors note that during preparation they became aware of independent related work by Monbroussou et al. on the trainability of linear optical circuits.",
+     "anchor": "Note added, p.21",
+     "quotes": [
+      "we became aware of independent and related work by Monbroussou et al. that studies the trainability of linear optical circuits [67]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A pointer to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

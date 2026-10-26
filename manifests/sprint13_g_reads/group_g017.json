@@ -1,0 +1,2625 @@
+{
+ "papers": [
+  {
+   "record_id": "huang-2023-coreset-selection-can-accelerate-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Huang-et-al._2023_Coreset-selection-can-accelerate-quantum-machine-learning-models-with__2309.10441.pdf",
+   "title_in_file": "Coreset selection can accelerate quantum machine learning models with provable generalization",
+   "version_note": "arXiv:2309.10441v2, 12 Dec 2023.",
+   "pages": 25,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A proposal to train QNNs and quantum-kernel SVMs on a weighted k-center coreset, with generalization bounds for both models on the coreset and numerical simulations on three tasks.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "coreset-correlation-task-threshold",
+     "verdict": "confirmed",
+     "note": "Section 6.2 says this as stored. The authors add that it means coreset helps when the prune rate is at least 0.18, out of a 1000-state training set tested on 200 unseen states.",
+     "value": "",
+     "anchor": "Section 6.2, Figure 6, p.13",
+     "quotes": [
+      "When utilizing the coreset method to prune the dataset, for sample sizes exceeding 180, the averaged test accuracy obtained by coreset is almost higher than the best accuracy achieved by random sampling.",
+      "It indicates that when ζ ≥ 0.18, the coreset selection could provide better performance compared to training on random sampling data"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The phrase 'almost higher' is the authors' own hedge."
+    },
+    {
+     "id": "coreset-generalization-bounds",
+     "verdict": "narrowed",
+     "note": "Theorems 1 and 2 hold only under stated assumptions: a Lipschitz class-specific regression function, a loss bounded by L, and zero training loss on the coreset. The bounds also carry an extra term proportional to the coreset radius, so 'comparable' holds only when the prune rate is chosen with care.",
+     "value": "The paper proves generalization bounds for QNNs and quantum-kernel SVMs trained on a coreset, assuming a Lipschitz class-specific regression function and a coreset loss that is zero and bounded by L. Each bound is mainly two terms: the full-data bound plus a term proportional to the coreset radius δc. The authors state the coreset bound is tighter than the random-sampling bound only when the data prune rate is chosen carefully.",
+     "anchor": "Theorem 1 and Theorem 2, Section 5, pp.9-10",
+     "quotes": [
+      "Assume there is λη-Lipshcitz continuous class-specific regression function η(x) = p(y = c|x), and the loss l(fw(xs, ys)) over coreset Sc is zero and bounded by L.",
+      "we have the generalization error of QNN on coreset is mainly bounded by two terms, i.e. O(( m log(m)/Nt + δc).",
+      "Thus, the GQc NN will give a tighter bound than GQr NN when we carefully choose the data prune rate ζ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved result, but the text layer flattens the bound formulas so the full statement cannot be quoted cleanly.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The zero-coreset-loss assumption is strong; the proof says it neglects the residual training error."
+    },
+    {
+     "id": "coreset-scope-simulation-only",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract p.1; Section 6 p.10",
+     "quotes": [
+      "Specifically, we employ our proposal to accomplish three learning tasks, which are synthetic data classification, quantum correlation identification, and quantum compiling."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its experiments (Section 6).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No hardware runs appear anywhere in the paper."
+    },
+    {
+     "id": "coreset-synthetic-250-vs-400",
+     "verdict": "confirmed",
+     "note": "Section 6.1. The model in this task is a quantum kernel, though the next sentence of the paper says QNNs.",
+     "value": "",
+     "anchor": "Section 6.1, Figure 5, p.12",
+     "quotes": [
+      "when achieving the same test accuracy, the model only needs 250 coreset examples while requiring 400 randomly sampled examples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "coreset-definition-epsilon",
+     "value": "The paper defines an ε-coreset: for a set of points P and a monotone measure function f, a subset Q of P is an ε-coreset of P if |f(Q) − f(P)| ≤ ε · f(P).",
+     "anchor": "Definition 1, Section 3.2, p.5",
+     "quotes": [
+      "Definition 1. (Coreset) Let P be a set of points in space V, and f be a monotone measure function, we call a subset Q ⊆ P as an ε-coreset of P , if |f (Q) − f (P )| ≤ ε · f (P ). (3)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own Definition 1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-k-center-construction",
+     "value": "The authors construct the coreset as a k-center problem: choose k centers so that the maximum distance from any point to its nearest center (the radius δc) is minimized. They state this is NP-hard, but a provable greedy algorithm efficiently finds a 2-approximate solution.",
+     "anchor": "Section 3.2, Eq. (4), p.5",
+     "quotes": [
+      "the goal of coreset construction is to find k data points as the centers C such that the maximum distance between any point s ∈ S to its nearest center is minimized",
+      "Although it is an NP-Hard problem to find Sc, there is a provable greedy algorithm can efficiently get a 2-approximate solution"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The 2-approximation is a known result the paper states without proof.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-per-class-size-and-weights",
+     "value": "The authors' greedy coreset algorithm builds the coreset class by class: each class's coreset size is proportional to that class's share of the data, and each coreset example's weight γs is the number of same-class training samples within radius δc of it.",
+     "anchor": "Algorithm 1 and text, Section 4, p.7",
+     "quotes": [
+      "the coreset size of each class i is restricted to be proportional to the ratio of the size of that class |S(i)| to the overall amount of data |S|.",
+      "set the weight γs as the number of samples covered by the coreset example xs in radius δc."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own algorithm (Section 4).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-weighted-qnn-and-svm",
+     "value": "The authors train the QNN on the coreset by weighting each example's loss by γs, and train the quantum-kernel SVM on the coreset by bounding each Lagrange multiplier αi by C · γi instead of C.",
+     "anchor": "Section 4, Eq. (9) and Eq. (10), pp.7-8",
+     "quotes": [
+      "we only need to replace the full training data S with the coreset Sc, and rewrite the cost function by introducing the weight {γs} for each corresponding data point x in coreset Sc",
+      "the Lagrange multipliers αi in dual problem is upper bounded by C · γi instead of C."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own method (Section 4).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-models-used",
+     "value": "The authors use a data re-uploading QNN that alternates encoding and variational circuits, trained by gradient descent with the parameter shift rule, and a fidelity quantum kernel κ(x, x′) = |⟨x′|x⟩|² with the feature map of Havlíček et al.",
+     "anchor": "Sections 3.3 and 3.4, p.6",
+     "quotes": [
+      "In this work, we consider a QNN implemented by the data-reuploading strategy [40, 61, 62], alternating the feature encoding circuit Ux and the variational circuit Uθ",
+      "can be completed by the gradient-descent optimizer based on the parameter shift rule",
+      "κ(x, x′) = |⟨x′|x⟩|2",
+      "In this work, we consider a generic quantum feature map proposed in [3]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own model setup (Sections 3.3 and 3.4).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Havlíček et al. is reference [3]."
+    },
+    {
+     "id_suggestion": "coreset-theorem1-qnn-bound",
+     "value": "The paper proves Theorem 1: for i.i.d. samples S with Sc a δc cover of S, a λη-Lipschitz class-specific regression function, and a coreset loss that is zero and bounded by L, with probability 1 − δ the generalization error of a QNN trained on the coreset is bounded by the order of the full-data term (m log(m) over Nt plus a log(1/δ) term) plus δc times (ληLnc plus a Lipschitz term in the layer count d, the feature dimension dx, the encoding weights and the measurement norm |M|).",
+     "anchor": "Theorem 1, Section 5, p.9; proof in Appendix A.1, pp.19-21",
+     "quotes": [
+      "Theorem 1. (Generalization error bound of QNN on coreset) Given sample set S = {xi, yi}Ni=t1 are i.i.d randomly drawn from distribution Z, Sc is δc cover of S.",
+      "Assume there is λη-Lipshcitz continuous class-specific regression function η(x) = p(y = c|x), and the loss l(fw(xs, ys)) over coreset Sc is zero and bounded by L.",
+      "We have the following upper bound for the generalization error of QNNs trained on coreset with probability 1 − δ,",
+      "m log(m) + Nt log(1/δ) Nt + δc(ληLnc + d dx max |wj| |M | (|M | + max |y|)",
+      "where m is the number of the parameters in QNN, d is the number of QNN layers, nc is the number of classes, M is the measurement operator, dx is the feature dimension."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 with its conditions quoted; proved in Appendix A.1. The text layer flattens the formula, so square roots and fractions may be lost.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Combining the stated bound with the Hoeffding step, the coreset error term also carries an L times square root of log(1/δ) over 2n term in Eq. (46) that Eq. (22) does not show."
+    },
+    {
+     "id_suggestion": "coreset-theorem2-kernel-bound",
+     "value": "The paper proves Theorem 2: under the same conditions as Theorem 1, with probability 1 − δ the generalization error of an SVM with a quantum kernel trained on the coreset is bounded by the order of the full-data kernel term (in the weight norm and log(4/δ) over Nt) plus δc times (ληLnc plus a Lipschitz term in Nc, dx, the weights, the mapped state size Nq and the maximum feature value r).",
+     "anchor": "Theorem 2, Section 5, pp.9-10; proof in Appendix A.2, p.21",
+     "quotes": [
+      "Theorem 2. (Generalization error bound of quantum kernels on coreset.)",
+      "We have the following upper bound for the generalization error of SVM with quantum kernel trained on coreset with probability 1 − δ,",
+      "⌈∥w∥⌉2 + Nt log (4/δ) Nt + δc(ληLnc + Nc dx max |wj| · (1 + (Nq − 1)r))",
+      "where nc is the number of classes, dx is the feature dimension of x, Nq is the size of mapped quantum state |x⟩, r is the maximum value of feature x."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 quoted; its conditions match Theorem 1's (Lipschitz regression function, zero bounded coreset loss). The proof (A.2) is one sentence that defers to Theorem 1's proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof of Theorem 2 is only a sketch by analogy to Theorem 1."
+    },
+    {
+     "id_suggestion": "coreset-prune-rate-tradeoff",
+     "value": "The authors state that a low prune rate ζ makes the coreset radius δc large and raises the approximation error, while a high ζ lowers the error but removes the training speed-up because Nc approaches Nt.",
+     "anchor": "Section 5, after Theorem 1, p.9",
+     "quotes": [
+      "For the second term, as δc is related to ζ, a low ζ will cause δc to become large leading to a high approximation error.",
+      "Conversely, a high ζ will decrease the approximation error but the acceleration of training will disappear because Nc is approximate to Nt."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' reading of the bound, not a separate theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-no-universal-prune-rate",
+     "value": "The authors state that there is no easy universal trick for choosing the data prune rate ζ, because it depends on the training set's distribution and the unknown true data distribution.",
+     "anchor": "Section 5, p.10",
+     "quotes": [
+      "It should be pointed out that it is not easy to propose a universal trick for selecting an appropriate data prune rate ζ that determines the δc to achieve a good generalization performance.",
+      "Because it is related to the distribution of the given training set S and unknown true data distribution Z."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section 5, p.10).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-kernel-matrix-speedup",
+     "value": "The authors state that using a coreset reduces the cost of building the kernel matrix, giving an O(k2) speedup (k squared) where k = Nt/Nc, while keeping a provable generalization guarantee.",
+     "anchor": "Section 5, after Theorem 2, p.10",
+     "quotes": [
+      "we will reduce the complexity of getting kernel matrix, that provides O(k2) speedup where k = Nt/Nc, meanwhile also having provable generalization guarantee."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A direct consequence of the quadratic kernel-matrix cost, stated without separate proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-kernel-matrix-cost",
+     "value": "The authors state that training a quantum kernel needs a kernel matrix of size O(N 2) (N squared) in the number of training examples N, each entry evaluated by its own quantum circuit, and that both classical and quantum kernels need O(N 2) runtime to collect the kernel matrix.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "the training process of quantum kernels necessitates the collection of a kernel matrix of size O(N 2), with N being the number of training examples and each entry demanding independent evaluation via a specific quantum circuit.",
+      "both classical and quantum kernels demand O(N 2) runtime for the collection of the kernel matrix."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' statement of background.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-qnn-no-backprop",
+     "value": "The authors state that most QNNs lack back-propagation and batch gradient descent, which limits their training efficiency on large datasets.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "This limitation is particularly evident due to the absence of fundamental training mechanisms like back-propagation and batch gradient descent in the majority of QNNs"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' background claim.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-cited-prior-bounds",
+     "value": "The authors cite prior bounds: QNN generalization error of the form O of the square root of p/N for p trainable parameters and N training instances, and a quantum-kernel bound of O of the square root of C1/N, which degrades under system noise with an extra term in the shot number m.",
+     "anchor": "Section 2, p.4",
+     "quotes": [
+      "In general, the resulting bound for generalization adheres to the format of O( p/N ), where p denotes the count of trainable parameters and N signifies the number of training instances.",
+      "For quantum kernels, the generalization error upper bound scales with O( C1/N ), where C1 depends on the labels of data and the value of quantum kernel [6].",
+      "where m is the shot number and C2 depends on the kernel value, shot number, and the noise level [53]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results; the square-root signs are lost in the text layer.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-theorem3-cited-qnn",
+     "value": "The paper restates, from Caro et al. (Theorem C.6 of reference [52]), a bound for a QNN with m trainable parameterized 2-qubit or 1-qubit gates and a loss bounded by L: with probability at least 1 − δ, the generalization error is of order m log(m) over Nt plus a log(1/δ) over Nt term.",
+     "anchor": "Theorem 3, Appendix A, p.19",
+     "quotes": [
+      "Theorem 3. (Generalization bound for QNN [52]) Let the QNN to be trained con- sists of m trainable parameterized 2-qubit or 1-qubit gates, and an arbitrary number of nontrainable fixed gates.",
+      "Then, accord- ing to Theorem C.6 in [52], the generalization error of the optimized QNN is bounded by the following form with probability at least (1 − δ) over the choice of i.i.d training data St from Z:"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result from reference [52].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-theorem4-cited-kernel",
+     "value": "The paper restates, from Theorem 2 of Huang et al. (reference [6]), a generalization bound for a quantum-kernel hypothesis optimized on a clipped absolute loss, of order the squared weight norm over Nt plus a log(4/δ) over Nt term, with probability at least 1 − δ.",
+     "anchor": "Theorem 4, Appendix A.1, p.21",
+     "quotes": [
+      "Then, according to Theorem 2 in [6], the generalization error of the optimized hypothesis is bounded by the following form with probability at least (1 − δ) over the choice of i.i.d training data S from Z:",
+      "|R − Reqkernel| < O",
+      "⌈∥w∥2⌉ + Nt log(4/δ)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result from reference [6].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The theorem title cites [13] but the text cites Theorem 2 in [6]."
+    },
+    {
+     "id_suggestion": "coreset-lemma1-qnn-lipschitz",
+     "value": "The paper proves Lemma 1: the loss of the d-layer re-uploading QNN is λ-Lipschitz in feature space with λ = 2d dx max|wj| |M|(|M| + max|y|), as printed in the text layer, provided the feature and label spaces are bounded; |M| is the spectral norm of the measurement operator.",
+     "anchor": "Lemma 1 and proof, Appendix A, pp.19-20",
+     "quotes": [
+      "Lemma 1. The loss function l(fθ(x), y) of d-layer QNN introduced in section 3.3 is the λ-Lipschitz in feature space with λ = 2d dx max |wj| |M | (|M | + max |y|). (29)",
+      "Provided the feature space and the label space are bounded, the loss function is λ-Lipschitz continuous with λ = 2d dx max |wj| · |M | (|M | + max |y|). (39)",
+      "Here, |M | denotes the spectral norm of the measurement operator."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 1 with its condition (bounded feature and label spaces) quoted; proved in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Eq. (34) suggests a square root on dx that the text layer drops."
+    },
+    {
+     "id_suggestion": "coreset-lemma2-kernel-lipschitz",
+     "value": "The paper proves Lemma 2: the clipped absolute loss of a quantum-kernel hypothesis built on a coreset of size kc is λ-Lipschitz in feature space with λ = 2kc dx max|wi| · (1 + (Nq − 1)r), as printed in the text layer, assuming the maximum feature value r is bounded.",
+     "anchor": "Lemma 2 and proof, Appendix A.1, p.21",
+     "quotes": [
+      "is λ-Lipschitz continuous in feature space with λ = 2kc dx max |wi| · (1 + (Nq − 1)r). (49)",
+      "Assuming r, the maximum feature value of x, is bound√ed and substituting Eq.(59) to Eq.(53)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 2 with its condition (bounded r) quoted; proved in Appendix A.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The Lipschitz constant grows linearly with the coreset size kc."
+    },
+    {
+     "id_suggestion": "coreset-proof-coreset-error-bound",
+     "value": "The paper derives in the proof of Theorem 1 that, by Hoeffding's bound and zero coreset training loss, with probability 1 − δ the coreset error is at most 3δcλl + (3nc − 2)δcληL plus a term in L and log(1/δ).",
+     "anchor": "Appendix A.1, Eqs. (45)-(46), pp.20-21",
+     "quotes": [
+      "According to Hoeffding's bound and assumption of zero coreset training loss, we have the coreset error of QNN with",
+      "probability 1 − δ, ReQNN − RcQNN ≤ 3δcλl + (3nc − 2)δcληL + L2 log(1/δ) . 2n (46)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A step proved in Appendix A.1 under the stated assumptions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-synthetic-setup",
+     "value": "The authors build the synthetic dataset from fashion-MNIST reduced by principal component analysis and relabeled to maximize the geometric difference between quantum and classical (RBF) kernels; they solve the k-center problem over a 1000-example set, test on 200 unseen examples, and run five independent trials per training size.",
+     "anchor": "Section 6.1, Figures 4 and 5, pp.10-11",
+     "quotes": [
+      "the synthetic dataset is based on fashion-MNIST [67].",
+      "we preprocess it as the low-dimension representation by principle component analysis and then relabel the class of each data point according to Eq. (24).",
+      "we conducted experiments on training sets with various sizes and subsequently tested on 200 unseen examples to get the test accuracy.",
+      "we first solve the k-center problem over set S with 1000 examples",
+      "we carried out five independent trials, each employing randomized initialization"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup (Section 6.1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-synthetic-250-higher-50pct",
+     "value": "The authors report that with 250 training examples (ζ = 0.25), the quantum kernel trained on the coreset reaches higher test accuracy than one trained on random samples, and that the coreset classifier reaches competitive performance with about 50% of the training examples random sampling needs.",
+     "anchor": "Section 6.1, Figure 5, p.12",
+     "quotes": [
+      "when the models are trained on a set with 250 examples (i.e., ζ = 0.25), the test accuracy of those trained on the data points obtained by coreset selection is higher than that of the model via random sampling.",
+      "achieving competitive performance while only utilizing approximately 50% of the training examples compared to random sampling."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "250 against 400 is about 62%, not 50%; the 50% figure is the authors' rounding."
+    },
+    {
+     "id_suggestion": "coreset-correlation-setup",
+     "value": "The authors classify two-qubit states ρAB(p, θ) into separable, entangled, one-way steerable and non-local by a QNN, labeling them with the PPT criterion and steering and non-locality thresholds; they generate 1000 states with p and θ picked uniformly as the full training set and test on 200 unseen random samples.",
+     "anchor": "Section 6.2, Eq. (27), Figure 6, pp.12-13",
+     "quotes": [
+      "we can label the quantum states with different non-classical correlations according to the above criteria and create the data set {ρAj B, yj}jN=1 where yi represents the type of correlation, i.e. separable, entangled, one-way steerable, non-local.",
+      "we uniformly pick the parameters p ∈ (0, 1) and θ ∈ (0, 2π) to generate the 1000 quantum states as the full training set",
+      "we examine the test accuracy of the model, trained over various sample sizes, on 200 unseen random samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup (Section 6.2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-compiling-no-gain",
+     "value": "The authors report that on the quantum compiling task, compilers trained on the coreset with different prune rates ζ perform similarly to those trained on randomly sampled sets, which they attribute to random samples already being spread uniformly in Hilbert space.",
+     "anchor": "Section 6.3, Figure 7, p.14",
+     "quotes": [
+      "Since the randomly sampled training points are likely to be uniformly located in Hilbert space",
+      "the compilers trained on coreset with the different ζ have similar performance compared to those trained on the random-sampled set."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This is a null result for coreset on the third task, which the Discussion's claim of 'extreme improvements' across all three tasks does not reflect."
+    },
+    {
+     "id_suggestion": "coreset-compiling-20-examples-6-qubits",
+     "value": "The authors report that for compiling a specific unitary, 1000 training examples are redundant, the effective training size scales linearly with system size, and around 20 examples suffice for a reasonable variational compiler on a 6-qubit system.",
+     "anchor": "Section 6.3, Figure 7, p.14",
+     "quotes": [
+      "For the compiling task on a specific unitary, we found that 1000 training examples are redundant, and the effective size of training data scales linearly with the system size",
+      "When given around 20 examples, it is sufficient for training the variational compiler to achieve a reasonable performance for a 6-qubit system."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-compiling-setup",
+     "value": "The authors build target circuits from a gate pool of single parametrized gates Rx, Ry, Rz and CNOT, train on pairs of random input states and their outputs, minimize the squared trace distance, and test prune rates ζ of 0.8, 0.4, 0.6 and 0.2; success is the share of test states with trace distance below 10−5.",
+     "anchor": "Section 6.3, Figure 7, pp.13-14",
+     "quotes": [
+      "we randomly pick the quantum gates from the gate pool consisting of single parametrized gates {Rx, Ry, Rz} and CNOT gate to build the target quantum circuits U .",
+      "one can simply minimize the empirical loss of the squared trace distance between target states U |ψj⟩ and parametrized output states V (θ)|ψj⟩",
+      "{0.8, 0.4, 0.6, 0.2}",
+      "The vertical axis represents the percentage of states in the test set for which the trace distance to their corresponding targets is below 10−5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup (Section 6.3).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-training-set-quasi-linear-in-gates",
+     "value": "The authors conclude that the training set should scale at least quasi-linearly with the number of gates, and that a sparser coreset enforces a stricter upper bound on the count of trainable gates.",
+     "anchor": "Section 7 Discussion, p.14",
+     "quotes": [
+      "It's evident that selecting a sparser coreset enforces a more rigorous upper bound on the count of trainable gates and appropriate data prune rate.",
+      "The size of the training set should be scaled at least quasi-linearly with the number of gates."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' conclusion drawn from the bounds, not a separate result.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-filters-noise-claim",
+     "value": "The authors state that data pruning improves training efficiency and also helps filter out noise data, enhancing model performance.",
+     "anchor": "Section 7 Discussion, p.14",
+     "quotes": [
+      "Data pruning contributes to improved training efficiency. Besides, it also helps filter out noise data, thereby enhancing model performance."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim; no experiment in the paper tests noisy data.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-conclusion-improvements",
+     "value": "The authors conclude that their investigation on synthetic data classification, non-classical correlation identification and quantum circuit compilation confirms extreme improvements in the effectiveness of their proposal.",
+     "anchor": "Section 7 Discussion, p.14",
+     "quotes": [
+      "Our investigation of various learning scenarios, including on classification of synthetic data, identification of non-classical correlations in quantum states, and quantum circuit compilation, confirm the extreme improvements in the effectiveness of our proposal."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' conclusion; Section 6.3 reports no gain on compilation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Overstated against the paper's own Section 6.3 result."
+    },
+    {
+     "id_suggestion": "coreset-future-influence-functions",
+     "value": "The authors state there is still significant room to improve, for instance by using influence functions to characterize the impact of data variations and filter data more precisely.",
+     "anchor": "Section 7 Discussion, p.14",
+     "quotes": [
+      "Although we have improved model training efficiency through data pruning methods, there is still significant room for enhancement.",
+      "the introduction of influence functions could better characterize the impact of data variations on the model, thus achieving more precise data filtering."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open direction (Section 7).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coreset-quantum-coreset-out-of-scope",
+     "value": "The authors state that using fault-tolerant quantum computers to speed up coreset construction is beyond the scope of their work, and that prior coreset applications to clustering and image classification lacked a unified view and generalization analysis.",
+     "anchor": "Section 2, p.4",
+     "quotes": [
+      "Their primary emphasis lies in employing fault-tolerant quantum computers to speed up the construction of coresets, a subject that falls beyond the scope of our work.",
+      "illustrated the potential of coreset in specific applications, i.e., clustering and image classification, without a unified view and generalization error analysis."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement (Section 2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Coreset construction itself is classical here."
+    }
+   ]
+  },
+  {
+   "record_id": "huang-2025-generative-quantum-advantage-classical-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Huang-et-al._2025_Generative-quantum-advantage-for-classical-and-quantum-problems__2509.09033.pdf",
+   "title_in_file": "Generative quantum advantage for classical and quantum problems",
+   "version_note": "arXiv:2509.09033v1, 10 Sep 2025. The text layer prints most italic math symbols as private-use characters, so many formulas in the appendices cannot be quoted; theorem names and the words around them were quoted instead.",
+   "pages": 49,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A Google Quantum AI paper that defines generative quantum advantage, proves classical hardness and quantum easiness for learning shallow generative QNNs and for compressing circuits, and reports experiments on a 68-qubit superconducting processor.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "classically-hard-quantumly-easy-generative-models",
+     "verdict": "widened",
+     "note": "The informal Theorem 1 is made formal as Theorems 12 and 13 in Appendix H.3. Both rest on Conjecture 1, which Proposition 4 derives from the assumption that the non-uniform polynomial hierarchy does not collapse. The proof covers exact sampling; approximate sampling relies on counting-problem results from cited work.",
+     "value": "The paper proves (Theorems 12 and 13) that learning generative tomographically-complete shallow QNNs and generative instantaneously-deep QNNs is quantumly easy but classically hard under Conjecture 1, and proves (Proposition 4) that Conjecture 1 holds if the non-uniform polynomial hierarchy does not collapse. The authors state that the result covers exact sampling, and that extending it to approximate sampling relies on the classical hardness of some counting problems from cited work.",
+     "anchor": "Theorem 1 (informal), Section II, p.5; Proposition 4, Theorems 12 and 13, Appendix H.3, pp.44-45",
+     "quotes": [
+      "Theorem 12 (Generative advantage with tomographically-complete shallow QNNs). Learning generative shallow QNNs that are tomographically-complete is quantumly easy but classically hard under Conjecture 1.",
+      "Theorem 13 (Generative advantage with instantaneously-deep QNNs). Learning generative instantaneously-deep QNNs is quantumly easy but classically hard under Conjecture 1.",
+      "Proposition 4. Assuming the non-uniform polynomial hierarchy does not collapse, Conjecture 1 is true.",
+      "The result above focuses on exact sampling. To extend the classical hardness to approximate sampling up to some small additive error in total variation distance, one can rely on the classical hardness of some counting problems"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 12 and 13 and Proposition 4 are stated with their assumption (Conjecture 1, non-collapse of the non-uniform polynomial hierarchy) and proved in Appendix H.4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The hardness is a conditional, worst-case complexity result for exact sampling."
+    },
+    {
+     "id": "idqnn-816-qubits-not-beyond-classical",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section III, pp.11-12",
+     "quotes": [
+      "Hence, 816 shallow qubits are not yet expected to be in the beyond-classical regime."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section III).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "idqnn-beyond-classical-estimate",
+     "verdict": "narrowed",
+     "note": "The beyond-classical point is not a run of the authors' model. It maps circuits from an earlier experiment (Ref. 30) into IDQNN form, emulates the learning classically, and uses that experiment's reported XEB values as a proxy. The authors call the qubit count an upper bound. Inference is on the all-zero input, which is also in the training set.",
+     "value": "The authors estimate, by mapping beyond-classical circuits from Ref. (30) into IDQNN form, that an IDQNN representation of the beyond-classical limit needs 34,304 shallow qubits, mapped to deep circuits on 67 physical qubits, and they call this an upper bound. Because learning reaches beyond the machine's precision, they use the reported XEB values of those circuits as a proxy for their model's performance. Against these proxies, they state, the quantum model mapped to real hardware outperforms the Frontier supercomputer with approximately 18,000 years of runtime.",
+     "anchor": "Section III, p.12; Appendix C.2.c, p.30; Fig. 2e",
+     "quotes": [
+      "an IDQNN representation of the beyond-classical limit is estimated to require 34,304 shallow qubits, mapped to deep circuits on 67 physical qubits.",
+      "This provides an upper bound on the required quantum resources, as more optimal mappings may be discovered in the future.",
+      "As we are able to learn from data efficiently in these circuits to beyond the precision of the machine implementing these experiments in addition to an exact circuit correspondence, we use as a proxy for our performance on these circuits their reported XEB values.",
+      "Even compared to the Frontier supercomputer equipped with approximately 18,000 years of runtime, the quantum model mapped to real hardware today exhibits a performance advantage",
+      "decompose the beyond-classical circuits from Ref. (30 ) into an IDQNN form"
+     ],
+     "kind": "shown",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An inferred estimate by the hardware vendor, built on an earlier experiment's reported values rather than a new run.",
+     "result_type": "vendor",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "idqnn-hardware-quantum-beats-classical-models",
+     "verdict": "narrowed",
+     "note": "The hardware comparison evaluates only the all-zero input, which avoids mid-circuit measurement; that input is also heavily weighted in the training data. The authors state the comparison does not address quantum-inspired classical simulation. Only dynamical decoupling and readout debiasing were applied.",
+     "value": "The authors report that on a superconducting processor with up to 68 physical qubits (an effective 816 shallow qubits), quantum models showed a considerable performance advantage over transformer and XGBoost models as size increased. They evaluated the hardware only on the all-zero input, used no error mitigation beyond dynamical decoupling and readout debiasing, and state that the comparison does not address quantum-inspired models powered by advanced classical simulation.",
+     "anchor": "Section III, p.11; Appendix C.2.b, p.29; Appendix C.3, pp.31-32; Fig. 2d",
+     "quotes": [
+      "we vary the physical qubits up to 68, corresponding to an effective shallow dimension of 816 qubits.",
+      "as size increases the quantum models demonstrate a considerable performance advantage over the classical models, both of which use classical learning algorithms here.",
+      "For our implementation, we bypass the need for mid circuit measurement by only evaluating the circuits in hardware for the",
+      "No additional error mitigation is implemented.",
+      "This however, does not address the question of quantum inspired models powered by advanced classical simulation, which we address subsequently."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, reported by the hardware vendor.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "gqa-definition-generative-problem",
+     "value": "The paper defines a generative problem as learning, from samples, to produce new outputs that follow specific patterns, and states that both learning and inference are essential to the definition.",
+     "anchor": "Definition 1, Section II, p.4",
+     "quotes": [
+      "Definition 1 (Generative problem). A generative problem involves learning to produce outputs that match specific patterns. The learner must develop the ability to generate new outputs that follow these patterns from samples.",
+      "We emphasize that both learning and inference are essential in our definition of a generative problem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own Definition 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-definition-generative-quantum-advantage",
+     "value": "The paper defines generative quantum advantage: a quantum computer can learn to generate the desired outputs substantially better than any classical computer, where better means reduced sample complexity, higher accuracy, faster learning or generation, or generating outputs that are practically infeasible classically.",
+     "anchor": "Definition 2, Section II, p.4",
+     "quotes": [
+      "Definition 2 (Generative quantum advantage). A generative problem exhibits quantum advantage when a quantum computer can learn to generate the desired outputs substantially better than any classical computer.",
+      "Here, better means achieving reduced sample complexity, higher accuracy, faster learning or generation time, or the capability to generate outputs that are practically infeasible for classical computers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own Definition 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-universal-approximation",
+     "value": "The paper proves (Proposition 3) that for any conditional distribution over bitstrings and any approximation error, a generative QNN exists that approximates it up to that error in total variation distance; the authors state that in the worst case the number of gates scales exponentially.",
+     "anchor": "Proposition 3 and proof, Appendix H.1.b, p.59",
+     "quotes": [
+      "there exists a generative QNN that can approximate",
+      "error in total variation distance (TVD).",
+      "Proposition 3 (Universal approximation).",
+      "In analogy to the preparation of arbitrary quantum states, in the worst case, the number of gates scales exponentially in"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 3, proved in Appendix H.1.b by a reversible-circuit construction; the symbols in its statement are lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Universality alone gives no efficiency; the exponential worst case is the paper's own caveat."
+    },
+    {
+     "id_suggestion": "gqa-idqnn-samples-deep-circuits",
+     "value": "The authors state (Proposition 1, made formal in Appendix H.2) that for any deep quantum circuit there exists an instantaneously deep QNN (IDQNN) that samples a deep circuit from a family containing it and generates a bitstring from it in constant time, with at most polynomial overhead in circuit size; the mechanism is the one used in measurement-based quantum computing.",
+     "anchor": "Proposition 1 (informal), Section II, p.6; Lemma 2 and Corollary 2, Appendix H.2, pp.60-65",
+     "quotes": [
+      "Proposition 1 (Informal: IDQNN samples and generates from deep quantum circuits).",
+      "generates a bitstring from the deep circuit",
+      "in constant time with at most polynomial overhead in the size of the circuit",
+      "This lemma uses exactly the same mechanism as in measurement-based quantum computation (53 )."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 2 is proved by induction in Appendix H.2 and Corollary 2 follows with Fact 1; the circuit symbols are lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-idqnn-definition",
+     "value": "The paper defines an instantaneously-deep QNN as a generative QNN on a connectivity graph that prepares a product input state set by the input bits, applies one layer of trainable Z rotations, applies CZ gates on all graph edges, and measures in a Pauli basis; it has constant circuit depth regardless of qubit count.",
+     "anchor": "Definition 16, Appendix H.2, p.60",
+     "quotes": [
+      "Definition 16 (Instantaneously-deep QNNs).",
+      "rotation gates to all",
+      "Applying a layer of",
+      "gates on all edges in the connectivity graph",
+      "circuit depth regardless of the number of qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own Definition 16; gate symbols are lost in the text layer, and the experimental figures name RZ and CZ.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-conjecture1-sampling-hardness",
+     "value": "The paper states Conjecture 1: there exists a family of polynomial-size quantum circuits such that no family of polynomial-size classical circuits can output a uniformly random bitstring together with an output bitstring from measuring the corresponding deep circuit's output state.",
+     "anchor": "Conjecture 1, Appendix H.3, p.66",
+     "quotes": [
+      "Conjecture 1 (Classical hardness of sampling deep quantum circuits). There exists a family of polynomial-size quantum circuits",
+      "such that no families of polynomial-size classical circuits can take",
+      "and many random bits as input and output a uniformly random bitstring"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own statement of the conjecture its theorems assume.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-prop4-proof-route",
+     "value": "The paper proves by contradiction that the sampling conjecture follows from non-collapse of the non-uniform polynomial hierarchy: if the conjecture failed, then PostBQP would be contained in PostBPP/poly, and with PostBQP = PP, Toda's theorem and a cited result this would put PH inside the third level of the non-uniform hierarchy, collapsing it.",
+     "anchor": "Proof of Proposition 4, Appendix H.3, pp.66-67",
+     "quotes": [
+      "Hence, this implies that PostBQP ⊆ PostBPP/poly.",
+      "we have PostBQP = PP.",
+      "Because the third level of non-uniform polynomial hierarchy is contained in the non-uniform polynomial hierarchy, Σ3/poly ⊆ PH/poly, we have PH/poly = Σ3/poly, which contradicts the assumption."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proof in Appendix H.3 from cited complexity results.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-classical-training-quantum-inference",
+     "value": "The authors state that the training of their quantum models is classically efficient but inference requires a quantum computer: an efficient classical learning algorithm suffices to learn these models, yet generating from them is computationally inefficient for classical machines.",
+     "anchor": "Section I, p.3; Section II, p.5",
+     "quotes": [
+      "Remarkably, the training of these quantum models is classically efficient, but inference requires a quantum computer.",
+      "Furthermore, an efficient classical learning algorithm suffices to learn these quantum models. However, performing inference and generation from these quantum models is computationally inefficient for classical machines."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from the quantum-easiness proofs (Appendix H.4.a and H.4.b) and the hardness under Conjecture 1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-local-decoupling-condition",
+     "value": "The authors state that their efficient classical learning of IDQNN parameters needs an input distribution with a local decoupling property: for any bit, the probability that its neighbors are one while it is zero is at least inverse-polynomial in system size; most input distributions without full support on all-zero or all-one inputs satisfy it.",
+     "anchor": "Appendix C.2.a, p.26",
+     "quotes": [
+      "The local decoupling property requires that for any index",
+      "is at least inverse-polynomial in the system size.",
+      "This property is satisfied by most input distributions",
+      "that do not have full support on all-zero or all-one input bitstrings."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own condition for its learning procedure (Appendix C.2.a).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-training-input-distribution",
+     "value": "The authors' experimental input distribution is a mixture: with probability 1/3 the all-zero input, with probability 1/3 bits i.i.d. 0 with probability 0.6, and with probability 1/3 bits i.i.d. 0 with probability 0.2. They state the all-zero input gives no useful information to their learning method, while it makes the task much easier for classical models.",
+     "anchor": "Appendix C.2.a, p.27",
+     "quotes": [
+      "With probability 1/3, every bit in",
+      "is sampled i.i.d. to be 0 with probability 0.6 and 1 with probability 0.4.",
+      "is sampled i.i.d. to be 0 with probability 0.2 and 1 with probability 0.8.",
+      "provides no useful information for learning the quantum generative model parameters using our proposed method since it lacks any 1 bits.",
+      "makes the task much easier for classical models as they can directly observe the output distributions for the specific input that will be tested during inference."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup (Appendix C.2.a).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-learning-samples-to-nisq-precision",
+     "value": "The authors report from classical emulation of learning that around one million total samples (printed as 106 in the text layer) suffice to learn the mapped beyond-classical circuits to typical NISQ two-qubit-gate infidelity (printed 10−3), which at current repetition rates takes seconds on a quantum computer.",
+     "anchor": "Section III, p.12; Appendix C.2.a, pp.26-27; Fig. 2c",
+     "quotes": [
+      "if we take typical NISQ infidelity of two-qubit gates today (10−3), then around 106 total samples suffice to learn these circuits to that precision.",
+      "At current repetition rates, this requires only seconds for a quantum computer in both the learning and inference regimes"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from a classical emulation in one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Superscripts are flattened: 106 is ten to the sixth and 10−3 is ten to the minus three."
+    },
+    {
+     "id_suggestion": "gqa-classical-baselines-setup",
+     "value": "The authors compare against XGBoost classifiers (n_estimators=100, eta=0.3, max_depth=6) and decoder-only transformers with between 106 and 108 parameters (ten to the sixth to ten to the eighth), trained 50 epochs to predict the next output bit autoregressively; they sample 200000 bitstrings from each model and compare KL divergence and XEB.",
+     "anchor": "Appendix C.2.b, pp.28-29",
+     "quotes": [
+      "we train a combination of XGBoost and Transformer models to autoregressively predict the next output bit.",
+      "n_estimators=100, eta=0.3, max_depth=6, subsample=1.0",
+      "we use a decoder only architecture with between 106 and 108 parameters",
+      "We train with a linear ramp cosine decay learning rate for 50 epochs.",
+      "we sample 200000 bitstrings from each of them and compare the KL divergence as well as the XEB score"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own baseline setup (Appendix C.2.b).",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-classical-models-degrade",
+     "value": "The authors report that the classical models are accurate at very small sizes but degrade quickly against the quantum models; both reach similar, quite poor XEB as size grows, substantially worse than the quantum models even on real hardware with noise.",
+     "anchor": "Appendix C.2.b, p.29; Fig. 2d",
+     "quotes": [
+      "We see that while these models are accurate at very small sizes, their performance quickly degrades in comparison to the quantum models.",
+      "However the performance of both was quite poor, and substantially worse than the quantum models even implemented with real hardware noise up to scaling."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-hardware-experiment-setup",
+     "value": "The authors run the bitstring experiment on a 2D superconducting (Sycamore) device with three repetitions of a CZ pattern for a model depth of 12; the shallow qubit count is 12 times the physical qubits, up to 68 physical (816 shallow). They learn parameters from 200000 samples, repeat with 5 independent parameter sets per size, and use Clifford-rounded circuits to predict performance at larger sizes.",
+     "anchor": "Appendix C.3, pp.31-32",
+     "quotes": [
+      "Three repetitions of the CZ circuits sketched in Fig. 2a are used, totaling to a model depth of 12",
+      "The total shallow qubits is 12 times the number of physical qubits used in the deep circuit",
+      "This corresponds to a shallow circuit performed on 816 qubits.",
+      "For these experiments we use a fixed number of samples of 200000",
+      "for each size of circuits we draw 5 independent sets",
+      "In order to predict performance of quantum learning at sizes that are not easy to simulate and verify classically, we also implement a set of Clifford test experiments",
+      "This device had 68 qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup (Appendix C.3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-learned-matches-ideal",
+     "value": "The authors report that in simulation the learning procedure reaches an XEB score of about 1 for all sizes, that on hardware the learned and ideal parameters perform similarly with degradation only from finite device fidelity, and that the Clifford proxies track experimental XEB very well.",
+     "anchor": "Appendix C.3, pp.31-32",
+     "quotes": [
+      "In simulation, we find that the learning procedure works to a very high degree of accuracy (XEB score ≈ 1 for all sizes)",
+      "in experiment we find that the learned and ideal values",
+      "perform similarly, with degradation only due to finite fidelity of the device.",
+      "this model tracks the experimental performance extremely well with regards to XEB."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-device-error-rates",
+     "value": "The authors state that the 68-qubit device had a typical per-qubit connectivity of roughly 3.47, and that typical error rates for this architecture are around 10−3 for single-qubit gates, 10−2 for two-qubit gates and 10−2 for measurement.",
+     "anchor": "Appendix B, pp.23-24; Figs. S1 and S2",
+     "quotes": [
+      "This device had 68 qubits with a typical connectivity per-qubit of roughly 3.47.",
+      "typical error rates for this architecture are around 10−3 for",
+      "single qubit gates, 10−2 for two-qubit gates, and 10−2 for measurement operations."
+     ],
+     "kind": "shown",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "The vendor's description of its own device.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-theorem14-circuit-compression-hard",
+     "value": "The paper proves (Theorem 14) that, under the assumption BPP ≠ BQP, generating a constant-depth circuit for an input circuit promised to have one is efficiently solvable on a quantum computer but classically intractable; the authors state some circuits may still be compressible classically.",
+     "anchor": "Theorem 2 (informal), Section II, p.7; Theorem 14 and proof, Appendix I, pp.71-73",
+     "quotes": [
+      "Theorem 14 (Generative quantum advantage for speeding up physical simulation). Under the standard assumption that BPP ̸= BQP,",
+      "is efficiently solvable on a quantum computer but classically intractable.",
+      "While some circuits may still be amenable to efficient compression via classical compilers or other methods, this result proves that in the general case"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 14 with its assumption quoted; proved in Appendix I by reduction from deciding a BQP promise problem.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The symbol ≠ is printed in the text layer as a combining slash; it is written plainly in the value."
+    },
+    {
+     "id_suggestion": "gqa-theorem3-shallow-maps-learnable",
+     "value": "The authors state (Theorem 3, informal; Theorem 8 in Appendix F) that a circuit for an unknown shallow unitary can be learned efficiently with only local measurements on random product inputs, giving a channel close in diamond distance that runs as a constant-depth circuit on twice the qubits.",
+     "anchor": "Theorem 3 (informal), Section II, p.8; Theorem 8, Appendix F.5, pp.45-46",
+     "quotes": [
+      "Theorem 3 (Informal: Shallow quantum maps are efficient to learn with local measurements).",
+      "using only local measurements, it is efficient to learn a circuit representation for implementing",
+      "Theorem 8 (Learning shallow quantum circuits). Given a failure probability",
+      "and this channel can be implemented by a constant-depth quantum circuit over"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Appendix F (and Ref. 45), but the sample-size formula and error terms are lost in the text layer, so the statement cannot be quoted in full.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-theorem9-exponential-local-minima",
+     "value": "The paper proves (Theorem 9) that learning a one-dimensional circuit of SWAPs between qubits three apart with a model of nearest-neighbor SWAPs, under a local cost function free of barren plateaus, has exponentially many strictly suboptimal local minima with large basins of attraction, so standard optimization needs exponentially many restarts.",
+     "anchor": "Theorem 4 (informal), Section II, p.9; Theorem 9 and proof, Appendix G.1, pp.50-55",
+     "quotes": [
+      "Theorem 9 (Exponentially many strictly suboptimal local minima).",
+      "This learning landscape contains exponentially many suboptimal local minima with large basins of attraction.",
+      "any treatment of these problems by standard optimization methods will require exponentially many restarts as a function of system size to succeed with high probability.",
+      "even when using cost functions and circuits that avoid barren plateaus, the optimization landscape contains an exponential number of suboptimal local minima"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 9 is proved in Appendix G.1.d by explicit construction; the setting (SWAP target, nearest-neighbor SWAP ansatz, local cost) is quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-theorem10-strong-convexity",
+     "value": "The paper proves (a strong-convexity theorem and its corollary) that the least-squares loss for learning Pauli coefficients with known circuit architecture is 2-strongly convex, with a unique global minimum, so every local minimum is global.",
+     "anchor": "Theorem 10 and Corollary 1, Appendix G.2.a, pp.55-56",
+     "quotes": [
+      "is strongly convex in the parameter space",
+      "Therefore, L(",
+      "is 2-strongly convex.",
+      "Every local minimum is"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 10 and Corollary 1 are proved in Appendix G.2.a.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-theorem11-benign-landscape",
+     "value": "The paper proves (Theorem 11) that learning local inversions on a constant-size lightcone has critical points in a number of connected components bounded by a constant, and a global-minimum basin of non-zero volume, so gradient descent with a constant number of random restarts finds a global minimum with arbitrarily high probability.",
+     "anchor": "Theorem 5 (informal), Section II, p.9; Theorem 11 and proof, Appendix G.2.b, pp.56-57",
+     "quotes": [
+      "Theorem 11 (Benign Landscape).",
+      "consists of a finite number of connected components. This number is bounded by a constant that depends only on",
+      "The basin of attraction corresponding to the set of global minima occupies a non-zero fraction of the total volume",
+      "Consequently, a gradient-based method with a constant number of random restarts finds a global minimum with arbitrarily high probability."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 11 is proved in Appendix G.2.b from real algebraic geometry.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The constant can depend exponentially on the lightcone size; the theorem gives no explicit value."
+    },
+    {
+     "id_suggestion": "gqa-swap-numerics-divide-and-conquer",
+     "value": "The authors report from numerics on the SWAP-4 circuit that learning the whole problem at once is exponentially unlikely to succeed, while divide-and-conquer learning on constant-sized blocks succeeds with high probability at any system size; the compression and SWAP runs total about 24,000 trials of 150 optimizer steps.",
+     "anchor": "Section III, pp.13-14; Fig. 4; Appendices D.2 and E",
+     "quotes": [
+      "learning the whole problem at once is exponentially unlikely to succeed, while learning using a divide-and-conquer strategy focusing on constant-sized blocks succeeds with high probability for any system size.",
+      "we run approximately 24,000 trial runs with 150 optimizer steps each"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical (numerical) result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-compression-experiment-40-qubits",
+     "value": "The authors report learning hidden fast-forwardable structure in simulated dynamics and finding a high-accuracy constant-depth representation at both short and long times, simulating the dynamics to high accuracy on hardware with 40 qubits: 20 system and 20 ancilla.",
+     "anchor": "Section III, p.13; Fig. 3; Appendix D.3",
+     "quotes": [
+      "We observe that at both short and long times, we find a high-accuracy representation implementable in constant depth, and even with current experimental errors we are able to simulate the dynamics to high accuracy using 40 qubits, 20 for the system qubits and 20 for the ancilla register."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-compression-mode1-only",
+     "value": "The authors state that in their current experiments they used only Mode 1, learning the local inversions by classical light-cone simulation, because they do not have a fault-tolerant quantum computer; the quantum-simulation mode was not run. Learning used blocks of 4 qubits so the sewn circuit runs in 2 layers.",
+     "anchor": "Appendix D.1, p.35; Appendix D.3, p.39",
+     "quotes": [
+      "In our current experiments, we focus on Mode 1, as we do not yet have access to a full-fledged fault-tolerant quantum computer.",
+      "This means the overall circuit can be implemented in depth 2 repetitions of the local inversions",
+      "we choose to learn on constant blocks of size 4 on a line"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of what it ran (Appendix D).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "In Mode 1 the learning is classical, so this experiment shows quantum inference of a classically learned circuit."
+    },
+    {
+     "id_suggestion": "gqa-compression-error-mitigation",
+     "value": "The authors apply an error mitigation in the compression experiment's inference step only: they run the ansatz with all parameters zero (a logical identity with similar noise) and rescale measured observables by its reference values; they state raw values were already quite good.",
+     "anchor": "Appendix D.3, pp.39-40",
+     "quotes": [
+      "This error mitigation technique is only used in the inference step, as the learning is done classically in Mode 1 as described.",
+      "When the ansatz circuit above sets all the trainable parameters to 0, it is logically the identity circuit.",
+      "Empirically we find that this mitigation technique improves the results, though we note the raw values are quite good as well"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own method description (Appendix D.3).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-open-hardness-crossover",
+     "value": "The authors state that more 1's in the input make classical inference easier (for example by tensor networks), and leave the detailed finite crossovers of hardness as the fraction of 1's varies as open questions.",
+     "anchor": "Appendix C.2.a, pp.27-28",
+     "quotes": [
+      "As the number of 1's increases, the inference problem becomes easier for methods like tensor network simulations",
+      "We leave these detailed studies of finite crossovers of computational hardness transitions as we vary the fraction of 1's in the input bitstring"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open question (Appendix C.2.a).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-tensor-network-may-sample",
+     "value": "The authors state that the IDQNN is built for efficient learning, not to produce hard samples at very low qubit counts, and that a more efficient simulator such as a tensor-network approach may still sample these distributions at some sizes, as a quantum-inspired classical model.",
+     "anchor": "Section III, pp.11-12",
+     "quotes": [
+      "it is designed to facilitate efficient learning with its structure and is not optimized to produce hard samples at very low",
+      "A more efficient quantum circuit simulator able to handle additional structure, such as a tensor network-",
+      "may still be able to sample from these distributions at some sizes, constituting a quantum-inspired classical model for this dataset."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section III).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-prior-advantages-artificial",
+     "value": "The authors state that prior provable exponential quantum advantages on classical data often embed artificial problems such as discrete logarithm, or assume fast data access like QRAM whose practicality is controversial, and that the same frameworks conclude no advantage for general distributions.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "but these often rely on embedding somewhat artificial problems, such as discrete logarithm, into learning problems or assume models of fast access like QRAM that remain controversial in their practicality",
+      "these same frameworks quickly conclude the absence of advantages when faced with general distributions"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' summary of cited work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gqa-discussion-open-steps",
+     "value": "The authors state that substantial work remains to bring these foundations into modern machine learning, that the precise remaining steps toward useful generative quantum advantage are an open question, and they suggest expanding efficiently trainable, provably hard-to-sample model classes and searching for practical data distributions compatible with such models.",
+     "anchor": "Section IV Discussion, p.14",
+     "quotes": [
+      "That said, there is substantial work that remains to be done to bring these powerful foundations to fruition in modern machine learning.",
+      "The precise remaining steps towards useful generative quantum advantage remain an open question, but we provide some speculation.",
+      "we believe continuing to expand the classes of models that are known to be both efficiently trainable and provably hard to sample from will be important.",
+      "sharpening the search for practical data distributions (either classical or quantum) that would be compatible with models that exhibit generative quantum advantage will be crucial."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open problems (Section IV).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No real-world (for example financial) dataset is used; the hard distributions are synthetic, built from the model itself."
+    },
+    {
+     "id_suggestion": "gqa-conclusion-evidence",
+     "value": "The authors conclude that their demonstration, together with their theorems, establishes experimental evidence of generative quantum advantage and quantifies the crossover for their specific trainable model.",
+     "anchor": "Section III, p.12",
+     "quotes": [
+      "This demonstration, together with our theorems, establishes experimental evidence of generative quantum advantage and further quantifies the crossover for our specific trainable model."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' conclusion from the hardware vendor.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The beyond-classical part rests on the mapping of an earlier experiment, not on new hardware runs at that scale."
+    }
+   ]
+  },
+  {
+   "record_id": "huang-2026-balancing-expressivity-learnability-quantum-kernel",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Huang-Tan-Jose_2026_Balancing-Expressivity-and-Learnability-in-Quantum-Kernel-Bandit__2607.01080.pdf",
+   "title_in_file": "Balancing Expressivity and Learnability in Quantum Kernel Bandit Optimization",
+   "version_note": "arXiv:2607.01080v1, 1 Jul 2026, with supplementary material (Appendices A to L).",
+   "pages": 40,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A study of GP bandit optimization with quantum kernels that replaces the full fidelity kernel with projected quantum kernels, random Fourier features or P-greedy approximations, with misspecified-bandit regret bounds and small simulated experiments.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qkbandit-approx-kernel-lower-regret",
+     "verdict": "narrowed",
+     "note": "The claim rests on comparing regret upper bounds, not on regret itself. For RFF with SquareCB the approximate bound is smaller when 4 to the n is at least about T, that is, when n grows at least logarithmically in T. The authors also state that their bounds may be overly conservative.",
+     "value": "The authors state that, in regimes where the full quantum kernel is excessively high-dimensional, a suitably chosen approximate kernel achieves strictly lower regret than the full model. Their supporting analysis compares regret upper bounds: for the RFF surrogate with SquareCB the bound is smaller than the full model's when 4n ≳ T, that is, for n = Ω(log T). They also state that their regret bounds may be overly conservative in practice.",
+     "anchor": "Section 1 contributions, p.3; Section 3.2 after Theorem 3, p.10; Appendix L, p.40",
+     "quotes": [
+      "In regimes where the full quantum kernel is excessively high-dimensional, we show that a suitably chosen approximate kernel achieves strictly lower regret than the full model (Figure 1).",
+      "regret when 4n ≳ T , i.e., for n = Ω(log T ).",
+      "els outperform full quantum fidelity kernel methods in regimes where the kernel complexity grows faster than the required approximation capacity.",
+      "Our theoretical regret bounds provide upper estimates that may be overly conservative in practice."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A comparison of upper bounds; the bound formulas are garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "A smaller upper bound does not by itself prove strictly lower regret."
+    },
+    {
+     "id": "qkbandit-info-gain-exponential",
+     "verdict": "widened",
+     "note": "The paper gives the bound itself and its reason: the information gain is O(4n log T) because the fidelity-kernel model is a linear model with 4n-dimensional features (Appendix B). It adds that a product of fixed-axis rotations gives feature dimension 3n, and that richer encodings reach exactly 4n.",
+     "value": "The authors state that for an n-qubit fidelity quantum kernel the maximum information gain scales as γT = O(4n log T), because the model is equivalent to a linear model with 4n-dimensional features, and that this exponential scaling is tight for many practical encodings. A product of single-qubit fixed-axis rotations gives feature dimension 3n; richer encodings such as two non-commuting Pauli rotations or data re-uploading give exactly 4n.",
+     "anchor": "Section 2.2, p.6; Appendix B, pp.18-19",
+     "quotes": [
+      "the information gain scales as γT = O(4n log T ) since the model is equivalent to a linear model with 4n dimensional features (see Appendix B).",
+      "This scaling is exponential in the number of qubits n, and is tight for many practical data-encoding circuits",
+      "therefore gives feature dimension 3n when applied independently to n qubits.",
+      "Richer encodings, such as two noncommuting Pauli rotations or data re-uploading, can yield a feature dimension of exactly 4n"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix B from the standard linear-kernel information-gain bound; the conditions (fidelity kernel, n qubits) are quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The exponents are printed flat: 4n means four to the n, and 3n means three to the n."
+    },
+    {
+     "id": "qkbandit-stated-limits",
+     "verdict": "widened",
+     "note": "Appendix L lists more limits than the stored value: the RFF error rate may be pessimistic, there is no universal closed-form error bound for projected kernels or P-greedy, the RFF analysis needs a tractable Fourier expansion, the analysis assumes exact kernel values, and quantum measurement overhead is not analyzed.",
+     "value": "The authors state that their regret bounds may be overly conservative, that their Gaussian noise model does not capture structured NISQ noise, that their approximation-error analysis assumes exact kernel values, that projected kernels and P-greedy have no universal closed-form error bound, that the RFF analysis needs a discrete or tractable Fourier expansion, and that a full measurement-aware regret and runtime analysis is left for future work.",
+     "anchor": "Appendix L, pp.40-41",
+     "quotes": [
+      "Our theoretical regret bounds provide upper estimates that may be overly conservative in practice.",
+      "This abstraction does not capture structured NISQ noise, such as readout errors, depolarizing noise, relaxation, drift, or cross-talk.",
+      "our approximationerror analysis assumes exact kernel values; finite-shot kernel estimation and device noise would introduce additional errors",
+      "for projected kernels and P-greedy methods, there is no universal closed-form bound for ε",
+      "Our RFF analysis relies on the assumption that the quantum kernel admits a discrete or tractable Fourier expansion.",
+      "A full measurement-aware regret and runtime analysis is left for future work."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own limitations section (Appendix L).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qkbandit-u-shaped-regret",
+     "verdict": "confirmed",
+     "note": "Confirmed. The setting is three-qubit kernels, T = 100 rounds, 30 trials; Appendix K repeats it with 6 qubits and T = 1000.",
+     "value": "",
+     "anchor": "Section 4.1, p.12; Section 4.2, pp.13-14; Appendix K, p.40",
+     "quotes": [
+      "Across all settings, we observe the characteristic \"Ushaped\" trend in regret.",
+      "Both approximation methods significantly outperform the full"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qkbandit-problem-setup",
+     "value": "The authors study a sequential bandit problem with a finite action set: the learner picks an action, observes a noisy reward of an unknown function, and minimizes cumulative regret; they assume the reward function lies in the RKHS of a quantum kernel with RKHS norm at most B.",
+     "anchor": "Section 2.1, pp.4-5",
+     "quotes": [
+      "at each round t, the learner chooses an action xt ∈ X from the finite action set X .",
+      "The goal of the learner is to minimize the cumulative regret over T rounds",
+      "We assume that the f ∗ belongs to the RKHS HκQ (X ) defined by a quantum kernel κQ(x, x′), with bounded RKHS norm"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own problem setting (Section 2.1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-fidelity-kernel-linear-rkhs",
+     "value": "The paper uses the global fidelity quantum kernel κQ(x, x′) = Tr(ρ(x)ρ(x′)†) and states that its RKHS consists of reward models linear in the quantum feature space, f(x) = Tr(Hρ(x)) for a Hermitian operator H, as in VQE energy functions.",
+     "anchor": "Section 2.1, Eq. (5), p.5",
+     "quotes": [
+      "κQ(x, x′) = Tr(ρ(x)ρ(x′)†). (5)",
+      "For the global fidelity kernel, this RKHS corresponds to reward models that are linear in the quantum feature space, i.e., f ∗(x) = Tr(Hρ(x)) for some Hermitian operator H ∈ H"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own kernel definition (Section 2.1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-motivation-nisq-tasks",
+     "value": "The authors state the setting covers NISQ-era tasks such as state preparation in quantum sensing, experimental quantum control and optimizing variational quantum algorithms, with actions as continuous parameters such as gate angles or pulse amplitudes; unlike prior quantum bandit work, it assumes no quantum reward oracle.",
+     "anchor": "Abstract and Section 1, pp.1-2",
+     "quotes": [
+      "This formulation naturally captures a range of NISQ-era optimization tasks, including state preparation in quantum sensing",
+      "Here, actions x correspond to continuous parameters (e.g., gate angles or pulse amplitudes)",
+      "In this work, we depart from this oracle-based paradigm, and study the quantum kernel bandit problem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement (Section 1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No financial or fraud task appears; all tasks are quantum-physics or synthetic."
+    },
+    {
+     "id_suggestion": "qkbandit-gp-ucb-cited-regret",
+     "value": "The paper cites the GP-UCB regret bound of Srinivas et al. (Theorem 1, simplified): with high probability the cumulative regret grows with the maximum information gain γT, so models with large γT are harder to learn.",
+     "anchor": "Theorem 1, Section 2.2, p.6",
+     "quotes": [
+      "Theorem 1 ((Simplified) [Srinivas et al., 2010]). Under mild regularity conditions on the kernel κQ(·, ·), there exists a suitable sequence {βt} such that quantum GP-UCB satisfies, with high probability",
+      "Theorem 1 shows that the cumulative regret scales with the maximum information gain γT",
+      "GP models with large γT are harder to learn and typically incur higher regret."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-kernel-concentration-cited",
+     "value": "The authors state, citing Thanasilp et al., that as the qubit count grows kernel values concentrate exponentially around a fixed value, requiring exponentially many quantum measurements to estimate the kernel accurately.",
+     "anchor": "Section 1, p.2; Section 2.2, p.6",
+     "quotes": [
+      "As the quantum system size n grows, kernel values concentrate exponentially, requiring exponentially many quantum measurements for accurate estimation [Thanasilp et al., 2024]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-info-gain-empirical",
+     "value": "The authors report a plot of information gain γT against T for n from 1 to 5 and against n at T = 1000, with Pauli-Y and Pauli-Z rotation encodings, which they state verifies the exponential increase of γT with n.",
+     "anchor": "Section 2.2 and Figure 2, pp.6-7",
+     "quotes": [
+      "We empirically validate this exponential dependence in Figure 2, where we plot the information gain γT as a function of the number of data samples T for different values of n (left); and as a function of n for fixed T = 1000 (right).",
+      "verifying the exponential increase of γT with n.",
+      "n=1 n=2 n=3 n=4 100 0 n=5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical (numerical) illustration from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-lpqk-definition",
+     "value": "The paper defines the linear projected quantum kernel on a qubit subset s as the trace of the product of reduced density matrices, and a summed LPQK as the average over all subsystems of size at most b; the reduced space is exponentially smaller than the full one.",
+     "anchor": "Section 3.1, Eq. (6), p.7",
+     "quotes": [
+      "the LPQK is defined as κsQ(x, x′) = Tr ρs(x)ρs(x′) , (6)",
+      "we define a summed LPQK over a collection Sb = {s1, . . . , sw} of all sub-systems satisfying |si| ≤ b",
+      "which is exponentially smaller than the full state dimension"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (Section 3.1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-theorem2-rkhs-inclusion",
+     "value": "The paper proves Theorem 2(i): the RKHS induced by the summed LPQKs is a subspace of the RKHS of the full quantum kernel, and (Appendix C.2) that the projected kernel equals the full feature map composed with a unique orthogonal projector.",
+     "anchor": "Theorem 2(i), Section 3.1, p.8; proofs in Appendix C.1 and C.2, pp.19-20",
+     "quotes": [
+      "Theorem 2. Let HκSb (X ) be the RKHS induced by the summed LPQKs κSb",
+      "Part (i) shows that the RKHS induced by LPQKs is a subspace of the full quantum RKHS.",
+      "Therefore, we have HκsQ (X ) ⊆ HκQ (X ).",
+      "there exists a unique self-adjoint idempotent operator P such that κsQ(x, x′) = ⟨P φQ(x), P φQ(x′)⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2(i) is proved in Appendix C.1 and extended in C.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-theorem2-misspec-worst-case",
+     "value": "The paper proves Theorem 2(ii): if the target observable is drawn uniformly from the sphere of operators with Hilbert-Schmidt norm B, then with probability at least 1 − δ the LPQK misspecification error scales with the fraction of Pauli-weight components the projection discards. The authors call this a conservative baseline under which aggressive dimension reduction is not guaranteed small error; LPQK helps when the observable is local or has a decaying high-weight Pauli tail.",
+     "anchor": "Theorem 2(ii), Section 3.1, p.8; proof in Appendix C.3, pp.20-23",
+     "quotes": [
+      "Theorem 2. Let HκSb (X ) be the RKHS induced by the summed LPQKs κSb",
+      "If the true function f ∗(x) = Tr[Hρ(x)] is generated by an observable H drawn uniformly at random from the sphere of operators with Hilbert–Schmidt norm B",
+      "then with probability at least 1 − δ, the misspecification error is bounded as",
+      "Part (ii) should be interpreted as a conservative baseline: for a dense uniformly random observable, the error scales with the fraction of Pauli-weight components discarded by the projection.",
+      "Thus aggressive dimension reduction is not guaranteed to have small error in this worstcase model.",
+      "the practical benefit of LPQK arises when the target observable or circuit has additional structure, such as locality or a rapidly decaying high-weight Pauli tail"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2(ii) with its random-observable assumption quoted; proved in Appendix C.3 via a Beta-distribution concentration bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-random-projection-lemmas",
+     "value": "The paper proves two lemmas: for a vector uniform on the unit sphere of a D-dimensional space, the expected squared norm of its projection onto a d-dimensional subspace is d/D, and that squared norm follows a Beta distribution with parameters d/2 and (D − d)/2.",
+     "anchor": "Lemmas 1 and 2, Appendix C.3, pp.21-22",
+     "quotes": [
+      "Let O be a random vector chosen uniformly from the unit sphere in a D-dimensional space V . Let PS be the orthogonal projection onto a d-dimensional subspace S. Then, E[∥PS(O)∥22] = d/D.",
+      "follows a Beta distribution with parameters α = d/2 and β = (D − d)/2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Both lemmas are stated in full and proved in Appendix C.3.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-random-observable-justification",
+     "value": "The authors justify the uniform random-observable assumption as conditioning an isotropic Gaussian prior on the observable's norm, and note that the full dimension 4n and the low-weight dimension assume a feature map expressive enough to span all n-qubit Hermitian operators; circuits with symmetries or few parameters have smaller dimensions.",
+     "anchor": "Appendix C.4 and C.5 remark, pp.23-25",
+     "quotes": [
+      "it can be motivated from an isotropic Gaussian prior on the observable O",
+      "are based on the assumption that the quantum feature map is sufficiently expressive to span the entire space of n-qubit Hermitian operators.",
+      "In such cases, the actual dimension of the full space D would be less than 4n"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its assumption's scope (Appendix C.4 and C.5).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-k-local-observables",
+     "value": "The authors show that for a k-local target observable, the summed LPQK with b = k is realizable (zero misspecification), using O(nk) features (n to the k) for fixed k instead of the full 4n-dimensional space, so LPQK replaces exponential full-kernel dimension by polynomial dimension.",
+     "anchor": "Appendix C.5, Example 1, p.24",
+     "quotes": [
+      "Then O>b = 0 for all b ≥ k, and therefore εb = 0 for all b ≥ k. Thus, choosing b = k makes the LPQK surrogate realizable",
+      "Therefore, for local physical observables, LPQK can replace the exponential full-kernel dimension 4n by the polynomial dimension Sk = O(nk)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix C.5 from the Pauli-tail bound, Eq. (18).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-pauli-tail-error-bound",
+     "value": "The paper shows that the LPQK misspecification error is bounded by the Hilbert-Schmidt norm of the target observable's Pauli components of weight above b, and that when that tail decays exponentially, the error decreases exponentially in the retained subsystem size b.",
+     "anchor": "Appendix C.5, Eqs. (18) and (20), p.24",
+     "quotes": [
+      "That is, the LPQK misspecification error is controlled by the high-weight Pauli tail of the target observable.",
+      "Hence the misspecification error decreases exponentially in the retained subsystem size b"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix C.5.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-ec-gp-ucb-misspec-term",
+     "value": "The authors apply the EC-GP-UCB algorithm of Bogunovic and Krause, whose regret in the misspecified setting carries an additional term depending on the misspecification error εb, and state that the LPQK information gain is much smaller than the full kernel's, so b can be chosen to balance the two.",
+     "anchor": "Section 3.1, Eq. (8), p.8",
+     "quotes": [
+      "we can leverage the EC-GP-UCB algorithm of Bogunovic and Krause [2021]",
+      "pends on the misspecification error εb.",
+      "can be optimized by effectively balancing the informa- tion gain γT and the misspecification error εb by choos- ing appropriate size b of the sub-system."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The regret bound is cited from Bogunovic and Krause; the formula is garbled in the text layer.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-theorem3-rff",
+     "value": "The paper states and proves Theorem 3: for an n-qubit shift-invariant quantum kernel and a target with RKHS norm at most B, D sampled Fourier features give, with probability at least 1 − δ, a function within a misspecification error that shrinks with D, and SquareCB on these features has an expected regret bounded by the minimum of the full-model and RFF-surrogate bounds.",
+     "anchor": "Theorem 3, Section 3.2, p.9; proof in Appendix E, pp.29-31",
+     "quotes": [
+      "Theorem 3. Let f ∗ ∈ HκQ (X ) with ∥f ∗∥HκQ ≤ B < ∞, where κQ(·, ·) is an n-qubit shift-invariant quantum ker- nel.",
+      "Then, with probability at least 1 − δ over the sampled Fourier features, there exists f ̃ ∈ HκRFF (X ) such that the misspecification error satisfies",
+      "Finally, taking the minimum of the exact-model bound and the RFF-surrogate bound yields the result in Theorem 3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Appendix E, but the bound formulas are garbled in the text layer and cannot be quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-shift-invariance-condition",
+     "value": "The authors state that the RFF analysis needs a shift-invariant kernel, which arises when each generator encodes an input coordinate into distinct, non-overlapping qubits, and that the kernel's frequency spectrum depends solely on the eigenspectrum of the encoding generator.",
+     "anchor": "Section 3.2, p.9",
+     "quotes": [
+      "The frequency spectrum depends solely on the eigenspectrum of the generator G.",
+      "For the circuit family above, shift-invariance arises when each generator Gi = G encodes input xi into distinct, non-overlapping qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of when its RFF analysis applies (Section 3.2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-computational-complexity",
+     "value": "The authors state that GP optimization with the full quantum kernel costs O(T 3) time (T cubed), while a D-dimensional feature map reduces it to O(T D2 + D3), linear in T; with quantum hardware, full GP-UCB still needs at least O(T 2) pairwise kernel evaluations against O(T D) for a fixed approximation, each multiplied by the shots per estimate.",
+     "anchor": "Section 1, p.3; Section 3.2, p.10; Appendix F, pp.32-33; Appendix L, p.41",
+     "quotes": [
+      "While naive GP optimization with a full quantum kernel incurs O(T 3) time complexity and costly circuit evaluations",
+      "to reduce the time complexity to O(T D2 + D3)",
+      "Full GP-UCB requires at least O(T 2) pairwise kernel evaluations over T selected points, while a fixed D-dimensional approximation requires O(T D) feature or basis evaluations after the surrogate is fixed.",
+      "These counts must be multiplied by the number of shots required per kernel or observable estimate."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Operation counts derived in Appendix F and stated in Appendix L.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Exponents are flattened: T 3 is T cubed, D2 is D squared, D3 is D cubed."
+    },
+    {
+     "id_suggestion": "qkbandit-p-greedy-near-optimal-cited",
+     "value": "The authors state, citing DeVore et al., that P-greedy typically achieves near-optimal performance relative to the Kolmogorov width, and that without additional circuit structure fast spectral decay is not guaranteed, though many circuit families give non-uniform spectra.",
+     "anchor": "Section 3.3, p.11; Appendix H, pp.34-35",
+     "quotes": [
+      "Nevertheless, P-greedy typically achieves near-optimal performance",
+      "Without additional circuit structure, fast spectral decay is generally not guaranteed.",
+      "there exist many circuit families that produce non-uniform spectra"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result plus an authors' statement.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-theorem7-truncation",
+     "value": "The paper proves Theorem 7: for a quantum kernel with a Fourier series and a function sampled from its GP, the expected uniform error of the best approximation in the RKHS of a truncated kernel is bounded by a constant times the sum of the left-out Fourier coefficients.",
+     "anchor": "Theorem 7, Appendix D.4, pp.28-29",
+     "quotes": [
+      "Theorem 7 (Approximation by Truncating Fourier Series).",
+      "We now show that a function f drawn from GP(0, κQ) can be uniformly approximated by a function in the RKHS of κsmall, with an error bounded by the sum of the left-out coefficients."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 7 is proved in Appendix D.4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-experiment1-setup",
+     "value": "The authors' first experiment draws a reward function from a three-qubit fidelity kernel built in PennyLane with Pauli-X encoding followed by random rotation and entangling layers, discretizes [0, 2π]3 into a 10 × 10 × 10 grid of 1000 arms, adds Gaussian noise, runs each algorithm for T = 100 rounds and averages over 30 trials.",
+     "anchor": "Section 4.1, pp.11-12; Appendix J.1, pp.37-38",
+     "quotes": [
+      "Our first synthetic task uses a true reward function f ∗ sampled from a three-qubit quantum kernel",
+      "We construct a parameterized quantum circuit in PennyLane with Pauli-X data-encoding gates followed by random rotation and entangling gates.",
+      "We discretize the input domain [0, 2π]3 on a 10 × 10 × 10 uniform grid, yielding 1000 possible arms (actions).",
+      "Each algorithm was run for T = 100 rounds, with results averaged over 30 trials."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The main text gives noise variance 0.01; Appendix J.1 prints the noise as N(0, 0.12), likely 0.1 squared flattened."
+    },
+    {
+     "id_suggestion": "qkbandit-u-shape-explanation",
+     "value": "The authors explain the U-shaped regret: at low model complexity the surrogate kernel underfits and regret is high; beyond an optimal point more complexity raises regret through increased information gain, mirroring overfitting.",
+     "anchor": "Section 4.1, p.12",
+     "quotes": [
+      "At low model complexity, the surrogate kernel is too coarse to capture f ∗ accurately, leading to underfitting and high regret.",
+      "beyond an optimal point, further increase in complexity leads to higher regret due to increased information gain, mirroring overfitting in classical learning."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' interpretation of one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-rff-dimension-choice-matches",
+     "value": "The authors report that Theorem 3's choice of RFF dimension D = √T, which gives D = 10 for T = 100, aligns with the best empirical performance, and that the theoretically optimal dimensions for projected kernels and P-greedy, from empirical error curves, closely match the observed performance peaks.",
+     "anchor": "Section 4.1, Figures 3 and 5, pp.12-13",
+     "quotes": [
+      "For T = 100, this yields D = 10, which is highlighted by the red vertical line in Figure 3(b).",
+      "Note that our theoretical choice of D aligns perfectly with the best empirical performance.",
+      "These values closely match the observed performance peaks, validating the approach."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer prints the square root before 'sion' in 'dimen√sion'; the √ sign is in that quote's region but not in the quote."
+    },
+    {
+     "id_suggestion": "qkbandit-phase-classification-setup",
+     "value": "The authors' phase task uses a generalized cluster Hamiltonian with couplings (J1, J2) discretized into 20 points each over [−4, 4], giving 400 arms; the reward is 1 inside the ferromagnetic phase and 0 elsewhere with noise variance 0.01, and EC-GP-UCB with projected kernels and P-greedy runs T = 100 rounds over 30 runs.",
+     "anchor": "Section 4.2, p.13; Appendix J.2, pp.38-39",
+     "quotes": [
+      "each discretized into 20 equally spaced points over [−4, 4]. This yields 20 × 20 = 400 total arms in the bandit problem.",
+      "Our task is to identify parameters (J1, J2) corresponding to the ferromagnetic phase (II).",
+      "the \"ideal\" label is 1; otherwise, it is 0.",
+      "We then add i.i.d. Gaussian noise of variance σ2 = 0.01",
+      "We run the algorithm for T = 100 rounds, record the cumulative regret, and then average over 30 runs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-phase-low-dim-suffices",
+     "value": "The authors report that on the phase task both approximation methods significantly outperform the full quantum kernel at their optimal complexity, suggesting lower-dimensional kernels suffice to distinguish the ferromagnetic phase while avoiding the full kernel's information-gain penalty.",
+     "anchor": "Section 4.2, Figure 6, pp.13-14",
+     "quotes": [
+      "This suggests that lower-dimensional kernels suffice to distinguish phase II, while avoiding the higher information-gain penalty of the full kernel."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-vqe-result",
+     "value": "The authors report that in Bayesian optimization of a 3-qubit XYZ Heisenberg VQE (Efficient SU(2) ansatz, Expected Improvement, 50 steps, 30 trials, no measurement noise), the full kernel appears excessively complex and converges more slowly, while simpler approximations converge faster.",
+     "anchor": "Section 4.3, Figure 7, p.14; Appendix J.3, p.39",
+     "quotes": [
+      "We employ a 3-qubit \"Efficient SU(2)\" circuit [Nicoli et al., 2023] as the parameterized ansatz U(x)",
+      "Each run consists of 50 optimization steps, averaged over 30 trials.",
+      "The full kernel appears excessively complex for this task, leading to slower convergence. In contrast, simpler approximations achieve faster convergence.",
+      "exactly without measurement noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-six-qubit-scaling",
+     "value": "The authors report that repeating the first experiment with 6 qubits and T = 1000 shows the same U-shaped regret against approximation dimension, which they state supports the scalability of their framework.",
+     "anchor": "Appendix K, Figures 9 and 10, pp.39-40",
+     "quotes": [
+      "though we increase T to 1000 here), we increase the number of qubits from 3 to 6",
+      "As in the 3-qubit experiments, we observe the characteristic \"U-shaped\" behavior",
+      "supporting the scalability of our approximation framework to larger quantum systems."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Six qubits is still small; scalability beyond that is not tested."
+    },
+    {
+     "id_suggestion": "qkbandit-classical-kernel-extension",
+     "value": "The authors state that their approach applies equally to classical kernels with finite- or infinite-dimensional RKHS, offering lower regret and reduced computational complexity there as well.",
+     "anchor": "Section 5 Conclusion, p.14; Appendix I, pp.36-37",
+     "quotes": [
+      "Finally, the techniques discussed here are applicable to high dimensional classical kernels, offering lower regret and reduced computational complexity (see Appendix I).",
+      "it applies equally well to classical kernels, whether they induce finite- or infinite-dimensional RKHS."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim argued in Appendix I without experiments.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qkbandit-conclusion",
+     "value": "The authors conclude that their approximate GP algorithms for quantum kernel bandits, using reduced quantum subspaces and classical approximations, achieve a practical trade-off between information gain and model misspecification, supported by regret bounds and results on synthetic and quantum tasks.",
+     "anchor": "Section 5 Conclusion, p.14",
+     "quotes": [
+      "By exploiting reduced quantum subspaces and classical approximations, our methods achieve a practical trade-off between information gain and model misspecification.",
+      "Theoretical regret bounds, supported by empirical results on both synthetic and quantum tasks, demonstrate the effectiveness of our approach."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "hur-2024-understanding-generalization-quantum-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Hur-Park_2024_Understanding-Generalization-in-Quantum-Machine-Learning-with-Margins__2411.06919.pdf",
+   "title_in_file": "Understanding Generalization in Quantum Machine Learning with Margins",
+   "version_note": "arXiv:2411.06919v1, 11 Nov 2024.",
+   "pages": 18,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A margin-based generalization bound for QNN classifiers, with simulations showing that margins predict the generalization gap of QCNNs better than parameter counts, and a link between margin mean and trace distance of quantum embeddings.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "margin-bound-qnn",
+     "verdict": "widened",
+     "note": "The stored value gives only the bound's property. Theorem 2.1's statement and conditions are quotable: an n-qubit QNN with unitary U and POVMs, a distance bound b from a reference unitary, any δ > 0 and γ > 0, an i.i.d. sample of size m. The true risk is bounded by the empirical margin loss plus a term in n, b, γ, the POVM spectral norms and m.",
+     "value": "The paper proves (Theorem 2.1) that for an n-qubit QNN with unitary U and POVMs for k-class classification, where every U lies within distance b of a reference unitary, for any δ > 0 and γ > 0, with probability at least 1 − δ over an i.i.d. sample of size m, every hypothesis's true risk is at most its empirical margin loss plus a term growing with n, b and the POVM spectral norms and shrinking with γ and m. The authors state the bound is tighter when the hypothesis classifies the sample with larger margins.",
+     "anchor": "Theorem 2.1, Section 2.2, pp.4-5; derivation in Appendix A.1, pp.15-17",
+     "quotes": [
+      "Theorem 2.1. Consider an n-qubit QNNs consist of unitary U ∈ UQNN and POVMs {Ei}ik=1 for kclass classification.",
+      "b be a distance bound such that ∥U −Uref ∥2,1 ≤ b holds for any U ∈ UQNN, with Uref serving as the reference unitary matrix.",
+      "Then, for any δ > 0 and γ > 0, with probability at least 1 − δ over the random draw of an i.i.d. sample S of size m, the following inequality holds for all h ∈ H:",
+      "Unlike uniform generalization bounds, a margin bound offers a tighter upper bound when the hypothesis classifies the sample set S with larger margins."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2.1 with its conditions quoted; derived in Appendix A.1. The bound's formula itself is flattened in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound hides logarithmic factors (soft-O)."
+    },
+    {
+     "id": "margin-embedding-trace-distance",
+     "verdict": "confirmed",
+     "note": "Confirmed. The evidence is binary classification of the first two classes of MNIST, Fashion-MNIST and Kuzushiji-MNIST with an 8-qubit QCNN and three embeddings.",
+     "value": "",
+     "anchor": "Section 4, Figure 4, p.11; Section 5, p.12",
+     "quotes": [
+      "By comparing different quantum embedding methods, we experimentally demonstrated that embeddings with higher trace distances consistently result in better generalization performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "margin-noise-open-question",
+     "verdict": "confirmed",
+     "note": "Confirmed. The paper adds that quantum noise, as a CPTP map, reduces trace distance and so shrinks margins.",
+     "value": "",
+     "anchor": "Section 5 Discussion, p.12",
+     "quotes": [
+      "Quantum noise, modeled by CPTP maps, reduces trace distance between quantum states, leading to smaller classification margins and poorer generalization performance."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open question (Section 5).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "margin-predicts-generalization",
+     "verdict": "confirmed",
+     "note": "Confirmed. The setting is 8-qubit QCNNs trained on 20 QPR samples, with hyperparameters varied over layers, label noise and ansatz.",
+     "value": "",
+     "anchor": "Section 3.2, Figure 3, pp.8-9; Section 5, p.12",
+     "quotes": [
+      "In both evaluation methods, margin-based metrics demonstrate stronger correlations than parameter-based metrics, indicating that margins are more effective in evaluating the generalization performance of QML models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "margin-corollary-projective",
+     "value": "The paper proves (Corollary 2.1.1) that when the POVMs are projective measurements, the margin bound becomes independent of the choice of measurement operators, so comparing models with projective measurements needs only the margin distribution.",
+     "anchor": "Corollary 2.1.1, Section 2.2, p.5",
+     "quotes": [
+      "Corollary 2.1.1. Under the conditions of Theorem 2.1, if the POVMs {Ei}ik=1 are projective measurements",
+      "This shows that, for QNNs with projective measurements, the margin bound is independent of the choice of measurement operators.",
+      "it suffices to evaluate the margin distribution alone"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A corollary of Theorem 2.1 with its condition (projective POVMs) quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "margin-lipschitz-measurement",
+     "value": "The paper shows that the margin ramp loss composed with the margin operator is 2/γ-Lipschitz, and that the quantum measurement function is 2E-Lipschitz, where E sums the squared spectral norms of the POVM elements, treating measurement as a Lipschitz nonlinear activation.",
+     "anchor": "Section 2.2, Eq. (3), p.4",
+     "quotes": [
+      "lγ(M (·, y)) is 2/γ-Lipschitz with respect to the lp norm",
+      "the quantum measurement function g is 2E-Lipschitz",
+      "This involves interpreting quantum measurements as Lipschitz continuous nonlinear activations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 2.2 and Appendix A.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "margin-mixed-state-extension",
+     "value": "The authors extend the margin bound to mixed input states by vectorization: the distance bound b then applies to U ⊗ U∗ instead of U, and E uses the Frobenius norm instead of the spectral norm.",
+     "anchor": "Appendix A.1, p.17",
+     "quotes": [
+      "The margin bound for QNNs can be extended to mixed quantum states via vectorization.",
+      "the distance bound b now applies to U ⊗ U ∗ rather than U , and E = i ∥Ei∥22 is evaluated using the Frobenius norm, unlike the spectral norm used for pure input states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix A.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "margin-mean-trace-distance-bound",
+     "value": "The paper proves that in binary classification the margin mean is at most the trace distance between the class-weighted ensemble states, with equality exactly when the effective measurement is the Helstrom measurement; the authors present this as the missing theoretical link between large trace-distance embeddings and better generalization.",
+     "anchor": "Section 4, Eq. (9), p.10; proof in Appendix A.3, p.20",
+     "quotes": [
+      "where the final inequality becomes equality if and only if {E±∗ 1} corresponds to the Helstrom measurement",
+      "Margin generalization offers this missing theoretical basis, as the trace distance serves as an upper bound on the margin mean.",
+      "we obtain μmean ≤ Dtr(p+ρ+, p−ρ−), where equality holds when E±∗ 1 are the Helstrom measurements."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix A.3 for the binary case.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "An upper bound on the margin mean does not guarantee large margins; it limits them."
+    },
+    {
+     "id_suggestion": "margin-embedding-loss-lower-bound-cited",
+     "value": "The authors state, citing Lloyd et al. and Hur et al., that the quantum embedding sets a lower bound on the training loss: for a linear loss, it is at least one half minus the trace distance between the class ensembles, because quantum channels cannot increase distinguishability.",
+     "anchor": "Section 4, Eq. (8), pp.9-10",
+     "quotes": [
+      "Quantum embedding is crucial to the overall performance of QML models, as it establishes the lower bound of the training loss (Lloyd et al., 2020; Hur et al., 2024).",
+      "This is because quantum channels are completely positive and trace-preserving (CPTP) maps, which cannot increase the distinguishability between quantum states."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "margin-uniform-bounds-vacuous-cited",
+     "value": "The authors state, citing Gil-Fuster et al., that QNNs with few qubits can overfit randomized labels on a benchmark quantum dataset, which shows uniform generalization bounds are equally ineffective in QML.",
+     "anchor": "Section 1, pp.1-2; Section 3.1, p.6",
+     "quotes": [
+      "Despite the small number of qubits, the QNNs were able to overfit the random labels, indicating that uniform bounds are equally ineffective in the QML framework.",
+      "QCNNs can overfit the randomized labels in the QPR dataset, revealing the limitations of uniform bounds in assessing generalization performance (Gil-Fuster et al., 2024)."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "margin-caro-parameter-bound-cited",
+     "value": "The authors cite Caro et al. as proving that in the worst case the QML generalization gap scales with the square root of the parameter count, or of the effective parameters when only some change substantially, and note these are uniform bounds.",
+     "anchor": "Section 3.2, p.7",
+     "quotes": [
+      "Specifically, they proved that, in the worst case, the generalization gap scales with the square root of the parameter count.",
+      "Despite being uniform bounds, the parameter-based generalization approach has become a standard method for understanding generalization behavior in QML models."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "margin-qpr-experiment-setup",
+     "value": "The authors train 8-qubit QCNNs on four-class quantum phase recognition of the generalized cluster Hamiltonian, with 20 training points split evenly across four classes, 1,000 test samples, Adam at learning rate 0.001, up to 5,000 iterations with early stopping, and results averaged over 15 repetitions; labels are randomized at 0%, 50% or 100%.",
+     "anchor": "Section 3.1, pp.5-6; Appendix A.2, p.18",
+     "quotes": [
+      "The model was trained on 20 data points, evenly split across four classes.",
+      "The test accuracy was measured on 1,000 test samples",
+      "The model was trained using Adam optimizer, with a learning rate of 0.001 and full-batch updates",
+      "The model was trained for up to 5,000 iterations",
+      "the results were averaged over 15 experimental repetitions",
+      "Corruption 0% Corruption 50% Corruption 100%",
+      "Figure 1 presents the margin distributions of optimized 8-qubit QCNNs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup (Appendix A.2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Twenty training samples is a deliberately tiny, overfitting regime."
+    },
+    {
+     "id_suggestion": "margin-label-noise-shifts-margins",
+     "value": "The authors report that across all layer configurations, label randomization lowers test accuracy and shifts margin distributions to the left, and that with labels not fully randomized, deeper QCNNs reach higher test accuracy with margins shifted right.",
+     "anchor": "Section 3.1, Figure 1, p.6; Figure 5",
+     "quotes": [
+      "Across all layer configurations, increasing label randomization leads to decreased test accuracy. Concurrently, label randomization shifts the margin distributions significantly to the left.",
+      "when labels are not completely randomized, QCNNs with deeper layers tend to achieve higher test accuracy.",
+      "As the test accuracy increases, we observe a corresponding rightward shift in the margin distributions"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "margin-vs-effective-params-trends",
+     "value": "The authors report that the generalization gap peaks at five QCNN layers, which the median margin captures while effective parameters increase monotonically; for rising label randomization and for decreasing ansatz expressibility, the margin tracks the rising gap while effective parameters show the inverse trend.",
+     "anchor": "Section 3.2, Figure 2, pp.7-8",
+     "quotes": [
+      "The generalization gap reaches its peaks at five layers before slightly decreasing. While the effective parameters increase monotonically with the number of layers, the median margin effectively captures the peak at five layers.",
+      "the margin effectively captures the rising generalization gap as the percentage of randomized labels increases, while the effective parameters show an inverse trend.",
+      "The margin correctly reflects the rising generalization gap as expressibility decreases, while the effective parameters show an inverse trend."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "margin-metrics-defined",
+     "value": "The authors compare three margin-based metrics (lower quartile, median and mean of the margin distribution) with three parameter-based metrics (total parameters and effective parameters at change thresholds of 10−1 and 10−2), using mutual information and the Kendall rank correlation coefficient.",
+     "anchor": "Section 3.2, pp.7-9",
+     "quotes": [
+      "For margin-based metrics, we analyze the lower quartile, median, and mean values of the margin distribution.",
+      "we define effective parameters using two thresholds, 10−1 and 10−2",
+      "we analyzed two different evaluation methods: mutual information and Kendall rank correlation coefficient."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own evaluation setup (Section 3.2).",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The paper's Kendall coefficient is rescaled to run from 0 to 1, not the usual minus one to one."
+    },
+    {
+     "id_suggestion": "margin-embedding-experiment-setup",
+     "value": "The authors classify the first two classes of MNIST, Fashion-MNIST and Kuzushiji-MNIST, reduced by PCA to the qubit count, with an 8-qubit QCNN, using three embeddings: a ZZ Feature Map with three layers, a trainable quantum embedding, and Neural Quantum Embedding with a fully-connected ReLU network.",
+     "anchor": "Section 4, p.11; Appendix A.2, pp.19-20",
+     "quotes": [
+      "we focused on the first two classes from the MNIST, fashion-MNIST, and Kuzushiji-MNIST datasets.",
+      "Principal component analysis (PCA) was applied to reduce the dimensionality of the data to match the number of qubits.",
+      "For the fixed embedding, we used the ZZ Feature Map with three repeated layers.",
+      "The neural network was a fully-connected ReLU network",
+      "datasets using 8-qubit QCNN with various"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "margin-embedding-accuracies",
+     "value": "The authors report that trace distance and margin mean increase in the order fixed embedding, trainable embedding, Neural Quantum Embedding, with test accuracies of 0.742 to 0.772 for the fixed embedding, 0.878 to 0.908 for the trainable embedding, and 0.887 to 0.986 for NQE across the three datasets.",
+     "anchor": "Section 4, Figure 4, p.11",
+     "quotes": [
+      "Fixed Quantum Embedding Test Accuracy KMNIST 0.742 0.762 0.772",
+      "Trainable Quantum Embedding Test Accuracy 0.878 0.907 0.908",
+      "Neural Quantum Embedding Test Accuracy 0.887 0.954 0.986",
+      "we observed a progressively increasing trace distance (indicated by a red dot) in the order of fixed quantum embedding, TQE, and NQE. This increase in trace distance corresponds to higher margin mean values"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study; the accuracies are read from the figure's text layer.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Which accuracy goes with which dataset is not certain from the text layer; the figure caption orders the panels KMNIST (top), Fashion-MNIST, MNIST (bottom)."
+    },
+    {
+     "id_suggestion": "margin-future-algorithmic-stability",
+     "value": "The authors state as an open direction that studying generalization of the specific hypothesis an algorithm learns, through algorithmic stability or optimization speed, could give deeper insight into QML generalization than worst-case uniform bounds.",
+     "anchor": "Section 5 Discussion, p.12",
+     "quotes": [
+      "Furthermore, exploring generalization from the perspective of the learning algorithm would offer valuable insights.",
+      "Extending this line of research to QML could provide deeper insights into the generalization behavior of quantum models."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open question (Section 5).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "margin-conclusion",
+     "value": "The authors conclude that margin-based metrics give a more reliable and interpretable framework for understanding generalization in QML models, with practical guidance for designing QML architectures that generalize well.",
+     "anchor": "Section 5 Discussion, p.12",
+     "quotes": [
+      "Overall, our results suggest that margin-based metrics provide a more reliable and interpretable framework for understanding generalization in QML models."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "All evidence is from simulation of at most 8 qubits."
+    }
+   ]
+  },
+  {
+   "record_id": "huynh-2024-variational-quantum-algorithm-bayesian-inference",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Huynh-et-al._2024_A-variational-quantum-algorithm-by-Bayesian-Inference-with-von-Mises-Fisher__2410.03130.pdf",
+   "title_in_file": "A variational quantum algorithm by Bayesian Inference with von Mises-Fisher distribution",
+   "version_note": "arXiv:2410.03130v1, 4 Oct 2024.",
+   "pages": 19,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theoretical ground-state search algorithm that uses a single-ancilla phase-estimation-style measurement and Bayesian updating of a von Mises-Fisher distribution over real-vectorized states, with convergence theorems and noiseless numerical illustrations on He-H+ and H2.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "vmf-convergence-theorem",
+     "verdict": "narrowed",
+     "note": "Theorem 1's full statement is quotable. Its proof uses the exact matrix W, keeps only success outcomes, and updates the posterior mean analytically, so it covers the idealized expected update, not finite measurement data. The numerical runs likewise use the exact W. The subspace statement is argued in prose, not proved. Equality holds only when the mean vector is already the ground state.",
+     "value": "The paper proves Theorem 1: at any iteration, the overlap between the new mean vector and the true ground-state vector is at least that of the current mean vector, with equality only when the current mean is the ground state. The proof assumes the exact matrix W built from the Hamiltonian, eigenvalues scaled so that εn t lies in (0, π], and a Bayesian update on success outcomes only. The authors state, without a separate proof, that searching a subspace converges to the vector in the subspace best aligned with the true solution.",
+     "anchor": "Theorem 1 and proof, Section IV, p.6; Section II, p.2; Section III.C, pp.5-6",
+     "quotes": [
+      "Theorem 1. At any nth iteration, the overlap between the new mean vector μn+1 to the true vector μt is always equal to or larger than that of the current mean vector μn.",
+      "It is worthy noticed that the equality just happens when the current mean vector is the ground state only",
+      "In this work, it is supposed εnt ∈ (0, π] for all n.",
+      "If we consider a success outcome only, the posterior distribution",
+      "the solution will converge to a state μ ̃t where μ ̃t represents the vector within the subspace that best aligns with μt.",
+      "the algorithm runs with the exact value of the matrix W within fixed number of iterations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1's statement and the conditions it uses are quoted; proved in Section IV using Appendix A.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Monotone overlap alone does not show convergence to the ground state at any particular rate."
+    },
+    {
+     "id": "vmf-practical-algorithm-deferred",
+     "verdict": "confirmed",
+     "note": "Confirmed. Section IV adds that the practical algorithm is for real situations where the Hamiltonian matrix (or W) is only partly known.",
+     "value": "",
+     "anchor": "Section IV, p.7; Section V, p.8",
+     "quotes": [
+      "This lays the groundwork for the development of a practical algorithm which will be presented in a forthcoming paper.",
+      "This stimulates us to design a corresponding practical algorithm to apply to the real situations when the information of the Hamiltonian matrix"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section V).",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "vmf-scope-eigenvalue-range",
+     "verdict": "widened",
+     "note": "The stored value leaves out the range and the long-term qualifier. The range is (0, π] after scaling, and the claim is for the long term. The scaling needs prior bounds on the energies, which the authors say may be available in practice.",
+     "value": "The authors state that their theoretical analysis shows the algorithm can find solutions in the long term for any Hamiltonian with eigenvalues assumed within (0, π], without prior knowledge of the solution. Meeting that assumption needs the Hamiltonian scaled using prior knowledge of lower and upper energy bounds.",
+     "anchor": "Section V, p.8; Section II, p.2",
+     "quotes": [
+      "Our theoretical analysis has shown the capability of our algorithm in finding solutions for any Hamiltonian matrix with eigenvalues assumed within the range (0, π] in the long term without requiring any prior knowledge about the solution.",
+      "This assumption can be satisfied in general by scaling the original Hamiltonian matrix and choosing the value for the time t given some prior knowledge about energy lower and upper bound"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' summary of their analysis, which assumes the exact matrix W.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "'Without prior knowledge about the solution' still needs prior energy bounds for the scaling."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "vmf-measurement-scheme",
+     "value": "The authors use a measurement scheme with a single ancilla qubit prepared in |+⟩, coupled to the system by a controlled unitary (assumed perfectly realized), and measure only the ancilla in the {|+⟩, |−⟩} basis, so a two-outcome measurement suffices however large the system.",
+     "anchor": "Section II, Fig. 1, p.3; Section V, p.8",
+     "quotes": [
+      "the ancilla system in our case is a single qubit only initially prepared in the state |+⟩.",
+      "The interaction between two systems is governed by a control-unitary operation, which is assumed to be perfectly realized in our work.",
+      "We perform the measurements on the control qubit only with the basis {|+⟩, |−⟩}.",
+      "Though the dimension of the system increases, just a two-outcome measurement setting only is needed to infer the encoded information"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup (Section II).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "A controlled time evolution of the full Hamiltonian is itself a deep circuit; the paper assumes it is perfect."
+    },
+    {
+     "id_suggestion": "vmf-success-max-at-ground",
+     "value": "The paper derives the ancilla outcome probability as a function of the overlaps of the trial state with the Hamiltonian's eigenstates, and states that the success probability is maximized when the trial state coincides with the ground state.",
+     "anchor": "Section II, Eqs. (3)-(4), p.3",
+     "quotes": [
+      "It is easy to see that if the trial state |ψ⟩ coincides with the ground state |h0⟩, the probability p(x = 0) is maximized."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from the derived outcome probability, Eq. (4), under the eigenvalue-range assumption.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vmf-state-parametrization",
+     "value": "The authors parametrize any state by the real and imaginary parts of its amplitudes over the full Hilbert space, needing 2d − 2 free parameters, which they state cannot be reduced further.",
+     "anchor": "Section III.A, p.4",
+     "quotes": [
+      "Thus in total we just need 2d − 2 = 2nq+1 − 2 free parameters, which cannot be reduced further.",
+      "First, this way can cover all the arbitrary quantum states as we employ the full Hilbert space"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own parametrization (Section III.A).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The parameter count grows exponentially in qubit number, so the method is not scalable as stated."
+    },
+    {
+     "id_suggestion": "vmf-w-bound",
+     "value": "The paper proves (Appendix A) that every valid unit vector satisfies ψT W ψ ≤ cos ε0t and ||W ψ|| ≤ cos ε0t, the property its convergence proof uses.",
+     "anchor": "Section III.A, p.4; Appendix A, p.10",
+     "quotes": [
+      "A proof (see appendix A) shows that all the valid unit vectors satisfy ψT W ψ ≤ cos ε0t, as well as ||W ψ|| ≤ cos ε0t for all ψ.",
+      "This is the property we used to prove the convergence of the solution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vmf-prior-choice",
+     "value": "The authors choose the von Mises-Fisher distribution as the prior over unit vectors, citing three advantages: it is described by one mean vector and one scalar concentration, it needs no normalization step, and it can be sampled without rejection.",
+     "anchor": "Section III.B, p.5",
+     "quotes": [
+      "In any dimension, the function is fully described by a mean vector and scalar concentration parameter while the normal distribution requires a vector and a matrix.",
+      "as this function deals with unit vectors only, we do not need any normalization step",
+      "the sampling can be done by using the inverse method without sample rejection"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' design rationale.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vmf-mean-update-rule",
+     "value": "The paper derives that the new posterior mean direction is a normalized combination of the current mean and W applied to the current mean, with non-negative coefficients built from modified Bessel function ratios; the concentration is re-estimated from the resultant length.",
+     "anchor": "Section III.C, Eqs. (12)-(14), p.6; Appendix C, pp.11-12",
+     "quotes": [
+      "The new mean vector is thus given by",
+      "are non-negative numbers.",
+      "The new concentration parameter kn+1 for the next iteration can be found by the estimator defined above"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix C from vMF moments.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vmf-theorem2-concentration",
+     "value": "The paper states Theorem 2: as iterations increase, the mean vector approaches the true solution and its resultant length also converges; the authors argue that in the long run the concentration increases, or the resultant length tends to 1.",
+     "anchor": "Theorem 2 and argument, Section IV, p.7",
+     "quotes": [
+      "Theorem 2. When the number of iteration increases, not only the mean vector approaches to the true solution, but its resultant length ||E[ψ]|| also converges.",
+      "Consequently, in the long run, the concentration increases or the resultant length Rn → 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The argument relies on calculations stated as done ('After some calculations') and on the limit from Theorem 1, so it is a sketch rather than a full proof.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vmf-numerics-setup",
+     "value": "The authors illustrate the theory on He-H+ and on H2 (6-31G basis, interatomic distance 0.745 Å), running the algorithm with the exact matrix W from 100 random initial guesses, initial concentration 0.001, stopping at concentration 700 or 1000 iterations.",
+     "anchor": "Section IV, Figs. 3 and 4, p.7",
+     "quotes": [
+      "We examine two prototypes such as Helium Hydride ion He-H+ and Hydrogen molecule H2",
+      "For each prototype, we repeat the algorithm with 100 different initial guesses.",
+      "The initial value for the concentration parameter k = 0.001.",
+      "we choose kmax = 700 and nimtearxation = 1000.",
+      "Results for the Hamiltonian of the Hydrogen Molecule (6-31G basis) set at an interatomic distance of 0.745"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own numerical setup (Section IV).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "These are noiseless theoretical calculations, not quantum-hardware or shot-based simulations."
+    },
+    {
+     "id_suggestion": "vmf-numerics-confirm-theory",
+     "value": "The authors report that the fidelity, resultant length and concentration plots for He-H+ and H2 confirm their theoretical predictions, and that the larger system needs more iterations to converge.",
+     "anchor": "Section IV, Figs. 3 and 4, p.7",
+     "quotes": [
+      "It is clear that we need more iterations to obtain the convergence when the dimension of the system is larger.",
+      "It can be seen that results confirm all the predictions of the theory we propose above."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical illustration in one study; no fidelity values are given in the text.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vmf-vqe-measurement-obstacle",
+     "value": "The authors state that VQE computes Hamiltonian expectations by direct measurement, so the number of measurement types needed rapidly increases with system dimension, which they call a significant obstacle that remains challenging.",
+     "anchor": "Abstract and Section I, p.1",
+     "quotes": [
+      "one obvious obstacle is that the number of measurement types needed rapidly increases when the dimension of the system grows up.",
+      "Though there have been attempts but this issue remains a challenging problem"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' background claim.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vmf-santagati-overlap-cited",
+     "value": "The authors state that the single-ancilla scheme of Santagati et al. used ansätze with initial overlap with the true state from 0.2 to 0.8, which may not be available in practice, and that their algorithm is designed to work without such prior information.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "they utilized the ansatz whose initial overlap with the true state varies from 0.2 to 0.8 in their particular examples, which may not available in practice generally.",
+      "we develop a new algorithm which can work without prior information that enables good guesses for the ground state"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result plus an authors' design aim.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vmf-conclusion",
+     "value": "The authors conclude that combining Bayesian inference with the von Mises-Fisher distribution worked as a good optimizer for their task and may extend to other problems involving unit vectors.",
+     "anchor": "Section V, p.8",
+     "quotes": [
+      "Finally, the combination between Bayesian inference and vMF distribution has been illustrated a good optimizer for our work, which may be extended to other circumstances in which unit vectors are involved."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' conclusion.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "No comparison with standard VQE optimizers is reported."
+    }
+   ]
+  }
+ ]
+}

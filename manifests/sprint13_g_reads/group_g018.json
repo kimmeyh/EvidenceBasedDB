@@ -1,0 +1,2126 @@
+{
+ "papers": [
+  {
+   "record_id": "incudini-2023-higher-order-topological-kernels-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Incudini-Martini-Di-Pietro_2023_Higher-order-topological-kernels-via-quantum-computation__2307.07383.pdf",
+   "title_in_file": "Higher-order topological kernels via quantum computation",
+   "version_note": "arXiv:2307.07383v1, 14 Jul 2023. The text layer holds the paper twice (plain and layout extraction); the first copy was read, the second used only to check quotes.",
+   "pages": 9,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short conference-style paper that defines a higher-order topological kernel from multidimensional Betti curves estimated with the LGZ quantum algorithm, bounds its error, and tests it on a synthetic shape-classification task in a noiseless simulator.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "incudini-classical-kernel-comparison",
+     "verdict": "narrowed",
+     "note": "The comparison of Fig. 3(a) used the topological kernel computed classically and exactly, with gamma and p fixed, against a fixed grid of conventional-kernel hyperparameters, with test-set accuracy as the metric and 5 to 20 sampled points; the stored value omits that the conventional kernels were not tuned beyond the grid and that the authors attribute the result to the inductive bias of TDA on a problem built to be topological.",
+     "value": "The authors report that on a synthetic, balanced 100-item dataset built to separate triangles from sliced quadrangles (shapes that are not topologically equivalent), with 5 to 20 points sampled per shape, the topological kernel computed classically and exactly (gamma = 1.0, p = 2) gave the best test-set accuracy against Gaussian (RBF), Laplacian and polynomial kernels over fixed hyperparameter grids, and was the only one that improved as more points were sampled; they attribute this to the inductive bias of TDA, an assumption they say is true for this problem.",
+     "anchor": "Section V.A Setup and V.B Results, Fig. 3(a)",
+     "quotes": [
+      "The dataset created has 100 items and is balanced.",
+      "with the number of points ranging from 5 to 20 for topological kernels calculated using classical methods",
+      "Firstly, we have compared the performance of the topological kernel (17) on the larger dataset having γ = 1.0, p = 2 with the Gaussian kernel",
+      "The metric chosen for the comparison is the accuracy with respect to the testing set. In this case, the topological kernel has been calculated classically and the result is exact.",
+      "Notably, the topological kernel yields the best performance compared to the conventional kernels. This can be explained by the inductive bias of topological data analysis.",
+      "This assumption is certainly true for the shape classification problem.",
+      "More importantly, the topological technique is the only one that exhibits improvement in performance with an increase in sampled points.",
+      "these two shapes are not topologically equivalent and therefore possess distinct topological characteristics"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one small synthetic study; Fig. 3(a) numbers are in the figure only.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The task is constructed so that topology separates the classes, so the advantage is expected by design and does not show a general advantage; the result is for the classical exact kernel, not the quantum-estimated one."
+    },
+    {
+     "id": "incudini-mercer-error-bound",
+     "verdict": "widened",
+     "note": "The stored value is the conclusion's summary. The paper states Proposition 1 (runtime and a relative Frobenius-norm error of at most delta, assuming the k'-clique-dense optimal regime) and Proposition 2 (the Gaussian kernel over the Betti-curve distance is a Mercer kernel, proved from the definition of the Gaussian kernel). The value now carries the statements and conditions.",
+     "value": "The paper states Proposition 1: for a Vietoris-Rips filtration with q thresholds and an integer k, using LGZ to estimate non-normalized Betti numbers up to a multiplicative error delta greater than 0, the matrix of multidimensional Betti curves can be approximated with relative Frobenius norm error at most delta, under the assumption of operating in the optimal regime, a k'-clique dense graph for every k' up to k; the runtime overhead is proportional to qk because every matrix element is estimated separately. It states Proposition 2: the Gaussian kernel over the Betti-curve distance of Equation (15) is a Mercer kernel, with a proof that follows from the definition of the Gaussian kernel.",
+     "anchor": "Section IV, Proposition 1 (Eqs. 13-14) and Proposition 2 (Eq. 17); Section VI",
+     "quotes": [
+      "To derive this bound, we assume that we are operating in the optimal regime, i.e. k′-clique dense graph for all k′ ≤ k.",
+      "Proposition 1. Consider the Vietoris-Rips filtration",
+      "Use LGZ to estimate (non-normalized) Betti numbers up to a multiplicative error δ > 0.",
+      "with relative Frobenious norm upper bounded by δ",
+      "The runtime is obtained by separately estimating all the elements of the matrix, which adds an overhead proportional to qk.",
+      "Proposition 2. The function in (17) is a Mercer kernel. Proof. Follows from the definition of Gaussian kernel [16].",
+      "Here, the distance function d corresponds to the one defined in Equation (15)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Propositions 1 and 2 in Section IV are stated with their conditions and short proofs; the bound holds only in the k'-clique-dense regime and inherits the LGZ multiplicative-error assumption.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound is elementary: it follows from each entry carrying a multiplicative error at most delta, so it adds no new analysis of LGZ itself."
+    },
+    {
+     "id": "incudini-quantum-simulation-robustness",
+     "verdict": "narrowed",
+     "note": "The robustness study ran on a smaller dataset of 20 items with 5 points each, comparing the LGZ-computed kernel with the exact one by RMSE; qDrift needed more repetitions. The stored value omits the small dataset and the qDrift caveat.",
+     "value": "The authors report that on a smaller dataset of 20 items with 5 points sampled from each, the LGZ-computed topological kernel on a noiseless simulator closely resembled the exact classical kernel; Trotter (Trotter number 2, 3 or 4) reached zero RMSE with only two repetitions, qDrift (1, 2, 5 or 10 repetitions) needed a greater number of repetitions for satisfactory performance, and 200 shots were sufficient to estimate the coefficients accurately.",
+     "anchor": "Section V.A Setup and V.B Results, Fig. 3(b)",
+     "quotes": [
+      "Furthermore, we have defined a smaller dataset of m = 20 items and sampled 5 points from each item.",
+      "Trotter (with a Trotter number spanning 2, 3, 4) and qDrift (with a repetition number of 1, 2, 5, 10)",
+      "It is noteworthy that the performance of the topological kernel created using LGZ closely resembles the exact classical calculations.",
+      "The qDrift technique introduces stochasticity in the simulation, thus requiring a greater number of repetitions to attain satisfactory performance.",
+      "yet yields the best performance (zero RMSE) with only two repetitions.",
+      "The number of shots needed is relatively unimportant, as 200 shots are sufficient to accurately estimate the coefficients."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one small noiseless-simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "incudini-simulator-and-fault-tolerance-scope",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract; Fig. 1(a) caption; Section III.B",
+     "quotes": [
+      "We exhibit a working prototype of our approach implemented on a noiseless simulator",
+      "assuming large-scale fault-tolerant quantum hardware is available"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its scope in the Abstract and Fig. 1 caption.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "incudini-lgz-requires-fault-tolerance",
+     "value": "The authors state that the LGZ algorithm requires fault-tolerant quantum computers, although a cheaper variation for NISQ devices exists, and that the quantum algorithm is not simulable on classical hardware for anything other than trivial examples with few points.",
+     "anchor": "Section III.B Limitations of the LGZ algorithm; Fig. 1(a) caption",
+     "quotes": [
+      "Clearly, this algorithm requires fault-tolerant quantum computers, although a cheaper variation that can be executed on NISQ devices exists [24].",
+      "The quantum algorithm is not simulable on classical hardware for anything other than trivial examples with few points."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of a limit of its method, Section III.B and Fig. 1(a).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "incudini-lgz-runtime-conditions",
+     "value": "The authors state, citing Schmidhuber and Lloyd, that LGZ keeps a polynomial runtime only when the inverse clique density is polynomial in n (a k-clique dense graph) and the condition number kappa is polynomial; the largest eigenvalue is bounded by O(n) but no lower bound on the smallest is known, so it could be exponentially small.",
+     "anchor": "Section III.B, Eqs. 7-9",
+     "quotes": [
+      "For the LGZ algorithm, a polynomial runtime is maintained only when ζ−1 ∈ O(poly(n)), which is the case for a graph that is k-clique dense.",
+      "Additionally, it is necessary for κ to be polynomial.",
+      "Although λmax can be bounded by O(n), there is currently no known lower bound for λmin, meaning it could potentially be exponentially small."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited complexity result ([25]).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "incudini-betti-np-hard-cited",
+     "value": "The authors state that Schmidhuber and Lloyd showed that both exact and approximate Betti number calculations are NP-hard, even for clique-dense graphs, which implies a need to investigate simplicial complexes not based on clique complexes; they also state LGZ cannot estimate persistent Betti numbers.",
+     "anchor": "Section III.B",
+     "quotes": [
+      "It is worth noting that [25] has demonstrated that both exact and approximate Betti number calculations are NP-hard, even for clique-dense graphs",
+      "which implies that it is necessary to investigate alternative definitions of simplicial complexes that are not based on clique complexes.",
+      "LGZ is not capable of estimating persistent Betti numbers."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited hardness result ([25]).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "incudini-lgz-speedup-claim-cited",
+     "value": "The authors state that LGZ is exponentially faster than the best classical method identified to date, that no attempt to invalidate this advantage by dequantization has succeeded, and that classical techniques are efficient for lower-dimensional topological features while the quantum framework seems indispensable for higher-dimensional ones.",
+     "anchor": "Section I Introduction",
+     "quotes": [
+      "The LGZ is exponentially faster than the best classical method identified to date, and no attempts to invalidate this advantage via dequantization techniques have succeeded [10].",
+      "While classical techniques are efficient for computing topological features of lower dimensions, the quantum framework seems to be indispensable for higher-dimensional ones."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim resting on cited work; the same paper notes the NP-hardness result and the unknown bound on the smallest eigenvalue.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "This claim is in tension with the paper's own Section III.B caveats (no known lower bound on the smallest eigenvalue; polynomial runtime only for clique-dense graphs)."
+    },
+    {
+     "id_suggestion": "incudini-multidimensional-betti-curve-definition",
+     "value": "The paper defines the multivariate (multidimensional) Betti curve, which extends the Betti curve to several Betti orders up to k and is represented as a real matrix whose entry (i, j) is the i-th Betti number of the j-th complex of the filtration, with one row per Betti order up to k and one column per threshold; a weighted Minkowski distance between two such curves (weighted Euclidean for p = 2) defines the kernel through a Gaussian with gamma greater than 0.",
+     "anchor": "Section IV, Eqs. 11, 12, 15 and 17",
+     "quotes": [
+      "The concept of Betti curves can be extended to include multiple orders of Betti numbers k, resulting in the multivariate Betti curve",
+      "(B≤Fk)i,j = βi(Sj); 0 ≤ i ≤ k, 0 ≤ j ≤ q (12)",
+      "It should be noted that Equation (15) represents an instance of the weighted Minkowski distance; for p = 2, it becomes a weighted Euclidean distance.",
+      "One common approach is to use the Gaussian kernel",
+      "where γ > 0. Here, the distance function d corresponds to the one defined in Equation (15)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Section IV Eqs. 11 to 17.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "incudini-threshold-count-bound",
+     "value": "The authors state that for a dataset of m elements each a cloud of n points, the number of distinct thresholds q is at most m(n − 1)(n − 2)/2, and that in practice the actual number can be significantly smaller than this bound.",
+     "anchor": "Section IV, after Proposition 1",
+     "quotes": [
+      "we can place an upper bound on the number of distinct thresholds q as m(n − 1)(n − 2)/2.",
+      "In practical scenarios, the actual number of thresholds can be significantly smaller than the upper bound."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A counting argument stated briefly in the text, not a named result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "incudini-experimental-setup",
+     "value": "The authors state the experiment is a small-scale synthetic shape-classification benchmark feasible on a quantum simulator: triangles and sliced quadrangles randomly rotated (0 to 2π) and sheared (0 to π/4), with points sampled from their perimeters, Vietoris-Rips complexes built and the kernel fed to a Support Vector Machine; the code was implemented in Python and Qiskit, and code and data are available only on request.",
+     "anchor": "Section I; Section V and V.A; Code and data availability",
+     "quotes": [
+      "test it over the shape classification problem, a small-scale synthetic benchmark feasible to solve on a quantum simulator.",
+      "The objective of this classification problem is to differentiate between a triangle and a sliced quadrangle, given a set of uniform sample points on their perimeters.",
+      "rotates the shape by a randomly generated angle between 0 and 2π radians and introduces a skew by randomly generating shear angles along the x and y axes with degrees between 0 and π/4.",
+      "After applying this kernel to a Support Vector Machine (SVM), we measured its accuracy",
+      "implement our approach using Python and the Qiskit platform.",
+      "The code and data used in this study are available upon request by contacting the authors for access."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup, Section V.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "incudini-feasibility-conclusion",
+     "value": "The authors conclude that their approach is feasible with Trotter and qDrift Hamiltonian simulation (qDrift only with a large enough number of circuit repetitions) and a modest number of shots, and that in most cases the quantum approximated technique closely resembles the exact classical method.",
+     "anchor": "Section VI Conclusion; Section I",
+     "quotes": [
+      "Our approach is feasible when using Trotter and qDrift as Hamiltonian simulation techniques (the latter only with a large enough number of repetitions of the circuit) and with a modest number of shots.",
+      "In most cases, the quantum (approximated) technique closely resembles the classical (exact, but computationally expensive) method, even when using stochastic Hamiltonian simulation techniques such as qDrift."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion from one noiseless-simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "incudini-higher-order-relevance-open",
+     "value": "The authors state that the literature lacks sufficient evidence on the impact of higher-order Betti numbers on solving problems, and name time series processing (via Takens' embedding), with applications including fraud detection, as a promising area to analyze.",
+     "anchor": "Section VI Conclusion and future work",
+     "quotes": [
+      "Firstly, the literature lacks sufficient evidence regarding the impact of higher-order Betti numbers on solving problems.",
+      "one promising area is time series processing, which can be efficiently encoded as a point cloud in a d-dimensional space using Takens' embedding.",
+      "Time series has several applications in biology, engineering, and finance, including fraud detection [28]."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of an open problem, Section VI.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "incudini-stability-unproven",
+     "value": "The authors state that the stability of the multivariate Betti curve can be intuitively inferred from the proof for the univariate Betti curve but has to be formally proven, and that all tested kernels, including theirs, could be improved by optimizing their parameters.",
+     "anchor": "Section VI Conclusion and future work",
+     "quotes": [
+      "Fifthly, the stability of the multivariate Betti curve can be intuitively inferred from the proof of the stability of the univariate Betti curve presented in [17], but this has to be formally proven.",
+      "Fourthly, all the tested methods have the potential to be enhanced by optimizing the kernel parameters."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of open problems, Section VI.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "incudini-quantum-kernel-problems-cited",
+     "value": "The authors state, citing prior work, that the basic fidelity-type quantum kernel is hindered by a flat distribution of exponentially small eigenvalues and by exponential concentration that makes kernel calls indistinguishable, and that the Shor-based kernel of Liu et al. gives an exponential speedup under cryptographic assumptions but is highly artificial and not applicable to most real-world problems.",
+     "anchor": "Section I Introduction",
+     "quotes": [
+      "However, its use is hindered by unfavorable properties such as the flat distribution of exponentially small eigenvalues [6]",
+      "the exponential concentration of coefficients, which makes kernel calls indistinguishable [7].",
+      "While this technique provides strong guarantees for this particular problem, it is highly artificial and not applicable to most real-world problems."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "jager-2026-provable-scalable-quantum-gaussian-processes",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Jager-et-al._2026_Provable-and-scalable-quantum-Gaussian-processes-for-quantum-learning__2605.00099.pdf",
+   "title_in_file": "Provable and scalable quantum Gaussian processes for quantum learning",
+   "version_note": "arXiv:2605.00099v1, 30 Apr 2026; main text, Methods and Supplementary Information in one file.",
+   "pages": 90,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory-and-simulation paper that defines quantum Gaussian processes (Bayesian priors over unknown quantum transformations), proves that matchgate (free-fermionic) evolutions give provable and scalable QGPs acting on all qubits, and demonstrates regression, classification and Bayesian optimization in MPS simulations of up to 100 qubits.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qgp-extrapolation-50-qubit",
+     "verdict": "widened",
+     "note": "The text adds what the stored value omits: the failing model used the unitary (fidelity) kernel; the correct matchgate kernel extrapolates perfectly without shot noise and stays robust with finite shots, with wider uncertainty bands; the target was t up to 10 from training on [0, 1].",
+     "value": "The authors report a 50-qubit synthetic regression task in which 15 training states with t in [0, 1] pass through an unknown random matchgate circuit and a Pauli observable in B1 is measured, with the signal to be predicted out to t ≤ 10; with the wrong prior (the unitary kernel, as if U could be any unitary) extrapolation is unattainable, while with the correct matchgate kernel the QGP extrapolates perfectly without shot noise and remains robust with realistic finite shots, which broaden the uncertainty bands. They conclude that interpolation can generally be achieved but extrapolation becomes impossible without a suitable inductive bias.",
+     "anchor": "Section II.D.1.a and Fig. 2, pp.4-5",
+     "quotes": [
+      "Here we consider a 50-qubit synthetic dataset where 15 training states ρ(t), with t ∈ S = [0, 1], are sent through an unknown matchgate circuit U from SPIN(2n), and where we measure a Pauli observable O ∈ B1.",
+      "The task is to predict the signal out to t ≤ 10, in a regime where the dynamics are not periodic and success is not trivially guaranteed.",
+      "replacing the correct kernel by the unitary kernel of Eq. (8), as if U could have been any element of U(2n). As shown in Fig. 2, extrapolation is then unattainable.",
+      "In the noiseless case, the QGP extrapolates perfectly.",
+      "The additional noise broadens the uncertainty bands, but the overall trend of the signal is still correctly captured.",
+      "Thus, the first example shows that successful interpolation can generally be achieved, here with only 15 training points in a narrow region, but extrapolation becomes impossible in the absence of a suitable inductive bias."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical (MPS) simulation result from one study, without hardware noise.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The task is synthetic and the prior is chosen to match how the data were generated, so success shows the value of a correct prior rather than performance on an unknown real process."
+    },
+    {
+     "id": "qgp-matchgate-gp-proved",
+     "verdict": "narrowed",
+     "note": "Theorem 1 holds asymptotically (large n) and only for suitable sets of states and observables in a single Majorana sector Bm with m not 0 or 2n; it needs the Gaussian pairings to dominate and, for even m divisible by 4, odd moments to vanish; scalability further needs min{m, n − m} in O(1). The stored value states the abstract's claim without these conditions.",
+     "value": "The paper proves (Theorem 1, informal in the main text, formal in the Supplementary Information) that there exist sets of states and measurement operators O in a single Majorana sector Bm (m not 0 or 2n) for which the expectation values under a Haar-random matchgate (SPIN(2n)) evolution form a zero-mean Gaussian process with a kernel proportional to the states' overlap in that sector; the moments match a Gaussian only asymptotically, under conditions that the observable have full support on the subspace and that Gaussian pairings dominate, with odd moments needing case-by-case analysis by m; scalability additionally needs min{m, n − m} ∈ O(1).",
+     "anchor": "Theorem 1, Section II.C, p.3; Methods IV.A; Table I and Table II",
+     "quotes": [
+      "Theorem 1 (Informal). There exist sets of states S and measurement operators O ∈ Bm (m ̸= 0, 2n) for which f forms a GP with μ(t) = 0",
+      "the moments of f asymptotically match those of a multivariate Gaussian distribution",
+      "where we find that the observable must have full support on the chosen subspace, and every non-pairwise contraction on the dataset must be subleading compared to the product of pairwise overlaps.",
+      "At that stage, the only remaining obstruction is the odd moments. Here, we need to perform a specific caseby-case analysis depending on the value of m.",
+      "one simply needs min{m, n − m} ∈ O(1)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 with its conditions is proved in the Supplementary Information; the main text states it informally with its conditions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qgp-no-gp-gaussian-pauli",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Supplementary Information C; Table II",
+     "quotes": [
+      "This violation implies, as per Theorem 2, that Gaussian states combined with Pauli observables in B4 cannot lead to GPs."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A proved consequence of Theorem 2 in Supplementary Information C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qgp-scalability-condition",
+     "verdict": "widened",
+     "note": "The text says why scalability is not automatic: the subspace overlaps are estimated, with coherent access and Bell measurements, with a shot number polynomial in the subspace dimension, so a polynomial cost in n needs min{m, n − m} in O(1).",
+     "value": "The authors state that Theorem 1 guarantees the provable QGP condition but scalability is not automatic: with coherent access and Bell measurements the subspace overlaps can be evaluated to precision epsilon with a shot number polynomial in the dimension of Bm over epsilon squared, so efficient polynomial scaling in n, with kernel entries of the same order as the noise covariance R, requires min{m, n − m} ∈ O(1).",
+     "anchor": "Section II.C after Theorem 1, p.3",
+     "quotes": [
+      "Theorem 1 guarantees the provable QGP condition, but scalability is not automatic.",
+      "Indeed, with coherent access and Bell measurements, we can evaluate these overlaps ⟨ρ(t), ρ(t′)⟩m up to precision ε with a shot number scaling as O(poly(dim(Bm))/ε2) shots",
+      "Consequently, to achieve efficient polynomial scaling in the total number of qubits n while ensuring that the kernel entries remain of the same order as those in R, one simply needs min{m, n − m} ∈ O(1)."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit of Theorem 1, Section II.C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qgp-regression-task-definition",
+     "value": "The paper defines the QGP regression task: in an initial phase lasting no more than polynomial time one has repeated access to a finite training set of states and to the unknown unitary U from a group G, can send states through U and record measurements; afterwards U is no longer available and the goal is to estimate the expectation value for every state in the set. Using the framework requires two ingredients, a provable QGP and a scalable QGP (all needed quantities estimable with polynomially many shots).",
+     "anchor": "Section II.B, p.2",
+     "quotes": [
+      "During an initial phase, we are given repeated access to a finite training set T ⊆ S as well as to a unitary U belonging to G.",
+      "Once this phase is over, we no longer have access to U and the goal is to estimate the value fU (t) for all ρ(t) ∈ S.",
+      "1. Provable QGP: Showing that fU ∼ GP(μ, κ); 2. Scalable QGP: The ability to estimate with O(poly(n)) shots all relevant quantities"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its task and requirements, Section II.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-full-unitary-not-scalable",
+     "value": "The authors state, citing prior work, that if the unknown unitary is Haar-random over the full unitary group and O is a traceless Pauli operator, the expectation values form a GP whose kernel is, up to a factor, the fidelity kernel, but this is not scalable: the kernel entries are of order one over 2 to the n and are dominated by the noise matrix R, whose entries are of order one over poly(n); restricting the unitary to act on O(log(n)) qubits restores scalability.",
+     "anchor": "Section II.B, Eq. (8), p.2",
+     "quotes": [
+      "Ref. [38] showed that if G = U(2n) and O is a traceless Pauli operator, then fU (t) forms a GP",
+      "where κ is, up to a factor, the fidelity kernel. This satisfies the first condition but not the second.",
+      "so the kernel entries are of order O(1/2n) and are dominated by the noise matrix R",
+      "Clearly, restricting the unitary to act on only m ∈ O(log(n)) qubits restores scalability [38]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result cited from [38], restated by the authors.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-matchgate-only-all-qubit",
+     "value": "The authors state that matchgates constitute the only known case of a provable and scalable QGP in which the unitary acts on all qubits; the previously known cases (unitary, orthogonal and symplectic groups) act on a subset of O(log(n)) qubits, and in every case the observable must lie in a specific subspace of operator space.",
+     "anchor": "Table I and Section II.C, p.3",
+     "quotes": [
+      "We highlight the fact that matchgates constitute the only known case where the unitary acts on all",
+      "qubits, rather than on a small subset of them.",
+      "For U(2m), O(2m) and SP(2m/2), the transformation acts locally on a subset of m ∈ O(log(n)) qubits",
+      "in all cases the observable O must belong to some subspace Bλ of operator space"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of known provable and scalable QGPs, Table I.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-not-always-gp",
+     "value": "The authors state that Table II presents state datasets and observables for which the expectation values do not form GPs, showing that care must be taken to guarantee the conditions for provable QGPs, and that some entries of Table II rest on numerical evidence rather than formal proof.",
+     "anchor": "Section II.C, p.3; Table II caption",
+     "quotes": [
+      "we present cases of state datasets and observables for which the expectation values do not form GPs, showing that care must be taken to guarantee that the conditions for provable QGPs are actually met.",
+      "Italics imply that the conclusion is based on numerical evidence rather than a formal proof."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of the limits of its result, Section II.C and Table II.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-experiments-beyond-provable",
+     "value": "The authors state that some of their experiments extend beyond strictly provable QGP regimes and present their success as showing the framework's value as a strong practical heuristic; for example, in the XXX model the observable spans two Majorana sectors (B2 and B4), which Theorem 1 does not directly cover, and the summed kernel is used because it is still positive semidefinite.",
+     "anchor": "Section II.D, p.4; Section II.D.1.b, p.5",
+     "quotes": [
+      "Notably, while some of the experiments presented extend beyond strictly provable QGP regimes, the success of these simulations highlights the framework's value as a strong, practical heuristic.",
+      "While Theorem 1 does not directly cover this combined observable, the resulting kernel is still positive semidefinite and hence defines a valid GP model."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of the scope of its experiments, Section II.D.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-xxx-phase-regression",
+     "value": "The authors report that QGP regression on a bond-alternating XXX model on n = 50 qubits, with a single informative training point at J1 = 2J2, correctly reconstructs the change in the order-parameter proxy across the transition near J1 = J2, with predictions converging towards the prior for small J1/J2.",
+     "anchor": "Section II.D.1.b and Fig. 3(a), p.5",
+     "quotes": [
+      "use QGP regression to recover the ground-state phase diagram of a bond-alternating XXX model [49] on n = 50 qubits.",
+      "Using only an informative training point placed at J1 = 2J2",
+      "the QGP correctly reconstructs the change in the order parameter across the transition near J1 = J2, as predictions converge towards the prior for small J1/J2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-xxz-100-qubit",
+     "value": "The authors report that QGP regression on a 100-qubit XXZ chain with alternating fields, trained on a single point in the maximal-magnetization region, gives a magnetization landscape that closely matches the true one, and that along a cut, trained on its two extrema, it reproduces the staircase structure of the magnetization plateaus; they explain the single-point success by the chosen point being physically informative.",
+     "anchor": "Section II.D.1.c and Fig. 4, pp.5-6",
+     "quotes": [
+      "we apply QGP regression to the magnetization diagram of a one-dimensional n = 100 qubit XXZ chain",
+      "the training set consists of a single point chosen in the region of maximal magnetization",
+      "Even under this extremely sparse supervision, the regressed magnetization landscape closely matches the true one.",
+      "In other words, the chosen training point is not just convenient numerically, but physically informative.",
+      "the QGP accurately reproduces the staircase structure of the magnetization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The training point is chosen with knowledge of the answer (the maximal-magnetization plateau), which favors the result."
+    },
+    {
+     "id_suggestion": "qgp-classification-95",
+     "value": "The authors report that a QGP classifier for the phases of the bond-alternating XXX model (n = 50), trained on a single point per class, reaches a test accuracy of 95%, with misclassifications only close to the critical point, and that its latent function correlates with the order-parameter proxy with correlation coefficient 0.998.",
+     "anchor": "Section II.D.2 and Fig. 3(b), p.6",
+     "quotes": [
+      "we consider a minimal training set with a single training point per class",
+      "the model achieves a test accuracy of 95%. The only misclassifications occur close to the critical point",
+      "for the finite system size considered here (n = 50)",
+      "with correlation coefficient 0.998."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-bo-synthetic",
+     "value": "The authors report that QGP-based Bayesian optimization on a synthetic, highly nonconvex two-parameter landscape (built from a 30-qubit matchgate dataset, shot noise neglected) reached the global optimum in only 7 function evaluations up to a resolution of 0.06, avoiding nearby local optima.",
+     "anchor": "Section II.D.3.a and Fig. 5(a), p.6",
+     "quotes": [
+      "To keep the focus on the optimization mechanism, we neglect shot noise in the simulations.",
+      "Starting from a random initial point, the optimizer reaches the global optimum in only 7 function evaluations, up to a resolution of ∆t = 0.06.",
+      "Synthetic two-parameter optimization landscape built from a 30-qubit matchgate dataset",
+      "the optimization path avoids getting trapped in nearby local optima."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single representative noiseless simulation trajectory.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "A representative trajectory is one run; the main text gives no distribution over starting points."
+    },
+    {
+     "id_suggestion": "qgp-bo-sensing",
+     "value": "The authors report that QGP-based Bayesian optimization of a squeezed probe state for a 55-qubit magnetometry task identified the maximally sensitive probe state in seven evaluations, reaching the global optimum with precision 0.006, even though the surrogate was not an accurate global model at that point; shot noise was neglected.",
+     "anchor": "Section II.D.3.b and Fig. 5(b), p.6",
+     "quotes": [
+      "The resulting QGP-BO trajectory is shown in Fig. 5 for a magnetometry task with n = 55 qubits.",
+      "The optimizer identifies the maximally sensitive probe state in only seven evaluations, reaching the global optimum with precision ∆t = 0.006.",
+      "By the time the optimum is found, the surrogate is still not an especially accurate global model of the underlying expectation value landscape.",
+      "we neglect shot noise in the simulations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single noiseless simulation trajectory.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-proof-not-clt",
+     "value": "The authors state that, unlike the classical infinite-width neural network correspondence, the proof does not follow from a central limit theorem, because the matrix elements of the orthogonal transformation induced by a matchgate are correlated; instead all moments are computed using an asymptotic Weingarten expansion over the Brauer algebra for the special orthogonal group, and the proof reduces to showing pairwise tensor matchings dominate.",
+     "anchor": "Methods IV.A, pp.7-8",
+     "quotes": [
+      "Unlike the classical neural network infinite-width correspondence [63], the proof does not follow from a cen- tral limit theorem.",
+      "The reason is that the matrix el- ements of the orthogonal transformation induced by a matchgate are correlated.",
+      "In the large-n limit, the relevant moment operator admits an asymptotic Weingarten expansion over the Brauer algebra [38, 65].",
+      "The proof, therefore, reduces to showing that the pairwise tensor matchings dominate asymptotically."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper's own proof method, sketched in Methods IV.A and given in full in the Supplementary Information.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-odd-moment-parity",
+     "value": "The paper shows that odd moments vanish trivially when m is odd; for m = 2 the even-moment argument suffices once Gaussian pairings dominate; for higher even m the third moment is the first obstruction, vanishing automatically when m ≡ 2 (mod 4) because the reshaped matrices are anti-symmetric, but not when m ≡ 0 (mod 4), where extra structure is needed.",
+     "anchor": "Methods IV.A, p.8; Table II",
+     "quotes": [
+      "If m is odd, then every odd moment vanishes trivially because mk is odd.",
+      "If m = 2, the even-moment argument above is already enough once Gaussian pairings dominate.",
+      "when m ≡ 2 (mod 4), the reshaped matrices are anti-symmetric, so Tr[O3] = 0 and the third moment vanishes automatically",
+      "when m ≡ 0 (mod 4), the reshaped matrices are symmetric, and odd moments do not vanish automatically, so extra structure is needed."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Part of the proof of Theorem 1, Methods IV.A and Supplementary Information.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-wigner-psd-correction",
+     "value": "The authors state that a finite-shot measured kernel matrix may not be positive semidefinite, a problem that typically does not occur with exactly computed classical kernels; clipping negative eigenvalues propagates no uncertainty and shifting by the lowest eigenvalue gives only minimal uncertainty propagation, so they propose shifting the diagonal by the Wigner semicircle bound (twice the square root of N times the kernel measurement standard deviation) as a Bayesian, more robust correction, valid when the noise is additive, i.i.d. and zero-mean.",
+     "anchor": "Methods IV.B, Eq. (31), p.8",
+     "quotes": [
+      "the (symmetrically) measured training kernel matrix KT T may not be positive semidefinite (PSD). Crucially, this phenomenon typically does not occur when using classical kernels",
+      "it has the disadvantage that it leads to no uncertainty being propagated from the kernel.",
+      "However, it constitutes only a “minimal uncertainty propagation”",
+      "one shifts the kernel diagonal (of N training points) by the eigenvalue bound of the Wigner semicircle law",
+      "In contrast to the λmin-shift, this λWigner-shift approach is Bayesian.",
+      "The Wigner semicircle law is applicable in the noisy kernel context when the noise is assumed to be additive, i.i.d., with zero mean and variance σκ2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own method and its stated assumptions, Methods IV.B.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-simulation-setup",
+     "value": "The authors state that all exact quantities were computed with matrix product states (ITensors.jl) with no bond-dimension truncation, ground states obtained by DMRG; shot noise was simulated on top (a worst-case Gaussian approximation for kernel entries assuming Bell measurements, a binomial model for observations), while noise affecting state preparation and evolution was not considered; the code is public on GitHub.",
+     "anchor": "Methods IV.F; Code availability",
+     "quotes": [
+      "However, we stress that no such truncation was used in our numerical examples.",
+      "we first prepared the ground state of the model at hand as an MPS by resorting to the density matrix renormalization group algorithm [76].",
+      "while not considering the noise that could affect the preparation of the states and their evolution, we considered the statistical noise induced by measuring quantum expectation values with a finite number of shots.",
+      "we added shot-noise to the base exact overlaps using a worst-case Gaussian approximation.",
+      "each Pauli measurement is treated as a binomial distribution over outcomes ±1.",
+      "The code implementing the QGP framework and to run the numerical simulations presented in this work is publicly available on GitHub"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its simulation setup, Methods IV.F.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No result was run on quantum hardware; device noise is absent from every experiment."
+    },
+    {
+     "id_suggestion": "qgp-bo-no-stopping-criterion",
+     "value": "The authors state that in both Bayesian optimization demonstrations the acquisition function is optimized by grid search, no automated stopping criterion is implemented, and the trajectories are shown until the global optimum is reached within grid precision.",
+     "anchor": "Methods IV.E, p.9",
+     "quotes": [
+      "In both demonstrations, we optimize the acquisition function via grid search",
+      "Additionally, we do not implement an automated stopping criterion and present the BO trajectories until the global optimum is reached within grid precision."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup, Methods IV.E.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Without a stopping rule, an optimizer run in practice would not know it had reached the optimum after seven evaluations."
+    },
+    {
+     "id_suggestion": "qgp-qml-limitations-cited",
+     "value": "The authors state that quantum machine learning is in many ways stuck: approaches built on linear-algebra primitives rest on strong data-access promises that make advantages fragile and in some cases vulnerable to dequantization, while variational models suffer difficult optimization, limited interpretability, curses of dimensionality and a poor understanding of when they should scale.",
+     "anchor": "Abstract and Section I",
+     "quotes": [
+      "Despite rapid recent advances in quantum machine learning, the field is in many ways stuck.",
+      "strong promises about data access models can make the resulting advantages fragile, and in some cases vulnerable to dequantization [9–12].",
+      "the flexibility of variational models comes at the price of difficult optimization [13– 18], limited interpretability [19–22], curses of dimensionality [23–27], and a poor understanding of when these methods should be expected to scale."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' summary of cited work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-future-directions",
+     "value": "The authors state that it will be important to broaden the range of quantum processes known to yield useful QGPs and to understand how far the framework extends beyond the settings covered by the current theorems, and name using QGPs as surrogate models inside variational quantum-circuit workflows as a promising direction.",
+     "anchor": "Section III Discussion, p.6",
+     "quotes": [
+      "it will be important to broaden the range of quantum processes known to yield useful QGPs, and to better understand how far the present framework extends beyond the settings covered by our current theorems.",
+      "a particularly promising direction is to use QGPs as surrogate models inside more standard variational and parametrized quantum-circuit workflows."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of open problems, Section III.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-theorem-1-formal",
+     "value": "The paper proves the formal Theorem 1: under Condition 1 (the observable has full support on a single module Bm, m not 0 or 2n) and Condition 2 (Gaussian pairings dominate: for every even k ≥ 4 the pairwise-matching sum asymptotically strictly dominates the non-pairwise and mixed sums as n → ∞), and in the large-n limit, the random variables form a GP if and only if all odd moments vanish; uniqueness of the limiting distribution follows from Carleman's condition. Theorem 2 states that under Condition 1 they do not form a GP if Condition 2 is violated or non-zero odd moments occur.",
+     "anchor": "Supplementary Information B 3, Conditions 1 and 2, Theorem 1, Theorem 2, Lemma B.5",
+     "quotes": [
+      "Condition 1 (Full module support of observable). The observable must have full support on the module Bm (m ̸= 0, 2n)",
+      "Condition 2 (Gaussian pairings dominate). For any even k ≥ 4 and all multisets",
+      "In the limit n → ∞, the sum Spair must then asymptotically (strictly) dominate8 the sums S¬pair and Smix",
+      "Theorem 1 (Gaussian Process). Under Conditions 1, 2 and in the large-n limit, {Xi}iN=1 forms a GP if and only if all odd moments vanish.",
+      "Hence Carleman's condition is satisfied, and the limiting univariate distribution is uniquely determined by its moments.",
+      "Theorem 2 (No Gaussian Process). Under Condition 1 and in the large-n limit, {Xi}iN=1 does not form a GP if a) Condition 2 is violated, or b) non-zero odd moments occur."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 1 and 2 stated with Conditions 1 and 2 and proved in Supplementary Information B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-asymptotic-moment-operator-range",
+     "value": "The paper shows (Lemmas B.1 and B.2) that the k-th moments of matchgate expectation values reduce to moment operators of the special orthogonal group and vanish when mk is odd, and uses an asymptotic moment operator (Lemma B.3) valid when mk < 2n, with cross-term weights of order 1/n.",
+     "anchor": "Supplementary Information B 1-2, Lemmas B.1-B.3",
+     "quotes": [
+      "Lemma B.2. The k-th moments (B2) either a) vanish EU∼SPIN(2n)[Xi1 Xi2 · · · Xik ] = 0 if mk is odd",
+      "Lemma B.3 (Asymptotic moment operator).",
+      "when mk < 2n, with wσ,π ∈ O 1 n ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemmas B.1 to B.3 stated and proved in Supplementary Information B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-b1-b2-always-gp",
+     "value": "The paper proves that for observables in the single-Majorana module B1, under Condition 1 and in the large-n limit, the expectation values always form a GP (Condition 2 holds trivially and odd moments vanish), with the asymptotic kernel matching the exact one; in B2 all odd moments vanish (Corollary B.3), and the exact B2 covariance differs from the asymptotic one only by a scaling factor, a relative deviation of 1 − 1/(2n).",
+     "anchor": "Supplementary Information B 4 c-d, Corollaries B.2 and B.3, Eq. (B62)",
+     "quotes": [
+      "For the smallest non-trivial module B1 (i.e., m = 1), Condition 2 always holds and we generally obtain GPs",
+      "Corollary B.2. For observables O ∈ B1, under Condition 1 and in the large-n limit, Xij N j=1 forms a GP.",
+      "Corollary B.3 (Vanishing odd moments). In the B2 case and under Condition 1, all odd moments vanish.",
+      "this deviation manifests itself purely in a scaling factor.",
+      "Overall, the relative deviation is 1 − 1/(2n)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollaries B.2 and B.3 proved in Supplementary Information B 4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-module-isomorphism",
+     "value": "The paper shows that the modules B2n−m and Bm are isomorphic SPIN(2n) modules (multiplication by the parity-like operator Γ commutes with matchgates), so all Gaussian-process statements transfer between them.",
+     "anchor": "Supplementary Information B 4 e, Eq. (B63)",
+     "quotes": [
+      "We can exploit the module isomorphism B2n−m ≃ Bm to directly transfer all GP statements between the modules B2n−m and Bm",
+      "Consequently, all statements regarding the convergence to Gaussian processes in the module Bm can be automatically translated to the module B2n−m."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Shown in Supplementary Information B 4 e.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-gaussian-states-b2",
+     "value": "The paper shows that for any single (univariate) Gaussian state and any observable in B2, Haar-random matchgates induce a GP; for multivariate datasets it proves (Proposition C.1) that even-parity Gaussian states whose normalized B2 overlaps decay more slowly than n to the power minus one third satisfy Condition 2 and form a multivariate GP. It also shows two independent Haar-random Gaussian states become exponentially orthogonal in B2 for large n.",
+     "anchor": "Supplementary Information C 1 a and C 2 a, Proposition C.1, Eqs. (C22), (C41)",
+     "quotes": [
+      "Therefore, Theorem 1 holds, and matchgate transformations induce univariate GPs from any Gaussian state and any observable O ∈ B2.",
+      "Proposition C.1 (A multivariate QGP in B2). Given a dataset of even-parity Gaussian states ρi, and an observable O ∈ B2",
+      "it is sufficient that all normalized overlaps rij decay more slowly than n−1/3 in order for the pairwise matching contributions to dominate the non-pairwise ones.",
+      "two generic such states become exponentially orthogonal in the large-n limit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition C.1 and the univariate result proved in Supplementary Information C 2 a.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Gaussian states with matchgate evolution are classically simulable (Supplementary Information C 1 a), so this provable family is a classically simulable setting."
+    },
+    {
+     "id_suggestion": "qgp-gaussian-states-classically-simulable",
+     "value": "The authors state, citing prior work, that matchgate (free-fermionic) transformations of Gaussian states can be classically simulated in polynomial time, so states must be non-Gaussian as a necessary condition for classical intractability.",
+     "anchor": "Supplementary Information C 1 a",
+     "quotes": [
+      "Gaussian states are of high interest due to their connection to classical efficient simulability, which is that matchgate (free-fermionic) transformations of Gaussian states can be classically simulated in polynomial time [80].",
+      "Hence, as a necessary condition for classical intractability, states must be non-Gaussian."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result ([80]).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-pauli-observables-insufficient",
+     "value": "The paper shows that a Pauli observable alone cannot guarantee a GP: in B2 its Schatten norm ratio stays constant in n, leaving Condition 2 to the choice of states; in B4 the corresponding ratio for a Pauli observable is a constant (Proposition C.4) and for Gaussian states it converges to a constant (Proposition C.3), so Gaussian states with B4 Pauli observables cannot form GPs, univariate or multivariate.",
+     "anchor": "Supplementary Information C 2 b and C 3 a-c, Propositions C.3 and C.4",
+     "quotes": [
+      "Hence, the statement transfers that a Pauli observable alone is not sufficient to obtain a GP, and a state family must be chosen to satisfy Condition 2.",
+      "The following Theorem shows",
+      "converges to a constant in the large-n limit.",
+      "The following theorem proves that these kinds of ratios are constant.",
+      "it naturally follows that multivariate GPs are likewise impossible."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Propositions C.3 and C.4 proved in Supplementary Information C 3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-random-b2-observable",
+     "value": "The paper proves (Proposition C.2) that a random observable in B2 with i.i.d. standard normal coefficients satisfies the norm-ratio condition almost surely in the large-n limit, via the Wigner semicircle law and Catalan numbers, so GPs emerge with overwhelming probability for such observables in the univariate case.",
+     "anchor": "Supplementary Information C 2 c, Proposition C.2, Supp. Fig. C.1",
+     "quotes": [
+      "Proposition C.2. Let O ∈ B2 be a random observable with i.i.d. N (0, 1) coefficients in the B2 basis",
+      "Therefore, GPs emerge in the large-n limit with overwhelming probability when sampling such random B2 observables"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition C.2 proved in Supplementary Information C 2 c, with numerical check in Supp. Fig. C.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-magic-states-b2",
+     "value": "The paper shows that the magic extent states (products of four-qubit blocks) with any observable in B2 form univariate GPs under Haar-random matchgates whenever cos(θ/2) is non-zero, and checks this numerically for n = 12 qubits.",
+     "anchor": "Supplementary Information C 2 d, Supp. Fig. C.2",
+     "quotes": [
+      "Therefore, Theorem 1 holds also for the family of product states ρθ, for all θ such that cos(θ/2) ̸= 0",
+      "We consider a system of n = 12 qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Supplementary Information C 2 d with a numerical check.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-random-fermionic-numerical",
+     "value": "The authors report numerical evidence only (n = 12 qubits) that a random fermionic state with a B4 Pauli observable could yield a univariate GP, in contrast to Gaussian states, judged by the Kullback-Leibler divergence to a fitted Gaussian (0.00175 against 0.02318); analytically characterizing such states is generally challenging.",
+     "anchor": "Supplementary Information C 3 c, Supp. Fig. C.3",
+     "quotes": [
+      "While analytically characterizing such states is generally challenging, we provide numerical evidence in Supp. Fig. C.3a.",
+      "we show numerically that a random fermionic state, i.e., a random positive eigenstate of the parity operator Z⊗n, could yield a univariate GP.",
+      "Sampled KL = 0.00175 Sampled KL = 0.02318",
+      "The system size considered in this analysis is n = 12"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical evidence from one small simulation, not a proof.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-disjoint-majorana-observables",
+     "value": "The paper proves that for a special class of observables, linear combinations of module basis operators on mutually disjoint Majorana index sets with order-one weights, all odd moments vanish (Proposition C.5, needing neither the large-n limit nor non-zero weights) and the non-pairwise even-moment contractions vanish at least as O(1/n) (Proposition C.6), so GPs emerge via Theorem 1 in any module Bm, subject to a suitable scaling of the states; single Pauli observables do not meet the needed scaling.",
+     "anchor": "Supplementary Information C 4, Propositions C.5 and C.6",
+     "quotes": [
+      "Proposition C.5 (Odd moments for special observable). For the special case of observables O defined in Eq. (C115), all odd moments vanish.",
+      "note that the proof for the vanishing of odd moments relies neither on the non-zero requirement of the weights in Eq. (C115), nor on the large-n limit or any associated scaling arguments.",
+      "it follows that the spurious contractions vanish at least as O(1/n) relative to the pairwise denominator",
+      "Generally, the complete fulfillment of Condition 2 is subject to an appropriate scaling behavior of the states",
+      "For instance, single Pauli observables in Bm do not meet such |V| scaling."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Propositions C.5 and C.6 proved in Supplementary Information C 4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-direct-kernel-estimator-separation",
+     "value": "The paper proves that a direct kernel-estimation protocol (preparing two states coherently, measuring in the Bell basis and post-processing classically in polynomial time for constant m) has error scaling linearly with the module dimension, O(n to the m) for a fixed number of measurements, while the naive indirect protocol (estimating each state's module coefficients separately) has error of order n to the 3m/2 up to logs, tight by a Paley-Zygmund lower bound on a hard instance; the indirect protocol thus needs a measurement budget larger by a factor of order n to the m/2, a strict polynomial separation. The direct estimator has high variance from heavy-tailed samples, which variance-reduction techniques could reduce.",
+     "anchor": "Supplementary Information D 1-3, Eqs. (D24), (D36), (D47)",
+     "quotes": [
+      "Instead, a direct estimation by simultaneously preparing ρ ⊗ ρ′, gathering Bell basis measurement statistics, and classical (efficient) post- processing provides kernel estimates.",
+      "Specifically, the error of the direct protocol scales strictly linearly with the module dimension as O(dm) = O(nm), whereas the propagated error of the naive indirect protocol scales as O ̃(d3m/2) = O ̃(n3m/2)",
+      "the indirect protocol requires an increase in measurement budget by a factor of O ̃(nm/2). By avoiding this dimensional scaling penalty entirely, the direct estimator establishes a strict polynomial separation in sample complexity.",
+      "This high variance stems from the heavy-tailed distribution of the samples, in which rare, large-magnitude outcomes dominate the error.",
+      "For a constant (in n) module order m ∈ O(1), given an observation for P , fm(P ) can be evaluated in polynomial14 time classically"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Upper and lower error bounds proved in Supplementary Information D 3 via Hoeffding and Paley-Zygmund inequalities.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The direct protocol needs coherent access to two copies at once (Bell measurements across ρ ⊗ ρ′), a stronger access model than measuring states one at a time."
+    },
+    {
+     "id_suggestion": "qgp-regression-benchmark-active-learning",
+     "value": "In the simulated regression benchmark (n = 50 qubits, B2 matchgate kernel, matched shot budgets), a constant-mean baseline shows an MSE of order 10 to the minus 2 is trivial and the non-trivial regime is MSE below 10 to the minus 3 with fewer than 100 training points; at N = 5 the fixed-dataset quantum models fail to meaningfully beat simple classical baselines, while the active learning QGP reaches an MSE of order 10 to the minus 4. The fixed-dataset QGP and the parametric formulation perform nearly identically, as expected from their equivalence.",
+     "anchor": "Supplementary Information E 1, Supp. Fig. E.1",
+     "quotes": [
+      "We define quantum data input states ρi as product states of n = 50 qubits",
+      "The constant mean baseline reveals that achieving a mean squared error (MSE) within the order of 10−2 is trivial",
+      "non-trivial performance regime lies at MSEs below 10−3 with a training set of fewer than 100 points.",
+      "At the smallest evaluated dataset size (N = 5), the fixed-dataset models fail to meaningfully surpass simple classical baselines.",
+      "the active learning QGP achieves a highly non-trivial MSE on the order of 10−4.",
+      "the standard fixed-dataset QGP and the parametric formulation demonstrate nearly identical performance across most dataset sizes"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Measured in classical simulation on one synthetic task.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-vs-hamiltonian-learning",
+     "value": "Against Hamiltonian learning (HL), a non-data-driven quantum regression method, the simulations show HL fails to beat the trivial MSE threshold unless both shot budgets are particularly large, and HL surpasses QGPs only in an unrealistically high shot regime with QGP restricted to N = 5 training points; the Pareto fronts of HL and QGP are strictly separated, so for any total shot budget some QGP setting beats HL. HL also strictly requires query access to the unknown transformation, which QGPs learning from a fixed dataset do not.",
+     "anchor": "Supplementary Information E 1, Supp. Figs. E.2 and E.3",
+     "quotes": [
+      "Our results indicate that HL fails to surpass this trivial threshold unless both shot budgets are particularly large",
+      "The only scenario in which HL surpasses QGPs occurs in an unrealistically high shot regime",
+      "when QGP is restricted to the smallest training set size benchmarked (N = 5).",
+      "Crucially, we observe a strict separation between the Pareto fronts of HL and the Pareto fronts of QGP",
+      "Furthermore, a fundamental limitation of HL is its strict"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Measured in classical simulation on one synthetic task.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-wigner-shift-benchmark",
+     "value": "The proposed Wigner diagonal shift (shift by twice the square root of N times the kernel noise standard deviation) is benchmarked against negative-eigenvalue clipping and the lowest-eigenvalue shift on the regression task (n = 50 qubits, N = 10 training points): the standard corrections fail when the kernel shots are orders of magnitude fewer than the observation shots, where adding observation shots increases the MSE, while the Wigner shift stays robust across all allocations and recovers the minimum error at the balanced allocation.",
+     "anchor": "Supplementary Information E 2, Eqs. (E10)-(E12), Supp. Fig. E.4",
+     "quotes": [
+      "Finally, the proposed method in this work aims for robust uncertainty propagation by",
+      "utilizing B2 matchgate kernels on n = 50 qubits and a QGP trained on N = 10 observations.",
+      "but fail entirely in the opposite regime (bottom-right), where nsκ is multiple",
+      "strictly increasing observation shots nsobs while holding nsκ constant (moving horizontally rightward in the heatmaps) actually increases the MSE.",
+      "In contrast, the λWigner shift maintains a symmetric, robust MSE profile across the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Measured in classical simulation on one regression task.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-wigner-shift-limitations",
+     "value": "The authors state two limitations of the Wigner-shift correction, both from its Gaussian orthogonal ensemble noise assumption, which is not satisfied in practice: kernel estimates are correlated through overlaps between input state pairs rather than i.i.d., and kernel noise is multinomial and heavy-tailed for matchgate kernels rather than normal; the specific shift value should not be viewed as absolute.",
+     "anchor": "Supplementary Information E 2",
+     "quotes": [
+      "Before concluding, we acknowledge two limitations",
+      "While it matches the numerical simulation, the assumption is not satisfied",
+      "which fails to account for the correlations among kernel value estimates arising from the overlaps between input state pairs",
+      "the kernel noise does not obey a normal distribution but is rather multinomial and, in particular, heavy-tailed for the matchgate kernels",
+      "the specific value of the λWigner-shift should not be viewed as absolute."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own stated limitation, Supplementary Information E 2.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-bo-optimizer-benchmark",
+     "value": "On the synthetic two-dimensional optimization task (30-qubit QGP model), over 100 random initializations QGP-based Bayesian optimization always reaches the global optimum in fewer than 15 evaluations, while gradient descent, L-BFGS-B, SLSQP, COBYLA and Nelder-Mead beat a uniform random sampling baseline in only 39%, 50%, 57%, 51% and 31% of runs; gradient descent finds the global optimum only if started in about 4% of the feasible area.",
+     "anchor": "Supplementary Information E 3, Supp. Fig. E.5",
+     "quotes": [
+      "The objective function and QGP model for 30 qubits match those presented in the main text.",
+      "over 100 runs. Due to the complex, unstructured nature of the objective landscape",
+      "The relative frequencies that these optimizers outperform the naive sampling baseline are 39% (gradient descent), 50% (L-BFGS-B), 57% (SLSQP), 51%",
+      "(COBYLA), and 31% (Nelder-Mead). In contrast, BO always reaches the global optimum in less than 15 evaluations.",
+      "about 4% of the feasible area in the example studied."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Measured in classical simulation on one synthetic objective.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The compared optimizers use SciPy defaults and finite-difference gradients, so the comparison is against untuned local optimizers, not other global methods."
+    },
+    {
+     "id_suggestion": "qgp-kernel-noise-as-observation-noise",
+     "value": "An ablation of the B1 extrapolation shows observation noise and kernel noise have a similar macroscopic effect, broadening predictive uncertainty and reducing reliance on training data, so kernel noise acts as an effective observation noise; this motivates the Wigner-shift prior.",
+     "anchor": "Supplementary Information F 1, Supp. Fig. F.1",
+     "quotes": [
+      "both noise sources have a fundamentally similar impact on the overall",
+      "Consequently, kernel noise acts as an effective observation noise"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Observed in one simulated ablation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-kernel-identification-marginal-likelihood",
+     "value": "In a noiseless simulation where an unknown single-qubit unitary acts on one of n = 50 qubits, maximizing the closed-form marginal likelihood over a non-negative combination of 50 local unitary kernels identifies the correct qubit's kernel (sending all other coefficients to zero) and gives perfect extrapolation from 15 training points in t ∈ [0, 1] to t ∈ [0, 10], with no additional quantum device executions; the uniform initial kernel could not extrapolate.",
+     "anchor": "Supplementary Information F 2, Eq. (F1), Supp. Fig. F.2",
+     "quotes": [
+      "but it is not known which of the n = 50 qubits is affected.",
+      "non-negative linear combination of 50 local unitary kernels for subsystems of size m = 1",
+      "extrapolation task from 15 training data points within t ∈ [0, 1] to the larger region of t ∈ [0, 10]",
+      "The marginal likelihood maximization, however, identifies the correct local kernel by sending all other parameters in θ to zero.",
+      "no additional executions on the quantum device are required",
+      "The results presented are in the absence of shot noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Measured in one noiseless simulation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgp-active-learning-and-model-selection",
+     "value": "The paper defines active learning for QGPs as iteratively querying the input with the highest predictive variance, and model (kernel) selection as maximizing the closed-form log marginal likelihood, which kernel ridge regression lacks; kernel ridge regression equals the QGP predictive mean but has no uncertainty quantification.",
+     "anchor": "Supplementary Information G 1-2, Eqs. (G1)-(G3); F 2",
+     "quotes": [
+      "(kernel) ridge regression, which is equivalent to the QGP predictive mean but lacks uncertainty quantification",
+      "sequentially querying the system at the input tnext that exhibits the highest predictive variance under the",
+      "model selection within the QGP framework can be performed efficiently by maximizing the marginal likelihood.",
+      "In contrast, in kernel regression, the marginal likelihood is not directly available"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Method definitions in Supplementary Information G.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "jeevanesan-2024-krylov-spread-complexity-quantum-walks",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Jeevanesan_2024_Krylov-Spread-Complexity-of-Quantum-Walks__2401.00526.pdf",
+   "title_in_file": "Krylov Spread Complexity of Quantum-Walks",
+   "version_note": "arXiv:2401.00526v2, 3 Sep 2024. The text layer holds the paper twice (plain and layout extraction); the first copy was read, the second used to check equations whose fractions the plain layer flattened.",
+   "pages": 8,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theoretical and numerical study of the long-time-average Krylov spread complexity of continuous-time quantum walks on graphs, relating it to the quantum-walk limiting distribution and finding graphs of minimal and maximal complexity.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "krylov-limiting-distribution",
+     "verdict": "widened",
+     "note": "The stored value is the abstract's sentence. The body (Section III, App. B) says what the relationship is: the limiting distribution and the Krylov kappa values differ only in the basis used, are identical where the Krylov and vertex bases coincide, and at the exit node of the glued binary tree they are equal, which lets the author compute the exact exit value.",
+     "value": "The paper shows that the quantum-walk limiting distribution chi (the long-time average probability of finding the walk at a vertex) resembles the Krylov kappa values, the only difference being the Krylov basis in place of the vertex basis; where the two bases coincide, as for path graphs, chi and kappa are identical, and for the glued binary tree of Childs, Farhi and Gutmann the last Krylov vector equals the exit vertex, so chi and kappa at the exit are identical and the Krylov approach gives the exact value of chi there. The derivation assumes the Hamiltonian has no degeneracies.",
+     "anchor": "Section III, Eqs. 5-8; Appendix B",
+     "quotes": [
+      "it is possible to introduce a quantity χi, which is the long-time average of the probability to find the system in state |vi⟩. This is called the limiting distribution of the quantum-walk.",
+      "assuming for the last step that H has no degeneracies.",
+      "The only difference is the appearance of the Krylov-basis in place of the vertex-basis.",
+      "In such cases the χ's and κ's are identical.",
+      "It turns out that the value of χ at the exit node is identical to the value of the Krylov κ at the exit, since the last Krylov-basis vector is equal to the exit vertex-basis vector",
+      "As a bonus, the Krylov approach allows us to compute the exact value of χ at the exit node of the glued binary tree Fig. 3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "An analytic derivation in Section III and Appendix B, stated with its non-degeneracy assumption.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "krylov-max-bound-not-attained",
+     "verdict": "widened",
+     "note": "The stored value omits which bound (the maximum complexity is at most D, from Eq. 1), the search range, the linear empirical fit, and that the maximizing graph is unique with the seed vertex as a leaf.",
+     "value": "The author states that from Eq. (1) the maximum long-time-average complexity is at most D and reports that this bound is never attained in graphs found by the optimization algorithm for up to 30 nodes; the maximizing graph is unique, its seed vertex is a leaf of degree 1, and a linear fit gives the empirical rule C̄max = 0.66D − 1.31 for large D.",
+     "anchor": "Section IV, Eq. (23), Fig. 1, p.5",
+     "quotes": [
+      "We find that this bound is never attained.",
+      "Examples of graphs found by the algorithm are shown in Fig. 1 (blue squares) for up to 30 nodes.",
+      "All these graphs have in common that the seed vertex |v0⟩ is a node of degree 1 (a leaf).",
+      "here the graph with maximum C ̄-complexity is unique.",
+      "a linear fit results in the empirical rule C ̄max = 0.66D − 1.31, (23) for large D."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical finding from a stochastic greedy search, not a proof.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "krylov-search-range",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Fig. 1 caption, p.1",
+     "quotes": [
+      "The results were obtained by running a graph optimization algorithm for values up to D = 30."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the range of its search, Fig. 1 caption.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "krylov-spread-complexity-definition",
+     "value": "The paper defines the spread complexity of a state as a weighted sum of its overlaps with the Krylov basis (obtained by Gram-Schmidt on the state and successive powers of H), with weights set to wn = n, and works with its long-time average, which is used as the cost function; the long-time-average formula assumes a non-degenerate spectrum, and for degenerate Hamiltonians the author combines it with analytical calculations.",
+     "anchor": "Section II, Eqs. 1-5",
+     "quotes": [
+      "Performing a Gram-Schmidt orthonormalization on the states in this order, one obtains the Krylov-basis {Kn}.",
+      "where wn is a sequence of positive increasing real numbers. Below we will set wn = n.",
+      "For this reason, we work with the long-time average of the Krylov complexity that we derive next.",
+      "This is valid provided that the spectrum is not degenerate.",
+      "we will combine the use of eq. (4) with analytical calculations to ensure the correctness of the results."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition and assumption, Section II.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "krylov-minimum-complete-graph",
+     "value": "The paper shows analytically that for a k-regular graph with an added hub vertex connected to all others the Krylov subspace is two-dimensional, the spread complexity does not depend on which k-regular graph is attached, and it is minimized by k = D − 2, which gives the complete graph, the lowest possible non-zero complexity; it goes to 0 as 2/D in the limit of large D.",
+     "anchor": "Section IV, Eqs. 9-21",
+     "quotes": [
+      "Consequently the Krylov subspace is only two-dimensional",
+      "all the different k-regular graphs with appended hub have the same spread-complexity.",
+      "the complexity of this class of graphs is minimized by choosing k maximally, i.e. by setting k = D − 2.",
+      "This yields the lowest possible non-zero C ̄-complexity value",
+      "Together with the hub and its edges, this is the complete graph on D vertices",
+      "the C ̄-complexity of the complete graph goes to 0 as C ̄min ∼ 2/D."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "An exact analytic derivation for the hub-plus-k-regular class, Section IV Eqs. 9 to 21.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The minimizing graphs were first found numerically; the analytic result covers the hub-plus-k-regular class, and that this class holds the global minimum rests on the search."
+    },
+    {
+     "id_suggestion": "krylov-star-graph-constant",
+     "value": "The paper states that the star graph falls into the hub-plus-k-regular class with k = 0, so its long-time-average complexity is one half irrespective of the number of vertices D.",
+     "anchor": "Section IV, Eq. (22)",
+     "quotes": [
+      "The star graph in Fig. 1 also falls into the previous class of graphs by choosing k = 0.",
+      "irrespective of the number of vertices D."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A special case of the analytic result of Section IV.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "krylov-scaling-classes",
+     "value": "The paper shows that the long-time-average complexity scales very differently with Hilbert space dimension across graph classes: it decreases as the inverse of the dimension for complete graphs, grows linearly for path graphs and the maximum graphs, and grows only logarithmically for complete trees (binary and m-ary trees, whose Krylov vectors are equal-weight superpositions of each level, turning the tree into a path graph of length h).",
+     "anchor": "Section IV, Eq. (24); Section V; Appendices A and B",
+     "quotes": [
+      "complete graphs have C ̄-complexities that decrease as the inverse of the dimension, while the C ̄ of path-graphs and the maximum graphs grow linearly.",
+      "Between these lie the complete trees with only logarithmically growing C ̄.",
+      "We see that the binary tree in terms of Krylov vectors is transformed into a path graph of length h.",
+      "the Krylov C ̄-complexity is now logarithmically lower."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Analytic results in Appendices A and B for path graphs and trees; the maximum-graph scaling is empirical (Eq. 23).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "krylov-glued-tree-small-subspace",
+     "value": "The paper shows that for the glued binary tree the Hilbert space dimension grows exponentially with n while the Krylov subspace has the exponentially smaller dimension 2n + 1, so the long-time-average complexity is bounded by the weight of that subspace size and captures the ease with which the quantum walk traverses the tree from entrance to exit; it states that, as shown by Childs, Farhi and Gutmann, the quantum walk finds the exit in linear time while a classical random walk spends an exponentially long time near the central column.",
+     "anchor": "Section III, Fig. 3; Appendix B",
+     "quotes": [
+      "while the Krylov subspace has the exponentially smaller dimension 2n + 1",
+      "In this way, the C ̄-complexity captures the ease with which the quantum walk traverses the glued tree from entrance to exit.",
+      "If the system is initialized in the root of the left binary tree, it finds the exit state at the root of the right tree in linear time.",
+      "When the walker arrives near the central column, it spends an exponentially (in n) long time there."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The Krylov-subspace dimension is derived in Appendix B; the traversal-time contrast is cited from [35].",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "krylov-extremization-algorithm",
+     "value": "The author states that brute-force search over graphs is out of the question even for small D, so a stochastic greedy algorithm performs local optimizations (a random node and up to 20 random neighbors, keeping the best connected choice, connectivity checked by depth-first search) until the cost stops changing; seeded with different initializations it repeatedly finds the same lowest-cost graph, but it occasionally gets stuck on graphs of higher cost and has to be restarted. The C++ implementation is on GitHub.",
+     "anchor": "Section IV",
+     "quotes": [
+      "Thus a brute-force search in the space of possible Hamiltonians is out of the question even for small D.",
+      "The algorithm selects a node i at random and then selects up to 20 neighbors of this node",
+      "The latter condition is checked by running a depth-first-search from the node |v0⟩",
+      "Seeding the algorithm with different initializations, we observe that the program repeatedly finds the same lowest-cost graph.",
+      "Occasionally, the algorithm gets stuck on graphs of higher cost and has to be restarted.",
+      "author's C++ implementation is available on GitHub [38]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its method, Section IV.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "A greedy local search that can get stuck gives no guarantee that the reported maxima are global maxima."
+    },
+    {
+     "id_suggestion": "krylov-seed-state-scope",
+     "value": "The author states that the Krylov procedure is always seeded with vertex v0, and that the graphs found maximize or minimize the complexity of that state only and will not in general extremize the complexity of the other basis states.",
+     "anchor": "Section II, end",
+     "quotes": [
+      "We always seed the Krylov procedure with the node |v0⟩ of the graph",
+      "These graphs will not in general extremize the C ̄ spread complexity of the other basis states."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of its results, Section II.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "krylov-practical-use-open",
+     "value": "The author states it remains an open question whether Krylov complexity can be used as a practical tool to assess the difficulty of state-preparation tasks, that the precise connection between Krylov spread complexity and gate complexity has remained elusive, and that NISQ graph platforms are ideal to test its utility as a proxy for gate complexity.",
+     "anchor": "Section I; Section V Outlook",
+     "quotes": [
+      "It remains an open question whether the Krylov C ̄complexity can also be used as a practical tool to assess the difficulty of state-preparation tasks",
+      "the precise connection between Krylov spread complexity and gate complexity has remained elusive.",
+      "these platforms are ideal for future explorations of Krylov C ̄-complexity and to test its utility as a proxy for gate-complexity."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of an open problem, Section V.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "krylov-not-nielsen-cited",
+     "value": "The author states, citing recent work, that Krylov complexity cannot equal the Nielsen complexity because it does not satisfy the fundamental axioms of distance measures.",
+     "anchor": "Section I Introduction",
+     "quotes": [
+      "points out that Krylov complexity cannot equal the Nielsen complexity, since the former does not satisfy the fundamental axioms of distance measures."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result ([29]).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "krylov-exponential-in-system-size",
+     "value": "The author states that because the Hilbert space dimension of physical systems typically scales exponentially with the degrees of freedom, path graphs and the maximum graphs have complexities that grow exponentially with system size.",
+     "anchor": "Section IV, end",
+     "quotes": [
+      "Typically the Hilbert space dimension of physical systems scales exponentially with the degrees of freedom.",
+      "Thus the last two examples of graphs have C ̄-complexities that grow exponentially with system size."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An inference by the author from the linear scaling in dimension.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "jeffery-2024-multidimensional-quantum-walks-recursion-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Jeffery-Pass_2024_Multidimensional-Quantum-Walks_Recursion_and-Quantum-Divide-Conquer__2401.08355.pdf",
+   "title_in_file": "Multidimensional Quantum Walks, Recursion, and Quantum Divide & Conquer",
+   "version_note": "arXiv:2401.08355v2, 7 May 2024. The text layer holds the paper twice (plain and layout extraction); the first copy was read in full, including Appendix A, and the second used to check theorem statements the plain layer scrambled (Theorem 5.3).",
+   "pages": 46,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A quantum-algorithms theory paper that formalizes multidimensional quantum walks as subspace graphs, proves a switch-composition theorem, and uses it for time-efficient quantum divide and conquer over Boolean formulas, switching networks with quantum subroutines, and a quadratic speed-up of Savitch's algorithm for directed st-connectivity.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "jeffery-divide-conquer-savitch",
+     "verdict": "widened",
+     "note": "The stored value is the abstract. Theorem 4.13 and Theorem 5.3 state the result with its conditions: a symmetric formula combining sub-problems with an auxiliary base-case function, unit-time-computable sub-instances, an error-free auxiliary subroutine, and the stated time and space for dstcon; the comparison with the classical recursion gives an up to quadratic speed-up.",
+     "value": "The paper proves (Theorem 4.13) that if a function family satisfies a recursion through a formula that is a symmetric formula on a sub-problems OR-ed with an auxiliary base-case function, with unit-time-computable sub-instances, then there is a bounded-error quantum algorithm whose time T satisfies a recurrence with the square root of a in place of the classical a, an up to quadratic speed-up over a large class of classical divide-and-conquer algorithms; applied to Savitch's algorithm (Theorem 5.3), it gives a recursive bounded-error quantum algorithm for directed st-connectivity on an n-vertex graph with time exponent half that of Savitch's classical algorithm, while keeping space O(log2 n).",
+     "anchor": "Theorem 1.1 (Section 1); Theorem 4.13 (Section 4.3); Theorems 5.2 and 5.3 (Section 5)",
+     "quotes": [
+      "Theorem 4.13. Fix a function family fl,n : Dl,n → {0, 1}.",
+      "a formula φ on {0, 1}a+1 such that φ = φ′(z1, . . . , za) ∨ za+1 for some symmetric formula φ′.",
+      "Then there is a bounded-error quantum algorithm that compute fl,n with time complexity O(T (l, n)), and space complexity O(Saux(l, n) + log T (l, n))",
+      "we get an up to quadratic speedup over a large class of classical divide-&-conquer algorithms.",
+      "Theorem 5.3. Let G = (V, E) be a directed graph, |V | = n. Then √there exists a recursive quantum algorithm that decides dstcon on G with bounded error in time",
+      "Theorem 5.2. Algorithm 2 decides dstcon in time O((2n)log n = 2log2 +O(log n)) and space O(log2 n).",
+      "achieving 1 2 log2(n)+O(log(n)) time, while still maintaining O(log2(n)) space (see Theorem 5.3)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 4.13 and 5.3 are stated with their conditions and proved in Sections 4.3 and 5.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The quadratic speed-up is in the exponent of a superpolynomial time bound; it is a time result in the paper's model with unit-cost controlled access to subroutine steps (QRAM-type), not plain gate complexity."
+    },
+    {
+     "id": "jeffery-scope-switch-composition",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 1 Introduction",
+     "quotes": [
+      "In this work, we consider one specific kind of composition of subspace graphs called switch composition",
+      "but we would like to emphasize the potential for more general types of recursion, which we leave for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its scope, Section 1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "jeffery-subspace-graph",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract; Definition 3.1, Section 3.1",
+     "quotes": [
+      "We introduce an object called a subspace graph that formalizes the technique of multidimensional quantum walks.",
+      "A subspace graph is simply a graph with some subspaces associated with each edge and vertex, where the structure of the graph constrains how the spaces can overlap."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Definition 3.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "jeffery-switch-composition-theorem",
+     "value": "The paper proves Theorem 4.1 (switch composition): given an st-composable subspace graph G whose working bases are generated in time T, and for each switch edge an st-composable subspace graph whose bases are generated in time at most T′, there is an st-composable composed subspace graph whose bases are generated in time T + T′ + O(1), whose positive and negative witnesses are built from those of G and the inserted graphs, and which computes the composed function.",
+     "anchor": "Theorem 4.1, Section 4.1, with proofs in Lemmas 4.3-4.8 and Appendix A",
+     "quotes": [
+      "Theorem 4.1. Let G be an st-composable subspace graph (Definition 3.9) with st-composable working bases that can be generated in time T , with scaling factor r.",
+      "let Ge be an st-composable subspace graph with st-composable working bases that can be generated in time at most T ′, with scaling factor re.",
+      "G◦ has st-composable working bases that can be generated in time T + T ′ + O(1), with scaling factor r.",
+      "the function computed by G◦ is the composed function f ◦ (fe)e∈E"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.1 stated with its conditions and proved in Section 4.1 and Appendix A.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jeffery-subspace-graph-to-algorithm",
+     "value": "The paper states Theorem 3.13: a subspace graph computing f, with working bases generated in time T and cropped positive witness size O(1), gives a quantum algorithm deciding f in time of order T times the negative witness size and space of order the log of the space dimension plus the log of the negative witness size; it follows from the phase estimation result of Jeffery and Zur (Theorem 2.8).",
+     "anchor": "Theorem 3.13, Section 3.2; Theorem 2.8",
+     "quotes": [
+      "Theorem 3.13. Let G be a subspace graph that computes f : {0, 1}n → {0, 1} with respect to |ψ0⟩, with working bases that can be generated in time T , and such that Wˆ +(G) = O(1).",
+      "Then there exists a quantum algorithm that decides f in time complexity O T Wˆ −(G) and space O(log dim HG + log Wˆ −(G)).",
+      "Then it follows from Theorem 2.8 and Claim 2.10 that"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3.13 stated with its conditions; it follows from Theorem 2.8 and Claim 2.10.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jeffery-algorithm-to-subspace-graph",
+     "value": "The paper proves Lemma 3.24: from any quantum algorithm computing a Boolean function with no error in time T (each step implementable in unit cost), one can derive an st-composable subspace graph computing f whose working bases can be generated in time O(log(T)); with all weights set to 1, both witness sizes are at most 2T. The lemma also applies to variable-time algorithms with T replaced by the expected running time.",
+     "anchor": "Lemma 3.24, Section 3.5; Corollaries 3.29-3.30",
+     "quotes": [
+      "Lemma 3.24. From any quantum algorithm computing some f : {0, 1}n → {0, 1} with no error in time T",
+      "with st-composable working bases that have scaling factor r = 2 and can be generated in time O(log(T )).",
+      "For example, we can set the weights all to 1, and then we get Wˆ + and Wˆ − both at most 2T .",
+      "also apply for variable-time algorithms, replacing T with the expected running time.",
+      "We are assuming the algorithm has no error for simplicity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 3.24 stated with its assumptions and proved in Section 3.5, building on [Jef22].",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jeffery-or-and-switching-networks",
+     "value": "The paper constructs switching networks for the OR and the AND of d bits as subspace graphs (Lemmas 3.16 and 3.20) with working bases generated in O(log d) time, and states that with unit weights they give quantum algorithms for d-bit OR and AND in optimal time O(√d).",
+     "anchor": "Lemmas 3.16-3.23, Sections 3.3.1 and 3.3.2",
+     "quotes": [
+      "Lemma 3.16. For any d ≥ 1, and positive weights {wi}i∈[d], there is a switching network Gor,d",
+      "there is a quantum algorithm for evaluating d-bit OR with time complexity O( d), which is optimal.",
+      "a c√orollary of this lemma is that there is a quantum algorithm for evaluating AND in optimal time O( d).",
+      "Lemma 3.20. For any d ≥ 1, and positive weights"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemmas 3.16 and 3.20 stated and proved in Sections 3.3.1 and 3.3.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text layer drops the square-root sign in O(√d); the square root is read from the paper's context (a Grover-type bound) and the value keeps it."
+    },
+    {
+     "id_suggestion": "jeffery-switching-network-subroutines",
+     "value": "The paper proves Theorem 4.15: for any switching network computing f whose working bases are generated in time Tbasis, with each edge variable computed by a bounded-error quantum algorithm of time Te, there is a bounded-error quantum algorithm for f whose complexity depends on the maximum effective resistance on positive inputs and on the cut-set sum of the edge weight times Te squared on negative inputs, improving on earlier results where every edge cost the maximum Te.",
+     "anchor": "Theorem 4.15 and Lemma 4.14, Section 4.4; Section 1",
+     "quotes": [
+      "Theorem 4.15. Let G be any switching network computing a Boolean function f , with working bases that can be generated in time Tbasis.",
+      "let {Ure}Tr=e 1 be a quantum algorithm computing a Boolean function fe with bounded error.",
+      "Then there is a bounded error quantum algorithm for f with complexity",
+      "if we can query the variable associated with an edge e in time Te, we can evaluate the switching network in time",
+      "Here we improve this to (see Theorem 4.15)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.15 stated and proved in Section 4.4 via Lemma 4.14 and Corollary 4.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The exact bound has a log Tmax factor in the proof (Lemma 4.14); the scrambled text layer prevents quoting the full formula."
+    },
+    {
+     "id_suggestion": "jeffery-model-of-computation",
+     "value": "The authors state they work in the model of Jeffery and Zur, assuming that a superposition of subroutines' steps, controlled on a time register, can be applied at unit cost; this assumption does not hold for strict gate complexity with arbitrary gates, but holds in the QRAM model or under certain uniformity conditions.",
+     "anchor": "Section 1 Model of Computation; Section 2.1",
+     "quotes": [
+      "We work in the same model as [JZ23], where we allow not only arbitrary quantum gates, but also assume subroutines are given via access to a unitary that applies the subroutine's t-th gate controlled on the value t in some time register.",
+      "It does not hold for strict gate complexity when U1i, . . . , UTimax are arbitrary gates, but it does hold in the fully quantum QRAM model",
+      "or if they satisfy certain uniformity conditions (see [JZ23, Section 2.2])."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its model and where it holds, Sections 1 and 2.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jeffery-error-scaling-limit",
+     "value": "The authors state that their techniques apply to composing quantum algorithms for arbitrary functions but with poor scaling in subroutine error: a bounded-error algorithm must be amplified, incurring logarithmic factors, which becomes a serious problem under recursion deeper than constant depth; they avoid this for Boolean formulas by using switching networks, and assume the auxiliary subroutine of their divide-and-conquer theorem has no error, with amplification log factors acceptable only because it is not called recursively.",
+     "anchor": "Section 1 Related and Future Work; remark after Theorem 4.13",
+     "quotes": [
+      "an issue is a poor scaling in the error of subroutines.",
+      "This becomes a serious problem if the function is called recursively to depth more than constant.",
+      "We get around this in the case of Boolean formulas by using a switching network construction",
+      "We stress that these log factors are only acceptable because we do not recursively call Paux,l,n."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of a limit, Section 1 and Section 4.3.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jeffery-transducers-comparison",
+     "value": "The authors state that transducers (Belovs, Jeffery and Yolcu) are more general and cleaner than subspace graphs, that it is not known whether subspace graphs can reproduce the composition results of transducers in terms of error scaling, and they leave the concrete connection for future work.",
+     "anchor": "Section 1 Related and Future Work",
+     "quotes": [
+      "Compared with the model of subspace graphs, transducers are more general, and cleaner, in particular how they are implemented as quantum algorithms.",
+      "It is not known whether subspace graphs can reproduce the composition results of transducers in terms of error scaling.",
+      "We leave concrete exploration of the connection for future work."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of an open problem, Section 1.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jeffery-abb23-incomparable",
+     "value": "The authors state that an independent work by Allcock et al. also achieves time-efficient quantum divide and conquer when the combining function is an OR (or AND) or a minimum or maximum, so the results are incomparable; that work treats the cost of creating sub-instances, whereas this paper assumes sub-instances can be queried at unit cost and so would not handle one of that work's applications as stated, though this is not an inherent limitation.",
+     "anchor": "Section 1 Related and Future Work",
+     "quotes": [
+      "OR is a Boolean formula, while minimum/maximum is not. In that sense, our results are incomparable.",
+      "whereas we assume sub-instances can simply be queried in unit cost.",
+      "so our framework, as stated, would not handle this application. This is not an inherent limitation of our techniques"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its scope relative to related work, Section 1.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jeffery-compose-graphs-not-algorithms",
+     "value": "The authors state that composing subspace graphs rather than algorithms is essential: converting a subspace graph to a quantum algorithm introduces constant factors, and composing first in the abstract model and converting only at the end ensures those factors enter the complexity only once.",
+     "anchor": "Section 1 Introduction",
+     "quotes": [
+      "To achieve these results, it is essential that we compose subspace graphs, rather than algorithms.",
+      "By first composing in the more abstract model of subspace graphs, and then only converting to a quantum algorithm at the end, we ensure these factors only come into the complexity once."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its method, Section 1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jeffery-naive-recursion-fails",
+     "value": "The authors state that naively recursing Grover's algorithm on the NAND-tree raises its constant factor to the power of the recursion depth, which kills the quantum speedup completely for constant fan-in, and that the query-complexity divide-and-conquer results of Childs et al. were not constructive, leaving their time complexity unknown.",
+     "anchor": "Section 1 Introduction",
+     "quotes": [
+      "Unfortunately, since we recurse to depth k, the constant in front of d is raised to the k-th power.",
+      "This kills the quantum speedup completely when d is constant",
+      "However, their results were not constructive, as dual adversary solutions do not fully specify algorithms, and in particular, the time complexity analysis of their results was unknown."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Motivating argument and a statement about cited work ([CKKD+22]).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jeffery-dstcon-background",
+     "value": "The authors state that directed st-connectivity is NL-complete, so understanding whether it can be solved in log(n) space by a quantum algorithm would resolve the relationship between quantum logspace and NL; the best known classical deterministic space is O(log2(n)) via Savitch's algorithm; and the algorithm of Dürr et al. decides it in O(n) time and space, optimal in time but far from optimal in space.",
+     "anchor": "Section 1 Application to DSTCON",
+     "quotes": [
+      "understanding if this problem can be solved in log(n) space by a quantum algorithm would resolve the relationship between quantum logspace complexity and NL, as dstcon is NL-complete.",
+      "The best known classical (deterministic) space complexity of dstcon is O(log2(n)), using Sav- itch's algorithm.",
+      "deciding connectivity in O(n) time and space4. This algorithm has optimal time complexity, whereas its space complexity is far from optimal."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited background results.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jeffery-dstcon-access-model",
+     "value": "The authors state that the dstcon result is proved in the adjacency matrix model with unit-cost oracle queries, and that the time bound also holds in the edge-list model because one access model can simulate the other in poly(n) time and O(log n) space, which the exponent absorbs.",
+     "anchor": "Section 5; footnote 3",
+     "quotes": [
+      "We will work in the adjacency matrix model, where we assume that for a directed graph G = (V, E) the input is given as an oracle OG that can be queried in unit cost",
+      "That is because given such access, we can implement a query to OG in poly(n) time and O(log n) space, and poly(n) factors are suppressed in 2O(log n)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its access model, Section 5.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jeffery-balanced-formula-composition",
+     "value": "The paper proves Lemma 4.10: for a balanced Boolean formula and st-composable subspace graphs for each leaf function, with bounds that incur logarithmic reflection cost, there is an st-composable subspace graph computing the composed function whose squared complexity is at most the sum of the squared leaf complexities, with working bases generated in time T + O(log |Σ|); without balance, a factor in the depth appears.",
+     "anchor": "Lemma 4.10 and Corollary 4.12, Section 4.2",
+     "quotes": [
+      "Lemma 4.10. Let φ be a balanced formula (Definition 2.4)",
+      "Furthermore, the working bases of G◦ can be generated in time T + O(log |Σ|).",
+      "We assume that φ is balanced (see Definition 2.4), as otherwise we get a factor in the depth."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 4.10 stated and proved by induction on depth in Section 4.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "jerbi-2022-quantum-policy-gradient-algorithms",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Jerbi-et-al._2022_Quantum-policy-gradient-algorithms__2212.09328.pdf",
+   "title_in_file": "Quantum policy gradient algorithms",
+   "version_note": "arXiv:2212.09328v1, 19 Dec 2022. The text layer holds the paper twice (plain and layout extraction); the first copy was read in full, including Appendices A to G, and the second used only to check quotes.",
+   "pages": 22,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper giving quantum numerical and analytical policy-gradient algorithms for reinforcement learning with quantum access to an MDP, with query-complexity theorems and proofs that parametrized-quantum-circuit policies meet the smoothness conditions for a full quadratic speed-up.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "jerbi-no-classical-lower-bound",
+     "verdict": "widened",
+     "note": "The same paragraph says why lower bounds are wanted: the speed-ups are only over specific classical algorithms that exploit the same smoothness conditions; whether known classical lower bounds can be adapted is left open.",
+     "value": "The authors state that they only obtain quadratic speed-ups over specific classical algorithms that exploit the same smoothness conditions as their quantum algorithms, that to strengthen these results one would ideally prove matching lower bounds for the classical complexity of this task, and they leave open whether known classical lower bounds can be adapted to policy gradient evaluation.",
+     "anchor": "Section 5 Discussion, p.11",
+     "quotes": [
+      "We note that in our results we only obtain quadratic speed-ups over specific classical algorithms that exploit the same smoothness conditions as our quantum algorithms.",
+      "In order to strengthen these results, one would ideally prove matching lower bounds for the classical complexity of this task.",
+      "We leave as an open question whether known classical lower bounds [39, 40] can be adapted to policy gradient evaluation."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 5.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "jerbi-quadratic-speedup-conditional",
+     "verdict": "narrowed",
+     "note": "Besides quantum access, the full quadratic speed-up needs regularity conditions on the policy: a bounded smoothness parameter D with a Gevrey condition of sigma at most one half for the numerical algorithm, and a bounded log-policy gradient in a p-norm with p in [1, 2] for the analytical one; the speed-up is in sample complexity over specific classical estimators.",
+     "value": "The authors state their algorithms give up to quadratic speed-ups in the number of interactions needed to evaluate policy parameter updates, provided the environment allows appropriate quantum access, and that the full quadratic speed-up in sample complexity holds only when the trained policies satisfy regularity conditions: for numerical gradient estimation the value function must satisfy a Gevrey condition with sigma at most one half, and for analytical estimation the full quadratic speed-up holds for p in [1, 2].",
+     "anchor": "Abstract; Section 3; Theorem 4.1; Section 5, p.10",
+     "quotes": [
+      "These algorithms can provide up to quadratic speed-ups in the number of interactions needed to evaluate the parameter updates of these policies, provided the environments allow for the appropriate quantum access.",
+      "However, these algorithms only offer full quadratic speed-ups in sample complexity over their classical analogs when the trained policies satisfy some regularity conditions.",
+      "But we also need to show that the value function satisfies a Gevrey condition σ ≤ 1/2 in order to get a full quadratic speed-up in sample complexity.",
+      "Notably, for p ∈ [1, 2], we get a full quadratic speed-up in the quantum setting."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 3.1 and 4.1 state the complexities with their conditions; proofs in Sections 3 and 4 and Appendices B to G.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The speed-up assumes coherent oracle access to the MDP's transition and reward functions, which a real environment normally does not give."
+    },
+    {
+     "id": "jerbi-quantum-policies-smooth",
+     "verdict": "widened",
+     "note": "The stored value is the discussion's summary. The paper proves two specific lemmas: raw-PQC policies satisfy D at most 1 (Lemma 3.1, Appendix D, via the parameter-shift rule) and softmax1-PQC policies satisfy B1 at most 2 (Lemma 4.1, Appendix E), giving Corollaries 3.2 and 4.2.",
+     "value": "The paper proves that any raw-PQC policy satisfies D ≤ 1 (Lemma 3.1), so it can benefit from a full quadratic speed-up from quantum numerical gradient estimation (Corollary 3.2), and that any softmax1-PQC policy satisfies B1 ≤ 2 (Lemma 4.1), so it can benefit from a full quadratic speed-up from quantum analytical gradient estimation (Corollary 4.2).",
+     "anchor": "Lemma 3.1 and Corollary 3.2 (Section 3, Appendix D); Lemma 4.1 and Corollary 4.2 (Section 4, Appendix E)",
+     "quotes": [
+      "Lemma 3.1. Any raw-PQC policy as defined in Def. 2.9 satisfies D ≤ 1.",
+      "Corollary 3.2. Any raw-PQC policy as defined in Def. 2.9 can benefit from a full quadratic speed-up from quantum numerical gradient estimation.",
+      "Lemma 4.1. Any softmax1-PQC policy as defined in Def. 2.11 satisfies B1 ≤ 2.",
+      "Corollary 4.2. Any softmax1-PQC policy as defined in Def. 2.11 can benefit from a full quadratic speed-up from quantum analytical gradient estimation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemmas 3.1 and 4.1 are stated with their definitions and proved in Appendices D and E.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "jerbi-theorem-3-1-numerical",
+     "value": "The paper proves Theorem 3.1: for a policy with bounded smoothness parameter D interacting with a quantum-accessible MDP with γT ≥ 2, the value-function gradient can be evaluated to error epsilon in the infinity-norm with a number of length-T episodes scaling as the square root of the parameter count d for a quantum numerical gradient estimator, against a scaling linear in d (and quadratic in the inverse error) for a classical numerical gradient estimator.",
+     "anchor": "Theorem 3.1, Section 3, Eqs. 22-23; Lemma G.1",
+     "quotes": [
+      "Theorem 3.1: Numerical policy gradient algorithm",
+      "Let πθ be a policy parametrized by a vector θ ∈ Rd, that can be used to interact with a quantumaccessible MDP M = (S, A, P, R, |R|max, T, γ) with γT ≥ 2, and such that πθ has a bounded smoothness parameter D, defined in Eq. (20).",
+      "can be evaluated to error ε in ∞-norm, using O √ d DT |R|max (22) ε(1 − γ) length-T episodes of interaction with the environment using a quantum numerical gradient estimator",
+      "while a classical numerical gradient estimator needs O d DT 2|R|max 2 (23) ε(1 − γ) length-T episodes of interaction with the environment."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3.1 with its conditions quoted; proof in Section 3 with Lemma F.1 and Lemma G.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jerbi-theorem-4-1-analytical",
+     "value": "The paper proves Theorem 4.1: for a policy with a bounded log-policy-gradient norm Bp for some p ≥ 1 in a quantum-accessible MDP, the value-function gradient can be evaluated to error epsilon in the infinity-norm with a number of length-T episodes scaling as the inverse error times a factor d to the power xi(p) for a quantum analytical estimator, against the squared inverse error for a classical analytical estimator (which keeps a logarithmic dependence on d); for p in [1, 2] the speed-up is fully quadratic.",
+     "anchor": "Theorem 4.1, Section 4, Eqs. 29-30",
+     "quotes": [
+      "Theorem 4.1: Analytical policy gradient algorithm",
+      "and such that πθ has a bounded smoothness param- eter Bp for some p ≥ 1, defined in Eq. (28).",
+      "can be evaluated to error ε in ∞-norm, using O dξ(p) BpT |R|max (29) ε(1 − γ) length-T episodes of interaction with the environment using a quantum analytical gradient estimator",
+      "while a classical analytical gradient estimator needs O BpT |R|max 2 (30) ε(1 − γ) length-T episodes of interaction with the environment.",
+      "Notably, for p ∈ [1, 2], we get a full quadratic speed-up in the quantum setting.",
+      "Note that the classical estimator still has a logarithmic dependence in d, hidden in the O notation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.1 with its conditions quoted; proof in Section 4 with Lemmas B.1 and C.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jerbi-quantum-access-definition",
+     "value": "The paper defines quantum access to an MDP as two oracles that coherently implement its dynamics: an oracle that coherently samples a column of the transition probability matrix, and an oracle returning a binary representation of the reward; it also assumes a unitary that coherently implements the policy (a quantum-evaluatable policy), and shows superpositions of length-T trajectories and their returns can be prepared with O(T) oracle calls (Lemmas 2.7 and 2.8).",
+     "anchor": "Definitions 2.4-2.6, Lemmas 2.7-2.8, Section 2.3",
+     "quotes": [
+      "Our oracular access to the environment takes the form of two oracles that coherently implement the MDP dynamics",
+      "An oracle P that coherently samples a column of the transition probability matrix P",
+      "An oracle R that returns a binary representation of the output of the reward function R",
+      "We say that the policy is quantum-evaluatable if we can construct a unitary satisfying",
+      "can be implemented using O(T ) calls to P and Π.",
+      "Lemma 2.7 (Superposition of trajectories).",
+      "Lemma 2.8 (Return). Let M be a quantum-accessible MDP"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions and short proofs, Section 2.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jerbi-lemma-f1-gevrey",
+     "value": "The paper proves Lemma F.1: for a policy with bounded smoothness parameter D in an MDP with Tγ ≥ 2, the value function as a function of the policy parameters satisfies the Gevrey condition with sigma = 0, which is what allows the full quadratic speed-up of quantum numerical gradient estimation.",
+     "anchor": "Lemma F.1, Appendix F; Section 3",
+     "quotes": [
+      "Lemma F.1. Let πθ be a parametrized policy with a bounded smoothness parameter D, defined in Eq.",
+      "with T γ ≥ 2. Then the value function Vπθ (s0) associated to the policy πθ in M, as a function of the policy parameters θ, satisfies the Gevrey conditions of Def. 2.12 for σ = 0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma F.1 is stated with its conditions and proved in Appendix F via Lemmas F.3 and F.4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jerbi-loose-bound-conjecture",
+     "value": "The authors state that in Appendix F they bound the value function's derivatives with a loose upper bound, needed to cast it as a Gevrey condition, and conjecture that a modified construction may improve the numerical algorithm's sample complexity by a factor of T to match the analytical one, which would also remove the γT ≥ 2 condition; they say that condition is not very limiting since MDPs of interest usually have a large horizon and a discount factor close to 1.",
+     "anchor": "Section 5 Discussion, p.11",
+     "quotes": [
+      "we end up bounding its derivatives ∂αVπ(θt)(s) using a loose upper bound, especially in the regime where the order k = |α| of the derivation is small.",
+      "We conjecture that a modification of the construction in [25, 26] may be possible such as to gain an improvement by a factor of T in the sample complexity of our numerical gradient algorithm",
+      "would also remove the need for the condition γT ≥ 2 that we enforce in the MDP",
+      "MDPs of interest usually have a large horizon T and a discount factor γ close to 1"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of a limit and an open conjecture, Section 5.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jerbi-smoothness-params-incomparable",
+     "value": "The authors state that the sample complexity is mostly governed by the number of policy parameters d and the smoothness parameters D and Bp, and that these two smoothness parameters are hard to relate in general, so the numerical and analytical algorithms are hard to compare.",
+     "anchor": "Section 5 Discussion, p.10",
+     "quotes": [
+      "Their sample complexity is mostly governed by the number of parameters d of the policy, as well as the smoothness parameters D and Bp",
+      "These two smoothness parameters are hard to relate to each other in general, making the performances of these two algorithms hard to compare."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 5.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jerbi-prior-qrl-limited",
+     "value": "The authors state that all previously proposed quantum algorithms in the quantum-accessible reinforcement learning setting remain inefficient in environments with large state-action spaces: aside from task-specific algorithms, they scale at best as the square root of the size of the state-action space; prior parametrized quantum policies were trained via classical interaction with the environment.",
+     "anchor": "Section 1 Introduction",
+     "quotes": [
+      "Yet, all the quantum algorithms that have been proposed in this quantum-accessible setting remain inefficient in the most well-publicised use cases of reinforcement learning",
+      "the proposed algorithms scale at best as the square root of the size of the state-action space, which is intractable in most modern-day applications",
+      "these models are however trained via classical interaction with the environment using, e.g., a classical policy gradient method."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' summary of prior work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jerbi-subroutine-regimes-cited",
+     "value": "The authors state, citing prior work, that Jordan's quantum gradient algorithm has a query complexity independent of dimension but assumes powerful binary oracle access; for Gevrey functions the quantum gradient estimator's dimension dependence reduces to the square root of d only when sigma ≤ 1/2; and quantum multivariate mean estimation has a dimension dependence that can be up to exponentially worse than classical estimators, which scale as O(log(d)).",
+     "anchor": "Section 2.5, Theorems 2.13 and 2.15 (cited from [26] and [28])",
+     "quotes": [
+      "Jordan's algorithm [34] manages to estimate gradients ∇θf (θ) with a query complexity that is independent of their dimension d = |θ|. However, this algorithm assumes a very powerful binary oracle access to the input function f",
+      "the dependence on the dimension of the gradient can only be reduced to d when the Gevrey condition of f satisfies σ ≤ 1/2.",
+      "exhibits a dependence on the dimension d that can be up to exponentially worse than for classical estimators (which is O(log(d)), see Lemma C.1)."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results ([25], [26], [28], [34]).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jerbi-classical-gradient-scaling",
+     "value": "The authors state that classical finite-difference methods have a sample complexity that scales linearly in the dimension of the parameters, while the analytical formulation (the policy gradient theorem) has a sample complexity only logarithmic in that dimension.",
+     "anchor": "Sections 2.1.1 and 2.1.2",
+     "quotes": [
+      "they inherently have a sample complexity (in terms of the number of interactions with the environment) that scales linearly in the dimension of θ.",
+      "the gradients of value functions also have an analytical formulation whose evaluation has a sample complexity only logarithmic in the dimension of θ [29]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited background ([29]); Lemma C.1 proves the classical multivariate estimator.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jerbi-lemma-c1-classical-mvmc",
+     "value": "The paper proves Lemma C.1: given sampling access to a d-dimensional random variable bounded by B in the infinity-norm, a classical estimator returns an epsilon-precise estimate of its mean in the infinity-norm with success probability at least 1 − δ using O of B squared over epsilon squared times log(d/δ) samples, by coordinate-wise averaging with Hoeffding's bound and a union bound.",
+     "anchor": "Lemma C.1, Appendix C",
+     "quotes": [
+      "Let X be a d-dimensional bounded random variable such that X ∞ ≤ B. Given sampling access to X, ε, δ > 0, there exists a classical multivariate mean estimator that returns an ε-precise estimate of E[X] in ∞-norm with success probability at least 1 − δ",
+      "Hence, for arbitrary ε and δ, the d expectations can be estimated to error ε in the ∞-norm with success probability 1 − δ using N = O B2 ε2 log d δ samples of X.",
+      "# union bound # Hoeffding's bound"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma C.1 stated and proved in Appendix C.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jerbi-lemma-b2-effective-horizon",
+     "value": "The paper proves Lemma B.2: an infinite-horizon MDP with discount factor below 1 can be truncated to a finite horizon of order 1/(1 − γ) up to a logarithmic factor while changing the value function by at most epsilon for any initial state and policy, so the authors always assume a horizon in O of 1/(1 − γ); Lemma B.1 bounds the value function's magnitude by |R|max times the smaller of T and 1/(1 − γ).",
+     "anchor": "Lemmas B.1 and B.2, Appendix B",
+     "quotes": [
+      "Lemma B.2. Consider an MDP M = (S, A, P, R, |R|max, T, γ) as defined in Def. 2.4, with an infinite horizon T = ∞, γ < 1 and a value function Vπθ .",
+      "has a value function Vπθ that satisfies Vπθ (s0) − Vπθ (s0) ≤ ε (41) for any initial state s0 ∈ S and any policy πθ.",
+      "Because of this lemma, we always assume the time horizon T of an MDP to be in O 1 1−γ .",
+      "evaluated on any initial state s0 ∈ S is upper bounded by |Vπθ (s0)| ≤ min T, 1−γ |R|max."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemmas B.1 and B.2 stated and proved in Appendix B.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jerbi-pqc-policy-definitions",
+     "value": "The paper defines a raw-PQC policy, whose action probabilities are expectation values of projections on the PQC's output state with all circuit parameters trainable, and a softmax1-PQC policy, a softmax over weighted projection expectation values with fixed circuit parameters and only the weights trainable, whose log-policy gradient is always bounded in 1-norm.",
+     "anchor": "Definitions 2.9-2.11, Fig. 1, Section 2.4",
+     "quotes": [
+      "The raw-PQC policy simply assigns a subset of these basis states to each action a ∈ A, and its parameters are θ = φ.",
+      "The softmax1PQC policy uses instead a fixed assignment of φ, and computes the weighted expectation values",
+      "We call the resulting policy a softmax1-PQC, as its log-policy gradient is always bounded in 1-norm"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions, Section 2.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jerbi-no-experiments",
+     "value": "The authors present the work as quantum algorithms with query-complexity analyses and proofs; the paper reports no numerical experiments or hardware runs.",
+     "anchor": "Sections 3-5 and Appendices A-G (whole paper)",
+     "quotes": [
+      "In this work, we design quantum algorithms to train parametrized policies in quantum-accessible environments."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope: its results are theorems and proofs only, as a full read confirms.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "That no experiment appears is the reader's observation from the full read; the quote states only what the work designs."
+    }
+   ]
+  }
+ ]
+}
