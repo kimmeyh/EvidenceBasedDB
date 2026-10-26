@@ -1,0 +1,864 @@
+{
+ "papers": [
+  {
+   "record_id": "zhang-2026-theory-finite-noise-optima-generalization",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Zhang-et-al._2026_A-Theory-of-Finite-Noise-Optima-and-Generalization-in-Quantum__2608.24229.pdf",
+   "title_in_file": "A Theory of Finite-Noise Optima and Generalization in Quantum Machine Learning",
+   "version_note": "",
+   "pages": 36,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A statistical-learning theory (noise-order surrogate and noise-order purity) of why moderate gate noise can lower test error in noisy quantum machine learning models, with simulations on a four-qubit regression model and eight- and nine-qubit molecular quantum graph networks.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "noise-finite-optimum-disappears",
+     "verdict": "confirmed",
+     "note": "Stated in the Discussion. The paper adds the basis: the analysis combines a noise-order surrogate with a local linearization around the trained optimum. Section II.8 reports the nested-training-set test.",
+     "value": "",
+     "anchor": "Section III Discussion, p.11",
+     "quotes": [
+      "Our theoretical analysis shows that the finite-noise optimum behaves differently in over- and underparameterized models and can eventually disappear in the large-sample limit.",
+      "This analysis combines a noise-order surrogate with a local linearization around the trained optimum."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived from a surrogate model with a local linearization; the derivation uses idealized assumptions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "noise-purity-generalization-gap",
+     "verdict": "confirmed",
+     "note": "Abstract wording matches. The paper's derivation of the proportionality is conditioned on weakly correlated noise-order predictors (Section II.3, Appendix A.3).",
+     "value": "",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "predicts the noise-induced reduction in model complexity and the consequent reduction in the generalization gap"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived from a surrogate model under idealized assumptions; checked numerically in the authors' own simulations.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "noise-theory-simulation-scope",
+     "verdict": "confirmed",
+     "note": "Matches the Discussion. Methods Section IV.2 adds that the channel acts after every elementary gate.",
+     "value": "",
+     "anchor": "Section III Discussion, p.11",
+     "quotes": [
+      "The present simulations assume independent gate-level noise."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own simulation scope in the Discussion.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "fourqubit-setup",
+     "value": "The authors report that the first experiment uses a four-qubit parametrized circuit on the diabetes regression dataset, predicting disease progression from two baseline clinical measurements, with 40 training and 400 testing samples drawn from 442.",
+     "anchor": "Section II.1 p.2 and Section IV.1.1 p.11",
+     "quotes": [
+      "We use a four-qubit parametrized circuit to predict this outcome from two baseline clinical measurements.",
+      "From the 442 samples, we randomly select disjoint training and testing sets of 40 and 400 samples, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup in Section II.1 and Methods IV.1.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The training set of 40 samples is smaller than the 72 trainable parameters, so the four-qubit model is overparameterized, which the derivation in Appendix A.5 treats only through a replacement of the rank."
+    },
+    {
+     "value": "The authors state that the four noise channels are depolarizing, bit-flip, phase-damping and amplitude-damping, that the channel is applied after every elementary gate in the data encoding and trainable circuit, and that no noise is applied to the classical post-processing.",
+     "anchor": "Section IV.2, p.12",
+     "quotes": [
+      "We consider four single-qubit noise channels: depolarizing, bit-flip, phase-damping and amplitudedamping noise.",
+      "In all models, the selected channel is applied after every elementary gate in the data encoding and trainable circuit.",
+      "No noise is applied to the classical post-processing including the regression."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its noise model in Methods IV.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "noise-channels-and-placement"
+    },
+    {
+     "value": "The authors report that the four-qubit model is trained with full-batch Adam at learning rate 0.01 for 800 epochs without early stopping, using ten independently initialized runs per noise model and noise rate, with the noisy channel included in both training and evaluation.",
+     "anchor": "Section IV.3, p.13",
+     "quotes": [
+      "We use full-batch Adam optimization [72] with learning rate 0.01 for 800 epochs and do not use early stopping.",
+      "For each physical noise model and noise rate, we train ten independently initialized models.",
+      "The physical noise channel at the selected value of β is included during both training and evaluation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training protocol.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "fourqubit-training-protocol"
+    },
+    {
+     "value": "The authors report that, across all four noise channels in the four-qubit regression experiment, the training loss generally increases with the noise rate, while the test loss first decreases below the nearly noiseless value and increases again only when noise becomes sufficiently strong.",
+     "anchor": "Section II.1, Fig. 1(a-d), p.2",
+     "quotes": [
+      "Across all four noise channels, the training loss Ltrain(β) generally increases as the physical noise rate becomes larger.",
+      "Instead, it first decreases below the nearly noiseless value and only increases again once the noise becomes sufficiently strong."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study: ten runs on one dataset and one circuit.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The test set holds 400 samples from one dataset split; the paper reports mean and one standard deviation over ten initializations, not over data splits.",
+     "id_suggestion": "fourqubit-train-test-divergence"
+    },
+    {
+     "value": "The authors report that the generalization gap decreases rapidly in the same intermediate-noise regime where the test loss improves, and they say the improvement is not caused by a lower training loss.",
+     "anchor": "Section II.1, Fig. 1(e), p.2-3",
+     "quotes": [
+      "As shown in Fig. 1(e), the gap decreases rapidly in the same intermediate-noise regime where the test loss improves.",
+      "The improvement in test performance is not caused by a lower training loss or by a more successful fit to the training samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "fourqubit-gap-decreases"
+    },
+    {
+     "value": "The authors state that, in the stochastic surrogate model, the loss separates by a bias-variance identity into the loss of the averaged noisy predictor plus a variance term measuring disagreement among predictors generated by different noise realizations, which they write as a pairwise penalty on disagreement between noise-order predictors.",
+     "anchor": "Section II.2 p.4 and Appendix A.1 Eq. (A13), p.18",
+     "quotes": [
+      "The second term comes from fluctuations across noisy circuit realizations and penalizes disagreement between predictors at different noise orders.",
+      "The first term is the mean-channel loss associated with the averaged noisy predictor ϕβ, while the second term measures the disagreement among predictors generated by different noise realizations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation inside the surrogate model; the algebraic identity is not quoted as a numbered statement.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "surrogate-loss-decomposition"
+    },
+    {
+     "value": "The authors define a noise-order surrogate in which the noisy predictor is a binomial-weighted ensemble average of effective noise-order predictors, grouping noisy circuit responses by the total number of noise occurrences, with the binomial weights set by the physical noise rate and the number of noisy locations.",
+     "anchor": "Section II.2, Eq. (2), p.3-4",
+     "quotes": [
+      "we group the noisy circuit responses by the total number of noise occurrences, and represent the combined response at order m by an effective noise-order predictor",
+      "the binomial weights pm(β, g) describe how the physical noise rate distributes probability mass across those orders"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition of the paper's own surrogate, Section II.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "noise-order-surrogate-definition"
+    },
+    {
+     "value": "The authors state that the analysis in Appendix A uses the simplest noise model, in which the noise channel at each location either does nothing or applies another noisy operation, and that the mechanism is not limited to this model.",
+     "anchor": "Appendix A.1, p.17",
+     "quotes": [
+      "Consider the simplest case where the noise channel at each location either does nothing or applies another noisy operation.",
+      "Nevertheless, the mechanism does not only apply to this simple model."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its derivation in Appendix A.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The wider claim in the second quote is asserted, then discussed in Appendix A.6; it is not tested numerically.",
+     "id_suggestion": "surrogate-bernoulli-scope"
+    },
+    {
+     "value": "The authors define the noise-order purity as the sum over noise orders of the squared binomial probabilities of the noise-order count, state that it is close to one when a single noise order dominates, and that it falls as probability mass spreads over many finite-noise orders.",
+     "anchor": "Section II.3 p.5 and Appendix A.2 p.19",
+     "quotes": [
+      "This quantity is close to one when the noisy predictor is dominated by a single noise order, such as the nearly noiseless branch at small β.",
+      "It decreases when the probability mass spreads over many finite-noise orders.",
+      "measures the concentration of the noise occurrence-count distribution"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition of the paper's own quantity, Eq. (4) and Eq. (A19).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "noise-order-purity-definition"
+    },
+    {
+     "value": "The authors state that the noise-order purity is well approximated by an exponential times a modified Bessel function of the first kind, and that this expression interpolates between a weak-noise linear expansion and a broad-distribution inverse-square-root scaling.",
+     "anchor": "Section II.3, Eq. (5), p.5 and Appendix A.4, p.22",
+     "quotes": [
+      "It is well approximated by",
+      "where I0 is the modified Bessel function of the first kind.",
+      "Rather than changing at a single rate, s2 shows a regime-dependent decay as the noise-order distribution first leaves the nearly noiseless branch and then spreads over many finite-noise orders."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Approximation derived through Poisson and Gaussian limits; the equation text is garbled in the text layer and is not quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The main text bounds the broad-distribution scaling by beta no larger than one half, while Appendix A.4 states it for beta much smaller than one.",
+     "id_suggestion": "noise-order-purity-approximation"
+    },
+    {
+     "value": "The authors state that, when different noise-order predictors are weakly correlated, the effective model complexity is proportional to the noise-order purity, that this is derived under idealized assumptions, and that it is validated by the numerical results across the QML models studied.",
+     "anchor": "Section II.3, Eq. (6), p.5",
+     "quotes": [
+      "when different noise-order predictors are weakly correlated, the effective model complexity satisfies",
+      "Although this proportionality is derived under idealized assumptions, it is validated by the numerical results across the QML models studied in this work."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Surrogate-model derivation with an assumed overlap structure; the equation is not quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proportionality holds only if the overlap parameter is near zero, and the same appendix gives a more general form with a nonzero overlap parameter.",
+     "id_suggestion": "complexity-proportional-purity-derivation"
+    },
+    {
+     "value": "The paper states the conditions for its derivation of effective complexity: the occurrence-count predictors are assumed to have comparable local sensitivities and approximately uniform cross-overlap, the Jacobians are assumed stable near the optimum with second-order residual terms ignored, and weak alignment between predictors gives effective complexity of about the parameter count times the purity.",
+     "anchor": "Appendix A.3, Eq. (A25) and Eqs. (A29)-(A33), p.20-21",
+     "quotes": [
+      "we assume that the Jacobians Jm are stable in a neighborhood of the optimum and ignore the second-order residual terms",
+      "Suppose that the occurrence-count predictors have comparable local sensitivities and approximately uniform cross-overlap:",
+      "When different occurrence-count predictors are weakly aligned, κ ≈ 0, this reduces to"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the assumptions of its own derivation in Appendix A.3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "These are assumptions, not tested ones. Whether trained quantum models satisfy a uniform cross-overlap is supported only by the downstream fit in Fig. 2.",
+     "id_suggestion": "overlap-model-conditions"
+    },
+    {
+     "value": "The authors state that, following a local linear smoother analysis, the expected generalization gap is approximated by twice the data-noise variance times the effective complexity divided by the number of training samples, so that the dependence on noise is controlled by the effective complexity and hence by the noise-order purity.",
+     "anchor": "Section II.3, Eq. (7), p.5 and Appendix A.3, Eq. (A28), p.21",
+     "quotes": [
+      "Following the local linearization analysis [47], the expected generalization gap obeys",
+      "Since these quantities are fixed across the noise sweep, the β-dependence of the generalization gap is controlled"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Applies a cited result (Efron) to the surrogate under homoscedastic data noise.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The Appendix adds the homoscedastic data-noise assumption.",
+     "id_suggestion": "generalization-gap-formula"
+    },
+    {
+     "value": "The authors report that all four noise models reduce the effective model complexity of the four-qubit model at different rates, and that after normalization all four curves follow the predicted dependence on the noise-order purity when an effective noise count is fitted separately for each noise model.",
+     "anchor": "Section II.4, Fig. 2, p.5-6",
+     "quotes": [
+      "Fig. 2(a) shows that all four noise models reduce the effective model complexity, but at different rates.",
+      "We account for this noise-model dependence by fitting geff separately for each model.",
+      "After normalization, all four curves follow the predicted dependence on s2(β, geff ) in Fig. 2(b)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study; one fitted parameter per noise model.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The effective noise count is a free parameter fitted for each noise model, so the agreement tests the functional form of the curve, not a predicted count. Only the dashed reference in Fig. 1(e) uses the exact count.",
+     "id_suggestion": "fourqubit-complexity-scaling"
+    },
+    {
+     "value": "The authors define the effective model complexity of a trained noisy model by linearizing the noisy predictor around the trained parameters and taking a soft count of the eigenvalues of the Jacobian Gram matrix, with a regularizer of 10−4, applied with the same scale for every noise model, noise rate and run.",
+     "anchor": "Section IV.4, Eqs. (13)-(14), p.13",
+     "quotes": [
+      "We estimate model complexity by linearizing the physical noisy predictor around the trained parameters.",
+      "Directions with eigenvalues well above 10−4 contribute approximately one, whereas weaker directions contribute proportionally less.",
+      "The same counting scale is used for every noise model, noise rate and run."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition of the paper's own measure, Methods IV.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "effective-complexity-definition"
+    },
+    {
+     "value": "The authors state that the effective noise count is obtained by fitting the run-averaged normalized complexity curve to the exact binomial noise-order purity, and that the dashed reference curve in the generalization-gap figure uses the exact four-qubit noisy-location count 126 instead of a fitted count.",
+     "anchor": "Section IV.4, Eq. (15), p.14",
+     "quotes": [
+      "We obtain the effective noise count by fitting this averaged curve to the exact binomial noise-order purity,",
+      "The dashed reference curve in Fig. 1(e) uses the exact four-qubit noisy-location count g = 126, rather than a fitted count."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition of the paper's own fitting procedure, Methods IV.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "effective-noise-count-fit"
+    },
+    {
+     "value": "The authors report that fitted effective noise counts, from both the physical-model and the surrogate calculations, order as depolarizing, then bit flip, then amplitude damping, then phase damping, from largest to smallest. They attribute the ordering to how directly each channel changes the populations probed by the final measurement.",
+     "anchor": "Section B.2 and Table I, p.26; Section II.4, p.6",
+     "quotes": [
+      "As shown in Table I, both calculations give the ordering",
+      "The ordering of geff can be understood from how directly each noise model changes the populations probed by the final measurement, which is Z⊗4 in this case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical fitted values from one study; the explanation is the authors' interpretation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table I gives the fitted counts: 32, 24, 11 and 6 for the physical model, and 91, 59, 20 and 8 for the surrogate. They are not quoted here because the table text is not usable as a quote.",
+     "id_suggestion": "effective-noise-count-ordering"
+    },
+    {
+     "value": "The authors state that a matrix order inequality implies the surrogate model complexity is no greater than the physical-model complexity, and they report that the surrogate shows the same purity scaling with larger fitted effective noise counts.",
+     "anchor": "Appendix B.1, Eq. (B3), p.25-26",
+     "quotes": [
+      "This matrix order inequality implies that the surrogate model complexity is no greater than the physical-model complexity.",
+      "The same physical noise therefore induces stronger effective regularization in the surrogate, as reflected by its larger fitted geff ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived for the surrogate model and checked numerically in the authors' simulations.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "surrogate-complexity-below-physical"
+    },
+    {
+     "value": "The authors report that the parameter-averaged output-gradient norm of the four-qubit model shows three regimes for all four noise models: little change in regime I, a decrease in regime II, and strong suppression in regime III. They report that regime II coincides with the test-error improvement.",
+     "anchor": "Section II.5, Fig. 3(e), p.6-7",
+     "quotes": [
+      "All four noise models exhibit three regimes. The output-gradient norm changes little in regime I, decreases in regime II, and is strongly suppressed in regime III.",
+      "Importantly, regime II coincides with the test-error improvement in Fig. 1, while the output-gradient norm remains appreciable."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The output-gradient norm is a proxy for trainability; the paper notes it is not the loss gradient.",
+     "id_suggestion": "gradient-three-regimes"
+    },
+    {
+     "value": "The authors report that, for the three unital noise models, output-gradient norms decrease relatively uniformly across parameters as noise grows, whereas amplitude damping gives smaller norms for parameters farther from the final measurement.",
+     "anchor": "Section II.5, Fig. 3(a-d), p.7",
+     "quotes": [
+      "For the three unital noise models, the output-gradient norms decrease relatively uniformly across parameters as the noise rate increases.",
+      "parameters farther from the measurement have smaller output-gradient norms"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "gradient-amplitude-damping-depth"
+    },
+    {
+     "value": "The authors define noise programming as adding an independent Gaussian perturbation with standard deviation sigma to the parameters after every optimizer update during training, and use programming strengths of two to the minus k for k from 1 to 10 plus an unprogrammed baseline, retraining for 800 full-batch epochs in each of ten runs.",
+     "anchor": "Section II.6 p.7 and Section IV.5 p.14",
+     "quotes": [
+      "After each optimization step, an independent Gaussian-distributed perturbation with standard deviation σ is added to the parameters.",
+      "We use programming strengths σ = 2−k for k = 1, . . . , 10, together with an unprogrammed baseline σ = 0.",
+      "the model is retrained for 800 full-batch epochs in each of the ten runs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition of the paper's own intervention, Methods IV.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "noise-programming-method"
+    },
+    {
+     "value": "The authors report that noise programming is directional: when the unprogrammed model lies on the low-noise side of the optimum, increasing programming strength can move it to a higher-noise, lower-error region, but once the physical noise has passed the optimum the intervention cannot return the model to the lower-noise regime. They report this asymmetry for all four physical noise models.",
+     "anchor": "Section II.6, Fig. 4, p.7-8",
+     "quotes": [
+      "When the unprogrammed model lies on the lownoise side of the optimum, increasing the programming strength can move it towards a higher-noise but lower-error part of the landscape.",
+      "Once the physical noise has passed the optimum, the same intervention cannot return the model to the lower-noise regime.",
+      "Fig. 4 shows this asymmetry for all four physical noise models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study on the four-qubit model.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The perturbation is applied to classical parameter updates; the paper treats it as a model of extra parameter uncertainty, not as added gate noise.",
+     "id_suggestion": "noise-programming-directional"
+    },
+    {
+     "value": "The authors state that mini-batch stochastic gradient descent generates fluctuations in parameter updates and may therefore provide a natural algorithmic route to noise programming.",
+     "anchor": "Section II.6, p.8",
+     "quotes": [
+      "Practically, mini-batch stochastic gradient descent generates fluctuations in parameter updates and may therefore provide a natural algorithmic route to noise programming [54, 55]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's suggestion, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "noise-programming-sgd-speculation"
+    },
+    {
+     "value": "The authors report that the molecular experiments use eight- and nine-qubit quantum graph neural networks that predict the HOMO-LUMO gap for molecules from QM9-HA8 and PCQM4Mv2-HA9, with one qubit per heavy atom, a trainable linear readout on the computational-basis probabilities, and 310 and 569 trainable parameters respectively.",
+     "anchor": "Section II.7 p.8 and Section IV.1.2 p.12",
+     "quotes": [
+      "We study eight- and nine-qubit quantum graph neural networks that predict the HOMO–LUMO gap for molecules drawn from QM9-HA8 and PCQM4Mv2-HA9",
+      "giving 310 and 569 trainable parameters in total"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own model setup in Methods IV.1.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "molecular-setup"
+    },
+    {
+     "value": "The authors report that the molecular models use Adam with learning rate 0.03, a mini-batch size of 16 and gradient clipping at maximum norm 1, are trained for 300 epochs (QM9-HA8) and 100 epochs (PCQM4Mv2-HA9), and use five fixed initializations across the noise sweep.",
+     "anchor": "Section IV.3, p.13",
+     "quotes": [
+      "We use Adam with learning rate 0.03, a mini-batch size of 16 and gradient clipping with maximum norm 1.",
+      "QM9-HA8 and PCQM4Mv2-HA9 models are trained for 300 and 100 epochs, respectively",
+      "For each molecular setting, five fixed initializations are used across the complete noise sweep."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training protocol.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Five runs per setting is a small sample for the reported standard deviations.",
+     "id_suggestion": "molecular-training-protocol"
+    },
+    {
+     "value": "The authors report that, in the molecular models, the testing MSE consistently exhibits a finite-noise optimum across training-set sizes, noise models (bit flip and depolarizing) and datasets, while the training MSE increases with the noise rate.",
+     "anchor": "Section II.7, Fig. 5(a-d), p.8-9",
+     "quotes": [
+      "Across these comparisons in Fig. 5(a–c), the testing MSE consistently exhibits a finite-noise optimum.",
+      "The training MSE instead increases with the noise rate (Fig. 5(d))"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study: five runs per setting.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The comparisons use bit-flip and depolarizing noise on the main figure; the phase-damping channel in Appendix C.4 does not show the optimum.",
+     "id_suggestion": "molecular-finite-noise-optimum"
+    },
+    {
+     "value": "The authors report that, in the molecular models, the generalization gap is linear in the effective model complexity and the effective complexity remains proportional to the noise-order purity, with the effective noise count fitted separately for each setting.",
+     "anchor": "Section II.7, Fig. 5(e,f), p.8-9",
+     "quotes": [
+      "Fig. 5(e) confirms the linear relation between the generalization gap and the effective model complexity, while Fig. 5(f) shows that the effective complexity remains proportional to the noise-order purity.",
+      "where geff is fitted separately for each setting"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study; one fitted parameter per setting.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "molecular-gap-complexity-linear"
+    },
+    {
+     "value": "The authors state that the testing error is minimized at a noise-order purity equal to SNR divided by the sum of SNR and the zero-noise effective complexity over the number of training samples, so that noise is more likely to help when the learnable signal is weak, the data noise is large, the learnable model dimension is large, or the training set is small.",
+     "anchor": "Section II.8 Eq. (9), p.9 and Appendix A.5 Eqs. (A46)-(A48), p.24",
+     "quotes": [
+      "This shows that noise is more likely to improve the testing MSE when the learnable signal is weak, the data noise is large, the locally",
+      "learnable model dimension is large, or the training set is small.",
+      "when such a solution is in the achievable range of s2(β, g)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived from the surrogate model with a local regression approximation; the equations are not quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The closed form needs the weak-overlap approximation and homoscedastic data noise. The Appendix derives it assuming the parameter count is below the sample count, then replaces the rank by the zero-noise effective complexity for overparameterized models; the four-qubit model (72 parameters, 40 training samples) is of the second kind.",
+     "id_suggestion": "optimum-location-formula"
+    },
+    {
+     "value": "The authors state that, when the data set and SNR are fixed, the optimum is controlled by the ratio of zero-noise effective complexity to the number of training samples, and that decreasing this ratio moves the purity at the optimum towards one and the optimal noise rate towards the low-noise limit.",
+     "anchor": "Section II.8, p.9-10",
+     "quotes": [
+      "When the data set is given and the SNR is fixed, the optimum is therefore controlled by the ratio",
+      "this ratio moves s⋆ towards one and hence moves β⋆ towards the low-noise limit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Consequence of the surrogate-model derivation.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "optimum-shifts-low-noise-with-data"
+    },
+    {
+     "value": "The authors report, from nested QM9-HA8 training sets of 80, 160, 320 and 1000 molecules under bit-flip noise, that the three smaller sets keep a clear finite-noise reduction in testing error, that for 1000 the low-noise generalization gap is much smaller and the non-monotonic response almost disappears, and that the optimum shifts generally towards low noise as the training set grows, with 80 and 160 sharing the same optimum at the sampled noise rate.",
+     "anchor": "Section II.8, Fig. 6, p.10",
+     "quotes": [
+      "nested QM9-HA8 training sets with ntrain = 80, 160, 320 and 1000",
+      "The three smaller training sets retain a clear finite-noise reduction in testing error.",
+      "For ntrain = 1000, the low-noise generalization gap is much smaller and the nonmonotonic response almost disappears.",
+      "The exception is ntrain = 80 and 160, for which the optimum occurs at the same sampled noise rate."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study: five runs per training size.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 1000-molecule model is trained for 100 epochs, the others for 300, so training length differs together with training size.",
+     "id_suggestion": "training-size-experiment"
+    },
+    {
+     "value": "The authors state that the model has 310 trainable parameters so both of the two smaller training-set cases are overparameterized, that the effective complexity is limited by the lack of data there, so the complexity-to-samples ratio stays nearly unchanged, and that once the training-set size exceeds the parameter count the optimum moves towards zero.",
+     "anchor": "Section II.8, p.10",
+     "quotes": [
+      "The model has q = 310 trainable parameters, so both cases are overparameterized",
+      "Consequently, de(0ff)/ntrain remains nearly unchanged.",
+      "Once ntrain exceeds q, this data limitation is removed and the optimum moves towards zero."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's explanation of the observation; the nearly unchanged ratio is not measured in the text.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The ratio is not reported as measured at 80 and 160; only two sample sizes above 310 (320 and 1000) test the second claim.",
+     "id_suggestion": "overparameterized-flat-ratio-explanation"
+    },
+    {
+     "value": "The authors state that, when the training-set size approaches infinity, the generalization gap vanishes because the testing set contains no additional statistical information, and they report an increasing training error and a shrinking generalization gap with training size in the experiment.",
+     "anchor": "Section II.8, p.10",
+     "quotes": [
+      "When the training-set size approaches infinity, the model sees the full data distribution, and therefore the generalization gap vanishes because the testing set contains no additional statistical information."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statistical argument, not proved in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Only the finite-sample trend in Fig. 6 is measured; the infinite-sample statement is not.",
+     "id_suggestion": "large-sample-gap-vanishes"
+    },
+    {
+     "value": "The authors state that, assuming the number of trainable parameters equals the number of noisy locations, noise can reduce the effective model complexity from order g to order the square root of g once the noise-order distribution is sufficiently spread out, and that the generalization gap falls correspondingly.",
+     "anchor": "Appendix A.4, Eq. (A38), p.22",
+     "quotes": [
+      "For simplicity, assume that the number of trainable parameters is q = g.",
+      "when the noise-order distribution is sufficiently spread out"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Asymptotic argument inside the surrogate; the equation is not usable as a quote.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The case q equals g does not hold in the four-qubit model (72 parameters, 126 locations) as the paper says in A.3.",
+     "id_suggestion": "scaling-sqrt-g-complexity"
+    },
+    {
+     "value": "The authors state that, under the weak-overlap local approximation, a lower noise-order purity reduces the generalization gap but raises a noise-induced bias term, and the competition between the two produces a non-monotonic testing MSE.",
+     "anchor": "Appendix A.5, Eqs. (A43)-(A45), p.23",
+     "quotes": [
+      "This reduces the generalization gap, but it also increases the bias term",
+      "The competition between these two effects leads to a non-monotonic testing MSE."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation inside the surrogate under the stated approximations.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "mse-bias-variance-competition"
+    },
+    {
+     "value": "The authors state that replacing the identity branch by a general principal channel keeps the same binomial weights and noise-order purity but distorts the hypothesis space itself, and that more general multi-branch noise models can be handled by a generalized purity over path probabilities.",
+     "anchor": "Appendix A.6, p.24",
+     "quotes": [
+      "In this more general setting, the hypothesis space itself is distorted by the principal noise branch.",
+      "We can similarly define a generalized noise-order purity by summing the squared probabilities of these paths."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A sketched extension, not worked out or tested numerically.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "noise-model-beyond-bernoulli"
+    },
+    {
+     "value": "The authors state that a dynamic-programming recurrence evaluates all order-resolved states and Jacobians in a cost that is polynomial in the number of noisy locations, in contrast with an exponential cost for enumerating all noise placements.",
+     "anchor": "Appendix B.3, p.27-28",
+     "quotes": [
+      "This is polynomial in g, in contrast to the O(2g) cost of enumerating all noise placements."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A complexity claim from the algorithm description; no timing is reported.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "dp-evaluation-cost"
+    },
+    {
+     "value": "The authors report that, for QM9-HA8 evaluated after 100, 200 and 300 epochs, longer training lowers training error and raises the testing error and low-noise generalization gap, and the non-monotonic response stays stable across the three endpoints.",
+     "anchor": "Appendix C.2, Fig. 8, p.29",
+     "quotes": [
+      "We evaluate the same five QM9-HA8 training trajectories after 100, 200 and 300 epochs",
+      "With longer training, the training error decreases while the testing error and generalization gap at low noise increase, indicating stronger overfitting",
+      "The overall non-monotonic response remains stable across the three optimization endpoints."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study: five fixed runs.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "ablation-epochs"
+    },
+    {
+     "value": "The authors report that replacing the linear readout (310 parameters) with a 128-unit tanh hidden layer (33,078 parameters) keeps a lower testing error at finite noise, does not improve the minimum testing error, and gives comparable full-model and quantum-only complexities.",
+     "anchor": "Appendix C.3, Fig. 9, p.29-30",
+     "quotes": [
+      "a fully connected hidden layer containing 128 tanh units",
+      "This increases the total parameter count from 310 to 33,078.",
+      "The finite-noise improvement is therefore not specific to the choice of classical post-processing, and additional classical capacity alone does not improve prediction."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study: five fixed runs, bit-flip noise, one training size.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "ablation-readout"
+    },
+    {
+     "value": "The authors report that, in the molecular model, bit flip, depolarizing and amplitude damping produce a clear intermediate-noise reduction in testing error, whereas phase damping does not produce the same non-monotonic response, and that switching the phase-damping measurement to the X basis recovers the high-noise collapse and the linear relation between the generalization gap and complexity.",
+     "anchor": "Appendix C.4, Figs. 10-11, p.30-31",
+     "quotes": [
+      "whereas phase damping does not produce the same non-monotonic response (Fig. 10(a)).",
+      "Switching to the X basis recovers both the high-noise collapse and the linear relation between the generalization gap and effective model complexity"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study: five fixed runs.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This is a measured exception to the general claim in the Discussion that the non-monotonic effect is a general phenomenon.",
+     "id_suggestion": "phase-damping-no-optimum-molecular"
+    },
+    {
+     "value": "The authors state that the benefit of noise-induced regularization depends not only on the noise model but also on the measured representation, because phase damping removes coherence in the Z basis, which affects an X-basis measurement directly but a Z-basis measurement only weakly.",
+     "anchor": "Appendix C.4, Fig. 11, p.31",
+     "quotes": [
+      "Phase damping removes coherence in the Z basis, which directly affects an X-basis measurement but has a weaker effect on a Z-basis measurement.",
+      "The benefit of noise-induced regularization therefore depends not only on the noise model, but also on the measured representation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study with an author's explanation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "measurement-basis-dependence"
+    },
+    {
+     "value": "The authors conclude that the intermediate noise regime differs from the weak- and strong-noise limits, is not described by perturbative error accumulation or by trainability collapse, and that the non-monotonic effects reported in recent studies are not occasional artifacts but a general phenomenon that can be understood and predicted. They also state that noise is not intrinsically beneficial and the improvement is not unconditional.",
+     "anchor": "Section III Discussion, p.10-11",
+     "quotes": [
+      "The non-monotonic effects reported in recent studies are therefore not occasional artifacts, but a general phenomenon that can be understood and predicted.",
+      "Noise is not intrinsically beneficial, and even when it is beneficial, the improvement is not unconditional."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper's own tests cover one four-qubit regression model and two molecular datasets in simulation, and phase damping on the molecular model is a measured exception.",
+     "id_suggestion": "conclusion-general-phenomenon"
+    },
+    {
+     "value": "The authors state that an understanding of noise-induced regularization focusing on optimization dynamics remains open, and that it is an open question whether the physical noisy model can be analyzed directly to capture the non-monotonicity without introducing the surrogate.",
+     "anchor": "Section III Discussion, p.11",
+     "quotes": [
+      "An understanding of noise-induced regularization focusing on optimization dynamics remains open.",
+      "It is also an open question whether the physical noisy model can be analyzed directly to capture the non-monotonicity without introducing the surrogate."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own open problems in the Discussion.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "open-problems-optimization-and-surrogate"
+    },
+    {
+     "value": "The authors state that the central hardware question is whether noise-order purity continues to predict model complexity and generalization when errors are correlated or time dependent and circuit outputs are estimated from finite shots.",
+     "anchor": "Section III Discussion, p.11",
+     "quotes": [
+      "The central hardware question is whether noise-order purity continues to predict model complexity and generalization when errors are correlated or time dependent and circuit outputs are estimated from finite shots."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own limit in the Discussion.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The simulations use exact density-matrix evolution, so shot noise and correlated errors are untested.",
+     "id_suggestion": "open-problem-hardware-noise"
+    }
+   ]
+  }
+ ]
+}
