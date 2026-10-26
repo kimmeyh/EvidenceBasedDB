@@ -157,7 +157,9 @@ def fetch() -> dict:
                 tally["refused"].append(f"{rid}: touches {stray}")
                 continue
             try:
-                entry = git("show", f"{ref}:{folder}done/{rid}.json")
+                # cat-file, not show: show stats its argument as a file name first, and on Windows a long record
+                # id made that "Filename too long", which read as "not finished" (xu-2025-accelerating-...).
+                entry = git("cat-file", "blob", f"{ref}:{folder}done/{rid}.json")
                 (WORK / "results" / f"{rid}.json").write_text(entry, encoding="utf-8")
                 continue
             except subprocess.CalledProcessError:
