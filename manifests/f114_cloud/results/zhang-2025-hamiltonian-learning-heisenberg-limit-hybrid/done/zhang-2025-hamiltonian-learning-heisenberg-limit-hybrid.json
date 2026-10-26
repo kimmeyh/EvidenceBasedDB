@@ -1,0 +1,572 @@
+{
+ "papers": [
+  {
+   "record_id": "zhang-2025-hamiltonian-learning-heisenberg-limit-hybrid",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Zhang-et-al._2025_Hamiltonian-Learning-at-Heisenberg-Limit-for-Hybrid-Quantum-Systems__2502.20373.pdf",
+   "title_in_file": "Hamiltonian Learning at Heisenberg Limit for Hybrid Quantum Systems",
+   "version_note": "arXiv:2502.20373v3, 30 Apr 2025; the text holds the main letter and the supplementary material.",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper with numerical checks that gives algorithms learning all coefficients of spin-boson Hamiltonians at the Heisenberg limit.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "zhang-heisenberg-theorem",
+     "verdict": "widened",
+     "note": "The stored value omits the statement's conditions. Theorem 1 is quoted in full here: unitary dynamics access to a Hamiltonian of the form of Eq. (1), error measured as RMSE, and the three listed properties. The paper's own supplement also says its trace-distance proof does not cover the trotter-based scheme for the couplings (see the new assertions on that limit).",
+     "value": "The paper states Theorem 1: given a unitary dynamics access to arbitrary Hamiltonian in the form of Eq. (1), there is an algorithm A that can estimate ξa, λan, ηan and ωn up to a RMSE ϵ, with a total evolution time T ∼ O(ϵ−1), O(polylog(ϵ−1)) measurements, and robustness under small SPAM error.",
+     "anchor": "Introduction, Theorem 1, p.2",
+     "quotes": [
+      "Theorem 1. Given a unitary dynamics access to arbitrary Hamiltonian in the form of Eq. (1), there is an algorithm A that can estimate ξa, λan, ηan and ωn up to a RMSE ϵ such that:",
+      "1. A takes a total evolution time of T ∼ O(ϵ−1) to measure all of the coefficients.",
+      "2. A uses O(polylog(ϵ−1)) measurements to learn all of the coefficients.",
+      "3. A is robust under small SPAM error."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Theorem 1 is stated with its conditions, but it is not proved as one theorem: its parts rest on cited results (RFE, RPE), on a limit R to infinity, and on numerics; see the new assertions.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Theorem 1 lists a coefficient ηan that is never defined in the paper. The O() bounds hide the dependence on k, the number of qubits and the number of bosonic modes (the number of Pauli strings Eb alone grows as a binomial in the number of qubits), and on the number of random-unitary segments R, which the theorem does not count. 'Small SPAM error' has no stated model or size in the theorem; support in the paper is the cited RFE tolerance and one numerical run (Fig. 3)."
+    },
+    {
+     "id": "zhang-scope-future",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that generalizing the protocol to high-dimensional fermionic Hamiltonians and non-linear bosonic modes is left for future exploration.",
+     "anchor": "Discussion, p.5-6",
+     "quotes": [
+      "For future exploration, one can consider generalizing our learning protocol to high-dimensional fermionic Hamiltonian and non-linear bosonic modes"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The Discussion states this as the work's own limit.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The supplement, Schwinger model paragraph (p.14), says a bosonic Hamiltonian with nonlinear terms 'remains learnable via the trotter-based scheme'. This sits in some tension with the Discussion's statement that non-linear bosonic modes are future work."
+    },
+    {
+     "id": "zhang-spam-numerics",
+     "verdict": "narrowed",
+     "note": "The paper ties this result to the trotter-based scheme (not the DQS-based scheme) and to the generalized Dicke model and spin-boson model of Fig. 3. The stored value does not name the scheme.",
+     "value": "The authors report that, in numerical experiments with the trotter-based scheme, a small Gaussian noise is added into measurements and 6 time points are sampled in 2K−fold space to implement RFE, and that the estimation error maintains a Heisenberg scaling despite the presence of noise.",
+     "anchor": "Numerical experiments, Fig. 3 and its caption, p.5",
+     "quotes": [
+      "In Fig. 3, we demonstrate the robustness of our algorithm against SPAM error using the trotter-based scheme.",
+      "A small Gaussian noise is added into measurements, and 6 time points are sampled in 2K−fold space to implement RFE.",
+      "We observe that the estimation error maintains a Heisenberg scaling despite the presence of noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one numerical study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The noise size is not given in the text, and only measurement noise is added. State-preparation error is not shown to be modelled. The figure shows the generalized Dicke and spin-boson models only."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "zhang-hamiltonian-form",
+     "value": "The authors state that the Hamiltonian class is a spin part plus a bosonic part plus an interaction, where the spin part of the interaction is assumed to be k-local, that is the support of each Pauli string is at most k.",
+     "anchor": "Introduction, Hybrid Hamiltonian learning, p.2",
+     "quotes": [
+      "and the spin part of Hˆint is assumed to be k-local, i. e. |supp(Ea)| ≤ k."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the model class it treats.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-sql-hl-definition",
+     "value": "The authors define the standard quantum limit as the scaling of the total evolution time and number of measurements of O(ϵ−2) set by the central limit theorem, and the Heisenberg limit as the optimal scaling in total evolution time, O(ϵ−1).",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "requires a scaling of O(ϵ−2) in total evolution time and number of measurements, defining the standard quantum limit (SQL).",
+      "the optimal scaling in total evolution time is O(ϵ−1), known as the Heisenberg limit."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper states the definitions its results are measured against.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-first-algorithm-claim",
+     "value": "The authors claim they present the first algorithm that learns hybrid Hamiltonians of spin-boson type at the Heisenberg limit.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "In this paper, we present the first algorithm that learns hybrid Hamiltonians of spin-boson at the Heisenberg limit."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's priority claim.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-no-low-intersection",
+     "value": "The authors state that, compared to reference [16], their algorithm for the spin part works without the low-intersection assumption, making it scalable for general k-local spin Hamiltonians.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "Compared to [16], our algorithm for Hˆspin works without the low-intersection assumption, making it scalable for general k-local spin Hamiltonians."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's comparison to prior work, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The scaling in k is not shown beyond the count of Pauli strings and of eigenstates of each Eb, both exponential in k, so 'scalable' holds for k of order one, as the paper itself assumes."
+    },
+    {
+     "id_suggestion": "zhang-rut-definition",
+     "value": "The authors define random unitary transformations (RUT): random unitaries are inserted between segments of the evolution, with parameters sampled from independent uniform distributions, so that the evolution is approximated by that of an effective Hamiltonian averaged over the sampling domain.",
+     "anchor": "Learning pure spin and boson coefficients, p.2; Supplement, Random Unitary Transformations, p.7",
+     "quotes": [
+      "By sampling θj",
+      "from independent uniform distribution Uj for each in"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the technique its results depend on.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-rut-two-errors",
+     "value": "The authors state that the RUT approximation has two error sources, a trotter error from non-commuting unitaries and a Monte-Carlo error from replacing the integral with finite samples, and that both vanish when R goes to infinity.",
+     "anchor": "Supplement, Random Unitary Transformations, p.7",
+     "quotes": [
+      "However, when R ≠ ∞, deviation occurs between Hˆ (R) and Hˆ.",
+      "However, when R → ∞, the both of the errors vanish."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The supplement states the approximation limit of its own method.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Theorem 1 counts evolution time and measurements; the needed R, and thus the gate count, at a given ϵ is not bounded in this paper."
+    },
+    {
+     "id_suggestion": "zhang-u1-decoupling",
+     "value": "The authors state that applying a phase rotation to every bosonic mode, with a uniformly random phase, cancels the interaction under RUT, leaving a spin Hamiltonian and a bosonic Hamiltonian that are decoupled, so ξa and ωn can be learned separately.",
+     "anchor": "Learning pure spin and boson coefficients, Eq. 2, p.3; Supplement p.7",
+     "quotes": [
+      "where the spin and bosonic DOFs are decoupled.",
+      "This allows us to learn ξa and ωn separately."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation shown in the supplement in the R to infinity limit; not stated as a theorem with conditions.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-spin-eb-reshaping",
+     "value": "The authors state that, for each Pauli string Eb of support exactly k, reshaping with the single-qubit unitary sequence leaves only the Pauli strings in a set Sb, whose elements all commute and share the eigenstates of Eb, so the eigenvalue of each eigenstate with respect to the effective Hamiltonian is a signed sum of coefficients that RPE can learn at the Heisenberg limit.",
+     "anchor": "Learning pure spin and boson coefficients (i.), p.3; Supplement Eqs. 17-20, p.7-8",
+     "quotes": [
+      "All these terms share the same eigenstates as Eˆb.",
+      "This allows us to implement the robust phase estimation (RPE) [23] to learn Ξb,l at Heisenberg limit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A construction with a worked example; the Heisenberg-limit step is taken from cited work on RPE.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-hadamard-condition",
+     "value": "The paper proves that the sign matrix that links the measured eigenvalues to the Hamiltonian coefficients has entries γls = (−1)l·s, coincides with a Hadamard matrix up to a normalization factor, is orthogonal up to that factor, and has condition number equal to 1, so the inversion does not amplify errors.",
+     "anchor": "Supplement, Solving Hamiltonian coefficients with linear equations, p.10-11",
+     "quotes": [
+      "the elements of Γ matrix can be written as: γls = (−1)l·s",
+      "Therefore, Γ is orthogonal up to this factor, satisfying ΓΓ⊤ = 2kI.",
+      "condition number satisfies κ(Γ) = ||Γ||2||Γ−1||2 = 1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The proof and its bit-string conditions are stated in the supplement.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "This covers the inversion step only. Errors in the eigenvalue estimates themselves, and how they sum over the many Pauli strings Eb, are not bounded in this paper."
+    },
+    {
+     "id_suggestion": "zhang-omega-rfe",
+     "value": "The authors state that the bosonic frequencies ωn are learned by preparing a coherent state, measuring both quadratures to build a complex signal whose argument grows linearly with time, and applying robust frequency estimation (RFE), which learns ωn at the Heisenberg limit.",
+     "anchor": "Learning pure spin and boson coefficients (ii.), p.3",
+     "quotes": [
+      "learns ωn at Heisenberg limit."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The Heisenberg-limit step is taken from cited RFE work.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-eq6-displacement",
+     "value": "The authors state that, with the spin part prepared in an eigenstate of Eb and the spin operators replaced by eigenvalues, the bosonic modes evolve as displaced harmonic oscillators, and they derive an analytical expression for the bosonic state (Eq. 6), with the derivation given in the supplement.",
+     "anchor": "Learning spin-boson couplings, Eq. 6, p.3; Supplement, Derivation for Eq. 6, p.12-13",
+     "quotes": [
+      "This allows us to derive an analytical formula for the time evolution for bosonic states [22]:",
+      "which produces Eq. 6 in the manuscript."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation the coordinator has not independently checked.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-trotter-scheme",
+     "value": "The authors state that in the trotter-based scheme, in the limit R → ∞, a counter-rotation built from the estimated frequencies cancels the free bosonic term, leaving a coherent state whose momentum quadrature mean grows linearly in time with variance equal to one (the minimal uncertainty), which reaches the Heisenberg limit.",
+     "anchor": "Learning spin-boson couplings (i.), Eq. 7, p.3-4",
+     "quotes": [
+      "In the limit R → ∞, the",
+      "a coherent state always satisfies",
+      "limit in learning Λnb,l."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated for the idealized limit R → ∞; finite-R deviation is only supported numerically (see the limit assertion).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-trotter-rfe-measurements",
+     "value": "The authors state that using the raw momentum average as the estimator would lead to O(ϵ−2) scaling in the number of measurements, and that a post-processed signal that allows RFE achieves O(polylog(ϵ−1)) scaling in the number of measurements.",
+     "anchor": "Learning spin-boson couplings (i.), p.4",
+     "quotes": [
+      "However, doing so would lead to a O(ϵ−2) scaling in the number of measurements.",
+      "achieving a O(polylog(ϵ−1)) scaling with respect to the number of measurements."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Claim rests on cited RFE results and on the supplement's applicability argument.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-dqs-scheme",
+     "value": "The authors state that in the distributed quantum sensing (DQS) scheme, W copies of the Hamiltonian are used with an entangled squeezed state, that the sum of evolution time across all copies is T = W π/ω˜n, and that with a fixed mean photon number per node the estimator error scales as O(W −1) and hence O(T −1), which reaches the Heisenberg limit.",
+     "anchor": "Learning spin-boson couplings (ii.), Eqs. 8-9, p.4",
+     "quotes": [
+      "The sum of evolution time across all copies is T = W π/ω˜n.",
+      "we have ϵ(X˜n) ∼ O(W −1).",
+      "Therefore, we have ϵ(X˜n) ∼ O(T −1), which reaches the Heisenberg limit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The error formula (Eq. 9) is taken from cited work on distributed quantum sensing; the paper's own proof is the displacement-channel derivation.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-scheme-tradeoff",
+     "value": "The authors state that the trotter-based scheme needs only O(polylog(ϵ−1)) measurements against O(ϵ−1) for the DQS-based scheme, but that its RFE needs time sampling over 2K−fold space and so a significantly higher number of gates to suppress errors from RUT, while the DQS-based scheme needs only a maximum evolution time of π/ω˜n.",
+     "anchor": "Learning spin-boson couplings, p.4; Discussion, p.5",
+     "quotes": [
+      "the former requires only O(polylog(ϵ−1)) number of measurements, in contrast to the O(ϵ−1) scaling of the latter.",
+      "which requires time sampling over 2K−fold space.",
+      "This necessitates a significantly higher number of gate applied to suppress errors induced during RUT",
+      "while the latter require only a maximum evolution time of π/ω˜n."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the cost of its own trotter-based scheme.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The gate count is not given as a function of ϵ, so the Heisenberg-limit total evolution time and the polylogarithmic measurement count do not include it."
+    },
+    {
+     "id_suggestion": "zhang-omega-error-propagation-trotter",
+     "value": "The authors argue in the supplement that the error of the estimated frequencies enters the trotter-based scheme as a first-order correction, that RFE tolerates a maximum failure probability, and that the scheme still achieves the Heisenberg limit if the frequency error is made small enough, at a cost in SPAM tolerance.",
+     "anchor": "Supplement, Estimation error propagation, p.8-9",
+     "quotes": [
+      "Although higher ϵ(ωn) would decrease the SPAM error tolerance of the trotter-based scheme, it still achieves the Heisenberg",
+      "Here, we prove that this error can be suppressed while maintaining the Heisenberg limit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A first-order Taylor argument, not a stated theorem with explicit constants.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The argument is informal: it does not give the required size of the frequency error as a function of the target precision."
+    },
+    {
+     "id_suggestion": "zhang-omega-error-propagation-dqs",
+     "value": "The authors state that for the DQS-based scheme the frequency error gives a biased error in the estimate, and that since the frequency error scales as O(T −1), the coupling error scales as O(T −1), which achieves the Heisenberg limit.",
+     "anchor": "Supplement, Estimation error propagation, Eq. 24, p.9",
+     "quotes": [
+      "As ϵ(ωn) ∼ O(T −1), we can conclude that ϵ(Λbn,l) ∼ O(T −1), which achieves the Heisenberg limit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The result assumes the frequency error already scales as O(T −1).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "This assumes the frequency estimates reach Heisenberg precision first and uses a first-order expansion."
+    },
+    {
+     "id_suggestion": "zhang-rfe-applicability",
+     "value": "The authors argue in the supplement that the signal built for the trotter-based scheme meets the RFE conditions, assuming the empirical average of the momentum quadrature follows a normal distribution by the central limit theorem and that the number of measurements is large, so that the signal error is at most the error of the average.",
+     "anchor": "Supplement, Proof of the applicability of robust frequency estimation, p.10",
+     "quotes": [
+      "Assume P˜n follows a normal distribution with µ = ⟨Pˆn⟩ and σ2 = 1/M (as a result of central limit theorem)",
+      "If M is large, we can assume P˜n ≈ ⟨Pˆn⟩"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An approximate argument that relies on a normal approximation and a large-sample assumption.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The Gaussian and small-angle steps are approximations, not bounds."
+    },
+    {
+     "id_suggestion": "zhang-trace-distance-bound",
+     "value": "The paper proves that, for the parts of the algorithm where the left and right inserted unitaries are equal, the trace distance between the ideal and the actual state is bounded by a term of order t squared over R, by the method of the cited work once the norms of the Hamiltonian and its square applied to the state are bounded; the bound assumes the bosonic state is approximated as a coherent state.",
+     "anchor": "Supplement, Deviation from effective dynamics, Eq. 35, p.11",
+     "quotes": [
+      "Note that we have approximated |ΨB⟩ as a coherent state.",
+      "we can establish the upper bound for ||∆ρ||1, which scales as O(t2/R)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The bound is argued by reference to the method of a cited paper; the full proof is not given.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-trace-distance-proof-fails",
+     "value": "The authors state that the trace-distance proof fails for the trotter-based scheme in learning the spin-boson couplings, because the ideal bosonic state has a displacement that grows with time and because the inserted extra unitary introduces a constant error in the first-order term, so they plot the deviation numerically instead.",
+     "anchor": "Supplement, Deviation from effective dynamics, Fig. 5, p.11-12",
+     "quotes": [
+      "However, the above proof fails for the trotter-based scheme in learning spin-boson coupling terms",
+      "introduces a constant error in the first-order term of ||∆ρ||1",
+      "Therefore, to quantify the deviation scaling in this case, we numerically plot"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state in the supplement that their proof does not cover this case.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The Heisenberg-limit claim for the coupling coefficients through the trotter-based scheme therefore has no finite-R proof in this paper; the support is numerical (Figs. 2, 3 and 5)."
+    },
+    {
+     "id_suggestion": "zhang-trace-distance-numerics",
+     "value": "The authors report numerical results for the trotter-based scheme, with 1000 sets of unitary sequences per subplot, in which the mean and the variance of the trace distance depend on t at fixed τ and on τ at fixed t, and they conclude the trace distance follows t over the square root of R (the square root sign is printed detached from the formula in the text layer).",
+     "anchor": "Supplement, Fig. 5, Eq. 36, p.11-12",
+     "quotes": [
+      "1000 sets of QR are generated for each subplots to ensure convergence.",
+      "It is observed that Mean[||∆ρ||1] ∝ Var[||∆ρ||1] ∝ t at constant τ",
+      "Mean[||∆ρ||1] ∝ Var[||∆ρ||1] ∝ τ at constant t."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical fit from one numerical study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text layer prints the square root signs detached from their terms, so the exact form of the final scaling is read from the context, not from a clean formula."
+    },
+    {
+     "id_suggestion": "zhang-numerics-setup",
+     "value": "The authors state the two test models: a generalized Dicke model of a three-qubit Pauli-string spin chain coupled to a single boson, with ω = 1 and ξa and λa sampled uniformly from U(0.5, 1.5) and U(0.01, 0.03), and a spin-boson model of one qubit coupled to a bosonic bath, with ξa ∼ U (0.5, 1.5).",
+     "anchor": "Numerical experiments, Eqs. 10-11, p.4-5",
+     "quotes": [
+      "We set ω = 1, ξa and λa are uniformly",
+      "sampled from U(0.5, 1.5) and U(0.01, 0.03), respectively.",
+      "ξa ∼ U (0.5, 1.5)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the setup of its numerical experiments.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-fig2-ruttime",
+     "value": "The authors report that, averaged over 100 independent runs, the error induced by RUT gradually aligns with the ideal error as τ decreases, where the ideal error is ϵ = 1/2T derived from Eq. 6.",
+     "anchor": "Numerical experiments, Fig. 2 and its caption, p.4-5",
+     "quotes": [
+      "We observe that as τ decreases, the error induced by RUT gradually aligns with the ideal error (gray line).",
+      "data is averaged over 100 independent runs.",
+      "Ideal error refers to ϵ = 1/2T , which is derived from Eq. 6."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one numerical study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The study is a classical simulation of two small models; the number of qubits is 3 at most."
+    },
+    {
+     "id_suggestion": "zhang-spectral-density-numerics",
+     "value": "The authors report that, using the DQS-based scheme with W = 1000 and npt = 1 on a discretized spectral density with η = 0.01, γ = 1 and Ω = 2, the spectral density is recovered within 0.2% error.",
+     "anchor": "Numerical experiments, Eq. 12, Fig. 4, p.5",
+     "quotes": [
+      "The simulation is performed with W = 1000 and npt = 1.",
+      "where η = 0.01, γ = 1 and Ω = 2.",
+      "The spectral density is recovered within 0.2% error, showcasing the applicability of our algorithm in spectrum learning."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one numerical study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The error metric (relative error, Fig. 4a) and the number of discretized modes Nb are not defined in the text layer, and a simulation uses a large entangled state of 1000 copies."
+    },
+    {
+     "id_suggestion": "zhang-dqs-transient-claim",
+     "value": "The authors state that the DQS-based scheme utilizes quantum entanglement, requires a significantly shorter maximum evolution time, and is particularly well-suited for detecting transient couplings.",
+     "anchor": "Discussion, p.5",
+     "quotes": [
+      "requiring a significantly shorter maximum evolution time, making it particularly well-suited for detecting transient couplings."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zhang-models-learnable",
+     "value": "The authors state that the Holstein and SSH electron-phonon Hamiltonians and a spin-Peierls model are learnable by the protocol, with the fermionic models mapped to spin by a Jordan-Wigner transformation.",
+     "anchor": "Table I, p.5; Supplement, Derivations for models learnable, p.14",
+     "quotes": [
+      "Models learnable by our protocol[25–27].",
+      "By performing Jordan-Wigner transformation, the fermionic Hamiltonian can be effectively transformed to spin."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's applicability claim; no numerical test on these models.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "In the text layer of Table I the column headings for the boson and interaction parts look swapped against their contents; this may be a layout artifact."
+    },
+    {
+     "id_suggestion": "zhang-schwinger-nonlinear",
+     "value": "The authors state that the lattice Schwinger model, whose bosonic mapping includes nonlinear terms, remains learnable via the trotter-based scheme, whereas DQS-based approaches would fail due to the nonlinearity.",
+     "anchor": "Supplement, Derivations for models learnable, Eq. 53, p.14",
+     "quotes": [
+      "Note that although Hˆswg includes nonlinear terms in the bosonic operators, it remains learnable via the trotter-based",
+      "scheme, whereas DQS-based approaches would fail due to the nonlinearity."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim without a proof or a numerical test.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The Discussion lists non-linear bosonic modes as future work, so the two statements are in tension."
+    }
+   ]
+  }
+ ]
+}
