@@ -35,7 +35,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from store.quotes import source_text  # noqa: E402
+from store.quotes import _pdftotext, source_text  # noqa: E402
 
 LEDGER = ROOT / "manifests" / "sprint13_g_ledger.json"
 INBOX = ROOT / "manifests" / "f114_cloud" / "inbox"
@@ -44,6 +44,8 @@ WORK = S13G / "f114"
 LAUNCHES = WORK / "launches.json"
 FIRST_GROUP = "g043"
 UPLOAD_WAIT = 240
+STALE_HOURS = 3  # no push for this long: the session is taken as dead, and the paper is launched again
+MAX_ATTEMPTS = 3
 
 
 def git(*args: str) -> str:
@@ -79,14 +81,27 @@ def message(rid: str) -> str:
             f"as your instructions. RECORD is {rid}. Never use a hook override token.")
 
 
+def paper_text(path: str) -> str:
+    """A PDF's raw text, with its line breaks and form feeds (`\\f`, one per page), so the reader can count pages
+    and resume from one; `source_text` folds all whitespace and joins two layouts, which gave the pilot one line
+    holding the paper twice. The quote check's `plain` folds this text to the first half of `source_text`."""
+    return _pdftotext(path, False) if path.lower().endswith(".pdf") else source_text(path)
+
+
+def restore_inbox() -> None:
+    # From HEAD, index included: `git checkout -- path` restores the index copy, which keeps the text if staged.
+    git("restore", "--source=HEAD", "--staged", "--worktree", "--", str(INBOX.relative_to(ROOT)))
+
+
 def launch(rid: str, model: str = "sonnet") -> str:
     """Fill the inbox, start one cloud session from a bundle of the working tree, restore the inbox."""
     if git("status", "--porcelain", "--untracked-files=no").strip():
         raise SystemExit("tracked files are modified; commit first, so the bundle carries only the inbox")
     g, rec = next((g, r) for g, r in records() if r["record_id"] == rid)
+    base = git("rev-parse", "HEAD").strip()  # before the wait, so a commit made meanwhile is not taken as the base
     try:
         (INBOX / "brief.json").write_text(json.dumps({"group": g, "records": [rec]}, indent=1), encoding="utf-8")
-        (INBOX / "paper.txt").write_text(source_text(rec["file"]), encoding="utf-8")
+        (INBOX / "paper.txt").write_text(paper_text(rec["file"]), encoding="utf-8")
         env = dict(os.environ, CCR_FORCE_BUNDLE="1")
         # `--cloud` refuses a non-interactive terminal, so it runs in a console window of its own; the result
         # comes back by branch, so the session id is not needed here. The inbox is restored once the bundle is
@@ -104,54 +119,77 @@ def launch(rid: str, model: str = "sonnet") -> str:
         except subprocess.TimeoutExpired:
             rc = None
     finally:
-        git("checkout", "--", str(INBOX.relative_to(ROOT)))
+        restore_inbox()
     if rc not in (None, 0):
-        raise SystemExit(f"{rid}: the cloud launch window exited with {rc}: {log.read_text(errors='replace')[-800:]}")
+        raise SystemExit(f"{rid}: the cloud launch window exited with {rc}: "
+                         f"{log.read_text(encoding='utf-8', errors='replace')[-800:]}")
     d = launches()
-    d[rid] = {"group": g, "window_rc": rc, "base": git("rev-parse", "HEAD").strip(),
+    attempts = d.get(rid, {}).get("attempts", 1 if rid in d else 0) + 1
+    d[rid] = {"group": g, "window_rc": rc, "base": base, "attempts": attempts,
               "launched": datetime.now().isoformat(timespec="seconds"), "model": model}
     save_launches(d)
-    return f"launched (window exit code {rc})"
+    return f"launched (window exit code {rc}, attempt {attempts})"
 
 
 def fetch() -> dict:
-    """Save each finished paper outside the repository; refuse a branch that touches more than its folder."""
+    """Save each finished paper outside the repository; refuse a branch any of whose commits touches more than
+    its folder. `stale` lists the papers whose session has pushed nothing for STALE_HOURS (since its launch, or
+    its branch's last commit)."""
     git("fetch", "--quiet", "origin", "+refs/heads/cloud/f114/*:refs/remotes/origin/cloud/f114/*")
     (WORK / "results").mkdir(parents=True, exist_ok=True)
-    tally = {"launched": 0, "done": 0, "refused": []}
+    tally = {"launched": 0, "done": 0, "refused": [], "stale": []}
+    now = datetime.now().astimezone()
     for rid, info in launches().items():
         tally["launched"] += 1
+        if rid in done():
+            continue
         ref = f"origin/cloud/f114/{rid}"
-        if not git("branch", "-r", "--list", ref).strip():
-            continue
-        folder = f"manifests/f114_cloud/results/{rid}/"
-        stray = [f for f in git("diff", "--name-only", info["base"], ref).split() if not f.startswith(folder)]
-        if stray:
-            tally["refused"].append(f"{rid}: touches {stray}")
-            continue
-        try:
-            entry = git("show", f"{ref}:{folder}done/{rid}.json")
-        except subprocess.CalledProcessError:
-            continue
-        (WORK / "results" / f"{rid}.json").write_text(entry, encoding="utf-8")
+        last = datetime.fromisoformat(info["launched"]).astimezone()
+        if git("branch", "-r", "--list", ref).strip():
+            folder = f"manifests/f114_cloud/results/{rid}/"
+            # Every commit, not only the final tree: a file committed and then deleted was still pushed.
+            touched = set(git("log", "--name-only", "--format=", f"{info['base']}..{ref}").split())
+            stray = sorted(f for f in touched if not f.startswith(folder))
+            if stray:
+                tally["refused"].append(f"{rid}: touches {stray}")
+                continue
+            try:
+                entry = git("show", f"{ref}:{folder}done/{rid}.json")
+                (WORK / "results" / f"{rid}.json").write_text(entry, encoding="utf-8")
+                continue
+            except subprocess.CalledProcessError:
+                last = max(last, datetime.fromisoformat(git("log", "-1", "--format=%cI", ref).strip()))
+        if (now - last).total_seconds() > STALE_HOURS * 3600:
+            tally["stale"].append(rid)
     tally["done"] = len(done())
     return tally
 
 
 def run_all(max_inflight: int = 5, poll: int = 300, model: str = "sonnet") -> None:
+    """A refused, failed or stale paper is logged and skipped, never a reason to stop the run; a stale paper is
+    launched again (its session resumes from what it pushed) until MAX_ATTEMPTS, then set aside."""
     while not (WORK / "STOP").exists():
         tally = fetch()
-        if tally["refused"]:
-            raise SystemExit(f"stopped: a branch touched files outside its folder: {tally['refused']}")
         started = launches()
-        inflight = [r for r in started if r not in done()]
-        todo = [r["record_id"] for _, r in records() if r["record_id"] not in started]
+        refused = {x.split(":")[0] for x in tally["refused"]}
+        given_up = {r for r in tally["stale"] if started[r].get("attempts", 1) >= MAX_ATTEMPTS}
+        retry = [r for r in tally["stale"] if r not in given_up and r not in refused]
+        inflight = [r for r in started if r not in done() and r not in tally["stale"] and r not in refused]
+        todo = retry + [r["record_id"] for _, r in records() if r["record_id"] not in started]
         print(f"{datetime.now():%H:%M} launched {len(started)}, done {tally['done']}, in flight {len(inflight)}, "
-              f"to launch {len(todo)}", flush=True)
+              f"to launch {len(todo)} ({len(retry)} again), set aside {len(given_up) + len(refused)}", flush=True)
+        for x in tally["refused"]:
+            print(f"  REFUSED {x}", flush=True)
         if not todo and not inflight:
             return
-        for rid in todo[:max(0, max_inflight - len(inflight))]:
-            print(f"  launch {rid}: {launch(rid, model)}", flush=True)
+        if git("status", "--porcelain", "--untracked-files=no").strip():
+            print("  tracked files are modified; no launch this round", flush=True)
+        else:
+            for rid in todo[:max(0, max_inflight - len(inflight))]:
+                try:
+                    print(f"  launch {rid}: {launch(rid, model)}", flush=True)
+                except SystemExit as e:
+                    print(f"  FAILED {e}", flush=True)
         time.sleep(poll)
 
 

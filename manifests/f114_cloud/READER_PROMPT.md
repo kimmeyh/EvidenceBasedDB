@@ -27,15 +27,27 @@ given in your launch message as RECORD.
 ## First, before anything else
 
 1. Run `mkdir -p /tmp/f114 && cp manifests/f114_cloud/inbox/brief.json manifests/f114_cloud/inbox/paper.txt /tmp/f114/`.
-2. Run `git checkout -- manifests/f114_cloud/inbox/`. The paper's text must
-   never be committed or pushed: it is not ours to publish. From here on
-   you read only `/tmp/f114/paper.txt` and `/tmp/f114/brief.json`.
-3. Run `git checkout -b cloud/f114/RECORD` (RECORD filled in).
-4. Run `git remote add origin https://github.com/kimmeyh/evidencebaseddb || git remote set-url origin https://github.com/kimmeyh/evidencebaseddb`.
+2. Run `git restore --source=HEAD --staged --worktree -- manifests/f114_cloud/inbox/`.
+   The paper's text must never be committed or pushed: it is not ours to
+   publish. From here on you read only `/tmp/f114/paper.txt` and
+   `/tmp/f114/brief.json`. Then run `git status --short` and
+   `git diff --cached --name-only`: both must print nothing. If either
+   prints anything, stop and reply with what it printed.
+   Check the inbox you copied: `/tmp/f114/brief.json` must list exactly
+   one record, whose `record_id` is RECORD, and `/tmp/f114/paper.txt` must
+   hold the paper, not a one-line placeholder. If either is wrong, stop
+   and reply with what you found; never read a paper other than RECORD.
+3. Run `git remote add origin https://github.com/kimmeyh/evidencebaseddb || git remote set-url origin https://github.com/kimmeyh/evidencebaseddb`.
    This copy of the repository came without a remote, and every push below
    needs one. Keep the URL in lower case exactly as written: the pilot's
    push was refused with the repository name in mixed case, and accepted
    with it in lower case.
+4. Make your branch (RECORD filled in). If
+   `git ls-remote origin refs/heads/cloud/f114/RECORD` prints a line, an
+   earlier session already pushed it: run
+   `git fetch origin cloud/f114/RECORD && git checkout -b cloud/f114/RECORD FETCH_HEAD`
+   and resume from it (step 1 of "Progress and restart"). Otherwise run
+   `git checkout -b cloud/f114/RECORD`.
 
 The brief lists your paper (record id and the coordinator's local file
 path) and the assertions the store already holds from it. Read ONLY that
@@ -81,12 +93,14 @@ folder is `manifests/f114_cloud/results/RECORD/`.
    `partial/RECORD.json` (the paper's entry so far, in the shape below)
    and `progress.json`:
    `{"record_id": "...", "pages": 0, "last_page_read": 0, "note": "what is next"}`,
-   then commit ONLY your folder (`git add manifests/f114_cloud/results/RECORD/`)
+   then commit ONLY your folder (`git add manifests/f114_cloud/results/RECORD/`
+   and `git commit -m "..." -- manifests/f114_cloud/results/RECORD/`, so the
+   commit holds that folder even if something else were staged)
    and `git push -u origin cloud/f114/RECORD`.
 3. **When the paper is finished**, write `done/RECORD.json` as
    `{"papers": [<the paper's entry>]}`, run the check (below) on it with
    `--partial` until it prints "0 problems", delete the `partial/` file,
-   commit ONLY your folder, and push.
+   commit ONLY your folder (the same two commands), and push.
 
 Never `git add -A`, `git add .` or `git commit -a`: only your folder is
 ever staged. Never open a pull request and never merge.

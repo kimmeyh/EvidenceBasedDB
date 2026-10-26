@@ -345,6 +345,17 @@ this project keeps having to replace with a step.
   quotes against the given text. Tests proven red by injection
   (`tests/test_f114_cloud.py`; the restart-phrase check in
   `tests/test_reader_prompts.py` now compares "\" and "/" alike) (Issue #138)
+- **fix**: F114 after the pilot and its review (2026-10-26). The pilot read
+  wierichs-2022-general-parameter-shift-rules-quantum in full, and its result
+  passed the check against the PDF. Fixes: the session adds the GitHub
+  remote before pushing (a bundled session has none); `fetch` reads git as
+  UTF-8 (the Windows code page garbled 12 quotes); the paper goes as raw
+  text with its page breaks, not one folded line holding it twice; the
+  inbox is restored from HEAD, index included, and the session commits only
+  its folder by pathspec and checks it was given RECORD; `fetch` checks
+  every pushed commit, not only the final tree; a session silent for 3
+  hours is launched again (3 attempts at most), and a refused or failed
+  paper is set aside instead of stopping the run (Issue #138)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

@@ -22,6 +22,18 @@ def test_the_inbox_placeholders_are_empty():
     assert text.startswith("Placeholder.") and len(text.splitlines()) == 1, "the inbox holds a paper's text"
 
 
+def test_the_reader_prompt_keeps_the_text_out_of_every_commit():
+    """Review of the F114 launcher (2026-10-26): `git checkout -- inbox` restores the index copy, so a staged
+    text survived it; a plain commit takes whatever is staged; and a session given the wrong inbox read the wrong
+    paper. Proven to fail, 2026-10-26: with the prompt's restore line put back to `git checkout --`, the test went
+    red; the same with the commit pathspec removed."""
+    prompt = (ROOT / "manifests" / "f114_cloud" / "READER_PROMPT.md").read_text(encoding="utf-8")
+    assert "git restore --source=HEAD --staged --worktree -- manifests/f114_cloud/inbox/" in prompt
+    assert "git checkout -- manifests/f114_cloud/inbox/" not in prompt
+    assert 'git commit -m "..." -- manifests/f114_cloud/results/RECORD/' in prompt
+    assert "git diff --cached --name-only" in prompt and "whose `record_id` is RECORD" in prompt
+
+
 def _check(tmp_path: Path, quote: str) -> subprocess.CompletedProcess:
     paper = tmp_path / "paper.txt"
     paper.write_text("The authors prove that the bound holds for every n at least two.\f", encoding="utf-8")
