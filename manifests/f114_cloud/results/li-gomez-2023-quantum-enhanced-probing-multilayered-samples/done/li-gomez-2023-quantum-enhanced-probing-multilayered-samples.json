@@ -1,0 +1,730 @@
+{
+ "papers": [
+  {
+   "record_id": "li-gomez-2023-quantum-enhanced-probing-multilayered-samples",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Li-Gomez-et-al._2022_Quantum-enhanced-probing-of-multilayered-samples__2212.12960.pdf",
+   "title_in_file": "Quantum enhanced probing of multilayered-samples",
+   "version_note": "arXiv:2212.12960v2, 12 May 2023 (dated 15 May 2023); the file name says 2022 for the v1 year.",
+   "pages": 13,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A quantum sensing paper that models Quantum Optical Coherence Tomography of multilayer samples (including echoes and artifacts) and fits the sample morphology from measured interferograms with a classical genetic algorithm.",
+   "bears_on_context": "",
+   "why_not": "The paper is about quantum sensing (QOCT with SPDC photon pairs) and uses a classical genetic algorithm as a curve-fitting tool; it has no quantum machine learning, quantum computing workload, finance or evaluation-method content.",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "qoct-resolution-and-dispersion",
+     "value": "The authors state that, compared with its classical counterpart, QOCT offers higher axial image resolution by a factor of 2 and immunity to even-order dispersion effects, the latter ensured by strict frequency anti-correlation.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "Compared to its classical counterpart, QOCT oﬀers higher image (axial) resolution by a factor of 2 and provides immunity to even-order dispersion eﬀects, the latter ensured by strict frequency anti-correlation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general statement of QOCT properties in the introduction, supported by citation to earlier work, not by a result of this paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qoct-artifacts-limitation",
+     "value": "The authors state that the practicality of QOCT is often hampered by long acquisition times and by artifacts, which are fake peaks or dips in the coincidence interferogram that corrupt the QOCT signal, and that the difficulty grows with the number of interfaces.",
+     "anchor": "Section I, pp.1-2",
+     "quotes": [
+      "the vast practicality of QOCT is often hampered by long acquisition times and the problem of artifacts, i.e. fake structures appearing as peaks or dips in the coincidence interferograms",
+      "this diﬃculty becomes increasingly acute as the sample complexity, in terms of the number of interfaces, increases."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limitation of QOCT in its introduction.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "prior-models-two-interface-only",
+     "value": "The authors state that earlier artifact-removal approaches (Fourier-domain and deep-learning methods) rest on a theoretical framework limited to a model of only two interfaces, and that such models disregard additional structures in the interferogram.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "Both artifact removal approaches are based on a theoretical framework that is limited to a model based on only two interfaces",
+      "such models have disregarded the presence of additional structures appearing in the QOCT interferogram"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors characterize other groups' work; this is the authors' claim about prior art.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paper-aims-full-model-and-ga",
+     "value": "The authors state two aims: first a QOCT model that takes into account all observed effects, including multiple reflections (echoes) and cross-interference artifacts involving echoes; second a genetic-algorithm tool that predicts the morphology best fitting an observed interferogram.",
+     "anchor": "Section I, pp.1-2",
+     "quotes": [
+      "we aim ﬁrst to develop a QOCT model which fully takes into account all observed eﬀects, some of which have been neglected in past work.",
+      "we aim secondly at developing a computational tool, based on genetic algorithms, that can predict the morphology which best ﬁts a particular observed QOCT interferogram."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope and aims in Section I.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hom-setup-definition",
+     "value": "The authors describe QOCT as Hong-Ou-Mandel interferometry in which an entangled SPDC photon pair is split, the signal photon traverses a reference path of known length and the idler photon a sample arm reflecting from each interface; each interface produces a HOM dip, a drop in the coincidence count rate, in the coincidence rate C(tau).",
+     "anchor": "Section II.A and Fig. 1, p.2",
+     "quotes": [
+      "The signal photon travels through a reference path of known length, while the idler photon passes through a sample arm which reﬂects light back from each of the multiple interfaces in a sample.",
+      "The HOM interference is characterized by a drop in the coincidence count rate, or HOM dip, of the output joint detection at τ = 0.",
+      "for every interface, a corresponding HOM dip will appear in the coincidence rate signal C(τ )"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the measurement setup and signal in Section II.A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "transfer-matrix-lossless-interface-model",
+     "value": "The authors model the sample with wave-transfer matrices, assuming each dielectric interface is lossless and including loss separately through a loss matrix, with four constraints on the reflection and transmission coefficients; the QOCT signal uses the effective reflection coefficient r_sample = -C/D, giving the sample transfer function H(omega) = -C(omega)/D(omega).",
+     "anchor": "Section II.A, Eqs. (1)-(6), pp.2-3",
+     "quotes": [
+      "Our approach is to assume that each in-",
+      "so that the following four constraints are fulﬁlled: |rkl| = |rlk|, |tkl| = |tlk|, |tkl|2 + |rkl|2 = 1, and tlk/tkl∗ = −rlk/rkl∗.",
+      "we use the eﬀective reﬂection coeﬃcient given by rsample = −C/D."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its model and constraints in Section II.A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "weak-dispersion-approximation",
+     "value": "The authors state that for materials that are not highly dispersive, the phase may be approximated as phi_k = omega tau_k, where tau_k is the optical thickness in time units.",
+     "anchor": "Section II.A, p.3",
+     "quotes": [
+      "For materials that are not highly dispersive, i.e. which fulﬁll"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the regime of the approximation. The tail of the condition and the approximation are split across lines by the text layer, so the quote holds the regime clause only.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-layer-echo-expansion",
+     "value": "The authors derive for a single layer (two interfaces) in air a sample transfer function whose series expansion has a direct reflection term at zero delay, a term at delay T, and a term at twice that delay that acts as a virtual interface (an echo) at twice the layer separation, where T is the round trip time through the layer.",
+     "anchor": "Section II.A, Eq. (7), p.3",
+     "quotes": [
+      "This corresponds to the lowest-order multiple reﬂection, and leads to a term that behaves as a virtual interface at twice the distance from interface 1 as the separation between the two interfaces.",
+      "We refer to such signals due to multiple reﬂections as echoes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A derivation within the paper's own model (Eq. 7); the quoted statements give the echo interpretation.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "echo-induced-artifact-types",
+     "value": "The authors state that, in addition to cross interference between interfaces, echo-induced artifacts arise from cross interference between an echo and an interface and between two echoes, and that multiple terms can co-exist at a given delay.",
+     "anchor": "Section II.A, p.3",
+     "quotes": [
+      "echo-induced artifacts can originate from cross interference between an echo and an interface, as well as between two echoes.",
+      "multiple terms can co-exist at a given delay value."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from the paper's own model expansion in Section II.A, stated there.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "spdc-state-and-jsi-gaussian",
+     "value": "The authors take the SPDC two-photon state as a vacuum term plus an eta-weighted double integral of the joint spectral amplitude f(omega1, omega2), assume f symmetric, and approximate the joint spectral intensity as a Gaussian with bandwidth Omega_a along the antidiagonal and Omega_d along the diagonal.",
+     "anchor": "Section II.B, Eqs. (8), (12), pp.3-4",
+     "quotes": [
+      "is the joint spectral amplitude, assumed henceforth to be symmetric",
+      "which can be",
+      "where Ωa (Ωd) is the bandwidth along the antidiagonal (diagonal) in {ω1, ω2} frequency space."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the assumptions of its model in Section II.B.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bandwidth-control-knobs",
+     "value": "The authors state that the antidiagonal bandwidth Omega_a may be controlled experimentally through a bandpass filter applied to the photon pairs, and the diagonal bandwidth Omega_d through the pump bandwidth.",
+     "anchor": "Section II.B, p.4",
+     "quotes": [
+      "while Ωa may be experimentally controlled through a bandpass ﬁlter applied to the photon pairs, Ωd may be controlled by the pump bandwidth."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Statement of the paper's own setup parameters.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cw-interferogram-full-expression",
+     "value": "The authors obtain a closed-form single-layer interferogram as a sum of dips with visibilities V_k (interfaces and echoes) and cross-term visibilities V_kl that carry a cosine factor cos[omega0 (l - k) T]; the single-layer CW simulation (cT = 200 micrometres) shows dips V0, V1, the first echo V2 and cross-terms V01, V02, V12.",
+     "anchor": "Section II.B, Eqs. (13)-(15), Fig. 2, p.4",
+     "quotes": [
+      "The interferogram obtained in the CW case shows the two dips associated with the boundaries V0, V1, the ﬁrst echo V2 and three cross-terms V01, V02, V12",
+      "where we have assumed cT = 200µm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Analytic result of the paper's model, with simulation in Fig. 2; the equations themselves are not carried by the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-pump-suppresses-artifacts",
+     "value": "The authors state that when T is much larger than tau_d (a femtosecond-pulse pump), the cross terms V_kl vanish, so that artifacts disappear from the interferogram while the echo (labelled V2) remains.",
+     "anchor": "Section II.B, Eq. (16), Fig. 2, pp.4-5",
+     "quotes": [
+      "for T τd, the artifacts disappear",
+      "The remaining dip labeled by V2 represents"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Limit of the paper's own model in Eqs. (13)-(16); the inequality symbol is lost by the text layer, so its direction is read from the text around it (femtosecond pulsed pump).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "echoes-survive-pulsed-pump",
+     "value": "The authors state that for a two-layer (three-interface) sample the QOCT signal shows echoes from multiple reflections that cannot be suppressed by a broadband pulsed SPDC pump, and that echoes small in a trace may still have large effects on the recovered structure through their artifacts.",
+     "anchor": "Section II.B, Fig. 3, p.5",
+     "quotes": [
+      "note that echoes which may themselves be small",
+      "or imperceptible in a given experimental trace, may lead",
+      "to major eﬀects on the recovered structure of the sample",
+      "the QOCT signal will show echoes due to the multiple",
+      "reﬂections that cannot be suppressed through the use of",
+      "a broadband pulsed SPDC pump."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Result of the paper's numerical model for a two-layer sample (Fig. 3).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ga-motivation-gradient-unsuitable",
+     "value": "The authors state that the interferogram complexity grows with the number of interfaces, so searching the sample parameters is a highly nonlinear problem for which gradient-based optimization is not suitable, and that they therefore use a genetic algorithm.",
+     "anchor": "Section II.C, pp.4-5",
+     "quotes": [
+      "a searching algorithm for this problem represents a highly nonlinear process for",
+      "which gradient-based optimization methods are not suitable.",
+      "For this reason, we have opted to apply a genetic algorithm."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author justification for a method choice; the paper reports no comparison with gradient-based methods.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": "The paper does not test a gradient-based method against the GA."
+    },
+    {
+     "id_suggestion": "ga-fitness-function-definition",
+     "value": "The authors define the fitness function as the mean absolute error between the measured interferogram C_exp(tau) and the retrieved interferogram C_ret(tau; parameters).",
+     "anchor": "Section II.C, p.6",
+     "quotes": [
+      "which in our case is deﬁned as the mean absolute error calculated between the measured QOCT interferogram, Cexp(τ ), and the retrieved interferogram Cret(τ ; parameters)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its fitness function in Section II.C.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ga-parameter-count-6n-minus-5",
+     "value": "The authors state that for a sample with N interfaces there are 4N - 3 effective real-valued interface parameters plus 2(N - 1) for the optical distance and loss of the N - 1 transmissive segments, for a total of 6N - 5 effective real-valued parameters.",
+     "anchor": "Section II.C and Supplemental Material, p.6 and p.12",
+     "quotes": [
+      "we have 4N − 3 eﬀective real-valued parameters where for each of the N − 1 transmissive segments we have one optical distance and one loss parameter.",
+      "yielding a total 4N − 3 + 2(N − 1) = 6N − 5 eﬀective real-valued parameters",
+      "This leaves 4 eﬀective real-valued parameters per interface."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Parameter counting from the paper's own model in Section II.C and the Supplemental Material.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ga-configuration-and-runtime",
+     "value": "The authors report that the genetic algorithm was scripted in Matlab with the Global Optimization toolbox, used a population of 300 individuals with around 50 generations depending on problem complexity, and typically converged in 3 to 10 minutes.",
+     "anchor": "Section II.C, p.6",
+     "quotes": [
+      "Our algorithm was scripted in Matlab, using the Global Optimization toolbox which takes advantage of parallel computation.",
+      "We use a population size of 300 individuals, with around 50 generations, depending on the complexity of the problem.",
+      "Convergence to a solution is typically achieved in a time between 3 and 10 minutes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical report of the authors' own runs; hardware is not stated.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "experiment-source-and-detection-setup",
+     "value": "The authors report a setup with a tunable CW laser (Moglabs LDL, initially 404.5 nm at 60 mW, 200 kHz linewidth) pumping a 2-mm type-I BBO crystal, a 40 nm bandpass filter centred at 800 nm, fibre-coupled signal and idler arms, a 50:50 beamsplitter, avalanche photodiodes and a 2 ns coincidence window, with the reference mirror translated in 1 micrometre steps.",
+     "anchor": "Section III.A, pp.6-7; Section IV, p.10",
+     "quotes": [
+      "a tunable continuous-wave (CW) laser",
+      "(Moglabs LDL) is used to pump a 2-mm long β-Barium Borate (BBO) nonlinear crystal.",
+      "The laser is initially centered at λ0 = 404.5 nm and set to a power of 60 mW.",
+      "spectrally ﬁltered by a 40 nm bandpass ﬁlter (BPF) centered at 800 nm",
+      "with a 2 ns coincidence window.",
+      "translating the reference mirror in 1 µm steps",
+      "(the linewidth of our pump laser is 200kHz)",
+      "recombined at the 50:50 beamsplitter (BS)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup in Section III.A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "experiment-samples-gold-coated-glass",
+     "value": "The authors report samples of glass substrates (refractive index 1.52 at 800 nm) with electron-beam-deposited gold films: a two-interface sample of about 180 micrometres thick glass with 8 nm and 50 nm coatings (R01 = 0.36, R10 = 0.34, R12 = 0.95), and a sample of two pressed glass substrates of about 200 micrometres treated as four interfaces because of an air gap, with the last interface at R34 = 0.95.",
+     "anchor": "Section III.A, p.7",
+     "quotes": [
+      "index of refraction n = 1.52 at 800 nm",
+      "The two-interface sample is a ∼ 180 µm-thick glass substrate with coatings of thicknesses 8 nm and 50 nm",
+      "R01 = 0.36, R10 = 0.34 (air-glass), and R12 = 0.95 (glass-air).",
+      "The presence of the air gap implies that the sample is well described by four interfaces",
+      "two independent ∼ 200 µm glass substrates"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own sample design in Section III.A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nominal-reflectivity-uncertainty",
+     "value": "The authors state that gold thicknesses are estimated from deposition settings within a tolerance of 0.5 nm, and that the associated reflectivity error computed with Fresnel equations and thin-film theory is less than 4.3%.",
+     "anchor": "Section III.A, p.7",
+     "quotes": [
+      "within a tolerance of 0.5 nm.",
+      "is less than 4.3%."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the uncertainty of its own nominal values.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pump-wavelength-tuning-targets-artifacts",
+     "value": "The authors report that by tuning the pump wavelength so that the cos(m omega0 T) factor of a chosen artifact takes a chosen value, they could generate interferograms of different shapes for the same sample, with the artifact between front and back surfaces flipping between dip and peak; for the two-interface sample, 404.042 nm gave zero artifact amplitude and 404.180 nm gave the largest dip.",
+     "anchor": "Section III.B, Figs. 6-7, p.7",
+     "quotes": [
+      "This means that we can target a speciﬁc artifact by choosing the corresponding cosine function for pump wavelength tuning, see Fig. 6.",
+      "the zero value of the cosine function at λ = 404.042 nm yields an artifact with zero amplitude",
+      "a minimum in the cosine function at λ = 404.180 nm results in the dip with the largest visibility possible"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one set of measurements on one sample.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "three-interface-artifact-overlap",
+     "value": "The authors report that for the multi-layer sample the front-back artifact overlaps the middle-interface dip, so at one pump wavelength the cosine function predicts a suppressed artifact yet the interferogram is not flat, because of the middle interface.",
+     "anchor": "Section III.B, Fig. 7(b), p.7",
+     "quotes": [
+      "the artifact overlaps with the dip corresponding to the middle interface.",
+      "the interferogram for that wavelength is not ﬂat even though the artifact amplitude is zero.",
+      "predicts a suppressed artifact for 404.096 nm"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one measured sample.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ga-layer-count-search-procedure",
+     "value": "The authors describe the GA procedure: starting from a given first reflectivity guess, it assumes N = 1 layer, then increases N and keeps each fitness value as a figure of merit until a minimal fitness value is obtained, taking the N_best whose reconstructed interferogram best matches the experiment; the first N - 1 reflectivities are set at each step as a proof of principle.",
+     "anchor": "Section III.B, p.7-8",
+     "quotes": [
+      "increasing, in each epoch, the number of layers N that the unknown sample could have.",
+      "The procedure is repeated with increasing values of N until a minimal ﬁtness value",
+      "we set the values of the ﬁrst N − 1 reﬂectivities.",
+      "While this is meant as a proof-of-principle demonstration"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own procedure and scope in Section III.B.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ga-fit-assumes-monochromatic-pump",
+     "value": "The authors state that each GA step evaluates the interferogram from the fitting parameters assuming a perfect monochromatic pump (zero pump spectral width) and photon pairs centred around 808 nm with a width of 40 nm.",
+     "anchor": "Section III.B, p.8",
+     "quotes": [
+      "which assumes a perfect monochromatic pump beam, i.e. with a zero SPDC pump spectral width, and that the generated photon pairs are centered around 808 nm with a width of 40 nm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the assumptions of its fit.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The experimental text gives a 800 nm filter centre and a 404.5 nm pump, while the fit assumes 808 nm, consistent with half the pump wavelength for degenerate pairs."
+    },
+    {
+     "id_suggestion": "ga-fit-agreement-and-filtering-caution",
+     "value": "The authors report that the reconstructed interferograms are in excellent agreement with the experimental traces for both samples, and that simply filtering signals that change with pump wavelength could remove structures of real interfaces because the front-back artifact overlaps the middle-surface signal.",
+     "anchor": "Section III.B, Fig. 7, p.8",
+     "quotes": [
+      "the reconstructed interferograms are in excellent agreement with the experimental traces, for both cases.",
+      "simply ﬁltering the signals that change their behavior as the pump wavelength is varied could potentially remove structures associated with real interfaces."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result with no quantitative fit statistic in the text; the fit quality is given by the authors' assessment of Fig. 7.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "No numeric goodness-of-fit value is reported in the text layer."
+    },
+    {
+     "id_suggestion": "ga-single-layer-retrieved-parameters",
+     "value": "The authors report, in Table I, GA-retrieved widths d1 at seven pump wavelengths for the one-layer sample with fixed R01 = 0.310, R10 = 0.290 and gold thickness 7.5 nm, with an average width of 185.213 micrometres and an average R1 of 0.907.",
+     "anchor": "Table I, p.10",
+     "quotes": [
+      "185.213 0.907",
+      "R01 = 0.310, R10 = 0.290, and metal thickness au = 7.5 nm",
+      "The last row is the average of the retrieved widths and reﬂectivities over all realizations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one sample.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ga-two-layer-retrieved-parameters",
+     "value": "The authors report, in Table II, GA-retrieved parameters for the two-layer (four-interface) sample at six pump wavelengths, with fixed R01 = 0.460, R10 = 0.440, R12 = 0.202, R21 = 0.190, R34 = 0.04 and R43 = 0.04 and gold thicknesses 10 nm and 5 nm; the retrieved air-gap width d3 varies across the pump wavelengths.",
+     "anchor": "Table II, p.10",
+     "quotes": [
+      "R01 = 0.460, R10 = 0.440, au,0 = 10 nm (ﬁrst metal layer), R12 = 0.202, R21 = 0.190, au,1 = 5 nm (second metal layer), R34 = 0.04, and R43 = 0.04."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one sample; individual table cells are not all in the quote.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "The text layer's table rows run together, so the range of d3 is read from the row values 0.064 and 3.288 in the table text."
+    },
+    {
+     "id_suggestion": "ga-predicts-distances-airgap-fluctuates",
+     "value": "The authors state that the algorithm predicts the distances well, though with a larger fluctuation for the air-gap thickness, that the recovered last-interface reflectivities are reasonably close to nominal values, and that they ascribe the variations to noise or fluctuations in the system.",
+     "anchor": "Section III.B, p.9",
+     "quotes": [
+      "The algorithm predicts well the distances, al-",
+      "though there is a larger ﬂuctuation in the case of the air gap thickness.",
+      "reasonably close to the nominal values.",
+      "We ascribe the variations observed in the recovered parameters to the presence of noise or ﬂuctuations in the system."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from two samples; the attribution to noise is the authors' interpretation.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "The noise attribution is not tested in the paper."
+    },
+    {
+     "id_suggestion": "ga-given-reflectivities-leave-one-free",
+     "value": "The authors state they gave the algorithm the first-interface reflectivity for the one-layer sample and the first three reflectivities for the two-layer sample, leaving it to find only the last reflectivity.",
+     "anchor": "Section III.B, p.8",
+     "quotes": [
+      "so that in both cases the algorithm is left to ﬁnd a value for the last reﬂectivity."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states which parameters were given and which were fitted.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The retrieval is therefore partly constrained by supplied nominal reflectivities, so it is not a blind recovery of all parameters."
+    },
+    {
+     "id_suggestion": "hom-dip-width-vs-airgap-resolution",
+     "value": "The authors report a HOM dip width of around 11 micrometres, wider than the air gap of about 2 to 3 micrometres, so the two nearly coincident dips cannot be resolved, though the air gap still affects the reflectivities of the adjacent interfaces and thus the dip and artifact visibilities.",
+     "anchor": "Section III.B, p.9",
+     "quotes": [
+      "the width of our HOM dips is around 11µm which is signiﬁcantly wider than the width of the airgap ≈ 2 − 3µm.",
+      "While we cannot resolve two dips separated by such a short distance"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one setup.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "factor-two-and-dispersion-cancellation",
+     "value": "The authors state that their results benefit from the usual factor of 2 axial resolution improvement of QOCT over classical OCT, and from quadratic dispersion cancellation ensured by a narrow-linewidth CW pump (laser linewidth 200 kHz).",
+     "anchor": "Section III.B, pp.9-10",
+     "quotes": [
+      "the experimental results presented in this paper beneﬁt from the usual factor of 2 improvement in axial resolution for QOCT as compared to an equivalent classical apparatus (OCT) [10].",
+      "(the linewidth of our pump laser is 200kHz)",
+      "our experimental results beneﬁt from quadratic dispersion cancellation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim relying on cited work; the paper reports no classical OCT comparison.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper reports no measurement of the factor of 2 or of dispersion cancellation."
+    },
+    {
+     "id_suggestion": "conclusion-model-and-artifact-removal-by-tuning",
+     "value": "The authors conclude that the new model accounts for real interfaces, artifacts, echoes and their superposition; that a given artifact can be removed by tuning the pump frequency to extinguish its visibility; and that echoes survive that process.",
+     "anchor": "Section IV, p.10",
+     "quotes": [
+      "We have presented a new, more complete model for Quantum Optical Coherence Tomography (QOCT)",
+      "a given artifact can be eﬀectively removed from the signal by tuning the pump frequency and consequently shaping its visibility to extinction.",
+      "Echoes, on the other hand, survive the process"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper's conclusion, resting on experiments on two samples.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-artifact-removal-risk",
+     "value": "The authors state that solely removing peaks or dips from the interferogram can be naive because the sample morphology is generally unknown and artifact removal risks information loss.",
+     "anchor": "Section IV, p.10",
+     "quotes": [
+      "Solely removing peaks or dips from the interferogram can be a naive approach as the morphology of the sample is generally unknown",
+      "artifact removal can be counterproductive since the technique comes with the risk of information loss."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author position supported by the two-sample overlap observation, not by a comparison with other removal methods.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-ga-plausibility-and-outlook",
+     "value": "The authors state that the GA can identify with plausibility the number of layers, the distances and the reflectivities, and that with further upgrades the approach could allow monitoring small light-sensitive biological entities such as living cells and bacteria without optical damage.",
+     "anchor": "Section IV, p.10",
+     "quotes": [
+      "The importance of our genetic algorithm thus lies in its ability to identify with plausibility the number of layers in a sample",
+      "With further upgrades, our approach presented here could bring the possibility of monitoring small-scale light-sensitive biological entities"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A forward-looking author claim with no biological sample tested.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Only gold-coated glass samples were measured."
+    },
+    {
+     "id_suggestion": "supp-constraint-counting-noiseless-needs-seven",
+     "value": "The authors state, for a single layer with 7 effective parameters, that the two dips and the first artifact give 3 constraints, adding the first echo and the second-interface-echo artifact gives 5, and only with the second echo and the artifact between the first two echoes, observable in the absence of noise, are the 7 constraints reached.",
+     "anchor": "Supplemental Material, p.12",
+     "quotes": [
+      "that only gives us 3 constraints, while the number of eﬀective parameters is 6 × 2 − 5 = 7.",
+      "that gives us 5 constraints, still short of the 7 parameters.",
+      "that gives us the 7 constraints that we need in order to extract all 7 parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A counting argument within the paper's own model in the Supplemental Material.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "supp-noise-limits-direct-solution",
+     "value": "The authors state that solving the coupled equations for an unknown sample may be impractical because it requires identifying each interferogram feature, and that with noise and other imperfections it becomes rapidly difficult to resolve progressively smaller features, so unambiguous determination of all parameters will most likely not occur in an actual experiment.",
+     "anchor": "Supplemental Material, pp.12-13",
+     "quotes": [
+      "actually solving such a system of equations for an unknown sample may not be practical",
+      "it becomes rapidly diﬃcult to resolve progressively smaller features from the noise.",
+      "in an actual experiment this will most likely not be the case."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in the Supplemental Material.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "supp-five-interface-noiseless-test",
+     "value": "The authors report a noiseless test on a model-generated five-interface sample (nominal optical distances 90, 110, 150 and 250 micrometres) in which the first reflectivity (0.1) was supplied and the other four were fitted; the retrieved distances were 91.116, 107.440, 152.100 and 249.730 micrometres, and the retrieved R4 and R5 were 0.506 and 0.901 against nominal 0.5 and 0.9.",
+     "anchor": "Supplemental Material, Fig. 8 and Table III, pp.12-13",
+     "quotes": [
+      "91.116 107.440 152.100 249.730",
+      "Note that we have provided the algorithm with the correct value of the ﬁrst reﬂectivity (0.1), leaving the other 4 reﬂectivities as free-ﬁtting parameters.",
+      "because there is a complete absence of noise (the interferogram is derived from our model and not from the experiment), the quality of the ﬁt is excellent",
+      "s1 (µm) 90 s2 (µm) 110 s3 (µm) 150 s4 (µm) 250",
+      "R4 = |r4|2 0.5 R5 = |r5|2 0.9",
+      "0.096 0.095 0.506 0.901"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation on one synthetic sample generated by the authors' own model, so it tests the fit against the same model that produced the data.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "The test is circular with respect to the model and has no noise, so it does not bound error on real data."
+    }
+   ]
+  }
+ ]
+}
