@@ -1,0 +1,580 @@
+{"papers": [{
+  "record_id": "xu-2025-spectral-amplitude-principle-dynamics-quantum",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Xu-Zhang_2024_Frequency-principle-for-quantum-machine-learning-via-Fourier-analysis__2409.06682.pdf",
+  "title_in_file": "The Spectral Amplitude Principle for Dynamics of Quantum Neural Networks",
+  "version_note": "arXiv:2409.06682v3 [quant-ph] 24 Dec 2025 (preprint dated December 25, 2025). The file name says 2024 and 'Frequency principle for quantum machine learning via Fourier analysis', an earlier title of the same arXiv id. The text layer has no form feeds and no line breaks; pages were counted from the running header. The text layer holds the paper twice (a one-column copy, then a two-column copy of the same pages); the first copy was read and the second used only as a check.",
+  "pages": 12,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A theory-and-simulation paper arguing that QNN training is governed by the amplitude of spectral components rather than their frequency index, using a frequency-domain gradient argument and a QNTK residual-dynamics derivation, checked on synthetic one-variable functions, Iris and a discrete-logarithm task in noise-free simulation.",
+  "bears_on_context": "qml",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "qnn-spectral-amplitude-priority",
+      "verdict": "narrowed",
+      "note": "The statement is in the abstract as stored. The paper limits the residual-dynamics derivation to the lazy training regime with a sufficiently small learning rate (Section 2.2.1), and the paper states no theorem: the gradient result is an argument from Eq. 7 and the residual result a linear difference equation solved as an exponential. Section 2.2.2 also reports that the analytic solution does not fit well for the low-amplitude components, especially early in training.",
+      "value": "The authors state they prove that QNN training is governed primarily by the magnitude of spectral components rather than their frequency indices; they state the derivation of the residual dynamics operates strictly within the lazy training regime.",
+      "anchor": "Abstract; Section 2.2.1, p.3",
+      "quotes": [
+        "we prove that QNN training is governed primarily by the magnitude of spectral components rather than their frequency indices",
+        "The derivation of the residual dynamics operates strictly within the lazy"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The statement and its conditions are not set out as a theorem; the derivation is a linear approximation valid under a lazy-training assumption.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "No numbered theorem, lemma or proposition appears in the paper. The 'proof' is Eq. 7 (gradient proportional to residual amplitude, with the spectral neutrality of the derivative term asserted) plus Eqs. 9 and 10 (a time-invariant kernel approximation solved as an exponential)."
+    },
+    {
+      "id": "qnn-spectral-limits",
+      "verdict": "confirmed",
+      "note": "Confirmed as stored. The paper adds that real processors may show deviations from limited connectivity, gate infidelity and compilation overhead, and that gradient-free optimizers such as SPSA or Nelder-Mead may need separate study.",
+      "value": "",
+      "anchor": "Section 1, Remarks and Limitations, p.2",
+      "quotes": [
+        "Our empirical validation relies on classical simulations of ideal state evolution.",
+        "the Amplitude Priority mechanism is strictly derived from a gradient-based optimization perspective"
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The authors state this limit in the Remarks and Limitations paragraph of Section 1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "qnn-vs-dnn-high-frequency",
+      "verdict": "narrowed",
+      "note": "The numbers are right. The paper limits the comparison to the high-frequency dominated target fH, with accuracy defined as one minus the loss. The QNN in this comparison is the 4 qubit, 20 layer, 160 parameter circuit of Section 3.1.",
+      "value": "The authors report that, on the high-frequency dominated function, the configuration [200, 200, 200, 100] yields the highest training (0.99) and testing (0.75) accuracy among the classical candidates, with accuracy measured by 1−L(θ), and that QNNs possessing two orders of magnitude fewer parameters show robust generalization capabilities across the entire frequency spectrum.",
+      "anchor": "Section 3.1.2, Table 2 and Figure 7, pp.5-6",
+      "quotes": [
+        "we find that the configuration [200, 200, 200, 100] yields the highest training (0.99) and testing (0.75) accuracy among the classical candidates",
+        "Crucially, our comparative analysis in Table 2 and Fig. 6 focuses specifically on the high-frequency dominated function (fH (x)).",
+        "The accuracy is measured by 1−L(θ).",
+        "possessing two orders of magnitude fewer parameters, the QNNs show robust generalization capabilities across the entire frequency spectrum"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulated study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The QNN has 160 trainable parameters; Table 2 lists 100,300 parameters for the chosen DNN, a ratio of about 630, so 'two orders of magnitude' is loose. The text layer also prints the baseline as 'approx. 104 parameters' (probably ten to the fourth), which does not match Table 2. The sweep covers five DNN configurations; the QNN test accuracy is shown only in Figure 7, not in text."
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "qnn-setup-univariate-ideal-reuploading",
+      "value": "The authors state they focus on univariate function approximation, analyze the ideal circuit model abstracting away hardware overheads such as error correction and gate noise, and study QNNs in the data re-uploading architecture.",
+      "anchor": "Section 2.1.1 and footnote 1, pp.1-2",
+      "quotes": [
+        "We focus on univariate function approximation to investigate the training dynamics of QNNs.",
+        "our analysis is primarily conducted within the framework of the ideal circuit model, abstracting away hardware-specific overheads such as error correction and gate noise",
+        "the QNNs studied in this paper are grounded in the data re-uploading architecture"
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper states its own scope in Section 2.1.1 and footnote 1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "qnn-definition-fourier-residual",
+      "value": "The authors define the QNN output as a partial Fourier series whose frequencies are set by the data encoding circuit and whose coefficients are set by the rest of the circuit, and define the frequency-domain residual as the difference between the QNN output spectrum and the target spectrum.",
+      "anchor": "Section 2.1.1, Eqs. 3 to 5, p.2",
+      "quotes": [
+        "the data encoding circuit determines the frequency ω and the rest of the circuit determines the coefficients C(ω, θ) of the summation",
+        "the frequency-domain residual is defined as the difference between the QNN output spectrum and the target spectrum"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines these terms in Section 2.1.1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "qnn-gradient-proportional-to-residual-amplitude",
+      "value": "The authors argue from the frequency-domain gradient expression that the derivative term does not vanish as the frequency index increases within the accessible spectrum, so the gradient magnitude is linearly proportional to the residual amplitude, and the optimizer prioritizes the components with the largest current residuals regardless of frequency.",
+      "anchor": "Section 2.1.1, Eq. 7, p.2",
+      "quotes": [
+        "it does not vanish as the frequency index k increases, provided k is within the accessible spectrum Ω determined by the encoding strategy",
+        "is linearly proportional to the residual amplitude A(k)",
+        "the optimizer will priori- tize reducing the error of the frequency components with the largest current residuals (A(k)), regardless of whether k rep- resents a low or high frequency"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An argument from an expression; the spectral neutrality of the derivative term is stated, and no derivation or theorem is given in the paper.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The text says the derivative term 'depends on the circuit structure and data encoding but remains spectrally neutral' without a bound; the claim holds only for frequencies in the accessible spectrum fixed by the encoding."
+    },
+    {
+      "id": "qnn-classical-gradient-decay-contrast",
+      "value": "The authors state that in classical DNNs the gradient magnitude typically decays with frequency, for example scaling as one over k squared because of the smoothness of activation functions.",
+      "anchor": "Section 2.1.1, p.2",
+      "quotes": [
+        "Unlike classical DNNs, where the gradient magnitude typically decays with frequency",
+        "due to the smoothness of activation functions"
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A statement about classical networks with no citation or derivation at that point.",
+      "result_type": "cited",
+      "context": "ml",
+      "reader_inference": "The text layer prints the scaling as a stacked fraction; the exponent on k reads as two."
+    },
+    {
+      "id": "qnn-fig3-gradients-from-analytic-formula",
+      "value": "The authors report that, for target functions dominated by low, middle and high frequencies, a circuit of 4 qubits and 20 layers with a total of 160 trainable parameters shows gradients that prioritize high-amplitude components, and they state the gradient curves in Figure 3 are computed and plotted from the analytical form in Eq. 7 rather than being raw numerical outputs from an optimizer.",
+      "anchor": "Section 2.1.2, Figure 3, p.3",
+      "quotes": [
+        "The quantum circuit is configured with 4 qubits and 20 layers, comprising a total of 160 trainable parameters.",
+        "the gradient dynamics visualized in Fig. 3 are explicitly computed and plotted according to the analytical form derived in Eq. 7, rather than merely raw numerical outputs from an optimizer",
+        "The results show that QNNs adaptively prioritize the convergence of frequency components with high amplitudes."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A simulated result on three synthetic functions; the curves illustrate the formula.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "Because Figure 3 plots the formula of Eq. 7, it illustrates the argument; it is not an independent measurement of optimizer behavior. The optimizer-based evidence is in Figures 4, 5, 10 and 11."
+    },
+    {
+      "id": "qnn-target-functions-fl-fm-fh",
+      "value": "The authors define three target functions, each a sum of three sine terms with amplitudes 0.9 and 0.1: fL(x) = 0.9 sin(x) + 0.1 sin(3x) + 0.1 sin(8x), fM(x) = 0.1 sin(x) + 0.9 sin(3x) + 0.1 sin(8x), and fH(x) = 0.1 sin(x) + 0.1 sin(3x) + 0.9 sin(8x), dominated by low, middle and high frequencies respectively.",
+      "anchor": "Section 2.1.2, Eq. 8, p.3",
+      "quotes": [
+        "fL(x) = 0.9 sin(x) + 0.1 sin(3x) + 0.1 sin(8x)",
+        "fM (x) = 0.1 sin(x) + 0.9 sin(3x) + 0.1 sin(8x)",
+        "fH (x) = 0.1 sin(x) + 0.1 sin(3x) + 0.9 sin(8x)"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines the targets in Eq. 8.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The highest-frequency target term is sin(8x), so 'high frequency' here means a single mode at frequency index 8 in a target with few modes."
+    },
+    {
+      "id": "qnn-residual-dynamics-lazy-regime",
+      "value": "The authors state that the derivation of the residual dynamics operates strictly within the lazy training regime, relies on a sufficiently small learning rate that confines the parameters to a small neighborhood of their initialization, and so treats the QNTK as a time-invariant constant.",
+      "anchor": "Section 2.2.1, p.3",
+      "quotes": [
+        "The derivation of the residual dynamics operates strictly within the lazy",
+        "This theoretical framework relies on the assumption of a sufficiently small learning rate, which effectively confines the parameters to a small neighborhood of their initialization.",
+        "Such an approximation allows the QNTK to be treated as a time-invariant constant during training"
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The authors state the conditions of their derivation in Section 2.2.1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The principle as derived covers the lazy regime only; training outside it is not covered by the derivation."
+    },
+    {
+      "id": "qnn-residual-exponential-solution",
+      "value": "The authors write the frequency-domain residual dynamics as a linear difference equation with the Fourier transform of the QNTK and give its solution as ε(t) = e−ηKtε(0), so residuals decay exponentially over training time.",
+      "anchor": "Section 2.2.1, Eqs. 9 and 10, p.3",
+      "quotes": [
+        "For the above linear difference Eq. (9), we can directly solve the linear equation and finally get the solution as:",
+        "ε(t) = e−ηKtε(0)",
+        "the residuals decay exponentially over training time"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A derivation under a lazy-regime, time-invariant kernel approximation, not stated as a theorem with conditions.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The exponential decay is a property of the linearized model; the paper checks it against training only in Figure 4."
+    },
+    {
+      "id": "qnn-fig4-residual-analytic-vs-actual",
+      "value": "The authors report that, with 8 qubits, learning rate η = 0.01 and parameters initialized randomly in [0, 2π], the QNTK analytical solution shows a high degree of fidelity to the empirical residual dynamics for the frequency components with significant spectral amplitudes, whose residuals decay exponentially.",
+      "anchor": "Section 2.2.2, Figure 4, p.4",
+      "quotes": [
+        "The qubit number is 8 with learning rate η = 0.01. Parameters in the ansatz are initialized randomly in [0, 2π].",
+        "the analytical solutions exhibit a high degree of fidelity to the empirical residual dynamics",
+        "the residuals of the frequency components possessing significant spectral amplitudes of the objective function decay exponentially under the setting of a small learning rate η"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulated study; the fit is shown in a figure only.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "No quantitative fit error is stated in the text; the fidelity is a visual judgment of Figure 4. This figure uses 8 qubits, while Figures 3 and 5 use 4 qubits and 20 layers."
+    },
+    {
+      "id": "qnn-residual-mismatch-low-amplitude",
+      "value": "The authors report that the analytic solutions do not fit well with the actual dynamics for the remaining (low-amplitude) components, especially at the early stage of training, and state the framework still describes the whole process because those residuals are several orders of magnitude smaller than the residuals of the high-amplitude components.",
+      "anchor": "Section 2.2.2, p.4; footnote 2, p.1",
+      "quotes": [
+        "the analytic solutions do not fit well with those of actual dynamics for the remaining, especially at the early stage of training",
+        "residuals for those remaining have a magnitude of several orders smaller than the residual of the frequency components with high spectral amplitude",
+        "the proposed residual dynamics framework yields a robust approximation of the overall training trajectory"
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result the authors state in Section 2.2.2 and footnote 2; a measured result is not graded high.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The learning order of low-amplitude components, which the principle also predicts, is therefore the part least supported by the analytic fit."
+    },
+    {
+      "id": "qnn-simulation-setup-noise-free",
+      "value": "The authors state they run all experiments in an ideal, noise-free environment, all simulations on a classical machine with an Intel Core i7-14700HX CPU and an NVIDIA GeForce RTX 4060 Laptop GPU, and implement a Python quantum simulator based on PennyLane.",
+      "anchor": "Section 3, p.4",
+      "quotes": [
+        "we conduct our experiments in an ideal, noise-free environment",
+        "All the simulations are performed on a classical machine",
+        "equipped with an Intel Core i7-14700HX CPU and an NVIDIA GeForce RTX 4060 Laptop GPU",
+        "We implement a Python quantum simulator simulate QNNs based on PennyLane"
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its experimental setup in Section 3.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "qnn-fig5-convergence-by-magnitude",
+      "value": "The authors report that in the 4 qubit, 20 layer preliminary experiment the rate of error convergence is primarily dictated by the magnitude of the spectral coefficients, that components with significant amplitudes converge fastest, and that for the high-frequency dominated function the high-frequency mode is prioritized because it carries the largest spectral weight.",
+      "anchor": "Section 3.1.1, Figure 5, p.5",
+      "quotes": [
+        "The quantum circuit comprises 4 qubits and a depth of 20 layers, with a total of 160 trainable parameters.",
+        "the rate of error convergence is primarily dictated by the magnitude of the spectral coefficients",
+        "spectral components possessing significant amplitudes consistently exhibit the fastest convergence"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulated study on three synthetic targets.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The text gives no number of runs or seeds for this result and no numerical convergence rates; the evidence is the shape of curves in Figure 5."
+    },
+    {
+      "id": "dnn-sweep-larger-not-better",
+      "value": "The authors report that further increasing DNN capacity to the [500, 500, 500, 500] configuration did not give superior performance but a lower test accuracy (0.70), and they suggest the difficulty of learning high-frequency functions cannot be simply mitigated by over-parameterization.",
+      "anchor": "Section 3.1.2, Table 2 and Figure 6, p.5",
+      "quotes": [
+        "further increasing the model capacity (e.g., the [500, 500, 500, 500] configuration) does not result in superior performance, but rather leads to a noticeable degradation in test accuracy (0.70)",
+        "This suggests that the difficulty in learning high-frequency functions cannot be simply mitigated by over-parameterization"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study of five DNN configurations on one target.",
+      "result_type": "measured",
+      "context": "ml",
+      "reader_inference": "Table 2 lists five configurations only, and the test accuracy of the 500-wide network (0.70) is below the 0.75 of the chosen one but above 0.56 to 0.62 for three others, so test accuracy is not monotone in size; five points do not show a limit of over-parameterization."
+    },
+    {
+      "id": "dnn-fig7-train-high-test-low-fh",
+      "value": "The authors report that DNNs achieve high training accuracy across all target functions, likely leveraging the massive parameter space for memorization, but fail to generalize on the high-frequency dominated task, while the 10,000 epochs of DNN training and 200 epochs of quantum circuit training are shown on one axis.",
+      "anchor": "Section 3.1.2, Figure 7, p.5",
+      "quotes": [
+        "the DNNs achieve high training accuracy across all target functions",
+        "it fails to generalize on the high-frequency dominated task (fH (x))",
+        "the bottom indicates the result of 10,000 times of DNN training and the top indicates 200 times of quantum circuit training"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulated study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The two models are trained for very different iteration counts (10,000 against 200) and with different optimizers or learning rates not stated in the text, so the comparison is not matched in training budget."
+    },
+    {
+      "id": "dnn-gradients-follow-spectral-bias",
+      "value": "The authors report that the frequency-domain loss gradients of the classical DNNs adhere strictly to the spectral bias, with optimization preferentially driven by low-frequency components, and that even for the high-frequency dominated target the DNNs suppress high-frequency gradients, delaying their convergence.",
+      "anchor": "Section 3.1.2, Figure 8, p.6",
+      "quotes": [
+        "the classical model adheres strictly to the spectral bias, where optimization is preferentially driven by low-frequency components",
+        "the DNNs suppress high-frequency gradients, delaying their convergence"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study, read from a figure.",
+      "result_type": "measured",
+      "context": "ml",
+      "reader_inference": "The text does not say which DNN configuration or how many runs Figure 8 uses."
+    },
+    {
+      "id": "qnn-vs-fourier-feature-nets-sensitivity",
+      "value": "The authors report that Fourier Feature Networks show a pronounced U-shaped sensitivity to the scale parameter σ, where an inadequately small σ (e.g., 0.01) misses high-frequency details and an excessively large σ (e.g., 5.0) gives spectral aliasing and poor generalization, while the QNN keeps a consistently low loss without tuning frequency-scaling hyperparameters.",
+      "anchor": "Section 3.1.3, Figure 9, p.6",
+      "quotes": [
+        "an inadequately small σ (e.g., 0.01) prevents the model from capturing highfrequency details, while an excessively large σ (e.g., 5.0) leads to spectral aliasing and poor generalization",
+        "the QNN shows remarkable robustness, maintaining a consistently low loss without requiring the fine-tuning of frequency-scaling hyperparameters"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulated study; the number of trials is not stated.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The text states 'multiple independent trials with different random seeds' without a count, and does not name the target function or the QNN size for Figure 9; the QNN has no scale parameter of this kind, so 'no tuning' is a statement about one family of hyperparameters."
+    },
+    {
+      "id": "qnn-iris-setup-and-scope",
+      "value": "The authors state they classify the Iris dataset with an ansatz of 2 qubits and 6 layers and the Mean Squared Error as loss, and state the Iris task is used as a practical benchmark for a model already known to have an advantage, not to prove the model's inherent superiority.",
+      "anchor": "Section 3.2, Figure 10, pp.6-7",
+      "quotes": [
+        "We adopt an ansatz with 2 qubits and 6 layers. The Mean Squared Error (MSE) is used as the loss function.",
+        "The Iris task is employed here not as a means to prove the model's inherent superiority"
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The authors state the setup and the purpose of the Iris experiment in Section 3.2.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The text reports no classification accuracy for Iris and no classical baseline there; the outcome is a heatmap of relative errors per frequency (Figure 10b)."
+    },
+    {
+      "id": "qnn-iris-iqp-advantage-cited",
+      "value": "The authors state it has been mathematically established that classically simulating the output probability distributions of Instantaneous Quantum Polynomial circuits requires exponential overhead, which they offer as the theoretical foundation of the advantage; no source is cited at that point.",
+      "anchor": "Section 3.2, p.6",
+      "quotes": [
+        "it has been mathematically established that classically simulating the output probability distributions of Instantaneous Quantum Polynomial circuits",
+        "requires exponential overhead"
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work, with no citation given at that point.",
+      "result_type": "cited",
+      "context": "qc",
+      "reader_inference": "The result concerns sampling from IQP circuit output distributions; the paper does not show that the Iris classification task inherits any such hardness."
+    },
+    {
+      "id": "qnn-iris-fig10-amplitude-order",
+      "value": "The authors report that the Iris target spectrum, computed by the Discrete Fourier Transform, has a significant non-uniformity in spectral amplitudes with a distinct peak structure, and that the second panel of the figure tracks the relative error of selected frequency components over training epochs to substantiate the correlation between fitting priority and spectral magnitude.",
+      "anchor": "Section 3.2, Figure 10, pp.6-7",
+      "quotes": [
+        "uniformity in the distribution of spectral amplitudes across frequency components, characterized by a distinct peak structure.",
+        "it serves as a critical reference for substantiating the correlation between fitting priority and spectral magnitude"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study; the text describes the figure but states no outcome numbers.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The text states the purpose of Figure 10(b) but does not state in words which frequencies converge first; the reader has to take that from the heatmap."
+    },
+    {
+      "id": "qnn-dlp-setup",
+      "value": "The authors state they use an ansatz of 8 qubits and 24 layers with data re-uploading on a dataset of 40 samples for the discrete logarithm problem, define the variational quantum kernel as the overlap Kij = |⟨ψ(xi)|ψ(xj)⟩|², and optimize the parameters by maximizing kernel-target alignment before SVM training.",
+      "anchor": "Section 3.3, p.7",
+      "quotes": [
+        "Our experimental setup utilizes an 8 qubits and 24 layers ansatz with a data re-uploading architecture, applied to a dataset of 40 samples.",
+        "The quantum kernel is defined as the overlap Kij = | ⟨ψ(xi)|ψ(xj)⟩ |2.",
+        "Optimization of the variational parameters θ is performed by maximizing kernel-target alignment"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own experimental setup in Section 3.3.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The kernel overlap is squared; the text layer prints the exponent flat."
+    },
+    {
+      "id": "qnn-dlp-liu-2020-advantage-cited",
+      "value": "The authors state, attributing it to Liu et al., that for datasets grounded in the DLP any efficient classical algorithm is provably incapable of learning the classification rule, while a support vector machine armed with quantum kernel estimation gives high-accuracy classification in polynomial time.",
+      "anchor": "Section 3.3, p.7",
+      "quotes": [
+        "for datasets grounded in the DLP, any efficient classical algorithm is provably incapable of learning the classification rule",
+        "employing a support vector machine armed with quantum kernel estimation enables high-accuracy classification within polynomial"
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to Liu et al. (2020).",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": "The cited advantage is for a given quantum kernel estimated on hardware with an SVM. The paper instead trains a variational kernel on 40 samples in simulation, a different model, and does not claim to reproduce the cited separation; the cited proof needs a classical hardness assumption for the discrete logarithm."
+    },
+    {
+      "id": "qnn-dlp-fig11-amplitude-order",
+      "value": "The authors report that for the DLP data the spectrum keeps significant energy across high-frequency indices, that the relative error decreases preferentially for the frequencies with the highest spectral peaks, and that lower-amplitude components are subsequently learned in descending order of their spectral contributions.",
+      "anchor": "Section 3.3, Figure 11, p.7",
+      "quotes": [
+        "Fig. 11(a) reveals a spectral landscape where energy remains significant across highfrequency indices.",
+        "the relative error decreases preferentially for frequencies with the highest spectral peaks",
+        "Lower-amplitude components are subsequently learned in descending order of their spectral contributions."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulated study on 40 samples.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The paper reports no test accuracy, no classical baseline and no run count for the DLP experiment, so the experiment supports the ordering of spectral fitting but not an advantage over classical methods."
+    },
+    {
+      "id": "qnn-abstract-outperform-dnn-claim",
+      "value": "The authors claim in the abstract that QNNs significantly outperform DNNs in high-frequency tasks, that QNNs can efficiently capture high-frequency functions provided they have significant amplitude, and in the introduction that the experiments show performance superiority over classical counterparts on simulation environments.",
+      "anchor": "Abstract; Section 1, p.1 and p.2",
+      "quotes": [
+        "The results show that QNNs significantly outperform DNNs in high-frequency tasks",
+        "QNNs can efficiently capture highfrequency functions",
+        "the performance superiority over their classical counterparts on simulation environments"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author claim; the classical comparison in the paper is one target function against five DNN configurations and a Fourier Feature Network sweep.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The only head-to-head comparison with a classical model is on the synthetic fH function (Section 3.1). The Iris and DLP experiments report QNN spectral dynamics only. 'Efficiently' is not backed by a resource or complexity statement in the paper."
+    },
+    {
+      "id": "dnn-spectral-bias-cited",
+      "value": "The authors state that DNNs are known to be inherently limited by their low-frequency spectral preference, citing Xu (2018) and Rahaman et al. (2019), and that for classical DNNs it is very challenging to capture the high-frequency part.",
+      "anchor": "Section 1, p.1 and p.2",
+      "quotes": [
+        "DNNs are known inherently limited by their low-frequency spectral preference (Xu, 2018; Rahaman et al., 2019)",
+        "it is very challenging to capture the high-frequency part (Xu, 2018; Rahaman et al., 2019)"
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited",
+      "context": "ml",
+      "reader_inference": ""
+    },
+    {
+      "id": "qnn-novelty-order-of-learning-open",
+      "value": "The authors state that prior QNN frequency work primarily addresses which frequencies are representable by the QNN, leaving the order in which frequencies are learned largely unexplored, and that their work fills this gap.",
+      "anchor": "Appendix A, Related Work, p.11",
+      "quotes": [
+        "these works primarily address the question of which frequencies are representable by the QNN, leaving the question of in what order frequencies are learned largely unexplored",
+        "Our work fills this gap by characterizing the spectral fitting (or convergence) dynamics during training."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author claim about the state of the literature.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "qnn-hardware-deferred-future-work",
+      "value": "The authors state that existing QNN training studies are mostly confined to ideal quantum circuits because noise renders the theoretical analysis elusive, and that they leave the experiments and further theoretical analysis for specific hardware environments for future work.",
+      "anchor": "Section 1, Remarks and Limitations, p.2",
+      "quotes": [
+        "mostly confined to ideal quantum circuits as the noise can be complex which renders the theoretical analysis elusive",
+        "we leave the experiments and further theoretical analysis for specific hardware environments for future work"
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The authors state this limit in the Remarks and Limitations paragraph.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "No result in the paper applies to noisy or hardware circuits."
+    },
+    {
+      "id": "qnn-conclusion-amplitude-not-index",
+      "value": "The authors conclude that they have established spectral amplitude priority as a fundamental mechanism of QNN training dynamics, that the spectral fitting priority is dictated by the magnitude of spectral coefficients rather than their frequency indices, and that this explains the capability of QNNs to learn high-frequency data, overcoming the spectral bias that limits classical DNNs.",
+      "anchor": "Section 4, Conclusion, p.7",
+      "quotes": [
+        "We have established the spectral amplitude priority as a fundamental mechanism characterizing the training dynamics of QNNs.",
+        "spectral fitting priority of QNNs is dictated by the magnitude of spectral coefficients rather than their frequency indices",
+        "overcoming the spectral bias that limits classical DNNs"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The paper's conclusion; the support is a lazy-regime derivation and noise-free simulations on univariate targets.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The conclusion is stated without the lazy-regime, univariate and noise-free conditions that limit the evidence in Sections 2 and 3."
+    }
+  ]
+}]}
