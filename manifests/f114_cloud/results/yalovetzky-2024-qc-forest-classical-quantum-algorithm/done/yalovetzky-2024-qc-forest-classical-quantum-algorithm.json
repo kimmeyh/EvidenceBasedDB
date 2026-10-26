@@ -1,0 +1,896 @@
+{
+ "papers": [
+  {
+   "record_id": "yalovetzky-2024-qc-forest-classical-quantum-algorithm",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Yalovetzky-et-al._2024_QC-Forest-a-Classical-Quantum-Algorithm-to-Provably-Speedup-Retraining__2406.12008.pdf",
+   "title_in_file": "QC-Forest: a Classical-Quantum Algorithm to Provably Speedup Retraining of Random Forest",
+   "version_note": "arXiv:2406.12008v3 [quant-ph], 11 Jul 2024. Main text, conclusions, data availability, references and Appendices A to D are all in the text layer. The Table II and Table III cells are read from the text layer; the figure plots (Figs. 2 to 6) carry only captions, with no numbers.",
+   "pages": 24,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory-plus-simulation paper that proposes QC-Forest, a hybrid classical-quantum random forest algorithm built on Des-q supervised q-means, claims poly-logarithmic retraining time in the accumulated sample count under a small-new-batch assumption, and tests only the classical stand-in (QC-Forest-c) for accuracy on seven small benchmark datasets.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qcforest-accuracy-benchmarks",
+     "verdict": "narrowed",
+     "note": "The paper limits the claim in four ways the stored value omits. (1) The comparison baseline in Section V is an ensemble of single sklearn trees fed the same bootstrap samples, without feature bagging; the comparison to scikit-learn random forest is only in Appendix D 2, on six of the seven datasets. (2) Reported results are for shallow trees; deeper trees lose accuracy to overfitting. (3) The reported setting (depth and cluster count, and the weighting method) is the one with the best performance. (4) The largest dataset in Table II has 60000 samples; the 80,000 figure is in the abstract and conclusions but no row of Table II shows it. The comparison criterion is overlap of the median and standard deviation across folds.",
+     "value": "The authors report that, using a classical implementation of the algorithm (QC-Forest-c), QC-Forest achieves competitive accuracy against state-of-the-art RF methods on benchmark datasets with up to 80,000 samples. In Section V the baseline is an ensemble of single trees built with the classes in sklearn.tree, and the results are for ensembles of shallow trees; the criterion is overlap of the metrics across folds.",
+     "anchor": "Abstract, p.1; Section V, p.11; Appendix D 5, p.23",
+     "quotes": [
+      "we showcase that QC-Forest achieves competitive accuracy in comparison to state-of-the-art RF methods on widely used benchmark datasets with up to 80,000 samples",
+      "in below experiments we compare to a baseline that is an ensemble of single trees built with the classes in sklearn.tree",
+      "For all the datasets considered, there is overlap between the metrics obtained with QC-Forest-c and the baseline.",
+      "Note that we report results corresponding to ensembles of shallow trees."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, on a classical stand-in.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Overlap of one-standard-deviation bands across 5 or 10 folds is not a significance test. The largest N in Table II is the Porto Seguro dataset at 60000; no table row shows 80,000. The text layer does not say which dataset carries that figure."
+    },
+    {
+     "id": "qcforest-deeper-tree-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section V, p.12",
+     "quotes": [
+      "We observe that for D = 2, QC-Forest-c manages to reduce the entropy, overlapping with the baseline. For higher depths, the baseline method is much effective in reducing the entropy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Scope: one Porto Seguro tree, D = 5, k = 2, per the text. The paper ties this to the overfitting it sees at higher depths (Appendix D 5)."
+    },
+    {
+     "id": "qcforest-initial-build-linear",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section I.A, p.2",
+     "quotes": [
+      "Creating this data structure from scratch is time-consuming, scaling linear in N . This is precisely the reason of why Des-q, and also our QC-Forest algorithm, take time linear in N for the initial model construction."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its own algorithm in Section I.A and again in Section II.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qcforest-retrain-runtime",
+     "verdict": "narrowed",
+     "note": "The abstract's poly-logarithmic runtime is Theorem 1, which holds only under the stated condition on the new batch and given the output of QC-Forest-BUILD. Theorem 1's proof also lists a loading step and a feature weight update step that depend on the size of the new batch and not on the accumulated size, and a clustering cost with a factor exponential in the tree depth.",
+     "value": "The paper states, as Theorem 1, that given new training data with Nnew ≪ N and the output of QC-Forest-BUILD, a hybrid quantum-classical algorithm retrains the ensemble of T trees of maximum depth D with N + Nnew examples in time T · O(poly log(N d)). Its proof takes the loading of the new samples as O(Nnew d log2(Nnew d)) and treats it as independent of N given Nnew ≪ N.",
+     "anchor": "Theorem 1 and proof, Section III, pp.6-7; Abstract, p.1",
+     "quotes": [
+      "such that Nnew ≪ N , and the output of QC-Forest-BUILD (Algorithm 1), there is a a hybrid quantum-classical algorithm, QC-Forest-RETRAIN, to retrain the ensemble of T trees",
+      "of maximum depth D with N + Nnew examples in time,",
+      "≈ T · O(poly log(N d))",
+      "Tload-new = O(Nnewd log2(Nnewd)) using the KP-tree structure. Given Nnew ≪ N , this is independent of N ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proof is given, but it defers the clustering and leaf label costs to Des-q and to Appendix C, and the constants eta and the errors epsilon are carried outside the poly-log.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The poly-log claim holds per retraining step and only while the new batch stays small against N. The clustering constant C1 carries a k3D factor (exponential in depth D), inverse powers of the estimation errors, and the norm constants eta1, eta2; the paper does not discuss how eta2 (a maximum feature-column norm) and eta3 (the label vector norm) grow with N, and Appendix D 1 standardizes every feature, which makes a column norm grow with the square root of N. If so, the poly-log in N would hide a factor that grows with N. This is the reader's reading, not a statement of the paper."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "theorem1-retrain-components",
+     "value": "The paper decomposes the retraining time into the time to load the new samples in the KP-tree, the classical update of the feature weights, the repeated supervised q-means clustering that grows the tree up to maximum depth D, and the extraction of output label information from the leaf nodes.",
+     "anchor": "Theorem 1, Section III, p.6",
+     "quotes": [
+      "Tretrain ≈ Tload-new + Tweights-update + Tclustering + Tleaf-label",
+      "where, Tload-new is the time to load the new samples in the KP-tree, Tweights-update the time to update the feature weights classically"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of the decomposition in Theorem 1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "value": "The paper states that the classical feature weight update in the proof of the retraining time theorem takes time O(Nnewd|M|) with the eta coefficient or O(Nnewd) with the Pearson correlation.",
+     "anchor": "Theorem 1 proof, item 2, Section III, p.6",
+     "quotes": [
+      "Tweights-update = O(Nnewd|M|) when using η coefficient or O(Nnewd) when using Pearson correlation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved as Theorems 2 and 3 (Appendix B 1 for the eta case).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The cost is linear in the new batch size and independent of N, which is why the classical update replaces the quantum estimate of weights in Des-q.",
+     "id_suggestion": "weights-update-cost"
+    },
+    {
+     "value": "The paper proves as a theorem that, given the stored means and the stored sum of feature-label products from the first N samples, the Pearson correlation weights for N + Nnew samples are computed in time O(Nnewd).",
+     "anchor": "Theorem 2, Section IV A, p.8",
+     "quotes": [
+      "Theorem 2 (Time complexity to classicalyl update Pearson correlation).",
+      "Given access to µj, µy and",
+      "w(N + Nnew) is computed in time",
+      "The total time for the update of the Pearson correlations for all the features is O(Nnewd) and this concludes the proof."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Section IV A with explicit update formulas (Eqs. 6 to 9).",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": "The update works because the sums involved are additive over samples, so the old batch is never re-read. The stored quantities are per-feature scalars.",
+     "id_suggestion": "theorem2-pearson-update"
+    },
+    {
+     "value": "The paper states as Theorem 3 that, given the stored means, class means, class counts and sums of squares from the first N samples, the eta coefficient weights for N + Nnew samples can be computed in time O(Nnewd|M|), and gives the time and memory of both methods in Table I as O(Nnewd|M|) time and O(d|M|) memory for eta, and O(Nnewd) time and O(d) memory for Pearson.",
+     "anchor": "Theorem 3, Section IV A, p.9; Table I; proof in Appendix B 1, p.17",
+     "quotes": [
+      "Theorem 3 (Time complexity to classically update η coefficient).",
+      "w(N + Nnew) can be computed in time O(Nnewd|M|).",
+      "η coefficient O(Nnewd|M|) O(d|M|)",
+      "Pearson O(Nnewd) O(d)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement in Section IV A; the proof is Theorem 6 in Appendix B 1.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": "",
+     "id_suggestion": "theorem3-eta-update"
+    },
+    {
+     "value": "The authors state that the stored training samples grow as new batches arrive, while the feature weights keep a fixed memory complexity as they are updated.",
+     "anchor": "Section III, p.7",
+     "quotes": [
+      "While the total samples used for training are incrementally stored as",
+      "the feature weights maintain fixed memory complexity as they are updated."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this itself in Section III.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "weights-fixed-memory"
+    },
+    {
+     "value": "The authors state that the algorithm can become memory-intensive because it must store the training samples in a data structure that allows retrieval classically or in superposition, so the stored data size will continually increase; they suggest removing old data by criteria such as age, or replacing it with reduced data such as through principal component analysis.",
+     "anchor": "Section III, p.7",
+     "quotes": [
+      "It becomes evident that the proposed algorithm can become memory-intensive, as it requires storing training",
+      "This means the stored data size will continually increase.",
+      "old data could be periodically removed based on criteria such as its age, or replaced with reduced data that retains the most"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states about its own algorithm in Section III.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The removal and PCA reduction are suggestions; the paper neither analyzes nor tests their effect on the retraining guarantee or the accuracy.",
+     "id_suggestion": "memory-grows-limitation"
+    },
+    {
+     "value": "The paper defines retraining with incremental batches of data as training a given model on the data of size N plus the sum of the batch sizes up to time T, and assumes each batch size Nnew,t is much smaller than N.",
+     "anchor": "Definition 1, Section III, p.4",
+     "quotes": [
+      "Here we assume that each batch size Nnew,t ≪ N .",
+      "Retraining the model with incremental batches of data at"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 1 states the setting and the condition on the batch size.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "retrain-batch-assumption"
+    },
+    {
+     "value": "The authors claim that retraining with the old data plus a small new batch is exponentially faster than classical standard methods when Nnew ≪ N, because updating the quantum-accessible data structure takes time linear in Nnew while running the algorithm takes time logarithmic in N, and that this assumption is realistic in many industrial settings.",
+     "anchor": "Section I.A, p.2",
+     "quotes": [
+      "is exponentially faster in comparison to classical standard methods, assuming Nnew ≪ N .",
+      "updating the quantum-accessible data structure takes time linear in Nnew, while running the algorithm itself takes time logarithmic in N .",
+      "This assumption is realistic in many applications in the industrial setting"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the realism of the assumption is asserted, not tested.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The speedup compares against retraining from scratch with a classical algorithm; the paper does not compare cost against classical incremental tree learners it cites (for example [17, 18]) except by saying they suffer from concept drift.",
+     "id_suggestion": "retrain-assumption-realistic-claim"
+    },
+    {
+     "value": "The authors state that two components of QC-Forest-BUILD scale polynomially in N, namely the loading of Sn to the quantum-accessible data structure and the feature weight calculation, while the remaining steps scale poly-logarithmically in N; the data loading takes time O(N d log2(N d)), and the feature weights take O(N d) for regression and O(N d |M|) for multi-class classification.",
+     "anchor": "Section II, pp.3-4",
+     "quotes": [
+      "There are two components that are time-consuming in QC-Forest-BUILD, scaling O(poly(N )), whereas the rest of the steps scale O(poly log(N )).",
+      "taking time O(N d log2(N d))",
+      "calculated exactly in time O(N d) for regression and O(N d|M|) for multi-class classification"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these costs of its own initial construction in Section II.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The first build is therefore not faster than a classical build in N; the speedup claim rests entirely on later retraining.",
+     "id_suggestion": "build-bottlenecks-poly-n"
+    },
+    {
+     "value": "The authors state that the proposed quantum-accessible classical data structures to construct QRAM from scratch would incur a time polynomial in the data size, so exponential speedup with quantum algorithms is not achievable if one accounts for the time for the creation of this specialized data structure.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "the proposed quantum-accessible classical data structures to construct QRAM from scratch would incur a time polynomial in the data size.",
+      "Thus exponential speedup with quantum algorithms is not achievable if one accounts for the time for the creation of this specialized data structure"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Attributed by the paper to other work ([21, 33, 34]); the paper does not prove it.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "This is the same limit that applies to the paper's own initial build; its retraining claim is the way around it, which holds only under the small-batch assumption.",
+     "id_suggestion": "qram-structure-cost-statement"
+    },
+    {
+     "value": "The paper states as Lemma 1, attributed to Kerenidis and Prakash [21], that a classical data structure storing the rows of X can be created in time O(N d log2(N d)), after which a quantum algorithm with access to it can perform the amplitude-encoding operations in time O(poly log(N d)).",
+     "anchor": "Lemma 1, Appendix A, pp.16-17",
+     "quotes": [
+      "Lemma 1 (KP-Tree data structure [21]).",
+      "Tkp = O(N d log2(N d))",
+      "such that, there is a quantum algorithm with access to the data structure which can perform the following operations (and also in superposition) in time T = O(poly log(N d)),"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result; the paper does not re-prove it.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The poly-log query time depends on the data structure sitting in a quantum read-only memory that the paper itself says has no commercial access (Section V).",
+     "id_suggestion": "kp-tree-lemma1"
+    },
+    {
+     "value": "The paper states, from the Des-q paper, as a theorem that, given quantum access to the dataset in poly-logarithmic time, supervised q-means takes K iterations to output with high probability centroids arbitrarily close to the output of the δ-k-means algorithm, and that repeated application of this procedure creates a depth-D tree in time with a factor exponential in D.",
+     "anchor": "Theorem 4, Section IV B, pp.9-10",
+     "quotes": [
+      "the supervised q-means algorithms takes K iterations to output with high probability the",
+      "centroids c1, · · · , ck that are arbitrarily close to the output centroids of the δ-k-means algorithm, a robust version of k-means, in time complexity,",
+      "Further, repeated application of this procedure creates a depth-D tree in time,"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The result is taken from Des-q [42]; the exact expressions (Eqs. 11 and 12) are not copied here because the text layer prints them flat.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The depth-D cost carries a factor k raised to the power 3D, so quantum runtime grows exponentially in depth; the paper keeps D small (D at most 3 in Table II).",
+     "id_suggestion": "theorem4-supervised-qmeans"
+    },
+    {
+     "value": "The paper defines the weighted distance between a sample and a cluster centroid as the sum over features of the feature weight times the squared difference, and states that it is estimated as the inner product between the sample and the weighted centroid, the element-wise product of the feature weights and the centroid.",
+     "anchor": "Section II, Step 3, p.4",
+     "quotes": [
+      "This is equivalent to doing the inner product between the weighted centroids defined as clw := w ◦ cl = [w1cl1, · · · wdcld]T",
+      "The weighted distance between sample xi and cluster centroids cl is defined by"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines it in Section II, Step 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text layer prints the displayed formulas out of order, so the formula itself is not quoted.",
+     "id_suggestion": "weighted-distance-definition"
+    },
+    {
+     "value": "The authors state that Des-q uses a supervised version of the quantum k-means algorithm to construct and retrain individual trees, with a weighted distance whose weights are the normalized relevancy coefficients of each feature vector with the target label vector.",
+     "anchor": "Section I.A, p.2",
+     "quotes": [
+      "Des-q uses a supervised version of the quantum k-means algorithm [34] to construct and retrain individual trees",
+      "where the weights are normalized relevancy coefficients of each feature vector with the target label vector"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of prior work (Des-q), cited.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "Each node split is a k-way clustering (k set per experiment), not the usual single-feature threshold split of CART.",
+     "id_suggestion": "supervised-clustering-idea"
+    },
+    {
+     "value": "The paper defines the eta coefficient, also known as the correlation ratio, as a measure of the non-linear association between a feature vector and the label vector, the percentage of the variance in the label vector explained by the feature vector, and states that it handles multi-class classification data with categorical features; for the j-th feature it equals the between-category sum of squares divided by the total sum of squares.",
+     "anchor": "Section IV A 2, Eq. 10, pp.8-9",
+     "quotes": [
+      "It measures the non-linear association between the feature vector and the label vector, i.e., the variance percentage in the label vector that can be explained by the feature vector.",
+      "A key benefit of this measure is that it can handle multi-class classification data with categorical features.",
+      "wj = ηj2 = SScj SSTj"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The definition the paper's multi-class feature weights depend on, in Section IV A 2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The paper's own wording says the percentage of variance in the label vector explained by the feature vector, but Eq. 10 is a ratio of sums of squares of the feature vector over classes. The reader notes the two descriptions are not the same quantity. The paper uses the eta formula in its experiments.",
+     "id_suggestion": "eta-coefficient-definition"
+    },
+    {
+     "value": "The authors state that QC-Forest extends Des-q to multi-class classification by introducing a classical method to efficiently calculate the eta coefficient as feature weights (the Pearson correlation in Des-q limits it to binary classes) and by introducing a method to efficiently estimate the probability of each class in the leaf nodes; Des-q output the mean value among the labels, which is unsuitable for unbalanced datasets with two classes and for multi-class classification.",
+     "anchor": "Section I.A, items 1 and 2, pp.2-3",
+     "quotes": [
+      "Des-q utilizes the Pearson correlation, limiting to only binary classes.",
+      "it outputs the mean value among the labels.",
+      "This is unsuitable for datasets with two classes that are unbalanced and for multi-class classification."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' statement of their own contributions and of Des-q's limits.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "multiclass-extension-contribution"
+    },
+    {
+     "value": "The paper defines the leaf label for regression as the mean of the label values of the samples in the cluster, and for classification as the relative occurrence of each class among the samples in the cluster, the count of samples with that label divided by the total number of samples in the leaf node.",
+     "anchor": "Section IV C, Eqs. 13 to 15, p.10",
+     "quotes": [
+      "its label value is simply the mean of the label values of the samples in the cluster",
+      "we propose to output the relative occurrence of each class among the samples in the cluster,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definitions in Section IV C.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "",
+     "id_suggestion": "leaf-label-definitions"
+    },
+    {
+     "value": "The paper states as Theorem 5 that, given the characteristic vector states for each leaf node and label, and the label superposition state prepared in time O(poly log(N)), a quantum algorithm estimates the occurrence values with additive error at most ϵ4 in time O(Tξjl |M| kD η3 / ϵ4), with η3 equal to the norm of the label vector Y.",
+     "anchor": "Theorem 5, Section IV C, p.10; proof as Theorem 8, Appendix C, pp.20-21",
+     "quotes": [
+      "Theorem 5 (Time complexity of leaf label assignment for classification).",
+      "the label superposition state |Y ⟩, which is be prepared in time O(poly log(N )), there exists a quantum algorithm to",
+      "and η3 = ∥Y ∥."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement is quoted only in part because the text layer garbles the displayed inequality and time expression.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The main text calls this Theorem 5 and Appendix C calls the same result Theorem 8 with the main-text number given as 6; the error symbol is ϵ4 in one and ϵ3 in the other. The abstract-level poly-log claim depends on η3 (the label vector norm) not growing with N, which the paper does not discuss.",
+     "id_suggestion": "theorem5-leaf-label-time"
+    },
+    {
+     "value": "The paper states that the leaf class counts are estimated by preparing an index superposition state over the samples of each leaf node with a given label and taking its inner product with the label superposition state using amplitude estimation, and that the label values are obtained by measuring a binarized label register a number of times of order |M| log |M| to recover all the states.",
+     "anchor": "Appendix C, pp.19-21",
+     "quotes": [
+      "we obtain, with high probability, all the states |ξjl⟩.",
+      "Now it is clear that this is the form of the input for amplitude estimation [54] algorithm where the task is to estimate the unknown coefficient p(1).",
+      "Since yi can only take discrete values in M, we see that upon measuring the |yi⟩ register a total of O(|M| log |M|) times"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A construction described in a proof, with no experiment on quantum hardware or a quantum simulator.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The class label itself is used as the value y_i in the inner product (Eq. C3 divides by the label value), so the construction assumes numeric label values that are nonzero; the paper does not state this condition.",
+     "id_suggestion": "leaf-label-estimation-method"
+    },
+    {
+     "value": "The authors state that both QC-Forest-BUILD and QC-Forest-RETRAIN output a classical representation of the trees, so inference runs on the classical computer, and that the time to infer one sample with one tree is O(kDd), where k is the number of clusters, D the maximum tree depth and d the number of features.",
+     "anchor": "Section III, p.7",
+     "quotes": [
+      "output a classical representation of the trees in the ensemble.",
+      "With this structure, the inference is executed on the classical computer.",
+      "Teval = O(kDd), where k is the number of clusters, D, the maximum tree depth, and d, the number of features."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of what runs where.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "inference-classical-cost"
+    },
+    {
+     "value": "The authors state that the evaluation of quantum algorithms for practically-relevant use cases at industrial scale is far from realization, that there is still no commercial access to quantum-accessible data structures, and that they therefore evaluate only the classical version QC-Forest-c, to quantify the accuracy of the predictions.",
+     "anchor": "Section V, pp.10-11",
+     "quotes": [
+      "there is still no commercial access to quantum-accessible data structures, which is essential for demonstrations with big datasets of the proposed algorithm.",
+      "However, in our work, we evaluate the classical version of QC-Forest, named QC-Forest-c, to quantify the accuracy of the predictions."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit of the paper's own evaluation, stated in Section V.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No quantum circuit, quantum simulator or hardware run and no runtime measurement is reported anywhere in the text; the speed claims are asymptotic only.",
+     "id_suggestion": "numerics-scope-classical-simulation"
+    },
+    {
+     "value": "The authors argue that QC-Forest-c, which uses the k-means clustering algorithm, gives a good approximation of the performance expected for QC-Forest when executed in the hybrid classical-quantum fashion, because k-means closely aligns with robust δ-k-means as shown by Kerenidis et al. and δ-k-means is a good approximation of q-means.",
+     "anchor": "Section V, p.11",
+     "quotes": [
+      "QC-Forest-c leverages the k-means clustering algorithm whose performance closely aligns with robust δ-k-means as shown by Kerenidis et al.[34].",
+      "Therefore, the results obtained with QC-Forest-c are a good approximation of the performance expected for QC-Forest when executed in the hybrid classical-quantum fashion."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument resting on a cited result; not tested for QC-Forest here.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The step from the classical simulation to the quantum algorithm assumes that the estimation errors of the quantum subroutines are small enough; no run with injected estimation error is reported.",
+     "id_suggestion": "qforest-c-approximation-argument"
+    },
+    {
+     "value": "The authors state that QC-Forest-c implements sampling with replacement and not feature bagging, because its clustering splits use all the features, so the Section V baseline is an ensemble of single trees built with sklearn.tree on the same sampled input data.",
+     "anchor": "Section V, p.11",
+     "quotes": [
+      "For these experiments, QC-Forest-c implements sampling with replacement and not feature bagging",
+      "QC-Forest is very much different in this sense as we do clustering in order to make the split and for this, we consider all the features in the dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The baseline is therefore not the scikit-learn random forest; Appendix D 2 adds that comparison for six datasets.",
+     "id_suggestion": "baseline-no-feature-bagging"
+    },
+    {
+     "value": "The authors report that for each dataset they create train-test folds and, for each fold, construct and evaluate an ensemble of 100 trees of different depths and numbers of clusters, reporting the results for the lowest values of k^D that reach the highest performance, using ROC AUC for classification and RMSE for regression, with the median and standard deviation across folds; they split the data with a test ratio of 0.3 and create five or ten folds depending on the dataset.",
+     "anchor": "Section V, p.11; Appendix D 1, p.21",
+     "quotes": [
+      "construct and evaluate an ensemble of 100 trees of different tree depths (D) and different number of clusters (k).",
+      "We report the results obtained corresponding to the lowest values of kD to achieve the highest performance",
+      "the metric used is the area under the Receiver Operating Characteristic (ROC) Curve",
+      "using a ratio of 0.3 and create five or ten train-test folds"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "Reporting the best setting per dataset, chosen on the same test folds that are scored, is a form of selection on the test set and can inflate the reported ROC AUC; the paper does not describe a held-out validation split for choosing depth, cluster count or weighting method.",
+     "id_suggestion": "experiment-protocol"
+    },
+    {
+     "value": "The authors report that for binary classification and regression datasets they use whichever of the Pearson correlation and the eta coefficient improves the performance the most, with the eta coefficient best for PIMA, German and Porto Seguro and the Pearson correlation best for Spambase and Boston housing.",
+     "anchor": "Appendix D 1, pp.21-22",
+     "quotes": [
+      "We report the results corresponding to the method that improves the",
+      "the best performance corresponds to using η coefficient whereas for Spambase and the Boston housing, it was Pearson correlation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical selection procedure from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Selecting the weighting method by performance adds another degree of freedom to the reported QC-Forest-c results that the baseline does not get.",
+     "id_suggestion": "weight-method-selection"
+    },
+    {
+     "value": "The authors report in Table II, as median ROC AUC with standard deviation across folds for QC-Forest-c against the baseline: Porto Seguro 0.612±0.003 against 0.616±0.004; Spambase 0.936±0.023 against 0.932±0.022; German 0.753±0.011 against 0.741±0.017; Wine 1.0±0.015 against 0.996±0.006; PIMA 0.821±0.043 against 0.829±0.042; Cars 1.000±0.000 against 1.000±0.000.",
+     "anchor": "Table II, Section V, p.11",
+     "quotes": [
+      "0.612±0.003 0.616±0.004",
+      "0.936±0.023 0.932±0.022",
+      "0.753±0.011 0.741±0.017",
+      "1.0±0.015 0.996±0.006",
+      "0.821±0.043 0.829±0.042",
+      "1.000±0.000 1.000±0.000"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer lists the QC-Forest-c column before the baseline column, matching the table heading. Porto Seguro (the largest dataset) has a ROC AUC near 0.61 for both methods, so it shows weak predictive signal rather than a strong demonstration. The depths and cluster counts for each row are in the table but the text layer prints them in the same lines as the metrics (Porto Seguro D = 2, k = 4; Wine D = 1, k = 3).",
+     "id_suggestion": "table2-classification-results"
+    },
+    {
+     "value": "The authors report in Table II for the one regression dataset, Boston housing, an RMSE of 0.037±0.008 for QC-Forest-c and 0.037±0.009 for the baseline.",
+     "anchor": "Table II, Section V, p.11",
+     "quotes": [
+      "0.037±0.008 0.037±0.009",
+      "Note that ”Boston Housing” is the only dataset for regression."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The regression claim rests on one small dataset of a few hundred samples. The unit of the RMSE is not stated in the text; the target appears to be scaled.",
+     "id_suggestion": "table2-regression-result"
+    },
+    {
+     "value": "The authors conclude from the overlap of metrics that QC-Forest obtains a competitive performance to the baseline method.",
+     "anchor": "Section V, p.11",
+     "quotes": [
+      "Therefore, we affirm that QC-Forest obtains a competitive performance to the baseline method."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion drawn from overlap, not a statistical test.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Overlap of mean-plus-or-minus-one-deviation intervals on few folds cannot show equivalence; it only fails to show a difference.",
+     "id_suggestion": "competitive-overlap-conclusion"
+    },
+    {
+     "value": "The authors report in a further comparison that, against a scikit-learn random forest of at least as many inner nodes, QC-Forest-c scores a ROC AUC of 0.936±0.023 against 0.965±0.014 on Spambase, 0.753±0.011 against 0.767±0.015 on German, 1.000±0.000 against 1.000±0.000 on Cars, 1.0±0.015 against 1.0±0.002 on Wine, 0.821±0.043 against 0.817±0.039 on PIMA, and an RMSE of 0.037±0.008 against 0.024±0.005 on Boston; they conclude that the method is competitive for all the datasets considered.",
+     "anchor": "Table III, Appendix D 2, p.22",
+     "quotes": [
+      "German 0.753±0.011 40",
+      "1.000±0.000 15",
+      "1.0± 0.015 4",
+      "PIMA 0.821±0.043 85",
+      "Boston 0.037±0.008 31",
+      "0.965±0.014 15",
+      "0.767±0.015 63",
+      "1.000±0.000 31 1.0±0.002",
+      "0.817±0.039 127",
+      "0.024±0.005 62",
+      "Spambase 0.936±0.023 7",
+      "Therefore, we conclude that the proposed method is competitive to this baseline too."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "On Spambase and Boston the random forest is better by more than one deviation of the QC-Forest-c result on one side, and the Boston RMSE bands only just touch (0.037 minus 0.008 equals 0.029; 0.024 plus 0.005 equals 0.029). Porto Seguro is not in Table III. The random forest is also trained on the fold's data, not on each tree's own bootstrap as in the Section V baseline.",
+     "id_suggestion": "table3-randomforest-comparison"
+    },
+    {
+     "value": "The authors report that they set the number of inner nodes of the scikit-learn random forest to the minimum number at least equal to the total inner nodes of the QC-Forest-c trees, and that in most cases this number is higher because the random forest split is binary; they note that they do not do pruning with QC-Forest-c and believe pruning may improve it.",
+     "anchor": "Appendix D 2, p.22",
+     "quotes": [
+      "we calculate the minimum number of internal nodes for the trees in random forest such that it is at least equal to the total number of inner nodes in the trees constructed with QC-Forest-c.",
+      "In most of the cases this number is higher that the nodes in QC-Forest-c because the split is binary in random forest.",
+      "Note that we do not do pruning with QC-Forest-c."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "",
+     "id_suggestion": "table3-node-counts"
+    },
+    {
+     "value": "The authors report an incremental-retraining experiment on the Porto Seguro dataset with QC-Forest-c, using batches sampled from the same distribution, up to 5300 samples, with test sets of 250 and 4787 samples and five repeated samplings; ROC AUC improves as the number of samples used for retraining increases for both methods, and the performance of QC-Forest is competitive to the baseline.",
+     "anchor": "Section V, Fig. 2, pp.11-12",
+     "quotes": [
+      "We performed incremental retraining using up to 5300 samples to train.",
+      "repeat the sampling to create the batches of data and perform the incremental retraining followed by the evaluation on test five times.",
+      "It can be seen an improvement on the accuracy metric, the ROC AUC, as the total number of samples used in the retraining is increased",
+      "the performance obtained with QC-Forest is competitive to the baseline.",
+      "in (a) the test set size is 250",
+      "in (b) the test set is of size 4787."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; Fig. 2 values are not in the text layer.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The retraining experiment stops at 5300 samples, far below the large-scale regime the speedup argument addresses, and measures accuracy only, not the retraining time.",
+     "id_suggestion": "incremental-retraining-experiment"
+    },
+    {
+     "value": "The authors state that for each of the incremental retraining experiments, given the size of the data set used, at some point of the continuous incremental retraining the RF model starts overfitting, so they report only up to 4000 samples in one test setting and 5300 in the other.",
+     "anchor": "Section V, p.12",
+     "quotes": [
+      "at some point of the continuous incremental retraining, the RF model starts overfitting.",
+      "corresponding to 4000 in (a) and 5300 in (b)."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The shown curves stop where overfitting begins, so the experiment does not show how the retrained model behaves with long streams.",
+     "id_suggestion": "incremental-overfit-limit"
+    },
+    {
+     "value": "The authors state that the baseline method has a complexity linear in the number of samples, making it inefficient to handle big sets of data, whereas QC-Forest performs the retraining efficiently and allows retraining at large scale.",
+     "anchor": "Section V, p.12",
+     "quotes": [
+      "However, the baseline method has a complexity linear in the number of samples, making it inefficient to handle big sets of data.",
+      "In contrast, QC-Forest performs the retraining efficiently, allowing to perform the retraining at large scale"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; no runtime measurement is shown.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The efficiency of QC-Forest rests on the asymptotic analysis and on a quantum-accessible memory the paper says has no commercial access.",
+     "id_suggestion": "baseline-linear-retrain-claim"
+    },
+    {
+     "value": "The authors report an entropy experiment on the Porto Seguro dataset with a single tree of D = 5 and k = 2, in which the supervised clustering with the eta coefficient weights reduces the entropy more than unsupervised clustering for tree depth higher than two (D > 2), and they relate the limited entropy reduction of QC-Forest at higher depths to the overfitting they see at higher depths.",
+     "anchor": "Section V, Fig. 3, pp.12-13",
+     "quotes": [
+      "we utilize the Porto Seguro data set and construct the RF model with D = 5 and k = 2",
+      "it can be seen that for tree depth higher than two (D > 2), the supervised clustering contributes to reduce the entropy more.",
+      "The limitation in the reduction of the entropy we encounter with QC-Forest is related to the overfitting we also encounter for higher depths"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on one dataset; Fig. 3 values are not in the text layer.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The paper's own reading of the entropy limit as overfitting is an explanation it offers, not a test.",
+     "id_suggestion": "entropy-experiment-setup-supervised"
+    },
+    {
+     "value": "The authors report that for all the datasets considered, using the weighted distance at inference gives either the same performance as using the Euclidean distance or, in some cases, a better one, and that in all the cases the highest ROC AUC values correspond to using the weighted distance; the example is the PIMA dataset in a figure.",
+     "anchor": "Appendix D 3, pp.22-23",
+     "quotes": [
+      "using the weighted distance obtains either the same performance as using Euclidean distance and in some cases, it even improves it.",
+      "In all the cases, the highest values of ROC AUC obtained corresponds to using the weighted distance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; only the PIMA plot is shown, with no values in the text layer.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "",
+     "id_suggestion": "weighted-distance-inference-gain"
+    },
+    {
+     "value": "The authors report on the German credit dataset, whose relative occurrence of label 0 is 0.69, that taking the naive threshold t = 0.5, the majority vote, makes the model performance low whereas fine-tuning the threshold significantly improves the accuracy; this is shown for one fold with an ensemble of 100 trees with D = 3 and k = 3.",
+     "anchor": "Appendix D 4, Fig. 5, p.23",
+     "quotes": [
+      "a total relative accurence of label 0 of 0.69.",
+      "taking the naive threshold t = 0.5 (vertical black line), which corresponds to taking the majority vote, makes the model performance low",
+      "significantly improves the accuracy.",
+      "an ensemble of 100 trees with D = 3 and k = 3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one fold of one dataset; Fig. 5 values are not in the text layer.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The best threshold is chosen where the accuracy on the test fold is maximal, so the reported gain is an optimistic upper bound; the threshold is a classical post-processing step that any random forest with probability outputs can use.",
+     "id_suggestion": "threshold-tuning-german"
+    },
+    {
+     "value": "The authors report that they give results only up to small depths because for higher values they see a decrease in test performance because of overfitting, for all the datasets considered, and that on PIMA the ROC AUC decreases for depths higher than three, more so for higher numbers of clusters k.",
+     "anchor": "Appendix D 5, Fig. 6, p.23",
+     "quotes": [
+      "we report the results up to small depths because for higher values we see a decrease in performance in test because of overfitting.",
+      "We have seen this for all the datasets considered.",
+      "It can be seen that the ROC AUC decreases for depths higher than three.",
+      "This decrease is more notorious for higher number of clusters (k )."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The runtime term k raised to 3D grows quickly with depth, while accuracy drops at depth above three in the example; the useful region for this method is small, shallow trees. The paper does not test pruning.",
+     "id_suggestion": "deep-tree-overfitting-limit"
+    },
+    {
+     "value": "The authors report that for all the datasets considered, aggregating the trees by taking the mean of the class probabilities significantly improves performance compared with the majority method, in which each tree outputs the label with highest probability; the PIMA dataset is the example in a figure.",
+     "anchor": "Appendix D 5, pp.23-24",
+     "quotes": [
+      "We have seen that for all the datasets considered using the mean method significantly improves performance.",
+      "Another method is mean where each tree outputs the probability of each class"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; only the PIMA plot is shown.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Mean-probability aggregation needs the per-class leaf probabilities, which is the capability the paper adds over Des-q.",
+     "id_suggestion": "aggregation-mean-vs-majority"
+    },
+    {
+     "value": "The authors state that previous quantum algorithms using Grover's search have targeted the speedup of the underlying tree construction in RF models, offering a quadratic improvement based on the number of features d, whereas in big data contexts with periodic retraining the primary bottleneck is typically the number of training examples N, which can be of the order of billions.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "offering a quadratic improvement based on the number of features (d) in the dataset [38–41].",
+      "the primary bottleneck is typically the number of training examples, N , which can be of the order of billions."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A characterization of prior work, cited, and an author's claim about the bottleneck.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "prior-quantum-tree-work-d-only"
+    },
+    {
+     "value": "The authors state that variational algorithms suffer from barren plateaus, that it has been conjectured and widely believed that the commonly used quantum variational models with a provable absence of barren plateaus could also be classically simulatable, and that some quantum algorithms provide a speedup only when the task is to recover the output quantum state or to extract few properties of it, since recovering the entire classical representation requires quantum state tomography.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "variational algorithms suffer from barren plateaus [25–30] constraining their practical usage.",
+      "could also be classically simulatable [31]",
+      "this requires performing a quantum state tomography which eliminates any speedup offered by the original algorithm [35]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "QC-Forest avoids the tomography problem because its output is a classical tree structure estimated by classical post-processing of quantum estimates, per Section III.",
+     "id_suggestion": "qml-challenges-cited"
+    },
+    {
+     "value": "The authors state that, to the best of their knowledge, this is the first time that such time-efficient incremental retraining has been proposed for RF models, and that QC-Forest achieves a significant speedup over standard methods in classical computation, which scale linear on N, when performing retraining in the streaming setting.",
+     "anchor": "Section VI, p.13",
+     "quotes": [
+      "To the best of our knowledge, this is the first time that such time-efficient incremental retraining has been proposed for RF models.",
+      "QC-Forest achieves a significant speedup over standard methods in classical computation, which scale linear on N , when performing retraining in the streaming setting."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's novelty and speedup claim.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The speedup is an asymptotic statement under Theorem 1's conditions, and not a measured one.",
+     "id_suggestion": "first-incremental-retrain-rf-claim"
+    },
+    {
+     "value": "The authors conclude that, when the quantum hardware matures allowing for implementation and adoption of QC-Forest, the models it produces will achieve competitive performance to the standard classical methods while significantly speeding up the model retrain in the streaming setting.",
+     "anchor": "Section VI, p.13",
+     "quotes": [
+      "These benchmarks show that when the quantum hardware matures allowing for implementation and adoption of QC-Forest, the its produced models will achieve competitive performance to the standard classical methods"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A forward-looking conclusion of the authors, contingent on future hardware.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The conclusion is conditional on hardware and on quantum-accessible memory that do not exist yet; the benchmarks test the classical stand-in only.",
+     "id_suggestion": "conclusion-hardware-contingent"
+    }
+   ]
+  }
+ ]
+}
