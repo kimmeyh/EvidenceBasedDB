@@ -1,0 +1,692 @@
+{
+ "papers": [
+  {
+   "record_id": "zhou-2023-hybrid-algorithm-quadratically-constrained-quadratic",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Zhou-et-al._2023_A-hybrid-algorithm-for-quadratically-constrained-quadratic-optimization__2309.10564.pdf",
+   "title_in_file": "A hybrid algorithm for quadratically constrained quadratic optimization problems",
+   "version_note": "arXiv:2309.10564v1 (19 Sep 2023); the text is the paper its record names.",
+   "pages": 8,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A variational quantum algorithm for general QCQPs that encodes variables in state amplitudes or measurement probabilities and runs a primal-dual interior-point loop, tested on random Max-Cut and optimal power flow instances against IPOPT and QAOA.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qcqp-better-than-classical",
+     "verdict": "narrowed",
+     "note": "The classical counterpart is one solver, IPOPT, and the text gives no instance count or objective values; the outcomes are in Fig. 2 and Fig. 3 only.",
+     "value": "The authors report that numerical experiments on Max-Cut and optimal power flow problems show better performance of their hybrid algorithm than the classical counterparts, where the classical method is the interior point optimizer IPOPT.",
+     "anchor": "Abstract, p.1; Appendix B, p.8",
+     "quotes": [
+      "Our numerical experiments on typical QCQP problems, including Max-Cut and optimal power flow problems, demonstrate a better performance of our hybrid algorithm over the classical counterparts.",
+      "In the numerical experiment of both problems, the classical method refers to the widely applied interior point optimizer for non-linear optimizations (IPOPT) [18]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The quantum part is described as 'numerical simulation' (Section III.A); the text does not report a hardware run or noise. The 'classical counterparts' are one solver, IPOPT, which also supplies the primal-dual interior-point loop of the hybrid algorithm."
+    },
+    {
+     "id": "qcqp-log-qubits",
+     "verdict": "confirmed",
+     "note": "Section III.A repeats it as n ~ polylog(N) for the parameter count. For the real-valued case the variables sit in measurement probabilities, not amplitudes.",
+     "value": "",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "By encoding the variables in the amplitude of a quantum state, the requirement of the qubit number scales logarithmically with the dimension of the variables."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A property of the amplitude encoding; not derived in the quotes.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qcqp-maxcut-vs-qaoa",
+     "verdict": "widened",
+     "note": "The appendix adds the graph model, N = 16 and P = 0.25, and that QAOA is the Qiskit implementation.",
+     "value": "The authors report that on randomly generated Max-Cut graphs with N = 16 nodes and edge probability P = 0.25 their algorithm outperforms the classical optimizer and QAOA, with QAOA at p = 4 layers and the hardware-efficient ansatz at l = 5.",
+     "anchor": "Section IV.B and Appendix B, pp.4 to 8",
+     "quotes": [
+      "It turns out that our algorithm outperforms the other two algorithms in these random graphs.",
+      "The number of layers p in QAOA is chosen to be 4, surpassing the depth of the hardware-efficient ansatz employed in our algorithm.",
+      "In our numerical experiment of max-cut problem, we choose N = 16 and P = 0.25.",
+      "In our examples l = 5 and p = 4, and the example graph has maximal degree d = 5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Only N = 16 nodes is stated, one problem size, and the text gives no count of graphs."
+    },
+    {
+     "id": "qcqp-random-instances",
+     "verdict": "corrected",
+     "note": "The 'connected graph' condition belongs to the OPF instances; Max-Cut graphs were sampled from GN,P with N = 16 and P = 0.25, and the text does not say they are connected.",
+     "value": "The authors state that the test instances were randomly generated: the Max-Cut input graphs were sampled from GN,P with N = 16 and P = 0.25, and the OPF instances were randomly generated connected graphs.",
+     "anchor": "Appendix B, pp.7 to 8",
+     "quotes": [
+      "graphs sampled from GN,P , i.e., there are N nodes in the graph and the probability of the existence of each edge is P .",
+      "In our numerical experiment of max-cut problem, we choose N = 16 and P = 0.25.",
+      "In summary, the instances are randomly generated such that",
+      "The graph G is a randomly generated connected graph;"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its test instances, Appendix B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "complex-qcqp-form",
+     "value": "The paper defines the complex-valued QCQP in homogeneous form, with Hermitian matrices that may be indefinite.",
+     "anchor": "Section II.A, p.2",
+     "quotes": [
+      "Without loss of generality, the general form of a complex-valued quadratically constrained quadratic program (QCQP) is given by a homogeneous form [7],",
+      "is Hermitian but possibly indefinite."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the problem class, Section II.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "psd-case-sdp",
+     "value": "The authors state that when all matrices in the complex-valued QCQP are positive semi-definite the problem is equivalent to a semi-definite program that can be solved efficiently.",
+     "anchor": "Section II.A, p.2",
+     "quotes": [
+      "When all Ai are positive semi-definite, the problem Eq. (1) is equivalent to a semi-definite programming (SDP) problem that can be efficiently solved."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement without proof or citation in this sentence.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "complex-to-real-recast",
+     "value": "The authors state, citing a thesis, that a complex-valued QCQP can be recast as a real-valued one.",
+     "anchor": "Section II.A, p.2",
+     "quotes": [
+      "In particular, it is a basic fact that a complex-valued QCQP can be recast as a real-valued one [12]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "general-qcqp-np-hard",
+     "value": "The authors state that solving general QCQPs is NP-hard and that this leaves a gap in computationally efficient solvers.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "Solving general QCQPs is NP-hard, leaving a notable gap in terms of computationally efficient solvers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement; no citation in this sentence.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-local-minima",
+     "value": "The authors state that classical solvers often encounter local minima because QCQPs are non-convex, which limits their ability to give globally optimal solutions.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "The primary challenge in solving QCQPs stems from their non-convex nature.",
+      "Classical solvers often encounter local minima, hindering their effectiveness in providing globally optimal solutions."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "IPOPT, the classical baseline, is a local solver, so the comparison does not test a global classical method."
+    },
+    {
+     "id_suggestion": "relaxations-limited",
+     "value": "The authors state that approximation algorithms such as semi-definite relaxation and the reformulation linearization technique have limitations in certain cases, and that efficient solutions are known for only specific classes of QCQPs.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "However, all of these approximation algorithms have limitations in certain cases [7].",
+      "In fact, efficient solutions are known for only specific classes of QCQPs [5]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A limitation the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-linear-qubits",
+     "value": "The authors state that QAOA handles a special type of QCQP, QUBO, and demands a number of qubits linearly proportional to the problem dimension.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "The QAOA algorithm demands a number of qubits linearly proportional to the problem’s dimension, which poses challenges for solving large-scale QCQPs."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement about prior work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sdp-quantum-gibbs-hard",
+     "value": "The authors state that another quantum algorithm for QUBO solves a semi-definite relaxation with quantum Gibbs sampling, and that implementing it on current quantum devices remains a substantial challenge.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "Another quantum algorithm for QUBO is based on semi-definite relaxation [9].",
+      "However, implementing this on current quantum devices remains a substantial challenge."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A limitation the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "open-question-near-term",
+     "value": "The authors state that designing a quantum algorithm for general QCQPs that can be realized on near-term quantum devices remains an open research question.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "Consequently, designing a quantum algorithm for general QCQPs that can be realized on near-term quantum devices remains an open research question."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of the gap the paper targets.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "near-term-suitability-claim",
+     "value": "The authors claim their algorithm needs far fewer qubit resources and is suitable for current quantum devices.",
+     "anchor": "Abstract, p.1; Section I, p.1",
+     "quotes": [
+      "which makes our algorithm suitable for current quantum devices.",
+      "Meanwhile, our algorithm requires far fewer qubit resources that can be easily implemented on current quantum devices."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the results are numerical simulations.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The text reports no run on quantum hardware and no noise model, so suitability for current devices is argued from qubit count only."
+    },
+    {
+     "id_suggestion": "variational-algorithm-definition",
+     "value": "The paper defines a variational algorithm as a parameterized quantum circuit with a classical optimizer that iteratively updates the circuit parameters, with the cost function and its gradient computed by measurements on the circuit.",
+     "anchor": "Section II.B, p.2",
+     "quotes": [
+      "A variational algorithm is essentially an iterative algorithm optimizing the circuit parameters, where the target function, also known as the cost function, and its gradient are computed by performing various measurements on the quantum circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition used by the paper, Section II.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ansatz-setup-simulation",
+     "value": "The authors state that they use a problem-independent hardware-efficient ansatz made of Ry, Rz and controlled-Z gates, and that the concrete implementation is the one applied in their numerical simulation.",
+     "anchor": "Section III.A and Fig. 1, p.2",
+     "quotes": [
+      "In this work, we consider a problem-independent, hardware-efficient ansatz denoted by a joint unitary gate U (θ).",
+      "In Fig. 1, we provide a concrete implementation of U (θ) applied in our numerical simulation, which is composed of Ry, Rz, and controlled-Z gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own ansatz and that the experiments are simulations, Section III.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "complex-amplitude-encoding",
+     "value": "The authors state that the complex vector is encoded in the amplitude of the parameterized state, with an additional real normalization parameter eta so that the encoded vector has unit norm.",
+     "anchor": "Section III.A, p.2",
+     "quotes": [
+      "For the complex-valued case, we consider encoding the complex vector x in the amplitude of the parameterized quantum state |ψ(θ)⟩.",
+      "we introduce an additional variable η ∈ R as the normalization parameter, which leads to a normalized complex variable ∥η−1/2x∥2 = 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the encoding, Section III.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "real-probability-encoding",
+     "value": "The authors state that for the real-valued case the vector is encoded in the probabilities of the computational-basis measurement outcomes, so the quadratic form has non-negative variables.",
+     "anchor": "Section III.A, pp.2 to 3",
+     "quotes": [
+      "For the real-valued case, one needs to measure |ψ(θ)⟩ in the computational basis to obtain a real-valued diagonal density matrix ρdiag, whose j-th diagonal element is ρdiag,j = | ⟨ϕj|ψ(θ)⟩ |2.",
+      "Due to the non-negativity of a density matrix, Eq. (5) represents a quadratic form with non-negative variables."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the real-valued encoding, Section III.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "In this encoding the quadratic form is estimated from sampled probabilities, so the estimate carries shot noise; the text gives no sample count S."
+    },
+    {
+     "id_suggestion": "monte-carlo-estimator",
+     "value": "The paper gives a Monte Carlo method (Algorithm 1) that estimates the real-valued quadratic form: for each of S samples it prepares the state and measures it in the computational basis twice, recording outcomes k and l, and averages the matrix entry for that pair scaled by eta.",
+     "anchor": "Algorithm 1, Section III.A, p.3",
+     "quotes": [
+      "To estimate the quadratic form, we apply the following Monte Carlo method in Algorithm 1.",
+      "Run the quantum circuit to prepare |ψ(θ)⟩;",
+      "record the measurement output k;",
+      "record the measurement output l;"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A procedure the paper describes; the quotes hold the steps, not a proof of correctness or a variance bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text gives no bound on the number of samples S or on the estimator variance, and none of the experiments report S."
+    },
+    {
+     "id_suggestion": "nonneg-reduction-no-loss-of-generality",
+     "value": "The authors state that any real-valued QCQP can be transformed into one with non-negative variables by replacing each variable with the difference of two non-negative variables, so their method does not lose generality.",
+     "anchor": "Section III.A, p.3",
+     "quotes": [
+      "Besides, note that any general real-valued QCQP can be transformed into a QCQP with non-negative variables by simply replacing each variable y ∈ RN with the difference of two non-negative variables y1 − y2, where y1, y2 ≥ 0.",
+      "Therefore, our method will not lose generality."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A short reduction stated in the text, without a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The reduction doubles the number of variables, which adds one qubit; the text does not discuss any other cost."
+    },
+    {
+     "id_suggestion": "polylog-parameters",
+     "value": "The authors state that the number of qubits scales logarithmically with the variable size, that the parameters of a hardware-efficient ansatz scale polynomially with the number of qubits, and so the number of circuit parameters n is polylogarithmic in N.",
+     "anchor": "Section III.A, p.3",
+     "quotes": [
+      "qubits has a logarithmic scaling in terms of the original variable size N .",
+      "On the other hand, the parameters in a hardware-efficient ansatz scale polynomially with the number of qubits.",
+      "Then we have n ∼ polylog(N ), which means the variational algorithm greatly simplifies the computation cost when N is large enough."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A scaling argument in prose; no theorem and no analysis of the layers needed to reach the optimum.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The scaling counts parameters of a fixed-depth ansatz. The text does not show that a polylogarithmic ansatz can represent the optimum of a QCQP."
+    },
+    {
+     "id_suggestion": "primal-dual-ipm-classical-part",
+     "value": "The authors state that the classical part uses a primal-dual interior point method to optimize the primal variables and the dual variables simultaneously, based on second-order gradients of the quadratic forms.",
+     "anchor": "Section III.B, p.3",
+     "quotes": [
+      "In the classical part of the variational quantum algorithm, we use a primal-dual interior point method for the non-convex optimization [13] to optimize primal variables ϑ and dual variables λ simultaneously.",
+      "This algorithm is based on second-order gradients of the quadratic forms."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own algorithm, Section III.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-computed-quantities",
+     "value": "The authors state that in the hybrid algorithm the gradient, Hessian and Jacobian matrix are obtained from the quantum processor, and that the optimization is also done by the primal-dual interior-point method in IPOPT.",
+     "anchor": "Appendix B, p.8",
+     "quotes": [
+      "While in our hybrid algorithm, the gradient, Hessian, and Jacobian matrix are obtained from the quantum processor.",
+      "The optimization process is also accomplished by the primal-dual interior-point method in IPOPT."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its experimental setup, Appendix B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The classical baseline and the hybrid algorithm share the same interior-point routine; they differ in where the function values and derivatives come from."
+    },
+    {
+     "id_suggestion": "parameter-shift-claim",
+     "value": "The authors state, citing prior work, that thanks to the parameter-shift rule in a hardware-efficient ansatz the first and second order gradients can be estimated efficiently.",
+     "anchor": "Section III.B, p.3",
+     "quotes": [
+      "Thanks to the existence of parameter-shift rule in hardware-efficient ansatz [14–16], the first and second order gradients can be estimated efficiently."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "eta-numerical-derivative",
+     "value": "The authors state that the normalization variable eta is not a circuit parameter, so its partial derivative is calculated numerically rather than by the parameter-shift rule.",
+     "anchor": "Section III.B, p.4",
+     "quotes": [
+      "Note that the variable η in ϑ is not a circuit parameter. The corresponding partial derivative is calculated numerically rather than using parameter-shift rule."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own method, Section III.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "perturbed-kkt-mu-contraction",
+     "value": "The authors state that the primal-dual interior point method solves a perturbed KKT condition with a parameter mu, contracts mu toward zero from an initial value, and that as mu goes to zero the solution converges to that of the original problem.",
+     "anchor": "Section III.B, p.3",
+     "quotes": [
+      "In the algorithm, the perturbation parameter µ is contracted to zero from an initial value µ0 iteratively,",
+      "When µ → 0, the solution will converge to that of the original problem without perturbation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement about a classical method; the paper gives no convergence proof for estimates that carry quantum noise.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The convergence statement is for exact function values. The text does not analyze convergence when the values and derivatives come from sampled measurements."
+    },
+    {
+     "id_suggestion": "mu-update-rule",
+     "value": "The authors state that when the inner termination criterion is met, mu is multiplied by a constant in the open interval from 0 to 1 and eventually goes to 0.",
+     "anchor": "Section III.B, p.4",
+     "quotes": [
+      "When Eq. (14) is satisfied, µ is updated by multiplying by a constant cµ ∈ (0, 1) and eventually goes to 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the update in Section III.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kkt-necessary-claim",
+     "value": "The authors state that the KKT conditions are a set of necessary conditions that any solution to a constrained optimization problem must satisfy in order to be optimal.",
+     "anchor": "Appendix A, p.5",
+     "quotes": [
+      "The KKT conditions are a set of necessary conditions that any solution to a constrained optimization problem must satisfy in order to be optimal."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of background; no condition is quoted.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The KKT conditions are necessary only under a constraint qualification, and the text does not state one."
+    },
+    {
+     "id_suggestion": "opf-formulation-simplified",
+     "value": "The authors state that the OPF problem is formulated as a complex-valued QCQP, and that for the demonstration they simplify the formulation by setting the range of the real and imaginary parts of the generated power to the unit interval.",
+     "anchor": "Section IV.A and Appendix B, pp.4 and 7",
+     "quotes": [
+      "cally, the OPF problem can be formulated as a complexvalued QCQP problem [17],",
+      "To demonstrate our algorithm, the formulation above is simplified."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of the simplified problem it solves, Appendix B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The OPF instances solved are a simplified, randomly generated version, not a standard OPF benchmark."
+    },
+    {
+     "id_suggestion": "opf-instance-generation",
+     "value": "The authors state that for the OPF instances each term of the load power and the admittances are uniform random variables on the unit interval, and the graph is a randomly generated connected graph.",
+     "anchor": "Appendix B, pp.7 to 8",
+     "quotes": [
+      "Each term of Re SL, Im SL is a uniform random variable in the range of [0, 1];",
+      "The graph G is a randomly generated connected graph;",
+      "The admittance yk, yjk are also uniform random variables in the range of [0, 1], and then the corresponding admittance matrix can be generated."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its OPF instance generation, Appendix B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "opf-experiment-result",
+     "value": "The authors report that they ran the OPF problem with their hybrid algorithm and with IPOPT, using 5 layers in the hardware-efficient ansatz, and that the hybrid algorithm performs better in these random instances.",
+     "anchor": "Section IV.A and Fig. 2, pp.4 to 5",
+     "quotes": [
+      "We ran the OPF problem using our hybrid algorithm",
+      "named Interior Point OPTimizer (IPOPT)",
+      "ansatz in Fig. 1 to be 5.",
+      "Compared to the classical algorithm, our algorithm performs better in these random instances."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text gives no number of instances, no problem size N and no objective values; the comparison is in a histogram (Fig. 2) only."
+    },
+    {
+     "id_suggestion": "maxcut-as-qcqp",
+     "value": "The authors state that Max-Cut is formulated as a real-valued QCQP and that it is a QUBO problem, which QAOA can solve.",
+     "anchor": "Section IV.B, p.4",
+     "quotes": [
+      "Mathematically, the Max-Cut problem can be formulated as a real-valued QCQP problem,",
+      "The Max-Cut problem is a quadratic unconstrained binary optimization (QUBO) problem, which can be solved by QAOA."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of the problem formulation, Section IV.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "maxcut-comparison-setup",
+     "value": "The authors state that for Max-Cut they also compare with QAOA using the Qiskit implementation, with QAOA at 4 layers, the hardware-efficient ansatz at 5 layers, and an example graph of maximal degree 5.",
+     "anchor": "Section IV.B and Appendix B, pp.5 and 8",
+     "quotes": [
+      "using implementation from Qiskit library [19].",
+      "In our examples l = 5 and p = 4, and the example graph has maximal degree d = 5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its comparison setup, Appendix B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "circuit-depth-formulas",
+     "value": "The authors state that the depth of an l-layer hardware-efficient ansatz is 4l + 2 and the depth of a p-layer QAOA ansatz is p(d + 1), where d is the maximal degree of one vertex in the graph.",
+     "anchor": "Appendix B, p.8",
+     "quotes": [
+      "The depth of a l-layer hardware-efficient ansatz used in our method is 4l + 2.",
+      "While the depth of a p-layer QAOA ansatz is p(d + 1) where d refers to maximal degree of one vertex in the graph."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Formulas stated without derivation.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "With l = 5, p = 4 and d = 5 the formulas give depths 22 and 24, so the depth gap is small; the paper's phrase 'lower depth' rests on this."
+    },
+    {
+     "id_suggestion": "maxcut-fewer-qubits-lower-depth",
+     "value": "The authors conclude that their algorithm achieves a better performance on the Max-Cut problem for random graphs with much fewer qubits and lower depth.",
+     "anchor": "Appendix B, p.8",
+     "quotes": [
+      "Therefore, our algorithm can achieve a better performance in solving the Max-Cut problem for the random graphs with much fewer qubits and lower depth."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion from the comparison above.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The text does not state qubit counts for either method. The hybrid circuit is compared to QAOA at one graph size, N = 16."
+    },
+    {
+     "id_suggestion": "conclusion-outperforms-classical",
+     "value": "The authors conclude that they have proposed a variational quantum algorithm for QCQPs that can outperform its classical counterpart, handle general quadratic constraints, and significantly reduce the quantum resource requirement.",
+     "anchor": "Section V, p.5",
+     "quotes": [
+      "In conclusion, we have proposed a variational quantum algorithm for QCQPs which can outperform its classical counterpart.",
+      "Compared to existing quantum algorithms, our algorithm can handle QCQPs with general quadratic constraints and significantly reduce the quantum resource requirement."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The experiments use simulated quantum parts on small random instances; 'outperform' is relative to one local solver."
+    },
+    {
+     "id_suggestion": "future-work",
+     "value": "The authors state as future work that variational quantum algorithms could be applied to more general non-linear, non-convex problems, that more efficient classical optimizers such as quasi-Newton methods could accelerate the optimization, and that optimization theory could refine the classical part.",
+     "anchor": "Section V, p.5",
+     "quotes": [
+      "Moreover, the exploration of more efficient classical optimization algorithms, such as quasiNewton methods, could accelerate the optimization process in VQAs.",
+      "Finally, optimization theory can be leveraged to refine the classical part of VQAs."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author statements of future work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
