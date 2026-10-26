@@ -291,7 +291,7 @@ this project keeps having to replace with a step.
   (Issue #138)
 - **feat**: Task G (F113, 2026-10-26): `scripts/sprint13_g_reading.py`
   enters the reviewed groups from `manifests/sprint13_g_reviews/` (one
-  coordinator review per group, g001 to g037 so far) and their reader
+  coordinator review per group, g001 to g041 so far) and their reader
   files; `ID_FIX` stores a new assertion under another id where the
   reader's suggestion is already another source's. Dry run only; nothing
   applied yet (Issue #138)
@@ -325,6 +325,12 @@ this project keeps having to replace with a step.
   groups g043 to g329 (snapshot as of 2026-10-26: 1,430 records) are
   registered as F114 in `docs/ALL_SPRINTS_MASTER_PLAN.md`, and F113's
   card records the pause (Issue #138)
+- **fix**: the fresh-eyes review of 57107f1 (2026-10-26): `record()` still
+  read ANCHOR_FIX and CONTEXT_FIX under the reader's id while value and
+  quote edits used the stored id, and the moved-id guard did not cover
+  them, so an anchor or context fix named under the stored id was dropped
+  silently. Both are now read under the stored id and guarded; the tests
+  were proven red by injection (Issue #138)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

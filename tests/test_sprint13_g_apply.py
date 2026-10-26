@@ -30,6 +30,10 @@ def test_an_edit_under_an_id_that_id_fix_moves_is_refused(monkeypatch):
     assert g.edits_under_moved_ids() == ["x"]
     monkeypatch.setattr(g, "VALUE_REPLACE", {"src-x": "a replaced value"})
     assert g.edits_under_moved_ids() == []
+    # review of 57107f1: anchor and context fixes are keyed the same way
+    monkeypatch.setattr(g, "ANCHOR_FIX", {"x": "p.3"})
+    monkeypatch.setattr(g, "CONTEXT_FIX", {"x": "ml"})
+    assert g.edits_under_moved_ids() == ["x"]
 
 
 def test_an_edit_under_the_stored_id_of_a_moved_assertion_is_written(monkeypatch):
@@ -46,9 +50,13 @@ def test_an_edit_under_the_stored_id_of_a_moved_assertion_is_written(monkeypatch
     monkeypatch.setattr(g, "ID_FIX", {"x": "src-x"})
     monkeypatch.setattr(g, "VALUE_REPLACE", {"src-x": "the coordinator's value"})
     monkeypatch.setattr(g, "EXTRA_QUOTES", {"src-x": ["an added quote"]})
+    monkeypatch.setattr(g, "ANCHOR_FIX", {"src-x": "p.3"})
+    monkeypatch.setattr(g, "CONTEXT_FIX", {"src-x": "ml"})
     [(_, rec, _, _)] = g.assertions()
     assert (rec.id, rec.value) == ("src-x", "the coordinator's value")
     assert "an added quote" in rec.citation_context
+    # review of 57107f1: the anchor and context fixes were still read under the reader's id
+    assert (rec.provenance, rec.context) == ("src, p.3", "ml")
 
 
 def test_a_graded_confirmed_row_the_apply_does_not_write_must_already_hold_its_grade(monkeypatch):

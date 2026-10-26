@@ -142,8 +142,10 @@ def _load_reviews() -> dict[str, tuple[str, str]]:
 
 def edits_under_moved_ids() -> list[str]:
     """record() and verify() look an edit up under the stored id, so an edit under a reader's id that ID_FIX moves
-    would be neither written nor checked (reviews of 6d8dec7 and 9c79048)."""
-    return sorted(set(ID_FIX) & (set(VALUE_REPLACE) | set(QUOTE_EDITS) | set(EXTRA_QUOTES)))
+    would be neither written nor checked (reviews of 6d8dec7 and 9c79048); anchor and context fixes too (review of
+    57107f1)."""
+    edits = set(VALUE_REPLACE) | set(QUOTE_EDITS) | set(EXTRA_QUOTES) | set(ANCHOR_FIX) | set(CONTEXT_FIX)
+    return sorted(set(ID_FIX) & edits)
 
 
 HIGH = high_grades(_load_reviews())
@@ -222,12 +224,12 @@ def record(g: str, rid: str, aid: str, a: dict, why: str, sid: str | None = None
     verify() checks an edit under (review of 9c79048)."""
     sid = sid or aid
     cert, reasons = certainty(aid, a)
-    anchor = anchor_safe(ANCHOR_FIX.get(aid) or a["anchor"])
+    anchor = anchor_safe(ANCHOR_FIX.get(sid) or a["anchor"])
     return AssertionRecord(
         id=sid, value=" ".join((VALUE_REPLACE.get(sid) or a["value"]).split()),
         provenance=f"{rid}, {anchor}",
         citation_context="; ".join(f'"{q}" ({anchor})' for q in quotes_of(sid, a)),
-        evidence_tag="N/A", context=CONTEXT_FIX.get(aid) or a["context"], certainty=cert,
+        evidence_tag="N/A", context=CONTEXT_FIX.get(sid) or a["context"], certainty=cert,
         certainty_reasons=reasons, fidelity=a.get("fidelity") or "scoped", derivation="extracted",
         claim_type=a["claim_type"],
         search_scope=("the paper's own text, as read" if a["claim_type"] == "absence" else None),
