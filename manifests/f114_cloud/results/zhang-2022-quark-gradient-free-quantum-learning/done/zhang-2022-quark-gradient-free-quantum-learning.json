@@ -1,0 +1,658 @@
+{"papers": [{
+  "record_id": "zhang-2022-quark-gradient-free-quantum-learning",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Zhang-et-al._2022_QUARK-A-Gradient-Free-Quantum-Learning-Framework-For-Classification-Tasks__2210.01311.pdf",
+  "title_in_file": "QUARK: A GRADIENT-FREE QUANTUM LEARNING FRAMEWORK FOR CLASSIFICATION TASKS",
+  "version_note": "arXiv:2210.01311v1 preprint, 2 Oct 2022, marked Preprint. Under review. The text layer lost the epsilon and delta symbols, the integral and sum limits, the fractions and the exponents inside the formulas of Theorems 1 to 3, so those formulas are described in words.",
+  "pages": 19,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A 2022 preprint that proposes Quark, a Grover-based, gradient-free training method for binary-weight quantum classifiers with basis-encoded data, gives three theorems on model query complexity, and tests it by simulation on Edge Detection and Tiny-MNIST.",
+  "bears_on_context": "qml",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "quark-query-complexity",
+      "verdict": "narrowed",
+      "note": "The paper says it proves the outperformance, but the comparison is between a stated bound for Quark and the worst case for gradient-based VQC methods, it rests on the assumption that C is much smaller than N, the K-parallel gain holds only under certain circumstances, and the conclusion calls the result some evidences. Stored value kept the claim but dropped these limits.",
+      "value": "The authors state that they prove Quark can outperform gradient-based methods by reducing model query complexity for highly non-convex problems, and that using K-parallel datasets can further reduce model query complexity under certain circumstances; their conclusion describes the theoretical result as some evidences in terms of model query complexity.",
+      "anchor": "Abstract; Introduction p.3; Contributions p.3; Section 6 p.9",
+      "quotes": [
+        "prove that Quark can outperform gradient-based methods by reducing model query complexity for highly non-convex problems.",
+        "In addition, we prove that using K-parallel datasets can further reduce model query complexity under certain circumstances.",
+        "Theoretically, we present some evidences in terms of model query complexity for Quark to demonstrate trade-offs between VQC based methods and Quark."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A theoretical result whose proofs are short appendix derivations with an approximation step; the formulas are partly lost in the text layer.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The paper compares an upper bound on Quark's cost with the worst case of the baseline, not a lower bound with a lower bound, and it runs no gradient-based baseline in any experiment."
+    },
+    {
+      "id": "quark-simulated-small-scope",
+      "verdict": "widened",
+      "note": "The paper says most, not all, simulation results are numerical, and that Qiskit Aer was used to check reproducibility on applicable models (Appendix A.6, a simplified binary Edge Detection task). The stored scope is right and the fuller value adds the Qiskit check.",
+      "value": "The authors state that most of the simulation results are obtained numerically because they have no access to large scale quantum devices that fit their setup, that they use Qiskit Aer to verify reproducibility on applicable models, and that, due to device limitation, the Tiny-MNIST task uses only classes 1, 2, 7, a 3-way classification task.",
+      "anchor": "Section 5 p.8; Section 5.2 p.9; Section 6 p.9; Appendix A.6 p.18",
+      "quotes": [
+        "Notice that most of the simulation results are obtained numerically since we have no access to large scale quantum devices that ﬁt our setup.",
+        "Due to device limitation, we only consider classes 1, 2, 7, which makes this task a 3-way classiﬁcation task.",
+        "Empirically, we have veriﬁed the effectiveness of Quark through numerical simulations on Edge Detection and Tiny-MNIST."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper states its own experimental scope in Section 5, Section 5.2 and Section 6.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "No run on quantum hardware is reported anywhere in the paper."
+    },
+    {
+      "id": "quark-tiny-mnist-accuracy",
+      "verdict": "confirmed",
+      "note": "",
+      "value": "The authors report that the best model in the search space on Tiny-MNIST achieves 86.08% training accuracy and 82.61% testing accuracy, whereas a well-optimized classical single layer perceptron achieves 85% training accuracy and 80% test accuracy.",
+      "anchor": "Section 5.2 p.9",
+      "quotes": [
+        "which can achieve 86.08% training accuracy and 82.61% testing accuracy by the best model in the search space.",
+        "Whereas a well-optimized classical single layer perceptron model can achieve 85% in training accuracy and 80% test accuracy."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study on a very small dataset.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "Appendix A.5.2 gives 79 training and 46 testing instances. 86.08% equals 68 of 79 and 82.61% equals 38 of 46, so the 2.61 point gap to the classical 80% is about one test instance. The paper does not say whether 85% and 80% are a mean, a best or a single seed over its ten listed seeds, and gives no variance for the Quark figures."
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "quark-framework-definition",
+      "value": "The authors define Quark as a gradient-free quantum learning framework for classification tasks that optimizes quantum models with quantum optimization (QMQO), in which the weights of a model and the encoded dataset are entangled so that model weights with optimal training classification accuracy are observed with the highest probabilities in a measurement.",
+      "anchor": "Section 1, p.2",
+      "quotes": [
+        "we introduce Quark, a gradient-free quantum learning framework for classiﬁcation tasks that optimizes quantum models with quantum optimization (QMQO).",
+        "where model weights that achieve optimal classiﬁcation accuracy on the training dataset can be observed with the highest probabilities in a measurement."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines its own framework in Section 1 and Section 4.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "quark-binary-weights-scope",
+      "value": "The authors state that, due to the limitation of the number of qubits, their parameterization can be viewed as a binary model over a bounded weight space, and that they focus on classification tasks.",
+      "anchor": "Appendix A.4, p.15; Section 3.1, p.4",
+      "quotes": [
+        "Due to the limitation of the number of qubits, our parameterization can be viewed as a binary model over a bounded weight space W.",
+        "We focus on classiﬁcation tasks and use the objective"
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper states the limit of its own parameterization in Appendix A.4 and Section 3.1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The indices in the garbled model-output formulas of Appendix A.4 suggest about 8 weight bits for Edge Detection and about 20 for Tiny-MNIST (so about 256 and about one million weight settings). This is inferred from the formulas, not stated by the authors, and the paper gives no search-space size in the text."
+    },
+    {
+      "id": "quark-solution-state-definition",
+      "value": "The authors define the Grover solution state space as the states in which the model output for a weight and a sample equals the label, and state that the key insight is to update the probability of observing a weight in a measurement based on its training objective.",
+      "anchor": "Section 4, p.5",
+      "quotes": [
+        "the key insight for Quark is to update the probability of observing weight w in a measurement based on its training objective J(w).",
+        "This is achieved through Grover’s algorithm by deﬁning the solution state space S = {|wi |xj, yj |f (wi, xj) | yj = f (wi, xj)}."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines the solution set in Section 4.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "quark-basis-encoding-registers",
+      "value": "The authors state that the weights register is initialized as a uniform superposition by applying the Hadamard gate on each weight qubit, that during training the entire data distribution is encoded through basis encoding so the model forward runs simultaneously for all data samples, and that during inference each sample is encoded as a single state.",
+      "anchor": "Section 4 p.5; Section 4.1 p.6",
+      "quotes": [
+        "To initialize a model’s weights register RW , we construct a",
+        "uniform state by applying the Hadamard gate on each weight qubit: |W =",
+        "During training, we encode the entire data distribution through basis encoding so we can apply",
+        "model forward simultaneously for all data samples. During inference, we encode each sample as a"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines its encoding in Section 4 and Section 4.1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The paper does not count the cost of loading the data register, so the data-size independence below holds for model queries only."
+    },
+    {
+      "id": "quark-theorem-1-statement",
+      "value": "The paper states Theorem 1: with alpha defined as the probability of measuring an epsilon-optimal solution after the Grover update, the model query complexity for getting an epsilon-optimal solution on a balanced C-way classification task is of order the square root of C divided by alpha. The authors say this follows from order square root of C Grover iterations per measurement and a number of measurements in expectation set by alpha.",
+      "anchor": "Theorem 1, Section 4.2, p.6-7",
+      "quotes": [
+        "Theorem 1 By deﬁning α =",
+        "a balanced C-way classiﬁcation task is O(",
+        "The proof of Theorem 1 is included in Appendix A.3.1, it follows",
+        "from the analysis that we need O( C) Grover iterations per measurement and O("
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The statement could not be fully quoted because the text layer lost the formula for alpha and the bound; the proof in Appendix A.3.1 is a short informal derivation.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The bound counts model forward calls only. It does not count the classical Evaluate step of Algorithm 3 or the shots used to estimate the Grover iteration number in Algorithm 2."
+    },
+    {
+      "id": "quark-theorem-1-proof-assumption",
+      "value": "The authors state that the Grover iteration count for a balanced C-way classification task follows from taking the expected accuracy of a random model to be that of a random guess.",
+      "anchor": "Appendix A.3.1, p.13",
+      "quotes": [
+        "Given the probability for sampling a solution state is p, then the Grover iterations to achieve the",
+        "(9) → (10) is due to for a balanced C-way classiﬁcation, we should expect the accuracy for a"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A theoretical derivation whose key step is an expectation about random models, not a proved result; the equations are partly lost in the text layer.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The equation numbers cited in the proof, (9) and (10), do not match the numbers printed beside the displayed steps, (6) to (8). The step needs the average accuracy over the whole weight space to equal the random-guess accuracy, which the proof assumes and does not show."
+    },
+    {
+      "id": "quark-size-independence-claim",
+      "value": "The authors state that the complexity of their method does not depend on sample size N, where model query complexity is defined as the number of model forward calls.",
+      "anchor": "Section 4.2, p.7; footnote 3, p.3",
+      "quotes": [
+        "Notice that the complexity of our method does not depend on sample size N .",
+        "Number of model forward being called"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A consequence of the Theorem 1 bound, whose proof is informal.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The independence is for the count of model forward calls. The paper reports no cost for preparing the superposed dataset with the data oracle, nor any measured run time."
+    },
+    {
+      "id": "quark-vs-vqc-worst-case-argument",
+      "value": "The authors argue that, for a general non-convex problem, the worst case for VQC-based methods with gradient-based optimizers needs many iterations to sample initial points that lie within convex regions containing epsilon-optimal solutions, with gradient evaluation cost of order N per iteration, and conclude that, since C is much smaller than N in practice, Quark provides a speed-up for finding an epsilon-optimal solution in the general non-convex setup.",
+      "anchor": "Section 4.2, p.7",
+      "quotes": [
+        "problem, the worst case scenario for VQC-based methods with gradient-based optimizers needs",
+        "lutions. With per iteration gradient evaluation cost that is in the order of O(N ), this gives an overall",
+        "and C N in practice. Our method provides a speed-up for ﬁnding an -optimal solution in the"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An analytical comparison that sets a bound for Quark against the worst case of the baseline, with the comparison step stated rather than proved.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The comparison pairs an upper bound on Quark with a worst case for the baseline, and the paper's own conclusion calls the result some evidences."
+    },
+    {
+      "id": "quark-no-speedup-convex",
+      "value": "The authors state, citing Garg et al., that no quantum speed-ups can be obtained for convex problems, with no exception for their method.",
+      "anchor": "Section 4.2, p.7",
+      "quotes": [
+        "For more idealistic case of convex problems, Garg et al. (2020) has given a proof of no quantum speed-ups can be obtained in this case with no exception of our method."
+      ],
+      "kind": "cited",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": "This limits the speed-up claim to non-convex problems."
+    },
+    {
+      "id": "quark-kpd-probability-claim",
+      "value": "The authors state that a naive implementation can only achieve a measurement probability proportional to the objective J(wi), and that K-parallel datasets extend it to a probability proportional to J(wi) raised to the power k, with an intuition similar to simulated annealing.",
+      "anchor": "Section 4.3, p.7",
+      "quotes": [
+        "A naive implementation can only achieve p(wi) ∝ J(wi), which requires more measurements for sampling",
+        "we further extend our method to achieve p(wi) ∝ J(wi)k through K-Parallel Dataset (KPD)",
+        "The intuition is similar to simulated annealing, by updating weights distribution proportional to J(wi)k, the probability mass"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A design claim supported by the simulated distributions in Figures 5, 6, 10 and 11, whose axis values are in images.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The paper does not state the qubit cost of the k copies of the data register."
+    },
+    {
+      "id": "quark-theorem-2-statement",
+      "value": "The paper states Theorem 2: with beta defined as the volume ratio between the epsilon-optimal weight subspace and the non-epsilon-optimal weight subspace, the model query complexity for getting an epsilon-optimal solution on a balanced C-way classification task with k-parallel datasets is a bound in alpha, beta, k and C (formula lost in the text layer).",
+      "anchor": "Theorem 2, Section 4.3, p.7",
+      "quotes": [
+        "Theorem 2 By deﬁning β =",
+        "-optimal solution wi ∈ W on a balanced C-way classiﬁcation task with k-parallel dataset is"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The statement could not be fully quoted because the text layer lost the bound; the proof in Appendix A.3.2 contains an approximation step.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "quark-kpd-tradeoff",
+      "value": "The authors state that with k-parallel datasets the number of Grover iterations needed per measurement grows, that the model forward is applied for each dataset, that the number of measurements needed can be reduced as the distribution converges toward the global solution, and that the optimal value for k therefore depends on alpha, beta and C.",
+      "anchor": "Section 4.3, p.7",
+      "quotes": [
+        "Here, the trade-off is that the number",
+        "of Grover iterations needed per measurement grows to O",
+        "model forward for each dataset, the KPD Grover complexity in terms of model query complexity",
+        "On the other hand, as we are converging to the global solution, the number of",
+        "optimal value for k depends on the speciﬁcation of α, β, C."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A theoretical trade-off stated with the bound formulas lost in the text layer.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The shots reported in Figure 7 count measurements and do not include the longer Grover run needed per measurement under 4-PD."
+    },
+    {
+      "id": "quark-theorem-2-proof-assumptions",
+      "value": "The authors state that the proof of the k-parallel dataset bound assumes the objective is bounded above within the non-optimal region and is near-uniformly distributed there, an assumption they call general, and that its step from the exact measurement count to the stated form is an approximation.",
+      "anchor": "Appendix A.3.2, p.14",
+      "quotes": [
+        "practice since J(wi) itself is upper bounded by [0, 1 − O( )] within the non- optimal region and",
+        "J(wi) can be assumed to be near-uniformly distributed within W/W across range [0, 1 − O( )],",
+        "which is a general assumption."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states the condition that its own derivation uses, in Appendix A.3.2.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The derivation replaces the mean of J to the power k by the mean of J, taken to the power k, using the approximation sign. The step before it only gives an inequality in one direction, and the paper does not show the direction of the resulting error. Whether a near-uniform J holds for a real classifier is not tested."
+    },
+    {
+      "id": "quark-theorem-3-statement",
+      "value": "The paper states Theorem 3: given alpha, beta and C, the optimal value of k is a closed form in alpha and beta when a threshold condition on alpha over beta holds, and otherwise the optimal k is 1. The authors conclude that this proves the effectiveness of KPD under certain circumstances.",
+      "anchor": "Theorem 3, Section 4.3, p.7-8",
+      "quotes": [
+        "Theorem 3 Given α, β, C, the optimal value of k is k∗ =",
+        "+ 1 else k∗ = 1.",
+        "ness of KPD under certain circumstances. We include the proof of Theorem 3 in Appendix A.3.3."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The condition and the closed form could not be quoted because the text layer lost them; the derivation is approximate.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "quark-theorem-3-derivation-approximation",
+      "value": "The authors state that, to find the optimal k, they compare the growth in Grover iterations per measurement against the measurements needed, and that they approximate the exact ratio of measurements needed by a simpler power.",
+      "anchor": "Appendix A.3.3, p.14",
+      "quotes": [
+        "As the trade-off is between measurements needed versus Grover iterations per measurement, we can",
+        "For measurements needed, the exact ratio should be",
+        "however we can further approximate this ratio as"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A derivation that rests on an approximation; the formulas are lost in the text layer.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The optimal k in Theorem 3 is optimal for the approximated ratio, not the exact one. The paper gives no numeric alpha, beta or C for either experiment, so it does not show which k Theorem 3 would pick there."
+    },
+    {
+      "id": "quark-grover-iteration-estimate-practice",
+      "value": "The authors state that in practice they use a more precise estimate of the Grover iteration number than the theoretical approximation, obtained from measured average accuracy, and that when the estimate is problematic they can introduce extra samples to the dataset that are marked by an additional qubit as non-solution states.",
+      "anchor": "Section 5 p.8; Appendix A.5.1 p.16",
+      "quotes": [
+        "Instead of leveraging the approximated iteration number from theoretical derivations for Grover’s update",
+        "we can introduce extra samples to dataset to resolve the issue.",
+        "identiﬁed by an additional qubit to classify them as non-solution states."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own experimental procedure in Section 5 and Appendix A.5.1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The iteration number used in the experiments therefore comes from sampled estimates of the average accuracy, not from the closed-form bound in Theorem 1."
+    },
+    {
+      "id": "quark-algorithm-1-selection-step",
+      "value": "The authors specify that the optimization pipeline returns the measured weight with the best evaluated objective from the buffer of measured weights, and that Evaluate computes the objective of a specific weight with a quantum circuit (Algorithm 3).",
+      "anchor": "Algorithm 1, p.8; Appendix A.5.1, p.16",
+      "quotes": [
+        "return arg maxw∈B(Evaluate(w))",
+        "In function Evaluate(), we evaluate the objective value of a speciﬁc weight w. The procedure is illustrated in Figure 9(b) and Algorithm 3."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own algorithm in Algorithm 1 and Appendix A.5.1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The reported shots count weight measurements. The extra circuit runs that Evaluate uses to pick the best measured weight are not in that count, and the paper does not say how many of them were used."
+    },
+    {
+      "id": "quark-modules-conv-maxpool",
+      "value": "The authors define the quantum convolution module for a 1 × 3 kernel as an AND over positions of the negated XOR of weight and input bit, and the max pooling module as an OR of the inputs, and state that Quark can support more diverse operations given enough qubits.",
+      "anchor": "Figure 4, p.6; Section 4.1, p.6",
+      "quotes": [
+        "(a) Convolution: for a 1 × 3 Conv",
+        "Oi = (¬(W1 ⊕ Xi1)) ∧ (¬(W2 ⊕ Xi2)) ∧ (¬(W3 ⊕ Xi3)).",
+        "[Xi1, Xi2, Xi3] the max pooling output is given by Oi = Xi1 ∨ Xi2 ∨ Xi3.",
+        "Besides Convolution and MaxPooling, Quark can support more diverse operations given enough qubits."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines its modules in the Figure 4 caption.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The modules act on single bits, so they are Boolean circuits and not real-valued network layers."
+    },
+    {
+      "id": "quark-broader-model-claim",
+      "value": "The authors state that, compared with CMQO methods, Quark provides more flexibility in model design by composing models directly on quantum circuits and therefore supports a broader range of ML models.",
+      "anchor": "Section 1, p.2",
+      "quotes": [
+        "Compared with CMQO methods, Quark provides more ﬂexibility in model design by composing models directly on quantum circuits and therefore supports a broader range of ML models."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author claim; the experiments use binary Boolean modules only.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The ReLU and fully connected modules are drawn in Appendix A.4 and are not run in either experiment."
+    },
+    {
+      "id": "quark-no-barren-plateau-claim",
+      "value": "The authors state that, because Quark does not require gradients calculation, it will not suffer from the notorious problem of barren plateau, and that it avoids frequent classical-quantum interactions by realizing both model design and optimization fully on quantum.",
+      "anchor": "Section 4.2, p.7; Section 1, p.2",
+      "quotes": [
+        "In addition, as Quark does not require gradients calculation, it will not suffer from the notorious problem of barren plateau.",
+        "Quark avoids frequent classical-quantum interactions by realizing both model design and optimization fully on quantum."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author claim with no proof or experiment on trainability in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The paper shows no landscape or scaling study. The Grover step replaces gradients with a search whose cost grows with the number of iterations per measurement, which Theorem 1 covers through C and alpha."
+    },
+    {
+      "id": "quark-edge-detection-setup",
+      "value": "The authors report that Edge Detection is a 4-way classification task on 512 instances of 3 × 3 binary matrices, split into a training set of 400 randomly selected instances and a test set of the rest, and that the model is a quantum convolutional model with 1 × 3 convolution kernels and max pooling.",
+      "anchor": "Section 5.1, p.8",
+      "quotes": [
+        "For Edge Detection, our goal is to identify if a 3 × 3 binary matrix has 1) both vertical and horizontal",
+        "Thus the task is a 4-way classiﬁcation task with 512 instances.",
+        "We split the 512 samples into a training set with 400 randomly selected instances and a test set",
+        "We use a Quantum Convolutional Model that consists of several 1 × 3 convolution"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own experimental setup in Section 5.1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The data cover all possible 3 × 3 binary matrices, so the task is fully enumerable and the test set is a random part of the same finite set."
+    },
+    {
+      "id": "quark-edge-detection-distribution",
+      "value": "The authors report that for Edge Detection the weight distribution under amplitude amplification with 1-PD shows a linear relationship between model accuracy and weight probability, and that with 4-PD the weights distribution further concentrates on the global optimal solutions.",
+      "anchor": "Section 5.1 p.8; Figure 5 p.8",
+      "quotes": [
+        "relationship between model accuracy and optimized weights distribution using 1-PD. For 4-PD, we",
+        "can observe that weights distribution further concentrates on the global optimal solutions."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study; the axis values are in an image (Figure 5).",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The Figure 5 plots are numerical simulation output, not hardware runs."
+    },
+    {
+      "id": "quark-edge-detection-shots",
+      "value": "The authors report that on Edge Detection 4-PD requires about 30 shots for a mean test accuracy above 98%, while uniform random sampling needs about 900 shots (about 30 times more) with much higher variance.",
+      "anchor": "Section 5.2 p.9; Figure 7a p.9",
+      "quotes": [
+        "In order to achieve equally well-performed model, 4-PD only requires ∼ 30 shots on Edge Detection task for a mean test accuracy > 98% while uniform random sampling needs ∼ 900 (∼ 30× more) shots with much higher variance."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study, in simulation.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The comparison is against uniform random sampling of weights, not against a gradient-based method. A shot is one measurement, and each shot first runs the Grover iterations, so shots do not equal model queries. If the Edge Detection weight space is about 256 settings (inferred from Appendix A.4, not stated), about 900 random draws would cover almost all of it."
+    },
+    {
+      "id": "quark-tiny-mnist-setup",
+      "value": "The authors report that Tiny-MNIST is built from MNIST images with label 1, 2, 7, downsampled to 3x3 images with binarization, with duplicates labelled by majority voting, giving 79 instances for training and 46 instances for testing, and that the same dataset evaluates both the classical methods and Quark.",
+      "anchor": "Appendix A.5.2, p.16; Section 5.2 p.9",
+      "quotes": [
+        "we select images with label 1, 2, 7 form the original MNIST training set and downsample them to 3x3 images with binarization applied to form D1.",
+        "we use majority voting to decide labels for duplicate samples within D1 to form our ﬁnal dataset.",
+        "This gives us a Tiny-MNIST dataset with 79 instances for training and",
+        "46 instances for testing. We use Tiny-MNIST for evaluating both classical methods and Quark. The"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own dataset construction in Appendix A.5.2.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "At 3x3 binary resolution and with duplicate images merged, the task is far from full MNIST, and one test instance is about 2.2 percentage points."
+    },
+    {
+      "id": "quark-tiny-mnist-distribution",
+      "value": "The authors report that for Tiny-MNIST a linear relationship between model accuracy and optimized weights distribution can be observed using 1-PD, while 4-PD can further increase the probability for sampling optimal solutions.",
+      "anchor": "Section 5.2 p.9; Figure 6 p.9",
+      "quotes": [
+        "between model accuracy and optimized weights distribution can be observed using 1-PD, while 4-",
+        "PD can further increase the probability for sampling optimal solutions."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study; the axis values are in an image (Figure 6).",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "quark-tiny-mnist-shots",
+      "value": "The authors report that on Tiny-MNIST 4-PD requires about 1000 shots for a mean test accuracy above 76.5%, while uniform random sampling needs about 20000 shots (about 20 times more) with higher variance.",
+      "anchor": "Section 5.2 p.9; Figure 7b p.9",
+      "quotes": [
+        "Similar trend can be observed on Tiny-MNIST where 4-PD only requires ∼ 1000 shots for a mean test accuracy > 76.5% while uniform random sampling needs ∼ 20000 (∼ 20× more) shots with higher variance."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study, in simulation.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The 76.5% mean test accuracy is below the 82.61% best-in-space test accuracy in Section 5.2, so this threshold is not the optimum. The comparison is again against uniform random sampling, and the weight space is about one million settings if the Appendix A.4 indices are read as bit counts (inferred, not stated)."
+    },
+    {
+      "id": "quark-classical-baseline-setup",
+      "value": "The authors list the classical comparison method as a 9 × 3 fully connected layer with softmax, cross entropy loss, with seeds 0,1,2,3,4,5,6,7,8,9.",
+      "anchor": "Appendix A.5.2, Table 1, p.17",
+      "quotes": [
+        "Architecture 9 × 3 FC + Softmax",
+        "Loss Function CrossEntropyLoss",
+        "0,1,2,3,4,5,6,7,8,9",
+        "Table 1: Basic Settings of Classical Method"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own baseline settings in Table 1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "Table 1 also lists the optimizer Adadelta, learning rate 1.0, batch size 8 and 100 epochs. The paper does not say how the ten seeds are combined into the reported 85% and 80%."
+    },
+    {
+      "id": "quark-qiskit-aer-check",
+      "value": "The authors report that, on a simplified Edge Detection task (identify whether a binary matrix has horizontal lines; a binary classification task with 512 instances, 400 training), the Qiskit Aer simulation gives a mean training accuracy of 94.14% and test accuracy of 92.41% at the largest shot count in its table, against 96.88% and 95.96% for the numerical simulation in the next table, each Qiskit data point acquired with 20 runs.",
+      "anchor": "Appendix A.6, Tables 2 and 3, p.18",
+      "quotes": [
+        "To further verify our framework, we use Qiskit Aer (Anis & et al., 2021) to simulate the process of solving a simpliﬁed Edge Detection task with Quark.",
+        "The task is a binary classiﬁcation task with 512 instances. We randomly select 400 of them as the training set and the rest as the test set.",
+        "Each data point is acquired with 20 runs.",
+        "train 59.14% 67.9% 68.36% 75.33% 85.04% 85.79% 91.93% 94.14%",
+        "test 58.17% 65.04% 65.54% 75.63% 84.69% 84.55% 90.18% 92.41%",
+        "train 60.74% 66.20% 71.52% 77.49% 83.82% 89.59% 93.93% 96.88%",
+        "test 60.03% 64.99% 70.11% 76.18% 82.83% 88.90% 93.22% 95.96%"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study, in simulation on a simplified task.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The largest shot count is 128 (last column of both tables). At that count the two simulations differ by 2.74 points in training and 3.55 points in testing, with a Qiskit standard deviation of 4.30 and 5.77 points. Both are simulations of a simpler binary task, not hardware."
+    },
+    {
+      "id": "quark-cited-barren-plateau",
+      "value": "The authors state, citing McClean et al., that the barren plateau phenomenon commonly exists in VQC-based methods, where gradients vanish exponentially with the model size.",
+      "anchor": "Section 2.2, p.4",
+      "quotes": [
+        "However, McClean et al. (2018) shows that the barren plateau phenomenon commonly exists in VQC-based methods, where gradients vanish exponentially with the model size."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "quark-cited-prior-limits",
+      "value": "The authors state that CMQO methods do not support ML models with nonlinear activations that cannot be represented in low-order polynomial, and that the Grover-based method of Kapoor et al. only applies to an idealistic setup where a hyperplane with perfect classification exists in its search space.",
+      "anchor": "Section 1 p.1; Section 2.1 p.4",
+      "quotes": [
+        "CMQO methods do not support ML models with nonlinear activations that cannot be represented in low-order polynomial (e.g., ReLU).",
+        "However, this method only applies to an idealistic setup where a hyperplane with perfect classiﬁcation exists in its search space."
+      ],
+      "kind": "cited",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "Statements about other authors' methods, not shown in this paper.",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "quark-conclusion",
+      "value": "The authors conclude that Quark sheds some lights on circumventing barren plateaus through a gradient-free optimization pipeline, that basis encoding lets non-linear operations be easily implemented, and that they present some evidences in terms of model query complexity to demonstrate trade-offs between VQC based methods and Quark.",
+      "anchor": "Section 6, p.9",
+      "quotes": [
+        "Quark shed some lights on circumventing this phenomenon through a gradient-free optimization pipeline.",
+        "so that non-linear operations can be easily implemented.",
+        "Theoretically, we present some evidences in terms of model query complexity for Quark to demonstrate trade-offs between VQC based methods and Quark."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The authors' own conclusions; the paper states them in hedged terms.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The conclusion is weaker in wording than the abstract's statement that the authors prove Quark can outperform classical gradient-based methods."
+    }
+  ]
+}]}
