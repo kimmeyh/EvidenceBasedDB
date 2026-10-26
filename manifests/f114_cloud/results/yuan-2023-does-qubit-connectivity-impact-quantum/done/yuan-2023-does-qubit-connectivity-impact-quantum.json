@@ -1,0 +1,934 @@
+{
+ "papers": [
+  {
+   "record_id": "yuan-2023-does-qubit-connectivity-impact-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Allcock-Yuan-Zhang_2022_Does-qubit-connectivity-impact-quantum-circuit-complexity__2211.05413.pdf",
+   "title_in_file": "Does qubit connectivity impact quantum circuit complexity?",
+   "version_note": "The text is arXiv:2211.05413v2 [quant-ph], 1 Sep 2023 (Yuan, Allcock, Zhang), 80 pages; the file name carries the 2022 first-version year. Superscript exponents are printed flat in the text layer (n2 for n squared, 4n for 4 to the n); this reader states them in words.",
+   "pages": 80,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that proves upper and lower bounds on the depth and size of circuits for general unitary synthesis, quantum state preparation and diagonal unitaries under qubit-connectivity constraint graphs (path, grids, trees, expanders, arbitrary connected graphs), with and without ancilla; it has no numerical experiments.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "connectivity-1d-chain-no-overhead",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Theorem 1, Section 1, p.2",
+     "quotes": [
+      "Theorem 1. Any n-qubit unitary can be implemented by a quantum circuit of depth O(4n/n) and size O(4n) under path constraint."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 is stated in Section 1; the proof is the path-constraint construction of Appendix B and Theorem 13 (Section 5.2) with Theorem 2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "connectivity-ancilla-tradeoff",
+     "verdict": "narrowed",
+     "note": "The abstract does say depth can be made polynomial with ancilla, but the body does not prove that for the constraint graphs it studies. Section 1 gives for the path with m ancilla greater than order 2 to the n over 2 only a depth lower bound that is exponential, and the Section 1 discussion of QSP states that grid and tree constraints keep the depth exponential in n regardless of the number of ancilla. The trade-off part (not impaired unless exponentially many ancilla) is supported only for m up to order 2 to the n over 2 (Theorem 2) and, for grids, up to the range in Theorem 3.",
+     "value": "The authors state in the abstract that with ancilla the circuit depth can be made polynomial and that the space-depth trade-off is not impaired by connectivity constraints unless exponentially many ancillary qubits are available. In the body, Theorem 2 gives depth of order 4 to the n over (n + m) for m up to order 2 to the n over 2 under the path constraint, and the authors state that for quantum state preparation grid and tree constraints make the required depth exponential in n regardless of the number of ancillary qubits.",
+     "anchor": "Abstract; Theorem 2, Section 1, p.2; Section 1 discussion of QSP, p.5",
+     "quotes": [
+      "the space-depth trade-oﬀ is not impaired by connectivity constraints unless we have exponentially many ancillary qubits",
+      "Theorem 2. For all m ≤ O(2n/2), any n-qubit unitary can be implemented by a quantum circuit of depth O(4n/(n + m))",
+      "However, both constantdimensional grid and d-ary tree constraints cause the required circuit depth to become exponential in n, regardless of the number of ancillary qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The abstract statement is a summary; the polynomial-depth claim is not backed by a quoted theorem in the body, so the suggestion stays low.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The abstract sentence about polynomial depth with ancilla reads as true only for the unconstrained case or an unstated regime; for the path, grid and tree results in Tables 1 and 2 the proved depth is exponential for every m. A reader should not cite 'polynomial depth with ancilla' as a result under connectivity constraints."
+    },
+    {
+     "id": "connectivity-any-connected-graph-size",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Theorem 5, Section 1, p.3; proof Theorem 16, Section 5.2, p.21",
+     "quotes": [
+      "Theorem 5. Any n-qubit unitary matrix can be implemented by a quantum circuit of size O(4n) under arbitrary connected graph constraints.",
+      "Theorem 16. Any n-qubit unitary can be realized by a quantum circuit of size and depth O(4n) under general graph G constraint."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5 in Section 1, proved as Theorem 16 in Section 5.2 and Appendix D.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "theorem1-bounds-tight-almost-all",
+     "value": "The authors state, citing STY+23, that the bounds of the path-constraint theorem are tight: even without any connectivity restrictions almost all n-qubit unitary circuits need depth of order 4 to the n over n and size of order 4 to the n, so they conclude the path constraint does not increase depth or size complexity by more than a constant factor for almost all n-qubit unitaries.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Note that these bounds are tight: even without any connectivity restrictions, almost all n-qubit unitary circuits need depth Ω(4n/n) and size Ω(4n) to implement [STY+23].",
+      "does not increase the depth and size complexity (by more than a constant factor) for almost all n-qubit unitaries."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The unconstrained lower bound is attributed to STY+23; the paper's own part is the matching upper bound of Theorem 1.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "compile-overhead-conjecture-wrong",
+     "value": "The authors state that compiling an all-to-all circuit to a one-dimensional chain usually blows depth up by order n squared and size by order n, that it is appealing to conjecture these overheads are unavoidable for generic circuits, and that this intuition turns out to be wrong.",
+     "anchor": "Abstract and Section 1, pp.1-2",
+     "quotes": [
+      "usually results in a blowup of depth by O(n2) and of size by Θ(n).",
+      "it is even appealing to conjecture that these overheads in depth and size are unavoidable for generic quantum circuits.",
+      "However, this intuition turns out to be wrong, as the following result shows."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The overhead is the authors' description of generic compilation, not a theorem; the refutation is Theorem 1.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem2-path-ancilla",
+     "value": "The paper states as Theorem 2 that for all m up to order 2 to the n over 2, any n-qubit unitary can be implemented by a circuit of depth of order 4 to the n over (n + m) and size of order 4 to the n under the (n + m)-long path constraint using m ancillary qubits, and that these bounds are tight.",
+     "anchor": "Theorem 2, Section 1, p.2; proof Theorem 13 (Section 5.2) and Theorem 26 (Section 6)",
+     "quotes": [
+      "Theorem 2. For all m ≤ O(2n/2), any n-qubit unitary can be implemented by a quantum circuit of depth O(4n/(n + m)) and size O(4n) under the (n + m)-long path constraint, using m ancillary qubits.",
+      "bounds are tight."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 states its condition on m; upper bound from Theorem 13 and lower bound from Theorem 26 in the body.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ancilla-placement-contiguous-scope",
+     "value": "The authors state that the ancilla path theorem considers the case where the ancilla and non-ancilla qubits form two contiguous blocks on the chain, and note that if the n non-ancilla qubits sat at the two ends with the ancilla in a contiguous block in the middle, at least order n + m depth is needed to let them reach each other.",
+     "anchor": "Footnote 1, Section 1, p.2",
+     "quotes": [
+      "then one requires at least O(n + m) depth to let them “reach” each other.",
+      "Here we consider the case where the ancilla and non-ancilla qubits form two contiguous blocks, a scenario more natural for downstream applications."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the placement assumption of the ancilla results in footnote 1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "path-large-ancilla-bounds",
+     "value": "The authors state that with m greater than order 2 to the n over 2 ancilla they give upper and lower circuit depth bounds under path constraint, and that comparing with the unrestricted upper bound of YZ23 shows the effect of connectivity on circuit complexity can be sensitive to the number of ancilla. The bound expressions are garbled in the text layer.",
+     "anchor": "Section 1, p.2 (after Theorem 2)",
+     "quotes": [
+      "On the other hand, we show circuit depth upper and lower",
+      "with m > O(2n/2) ancilla.",
+      "we see that the eﬀect of connectivity on circuit complexity can be sensitive to the number of ancilla."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The exact bound expressions are not legible in the text layer, so the statement cannot be quoted in full.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Lower and upper bounds for m above this range are not tight (Table 1 optimal range stops at order 2 to the n over 2 for the path)."
+    },
+    {
+     "id_suggestion": "theorem3-grid-ancilla",
+     "value": "The paper states as its grid theorem that for m in a stated range, any n-qubit unitary can be implemented under the d-dimensional grid constraint with depth of order 4 to the n over (n + m) and size of order 4 to the n using m ancillary qubits, that these bounds are tight, and that with no ancillary qubits the required depth is of order 4 to the n over n, the same as for unrestricted circuits. The m range expression is garbled in the text layer.",
+     "anchor": "Theorem 3, Section 1, p.3",
+     "quotes": [
+      "any n-qubit unitary can be implemented by a quantum circuit of O(4n/(n + m)) depth and O(4n) size under the (n + m)1/d × · · · × (n + m)1/d-grid constraint using m",
+      "When no ancillary qubits are used, the required circuit depth is O(4n/n), the same as for unrestricted circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 statement quoted; the range of m is garbled but the conditions that can be read are quoted.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem4-dary-tree",
+     "value": "The paper states as Theorem 4 that under a complete d-ary tree constraint with n + m vertices any n-qubit unitary can be realized with size of order 4 to the n, and that when no ancillary qubits are available the required depth is of order 4 to the n, optimal up to a factor of order n over d. The depth expression with ancilla is garbled in the text layer.",
+     "anchor": "Theorem 4, Section 1, p.3",
+     "quotes": [
+      "Theorem 4. For all m ≥ 0, any n-qubit unitary can be realized by a quantum circuit of depth",
+      "and size O(4n) under complete d-ary tree (with n + m vertices) constraint, using m ancillary qubits.",
+      "In particular, when no ancillary qubits are available, the required circuit depth is O(4n), and this is optimal up to a factor of O(n/d)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4 conditions quoted; proved as Theorem 14 and Theorem 27.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem5-size-tight",
+     "value": "The authors state that the arbitrary-graph size theorem is tight because the circuit size lower bound of order 4 to the n holds even with all-to-all connectivity, citing SMB04, and that for almost all unitaries arbitrary graph constraints do not impact the required circuit size.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "This result is tight, as the circuit size lower bound is Ω(4n) even assuming all-to-all connectivity [SMB04].",
+      "This implies that for almost all unitary operations, arbitrary graph constraints do not impact the required circuit size."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The lower bound is attributed to SMB04 (also reproved by parameter counting in Proposition 1).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gus-bounds-worst-case-and-generic",
+     "value": "The authors state that their circuit constructions apply to the worst case (they work for all unitary operations) while their lower bounds hold for generic (almost all) unitaries, which makes their results stronger.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "our circuit constructions apply to the worst case (i.e. work for all unitary operations), and our lower bounds hold for generic (i.e., almost all) unitaries, which make our results stronger."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of their upper and lower bounds in Section 1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsp-size-theorem6",
+     "value": "The paper states as Theorem 6 that an n-qubit QSP unitary can be implemented by a circuit of size of order 2 to the n under any graph constraint, and states this is tight because QSP needs size of order 2 to the n even without connectivity constraints, citing PB11.",
+     "anchor": "Theorem 6, Section 1, p.4; proof Theorem 12, Section 5.1",
+     "quotes": [
+      "Theorem 6. An n-qubit QSP unitary can be implemented by a quantum circuit of size O(2n) under any graph constraint.",
+      "This bound is tight, as QSP needs Ω(2n) size even without any connectivity constraints [PB11]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 6 is stated with its condition (any graph constraint); proved as Theorem 12.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsp-grid-theorem7-tightness",
+     "value": "The paper states as its grid QSP theorem depth upper bounds under one-dimensional chain, two-dimensional grid and d-dimensional grid constraints with m ancillary qubits, and states that these bounds are tight for any constant d and off by at most a factor of d for d(n) = ω(1). The depth expressions are garbled in the text layer.",
+     "anchor": "Theorem 7, Section 1, p.4; Table 2, p.5",
+     "quotes": [
+      "Theorem 7. An n-qubit QSP unitary can be implemented by a quantum circuit of depth O",
+      "These bounds are tight for any constant d, and oﬀ by at most a factor of d for d(n) = ω(1)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The depth expressions of Theorem 7 are not legible in the text layer, so the statement could not be quoted in full.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsp-tree-theorem8",
+     "value": "The paper states as its tree QSP theorem depth upper bounds under complete binary tree, complete d-ary tree and star graph constraints using m ancillary qubits, and states that the star graph bound is tight and the d-ary tree bound is tight for m of order 2 to the n over n squared d. The star graph depth is printed as of order 4 to the n in that theorem statement, whereas Theorem 10, Corollary 4 and Table 2 give order 2 to the n for the star.",
+     "anchor": "Theorem 8, Section 1, p.4; Theorem 10 and Corollary 4, Sections 5.1 and D.1.4",
+     "quotes": [
+      "and depth O 4n under star graph constraint, using m ≥ 0 ancillary qubits.",
+      "The bound for the star graph is tight, and the bound for general complete d-ary trees is tight for m = O(2n/n2d).",
+      "Corollary 4 (Theorem 10 (Case 3)). Any n-qubit quantum state can be realized by a quantum circuit of depth O 2n under Starn+m constraint"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement is internally inconsistent about the star graph depth, so it is not suggested as high.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The 4 to the n for the star in the Theorem 8 statement is most likely a typo for 2 to the n, since Theorem 10 Case 3, Corollary 4 and Corollary 10 (lower bound of order 2 to the n for states) all use 2 to the n."
+    },
+    {
+     "id_suggestion": "qsp-constraints-hinder-spacedepth",
+     "value": "The authors state that connectivity constraints make it harder to trade space for depth: without constraints QSP depth is polynomial (in fact linear) in n when sufficiently many ancilla are available, but constant-dimensional grid and d-ary tree constraints make the depth exponential in n regardless of the number of ancillary qubits.",
+     "anchor": "Section 1, p.5 (after Table 3)",
+     "quotes": [
+      "First, connectivity constraints make it harder to trade space for depth.",
+      "In particular, QSP circuit depth is polynomial (in fact, linear) in n when suﬃciently many ancilla are available.",
+      "However, both constantdimensional grid and d-ary tree constraints cause the required circuit depth to become exponential in n, regardless of the number of ancillary qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A summary statement; the supporting depth lower bounds are Theorems 22 and 23, but this passage itself is not a theorem statement.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "unconstrained-qsp-optimal-cited",
+     "value": "The authors state, citing YZ23, that without connectivity constraints tight QSP bounds are known for any number m of ancillary qubits: the optimal circuit depth is of order n + 2 to the n over (n + m) and the optimal size is of order 2 to the n.",
+     "anchor": "Section 1, p.5",
+     "quotes": [
+      "The optimal circuit depth is O(n + 2n/(n + m)) and the optimal size is O(2n)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result from YZ23.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "more-connectivity-not-monotone",
+     "value": "The authors state that for grids the required circuit depth decreases as d grows, while for d-ary trees the required depth increases slightly with d and is largest for the star graph, which they attribute to the size of a maximum matching limiting how many two-qubit gates can run in parallel; they conclude that it seems difficult to use one simple measure of graph connectivity to characterize the effect on circuit complexity.",
+     "anchor": "Section 1, p.5",
+     "quotes": [
+      "For grids, our results show that the circuit depth decreases with d",
+      "the required circuit depth increases slightly with d, reaching a maximum when d takes its largest possible value (i.e, a star graph).",
+      "if the constraint graph does not contain a large matching, it limits how many two-qubit gates can be applied in parallel.",
+      "Thus, it seems diﬃcult to use one simple measure of graph connectivity to characterize its eﬀect on circuit complexity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An interpretive summary of the bounds in Tables 1 and 2; the matching explanation is the authors' reading.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsp-in-qml-algorithms",
+     "value": "The authors state that QSP is an important subroutine in many quantum machine learning algorithms and Hamiltonian simulation algorithms, and describe QSP as a fundamental task used in many quantum algorithms for machine learning and linear algebra.",
+     "anchor": "Abstract and Section 1, pp.1,4",
+     "quotes": [
+      "the last being a fundamental task used in many quantum algorithms for machine learning and linear algebra.",
+      "QSP is an important subroutine in many quantum machine learning algorithms"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A motivating statement backed by citations, not a result of the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "related-work-herbert-rosenbaum",
+     "value": "The authors report, citing Her20, that there exist n-qubit circuits needing a multiplicative depth overhead of order log n under certain constant-degree graph constraints and constant-degree graphs where that logarithmic overhead is sufficient, and, citing Ros13, that a general controlled single-qubit gate needs depth of order n to the 1 over k and size of order n under a k-dimensional grid.",
+     "anchor": "Related work, Section 1, p.6",
+     "quotes": [
+      "Ref. [Her20] showed that there exist n-qubit circuits such that a multiplicative overhead of Ω(log(n)) on depth is needed under certain constant-degree graph constraints",
+      "Ref. [Ros13] showed that the depth and size required for a general n-qubitcontrolled 1-qubit gate are Θ(n1/k) and Θ(n), respectively, under n1/k × · · · × n1/k grid constraint."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "constraint-graph-definition",
+     "value": "The paper defines a constraint graph G = (V, E) so that a two-qubit gate can be applied to qubits (i, j) if and only if (i, j) is in E, and defines standard quantum circuits as circuits of single-qubit gates and the two-qubit CNOT gate, to which all circuits in the paper are restricted.",
+     "anchor": "Section 2.1 and 2.2, p.6",
+     "quotes": [
+      "a two-qubit gate can be applied to qubits (i, j) if and only if (i, j) ∈ E.",
+      "We refer to circuits consisting of only these gates as standard quantum circuits. All circuits in this paper are standard quantum circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definitions in Sections 2.1 and 2.2 on which every result depends.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "expander-definition",
+     "value": "The paper defines an expander as a graph G whose vertex expansion hout(G) is at least c for some constant c > 0, where the vertex expansion is the minimum over vertex subsets S of size below half the vertex count of the size of the outer boundary of S divided by the size of S.",
+     "anchor": "Definition 3, Section 2.2, p.7",
+     "quotes": [
+      "An expander is a graph G such that hout(G) ≥ c for some constant c > 0.",
+      "hout(G) := min |∂out(S )|/|S |"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 3 in Section 2.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dary-tree-brickwall-definitions",
+     "value": "The paper defines the complete d-ary tree as one where every non-leaf node has exactly d children (the star is the case d = n - 1), and states that in IBM's brick-wall chips b1 = 3 and b2 = 5.",
+     "anchor": "Definition 2 and Brick-walls, Section 2.2, pp.7-8",
+     "quotes": [
+      "The complete d-ary tree is a tree in which every non-leaf node has exactly d children (see Fig. 2).",
+      "In IBM’s brick-wall chips, b1 = 3 and b2 = 5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definitions in Section 2.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsp-gus-definitions-ancilla-returned",
+     "value": "The paper defines a QSP circuit with m ancillary qubits as solving the problem if it maps the all-zero state to the target state with the ancilla returned to zero, and a GUS circuit with m ancillary qubits as solving the problem if it applies U to every input basis state with the ancilla returned to zero.",
+     "anchor": "Section 2.5, p.10",
+     "quotes": [
+      "A circuit CQSP with m ancillary qubits solves the QSP problem if",
+      "A circuit CGUS with m ancillary qubits solves the GUS problem if CGUS |x |0m = (U |x ) |0m , ∀x ∈ {0, 1}n."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definitions in Section 2.5; the QSP equation is partly garbled in the text layer.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma2-cnot-distance",
+     "value": "The paper proves as its CNOT distance lemma that a CNOT between vertices u and v can be implemented by a CNOT circuit of depth and size of order d(u, v), the minimum distance between u and v, under an arbitrary graph constraint.",
+     "anchor": "Lemma 2, Section 2.4, p.9; proof Appendix A.1",
+     "quotes": [
+      "can be implemented by a CNOT circuit of depth and size O(d(u, v)) under arbitrary graph constraint, where d(u, v) is the minimum distance between vertices u and v in G."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 2 is stated with its condition and proved in Appendix A.1 by the path construction of Fig. 8.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma3-cnot-linear-transform-cited",
+     "value": "The paper cites WHY+19 for Lemma 3: for a connected graph with n vertices and minimum degree delta, any n-qubit invertible linear transformation can be implemented in circuit depth and size of order n squared over log delta under that graph constraint.",
+     "anchor": "Lemma 3, Section 2.4, p.9",
+     "quotes": [
+      "Lemma 3 ( [WHY+19]). Let Gδ be a connected graph with n vertices and minimum degree δ.",
+      "Any nqubit invertible linear transformation can be implemented in circuit depth and size O(n2/ log(δ)) under Gδ constraint."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result from WHY+19.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsp-via-ucg-decomposition-cited",
+     "value": "The paper relies on two cited decompositions: QSP can be solved by n uniformly controlled gates acting on 1, 2, ..., n qubits (GR02, KP17), and any n-qubit unitary can be decomposed into 2 to the n minus 1 n-qubit uniformly controlled gates (MV06); and, citing the STY paper, every j-qubit UCG decomposes into 3 j-qubit diagonal unitary matrices and 4 single-qubit gates.",
+     "anchor": "Lemmas 4, 19 and 20, Sections 2.6, 5.1 and 5.2",
+     "quotes": [
+      "The QSP problem can be solved by n UCGs V1, V2, . . . , Vn acting on 1, 2, . . . , n qubits, respectively.",
+      "Any n-qubit unitary matrix U ∈ C2n×2n can be decomposed into 2n − 1 n-qubit UCGs.",
+      "every j-qubit UCG V j can be decomposed into 3 j-qubit diagonal unitary matrices and 4 single-qubit gates (Lemma 4)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results cited from GR02, KP17, MV06 and STY+23 and used as building blocks.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "diag-path-lemma11",
+     "value": "The paper proves that any n-qubit diagonal unitary matrix can be realized by a circuit of depth of order 2 to the n over n and size of order 2 to the n under path constraint without ancillary qubits, and states that for the path, binary tree and expander the constructed depth is within about a log n factor of the lower bound of order 2 to the n over n known for QSP or diagonal unitaries without constraints.",
+     "anchor": "Lemma 11, Section 3.3, p.17; Lemma 26, Appendix B.2; Section 3.2, p.14",
+     "quotes": [
+      "Lemma 11. Any n-qubit diagonal unitary matrix Λn can be realized by a quantum circuit of depth O(2n/n) and size O(2n), under Pathn constraint without ancillary qubits.",
+      "which are almost tight as a lower bound of Ω(2n/n) is known for QSP (or diagonal unitary operations) even without graph constraints."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 11 is stated with its conditions and proved as Lemma 26 in Appendix B.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "diag-grid-tree-expander-general-no-ancilla",
+     "value": "The paper proves, without ancillary qubits, that an n-qubit diagonal unitary matrix has circuits of depth of order 2 to the n over n and size of order 2 to the n under d-dimensional grid constraint, depth of order log(n) times 2 to the n over n under binary tree and expander constraints, depth of order 2 to the n under star graph constraint, and size of order 2 to the n under any graph constraint.",
+     "anchor": "Lemmas 12-15, Sections 3.3 and 3.4, p.17; proofs Appendix B.3-B.5",
+     "quotes": [
+      "Lemma 12. Any n-qubit diagonal unitary matrix Λn can be realized by a quantum circuit of depth O(2n/n) and size O(2n) under Gridnn1,n2,...,nd constraint.",
+      "1. O(log(n)2n/n) under Treen(2) constraint.",
+      "3. O(2n) under Starn constraint.",
+      "O(log(n)2n/n) under Expandern constraint, using no ancillary qubits.",
+      "of size O(2n) under arbitrary graph constraint, using no ancillary qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma statements with conditions quoted; proofs in Appendix B.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "general-graph-extra-n-factor-unavoidable",
+     "value": "The authors state that the general-graph diagonal unitary construction is not as good as the near 2 to the n over n depth for grids, trees and expanders, and that this extra factor of order n is unavoidable for general graphs, referring to Appendix E.",
+     "anchor": "Appendix B.5, end of Lemma 15 proof, p.39",
+     "quotes": [
+      "Though this is not as good as the O˜(2n/n) upper bound obtained in the constructions for grids, trees, and expanders, in Appendix E we will see that this extra price of O(n) is unavoidable for general graphs."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The claim is asserted in a remark; the lower bound for general graphs is Theorem 36, which is stated in terms of the maximum matching size, and no separate proof of 'unavoidable' for every general graph is quoted here.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Theorem 36 gives depth of order 2 to the n over nu for maximum matching size nu, which is only linear in n for graphs with small matchings (star-like); for graphs with a large matching the extra factor n is not shown unavoidable by that bound."
+    },
+    {
+     "id_suggestion": "ancilla-diag-requires-m-omega-n",
+     "value": "The authors state that the ancilla constructions are not simply the no-ancilla constructions of the earlier section, are fundamentally different, and require m of at least order n; the registers are each sized at least n so they assume m is at least 3n.",
+     "anchor": "Section 4 intro, p.18; Appendix C.1, p.40",
+     "quotes": [
+      "The constructions here are fundamentally diﬀerent and require m ≥ Ω(n).",
+      "and therefore in total we assume that m ≥ 3n."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the ancilla-count condition of the Section 4 constructions.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma16-diag-ancilla-path",
+     "value": "The paper proves that an n-qubit diagonal unitary matrix can be implemented using m of at least order n ancillary qubits under path constraint with depth of order 2 to the n over 2 plus 2 to the n over m, and that depth of order 2 to the n over 2 is achieved with m of order 2 to the n over 2 ancillary qubits; the paper notes this bound is optimal by a later corollary.",
+     "anchor": "Lemma 16 case 1, Section 4.2, p.19; Lemma 51, Appendix C.3, p.48 (m at least 3n there)",
+     "quotes": [
+      "In particular, we can achieve circuit depth O(2n/2) by using m = Θ(2n/2) ancillary qubits.",
+      "As we will see from Appendix E (Corollary 7), this bound is optimal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated and proved as Lemma 51 in Appendix C.3; the formula for the general m bound is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "diag-ancilla-grid-tree-expander",
+     "value": "The paper proves diagonal-unitary depth bounds with m ancilla of at least order n for d-dimensional grids, binary and d-ary trees and expanders (expressions garbled in the text layer), and depth of order 2 to the n under star graph constraint, where the ancillary qubits are not used.",
+     "anchor": "Lemmas 16-18, Section 4.2, p.19; Lemmas 53, 61-63, 18, Appendices C.4-C.6",
+     "quotes": [
+      "3. O(2n) under Starn+m constraint.",
+      "Do not use ancillary qubits. The result follows from Lemma 32."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The grid, tree and expander depth expressions are not legible in the text layer, so the theorem statements could not be quoted in full.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem9-12-qsp-upper-bounds",
+     "value": "The paper proves QSP depth upper bounds under path, grid, tree and expander constraints with m ancillary qubits (expressions garbled in the text layer and given in the QSP table), and that any n-qubit state can be prepared with size and depth of order 2 to the n under arbitrary graph constraint using no ancillary qubits.",
+     "anchor": "Theorems 9-12, Section 5.1, p.20; Table 2, p.5",
+     "quotes": [
+      "Theorem 12. Any n-qubit quantum state can be prepared by a quantum circuit of size and depth O(2n) under arbitrary graph G constraint, using no ancillary qubits.",
+      "Any n-qubit quantum state can be prepared by a circuit with m ≥ 0 ancillary qubits, of depth"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 12 is quoted with its conditions; Theorems 9 to 11 are proved in Appendix D.1 but their expressions are garbled.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem13-15-gus-upper-bounds",
+     "value": "The paper proves GUS depth upper bounds with m ancillary qubits under path, grid, tree and expander constraints, obtained by combining the diagonal-unitary results with the decomposition of any unitary into uniformly controlled gates; the expressions are garbled in the text layer and are given in the GUS table.",
+     "anchor": "Theorems 13-15, Section 5.2, p.21; Table 1, p.4",
+     "quotes": [
+      "Combining this with Lemma 4 and the results for diagonal unitary matrices of Sections 3 and 4 give the following circuit depth bounds for GUS:",
+      "Any n-qubit unitary can be realized by a quantum circuit with m ≥ 0 ancillary qubits, of depth"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The depth expressions of Theorems 13 to 15 are not legible in the text layer, so the statements could not be quoted in full.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma21-graph-transformation",
+     "value": "The paper proves as its graph transformation lemma that if a circuit of depth d and size s exists under a constraint graph G' whose extra edges split into c classes, each connectable by vertex disjoint paths of length at most c' in a subgraph G, then a circuit implementing the same transformation of depth of order c c' d and size of order c' s exists under G.",
+     "anchor": "Lemma 21, Section 5.3, p.21; proof Appendix D.3",
+     "quotes": [
+      "If C′ is a circuit of depth d and size s under G′ constraint, there exists a circuit C implementing the same transformation of depth O(cc′d) and size O(c′s), under G constraint."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 21 is stated with its conditions in Section 5.3 and proved in Appendix D.3.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "brickwall-corollaries",
+     "value": "The paper proves, by reduction to the 2D grid through the graph transformation lemma, Corollaries 1 and 2: QSP and GUS depth bounds under the brick-wall constraint with b1 and b2 of order 1, using m ancillary qubits, and states that for general b1 and b2 the result still holds with an additional factor of order b1 b2 (b1 + b2).",
+     "anchor": "Corollaries 1 and 2, Section 5.3, p.21; Appendix D.3, p.66",
+     "quotes": [
+      "under Brickwallnn1+,mn2,b1,b2 constraint with b1, b2 = O(1), using m ≥ 0 ancillary qubits.",
+      "In the general case where b1 and b2 are not necessarily constant, the result still holds, although with an additional factor of O(b1b2(b1 + b2))."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The conditions are quoted; the depth expressions are garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "size-lower-bounds-any-graph",
+     "value": "The paper proves, by parameter counting, that for any connected graph G there exist n-qubit states and n-qubit unitaries requiring circuits of size at least order 2 to the n and order 4 to the n respectively under G constraint, and that there exist n-qubit diagonal unitary matrices needing size of order 2 to the n.",
+     "anchor": "Theorems 17 and 18, Section 6.1, p.22; Propositions 1 and 2, Appendix E.1",
+     "quotes": [
+      "Theorem 17. For an arbitrary graph G = (V, E), there exist n-qubit states which can only be prepared by quantum circuits of size at least Ω(2n) under G constraint.",
+      "Theorem 18. For an arbitrary graph G = (V, E), there exist n-qubit unitaries which can be only prepared by quantum circuits of size at least Ω(4n) under G constraint.",
+      "The proof of Lemma 70 is by parameter counting, which also applies to diagonal unitaries.",
+      "a diagonal unitary matrix Λn is determined by at least 2n − 1 free real parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 17 statement quoted with its condition; the unitary bound (Theorem 18) follows the same argument from Lemma 70 (SMB04, PB11).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem19-lightcone-parameter-count",
+     "value": "The paper proves as the lightcone theorem, by removing all gates outside the lightcone of the input qubits and counting free real parameters, that the sum of the sizes of the reachable subsets is at least 2 to the n minus 1 for any n-qubit quantum state or diagonal unitary and at least 4 to the n minus 1 for any n-qubit general unitary; the proof assumes a parameterized circuit, and the authors remark that a flexible architecture cannot increase the dimension of the output.",
+     "anchor": "Theorem 19, Section 6.1, p.22; proof Appendix E.1, pp.68-69",
+     "quotes": [
+      "Since the set of all n-qubit states |ψ is a sphere of dimension 2n − 1",
+      "noting that they are speciﬁed by at least 2n − 1 and 4n − 1 free parameters, respectively.",
+      "In the above proof, we assume that C is a parameterized circuit, i.e., the architecture is ﬁxed and only the parameters vary."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proof steps and the parameterized-circuit assumption are quoted from Appendix E.1; the display of the sum is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem20-matching-depth-lower-bound-states",
+     "value": "The paper proves as Theorem 20 that for any connected graph G with n + m vertices and maximum matching size nu, there exist n-qubit quantum states that can only be prepared by circuits of depth at least of order max of n and 2 to the n over nu under G constraint, using m of at least 0 ancillary qubits.",
+     "anchor": "Theorem 20, Section 6.1, p.23; proof Theorem 36, Appendix E.1, p.69",
+     "quotes": [
+      "Theorem 20. Let G = (V, E) denote an arbitrary connected graph with n + m vertices, with ν the size of",
+      "a maximum matching of G. There exist n-qubit quantum states which can only be prepared by circuits of depth at least Ω max{n, 2n/ν} under G constraint, using m ≥ 0 ancillary qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 20 statement quoted with its conditions; proved as Theorem 36.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem21-matching-depth-lower-bound-unitaries",
+     "value": "The paper proves as the matching theorem for unitaries that for any connected graph G with n + m vertices and maximum matching size nu, there exist n-qubit unitaries that can only be implemented by circuits of depth at least of order max of n and 4 to the n over nu under G constraint, using m of at least 0 ancillary qubits.",
+     "anchor": "Theorem 21, Section 6.1, p.23; proof Theorem 36, Appendix E.1, p.69",
+     "quotes": [
+      "There exist n-qubit unitaries which can only be implemented by circuits of depth at least Ω max{n, 4n/ν} under G constraint, using m ≥ 0 ancillary qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 21 statement quoted with its conditions; proved as Theorem 36.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem22-26-path-grid-depth-lower-bounds",
+     "value": "The paper states depth lower bounds for QSP states and for unitaries under path, two-dimensional grid and d-dimensional grid constraints with m ancillary qubits; the full expressions are garbled in the text layer and are given in the summary tables, and a later corollary states depth and size lower bounds for the path.",
+     "anchor": "Theorems 22 and 26, Section 6.2, p.23; Appendix E.2",
+     "quotes": [
+      "Theorem 22. There exists an n-qubit quantum state that requires a circuit using m ≥ 0 ancillary qubits, of depth",
+      "Theorem 26. There exists an n-qubit unitary that requires a quantum circuit using m ≥ 0 ancillary qubits, of depth"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The depth expressions are not legible in the text layer, so the theorem statements could not be quoted in full.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "star-graph-lower-bounds-corollary10",
+     "value": "The paper proves as Corollary 10 that there exist n-qubit quantum states and unitary matrices that require circuits under star graph constraint of depth at least order 2 to the n and order 4 to the n respectively, using m of at least 0 ancillary qubits.",
+     "anchor": "Corollary 10, Appendix E.2, p.75",
+     "quotes": [
+      "Corollary 10. There exist n-qubit quantum states and n-qubit unitary matrices which require quantum circuits under Starn+m constraint of depth at least Ω(2n) and Ω(4n), respectively, to implement, using m ≥ 0 ancillary qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary 10 statement quoted with its conditions.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "expander-gus-lower-bound-statement-mismatch",
+     "value": "The paper states its expander theorem on unitaries (a depth lower bound under expander constraint) with the term 2 to the n over (n + m), whereas the expander corollary for GUS and the GUS table give the term 4 to the n over (n + m).",
+     "anchor": "Theorem 28, Section 6.2, p.24; Corollary 9, Appendix E.2, p.75",
+     "quotes": [
+      "Theorem 28. There exists an n-qubit unitary that requires a quantum circuit of depth Ω max{n, 2n n+m } under Expandern+m constraint, using m ≥ 0 ancillary qubits.",
+      "3. n-qubit GUS needs quantum circuits of depth Ω max n, 4n n+m and size Ω(4n)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statements of the same bound disagree within the paper, so no certainty beyond low is suggested.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Theorem 28 as printed is probably a typo for 4 to the n, since the proof by Theorem 36 gives 4 to the n over nu for unitaries; a reader should check the arXiv source before citing the exponent."
+    },
+    {
+     "id_suggestion": "unary-qsp-lemma74-binary-tree",
+     "value": "The paper proves as its unary lemma that a unary-encoded state on 2 to the n qubits can be implemented by a circuit of depth of order n and size of order 2 to the n under a binary tree constraint using 2 to the n minus 1 ancillary qubits; the text of the proof reports the total size and depth as of order n and 2 to the n respectively, which swaps the quantities relative to the lemma statement.",
+     "anchor": "Lemma 74, Appendix F, p.76",
+     "quotes": [
+      "can be implemented by a quantum circuit of depth O(n) and size O(2n) under Tree2n+1−1(2) constraint using 2n − 1 ancillary qubits",
+      "The total size and depth required for the procedure are therefore O(n) and O(2n), respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 74 is stated with its conditions; the proof's closing sentence lists size and depth in the opposite order, which is a wording slip because the step count (n steps of constant depth, then 2 to the n single-qubit gates at depth 1) matches depth of order n.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma76-theorem37-qsp-tree-improvement",
+     "value": "The paper proves as Lemma 76 that any n-qubit quantum state can be prepared by a circuit of depth of order n squared log n and size of order n squared times 2 to the n under binary tree constraint using 2 to the n+1 minus 1 ancillary qubits, and as Theorem 37 that the binary-tree QSP depth improves to order n squared log squared n plus log(n) 2 to the n over (n + m) for m below order 2 to the n and to order n squared log n for m at least of order 2 to the n, improving the earlier binary-tree bound of order n cubed log n.",
+     "anchor": "Lemma 76 and Theorem 37, Appendix F, pp.79-80",
+     "quotes": [
+      "Lemma 76. Any n-qubit quantum state |ψv = x∈{0, 1}n vx |x can be prepared by a quantum circuit of depth O(n2 log n) and size O(n22n)",
+      "Theorem 37. Any n-qubit quantum state can be realized by a quantum circuit of depth",
+      "In Appendix F we show that using a unary encoding for the QSP circuit and a diﬀerent circuit framework, the circuit depth in Theorem 31 can be improved to O n2 log2(n)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 76 statement and the m at least order 2 to the n case of Theorem 37 are quoted with their conditions.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The Theorem 10 case 1 binary-tree QSP bound in Table 2 (order n cubed log n) is therefore not the paper's best binary-tree QSP bound; Appendix F improves it for large m."
+    },
+    {
+     "id_suggestion": "conclusion-size-and-depth",
+     "value": "The authors conclude that connectivity constraints do not increase the order of circuit size required for implementing almost all unitaries and for quantum state preparation, that depth for almost all unitaries is not increased even for the one-dimensional chain and remains so with m ancilla unless m is exponentially large, but that connectivity does hinder space-depth trade-offs.",
+     "anchor": "Section 7, p.24",
+     "quotes": [
+      "connectivity constraints do not increase the order of circuit size required for implementing almost all unitaries, as well as for quantum state preparation.",
+      "and this remains true when m ancilla are available unless m is exponentially large.",
+      "qubit connectivity does hinder space-depth trade-oﬀs: it makes it harder to use a large number of ancilla qubits to achieve smaller depth."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conclusions summary; the supporting theorems are quoted separately.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The 'unless m is exponentially large' wording is looser than Theorem 2, which proves the matching bound only for m up to order 2 to the n over 2; between that and exponential m the bounds in Table 1 do not match."
+    },
+    {
+     "id_suggestion": "conclusion-graph-measures",
+     "value": "The authors state they found that common measures of graph connectivity such as graph diameter, vertex degree and graph expansion, as well as less prominent measures such as the size of a maximum matching, all seem to have some impact on the required circuit depth.",
+     "anchor": "Section 7, p.24",
+     "quotes": [
+      "as well as less prominent measures such as the size of a maximum matching, all seem to have some impact on the required circuit depth."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A qualitative summary by the authors, not a theorem.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "stated-open-problems-limits",
+     "value": "The authors state that gaps remain between upper and lower bounds for GUS in the d-dimensional grid and d-ary tree cases when the number of ancillary qubits is large, and that optimizing the circuit complexity of an arbitrary given unitary is QMA-hard, citing JWB05.",
+     "anchor": "Section 7, pp.24-25",
+     "quotes": [
+      "Gaps remain between upper and lower bounds for GUS in the d-dimensional grid and d-ary tree cases when the number of ancillary qubits is large.",
+      "We cannot hope to have an eﬃcient algorithm to optimize the circuit complexity for any given unitary as it is QMA-hard [JWB05]"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state these limits in Section 7.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "constants-and-variational-ansatz-claim",
+     "value": "The authors claim, without a numerical evaluation in the paper, that the constant factor hidden in the big-O notation is not large and that their constructions may inspire efficient circuits for small scale circuits, and that because the constructed circuits are parameterized they may have applications in designing ansatzes for variational quantum circuits for quantum machine learning or quantum chemistry.",
+     "anchor": "Section 7, item 4, p.25",
+     "quotes": [
+      "the constant factor hidden in the big-O notation is not large",
+      "Our constructed circuits are all parameterized ones, which may have applications in designing ansatzes for variational quantum circuits for quantum machine learning or quantum chemistry."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim and speculation with no evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper contains no implementation or numerical results, so the claim about small constant factors and the variational-ansatz use is untested here."
+    }
+   ]
+  }
+ ]
+}
