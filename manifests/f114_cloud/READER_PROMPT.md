@@ -9,10 +9,10 @@ here for each paper and returns information to this session".
 Changed from Sprint 13 Task G's prompt (`manifests/sprint13_g_reads/READER_PROMPT.md`)
 only where a cloud session differs from a local reader:
 - one paper, not a group of five;
-- the paper's text and its brief arrive in `manifests/f114_cloud/inbox/`,
-  uncommitted, in the repository bundle `scripts/f114_cloud.py` uploads
-  (the PDF never leaves the coordinator's machine and the text never enters
-  git: ADR-0005 section 3);
+- the paper's text and its brief arrive in a message, which
+  `scripts/f114_unpack.py` saves outside the repository (the PDF never
+  leaves the coordinator's machine and the text never enters git:
+  ADR-0005 section 3);
 - progress and the result are pushed to a branch, since a cloud session
   cannot message the coordinator's session; the coordinator fetches it.
 Everything else (every page, no cap, the verdicts, the rules, the check) is
@@ -21,27 +21,24 @@ Task G's, word for word where it can be.
 ---
 
 You are a first-pass reader for the Evidence Based DB, running as a cloud
-session on a copy of the repository. You read ONE paper. Its record id is
-given in your launch message as RECORD.
+session on a clone of the repository. You read ONE paper. Its record id is
+given in your message as RECORD.
 
 ## First, before anything else
 
-1. Run `mkdir -p /tmp/f114 && cp manifests/f114_cloud/inbox/brief.json manifests/f114_cloud/inbox/paper.txt /tmp/f114/`.
-2. Run `git restore --source=HEAD --staged --worktree -- manifests/f114_cloud/inbox/`.
-   The paper's text must never be committed or pushed: it is not ours to
+1. Run `python3 scripts/f114_unpack.py RECORD` (RECORD filled in). It saves
+   the brief and the paper's text from your message to
+   `/tmp/f114/brief.json` and `/tmp/f114/paper.txt`, exactly as sent, and
+   checks that the brief is RECORD's. Never copy them out of the message
+   yourself. If it fails, stop and reply with what it printed; never read a
+   paper other than RECORD.
+2. The paper's text must never be committed or pushed: it is not ours to
    publish. From here on you read only `/tmp/f114/paper.txt` and
-   `/tmp/f114/brief.json`. Then run `git status --short` and
+   `/tmp/f114/brief.json`. Run `git status --short` and
    `git diff --cached --name-only`: both must print nothing. If either
    prints anything, stop and reply with what it printed.
-   Check the inbox you copied: `/tmp/f114/brief.json` must list exactly
-   one record, whose `record_id` is RECORD, and `/tmp/f114/paper.txt` must
-   hold the paper, not a one-line placeholder. If either is wrong, stop
-   and reply with what you found; never read a paper other than RECORD.
-3. Run `git remote add origin https://github.com/kimmeyh/evidencebaseddb || git remote set-url origin https://github.com/kimmeyh/evidencebaseddb`.
-   This copy of the repository came without a remote, and every push below
-   needs one. Keep the URL in lower case exactly as written: the pilot's
-   push was refused with the repository name in mixed case, and accepted
-   with it in lower case.
+3. Run `git remote -v`. This clone's remote is set up for you; never
+   change it. If it prints nothing, stop and reply that there is no remote.
 4. Make your branch (RECORD filled in). If
    `git ls-remote origin refs/heads/cloud/f114/RECORD` prints a line, an
    earlier session already pushed it: run
@@ -87,8 +84,9 @@ folder is `manifests/f114_cloud/results/RECORD/`.
    in your folder. A file in `done/` means the paper is finished. A file
    in `partial/` continues from the page after `last_page_read` in
    `progress.json`, keeping the verdicts and assertions already in it.
-   (On a resume, `/tmp/f114/` may be gone; then say so in your reply and
-   stop: the coordinator relaunches with the text.)
+   (On a resume, `/tmp/f114/` may be gone; run step 1 of "First" again,
+   which saves it again from your message. If that fails, say so in your
+   reply and stop: the coordinator relaunches with the text.)
 2. **While you read**, after about every 10 pages, write
    `partial/RECORD.json` (the paper's entry so far, in the shape below)
    and `progress.json`:

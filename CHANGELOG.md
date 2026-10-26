@@ -356,6 +356,14 @@ this project keeps having to replace with a step.
   every pushed commit, not only the final tree; a session silent for 3
   hours is launched again (3 attempts at most), and a refused or failed
   paper is set aside instead of stopping the run (Issue #138)
+- **fix**: F114 sessions start from GitHub, not from an uploaded bundle
+  (2026-10-26, team lead: "q2 1"). A bundled session is not linked to the
+  repository, so every push was refused until the team lead linked it by
+  hand. The launcher now reads the new session's id from its console
+  (`scripts/f114_launch.ps1`) and sends the instructions, brief and paper
+  text as one follow-up message; the session saves them outside the
+  repository with `scripts/f114_unpack.py`. Tests proven red by injection
+  (Issue #138)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

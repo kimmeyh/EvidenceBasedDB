@@ -23,15 +23,43 @@ def test_the_inbox_placeholders_are_empty():
 
 
 def test_the_reader_prompt_keeps_the_text_out_of_every_commit():
-    """Review of the F114 launcher (2026-10-26): `git checkout -- inbox` restores the index copy, so a staged
-    text survived it; a plain commit takes whatever is staged; and a session given the wrong inbox read the wrong
-    paper. Proven to fail, 2026-10-26: with the prompt's restore line put back to `git checkout --`, the test went
-    red; the same with the commit pathspec removed."""
+    """Review of the F114 launcher (2026-10-26): a plain commit takes whatever is staged, and a session given the
+    wrong paper read it. The text now arrives by message and is saved outside the repository. Proven to fail,
+    2026-10-26: with the commit pathspec removed from the prompt, the test went red; the same with the unpack step
+    removed."""
     prompt = (ROOT / "manifests" / "f114_cloud" / "READER_PROMPT.md").read_text(encoding="utf-8")
-    assert "git restore --source=HEAD --staged --worktree -- manifests/f114_cloud/inbox/" in prompt
-    assert "git checkout -- manifests/f114_cloud/inbox/" not in prompt
+    assert "python3 scripts/f114_unpack.py RECORD" in prompt
+    assert "manifests/f114_cloud/inbox/" not in prompt.split("---", 1)[1]
     assert 'git commit -m "..." -- manifests/f114_cloud/results/RECORD/' in prompt
-    assert "git diff --cached --name-only" in prompt and "whose `record_id` is RECORD" in prompt
+    assert "git diff --cached --name-only" in prompt
+
+
+def _unpack(tmp_path: Path, monkeypatch, message: str, rid: str) -> int:
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import f114_unpack
+    home = tmp_path / "home"
+    log = home / ".claude" / "projects" / "-home-user-repo" / "s.jsonl"
+    log.parent.mkdir(parents=True)
+    log.write_text("\n".join(json.dumps(e) for e in [
+        {"type": "user", "message": {"role": "user", "content": "Reply with the one word waiting."}},
+        {"type": "user", "message": {"role": "user", "content": [{"type": "text", "text": message}]}},
+        {"type": "assistant", "message": {"role": "assistant", "content": [{"type": "text", "text": "ok"}]}},
+    ]), encoding="utf-8")
+    monkeypatch.setattr(f114_unpack.Path, "home", staticmethod(lambda: home))
+    monkeypatch.setattr(f114_unpack, "OUT", tmp_path / "out")
+    return f114_unpack.main([rid])
+
+
+def test_unpack_saves_the_text_exactly_as_sent(tmp_path, monkeypatch):
+    """The session saves its paper from its own transcript, page breaks included, and only for RECORD. Proven to
+    fail, 2026-10-26: with unpack's split on the text marker dropped (the whole message saved as the text), the
+    first assertion went red; with the record check removed, the second did."""
+    text = "Page one.\fPage two, with a minus sign \u2212 and a line\nbreak."
+    brief = {"group": "g043", "records": [{"record_id": "r", "file": "D:\\r.pdf", "stored_assertions": []}]}
+    message = f"Read the prompt. RECORD is r.\n=== BRIEF ===\n{json.dumps(brief)}\n=== PAPER TEXT ===\n{text}"
+    assert _unpack(tmp_path, monkeypatch, message, "r") == 0
+    assert (tmp_path / "out" / "paper.txt").read_text(encoding="utf-8") == text
+    assert _unpack(tmp_path / "other", monkeypatch, message, "not-r") == 1
 
 
 def _check(tmp_path: Path, quote: str) -> subprocess.CompletedProcess:

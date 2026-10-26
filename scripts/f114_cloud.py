@@ -6,11 +6,12 @@ whole paper) as part of the prompt ... We just store them until 10/27 11:10pm an
 processing"; "do one pilot first, then adjust as needed and continue sending until completed or we run out of
 weekly tokens".
 
-How a paper reaches its session without passing through git: the paper's text (extracted here, as the quote
-checker extracts it) and its one-record brief are written into the TRACKED placeholders in
-`manifests/f114_cloud/inbox/`, `claude --cloud` is run with CCR_FORCE_BUNDLE=1 (the bundle carries uncommitted
-changes to tracked files), and the placeholders are restored at once. The text never enters a commit
-(ADR-0005 section 3); `tests/test_f114_cloud.py` fails if a placeholder is left filled.
+How a paper reaches its session without passing through git: `claude --cloud` starts a session from GitHub, at
+this branch as pushed (so it is linked to the repository and may push its result; a session started from an
+uploaded bundle was not, and every push was refused: team lead, 2026-10-26, "q2 1"). The session's id is read
+from the console it was started in (`scripts/f114_launch.ps1`), and the instructions, the one-record brief and
+the paper's text (extracted here) follow as one message, `claude -p --cloud <id>`; the session saves them with
+`scripts/f114_unpack.py`. The text never enters a commit (ADR-0005 section 3).
 
 How a result comes back: the session pushes `manifests/f114_cloud/results/<record>/` to branch
 `cloud/f114/<record>` (a cloud session cannot message this one). `fetch` saves each finished paper outside the
@@ -25,7 +26,7 @@ Local state (never in git): WORK/launches.json, WORK/results/<record>.json, WORK
 from __future__ import annotations
 
 import json
-import os
+import re
 import subprocess
 import sys
 import time
@@ -38,7 +39,6 @@ sys.path.insert(0, str(ROOT))
 from store.quotes import _pdftotext, source_text  # noqa: E402
 
 LEDGER = ROOT / "manifests" / "sprint13_g_ledger.json"
-INBOX = ROOT / "manifests" / "f114_cloud" / "inbox"
 S13G = Path(r"C:\Users\kimme\AppData\Local\Temp\claude\D--Data-Harold-github-EvidenceBasedDB\s13g")
 WORK = S13G / "f114"
 LAUNCHES = WORK / "launches.json"
@@ -76,9 +76,16 @@ def done() -> set[str]:
     return {p.stem for p in (WORK / "results").glob("*.json")}
 
 
-def message(rid: str) -> str:
+FIRST_MESSAGE = ("Reply with the one word waiting, and do nothing else. Your instructions, your brief and your "
+                 "paper arrive in the next message.")
+
+
+def message(rid: str, brief: dict, text: str) -> str:
     return (f"Read manifests/f114_cloud/READER_PROMPT.md and follow everything after its first \"---\" line exactly, "
-            f"as your instructions. RECORD is {rid}. Never use a hook override token.")
+            f"as your instructions. RECORD is {rid}. Never use a hook override token. This message carries your "
+            f"brief and your paper's text, after the two markers below; save them with the prompt's first step, "
+            f"never by copying them yourself.\n=== BRIEF ===\n{json.dumps(brief, indent=1)}\n=== PAPER TEXT ===\n"
+            f"{text}")
 
 
 def paper_text(path: str) -> str:
@@ -88,47 +95,43 @@ def paper_text(path: str) -> str:
     return _pdftotext(path, False) if path.lower().endswith(".pdf") else source_text(path)
 
 
-def restore_inbox() -> None:
-    # From HEAD, index included: `git checkout -- path` restores the index copy, which keeps the text if staged.
-    git("restore", "--source=HEAD", "--staged", "--worktree", "--", str(INBOX.relative_to(ROOT)))
-
-
 def launch(rid: str, model: str = "sonnet") -> str:
-    """Fill the inbox, start one cloud session from a bundle of the working tree, restore the inbox."""
-    if git("status", "--porcelain", "--untracked-files=no").strip():
-        raise SystemExit("tracked files are modified; commit first, so the bundle carries only the inbox")
+    """Start one cloud session from GitHub, then send it its instructions, brief and paper as one message."""
+    base = git("rev-parse", "HEAD").strip()
+    branch = git("rev-parse", "--abbrev-ref", "HEAD").strip()
+    if git("ls-remote", "origin", f"refs/heads/{branch}").split()[:1] != [base]:
+        raise SystemExit(f"{branch} on GitHub is not HEAD; push first, since the session clones it from there")
     g, rec = next((g, r) for g, r in records() if r["record_id"] == rid)
-    base = git("rev-parse", "HEAD").strip()  # before the wait, so a commit made meanwhile is not taken as the base
+    (WORK / "logs").mkdir(parents=True, exist_ok=True)
+    log = WORK / "logs" / f"{rid}.console.txt"
+    log.unlink(missing_ok=True)
+    # `--cloud` creates a session only from an interactive terminal, so it runs in a console window of its own,
+    # and the window's screen, read after claude exits, gives the session's id.
+    proc = subprocess.Popen(["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+                             str(ROOT / "scripts" / "f114_launch.ps1"), "-Message", FIRST_MESSAGE, "-Model", model,
+                             "-Log", str(log)], cwd=ROOT, creationflags=subprocess.CREATE_NEW_CONSOLE)
     try:
-        (INBOX / "brief.json").write_text(json.dumps({"group": g, "records": [rec]}, indent=1), encoding="utf-8")
-        (INBOX / "paper.txt").write_text(paper_text(rec["file"]), encoding="utf-8")
-        env = dict(os.environ, CCR_FORCE_BUNDLE="1")
-        # `--cloud` refuses a non-interactive terminal, so it runs in a console window of its own; the result
-        # comes back by branch, so the session id is not needed here. The inbox is restored once the bundle is
-        # uploaded: when the window's process exits, or after UPLOAD_WAIT seconds.
-        # stderr goes to a log (stdin and stdout stay the console's), so a failed launch says why.
-        (WORK / "logs").mkdir(parents=True, exist_ok=True)
-        log = WORK / "logs" / f"{rid}.err.txt"
-        # cmd does the redirect: a handle passed by Popen would make claude's stdin and stdout this session's
-        # pipes too, and `--cloud` then refuses them.
-        line = subprocess.list2cmdline(["claude", "--cloud", message(rid), "--model", model])
-        proc = subprocess.Popen(f'cmd /c "{line} 2> "{log}""', cwd=ROOT, env=env,
-                                creationflags=subprocess.CREATE_NEW_CONSOLE)
-        try:
-            rc = proc.wait(timeout=UPLOAD_WAIT)
-        except subprocess.TimeoutExpired:
-            rc = None
-    finally:
-        restore_inbox()
-    if rc not in (None, 0):
-        raise SystemExit(f"{rid}: the cloud launch window exited with {rc}: "
-                         f"{log.read_text(encoding='utf-8', errors='replace')[-800:]}")
+        rc = proc.wait(timeout=UPLOAD_WAIT)
+    except subprocess.TimeoutExpired:
+        rc = None
+    screen = log.read_text(encoding="utf-8-sig", errors="replace") if log.is_file() else ""
+    ids = re.findall(r"\b(?:session|cse)_[A-Za-z0-9]{20,}\b", screen)
+    if not ids:
+        raise SystemExit(f"{rid}: no session id on the launch window's screen (exit {rc}): {screen.strip()[-800:]}")
+    sid = ids[-1]
+    payload = message(rid, {"group": g, "records": [rec]}, paper_text(rec["file"]))
+    sent = subprocess.run(["claude", "-p", "--cloud", sid, "--output-format", "json"], cwd=ROOT,
+                          input=payload.encode("utf-8"), capture_output=True)
+    out = sent.stdout.decode("utf-8", "replace")
+    if sent.returncode != 0 or '"ok":true' not in out.replace(" ", ""):
+        raise SystemExit(f"{rid}: session {sid} started, but its paper was not sent: "
+                         f"{(out + sent.stderr.decode('utf-8', 'replace'))[-800:]}")
     d = launches()
     attempts = d.get(rid, {}).get("attempts", 1 if rid in d else 0) + 1
-    d[rid] = {"group": g, "window_rc": rc, "base": base, "attempts": attempts,
+    d[rid] = {"group": g, "session": sid, "base": base, "attempts": attempts,
               "launched": datetime.now().isoformat(timespec="seconds"), "model": model}
     save_launches(d)
-    return f"launched (window exit code {rc}, attempt {attempts})"
+    return f"launched {sid} (attempt {attempts}), sent {len(payload)} characters"
 
 
 def fetch() -> dict:
@@ -182,14 +185,11 @@ def run_all(max_inflight: int = 5, poll: int = 300, model: str = "sonnet") -> No
             print(f"  REFUSED {x}", flush=True)
         if not todo and not inflight:
             return
-        if git("status", "--porcelain", "--untracked-files=no").strip():
-            print("  tracked files are modified; no launch this round", flush=True)
-        else:
-            for rid in todo[:max(0, max_inflight - len(inflight))]:
-                try:
-                    print(f"  launch {rid}: {launch(rid, model)}", flush=True)
-                except SystemExit as e:
-                    print(f"  FAILED {e}", flush=True)
+        for rid in todo[:max(0, max_inflight - len(inflight))]:
+            try:
+                print(f"  launch {rid}: {launch(rid, model)}", flush=True)
+            except SystemExit as e:
+                print(f"  FAILED {e}", flush=True)
         time.sleep(poll)
 
 
