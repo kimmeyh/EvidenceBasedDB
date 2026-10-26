@@ -1,0 +1,749 @@
+{
+ "papers": [
+  {
+   "record_id": "xu-2025-entangled-mixed-state-datasets-generation",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Xu-et-al._2025_Entangled-mixed-state-datasets-generation-by-quantum-machine-learning__2503.06452.pdf",
+   "title_in_file": "Entangled Mixed-State Datasets Generation by Quantum Machine Learning",
+   "version_note": "arXiv:2503.06452v1 [quant-ph] 9 Mar 2025. The text layer holds the paper twice (preprint copy twice in sequence); the first copy was read and the second used only to check quotes. The text layer has no page breaks, so the page count is an estimate.",
+   "pages": 19,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A QML paper that generates entangled mixed-state datasets with concentratable-entanglement lower bounds and benchmarks three ansatz families on entangled-separable classification for 2 to 5 qubits.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "emsd-benchmark",
+     "verdict": "confirmed",
+     "note": "The value matches the quoted sentence in Sec. 4. Scope worth keeping beside it: widths n to n + 3 and depths 3 to 6, on the authors' own generated datasets (see the new setup assertions).",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "emsd-continuity",
+     "verdict": "widened",
+     "note": "The stored value says only that a bound was proved. Theorem 1 states it, and Appendix B gives the derivation. The statement is added here with its conditions quoted.",
+     "value": "The paper states Theorem 1: for two n-qubit states rho and sigma, if their trace distance is at most d, then the absolute difference of their CEL values is at most a quantity that depends on n and d. The text layer prints the bound as '( 1 2n + 1) 2d' (a factor of one over two to the n, plus one, times the square root of two d).",
+     "anchor": "Theorem 1, Section 3.2; proof in Appendix B",
+     "quotes": [
+      "Theorem 1 Give√n two n-qubit state ρ , σ, if Dtr(ρ, σ) ≤ d, then |Cρl (S) − Cσl (S)| ≤ ( 1 2n + 1) 2d,",
+      "where Dtr(·) denotes the trace distance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement is quoted, but the text layer garbles the bound, so the coordinator cannot confirm its exact form from the text.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer does not show whether the square root covers only 2d or also the factor in front. Appendix B ends with the trace norm replaced by d; the paper does not state its trace-distance normalization (with the usual one half factor, the trace norm is at most twice d, which would change the constant). Check the printed formula against the PDF."
+    },
+    {
+     "id": "emsd-ghz-limit",
+     "verdict": "confirmed",
+     "note": "The value matches the quotes. The paper does not say which ansatz, width or depth gave the 60%, what the sizes of the datasets were, or how many runs were made; 'in this architecture' is the only pointer.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "emsd-method",
+     "verdict": "confirmed",
+     "note": "The value restates the Abstract.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "ce-definition",
+     "value": "The paper defines the concentratable entanglement (CE) of an n-qubit pure state, following Ref. [32], as one minus a normalized sum of the purities of the reduced states over the power set of the qubit indices.",
+     "anchor": "Definition 1, Section 2.1",
+     "quotes": [
+      "Definition 1 (Concentratable Entanglement [32])",
+      "Let S be the set of qubit indices and P(S) be the power set of S.",
+      "where ρα is the reduced state of |ψ⟩ in the subsystems labeled by the elements in α"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 1 in Section 2.1 states it.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text layer prints Eq. (2) with its fractions out of order; the words above are the reader's reading of it."
+    },
+    {
+     "id_suggestion": "ce-meaning",
+     "value": "The authors state that CE measures quantify the average bipartite concurrence between any possible partition of the whole system.",
+     "anchor": "Section 2.1, after Definition 1",
+     "quotes": [
+      "Concentratable Entanglement (CE) measures quantify the average bipartite concurrence[33, 34] between any possible partition of the whole system"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about a measure from Ref. [32]; no proof is given here.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fully-separable-definition",
+     "value": "The paper defines a state as fully separable if it is a convex combination of product states, and otherwise entangled. The paper states that it does not separate k-separable states and treats only the separable and entangled split.",
+     "anchor": "Section 2.1, Eq. (1)",
+     "quotes": [
+      "A quantum state ρ ∈ H is fully separable if it can be expressed as a convex combination of product states:",
+      "However, in this paper, we do not make more detailed distinctions and focus solely on the basic classification of separable and entangled states as defined above."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2.1 gives the definition and the scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cel-lower-bound-definition",
+     "value": "The authors state that the convex roof extension of CE to mixed states is challenging to implement, and that they use instead a CE lower bound (CEL) for mixed states, taken from earlier studies. They state that this CEL is not an exact bound.",
+     "anchor": "Section 2.1, Eqs. (3) and (4)",
+     "quotes": [
+      "This convex roof construction is often challenging to implement.",
+      "Instead, several studies [36, 37] have derived a CE lower bound(CEL) for mixed states, given by:",
+      "Since Eq. (4) is not an exact bound, it is natural to consider the potential errors associated with its estimation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2.1 defines the CEL used throughout.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ghz-cel-formula",
+     "value": "The authors derive a closed-form CEL for an n-qubit GHZ state mixed with white noise at weight p (the paper's Eq. 9, derived in Appendix A). The text layer prints the fractions out of order.",
+     "anchor": "Eq. (9), Section 3.1; derivation in Appendix A, Eq. (A.4)",
+     "quotes": [
+      "For a n-qubit GHZ state with white noise, the density matrix is given by",
+      "Cρl = p2 2 − 1 2n + (1 − p2) 31 2n − 4n − 3n 4 , (9)",
+      "The detailed derivation is provided in Appendix. A."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived formula whose printed form is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The Appendix A and Eq. (9) readings agree in the layer text; the exact fractions need the PDF."
+    },
+    {
+     "id_suggestion": "w-cel-formula",
+     "value": "The authors derive a closed-form CEL for an n-qubit W state mixed with white noise at weight p (the paper's Eq. 11, derived in Appendix A). The text layer prints the fractions out of order.",
+     "anchor": "Eq. (11), Section 3.1; derivation in Appendix A, Eq. (A.9)",
+     "quotes": [
+      "For a n-qubit W state with white noise, the density matrix is given by",
+      "Cρl = (n − 1)p2 2n + (1 − p2) 21 2n − 4n − 3n 4 , (11)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived formula whose printed form is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "separability-thresholds-cited",
+     "value": "The paper cites known thresholds below which the noisy GHZ and W states are fully separable, from earlier work.",
+     "anchor": "Section 3.1",
+     "quotes": [
+      "It is known that ρ is fully separable if and only if p ≤ 1 1+2n−1 [46, 47].",
+      "It is known that ρ is fully separable if and only if p≤ n n+2n [48]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results; the paper does not prove them.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cel-simulation-agrees",
+     "value": "The authors report that simulations of the CEL circuit for noisy GHZ and W states agree with their closed-form CEL, and that the maximum CEL values rise with system size.",
+     "anchor": "Section 3.1, Fig. 2",
+     "quotes": [
+      "The simulation results are in agreement with both Eq. (9) and Eq. (11).",
+      "In Fig. 2, the maximum values of these states under the quantification of CEL show a significant upward trend with increasing system size"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical (simulated) result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cel-false-positives",
+     "value": "The authors report that the error of the CEL as a separability test grows with system size: for the 5-qubit case, nearly half of the separable states are identified as entangled when CEL is used as the criterion.",
+     "anchor": "Section 3.1, Fig. 2(g) and 2(h)",
+     "quotes": [
+      "Meanwhile, the error of CEL are becoming more evident.",
+      "For 5-qubit case, as shown in Fig. 2(g) and Fig. 2(h), nearly half of the separable states are identified as entangled states, if we use CEL as a criterion."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The next sentence in the paper reads 'the method used to identify entangled states is absolutely accurate'; it contradicts this result and is probably a lost 'not'. The coordinator should check the PDF. If a CEL above zero is also reached by separable states, a target CEL of 0.25 does not by itself certify an entangled state (the paper gives no independent check)."
+    },
+    {
+     "id_suggestion": "cel-circuit-qubits",
+     "value": "The authors state that computing the CEL of an n-qubit noisy GHZ or W state with the parallel swap test needs 5n + 2 qubits, n of them auxiliary.",
+     "anchor": "Appendix A, Figs. 9 and 10",
+     "quotes": [
+      "For the n-qubit case, 5n + 2 qubits, including n auxiliary qubits, are required."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A resource statement without a derivation in the text.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "anti-purification",
+     "value": "The authors state that a mixed state can be obtained in a circuit by tracing out an ancillary register of an entangled pure state, citing the purification theorem of Ref. [49], and call this a form of anti-purification.",
+     "anchor": "Section 3.2",
+     "quotes": [
+      "According to the purification theorem in Ref. [49]",
+      "the method of obtaining mixed states in a quantum circuit is actually a form of anti-purification"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited theorem used as the design basis.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ansatz-definitions",
+     "value": "The paper tests three ansatz families for generating mixed states: the hardware-efficient ansatz (HWE, Ref. [52]), the strongly-entangling ansatz (SEA, Ref. [53]) and the simplified 2-design ansatz (SD, Ref. [54]).",
+     "anchor": "Section 3.2, Fig. 3",
+     "quotes": [
+      "Hardware-efficient ansatz (HWE)[52] in Fig. 3(a): Composed of layers of single-qubit rotations denoted by R and entangled layers",
+      "Strongly-entangling ansatz (SEA)[53] in Fig. 3(b): Composed of arbitrary single-qubit rotations denoted by R and varied pattern CNOT entanglement",
+      "Simplified 2-design ansatz (SD)[54] in Fig. 3(c):Composed of PauliY rotations denoted by Ry and entanglers bwtween neighbor qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 3.2 defines the three ansatz.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "purity-setup",
+     "value": "The authors state that for each ansatz they varied depth l (1 to 4) and width w (2 to 5) and randomly generated 100 states per circuit, to see the purity distributions.",
+     "anchor": "Section 3.2, Fig. 4",
+     "quotes": [
+      "For each type, we considered different depth (denoted by l, with l = 1, 2, 3, 4) and width (denoted by w, with w = 2, 3, 4, 5).",
+      "For all circuits, we randomly generated 100 states"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 3.2 states the setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "purity-results",
+     "value": "The authors report from the purity distributions that SEA is notably susceptible to depth and width, the SD purity shifts lower as depth and width grow, and the HWE purity stays largely invariant with width; they conclude all three can generate mixed states.",
+     "anchor": "Section 3.2, Fig. 4",
+     "quotes": [
+      "The SEA(the green area) is notably susceptible to variations in both depth and width.",
+      "As both depth and width increase, the distribution of purity for the SD(the orange area) shifts towards lower values.",
+      "The HWE(the blue area) , however, remains largely invariant with respect to variations in width.",
+      "types of ansatz are all affected by depth and width, yet they are all capable of generating mixed states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "continuity-proof-basis",
+     "value": "The paper's proof of Theorem 1 (Appendix B) starts from a bound of Ref. [16] on the difference of reduced-state purities in terms of the trace norm of the difference of the two states, and sums over the subsets of qubits, ending with the printed bound.",
+     "anchor": "Appendix B, Eq. (B.1)",
+     "quotes": [
+      "In Ref. [16], the authors showed that for any reduced √density matrix for index subset α ∈ P(S), for given ρ and σ,",
+      "≤ 2n + 1 2∥ρ − σ∥1 √ ≤ 2n + 1 2d (B.1)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proof depends on a cited bound and the printed steps are garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The final step replaces the trace norm of the difference with d; the normalization of the trace distance is not stated, so the constant in Theorem 1 is unchecked."
+    },
+    {
+     "id_suggestion": "unitary-closeness-claim",
+     "value": "The authors conclude from the continuity bound and unitary invariance that when the initial states are sufficiently close, the CELs of the states after a unitary are also close.",
+     "anchor": "Section 3.2, after Theorem 1",
+     "quotes": [
+      "Therefore, based on the unitary invariance, we can conclude that when the initial states are sufficiently close, the CELs of two quantum states after the action of a unitary operator are also close."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A consequence stated without its own proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "It follows if the trace distance is unitarily invariant (a standard fact the paper does not state)."
+    },
+    {
+     "id_suggestion": "generation-method",
+     "value": "The paper's generation method: prepare a mixed state with a desired CEL value, perturb it with local transformations to get an initial set P, and train a parameterized circuit so the CEL of each output is within a tolerance delta of a target value xi.",
+     "anchor": "Section 3.2",
+     "quotes": [
+      "So, we could firstly generate an mixed state ρin with an desired CEL value.",
+      "By applying different perturbations ε to the initial state through local transformations, we can obtain an initial state dataset P",
+      "we just need to train the parameters such that |Cσl (S)−ξ| ≤ δ, where σ = U (θ)ρinU †(θ) and δ is the tolerant value."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 3.2 states the method.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "epsilon-distribution-result",
+     "value": "The authors report that for the SEA generating 3-qubit entangled mixed states around a target CEL of 0.25, with rotation angles drawn from the interval (-epsilon, epsilon), the distribution of 1000 states becomes broader as epsilon increases.",
+     "anchor": "Section 3.2, Fig. 5",
+     "quotes": [
+      "In Fig. 5, we show the performance of the SEA in generating 3-qubit entangled mixed states.",
+      "the local unitary operations are single-qubit rotations and ε are chosen from {0.25, 0.5, 0.75, 1}. Each group of data consists of 1000 states, distributed around ξ = 0.25.",
+      "As expected, as ε increases, the distribution of the set composed of 1000 states becomes more and more broader."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "trace-distance-not-computed",
+     "value": "The authors state that for simplicity they did not strictly compute the trace distance between the initial states, and controlled the rotation angles instead.",
+     "anchor": "Section 3.2, after Fig. 5",
+     "quotes": [
+      "For simplicity, we did not strictly calculate the trace distance between the initial states when generating the initial state set.",
+      "with the rotation angles randomly selected from the interval (−ε, ε)."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The Theorem 1 guarantee is therefore not checked for the sets actually generated."
+    },
+    {
+     "id_suggestion": "closeness-claim-fig5",
+     "value": "The authors conclude that for the optimized circuit, any set of close initial states will be distributed around the target CEL.",
+     "anchor": "Section 3.2, after Fig. 5",
+     "quotes": [
+      "For the optimized parameterized quantum circuit, we can conclude that any set of close initial states, after being acted upon by this parameterized quantum circuit, will be distributed around ξ."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion; the only support is the single Fig. 5 run.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dataset-composition",
+     "value": "The paper states that it built four datasets of 2, 3, 4 and 5 qubits; the entangled part of each holds 6,000 states from SD, HWE and SEA, made with epsilon 0.5 and target CEL 0.25, and the separable part holds 6000 states.",
+     "anchor": "Section 4, Table 1",
+     "quotes": [
+      "which include four datasets of 2, 3, 4, and 5 qubits.",
+      "We set ε = 0.5 and ξ = 0.25 in construction entangled mixed-state datasets.",
+      "it contains a total of 6,000 quantum states generated by SD, HWE, and SEA, respectively, with different numbers of layers",
+      "For every qubit system, the dataset contains 6000 states.",
+      "In the generation of datasets, the first two qubtits are set as ancillary register and initial state is |0⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 4 states the dataset setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Table 1 lists a count of 500 in each of twelve rows (12 x 500 = 6,000), as the reader reads the table. The paper labels a state entangled by its target CEL, and Sec. 3.1 reports CEL above zero for separable states, so the entangled labels are not independently certified in the text."
+    },
+    {
+     "id_suggestion": "separable-generation",
+     "value": "The authors state that separable states are generated from Eq. (1), using only random controlled rotation gates between an ancillary qubit (control) and a target-register qubit.",
+     "anchor": "Section 4",
+     "quotes": [
+      "All separable states in our dataset are generated based on Eq. (1).",
+      "To avoid entanglement, only random controlled rotation gates are implemented between ancillary register and target register.",
+      "the control qubit is randomly chosen from the ancillary register, and the target qubit from the target register."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 4 states the construction.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper gives no proof or check that every state so generated is separable."
+    },
+    {
+     "id_suggestion": "training-setup",
+     "value": "The authors state that classification used the observable Z on the last qubit of the target register, a batch size of 32, circuit widths from n to n + 3 and depths 3 to 6 for n-qubit datasets, and accuracy and F1 score on a test set.",
+     "anchor": "Section 4",
+     "quotes": [
+      "we choose a simple observable O = Z, where Z is the Pauli operator acting on the last qubit of target register",
+      "for the n-qubit datasets, where n = 2, 3, 4, 5, the range of circuit widths is {n, n + 1, n + 2, n + 3}}, while the depth is independent of n and the range of depths is {3, 4, 5, 6}.",
+      "with a batch size of 32 used in our experiments",
+      "We used the accuracy and F1 Score[55, 56] of the trained models on the test set as evaluation criteria."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 4 states the setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text carries no train/test split, optimizer, learning rate, seed or number of repeated runs, so the results cannot be given error bars from the text."
+    },
+    {
+     "id_suggestion": "convergence-result",
+     "value": "The authors report that accuracy rose rapidly in the first 20 iterations then stabilized, that the final stable accuracy increased with system size, and that SD trained less efficiently while HWE and SEA were comparable.",
+     "anchor": "Section 4, Fig. 6",
+     "quotes": [
+      "Within the first 20 iterations, the accuracy increased rapidly.",
+      "with the final stable success rate increasing with the system size.",
+      "the training efficiency of SD(the orange line) is relatively low, especially in Figs. 6(a), 6(c) and 6(d), while the training efficiencies of HWE and SEA are comparable."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The authors attribute the rise with system size to the circuit width growing with it, so it is not a pure system-size effect."
+    },
+    {
+     "id_suggestion": "depth-width-result",
+     "value": "The authors report that varying the width did not significantly improve accuracy or F1 score, that deeper models reached higher accuracy and F1 score, and conclude that depth plays the primary role in learning performance.",
+     "anchor": "Section 4, Fig. 7",
+     "quotes": [
+      "In Fig. 7, we observe that for different widths, the accuracy and F1 Score of the three models do not show significant improvements.",
+      "deeper models achieving higher accuracy and F1 Score as the system size increases.",
+      "Therefore, we conclude that in this work, the depth of the ansatz plays a primary role in its learning performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sd-instability-result",
+     "value": "The authors report that SD accuracy and F1 score fluctuate more with system size, and even decrease as width grows in two panels, while SEA and HWE are more stable.",
+     "anchor": "Section 4, Fig. 7(e) and 7(g)",
+     "quotes": [
+      "In Figs. 7(e) and 7(g), as the width increases, the accuracy and F1 Score of the SD(the orange) even decrease.",
+      "While the SEA and the HWE demonstrate more stable performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sd-debugging-claim",
+     "value": "The authors state that using SD for related work may increase additional debugging workload.",
+     "anchor": "Section 4",
+     "quotes": [
+      "Using SD for related work may increase additional debugging workload."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author remark without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "observable-picture",
+     "value": "The authors state that by the cyclic property of the trace the measured value of the circuit on a state equals the trace of the state with a rotated observable, so the circuit can be read as acting on the observable, and tie this to entanglement witnesses.",
+     "anchor": "Section 4, after the GHZ and W result",
+     "quotes": [
+      "the measurement outcome Tr(U (θ)ρiU †(θ)O) can be equivalently expressed as Tr(ρO(θ)), where O(θ) = U †(θ)OU (θ).",
+      "This implies that U (θ) can also be interpreted as acting on the observable O."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A standard identity stated without a proof; the link to witnesses is the authors' argument.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qml-supersede-witness-claim",
+     "value": "The authors claim that supervised QML could supersede entanglement witnesses when supported by high-quality quantum datasets.",
+     "anchor": "Section 4",
+     "quotes": [
+      "This discovery shows that supervised QML could supersede entanglement witnesses when supported by high-quality quantum datasets."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no experiment in the paper tests it.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "It sits beside the paper's own statements that GHZ and W learning reached only 60% and that witnesses should still be combined with high accuracy."
+    },
+    {
+     "id_suggestion": "qml-limit-hyperplane",
+     "value": "The authors state that supervised QML can classify two state sets when a supporting hyperplane exists between their convex hulls and cannot when none exists, giving Werner-state classification as an example where it is unsuitable without other optimizations.",
+     "anchor": "Section 4, Fig. 8",
+     "quotes": [
+      "When there exists a supporting hyperplane between the convex hulls of two state sets in the state space, supervised QML can effectively accomplish the task.",
+      "When there is no supporting hyperplane between the convex hulls of two quantum state sets, supervised QML cannot perform effective classification[44, 45].",
+      "For example, without the aid of other algorithmic optimizations, supervised QML is not suitable for entanglement-separability classification of the Werner states."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim with citations; no proof in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "witness-advice",
+     "value": "The authors state that even when accuracy is high, entanglement witnesses should be combined for analysis, otherwise the learning motivation cannot be explained, and leave this for future research.",
+     "anchor": "Section 4",
+     "quotes": [
+      "Even when the accuracy is high, entanglement witnesses should be combined for analysis; otherwise, the learning motivation cannot be explained.",
+      "We will not further discuss such work in this paper but leave it for future research."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 4 states this limit.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "stated-limitations",
+     "value": "The authors state open problems: more accurate and computationally feasible entanglement measures than CEL, scalability to more qubits, and decoherence and gate errors before generation on real quantum hardware.",
+     "anchor": "Section 5",
+     "quotes": [
+      "Although the CEL provides a useful tool, more accurate and computationally feasible measures are still required to enhance the quality of the dataset.",
+      "Second, the scalability of our approach to larger systems (more qubits) needs to be explored.",
+      "Practical limitations, such as decoherence and gate errors, must be addressed to ensure the feasibility of generating entangled states on real quantum hardware."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 5 states these limits.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Every result in the paper is from numerical simulation of at most 5 qubits in the data sets."
+    },
+    {
+     "id_suggestion": "conclusion-claims",
+     "value": "The authors conclude that their approach provides a valuable resource for benchmarking QML models and opens new avenues for exploring entanglement in mixed states.",
+     "anchor": "Section 5",
+     "quotes": [
+      "Our approach not only provides a valuable resource for benchmarking QML models but also opens new avenues for exploring the rich structure of quantum entanglement in mixed states."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "transferable-scalable-claim",
+     "value": "The authors claim in the introduction that their approach is transferable and scalable.",
+     "anchor": "Section 1",
+     "quotes": [
+      "This approach is transferable and scalable, and it offers inspiration for more in-depth classification tasks based on QML."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; Section 5 lists scalability as untested.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Section 5 says scalability to more qubits still needs to be explored."
+    },
+    {
+     "id_suggestion": "cited-prior-work",
+     "value": "The paper attributes to earlier work: that entanglement in training data can reduce the number of training data used, and that the effect of entangled datasets on prediction error depends on the number of measurements allowed (the quantum no-free-lunch theorem).",
+     "anchor": "Section 1",
+     "quotes": [
+      "Sharma et al. pointed out that entanglement in training quantum data can reduce the number of used training datasets[19].",
+      "quantum NFL theorem demonstrated that the effect of quantum entangled datasets on prediction error exhibits a double effect, depending critically on the number of measurements allowed."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-prior-datasets",
+     "value": "The paper attributes to Schatzki et al. methods for pure entangled states only, and states that their framework does not address entangled mixed states; it also notes the absence of comprehensive large-scale quantum datasets.",
+     "anchor": "Section 1",
+     "quotes": [
+      "Despite Schatzki et al. established methods for generating pure entangled states, their framework does not address the preparation of entangled mixed states",
+      "the field of quantum machine learning still suffers from an absence of comprehensive, large-scale quantum datasets"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A positioning statement about other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
