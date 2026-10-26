@@ -1,0 +1,556 @@
+{
+ "papers": [
+  {
+   "record_id": "kaustaban-2022-continual-learning-tumor-classification-histopathology",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QCiAuthorsPapers\\Mohammad-Ali-Miri\\topic-screened\\Kaustaban-et-al._2022_Continual-Learning-for-Tumor-Classification-in-Histopathology-Images__2208.03609.pdf",
+   "title_in_file": "Characterizing Continual Learning Scenarios for Tumor Classification in Histopathology Images",
+   "version_note": "The text is the arXiv v1 preprint (2208.03609v1, 7 Aug 2022, eess.IV); the running head reads 'Continual Learning for Tumor Classification in Histopathology Images' and the file name matches the record.",
+   "pages": 13,
+   "read_extent": "partial",
+   "not_read": "pages after the last page read are pending",
+   "what_it_is": "A MICCAI 2022 style study that defines four continual learning scenarios for histopathology and benchmarks EWC, Online EWC, LwF, iCaRL, A-GEM and CoPE on a stain-augmented colorectal cancer dataset and on CRC plus PatchCam.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "data-il-definition",
+     "value": "The authors define the Data Incremental scenario (Data-IL) as continually learning from new streams of data from an identical underlying distribution during model development or update. They state that Data-IL does not consider new classes or considerable shifts of data distribution and is expected to be the easiest among all CL scenarios.",
+     "anchor": "Section 2, p.2-3",
+     "quotes": [
+      "Continuously learn from new streams of data from an identical underlying distribution during model development or update.",
+      "Data-IL does not consider new classes or considerable shifts of data distribution and is thus expected to be the easiest",
+      "among all CL scenarios. In DP, it is common for expert pathologists to generate annotations for a dataset in multiple batches"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2 defines the scenario.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The expectation that Data-IL is easiest is not borne out for every method: in Table S1 only LwF exceeds finetuning in Data-IL."
+    },
+    {
+     "id_suggestion": "domain-il-definition",
+     "value": "The authors define the Domain Incremental scenario (Domain-IL) as continually updating a model with new streams of data from shifted distributions, with examples such as variations of tissue processing/staining reagents, patient populations and scanning instruments. They state that the extent of domain shift is a continuum and that the categorization of a scenario into Data-IL or Domain-IL is a design choice and/or empirical decision.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "Continuously update a model with new streams of data from shifted distributions.",
+      "Examples in clinical settings include variations of tissue processing/staining reagents, patient populations, scanning instruments and so on.",
+      "the categorization of a scenario into Data-IL or Domain-IL is a design choice and/or empirical decision."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2 defines the scenario.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "class-il-definition",
+     "value": "The authors define the Class Incremental scenario (Class-IL) as continually extending an existing model to unseen classes with new streams of data. They state that, because the knowledge to learn from each batch of unseen classes is largely non-overlapping, this scenario is expected to be the hardest among CL scenarios.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "Continuously extend an existing model to unseen classes with new streams of data.",
+      "Since the knowledge to learn from each batch of unseen classes is largely non-overlapping, this scenario is expected to be the hardest among CL scenarios."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2 defines the scenario.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "task-il-definition",
+     "value": "The authors define the Task Incremental scenario (Task-IL) as any of the other scenarios in which each data stream is defined as a new task and prior knowledge of the task identity (task ID) is always given at inference. They state that in this study they tested Task-IL with new classes introduced at each task.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "Any of the above scenarios can be considered as Task-IL if each data stream is deﬁned as a new task",
+      "prior knowledge is always given as to which task (task identity, i.e. task ID) the test data should be predicted with.",
+      "In this study, we tested the task IL scenario with new classes introduced at each task."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2 defines the scenario and states how it is tested here.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-systematic-cl-study-for-dp",
+     "value": "The authors state that, to their best knowledge, there is no systematic study so far on continual learning performance of deep learning or machine learning models designed for histopathology images, and consequently no appropriate CL baselines for digital pathology. They also state that, to the best of their knowledge, no benchmark for simulating CL scenarios had been proposed for digital pathology analysis.",
+     "anchor": "Section 1, p.2; Section 3.2, p.3-4",
+     "quotes": [
+      "to our best knowledge, there is no systematic study so far on CL performance on deep learning/machine learning models designed for histopathology images, and consequently, no appropriate CL baselines for DP.",
+      "To the best of our knowledge, no such benchmark has been proposed for"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "A priority and novelty claim made without a literature search shown in the paper. Reference 19 (Perkonigg et al.) and others in the cited list study CL in medical imaging, but not histopathology."
+    },
+    {
+     "id_suggestion": "cl-algorithms-tested-on-non-dp-datasets",
+     "value": "The authors state that continual learning algorithms have largely been tested on relatively less complex datasets from non-DP domains, including MNIST and CIFAR, and that the insights from these thus cannot be directly transferred to DP data.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "these CL algorithms have largely been tested on relatively less complex datasets from non-DP domains, including MNIST [1, 8, 17]",
+      "the insights from which thus cannot be directly transferred to DP data."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The paper does not test whether insights from MNIST or CIFAR transfer; the assertion is a premise, not a result."
+    },
+    {
+     "id_suggestion": "full-retraining-versus-transfer-learning-tradeoff",
+     "value": "The authors state that training on all existing and newly arrived data from scratch in general ensures performance but requires storage of all the data and increasing computing resources at each update. They state that updating a model with transfer learning has no extra cost of data storage and computing resources but is known to suffer from catastrophic forgetting.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Such an approach in general ensures performance, but requires storage of all the data and an increasing amount of computing resources each time a model is updated",
+      "updating a model with transfer learning, albeit with no extra cost of data storage and computing resources, is known to suﬀer from catastrophic forgetting [14]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": "Motivation for the study. The forgetting claim is attributed to reference 14 (Kirkpatrick et al.)."
+    },
+    {
+     "id_suggestion": "contributions-stated",
+     "value": "The authors list three contributions: identifying continual learning scenarios practical for digital pathology analysis and characterizing the performance of recent CL methods in them; establishing an augmented H&E dataset simulating data streams from multiple data sources; and exploring learning continuously from more than one tumor type and applying online CL methods.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Our contributions are three-fold: (1) we identify continual learning scenarios practical for DP-based analysis",
+      "(2) we establish a dataset with augmented H&E images, simulating data streams from multiple data sources",
+      "(3) we have explored the feasibility and provided insights into performance of both learning continuously from more than one type of tumor"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The introduction states the scope of the study.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "crc-dataset-description",
+     "value": "The authors state that they used a colorectal cancer (CRC) dataset of stain-normalized 224x224 patches at 20x from H&E stained whole-slide images (136 patients) with tile-wise labels for 9 tissue types: tumor, stroma, normal, lymphocyte-rich, mucin, muscle, adipose, debris and background.",
+     "anchor": "Section 3.1, p.3",
+     "quotes": [
+      "composed of stain-normalized [18] 224x224 patches at 20x from hematoxylin and eosin (H&E) stained wholeslide images (136 patients)",
+      "with tile-wise class labels for 9 tissue types - tumor, stroma, normal, lymphocyte-rich, mucin, muscle, adipose, debris, background."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 3.1 states the dataset used.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "crc-class-balanced-subset",
+     "value": "The authors state that, to establish a class-balanced dataset, they randomly selected 8700 images from each class for training (7000 train; 2700 validation) and used the entire test set (7150 images) for testing.",
+     "anchor": "Section 3.1, p.3",
+     "quotes": [
+      "we randomly selected 8700 images from each class for training (7000 train; 2700 validation) and the entire test set (7150 images) for testing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 3.1 states the data split used.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The stated figures do not add up: 7000 plus 2700 is 9700, not 8700. The later text also uses 8700/5 = 1740 examples per class per domain 'for training', which would be 1400 if training were 7000. The paper does not say which figure is the actual training size."
+    },
+    {
+     "id_suggestion": "patchcam-dataset-description",
+     "value": "The authors state that PatchCam was used for breast cancer classification, comprising 96x96 patches labeled normal or tumor from 400 breast cancer H&E whole-slide images at 20x resolution, and that they stain-normalized the patches to be consistent with the colorectal cancer dataset.",
+     "anchor": "Section 3.1, p.3",
+     "quotes": [
+      "PatchCam from [5] was used for breast cancer classiﬁcation, which comprises 96x96 patches with class labels of “normal” and “tumor” from 400 breast cancer H&E whole-slide images at 20x resolution.",
+      "We stain-normalized [18] the patches to be consist with colorectal cancer dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 3.1 states the second dataset used.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "augmented-crc-construction",
+     "value": "The authors state that they simulated domain shifts by creating four additional data sources (Domains 2 to 5) beside the original CRC images (Domain 1). They randomly divided the images of each of the 9 classes into 5 splits, kept 1 split unchanged for Domain 1, and performed stain unmixing on the remaining splits before applying augmentations to remix them into augmented H&E images, called augmented CRC.",
+     "anchor": "Section 3.2, p.4",
+     "quotes": [
+      "Except for the images provided by CRC (Domain 1), we simulated 4 additional data sources (Domain 2-5)",
+      "randomly divided images in each of the 9 classes into 5 splits, kept 1 split unchanged for Domain 1 and performed stain unmixing [21] for the remaining splits.",
+      "remix the stain-unmixed intensity images into augmented H&E and refer to this augmented dataset as augmented CRC."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 3.2 describes how the augmented dataset was built.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "domain-2-augmentation",
+     "value": "The authors state that Domain 2 (increased stain intensity) was made by randomly increasing eosin intensity with a scaling factor sampled from [1.75, 2.75] and hematoxylin intensity from [1.5, 2.0].",
+     "anchor": "Section 3.2, p.4",
+     "quotes": [
+      "Domain 2 (increased stain intensity, simulating, for example, concentration increase of the eosin and/or hemotoxylin solutions, each with a diﬀerent extent of change)",
+      "eosin intensity was randomly increased with a scaling factor sampled from [1.75, 2.75], hematoxylin from [1.5, 2.0]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 3.2 gives the augmentation settings.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "domain-3-augmentation",
+     "value": "The authors state that Domain 3, described as decreased eosin stain intensity (simulating slides with fading stain), used an eosin intensity scaling factor sampled from [0.4, 2.75].",
+     "anchor": "Section 3.2, p.4",
+     "quotes": [
+      "Domain 3 (decreased eosin stain intensity, simulating, for example, slides prepared from many years ago with fading stain)",
+      "eosin intensity scaling factor sampled from [0.4, 2.75]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 3.2 gives the augmentation settings.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The range [0.4, 2.75] reaches above 1, so it also covers intensity increases although the domain is described as a decrease; the upper bound 2.75 matches Domain 2's eosin upper bound and may be a typographical error. The paper does not comment."
+    },
+    {
+     "id_suggestion": "domain-4-augmentation",
+     "value": "The authors state that Domain 4 (change of hue) changed eosin hue by a scaling factor sampled from [-0.05, -0.03] and hematoxylin hue from [0.05, 0.08].",
+     "anchor": "Section 3.2, p.4",
+     "quotes": [
+      "Domain 4 (change of hue, simulating, for example, change of reagent manufacturer, scanner or stainer):",
+      "eosin hue changed by a scaling factor sampled from [-0.05, -0.03], hematoxylin from [0.05,0.08]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 3.2 gives the augmentation settings.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "Section 4.1 later describes Domain 4 as 'change of hue and saturation', while Section 3.2 gives hue and saturation changes to Domain 5 only. The two descriptions of Domain 4 differ."
+    },
+    {
+     "id_suggestion": "domain-5-augmentation",
+     "value": "The authors state that Domain 5 (change of hue and saturation) changed eosin hue by [0.03, 0.05], increased saturation for eosin by [1.2, 1.4] and for hematoxylin by [1.1, 1.3].",
+     "anchor": "Section 3.2, p.4",
+     "quotes": [
+      "Domain 5 (change of hue and saturation, simulating, for example, change of reagent manufacturer, scanner or stainer):",
+      "eosin hue changed by [0.03, 0.05]; saturation increased for eosin by [1.2, 1.4] and hematoxylin by [1.1, 1.3]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 3.2 gives the augmentation settings.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pathologist-assessment-augmented-crc",
+     "value": "The authors report that they presented four randomly selected images from each domain to two pathologists. Both confirmed that images of Domain 1-4 look realistic, and one pathologist thought Domain 5 slightly deviates from the majority of DP images from the authors' organization.",
+     "anchor": "Section 3.2, p.4",
+     "quotes": [
+      "We presented four randomly selected images from each domain to two pathologists.",
+      "Both of them conﬁrmed that images of Domain 1-4 look realistic and one pathologist thought the Domain 5 is slightly deviating from majority of DP images from our organization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "A qualitative check on a very small sample (four images per domain, two raters); it does not validate realism across the full augmented set."
+    },
+    {
+     "id_suggestion": "cl-setup-domain-il",
+     "value": "The authors state that for Domain-IL the 5 domains were used as individual batches of data, each domain containing examples from all 9 classes, giving for training 8700/5 = 1740 examples per class per domain.",
+     "anchor": "Section 3.2, p.4-5",
+     "quotes": [
+      "For Domain-IL, the 5 domains were used",
+      "as individual batches of data with domain shifts, where each domain contains examples from all 9 classes (e.g. for training, 8700/5 = 1740 examples per class per domain)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 3.2 states the experimental setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "This is in tension with the 7000 training images per class stated in Section 3.1; see crc-class-balanced-subset."
+    },
+    {
+     "id_suggestion": "cl-setup-class-il-data-il",
+     "value": "The authors state that in Class-IL each data batch contains all examples from the new classes, with the same number of examples from each domain for each class, and that in Data-IL each data batch was randomly selected and contained roughly the same number of examples from each domain.",
+     "anchor": "Section 3.2, p.5",
+     "quotes": [
+      "In Class-IL, each data batch contains all examples from the new classes and thus the same number of examples from each domain for each class.",
+      "In Data-IL, each data batch was randomly selected and roughly contained the same number of examples from each domain."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 3.2 states the experimental setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "Data-IL batches therefore contain all five domains; the Data-IL scenario here is not drawn from a single domain although Section 2 defines it as an identical underlying distribution."
+    },
+    {
+     "id_suggestion": "cl-method-categories",
+     "value": "The authors state that recent continual learning methods can be largely classified into replay, regularization and parameter isolation methods, citing reference 28. They state that parameter isolation methods only apply to Task-IL because they require multi-headed designs and use task IDs to select a task-specific head at inference, while replay and regularization apply to all scenarios.",
+     "anchor": "Section 3.2, p.5",
+     "quotes": [
+      "Recent proposed CL methods can be largely classiﬁed into three categories: replay, regularization and parameter isolation [28].",
+      "while replay and regularization apply to all scenarios, parameter isolation only applies to Task-IL",
+      "both require multi-headed designs and use task IDs to select a task-speciﬁc head during inference."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": "Parameter isolation methods are not evaluated in the paper, consistent with its choice of scenarios."
+    },
+    {
+     "id_suggestion": "methods-evaluated",
+     "value": "The authors state that they evaluate EWC, Online EWC, LwF, iCaRL, A-GEM and CoPE. They state that A-GEM was tested in the literature only in Class-IL and Task-IL, and that they tested CoPE in Data-IL, Domain-IL and Class-IL.",
+     "anchor": "Section 3.2, p.5-6; Table S1, p.12",
+     "quotes": [
+      "Here we evaluate the following CL methods.",
+      "In the literature, A-GEM was tested only in Class-IL and Task-IL scenarios as reported in [8].",
+      "We tested CoPE in Data-IL, Domain-IL and Class-IL scenarios."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 3.2 lists the methods under test.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "Table S1 reports A-GEM only for Task-IL and Class-IL, CoPE only for Data-IL, Domain-IL and Class-IL, and iCaRL for Data-IL, Domain-IL and Class-IL but not Task-IL."
+    },
+    {
+     "id_suggestion": "ewc-online-ewc-description",
+     "value": "The authors describe EWC and Online EWC as regularization-based methods whose loss includes a term penalizing large changes to network weights important for previous tasks, proportional to each weight's importance. They state that in EWC the number of quadratic penalty terms grows linearly with the number of tasks, and that Online EWC uses a single quadratic penalty term whose strength is determined by a running sum of parameter importance, with an additional decay hyperparameter.",
+     "anchor": "Section 3.2, p.5",
+     "quotes": [
+      "The loss function includes a regularization term, which penalizes large changes to network weights that are important for previous tasks",
+      "In EWC, the number of quadratic penalty terms grows linearly with the number of tasks.",
+      "Online EWC [23] uses a single quadratic penalty term on parameters whose strength is determined by a running sum of parameter importance from previous tasks."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": "The paper's description of methods proposed in references 14 and 23."
+    },
+    {
+     "id_suggestion": "lwf-description",
+     "value": "The authors describe LwF as a data-focused regularization method that distills knowledge from a previous model to an updated model trained on new data, replaying each input with a soft target obtained from a copy of the model stored after training on the most recent task.",
+     "anchor": "Section 3.2, p.5",
+     "quotes": [
+      "Data-focused regularization method [16] which distills knowledge from a previous model to an updated model trained on new data.",
+      "Each input is replayed with a soft target obtained using a copy of the model stored after ﬁnishing training on the most recent task."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": "The paper's description of the method proposed in reference 16."
+    },
+    {
+     "id_suggestion": "icarl-description",
+     "value": "The authors describe iCaRL as a replay-based method storing a subset of the most representative original images per class in memory, chosen according to approximate class means in the learned feature space, with memory size determined by grid search and/or availability of computing resources.",
+     "anchor": "Section 3.2, p.5",
+     "quotes": [
+      "Replay-based method using stored original images from previous data streams [20].",
+      "which are chosen according to approximate class means in the learned feature space.",
+      "The memory size can be determined by grid search and/or availability of computing resources."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": "The paper's description of the method proposed in reference 20."
+    },
+    {
+     "id_suggestion": "agem-description",
+     "value": "The authors describe A-GEM as an online constrained replay-based method in which model updates are constrained to prevent forgetting by projecting the estimated gradient on the direction determined by randomly selected samples from a replay buffer, with buffer size and sampling size from the buffer as tunable hyperparameters.",
+     "anchor": "Section 3.2, p.5-6",
+     "quotes": [
+      "In this online constrained replay-based method [8], model updates are constrained to prevent forgetting by projecting the estimated gradient",
+      "on the direction determined by randomly selected samples from a replay buﬀer.",
+      "Buﬀer size and sampling size from the buﬀer are both tunable hy-"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": "The paper's description of the method proposed in reference 8."
+    },
+    {
+     "id_suggestion": "cope-description",
+     "value": "The authors describe CoPE as an online rehearsal-based approach that enables rapidly evolving prototypes with balanced memory and a loss function that updates the representations or pseudo prototypes, thus alleviating catastrophic forgetting.",
+     "anchor": "Section 3.2, p.6",
+     "quotes": [
+      "An online rehearsal based approach [10], which enables rapidly evolving prototypes with balanced memory and a loss function that updates the representations or pseudo prototypes",
+      "thus alleviating catastrophic forgetting."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": "The paper's description of the method proposed in reference 10."
+    },
+    {
+     "id_suggestion": "evaluation-metrics-definitions",
+     "value": "The authors define an experience as learning from a batch of data for CL. They report accuracy averaged over test sets at the end of training the last experience from multiple repeats, and accuracy over multiple repeats at each experience. They state that evaluation on test sets from past experiences indicates how well the model retains past knowledge without forgetting (backward transfer), while accuracy on current or future test sets reflects new knowledge assimilation (forward transfer).",
+     "anchor": "Section 3.2, p.6",
+     "quotes": [
+      "We refer to learning from a batch of data for CL as an experience.",
+      "accuracy averaged over test sets at the end of training the last experience from multiple repeats",
+      "While evaluation on test sets from past experiences indicates how well the model retains past knowledge without forgetting (backward transfer)",
+      "accuracy on current/future test sets reﬂects new knowledge assimilation (forward transfer)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 3.2 defines the evaluation terms and metrics used.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "baselines-definitions",
+     "value": "The authors state that all methods were compared against two baselines: joint training (upper bound), where a model was trained on all the data available so far, and finetuning (that is, transfer learning; lower bound), where a model was trained sequentially with exposure to only the data from the current experience. For A-GEM and CoPE they also compared online versions of the baselines: A-GEM baselines trained in an online setup for 1 epoch, and CoPE baselines with experiences divided into mini experiences of 128 samples each, trained for 1 epoch per mini experience.",
+     "anchor": "Section 3.2, p.6",
+     "quotes": [
+      "1) joint training (upper bound), where a model was trained on all the data available so far;",
+      "2) ﬁnetuning (i.e transfer learning; lower bound), where a model was trained sequentially with exposure to only the data from the current experience.",
+      "the A-GEM baselines were trained in an online setup for 1 epoch",
+      "the experiences were divided into mini experiences (128 samples each) in a data incremental fashion and trained for 1 epoch per mini experience"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 3.2 defines the baselines.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "Joint training is called the upper bound, but in Table S1 LwF in Data-IL (91.32) exceeds Joint (90.48), and Joint (A-GEM) in Task-IL (65.58) is below A-GEM (72.41); the 'bounds' are not strict in the reported results."
+    },
+    {
+     "id_suggestion": "implementation-architecture-training",
+     "value": "The authors state that they used ResNet-18 feature extraction layers followed by a single-layer nearest mean classifier, assigning the class label by the nearest prototype vector. Training used 15 epochs and a batch size of 16 on 1 NVIDIA V100 or A100 GPU for 3-5 repeats, with Stochastic Gradient Descent, learning rate 0.1, momentum 0.9, and a weight decay of 0.00001 applied after epochs 10 and 13. Hyperparameters were found by grid search in all scenarios.",
+     "anchor": "Section 4.1, p.6",
+     "quotes": [
+      "We used a ResNet-18 [11] feature extraction layers followed by a single-layer nearest mean classiﬁer [20]",
+      "Training was conducted with 15 epochs and a batch size of 16 on 1 NVIDIA V100 or A100 GPU for 3-5 repeats.",
+      "Models were optimized with Stochastic Gradient Descent starting with a learning rate of 0.1 and momentum of 0.9 and a weight decay of 0.00001 applied after epochs 10 and 13.",
+      "In all scenarios we ran grid search for best hyperparameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 4.1 states the implementation.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The sentence reads as if weight decay is applied after epochs 10 and 13, which may mean a learning-rate decay schedule; the text does not clarify. Each result is a mean over only 3 to 5 repeats."
+    }
+   ]
+  }
+ ]
+}
