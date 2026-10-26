@@ -1,0 +1,656 @@
+{
+ "papers": [
+  {
+   "record_id": "yu-2024-non-asymptotic-approximation-error-bounds",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Yu-et-al._2023_Provable-Advantage-of-Parameterized-Quantum-Circuit-in-Function-Approximation__2310.07528.pdf",
+   "title_in_file": "Non-asymptotic Approximation Error Bounds of Parameterized Quantum Circuits",
+   "version_note": "arXiv:2310.07528v2 (8 Oct 2024), the NeurIPS 2024 camera-ready; the record id names 2024 and the file name carries the 2023 first version.",
+   "pages": 32,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that constructs data re-uploading PQCs for multivariate polynomials, Lipschitz and Hölder smooth functions, proves non-asymptotic approximation bounds, compares circuit size with ReLU networks, and runs two small simulations.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "pqc-approx-bounds",
+     "verdict": "narrowed",
+     "note": "Each bound is for a stated function class and circuit family, not one bound for all PQCs. The Lipschitz bound (via Bernstein polynomials) is in terms of the polynomial degree and the circuit size; the Hölder bound holds only on the union of the localized hypercubes, not on the trifling region; the continuous-function theorem gives existence of a degree with no rate. The Hölder bound is in terms of K, d and the smoothness; width, depth and parameter counts are given separately in each theorem.",
+     "value": "The paper proves non-asymptotic approximation error bounds for explicitly constructed data re-uploading PQCs: for Lipschitz continuous functions through Bernstein polynomials (a bound in the polynomial degree n, with the circuit width, depth and parameter count given in n), and for Hölder smooth functions through a localized Taylor expansion (a bound in K, d and the smoothness, valid on the union of the localized hypercubes and not on the trifling region, with width, depth and parameter count given in K, d, s and the localization width). The universal-approximation theorem for continuous functions gives only the existence of a degree n, with no rate.",
+     "anchor": "Theorem 3, Section 3.2, p.6; Theorem 4, Section 3.3, p.7; Theorem 2, Section 3.2, p.5",
+     "quotes": [
+      "We establish the first non-asymptotic approximation error bounds for these functions in terms of the number of qubits, quantum circuit depth, and number of trainable parameters.",
+      "for x ∈ η Qη. The width of the PQC is O(d log K+log s+s log d)",
+      "We have established the uniform convergence property of PQCs for approximating Hölder smooth function on [0, 1]d except for the trifling region Λ(d, K, ∆)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Theorem 3's bound is printed garbled and its constants differ from Lemma S8; Lemma S9's stated circuit size is smaller than its proof's own count by a factor n; Theorem 4's proof drops a term. Details are in the new assertions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Reading the proofs, three points need the coordinator's attention: (1) Lemma S9's proof gives depth of order d(n+1)^(d+1) log(n+1) and (n+1)^d times d(n+2) parameters, an extra factor n over the O(d n^d log n) and O(d n^d) that Lemma S9 and Theorems 2 and 3 state; (2) the Theorem 4 proof bounds the PQC output against the Taylor expansion taken at the localization output and then drops that first term (D.64 to D.66) with no argument; (3) the nested circuit builds the basis state from a rounded expectation value of the localization circuit, so it is not a single coherent circuit."
+    },
+    {
+     "id": "pqc-scope-expressivity",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state the paper investigates the expressivity of PQCs for approximating multivariate function classes and that they also validate approximation by numerical experiments.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "This paper investigates the expressivity of PQCs for approximating general multivariate function classes.",
+      "We further validate the approximation capability of PQCs through numerical experiments."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its scope (Abstract).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The numerical experiments (Section 4) train a circuit of the same shape, with the Taylor coefficients held in a separate classical matrix; they are a proof of principle, not a test of the constructed circuits."
+    },
+    {
+     "id": "pqc-vs-relu-size",
+     "verdict": "narrowed",
+     "note": "The paper limits the comparison: it compares the paper's own upper bounds with the upper bounds of Lu et al. for ReLU networks, for smooth-function classes with smoothness index s, 2 <= s < d, treats terms depending only on s as constants, takes d much larger than s, and takes the error as 'some constant'. The 'exponentially smaller' statement is the conclusion drawn from that comparison. Under the stated scalings the size ratio still carries a factor in epsilon (see reader_inference).",
+     "value": "The authors state that, for the same approximation error, the model size of their PQCs (width times depth) compared with the near-optimal ReLU networks of the cited Lu et al. result has a ratio of the stated scaling order when 2 ≤ s < d, with the approximation error taken as some constant, terms depending only on s treated as constants and d much larger than s; they conclude that the required circuit size and number of parameters of the PQCs is exponentially smaller than the network size and number of parameters of those ReLU networks.",
+     "anchor": "Section 5, p.9; Appendix E, p.31-32",
+     "quotes": [
+      "Remarkably, when 2 ≤ s < d, an intriguing observation emerges: the ratio of model sizes between PQCs and FNNs [21] exhibits a scaling behavior of O(ε−d/(2s)/sd2−d logs d).",
+      "when they yield the same approximation error ε (say some constant)",
+      "we identify terms that solely rely on the variable s as constants and d ≫ s within Table S1",
+      "is exponentially smaller than the required network size and number of parameters of ReLU FNNs"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A comparison of the paper's upper bounds with another paper's upper bounds, drawn under stated simplifications; no lower bound on either side.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "From the printed scalings the PQC size is of order K_Q^d with K_Q of order d^2/eps^(1/s), that is eps^(-d/s), and the ReLU size is of order K_C^(d/2), that is eps^(-d/(2s)); the stated ratio therefore contains eps^(-d/(2s)) in its numerator and grows as eps shrinks at fixed d. The ratio is below one only while the s-dependent denominator outweighs it, which holds for eps not exponentially small in d. So the advantage is for large d with eps held constant, not for the limit of small error. The text layer prints the exponents flat; the coordinator should check this reading against the PDF."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "setup-data-reuploading-pqc",
+     "value": "The paper defines an L-layer data re-uploading PQC as interleaved data-encoding blocks and trainable blocks, with output the expectation of a Hermitian observable O, and for single-variable constructions uses the Pauli X basis encoding S(x) that is a Pauli X rotation by arccos of x, interleaved with trainable Pauli Z rotations, for inputs x in [−1, 1].",
+     "anchor": "Section 2, p.4",
+     "quotes": [
+      "The PQCs we shall construct in this paper are of data re-uploading",
+      "type [11], i.e., consisting of interleaved data encoding circuit blocks and trainable circuit blocks.",
+      "fUθ (x) := ⟨0| Uθ†(x)OUθ(x) |0⟩ ,",
+      "For the input x ∈ [−1, 1], we utilized the Pauli X basis encoding scheme [10]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the model class, Section 2 and Appendix A.2 (Eqs. 1, 2, A.1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsp-single-qubit-polynomials-cited",
+     "value": "The paper states, citing quantum signal processing results, that with Pauli X basis encoding there exist trainable angles such that the single-qubit data re-uploading PQC outputs a real polynomial p(x) as ⟨+|Uθ(x)|+⟩ if and only if the degree of p is at most L, its parity is L mod 2, and its absolute value is at most 1 on [−1, 1]; the paper's polynomial constructions rest on this result.",
+     "anchor": "Section 2, p.4; Corollary S2, Appendix A.2.1, p.18",
+     "quotes": [
+      "there exists θ ∈ RL+1 such that Uθ(x) implements polynomial transformations p(x) ∈ R[x] as p(x) = ⟨+|Uθ(x)|+⟩ for any x ∈ [−1, 1] if and only if the degree of p(x) is at most L, the parity of p(x) is L mod 2 4, and |p(x)| ≤ 1 for all x ∈ [−1, 1]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to quantum signal processing work [45 to 47]; it is not proved here.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "Every construction in Sections 3.1 to 3.3 depends on this cited characterization."
+    },
+    {
+     "id_suggestion": "thm1-multivariate-polynomial-pqc",
+     "value": "The paper proves that any multivariate polynomial p with d variables and degree s whose absolute value is at most 1 on the unit cube is the exact output of a PQC Wp (a Hadamard test on a linear combination of unitaries) measured with Pauli Z on the first qubit, with width O(d+log s+s log d), depth O of s squared times d to the power s times (log s + s log d), and number of parameters O of s times d to the power s times (s + d).",
+     "anchor": "Theorem 1, Section 3.1, p.5; Appendix B.1, p.21",
+     "quotes": [
+      "For any multivariate polynomial p(x) with d variables and degree s such that |p(x)| ≤ 1 for x ∈ [0, 1]d, there exists a PQC Wp(x) such that",
+      "fWp (x) := ⟨0| Wp†(x)Z(0)Wp(x) |0⟩ = p(x)",
+      "where Z(0) is the Pauli Z observable on the first qubit.",
+      "The width of the PQC is O(d+log s+s log d), the depth is O(s2ds(log s + s log d)), and the number of parameters is O(sds(s + d))."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 with its conditions quoted; proof in Appendix B.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof defines the normalized operator with a factor 1/T over the T monomials (B.18) and then equates the Hadamard-test output with p(x) (B.22) without carrying that factor; the exactness claim holds only if the 1/T is handled, which the text does not show. The equality is for the exact expectation value, so it holds with infinitely many shots."
+    },
+    {
+     "id_suggestion": "thm1-measurement-cost",
+     "value": "The authors state that estimating p(x) to additive error epsilon needs about 1 over epsilon squared measurements of the first qubit, and that amplitude estimation can reduce this overhead while increasing circuit depth by order 1 over epsilon.",
+     "anchor": "Section 3.1, p.5; Appendix B.1, p.22",
+     "quotes": [
+      "Measuring the first qubit of Wp(x) for O( 1 ε2 ) times is needed",
+      "to reduce the overhead while increasing the circuit depth by O( 1 ε )"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of a standard cost; no derivation in the paper (amplitude estimation is cited from [50]).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The circuit sizes in Theorems 1 to 4 and the size comparison with ReLU networks do not include this sampling cost."
+    },
+    {
+     "id_suggestion": "lemma-s5-monomial-pqc",
+     "value": "The paper proves that a monomial c_alpha times x to the alpha, with absolute value at most 1 on the unit cube and 1-norm of alpha at most s, is implemented exactly by a product of d single-qubit PQCs, with width at most d, depth at most 2s + 1 and at most s + d parameters.",
+     "anchor": "Lemma S5, Appendix B.1, p.20",
+     "quotes": [
+      "where |cαxα| ≤ 1 for x ∈ [0, 1]d and ∥α∥1 ≤ s.",
+      "⟨+|⊗dU α(x)|+⟩⊗d = cαxα.",
+      "The width of the PQC is at most d, the depth is at most 2s + 1, and the number of parameters is at most s + d."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma S5 with its conditions quoted; proof is the product of single-qubit PQCs from Corollary S2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof states the depth and parameter counts as a conclusion without deriving them."
+    },
+    {
+     "id_suggestion": "prop-s7-trigonometric-pqc",
+     "value": "The paper states that a multivariate trigonometric polynomial of degree s with absolute value at most 1 is the exact output of a PQC with width O(d+log s+s log d), depth O of s squared times d to the power 2s times (log s + s log d), and O of s times d to the power 2s times (s + d) parameters, and says the proof is similar to Theorem 1; the monomial lemma gives width at most d, depth at most 6s + 3 and at most 4s + 3d parameters.",
+     "anchor": "Lemma S6 and Proposition S7, Appendix B.2, p.22-23",
+     "quotes": [
+      "The width of the PQC is at most d, the depth is at most 6s + 3, and the number of parameters is at most 4s + 3d.",
+      "The width of the PQC is O(d+log s+s log d), the depth is O(s2d2s(log s + s log d)), and the number of parameters is O(sd2s(s + d)).",
+      "The proof is similar to Theorem 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proposition S7's proof is stated as similar to Theorem 1 and not written out.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The term count bound as printed (B.32) reads d to the 2s; for d equal to one the number of integer vectors with 1-norm at most s is 2s + 1, which exceeds that bound, so the bound seems to need d at least 2."
+    },
+    {
+     "id_suggestion": "bernstein-definition-and-convergence",
+     "value": "The paper defines the multivariate Bernstein polynomial of degree n of a function f on the unit cube and states, citing earlier work, that Bernstein polynomials converge uniformly to f as n goes to infinity.",
+     "anchor": "Eq. (4), Section 3.2, p.5",
+     "quotes": [
+      "the multivariate Bernstein polynomial with degree n ∈ N+ of f is defined as",
+      "It is known that Bernstein polynomials converge uniformly to f on [0, 1]d as n → ∞ [52, 53]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Definition from, and convergence result attributed to, cited work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma-s8-bernstein-lipschitz-rate",
+     "value": "The paper restates, from Foupouagnigni and Mouafo Wouodjié, an error bound for the degree-n Bernstein polynomial of a Lipschitz function bounded by Gamma: epsilon plus twice Gamma times a term that decreases with n and grows with the Lipschitz constant and the dimension, with epsilon arbitrarily small.",
+     "anchor": "Lemma S8, Appendix C.1, p.24",
+     "quotes": [
+      "Given a Lipschitz continuous function f : [0, 1]d → R with Lipschitz constant ℓ, which is defined as |f (x) − f (y)| ≤ ℓ∥x − y∥∞. Let f be bounded by Γ.",
+      "where ε > 0 is an arbitrarily small quantity."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to [53], with a sketch proof in the appendix; the displayed bound is garbled in the text layer.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "Theorem 3 replaces the 4 n epsilon-squared of this lemma with n epsilon-squared and sets Gamma to one, with no step shown."
+    },
+    {
+     "id_suggestion": "lemma-s9-bernstein-pqc",
+     "value": "The paper states that any d-variable Bernstein polynomial of degree n with absolute value at most 1 on the unit cube is the exact output of a PQC Wb with width O(d log n), depth O(d n to the power d times log n) and O(d n to the power d) parameters.",
+     "anchor": "Lemma S9, Appendix C.2, p.25",
+     "quotes": [
+      "For any d-variable Bernstein polynomial with degree n ∈ N defined in Eq. (C.34) such that |Bn(f ; x)| ≤ 1 for x ∈ [0, 1]d, there exist a PQC Wb(x) satisfying",
+      "The width of the PQC is O(d log n), the depth is O dnd log n , and the number of parameters is O(dnd)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proof's own counts (next assertion) are larger than this statement by a factor n.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "See lemma-s9-proof-counts."
+    },
+    {
+     "id_suggestion": "lemma-s9-proof-counts",
+     "value": "In the proof of Lemma S9 the authors state that the depth of Wb scales as O of d times (n + 1) to the power (d + 1) times log (n + 1) plus d, that the width is 2d + d log (n + 1), and that the number of parameters is (n + 1) to the power d times (n + 2) to the power d; the sum has (n + 1) to the power d terms and each term has parameters d(n + 2).",
+     "anchor": "Proof of Lemma S9, Appendix C.2, p.25",
+     "quotes": [
+      "The number of terms in the summation in Eq. (C.34) is (n + 1)d.",
+      "The depth of Wb scales as O d(n + 1)d+1 log (n + 1) + d",
+      "the width is 2d + d log (n + 1), and the number of parameters is (n + 1)d(n + 2)d.",
+      "The results presented in Lemma S9 can be obtained after simplification."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Intermediate counts in a proof, printed flat; they do not match the lemma statement.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "With (n+1)^d terms and d(n+2) parameters per term, the parameter total is of order d n^(d+1), and the depth printed carries (n+1)^(d+1); both exceed the O(d n^d) forms in Lemma S9, Theorem 2 and Theorem 3 by a factor n. The text says only that the lemma follows 'after simplification'. The coordinator should treat the stated sizes of Theorems 2 and 3 as unverified."
+    },
+    {
+     "id_suggestion": "thm2-universal-approximation",
+     "value": "The paper proves that for any continuous function f from the unit cube to [−1, 1] and any epsilon > 0 there exist n and a PQC Wb with width O(d log n), depth O(d n to the power d times log n) and O(d n to the power d) trainable parameters whose output differs from f by at most epsilon at every point of the unit cube; the statement gives no relation between epsilon and n.",
+     "anchor": "Theorem 2, Section 3.2, p.5; Appendix C.3, p.26",
+     "quotes": [
+      "For any continuous function f : [0, 1]d → [−1, 1], given an ε > 0, there exist an n ∈ N and a PQC Wb(x) with width O(d log n), depth O(dnd log n) and the number of trainable parameters O(dnd) such that",
+      "|f (x) − fWb (x)| ≤ ε (5) for all x ∈ [0, 1]d"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Theorem 2 is quoted with its conditions, but its size counts rest on Lemma S9, whose proof counts disagree with its statement.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Existence only: no rate in epsilon. The proof is Bernstein uniform convergence plus Lemma S9."
+    },
+    {
+     "id_suggestion": "thm3-lipschitz-bound",
+     "value": "The paper states that for a Lipschitz continuous function from the unit cube to [−1, 1] with Lipschitz constant ℓ, for any epsilon > 0 and n, there exists a PQC Wb whose output is within epsilon plus a term in n, epsilon, ℓ and d of f at every point, with width O(d log n), depth O(d n to the power d times log n) and O(d n to the power d) parameters.",
+     "anchor": "Theorem 3, Section 3.2, p.6; Appendix C.3, p.26",
+     "quotes": [
+      "for any ε > 0 and n ∈ N, there exists a PQC Wb(x)",
+      "|f (x) − fWb (x)| ≤ ε + 2 ℓ2 1 + nε2 d −1 ≤ ε + d2d ℓ2 nε2",
+      "The width of the PQC is O(d log n), the depth is O dnd log n , and the number of parameters is O(dnd)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The bound is printed flat and garbled; its constants differ from Lemma S8; circuit sizes rest on Lemma S9.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Lemma S8 has 4 n epsilon squared where Theorem 3 has n epsilon squared. The second inequality, with a d 2^d factor, is stated without proof and seems to need the quantity l^2/(n eps^2) to be small."
+    },
+    {
+     "id_suggestion": "global-approach-limit",
+     "value": "The authors state that n must be sufficiently large to obtain good precision with the Bernstein (global) approach, which yields an extremely deep PQC, and attribute this to the difficulty of using a single global polynomial to approximate a continuous function uniformly.",
+     "anchor": "Section 3.2, p.6",
+     "quotes": [
+      "we could find that n must be sufficiently large to obtain a good precision, yielding an extremely deep PQC.",
+      "This inefficiency is essentially due to the intrinsic difficulty of using a single global polynomial to approximate a continuous function uniformly."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of a limit of Theorem 3 (Section 3.2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "def-holder-class-and-taylor-lemma",
+     "value": "The paper defines the beta-Hölder class on the unit cube with constant B0 and, citing Petersen and Voigtlaender, states a Taylor-expansion error bound for Hölder functions: the error at x of the Taylor polynomial at x0 is at most d to the power s times the Euclidean distance between x and x0 raised to the power beta.",
+     "anchor": "Eq. (7), Section 3.3, p.6; Lemma S10, Appendix D, p.27",
+     "quotes": [
+      "the β-Hölder class of functions Hβ([0, 1]d, B0) is defined as",
+      "As shown in Petersen and Voigtlaender [18], for any β-Hölder smooth function f ∈ Hβ([0, 1]d, B0), its local Taylor expansion at some fixed point x0 ∈ [0, 1]d satisfies"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The Taylor bound is attributed to [18]; the displayed inequality is garbled in the text layer.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "Lemma S10 is stated for B0 equal to one, which Theorem 4 uses."
+    },
+    {
+     "id_suggestion": "lemma-s11-sign-polynomial-cited",
+     "value": "The paper states, citing Low's thesis, that for c in the closed interval from minus one to one, Delta positive and epsilon in the open unit interval there is an odd polynomial, of degree of order the reciprocal of Delta times the logarithm of the reciprocal of epsilon, that approximates the sign function sgn(x − c) to error epsilon outside the window of width Delta around c and has absolute value at most one on that interval.",
+     "anchor": "Lemma S11, Appendix D.1, p.27",
+     "quotes": [
+      "Lemma S11 (Polynomial approximation to the sign function sgn(x − c) [54]).",
+      "there exists an odd polynomial P∆,ε(x) of degree"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result [54].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma-s14-localization-pqc",
+     "value": "The paper states that for K, Delta below a third of the reciprocal of K and epsilon below the reciprocal of K there exists a PQC WD of width O(d) and depth of order the reciprocal of Delta times the logarithm of K over epsilon, whose output f_WD(x) lies within epsilon above the grid point eta over K when x is in the hypercube Q_eta; it is built from a single-qubit PQC per coordinate whose Hadamard-test output approximates the piecewise-constant function D(x), and epsilon must be below the reciprocal of K.",
+     "anchor": "Lemmas S12 and S14, Corollary S13, Appendix D.1, p.27-28; Section 3.3, p.6",
+     "quotes": [
+      "Note that ε has to be bounded by",
+      "Given K ∈ N, ∆ ∈ (0,",
+      "Let fWD (x) := (fUD (x1), . . . , fUD (xd)), which implements the lo-"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The lemma statements are garbled in the text layer, so the exact condition list could not be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma-s15-taylor-coefficient-pqc",
+     "value": "The paper states that for a beta-Hölder function from the unit cube to the interval from minus one to one the controlled rotation circuit Uco, a sum over eta of the projector on eta tensor an X rotation by twice the arccos of the Taylor coefficient, reproduces each coefficient xi_(eta,alpha) exactly, with width O(d log K) and depth O(K to the power d); this is a point-fitting construction, and the state eta is prepared by basis encoding of the localization output.",
+     "anchor": "Lemma S15, Appendix D.2, p.28; Section 3.3, p.7",
+     "quotes": [
+      "Next, we use PQC to implement the Taylor coefficients, which is essentially a point-fitting problem.",
+      "The width of the PQC is O(d log K), and the depth is O(Kd)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Statement garbled in the text layer; coefficient angles are fixed from the target's derivatives.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The rotation angles are computed classically from the derivatives of f at each grid point, so building this circuit needs the K^d Taylor coefficients of the target; the parameter count includes these values."
+    },
+    {
+     "id_suggestion": "lemma-s17-taylor-pqc",
+     "value": "The paper states that for f in the Hölder class and any grid index eta there is a PQC We that outputs the truncated Taylor expansion of f at the point eta over K, with depth O(s squared d to the power s K to the power d (log s + s log d + d log K)), width O(d log K + log s + s log d) and O(s d to the power s (s + d + K to the power d)) parameters.",
+     "anchor": "Lemma S17, Appendix D.3, p.29-30",
+     "quotes": [
+      "The depth of the PQC is O(s2dsKd(log s + s log d + d log K)), the width is O(d log K + log s + s log d), and the number of parameters is O(sds(s + d + Kd))."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma S17 with its size statement quoted; proof by the Theorem 1 construction.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thm4-holder-bound",
+     "value": "The paper proves that for f in the beta-Hölder class (beta = r + s, r in (0, 1], s a positive integer, constant one), any K and Delta below a third of the reciprocal of K, a nested PQC Wt exists whose output is within d to the power (s + beta over 2) times K to the power (−beta) of f for every x in the union of the hypercubes Q_eta, with width O(d log K + log s + s log d), depth O(s squared d to the power s K to the power d (log s + s log d + d log K)) plus O of (1 over Delta) log K, and O(s d to the power s (s + d + K to the power d) + (d over Delta) log K) parameters.",
+     "anchor": "Theorem 4, Section 3.3, p.7; Appendix D.3, p.30",
+     "quotes": [
+      "Given a function f ∈ Hβ([0, 1]d, 1) with β = r + s, r ∈ (0, 1] and s ∈ N+, for any",
+      "|f (x) − fWt (x)| ≤ ds+β/2K−β (10)",
+      "for x ∈ η Qη. The width of the PQC is O(d log K+log s+s log d)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Statement quoted with conditions, but the proof drops the first term of D.64 without argument and the circuit is nested via a rounded expectation value.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "(1) D.64 splits the error into the PQC-versus-Taylor term and the Taylor remainder, then D.65 and D.66 keep only the remainder: the first term is set to zero though the Taylor polynomial is taken at the localization output, not at the exact grid point, and the localization error epsilon is never carried. (2) The proof says the norm of x minus the localization output is at most 1/K, but the coordinatewise bound gives the root of d over K, which is what the theorem's d^(s+beta/2) needs. (3) Section D.4 applies the theorem with s = 0, outside the stated s in the positive integers. (4) The grid index is obtained as the floor of K times an expectation value; this is a classical rounding step inside the 'nested' circuit."
+    },
+    {
+     "id_suggestion": "cor-s18-l2-bound",
+     "value": "The paper states that, with the same conditions as Theorem 4, the squared L2(nu) error of Wt is at most (d to the power (s + beta over 2) times K to the power (−beta)) squared plus 4 d times K to the power (1 − d), obtained by taking Delta = K to the power (−d) so that the trifling region has Lebesgue measure at most d K Delta.",
+     "anchor": "Corollary S18, Appendix D.3, p.31; Section 3.3, p.8",
+     "quotes": [
+      "Note that the Lebesgue measure of such a trifling region is no more than dK∆.",
+      "We can set ∆ = K−d with no influence on the size of the constructed PQC",
+      "≤ (ds+β/2K−β )2 + 4dK1−d."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Measure statement not proved; the measure nu is not defined in the text.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text says nu is absolutely continuous with respect to the Lebesgue measure; the final bound needs the density of nu bounded by one on the trifling region, which is not stated."
+    },
+    {
+     "id_suggestion": "sec4-localization-experiment",
+     "value": "The authors report training a single-qubit PQC to learn the piecewise-constant localization function D(x) on 200 random points in [0, 1], with L = 764 parameters for K = 2 and L = 996 for K = 10, using the Adam optimizer with learning rate 0.01, MSE loss, at most 300 iterations and batch size 100, reaching test MSE 3.57 × 10−4 for K = 2 and 1.04 × 10−4 for K = 10.",
+     "anchor": "Section 4, p.8; Figure 3",
+     "quotes": [
+      "We randomly sample 200 data points within the domain [0, 1] to create training and test datasets for D(x).",
+      "A single-qubit PQC with adjustable parameters L = 764 (L = 996) is used to learn D(x) with K = 2 (K = 10).",
+      "We use the Adam optimizer [55] with a learning rate of 0.01 to minimize the Mean Squared Error (MSE) loss function during training.",
+      "The training process was limited to a maximum of 300 iterations with a batch size of 100 data points.",
+      "The achieved MSE on the test data was 3.57 × 10−4 (K = 2) and 1.04 × 10−4 (K = 10)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This is a trained single-qubit circuit, not the constructed polynomial of Lemma S12. Both test errors are above the 10−4 early-termination level. Run on a classical CPU simulation; the text mentions no noise model and no shot count. The train and test split of the 200 points is not stated."
+    },
+    {
+     "id_suggestion": "sec4-bivariate-experiment",
+     "value": "The authors report approximating a bivariate polynomial on the unit square with a nested PQC of 12 two-qubit PQCs of depth 2, with the Taylor coefficients stored in a separate matrix of size K2 × 12, with 120 trainable parameters for K = 2 and 1272 for K = 10, reaching test MSE 2.22 × 10−4 for K = 2 and 9.82 × 10−5 for K = 10, and state that the approximation improves as K increases.",
+     "anchor": "Section 4, p.8-9; Figure 4",
+     "quotes": [
+      "It combined 12 two-qubit PQCs with a depth of 2, allowing the approximation of a degree-4 polynomial through a combination of lower-degree ones.",
+      "Additionally, Taylor coefficients were stored in a separate matrix of size K2 × 12.",
+      "The number of trainable parameters varied from 120 (K = 2) to 1272 (K = 10), each initialized randomly from [0, π].",
+      "The achieved MSE on the test data was 2.22 × 10−4 (K = 2) and 9.82 × 10−5 (K = 10).",
+      "As K increases, the PQC demonstrates improved approximation performance, aligning with the theoretical findings."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, two settings of K.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The stated counts fit 72 circuit parameters plus K squared times 12 coefficient entries (48 for K = 2, 1200 for K = 10), so most of the parameters at K = 10 are entries of the coefficient matrix. Only two values of K were run. The experiment is a proof of principle that trains this structure, not a run of the LCU and Hadamard-test construction of Theorem 4."
+    },
+    {
+     "id_suggestion": "d4-global-vs-local-lipschitz",
+     "value": "The authors state that for Lipschitz functions the global (Bernstein) approach reaches error 2ε with n = (2ddℓ2)/ε3 and parameters of the printed order O 2d2 dd+1ℓ2d/ε3d, while the local approach reaches error 2ε with K = d/ε and parameters of the printed order O dd/2/εd, and conclude that the local approach is better; the local analysis sets β = 1, thus s = 0 in Theorem 4.",
+     "anchor": "Appendix D.4, p.31",
+     "quotes": [
+      "By selecting n = (2ddℓ2)/ε3, we ensure an approximation error of 2ε.",
+      "Setting K = d/ε ensures a 2ε approximation error, with the number of trainable parameters scaling as O dd/2/εd",
+      "we set β = 1, thus s = 0 in Theorem 4, in accordance with the Lipschitz continuous property exhibited by the target function."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived by the authors from Theorems 3 and 4; the s = 0 case is outside Theorem 4's stated hypothesis.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Theorem 4 requires s to be a positive integer; this comparison uses s = 0. With s = 0 the 'Taylor expansion' is the constant f(eta/K), so the local bound is a piecewise-constant bound of order root-d over K."
+    },
+    {
+     "id_suggestion": "e-size-measure-and-scalings",
+     "value": "The authors state that they gauge model size by the product of width and depth, that for error ε the PQC size scales as O(K_Q to the power d times d to the power (s + 1)) and the near-optimal ReLU network size as O(K_C to the power (d over 2) times s to the power (d + 3)), with K_Q = Θ(d2/ε1/s) and K_C = Θ(sd/s/ε1/s).",
+     "anchor": "Appendix E, p.32; Section 5, p.9",
+     "quotes": [
+      "Here, we use a straightforward measure, the product of width and depth, to gauge the model size.",
+      "By setting approximation error as ε, the size of PQC and FNN scale as O(KQd ds+1) and O(KCd/2sd+3), respectively, where KQ = Θ(d2/ε1/s) and KC = Θ(sd/s/ε1/s)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' substitution into upper bounds of two constructions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Both sides are upper bounds. The product of width and depth ignores the shots needed to read the PQC output."
+    },
+    {
+     "id_suggestion": "e-parameter-count-scalings",
+     "value": "The authors state that for error ε the number of trainable parameters of the PQC scales as O(K_Q to the power d times d to the power (s + 1)) and that of the ReLU network as O(K_C to the power ((1+λ0)d/2) times s to the power (2d + 4)), with λ0 in (0, 1) the ReLU width hyperparameter, and that for 2 ≤ s < d the ratio is of the printed order, so the PQC parameter count is significantly lower.",
+     "anchor": "Appendix E, p.32",
+     "quotes": [
+      "By setting approximation error as ε, the number of trainable parameters of PQC and FNN scale as O(KQd ds+1) and O(KC(1+λ0)d/2s2d+4), respectively.",
+      "Here, the hyperparameter λ0 ∈ (0, 1) signifies FNN’s width."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A comparison of upper bounds by the authors.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "e-monomial-claim",
+     "value": "The authors state that PQCs capture monomial functions of degree s exactly, so no approximation is needed, whereas the ReLU networks approximate them with error shown in Table S1, and conclude PQCs are promising candidates for outperforming FNNs on more complex target spaces.",
+     "anchor": "Appendix E, p.32; Table S1, p.31",
+     "quotes": [
+      "Notably, PQCs possess the unique capability to capture the dynamics of monomial functions precisely, eliminating the need for approximation and thereby offering a compelling advantage.",
+      "These advantages position PQCs as promising candidates for outperforming FNNs when addressing more complex target function spaces."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the exactness is of the expectation value (Lemma S5).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The exactness holds for the exact expectation value of a monomial whose absolute value is at most 1 and for a PQC with a free angle choice that the authors give by existence; it does not include sampling error."
+    },
+    {
+     "id_suggestion": "claim-no-classical-processing",
+     "value": "The authors state that all variables in their PQCs are parameters of single-qubit rotation gates, with no classical parameterized pre- or post-processing, so it is not ambiguous whether the expressivity comes from the classical or the quantum part, and that the constructions rely on no impractical assumptions.",
+     "anchor": "Section 1, p.2; Section 5, p.9; Appendix A.3, p.20",
+     "quotes": [
+      "This eliminates the ambiguity regarding whether the expressivity originates from classical or quantum parts.",
+      "All the variables take the form of parameters within single-qubit rotation gates, avoiding any classical parameterized pre-processing or post-processing."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim about their own construction.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The localization step and the grid index come from a floor applied to an expectation value, and the Taylor coefficients are classical numbers from the target's derivatives (Lemma S15); neither is parameterized pre-processing in the paper's sense, but the first is a classical step between two circuits."
+    },
+    {
+     "id_suggestion": "cited-zhao-lower-bound",
+     "value": "The authors state, citing Zhao et al., that exponential lower bounds on the number of trainable parameters in terms of the number of variables were proved for approximating bounded Lipschitz continuous functions with PQCs without parameterized classical data processing, so PQCs still suffer the curse of dimensionality for Lipschitz functions, and that this does not rule out the same rate with smaller PQCs than classical networks.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "proved exponential lower bounds on the number of trainable parameters (in terms of the number of variables) needed for approximating bounded Lipschitz continuous functions using PQCs without parameterized classical data processing",
+      "However, this does not rule out the possibility that one can achieve the same approximation rate with PQCs of smaller size compared to classical deep neural networks."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to [42].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The paper's own PQC sizes have a K to the d factor, consistent with exponential growth in d."
+    },
+    {
+     "id_suggestion": "claim-first-explicit-construction",
+     "value": "The authors state that their results are, to the best of their knowledge, the first explicit PQC constructions for approximating Lipschitz continuous and Hölder smooth functions with quantitative approximation error bounds.",
+     "anchor": "Section 5, p.8; Abstract, p.1",
+     "quotes": [
+      "To the best of our knowledge, our results establish the first explicit PQC constructions for approximating Lipschitz continuous and Hölder smooth functions with quantitative approximation error bounds."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author priority claim.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-quantum-advantage-model-size",
+     "value": "The authors state that by comparison with the near-optimal approximation bound for classical ReLU networks they demonstrate an improvement over classical models on approximating high-dimensional functions satisfying specific smoothness criteria, in model size and number of parameters.",
+     "anchor": "Section 5, p.9",
+     "quotes": [
+      "we demonstrate an improvement over the classical models on approximating high-dimensional functions that satisfy specific smoothness criteria, quantified by an improvement on the model size and the number of parameters."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion resting on a comparison of upper bounds.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No lower bound on the classical side and no sampling cost on the quantum side is stated; see pqc-vs-relu-size."
+    },
+    {
+     "id_suggestion": "limits-and-future-work",
+     "value": "The authors state as future work exploring more powerful PQC constructions, understanding capabilities and limitations of PQCs in practical tasks even with real-world data, and developing efficient training strategies, such as faster-converging methods; they introduce the nested PQC structure as novel.",
+     "anchor": "Section 5, p.10",
+     "quotes": [
+      "Future work could focus on exploring more powerful PQC constructions based on our proposed idea and understanding the capabilities and limitations of PQCs in more practical tasks even with real-world data.",
+      "Developing efficient training strategies for PQCs, such as accelerated methods that achieve faster convergence rates, will also be interesting."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own list of open problems (Section 5).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The theorems construct circuits by existence; trainability of the constructed angles is not addressed."
+    }
+   ]
+  }
+ ]
+}
