@@ -802,6 +802,24 @@ and in git. Remaining items below.
   nothing.
 - Depends on: Manual Validation Q2 (the write-path bypasses closed before
   any more reads) and the reader prompt with no budget
+- **Paused 2026-10-26 (team lead):** "pause after the 5 current agents
+  complete and backlog the remaining for the next sprint". Sprint 13
+  finishes groups g001 to g042 of `manifests/sprint13_g_ledger.json`
+  and applies them; groups g043 to g329 move to F114.
+
+**F114. Read in full the papers in Task G groups g043 to g329, with no reading budget (no estimate: as long as the reads take) Priority 10** (NEW 2026-10-26, team lead at Sprint 13 Task G: "pause after the 5 current agents complete and backlog the remaining for the next sprint")
+- Phase: Sourcing / extraction
+- Value: finishes F113. **Snapshot as of 2026-10-26**: 287 groups, 1,430
+  records, in `manifests/sprint13_g_ledger.json`, none read by a
+  Sprint 13 reader.
+- Platform: the same as F113: `manifests/sprint13_g_reads/READER_PROMPT.md`
+  (with its "Progress and restart" section), up to 5 first-pass readers,
+  the coordinator review of each group, and `scripts/sprint13_g_reading.py`
+  for the apply with its verified backup
+- Acceptance: F113's acceptance, for groups g043 to g329; each group's
+  reader file and review committed under `manifests/sprint13_g_reads/`
+  and `manifests/sprint13_g_reviews/`; a second apply writes nothing.
+- Depends on: F113's groups g001 to g042 applied in Sprint 13
 
 ## Design documents governing this repository
 

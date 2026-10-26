@@ -291,7 +291,7 @@ this project keeps having to replace with a step.
   (Issue #138)
 - **feat**: Task G (F113, 2026-10-26): `scripts/sprint13_g_reading.py`
   enters the reviewed groups from `manifests/sprint13_g_reviews/` (one
-  coordinator review per group, g001 to g031 and g033 so far) and their reader
+  coordinator review per group, g001 to g037 so far) and their reader
   files; `ID_FIX` stores a new assertion under another id where the
   reader's suggestion is already another source's. Dry run only; nothing
   applied yet (Issue #138)
@@ -319,6 +319,12 @@ this project keeps having to replace with a step.
   full read anywhere in a row's history, so a second correction on one day
   was refused; it now asks whether the last change was the full read. Each
   has a test proven red by injection (Issue #138)
+- **docs**: Task G paused (2026-10-26, team lead: "pause after the 5
+  current agents complete and backlog the remaining for the next
+  sprint"). Sprint 13 finishes groups g001 to g042 and applies them;
+  groups g043 to g329 (snapshot as of 2026-10-26: 1,430 records) are
+  registered as F114 in `docs/ALL_SPRINTS_MASTER_PLAN.md`, and F113's
+  card records the pause (Issue #138)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 
