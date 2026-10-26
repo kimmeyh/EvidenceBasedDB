@@ -4,9 +4,12 @@
 # in a console window of its own. Its output is the console, never a pipe, and so cannot be captured as
 # output; once claude exits, this reads the console's own screen buffer and writes it to the log, where
 # `f114_cloud.py` finds the new session's id.
-param([string]$Message, [string]$Model, [string]$Log)
+param([string]$Message, [string]$Model, [string]$Log, [string]$Name)
 
-& claude --cloud $Message --model $Model
+# --name: the session's title in the team lead's session list; without it each took its title from the first
+# message, and some 60 sessions all read "Waiting for instructions".
+$named = if ($Name) { @("--name", $Name) } else { @() }
+& claude --cloud $Message --model $Model @named
 $code = $LASTEXITCODE
 $raw = $Host.UI.RawUI
 $width = $raw.BufferSize.Width

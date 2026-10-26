@@ -109,7 +109,7 @@ def launch(rid: str, model: str = "sonnet") -> str:
     # and the window's screen, read after claude exits, gives the session's id.
     proc = subprocess.Popen(["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
                              str(ROOT / "scripts" / "f114_launch.ps1"), "-Message", FIRST_MESSAGE, "-Model", model,
-                             "-Log", str(log)], cwd=ROOT, creationflags=subprocess.CREATE_NEW_CONSOLE)
+                             "-Log", str(log), "-Name", f"F114 {rid}"], cwd=ROOT, creationflags=subprocess.CREATE_NEW_CONSOLE)
     try:
         rc = proc.wait(timeout=UPLOAD_WAIT)
     except subprocess.TimeoutExpired:
