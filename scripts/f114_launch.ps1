@@ -15,7 +15,7 @@ $rect = New-Object System.Management.Automation.Host.Rectangle 0, 0, ($width - 1
 $cells = $raw.GetBufferContents($rect)
 $text = [System.Text.StringBuilder]::new()
 for ($y = 0; $y -le $last; $y++) {
-    for ($x = 0; $x -lt $width; $x++) { [void]$text.Append($cells[$y, $x].Character) }
+    for ($x = 0; $x -lt $width; $x++) { [void]$text.Append($cells.GetValue($y, $x).Character) }
     [void]$text.AppendLine()
 }
 "exit $code" | Out-File -FilePath $Log -Encoding utf8
