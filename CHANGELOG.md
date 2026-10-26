@@ -304,6 +304,14 @@ this project keeps having to replace with a step.
   files. `tests/test_reader_prompts.py` fails on a prompt without the
   section, and `tests/test_sprint13_g_restart.py` on the check and the
   status, each proven red by injection (Issue #138)
+- **fix**: the fresh-eyes review of 6d8dec7 (2026-10-26): Task G's own
+  sync skipped the date guard, so its next apply would have put a review's
+  value back over a later correction; a full-read sync dated before the
+  row's last change is now refused. An ordinal suffix ("2nd") matched the
+  start of the next word, so "R2 of 0.93 than ..." went unglossed. The
+  apply script refuses an edit under an id that `ID_FIX` moves, and refuses
+  a graded confirmed row it does not rewrite unless the store already holds
+  that grade. Each has a test proven red by injection (Issue #138)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

@@ -694,7 +694,8 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
     if row is None:
         raise ValueError(f"{rid}: no stored assertion to sync")
     *row, updated, reason = row
-    if FULL_READ_MARK in (reason or "") and FULL_READ_MARK not in note and today <= (updated or ""):
+    if FULL_READ_MARK in (reason or "") and (today < (updated or "") or
+                                             (FULL_READ_MARK not in note and today == updated)):
         # Sprint 13 Task G (F113): a re-read of the whole paper supersedes the
         # partial read an older script entered. Without this, re-running that
         # script (as its own second-apply test does, each with its fixed TODAY)
@@ -703,7 +704,10 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
         # later correction is never refused (review of 0765e9a). A sync dated
         # on or before it is a re-apply of work the full read superseded: the
         # row is left as it is and, as for a sync that finds nothing to change,
-        # no history is appended.
+        # no history is appended. Task G's own sync is held to the date too
+        # (review of 6d8dec7): each apply re-syncs every reviewed group at its
+        # review date, which must not undo a later correction; on the same
+        # day it goes through, so a correction within Task G still lands.
         return []
     changed = [c for c, have in zip(_SYNC_RECORD_COLUMNS, row) if have != getattr(wanted, c)]
     for column in changed:

@@ -134,7 +134,16 @@ def _load_reviews() -> dict[str, tuple[str, str]]:
             if aid in high:
                 raise ValueError(f"{aid}: graded HIGH by two groups")
             high[aid] = (basis, why)
+    moved = edits_under_moved_ids()
+    if moved:
+        raise ValueError(f"{moved}: an edit under an id that ID_FIX moves; name the edit under the stored id")
     return high
+
+
+def edits_under_moved_ids() -> list[str]:
+    """verify() looks an edit up under the stored id, so an edit under a reader's id that ID_FIX moves would skip
+    its basis check (review of 6d8dec7)."""
+    return sorted(set(ID_FIX) & (set(VALUE_REPLACE) | set(QUOTE_EDITS) | set(EXTRA_QUOTES)))
 
 
 HIGH = high_grades(_load_reviews())
@@ -242,6 +251,28 @@ def assertions() -> list[tuple[str, AssertionRecord, str, dict]]:
                 new.id = ID_FIX.get(aid, aid)  # graded and edited under the reader's id, stored under the fixed one
                 out.append((g, new, rid, p))
     return out
+
+
+def grades_not_written(conn) -> list[str]:
+    """A confirmed stored assertion the review grades but the apply does not write (it is not in REQUOTE) keeps
+    its stored certainty; each one whose stored certainty is not the review's grade (review of 6d8dec7)."""
+    problems = []
+    for _, p in load_groups():
+        for e in p.get("existing", []):
+            aid = e["id"]
+            if e["verdict"] in CHANGED or aid in REQUOTE or aid in KEEP_STORED or aid in NOT_IN_PAPER:
+                continue
+            if aid in HIGH:
+                want = grade(aid, HIGH, otherwise=low_grade("authors' claim"))[0]
+            elif aid in THEORY_LOW:
+                want = low_grade("theoretical result", THEORY_LOW[aid])[0]
+            else:
+                continue
+            row = conn.execute("SELECT certainty FROM records WHERE id = ?", (aid,)).fetchone()
+            if row is None or row[0] != want:
+                problems.append(f"{aid}: graded {want}, stored {row[0] if row else 'nothing'}, and not rewritten; "
+                                "add it to REQUOTE or change the grade")
+    return problems
 
 
 def verify() -> list[tuple[AssertionRecord, str, dict, object]]:
@@ -359,8 +390,10 @@ def main(argv: list[str] | None = None) -> int:
         clash = [i for i in ids if conn.execute(
             "SELECT 1 FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ? AND "
             "r.provenance NOT LIKE ?", (i, f"%{owner[i]}%")).fetchone()]
-    if dupes or clash:
+        unwritten = grades_not_written(conn)
+    if dupes or clash or unwritten:
         print(f"duplicate assertion ids: {dupes}; ids already held by another source: {clash}")
+        print("\n".join(unwritten))
         return 1
     if "--apply" not in args:
         checked = verify()

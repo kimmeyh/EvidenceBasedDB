@@ -130,11 +130,17 @@ def test_a_label_beside_a_statistic_is_kept_bare_by_its_guard(label, guard, monk
     ("D^2-sampling", "D^2-sampling (D squared sampling)"),
     ("negative coefficients of determination", "negative coefficients of determination (R squared)"),
     ("an increase in R² of 0.05", "an increase in R² (R squared) of 0.05"),
+    # review of 6d8dec7: an ordinal suffix matched the start of the next word
+    ("higher R2 of 0.93 than the baseline", "higher R2 (R squared) of 0.93 than the baseline"),
+    ("an R2 of 0.95 throughout", "an R2 (R squared) of 0.95 throughout"),
+    ("R2 of 0.88 still", "R2 (R squared) of 0.88 still"),
+    ("R2 = 0.9 standard deviation 0.1", "R2 (R squared) = 0.9 standard deviation 0.1"),
 ])
 def test_every_spelling_of_the_statistic_gains_the_name(value, glossed):
     """Proven to fail, 2026-10-25: on ce95e82's rule the first four were
     left without the common name; on 8c869cc's rule the next six were;
-    2026-10-26, on 44e2512's rule the last sixteen were."""
+    2026-10-26, on 44e2512's rule the next sixteen were, and on 6d8dec7's
+    rule the last four were."""
     assert with_common_names(value) == glossed
     assert with_common_names(glossed) == glossed
     assert bare(glossed) == []

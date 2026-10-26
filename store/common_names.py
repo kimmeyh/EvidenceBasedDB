@@ -49,9 +49,10 @@ _CONNECT = (r"(?:(?:of|is|was|were|are|=|:|≈|~|>|<|≥|≤|\(|above|below|over
             r"(?: from| to)?|approximately|about|around|near|only|just|from|to|values? of|scores? of)\s*)*")
 _NUMBER = r"[-+−]?(?:\d+(?:\.\d+)?|\.\d+)"
 # The statistic has no unit: a number followed by one of these is a count, a size, an order or a dimension.
-_UNIT = re.compile(r"\s*(?:-\s*)?(?:st|nd|rd|th|[a-z]?b\b|ms\b|s\b|d\b|D\b|dimension\w*|dim\b|qubits?|points?|"
-                   r"layers?|nodes?|times|fold|x\b|×|years?|days?|hours?|minutes?|seconds?|items?|samples?|"
-                   r"features?|classes|bits?|gb|mb|kb|tb)", re.IGNORECASE)
+# An ordinal suffix touches its digits ("2nd"); a word after a space ("0.93 than", "0.9 standard") is no unit.
+_UNIT = re.compile(r"(?:(?:st|nd|rd|th)\b|\s*(?:-\s*)?(?:[a-z]?b\b|ms\b|s\b|d\b|D\b|dimension\w*|dim\b|qubits?|"
+                   r"points?|layers?|nodes?|times|fold|x\b|×|years?|days?|hours?|minutes?|seconds?|items?|samples?|"
+                   r"features?|classes|bits?|gb|mb|kb|tb))", re.IGNORECASE)
 _NUMBER_AFTER = re.compile(_GLOSSED + _SIBLING_METRICS + r"\s*" + _PHRASE + _CONNECT + f"({_NUMBER})",
                            re.IGNORECASE)
 _NOUN_AFTER = re.compile(_GLOSSED + r"(?:values?|scores?|statistics?|coefficients?|metrics?|measures?)\b",

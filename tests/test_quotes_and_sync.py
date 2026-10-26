@@ -163,7 +163,13 @@ def test_a_row_re_read_in_full_is_left_alone_by_an_older_script(synthetic_store)
     and so was a row Task G only annotated. The test is now the date: older
     or same-day syncs are refused and leave the history as it was; a later
     one goes through. Proven to fail, 2026-10-26: with the date test removed
-    from the guard, the later correction was refused."""
+    from the guard, the later correction was refused.
+
+    Review of 6d8dec7: a sync naming the full read skipped the date test, so
+    Task G's next apply, which re-syncs every reviewed group at its review
+    date, put an older value back over a later correction and moved
+    `updated` back. A full-read sync dated before the row's last change is
+    now refused too."""
     conn = connect(synthetic_store)
     try:
         older = _stored(conn)
@@ -179,5 +185,9 @@ def test_a_row_re_read_in_full_is_left_alone_by_an_older_script(synthetic_store)
         later = replace(again, value="a correction made after the full read")
         assert sync_assertion(conn, later, "2026-11-02 (Sprint 14): corrected", "2026-11-02") == ["value"]
         assert conn.execute("SELECT value FROM records WHERE id = 'claim-one'").fetchone()[0] == later.value
+        # review of 6d8dec7: Task G's next apply re-syncs every reviewed group at its review date
+        assert sync_assertion(conn, again, f"Sprint 13 Task G: {ingest.FULL_READ_MARK}", "2026-10-26") == []
+        assert tuple(conn.execute("SELECT value, updated FROM records WHERE id = 'claim-one'").fetchone()) == (
+            later.value, "2026-11-02")
     finally:
         conn.close()
