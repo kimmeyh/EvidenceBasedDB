@@ -1,0 +1,1141 @@
+{
+ "papers": [
+  {
+   "record_id": "neven-2012-qboost-adiabatic-quantum-optimization",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\QBoost - Large Scale Classifier Training with Adiabatic Quantum Optimization - Neven Denchev Rose Macready - ACML PMLR v25 2012.pdf",
+   "title_in_file": "QBoost: Large Scale Classiﬁer Training with Adiabatic Quantum Optimization",
+   "version_note": "",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A 2012 ACML (PMLR volume 25) paper by Neven, Denchev, Rose and Macready that casts boosting-style binary classifier training as QUBO problems suited to adiabatic quantum optimization hardware, with classical-heuristic experiments, one 52-qubit D-Wave experiment and a quantum Monte Carlo scaling study.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "qboost-qubo-baseline-formulation",
+     "value": "The authors state that they study regularized risk minimization with square loss and 0-norm regularization over discrete weight and bias variables of bit depth dw and db respectively, which gives a QUBO-compatible baseline optimization problem.",
+     "anchor": "Section 3.1, Equation 4, p.335",
+     "quotes": [
+      "here we study regularized risk minimization with Lsquare and 0-norm regularization over discrete variables",
+      "of bit depth dw and db respectively. This leads to a QUBO-compatible baseline optimization problem:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own training objective in Section 3.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qboost-bit-depth-lower-bound",
+     "value": "The paper derives that discrete weights on a lattice realize every classifier reachable with real-valued weights when dw ≥ log2(f ) + log2(e), where e is the Euler number and f = S/N, for binary features and S ≥ N. The authors state that the required bit depth grows only logarithmically with the ratio of training examples to features, so that often a single bit may suffice.",
+     "anchor": "Section 3.2, Equation 8, p.337",
+     "quotes": [
+      "dw ≥ log2(f ) + log2(e)",
+      "where e is the Euler number and f = S/N",
+      "This holds in the case of S ≥ N .",
+      "If each solution region contains a lattice vertex then all classiﬁers that can be attained with real-valued weights can also be realized by the discrete weight conﬁgurations.",
+      "result as it shows that the required bit depth for weight variables only grows logarithmically",
+      "with the ratio of the number of training examples to the number of features. Thus for many"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An informal counting argument that uses an upper bound on the region count and an approximate step, not a stated theorem with a proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The argument compares the number of lattice vertices with an upper bound on the number of solution regions. That comparison is necessary but not sufficient for every region to hold a lattice vertex, and the sufficiency step is not proved. The bound also assumes binary features and counts regions in the positive quadrant."
+    },
+    {
+     "id_suggestion": "hyperplane-region-counts-small-n",
+     "value": "The authors report that for the arrangement of all diagonal hyperplanes defined by training examples with inputs restricted to plus or minus one, N = 3 yields 14 regions, N = 4 leads to 104 and N = 5 to 1882 regions.",
+     "anchor": "Figure 1 caption, Section 3.2, p.336",
+     "quotes": [
+      "Depicted is the situation for N = 3, which yields 14 regions. The number of solution regions grows rapidly: N = 4 leads to 104 and N = 5 to 1882 regions."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Counts are stated in a figure caption without a displayed derivation or code.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "region-count-upper-bound-conservative",
+     "value": "The authors state that, because linear dependencies among the hyperplanes occur for N ≥ 4, they cannot find a closed form for the intersection dimension and so resort to an upper bound on the number of regions, which they call a conservative estimate because multiple training examples can generate identical inequality constraints.",
+     "anchor": "Section 3.2, Equations 6 and 7, pp.336-337",
+     "quotes": [
+      "Due to linear dependencies among the hyperplanes,",
+      "which occur for N ≥ 4, we are not able to ﬁnd a closed form expression for",
+      "instead have to resort to an upper bound for Nregions",
+      "So, (7) is a conservative estimate as the actual number of solution spaces is often lower."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state in Section 3.2 that no closed form is available and that the bound is conservative.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "region-count-footnote-scope",
+     "value": "The authors state, in a footnote, that the region count ignores the case in which a hyperplane or part of it becomes a solution space itself, which they describe as exceedingly unlikely.",
+     "anchor": "Footnote 2, Section 3.2, p.336",
+     "quotes": [
+      "In this calculation we ignored the fact that a hyperplane or parts of it can become a solution space itself.",
+      "Since this case is exceedingly unlikely"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this exclusion in footnote 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "weights-low-bit-depth-scope",
+     "value": "The authors state that they discretize the weights to a low bit depth dw < 64, that they show the favorable condition dw ≥ log(S/N ) for binary features such as the weak classifiers typically used in boosting, and that analyzing more general feature sets appears more difficult while experiments provide support for low-precision weights.",
+     "anchor": "Section 3.1, p.335",
+     "quotes": [
+      "We discretize the elements of w to some low bit-depth dw < 64.",
+      "In fact we show a favorable condition dw ≥ log(S/N ) in the case of binary features such as the weak classiﬁers typically used in boosting.",
+      "Even though analyzing classiﬁers constructed out of more general sets of features appears to be more diﬃcult, experiments provide support for using low-precision weights."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state in Section 3.1 which feature types the bit-depth result covers.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section 3.1 gives the condition as dw ≥ log(S/N ) while Section 3.2 derives log2(f ) + log2(e), which is larger by log2(e), about 1.44 bits. The Section 3.1 statement is the looser form. The experiments use only dw = 1, so no experiment in the paper varies the bit depth."
+    },
+    {
+     "id_suggestion": "zero-one-loss-training-nphard-cited",
+     "value": "The authors state, citing Feldman et al. (2010), that the optimization problem (1) with 0-1 loss is NP-hard due to non-convexity.",
+     "anchor": "Section 2, p.334",
+     "quotes": [
+      "The optimization problem (1) with L0-1 is NP-hard due to non-convexity (Feldman et al., 2010)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zero-one-loss-no-margin-cited",
+     "value": "The authors state, citing Vapnik (1998), that because 0-1 loss does not enforce a margin, the generalization of classifiers trained with it is bad even when regularization is applied.",
+     "anchor": "Section 2, p.334",
+     "quotes": [
+      "Also, because L0-1 does not enforce a margin, the generalization of classiﬁers trained with it is bad even when regularization is applied (Vapnik, 1998)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "l0-norm-natural-but-nonconvex",
+     "value": "The authors state that 0-norm penalization is the natural regularizer because it explicitly drives weights towards exact zero, is associated with good generalization and fast execution, but leads to non-convex optimization problems.",
+     "anchor": "Section 2, p.334",
+     "quotes": [
+      "The natural choice for Ω is 0-norm penalization of w because that explicitly drives weights towards exact zero.",
+      "This is not only associated with good generalization but also fast execution during the performance phase.",
+      "However, 0-norm regularization leads to non-convex optimization problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Background statements without evidence in this paper.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "l2-regularization-no-exact-zeros",
+     "value": "The authors state that, with continuous weight variables, 2-norm regularization only decreases the magnitude of weights but does not produce exact zeros.",
+     "anchor": "Section 2, p.335",
+     "quotes": [
+      "However, when continuous weight variables are used in training, 2-norm regularization only decreases the magnitude of weights but does not produce exact zeros."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A background statement without evidence in this paper.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaboost-greedy-exponential-loss-differences",
+     "value": "The authors state, citing Zhang (2008), that AdaBoost can be seen as a greedy minimization of the exponential loss over a finite dictionary of weak classifiers, and that the baseline objective (4) differs from it in two ways: 0-norm regularization and square loss.",
+     "anchor": "Section 4, Equation 9, p.337",
+     "quotes": [
+      "AdaBoost can be seen as a greedy minimization of the exponential loss (Zhang, 2008):",
+      "There are two diﬀerences between the baseline objective (4) and the one",
+      "employed by AdaBoost. The ﬁrst is that we use 0-norm regularization. Second, we employ",
+      "square loss, while AdaBoost works with the exponential loss."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The AdaBoost characterization is attributed to other work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "strong-classifier-vc-dimension-bound-cited",
+     "value": "The authors state, citing Freund and Schapire (1995), an upper bound on the VC dimension of a strong classifier made of T weak classifiers: VC_H = 2(VC{ht} + 1)(T + 1) log2(e(T + 1)), where VC{ht} is the VC dimension of the weak classifiers.",
+     "anchor": "Section 4, Equation 10, p.337",
+     "quotes": [
+      "V CH = 2(V C{ht} + 1)(T + 1) log2(e(T + 1))",
+      "where V C{ht} is the VC dimension of the weak classiﬁers (Freund and Shapire, 1995)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generalization-error-vc-bound-cited",
+     "value": "The authors state, citing Vapnik and Chervonenkis (1971), that the strong classifier's generalization error has an upper bound equal to the training error plus a term that involves VC_H, the number of training examples S and a confidence parameter δ,, as typeset in the paper.",
+     "anchor": "Section 4, Equation 11, p.337",
+     "quotes": [
+      "classiﬁer’s generalization error has the upper bound (Vapnik and Chervonenkis, 1971):",
+      "Errortest ≤ Errortrain +"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work; the text layer scrambled the displayed formula.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "compact-classifier-lower-generalization-claim",
+     "value": "The authors state that a more compact strong classifier that achieves a given training error with a smaller number T of weak classifiers, hence with a smaller VC_H, comes with a guarantee for lower generalization error.",
+     "anchor": "Section 4, p.338",
+     "quotes": [
+      "Apparently a more compact strong classiﬁer that achieves a given Errortrain with a",
+      "smaller number T of weak classiﬁers—hence, with a smaller V CH —comes with a guarantee",
+      "for lower generalization error."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An inference from an upper bound, stated without further argument.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The bound in Equation 11 is an upper bound, so a smaller bound does not guarantee a lower actual test error. The word guarantee overstates what the bound gives."
+    },
+    {
+     "id_suggestion": "weak-lambda-regime-thinning-argument",
+     "value": "The authors state that when the regularization parameter λ is below a threshold that depends on N (given in a formula that the text layer scrambled), the effect of regularization is merely to thin out the strong classifier without sacrificing training accuracy. They derive the condition by demanding that the reduction of the regularization term from switching a weight to zero is smaller than the smallest associated increase in empirical risk from misclassifying one training example, and they state that the resulting VC bound is lower than or equal to that of a classifier trained without regularization.",
+     "anchor": "Section 4, p.338",
+     "quotes": [
+      "regularization is merely to thin out the strong classiﬁer without sacriﬁcing training accuracy.",
+      "One arrives at the condition for λ by demanding that the reduction of the regularization term",
+      "∆Ω(w˙ ) that can be obtained by switching a w˙ i to zero is smaller than the smallest associated increase in empirical risk ∆R(w˙ ) that comes from incorrectly classifying a training example.",
+      "Therefore regularization keeps only a minimal set of components—those",
+      "which are needed to achieve the minimal training error that can be obtained when using",
+      "than or equal to the VC bound of a classiﬁer trained without regularization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An informal derivation, and the threshold formula could not be quoted because the text layer split it across lines.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": "The text layer prints the threshold as lambda less than 2 over N plus 1 over N squared. The paper itself says the experiments do not operate in this weak regime, because lambda is chosen by cross-validation."
+    },
+    {
+     "id_suggestion": "adaboost-no-sparsity-hand-crafted-demo",
+     "value": "The authors report, for a hand-crafted separable two-dimensional data set, that the optimal classifier uses four weak classifiers, that AdaBoost shown after 10, 20, and 640 iterations does not find it although the needed weak classifiers are generated, that the configuration at T = 640 is asymptotic, and that breakout regions occur where the training set contains no negative examples. They state that AdaBoost does not explicitly enforce sparsity and may use a richer set of weak classifiers than needed.",
+     "anchor": "Figure 2 caption, Section 4, pp.338-339",
+     "quotes": [
+      "C shows the optimal classiﬁer for this situation, which employs four weak classiﬁers to partition the input space into positive and negative areas.",
+      "The lower row shows partitions generated by AdaBoost after 10, 20, and 640 iterations.",
+      "The conﬁguration at T = 640 is the asymptotic one, which does not change anymore in subsequent iterations.",
+      "The breakout regions outside the bounding box of the positive cluster occur in areas in which the training set does not contain negative examples.",
+      "to AdaBoost’s greedy approach, the optimal conﬁguration for this data is not found despite the fact that the weak classiﬁers necessary to construct the ideal classiﬁer are generated."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single hand-crafted illustration, shown as a figure.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "This is one illustrative toy data set, so it shows the failure mode can occur but not how often."
+    },
+    {
+     "id_suggestion": "lambda-chosen-by-cross-validation",
+     "value": "The authors state that in practice they do not operate in the weak λ regime but determine the regularization strength by cross-validation, measuring classifier performance for different values of λ on a validation set and choosing the one with minimal validation error.",
+     "anchor": "Section 4, p.339",
+     "quotes": [
+      "In practice we do not operate in the weak λ regime but rather determine the regularization strength by cross-validation.",
+      "We measure the performance of the classiﬁer for diﬀerent values of λ on a validation set and then choose the one with minimal validation error."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how it sets λ in Section 4.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "regularization-noise-robustness-gains",
+     "value": "The authors state that, at the regularization strengths used in practice, the optimization may accept some higher empirical loss to keep the classifier compact, that this leads to increased robustness for noisy data, and that they observe the most significant gains over AdaBoost for noisy data sets when the Bayes error is high.",
+     "anchor": "Section 4, p.339",
+     "quotes": [
+      "In this regime the optimization may perform a trade-oﬀ and accept some higher empirical loss if the classiﬁer can be kept more compact.",
+      "This leads to increased robustness in the case of noisy data, and indeed we observe the most signiﬁcant gains over AdaBoost for noisy data sets when the Bayes error is high."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from the paper's own experiments; no separate noise-robustness experiment is described.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The observation most plausibly refers to the synthetic data of Figure 3, where the gain grows with the overlap between the Gaussians. The paper does not run a label-noise experiment."
+    },
+    {
+     "id_suggestion": "l1-adaboost-no-better-than-adaboost",
+     "value": "The authors state that they also experimented with a version of AdaBoost with explicit 1 regularization (citing Duchi and Singer, 2009), which did not perform better than plain AdaBoost on their data.",
+     "anchor": "Section 4, p.339",
+     "quotes": [
+      "We also experimented with a version of AdaBoost with explicit 1 regularization (Duchi and Singer, 2009), but that did not perform better than plain AdaBoost on our data."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A negative result reported in one sentence with no data, settings or numbers.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The text layer lost the norm symbol before the word regularization, so the variant is most likely the 1-norm (ell one) version. No numbers are given."
+    },
+    {
+     "id_suggestion": "loss-choice-exponential-vs-square-not-essential",
+     "value": "The authors state that the discussion of the role of regularization does not change if square loss is replaced by exponential loss, and that the literature agrees the exponential loss in AdaBoost is not essential and other loss functions could yield classifiers with similar performance (citing Friedman et al., 1998 and Wyner, 2002).",
+     "anchor": "Section 4, p.339",
+     "quotes": [
+      "In fact, the discussion above about the role of regularization does not change if we replace square loss by exponential loss.",
+      "The literature agrees that the use of exponential loss in AdaBoost is not essential and that other loss functions could yield classiﬁers with similar performance (Friedman et al., 1998; Wyner, 2002)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Attributed to other work, with the first sentence an unsupported claim.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "square-loss-bayes-consistent-cited",
+     "value": "The authors state, citing Zhang (2008), that a classifier that minimizes square loss is Bayes consistent, that is, with increasing numbers of training examples it asymptotically approaches the Bayes-optimal classifier.",
+     "anchor": "Section 4, p.339",
+     "quotes": [
+      "From a statistical perspective, square loss is satisfactory since a classiﬁer that minimizes it is Bayes consistent, i.e. with increasing numbers of training examples it asymptotically approaches the Bayes-optimal classiﬁer (Zhang, 2008)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "large-scale-problem-size-limits",
+     "value": "The authors state that the CPLEX solver operates in heuristic mode for these mixed integer quadratic programs and can solve problems in reasonable time for up to ten to the third power variables (printed 103 in the text layer), that existing quantum hardware can currently handle 512-variable problems, and that they estimate typical classifiers in vision-based products use thousands of weak learners, so the weights cannot be determined in a single AQO run.",
+     "anchor": "Section 5, p.339",
+     "quotes": [
+      "The state-of-the-art commercial solver CPLEX operates in heuristic mode for the problems we study (mixed integer quadratic programs) and can solve problems in reasonable time for up to 103 variables.",
+      "Existing quantum hardware currently can handle 512-variable problems.",
+      "We estimate that typical classiﬁers employed in vision-based products today use thousands of weak learners."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Statements of solver capacity and of an estimate, without a source or measurement.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Section 3 names the 512-variable device as the Vesuvius generation, while the hardware experiment in Section 6.2 used an earlier chip limited to 52 variables."
+    },
+    {
+     "id_suggestion": "qboost-algorithm1-inner-loop-definition",
+     "value": "The paper defines QBoost Algorithm 1 for the case T ≤ Q, where T is the size of the final strong classifier and Q the number of variables one optimization run can handle. Each iteration selects the Q − Tinner weak classifiers with the smallest weighted training error rates into a pool, optimizes the weights over a sweep of λ values, saves the run with the lowest validation error so far, updates the example weights dinner, and repeats until the validation error stops decreasing.",
+     "anchor": "Algorithm 1, Section 5, p.340",
+     "quotes": [
+      "Let T denote the size of the ﬁnal strong classiﬁer and Q the number of variables that a single optimization run can handle.",
+      "QBoost Algorithms 1 and 2 consider two cases: T ≤ Q and T > Q.",
+      "4: From {hi} select the Q − Tinner weak classiﬁers that have the smallest training error rates",
+      "weighted by dinner and add them to the pool {hq}",
+      "5: for λ = λmin : λstep : λmax do",
+      "11: Save w˙ ∗, Tinner, Hw˙ ∗ (x) and Errorval from the optimization run that has yielded the lowest",
+      "Update dinner(s) = dinner(s) ys",
+      "15: until validation error Errorval stops decreasing"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own algorithm in Algorithm 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qboost-algorithm2-outer-loop-definition",
+     "value": "The paper defines QBoost Algorithm 2 for the case T > Q. It runs Algorithm 1 with the example weights initialized from the outer weights and an objective that takes the current outer strong classifier into account, appends the selected weights and weak learners to the outer classifier, updates the outer example weights, and repeats until the validation error stops decreasing. The authors state that this freezes the classifier obtained so far and adds another partial classifier trained by the inner loop.",
+     "anchor": "Algorithm 2, Section 5, pp.340-341",
+     "quotes": [
+      "QBoost Algorithms 1 and 2 consider two cases: T ≤ Q and T > Q.",
+      "3: Run Algorithm 1 with {xs}, {hi(x)}, λmin, λstep, λmax, initializing dinner from douter, and",
+      "6: Set {ht} = {{ht}, {hq}}",
+      "7: Set Touter = Touter + Tinner",
+      "10: until validation error Errorval stops decreasing",
+      "In this case QBoost Algorithm 2 “freezes” the classiﬁer obtained so far and adds another partial classiﬁer trained by the inner loop."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own algorithm in Algorithm 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "inner-loop-monotone-objective-guarantee",
+     "value": "The authors state that, under the assumption that the solver always finds the global minimum, it is guaranteed that for a given λ the solutions found in a subsequent round have lower or equal objective value, that is, they achieve lower empirical risk, represent a more compact strong classifier, or stay the same.",
+     "anchor": "Section 5, p.341",
+     "quotes": [
+      "Under the assumption that the solver always ﬁnds the global minimum, it is guaranteed that for a given λ the solutions found in the subsequent round have lower or equal objective value",
+      "i.e. they achieve lower empirical risk, represent a more compact strong classiﬁer, or stay the same."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated as a guarantee with no proof in the paper, and conditional on a global-minimum solver.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The classical experiments use Tabu search, and Section 7 states that Tabu search often fails to find the optimum for problems of 64 variables, so the global-minimum condition is not met in the experiments with Q of 64, 128 and 256."
+    },
+    {
+     "id_suggestion": "qboost-groups-of-weak-classifiers-efficiency-claim",
+     "value": "The authors state that considering groups of Q weak classifiers simultaneously, instead of augmenting the strong classifier by one, and then finding a subset that produces low empirical risk allows the algorithm to find good configurations more efficiently.",
+     "anchor": "Section 5, p.341",
+     "quotes": [
+      "The fact that the algorithm considers groups of Q weak classiﬁers simultaneously (instead of augmenting the strong classiﬁer by one) and then tries to ﬁnd a subset that produces low empirical risk, allows it to ﬁnd good conﬁgurations more eﬃciently."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An efficiency claim with no direct supporting measurement.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "experiment-scope-three-data-sets",
+     "value": "The authors state that experiments use three data sets, that the first two are toy problems of limited practical importance trained with a classical heuristic standing in for quantum hardware, and that the third is a difficult large-scale practical problem for which they use an actual quantum chip consisting of 52 operational qubits.",
+     "anchor": "Section 6, p.341",
+     "quotes": [
+      "In this section we present experimental results from training with QBoost on three diﬀerent data sets.",
+      "The ﬁrst two can be considered toy problems of limited practical importance, so we train classiﬁers for them by a classical heuristic algorithm serving as a stand-in for quantum hardware.",
+      "for it we use an actual quantum chip consisting of 52 operational qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of their experiments in Section 6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The abstract says one synthetic and two natural data sets. Section 6.1 describes the synthetic data and the eye data; the 96-dimensional data mentioned for the dictionary size is not otherwise described."
+    },
+    {
+     "id_suggestion": "datasets-synthetic-and-eye-setup",
+     "value": "The authors report that the synthetic data was sampled in 30 dimensions from a mixture of two spherical Gaussians with an overlap coefficient that sets their separation, that the natural data are 30-dimensional vectors of Gabor wavelet amplitudes extracted at eye locations in face images, and that the data sets consist of 2 · 104 input vectors (exponent printed flat) divided evenly into training, validation, and test sets.",
+     "anchor": "Section 6.1, p.341",
+     "quotes": [
+      "The synthetic data was sampled in 30 dimensions from",
+      "This data captures generic characteristics of",
+      "classiﬁcation problems via the usage of an overlap coeﬃcient that determines the separation",
+      "The natural data consists of 30-dimensional vectors of Gabor wavelet",
+      "amplitudes extracted at eye locations in images showing faces. The data sets consist of",
+      "2 · 104 input vectors, which we divide evenly into training, validation, and test sets."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own data setup in Section 6.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-experiment-tabu-stumps-setup",
+     "value": "The authors report that for the classical-heuristic experiments they use Tabu search as a stand-in for quantum hardware, discretize the weights with dw = 1, and employ a dictionary of decision stumps, which has 930 weak classifiers for the 30-dimensional input data and 9312 weak learners for the 96-dimensional data.",
+     "anchor": "Section 6.1, p.341",
+     "quotes": [
+      "Tabu search as a classical heuristic stand-in for quantum hardware, discretize the weight",
+      "variables with dw = 1, and employ a dictionary of decision stumps:",
+      "For the 30-dimensional input data the dictionary employs 930 weak classiﬁers, and for the 96-dimensional data it consists of 9312 weak learners."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup in Section 6.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The counts match two single-feature stumps per dimension plus two pair-product stumps per pair of dimensions: 2·30 + 2·435 = 930 and 2·96 + 2·4560 = 9312. The paper does not say which data set has 96 dimensions."
+    },
+    {
+     "id_suggestion": "synthetic-data-qboost-beats-adaboost-fig3",
+     "value": "The authors report, for the synthetic data with the outer loop run at Q of 64, 128, 256 and means over 100 runs, that all three versions outperform AdaBoost, that the gain increases as the overlap between the two Gaussians increases, and that the error rate decreases with increasing Q. The numeric test errors are in a figure that the text layer does not carry.",
+     "anchor": "Figure 3 caption, Section 6.1, p.342",
+     "quotes": [
+      "values of Q: 64, 128, 256.",
+      "The plots show means over 100 runs and the error bars indicate the corresponding standard deviations.",
+      "All three versions outperform AdaBoost. The gain increases as the classiﬁcation problem gets harder i.e. as the overlap between the two Gaussians increases.",
+      "One can also see that there is a beneﬁt to being able to run larger optimizations since the error rate decreases with increasing Q."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on one synthetic distribution, with Tabu search as a classical stand-in solver.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The magnitude of the gain is not in the text. The run used Tabu search, not quantum hardware."
+    },
+    {
+     "id_suggestion": "synthetic-data-bayes-error-and-qp2",
+     "value": "The authors state that an overlap coefficient of 1 means the two Gaussian means are equal and the Bayes error rate for that case is ≈ 0.05, and that for comparison they also included results for a classifier trained on a fixed dictionary (QP 2) with training performed as per Equation 4.",
+     "anchor": "Figure 3 caption, Section 6.1, p.342",
+     "quotes": [
+      "“Overlap Coeﬃcient” = 1 means that µ+ = µ−, and the Bayes error rate for this case is ≈ 0.05.",
+      "For comparison we also included results for a classiﬁer trained on a ﬁxed dictionary (QP 2) for which the training was performed as per (4)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A caption statement about the synthetic setup, without a derivation.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "A Bayes error of about 0.05 at equal means looks inconsistent with two Gaussians that have the same mean but different covariances (I and I/2) only if the error were zero; the paper gives no derivation, so the value is taken as stated."
+    },
+    {
+     "id_suggestion": "eye-data-table1-adaboost-column",
+     "value": "The authors report in its results table for AdaBoost on the eye data: test error 0.258 ± 0.006, 257.8 ± 332.1 weak classifiers, 658.9 ± 209.3 reweightings, and training error 0.038 ± 0.054.",
+     "anchor": "Table 1, AdaBoost column, p.342",
+     "quotes": [
+      "0.258± 0.006 257.8± 332.1 658.9± 209.3 0.038± 0.054"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The text layer separates the row labels (Test error, Weak classifiers, Reweightings, Training error, Outer loops) from the numbers, so the mapping is by row order. The AdaBoost column has no outer-loops entry."
+    },
+    {
+     "id_suggestion": "eye-data-table1-qboost-q64",
+     "value": "The authors report in its results table for the first of three QBoost outer-loop columns on the eye data: test error 0.254 ± 0.010, 116.8 ± 139.0 weak classifiers, 130.8 ± 65.3 reweightings, training error 0.185 ± 0.039.",
+     "anchor": "Table 1, Q = 64 column, p.342",
+     "quotes": [
+      "0.254± 0.010 116.8± 139.0 130.8± 65.3 0.185± 0.039"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The mapping of numbers to row labels is by row order, as the text layer separates labels from values. The test-error difference to AdaBoost is 0.004, smaller than one standard deviation of the QBoost column. The column's outer-loops entry is on a separate text line; the paper lists Q = 64, 128 and 256 as the three column headings in order."
+    },
+    {
+     "id_suggestion": "eye-data-table1-qboost-q128",
+     "value": "The authors report in its results table for the second of three QBoost outer-loop columns on the eye data: test error 0.249 ± 0.010, 206.1 ± 241.8 weak classifiers, 145.6 ± 65.5 reweightings, training error 0.170 ± 0.039.",
+     "anchor": "Table 1, Q = 128 column, p.342",
+     "quotes": [
+      "0.249± 0.010 206.1± 241.8 145.6± 65.5 0.170± 0.039"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The mapping of numbers to row labels is by row order. The column's outer-loops entry is on a separate text line; the paper lists Q = 64, 128 and 256 as the three column headings in order."
+    },
+    {
+     "id_suggestion": "eye-data-table1-qboost-q256",
+     "value": "The authors report in its results table for the third of three QBoost outer-loop columns on the eye data: test error 0.246 ± 0.009, 356.3 ± 420.3 weak classifiers, 159.8 ± 63.7 reweightings, training error 0.158 ± 0.040.",
+     "anchor": "Table 1, Q = 256 column, p.342",
+     "quotes": [
+      "0.246± 0.009 356.3± 420.3 159.8± 63.7 0.158± 0.040"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The mapping of numbers to row labels is by row order. At Q = 256 the mean number of weak classifiers (356.3) is higher than AdaBoost's 257.8, which conflicts with the caption's reduced-classifier claim for that setting. The column's outer-loops entry is on a separate text line; the paper lists Q = 64, 128 and 256 as the three column headings in order."
+    },
+    {
+     "id_suggestion": "eye-data-table1-caption-conclusions",
+     "value": "The authors state, in the table caption, that on the eye data QBoost leads to only slightly lower test errors but with a significantly reduced number of weak classifiers, and that the number of iterations needed in training is more than 4 times lower than AdaBoost's. They state that the means and standard deviations come from 103 runs (exponent printed flat), and that a validation set is used to determine the optimal size T of the AdaBoost strong classifier.",
+     "anchor": "Table 1 caption and Section 6.1, pp.342-343",
+     "quotes": [
+      "The means and standard deviations are obtained from 103 runs.",
+      "Here QBoost leads to only sightly lower test errors but obtains those with a signiﬁcantly reduced number of weak classiﬁers.",
+      "Also, the number of iterations needed in training is more than 4 times lower than what is required by AdaBoost.",
+      "We use a validation set to determine the optimal size T of the strong classiﬁer generated by AdaBoost."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' summary of an empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The reweighting ratio is 658.9 / 159.8 = 4.1 at Q = 256 and 658.9 / 130.8 = 5.0 at Q = 64, consistent with the 4-times claim. The weak-classifier count is not lower at Q = 256, and its standard deviations (up to 420.3) are large compared with the means. Differences in test error (0.004 to 0.012) are small compared with the standard deviations of the QBoost columns (0.009 to 0.010). The caption text says 103 runs while Figure 3 states 100 runs."
+    },
+    {
+     "id_suggestion": "hardware-car-detector-setup",
+     "value": "The authors report applying QBoost to train a detector for cars in digital images, using an early-generation D-Wave chip (Rainier) to solve optimization problems of size Q = 52 by AQO. The training and test sets each consist of 2·104 images (exponent printed flat), roughly half containing cars in side-view positions, and random subregions give about 105 patches (exponent printed flat).",
+     "anchor": "Section 6.2, p.343",
+     "quotes": [
+      "In this experiment we applied QBoost to the training of a detector for cars in digital images and employed an early-generation D-Wave chip (Rainier) to solve optimization problems of size Q = 52 by AQO.",
+      "The training and test sets consist of 2·104 images with roughly half the images in each set containing cars in side-view positions",
+      "to obtain about 105 patches."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own hardware experiment setup in Section 6.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-cascade-integration-setup",
+     "value": "The authors report that they replaced the feature-selection routine of a highly tuned cascaded confidence-rated boosting system with QBoost, that QBoost is invoked for each cascade stage to select T weak classifiers out of several million, that Q is kept fixed at 52, the maximum problem size the available hardware could handle, and that early stages use only Algorithm 1 while later stages invoke Algorithm 2. They state the guiding principle is to reduce false positives by 50% at each stage.",
+     "anchor": "Section 6.2, p.343",
+     "quotes": [
+      "we replaced its feature-selection routine by QBoost.",
+      "The guiding principle is to reduce the false positives by 50% at each stage of the cascade.",
+      "We keep the optimization size Q ﬁxed at 52, which is the maximum problem size that the available quantum hardware could handle.",
+      "Since T can be both smaller and larger than 52, early stages utilize only Algorithm 1, while later stages invoke Algorithm 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own hardware experiment setup in Section 6.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-vs-tabu-accuracy-car-detector",
+     "value": "The authors report that training with the quantum hardware led to a classifier with useful classification accuracy, that the accuracy obtained by the hardware solver is better than the accuracy of the classifier trained with Tabu search, and that the hardware solver's error rates were superior to Tabu search across all stages (per-pixel error rates). The numeric rates are in a figure the text layer does not carry.",
+     "anchor": "Section 6.2 and Figure 4 caption, pp.343-344",
+     "quotes": [
+      "We found that training using the quantum hardware led to a classiﬁer that produces useful classiﬁcation accuracy.",
+      "the accuracy obtained by the hardware solver is better than the accuracy of the classiﬁer trained with Tabu search.",
+      "The error rates of the hardware solver are superior to the ones obtained by Tabu search across all stages.",
+      "The reported error rates are per pixel errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on a small 52-variable hardware run; no numbers, repetitions or significance are given in the text.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper gives no numbers for the comparison in the text and does not say how many repetitions were run. With Q = 52 the Tabu search problem is small, and the paper elsewhere states that Tabu search can fail at 64 variables. This is not a demonstration of speedup."
+    },
+    {
+     "id_suggestion": "hardware-classifier-worse-false-negatives-than-baseline",
+     "value": "The authors report that the classifier from the hardware solver, although sparser by about 10%, has a false negative rate approximately 10% higher than the boosting framework they employed as a point of departure.",
+     "anchor": "Section 6.2, p.343",
+     "quotes": [
+      "However, the classiﬁer obtained with the hardware solver—even though it is sparser by about 10%—has a false negative rate approximately 10% higher than the boosting framework we employed as a point of departure."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the baseline numbers are not in the text.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text does not say whether the 10% is relative or absolute. The hardware-trained detector was worse than the existing classical baseline on false negatives, so the paper does not show an end-to-end advantage of the hardware route."
+    },
+    {
+     "id_suggestion": "hardware-shortfall-reason-small-q-speculation",
+     "value": "The authors state that a possible reason for the higher false negative rate is the extremely small Q relative to the several million weak learners in the dictionary, and that future training runs with larger hardware are expected to produce drastically better results.",
+     "anchor": "Section 6.2, p.343",
+     "quotes": [
+      "A possible reason for that is the extremely small Q relative to the number of weak learners as here we do selection from a dictionary consisting of several million weak classiﬁers.",
+      "Future training runs with larger hardware are expected to produce drastically better results."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A speculative explanation and a forecast, with no test in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-cascade-24-stages-sparsity-no-clear-advantage",
+     "value": "The authors report that the cascade training consisted of 24 stages, each trained on the false negatives of the previous stage as positive examples plus unseen true negatives (citing Viola and Jones, 2004), and that the cumulative number of weak classifiers at a stage does not suggest a clear advantage for either the hardware solver or Tabu search.",
+     "anchor": "Figure 4 caption, Section 7, p.344",
+     "quotes": [
+      "The training consisted of 24 cascaded stages.",
+      "Each stage is trained on the false negatives of the previous stage as its positive examples complemented with true negative examples unseen so far (Viola and Jones, 2004).",
+      "The cumulative number of weak classiﬁers employed at a certain stage does not suggest a clear advantage for either method."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, reported in a figure caption.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adiabatic-theorem-evolution-time-cited",
+     "value": "The authors state, citing the adiabatic theorem (Messiah, 1999), that AQO finds the ground state of the problem Hamiltonian with high probability provided the evolution time is of order the inverse square of the minimum gap, where the minimum gap is the smallest energy gap between the ground state and first excited state along the evolution.",
+     "anchor": "Section 7, p.343",
+     "quotes": [
+      "According to the adiabatic theorem (Messiah, 1999), the ground state of the problem Hamiltonian HP is found with high probability by AQO,",
+      "provided that the evolution time T from the initial Hamiltonian HB to HP is Ω(gm−2in), where gmin is the minimum gap.",
+      "The minimum gap is the smallest energy gap between the ground state E0 and ﬁrst excited state E1 of the time-dependent Hamiltonian"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work; the exponent was printed flat in the text layer.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmc-diagonalization-size-limits-cited",
+     "value": "The authors state, citing Young et al. (2010), that exact diagonalization is currently limited to about N = 30 binary variables and quantum Monte Carlo to about N = 256, and that analytic extraction of the minimum-gap scaling has been extremely difficult in practice except for a few special cases (citing Amin and Choi, 2009).",
+     "anchor": "Section 7, p.344",
+     "quotes": [
+      "Unfortunately, diagonalization is currently limited to about N = 30, and QMC to about N = 256, where N is the number of binary variables (Young et al., 2010).",
+      "As noted in Amin and Choi (2009), the task of analytically extracting the minimum gap scaling has been extremely diﬃcult in practice, except for a few special cases."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Limits the paper attributes to other work, as of 2012.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmc-indirect-gap-measurement-method",
+     "value": "The authors report that, using the QMC simulator of Farhi et al. (2009), they indirectly measured the minimum gap by estimating the magnitude of the second derivative of the ground state energy with respect to s. They state that this quantity bounds a different quantity than the one that sets the AQO time scaling, so they assume the matrix element V01 is not extremely small, and then use the polynomial or exponential scaling of the second derivative to infer whether the AQO time complexity is polynomial or exponential in N.",
+     "anchor": "Section 7, pp.344-345",
+     "quotes": [
+      "Using the QMC simulator of Farhi et al. (2009), we indirectly measured the minimum gap by estimating the magnitude of the second derivative of the ground state energy with respect to s",
+      "This quantity is an upper bound on 2|V01|2/gmin",
+      "However, the quantity we seek for the time scaling of AQO is",
+      "Nevertheless, assuming that the matrix element V01 is",
+      "not extremely small, the scaling of the second derivative—polynomial or exponential—can",
+      "be used to infer if the time complexity of AQO is polynomial or exponential in N ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own measurement method and its assumption in Section 7.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The measured quantity bounds 2|V01|^2 / gmin, whereas the AQO runtime depends on |V01| / gmin^2. Inferring the runtime scaling therefore rests on the stated assumption about V01, so the result is a proxy, not a gap measurement."
+    },
+    {
+     "id_suggestion": "qmc-scaling-linear-synthetic-instances",
+     "value": "The authors report for the synthetic data set (overlap coefficient 0.95) that exact diagonalization and QMC results for the second-derivative quantity coincide very well on a 20-variable problem, and that the peaks of its mean against the number of qubits for values in [10, 100], with each point representing 20 QMC runs, are well fitted by a linear function. They state this implies the AQO runtime on this data set is likely to scale at most polynomially.",
+     "anchor": "Figure 5 caption and Section 7, p.345",
+     "quotes": [
+      "ulation as well as exact diagonalization for a training problem with 20 weight",
+      "can see, the results obtained by diagonalization coincide very well with the ones",
+      "data set with an overlap coeﬃcient of 0.95. Right: A plot of the peaks of the",
+      "[10, 100].",
+      "error bars indicate standard deviation. Each point of the plot represents 20 QMC",
+      "runs. The data is well ﬁtted by a linear function. From the fact that the scaling",
+      "implies that the runtime of AQO on this data set is likely to scale at most polynomially."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on one synthetic data set, using QMC at small sizes and extrapolating.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The fit covers 10 to 100 variables, below the largest sizes the hardware can hold, and uses a proxy for the gap. A linear trend over this range does not establish polynomial AQO runtime at larger sizes."
+    },
+    {
+     "id_suggestion": "qmc-scaling-representativeness-limit",
+     "value": "The authors state that it is not possible to judge how typical the data set and scaling behavior are, and that scaling should depend on the input data.",
+     "anchor": "Section 7, p.345",
+     "quotes": [
+      "It is not possible to judge how typical this data set and scaling behavior are.",
+      "Obviously,"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of their scaling analysis in Section 7.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tabu-fails-at-64-variables-and-hard-instance-encoding",
+     "value": "The authors state that from related experiments with known optimal solutions, Tabu search often fails to obtain the optimal solution for training problems as small as 64 variables, and that it is possible to take a hard problem known to defeat AQO (Amin and Choi, 2009) and encode it as a training problem, which would cause the scaling to become exponential.",
+     "anchor": "Section 7, p.345",
+     "quotes": [
+      "from related experiments with known optimal solutions that Tabu search often fails to obtain",
+      "the optimal solution for training problems of sizes as small as 64 variables.",
+      "known to defeat AQO (Amin and Choi, 2009) and encode it as a training problem, which",
+      "would cause the scaling to become exponential."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Statements without data or a described experiment in this paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The first statement bears on the classical experiments: they use Tabu search at Q of 64 to 256, so their solutions are probably not optimal. The paper does not measure how far from optimal they are."
+    },
+    {
+     "id_suggestion": "aqo-approximate-solutions-may-still-beat-classical-claim",
+     "value": "The authors state that an exponentially small minimum gap only implies the system is unlikely to be found in its ground state if the evolution is completed in polynomial time, that due to quantum tunneling approximate solutions found by AQO can still be significantly better than those found by classical solvers, and that, citing approximability theory (Zuckerman, 2006), obtaining such approximate solutions may still be NP-hard, so finding a low-lying excited state may be difficult for classical algorithms but not for AQO.",
+     "anchor": "Section 7, pp.345-346",
+     "quotes": [
+      "only implies that the system is unlikely to be found in its ground state at the end of the",
+      "Due to quantum tunneling, approximate",
+      "solutions found by AQO can still be signiﬁcantly better than those found by classical solvers.",
+      "Further, results from approximability theory (Zuckerman, 2006) imply that obtaining such",
+      "approximate solutions may still be NP-hard, i.e. ﬁnding a low-lying excited state of HP may still be diﬃcult for classical algorithms but not for AQO."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument stated without evidence in this paper, partly attributed to other work.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The argument says AQO might give good approximate solutions; the paper does not show that AQO does so for QBoost problems. The NP-hard-to-approximate claim does not by itself show AQO can solve the approximate problem."
+    },
+    {
+     "id_suggestion": "aqo-polynomially-equivalent-to-gate-model-cited",
+     "value": "The authors state, citing Aharonov et al. (2004), that adiabatic quantum optimization was shown to be polynomially equivalent to the gate model of quantum computation.",
+     "anchor": "Section 1, p.333",
+     "quotes": [
+      "Aharonov et al. (2004) showed it to be polynomially equivalent to the gate model of quantum computation."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqo-superiority-studies-encouraging-cited",
+     "value": "The authors state that theoretical and numeric studies of the purported computational superiority of AQO over classical computing have repeatedly given encouraging results, citing four studies listed in the reference list.",
+     "anchor": "Section 1, p.333",
+     "quotes": [
+      "Theoretical and numeric studies of the purported computational superiority of AQO over classical computing have repeatedly given encouraging results"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A characterization of other work, using the word purported for the superiority.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The paper itself calls the superiority purported and cites four studies; the citations are in the reference list. This paper does not show a quantum speedup."
+    },
+    {
+     "id_suggestion": "dwave-benchmark-dramatic-speedup-vendor-claim",
+     "value": "The authors state that benchmarking tests performed by D-Wave on their current chips (citing Rose, 2011) have indicated that they are capable of providing dramatic speedups with respect to the best known classical algorithms for certain NP-hard problems.",
+     "anchor": "Section 1, pp.333-334",
+     "quotes": [
+      "Most recently, benchmarking tests performed by D-Wave on their current chips (Rose, 2011) have indicated that they are indeed capable of providing dramatic speedups with respect to the best known classical algorithms for certain NP-hard problems."
+     ],
+     "kind": "cited",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "D-Wave describes its own product; the cited source is a vendor presentation, and two authors are D-Wave staff.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "Authors Rose and Macready are affiliated with D-Wave Systems. No benchmark data are given in this paper."
+    },
+    {
+     "id_suggestion": "dwave-nature-publication-quantum-properties-cited",
+     "value": "The authors state that a series of rigorous studies of the quantum mechanical properties of the D-Wave processors, culminating in a recent Nature publication (Johnson et al., 2011), have increased the excitement in the quantum computing community for this approach.",
+     "anchor": "Section 1, p.333",
+     "quotes": [
+      "A series of rigorous studies of the quantum mechanical properties of the D-Wave processors, culminating in a recent Nature publication (Johnson et al., 2011), have increased the excitement in the quantum computing community for this approach."
+     ],
+     "kind": "cited",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor-affiliated description of its own processors' studies.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "The cited Nature paper has D-Wave authors, including Rose, who is an author of this paper."
+    },
+    {
+     "id_suggestion": "dwave-aqo-engine-accepts-qubo",
+     "value": "The authors state that, for machine learning purposes, D-Wave's implementation of AQO can be regarded as a discrete optimization engine that accepts any problems formulated as quadratic unconstrained binary optimization (QUBO), also equivalent to the Ising model and Weighted MAX-2-SAT.",
+     "anchor": "Section 1, p.334",
+     "quotes": [
+      "D-Wave’s implementation of AQO can be regarded as a discrete optimization engine that accepts any problems formulated as quadratic unconstrained binary optimization (QUBO), also equivalent to the Ising model and Weighted MAX-2-SAT."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A description of the vendor's own product by vendor-affiliated authors.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "The hardware experiment states a 52-variable limit for the chip used, so accepting any QUBO holds only within the chip's size and connectivity; the text does not discuss connectivity."
+    },
+    {
+     "id_suggestion": "conclusion-three-claimed-gains-over-adaboost",
+     "value": "The authors state in the conclusion that QBoost offers gains over standard AdaBoost in three aspects: lower generalization error, faster classification by employing fewer weak classifiers, and smaller computational effort for training with fewer boosting iterations.",
+     "anchor": "Section 8, p.346",
+     "quotes": [
+      "gains over standard AdaBoost in three aspects: i. lower generalization error; ii. faster classiﬁcation (employing fewer weak classiﬁers); iii. smaller computational eﬀort for training (fewer boosting iterations)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own summary claim; the supporting measurements are mixed.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "Table 1 supports lower test error only by amounts smaller than a standard deviation, and the weak-classifier count at Q = 256 is higher than AdaBoost's. The 52-qubit experiment had a higher false negative rate than the baseline. Only the iteration count (reweightings) is clearly lower in the reported numbers."
+    },
+    {
+     "id_suggestion": "conclusion-compact-in-all-experiments",
+     "value": "The authors state that in all experiments they find the classifier constructed with discrete optimization to be significantly more compact, while the gain in accuracy is more varied.",
+     "anchor": "Section 8, p.346",
+     "quotes": [
+      "In all experiments we ﬁnd that the classiﬁer constructed with discrete optimization is signiﬁcantly more compact.",
+      "The gain in accuracy however is more varied."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' summary claim; the reported numbers do not all support it.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "Table 1 shows more weak classifiers at Q = 256 (356.3) than AdaBoost (257.8), and the Figure 4 caption says the cumulative weak-classifier count shows no clear advantage between hardware and Tabu search. The all-experiments wording is stronger than the reported numbers."
+    },
+    {
+     "id_suggestion": "conclusion-negative-translation-cost-claim",
+     "value": "The authors state that the good performance of a large-scale binary classifier trained by iterated discrete optimization, in a form amenable to AQO but solved with classical heuristics, shows it is possible to map classifier training to AQO with negative translation costs, and that any improvements by AQO to the training solution will directly increase the advantage of their algorithm over conventional approaches.",
+     "anchor": "Section 8, p.346",
+     "quotes": [
+      "shows that it is possible to map the training of a classiﬁer to AQO with negative translation costs.",
+      "Any improvements by AQO to the solution of the training problem will directly increase the advantage of the algorithm proposed here over conventional approaches."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conclusion drawn by the authors, not tested directly in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper does not define negative translation costs; it presumably means the reformulation costs nothing in accuracy against classical boosting. The evidence is the classical-heuristic result in Table 1 and Figure 3."
+    },
+    {
+     "id_suggestion": "conclusion-hardware-gain-not-established",
+     "value": "The authors state that access to emerging hardware that realizes AQO is needed to establish the size of the gain over classical solvers, and that processors with larger qubit numbers than the 52 operational qubits of the first such experiment will be needed to see a more pronounced effect.",
+     "anchor": "Section 8, p.346",
+     "quotes": [
+      "Access to emerging hardware that realizes AQO is needed to establish the size of the gain over classical solvers.",
+      "We already completed the ﬁrst such experiment with 52 operational qubits, but processors with larger qubit numbers will be needed in order to see a more pronounced eﬀect."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit of their hardware evidence in Section 8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-bit-constrained-learning-generalizes-better-claim",
+     "value": "The authors state that they conclude bit-constrained learning machines can be expected to exhibit better generalization than when the weight variables are represented with higher precision, that bit-constraining can be regarded as intrinsic regularization that keeps model complexity low, and that to the best of their knowledge this has not been studied before.",
+     "anchor": "Section 8, p.346",
+     "quotes": [
+      "Further, we conclude that bit-constrained learning machines can be expected to exhibit better generalization than what is obtained when the weight variables are represented with higher precision.",
+      "Bit-constraining can be regarded as intrinsic regularization that contributes to keeping the model complexity low.",
+      "To the best of our knowledge this has not been studied before."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conclusion stated without a direct experiment in the paper.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "All reported experiments use dw = 1, so the paper reports no comparison of bit depths. The conclusion rests on the bit-depth counting argument and on the QBoost-vs-AdaBoost comparisons, which also differ in regularizer and loss."
+    },
+    {
+     "id_suggestion": "conclusion-integer-program-nphard-motivates-quantum",
+     "value": "The authors state that treating training as an integer program renders the training problem manifestly NP-hard, thus further motivating the application of quantum algorithms that may generate better approximate solutions than classically available.",
+     "anchor": "Section 8, p.346",
+     "quotes": [
+      "Second, this renders the training problem manifestly NP-hard, thus further motivating the application of quantum algorithms that may generate better approximate solutions than classically available."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A motivational claim with no proof in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "NP-hardness of the optimization problem does not by itself imply a quantum advantage on it. The paper states no result about quantum approximation quality on these problems."
+    }
+   ]
+  }
+ ]
+}
