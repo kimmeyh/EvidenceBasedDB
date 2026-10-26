@@ -141,8 +141,8 @@ def _load_reviews() -> dict[str, tuple[str, str]]:
 
 
 def edits_under_moved_ids() -> list[str]:
-    """verify() looks an edit up under the stored id, so an edit under a reader's id that ID_FIX moves would skip
-    its basis check (review of 6d8dec7)."""
+    """record() and verify() look an edit up under the stored id, so an edit under a reader's id that ID_FIX moves
+    would be neither written nor checked (reviews of 6d8dec7 and 9c79048)."""
     return sorted(set(ID_FIX) & (set(VALUE_REPLACE) | set(QUOTE_EDITS) | set(EXTRA_QUOTES)))
 
 
@@ -217,13 +217,16 @@ def anchor_safe(anchor: str) -> str:
     return anchor.replace('"', "'")  # a quote mark inside a label would break the quote pattern
 
 
-def record(g: str, rid: str, aid: str, a: dict, why: str) -> AssertionRecord:
+def record(g: str, rid: str, aid: str, a: dict, why: str, sid: str | None = None) -> AssertionRecord:
+    """Graded under the reader's id `aid`; stored, and edited, under `sid` (ID_FIX's id, else `aid`), the id
+    verify() checks an edit under (review of 9c79048)."""
+    sid = sid or aid
     cert, reasons = certainty(aid, a)
     anchor = anchor_safe(ANCHOR_FIX.get(aid) or a["anchor"])
     return AssertionRecord(
-        id=aid, value=" ".join((VALUE_REPLACE.get(aid) or a["value"]).split()),
+        id=sid, value=" ".join((VALUE_REPLACE.get(sid) or a["value"]).split()),
         provenance=f"{rid}, {anchor}",
-        citation_context="; ".join(f'"{q}" ({anchor})' for q in quotes_of(aid, a)),
+        citation_context="; ".join(f'"{q}" ({anchor})' for q in quotes_of(sid, a)),
         evidence_tag="N/A", context=CONTEXT_FIX.get(aid) or a["context"], certainty=cert,
         certainty_reasons=reasons, fidelity=a.get("fidelity") or "scoped", derivation="extracted",
         claim_type=a["claim_type"],
@@ -247,9 +250,7 @@ def assertions() -> list[tuple[str, AssertionRecord, str, dict]]:
         for a in p.get("assertions", []):
             aid = a["id_suggestion"]
             if aid not in DROP:
-                new = record(g, rid, aid, a, "extracted at a full read")
-                new.id = ID_FIX.get(aid, aid)  # graded and edited under the reader's id, stored under the fixed one
-                out.append((g, new, rid, p))
+                out.append((g, record(g, rid, aid, a, "extracted at a full read", ID_FIX.get(aid, aid)), rid, p))
     return out
 
 

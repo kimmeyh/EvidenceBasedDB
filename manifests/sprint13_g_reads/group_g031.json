@@ -1,0 +1,2384 @@
+{
+ "papers": [
+  {
+   "record_id": "paine-2023-physics-informed-quantum-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Paine-Elfving-Kyriienko_2023_Physics-Informed-Quantum-Machine-Learning-Solving-nonlinear__2308.01827.pdf",
+   "title_in_file": "Physics-Informed Quantum Machine Learning: Solving nonlinear differential equations in latent spaces without costly grid evaluations",
+   "version_note": "arXiv:2308.01827v1, dated August 4, 2023.",
+   "pages": 17,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A protocol that represents differential-equation terms as quantum states in a latent basis (Chebyshev or Fourier), builds a physics-informed loss from state overlaps instead of grid evaluations, and tests it by noiseless statevector simulation on four small examples.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "pi-qml-no-grid-evaluation",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract, p.1; Section I, p.2",
+     "quotes": [
+      "we construct a loss that does not require independent sequential function evaluations on grid points",
+      "and does not depend on Lc"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A construction of the paper; shown only by small noiseless simulations.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "pi-qml-nonlinearity-cost",
+     "verdict": "widened",
+     "note": "The body says more than the abstract: the additive cost depends on the encoding and is a single qubit for the two encodings introduced (the product basis of two Chebyshev functions is the Chebyshev encoding on N + 1 qubits), against the system size doubling of quantum nonlinear processing units for quadratic nonlinearity.",
+     "value": "The authors state that for some bases encoding nonlinearity requires only an additive linear increase of the system size, O(N + p), in the degree of nonlinearity p; they state the additive cost depends on the encoding and can be a single qubit for the specific encodings introduced (the product basis of two Chebyshev-encoded functions is the Chebyshev encoding for N + 1 qubits), against the system size doubling that quantum nonlinear processing units need for quadratic nonlinearity.",
+     "anchor": "Abstract p.1; Section III.A Multiplier, Eq. (38), p.8; Section V Discussion, p.13",
+     "quotes": [
+      "for some bases requiring only an additive linear increase of the system size O(N + p) in the degree of nonlinearity p",
+      "which is simply the Chebyshev encoding for N + 1 qubits",
+      "This additive cost depends on the choice of encoding, and can be just a single qubit for the specific encodings introduced.",
+      "require system size doubling for introducing quadratic nonlinearity (multiplicative cost in the degree of nonlinearity), over the linear system size increase that we require in the latent space"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A constructive count from the multiplier construction; not stated as a theorem with conditions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The single-qubit increase is shown for one product of two functions (degree 2); for higher powers the paper says only that the procedure is similar."
+    },
+    {
+     "id": "pi-qml-simulation-scope",
+     "verdict": "corrected",
+     "note": "The simulations are in Section IV (Results), not Section V. Four Chebyshev qubits is the setup of the linear and shifted-linear examples only; the nonlinear example used three qubits and the multidimensional example two qubits per variable (four in total).",
+     "value": "The authors report that they tested the algorithm by full statevector simulation in Julia with Yao.jl; the linear and shifted linear examples use the Chebyshev encoding with four qubits, the nonlinear example uses the Chebyshev encoding on three qubits, and the multidimensional example encodes each of x and y with a Chebyshev encoding of two qubits, four qubits in total.",
+     "anchor": "Section IV.A to IV.D, pp.10 to 12",
+     "quotes": [
+      "We use the Julia programming language and the Yao.jl package [113] for the full statevector simulation.",
+      "In particular we use the Chebyshev encoding and represent the function using four qubits.",
+      "We employ the Chebyshev encoding on three qubits and the same depth-six variational ansatz.",
+      "We choose to encode both |x⟩ and |y⟩ with Chebyshev encod- ing of two qubits.",
+      "applied over four qubits in total, with an ansatz depth of six"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its simulation setup, Section IV.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "pi-qml-overlap-model-definition",
+     "value": "The paper defines its quantum model as the overlap between a state |x⟩ that encodes the variable x through a feature map and a mixture of quantum states, a sum of states weighted with individual coefficients.",
+     "anchor": "Section II.B, Eq. (3), p.3",
+     "quotes": [
+      "represented by the overlap between a quantum state |x⟩ and a mixture of quantum states | fθ⟩⟩",
+      "We define the mixture as a sum of quantum states weighted with individual coefficients"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the model, Section II.B, Eq. (3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-basis-independence-condition",
+     "value": "The authors state that when the amplitudes of the variable state form an independent basis set the differential equation is satisfied if and only if the sum of the term states is zero; without that restriction the zero sum is sufficient but not necessary, and solutions can be missed in training.",
+     "anchor": "Section II.B, after Eq. (6), p.4; Section II.C, Eq. (12), p.5",
+     "quotes": [
+      "We additionally restrict the state |x˜⟩ such that its amplitudes form an independent basis set",
+      "With this restriction the differential equation is satisfied if and only if",
+      "is sufficient but not a necessary condition. In this case solutions can be missed when training for"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A stated equivalence argued in the text, not a numbered theorem; the formula itself is lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-total-loss",
+     "value": "The paper sets the total loss as the sum of a differential-equation loss built from overlaps, an initial value term and a data term, each of the last two a weighted mean square error, minimized by non-convex optimization or other iterative methods.",
+     "anchor": "Section II.B, Eqs. (7) to (11), p.4",
+     "quotes": [
+      "Using the mean square error (MSE) for defining the distance",
+      "L(θ) = LDE(θ) + Linit(θ) + Ldata(θ),",
+      "which is to be minimized either by non-convex optimization methods"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the loss, Section II.B, Eq. (11).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-overlap-measurement",
+     "value": "The authors state the overlaps are measured with known methods such as the Hadamard test, and that the real and imaginary parts of each overlap are needed, not the absolute value squared.",
+     "anchor": "Section II.B, p.4; Appendix A, Fig. 7, p.14",
+     "quotes": [
+      "the overlaps are estimated using known methods, for instance the Hadamard test [96]",
+      "As we are not interest in the absolute value squared of state overlaps, but their individual real and imaginary parts"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own measurement procedure, Appendix A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-derivative-via-generator",
+     "value": "The paper evaluates model derivatives by an x-independent generator operator applied to the model state, which requires a feature map whose derivative is a product of that operator and the feature map; since the operator is generally not unitary, it is compiled with linear combination of unitaries or other decompositions, and higher derivatives repeat the generator.",
+     "anchor": "Section II.C Evaluating derivatives, Eqs. (17), (18), p.5; Section II.D, Eq. (24), p.6",
+     "quotes": [
+      "we can associate a derivative of an operator with the product of two operators",
+      "This is the form of embedding we rely upon.",
+      "As in general the emergent operator (matrix) is not unitary",
+      "Higher-order derivatives follow the same strategy, where we repeatedly “lower-down” and concatenate generators"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's construction of the derivative, Section II.C.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-chebyshev-exact-derivatives",
+     "value": "The authors state that with the Chebyshev encoding the derivatives are exact, with no finite differencing, built from the Chebyshev differentiation rules, so the procedure is an automatic quantum differentiation.",
+     "anchor": "Section III.A Derivatives, Eqs. (30) to (34), pp.7 to 8",
+     "quotes": [
+      "Note that derivatives are exact (no finite differencing is",
+      "and the procedure can be considered as an automatic quantum differentiation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Follows from the cited Chebyshev identities; not stated as a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-chebyshev-multiplier",
+     "value": "The paper builds the Chebyshev multiplier from an adder circuit and a subtractor circuit with a modulus correction, controlled rotations to rescale the zero-degree coefficient, and projective measurements onto zero on ancillas, whose success probability gives the renormalization factors.",
+     "anchor": "Section III.A Multiplier, Fig. 2, Eqs. (41) to (55), pp.8 to 9",
+     "quotes": [
+      "First, either Uˆ ADD or Uˆ SUB are applied followed by identity or Uˆ MOD, respectively.",
+      "The probability of success of the projective measurement is used to estimate the renormalization factors"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own circuit construction, Section III.A and Fig. 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The multiplier is post-selected, so its cost includes the inverse of the success probability; the paper does not quantify that probability."
+    },
+    {
+     "id_suggestion": "pi-qml-fourier-multiplier-simpler",
+     "value": "The authors state that the Fourier multiplier is a simplified version of the Chebyshev multiplier, as it needs no rescaling and no subtraction, and that the Fourier operator toolbox is in general slightly simpler.",
+     "anchor": "Section III.B, Eq. (63), p.10; Section III.C, p.10",
+     "quotes": [
+      "the Fourier multiplicator is a simplified version of the Chebyshev multiplicator, as it does not require rescaling and subtraction",
+      "the required operator toolbox for implementing the Fourier encoding is slightly simpler than for the Chebyshev"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Comparison of the paper's own constructions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-fourier-real-function-limit",
+     "value": "The authors state that the Chebyshev encoding state is real for all x, so real functions can be enforced with a real-only ansatz, while the Fourier encoding state is complex and no ansatz enforcing purely real functions is currently known.",
+     "anchor": "Section III.C Comparing the encodings, p.10",
+     "quotes": [
+      "the Chebyshev encoding state is real for all x",
+      "The Fourier encoding state is naturally complex, and therefore such a simple enforcement for purely real functions is not available.",
+      "specific variational ansatz could be created for this purpose but it is not currently known"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states for its own encodings, Section III.C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-encoding-choice-open",
+     "value": "The authors state that an appropriate basis has to be found for each problem, that the operator toolbox, the multiplier in particular, must be found for each encoding chosen, and that encoding several variables on one register is left for future investigation.",
+     "anchor": "Section III.C, p.10; Section II.D, p.7",
+     "quotes": [
+      "For each problem an appropriate",
+      "basis (one of these two or another entirely) would have to be found.",
+      "For any encoding chosen the appropriate operator toolbox must be found.",
+      "and leave this as a question for future investigations"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Limits the paper states, Sections II.D and III.C.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-results-scope",
+     "value": "The authors state that the results test the main aspects of the protocol and do not address particular industrial use-cases, which are left for a separate publication.",
+     "anchor": "Section IV Results, p.10",
+     "quotes": [
+      "Here we aim to test the main aspects of the protocol, and do not concentrate on the particular industrial use-cases.",
+      "considered in a separate publication"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of its results, Section IV.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-linear-example",
+     "value": "The authors report that for a linear differential equation with the damped-oscillator solution, with κ = 1, λ = 2π and initial value f(0) = 1, a real-only ansatz of seven rotational and six entanglement layers trained with Adam at learning rate 0.005 gave solutions that follow the ground truth.",
+     "anchor": "Section IV.A, Eq. (64), Fig. 3, pp.10 to 11",
+     "quotes": [
+      "for κ = 1, λ = 2π, and initial value of f (0) = 1",
+      "seven rotational and six entanglement layers are used",
+      "is minimized via the Adam optimizer with a small learning rate 0.005",
+      "We observe that the obtained",
+      "solutions follow the ground truth for the system"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One noiseless simulation, judged by plot.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-loss-hyperparameters",
+     "value": "The authors state that in all examples the total loss is the differential loss raised to the power p plus η times the initial value or boundary loss, with p = 1/2 (turning the mean square error into a root mean square error) and η = 10.",
+     "anchor": "Section IV.A to IV.D, pp.11 to 12",
+     "quotes": [
+      "we set the weight factor for the initial value loss η = 10",
+      "which is chosen as p = 1/2",
+      "it allows converting the loss from MSE to RMSE (root-mean-square error) loss"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own training setup, Section IV.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-shifted-model-result",
+     "value": "The authors report that for df/dx minus f plus 15 = 0 with f(0) = 16, a model with a trainable shift performed better than the scaled model, needing roughly an order of magnitude fewer epochs, while the scaled model deviated from the ground truth.",
+     "anchor": "Section IV.B, Eq. (66), Fig. 4, pp.11 to 12",
+     "quotes": [
+      "d f (x) − f (x) + 15 = 0, f (0) = 16,",
+      "We observe that the shifted model performs better",
+      "require fewer epochs roughly reduced by an order of magnitude, signifying the improved trainability",
+      "while the regular scaled model starts to deviate from the ground truth"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One noiseless simulation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-nonlinear-example",
+     "value": "The authors report that for a nonlinear equation with analytic solution f(x) = 1/(2 − x) and f(0) = 1/2, solved with the latent-space multiplier on three Chebyshev qubits, the trained solution follows the ground truth, and the optimizer finds a suitable candidate when the loss drops below unity.",
+     "anchor": "Section IV.C, Eq. (67), Fig. 5, p.12",
+     "quotes": [
+      "This DE has an analytic solution f (x) = 1/(2 − x), set as the ground truth.",
+      "Results of solving nonlinear DE d f /dx − f 2 = 0 with initial value f (0) = 0.5",
+      "This follows nicely the ground truth",
+      "ultimately finds the suitable candidate when loss drops below unity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One noiseless simulation, judged by plot.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Eq. (67) prints the equation with a plus sign, the Fig. 5 caption with a minus sign; only the minus sign is consistent with the stated solution 1/(2 − x)."
+    },
+    {
+     "id_suggestion": "pi-qml-multidimensional-example",
+     "value": "The authors report that for df/dy − 2y − x = 0 with f(x, 0) = 1, using two two-qubit Chebyshev registers and 21 uniformly spaced boundary points, the trained solution closely follows the ground truth with average deviation in the range of 10 to the power minus 3.",
+     "anchor": "Section IV.D, Eq. (68), Fig. 6, p.12",
+     "quotes": [
+      "d f (x, y) − 2y − x = 0, f (x, 0) = 1.",
+      "We choose 21 uniformly spaced points for x ∈ (−1, 1).",
+      "closely following the ground truth (average deviation is in the range of 10−3)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One noiseless simulation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-trainability-limits",
+     "value": "The authors state that the approach comes at the expense of non-convex optimization, that barren plateaus and local minima apply to protocols not tailored to specific problems, and that the multiplication, differentiation and mapping circuits add overheads that may be difficult to handle within NISQ.",
+     "anchor": "Section V Discussion, p.13",
+     "quotes": [
+      "This comes at the expense of non-convex optimization (similarly to deep learning approaches), which can",
+      "training issues such as barren plateaus [87, 116] and local minima [85, 86] are generally applicable to all protocols that are not tailored to specific",
+      "multiplication, differentiation and mapping circuits add overheads that may be difficult to handle within NISQ"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Limits the paper states, Section V.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-circuit-gatecount-claim",
+     "value": "The authors state that the added circuits mostly involve QFT-like circuits with gate count of order N squared or cheaper approximators, so they fit early fault-tolerant (ISQ) requirements.",
+     "anchor": "Section V Discussion, p.13",
+     "quotes": [
+      "But given that they are mostly involving QFT-like circuits with O(N2) gatecount or even more resource-frugal approximators",
+      "the proposed circuits fit the ISQ requirements"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no resource count is given in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-qubit-scaling",
+     "value": "The authors state that for Lc basis functions the approach needs order log Lc qubits per dimension and order D log Lc qubits for D-dimensional problems.",
+     "anchor": "Section V Discussion, p.13",
+     "quotes": [
+      "we need O(log Lc) per dimension, and O(D log Lc) qubits for D-dimensional problems"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Follows from the encoding of 2^N basis functions on N qubits; stated without proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-inversion-workflow-open",
+     "value": "The authors outline an alternative workflow for linear problems that writes the constraints and the initial value as a linear system solved by quantum linear-system solvers such as HHL or adiabatic inversion, state it may lead to significant circuit depth, and leave its full details for future research.",
+     "anchor": "Appendix B, p.14",
+     "quotes": [
+      "assuming a linear problem with no cross products between functions of the independent variable and the model",
+      "This is promising in terms of big-O scaling, while may lead to significant circuit depth in practice.",
+      "an approach and generalizing is left for future research"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states for its own alternative workflow, Appendix B.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-conclusion-future",
+     "value": "The authors conclude that the physics-informed constraints are implemented as overlaps between quantum states, and state that further research could investigate whether the method improves on the limiting factors of PINN methods regarding massive grid evaluations in higher dimensions.",
+     "anchor": "Section VI Conclusion, pp.13 to 14",
+     "quotes": [
+      "The physics-informed constraints are then implemented as overlaps between quantum states",
+      "Further research could investigate in more detail the potential for quantum",
+      "to improve on the limiting factors of PINN methods with regards to massive grid evaluations in higher dimensions"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion; the advantage is left as an open question.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pi-qml-patent-application",
+     "value": "The paper notes that a patent application for the method described in the manuscript has been submitted by PASQAL.",
+     "anchor": "Reference [89], p.16",
+     "quotes": [
+      "patent application for the method described in this manuscript has been submitted by PASQAL"
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A company statement about its own method.",
+     "result_type": "vendor",
+     "context": "world",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "pal-2026-loophole-robust-certification-quantum-advantage",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Pal-et-al._2026_Loophole-Robust-Certification-of-Quantum-Advantage__2607.13090.pdf",
+   "title_in_file": "Loophole-Robust Certification of Quantum Advantage",
+   "version_note": "arXiv:2607.13090v1, dated July 16, 2026. The text refers once to 'Eq. (??)', a broken cross-reference in the source.",
+   "pages": 18,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that defines benchmark dependence, a task-level generalization of Bell measurement dependence, proves a tight additive bound on how much benchmark-correlated side information can raise a classical score, and applies it to IBM hardware Bell-game data and to a Havlicek-style quantum-kernel benchmark.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "benchmark-dependence-bound",
+     "verdict": "widened",
+     "note": "The stored quotes cut off the inequality. The body states it in full, with its conditions (reward in [0, 1]), shows it is independent of the number of parties and of the sizes of the input, output and hidden-variable spaces, and proves no universal bound with a sublinear penalty exists.",
+     "value": "The paper proves that for any distributed task with reward in [0, 1], the optimal classical score under benchmark dependence of strength at most η satisfies Sη ≤ min{1, Scl + η}, where Scl is the optimal benchmark-independent classical value; the bound is independent of the number of parties and of the sizes of the input, output and hidden-variable spaces. It constructs a family of tasks that saturates the bound and proves that no universal bound Sη ≤ Scl + g(η) with g(η) = o(η) as η → 0 holds for all bounded-reward tasks.",
+     "anchor": "Section I p.2; Section II.B Eqs. (13), (14), (24), (29), pp.4 to 5",
+     "quotes": [
+      "For any distributed task with reward in [0, 1], the optimal classical score under benchmark dependence of strength at most η satisfies Sη ≤ min{1, Scl",
+      "where Scl is the optimal benchmark-independent classical value",
+      "The bound is independent of the number of parties and of the sizes of the input, output, and hidden-variable spaces.",
+      "construct a family of tasks that saturates this bound",
+      "bound of the form Sη ≤ Scl + g(η) (29) valid for all bounded-reward tasks with g(η) = o(η) as η → 0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Section II.B (Eqs. 12 to 19) with the statement and its condition of rewards in [0, 1] quoted; saturation proved by the construction of Eqs. (23) to (28).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "benchmark-dependence-ibm-certificates",
+     "verdict": "widened",
+     "note": "The body names the runs and the confidence: CHSH on IBM Kingston with 4096 shots per context and Mermin-GHZ on IBM Marrakesh with 2048 shots per context, simultaneous one-sided 95% Clopper-Pearson bounds with Bonferroni allocation; for magic square every raw certificate is zero.",
+     "value": "The authors report that, using simultaneous one-sided 95% Clopper–Pearson bounds with Bonferroni allocation on raw IBM counts, the strongest reconstructed cycle-product certificates are 0.08115 for CHSH on IBM Kingston with 4096 shots per context and 0.21777 for Mermin–GHZ on IBM Marrakesh with 2048 shots per context, while every raw-count magic-square certificate is zero; the CHSH value remains below the ideal CHSH threshold of about 0.1036.",
+     "anchor": "Section III.G, Table II, pp.11 to 12; Section IV p.16",
+     "quotes": [
+      "the strongest reconstructed cycle-product certificates are ηmceirnt,block = 0.08115 for CHSH on IBM Kingston and 0.21777 for",
+      "Mermin–GHZ on IBM Marrakesh",
+      "For CHSH, the largest certified value occurs on IBM Kingston with 4096 shots per context.",
+      "Marrakesh with 2048 shots per context",
+      "For the magic-square game, every exact raw-count reconstructed-block certificate is zero.",
+      "This remains below the ideal CHSH threshold cos2(π/8) − 3/4 ≈ 0.1036",
+      "Clopper–Pearson lower bound obtained using Bonferroni allocation",
+      "with 95% con-"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "benchmark-dependence-stated-limits",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section III.A p.6; Section III.I p.15; Section IV p.16",
+     "quotes": [
+      "Inter-round hidden-state correlations can invalidate the factorization in Eq. (36); therefore, Eqs. (34) and (37) are specific to roundwise benchmark dependence."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Limits the paper states in Sections III and IV.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "quantum-kernel-benchmark-audit",
+     "verdict": "widened",
+     "note": "The stored quotes are cut and lose the scores. The body gives the hardware quantum-kernel score 0.900 against the classical SVM 0.525, the required dependence 0.375 as their difference, the signed construction variables at 0.5, and the shortcut classifiers at perfect test accuracy; it also states the 0.5 is a label-conditioned lower bound on the formal dependence.",
+     "value": "The authors report that on ibm_marrakesh the hardware-estimated quantum-kernel SVM achieved 0.900 held-out accuracy against 0.525 for the best pre-specified classical SVM (polynomial kernel), so any benchmark-dependent classical surrogate must have dependence at least 0.375; the signed construction variables (sign g(u) and the signed-margin bin) have label-conditioned dependence 0.5, which lower-bounds their full-instance dependence, and a classical SVM given sign g(u) alone achieved perfect test accuracy.",
+     "anchor": "Section III.I, Eqs. (98), (103), Table III, pp.14 to 16",
+     "quotes": [
+      "The hardware-estimated quantum-kernel support vec- tor machine (SVM) achieved SQ = 0.900",
+      "was a polynomial-kernel SVM with Scl = 0.525",
+      "ηbm ≥ ηreq := max{0, SQ − Scl} = 0.375.",
+      "The signed construction variables satisfy ηλ(Y ) = 0.5 > ηreq",
+      "their corresponding fullinstance benchmark dependence is also at least 0.5",
+      "A classical SVM given sign g(u) alone achieved perfect test accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on 40 test examples.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "benchmark-dependence-definition",
+     "value": "The paper defines benchmark dependence as the supremum over benchmark instances z of the total-variation distance between the hidden-variable law p(λ|z) and its benchmark marginal p0(λ); the benchmark-independent model has ηbm = 0, and when z is the full measurement-setting tuple it reduces to a posterior total-variation measure of Bell measurement dependence.",
+     "anchor": "Section I p.2; Section II.A Eqs. (5) to (7), p.3",
+     "quotes": [
+      "We quantify benchmark dependence by ηbm = supz dTV(p(λ|z), p0(λ)) .",
+      "The benchmarkindependent model corresponds to ηbm = 0.",
+      "When z is the full measurement-setting tuple, this definition reduces to a",
+      "posterior total-variation measure of measurement dependence"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition, Section II.A Eq. (6).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-pairwise-equivalence",
+     "value": "The paper shows that the benchmark-dependence parameter and the pairwise parameter are equivalent up to constants, ηbm ≤ ηpair ≤ 2 ηbm, and relates them to Hall's measurement-dependence parameter through M = 2ηpair.",
+     "anchor": "Section II.A Eqs. (8) to (10), p.3",
+     "quotes": [
+      "These two quantities are equivalent up to constants: ηbm ≤ ηpair ≤ 2 ηbm.",
+      "The left inequality follows because p0 is a convex mixture of the distributions p(λ|z), while the right inequality is a direct consequence of the triangle inequality.",
+      "since M = 2ηpair and ηbm ≤ ηpair ≤ 2ηbm"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Section II.A by convexity and the triangle inequality, with both steps quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-inversion",
+     "value": "The authors state that an observed score S above Scl implies ηbm ≥ S − Scl for every benchmark-dependent classical surrogate able to reproduce that score, and that for an imperfect observed score Q < 1 the inversion is η ≥ max{0, Q − Scl}.",
+     "anchor": "Section I p.2; Section II.B p.4",
+     "quotes": [
+      "Hence, an observed score S > Scl implies ηbm ≥ S − Scl for every benchmark-dependent classical surrogate capable of reproducing that score.",
+      "from any imperfect observed score Q < 1, for which the inversion remains η ≥ max{0, Q − Scl}"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows directly from the proved bound of Eq. (13), Section II.B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-exact-saturation",
+     "value": "The paper proves exact saturation: for a hidden-instance identification task with m ≥ 2 equally likely instances and reward 1 when Alice outputs the instance, Scl = 1/m and the benchmark-dependent optimum equals min{1, 1/m + η}, achieved by shifting probability mass η toward the correct label.",
+     "anchor": "Section II.B Exact saturation, Eqs. (23) to (28), pp.4 to 5",
+     "quotes": [
+      "there exist tasks for which benchmark dependence increases the achievable classical score by exactly η",
+      "Let m denote the number of possible hidden task instances with m ≥ 2",
+      "Thus Scl = 1/m.",
+      "This construction shifts probability mass η toward the correct label λ = z"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved by explicit construction, Section II.B Eqs. (23) to (28).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-average-round-bound",
+     "value": "The paper shows that for n-repeated tasks scored by the average over rounds the additive bound carries over, the average score rising by at most η (or the mean of roundwise ηt), that this additive average-score bound holds without any factorization assumption, and that it is also generically optimal.",
+     "anchor": "Section II.B Eqs. (20) to (22), p.4; Section III.A p.6",
+     "quotes": [
+      "the general relaxed advantage inequality immediately gives",
+      "the additive average-score bound (21)",
+      "remains valid without any factorization assumption",
+      "additive dependence in (22) is also generically optimal"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A direct consequence of the proved Eq. (13), stated in Section II.B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-multiplicative-bound",
+     "value": "The paper proves that for an n-round product task under the roundwise benchmark-dependent model the score is at most the product over rounds of (ωc + ηi), which is (ωc + η) to the power n when all ηi = η, and that the bound is exact for the hidden-instance primitive for 0 ≤ η ≤ 1 − ωc; inter-round hidden-state correlations can invalidate the factorization, so these results are specific to roundwise dependence.",
+     "anchor": "Section III.A Eqs. (34) to (37), pp.5 to 6",
+     "quotes": [
+      "For the n-round product task (31) under the roundwise model (32), we posit that",
+      "In particular, if ηi = η for all i, then",
+      "Each bracket is a oneround benchmark-dependent classical score. By (13), it is at most ωc + ηi.",
+      "Sη(n) = (ωc + η)n for 0 ≤ η ≤ 1 − ωc.",
+      "Inter-round hidden-state correlations can invalidate the factorization in Eq. (36)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Section III.A by factorizing the product score into one-round scores each bounded by Eq. (13); conditions (product task, roundwise model) quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The statement is introduced with 'we posit that' but is then proved."
+    },
+    {
+     "id_suggestion": "benchmark-dependence-pathwise-bound",
+     "value": "The paper shows that for any n-round bounded-reward task with any certified loophole-free classical bound Cn, the score is at most Cn + ηpath, where ηpath is the benchmark dependence of the whole hidden trajectory; this bound holds even when the hidden dynamics are arbitrarily correlated across rounds.",
+     "anchor": "Section III.A Eqs. (38), (39), p.6",
+     "quotes": [
+      "Then for any n-round bounded-reward task with any certified loophole-free classical bound Cn, S(n) ≤ Cn + ηpath.",
+      "loopholerobust bound that remains valid even when the hidden dynamics are arbitrarily correlated across rounds"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Eq. (13) applied to the augmented hidden variable, Section III.A, stated with its conditions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-proposition-1",
+     "value": "Proposition 1 (sequential path-coupling bound) proves that for the benchmark-dependent Markov model the pathwise dependence satisfies ηpath ≤ 1 − (1 − ε1) times the product over t of (1 − εt), and consequently ηpath ≤ min{1, ε1 plus the sum of εt}, where ε1 and εt are the one-step benchmark sensitivities of the initial distribution and transition kernels; with common minorization weights αt, εt ≤ 1 − αt.",
+     "anchor": "Proposition 1, Section III.A, Eqs. (40) to (52), pp.6 to 7",
+     "quotes": [
+      "Proposition 1 (Sequential path-coupling bound). For the benchmark-dependent Markov model (40), the pathwise dependence satisfies",
+      "ηpath ≤ 1 − (1 − ε1) (1 − εt).",
+      "Consequently, n ηpath ≤ min 1, ε1 + εt .",
+      "Hence εt ≤ 1 − αt (t = 1, . . . , n),"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 1 with its proof by maximal coupling, Section III.A; statement and model condition quoted (the product symbol is lost in the text layer).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-pathwise-conservative",
+     "value": "The authors state that the pathwise estimate is intentionally conservative because it concerns the law of the whole trajectory, and that Dobrushin-type contraction coefficients can sharpen bounds for current-state distributions but do not erase discrepancies already in the full path.",
+     "anchor": "Section III.A p.7",
+     "quotes": [
+      "The result is intentionally conservative because it concerns the law of the entire",
+      "Dobrushin-type contraction coefficients can sharpen corresponding bounds for the current-state or suffix distributions,",
+      "but they do not erase discrepancies already contained in the full path"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states for its own bound, Section III.A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-finite-sample",
+     "value": "The paper gives a finite-sample certificate: with N i.i.d. bounded scores, a one-sided Hoeffding lower confidence bound LN(α) on the mean gives a certified lower bound on the loophole strength at confidence 1 − α of max{0, LN(α) − C}, and for binary outcomes the exact one-sided Clopper–Pearson limit may replace the Hoeffding bound.",
+     "anchor": "Section III.B Eqs. (53) to (59), p.7",
+     "quotes": [
+      "By Hoeffding’s inequality, with probability at least 1 − α, the true mean score S satisfies",
+      "Equivalently, a certified lower bound on the loophole strength at confidence 1 − α is",
+      "max{0, LN (α) − C}",
+      "If Wj ∈ {0, 1}, one may replace the Hoeffding bound"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from Hoeffding's inequality and Eq. (13), Section III.B, conditions (i.i.d. bounded scores) quoted.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-mutual-information",
+     "value": "The paper derives an average-case relaxed advantage inequality in which the excess score above the loophole-free classical value is bounded by the average total-variation dependence, itself bounded through Pinsker's and Jensen's inequalities by the square root of half the mutual information between the hidden variable and the benchmark instance; the authors state this is genuinely weaker than the worst-case bound, since a rare instance can have order-one deviation while adding arbitrarily little mutual information.",
+     "anchor": "Section III.C Eqs. (60) to (64), p.8",
+     "quotes": [
+      "Equation (64) is thus an average-case relaxed advantage inequality",
+      "Applying Pinsker’s inequality pointwise,",
+      "and then Jensen’s inequality for the concave square-root function",
+      "This formulation is genuinely weaker than the worstcase bound.",
+      "so ηbm cannot, in general, be bounded in terms of I(Λ; Z) alone"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section III.C from Pinsker's and Jensen's inequalities and Eq. (13).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-bell-thresholds",
+     "value": "The authors state that for pseudo-telepathy games a perfect product score forces η ≥ 1 − ωc, giving 1/4 for the GHZ/Mermin game (ωc = 3/4) and 1/9 for the Mermin–Peres magic square (ωc = 8/9), while for CHSH, whose quantum value is cos2(π/8), the ideal threshold is cos2(π/8) − 3/4 ≈ 0.1036.",
+     "anchor": "Section III.D, Eqs. (66) to (70), Table I, p.8",
+     "quotes": [
+      "an ideal perfect product-task score Qn = 1 forces",
+      "the three-party GHZ/Mermin game has ωc = 3/4 and ωq = 1 [51, 56, 57], while the Mermin–Peres magic-square game has ωc = 8/9 and ωq = 1",
+      "threshold 1 − ωc = 1/4",
+      "At η = 1/9, the strategy therefore wins with certainty.",
+      "the ideal CHSH threshold cos2(π/8) − 3/4 ≈ 0.1036"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived from the proved bounds and the known game values, Section III.D.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-multiparty",
+     "value": "The paper shows that for a k-party distributed task with factorized local responses the proof is unchanged and the additive penalty remains exactly η, independent of k; the number of parties enters only through the task-dependent classical value.",
+     "anchor": "Section III.E Eqs. (71) to (74), p.9",
+     "quotes": [
+      "the proof of (13) is unchanged",
+      "the additive penalty remains exactly η, independent of k",
+      "Hence the number of parties enters only through the task-dependent benchmark ωc"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proof of Eq. (13) carried over in Section III.E with its factorization condition stated.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-synthetic-magic-square",
+     "value": "The authors give a synthetic noisy magic-square illustration: with K = 9650 wins in ten thousand rounds the 95% Clopper–Pearson average-score certificate is about 0.0729, and with 1800 flawless blocks out of 2000 blocks of three rounds the product-score certificate is about 0.0724, corresponding to a Hall-type measurement dependence M ≥ about 0.145.",
+     "anchor": "Section III.F, pp.9 to 10",
+     "quotes": [
+      "consider a synthetic noisy realization of the Mermin–",
+      "yield K = 9650 wins",
+      "≈ 0.9618 − 8 9 ≈ 0.0729",
+      "Suppose 1800 of the 2000 blocks are flawless",
+      "0.0724. Thus, with 95% confidence",
+      "2ηmceirnt ≈ 0.145"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A worked illustration on synthetic numbers, not data.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-hardware-setup",
+     "value": "The authors state that CHSH, Mermin–GHZ and magic square were run on IBM Fez, Kingston and Marrakesh with two, three and four measured qubits, transpiled at optimization level 3, executed with IBM Runtime SamplerV2 without added resilience options, and readout-mitigated with a full assignment matrix that does not correct state-preparation or gate errors, drift or crosstalk.",
+     "anchor": "Section III.G, p.10",
+     "quotes": [
+      "CHSH, Mermin–GHZ, and magic square were implemented using two, three, and four measured qubits, respectively.",
+      "first transpiled at optimization level 3",
+      "All circuits were executed using IBM Runtime SamplerV2 without additional Runtime resilience options.",
+      "It does not correct state-preparation or gate errors, nor does it model time-dependent calibration drift or gate-induced crosstalk."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own hardware setup, Section III.G.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-cycle-product-limit",
+     "value": "The authors state that because the exported data were aggregated by benchmark context and not kept as a shot-ordered sequence of rounds, product-task certification could not be done as a direct block-success analysis, so they built a conservative cycle-product statistic from the context-resolved data.",
+     "anchor": "Section III.G, p.10",
+     "quotes": [
+      "Because the exported data were aggregated by benchmark context rather than retained as a shotordered sequence of",
+      "We therefore construct a conservative cycle-product statistic from the"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states on its own analysis, Section III.G.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-magic-square-uncertified",
+     "value": "The authors report that for the magic-square game the largest simultaneous block lower bound, 0.02083 on IBM Fez with 128 shots per context, has a ninth root below ωc = 8/9, and state that this does not imply the observed one-round scores are classically trivial; the nine-context product construction is too stringent.",
+     "anchor": "Section III.G, Table II, p.11",
+     "quotes": [
+      "The largest value of the simultaneous block lower bound is obtained on IBM Fez with 128 shots per context",
+      "= 0.02083, but its ninth root remains below the loophole-free classi-",
+      "cal value ωc = 8/9",
+      "This does not imply that the observed one-round scores are classically trivial."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-mitigated-sensitivity",
+     "value": "The authors report that readout mitigation raises the plug-in estimates, to 0.10190 for CHSH on IBM Kingston with 4096 shots and 0.24194 for Mermin–GHZ on IBM Fez with 2048 shots, by an average of 8.12 thousandths for CHSH across backends and shot budgets, and state these mitigated quantities are not exact 95% confidence bounds; a confidence-certified mitigated analysis would need propagation of calibration and game-shot uncertainty.",
+     "anchor": "Section III.G, pp.11",
+     "quotes": [
+      "for which ηmmiint,block = 0.10190",
+      "For Mermin–GHZ, the largest mitigated value is obtained on IBM Fez with 2048 shots per context, ηmmiint,block = 0.24194.",
+      "The largest mitigated value for CHSH is obtained on IBM Kingston with 4096 shots per context",
+      "increases the plug-in value by an average of 8.12 × 10−3 for CHSH",
+      "should not be interpreted as exact 95% confidence bounds",
+      "A confidence-certified mitigated analysis would additionally require propagation of both calibra-"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-interval-robustness",
+     "value": "The authors report that the conclusions are insensitive to the simultaneous-interval construction: Bonferroni and Šidák Clopper–Pearson, Bonferroni Wilson and Bonferroni Agresti–Coull give about 0.0811 for the strongest raw CHSH run and about 0.217 for Mermin–GHZ, and all four give zero for magic square.",
+     "anchor": "Section III.G, p.11",
+     "quotes": [
+      "The conclusions are insensitive to the particular simultaneous-interval construction.",
+      "Agresti–Coull analyses give similar values ≃ 0.0811",
+      "the corresponding values are ≃ 0.217",
+      "All four constructions give zero for magic square."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical sensitivity check in one study.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-explicit-surrogates",
+     "value": "The paper constructs explicit benchmark-dependent classical surrogates for CHSH and Mermin–GHZ, each of four deterministic strategies losing on exactly one setting, whose score is 3/4 + η and saturates the additive bound, and for the magic square a surrogate with score min{1, 8/9 + η}.",
+     "anchor": "Section III.H, Eqs. (82) to (90), pp.12 to 13",
+     "quotes": [
+      "it can be saturated by an explicit benchmarkdependent classical model",
+      "Therefore SηGHZ = 3 4 + η.",
+      "The loophole-free classical value is ωc = 8/9.",
+      "At η = 1/9, the strategy therefore wins with certainty.",
+      "Thus, the magic-square game also admits an explicit benchmark-dependent classical surrogate that saturates the additive relaxed bound over its full admissible range."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Explicit constructions with their total-variation and score computed, Section III.H.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-qk-setup",
+     "value": "The authors state that the quantum kernel was a fidelity kernel with a two-qubit ZZ feature map of two repetitions and full entanglement, run on ibm_marrakesh with 1024 shots per kernel circuit; labels came from a rotated parity observable of the feature state with separation gap 0.25; the training set had 15 examples per class and the held-out set 20 per class, 40 in all; the task is not a natural-data demonstration.",
+     "anchor": "Section III.I, pp.13 to 14",
+     "quotes": [
+      "is generated by a two-qubit ZZ-feature map with two repetitions and full",
+      "We used a separation gap ∆ = 0.25",
+      "We implemented this task on the IBM ibm_marrakesh backend using 1024 shots per kernel circuit",
+      "The training set contained 15 examples per class, and the held-out test set contained 20 examples per class",
+      "the uniform empirical distribution over the 40 test examples",
+      "It is not intended as a natural-data demonstration of practical quantum advantage."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup, Section III.I.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-qk-paired-results",
+     "value": "The authors report that on the 40 held-out examples the quantum kernel was correct on 36 and the classical SVM on 21; the quantum kernel alone was correct in 17 cases and the classical SVM alone in 2; the absolute-margin bin has label-conditioned dependence 0.15 and the random control 0.05.",
+     "anchor": "Section III.I, Table III, pp.14 to 16",
+     "quotes": [
+      "the quantum kernel was correct on 36/40 test examples, while the classical SVM was correct on 21/40",
+      "SVM was wrong in 17 cases, while the classical SVM was correct and the quantum kernel was wrong in 2 cases",
+      "the absolute-margin bin has ηλ(Y ) = 0.15, and the random control has only ηλ(Y ) = 0.05"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-label-conditioned-lower-bound",
+     "value": "The paper proves by convexity of total variation that the label-conditioned construction diagnostic ηλ(Y) is a lower bound on the full-instance benchmark dependence, and states that the full-instance empirical quantity is not informative here because each continuous input occurs once, so it is governed by the least frequent category and can be large even for a random control.",
+     "anchor": "Section III.I Eqs. (93) to (98), pp.13 to 14",
+     "quotes": [
+      "and convexity of total variation gives",
+      "ηλ(Y ) ≤ ηbm,λ.",
+      "This full-instance empirical quantity is not, however, an informative diagnostic of class-relevant construction leakage in the present benchmark.",
+      "It can therefore assign substantial full-instance dependence even to a random control"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved by convexity of total variation, Eqs. (96) to (98).",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-necessary-not-sufficient",
+     "value": "The authors state that a side variable whose dependence exceeds the required amount is only a necessary-resource audit, not proof it can reproduce the quantum score, so operational sufficiency is tested separately by training classical shortcut classifiers with explicit access to it, which is not a fair classical benchmark.",
+     "anchor": "Section III.I, p.14",
+     "quotes": [
+      "This comparison alone is a necessary-resource",
+      "audit, not a proof that the variable can reproduce the quantum score.",
+      "Operational sufficiency is tested separately by training classical shortcut classifiers with explicit access to λ.",
+      "This is not a fair classical benchmark"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states on its own audit, Section III.I.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-leakage-relation",
+     "value": "The authors state that construction-side leakage is related to data leakage and shortcut learning in classical machine learning but not identical, because benchmark-construction information need not be in the declared training features to act as a classical side resource.",
+     "anchor": "Section I, p.2; Section III.I, p.13",
+     "quotes": [
+      "This is related to data leakage and shortcut learning in classical machine",
+      "The analogy is, however, not exact: benchmark-construction information need not be present in the declared",
+      "training features to constitute a classical side resource"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of the scope of its notion, Section I.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-novelty-scope",
+     "value": "The authors state that the total-variation stability estimate in the proof is classical and standard in robust statistics and decision theory, and that their contribution is its operational use as a resource bound for quantum-advantage certification.",
+     "anchor": "Section I p.2; Section IV p.16",
+     "quotes": [
+      "The total-variation stability estimate entering the proof is classical; the contribution of the present framework is its operational use for quantum-advantage certification.",
+      "contribution is not this probabilistic inequality in isolation"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of its contribution, Sections I and IV.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-certification-principle",
+     "value": "The authors conclude that a loophole-robust advantage claim should specify the permitted information resources, report the benchmark-independent classical value, and quantify the minimum benchmark dependence needed by any classical surrogate that reproduces the observed score, which is stronger than exceeding a selected classical comparator.",
+     "anchor": "Section IV Conclusion, p.16",
+     "quotes": [
+      "A loophole-robust claim should specify the permitted information resources, report",
+      "the benchmark-independent classical value, and quantify the minimum benchmark dependence required by any classical surrogate capable of reproducing the observed score",
+      "stronger than the statement that a selected classical comparator has been exceeded"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A recommendation of the authors.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dependence-data-availability",
+     "value": "The authors state that the data and analysis code, including the raw and readout-mitigated IBM results and the quantum-kernel benchmark data, are publicly available on GitHub.",
+     "anchor": "Data availability statement, pp.16 to 17",
+     "quotes": [
+      "The data and analysis code supporting the findings of this study, including the raw and readout-mitigated IBM quantum-hardware results",
+      "//github.com/ramkrip/quantadvantage/."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author statement; the repository was not opened.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "pappalardo-2025-photonic-parameter-shift-rule-enabling",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Pappalardo-et-al._2024_A-Photonic-Parameter-shift-Rule-Enabling-Gradient-Computation-for__2410.02726.pdf",
+   "title_in_file": "A Photonic Parameter-shift Rule: Enabling Gradient Computation for Photonic Quantum Computers",
+   "version_note": "arXiv:2410.02726v3, 16 Jul 2025 (the file name says 2024, the first version's year). Authors from Quandela and Quantinuum.",
+   "pages": 12,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A derivation of an exact parameter-shift rule for phase shifters in linear optical circuits with a finite photon number, a Hoeffding comparison of its sample cost against finite differences, and noisy simulations (Perceval) of a VQE and a QCBM.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "photonic-psr-exact-linear-scaling",
+     "verdict": "widened",
+     "note": "The body gives the count and the conditions: the canonical rule needs 2n evaluations per gradient for one phase-shifter parameter, for arbitrary input states with a finite total number n of photons, with no assumption on the observable.",
+     "value": "The authors derive a photonic parameter-shift rule that gives an exact formula, not an approximation, for the gradient of expectation values of linear optical circuits in arbitrary states with a finite total number of photons, with no assumption on the observable; the canonical form needs 2n evaluations per gradient, each the same circuit with shifted parameters, so the cost scales linearly with the number n of input photons.",
+     "anchor": "Abstract p.1; Section 1 p.2; Section 2.1 Eq. (10), p.3; Section 4 p.6",
+     "quotes": [
+      "which provides an exact formula for computing the gradient of the expectation values of linear optical circuits in arbitrary states with a finite total number of photons",
+      "Remark that Eq. (10) is an exact equation and not an approximation",
+      "Our derivation requires 2n evaluations per gradient computation.",
+      "Our method scales linearly with the number of input photons and utilizes the same parameterized photonic circuit",
+      "it does not make any assumption about the observable"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in full in Section 2.1 (Eqs. 2 to 10) by element-wise identification, with its conditions (finite photon number n, phase shifter in mode k) quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "photonic-psr-limit-landscape",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 4, p.6",
+     "quotes": [
+      "This will necessitate going beyond l2 geometry and finding improved metrics in optimisation methods such",
+      "as quantum natural gradient descent [36]"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states, Section 4.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "photonic-psr-simulation-results",
+     "verdict": "narrowed",
+     "note": "The body limits 'superior': without finite sampling, finite differences and the PSR gave very similar results; the advantage over finite differences appears with finite sampling (finite differences failed to converge), and the robustness to distinguishability is relative to COBYLA. The runs are small simulations (H2 VQE on a 2-qubit circuit; QCBM with 3 photons in 8 modes) averaged over 10 initial conditions.",
+     "value": "The authors report Perceval simulations of an H2 VQE (2-qubit circuit, 8 parameters) and a QCBM learning a mixture of two Gaussians (n = 3 photons in m = 8 modes, 28 parameters) with N = 5000 samples and HOM = 0.9, averaged over 10 initial conditions. Without finite sampling, finite differences and the PSR gave very similar results; with finite sampling, finite differences could not converge while the PSR was barely affected; partial distinguishability reduced the final precision of all optimizers, more for COBYLA. In the QCBM, they conclude PSR gradient descent gave the best precision and converged in fewer iterations than SPSA and COBYLA.",
+     "anchor": "Section 3.1, Fig. 2, pp.4 to 5; Section 3.2, Fig. 3, pp.5 to 6",
+     "quotes": [
+      "We use the 2-qubit circuit used",
+      "in [3] for the quantum state preparation and the measurements with 8 tunable parameters",
+      "a photonic circuit comprising n = 3 photons in m = 8 modes with 28 tunable parameters. We have set N = 5000 samples and HOM=0.9.",
+      "The results are averaged over 10 different initial conditions",
+      "We observe that, in the absence of finite sampling, finite differences and the PSR yield very similar results.",
+      "affects finite differences as it was not possible to converge in a reasonable number of samples, while barely impacting the PSR or COBYLA",
+      "partial distinguishability error reduces the final precision obtained with all optimizers, with a greater effect on gradient-free optimizers such as COBYLA",
+      "We conclude that gradient descent based on the photonic PSR provides the best precision and",
+      "it converges in fewer iterations than the other methods"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical simulation results from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "photonic-psr-obstacle-unbounded",
+     "value": "The authors state that differentiating the phase-shifter map gives an operator that is not unitary and, more crucially, unbounded, which prevents it from being physically realizable within linear optics on the same number of modes; this is why qubit parameter-shift rules do not directly extend to the linear optical setting.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "which is not unitary and more crucially unbounded. This prevents it from being a physically realizable operation within linear optics on the same number of modes",
+      "However, these techniques do not directly extend to the linear optical setting."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of the problem it addresses, Section 1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-psr-setup",
+     "value": "The paper's setting is an optical circuit of m modes with n single photons at the input, any input state with total photon number n, and a single parameter that is the angle of a phase shifter in mode k; multiple parameters follow by the chain rule.",
+     "anchor": "Section 2.1, p.2",
+     "quotes": [
+      "of m optical modes with n single photons at the in-",
+      "The input state is assumed to be any state with total number of photons n",
+      "We consider a single parameter θ corresponding to the angle of a phase shifter in mode k.",
+      "The generalisation to multiple parameters is easily obtained by the chain rule."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup, Section 2.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-psr-general-condition",
+     "value": "The paper shows that photonic shift rules correspond to solutions of its Eq. (9), a system over shift angles and coefficients that must hold for every photon-number difference from −n to n; the system is overparameterized, so multiple rules can be derived, and the canonical choice uses P = 2n angles at the (2n + 1)th roots of unity with coefficients given by an inverse discrete Fourier transform.",
+     "anchor": "Section 2.1 Eqs. (8) to (10), p.3",
+     "quotes": [
+      "showing that photonic shift rules correspond to solutions of Equation (9)",
+      "The system Eq. (9) is overparameterized and we",
+      "can thus derive multiple PSRs",
+      "A canonical choice is to fix P = 2n and the angles to",
+      "the (2n + 1)th",
+      "they are the inverse Discrete Fourier Transform (DFT) of i(0, 1, ..., n, −n, ..., −1)T with c0 = 0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 2.1 by element-wise identification, valid for any observable as stated.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-psr-optimality-open",
+     "value": "The authors state it is an open question whether the Fourier-transform-based solution is optimal in the number of evaluations and for the application considered.",
+     "anchor": "Section 2.1, p.3",
+     "quotes": [
+      "It is an open question to know whether the solution based on",
+      "the Fourier transform is optimal in the number of evaluations and the application one considers"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "An open problem the paper states, Section 2.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-psr-sample-ratio",
+     "value": "The authors prove with Hoeffding's inequality that the ratio of the number of samples finite differences need to the number the photonic PSR needs, for the same gradient precision, depends only on the finite-difference step size and on the squared sum of the absolute PSR coefficients, which is fixed by the number of photons in the input state.",
+     "anchor": "Section 2.2 Eq. (11), p.3; Appendix A.1 Eqs. (12) to (26), pp.9 to 10",
+     "quotes": [
+      "By applying Hoeffding’s inequality to the two gradient estimators derived",
+      "Interestingly, this ratio depends only on ∆ – the",
+      "is only determined by the number of photons in the",
+      "A full proof is provided in Appendix A.1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Appendix A.1, but the formula is garbled in the text layer and cannot be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The comparison sets the finite-difference error target to ϵ + ∆ and treats the Taylor error as negligible, which the authors note favors finite differences."
+    },
+    {
+     "id_suggestion": "photonic-psr-coefficient-scaling",
+     "value": "The authors observe numerically that the squared sum of the absolute PSR coefficients scales as n to the power α with α ≤ 2.3.",
+     "anchor": "Section 2.2, p.4",
+     "quotes": [
+      "We observe numerically that this quantity scales as nα with α ≤ 2.3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical observation, no range of n given.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-psr-sample-example",
+     "value": "The authors state that, with sampling noise only, step size ∆ = 0.01 and negligible Taylor error, reaching additive gradient error 0.1 with at least 90% confidence for a 4-photon circuit needs about 26.5 thousand samples per parameter with the photonic PSR against about 24.0 million with finite differences, three orders of magnitude.",
+     "anchor": "Section 2.2, p.4",
+     "quotes": [
+      "with ∆ = 0.01 (this is",
+      "achieving an additive error on the true gradient of 0.1 with at least 90%",
+      "confidence for a 4-photon circuit would require approximately 26.5 × 103 samples",
+      "trast, using finite differences would necessitate around 24.0 × 106 samples – an improvement of three orders"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A computed example from the Hoeffding bounds, not a measurement.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-psr-light-cone-reduction",
+     "value": "The authors state that bounding, by a light cone argument, the maximum number of photons that can pass through the phase shifter reduces the number of evaluations; in their 6-mode, 2-photon example only 2 of 4 terms are needed because only one photon is in the past light cone.",
+     "anchor": "Section 2.3, Fig. 1, p.4",
+     "quotes": [
+      "by a light cone argument (see Fig. 1), it is possible to bound the maximum number of photons travelling through a given phase-shifter",
+      "Example of a causal cone for a circuit with 6 modes and 2 single photons at input.",
+      "2 terms out of 4 terms. This is because only one photon is in the past light cone of the phaseshifter."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument with one example, not proved in general.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-psr-vqe-setup",
+     "value": "The authors state the VQE simulations computed the ground-state energy of H2 in Perceval, comparing finite-difference gradient descent (step ∆ = 0.01, learning rate 0.4), PSR gradient descent (learning rate 0.4) and COBYLA, with N = 5000 samples as a realistic NISQ value and HOM = 0.9 as a standard value for quantum-dot single photons; Nelder-Mead was tested but left out of the figure.",
+     "anchor": "Section 3 and 3.1, pp.4 to 5",
+     "quotes": [
+      "We use the software tool Perceval [22] to make all numerical simulations.",
+      "we set N to 5000 as this is a realistic value for a NISQ type experiment",
+      "we set HOM = 0.9 since this is a standard value for single-photon emitted from quantum dots [11]",
+      "gradient descent using finite difference with stepsize ∆ = 0.01 and a learning rate of 0.4",
+      "Other gradient-free methods such as Nelder-Mead were also tested"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own simulation setup, Section 3.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-psr-qcbm-setup",
+     "value": "The authors state that in the QCBM simulations the target distribution is known in advance, unlike in practice, finite-difference descent did not converge under finite sampling so SPSA (learning rate 0.4) was used instead, and the comparison was against PSR descent (learning rate 0.4) and COBYLA.",
+     "anchor": "Section 3.2, pp.5 to 6",
+     "quotes": [
+      "the target probability distribution is known in advance in this work",
+      "Of course this is not the case in practice",
+      "they were not converging in the simulations of QCBM",
+      "gradient descent using SPSA with a learning rate of 0.4"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the QCBM setup and scope, Section 3.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-psr-qcbm-sampling",
+     "value": "The authors report that in the QCBM, above a reasonable number of samples, PSR gradient descent is barely affected by finite sampling while COBYLA suffers from a low number of samples, and SPSA is less consistent than the other methods.",
+     "anchor": "Section 3.2, Fig. 3, pp.5 to 6",
+     "quotes": [
+      "Above a reasonable number of samples, PSR gradient descent is barely affected by finite sampling, while COBYLA does",
+      "suffer from a low number of samples",
+      "SPSA is less consistent compared to the other methods"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-psr-any-observable-probabilities",
+     "value": "The authors state that the rule makes no assumption about the observable, which may be any operator on the Fock space including the non-Hermitian full-counting statistics, and that in the Schrödinger picture it computes the gradient, with respect to a phase shifter, of the outcome probabilities of an arbitrary quantum optical system with a bounded number of photons.",
+     "anchor": "Section 4, p.6",
+     "quotes": [
+      "M is an arbitrary operator on the Fock space through-",
+      "[35] which is not Hermitian",
+      "tonic PSR can be used to compute the gradient with",
+      "ities of an arbitrary quantum optical system with a"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Follows from the derivation, stated in the Discussion.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-psr-kl-mmd-extension",
+     "value": "The paper shows the photonic PSR cannot be applied directly to the KL divergence or MMD loss, since they are not linear in an expectation value, but can be reused by applying it to the derivative of each output probability; for MMD it uses a Gaussian mixture kernel.",
+     "anchor": "Section 3.2 p.6; Appendix A.2, pp.10 to 12",
+     "quotes": [
+      "Since they are not a linear sum of expectation values from the circuit, we need to adapt the photonic PSR.",
+      "One can use the PSR to compute ∂θQθ(x).",
+      "we decided to use the Gaussian mixture kernel in this work"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix A.2 by the chain rule; a direct consequence of Eq. (10).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-psr-prior-dilation",
+     "value": "The authors state that an earlier unitary-dilation approach doubles the number of modes, needs an additional single photon, departs from reusing the same circuit, and induces exponential finite-sampling costs; and that the same shift rule appears in Facelli et al. and in work on photonic metrology, whose derivations follow Wierichs et al., while theirs is more direct and assumes nothing about the observable.",
+     "anchor": "Section 1 Prior and related works, p.2",
+     "quotes": [
+      "However, this approach doubles the number of",
+      "modes in the circuit and requires an additional single photon",
+      "the dilation method induces",
+      "exponential costs in finite sampling",
+      "The same shiftrule appears in very recent work of Facelli et al. [31]",
+      "Our derivation is more direct and does not make any assumption about the observable."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of other work and a comparison claim by the authors.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "photonic-psr-no-hardware",
+     "value": "The authors demonstrate the rule through Hoeffding bounds and numerical simulations and state that this opens the path to hardware demonstrations of VQAs with the photonic PSR; no hardware run is reported.",
+     "anchor": "Section 4, p.6",
+     "quotes": [
+      "Through Hoeffding bounds and numerical simulations, we demonstrated the improved performance",
+      "This opens the path to hardware demonstrations of VQAs with the photonic PSR in the NISQ era and beyond."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of its evidence, Section 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The authors work at photonic hardware vendors (Quandela, Quantinuum)."
+    }
+   ]
+  },
+  {
+   "record_id": "park-2022-quantum-multi-programming-grover-s",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Park-et-al._2022_Quantum-multi-programming-for-Grovers-search__2207.14464.pdf",
+   "title_in_file": "Quantum multi-programming for Grover's search",
+   "version_note": "arXiv:2207.14464v2, 18 Dec 2022 (Springer Nature template).",
+   "pages": 26,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A Grover search variant that runs all 2^b partial-search circuits, one per guess of b qubits, concurrently on one superconducting device (quantum multi-programming), with a theory argument for a larger rotation angle and five-qubit experiments on IBM Washington and IBMQ Brooklyn.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "park-qmp-hardware-setup",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 4.3, pp.15 to 16",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup, Section 4.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "park-qmp-hardware-success-probability",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 4.4.1, Fig. 6, p.17",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The QMP success probability is that of the circuit whose guessed bits match the target; the QMP circuit uses B times the qubits of one partial-search circuit."
+    },
+    {
+     "id": "park-qmp-limits",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 5, p.20",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Limits the paper states, Section 5.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "park-qmp-rotation-angle",
+     "verdict": "narrowed",
+     "note": "The 'proof' in Section 3.3 is a monotonicity argument: the rotation angle becomes arcsin of the square root of B/N against arcsin of the square root of 1/N, larger because arcsine is increasing on the stated interval. The larger angle and the success gain hold for the circuit (block) that contains the target; the blocks without a target keep their initial amplitude, and running B = 2^b circuits uses B times the qubits.",
+     "value": "The paper argues that placing B = 2^b partial-search circuits in parallel gives B times the success probability of the random-guess partial search, with rotation angle the arcsine of the square root of B over N in place of the canonical Grover rotation angle, the arcsine of the square root of one over N; since the arcsine is increasing on the interval the paper states, this angle is greater. The states of the blocks that do not contain the target keep their initial amplitude.",
+     "anchor": "Section 3.3, Eqs. (9) to (12), pp.7 to 8",
+     "quotes": [
+      "When we place B(= 2b)-circuits in the QMP, we have B times better success probability as follows",
+      "is the rotation angle of the Grover operator",
+      "arcsine function is an",
+      "Therefore, we have θMP which is greater than the rotation angle of the canonical Grover’s algorithm.",
+      "On the other hand, the quantum states of the blocks which do not include the targets remain amplitude B/N ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A short derivation whose formulas are garbled in the text layer; the comparison is per block, not over the whole multi-programmed device.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Taken over all B circuits together, the method is equivalent to exhaustively trying every value of the b guessed bits in parallel, so the gain is bought with B times the qubits; the paper's EQCV metric is its attempt to account for this."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "park-qmp-definition-motivation",
+     "value": "The authors define quantum multi-programming as executing multiple quantum circuits concurrently on a NISQ device, motivated by the number of qubits of NISQ computers being much greater than their quantum volume; the concurrent circuits can differ and have different depths.",
+     "anchor": "Section 1, p.2; Section 3, p.6",
+     "quotes": [
+      "This method, called Quantum Multi-Programming (QMP), utilizes the NISQ devices by executing",
+      "multiple quantum circuits concurrently. The quantum circuits executed concurrently can be diﬀerent and even have diﬀerent circuit depths.",
+      "The main motivation of the QMP is that the number of qubits of NISQ computers"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of QMP as the paper uses it, Section 1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-qv-example",
+     "value": "The authors state that IBM Washington has 127 qubits with quantum volume 64, meaning a 6-qubit model circuit runs reliably at six depths on average, so a 7-qubit correlated system fails to give reliable output despite the 127 qubits.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "For example, IBM Washington quantum computer has 127 qubits with QV 64. This means the model circuit with 6-qubits runs reliably at six depths of the model circuit on average on IBM Washington.",
+      "this also means the 7-qubit correlated system with the circuit depth of the model circuit fails to make reliable output even though IBM Washington"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' reading of a vendor metric; not measured in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-partial-search-drawback",
+     "value": "The authors state that the hybrid partial Grover search, which randomly guesses b bits and searches the remaining m bits with a local diffusion operator, needs fewer oracles and only local diffusion operators but has success probability reduced by the factor 1/2b, which multi-programming aims to remove by running the partial search circuits in parallel.",
+     "anchor": "Section 2.2, Eq. (8), pp.5 to 6",
+     "quotes": [
+      "However, the drawback is obvious, namely the factor 1/2b in the success probability.",
+      "multi-programming method aims to improve the success probability by removing 1/2b from the success probability in Eq. (8) by executing the partial search circuits in parallel"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of the algorithm it builds on, Section 2.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The text layer prints 2 to the power b flat as '2b'."
+    },
+    {
+     "id_suggestion": "park-qmp-theory-iterations",
+     "value": "The authors report from theory that for one target in a 12-qubit (4096-item) domain with b = 3, the QMP needs 14 iterations of the partial Grover operators to reach 90% success probability while canonical Grover search needs 40.",
+     "anchor": "Section 3.3, Fig. 1, pp.7 to 9",
+     "quotes": [
+      "These plots use one target out of 12-qubit search domain (4096 items) with b = 1, 2, and 3.",
+      "When we have b = 3, the QMP needs 14-times",
+      "iteration of the partial Grover’s operators to achieve 90% success probability",
+      "while the GAS needs 40-times iteration"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Computed from the success-probability formulas; not measured.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The paper writes 'GAS' for GSA in places."
+    },
+    {
+     "id_suggestion": "park-qmp-single-target-example",
+     "value": "The authors report an example with target |1011: canonical Grover with one iteration has theoretical success probability about 0.472656 and a simulated target probability of 0.464 in 8192 shots, while in the QMP of four partial-search circuits the circuit containing the target reaches success probability 1.0 and the other three stay uniform at 25%.",
+     "anchor": "Section 3.5, Figs. 2 to 4, pp.9 to 11",
+     "quotes": [
+      "we have the target |1011",
+      "≈ 0.472656",
+      "The target sampling probability",
+      "is 0.464 which is consistent with the theoretical success probability",
+      "with 8192 trials (shots)",
+      "The QMP circuit is composed of four partial search",
+      "= 1.0 which is consistent with the histogram of the circuit 4",
+      "they have a uniform distribution of 25% probability"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A small simulation example.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-multiple-targets",
+     "value": "The authors extend the QMP success probability to multiple targets, where each block's success depends on its number of targets, and report a five-qubit simulation with three targets: canonical Grover's theoretical success about 0.645996 and simulated 0.642; the block with one target about 0.78125 and the block with two targets 1.0.",
+     "anchor": "Section 3.6, Eq. (13), Fig. 5, pp.11 to 12",
+     "quotes": [
+      "This success probability per block depends on the number of",
+      "≈ 0.645996",
+      "three probabilities of the three targets is 0.642",
+      "≈ 0.78125 (refer to Eq. (11))",
+      "= 1.0. The histogram of the circuit 2",
+      "three targets out of ﬁve qubit search domains"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A small simulation example.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-buffer-and-timing",
+     "value": "The authors use one physical buffer qubit between circuits, citing Ohkura et al.'s finding that one buffer suffices up to 30 CX gates, and state that since their QMP circuits have the same depth they need not consider measurement timing.",
+     "anchor": "Sections 3.1 and 3.2, pp.6 to 7",
+     "quotes": [
+      "concluded that only 1 physical buﬀer is suﬃcient until 30 CX gates",
+      "Therefore, we use one physical",
+      "In our case, since the circuits in QMP have the same depth, we do not need to consider the measurement timing."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Relies on a cited result for the buffer choice.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-trf",
+     "value": "The authors state that each circuit's partial measurement is extracted from the whole measurement by post-processing, so the trial reduction factor of their QMP is B, the number of circuits.",
+     "anchor": "Section 3.4, Appendix A, pp.9, 21",
+     "quotes": [
+      "The partial measurement for each circuit is post-processed after measuring all circuits",
+      "the TRF is B (the number of circuits of the QMP)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own measurement procedure, Section 3.4.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-eqcv-definition",
+     "value": "The authors propose Quantum Circuit Volume, the total number of qubits times the circuit depth, and Expected Quantum Circuit Volume, that volume divided by the success probability, as the efficiency metric, because expected depth alone does not account for QMP using several times more qubits.",
+     "anchor": "Section 4.1.2, Eqs. (14), (15), p.13",
+     "quotes": [
+      "We propose a metric, Quantum Circuit Volume (QCV), for the usage of quantum computer resources of a quantum circuit as follows",
+      "where O is a quantum circuit implementation of a quantum algorithm, nq(O) is the total number of qubits used to implement O, and d(O) is the circuit depth of the implementation O",
+      "because the QMP uses several times more qubits than the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the paper's own metric, Section 4.1.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-circuit-implementation",
+     "value": "The authors state that the five-qubit Toffoli used in the oracle and diffusion operator was implemented with one ancillary qubit, so each circuit has six qubits; G2D3M3 and G3D2M2 used 24 and 48 qubits; circuits were transpiled at optimization level 3 with a default mapping or a manual initial layout with at least one buffer qubit; G3D2M2 ran only on IBM Washington because IBMQ Brooklyn lacked mapping space.",
+     "anchor": "Sections 4.2 and 4.3, pp.14 to 16",
+     "quotes": [
+      "one ancillary qubit is added [22]. Thus the number of qubits in a circuit is six.",
+      "To run the experiments of G2D3M3 and G3D2M2 circuits, 24 (6: qubits in a circuit × 4: circuits",
+      "and 48 qubits are used, respectively",
+      "with the optimization level of 3 for each target IBM quantum computer",
+      "G3D2M2 was tested only",
+      "on IBM Washington"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own implementation setup, Sections 4.2 and 4.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-theoretical-probabilities",
+     "value": "The authors state the theoretical success probabilities: 25.8% and 60.2% for canonical D5M5 and D5D5M5, 19.5% and 12.5% for the No QMP G2D3M3 and G3D2M2 circuits, and 78.1% and 100% for the QMP G2D3M3 and G3D2M2 circuits.",
+     "anchor": "Section 4.4.1, p.17",
+     "quotes": [
+      "The theoretical success probabilities of D5M5 and D5D5M5 are 25.8% and 60.2%",
+      "The No QMP circuits of G2D3M3 and G3D2M2 have 19.5% and 12.5% theoretical success probabilities",
+      "the QMP circuits of G2D3M3 and G3D2M2 have 78.1% and 100% theoretical success probabilities"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Direct evaluations of the success-probability formulas, Eqs. (5), (8) and (11).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-manual-mapping",
+     "value": "The authors report that manual mapping outperformed default mapping, benefiting from a buffer qubit and shorter circuits; default-mapped QMP circuits had 1.7 to 2.3 times longer circuit depths (for example depth 113 against 50 for G3D2M2 on IBM Washington), because the default did not keep a circuit's logical qubits physically adjacent.",
+     "anchor": "Section 4.4.1, p.18; Appendix B, Figs. B1 to B3, p.22",
+     "quotes": [
+      "QMP (manual) outperforms QMP (default) as shown in Fig. 6",
+      "QMP (default) circuits have 1.7 ∼ 2.3 times longer circuit depths",
+      "QMP (default) layout (depth: 113)",
+      "QMP (manual) layout (depth: 50)",
+      "does not guarantee for logical qubits in a circuit to be"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-backend-comparison",
+     "value": "The authors report that IBM Washington gave slightly better results than IBMQ Brooklyn, which they think is because of its greater quantum volume (64 against 32).",
+     "anchor": "Section 4.4.1, p.18",
+     "quotes": [
+      "the results from IBM Washington show a little bit better results than the results from IBMQ Brooklyn",
+      "We think this is",
+      "because IBM Washington has a greater quantum volume (64) than the quantum volume (32) of IBMQ Brooklyn"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An observation with an untested explanation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-trapped-ion-comparison",
+     "value": "The authors compare with trapped-ion results from an earlier paper, 49.0% on the Honeywell machine (D5D5M5) and 9.3% on IonQ (No QMP G3D2M2), and attribute the QMP G3D2M2 exceeding the Honeywell result to its greater theoretical success probability despite Honeywell's quantum volume of 1024.",
+     "anchor": "Section 4.4.1, Fig. 6, pp.17 to 18",
+     "quotes": [
+      "Honeywell Quantum Computer (HQC) (49.0%) and IonQ quantum computer (9.3%)",
+      "The HQC and the",
+      "IonQ quantum computer results are from D5D5M 5 of the GSA and G3D2M 2 of the No QMP, respectively in Ref. [22]",
+      "theoretical success probability than the latter despite the higher quantum volume 1024 of the latter"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A comparison with cited results run on other circuits.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The comparison sets a 48-qubit multi-programmed circuit against single 6-qubit circuits on other machines, so it does not compare like resources."
+    },
+    {
+     "id_suggestion": "park-qmp-eqcv-results",
+     "value": "The authors report that the G3D2M2 circuits had the shortest circuit depths and highest success probabilities, so the best Expected Quantum Circuit Volume, even with two and eight times more qubits than G2D3M3 and the canonical search, while the canonical Grover circuits had the worst.",
+     "anchor": "Section 4.4.2, Fig. 7, pp.18 to 19",
+     "quotes": [
+      "The G3D2M2 circuits have the shortest",
+      "circuit depths than the other circuits and the highest success probability even though they have two times and eight times more qubits than G2D3M3 and the GSA",
+      "Therefore, the G3D2M2 circuits show the best",
+      "Hence, they show the worst EQCV."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-conclusion-redeem-qv",
+     "value": "The authors conclude that the algorithm shows a way to redeem the relatively low quantum volume of superconducting quantum computers by using more qubits, claim that limited connectivity can be an advantage for QMP because it reduces crosstalk, and expect the advantage to apply to other superconducting computers.",
+     "anchor": "Section 5, pp.19 to 20",
+     "quotes": [
+      "Our new quantum algorithm shows a way to redeem the relatively low quantum volume of superconducting quantum computers by using more qubits.",
+      "the limited connectivity of superconducting quantum computers can be an advantage to applying QMP because it reduces crosstalk between each circuit in QMP",
+      "we expect that this advantage will be applied to other superconducting quantum computers"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion and expectation.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-small-processor-limit",
+     "value": "The authors state that the algorithm's usage is limited on processors with few qubits such as IBMQ Kolkata, Montreal and Mumbai, and that it will be more useful as processors exceed one thousand qubits; on trapped-ion machines the number of concurrent circuits is limited by the small qubit count.",
+     "anchor": "Section 5, p.20",
+     "quotes": [
+      "Therefore, the usage of this algorithm is limited when quantum processors have a small number of qubits like IBMQ Kolkata, IBMQ Montreal , IBMQ Mumbai .",
+      "as the number of qubits of quantum processes increases to more than one thousand",
+      "The number of circuits running concurrently is limited due to the relatively small number of"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states, Section 5.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-future-work",
+     "value": "The authors leave for future work different target densities per block, systematic qubit-mapping algorithms, and error mitigation such as crosstalk mitigation, hardware-aware compiling and qubit partitioning.",
+     "anchor": "Section 5, pp.19 to 20",
+     "quotes": [
+      "The diﬀerent target densities in blocks (circuits) in the QMP will be studied in our future work.",
+      "will be studied and implemented with our new QMP algorithm for our future work"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Open problems the paper states, Section 5.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "park-qmp-data-availability",
+     "value": "The authors state that all code and datasets are available in a GitHub repository.",
+     "anchor": "Data Availability, p.21",
+     "quotes": [
+      "All codes and the datasets generated during and/or analyzed during the current study are available in the GitHub repository"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author statement; the repository was not opened.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "pastorello-2025-scalable-quantum-neural-networks-few",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Pastorello-Blanzieri_2023_Scalable-quantum-neural-networks-by-few-quantum-resources__2307.01017.pdf",
+   "title_in_file": "Scalable quantum neural networks by few quantum resources",
+   "version_note": "arXiv:2307.01017v2, 9 Apr 2025 (the file name says 2023, the first version's year).",
+   "pages": 15,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory-only construction showing that independent swap tests over small qubit modules, read out by lossy single-qubit measurements with chosen efficiencies, realize a two-layer feedforward network with cosine pre-activation and quadratic activation.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "swaptest-qnn-module-assumption",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 2 p.3; Section 5 p.13",
+     "quotes": [
+      "that we assume to have implemented into a speciﬁc-purpose quantum",
+      "hardware, characterized by an arbitrarily small number of qubits, that we call module"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own assumption, Sections 2 and 5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "swaptest-qnn-no-empirical-evaluation",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 5, p.13",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states, Section 5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "swaptest-qnn-two-layer-equivalent",
+     "verdict": "narrowed",
+     "note": "Proposition 6 gives the equivalence only up to an error of order one over the square root of the number of measurement repetitions, for a network with cosine pre-activation and the specific activation one half of (1 minus z squared), whose first-layer connectivity is limited by the independence of the modules.",
+     "value": "The paper proves (Proposition 6) that the model, the fraction of zeros over N repetitions of a computational measurement protocol with efficiencies p on the control qubits of m independent swap-test modules, is equivalent, up to an error of order 1 over the square root of N, to a two-layer feedforward neural network with cosine pre-activation and activation ϕ(z) equal to one half of (1 − z squared) in the hidden neurons; the first layer's connectivity is limited by the mutual independence of the modules.",
+     "anchor": "Section 3, Proposition 6, Eqs. (15) to (17), pp.9 to 10",
+     "quotes": [
+      "Proposition 6 The model (15) is equivalent, up to an error ǫ = O(1/ N ), to the following",
+      "two-layer feedforward neural network with cosine pre-activation and activation ϕ(z) = 1 2 (1 − z2) in the hidden neurons",
+      "where N is the number of repetitions of the computational measurement protocol",
+      "with connectivity limited by the mutual independence of the modules"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 6 with proof in Section 3; statement, error and activation quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "swaptest-qnn-quadratic-activation-background",
+     "value": "The authors state, citing prior work, that a two-layer network is a universal approximator if its activation is non-polynomial, and that networks with quadratic activation are as expressive as networks with threshold activation and can be learned in polynomial time but fail universality.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "is relevant because it is a universal approximator if ϕ is non-polynomial",
+      "networks with quadratic",
+      "activation are as expressive as networks with threshold activation and can be learned in polynomial time [12]",
+      "The network with this activation fails the universality"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "swaptest-qnn-cosine-preactivation-cited",
+     "value": "The authors state, citing experiments, that cosine pre-activation decreases neuron variance and achieves better classification test error than batch, weight and layer normalization.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "The cosine pre-activation is a normalization procedure adopted to decrease the variance of the neuron",
+      "Experiments show that cosine pre-activation achieves better performances, in terms of test error in classiﬁcation, compared to batch, weight, and layer"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited empirical result.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "swaptest-qnn-swap-test-perceptron",
+     "value": "The paper states that the swap test on amplitude-encoded input and weight states returns a probability equal to one half of (1 − cos2(x, w)), the output of a perceptron with quadratic activation and cosine pre-activation, because the inner product of two amplitude-encoding states is the cosine similarity of the vectors; estimating it within error ǫ needs a number of runs of order ǫ to the minus 2.",
+     "anchor": "Section 2, Eqs. (4), (9), pp.4 to 6",
+     "quotes": [
+      "the inner product of two encoding states corresponds to the cosine similarity of the encoded vectors",
+      "P(0) = 1 2 (1 − | ψ|ϕ |2).",
+      "that is the output of a perceptron with a quadratic activation and cosine pre-activation",
+      "within an error ǫ is O(ǫ−2)",
+      "(1 − cos2 (x, w))"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own construction of the building block, Section 2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The standard swap test gives probability one half of (1 + squared overlap) for outcome 0; the paper's (1 − squared overlap) is the probability of outcome 1. The construction is unchanged if outcome 1 is counted."
+    },
+    {
+     "id_suggestion": "swaptest-qnn-single-qubit-measurement",
+     "value": "The authors state that the same quantity can be obtained on k qubits with the circuit U = UwUx, but that it needs a number of measurements of order k, while the swap test needs only a single-qubit measurement, which simplifies combining the outputs of many perceptrons; amplitude encoding needs a number of elementary gates of order 2 to the k.",
+     "anchor": "Section 2, p.6",
+     "quotes": [
+      "Therefore, the parametric model can be simply implemented by the",
+      "However, the overall number of the measurements required by the circuit U = UwUx is",
+      "The requirement of measuring only a single qubit of the swap test is particularly convenient",
+      "For the amplitude encoding, the number of elementary gates required for the implementations of Ux and Vx is O(2k)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author argument without formal proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "swaptest-qnn-proposition-3",
+     "value": "Proposition 3 proves that for N > 2 to the k, storing x in CN by amplitude encoding into non-interacting k-qubit registers needs m = O(N times 2 to the minus k) copies, because each register holds at most 2 to the k entries; the total qubit count to encode and process x is O(N(2k + 1) 2 to the minus k), linear in N with exponential decay in the module size.",
+     "anchor": "Section 3, Proposition 3, Eqs. (11), (12), p.7",
+     "quotes": [
+      "Proposition 3 Let R be a k-qubit register. Let N > 2k, the number m of non-interacting2",
+      "In each register, we can encode at most 2k entries of x into the amplitudes of a k-qubit state.",
+      "n = O N (2k + 1)2−k .",
+      "the total number of qubits scales linearly in N , however there is an exponential decay in the size of a single module"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 3 with proof, Section 3; condition N > 2^k and non-interacting registers quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints 2 to the k flat as '2k'."
+    },
+    {
+     "id_suggestion": "swaptest-qnn-non-interacting-definition",
+     "value": "The paper defines non-interacting registers as registers on which every operation, including state preparation, is performed locally, so no entanglement can be produced among different k-qubit registers.",
+     "anchor": "Section 3, footnote 2, p.7",
+     "quotes": [
+      "In this context, non-interacting registers means that any operation on the registers, including those required for state preparation, must be performed locally on each register.",
+      "no entanglement can be"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition in footnote 2, Section 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "swaptest-qnn-n128-example",
+     "value": "The authors give an example: for N = 128 with modules of a 5-qubit input register and a 5-qubit weight register, 4 modules and 44 qubits are needed, and coherence must be kept only inside one module of 11 qubits.",
+     "anchor": "Section 3, p.7",
+     "quotes": [
+      "For instance, if N = 128 and we have a single",
+      "module with a 5-qubit input register and a 5qubit weight register then 4 modules and 44 qubits are required",
+      "the coherence must be maintained only inside a single module (that is 11 qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Arithmetic example from Proposition 3, Section 3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "swaptest-qnn-lossy-measurement-definitions",
+     "value": "The paper defines a lossy measurement as a measurement repeated N times of which only some outcomes are stored, its efficiency being the stored fraction, and a local measurement protocol as a collection of lossy single-qubit measurements each with its efficiency; the efficiencies act as the second-layer weights.",
+     "anchor": "Section 3, Definitions 4 and 5, pp.8 to 9",
+     "quotes": [
+      "is called lossy measurement with eﬃciency",
+      "a local measurement protocol is a collection {(Ml, pl)}l=1,...,m where Ml is a lossy measurement process on the lth qubit and pl its eﬃciency",
+      "let us deﬁne a model with parameters given by the weights w ∈ RN and the eﬃciencies p = (p1, ..., pm)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definitions 4 and 5, Section 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "swaptest-qnn-proposition-7",
+     "value": "Proposition 7 states that, with a single module of size k, running the swap test N times for each of R weight vectors and Q efficiencies and taking the fraction of zeros in the concatenated outcomes yields, up to an error of order 1 over the square root of RN, a fully connected feedforward network with cosine pre-activation, the same quadratic activation, 2 to the k input nodes, R hidden nodes and Q output nodes; the proof is given for k = R = Q = 2 with the generalization called straightforward.",
+     "anchor": "Section 3, Proposition 7, pp.10 to 12",
+     "quotes": [
+      "Proposition 7 Given a single module of size k and the positive integers R and Q",
+      "The output y ∈ RQ corresponds, up to an error O(1/ RN ), to the output of a fully connected",
+      "input nodes, R hidden nodes, and Q output nodes",
+      "Let us prove the claim simply for k = R = Q = 2, since the generalization is straightforward."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proof covers only k = R = Q = 2; the general case is asserted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "swaptest-qnn-connectivity",
+     "value": "The authors state that the first layer is fully connected only when a single module computes the swap test, otherwise its connectivity depends on the number and size of the modules, while the local measurement protocol always gives all-to-all connections in the second layer; hidden and output neurons can be increased by more swap-test runs.",
+     "anchor": "Section 3, pp.10, 12",
+     "quotes": [
+      "in the ﬁrst layer is implied by the fact that we consider a single module for the calculation of the swap test",
+      "connectivity in the ﬁrst layer depends by the number of the considered modules and their size k",
+      "the local measurement protocol described in the algorithm of proposition 7 always enables all-to-all",
+      "Let us note that the",
+      "number of hidden and output neurons can be arbitrarily increased"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Follows from the construction; stated without separate proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "swaptest-qnn-state-preparation-bottleneck",
+     "value": "The authors state that the model's time complexity is bounded by state preparation, since the measurement protocols' time is independent of input size; amplitude encoding into a log N-qubit state takes time O(log N) only with a quantum RAM, otherwise retrieving |x⟩ and initializing |w⟩ takes time O(N).",
+     "anchor": "Section 4, pp.12 to 13",
+     "quotes": [
+      "the performances of the proposed model are bounded by the state preparation for encoding the input",
+      "can be performed in time O(log N ) only if a quantum RAM (QRAM)",
+      "is available otherwise the retrieval of |x and the initialization of |w take time O(N )"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states, Section 4.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "swaptest-qnn-no-exponential-storage",
+     "value": "The authors state that the model does not have the expected exponential storage capacity because the input is encoded piecewise into small registers, though the qubit count is tamed by an exponential decay in the module size k and coherence is needed only within each module.",
+     "anchor": "Section 4, p.13; Section 3, p.7",
+     "quotes": [
+      "there is not the expected exponential storage capacity because we assume the",
+      "the number of required qubits is tamed by an exponential decay in the size k of a single module",
+      "we do not require the coherence over all the qubits but only in any module where the swap test is"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states, Section 4.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "swaptest-qnn-quantum-data-input",
+     "value": "The authors claim the scheme can take superpositions of data and quantum data as input, and that an entangled input distributed over many qubits creates quantum correlations among modules that are otherwise uncorrelated, giving a non-trivial execution of the network.",
+     "anchor": "Section 4, p.13; Section 5, p.13",
+     "quotes": [
+      "the quantum implementation of the proposed scheme oﬀers the possibility of submitting superposition of data to the network",
+      "in this case the quantum processing of a widely entangled input creates",
+      "quantum correlations among the modules",
+      "Even if the composition of independent modules does not create entanglement, an entangled state in input introduces quantum correlations in the network."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim not developed or tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "swaptest-qnn-ensemble-convolution",
+     "value": "The authors state that the modular structure naturally enables ensemble learning through random partitions of the input, and that modules sharing the same weights can be read as a convolutional layer followed by local pooling.",
+     "anchor": "Section 4, p.12",
+     "quotes": [
+      "The modular structure of the model naturally enables the possibility of ensemble learning.",
+      "can be interpreted as the",
+      "application of a convolutional layer followed by a local pooling"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation, not developed.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "swaptest-qnn-minimum-module",
+     "value": "The authors state that the network structure is preserved with modules of minimum size k = 1, with the lowest storing capacity and a sparse first layer.",
+     "anchor": "Section 4, p.13",
+     "quotes": [
+      "the global structure of neural network is also preserved when modules are of minimum size (k = 1), in this case we have the lowest storing capacity and the ﬁrst layer turns out to be sparse"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Follows from the construction; stated without proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "swaptest-qnn-simulation-not-useful",
+     "value": "The authors state that for amplitude-encoded classical data a simulation of the multiple swap tests is not very useful because it mathematically equals a classical two-layer network with quadratic activation, so experiments on real quantum hardware, specifically combined photonic modules, would be needed to reveal actual quantum advantages; for highly entangled quantum data a simulation could be interesting but limited to few qubits.",
+     "anchor": "Section 5, p.13",
+     "quotes": [
+      "a simulation of the multiple swap tests is not so useful because it mathematically corresponds to the execution of a two-layer network with quadratic activation",
+      "experiments on real quantum hardware would be deﬁnitely more signiﬁcant for revealing actual quantum advantages",
+      "a simulation could be interesting but restricted to a small total number of qubits for computational reasons"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states on its own evidence, Section 5.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "For classical data the model computes a classical function, so any advantage would have to come from data loading or quantum data, which the paper does not quantify."
+    }
+   ]
+  }
+ ]
+}

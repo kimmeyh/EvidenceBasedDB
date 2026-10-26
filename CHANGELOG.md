@@ -291,7 +291,7 @@ this project keeps having to replace with a step.
   (Issue #138)
 - **feat**: Task G (F113, 2026-10-26): `scripts/sprint13_g_reading.py`
   enters the reviewed groups from `manifests/sprint13_g_reviews/` (one
-  coordinator review per group, g001 to g028 so far) and their reader
+  coordinator review per group, g001 to g031 and g033 so far) and their reader
   files; `ID_FIX` stores a new assertion under another id where the
   reader's suggestion is already another source's. Dry run only; nothing
   applied yet (Issue #138)
@@ -312,6 +312,13 @@ this project keeps having to replace with a step.
   apply script refuses an edit under an id that `ID_FIX` moves, and refuses
   a graded confirmed row it does not rewrite unless the store already holds
   that grade. Each has a test proven red by injection (Issue #138)
+- **fix**: the fresh-eyes review of 9c79048 (2026-10-26): `record()` read
+  an edit under the reader's id while `verify()` and the guard used the
+  stored id, so an edit named as the guard advised was dropped; edits are
+  now read under the stored id. The same-day sync refusal looked for the
+  full read anywhere in a row's history, so a second correction on one day
+  was refused; it now asks whether the last change was the full read. Each
+  has a test proven red by injection (Issue #138)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

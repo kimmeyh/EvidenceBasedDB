@@ -32,6 +32,25 @@ def test_an_edit_under_an_id_that_id_fix_moves_is_refused(monkeypatch):
     assert g.edits_under_moved_ids() == []
 
 
+def test_an_edit_under_the_stored_id_of_a_moved_assertion_is_written(monkeypatch):
+    """Review of 9c79048: record() read an edit under the reader's id while the
+    guard told the coordinator to name it under the stored id, so the edit was
+    dropped and the reader's value written. Proven to fail, 2026-10-26: with
+    record() reading the reader's id, the value was the reader's."""
+    g = _script()
+    paper = {"record_id": "src", "assertions": [{
+        "id_suggestion": "x", "value": "the reader's value", "anchor": "p.1", "quotes": ["a quote"],
+        "context": "qml", "claim_type": "positive", "result_type": "theoretical"}]}
+    monkeypatch.setattr(g, "load_groups", lambda: [("g1", paper)])
+    monkeypatch.setattr(g, "HIGH", high_grades({"x": ("proved result", "quoted with its conditions")}))
+    monkeypatch.setattr(g, "ID_FIX", {"x": "src-x"})
+    monkeypatch.setattr(g, "VALUE_REPLACE", {"src-x": "the coordinator's value"})
+    monkeypatch.setattr(g, "EXTRA_QUOTES", {"src-x": ["an added quote"]})
+    [(_, rec, _, _)] = g.assertions()
+    assert (rec.id, rec.value) == ("src-x", "the coordinator's value")
+    assert "an added quote" in rec.citation_context
+
+
 def test_a_graded_confirmed_row_the_apply_does_not_write_must_already_hold_its_grade(monkeypatch):
     """A confirmed stored assertion graded in a review but not in REQUOTE is
     never rewritten, so its stored certainty must already be the review's

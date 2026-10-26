@@ -169,7 +169,11 @@ def test_a_row_re_read_in_full_is_left_alone_by_an_older_script(synthetic_store)
     Task G's next apply, which re-syncs every reviewed group at its review
     date, put an older value back over a later correction and moved
     `updated` back. A full-read sync dated before the row's last change is
-    now refused too."""
+    now refused too, once the row's history carries the full read.
+
+    Review of 9c79048: the same-day refusal looked for the full read anywhere
+    in the history, so a second correction on the day of a first was refused.
+    It now asks whether the last change was the full read."""
     conn = connect(synthetic_store)
     try:
         older = _stored(conn)
@@ -189,5 +193,8 @@ def test_a_row_re_read_in_full_is_left_alone_by_an_older_script(synthetic_store)
         assert sync_assertion(conn, again, f"Sprint 13 Task G: {ingest.FULL_READ_MARK}", "2026-10-26") == []
         assert tuple(conn.execute("SELECT value, updated FROM records WHERE id = 'claim-one'").fetchone()) == (
             later.value, "2026-11-02")
+        # review of 9c79048: a second correction on the day of a first is not a re-apply of the full read
+        second = replace(later, value="a second correction the same day")
+        assert sync_assertion(conn, second, "2026-11-02 (Sprint 14): corrected again", "2026-11-02") == ["value"]
     finally:
         conn.close()
