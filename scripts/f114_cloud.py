@@ -90,16 +90,20 @@ def launch(rid: str, model: str = "sonnet") -> str:
         # `--cloud` refuses a non-interactive terminal, so it runs in a console window of its own; the result
         # comes back by branch, so the session id is not needed here. The inbox is restored once the bundle is
         # uploaded: when the window's process exits, or after UPLOAD_WAIT seconds.
-        proc = subprocess.Popen(["claude", "--cloud", message(rid), "--model", model], cwd=ROOT, env=env,
-                                creationflags=subprocess.CREATE_NEW_CONSOLE)
-        try:
-            rc = proc.wait(timeout=UPLOAD_WAIT)
-        except subprocess.TimeoutExpired:
-            rc = None
+        # stderr goes to a log (stdin and stdout stay the console's), so a failed launch says why.
+        (WORK / "logs").mkdir(parents=True, exist_ok=True)
+        log = WORK / "logs" / f"{rid}.err.txt"
+        with log.open("w", encoding="utf-8") as err:
+            proc = subprocess.Popen(["claude", "--cloud", message(rid), "--model", model], cwd=ROOT, env=env,
+                                    stderr=err, creationflags=subprocess.CREATE_NEW_CONSOLE)
+            try:
+                rc = proc.wait(timeout=UPLOAD_WAIT)
+            except subprocess.TimeoutExpired:
+                rc = None
     finally:
         git("checkout", "--", str(INBOX.relative_to(ROOT)))
     if rc not in (None, 0):
-        raise SystemExit(f"{rid}: the cloud launch window exited with {rc}")
+        raise SystemExit(f"{rid}: the cloud launch window exited with {rc}: {log.read_text(errors='replace')[-800:]}")
     d = launches()
     d[rid] = {"group": g, "window_rc": rc, "base": git("rev-parse", "HEAD").strip(),
               "launched": datetime.now().isoformat(timespec="seconds"), "model": model}
