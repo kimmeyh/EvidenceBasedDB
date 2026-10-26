@@ -1,0 +1,935 @@
+{
+ "papers": [
+  {
+   "record_id": "yun-2022-quantum-multi-agent-meta-reinforcement",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Yun-Park-Kim_2022_Quantum-Multi-Agent-Meta-Reinforcement-Learning__2208.11510.pdf",
+   "title_in_file": "Quantum Multi-Agent Meta Reinforcement Learning",
+   "version_note": "arXiv:2208.11510v4 (25 Nov 2022); AAAI-style main text followed by Supplementary Materials. The text layer carries the paper once. Greek letters that carry a subscript or a hat (epsilon_t and similar) were lost in the layer, so Theorem 1 prints its two constants as bare 't'. Figures 1 to 7 and the supplementary figures are images; their captions and the text around them were read.",
+   "pages": 17,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A proposal of quantum meta multi-agent reinforcement learning (QM2ARL) that trains a QNN's angle parameters as a meta Q-network, then its two-parameter measurement poles for local tasks, with an angle-to-pole noise regularizer, a convergence bound (Theorem 1), a pole memory, and classical-simulation experiments on a two-step game and a single-hop offloading task.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qm2arl-convergence-theorem",
+     "verdict": "widened",
+     "note": "The text layer holds Theorem 1's full statement (the stored note says it is cut before its bound). The bound is sin(alpha)/alpha times a sum of two constants indexed by t, on the expected angle training error with the regularization. Assumption 2 (bi-Lipschitz continuity of the meta Q-network) is also quoted; the stored value names only the second assumption by its content.",
+     "value": "The paper states Theorem 1: with Assumptions 1 and 2, the angle training error of a meta Q-network with angle-to-pole regularization at epoch t is upper bounded by a constant, the expectation of the error is at most sin α α times the sum of two constants indexed by t. Assumption 1 is the convergence of angle training without the regularization (error at most a constant for t ≥ 0) and Assumption 2 is that the meta Q-network is bi-Lipschitz continuous.",
+     "anchor": "Theorem 1, Assumptions 1 and 2, Meta QNN Angle Training with Angle-to-Pole Regularization; proof in Supplementary Materials, Proof of Theorem 1",
+     "quotes": [
+      "Theorem 1. With Assumptions 1 and 2, the angle training error of a meta Q-network with angle-to-pole regularization at epoch t is upper bounded by a constant Eθ˜ φ˜t − φ∗ ≤ sin α α ( t + t).",
+      "we assume the convergence of meta Q-network angle training without the regularization as below.",
+      "epoch, the angle training error of a meta Q-network with its suboptimal parameter φ∗ is upper bounded by a constant t ≥ 0, i.e., φt − φ∗ ≤ t.",
+      "Meta Q-network is bi-Lipschitz continuous, i.e.,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and both assumptions are quoted from the main text; the proof is in the supplement (Lemmas 1 to 3 and 'Proof of Theorem 1').",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound is conditional on Assumption 1, which assumes the unregularized training already converges, so it shows the noise factor sin(alpha)/alpha scales the bound; it does not show that training converges. The supplementary proof is short: Lemma 2 and the final chain use an inequality for the noisy gradient, and equation (5) replaces the average of two parameter-shifted observables by the unshifted observable (an approximation the text marks with the 'approximately equal' sign). The final step states that one term is 'bounded to' the Assumption 1 constant and the other 'bound to constant' without computing the second constant. A reviewer should check the proof before the grade is set. The bound's sin(alpha)/alpha factor is below 1 for alpha above 0, so the bound shrinks as the noise grows, which sits oddly beside the experiments where larger alpha slows meta training (Fig. 5)."
+    },
+    {
+     "id": "qm2arl-regularization-tradeoff",
+     "verdict": "narrowed",
+     "note": "The Concluding Remarks sentence is as stored, but the body places the slowdown in the meta-QNN angle-training stage and reports the opposite (faster convergence) for the local-QNN pole-training stage. All of it is measured on the two-step game. The body gives no direct test of generalization (no held-out environment); the conclusion's word 'generalizing' rests on the Fig. 4 and Fig. 5 observations.",
+     "value": "The authors report, on the two-step game, that a larger angle noise bound makes the meta-QNN angle training slower (the training loss grows with the noise and the meta Q-network ends farther from the optimal action-value), while the local-QNN pole training converges faster; the Concluding Remarks state that the angle-to-pole regularization is effective in generalizing the meta-QNN training, yet at the cost of compromising convergence speed.",
+     "anchor": "Impact of Angle-to-Pole Regularization (Fig. 5), Concluding Remarks",
+     "quotes": [
+      "As shown in Fig. 5(a), the training loss is proportioned to the intensity of angle noise.",
+      "As shown in Fig. 5(c), the smaller angle bound, QM2ARL converges slowly, and when the angle bound is large, it shows faster convergence.",
+      "In summary, despite the angle noise regularizer making meta-QNN angle training slow convergence, the angle noise regularizer makes the local-QNN pole training fast convergence.",
+      "The results also showed that the proposed angle-to-pole regularization is effective in generalizing the meta-QNN training, yet at the cost of compromising convergence speed."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, read from figures, with no repeats or error bars stated.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The slowdown named in the conclusion is the meta stage; the pole stage gets faster. The conclusion does not say which stage its 'convergence speed' cost applies to. No experiment measures generalization to an unseen environment; the evidence for 'generalizing' is the spread of action values over pole positions in Fig. 4 and the pole-memory runs."
+    },
+    {
+     "id": "qm2arl-simulation-reward",
+     "verdict": "narrowed",
+     "note": "The Concluding Remarks sentence is as stored. The body discusses the comparison only in the single-hop offloading environment (Fig. 7), and states the faster-convergence result against the conventional CTDE QMARL technique. The classical MARL baseline appears in the Fig. 7(b) legend and in the intro to that section, but the body text does not describe its result. Fig. 7(a) shows no significant difference with or without angle noise during meta-QNN angle training.",
+     "value": "The authors report, on the single-hop offloading environment, that in the local-QNN pole training the performance difference between angle noise present and absent is large, that the proposed scheme converges faster than the conventional CTDE QMARL technique, and that removing the pretraining causes a significant performance deterioration; in the meta-QNN angle training stage there was no significant difference with or without angle noise. The Concluding Remarks state that simulation results corroborated higher reward with faster convergence than a QMARL baseline and a classical MARL with the same number of parameters.",
+     "anchor": "QM2ARL vs. QMARL and Classical MARL (Fig. 7), Concluding Remarks",
+     "quotes": [
+      "In Fig. 7(a), there was no significant difference in performance when angle noise exists (i.e., α = 30◦) and when it does not exist.",
+      "However, in the local-QNN pole training, the performance difference between the existence of angle noise is large",
+      "When comparing blue line and green line, the convergence of the proposed scheme is faster than that of the conventional CTDE QMARL technique.",
+      "When compared with the local-QNN pole training without pretraining, the performance deterioration is significant.",
+      "Simulation results corroborated that Q2MARL achieves higher reward with faster convergence than an QMARL baseline and a classical MARL with the same number of parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, in one environment, read from learning curves; no numbers, seeds or error bars are given in the text.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text names the lines by colour (blue, green, red) and the colour key is in the figure image, so the baseline mapping is not checkable from the text alone. The comparison with the classical MARL is not described in the body. The simulations are classical simulations of the circuits (see the setup assertion on software and hardware)."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "q-network-definition",
+     "value": "The paper defines the Q-network as the scaling hyperparameter β times the expectation of an action-specific observable, built from projection matrices on the qubits tied to the action, with the circuit's angle parameters φ and the measurement's pole parameters θ both trainable.",
+     "anchor": "Definition 1 (Q-network), QNN Implementation to Reinforcement Learning",
+     "quotes": [
+      "the trainable PQC parameters (i.e., angle parameters) φ ∈ [−π, π]|φ|",
+      "trainable pole parameters θ ∈ [−π, π]|a|, and a scaling hyperparameter β ∈ R",
+      "The Q-network is deﬁned as Q(o, a; φ, θ) = β Oa o,φ,θ = β ψo,φ| m∈Ma Pm,θ|ψo,φ ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 1 states it.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper credits the construction to Jerbi et al. 2021 as motivation but replaces their classically trained weighted Hermitian by trainable pole parameters."
+    },
+    {
+     "id_suggestion": "angle-to-pole-regularization-definition",
+     "value": "The paper defines the angle-to-pole regularization as an angle noise that is a multivariate independent random variable θ˜ ∼ U(−α, +α) with α in [0, π], injected as artificial noise on the pole parameters during the angle training of the meta Q-network.",
+     "anchor": "Definition 2 (Angle-to-pole regularization), Meta QNN Angle Training with Angle-to-Pole Regularization",
+     "quotes": [
+      "Let an angle noise be deﬁned as a multivariate independent random variable, θ˜ ∼ U(−α, +α), where ∀α ∈ [0, π]",
+      "The angle-to-pole regularization injects artiﬁcial noise on the pole parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 2 states it.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "meta-q-loss-function",
+     "value": "The paper gives the meta Q-network loss as a double-DQN-style temporal difference over the episode: the target term uses the target angle parameters and the noise-free pole θ, and the prediction term uses θ + θ˜; gradients are obtained by the parameter shift rule.",
+     "anchor": "Meta QNN Angle Training with Angle-to-Pole Regularization",
+     "quotes": [
+      "the loss function is given as a temporal difference of the meta Q-network: L(φ; θ + θ˜, E) = 1 n(E ) o,a,r,o ∈E [r + Q(o , arg maxa a ; φ , θ) − Q(o, a; φ, θ + θ˜)]2.",
+      "the quantum gradient de- scent of loss can be obtained by the parameter shift rule"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its loss.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text layer lost the primes on the target terms; the target reading follows the supplement's derivation of the loss gradient."
+    },
+    {
+     "id_suggestion": "assumption-1-convergence-without-regularization",
+     "value": "The paper assumes that without the angle-to-pole regularization the angle training error of a meta Q-network at epoch t is upper bounded by a constant t ≥ 0, citing earlier convergence proofs under black-box formalization and under measurement noise with noise-free gates.",
+     "anchor": "Assumption 1, Meta QNN Angle Training with Angle-to-Pole Regularization",
+     "quotes": [
+      "In the recent literature on quantum stochastic optimization, the QNN convergence has been proved under a black-box formalization",
+      "we assume the convergence of meta Q-network angle training without the regularization as below.",
+      "epoch, the angle training error of a meta Q-network with its suboptimal parameter φ∗ is upper bounded by a constant t ≥ 0, i.e., φt − φ∗ ≤ t."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states Assumption 1 as the premise of Theorem 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The assumption is made, not proved here; it is that the baseline training converges to a suboptimal parameter. Theorem 1 inherits this assumption."
+    },
+    {
+     "id_suggestion": "assumption-2-bi-lipschitz",
+     "value": "The paper assumes, for mathematical amenability, that the meta Q-network is bi-Lipschitz continuous: the error to the suboptimal parameter is bounded above and below by constant multiples of the sum of learning-rate-weighted loss gradients over later epochs, with constant learning rates and an episode at each epoch.",
+     "anchor": "Assumption 2, Meta QNN Angle Training with Angle-to-Pole Regularization",
+     "quotes": [
+      "For the sake of mathematical amenability, we additionally consider the following assumption.",
+      "Meta Q-network is bi-Lipschitz continuous, i.e.,",
+      "ηj > 0 and Ej are constant learning rate and an episode at epoch j, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states it as an assumption of Theorem 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper does not check that a quantum Q-network satisfies this condition. The simulations use Adam (Table 1), not constant-learning-rate gradient descent."
+    },
+    {
+     "id_suggestion": "convergence-analysis-scope-no-measurement-noise",
+     "value": "The authors state that the convergence analysis covers the meta-QNN angle training under the angle-to-pole regularization while ignoring the measurement noise.",
+     "anchor": "Meta QNN Angle Training with Angle-to-Pole Regularization",
+     "quotes": [
+      "we focus on analyzing the convergence of the meta-QNN angle training under the existence of the angle-to-pole regularization while ignoring the measurement noise."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own analysis scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Shot noise and hardware noise are outside the theorem."
+    },
+    {
+     "id_suggestion": "no-convergence-analysis-local-pole-training",
+     "value": "The authors state that the convergence analysis of the local-QNN pole-training loss La is challenging, so they show the effectiveness of the local-QNN pole training through numerical experiments instead; the stated theorem covers only the meta-QNN angle training.",
+     "anchor": "Local QNN Pole Training",
+     "quotes": [
+      "Since the convergence analysis of La is challenging, we show the effectiveness of the local-QNN pole training via numerical experiments."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit itself.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma-1-expected-q-under-pole-noise",
+     "value": "The paper states as Lemma 1 that the expectation of the meta Q-network under the pole noise is a function of α times the noise-free meta Q-network, namely Eθ˜∼U [Q(o, a; φ, θ + θ˜)] = sin α α Q(o, a; φ, θ).",
+     "anchor": "Lemma 1, Supplementary Materials, Proof of Theorem 1",
+     "quotes": [
+      "Lemma 1. The expectation of meta Q-network is derived as the multiplication form of function of α and meta Q-network, i.e., Eθ˜∼U [Q(o, a; φ, θ + θ˜)] = sin α α Q(o, a; φ, θ).",
+      "Then, we derive the LHS of (9) in a closed-form as follows,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement is quoted; the supplement derives it in equations (8) to (11) from the rotation form of the measurement operator.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The step rests on the average of cos(noise) over a uniform interval of half-width alpha being sin(alpha)/alpha, with the sine term averaging to zero. That is a standard identity and fits the measurement form given in the preliminaries."
+    },
+    {
+     "id_suggestion": "lemma-2-expected-gradient-bound",
+     "value": "The paper states as Lemma 2 an inequality for the expectation of the loss gradient under angle noise, with a factor sin α over α and a term A2 that takes one of two forms depending on the sign of the derivative of the noisy observable.",
+     "anchor": "Lemma 2, Supplementary Materials, Proof of Theorem 1",
+     "quotes": [
+      "Lemma 2. The expectation of parameters of meta Q-network’s gradient with angle noise is written as",
+      "where A2(τ ) is written as,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The text layer scrambles the order of the inequality's terms, so the statement could not be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof of Lemma 2 uses a bound that the observable's magnitude is at most 1 and reads the sign of the derivative to pick the constant 1 or -1 (equations (13), (17)); a reader should check it against the PDF image."
+    },
+    {
+     "id_suggestion": "lemma-3-gradient-variance-bounded",
+     "value": "The paper states as Lemma 3 that the variance of the meta Q-network gradient with the angle regularizer is bounded to a constant, which depends on the noise bound α and on trace terms of the measurement operator.",
+     "anchor": "Lemma 3, Supplementary Materials, Proof of Theorem 1",
+     "quotes": [
+      "Lemma 3. The variance of meta Q-network gradient with angle regularizer is bounded to a constant written as follows:",
+      "Now, we focus on ﬁguring out 4 ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement's formula is scrambled in the text layer, so it could not be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-1-proof-closing-step",
+     "value": "The supplement's proof of the theorem ends by stating that, since the meta Q-network follows bi-Lipschitz continuity, one term is bounded to the assumed convergence constant, and according to the result of Lemma 3 the gradient variance is bounded to constant, so the other term is bound to constant and the meta Q-network with the noise regularizer has a convergence bound.",
+     "anchor": "Proof of Theorem 1, Supplementary Materials",
+     "quotes": [
+      "According to the result of Lemma 3, the variance of meta Q-network’s gradient is bounded to constant.",
+      "we prove that meta Q-network with noise regularizer has a convergence bound."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A brief closing argument; the second constant is not computed and the step from a variance bound to a bound on the summed gradient norm is not shown in the text.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The second term in the final chain is the sum of the norms of the observable gradients weighted by the learning rates; Lemma 3 bounds a variance, not that sum. This is a gap a reviewer should look at."
+    },
+    {
+     "id_suggestion": "claim-bounded-convergence-nontrivial",
+     "value": "The authors state that they theoretically prove the bounded convergence of meta-QNN training in the presence of the angle-to-pole regularization, which they call non-trivial as the gradient variance during angle training may diverge.",
+     "anchor": "Introduction, Contributions",
+     "quotes": [
+      "Third, we theoretically prove the bounded convergence of meta-QNN training in the presence of the angle-to-pole regularization, which is non-trivial as the gradient variance during angle training may diverge."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's characterization of their own result.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "See the Theorem 1 verdict note on what the bound does and does not show."
+    },
+    {
+     "id_suggestion": "claim-first-qmarl-angle-and-pole",
+     "value": "The authors state that QM2ARL is the first QMARL framework that utilizes both the angle and pole domains of a QNN for meta reinforcement learning.",
+     "anchor": "Introduction, Contributions",
+     "quotes": [
+      "First, we propose QM2ARL, the ﬁrst QMARL framework that utilizes both the angle and pole domains of a QNN for meta RL."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A priority claim by the authors, not checked against a literature search here.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-overfitting-with-few-environments",
+     "value": "The authors state that when the number of environments is limited, angle training may incur overfitting, making the meta Q-network ill-posed, which motivates the angle-to-pole regularization.",
+     "anchor": "Introduction",
+     "quotes": [
+      "When the number of environments is limited, angle training may incur overﬁtting, making the meta Q-network ill-posed."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An unsupported motivation stated by the authors.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No experiment in the paper measures overfitting or performance on an environment unseen in meta training."
+    },
+    {
+     "id_suggestion": "pole-memory-two-parameters-per-qnn",
+     "value": "The authors state that, since each locally trained QNN is represented by its two-parameter pole deviation, the pole memory can store K different QNN configurations using 2K parameters, regardless of the QNN size (the dimension of φ).",
+     "anchor": "Introduction",
+     "quotes": [
+      "Thanks to the two-parameter space of θ, the pole memory can store K different QNN conﬁgurations only using 2K parameters, regardless of the QNN sizes, i.e., φ dimensions."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A design claim, stated without a count from the experiments.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Table 1 lists the number of measurement parameters as 6, with the supplement stating two rotation gates per qubit for the measurement, so the 'two parameters' is per qubit; the stored pole for a whole QNN in the experiments holds more than two numbers. The claim also stores only the pole, so recovering a stored QNN needs the meta-trained angle parameters φ to be kept."
+    },
+    {
+     "id_suggestion": "pole-training-rationale-claims",
+     "value": "The authors state, as the rationale for few-shot learning in the pole domain, that a small QNN suffers from adapting to multiple environments, that scaling up the model is also challenging, that the measurement is an excellent kernel using very few parameters, and that the heritage of measurement enables fast catastrophic remembering to be more intuitive, reversible and memorable than the classical few-shot method.",
+     "anchor": "Local QNN Pole Training",
+     "quotes": [
+      "First of all, if the size of QNN is small, then the QNN suffers from adapting to multiple environments.",
+      "Second, the measurement is an excellent kernel where the entangled quantum state is mapped to the observable",
+      "The last one is that the heritage of measurement enables fast catastrophic remembering to be more intuitive, reversible, and memorable than the classical few-shot method"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reasoning offered by the authors, with citations for part of it, not tested against an alternative in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The experiments never compare pole-domain few-shot training with fine-tuning the angle parameters or with a classical few-shot method."
+    },
+    {
+     "id_suggestion": "local-pole-training-joint-value-decomposition",
+     "value": "The authors state that for local-QNN pole training, inspired by VDN, they assume the joint action-value can be expressed as the summation of local action-values across N agents; only the pole parameters Θ are trained, and no angle noise is used in this stage.",
+     "anchor": "Local QNN Pole Training",
+     "quotes": [
+      "VDN (Sunehag et al. 2018), we assume that the joint action-value can be expressed as the summation of local action-value across N agents",
+      "pole training only focuses on training pole parameters Θ {θn}nN=1, and we do not consider angle noise in local-QNN pole training."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The formula printed with the assumption carries a factor 1/N, so the decomposition is an average, though the text says summation."
+    },
+    {
+     "id_suggestion": "pole-initialization-and-meta-agent-setup",
+     "value": "The authors state that pole parameters are initialized to 0, so the measurement axes of all qubits start as the z-axes, and that in the meta-QNN angle training only one agent (the meta agent) is trained while it interacts with other agents that follow other policies.",
+     "anchor": "QM2ARL Algorithm; Algorithm 1",
+     "quotes": [
+      "Note that the pole parameters are initialized to 0. Thus, the measurement axes of all qubits are the same as the z-axes in the initialization step.",
+      "In meta-QNN angle training, only one agent (i.e., meta agent) is trained, where the meta agent interacts with other agents in a multi-agent environment."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own procedure.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Algorithm 1 prints the other agents' actions as drawn from a random policy; the prose says only 'other policies'."
+    },
+    {
+     "id_suggestion": "pole-memory-procedure-reload-pole",
+     "value": "The paper describes the pole memory procedure (Algorithm 2): the meta Q-network is trained over various environments, local QNN pole training fine-tunes it to a specific environment, and when a forgotten environment is met again during continual learning the pole parameters can be re-initialized from the pole memory.",
+     "anchor": "Pole Memory for Fast Remembering Against Catastrophic Forgetting; Algorithm 2",
+     "quotes": [
+      "Precisely, as illustrated in Algorithm 2, the meta Q-network is trained over various environments.",
+      "Finally, when re-encountering a forgotten environment during continual learning, the pole parameters can be re-initialized as the meta Q-network in the pole memory."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own method.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The sentence's wording ('re-initialized as the meta Q-network in the pole memory') and the Fig. 1 caption (which names an initial pole or the optimal pole of other environments) are not fully consistent about which pole is reloaded."
+    },
+    {
+     "id_suggestion": "claim-replay-methods-high-cost",
+     "value": "The authors state that, to cope with catastrophic forgetting, existing methods rely on replaying the entire previous experiences (Daniels et al. 2022), incurring a high computational cost.",
+     "anchor": "Pole Memory for Fast Remembering Against Catastrophic Forgetting",
+     "quotes": [
+      "existing methods rely on replaying the entire previous experiences (Daniels et al. 2022), incurring a high computational cost."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement attributed to other work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": "No replay baseline is run in the paper."
+    },
+    {
+     "id_suggestion": "simulation-software-and-hardware",
+     "value": "The authors state that the simulations use Pytorch v1.8.2 LTS and Torchquantum as software libraries, run on NVIDIA DGX Station V100 (4EA), and that experiment codes are provided in the supplemental material under the MIT License.",
+     "anchor": "Simulation Setting, Supplementary Materials",
+     "quotes": [
+      "For the simulation, we use Pytorch v1.8.2 LTS, Torchquantum as software libraries. The experiments are conducted on NVIDIA DGX Station V100 (4EA).",
+      "For reproductivity, we provide experiment codes in the supplemental material and all source codes follow the MIT License."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "All results are classical simulations of the circuits on GPUs. No run on quantum hardware and no gate-noise model is described, so none of the results speak to hardware noise."
+    },
+    {
+     "id_suggestion": "simulation-hyperparameters-table-1",
+     "value": "The paper's table of common experimental parameters lists, in order for its labels, 45 angle parameters, 6 measurement parameters, 8 for the observable hyperparameter, the Adam optimizer, and angle noise bounds of 0, π/6, π/4, π/3 and π/2, together with values for the learning rate and weight decay.",
+     "anchor": "Table of common experimental parameters, Simulation Setting, Supplementary Materials",
+     "quotes": [
+      "Learning rate (η0) Weight decay Number of angle parameters (|φ|) Number of measurement parameters(|θ|) Hyperparameter of observable (β) Optimizer Angle noise bound (α)",
+      "45 6 8 Adam Optimizer {0, π/6, π/4, π/3, π/2}"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The learning rate and weight decay are printed as 10^-4 and 10^-5 in the text layer on a line too short to quote. The assignment of values to labels is by order in the table."
+    },
+    {
+     "id_suggestion": "training-length-reported-twice",
+     "value": "The authors report meta-QNN angle training of 3, 000 iterations and local-QNN pole training of 20, 000 iterations in the main text, while the supplement states the meta Q-network is trained for 2, 000 epochs followed by few-shot angle training with 20, 000 epochs; the pre-training uses angle noise α = {0, 30◦, 45◦, 60◦, 90◦}.",
+     "anchor": "Impact of Angle-to-Pole Regularization; Simulation Setting, Supplementary Materials",
+     "quotes": [
+      "We conduct metaQNN angle training and local-QNN pole training with 3, 000 and 20, 000 iterations for the simulation, respectively.",
+      "We train meta-Q network with 2, 000 training epochs. Then, we conduct few-shot angle training with 20, 000 training epochs.",
+      "We pre-train the policy with the angle noise α = {0, 30◦, 45◦, 60◦, 90◦}."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The two statements disagree on meta-training length (3,000 against 2,000), and the supplement calls the second stage 'few-shot angle training' where the main text calls it pole training. Fig. 5(a) runs to 3,000 epochs. The 5,000 epochs of the pole-memory experiment are a third setting."
+    },
+    {
+     "id_suggestion": "two-step-game-description",
+     "value": "The authors describe the two-step game as a two-agent matrix game that starts at s1; the transition from s1 is determined by the first agent's action regardless of the second agent's action; in s2 all agents receive the score 7; in s3 an agent's reward depends on the other agent's action.",
+     "anchor": "Two-Step Game, Supplementary Materials",
+     "quotes": [
+      "It starts at s1. The state transition from s1 is determined by an action of the ﬁrst agent, regardless of the action of the second agent. In state s2, all agents receive the score 7. In state s3, an agent receives a reward that depends on the other agent’s action."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The supplement's Figure 2 calls it a 'prisoner's dilemma' state diagram."
+    },
+    {
+     "id_suggestion": "two-step-game-optimal-action-values",
+     "value": "The authors state that if an agent does not know the other agent's strategy the optimal action-values are E[maxa Q∗(s1, a)] = 7, E[maxa Q∗(s2, a)] = 7 and E[maxa Q∗(s3, a)] = 4.5.",
+     "anchor": "Two-Step Game, Supplementary Materials",
+     "quotes": [
+      "If agent does not know the other agent’s strategy, the optimal action value function is E[maxa Q∗(s1, a)] = 7, E[maxa Q∗(s2, a)] = 7, and E[maxa Q∗(s3, a)] = 4.5, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of the reference values its experiments use.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The supplement also gives a second set of values (8, 7, 8) for an agent that knows the other's strategy; Table 5(f) 'Ground Truth' uses the first set (7, 7, 0.5 and 4.5, 7, 4.5)."
+    },
+    {
+     "id_suggestion": "continual-learning-environments-a-b",
+     "value": "The authors describe the continual-learning setting as the environment changing from A to B and back to A; in environment A the optimal action when multiple agents are in s3 is a = 1 and in environment B it is a = 0; the original reward function (Env A) is changed into a wrong reward function (Env B) so that the training fails to achieve high Q-value, then rolled back.",
+     "anchor": "Continual Learning, Supplementary Materials; Effectiveness of Pole Memory in Fast Remembering",
+     "quotes": [
+      "In continual learning, the environment is changed (A→B→A). In environment A, when multiple agents are in s3, the optimal action is a = 1. In environment B, when multiple agents are in s3, the optimal action is a = 0.",
+      "the original reward function (i.e., Env A) is changed into a wrong reward function (Env B so that the training fails to achieve high Q-value."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The forgetting is induced on purpose by a reward flip in one state of a toy game; it is not forgetting that arises in a realistic task sequence."
+    },
+    {
+     "id_suggestion": "fig4-pole-position-action-value-distribution",
+     "value": "The authors report, on the two-step game with angle noise bounds α = {30◦, 60◦, 90◦} against none, that without the regularization the action-value distribution over pole positions has both high and low values, that with it the minimum and maximum values are evenly and uniformly distributed, and that the variance of the action value is large if angle noise exists.",
+     "anchor": "Impact of Pole Parameters on the Meta Q-Network (Fig. 4)",
+     "quotes": [
+      "The angle noise bound was set to α = {30◦, 60◦, 90◦}.",
+      "As shown in Fig. 4(a), the action-value distribution has both high and low values.",
+      "When the angle-to-pole regularization exists, we ﬁgure out that the minimum and maximum values are evenly and uniformly distributed as shown in Fig. 4(b–d).",
+      "In addition, the variance of the action value is large, if angle noise exists."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, read from heat maps.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The section's closing sentence, 'it is obvious meta Q-network is affected by angle-to-pole regularization', states only that the regularization changes the Q-value map, not that the change helps. The paper's explanation in terms of momentum is not tested."
+    },
+    {
+     "id_suggestion": "fig5-experiment-setup-convergence-criterion",
+     "value": "The authors test angle noise bounds α ∈ {0◦, 30◦, 45◦, 60◦, 90◦} on the two-step game and set the criterion of numeric convergence as when the action-values given s1 and s3 stop increasing or decreasing.",
+     "anchor": "Impact of Angle-to-Pole Regularization (Fig. 5)",
+     "quotes": [
+      "We test under the angle noise bound",
+      "α ∈ {0◦, 30◦, 45◦, 60◦, 90◦}. We set the criterion of numeric convergence when the action-values given s1 and s3, stop increasing/decreasing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The criterion is visual (values stop moving) and no tolerance or number of repeats is stated."
+    },
+    {
+     "id_suggestion": "fig5-meta-stage-loss-and-distance-grow-with-alpha",
+     "value": "The authors report, on the two-step game, that the meta-QNN angle-training loss is proportioned to the intensity of the angle noise, and that the larger the angle bound, the larger the distance between the meta Q-network's action-value and the optimal action-value.",
+     "anchor": "Impact of Angle-to-Pole Regularization (Fig. 5(a) and 5(b))",
+     "quotes": [
+      "As shown in Fig. 5(a), the training loss is proportioned to the intensity of angle noise.",
+      "As shown in Fig. 5(b), the larger angle bound, the distance between the action-value of the meta Q-network and the optimal action-value is larger."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, read from learning curves.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 5 gives test Q-tables for the same sweep; the distance there is not monotone in alpha (see the Table 5 assertions), so 'larger bound, larger distance' is a trend in the plotted curves, not a strict ordering of every table entry."
+    },
+    {
+     "id_suggestion": "fig5-local-stage-faster-with-larger-alpha",
+     "value": "The authors report, on the two-step game, that in the local-QNN pole training QM2ARL converges slowly for a smaller angle bound and faster for a larger angle bound.",
+     "anchor": "Impact of Angle-to-Pole Regularization (Fig. 5(c))",
+     "quotes": [
+      "As shown in Fig. 5(c), the smaller angle bound, QM2ARL converges slowly, and when the angle bound is large, it shows faster convergence."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, read from learning curves.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper does not give the epochs to convergence or a repeat count. Fig. 7(b) shows the same pattern on the offloading task, with only alpha 0 against 30 degrees."
+    },
+    {
+     "id_suggestion": "meta-q-distance-measure-dnorm",
+     "value": "The authors define the distance between the optimal action-value and the meta Q-network's action-value for the same state and min-max normalize it, then probe the meta Q-values for all the measurement parameters quantized to a grid, for every qubit.",
+     "anchor": "Results of Meta Q-Network Training, Supplementary Materials (equations (30) and (31))",
+     "quotes": [
+      "we calculate the distance between an optimal action-value and the action-value of meta-Q network, where the same state is given. Then we min-max normalize the distance.",
+      "We probe meta Q-values maxa Q(s, a; φ, θ) for all the measurement parameters that are quantized to"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of its own evaluation measure.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The quantization grid is printed as fractions of pi over 16 in the text layer; the grid step is read from that."
+    },
+    {
+     "id_suggestion": "table5-meta-q-table-alpha-0",
+     "value": "The authors report the test Q-table of the meta Q-network trained with angle noise bound 0◦: for the action with index zero the values 6.916, 6.965 and 2.893 for the three states in order, and for the action with index one 4.399, 6.932 and 4.163.",
+     "anchor": "Table 5(a), Results of Meta Q-Network Training, Supplementary Materials",
+     "quotes": [
+      "6.916 6.965 2.893",
+      "4.399 6.932 4.163",
+      "(a) α = 0◦."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run, as printed.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Ground truth in Table 5(f) is 7, 7, 0.5 for the first action and 4.5, 7, 4.5 for the second. Here the greedy action matches the ground truth in the first and third states."
+    },
+    {
+     "id_suggestion": "table5-meta-q-table-alpha-30",
+     "value": "The authors report the test Q-table of the meta Q-network trained with angle noise bound 30◦: for the action with index zero the values 6.955, 7.109 and 2.908 for the three states in order, and for the action with index one 4.416, 6.458 and 3.168.",
+     "anchor": "Table 5(b), Results of Meta Q-Network Training, Supplementary Materials",
+     "quotes": [
+      "6.955 7.109 2.908",
+      "4.416 6.458 3.168",
+      "(b) α = 30◦."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run, as printed.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The greedy action matches the ground truth in the first and third states."
+    },
+    {
+     "id_suggestion": "table5-meta-q-table-alpha-45",
+     "value": "The authors report the test Q-table of the meta Q-network trained with angle noise bound 45◦: for the action with index zero the values 7.352, 5.915 and 4.262 for the three states in order, and for the action with index one 4.692, 6.611 and 3.810.",
+     "anchor": "Table 5(c), Results of Meta Q-Network Training, Supplementary Materials",
+     "quotes": [
+      "7.352 5.915 4.262",
+      "4.692 6.611 3.810",
+      "(c) α = 45◦."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run, as printed.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In the third state the larger value is for the action with index zero (4.262 against 3.810), the reverse of the ground truth ordering (0.5 against 4.5)."
+    },
+    {
+     "id_suggestion": "table5-meta-q-table-alpha-60",
+     "value": "The authors report the test Q-table of the meta Q-network trained with angle noise bound 60◦: for the action with index zero the values 6.972, 6.015 and 4.585 for the three states in order, and for the action with index one 5.785, 6.087 and 6.814.",
+     "anchor": "Table 5(d), Results of Meta Q-Network Training, Supplementary Materials",
+     "quotes": [
+      "6.972 6.015 4.585",
+      "5.785 6.087 6.814",
+      "(d) α = 60◦."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run, as printed.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The greedy action matches the ground truth in the first and third states; the value for the action with index one in the third state, 6.814, is above the ground truth 4.5."
+    },
+    {
+     "id_suggestion": "table5-meta-q-table-alpha-90",
+     "value": "The authors report the test Q-table of the meta Q-network trained with angle noise bound 90◦: for the action with index zero the values 5.634, 6.651 and 4.128 for the three states in order, and for the action with index one 6.267, 6.498 and 4.223.",
+     "anchor": "Table 5(e), Results of Meta Q-Network Training, Supplementary Materials",
+     "quotes": [
+      "5.634 6.651 4.128",
+      "6.267 6.498 4.223",
+      "(e) α = 90◦."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run, as printed.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In the first state the larger value is for the action with index one (6.267 against 5.634), the reverse of the ground truth (4.5 against 7); in the third state the two values are close (4.128 and 4.223). Across the five tables the match to ground truth is not monotone in alpha: 60 degrees is closest in the first and third states, 45 degrees fails the third."
+    },
+    {
+     "id_suggestion": "pole-memory-experiment-setup",
+     "value": "The authors set up the pole-memory experiment on the two-step game with environments A and B: the meta Q-network is trained for 5,000 epochs, local-QNN pole training runs for 10,000 epochs per environment in the order Env A (Phase I), Env B (Phase II) and Env A (Phase III), comparing QM2ARL with and without pole memory for α ∈ {0◦, 30◦}, using the optimal Q-value distance as the measure.",
+     "anchor": "Effectiveness of Pole Memory in Fast Remembering (Fig. 6)",
+     "quotes": [
+      "The meta Q-network is trained for 5,000 epochs.",
+      "Then, we conduct local-QNN pole training for 10,000 epochs per environment.",
+      "we train the pole parameters in Env A (Phase I), then Env B (Phase II), and ﬁnally Env A (Phase III).",
+      "we compare QM2ARL with pole memory (denoted as w. PM.) and without pole memory (denoted as w/o. PM.) for two angles bound α ∈ {0◦, 30◦}."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No repeat count, random seed or error band is stated."
+    },
+    {
+     "id_suggestion": "pole-memory-fast-remembering-result",
+     "value": "The authors report, on the two-step game, that the initial tangent of the optimal Q-value distance is steep in Phase I when the pole memory is used, that in Phase II the comparison without pole memory cannot adapt to Env B while the proposed framework (α = 30◦ with pole memory) adapts, that utilizing a pole memory shows faster adaptation, and that Phase III shows faster adaptation similar to Phase I.",
+     "anchor": "Effectiveness of Pole Memory in Fast Remembering (Fig. 6)",
+     "quotes": [
+      "As shown in phase I of Fig. 6, the initial tangent of the optimal Q-value distance shows steep when the pole memory is utilized.",
+      "In phase II, the comparison (i.e., no pole memory) cannot adapt to Env B, while the proposed framework (denoted as α = 30◦ w. PM) adapts to Env B.",
+      "In addition, utilizing a pole memory shows faster adaptation. The result of phase III shows faster adaptation, which is similar to the results of phase I.",
+      "In summary, the pole memory enables QM2ARL to achieve faster adaptation, and the proposed framework (i.e., QM2ARL leveraging both angle-to-pole regularization and pole memory) shows faster and better adaptation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on a toy game, read from a curve.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text gives no numbers for the speed-up. The text reports all frameworks adapt better to Env A than Env B. The task is a three-state game with a reward flip in one state, and no comparison is made with replay or another continual-learning method."
+    },
+    {
+     "id_suggestion": "single-hop-offloading-environment",
+     "value": "The authors describe the single-hop offloading environment, proposed by Yun et al., as 4 edge agents and 2 cloud agents each with a queue; the objective is to maintain queue stability; Table 4 lists the observation dimension 4, state dimension 16, 4 discrete actions, a reward modelled with queue stability, and an expected return of −33.2 with a random policy.",
+     "anchor": "Single-hop Offloading Environment, Table 4, Supplementary Materials",
+     "quotes": [
+      "The single-hop environments consist of 4 edge agents and 2 cloud agents.",
+      "stability for all agents and clouds.",
+      "4. Current and previous queue state of agent and current queue state of clouds, dim(o) = 4. st ∪nN=1{ont }, dim(s) = 16. Transmit small/large amount of chunk to clouds, dim(a) =Discrete(4). Modeled with queue stability. −33.2 with random policy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The Fig. 7 curves run from about 0 down to -40 on the return axis, so the random-policy value gives the scale."
+    },
+    {
+     "id_suggestion": "single-hop-compared-schemes",
+     "value": "The authors list the four schemes compared on the single-hop environment: a technique that removes the meta Q-network training, QM2ARL without angle noise, a state-of-the-art CTDE QMARL method (Yun et al. 2022), and QM2ARL with the angle noise method proposed in the paper.",
+     "anchor": "Single-hop Offloading Environment, Simulation Settings, Supplementary Materials; Fig. 7",
+     "quotes": [
+      "Experiments are conducted with four different schemes; 1) a technique that removes the meta Q-network training, 2) QM2ARL but removes the angle noise (i.e., α = 0◦), 3) a state-of-the-art CTDE QMARL method (Yun et al. 2022), 4)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The fourth item is garbled in the text ('Learning about total reward in the QM2ARL and angle noise method proposed in this paper (i.e., α = 30◦)'). The Fig. 7(b) legend adds a 'Classical MARL' line that this list does not name, and the paper gives no detail on how the classical model's parameter count was matched."
+    },
+    {
+     "id_suggestion": "claim-superior-performance-summary-single-hop",
+     "value": "The authors conclude, in the summary of the single-hop section, that the performance of the proposed method is superior to multi-agent learning and inference over a finite horizon.",
+     "anchor": "QM2ARL vs. QMARL and Classical MARL",
+     "quotes": [
+      "In summary, like single-hop environment, the performance of the method proposed in this paper is superior to multi-agent learning and inference over a ﬁnite horizon."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's summary whose wording is unclear.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The sentence does not say which baseline it is compared with; the supported comparisons are the ones stated earlier in the section."
+    },
+    {
+     "id_suggestion": "contribution-claim-higher-reward-than-baselines",
+     "value": "The authors state that by simulation they validate that QM2ARL achieves higher rewards and faster convergence than several baselines, including the naive CTDE-QMARL, under a two-step game and a single-hop offloading scenario.",
+     "anchor": "Introduction, Contributions",
+     "quotes": [
+      "Lastly, by simulation we validate that QM2ARL achieves higher rewards and faster convergence than several baselines, including the naïve CTDE-QMARL (Yun et al. 2022)"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's summary of their own experiments.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The body reports a baseline comparison only for the single-hop environment; on the two-step game the experiments sweep alpha and test the pole memory without QMARL or classical baselines."
+    },
+    {
+     "id_suggestion": "conclusion-pole-memory-effectiveness",
+     "value": "The authors conclude that the simulations demonstrated the effectiveness of the proposed pole memory in enabling fast remembering against catastrophic forgetting, and that the pole memory can save all meta-QNN and local-QNN training outcomes in the pole domain and load them using two parameters per each.",
+     "anchor": "Concluding Remarks",
+     "quotes": [
+      "Lastly, the simulations demonstrated the effectiveness of the proposed pole memory in enabling fast remembering against catastrophic forgetting.",
+      "we introduced a concept of pole memory that can save all meta-QNN and local-QNN training outcomes in the pole domain and load them only using two"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion resting on the one toy experiment above.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The second quote continues onto the next page with 'parameters per each'; it is the same two-parameter claim as the Introduction's."
+    },
+    {
+     "id_suggestion": "stated-open-problems-future-work",
+     "value": "The authors state that it is worth optimizing the trade-off between generalization and convergence speed in future research, and that investigating more benefits of the pole memory in continual learning and incorporating multiple measurement dimensions could be interesting topics for future research.",
+     "anchor": "Concluding Remarks",
+     "quotes": [
+      "It is therefore worth optimizing this trade-off between generalization and convergence speed in future research.",
+      "Investigating its more beneﬁts in continual learning as well as incorporating multiple measurement dimensions could be interesting topics for future research."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own open problems.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scope-qml-too-early-for-advantage",
+     "value": "The authors state that, compared to classical ML, QML is still in its infancy and too early to demonstrate quantum supremacy in accuracy and scalability due to the currently limited number of qubits, so the current research focus is to identify possible challenges and novel potential in QNN-based QML applications.",
+     "anchor": "Introduction",
+     "quotes": [
+      "Compared to classical ML, QML is still in its infancy and too early to demonstrate quantum supremacy in accuracy and scalability due to the currently limited number of qubits.",
+      "the main focus in the current research direction is to identify possible challenges and novel potential in QNN-based QML applications"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own positioning and limit.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper makes no claim of quantum advantage over classical MARL beyond the parameter-matched comparison in Fig. 7(b)."
+    },
+    {
+     "id_suggestion": "cited-ibm-roadmap-100k-qubits-2026",
+     "value": "The authors state, citing Gambetta 2022 (IBM's roadmap), that it is envisaged to reach the full potential of QML by around 2026 when quantum computers can run with 100k qubits.",
+     "anchor": "Introduction",
+     "quotes": [
+      "According to IBM’s roadmap, it is envisaged to reach the full potential of QML by around 2026 when quantum computers can run with 100k qubits (Gambetta 2022)."
+     ],
+     "kind": "cited",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A roadmap statement attributed to a vendor, not checked here.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "A vendor forecast; the paper uses it only as motivation."
+    },
+    {
+     "id_suggestion": "cited-nisq-few-hundred-qubits",
+     "value": "The authors state, citing Cho 2020, that the NISQ era has already been ushered in, where quantum computers run with up to a few hundred qubits.",
+     "anchor": "Introduction",
+     "quotes": [
+      "The noisy intermediate-scale quantum (NISQ) era has already been ushered in, where quantum computers run with up to a few hundred qubits (Cho 2020)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
