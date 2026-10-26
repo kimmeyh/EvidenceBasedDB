@@ -13,6 +13,8 @@ Usage:
   python scripts/sprint13_g_check.py <one paper's done file> <group brief> --partial
 Prints one line per problem and ends "N problems"; 0 is the reader's finish line.
 With --partial the file need not hold every record of the brief.
+  ... --text <paper text file>   check against that text instead of the PDF (F114's cloud readers, which are
+                                 given the coordinator's extracted text, never the PDF)
 """
 from __future__ import annotations
 
@@ -65,13 +67,21 @@ def assertion_problems(tag: str, a: dict, text: str) -> list[str]:
     return out
 
 
-def paper_problems(p: dict, given: set[str], brief_file: str = "") -> list[str]:
+def paper_problems(p: dict, given: set[str], brief_file: str = "", text_file: str = "") -> list[str]:
+    """`text_file`: the paper's text as extracted on the coordinator's machine (F114's cloud readers have the text,
+    not the PDF); the entry's `file` must then be the brief's path as written."""
     rid = p.get("record_id", "?")
     out = []
     path = p.get("file") or ""
-    if not Path(path).is_file():
+    if text_file:
+        text = plain(Path(text_file).read_text(encoding="utf-8"))
+        if brief_file and path != brief_file:
+            out.append(f"{rid}: file is not the brief's ({brief_file})")
+        brief_file = ""
+    elif not Path(path).is_file():
         return [f"{rid}: file not found: {path}"]
-    text = plain(source_text(path))
+    else:
+        text = plain(source_text(path))
     if p.get("read_extent") not in ("full", "partial"):
         out.append(f"{rid}: read_extent must be full or partial")
     if p.get("read_extent") == "partial" and not (p.get("not_read") or "").strip():
@@ -109,6 +119,11 @@ def paper_problems(p: dict, given: set[str], brief_file: str = "") -> list[str]:
 
 def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
+    text_file = ""
+    if "--text" in args:
+        i = args.index("--text")
+        text_file = args[i + 1]
+        del args[i:i + 2]
     data = json.loads(Path(args[0]).read_text(encoding="utf-8"))
     brief = json.loads(Path(args[1]).read_text(encoding="utf-8"))
     given = {r["record_id"]: {e["id"] for e in r.get("stored_assertions", [])} for r in brief["records"]}
@@ -118,7 +133,7 @@ def main(argv: list[str] | None = None) -> int:
     problems = [] if "--partial" in args else [f"{rid}: no entry for this record" for rid in sorted(set(given) - held)]
     problems += [f"{rid}: not a record of this brief" for rid in sorted(held - set(given))]
     problems += [x for p in data.get("papers", []) for x in paper_problems(p, given.get(p.get("record_id"), set()),
-                                                                           files.get(p.get("record_id"), ""))]
+                                                                           files.get(p.get("record_id"), ""), text_file)]
     for x in problems:
         print(x)
     print(f"{len(problems)} problems")

@@ -73,8 +73,8 @@ def test_every_reader_prompt_from_task_g_on_forbids_hook_override_tokens():
     assert missing == [], f"reader prompts that do not forbid hook override tokens: {missing}"
 
 
-RESTART = ("## Progress and restart", "progress.json", "done\\", "partial\\", "last_page_read", "start here, every time",
-           "--partial")
+RESTART = ("## Progress and restart", "progress.json", "done/", "partial/", "last_page_read", "start here, every time",
+           "--partial")  # a local reader's paths use "\", F114's cloud reader's "/"; both are compared as "/"
 
 
 def test_every_reader_prompt_from_task_g_on_saves_its_progress_and_starts_from_it():
@@ -84,5 +84,6 @@ def test_every_reader_prompt_from_task_g_on_saves_its_progress_and_starts_from_i
     fail, 2026-10-26: run on Task G's instructions with the "Progress and
     restart" section and the --partial paragraph cut, the check named all
     seven phrases missing."""
-    missing = {p: [w for w in RESTART if w.lower() not in instructions(p).lower()] for p in prompts()}
+    missing = {p: [w for w in RESTART if w.lower() not in instructions(p).lower().replace("\\", "/")]
+               for p in prompts()}
     assert {p: m for p, m in missing.items() if m} == {}

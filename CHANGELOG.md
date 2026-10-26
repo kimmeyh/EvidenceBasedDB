@@ -331,6 +331,20 @@ this project keeps having to replace with a step.
   them, so an anchor or context fix named under the stored id was dropped
   silently. Both are now read under the stored id and guarded; the tests
   were proven red by injection (Issue #138)
+- **feat**: F114 cloud readers (2026-10-26, team lead: "cloud runs only one
+  paper at a time, sends the 'brief' (it needs to be essentially the whole
+  paper) ... do one pilot first, then adjust as needed and continue sending
+  until completed or we run out of weekly tokens"). `scripts/f114_cloud.py`
+  writes one paper's extracted text and brief into the tracked placeholders
+  in `manifests/f114_cloud/inbox/`, starts a cloud session from a bundle of
+  the working tree (`CCR_FORCE_BUNDLE=1`), and restores the placeholders,
+  so the text never enters a commit (ADR-0005 section 3); the session pushes
+  its result to `cloud/f114/<record>` and `fetch` saves it outside the
+  repository without merging. `manifests/f114_cloud/READER_PROMPT.md` is
+  Task G's prompt for one paper; `scripts/sprint13_g_check.py --text` checks
+  quotes against the given text. Tests proven red by injection
+  (`tests/test_f114_cloud.py`; the restart-phrase check in
+  `tests/test_reader_prompts.py` now compares "\" and "/" alike) (Issue #138)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 
