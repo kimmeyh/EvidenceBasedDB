@@ -26,7 +26,6 @@ from __future__ import annotations
 
 import json
 import os
-import re
 import subprocess
 import sys
 import time
@@ -44,7 +43,7 @@ S13G = Path(r"C:\Users\kimme\AppData\Local\Temp\claude\D--Data-Harold-github-Evi
 WORK = S13G / "f114"
 LAUNCHES = WORK / "launches.json"
 FIRST_GROUP = "g043"
-SESSION_ID = re.compile(r"\b((?:session|cse)_[A-Za-z0-9]+)\b")
+UPLOAD_WAIT = 240
 
 
 def git(*args: str) -> str:
@@ -88,21 +87,24 @@ def launch(rid: str, model: str = "sonnet") -> str:
         (INBOX / "brief.json").write_text(json.dumps({"group": g, "records": [rec]}, indent=1), encoding="utf-8")
         (INBOX / "paper.txt").write_text(source_text(rec["file"]), encoding="utf-8")
         env = dict(os.environ, CCR_FORCE_BUNDLE="1")
-        run = subprocess.run(["claude", "--cloud", message(rid), "--model", model], cwd=ROOT, env=env,
-                             stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=600)
+        # `--cloud` refuses a non-interactive terminal, so it runs in a console window of its own; the result
+        # comes back by branch, so the session id is not needed here. The inbox is restored once the bundle is
+        # uploaded: when the window's process exits, or after UPLOAD_WAIT seconds.
+        proc = subprocess.Popen(["claude", "--cloud", message(rid), "--model", model], cwd=ROOT, env=env,
+                                creationflags=subprocess.CREATE_NEW_CONSOLE)
+        try:
+            rc = proc.wait(timeout=UPLOAD_WAIT)
+        except subprocess.TimeoutExpired:
+            rc = None
     finally:
         git("checkout", "--", str(INBOX.relative_to(ROOT)))
-    (WORK / "logs").mkdir(parents=True, exist_ok=True)
-    (WORK / "logs" / f"{rid}.launch.txt").write_text(f"rc={run.returncode}\n{run.stdout}\n{run.stderr}",
-                                                     encoding="utf-8")
-    found = SESSION_ID.search(run.stdout + run.stderr)
-    if run.returncode != 0 or not found:
-        raise SystemExit(f"{rid}: no session started (rc={run.returncode}); see {WORK / 'logs' / (rid + '.launch.txt')}")
+    if rc not in (None, 0):
+        raise SystemExit(f"{rid}: the cloud launch window exited with {rc}")
     d = launches()
-    d[rid] = {"group": g, "session": found.group(1), "base": git("rev-parse", "HEAD").strip(),
+    d[rid] = {"group": g, "window_rc": rc, "base": git("rev-parse", "HEAD").strip(),
               "launched": datetime.now().isoformat(timespec="seconds"), "model": model}
     save_launches(d)
-    return found.group(1)
+    return f"launched (window exit code {rc})"
 
 
 def fetch() -> dict:
