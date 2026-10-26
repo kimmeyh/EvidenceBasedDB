@@ -1,0 +1,952 @@
+{
+ "papers": [
+  {
+   "record_id": "berwald-2025-zeno-effect-computation-opportunities-challenges",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QCiAuthorsPapers\\Nicholas-Chancellor\\topic-screened\\Berwald-et-al._2023_Zeno-effect-Computation-Opportunities-and-Challenges__2311.08432.pdf",
+   "title_in_file": "Zeno-effect Computation: Opportunities and Challenges",
+   "version_note": "arXiv:2311.08432v3, 1 Apr 2025, as printed in the text layer. The file name carries 2023.",
+   "pages": 45,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theoretical and numerical study of computing with Zeno effects in three-level units, covering a transverse field Ising model reduction, a dissipative satisfiability solver, non-perturbative constraints and a STIRAP-style implementation.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "zeno-three-level-unit-setup",
+     "value": "The authors state that each computational unit is a three-level system: the usual qubit states |0⟩ and |1⟩ plus a third \"undefined\" state |u⟩. The protocol initialises in |u⟩ and continuously evolves until the variable is forced into the space spanned by |0⟩ and |1⟩.",
+     "anchor": "Section 2, p.6",
+     "quotes": [
+      "The |0⟩ and |1⟩ states are the usual qubit states, while |u⟩ is a third “undefined” state.",
+      "Conceptually the computational protocol we consider consists of initialising in the undefined state |u⟩ and continuously evolving the space until the variable is forced to be in the space spanned by {|0⟩, |1⟩}."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2 defines the construction on which all later results depend.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-three-level-rationale",
+     "value": "The authors state that Zeno physics needs a Hilbert space expanded by at least one state that can be forbidden by a Zeno effect, leaving a non-trivial two-state subspace rather than a trivial one-state one.",
+     "anchor": "Section 2, p.6",
+     "quotes": [
+      "Qubits form a simple unit for performing computations, but to effectively make use of Zeno physics the Hilbert space needs to be expanded to include at least one state which can then be forbidden using a Zeno effect, leaving a non-trivial two-state subspace as opposed to a trivial one-state one."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own design rationale in Section 2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-forbidden-state-sweep",
+     "value": "The authors state that the Zeno coupling is to a state |ξ(θ)⟩ that is swept from θ = 0 to θ = π/2. With strong enough coupling to achieve a Zeno effect, the system is confined to the two-dimensional orthogonal complement of |ξ(θ)⟩.",
+     "anchor": "Section 2, p.6, equations 2 and 3",
+     "quotes": [
+      "and continuously evolving θ = 0 → θ =√ π/2.",
+      "Assuming strong enough coupling to achieve a Zeno effect, the system is confined to the orthogonal complement of |ξ(θ)⟩, a two-dimensional space spanned by"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2 defines the forbidden state and the confinement assumption.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-minus-state-always-allowed",
+     "value": "The authors state that |−⟩ is the only state that lies within the allowed space for all θ.",
+     "anchor": "Section 2, p.7",
+     "quotes": [
+      "Furthermore, given the nature of the rotation, |−⟩ is the only state which lies within the allowed space for all θ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from the orthogonality relations in Section 2 (equation 3 and table 1).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-effective-transverse-ising",
+     "value": "The authors show, assuming perfect projection into the allowed two-dimensional subspace, that adding Ising terms and an energy offset on the undefined state gives a Hamiltonian that effectively defines a transverse field Ising model. The longitudinal field terms follow a different schedule from the coupling terms, which they remove by replacing fields with couplings to an auxiliary variable.",
+     "anchor": "Section 3, pp.9-10",
+     "quotes": [
+      "defines a transverse field Ising model, but where the longitudinal field",
+      "terms follow a different annealing schedule than the coupling terms. This",
+      "an auxilliary variable which will by construction have the same effective"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Analytic derivation in the paper, shown for the stated perfect-projection assumption; the equations were not available as text so the statement is quoted from the prose.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-ising-perfect-projection-assumption",
+     "value": "The authors state that the Ising result assumes projection into the allowed subspace is perfect, that is, the matrix elements that forbid |ξ(θ)⟩ are much larger in magnitude than any others.",
+     "anchor": "Section 3, p.10",
+     "quotes": [
+      "One subtle observation to make here is that we have implicitly assumed that projection into the {|+˜ ⟩, |−˜ ⟩} basis is perfect.",
+      "The mathematical assumption in this case is that the elements which forbid the |ξ(θ)⟩ state are much larger in magnitude than any others."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 3 states the condition under which the effective Ising model holds.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-only-theta-swept",
+     "value": "The authors state that the construction realises a transverse field Ising Hamiltonian without requiring the ZiZj couplings to be tuned over time; the only variable swept dynamically is θ, a control parameter on a single variable. They state that the h and J couplings must be programmable.",
+     "anchor": "Section 3, p.10",
+     "quotes": [
+      "We note that importantly, while this implementation effectively realises a transverse field Ising Hamiltonian, it does so without requiring coupling interactions between the variable ZiZj to be tuned over time.",
+      "In fact, the only variable which needs to be dynamically swept is θ, which is a control parameter on a single variable."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Design claim by the authors; no hardware demonstration.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper reports no hardware test of the reduced tuning requirement; the claim follows from the construction."
+    },
+    {
+     "id_suggestion": "zeno-engineering-claim-single-J",
+     "value": "The authors state that many optimisation problems can be mapped with a single non-zero value of J, for example maximum cut with Jjk = 1 on graph edges and 0 otherwise, so very limited coupling programmability suffices. They state that maximum independent set also needs additional h terms.",
+     "anchor": "Section 3, p.10",
+     "quotes": [
+      "Furthermore, many optimisation problems of interest can in fact be mapped using only a single non-zero value of J. For example, a maximum cut problem would only require Jjk = 1 for edges which are within the graph and Jjk = 0 otherwise."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author claim, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-frustration-definition",
+     "value": "The authors define a frustrated system as one where the lowest energy state of a sum of Hamiltonian terms does not minimize each of the terms individually.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "A frustrated system is defined as one where the lowest energy state of a sum of Hamiltonian terms does not minimize each of the terms individually."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition stated in the introduction.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-dissipative-no-frustration-triangle",
+     "value": "The authors argue with a triangle of three qubits that a dissipative analog of frustration, coupling every state with a |00⟩ or |11⟩ pair to a destroyed state |d⟩, fails: every three-qubit state contains at least one such pair, so in the strong coupling limit needed for Zeno effects the system always ends in a computationally useless state.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "All possible three qubit states will contain at least one |00⟩ or |11⟩ pair.",
+      "Therefore in the limit of strong coupling which is needed for Zeno effects to be implemented, such a system would always end in a computationally useless state."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Argument by a single example; not a general theorem.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-measurement-no-frustration-triangle",
+     "value": "The authors argue that implementing frustration with a measurement-based Zeno effect fails because measurements in incompatible bases would lead to unavoidable decoherence. For the triangle example, measuring ⟨Z1Z2⟩, ⟨Z2Z3⟩ and ⟨Z1Z3⟩ would decohere superpositions of states such as |110⟩ and |101⟩ that give different classical measurement patterns.",
+     "anchor": "Section 1, pp.3-4",
+     "quotes": [
+      "Similarly, if one tried to implement frustration with a measurement based Zeno effect, measurements in incompatible bases would lead to unavoidable decoherence.",
+      "Different classical measurement patterns mean that these√states would be distinguishable and therefore the state (|110⟩ + |101⟩)/ 2 would be subject to decoherence."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Argument by a single example.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-why-adiabatic-supports-frustration",
+     "value": "The authors state that adiabatic Zeno effects support frustration while others do not because quantum mechanics is invariant under global phase rotations: being in a higher energy state of one or more Hamiltonian terms only contributes a global phase to the ground state, whereas replacing a term by a measurement or destruction operation is highly disruptive.",
+     "anchor": "Section 1, p.4",
+     "quotes": [
+      "The reason adiabatic Zeno effects support frustration, while others do not is that quantum mechanics is invariant under global phase rotations.",
+      "Being in a higher energy state of one (or more) Hamiltonian term only contributes a global phase to the ground state."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Explanatory statement by the authors, without a formal proof.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-dissipation-as-antihermitian",
+     "value": "The authors state that coupling a state |ξ⟩ to decay is represented by an effective anti-Hermitian \"Hamiltonian\" whose evolution leaves an un-normalised state with norm no greater than one; the final norm is the probability that a decay has not occurred. With all decay rates Γj positive, the generator has only non-positive eigenvalues and can only decrease the norm.",
+     "anchor": "Section 4.1, p.11, equations 14-16",
+     "quotes": [
+      "evolution with an effective anti-Hermitian “Hamiltonian”, this decay leads",
+      "final norm represents the probability that a decay has not occurred. A",
+      "Assuming all Γj are positive, −iH¯ will have only non-positive eigenvalues and therefore can only decrease the norm of a state vector"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The model of dissipative Zeno effects used in Section 4.1 is defined here.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-dissipative-single-destroyed-state-simplification",
+     "value": "The authors state that a real system would likely couple each forbidden state to its own destroyed state, and that they simplify by treating all destroyed states as equivalent and as a failure of the computation.",
+     "anchor": "Section 4.1, p.11",
+     "quotes": [
+      "Within a real system, it is likely that each state which is forbidden in the constraints will couple to it’s own “destroyed” state rather than a single shared one.",
+      "However, this picture can be simplified substantially if we treat all such states as the same and as being equivalent and computationally useless"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Stated modelling simplification in Section 4.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-sat-decay-free-states-theta-zero",
+     "value": "The authors state that, in their satisfiability implementation, every clause couples dissipation to a single computational basis state. Any state that is a combination of |u⟩ and |−⟩ with at least one |u⟩ variable in every clause does not couple to dissipation at θ = 0.",
+     "anchor": "Section 4.1, p.12",
+     "quotes": [
+      "It follows from this construction that any state which is a combination of |u⟩ and |−⟩ where every clause has at least one variable in the |u⟩ configuration will not couple to dissipation at θ = 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Argued from the construction in prose, not stated as a numbered theorem.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-sat-exponentially-many-weak-states",
+     "value": "The authors state that hard satisfiability problems tend to have a number of clauses proportional to the number of variables, so there will be an exponentially growing number of states that do not couple to dissipation at the start of the sweep. They state that exponential overheads are widely suspected for quantum algorithms on NP-hard problems, so they cannot automatically rule out the paradigm.",
+     "anchor": "Section 4.1, p.12",
+     "quotes": [
+      "Since hard satisfiability problems tend to have a number of clauses proportional to the number of variables [42, 43], there will be an exponentially growing number of such states.",
+      "Therefore we cannot automatically rule out the use of the paradigm we have proposed here"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Scaling argument by the authors with cited inputs; not proved.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-sat-numerical-instance",
+     "value": "The authors report a numerical demonstration on a three satisfiability problem with five variables where |00000⟩ is a planted, unique satisfying assignment, built by randomly adding clauses until no other satisfying assignment remained. The clauses are listed in Section B of the supplement.",
+     "anchor": "Section 4.1, p.12; Appendix B, pp.28-29",
+     "quotes": [
+      "To construct a numerical demonstration, we construct a three satisfiability problem with five variables where |00000⟩ is planted as a unique satistfying assignment.",
+      "This is done by randomly adding clauses with at least one variable is negated until no other satisfying assignment remains."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own test instance.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Only one five-variable instance is studied, so the runtime results rest on a single small problem."
+    },
+    {
+     "id_suggestion": "zeno-sat-spectrum-zero-eigenvalue",
+     "value": "The authors report spectra of the dissipative generator for the satisfiable instance and for an unsatisfiable variant with the added clause x0 ∨ x1 ∨ x2. For the satisfiable problem a zero eigenvalue eigenstate exists for all θ. In the unsatisfiable case it exists only at θ = 0 and the magnitude of the smallest-magnitude eigenvalue grows monotonically.",
+     "anchor": "Section 4.1, p.13, figure 2",
+     "quotes": [
+      "for a satisfiable problem as depicted in figure 2a a zero eigenvalue eigenstate exists for all θ,",
+      "while in the unsatisfiable case in figure 2b this only exists for θ = 0 and the magnitude of the smallest magnitude term grows monotonially."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical spectra of one instance pair.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-sat-fifteen-degenerate-states",
+     "value": "The authors report that in both the satisfiable and unsatisfiable cases there are 15 additional degenerate eigenstates at θ = 0, corresponding to five states with a single |−⟩ tensored with |u⟩ and ten with two |−⟩ terms. The degeneracy is lifted for θ > 0 but only slowly.",
+     "anchor": "Section 4.1, p.13, figure 2",
+     "quotes": [
+      "We also observe that in both cases there are 15 additional degenerate eigenstates at θ = 0, corresponding to five states with a single |−⟩ tensored with |u⟩ and ten with two |−⟩ terms.",
+      "This degeneracy is lifted for θ > 0, but only slowly."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical result on one five-variable instance.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-dissipative-slow-runtime-scaling",
+     "value": "The authors report that with the dissipative implementation the probability of finding the satisfying assignment approaches one as total runtime increases, but slowly: modest success probability appears at runtimes in the tens, and a close approach to unity does not occur until a runtime printed in the text layer as 109, which the paper's figure 3 caption describes as spanning 11 orders of magnitude on a logarithmic scale.",
+     "anchor": "Section 4.1, p.13, figure 3",
+     "quotes": [
+      "We note however from figure 3 that this approach is very slow, with modest success probability appearing in with runtimes values in the tens, but close appraoch to unity not occuring until 109.",
+      "Note the logarithmic scale spanning 11 orders of magnitude in subfigure (b)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical result on one instance in dimensionless time units.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The printed 109 is most likely ten to the ninth power with the exponent flattened by the text layer; the figure caption's eleven-order span is consistent with that reading."
+    },
+    {
+     "id_suggestion": "zeno-dissipative-weak-zeno-explanation",
+     "value": "The authors state that the slow approach is likely due to very weak Zeno effects from eigenstates that couple only weakly to the dissipation at low θ. They state that figure 3a confirms this, showing dissipation occurring increasingly early in the sweep as runtimes are increased.",
+     "anchor": "Section 4.1, p.13",
+     "quotes": [
+      "Such a slow approach is likely the result of very weak Zeno effects due to eigenstates which only couple weakly to the dissipation at low θ.",
+      "A fact confirmed by figure 3a, which shows dissipation occurring increasingly early in the sweep as runtimes are increased."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author explanation supported by one figure.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-nonuniform-sweep-suggestion",
+     "value": "The authors suggest, without testing it, that success probability could be improved by a non-uniform sweep that proceeds slowly at small θ values, and state that this is beyond the scope of the work.",
+     "anchor": "Section 4.1, pp.13-14",
+     "quotes": [
+      "While beyond the scope of our cur-",
+      "rent work, this also suggests that success probability could be improved by performing a non-uniform sweep, which proceeded slowly at small θ values."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Untested suggestion.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-satisfiable-state-never-decays",
+     "value": "The authors state that if a satisfying arrangement exists, the state built from it (equation 64) overlaps no state coupled to decay and therefore does not decay for any θ. If none exists, then for any θ with 0 < θ ≤ π/2 any state has to decay.",
+     "anchor": "Section 4.1, p.14; Appendix C, pp.30-31",
+     "quotes": [
+      "The dissipative implementation does have an interesting property; if a satisfying arrangement s exists, then the construction in equation 64 would correspond to a state which does not overlap any states coupled to decay and therefore will not decay itself, for all values of θ.",
+      "On the other hand, if no satisfying arrangement exists, then for any 0 < θ ≤ π/2, any state will have to decay."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Argued in prose from the construction; stated as an observation rather than a numbered theorem, and the state's equation was not recoverable as text.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-sat-detection-small-sweep",
+     "value": "The authors state that a small sweep of θ, to a value substantially less than π/2, can test whether an expression has a satisfying arrangement without finding the arrangement, and that this could be used in a complete solver proving unsatisfiability. They state the method assumes the system evolves slowly enough to remain in the relevant subspace, which will be difficult in practice.",
+     "anchor": "Section 4.1, p.14",
+     "quotes": [
+      "Since θ can be substantially less than π/2, the measured state will be substantially different from the actual satisfying arrangement",
+      "we have a method using a small sweep to test if an expression has a satisfying arrangement without directly finding the arrangement itself.",
+      "Although it is worth noting the implicit assumption that the system evolves slowly enough to remain in the relvant subspace, which will be difficult in practice."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The caveat is the paper's own stated limit on the tester.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-iterative-solver-outline",
+     "value": "The authors state that bit values obtained when measuring a state out are guaranteed to belong to a satisfying assignment, so they can be fixed and a smaller problem solved iteratively. They state that a detailed study of this iterative method is beyond the scope of the work.",
+     "anchor": "Section 4.1, p.14; Appendix D, pp.32-33",
+     "quotes": [
+      "In principle such a solver could be used iteratively since any {|0⟩, |1⟩} values which were obtained when measuring a state out are guaranteed to belong to a satisfying assignment.",
+      "a detailed study is beyond the scope of our current work."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Untested proposal.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-iterative-solver-feasibility-limit",
+     "value": "The authors state that the iterative solver requires a strong assumption that a sweep slow enough to avoid decay with reasonable probability is possible; if decoherence or another technical issue prevents it, the result would almost always be a decayed state. They state that for this reason the solver is unlikely to be technically feasible but is interesting from a theoretical perspective.",
+     "anchor": "Appendix D, p.33",
+     "quotes": [
+      "For this reason the solver discussed here is unlikely to be technically feasible, but is interesting from a theoretical perspective."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated by the authors in Appendix D.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-iterative-solver-runtime-footnote",
+     "value": "The authors state that the number of iterations, not the total runtime, will scale linearly, because a linear total runtime would imply P = NP, which is strongly suspected to be untrue. They state that exponential scaling likely lies elsewhere, for example in the time to reliably perform each Zeno sweep.",
+     "anchor": "Appendix D, footnote 8, p.33",
+     "quotes": [
+      "Note that this is number of iterations and not total runtime which will scale linearly, as the latter would imply that P = N P , which is strongly suspected to be untrue"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Footnote reasoning with no analysis.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-repeated-measurement-implementation",
+     "value": "The authors report that an implementation by repeated measurements of the |ξ⟩ states, with θ modified slowly, shows the same characteristic drop in the probability that no measurement has failed and the same slow growth in success probability as the dissipative implementation. They state it is effectively a digitised version of the dissipative one.",
+     "anchor": "Section 4.2, p.15, figure 4",
+     "quotes": [
+      "Since this is effectively a digitised version of the dissipative implementation, with dissipation occurring at discrete steps in the form of measurements",
+      "with figure 4a showing the same characteristic drop in probability that no measurement has “failed” and figure 4b showing the same slow growth in success probability."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical result on one instance.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-measurement-dissipation-equivalence-claim",
+     "value": "The authors state that the same success probability feature arises with measurements, and that this is likely because both protocols become mathematically identical in the limit of many measurements or strong dissipative coupling.",
+     "anchor": "Section 1, p.4",
+     "quotes": [
+      "We further show that the same success probability feature arises when implemented using measurements. This is likely because both protocols become mathematically identical in the limit of many measurements or strong dissipative coupling."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Explanation stated as likely, not proved.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-adiabatic-offset-removes-degeneracy",
+     "value": "The authors report that adding an offset of strength α = 0.1 to the adiabatic version removes the initial degeneracy and leaves a finite gap at all times. The lowest eigenvalue is then no longer 0 except at θ = π/2, so a direct dissipative analog of this Hamiltonian would simply decay.",
+     "anchor": "Section 4.3, p.16, figure 5",
+     "quotes": [
+      "We add such a term with an offset strength of α = 0.1.",
+      "On the other hand, when an offset is added in figure 5b, the initial degeneracy disappears leaving a Hamiltonian with a finite gap at all times.",
+      "Note however that the lowest eigenvalue is no longer 0 except for at θ = π/2.",
+      "As a consequence, a direct implementation of a dissipative analog of this Hamiltonian would simply result in decay."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical result on one instance.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-adiabatic-offset-faster-success",
+     "value": "The authors report that the additional gap from the offset makes the success probability approach one much faster as runtime increases, with a steep rise, while the no-offset adiabatic version shows final success probabilities similar to the dissipative case. The no-offset scale in figure 6a spans 11 orders of magnitude.",
+     "anchor": "Section 4.3, pp.16-17, figure 6",
+     "quotes": [
+      "As figure 6 shows, the additional gap caused by the offset causes the success probability as function of runtime to approach one much faster.",
+      "adding an offset as shown in figure 6b leads to a steep rise in success probability.",
+      "Note the logarithmic scale in both insets, and particularly that the scale in (a) spans 11 orders of magnitude."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical result on one five-variable instance.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The offset adds frustration through a term that pure projection cannot supply; the paper reads the speedup as evidence for the importance of frustration, from one instance."
+    },
+    {
+     "id_suggestion": "zeno-frustration-importance-argument",
+     "value": "The authors state that the removal of the pathological structure when the offset is added is evidence of the importance of frustration, because the offset term could not be accomplished by pure Zeno projection.",
+     "anchor": "Section 1.1, p.5",
+     "quotes": [
+      "We argue that this is evidence of the importance of frustration, as this term could not be accomplished by using pure Zeno projection."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author interpretation of one numerical comparison.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-nonperturbative-constraint-definition",
+     "value": "The authors state that traditional adiabatic constraints are implemented with very strong Ising terms, which force the system through high energy states, so the transition rate scales inversely with the penalty strength and creates a tradeoff. They state that no such tradeoff exists with the three-state implementation.",
+     "anchor": "Section 5, p.18",
+     "quotes": [
+      "In other words, these require the system to travel through high energy states to traverse the state space, the rate of these transitions scales inversely with the penalty strength creating a tradeoff. With the three-state implementation, no such tradeoff exists."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Claim supported by the numerical demonstration of figure 7 and the analysis in Appendix E, not by a general proof.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-three-hot-numerical-setup",
+     "value": "The authors report a numerical comparison on a problem of five single-body Ising terms under a three-hot constraint, with field vector h = [−0.67513783, −0.62099006, −0.14675767, 0.72688415, 0.56602992]. They state the unconstrained solution state is |00011⟩ and the constrained one is |00111⟩.",
+     "anchor": "Section 5, p.18, equation 22",
+     "quotes": [
+      "⃗h = [−0.67513783, −0.62099006, −0.14675767, 0.72688415, 0.56602992] . (22)",
+      "As a result, the unconstrained solution state will be |00011⟩, while the constrained one will be |00111⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own test problem.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-constraint-strength-tradeoff-result",
+     "value": "The authors report that in the three-state implementation, strengthening the constraints leads to the behaviour of a perfectly projected system with a finite success probability comparable to the best seen in the transverse field implementation for the same runtime. In the transverse field implementation there is a tradeoff between constraint strength and effective dynamics, with success probabilities no better than random guessing as constraints become very strong.",
+     "anchor": "Section 5, p.18, figure 7",
+     "quotes": [
+      "strengthening the constraints causes an approach to behaving as a perfectly projected system, with a finite success probability comparable to the best success probability seen in figure 7b for the same runtime.",
+      "leading to success probabilities no better than random guessing as constraints become very strong."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical result on one five-variable problem at runtimes 5, 10 and 100.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The three-state runs used an offset α = 1 per the figure 7 caption; the comparison is one problem with one constraint, not a general scaling."
+    },
+    {
+     "id_suggestion": "zeno-figure7-numerical-artifact-caveat",
+     "value": "The authors state that the sharp dips in the three-state success probability plot are likely artifacts of the numerical matrix diagonalisation algorithm, because the matrix is highly ill-conditioned.",
+     "anchor": "Figure 7 caption, p.19",
+     "quotes": [
+      "The sharp dips in plot (a) are likely artifacts of the numerical matrix diagonalisation algorithm arising due to the matrix being highly ill-conditioned."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author's unverified explanation of a numerical feature.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-stirap-dark-state-protocol",
+     "value": "The authors propose a STIRAP-like time-dependent Hamiltonian using an additional state |β⟩ with couplings A(t) and B(t), with θ set by the arctangent of B(t) over A(t). They state that |+˜⟩ is then an eigenstate with eigenvalue 0, a dark state, and that the system effectively applies an additional phase to |ξ⟩ while leaving |+˜⟩ and |−⟩ unchanged.",
+     "anchor": "Section 6, p.20, equations 24 and 25",
+     "quotes": [
+      "If we consider the situation where an additional state |β⟩ is available, then the task of coupling to |ξ⟩ while maintaining |+˜ ⟩ as a dark state can be achieved by a protocol reminiscent of the celebrated stimulated Raman adiabatic passage (STIRAP) protocol[41].",
+      "then |+˜ ⟩ will be an eigenstate of equation 24 with an eigenvalue of 0, effectively a “dark state” since it does not couple at √all to any of the Hamiltonian terms."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Theoretical proposal; no experiment is reported.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The paper reports no hardware implementation of this protocol."
+    },
+    {
+     "id_suggestion": "zeno-stirap-dissipative-and-measurement-variants",
+     "value": "The authors state that, as in conventional STIRAP, the state |β⟩ could decay, allowing dissipative Zeno effects, and that discrete pulses into |β⟩ followed by a measurement that discerns whether the system is in |β⟩ could apply a Zeno effect through measurement.",
+     "anchor": "Section 6, p.21",
+     "quotes": [
+      "the state |β⟩ could decay, allowing for implementation of dissipative Zeno effects.",
+      "then this method could apply a Zeno effect which is instantiated through measurement."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proposal, not tested.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-errors-discussion",
+     "value": "The authors state that a three or four level system may be more prone to errors than a two level system, that a detailed discussion depends on the implementation and is beyond their scope, and that the engineering of individual variables is more complex than direct transverse driving between two levels. They state this may not necessarily increase the error and that added complexity should be justified, which they believe non-perturbative constraints may do.",
+     "anchor": "Section 6.1, pp.21-22",
+     "quotes": [
+      "A potential concern for this proposal is that a three (or four) level system may be more prone to errors than a more simple two level system.",
+      "While this may not necessarily increase the error, added complexity should be justified somehow as a general design principle of of any system."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit of their error analysis.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-numerical-methods",
+     "value": "The authors report that all simulations used Python 3 with 1000 evenly spaced time steps. Projection into valid subspaces kept only eigenvectors whose eigenvalue magnitude is less than 10−9 (printed flat). They report that some plots needed more than a day of compute time on a standard laptop and that the code is at a QCi public GitHub repository.",
+     "anchor": "Section 7, p.22",
+     "quotes": [
+      "All numerical simulations were performed in Python 3.",
+      "All sweeps involved 1000 evenly spaced time steps, which was found to be sufficiently well converged to make accurate plots.",
+      "Projection into valid subspaces was performed by numerically diagonlising and keeping only eigenvectors where the magnitude of the eigenvalues is less than 10−9.",
+      "but some plots did require more than a day of compute time on a standard laptop."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its simulation setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-conclusion-key-challenge",
+     "value": "The authors conclude that the mathematical structure of the systems they develop leads to weak coupling and correspondingly weak Zeno effects, shown as a slow increase in success probability with total runtime. They state this suggests that systems including both loss and gain, or supporting frustration, may fundamentally be more powerful solvers.",
+     "anchor": "Section 8, pp.22-23",
+     "quotes": [
+      "The key challenge we observe is that the mathematical structure of the systems we develop lead to weak coupling and correspondingly weak",
+      "This suggests that systems including both loss and gain, or supporting frustration, may fundamentally be more powerful solvers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author conclusion drawn from a single five-variable instance.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The evidence is one planted five-variable instance plus the spectral argument; the generality of the slow scaling is argued, not measured across sizes."
+    },
+    {
+     "id_suggestion": "zeno-conclusion-opportunities",
+     "value": "The authors state the opportunities as solvers usable in a purely dissipative setting or one with only measurements, initialisation in a simple product state rather than a cluster state, and testing satisfiability of a set of clauses without obtaining the full solution, which raises the possibility of complete satisfiability solvers.",
+     "anchor": "Section 8, p.22",
+     "quotes": [
+      "Our method allows the system to be initialised in a simple product state, rather than a complex cluster state.",
+      "raising the possibility of developing complete rather than incomplete satisfiability solvers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author claims of possibility; not demonstrated.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-no-speedup-claim-grover-prior",
+     "value": "The authors state that an earlier work by overlapping authors showed that analog optimisers based on general Zeno effects can yield an equivalent speedup to Grover's gate-model algorithm for unstructured search, and that this paper does not examine practical problems in the same way as that work did not.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "It was recently shown [30], that analog optimisers based on general Zeno effects1 can yield an equivalent speedup to Grover’s well known gate-model algorithm for unstructured search [32, 33]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Result cited from the authors' earlier paper, reference 30.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-biased-driving-appendix",
+     "value": "The authors state that a biased search can be implemented by coupling to a state with the |+⟩ replaced by cos(ϕ)|0⟩ + sin(ϕ)|1⟩. For ϕ = π/4 this reduces to unbiased search, 0 < ϕ < π/4 gives a bias toward |0⟩, and π/4 < ϕ < π/2 a bias toward |1⟩. They state that except at θ = π/2 the action of Z is not simple in the biased basis, and that single Z terms can be removed with θ-dependent correction terms.",
+     "anchor": "Appendix A.1, pp.24-25",
+     "quotes": [
+      "For ϕ = π/4, this reduces to unbiased search, whereas 0 < ϕ < π/4 corresponds to a bias toward |0⟩, and π/4 < ϕ < π/2 corresponds to a bias toward |1⟩",
+      "Fortunately these single Z terms can be removed by adding θ-dependant Z terms specifically,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Analytic supplementary result, equations not recoverable as text.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-higher-order-driving-cost",
+     "value": "The authors state that implementing a Pauli X string by forbidding states with an odd number of |+⟩ terms requires a number of forbidden and undefined state pairs that grows exponentially with the string length. They give a more efficient construction using an additional qubit per variable that maps Z Pauli strings on the undefined subspace one-to-one onto X Pauli strings on the computational variables.",
+     "anchor": "Appendix A.3, pp.27-28",
+     "quotes": [
+      "A disadvantage of this coupling method is that the number of states with an odd number of |+⟩ states grows exponentially with the length of the string",
+      "there is a one-to-one mapping between Z Pauli strings on the u subspace and X Pauli strings on the subspace of computational variables"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Analytic supplementary construction.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-annealing-incomplete-solver",
+     "value": "The authors state that quantum annealing applied to satisfiability gives an incomplete solver: if no satisfying assignment exists, even a perfectly adiabatic protocol finds a state satisfying the maximum number of clauses without indicating whether a higher quality solution exists. They state that dissipative protocols potentially provide an avenue toward complete solvers that does not exist for annealing protocols.",
+     "anchor": "Appendix C, p.30",
+     "quotes": [
+      "When applied to satisfiability problems, quantum annealing provides an incomplete solver",
+      "but do discuss that dissipative protocols potentially provide an avenue toward complete solvers, which does not exist for annealing protocols."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author claim.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-sat-clause-forbids-state",
+     "value": "The authors state that a clause forbids a subset of variables from taking a given set of values, so a Zeno interaction can enforce satisfiability by strongly coupling each forbidden state to the environment. For clauses in conjunctive normal form, a clause containing at least one |u⟩ variable is defined as satisfied.",
+     "anchor": "Appendix C, p.30",
+     "quotes": [
+      "A clause in a statisfiability problem effectively forbids a subset of variables from taking a given set of values",
+      "this is equivalent to stating that a clause containing at least one |u⟩ variable is always satisfied, but this will not always be the case for other kinds of constraints."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the clause action on |u⟩ in Appendix C.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-sat-failure-modes-without-solution",
+     "value": "The authors state that if no satisfying assignment exists, the outcome depends on the Zeno effect. For phase-flipping, adiabatic or multi-stage quantum walk effects the system ends in a state that is not a satisfying assignment or contains |u⟩; the same holds for measurement and dephasing effects. For destruction or dissipation the system ends in a destroyed state.",
+     "anchor": "Appendix C, pp.31-32",
+     "quotes": [
+      "Since it is easy to check if a state represents a satisfying assignment, these outcomes can easily be checked and discarded",
+      "In the case of a Zeno effect based on destruction/dissipation, then the system will end in a “destroyed” state."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author argument without a formal proof.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-domain-wall-numerics",
+     "value": "The authors report a domain-wall encoded variable with five allowed values, four qubits, with |1111⟩ assigned an energy 2 lower than all other configurations and a bias with α = 2. The spectrum features an avoided level crossing, and increasing the total runtime of a sweep approaches the adiabatic limit. They assumed perfect projection into the allowed manifold.",
+     "anchor": "Appendix E.1, pp.35-36, figure 10",
+     "quotes": [
+      "where the |1111⟩ is assigned an energy which is 2 lower than all other configurations.",
+      "A bias term of the form given in equation 50 is applied with α = 2",
+      "As figure 10a shows the system exhibits a spectrum which features an avoided level crossing, and as a result increasing the total runtime of a sweep leads to an approach to the adiabatic limit as depicted in figure 10b.",
+      "Perfect projection into the manifold of allowed states is assumed."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical result on one small instance with assumed perfect projection.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-one-hot-nonperturbative-dynamics",
+     "value": "The authors state that in a transverse field setting one-hot states have no single-bit-flip transitions, so transitions are perturbative and, for a perfect constraint, the dynamics completely stop. They state analytically and numerically that in their formalism a one-hot constraint still permits dynamics, because the state vectors for different valid assignments are non-orthogonal before the end of the sweep and mix as θ is swept, producing an avoided level crossing and an adiabatic limit.",
+     "anchor": "Appendix E.1, pp.35-38, figure 11",
+     "quotes": [
+      "In the transverse field setting, this means that transitions must occur perturbatively, and for a perfect constraint where no states outside of the one-hot manifold are ever allowed, the dynamics completely stop.",
+      "the presence of non-zero off-diagonal elements confirms that adiabatic state transfer will be facilitated."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Analytic argument plus a five-qubit numerical run; no general theorem.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-one-hot-scalability-limit",
+     "value": "The authors state that a single one-hot or domain-wall system has a state space that grows only linearly with the number of qubits and could therefore be sampled efficiently classically, so a scalable system should combine multiple such subsystems.",
+     "anchor": "Appendix E.1, p.34",
+     "quotes": [
+      "A single one-hot or domain-wall system would have a state space which only grows linearly with the number of qubits and therefore could efficiently be sampled classically."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated limit on single-subsystem examples.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zeno-resource-constraint-numerics",
+     "value": "The authors report that for a resource constraint on the number of ones among a small set of variables, using the same random field vector as in the main-text constraint example, the success probability quickly approaches unity. They state such constraints lack the extreme symmetry of one-hot constraints and are less approachable analytically.",
+     "anchor": "Appendix E.2, pp.38-39, figure 12",
+     "quotes": [
+      "As we see even for this more complicated constraint, the success probability quickly approaches unity.",
+      "For these problems, the solution space lacks the extreme symmetry of one-hot-constrained systems, so they are less approachable analytically"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical result on one instance.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The figure 12 caption says two or fewer qubits may take a zero value, while the text says a constraint on the number of ones; the text and caption differ in which value is bounded."
+    }
+   ]
+  }
+ ]
+}
