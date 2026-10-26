@@ -1,0 +1,217 @@
+{"papers": [{
+  "record_id": "qci-applications-image-classification-using-emucore",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\References\\QCi-site\\applications\\image-classification-using-emucore.html",
+  "title_in_file": "Image Classification using EmuCore - Quantum Computing Inc",
+  "version_note": "",
+  "pages": 1,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A vendor application page (a Jupyter-style walkthrough) in which Quantum Computing Inc classifies MNIST digits by passing flattened images through its EmuCore reservoir and fitting a linear model to the responses.",
+  "bears_on_context": "ml",
+  "why_not": "",
+  "existing": [],
+  "assertions": [
+    {
+      "id_suggestion": "emucore-mnist-dataset-split",
+      "value": "The authors state that the dataset consists of 70,000 images of handwritten digits 0-9, with 60,000 samples used for training and the remaining 10,000 images kept for testing, and that each sample is a 28 x 28 pixel image.",
+      "anchor": "Introduction",
+      "quotes": [
+        "The dataset consists of 70,000 images of handwritten digits 0-9; 60,000 samples are used for training and the remaining 10,000 images are kept for testing.",
+        "Each sample is a 28 x 28 pixel image."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The page states its own dataset and split in the Introduction.",
+      "result_type": "setup", "context": "ml", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "emucore-mnist-source-tensorflow",
+      "value": "The authors state that the training data are imported with the mnist package from tensorflow, and the conclusion names the data as the MNIST digit dataset.",
+      "anchor": "Get train and test datasets; Conclusion",
+      "quotes": [
+        "We use the mnist package from tensorflow to import training data.",
+        "build an image classification model using the MNIST digit dataset"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The page states its own data source in the data section and the conclusion.",
+      "result_type": "setup", "context": "ml", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "emucore-pipeline-serialize-then-linear",
+      "value": "The authors state that the images are serialized in one of the two spatial directions and sent through EmuCore, and that the output is an enriched dataset which is then used to train a simple linear model.",
+      "anchor": "Introduction",
+      "quotes": [
+        "The images are serialized in one of the two spatial directions and sent through EmuCore.",
+        "The output is an enriched dataset which is then used to train a simple linear model."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The page describes its own pipeline in the Introduction and the code that follows.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": "Only the linear readout is trained; the reservoir is a fixed feature map, the usual reservoir computing arrangement. The page does not call it that in this paragraph."
+    },
+    {
+      "id_suggestion": "emucore-normalize-0-1-claim",
+      "value": "The authors state that pixel values (integers from 0 to 255, representing 256 colors) are normalized to a 0-1 range, and claim that this normalization improves the behavior of the reservoir. The page shows no comparison without normalization.",
+      "anchor": "Normalize data",
+      "quotes": [
+        "The elements of the matrix are integers between 0 and 255, each representing one of the 256 colors.",
+        "We can normalize values to a 0-1 range. This normalization improves the behavior of the reservoir."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An author claim without a measurement in the page.",
+      "result_type": "claim", "context": "ml", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "emucore-flatten-direction-claim",
+      "value": "The authors state that the flattening can be done in either of the two spatial directions, and claim that they tested both and the results are nearly identical. The page shows the results for one direction only (the swapaxes lines are commented out in the code).",
+      "anchor": "Flatten data",
+      "quotes": [
+        "We should now flatten in one of the two spatial directions. We have tested with both directions and the results are nearly identical."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An author claim; the other direction is not shown in the page.",
+      "result_type": "claim", "context": "ml", "reader_inference": "No numbers are given for the second direction, so the claim cannot be checked from the page."
+    },
+    {
+      "id_suggestion": "emucore-flattened-shapes",
+      "value": "The authors report that flattening gives arrays of shape (60000, 784) for training and (10000, 784) for testing.",
+      "anchor": "Flatten data, output of In [36]",
+      "quotes": [
+        "Flat x_train shape: (60000, 784) Flat x_test shape: (10000, 784)"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "A printed output of the page's own setup.",
+      "result_type": "setup", "context": "ml", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "emucore-reservoir-configuration",
+      "value": "The authors report the reservoir settings used for this run: VBIAS 0.31, GAIN 0.72, NUM_NODES 2500, NUM_TAPS 2500, FEATURE_SCALING 0.1 and DENSITY 1.0.",
+      "anchor": "Run the dataset through EmuCore, In [42]",
+      "quotes": [
+        "VBIAS = 0.31 GAIN = 0.72 NUM_NODES = 2500 NUM_TAPS = 2500 FEATURE_SCALING = 0.1 DENSITY = 1.0"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The page states the settings of its own run in code.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": "The page does not say how these settings were chosen or whether they were tuned on the test set."
+    },
+    {
+      "id_suggestion": "emucore-network-device-access",
+      "value": "The authors show the device being used through a client object created from an IP address, with a lock acquired by wait_for_lock, a reservoir reset, an rc_config call, and a release_lock call at the end.",
+      "anchor": "Run the dataset through EmuCore, In [42]",
+      "quotes": [
+        "client = EmuCoreClient(ip_addr=IP_ADDR)",
+        "lock_id, start, end = client.wait_for_lock()",
+        "client.reservoir_reset(lock_id=lock_id)",
+        "client.release_lock(lock_id=lock_id)"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The page shows its own access code.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": "The device is a shared, network-attached resource used under an exclusive lock. The page gives no run time, throughput or energy figure."
+    },
+    {
+      "id_suggestion": "emucore-response-shapes",
+      "value": "The authors report that the EmuCore responses have shape (60000, 2500) for the training set and (10000, 2500) for the testing set.",
+      "anchor": "Run the dataset through EmuCore, output of In [42]",
+      "quotes": [
+        "Training response shape: (60000, 2500) Testing response shape: (10000, 2500)"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "A printed output of the page's own setup.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": "Each 784-value input becomes a 2500-value response, so the reservoir expands the features from 784 to 2500."
+    },
+    {
+      "id_suggestion": "emucore-label-encoding-plus-minus-one",
+      "value": "The authors state that each label from 0 to 9 is converted to an array with one element set to 1 and the other elements set to -1, and that the encoded labels have shape (60000, 10) for training and (10000, 10) for testing.",
+      "anchor": "Build a linear model",
+      "quotes": [
+        "As each label (from 0 to 9) represents a category of digits",
+        "each label is converted to an array with one element set to 1 and the other elements set to -1",
+        "Categorical y_train.shape: (60000, 10) Categorical y_test.shape: (10000, 10)"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "definition",
+      "certainty_reason": "The page defines its own target encoding and prints the shapes.",
+      "result_type": "setup", "context": "ml", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "emucore-readout-linear-regression-argmax",
+      "value": "The authors fit scikit-learn LinearRegression with an intercept from the reservoir responses to the encoded labels, and obtain a predicted digit with np.argmax over the ten outputs.",
+      "anchor": "Train a linear model; Calculate classification success rates",
+      "quotes": [
+        "model = LinearRegression(fit_intercept= True ) model.fit(resp_train, y_train_cat)",
+        "y.append(np.argmax(y_cat[i]))"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The page shows the readout in its own code.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": "The readout is a least-squares regression onto the encoded labels, not a logistic or softmax classifier. No regularization is shown."
+    },
+    {
+      "id_suggestion": "emucore-training-r2",
+      "value": "The authors report an R2 of 0.6806182222229208, computed by model.score on the training responses and the encoded training labels.",
+      "anchor": "Train a linear model, output of In [44]",
+      "quotes": [
+        "model.score(resp_train, y_train_cat)",
+        "Out [ ]: R2 = 0.6806182222229208"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical result from one run on training data.",
+      "result_type": "measured", "context": "ml",
+      "reader_inference": "The R2 is a training-set fit of the encoded targets, not a test-set figure, and the page does not interpret it."
+    },
+    {
+      "id_suggestion": "emucore-mnist-success-rates",
+      "value": "The authors report a classification success rate of 0.919 on the training data and 0.903 on the test data for the EmuCore reservoir with a linear readout on MNIST.",
+      "anchor": "Calculate classification success rates, output of In [45]",
+      "quotes": [
+        "Success rate on train data: 0.919 Success rate on test data: 0.903"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical result from one run, with no repeat, interval or baseline.",
+      "result_type": "measured", "context": "ml",
+      "reader_inference": "The page shows one run with no variance, no classical baseline (for example the same linear model on the raw 784 pixels, or a random reservoir of 2500 units) and no stated hold-out for the settings, so the page does not show what EmuCore adds. A linear model on raw pixels is commonly reported near 92 percent on MNIST, which is the same range, but that figure is not from this page."
+    },
+    {
+      "id_suggestion": "emucore-conclusion-91-percent",
+      "value": "The authors state in the conclusion that the classification model yields a success rate of about 91% on both training and testing data, and that images are flattened in one of the two spatial dimensions and passed through EmuCore, followed by a linear model trained on the EmuCore output.",
+      "anchor": "Conclusion",
+      "quotes": [
+        "The classification model yields a success rate of about 91% on both training and testing data.",
+        "A linear model is then trained using the output of EmuCore."
+      ],
+      "kind": "claimed", "claim_type": "vendor-self-claim", "fidelity": "scoped",
+      "certainty_suggestion": "moderate", "high_basis": "",
+      "certainty_reason": "A vendor describing its own product's result.",
+      "result_type": "vendor", "context": "ml",
+      "reader_inference": "The printed rates are 0.919 and 0.903; 'about 91%' averages them and rounds the test rate up from 90.3 percent."
+    },
+    {
+      "id_suggestion": "emucore-test-plot-uses-x-train",
+      "value": "The authors label one plot as showing the testing data, but the code under that label plots x_train[i] with the plasma colormap.",
+      "anchor": "Plot some of the samples, In [34]",
+      "quotes": [
+        "And in the testing data,",
+        "plt.imshow(x_train[i], cmap=plt.get_cmap( \"plasma\" ))"
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "A reader observation on the page's own code; it does not affect the reported rates.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": "Probably a copy error in the plotting cell. The reported success rates use x_test_flat for the test responses, so they are not affected."
+    }
+  ]
+}]}
