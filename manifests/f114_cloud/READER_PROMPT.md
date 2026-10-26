@@ -31,6 +31,11 @@ given in your launch message as RECORD.
    never be committed or pushed: it is not ours to publish. From here on
    you read only `/tmp/f114/paper.txt` and `/tmp/f114/brief.json`.
 3. Run `git checkout -b cloud/f114/RECORD` (RECORD filled in).
+4. Run `git remote add origin https://github.com/kimmeyh/evidencebaseddb || git remote set-url origin https://github.com/kimmeyh/evidencebaseddb`.
+   This copy of the repository came without a remote, and every push below
+   needs one. Keep the URL in lower case exactly as written: the pilot's
+   push was refused with the repository name in mixed case, and accepted
+   with it in lower case.
 
 The brief lists your paper (record id and the coordinator's local file
 path) and the assertions the store already holds from it. Read ONLY that
