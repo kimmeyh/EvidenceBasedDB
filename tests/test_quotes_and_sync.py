@@ -156,14 +156,28 @@ def test_a_row_re_read_in_full_is_left_alone_by_an_older_script(synthetic_store)
     an older reading script's sync (its second-apply test runs it again)
     must not put the partial read's value back; Task G's own next sync still
     goes through. Proven to fail, 2026-10-25: with the guard in
-    sync_assertion removed, the older script's value replaced Task G's."""
+    sync_assertion removed, the older script's value replaced Task G's.
+
+    Review of 0765e9a: the guard first asked only whether the note named the
+    full read, so a LATER correction from any other script was refused too,
+    and so was a row Task G only annotated. The test is now the date: older
+    or same-day syncs are refused and leave the history as it was; a later
+    one goes through. Proven to fail, 2026-10-26: with the date test removed
+    from the guard, the later correction was refused."""
     conn = connect(synthetic_store)
     try:
-        task_g = replace(_stored(conn), value="the value from the whole paper")
+        older = _stored(conn)
+        task_g = replace(older, value="the value from the whole paper")
         assert "value" in sync_assertion(conn, task_g, f"Sprint 13 Task G: {ingest.FULL_READ_MARK}", "2026-10-25")
-        assert sync_assertion(conn, _stored(conn), "Sprint 12 reading", "2026-10-25") == []
-        assert conn.execute("SELECT value FROM records WHERE id = 'claim-one'").fetchone()[0] == task_g.value
+        history = conn.execute("SELECT updated_reason FROM records WHERE id = 'claim-one'").fetchone()[0]
+        for day in ("2026-10-23", "2026-10-25"):
+            assert sync_assertion(conn, older, f"{day} (Sprint 12 reading): corrected", day) == []
+        assert tuple(conn.execute("SELECT value, updated_reason FROM records WHERE id = 'claim-one'").fetchone()) == (
+            task_g.value, history)
         again = replace(task_g, value="a corrected value from the whole paper")
         assert sync_assertion(conn, again, f"Sprint 13 Task G: {ingest.FULL_READ_MARK}", "2026-10-26") == ["value"]
+        later = replace(again, value="a correction made after the full read")
+        assert sync_assertion(conn, later, "2026-11-02 (Sprint 14): corrected", "2026-11-02") == ["value"]
+        assert conn.execute("SELECT value FROM records WHERE id = 'claim-one'").fetchone()[0] == later.value
     finally:
         conn.close()

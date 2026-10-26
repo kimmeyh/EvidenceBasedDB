@@ -689,17 +689,22 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
     wanted = replace(wanted, value=with_common_names(wanted.value))  # Sprint 13 MV Q4, so a second sync is a no-op
     validate_assertion(wanted)
     rid = wanted.id
-    reason = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()
-    if reason and FULL_READ_MARK in (reason[0] or "") and FULL_READ_MARK not in note:
-        # Sprint 13 Task G (F113): a re-read of the whole paper supersedes the
-        # partial read an older script entered. Without this, re-running that
-        # script (as its own second-apply test does) would put the older value
-        # back. The row is left as Task G wrote it, and no history is appended.
-        return []
-    row = conn.execute(f"SELECT {', '.join(_SYNC_RECORD_COLUMNS)} FROM records WHERE id = ? AND class = 'assertion'",
-                       (rid,)).fetchone()
+    row = conn.execute(f"SELECT {', '.join(_SYNC_RECORD_COLUMNS)}, updated, updated_reason FROM records "
+                       "WHERE id = ? AND class = 'assertion'", (rid,)).fetchone()
     if row is None:
         raise ValueError(f"{rid}: no stored assertion to sync")
+    *row, updated, reason = row
+    if FULL_READ_MARK in (reason or "") and FULL_READ_MARK not in note and today <= (updated or ""):
+        # Sprint 13 Task G (F113): a re-read of the whole paper supersedes the
+        # partial read an older script entered. Without this, re-running that
+        # script (as its own second-apply test does, each with its fixed TODAY)
+        # would put the older value back. The test is the date, not the
+        # script: a sync dated after the row's last change goes through, so a
+        # later correction is never refused (review of 0765e9a). A sync dated
+        # on or before it is a re-apply of work the full read superseded: the
+        # row is left as it is and, as for a sync that finds nothing to change,
+        # no history is appended.
+        return []
     changed = [c for c, have in zip(_SYNC_RECORD_COLUMNS, row) if have != getattr(wanted, c)]
     for column in changed:
         conn.execute(f"UPDATE records SET {column} = ? WHERE id = ?", (getattr(wanted, column), rid))

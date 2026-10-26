@@ -1,0 +1,2065 @@
+{
+ "papers": [
+  {
+   "record_id": "che-2026-quantum-circuit-complexity-unsupervised-machine",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Che-et-al._2025_Quantum-circuit-complexity-and-unsupervised-machine-learning-of-topological__2508.04486.pdf",
+   "title_in_file": "Quantum circuit complexity and unsupervised machine learning of topological order",
+   "version_note": "arXiv:2508.04486v2, dated 16 January 2026; the text layer holds the main text and the Supplementary Information once.",
+   "pages": 23,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory-and-simulation paper that proposes Nielsen's quantum circuit complexity as a distance for unsupervised manifold learning of topological order, proves two lower-bound theorems, and tests fidelity and entanglement kernels on tensor-network ground states.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "che-entanglement-kernel-noise-robust",
+     "verdict": "narrowed",
+     "note": "The robustness result is for two-qubit Haar random unitaries applied to the toric code and random product states (32 qubits, 20 samples, small proof-of-principle), not for noise in general. The supplement says noise in general invalidates the unitary-path ansatz.",
+     "value": "The authors report that, for the toric code ground state and random product states, the entanglement-based kernel is more robust than the fidelity-based kernel under the application of two-qubit Haar random unitaries.",
+     "anchor": "Section II.D.2, Fig. 3, p.8; Supplementary Sec. V, p.18",
+     "quotes": [
+      "while the entanglement-based one is more robust under the application of two-qubit Haar random unitaries to both the toric code and the RPS",
+      "Generically, the presence of noise invalidates our original ansatz of unitary path planning"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from one small study",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The abstract says \"local Haar random noises\". The experiment applies layers of two-qubit Haar random gates to a 32-qubit system; this is a stand-in for noise, not a hardware noise model."
+    },
+    {
+     "id": "che-theorem2-geometric-locality-scope",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "che-xxz-clusters-three-phases",
+     "verdict": "narrowed",
+     "note": "The result holds for one fixed setting of the bond-alternating XXZ chain (large chain from DMRG, fixed field and detuning, 30 samples) and for both kernels together; the paper also notes an outlier in the critical region.",
+     "value": "The authors report that, for the bond-alternating XXZ chain solved by DMRG, the unsupervised learning produces distinct clusters associated with three phases (trivial, symmetry broken, and topological), in good agreement with independent calculations of topological invariants, using n = 151 qubits, h0 = 0 and delta = 3, with N = 30 samples drawn in J2/J1.",
+     "anchor": "Section II.D.1, Fig. 2, p.7-8",
+     "quotes": [
+      "we find that the unsupervised learning produces distinct clusters that can be associated with three phases (trivial, symmetry broken, and topological), in good agreement with independent calculations of topological invariants",
+      "We use n = 151 qubits",
+      "We set h0 = 0 and δ = 3, while N = 30 samples are drawn uniformly"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from one study",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qcc-bounds-bures-entanglement-distance",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "che-def1-quantum-path-planning",
+     "value": "The paper defines the quantum path planning problem as: given two arbitrary pure n-qubit quantum states, find continuous paths of the form of a unitary applied to the first state that connect the two states, where the generator of the unitary is a Hermitian operator with finite operator norm.",
+     "anchor": "Definition 1, Section II.A, p.4",
+     "quotes": [
+      "Definition 1. [Quantum path planning (QPP).] The QPP problem is defined as: Given two arbitrary pure n-qubit quantum states"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "high: the paper states its own definition in Definition 1",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The definition is the basis for every later bound."
+    },
+    {
+     "id_suggestion": "che-def3-nielsen-qcc",
+     "value": "The paper defines Nielsen's quantum circuit complexity of the first order for qubit systems as the infimum, over paths, of the integral of the sum of the absolute values of the real Pauli-expansion coefficients of the generator, and notes it can be generalized to other systems with an orthonormal operator basis of bounded operator norm.",
+     "anchor": "Definition 3, Section II.A, p.4-5",
+     "quotes": [
+      "Definition 3. (Nielsen's QCC.) The quantum circuit complexity of the unitary U (s = 1) can be evaluated through Nielsen's geometric approach",
+      "the Nielsen's quantum circuit complexity of the first order reads"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "high: the paper states its own definition in Definition 3",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "che-def4-quantum-fisher-complexity",
+     "value": "The paper defines the quantum Fisher complexity as an infimum over paths of an integral of the square root of the quantum Fisher information, states that it represents the optimal Bures distance between the two states, and states that it coincides with the Bures distance given by a fidelity measure.",
+     "anchor": "Definition 4, Section II.B, p.5-6",
+     "quotes": [
+      "First, we define the quantum Fisher complexity (QFC) related to the QPP, denoted by CF (ρ0 → ρ1), which coincides with the Bures distance between the two quantum states given by a fidelity measure",
+      "which represents the optimal Bures distance between the two quantum states [81], reflecting the overall fidelity variation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "high: the paper states its own definition in Definition 4",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text calls the quantity \"coincides with the Bures distance\" in one place and \"optimal Bures distance\" in another; the supplement proves only the inequality chain."
+    },
+    {
+     "id_suggestion": "che-theorem1-qcc-lower-bounds-fidelity",
+     "value": "The paper states Theorem 1: the Nielsen quantum circuit complexity for the quantum path planning between two states is lower bounded by the quantum Fisher complexity, which is lower bounded by the Bures distance; and for a geometrically local quantum circuit it is approximately lower bounded by a sum, over non-overlapping constant-size subsystems that together with their neighboring environments cover the whole system, of the Bures distance between the reduced density matrices.",
+     "anchor": "Theorem 1, Section II.B, p.6; proof in Supplementary Sec. I, p.13-15",
+     "quotes": [
+      "The QCC for the QPP from ρ0 to ρ1 is lower bounded by the QFC and the Bures distance",
+      "the QCC of a geometrically local quantum circuit for the same QPP is approximately lower bounded by",
+      "where ρ (∆) is the reduced density matrix supported on the subsystem ∆ of constant size",
+      "non-overlapping subsystems which, together with their neighboring environments, cover the whole system"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the statement and its conditions (geometric locality, constant-size subsystems, approximate bound) are quoted from Theorem 1, and the proof is in Supplementary Sec. I",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The local bound uses an approximate sign and a Trotter-step argument, so it is not an exact inequality. The title of Theorem 1 says \"upper bounds\" while the body states lower bounds."
+    },
+    {
+     "id_suggestion": "che-theorem1-proof-method",
+     "value": "The authors state that the proof of the first theorem uses a Trotter decomposition of the unitary evolution into many small steps and the fact that the quantum Fisher information of a reduced density matrix does not exceed that of the enlarged pure system.",
+     "anchor": "Supplementary Sec. I, proof of Theorem 1, p.14-15",
+     "quotes": [
+      "We make a Trotter decomposition of the unitary evolution generated by G(s) into a product of many sufficiently small, finite time steps.",
+      "The QFI of the reduced density matrix with respect to s does not exceed that of its enlarged pure system"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the paper states the proof steps in the supplement",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "che-theorem2-entanglement-lower-bound",
+     "value": "The paper states the second theorem: the Nielsen quantum circuit complexity for the quantum path planning from one n-qubit state to another with a geometrically local quantum circuit, with respect to the n-qubit chain, is lower bounded by a constant c times the average over the cuts of the absolute change in the entanglement entropy across each cut, for some constant c greater than zero.",
+     "anchor": "Theorem 2, Section II.B, p.6-7; proof in Supplementary Sec. I, p.15",
+     "quotes": [
+      "The QCC for the QPP from ρ0 to ρ1 with a geometrically local quantum circuit (with respect to the n-qubit chain) is lower bounded by",
+      "for some constant c > 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the statement and its condition (geometric locality along the chain, some constant c) are quoted from Theorem 2",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The title of Theorem 2 says \"upper bounds\" while the body states a lower bound."
+    },
+    {
+     "id_suggestion": "che-theorem2-proof-assumptions",
+     "value": "The authors state that the proof of Theorem 2 assumes the coupling in the generator between a subsystem and its environment is spatially local along the chain, relies on rigorous Small Incremental Entangling results from earlier work, and obtains the constant c as 1 over the product of a constant c-prime and the natural log of 2.",
+     "anchor": "Supplementary Sec. I, proof of Theorem 2, p.15",
+     "quotes": [
+      "we assume that the coupling in the generator G(s) of U (s) between Ak and Bk is spatially local with respect to the qubit chain",
+      "With rigorous results already proved in [112–116] concerning the Small Incremental Entangling (SIE)",
+      "for some constant c = 1/ (c′ ln 2) > 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the paper states the proof assumptions in the supplement",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "che-kernel-definitions",
+     "value": "The authors define a fidelity-based kernel from the Uhlmann-Jozsa fidelity between r-body reduced density matrices up to a cutoff scale R, and an entanglement-based kernel from the entanglement-profile distance of Theorem 2, and state the entanglement kernel is particularly useful when the entanglement profile over nontrivial bonds can be efficiently estimated.",
+     "anchor": "Section II.B, Eqs. (10) and (13), p.6-7",
+     "quotes": [
+      "The Uhlmann-Jozsa fidelity between the r-body reduced density matrices with r = {1, 2, · · · , R} can be used for this purpose, where R is a scale of cutoff.",
+      "Theorem 2 inspires an entanglement-based kernel",
+      "which is particularly useful when the entanglement profile over nontrivial bonds can be efficiently estimated"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "high: the paper states its own kernel definitions",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "che-optimal-kernel-claim",
+     "value": "The authors argue that Nielsen's quantum circuit complexity represents an intrinsic topological distance or similarity measure between topological phases, and propose an exponential kernel of the complexity, with a positive hyperparameter, as the theoretically optimal similarity for unsupervised manifold learning of topological order.",
+     "anchor": "Abstract, p.1; Section II.A, Eq. (3), p.5",
+     "quotes": [
+      "We argue that Nielsen's quantum circuit complexity represents an intrinsic topological distance or similarity measure between topological quantum many-body phases of matter",
+      "up to a normalization constant, where β > 0 is a hyperparameter."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' argument; the exact complexity is not computed in the paper",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper states that the exact complexity is generically intractable and tests only the two lower-bound substitutes."
+    },
+    {
+     "id_suggestion": "che-classical-shadow-relation",
+     "value": "The authors state that the shadow kernel suggested in earlier work can be understood as a special case of the fidelity-based kernel if the states and reduced density matrices are represented by their classical shadows, with the weight function set to nu to the r over r factorial and the limit R to infinity.",
+     "anchor": "Section II.C, p.7",
+     "quotes": [
+      "can be understood as a special case of the fidelity-based kernel in (10), if the quantum state ρ and the r-body reduced density matrices are represented by their classical shadows"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' derivation is stated, not worked out in the text",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "che-toric-code-setup-and-clustering",
+     "value": "The authors report that, for 10 toric code samples and 10 random product state samples on 32 qubits (a 4 by 4 lattice with toric boundary conditions), solved with DMRG, both kernels cluster the toric code and the random product states well with no noise.",
+     "anchor": "Section II.D.2, Fig. 3, p.8-9",
+     "quotes": [
+      "We use N = 20 samples in total, with 10 samples of the toric code (blue dots) and 10 samples of the RPS",
+      "We use n = 32 qubits (on a lattice of size 4 × 4 with toric boundary condtions",
+      "The result shows that, in the absence of noise (i.e. with circuit depth zero), both kernels types perform well in clustering the toric code and the RPS"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from one small proof-of-principle study",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Twenty samples on one 32-qubit lattice is a small test; the authors call it a proof of principle."
+    },
+    {
+     "id_suggestion": "che-extended-toric-code",
+     "value": "The authors report that, for the extended toric code on an infinite cylinder of circumference 4 with 20 samples (10 of the extended toric code), the topological clustering with both kernels is robust to local perturbations, and that a maximal MPS bond dimension of 600 was sufficient for accurate results.",
+     "anchor": "Section II.D.3, Fig. 4, p.9-10",
+     "quotes": [
+      "The result shows that the topological clustering is robust to local perturbations.",
+      "a maximal bond dimension of 600 is sufficient to produce accurate results",
+      "with a circumference of Ly = 4",
+      "We use N = 20 samples in total, with 10 samples of the ETC"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from one small study",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "che-asymptotic-tightness",
+     "value": "The authors state that for gapped ground states the quantum Fisher complexity is asymptotically tight as a lower bound of Nielsen's complexity, that the entanglement-based bound is asymptotically tight for the toric code ground state while the fidelity-based bound overestimates the circuit cost, and that for states whose complexity may grow exponentially with the number of qubits both bounds are no longer tight.",
+     "anchor": "Supplementary Sec. III, p.16",
+     "quotes": [
+      "we will show in the following that the quantum Fisher complexity (QFC) in Theorem 1 is asymptotically (with respect to the number of qubits n) tight as a lower bound of the Nielsen's QCC",
+      "our entanglement-based bound is asymptotically tight for the toric code ground state, while the fidelity-based one overestimates the quantum circuit cost",
+      "both lower bounds [see Eq. (9) in Theorem 1 and Eq. (12) in Theorem 2] are no longer tight in this case"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "high: the paper states where the bounds are tight and where they are not, in Supplementary Sec. III",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "che-gapped-path-complexity-estimate",
+     "value": "The authors estimate Nielsen's complexity along a gapped Hamiltonian path in terms of the maximal operator norm of the path derivative of the Hamiltonian divided by the spectral gap, and state this is similar but not identical to the adiabaticity condition; the explicit optimization by differential geometry is left for further investigation.",
+     "anchor": "Supplementary Sec. II, p.16",
+     "quotes": [
+      "where H(s) is the Hamiltonian path with a spectral gap δ(s) ≥ γ > 0 (∀s ∈ [0, 1])",
+      "which is similar (but not identical) to the adiabaticity condition in adiabatic quantum computation [117]",
+      "the Nielsen QCC may be explicitly obtained by optimization based on differential geometry, which deserves further investigation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an order estimate stated without a full derivation of the constants",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "che-method-cost-scaling",
+     "value": "The authors state that the kernel computation with two-body reduced density matrices of constant size has computational or measurement complexity linear in the number of qubits, that kernel PCA and the diffusion map cost is cubic in the number of samples, and that metric-MDS or t-SNE is more suitable for large data sets with cost proportional to the iteration count times the square of the number of samples.",
+     "anchor": "Supplementary Sec. IV, p.17",
+     "quotes": [
+      "the computational or the measurement complexity in calculating the kernel is O(n)",
+      "the (classical) computational complexity of the kernel PCA and the diffusion map (manifold learning) algorithm is O N 3",
+      "the computational complexity of which is O(T N 2), where T is the number of iterations in the learning algorithm"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' scaling statements; exponents are printed flat in the text layer",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "che-worst-case-hardness",
+     "value": "The authors state that estimating the quantum Fisher information and von Neumann entropy through classical shadows requires high-order moments of the density matrix which in general need exponentially many copies, that polynomially many local measurements may suffice for the second-order moment, that this remains open for the von Neumann entropy and the quantum Fisher information, and that they therefore conclude topological order is hard to learn in the worst case.",
+     "anchor": "Supplementary Sec. IV, p.17",
+     "quotes": [
+      "which in general require exponentially many copies of the quantum states",
+      "while it remains open for the Von Neumann entropy and the QFI, which deserves further investigations",
+      "Therefore, we may conclude that topological order is hard to learn in the worst case."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' conclusion from cited results",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "che-noise-scenarios-and-limits",
+     "value": "The authors state that decoherence during path planning invalidates the unitary-path ansatz and that a proper distance between noisy states may need the complexity of local quantum channels, which they leave for future work.",
+     "anchor": "Supplementary Sec. V, p.18",
+     "quotes": [
+      "Generically, the presence of noise invalidates our original ansatz of unitary path planning, where the optimal distance is defined on a unitary-group manifold.",
+      "Proper topological distance between noisy quantum states may require the analysis of the complexity of local quantum channels, a generalization of our current approach, which we leave for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "high: the paper states this limit of its own approach in Supplementary Sec. V",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "che-scope-pure-gapped-limit",
+     "value": "The authors state that the demonstrated examples focus on pure and gapped ground states, and that gapless, topological quantum critical and mixed-state cases are possible extensions.",
+     "anchor": "Section III, Discussion, p.11",
+     "quotes": [
+      "Also, in the demonstrated examples, so far we focused on pure and gapped ground states.",
+      "Possible extensions could be applications in gappless, topological quantum criticalities"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "high: the paper states the scope of its examples",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "che-comparison-neural-network-claim",
+     "value": "The authors state that, when limited to symmetry-protected topological order and compared with a recent neural-network result on the bond-alternating XXZ model, their method is fully unsupervised and gives sharper phase boundaries while providing good interpretability.",
+     "anchor": "Section III, Discussion, p.11",
+     "quotes": [
+      "our method is fully unsupervised and results in sharper phase boundaries in clustering quantum phases of this model while providing good interpretability"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' comparison to a cited work; no side-by-side numbers in this paper",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "che-no-hardware-no-quantum-ml",
+     "value": "The authors state that their approach is primarily classical machine learning of topological quantum order, and that quantum machine learning with parameterized circuits is an idea for future exploration.",
+     "anchor": "Section III, Discussion, p.11",
+     "quotes": [
+      "Our current approach is primarily based on the classical machine learning of topological quantum order by exploiting Nielsen's QCC as an informational distance.",
+      "It might also be interesting to explore quantum machine learning [105, 106] in terms of parametrized quantum circuits"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "high: the paper states the classical nature of its current approach",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "All numerical results use classical DMRG tensor-network simulation; no quantum hardware or quantum-circuit learning is run."
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2020-variational-quantum-circuits-deep-reinforcement",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2019-07_Chen_Variational-Quantum-Circuits-for-Deep-Reinforcement-Learning.pdf",
+   "title_in_file": "Variational Quantum Circuits for Deep Reinforcement Learning",
+   "version_note": "arXiv:1907.00397v3, 20 July 2020 (IEEE Access style); the text layer holds the paper twice, the second copy used only to check quotes.",
+   "pages": 21,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation paper that trains variational-quantum-circuit Q-networks with experience replay and a target network on frozen-lake and cognitive-radio tasks, with a noisy simulation and a few inference runs on IBM hardware.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "chen2020-cognitive-radio-convergence",
+     "verdict": "narrowed",
+     "note": "The convergence figure is for the first of three channel-pattern configurations and a simple periodic primary-user pattern. The Fig. 8 caption says the 2-channel and 5-channel cases reach a reward of 100 and the 3-channel and 4-channel cases reach near-optimal, while the text says optimal at about 100 episodes.",
+     "value": "The authors report that in the cognitive-radio experiment, with 2, 3, 4 and 5 possible channels in the first configuration, they run 500 episodes and the agent converges to the optimal total reward value at around 100 iterations or episodes, while the figure caption states that the three-channel and four-channel cases reach a near-optimal policy.",
+     "anchor": "Section VI-D, p.14; Fig. 8 caption, p.12",
+     "quotes": [
+      "there are 2, 3, 4 and 5 possible channels with the environment configuration shown in (a) of Fig. 3 for the agent to choose, respectively",
+      "we run 500 episodes and the agent converges to the optimal total reward value at around 100 iterations or episodes",
+      "the agent also reaches near-optimal policy at only several iterations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from one study run in classical simulation",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The caption says several iterations for the first reach and the text says about 100; the two differ."
+    },
+    {
+     "id": "chen2020-noise-model-convergence",
+     "verdict": "narrowed",
+     "note": "The noise result is a classical Qiskit Aer simulation with a noise model downloaded from one IBM machine on one date, for the 2-channel and 4-channel settings only. The paper separately ran inference with the trained noiseless model on real hardware.",
+     "value": "The authors report that in a simulation using noise data downloaded from the IBM Q machine ibmq-poughkeepsie, for the 2-channel and 4-channel cognitive-radio settings, the agent converges to the optimal total reward value at around 110 iterations, and they conclude their quantum circuit based DRL is robust against noise in the current machines.",
+     "anchor": "Section VI-C and VI-D, Fig. 10, p.13-14",
+     "quotes": [
+      "We perform the noise-model simulations for the 2-channel and 4-channel settings in cognitive-radio experiments",
+      "the agent converges to the optimal total reward value at around 110 iterations in the 2-channel and 4-channel settings",
+      "showing that our proposed quantum circuit based DRL is robust against noise in the current machines"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from one study and one noise snapshot",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "chen2020-parameter-count",
+     "verdict": "narrowed",
+     "note": "The scaling claim is restricted by the paper to the tested cases (up to 5 channels) and rests on computational basis encoding; the comparison classical network is one fixed architecture from another paper; and the paper says no guarantee exists that either model scales as hoped.",
+     "value": "The authors state that for the considered testing environments variational quantum deep Q-learning involves parameters as small as O(n), against tabular Q-learning and neural network based deep Q-learning with O(n3) and O(n2) parameters (printed flat; n cubed and n squared), and that the scaling comparison is restricted to the cases they test, with the number of channels n up to 5.",
+     "anchor": "Section VIII, p.16; Section VI-F, p.15-16",
+     "quotes": [
+      "the variational quantum deep Q-learning involves parameters as small as O(n), but the tabular Q-learning and neural network based deep Q-learning have O(n3) and O(n2) parameters, respectively.",
+      "Therefore, in this work, the comparison in scaling is restricted to the cases we test.",
+      "we consider only the cases with number of channels n ≤ 5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an analytic parameter count; the quantum advantage claimed is parameter count only",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The paper defines its quantum advantage as fewer parameters, not as faster training or better reward."
+    },
+    {
+     "id": "chen2020-simple-environments",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "chen2020-first-demonstration-claim",
+     "value": "The authors state that their work is the first proof-of-principle demonstration of variational quantum circuits approximating the deep Q-value function for decision-making and policy-selection reinforcement learning with experience replay and target network.",
+     "anchor": "Abstract, p.1; Introduction, p.2",
+     "quotes": [
+      "this work is the first proof-of-principle demonstration of variational quantum circuits to approximate the deep Q-value function"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an author priority claim",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2020-circuit-architecture-parameters",
+     "value": "The authors state that for the frozen-lake and four-channel cognitive-radio experiments the circuit has four input qubits with the grouped layer repeated twice, giving 4 x 3 x 2 = 24 optimized circuit parameters plus 4 bias parameters, 28 in total.",
+     "anchor": "Section IV-A, p.8-9",
+     "quotes": [
+      "Therefore the total number of circuit parameters subject to optimization is 4 × 3 × 2 = 24.",
+      "Therefore, the total number of parameters in this example is 24 + 4 = 28"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "high: the paper states its own circuit setup and parameter count",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2020-encoding-and-action-selection",
+     "value": "The authors state that states are encoded by computational basis encoding with single-qubit rotations, and that the action is the index of the measured qubit with the largest expectation value, with the expectation value computed analytically on a simulator or estimated from repeated measurements on hardware.",
+     "anchor": "Section IV-A and VI-A, p.8-12",
+     "quotes": [
+      "The choice of the action is just the index of the measurement qubit output port or wire that has the largest expectation value.",
+      "The expectation value can be calculated analytically if we use the quantum simulator"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "high: the paper states its own encoding and action rule",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2020-simulation-scale-and-software",
+     "value": "The authors state that the scale considered (several qubits) is still simulable by a quantum simulator on a classical computer, and that the circuits were numerically simulated with PennyLane and PyTorch, trained with RMSprop at learning rate 0.01.",
+     "anchor": "Section IV and VI-B, p.7-13",
+     "quotes": [
+      "The scale we consider here (several qubits) is still simulable by a quantum simulator on a classical computer.",
+      "The quantum circuits as constructed in Fig. 5 and Fig. 6 are numerically simulated with the software package PennyLane [42].",
+      "The optimization method is chosen to be RMSprop [44] in which parameters are set to be learning rate = 0.01"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "high: the paper states its own scale and software",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2020-training-hyperparameters",
+     "value": "The authors state that the target circuit parameters are updated per 20 steps, the replay memory length is 80 for frozen lake and 1000 for cognitive radio, and the training batch size is 5 for all environments.",
+     "anchor": "Section IV, p.8",
+     "quotes": [
+      "the target circuit parameters are updated per 20 steps",
+      "the replay memory is set for the length of 80 to adapt to the frozen-lake testing environment and the length of 1000 for the cognitive-radio testing environment",
+      "the size of training batch is 5 for all of the environments"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "high: the paper states its own hyperparameters",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2020-environment-rewards",
+     "value": "The authors state that frozen lake gives a reward of +1.0 for the goal, -0.2 for a hole and -0.01 per step, and that cognitive radio gives +1 for no collision and -1 for a collision, with a maximum score of 100 per episode.",
+     "anchor": "Section III and Table 1, p.5-6",
+     "quotes": [
+      "The rewards in this environment are +1.0 for successfully achieving the goal, −0.2 for failing the task, which is stepping into one of the holes.",
+      "there is also a −0.01 reward for each step taken",
+      "Agent can achieve a maximum score of 100."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "high: the paper states its own environment definition",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2020-frozen-lake-results",
+     "value": "The authors report that in the frozen-lake experiment they run 500 episodes on all three configurations, that for configuration (a) the agent converges to the total reward 0.9 after the 198th episode, and that several sub-optimal results occur which they attribute probably to the greedy policy selection.",
+     "anchor": "Section VI-D, Fig. 7, p.13",
+     "quotes": [
+      "In the frozen-lake experiment, we run 500 episodes on all three configurations.",
+      "The agent converges to the total reward 0.9 after the 198th episode.",
+      "It is noted that, however, several sub-optimal results occurr.",
+      "This phenomenon is probably due to the greedy policy selection."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from one study",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2020-other-configurations",
+     "value": "The authors report that the training results on the two other four-channel cognitive-radio configurations are comparable to those on the first configuration.",
+     "anchor": "Section VI-D, Fig. 9, p.14",
+     "quotes": [
+      "the training result shown in Fig. 9 is comparable to the 4-channel training result on environment configuration (a) shown in Fig. 8"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from one study",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2020-hardware-inference-cognitive-radio",
+     "value": "The authors report that a model trained on the noiseless simulator was run for five episodes on the IBM Q machine ibmq-valencia in the four-channel cognitive-radio task, with total rewards of 100, 100, 100, 100 and 98, using 1024 measurement shots.",
+     "anchor": "Section VI-E, Table 3, p.14-15",
+     "quotes": [
+      "we exclusively carry out five episodes of this specific experiment on the IBM Q backend machine ibmq-valencia",
+      "Total Reward 100 100 100 100 98",
+      "the number of shots of quantum measurements for the calculation or estimation of the expectation values is 1024"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from five episodes on one device",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Training was done in simulation; the hardware runs are inference only."
+    },
+    {
+     "id_suggestion": "chen2020-hardware-inference-frozen-lake",
+     "value": "The authors report that the trained frozen-lake model for configuration (c) was run for seven episodes on ibmq-valencia with total rewards between 0.94 and 0.95, which they describe as comparable to the simulator.",
+     "anchor": "Section VI-E, Table 4, p.15",
+     "quotes": [
+      "Total Reward 0.95 0.95 0.95 0.94 0.94 0.94 0.95",
+      "carry out seven episodes of this specific experiment",
+      "is also comparable to that obtained by running on the PennyLane or Qiskit quantum simulator"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from seven episodes on one device",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2020-frozen-lake-parameter-reduction",
+     "value": "The authors state that for frozen lake their quantum model has 28 parameters while tabular Q-learning needs a table of size 16 x 4 = 64, a reduction of (64 - 28)/64 = 56.25%.",
+     "anchor": "Section VI-F, p.15",
+     "quotes": [
+      "number of parameters in our proposed VQ-DQL is 28, while in tabular Q-Learning, the table that needs to store all the state-action information is of the size 16 × 4 = 64",
+      "Thus our VQ-DQL method reduces the number of parameters by (64 − 28)/64 = 56.25%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "high: the paper states this count from its own setup",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The comparison is to a lookup table, not a trained neural network."
+    },
+    {
+     "id_suggestion": "chen2020-cognitive-radio-classical-baseline",
+     "value": "The authors state that for cognitive radio the quantum model has n x (3 x 2 + 1) parameters against 2 x n^2 + 2 x n for the neural network of the ns3-gym paper, and, reading from that paper's figures, that their agents converge faster, reaching a score very close to 100 at less than 10 iterations even with noise, against more than 20 iterations in the original paper.",
+     "anchor": "Section VI-F, p.15-16",
+     "quotes": [
+      "the number of parameters is n×(3×2+1) in our variational-quantum-circuit-based DQL (DQN), while it is 2 × n2 + 2 × n in the neural network based RL [30]",
+      "we can see that our agents converge faster than the classical ones",
+      "our agents can reach score very close to 100 at less than 10 iterations as shown in Fig. 10",
+      "the agents reach score 100 in more than 20 iterations"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' comparison to figures of another paper, not a controlled head-to-head run",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The \"less than 10 iterations\" statement conflicts with the \"around 110 iterations\" convergence reported for the noise model in Section VI-D; the paper does not reconcile the two."
+    },
+    {
+     "id_suggestion": "chen2020-quantum-advantage-definition",
+     "value": "The authors state that the quantum advantage in their method refers to less memory consumption, meaning fewer parameters in the quantum circuits, and that this advantage relies on the data encoding scheme.",
+     "anchor": "Section VI-F, p.16",
+     "quotes": [
+      "In summary, the quantum advantage in our proposed method refers to the less memory consumption, which means there are less parameters in the quantum circuits.",
+      "The quantum advantage in terms of the parameters of the quantum circuit relies on the data encoding schemes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "high: the paper defines its own use of the term quantum advantage",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2020-amplitude-encoding-claim",
+     "value": "The authors state that with amplitude encoding the parameter count may be poly(log n) against poly(n) in a standard neural network, but that amplitude encoding is hard to implement because no known efficient algorithm prepares classical vectors in quantum registers, and they leave it to future work.",
+     "anchor": "Section VI-F and VII-E, p.16-17",
+     "quotes": [
+      "the number of parameters in an amplitude coding may be poly(log n) in contrast to poly(n) in a standard neural network",
+      "it is hard to implement the amplitude encoding scheme as there is no known efficient algorithm to prepare classical vectors into quantum registers"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' claim, untested in the paper",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2020-fixed-shot-claim",
+     "value": "The authors state that because only the qubit with the largest expectation value matters, the number of repeated measurements can be chosen to be a fixed number rather independent of n, and that the algorithm is relatively robust against noise.",
+     "anchor": "Section VI-A and VII-C, p.12-17",
+     "quotes": [
+      "the number of repeated experiments (measurements) to obtain the expectation values can be chosen to be a fixed number, rather independent of n",
+      "as long as the qubit that has the largest expectation value is the same as that on the ideal quantum simulator, the DRL agent will select the same action"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' argument, tested only at up to 5 qubits",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2020-simulability-open",
+     "value": "The authors state that the circuit is not constant-depth and includes non-Clifford gates, so it is not obviously classically simulable for many qubits, and that the hardness of simulability of this model is worth studying theoretically.",
+     "anchor": "Section VII-D, p.17",
+     "quotes": [
+      "Thus, it is not obviously classically simulable when the number of qubits is large.",
+      "The hardness of simulability of this model is also worth studying theoretically."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "high: the paper states this open question itself",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2023-efficient-postprocessing-procedure-evaluating-hamiltonian",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Chen-Goan_2023_A-More-Efficient-Postprocessing-Procedure-for-Evaluating-Hamiltonian__2312.01023.pdf",
+   "title_in_file": "Efficient Postprocessing Procedure for Evaluating Hamiltonian Expectation Values in Variational Quantum Eigensolver",
+   "version_note": "arXiv:2312.01023v2, 27 December 2023. The PDF has 7 pages; the text layer holds the 3-page-plus-appendix paper twice (two-column reading order is interleaved in places), the second copy used only to check quotes. The record title says 'More Efficient'; the file title is 'Efficient Postprocessing Procedure'.",
+   "pages": 7,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short VQE software-method paper proposing a measurement-memory dictionary that caches the eigenvalue of each commuting group for each measured bit string, with a complexity argument and CPU-time simulations.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "mm-vqe-ising-speedup",
+     "verdict": "narrowed",
+     "note": "The speedup is the order of growth of the percentage of CPU time saved, observed for up to 20 qubits, with a fitted quadratic label on the figure; the percentage cannot exceed 100 so it is not an asymptotic claim; and it is a classical simulation timing.",
+     "value": "The authors report that, for a fully connected Ising Hamiltonian up to 20 qubits, where all O(N2) terms commute (exponents printed flat), the method offers an O(N2) speedup in terms of the percentage of time saved; the run uses 10 initial parameter guesses, 200 optimization steps, and Fig. 1 carries the label 0.16x2 - 1.65x + 4.15.",
+     "anchor": "Abstract, p.1; Section IV.A, Fig. 1, p.2-3",
+     "quotes": [
+      "For Ising Hamiltonian, where all O(N 2) terms commute, our method offers an O(N 2) speedup in terms of the percentage of time saved.",
+      "minimizing a fully connected Ising Hamiltonians up to 20 qubits",
+      "We take 10 initial parameter guesses",
+      "CPU time (t ) for 200 steps of optimization of fully-connected Ising Hamiltonians",
+      "0.16x2 - 1.65x + 4.15"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from one study",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The O(N2) is a growth order of a percentage over 20 qubits (a fitted quadratic label on Fig. 1b), not a proved asymptotic speedup."
+    },
+    {
+     "id": "mm-vqe-molecular-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "mm-vqe-time-complexity",
+     "verdict": "narrowed",
+     "note": "The appendix proves MM is no worse than the sort-and-evaluate procedure (worst case equal when nothing is stored, and each stored state trades a cost of order N plus the group cost for twice the order of N), which relies on the group evaluation cost being at least order N. It does not show MM beats naive evaluation in every case, and it analyses time only.",
+     "value": "The authors state that, in the appendix, in the worst case the first step with no stored bit strings has the complexity equal to the sort-and-evaluate scheme, and that for every extra state stored they trade a cost of order N plus the group evaluation cost for two times a cost of order N, which they take as showing MM is more efficient than the sort-and-evaluate procedure.",
+     "anchor": "Abstract, p.1; Appendix, Time Complexity of MM, p.4-5",
+     "quotes": [
+      "In equation 14, we can see that in the worst case, for example, the first step, l = 0, the complexity is equal to sort-and-evaluate scheme",
+      "For every extra state we store (i.e. l + 1), we are trading O (N ) + O (G) cost for 2O (N ).",
+      "Since O (G) ≥ O (N ) in general"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the appendix states the complexity expressions and the condition O (G) ≥ O (N ) it relies on",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The abstract says always more efficient; the proof compares only to sort-and-evaluate and uses a hash-table cost model for Python dictionaries. Memory for the dictionary is not analysed."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "mm-vqe-method-definition",
+     "value": "The authors define a measurement memory dictionary for every commuting operator group of the Hamiltonian that stores each measured bit string b as a key and the group eigenvalue for b as the value, so a repeated bit string is looked up rather than recomputed.",
+     "anchor": "Abstract, p.1; Section II, Algorithm 1, p.2",
+     "quotes": [
+      "we create a measurement memory (MM) dictionary for every commuting operator group G in a Hamiltonian",
+      "Once a measurement outcome bit string b appears, we store b and 〈b|G|b〉 as key and value"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "high: the paper states its own method definition",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mm-vqe-molecular-results",
+     "value": "The authors report that for H2 (4 qubit), H4 (8 qubit), LiH (12 qubit) and H2O (14 qubit) molecules in the sto-3g basis with three grouping methods, the order of improvement is FG > GC > QWC, with over O(N) percentage time saved depending on the grouping method.",
+     "anchor": "Section IV.B, Figs. 2-3, p.3",
+     "quotes": [
+      "H2 (4 qubit), H4 (8 qubit), LiH (12 qubit), and H2O (14 qubit) molecules with sto-3g basis set",
+      "As expected, the order of improvement is FG > GC > QWC",
+      "we achieved over O(N ) percentage time saved, depending on the grouping method"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from one study; exponents printed flat",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mm-vqe-benefit-depends-on-group-size",
+     "value": "The authors state that the potential improvement of MM is mainly determined by how the number of operators in each group scales, that the improvement will be very limited for a sublinear scaling group, and that superlinear scaling groups should give fruitful improvement.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "the potential performance improvement of MM is mainly determined by the scaling of the number of operators in each group",
+      "Thus, the improvement will be very limited for an MM created for a sublinear scaling operator group."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "high: the paper states this limit of the method itself",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mm-vqe-simulation-setup",
+     "value": "The authors state that the Ising and molecular tests measure CPU time in simulation, with 10 initial parameter guesses, for 200 optimization steps in the Ising test and 100 in the molecular test.",
+     "anchor": "Section IV.A, Fig. 1-2 captions, p.3",
+     "quotes": [
+      "We take 10 initial parameter guesses",
+      "CPU time (t ) for 200 steps of optimization of fully-connected Ising Hamiltonians with increasing problem size.",
+      "CPU time required for 100 steps of optimization, with different grouping methods"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "high: the paper states its own experimental setup",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Fig. 1 uses 200 steps and Fig. 2 uses 100 steps; no quantum hardware is used."
+    },
+    {
+     "id_suggestion": "mm-vqe-sort-versus-naive",
+     "value": "The authors state that for an ansatz with the same probability over all eigenstates, expected distinct values approach the number of measurements, which gives a condition under which naive evaluation is better than sort-and-evaluate, and that sort-and-evaluate has an advantage for concentrated ansatzes and in most cases.",
+     "anchor": "Appendix, Time Complexity of sort-and-evaluate, p.4",
+     "quotes": [
+      "Thus, substituting L for m in condition 10, we end up with O(G) ≥ ∞, which implies that one should conduct naive evaluation in this case.",
+      "one can always conduct the sort-and-evaluate scheme with advantage in most case, and with acceptable disadvantage in some cases"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the appendix states the condition and the two extreme cases it analyses",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mm-vqe-ising-extra-benefit-claim",
+     "value": "The authors state that storing every eigenvalue of every measured eigenstate of the Ising Hamiltonian during the VQE process provides an additional benefit of increasing the probability of finding a low-energy solution.",
+     "anchor": "Section IV.A and Section V, p.3",
+     "quotes": [
+      "providing an additional benefit of increasing the probability of finding a low-energy solution"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: stated without a measurement of solution quality",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "No result in the paper measures the energy reached, only CPU time."
+    },
+    {
+     "id_suggestion": "mm-vqe-no-downside-claim",
+     "value": "The authors state that the worst case of MM is identical to the regular procedure and conclude that employing MM has no downside trade-offs, and that MM could be applied to other deterministic measurement schemes as long as the measurement basis are fixed.",
+     "anchor": "Section III and Section V, p.2-3",
+     "quotes": [
+      "Moreover, the worst case scenario of MM is identical to the regular procedure.",
+      "employing MM has no down side trade offs",
+      "as long as the measurement basis are fixed"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' conclusion; their analysis covers time complexity only",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Dictionary memory use is not discussed, so no downside is checked for memory."
+    },
+    {
+     "id_suggestion": "mm-vqe-vqe-cost-setup",
+     "value": "The authors state that a VQE with d parameters and T iterations needs (2d + 1)T Hamiltonian expectation evaluations when the gradient uses the parameter shift rule, and that the circuit repetition needed for even small molecules can reach hundreds of millions, which makes classical postprocessing overhead nontrivial.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "making it a total of 2d + 1 times of evaluation in every optimization step, and thus (2d +1)T evaluations are required for a whole VQE process with T iterations",
+      "it still requires hundreds of millions of circuit repetitions to evaluate even small molecules [11] (e.g., H2O, NH3) to chemical accuracy"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: a cited motivation and a standard count stated in the introduction",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2025-provably-faster-randomized-quantum-algorithms",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Chen-et-al._2025_Provably-faster-randomized-and-quantum-algorithms-for-k-means-clustering-via__2504.20982.pdf",
+   "title_in_file": "Provably faster randomized and quantum algorithms for k-means clustering via uniform sampling",
+   "version_note": "arXiv:2504.20982v3, 13 October 2025; the text layer holds the paper twice, the first copy read in full and the second used only to check quotes.",
+   "pages": 33,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that proves one-step guarantees for a uniform-sampling mini-batch k-means algorithm and a QRAM-based quantum analog, with synthetic and MNIST classical experiments.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "kmeans-quantum-quadratic-small-regime",
+     "verdict": "narrowed",
+     "note": "The quadratic improvement is in the epsilon dependence only, only for small epsilon, per iteration, under the QRAM access assumption, an exact quantum arithmetic assumption, and (for the headline bound) balanced clusters. The paper notes that no improvement over classical estimators is possible for large epsilon.",
+     "value": "The authors state that, assuming superposition quantum access to the data using QRAM and exact quantum arithmetic, they showcase a quadratic improvement in the ε dependence compared to their classical algorithm in the small ε regime, and that a quantum advantage is only possible in the small ε regime for mean estimation.",
+     "anchor": "Section 1.2, p.3-4; Assumptions 3.1-3.2, Section 3.1, p.11; Theorem 3.5, p.13",
+     "quotes": [
+      "Assuming superposition quantum access to the data using QRAM",
+      "we showcase a quadratic improvement in the ε dependence compared to our classical algorithm in the small ε regime",
+      "it is well-known that we can obtain a quantum advantage only in the small ε regime",
+      "Assumption 3.2 (Exact quantum arithmetic)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the contributions summary of Theorem 3.5; the theorem relies on imported mean-estimation results",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The comparison is in QRAM queries, not time, and QRAM itself is an assumption the paper does not cost."
+    },
+    {
+     "id": "kmeans-scope-balanced-qram",
+     "verdict": "widened",
+     "note": "Theorems 2.1 and 3.5 are stated for a general cluster-size parameter; the balanced assumption is adopted to compare with prior work, and the quantum guarantee is one iteration in QRAM query complexity.",
+     "value": "The authors state that the headline bounds assume roughly balanced initial clusters, an assumption the paper adopts to compare with prior work, while the main classical and quantum theorems are stated with a general cluster-size parameter kC, and that the quantum guarantee is stated as QRAM query complexity, not time complexity.",
+     "anchor": "Section 1.2, p.3-4; Section 3.3, p.13",
+     "quotes": [
+      "Our main result is that, if the initial clusters are roughly balanced",
+      "Previous works assume balanced cluster sizes kC = Θ(k) [KLLP19; DLT25].",
+      "because the authors analyze time complexity, whereas our study focuses on QRAM query complexity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "high: the paper states its own scope and which assumption it adopts for comparison",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "kmeans-uniform-sampling-improvement",
+     "verdict": "narrowed",
+     "note": "The improvement is in the bound's data-dependent parameter (phi against eta-bar, eta-hat, eta), is for one iteration, and is not uniform: the paper says its classical bound is at most a factor of d worse than the updated prior bound and that neither algorithm always does better.",
+     "value": "The authors state that their classical sample complexity bound is always better than that of [DLT25] while at most O(d) worse than the bound of [CDLT25], that φ can be arbitrarily smaller than both η̄ and η̂, and that neither their algorithm nor the updated prior algorithm always does better than the other.",
+     "anchor": "Section 1.2, p.4; Appendix D.2.1, p.31-33",
+     "quotes": [
+      "is always better than that of [DLT25], while at most O ̃ (d ) worse than the bound derived in [CDLT25]",
+      "On the other hand, φ can be arbitrarily smaller than both η ̄ and ηˆ",
+      "As such, neither algorithm always does better than the other algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: a comparison of upper bounds stated in the paper, not of measured performance",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "kmeans-algorithm2-uniform-minibatch",
+     "value": "The authors describe the mini-batch algorithm, which selects a subset of b data points uniformly at random with replacement and performs one step of the k-means algorithm on it, and state they make no claim of novelty for it.",
+     "anchor": "Section 1.2 and Algorithm 2, p.4-7",
+     "quotes": [
+      "The algorithm, about whose novelty we make no claims, is extremely simple",
+      "a random subset of data points b is drawn from the full dataset uniformly at random (with replacement)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "high: the paper states its own algorithm definition",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-theorem-2-1",
+     "value": "The paper proves Theorem 2.1: if the batch size is at least kC times the maximum of 4φ divided by ε squared times δ and the logarithm of k over δ, then with probability at least 1 - δ the output of Algorithm 2 has size-weighted squared distance to the exact k-means centers at most ε squared.",
+     "anchor": "Theorem 2.1, Section 2.1, p.7; proof Section 2.2, p.8-9",
+     "quotes": [
+      "Theorem 2.1. Suppose b ≥ kC · max 4φ ε2δ , log k δ , where kC and φ are defined in (1.7).",
+      "Then, with probability at least 1 − δ, the output (c1, . . . , ck ) of Algorithm 2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the statement and conditions are quoted from Theorem 2.1, proved by a Chernoff bound, Markov inequality and a union bound",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": "The dependence on 1/δ is polynomial, as the authors note in Remark 2.3."
+    },
+    {
+     "id_suggestion": "kmeans-corollary-2-2",
+     "value": "The paper proves Corollary 2.2: for batch size at least kC times the maximum of 4φkC over ε squared times δ and 8 times the logarithm of k over δ, with probability at least 1 - δ every output center is within ε of the corresponding exact k-means center; for balanced clusters this is a batch size of order k squared over ε squared times φ plus the logarithm of k.",
+     "anchor": "Corollary 2.2, Section 2.1, p.7",
+     "quotes": [
+      "Corollary 2.2. Suppose b ≥ kC · max 4φkC ε2δ ,8 log k δ , where kC and φ are defined in (1.7).",
+      "if |C 0j | = Θ(n/k) (i.e., kC = Θ(k)) and b = O(k2ε−2φ + log(k))"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the statement and conditions are quoted from Corollary 2.2, derived from Theorem 2.1",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-remark-2-3-failure-probability",
+     "value": "The authors state that their bounds have an undesirable polynomial dependence on the inverse failure probability, and that this can be improved to an arbitrary failure probability by repeating each iteration a logarithmic number of times with a high-dimensional median trick (Theorem A.6).",
+     "anchor": "Remark 2.3, p.7; Theorem A.6, Appendix A.4, p.32",
+     "quotes": [
+      "While our bounds have an undesirable polynomial dependence on the inverse failure probability 1/δ",
+      "by repeating each iteration O(log(1/δ)) times and using a high-dimensional variant of the \"median"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "high: the paper states this limitation and its remedy",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-example-1-1-sampling-sensitivity",
+     "value": "The paper works an example of a one-dimensional dataset with two clusters, showing that uniform sampling finds the correct centers with probability 1 - δ using a number of samples of order log(1/δ), while sampling proportional to squared row norms needs at least order α squared times log(1/δ) samples when α is much greater than 1.",
+     "anchor": "Example 1.1, Section 1.3, p.5-6",
+     "quotes": [
+      "This happens with probability 1 − δ if we use b = 1 + log2(1/δ) = Θ(log(1/δ)) samples.",
+      "so that we need at least b = Ω(α2 log(1/δ)) samples to observe a point from the cluster at −1 with probability 1 − δ"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the example is worked in the paper with its conditions and the sample counts quoted",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-invariance-argument",
+     "value": "The authors argue that the k-means objective is invariant to rigid-body transformations, that uniform sampling respects this symmetry while row-norm importance sampling does not, and that this is why prior bounds depend on η, η̂ and η̄.",
+     "anchor": "Section 1.3, p.5; Section 4, p.23",
+     "quotes": [
+      "The k-means clustering objective is invariant to rigid-body transformations of the data",
+      "On the other hand, algorithms which depend on the relative sizes of the row-norms can behave drastically different depending on how the data is transformed"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' explanation, supported by Example 1.1",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-lemma-a2-phi-bound",
+     "value": "The paper proves Lemma A.2, which expresses φ as η̄ minus a nonnegative size-weighted term in the exact k-means centers, so that φ is at most η̄, and states φ ≤ η̄ ≤ η always holds.",
+     "anchor": "Lemma A.2, Appendix A.1, p.30; Section 4, p.23",
+     "quotes": [
+      "The following result exactly quantifies how much smaller φ is than η ̄.",
+      "indeed φ ≤ η ̄ ≤ η always holds"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the lemma and its proof are in the appendix",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-corollary-b1-cost-bound",
+     "value": "The paper proves Corollary B.1: under a batch-size condition of kC times the maximum of a term in 1/(εδ) and 8 log(k/δ), with probability at least 1 - δ the k-means cost of the output of Algorithm 2 is at most (1 + ε)φ, which is at most (1 + ε) times the cost of the initial centers.",
+     "anchor": "Corollary B.1, Appendix B, p.32-33",
+     "quotes": [
+      "Corollary B.1. Suppose b ≥ kC · max 4 , 8 log εδ k δ .",
+      "Then, with probability at least 1 − δ, the output (c1, . . . , ck ) of Algorithm 2 satisfies"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the statement is in Corollary B.1, proved from Theorem 2.1 and Lemma B.2",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-damped-minibatch-corollary",
+     "value": "The paper proves Corollary C.1 for a damped mini-batch variant related to scikit-learn's MiniBatchKMeans: with probability at least 9/10 the cost of the output centers is at most (1 - αmin) + αmax(1 + ε) times φ, nearly monotone in the sense of not increasing by more than a small multiplicative factor.",
+     "anchor": "Corollary C.1, Appendix C, p.33",
+     "quotes": [
+      "Our main result for Algorithm 8 is a generalization of Corollary B.1.",
+      "Then, with probability at least 9/10, the output (c1α, . . . , ckα) of Algorithm 8 satisfies"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the statement is in Corollary C.1, proved from Theorem 2.1 and Lemma C.2",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-quantum-access-assumptions",
+     "value": "The authors state that the quantum algorithm assumes input data is accessible in coherent superposition through a QRAM implementing the map from index and zero to index and data row, with a query counted as one use of that map, and assumes exact quantum arithmetic.",
+     "anchor": "Assumptions 3.1-3.2, Section 3.1, p.11",
+     "quotes": [
+      "A key assumption of our quantum algorithm is that the input data can accessed in a coherent superposition using a quantum computer.",
+      "Assumption 3.2 (Exact quantum arithmetic)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "high: the paper states its own model assumptions",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "QRAM construction cost is not part of the stated query count."
+    },
+    {
+     "id_suggestion": "kmeans-theorem-3-5",
+     "value": "The paper proves its main quantum theorem: given QRAM access and exact quantum arithmetic, for ε greater than zero the quantum algorithm uses a number of QRAM queries of order tilde-O of k to the three-halves power times the square root of kC times terms in the square root of d, φ, ε and dk, so that with probability at least 1 − δ every output center is within ε of the exact k-means center.",
+     "anchor": "Theorem 3.5, Section 3.3, p.13; proof Section 3.5, p.15-17",
+     "quotes": [
+      "Given QRAM access (Assumption 3.1) to data points v1, . . . , vn and cluster centers c01, . . . , ck0 such that the quantum data encoding satisfies Assumption 3.2",
+      "with probability at least 1 − δ, the output (c1, . . . , ck ) of Algorithm 3 satisfies",
+      "We have not tried to optimize the dependence on k, which we suspect can be improved."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the exact query expression is garbled in the text layer, so the statement could not be quoted in full",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The square root signs are lost in the text layer; the statement cannot be restated exactly from the layer."
+    },
+    {
+     "id_suggestion": "kmeans-imported-mean-estimation",
+     "value": "The paper uses, as an imported result from earlier work, a quantum mean estimation algorithm that outputs an estimate with squared error at most ε squared times the trace of the covariance, with probability at least 1 − δ, using order tilde-O of the square root of d over ε queries, for ε below a threshold, and notes no improvement over classical estimators is possible for large ε.",
+     "anchor": "Imported Theorem 3.4, Section 3.2, p.12; footnote 7",
+     "quotes": [
+      "Imported Theorem 3.4 (Quantum mean estimation [CHJ22, Theorem 3.5]).",
+      "with probability at least 1 − δ, ∥μ − μ∥2 ≤ ε2 tr(Σ)",
+      "no improvement over classical estimators is possible for large ε [CHJ22, Theorems 3.7]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: a result the paper attributes to other work",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-imported-amplitude-amplification",
+     "value": "The paper uses, as an imported result, fixed-point amplitude amplification that boosts a good state's amplitude with a number of queries inverse in the amplitude times a logarithm of the accuracy.",
+     "anchor": "Imported Theorem 3.3, Section 3.2, p.11-12",
+     "quotes": [
+      "Imported Theorem 3.3 (Fixed-point amplitude amplification [GSLW19, Theorem 27])."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: a result the paper attributes to other work",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-theorem-3-7-cluster-assignment",
+     "value": "The paper proves Theorem 3.7: Algorithm 4 uses a number of QRAM queries of order k to construct a unitary that maps each index and zero to the index and its nearest initial cluster label.",
+     "anchor": "Theorem 3.7, Section 3.4.1, p.14",
+     "quotes": [
+      "Theorem 3.7 (Cluster assignment). Algorithm 4 uses O(k) QRAM queries to construct a unitary U which performs the map"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the statement is quoted and the proof counts the k + 1 QRAM calls",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-corollary-3-8-cluster-superposition",
+     "value": "The paper proves a corollary that, given the cluster assignment unitary, Algorithm 5 uses a number of queries of order the square root of kC times a logarithm of 1/Δ to build a unitary preparing, up to error Δ, a uniform superposition over the points of cluster j.",
+     "anchor": "Corollary 3.8, Section 3.4.2, p.14-15",
+     "quotes": [
+      "For all j ∈ [k], Algorithm 5 uses at most O( kC log(1/∆)) queries to U and U † to construct a unitary U j which performs the map"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the square root is lost in the text layer, so the statement could not be quoted in full",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-corollary-3-9-random-variable-access",
+     "value": "The paper proves a corollary that, for each cluster, Algorithm 6 uses a number of QRAM calls of order k to prepare the unitary giving access to the random variable equal to the data point minus the initial center if the point belongs to the cluster and zero otherwise.",
+     "anchor": "Corollary 3.9, Section 3.4.3, p.15",
+     "quotes": [
+      "For each j ∈ [k], Algorithm 6 uses O(k) calls to the QRAM to prepare the unitary B j ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the statement is quoted and follows from Theorem 3.7",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-no-kp-tree-claim",
+     "value": "The authors state that because they use only a uniform superposition over the data, they do not require access to a KP-tree data structure.",
+     "anchor": "Section 1.2, p.4",
+     "quotes": [
+      "since we only use uniform superposition over the data, we do not require access to a KP-tree data structure"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' statement about their own algorithm",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-quantum-vs-classical-crossover",
+     "value": "The authors state that under the balanced cluster assumption the quantum algorithm does better than the classical algorithm when ε is smaller than a threshold of order tilde-O of the square root of φ over a root of d k, and that the access models of [KLLP19], [DLT25; CDLT25] and their own differ.",
+     "anchor": "Section 1.2, p.4; Remark 3.6, p.13-14",
+     "quotes": [
+      "Under the balanced cluster assumption, the quantum algorithm will do better than the classical algorithm when ε is",
+      "the precise access model and way of measuring costs for the quantum algorithms in [KLLP19], [DLT25; CDLT25], and our work are all slightly different"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the threshold expression is garbled in the text layer; the comparison is of upper bounds",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-synthetic-experiment",
+     "value": "The authors report that on synthetic data with d = 2 and k = 4 means, each with ten thousand Gaussian points, the mini-batch algorithm clearly outperforms the algorithm of [DLT25] in the cluster error as a function of batch size, most when φ is small, and that the baselines use twice the number of samples.",
+     "anchor": "Section 2.3, Fig. 2, p.9-10",
+     "quotes": [
+      "The data-set is synthetically generated for d = 2 by choosing k = 4 means",
+      "We observe that Algorithm 2 clearly outperforms the algorithm of [DLT25].",
+      "This is most pronounced when φ is small, which is as expected",
+      "Thus, the total number of samples used at a given value of b is twice that of our algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result on synthetic data from one study",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The value 10^4 is read from the text \"104 data-points\" with the exponent printed flat."
+    },
+    {
+     "id_suggestion": "kmeans-mnist-multistep",
+     "value": "The authors report that on MNIST with n = 70, 000 embedded into d = 30 dimensions by a Gaussian Johnson-Lindenstrauss embedding, with k = 10 and k-means++ initialization, the cluster error of the mini-batch algorithm accumulates some over iterations but remains relatively stable, and that a theoretical multi-step guarantee seems very challenging.",
+     "anchor": "Section 2.3, Fig. 3, p.10",
+     "quotes": [
+      "Here we use the MNIST dataset n = 70, 000, which we embed into d = 30 dimensions using a Gaussian Johnson–Lindenstrauss embedding.",
+      "We observe that the error accumulates some as the number of iterations increases, but remains relatively stable.",
+      "Unfortunately, describing this behavior theoretically seems very challenging",
+      "We then perform clustering with k = 10 using k-means++ initialization [AV07]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result on one dataset from one study",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-one-step-limit",
+     "value": "The authors state that all of their theoretical guarantees are local per-iteration guarantees, that the multi-step behavior is not covered, and that the primary difficulty is that the k-means algorithm is not smooth.",
+     "anchor": "Section 1.4, p.6; Section 2.3, p.10; Section 4, p.23",
+     "quotes": [
+      "All of our theoretical guarantees are local per-iteration guarantees",
+      "Our theoretical guarantees are only for one step of the k-means algorithm.",
+      "The primary difficulty limiting this extension is that the k-means algorithm is not smooth"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "high: the paper states this limit itself",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-lemma-a3-and-a1",
+     "value": "The paper proves that Lloyd steps are locally optimal (Lemma A.1) and gives the mean and second moment of the importance-sampled matrix-vector estimator (Lemma A.3), which the proof of the main classical theorem uses.",
+     "anchor": "Lemmas A.1 and A.3, Appendix A, p.30-31",
+     "quotes": [
+      "The k-means steps are locally optimal in the sense that the following hold:",
+      "Independently sample random indices s1, . . . , sb such that Pr(s j = i ) = pi and define the estimator"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the lemma statements and proofs are in Appendix A",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kmeans-prior-work-parameters",
+     "value": "The authors state that the guarantees of past works involve data-dependent quantities η̄, η̂ and η that can be arbitrarily large even on intuitively easy to cluster data sets, and that the dependence is necessary for row-norm based importance sampling.",
+     "anchor": "Section 1.1, p.3; Appendix D, p.33-35",
+     "quotes": [
+      "These parameters can be arbitrarily large, even on intuitively easy to cluster data-sets.",
+      "the dependence on these parameters is necessary, and arises due to the use of row-norm based importance sampling"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' characterization of cited prior work",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "cheng-2023-quantum-imitation-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Cheng-et-al._2023_Quantum-Imitation-Learning__2304.02480.pdf",
+   "title_in_file": "Quantum Imitation Learning",
+   "version_note": "arXiv:2304.02480v1, 4 April 2023; the text layer holds the paper twice, the second copy used only to check quotes.",
+   "pages": 15,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation paper that proposes quantum behavioural cloning (Q-BC) and quantum generative adversarial imitation learning (Q-GAIL) with variational quantum circuit policies, proves an error bound for Q-BC under two assumptions, and tests both on four OpenAI Gym tasks.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qil-expert-level-no-degradation",
+     "verdict": "narrowed",
+     "note": "The result is from classical simulation (TensorFlow Quantum and Cirq) of 2 to 6 qubit circuits on four small control tasks with 5 seeds each, against DNN baselines; several Table IV differences are within one standard deviation; the sample-efficiency gain is described by the authors as not satisfactory.",
+     "value": "The authors report that Q-BC and Q-GAIL, in simulation with 5 random seeds, mimic experts and achieve expert-level performance, and that no performance degradations are observed against the DNN-based BC and GAIL.",
+     "anchor": "Section V.C-D, Table IV, p.9-11",
+     "quotes": [
+      "Each algorithm is run with 5 random seeds to obtain a relatively robust evaluation.",
+      "are able to successfully mimic experts from expert data and achieve expert-level performance",
+      "no performance degradations are observed in the corresponding quantum versions, i.e., Q-BC and Q-GAIL."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from one simulated study",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table IV gives CartPole-v1 Q-BC 500.0 +/- 0.0 against BC 497.6 +/- 1.3 and Q-GAIL 469.7 +/- 60.5 against GAIL 433.4 +/- 133.1; the intervals overlap for several tasks and no significance test is reported."
+    },
+    {
+     "id": "qil-q-bc-error-bound",
+     "verdict": "narrowed",
+     "note": "The bound is conditional on two assumptions (a bounded additive measurement error on each expectation value, and a delta error from optimizing the BC loss under infinite samples), and its measurement-error term is a hyperbolic sine in the product of the inverse temperature and the error. The proof was read in the appendix.",
+     "value": "The paper states Theorem 1: given an expert policy and the true learner policy generated by Q-BC, if Assumptions 1 and 2 hold, the absolute difference in expected discounted reward is bounded by a prefactor proportional to the reward bound over the square of one minus the discount factor times the sum of a hyperbolic sine term in the inverse temperature and measurement error and a term in the square root of the optimization error; the authors read this as growing exponentially with the quantum measurement error and linearly with the square root of the optimization error.",
+     "anchor": "Theorem 1, Section IV.B, p.6; proof in Appendix, p.12-13",
+     "quotes": [
+      "Theorem 1. Given an expert policy πE and the true learner policy πθ generated by Q-BC, suppose Assumptions 1 and 2 hold, the error bound is",
+      "where sinh is the hyperbolic sine function.",
+      "can see that the error bound grows exponentially regarding the quantum measurement error and grows linearly with respect to the square root of the optimization error"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the statement and its two assumptions are quoted from Theorem 1; the proof is in the appendix",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound expression is garbled in the text layer, so the exact prefactor cannot be quoted. For small measurement error a hyperbolic sine is close to linear, so \"exponentially\" holds for large values only."
+    },
+    {
+     "id": "qil-simulated-with-tfq",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qil-speedup-potential",
+     "verdict": "narrowed",
+     "note": "The paper itself says VQC methods are heuristic and lack theoretical analysis of speed-up, and that the sample-efficiency improvement seen is not satisfactory and far from quadratic or exponential speed-up.",
+     "value": "The authors state that QIL algorithms have the potential to be run on quantum computers and thus enjoy the quantum speed-up, but also that VQC-based methods are heuristic and lack theoretical analysis on the quantum speed-up, and that the improvement in sample efficiency is not satisfactory and far from the potential quadratic or exponential quantum speed-up.",
+     "anchor": "Section V.D and V.F, p.9-11",
+     "quotes": [
+      "QIL algorithms have the potential to be run on quantum computers and thus enjoy the quantum speed-up",
+      "VQC-based methods are heuristic and lack theoretical analysis on the quantum speed-up",
+      "the improvement in sample efficiency is not satisfactory and far from the potential quadratic or exponential quantum speed-up"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' own claim, not tested in the paper and qualified by them",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qil-first-qil-claim",
+     "value": "The authors state that they are the first to propose the concept of quantum imitation learning and conduct pilot studies, and that the two algorithms are proof-of-principle.",
+     "anchor": "Abstract, p.1; Section I, p.2",
+     "quotes": [
+      "To our knowledge, we are the first to propose the concept of QIL and conduct pilot studies",
+      "devise two proof-ofprinciple QIL algorithms, Q-BC and Q-GAIL"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an author priority claim",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-qbc-definition",
+     "value": "The authors define Q-BC as behavioural cloning with a softmax-VQC policy trained offline with a negative log-likelihood loss on expert data, using qubit encoding, data re-uploading and input and output scaling parameters.",
+     "anchor": "Section IV.A-B, p.4-5",
+     "quotes": [
+      "Q-BC learns in an SL manner with a negative loglikelihood (NLL) loss to clone expert behaviors from expert data, which works off-line.",
+      "In this work, we exploit qubit encoding for our VQCs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "high: the paper states its own algorithm definition",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-qgail-definition",
+     "value": "The authors define Q-GAIL as an online, on-policy method with a VQC policy trained with REINFORCE and a baseline, whose discriminator is a classical DNN regularized by spectral normalization; a VQC-based discriminator is tested separately.",
+     "anchor": "Section IV.C, p.6-7",
+     "quotes": [
+      "In this paper, we regard the discriminator as a part of the environment and implement it with traditional DNNs as in [76]",
+      "we use REINFORCE [33], one of the most fundamental algorithms in RL, to learn from virtual rewards",
+      "we adopt spectral normalization for the discriminator [20], [78]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "high: the paper states its own algorithm definition",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "In the headline Q-GAIL the discriminator is classical, so only the policy is quantum."
+    },
+    {
+     "id_suggestion": "qil-assumption-1-measurement-error",
+     "value": "The authors state a first assumption: efficient approximations of the unknown true expectation values are available with at most an additive measurement error epsilon for each action, and they argue this is reasonable because repeating executions of order 1/epsilon squared times reduces the error.",
+     "anchor": "Assumption 1, Section IV.B, p.6",
+     "quotes": [
+      "Assumption 1 assumes the measurement error is bounded, which is reasonable in most realistic quantum systems.",
+      "we can independently repeat executions and measurements with O( −2) times on a quantum computer to reduce the error"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "high: the paper states its own assumption",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-assumption-2-optimization-error",
+     "value": "The authors state a second assumption: optimizing the BC loss under the infinite sample situation achieves a delta error in the expected KL divergence between the expert policy and the learner policy.",
+     "anchor": "Assumption 2, Section IV.B, p.6",
+     "quotes": [
+      "We can achieve a δ error by optimizing the BC loss in Eq. (4) such that",
+      "After optimizing BC loss under the infinite sample situation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "high: the paper states its own assumption",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The infinite-sample condition means the bound says nothing about finite expert data."
+    },
+    {
+     "id_suggestion": "qil-lemma-5-tv-distance",
+     "value": "The paper proves Lemma 5: under Assumption 1, the expected total variation distance between the true softmax-VQC policy and the policy built from approximated expectation values is bounded by the absolute value of a hyperbolic sine of twice the product of the inverse temperature and the measurement error.",
+     "anchor": "Lemma 5, Appendix, p.12-13",
+     "quotes": [
+      "Lemma 5. Suppose Assumption 1 hold, we can obtain the TV distance between the true policy πθ and the approximated policy",
+      "In other words, the approximated policy πθ(a|s) is bounded by"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the lemma statement is quoted and proved in the appendix from Assumption 1",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-theorem-1-proof-dependencies",
+     "value": "The authors state that the proof of the error bound rewrites lemmas from earlier work, uses Pinsker's inequality and Jensen's inequality, and splits the distance between learner and expert policies into the measurement-error part and the optimization-error part.",
+     "anchor": "Appendix, proof of Theorem 1, p.12-13",
+     "quotes": [
+      "First, we rewrite some necessary lemmas in [42], [54], which helps simplify the derivation.",
+      "where (i) follows from the Pinsker's inequality [94], and (ii) follows from Jensen's inequality."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "high: the appendix states the proof steps and the lemmas it imports",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-lemma-1-gradient",
+     "value": "The paper uses, from earlier work, a lemma giving the gradient of the log-probability of a softmax-VQC policy, which Q-BC and Q-GAIL use to estimate their gradients.",
+     "anchor": "Lemma 1, Section IV.B, p.5",
+     "quotes": [
+      "Lemma 1. [42] For a policy πθ constructed with softmaxVQCs, the gradient of the log-probability can be obtained,"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: a result the paper attributes to other work",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-expert-data",
+     "value": "The authors report that expert policies were trained with an RL algorithm on the classic control tasks, giving 200 expert trajectories for each of three discrete-action tasks and 100 for the continuous-action task, with an expert performance on CartPole-v1 of 494.0 plus or minus 21.2.",
+     "anchor": "Section V.B, Table II, p.8",
+     "quotes": [
+      "Trajectories 200 200 200 100",
+      "Performance 494.0±21.2",
+      "the RL algorithm in [42] (implemented in TensorFlow Quantum [86]) is employed to train expert policies for the classic control tasks"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "high: the paper states its own expert data setup",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-bc-results-table",
+     "value": "The authors report in Table IV that Q-BC and BC reach, on CartPole-v1, 500.0±0.0 and 497.6±1.3, on Acrobot-v1 -104.0±5.2 and -113.4±5.6, on MountainCar-v0 -79.3±2.5 and -79.3±2.3, and on InvertedPendulum-v2 1000.0±0.0 for both.",
+     "anchor": "Section V.D, Table IV, p.10",
+     "quotes": [
+      "BC 497.6±1.3 -113.4±5.6 -79.3±2.3 1000.0±0.0 Q-BC(Ours) 500.0±0.0 -104.0±5.2 -79.3±2.5 1000.0±0.0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from one simulated study over 5 seeds",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Most differences are within one reported standard deviation; the paper runs no significance test."
+    },
+    {
+     "id_suggestion": "qil-gail-results-table",
+     "value": "The authors report in Table IV that Q-GAIL and GAIL reach, on CartPole-v1, 469.7±60.5 and 433.4±133.1, on Acrobot-v1 -101.3±12.3 and -108.2±2.5, on MountainCar-v0 -78.6±2.8 and -83.1±3.6, and on InvertedPendulum-v2 1000.0±0.0 and 966.8±66.5.",
+     "anchor": "Section V.D, Table IV, p.10",
+     "quotes": [
+      "GAIL 433.4±133.1 -108.2±2.5 -83.1±3.6 966.8±66.5 Q-GAIL(Ours) 469.7±60.5 -101.3±12.3 -78.6±2.8 1000.0±0.0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an empirical result from one simulated study over 5 seeds",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Q-GAIL has the larger spread on Acrobot-v1 and the intervals overlap on CartPole-v1."
+    },
+    {
+     "id_suggestion": "qil-expert-trajectory-ablation",
+     "value": "The authors report that Q-BC reaches only about half of the expert performance on CartPole-v1 with one expert trajectory, that Q-GAIL can replicate expert behaviors with only one expert trajectory, and that more expert data does not improve Q-GAIL.",
+     "anchor": "Section V.E.1, Fig. 3, p.10-11",
+     "quotes": [
+      "In CartPole-v1, Q-BC can only achieve about half of the expert performance with one expert trajectory.",
+      "Q-GAIL is able to effectively replicate expert behaviors with only one expert trajectory",
+      "increasing the number of expert data does not help improve the performance of Q-GAIL"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an ablation from one simulated study",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-scaling-and-layers-ablation",
+     "value": "The authors report that disabling the input and output scaling parameters hurts Q-BC and Q-GAIL, except that disabling the input scaling does not damage Q-BC in the two tested environments, and that fewer softmax-VQC layers degrade performance, more so for Q-GAIL.",
+     "anchor": "Section V.E.2, Figs. 5-6, p.11",
+     "quotes": [
+      "An interesting phenomenon is that disabling λ does not cause damage to the performance of Q-BC in the both two environments.",
+      "These results mean that enabling scaling parameters and adding more VQC layers help improve the representation ability, leading to a performance gain in IL."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an ablation from one simulated study",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-inverse-temperature-ablation",
+     "value": "The authors report that a larger inverse temperature gives a more exploitable, lower-entropy policy prone to suboptimal policies, while a smaller one explores more and slows learning.",
+     "anchor": "Section V.E.2, Figs. 7-8, p.11",
+     "quotes": [
+      "a larger β generates a more exploitable policy whose entropy is lower, which is prone to finding suboptimal policies, while a smaller β could result in a more exploring policy, slowing down the learning process"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an ablation from one simulated study",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-spectral-normalization-ablation",
+     "value": "The authors report that spectral normalization improves and stabilizes Q-GAIL, slightly in Acrobot-v1 and significantly in MountainCar-v0.",
+     "anchor": "Section V.E.3, Fig. 9, p.11",
+     "quotes": [
+      "In Acrobotv1, Q-GAIL performs slightly better than the counterpart Q-GAIL/SN, while Q-GAIL significantly outperforms QGAIL/SN in MountainCar-v0.",
+      "It is clear that spectral normalization plays an important role of improving and stabilizing Q-GAIL."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an ablation from one simulated study",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-quantum-discriminator-ablation",
+     "value": "The authors report that Q-GAIL with a VQC-based discriminator performs similarly to the one with a DNN-based discriminator in CartPole-v1 and Acrobot-v1, which they take as showing the feasibility of abandoning DNNs in Q-GAIL.",
+     "anchor": "Section V.E.4, Fig. 10, p.11-12",
+     "quotes": [
+      "Q-GAIL with a VQC-based discriminator performs similarly to the one with a DNN-based discriminator, demonstrating the feasibility to completely abandon DNNs in Q-GAIL",
+      "We validate the performance of Q-GAIL with the VQC-based discriminator in CartPole-v1 and Acrobot-v1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: an ablation from one simulated study",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-parameter-count-claim",
+     "value": "The authors state that 78 and 4610 trainable parameters are used for QIL and IL in CartPole-v1 respectively, indicating a stronger generalization ability.",
+     "anchor": "Section V.F, p.12",
+     "quotes": [
+      "78 and 4610 trainable parameters are adopted for QIL and IL in CartPole-v1, respectively), indicating the stronger generalization ability"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the count is the authors' report; the generalization conclusion is an inference they do not test",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Fewer parameters do not by themselves show better generalization; no generalization test is reported."
+    },
+    {
+     "id_suggestion": "qil-small-scale-limit",
+     "value": "The authors state that quantum computing and QIL are still in their infancy, that current problems may be too small in scale to illustrate the speed-up, and that the experiments use simulation of small circuits whose qubit count equals the state dimension of the task.",
+     "anchor": "Section V.C and V.F, p.9-12",
+     "quotes": [
+      "It is possible that current problems are small scale such that it is not enough to illustrate the speedup [93].",
+      "The number of qubits for a VQC is the same as the state dimension of target environments"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "high: the paper states this limit and setup itself",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-hyperparameters-setup",
+     "value": "The authors state that Q-BC uses a batch size of 2,000 state-action pairs, Q-GAIL uses discount 1 and a batch of 10 agent trajectories, the DNN discriminator has 2 hidden layers of 64 nodes with learning rate 3e-4, and local observables are chosen to reduce the impact of barren plateaus.",
+     "anchor": "Section V.C, Table III, p.8-9",
+     "quotes": [
+      "For Q-BC, the batchsize is 2,000",
+      "we use a discount γ = 1 and a batchsize of 10.",
+      "which consists of 2 hidden layers with 64 nodes at each layer and its learning rate is 3e−4",
+      "to reduce the impact of barren plateaus"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "high: the paper states its own hyperparameters",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-continuous-action-setup",
+     "value": "The authors state that for the continuous-action task they use a Gaussian-VQC policy, replace REINFORCE with PPO in Q-GAIL, use a VQC with 5 re-uploading layers, and take the expert data for InvertedPendulum-v2 from earlier work.",
+     "anchor": "Section IV.A.3 and V.C, p.5, 9",
+     "quotes": [
+      "Note that for Q-GAIL, we use a VQC with 5 re-uploading layers.",
+      "we replace the initial RL algorithm REINFORCE with proximal policy optimization (PPO) [80]",
+      "we directly employ the expert data for InvertedPendulum-v2 in [20]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "high: the paper states its own continuous-action setup",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-compounding-error-explanation",
+     "value": "The authors attribute the larger Q-BC degradation with few expert trajectories on CartPole-v1 to longer episodes causing larger compounding errors and overfitting.",
+     "anchor": "Section V.E.1, p.10",
+     "quotes": [
+      "The reason for this phenomenon is that the episode length is much longer in CartPole-v1, leading to larger compounding errors and overfitting with fewer expert data."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "low: the authors' explanation, not tested",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qil-future-work-and-limits",
+     "value": "The authors state that they leave theoretical analysis of the sample complexity of the two QIL algorithms, extension to large-scale tasks and integration of environments into quantum computers to future work.",
+     "anchor": "Section VI, p.12",
+     "quotes": [
+      "In the future, we would provide theoretical analyses on the sample complexity of these two QIL algorithms.",
+      "integrating environments into quantum computers to achieve the potential full speed-up of QIL algorithms"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "high: the paper states these open items itself",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

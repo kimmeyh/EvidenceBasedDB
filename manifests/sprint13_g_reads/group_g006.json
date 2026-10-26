@@ -1,0 +1,2527 @@
+{
+ "papers": [
+  {
+   "record_id": "cao-2024-differentially-private-quantum-neural-network",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Cao-Chen-Xu_2024_A-Differentially-Private-Quantum-Neural-Network-for-Probabilistic-Optimal__2411.16117.pdf",
+   "title_in_file": "A Differentially Private Quantum Neural Network for Probabilistic Optimal Power Flow",
+   "version_note": "arXiv 2411.16117v2, 15 Dec 2024. The text layer holds the paper twice (two layouts); the first copy was read and the second used to check quotes.",
+   "pages": 7,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A proposal and simulation study of a variational quantum circuit trained with clipped, Gaussian-noised gradients (DP-SGD style) to approximate probabilistic optimal power flow on a modified IEEE 33-bus system, with a differential-privacy theorem and a comparison against a classical MLP.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "dpqnn-parameter-reduction",
+     "verdict": "narrowed",
+     "note": "The 90% figure is stated in the abstract and introduction; the only numbers behind it are in Table 3 and its discussion: 165 parameters for the QNN against 1,281 for one specific MLP (two hidden layers of 32 units), for one output (voltage magnitude at Node 30). The paper's own table figures give a smaller cut than 90%.",
+     "value": "The authors state that the QNN has significantly fewer parameters than the private MLP they compare against, 165 versus 1,281, the MLP being a network with two hidden layers of 32 units each, and the abstract and introduction summarize this as a reduction of the number of parameters by 90%.",
+     "anchor": "Abstract; Section 1; Section 5.3 and Table 3, pp.1, 6",
+     "quotes": [
+      "the QNN reduces the number of parameters by 90%",
+      "utilizes significantly fewer parameters, i.e., 165 versus 1,281",
+      "The MLP is developed using the PyTorch library and consists of two hidden layers, each containing 32 units."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Computed from the table figures: 1 - 165/1281 is about 87%, so the 90% in the abstract is a rounded figure. The comparison is with one MLP size and one output node."
+    },
+    {
+     "id": "dpqnn-privacy-guarantee",
+     "verdict": "widened",
+     "note": "The stored value names Theorem 1 but not its statement or conditions. Section 4.3 states them: epsilon and delta in (0,1), sigma at or above a bound in epsilon and delta, delta' above 0, then Algorithm 1 is (epsilon', TB/N delta + delta')-differentially private with epsilon' in equation (17). The proof composes the Gaussian mechanism, privacy amplification by uniform subsampling and advanced composition, each cited from other work.",
+     "value": "The paper states Theorem 1 (Privacy Guarantees): for adjacent load datasets, if ε, δ ∈ (0, 1), σ is at least a bound printed in the text layer as 2 log(1.25)/δ ε (a square root sign is lost), and δ′ > 0, then Algorithm 1 is (ε′, TB N δ + δ′)-differentially private, with ε′ given in equation (17).",
+     "anchor": "Section 4.3, Theorem 1, p.5; equation (17)",
+     "quotes": [
+      "if ε, δ ∈ (0, 1), σ ≥ 2 log(1.25)/δ ε , and δ′ > 0, then, Algorithm",
+      "differentially private, where ε′ = 2T ln(1/δ′) · Bε N + TB N ε (eBε/N − 1). (17)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The theorem statement and its conditions are quoted from Section 4.3, and a proof follows there (built on cited theorems).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof treats each step as one subsampled Gaussian mechanism and composes over T epochs. Algorithm 1 runs many batches per epoch. A reader cannot tell from the text whether the composition counts every batch step; the coordinator may want a privacy specialist to check this."
+    },
+    {
+     "id": "dpqnn-r2-vs-mlp",
+     "verdict": "confirmed",
+     "note": "Table 3 holds the figures: MLP 0.971, -0.065, -0.095, -22291.787 and QNN 0.977, 0.739, 0.291, 0.113 for sigma 0, 1, 2, 5. The result is for one output (voltage magnitude at Node 30) over 1,000 samples. The QNN also loses accuracy as sigma grows.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "dpqnn-scope-33-bus",
+     "verdict": "confirmed",
+     "note": "Also: the QNN input is the uncertain variables of 2 wind turbines, 2 PVs and the load of 1 customer, and the quantum part is simulated on a MacBook (no quantum hardware).",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "dpqnn-definition-dp",
+     "value": "The authors define (ε, δ)-differential privacy: a randomized OPF algorithm M is (ε, δ)-differentially private if, for all s ⊆ S and for any adjacent pair of load datasets, P[M(D) ∈ s] ≤ exp(ε)P[M(D′) ∈ s] + δ.",
+     "anchor": "Section 4.1, Definition 1, p.4",
+     "quotes": [
+      "A randomized OPF algorithm M : D → S from the domain D to domain S is (ε, δ)-differentially private if, for all s ⊆ S and for any adjacent pair D ∼μ D′ ∈ Rn, the following condition holds: P[M(D) ∈ s] ≤ exp(ε)P[M(D′) ∈ s] + δ. (16)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the term in Section 4.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpqnn-definition-adjacency",
+     "value": "The authors call two load datasets adjacent when they differ in only one element, with a scalar μ measuring the distance between two adjacent datasets.",
+     "anchor": "Section 4.1, equation (15), p.4",
+     "quotes": [
+      "For two load datasets D and D′ that differ only in one element, they hold the following adjacency relation D ∼μ D′:",
+      "where μ is the scalar measuring the distance between two adjacent datasets."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines adjacency in Section 4.1; the privacy theorem holds for this relation only.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpqnn-algorithm-1-mechanism",
+     "value": "The authors describe the training procedure (Algorithm 1): each sample's gradient is clipped to a pre-defined l2 norm C, so the influence of one sample on the gradient is bounded, and Gaussian noise controlled by the scale σ is added to the clipped gradients before the VQC parameters θ are updated.",
+     "anchor": "Section 4.2, Algorithm 1, pp.4-5",
+     "quotes": [
+      "Algorithm 1 outlines the differentially private VQC learning process.",
+      "clip the gradient of each sample by a pre-defined l2 norm C.",
+      "By clipping, the influence of each individual sample on the gradient is bounded to protect privacy.",
+      "Then, the Gaussian noises controlled by scale σ are added to the clipped gradients before updating the VQC parameters θ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 4.2 and Algorithm 1 state the training procedure.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpqnn-proof-ingredients",
+     "value": "The privacy proof uses the Gaussian Mechanism, privacy amplification by uniform subsampling, and the advanced composition theorem, each taken from cited work.",
+     "anchor": "Section 4.3, proof of Theorem 1, p.5",
+     "quotes": [
+      "By Gaussian Mecha- nism [13], if we choose",
+      "From the theorem of privacy amplifica- tion by uniform subsampling [14]",
+      "From the advanced composition theorem [13]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: the privacy result rests on theorems the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpqnn-setup-system",
+     "value": "The authors run experiments on the modified IEEE 33-bus power distribution system with 2 distributed generators, 2 photovoltaic units and 2 wind turbines. The relaxed ACOPF reference problem is coded in MATLAB with YALMIP and solved with GUROBI, and the QNN is implemented with the Pennylane and JAX libraries on a MacBook with an M3 Max chip.",
+     "anchor": "Section 5, Figure 2, p.5",
+     "quotes": [
+      "Numerical experiments are conducted on the modified IEEE 33-bus power distribution system.",
+      "the system integrates 2 distributed generators (DGs), 2 Photovoltaic (PVs), and 2 wind turbines (WTs).",
+      "The relaxed ACOPF problem (1) is coded in MATLAB using the YALMIP interface and solved with GUROBI software.",
+      "The QNN is implemented using the Pennylane library and JAX library.",
+      "All experiments are conducted on a MacBook with the M3 Max Apple Silicon chip."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 5 states the experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpqnn-setup-inputs-single-customer",
+     "value": "The QNN input features are the uncertain variables of the 2 wind turbines and 2 PVs and the load demand of 1 customer, and the output is the voltage magnitude at a single node, which the authors tie to the qubit limitation of the NISQ era.",
+     "anchor": "Section 5, Figure 2 caption, p.5",
+     "quotes": [
+      "The input features of the QNN include uncertain variables of 2 WTs, 2 PVs, and load demand from 1 customer.",
+      "The output is the voltage magnitude at node i due to the qubit limitation in the Noisy Intermediate-Scale Quantum (NISQ) era [15]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Figure 2's caption states the input and output scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The QNN approximates one scalar output of the OPF solution, not the full solution vector y* the method section describes."
+    },
+    {
+     "id_suggestion": "dpqnn-setup-hyperparameters",
+     "value": "The authors list the test hyperparameters: learning rate 0.05, clipping norm 10, batch size 32, 5 qubits and the Adam optimizer.",
+     "anchor": "Table 1, p.5",
+     "quotes": [
+      "learning rate (η) 0.05 clipping norm (C) 10",
+      "batch size 32 number of variational layers",
+      "qubits 5 optimizer"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Table 1 states the settings.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text layer interleaves the Table 1 cells; the number of variational layers is garbled in the layer and is not stated here."
+    },
+    {
+     "id_suggestion": "dpqnn-limit-simulation-time-by-formula",
+     "value": "The authors state that, because of the limited availability of real quantum hardware, they compute quantum computational time with a formula by Guerreschi et al. (T = Tp + TG × D + TM), with Tp + TM set to 1 μs and TG to 10 ns, and the QNN is simulated on classical hardware.",
+     "anchor": "Section 5.3, p.6",
+     "quotes": [
+      "Due to the limited availability of real quantum hardware, we adopt the formula proposed by Guerreschi et al. [16] to calculate the quantum computational time",
+      "The time scales are set as Tp + TM = 1 μs and TG = 10 ns"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states in Section 5.3 that no quantum hardware time was measured.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The calculation-time column of Table 3 is therefore a model estimate, not a measurement on a quantum device."
+    },
+    {
+     "id_suggestion": "dpqnn-mlp-setup",
+     "value": "The classical baseline is a multilayer perceptron built with PyTorch with two hidden layers of 32 units each; both models are trained for 1,000 epochs, both use Algorithm 1 when noise is introduced, and accuracy is the coefficient of determination R2.",
+     "anchor": "Section 5.3, p.6",
+     "quotes": [
+      "The MLP is developed using the PyTorch library and consists of two hidden layers, each containing 32 units. Both models are trained for 1,000 epochs.",
+      "When noise is introduced, both models utilize Algorithm 1 to preserve the privacy of load demands."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 5.3 states the baseline and protocol.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpqnn-table3-numbers",
+     "value": "The authors report in Table 3, for the voltage magnitude at Node 30 over 1,000 samples, R2 for the MLP of 0.971, -0.065, -0.095 and -22291.787 and for the QNN of 0.977, 0.739, 0.291 and 0.113 at noise scales σ = 0, 1, 2 and 5, with 165 QNN parameters against 1281 for the MLP.",
+     "anchor": "Table 3, p.6",
+     "quotes": [
+      "Table 3 presents a comparison of the accuracy in predict- ing the voltage magnitude at Node 30 across 1,000 samples.",
+      "MLP 1.12 × 10−4 1281 0.971 -0.065 -0.095 -22291.787",
+      "QNN 1.76 × 10−6 165 0.977 0.739 0.291 0.113",
+      "Model Calculation Time #Parameters σ = 0 σ = 1 σ = 2 σ = 5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Single run per cell is not stated; no variance is reported. The QNN R2 falls from 0.977 to 0.113 as σ rises to 5, so the QNN also pays a privacy cost."
+    },
+    {
+     "id_suggestion": "dpqnn-sigma5-mlp-negative-r2",
+     "value": "The authors report that at a noise scale of σ = 5 the MLP has an R2 of -22,291.787 while the QNN keeps a positive R2 of 0.113, and they attribute the MLP's poor results to accumulated noise on the gradients.",
+     "anchor": "Section 5.3, p.6",
+     "quotes": [
+      "Notably, at a noise scale of σ = 5, the MLP exhibits a large negative R2 value of -22,291.787, while the QNN still maintains a positive R2 of 0.113.",
+      "This degradation is attributed to the accumulated noises, which hinder the MLP's forecast- ing capability."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpqnn-training-loss-stability",
+     "value": "The authors report that at σ = 1 the training loss of the MLP is highly unstable, with most loss values around zero but some very large ones, while the QNN maintains stable training; they give as a potential reason that accumulated noise on the gradients dominates the MLP's learning.",
+     "anchor": "Section 5.3, Figure 4, p.6",
+     "quotes": [
+      "Figure 4 illustrates the case when σ = 1.",
+      "The graph reveals that the training loss of the MLP is highly unstable; although most loss values are around zero, some instances exhibit very large loss values.",
+      "In contrast, the QNN maintains stable training and is resilient to noise"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The explanation is the authors' hypothesis (they say a potential reason); no experiment isolates it."
+    },
+    {
+     "id_suggestion": "dpqnn-pop-accuracy-table2",
+     "value": "The authors report, from 1,000 Monte Carlo samples (wind from a Weibull(1, 4.8) distribution, PV from a Beta(2, 5) distribution, load from a normal N (0, 0.3)), that across the noise scales σ = 0, 1, 5 and 10 the error percentage for the mean voltage at Node 30 remains within 0.0019%, while the standard deviation deviates more as the noise restricts the model's sensitivity to minor variations.",
+     "anchor": "Section 5.2 and Table 2, p.5",
+     "quotes": [
+      "we computed the mean and standard deviation based on 1,000 samples.",
+      "These samples were obtained by sampling the WT generation from a Weibull distribution Weibull(1, 4.8), PV generation from a Beta distribution Beta(2, 5), and load demand from a normal distribution N (0, 0.3).",
+      "Table 2 presents a comparison of the voltage magnitude at Node 30 across various perturbation levels (σ = 0, 1, 5, and 10).",
+      "the error percentage for the mean voltage remains within 0.0019%",
+      "However, the standard deviation exhibits larger deviations as the noise restricts the model's sensitivity to minor variations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The reference mean 12.6592 kV and standard deviation 0.0009 kV come from Monte Carlo runs of the deterministic OPF; the standard-deviation error rises to tens of percent at σ = 5 and 10 per Table 2."
+    },
+    {
+     "id_suggestion": "dpqnn-privacy-leak-demonstration",
+     "value": "The authors report, from plots of one customer's load pattern against voltage, that the non-private OPF solution leaks the load information through the voltage readings, that the non-private QNN shows the same informative reverse pattern, and that larger noise scale σ gives smaller fluctuation and stronger privacy protection.",
+     "anchor": "Section 5.1, Figure 3, p.5",
+     "quotes": [
+      "The non-private OPF solution leaks the sensitive load information through the voltage readings, as displayed in Figure 3.",
+      "When noise with a larger scale σ is introduced, the fluctuation is smaller, leading to stronger privacy protection."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The privacy effect is judged by eye from plots; no attack, reconstruction error or numeric (ε, δ) value is reported for the experiments."
+    },
+    {
+     "id_suggestion": "dpqnn-qnn-architecture",
+     "value": "The authors encode inputs with angle encoding, use repeated variational layers including a strongly entangled layer of qubit rotations followed by adjacent pairwise CNOT gates, and read out the prediction as the expectation value of an observable O.",
+     "anchor": "Section 3, p.3",
+     "quotes": [
+      "Here, we use the angle encoding to encode the input values into the relative phase in the quantum states",
+      "This layer consists of qubit rotations followed by adjacent pairwise CNOT gates"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 3 states the circuit design.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpqnn-claim-exponential-speedup",
+     "value": "The authors state that quantum computing provides an exponential speedup and that the inherent speed advantages of quantum computing allow QML methods to compute more quickly, which they use to motivate the method.",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "Building on the exponential speedup provided by quantum computing, the rapid advancements in quantum machine learning (QML) offer promising prospects",
+      "Moreover, the inherent speed advantages of quantum computing allow QML methods to perform computations more quickly"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The experiments are classical simulations and the timing is a formula estimate; no speedup is measured in the paper."
+    },
+    {
+     "id_suggestion": "dpqnn-claim-novelty-gap",
+     "value": "The authors state that most differentially private OPF work is optimization-based, that learning-based methods are seldom explored, and that complex nonlinear problems such as OPF remain unexplored for differentially private quantum machine learning, which is the research gap they address.",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "most existing works are based on optimization methods [7, 8], while learning-based methods are seldom explored.",
+      "While simple classification tasks have been studied in [9], complex nonlinear problems such as OPF remain unexplored."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpqnn-claim-noise-resilient",
+     "value": "The authors state that the proposed QNN is noise-resilient, in that when noise is added at a large scale the model updates steadily without issues such as gradient exploding in classical neural networks.",
+     "anchor": "Section 1, contributions, p.1",
+     "quotes": [
+      "the proposed QNN is noise-resilient, i.e., when adding noise at a large scale, the model updates steadily without issues such as gradient exploding in classical NNs."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The supporting evidence is the Figure 4 loss curve at σ = 1 and the R2 values to σ = 5; no gradient norms are shown."
+    },
+    {
+     "id_suggestion": "dpqnn-conclusion",
+     "value": "The authors conclude that the proposed private QNN preserves private load information while maintaining an accurate estimate of the probabilistic OPF statistics, that it achieves significantly higher accuracy than the private classical neural network, and that it is more noise-resilient.",
+     "anchor": "Section 6, p.7",
+     "quotes": [
+      "The case study validates that the proposed method preserves private load information while still maintaining an accurate estimation of the statistics in probabilistic OPF.",
+      "the proposed private QNN achieves significantly higher accuracy and is more noise-resilient."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "carlson-2023-quantum-advantage-over-classical-local",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Carlson-et-al._2023_A-quantum-advantage-over-classical-for-local-max-cut__2304.08420.pdf",
+   "title_in_file": "A quantum advantage over classical for local max cut",
+   "version_note": "arXiv 2304.08420v4, 14 Sep 2023. The text layer holds the paper twice (two layouts); the first copy was read and the second used to check quotes.",
+   "pages": 23,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper comparing single-round (p = 1) QAOA with a one-round randomized classical local algorithm on LocalMaxCut for degree-2 and degree-3 regular graphs of large girth, with expectation formulas derived by hand and maximized numerically.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "degree2-classical-beats-qaoa",
+     "verdict": "narrowed",
+     "note": "Theorem 1 gives the numbers (classical at least 0.95n, QAOA only less than 0.94n). The QAOA side is Theorem 5/7, which needs a degree-2 graph of large girth (girth at least 7 in the appendix) and covers single-round QAOA only. The classical side is the paper's own one-round algorithm.",
+     "value": "The paper states Theorem 1: for degree-2 graphs there is a classical algorithm that outputs a cut with at least 0.95n locally satisfied vertices, whereas the QAOA can only guarantee fewer than 0.94n satisfied vertices; the QAOA part (Theorem 5) is proved for degree-2 graphs with large girth and for single-round QAOA.",
+     "anchor": "Section 1, Theorem 1; Section 3.2, Theorem 5; Appendix B.1, Theorem 7, pp.3, 6, 16",
+     "quotes": [
+      "Theorem 1. For degree-2 graphs, there is a classical algorithm that outputs a cut with ≥ 0.95n locally",
+      "satisfied vertices whereas the QAOA can only guarantee < 0.94n satisfied vertices.",
+      "Theorem 5. On a degree-2 graph G with large girth, every pair of angles (γ, β) satisfies F (γ, β) < 0.94n.",
+      "This paper is focused on one-round local algorithms so T = 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 and Theorem 5 are quoted with their conditions (large girth, one round); proofs are in Appendices A and B.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The 0.94n upper bound is from numerically maximizing a trigonometric polynomial (about 0.93937n), not from a closed-form bound."
+    },
+    {
+     "id": "degree3-qaoa-beats-classical",
+     "verdict": "narrowed",
+     "note": "The introduction's Theorem 2 says QAOA at least 0.819n and classical below 0.8n. The proved statements are Theorem 6 (QAOA at least 0.81n for degree-3 graphs with large girth, with 0.819292n found by numerical optimization) and Theorem 4 (classical at most 0.8n for all p and q, resting on a numerical optimizer; Lemma 5 gives about 0.77). The comparison is against the paper's own one-round classical algorithm, so 'the basic probabilistic classical algorithm' is that algorithm only.",
+     "value": "The paper states Theorem 2: for degree-3 graphs with sufficiently large girth the QAOA satisfies at least 0.819n vertices while the one-round classical algorithm can only guarantee fewer than 0.8n satisfied vertices in expectation; the body proves the weaker QAOA bound of 0.81n (Theorem 6, with a numerical maximum of about 0.819292n) and a classical bound of at most 0.8n (Theorem 4).",
+     "anchor": "Section 1, Theorem 2; Section 3.2, Theorems 4 and 6; Appendix B.2, Theorem 8, pp.3, 6, 18",
+     "quotes": [
+      "Theorem 2. For degree-3 graphs with sufficiently large girth, the QAOA satisfies ≥ 0.819n vertices while the one-round classical algorithm can only guarantee < 0.8n satisfied vertices in expectation.",
+      "Theorem 4. On a degree-3 graph G, for all possible probabilities p, q, our algorithm outputs a cut that satisfies ≤ 0.8n many vertices in expectation.",
+      "Theorem 6. On a degree-3 graph G with large girth, there exist angles (γ∗, β∗) such that F (γ∗, β∗) ≥ 0.81n.",
+      "Running this trigonometric polynomial through a numerical optimizer results in a maximum F (γ, β) value of ≈ 0.819292n"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: the margin rests on numerical maximization, and the stated 0.819n and the proved 0.81n differ.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Theorem 2 (0.819n) is stronger than Theorem 6 (0.81n). The 0.819 figure is the numerical maximum of the derived polynomial."
+    },
+    {
+     "id": "scope-single-round-algorithms",
+     "verdict": "confirmed",
+     "note": "Also: Section 2.2 and 2.3 repeat the scope (T = 1, single-round QAOA).",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "localmaxcut-definition",
+     "value": "The paper defines a vertex as locally satisfied under a cut if at least half of the edges incident to it are cut, and defines LocalMaxCut as the optimization problem of finding a cut that satisfies as many vertices as possible.",
+     "anchor": "Section 1, p.1-2",
+     "quotes": [
+      "A vertex v is (locally) satisfied under τ if at least half of the edges incident to v are cut.",
+      "We define LocalMaxCut to be the optimization problem of finding a cut that satisfies as many vertices as possible."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the term.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "localmaxcut-opt-equals-v",
+     "value": "The paper states that every true maximum cut is locally maximal, so the optimum value of LocalMaxCut equals the number of vertices for any graph, which differs from MaxCut.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "A true maximum cut is guaranteed to be locally maximal but the converse is not true.",
+      "this implies that OP T (LocalM axCut) = |V | no matter the underlying graph."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated with a short argument in Section 1 (every graph has a maximum cut, which is locally maximal).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "localmaxcut-locality",
+     "value": "The paper states that MaxCut is 2-local while LocalMaxCut decomposes into |V| functions each acting on d + 1 input bits, so LocalMaxCut is (d + 1)-local; the authors propose this larger locality as the reason the QAOA can outperform classical techniques at larger degree.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "MaxCut is 2-local as a problem and this does not change no matter how complex the underlying interaction graph.",
+      "LocalMaxCut's objective is decomposed into |V | functions that act on d + 1 input bits",
+      "which means that LocalMaxCut is (d + 1)-local.",
+      "One main idea from this paper is that the QAOA is able to exploit the larger locality of LocalMaxCut and thus outperform classial techniques in larger-degree graphs."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: the locality explanation is the authors' idea; the proofs cover degrees 2 and 3 only.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "setup-graph-class",
+     "value": "The paper restricts attention to simple, undirected, unweighted d-regular graphs and states its two main theorems for low-degree graphs.",
+     "anchor": "Section 1 and Section 2, pp.2-3",
+     "quotes": [
+      "For simplicity we assume our graphs are unweighted and regular with degree d.",
+      "We consider simple, undirected d-regular graphs G = (V, E) with V = [n] and m = |E| = poly(n).",
+      "The main contribution of our paper is the following two theorems on low-degree graphs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its scope in Sections 1 and 2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-algorithm-definition",
+     "value": "The classical algorithm is a one-round local algorithm: each vertex gets a random initial value (positive with probability p), queries its neighbors to count agreeing neighbors, and flips with a probability q that depends on that count; a run is parameterized by d + 2 probabilities p and q = (q0, ..., qd), and the algorithm generalizes the HRSS algorithm.",
+     "anchor": "Section 3.1, p.7",
+     "quotes": [
+      "Classically, we use a one-round local algorithm, a common family of algorithms previously studied for MaxCut type problems",
+      "More formally, a run of the algorithm is parameterized by d + 2 probabilities p and q = (q0, . . . , qd).",
+      "Our algorithm generalizes the HRSS algorithm[11]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the algorithm in Section 3.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-setup-single-round",
+     "value": "The QAOA studied is the single-round instance with mixing operator HM equal to the sum of X on each vertex, and angles (γ, β) in [0, 2π) × [0, π), whose expected objective F(γ, β) is maximized by a classical optimizer.",
+     "anchor": "Section 2.3, p.6-7",
+     "quotes": [
+      "The QAOA is parameterized by a pair of angles (γ, β) ∈ [0, 2π) × [0, π).",
+      "We use the mixing operator HM = v Xv.",
+      "which is in general iterative but we focus on the singleround instance in this work."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 2.3 states the QAOA setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem3-classical-degree2",
+     "value": "The paper states Theorem 3: on a degree-2 graph there exist probabilities p and q such that the classical algorithm outputs a cut satisfying at least 0.95n vertices in expectation; the maximizer is p = 1/2 and q = (0, 0, 4/5), found analytically with multivariable calculus.",
+     "anchor": "Section 3.1, Theorem 3; Appendix A.1, Lemma 3, pp.7, 14",
+     "quotes": [
+      "Theorem 3. On a degree-2 graph G, there exists probabilities p, q such that our algorithm outputs a cut satisfying at least 0.95n vertices in expectation.",
+      "This function is maximized by p = 1/2 and q = (0, 0, 4/5) to value 0.95.",
+      "The maximizer is found analytically using multivariable calculus techniques."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 and Lemma 3 are quoted with their conditions; Appendix A.1 derives the maximizer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma4-degree2-satisfied-stay",
+     "value": "The paper proves, for degree-2 graphs, that a vertex satisfied under the initial cut remains satisfied after the classical update, and that at least one of its neighbors is also satisfied and remains so.",
+     "anchor": "Appendix A.1, Lemma 4, p.14",
+     "quotes": [
+      "Lemma 4. For a degree-2 graph, if a vertex v is satisfied under τ0, then it will remain satisfied under τ1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 4 is quoted with its proof in Appendix A.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma5-degree3-numerical-classical",
+     "value": "The paper states Lemma 5, that for degree 3 the single-vertex satisfaction probability is maximized by p ≈ 0.39 and q = (0, 0, 0, 1) to a value of about 0.77, and says the maximum is found with a numerical optimizer rather than analytically.",
+     "anchor": "Appendix A.2, Lemma 5, p.15-16",
+     "quotes": [
+      "Lemma 5. For probabilities p and q = (q0, q1, q2, q3), we have that Pr [Sv1|p, q] is maximized by p ≈ 0.39 and q = (0, 0, 0, 1) to value ≈ 0.77.",
+      "Similar to the degree-2 case, we rely on a numerical optimizer to solve for the maxima here."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper itself states that the degree-3 classical maximum is numerical.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text near Lemma 5 gives p as about 0.39, as about 3/5 and as about 2/5; by the p to 1 - p symmetry of Lemma 9 these are consistent only as pairs. The classical upper bound in Theorem 4 (0.8n) rests on this numerical step."
+    },
+    {
+     "id_suggestion": "theorem5-qaoa-degree2",
+     "value": "The paper states Theorem 5: on a degree-2 graph with large girth every pair of angles satisfies F(γ, β) < 0.94n, and proves it as Theorem 7 (girth at least 7) by computing the full expectation, whose numerical maximum is about 0.93937n.",
+     "anchor": "Section 3.2, Theorem 5; Appendix B.1, Theorem 7, pp.8, 17",
+     "quotes": [
+      "Theorem 5. On a degree-2 graph G with large girth, every pair of angles (γ, β) satisfies F (γ, β) < 0.94n.",
+      "Fix a degree-2 graph G with girth at least 7.",
+      "Running this trigonometric polynomial through a numerical optimizer results in a maximum F (γ, β) value of ≈ 0.93937n"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5 and its conditions are quoted; the proof is in Appendix B.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem8-qaoa-degree3",
+     "value": "The paper states, for a degree-3 graph that is locally tree-like (girth at least 7), that the QAOA expectation F has a closed form and that some pair of angles gives F of about 0.819n, above 0.81n.",
+     "anchor": "Appendix B.2, Theorem 8, p.18",
+     "quotes": [
+      "Fix a degree-3 graph G that is locally tree-like (specifically, let it have a girth of at least 7).",
+      "Moreover, there exist a pair of angles (γ∗, β∗) such that F (γ∗, β∗) ≈ 0.819n > 0.81n."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The theorem statement and its girth condition are quoted from Appendix B.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The 0.819n value is a numerical maximum of the derived trigonometric polynomial."
+    },
+    {
+     "id_suggestion": "lemma10-general-expectation-tool",
+     "value": "The paper presents an expectation formula for the QAOA state for any real diagonal problem Hamiltonian, built on lemma 3.1 of Ryan-Anderson, which the authors say generalizes beyond the MaxCut Hamiltonian; they note a dropped negative sign in that earlier equation had no effect on its results.",
+     "anchor": "Appendix B, Lemma 10 and Lemma 11, p.16-17",
+     "quotes": [
+      "The following statement builds off of lemma 3.1 in [14] and is the main tool used in our analysis.",
+      "we generalize for any real diagonal problem Hamiltonian, HC as defined in (5), and make additional observations that allow for easier analysis.",
+      "The effects of this mistake are inconsequential to the rest of the results in [14]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: the lemma statement itself is not quoted here.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "method-linearity-expectation",
+     "value": "The authors state that both algorithms are probabilistic, that the theorems hold in expectation, and that each result comes from an explicit probability that one vertex is satisfied, extended to all vertices by linearity of expectation.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "These algorithms are both probabilistic and the theorems hold in expectation.",
+      "we provide an explicit formula for the probability that the algorithm satisfies a single vertex and then extend to the expected number of satisfied vertices by linearity of expectation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 1 states the form of the results.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-small-scale-quantum-advantage",
+     "value": "The authors state that their results hint that even small-scale quantum computation, relevant to current quantum hardware, could have significant advantages over comparably simple classical computation.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "These results hint that even small-scale quantum computation, which is relevant to the current state-of the art quantum hardware, could have significant advantages over comparably simple classical computation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The results are analytic bounds on single-round algorithms for degrees 2 and 3; no hardware run is reported."
+    },
+    {
+     "id_suggestion": "claim-complexity-explains-advantage",
+     "value": "The authors state that they believe the increase in complexity of the degree-3 local Hamiltonian is crucial for allowing the QAOA to outperform the classical technique.",
+     "anchor": "Section 3.2, p.8",
+     "quotes": [
+      "We believe that this increase in complexity is crucial for allowing the QAOA to outperform the classical technique."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-hastings-classical-beats-qaoa-maxcut",
+     "value": "The paper reports, citing Hastings, that a classical local tensor algorithm outperforms the QAOA on MaxCut on triangle-free graphs, and, citing earlier work, that the best classical local techniques satisfy a fraction 1/2 plus an order 1/sqrt(d) term of the edges on triangle-free graphs.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Moreover, Hastings proves that a classical local tensor algorithm outperform the QAOA on MaxCut on triangle-free graphs.",
+      "the best classical techniques produce a cut satisfying 1/2 + Ω(1/"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: cited result or claim as the paper reports it.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-scope-one-round-classical-baseline",
+     "value": "The classical baseline is the authors' own one-round algorithm that generalizes the HRSS algorithm, and the QAOA is single-round; the paper notes that Hastings' local tensor algorithms are typically iterative but that this work focuses on single-round algorithms.",
+     "anchor": "Section 1 and Section 3.1, pp.2, 7",
+     "quotes": [
+      "Hastings local tensor algorithms are typically iterative but this work focuses on single round algorithms.",
+      "The classical algorithm our paper considers proposes an update step that generalizes [11]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of the comparison.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The advantage claimed is against this one-round randomized baseline, not against the best classical algorithm for LocalMaxCut."
+    }
+   ]
+  },
+  {
+   "record_id": "caro-2023-classical-verification-quantum-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Caro-et-al._2023_Classical-Verification-of-Quantum-Learning__2306.04843.pdf",
+   "title_in_file": "Classical Verification of Quantum Learning",
+   "version_note": "arXiv 2306.04843v2, 7 Dec 2023. The text layer holds the paper twice (two layouts); the first copy was read and the second used to check quotes. Many math symbols (italic letters) came out as private-use glyphs, so values and quotes avoid them; the theorem parameter lists were read from the text layer with those glyphs and are not all quotable.",
+   "pages": 81,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A learning-theory paper that introduces mixture-of-superpositions quantum examples, gives quantum algorithms for distributional agnostic learning of parities and Fourier-sparse functions under uniform input marginal, proves a classical verifier can check such learning under promises on the distribution, and proves distribution-independent sample-complexity lower bounds.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "caro-classical-verification-parity",
+     "verdict": "narrowed",
+     "note": "The abstract's sentence is the headline. The formal results (Theorems 7 to 16) hold only under promises: the distribution must lie in a class with no small non-zero Fourier coefficients (and, for the distributional case, a bounded squared l2 norm of the label expectation), the accuracy has a lower limit that depends on that bias gap, parities are verified 1-agnostically but Fourier-sparse functions only 2-agnostically and improperly, and the verifier has an accuracy floor that cannot be improved without a verifier cost linear in the input length (Theorem 13). Section 6.1 says the verification protocols need an additional assumption beyond the learning algorithms.",
+     "value": "The authors state that the verification results need an additional assumption on the unknown function or distribution (a class with no small non-zero Fourier coefficients, with a bounded squared norm of the label expectation in the distributional case), and prove verification of agnostic parity learning (proper) and Fourier-sparse learning (improper, with agnostic factor of two) by a classical verifier with random-example or statistical-query access; the separation is unconditional for statistical-query access and conditional on the hardness of Learning Parity with Noise for random-example access.",
+     "anchor": "Abstract; Section 1.2, Theorem 2; Section 6, Theorems 7 to 16, pp.1, 6, 35-52",
+     "quotes": [
+      "The quantum learning algorithms presented in Section 4 and Section 5 worked without any prior assumptions on the unknown function/distribution. For our classical verification protocols, however, we rely on an additional assumption",
+      "This separation is unconditional for SQ access and conditional on the hardness of Learning Parity with Noise (LPN) for random example access.",
+      "Without such a promise, the total Fourier weight in the distributional agnostic case may take any value between 0 and 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: the headline statement is the abstract's; the formal theorems carry the promise conditions above and are not all quotable from this text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Theorem 2 (informal) says 'when promised that the unknown distribution lies in' a class; the claim is for that restricted class, not for arbitrary distributions."
+    },
+    {
+     "id": "caro-mixture-superposition-learning",
+     "verdict": "narrowed",
+     "note": "Theorem 1 is informal. Its formal versions (Theorem 5, Corollaries 6 and 7) hold for uniform input marginal and only 'up to inverse-exponentially small accuracies' (a lower bound on the accuracy of order 2 to the minus n/2 minus constant); parity learning is proper and 1-agnostic; Fourier-sparse learning is 2-agnostic and improper (a randomized hypothesis). The sampling in Theorem 5 succeeds with probability 1/2 and is approximate, not exact.",
+     "value": "The authors state that Theorem 1 (formal versions in Section 5) constitutes the first general progress on distributional agnostic quantum learning with respect to a uniform input marginal; the algorithms are a proper quantum parity learner and a 2-agnostic improper quantum Fourier-sparse learner, both up to inverse-exponentially small accuracies.",
+     "anchor": "Section 1.2, Theorem 1; Section 5.2, Corollaries 6 and 7, pp.6, 29-31",
+     "quotes": [
+      "Theorem 1, proved in Section 5, constitutes the first general progress on distributional agnostic quantum learning w.r.t. uniform input marginal.",
+      "Thus, this quantum algorithm is a distributional agnostic proper quantum parity learner up to inverse-exponentially small accuracies, assuming a uniform marginal over inputs.",
+      "In particular, this quantum algorithm is a distributional 2-agnostic improper quantum Fourier-sparse learner up to inverse-exponentially small accuracies, assuming a uniform marginal over inputs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The formal corollary statements with their conditions (uniform marginal, accuracy limit, agnostic factor) are quoted from Section 5.2; proofs follow each.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Corollary 6 is 1-agnostic proper for parities; Corollary 7 is only 2-agnostic and improper for Fourier-sparse functions, as the authors state again in Section 1.5."
+    },
+    {
+     "id": "caro-no-distribution-independent-advantage",
+     "verdict": "widened",
+     "note": "Theorem 17 gives the formal statement: for a benchmark class with VC-dimension d at least 1, at least a bound of order (d + log(1/delta))/epsilon squared copies are necessary, with a tilde hiding logarithmic factors in d. The paper conjectures the quantum and classical sample complexities coincide up to constant factors; it proves only the bound up to logarithmic factors in d. Theorem 18 adds a separate verification lower bound.",
+     "value": "The authors prove a lower bound on the number of mixture-of-superpositions copies needed for distribution-independent quantum agnostic learning that matches the classical upper bound up to factors logarithmic in the VC dimension, and they conjecture that quantum and classical sample complexities for distribution-independent learning coincide up to constant factors.",
+     "anchor": "Section 1.2, Theorem 3; Section 7, Theorem 17, pp.7, 52",
+     "quotes": [
+      "does not improve upon the classical sample complexity, up to logarithmic factors.",
+      "we prove a quantum sample complexity lower bound that matches the classical upper bound up to factors logarithmic in",
+      "we in fact conjecture that quantum and classical sample complexities for distribution-independent learning coincide up to constant factors.",
+      "Here, the Ω ̃ hides prefactors logarithmic in"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 17's statement, including what the tilde hides, is quoted from Section 7 with a proof following it.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "caro-open-oracle-separation",
+     "verdict": "confirmed",
+     "note": "Section 1.5 also states that no hardness result is known for Fourier sampling from standard superposition examples in the distributional setting.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "agnostic-learning-definition",
+     "value": "The paper defines an agnostic learner as one whose output model has error at most a multiple of the best error in the benchmark class plus a tolerance, with the multiple called the agnostic factor; it calls the learner proper if its model class is within the benchmark class and improper otherwise.",
+     "anchor": "Section 2.2, Definition 3, p.14",
+     "quotes": [
+      "In words, the criterion for learning as given in Equation (8) says that the error achieved by the output model should be close to a multiple of the best achievable error by any model in the benchmark class.",
+      "We also make a basic distinction between proper and improper learners."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 3 and the following text define the terms.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mixture-of-superpositions-definition",
+     "value": "The authors define a mixture-of-superpositions quantum example for a distribution: the oracle first draws a random function from the distribution over functions induced by the conditional label probabilities and then returns a copy of the superposition example for that function; measuring in the computational basis gives an ordinary classical example, and for a functional distribution it reduces to the standard superposition example.",
+     "anchor": "Section 1.2 and Section 3, Definition 8, Lemma 1, pp.5, 17-18",
+     "quotes": [
+      "is queried, it responds by first choosing a random function",
+      "Definition 8 also reproduces the standard notion of a classical distributional agnostic random example under computational basis measurements:",
+      "In particular, Definition 8 reproduces the functional superposition example of Definition 4 for distributions of the form"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 8 and Lemma 1 define and check consistency of the oracle.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mixture-of-superpositions-consistency",
+     "value": "The authors state that the new quantum data still reproduces classical training data upon computational basis measurements and so is a consistent quantum generalization of classical training data.",
+     "anchor": "Section 1.1, p.4",
+     "quotes": [
+      "Note that this kind of quantum data still reproduces classical training data upon computational basis measurements and is thus a consistent quantum generalization of the classical notion of training data."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 1 in Section 3 proves the statement; the sentence is its summary.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "interactive-verification-definition",
+     "value": "The paper defines interactive verification of agnostic learning with a completeness condition (an honest prover leads the verifier to output a good hypothesis with high probability) and a soundness condition holding against any possibly unbounded dishonest prover, and calls it efficient when both parties use polynomially many queries and time.",
+     "anchor": "Section 2.4, Definition 7, p.16",
+     "quotes": [
+      "Completeness: For any",
+      "and for any (possibly unbounded) dishonest prover"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 7 defines the verification notion.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem5-approximate-fourier-sampling",
+     "value": "The paper proves, for any distribution with uniform input marginal, that applying Hadamard gates to one copy of the mixture-of-superpositions example and measuring gives outcome 1 on the last qubit with probability 1/2, and conditioned on that outcome the first qubits give a string with probability equal to a uniform term plus the squared Fourier coefficient, so quantum Fourier sampling is only approximate in the distributional case.",
+     "anchor": "Section 5.1, Theorem 5, p.26-27",
+     "quotes": [
+      "(i) The computational basis measurement on the last qubit gives outcome 0 with probability 1/2 and outcome 1 with probability 1/2.",
+      "Thus, it does not make sense to speak of exact sampling from the",
+      "However, by Parseval, we know that"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5 is stated in Section 5.1 with a proof; the exact probability expression is in the text layer but contains symbol glyphs, so only the quotable parts are cited.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The correction term is exponentially small in the input length, so sampling is approximate up to an inverse-exponentially small error."
+    },
+    {
+     "id_suggestion": "theorem1-point1-informal",
+     "value": "The authors state, as Point 1 of Theorem 1 (informal), that there is an efficient quantum algorithm that, given a single copy of the mixture-of-superpositions state, succeeds with probability 1/2 and outputs a sample from a distribution over strings inverse-exponentially close to the squares of the Fourier coefficients of the conditional label expectation.",
+     "anchor": "Section 1.2, Theorem 1, Point 1, p.6",
+     "quotes": [
+      ", with success probability 1/2 outputs a sample from a probability distribution over {0, 1}",
+      "that is inverse-exponentially close to the squares of the Fourier coefficients of"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: informal statement; the formal version is Theorem 5.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "corollary5-spectrum-approximation",
+     "value": "The paper proves Corollary 5: from copies of the mixture-of-superpositions state a quantum algorithm outputs, with the stated success probability, a succinct approximation of the Fourier spectrum of the conditional label expectation, under an assumption that the accuracy is inverse-exponentially small in the input length at worst; the authors remark that this lower bound on the accuracy is satisfied for the inverse-polynomial accuracies usually of interest.",
+     "anchor": "Section 5.1, Corollary 5, p.28",
+     "quotes": [
+      "Note that Corollary 5 imposes an additional assumption compared to the noiseless functional case, namely a lower bound on the desired accuracy",
+      "However, this lower bound is inverse-exponential in"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary 5 is stated and proved in Section 5.1; the accuracy-floor condition is quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The copy count and gate counts in Corollary 5 are printed with symbol glyphs in the text layer and are not restated here."
+    },
+    {
+     "id_suggestion": "corollary6-distributional-parity-learning",
+     "value": "The paper proves that a quantum algorithm using mixture-of-superpositions copies outputs a bit string whose parity achieves error within an additive tolerance of the best parity, so it is a distributional agnostic proper quantum parity learner up to inverse-exponentially small accuracies under uniform input marginal; the authors do not expect an efficient classical procedure for the corresponding problem because of its reduction to the believed hardness of Learning Parity with Noise.",
+     "anchor": "Section 5.2, Corollary 6, p.29-30",
+     "quotes": [
+      "Thus, this quantum algorithm is a distributional agnostic proper quantum parity learner up to inverse-exponentially small accuracies, assuming a uniform marginal over inputs.",
+      "In contrast, by reduction to the widely believed hardness of LPN, we do not expect an efficient classical procedure for the corresponding classical agnostic learning problem to exist."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary 6 is stated and proved in Section 5.2; the classical hardness part is a belief stated by the authors.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The classical-hardness half rests on an unproven LPN assumption."
+    },
+    {
+     "id_suggestion": "corollary7-distributional-fourier-sparse",
+     "value": "The paper proves that a quantum algorithm outputs a randomized hypothesis whose error is at most twice the best Fourier-sparse error plus a tolerance, so it is a distributional 2-agnostic improper quantum Fourier-sparse learner up to inverse-exponentially small accuracies under uniform input marginal; the authors say there are currently no classical algorithms for 2-agnostic Fourier-sparse learning from examples.",
+     "anchor": "Section 5.2, Corollary 7, p.30",
+     "quotes": [
+      "In particular, this quantum algorithm is a distributional 2-agnostic improper quantum Fourier-sparse learner up to inverse-exponentially small accuracies, assuming a uniform marginal over inputs.",
+      "To the best of our knowledge, currently there are also no classical algorithms for 2-agnostic Fourier-sparse learning from examples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary 7 is stated and proved in Section 5.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "corollary8-l2-error-1-agnostic",
+     "value": "The paper proves Corollary 8: if the l2 error is the performance measure, the quantum algorithm achieves 1-agnostic learning, and since the output function is Fourier-sparse but not valued in minus one and one, the learner is improper.",
+     "anchor": "Section 5.2, Corollary 8, p.31",
+     "quotes": [
+      "then we can achieve 1-agnostic learning w.r.t. this performance measure:",
+      "Therefore, also the quantum learning procedure of Corollary 8 is improper."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary 8 is stated and proved in Section 5.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem6-distributional-qsq-goldreich-levin",
+     "value": "The paper proves Theorem 6, a Goldreich-Levin procedure from distributional agnostic quantum statistical queries that outputs a list containing every heavy Fourier coefficient and only coefficients of at least half that size, by starting the standard branch-and-prune not at the empty string but at strings of a carefully chosen length (a warm-up phase), because the approximate sampling adds a non-negligible perturbation for large sets.",
+     "anchor": "Section 5.3, Theorem 6, p.32-33",
+     "quotes": [
+      "Theorem 6: (Goldreich-Levin from distributional agnostic QSQs)",
+      "we perform it starting from strings of a carefully chosen length."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 6 is stated and proved in Section 5.3; its symbolic bounds are in the text layer with glyphs.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "remark2-qsq-linear-dependence",
+     "value": "The authors state that the QSQ complexity bounds of the Goldreich-Levin theorem depend linearly on the input length while the sample bounds of the preceding subsection do not, and that this discrepancy between QSQs and quantum examples is unavoidable because of a known lower bound for exact parity learning from QSQs.",
+     "anchor": "Section 5.3, Remark 2, p.32",
+     "quotes": [
+      "This discrepancy between QSQs and quantum examples is unavoidable since"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Remark 2 states the limit; it cites an external lower bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "functional-case-quantum-fourier-sampling",
+     "value": "The paper restates, for the functional case, that quantum Fourier sampling from superposition examples gives functional agnostic proper parity learning and functional 2-agnostic improper Fourier-sparse learning under uniform input marginal, and that the same subroutine yields an exact Fourier-sparse learner in the realizable case whose sample bound is worse than a known bound from Arunachalam et al.",
+     "anchor": "Section 4.1, Corollaries 1 to 3 and 10, pp.19-22",
+     "quotes": [
+      "Thus, this quantum algorithm is a functional agnostic proper quantum parity learner, assuming a uniform marginal over inputs.",
+      "In particular, this quantum algorithm is a functional 2-agnostic improper quantum Fourier-sparse learner, assuming a uniform marginal over inputs.",
+      "However, this quantum sample complexity upper bound is worse than the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: these are combinations of known techniques, which the authors say in Section 4; the statements with parameters are glyph-laden.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noisy-functional-robustness",
+     "value": "The authors state that classical learning of parities becomes hard under random classification noise, that this does not happen for noisy quantum examples (citing earlier work), and that all three noisy quantum example types considered still allow a quantum learner to at least approximately sample from the squared Fourier coefficients.",
+     "anchor": "Section 2.3 and Section 4.2, Lemmas 4 to 6, pp.15, 22-24",
+     "quotes": [
+      "In contrast to the classical case where random classification noise makes learning parities hard, this does not happen in the case of noisy quantum examples [CSS15; GKZ19].",
+      "The central observation of this subsection is that all three types of noisy quantum examples still allow a quantum learner to (at least approximately) sample from the probability distribution formed by the squares of the Fourier coefficients"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: the first claim is attributed to earlier work; the second is proved by Lemmas 4 to 6 whose probabilities are glyph-laden.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "section6-promise-lemma8",
+     "value": "The authors state that, by a granularity result, functional agnostic learning under the promise of no small non-zero Fourier coefficients is essentially equivalent to a promise that the unknown labeling function is Fourier-sparse.",
+     "anchor": "Section 6.1, Lemma 8, p.35",
+     "quotes": [
+      "According to Lemma 8, functional agnostic learning under the promise of no small non-zero Fourier coefficients is essentially equivalent to a promise that the unknown labeling function is Fourier-sparse."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 8 is stated and proved in Section 6.1; the quoted sentence is the authors' reading of it.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-sq-hardness-parities",
+     "value": "The authors state that the comparative learning problems under the promise are unconditionally hard for a classical learner with statistical-query access, inherited from the unconditional hardness of parity learning from statistical queries, which gives the statistical-query part of the hardness claim in their separation theorem.",
+     "anchor": "Section 6.1, p.36",
+     "quotes": [
+      "are unconditionally hard for a classical learner with SQ access, this is inherited immediately from the unconditional hardness of parity learning from SQs [Kea98]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: the hardness is cited from Kearns.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem7-sq-verification-functional-parities",
+     "value": "The paper proves that the class of parities is efficiently proper 1-agnostic verifiable, with respect to the functional class with no small non-zero Fourier coefficients, by a classical verifier with statistical-query access interacting with a quantum prover with quantum statistical-query access, using a single round of communication; the verifier asks the prover for a list of Fourier coefficients and checks that the list has enough accumulated Fourier weight.",
+     "anchor": "Section 6.1, Theorem 7, p.36-38",
+     "quotes": [
+      "-bit parities is efficiently proper 1-agnostic verifiable w.r.t.",
+      "uses only a single round of communication consisting of at most",
+      "the verifier asks the prover to make use of their quantum data acces to obtain and send a list of relevant Fourier coefficients."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 7 is stated and proved in Section 6.1; the promise class is stated in Definition 11.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem8-random-example-verification-limit",
+     "value": "The paper proves the random-example version of that verification result (classical verifier with random examples, quantum prover with superposition examples), and states that Theorem 8 does not yet establish a computational separation conditioned on Learning Parity with Noise, because hardness of the promise problem has not been shown.",
+     "anchor": "Section 6.1, Theorem 8, p.39-40",
+     "quotes": [
+      "with access to classical random examples interacting with a quantum prover",
+      "However, we emphasize that Theorem 8 does not yet establish an analogous computational complexity separation conditioned on LPN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The limit is stated by the authors after Theorem 8.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorems9-10-fourier-sparse-verification",
+     "value": "The paper proves results that give efficient improper 2-agnostic verification of Fourier-sparse functions under the functional promise, with statistical-query and random-example access; one of them uses the exact-learning result of Arunachalam et al. and the interactive Goldreich-Levin algorithm of Goldwasser et al., so only the prover needs the promised value.",
+     "anchor": "Section 6.1, Theorems 9 and 10, Proposition 1, pp.40-43",
+     "quotes": [
+      "is efficiently improper 2- agnostic verifiable w.r.t.",
+      "Therefore, according to the exact learning result of [Aru+21], an honest quantum prover can use"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The theorem statements are stated and proved in Section 6.1; Proposition 1 relies on cited results.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noisy-verification-lpn-hardness",
+     "value": "The authors state that, for the noisy setting, they obtain computational hardness of the learning task for the classical verifier alone conditioned on classical hardness of Learning Parity with Noise, which gives a separation even with random examples.",
+     "anchor": "Section 6.2, p.43",
+     "quotes": [
+      "In this noisy setting, we immediately obtain computational hardness of the learning task for the classical verifier without the help of the quantum prover conditioned on classical hardness of LPN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: the hardness is conditional on the unproven LPN assumption.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "distributional-promise-and-motivation",
+     "value": "The authors state that the verification for the distributional case needs, besides the no-small-coefficient class, a promise that the squared l2 norm of the label expectation lies in a known interval, because without such a promise the total Fourier weight may take any value between 0 and 1 and the verifier cannot know what a sufficient list weight is.",
+     "anchor": "Section 6.3, Definitions 13 and 14, p.44",
+     "quotes": [
+      "Without such a promise, the total Fourier weight in the distributional agnostic case may take any value between 0 and 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Definition 14 and its motivation state the scope condition.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem12-distributional-verification-random-examples",
+     "value": "The paper proves that the class of parities is efficiently proper 1-agnostic verifiable, under the distributional promises, by a classical verifier with random examples interacting with a quantum prover with mixture-of-superpositions examples, with a single round of communication; a statistical-query version is also proved; the accuracy is limited by a term depending on the gap between the squared-norm bounds.",
+     "anchor": "Section 6.3, Theorems 11 and 12, p.44-48",
+     "quotes": [
+      "-bit parities is efficiently proper 1-agnostic verifiable w.r.t.",
+      "with access to classical random examples interacting with a quantum prover",
+      "In Theorem 12, the achievable accuracy is limited by"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 12 is stated and proved in Section 6.3; the exact accuracy limit is glyph-laden.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem13-verifier-accuracy-floor",
+     "value": "The paper proves that proper PAC verification of parities in the distributional class by a classical verifier with random examples and a quantum prover with mixture-of-superpositions examples requires the verifier to use at least a number of classical examples growing linearly with the input length, so the accuracy limit of the preceding verification theorem cannot be significantly improved without worsening the verifier from input-length-independent to linear in the input length.",
+     "anchor": "Section 6.3, Theorem 13, p.49",
+     "quotes": [
+      "requires the verifier to use at least",
+      "cannot be significantly improved without at the same time worsening the number of examples used by the classical verifier from"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 13 is stated and proved in Section 6.3, by reduction to a testing lower bound (Lemma 18) adapted from Mutreja and Shafer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma18-testing-lower-bound",
+     "value": "The paper proves that any classical or quantum algorithm that distinguishes the uniform distribution from a random noisy parity with success probability at least 7/12 from classical examples has to use a number of examples growing at least linearly with the input length.",
+     "anchor": "Appendix C, Lemma 18, p.77-78",
+     "quotes": [
+      "Any (classical or quantum) algorithm that, given",
+      "with success probability ≥ 7/12 has to use at least"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 18 is stated and proved in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorems14-15-fourier-sparse-distributional-verification",
+     "value": "The paper proves the Fourier-sparse (2-agnostic, improper) distributional verification results with statistical-query and random-example access, and a further theorem that extracts the central routine: the Fourier spectrum of any distribution in the promise class is efficiently verifiable through classical-quantum interactions, with completeness and soundness for the verifier.",
+     "anchor": "Section 6.3, Theorems 14 to 16, p.50-51",
+     "quotes": [
+      "is efficiently improper 2- agnostic verifiable w.r.t.",
+      "is efficiently verifiable through classical-quantum interactions.",
+      "Soundness: If"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 16 is stated and proved from the proofs of Theorems 12 and 15 in Section 6.3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "proposition2-spectrum-verification-floor",
+     "value": "The paper proves that any protocol for verifying Fourier spectrum approximation with a classical random-example verifier and a quantum mixture-of-superpositions prover over the promise class requires the verifier to use a number of classical examples growing at least linearly with the input length, so the accuracy limitation of the spectrum-verification theorem cannot be improved while keeping the verifier's sample count independent of the input length.",
+     "anchor": "Section 6.3, Proposition 2, p.52",
+     "quotes": [
+      "the accuracy limitation",
+      "cannot be significantly improved while keeping the sample complexity of the verifier"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 2 is stated and proved in Section 6.3 using Lemma 19.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem17-sample-complexity-lower-bound",
+     "value": "The paper proves that, for a benchmark class of VC dimension at least one, a number of mixture-of-superpositions copies of at least the order of the VC dimension plus the log of the inverse of δ, over ε squared, with the tilde hiding factors logarithmic in the VC dimension, is necessary for distribution-independent quantum agnostic learning; the proof uses the Fuchs-van de Graaf inequalities and an information-theoretic argument adapted from Arunachalam and de Wolf.",
+     "anchor": "Section 7, Theorem 17, p.53-58",
+     "quotes": [
+      "Here, the Ω ̃ hides prefactors logarithmic in",
+      "are necessary for distribution- independent quantum agnostic learning of"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 17 is stated and proved in Section 7 with the tilde convention quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem18-verification-lower-bound",
+     "value": "The paper proves a lower bound on the number of classical examples a verifier needs for distribution-independent agnostic verification with a quantum prover using mixture-of-superpositions examples, matching the classical bound of Mutreja and Shafer, and notes that the bound cannot be improved in general; the authors summarize that these examples are not information-theoretically more powerful than classical examples for verification of learning.",
+     "anchor": "Section 7, Theorem 18, p.58-59",
+     "quotes": [
+      "are also not information-theoretically more powerful than classical examples for verification of learning.",
+      "We note that, as a consequence of [MS23, Theorem 9], the lower bound of Theorem 18 cannot be further improved in general."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 18 is proved in Section 7 by the reduction of Theorem 13.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "appendix-b-theorem19-classical-reduction",
+     "value": "The paper proves, in an appendix, a classical reduction from distributional to functional agnostic learning from random examples that uses the induced distribution over functions, and that preserves properness; it is given as motivation for the mixture-of-superpositions definition.",
+     "anchor": "Appendix B, Theorem 19, p.72-75",
+     "quotes": [
+      "we next demonstrate that one can make use of similar ideas to employ",
+      "Then there is a randomized algorithm"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 19 is stated and proved in Appendix B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-future-work-agnostic-factor-and-assumptions",
+     "value": "The authors state as limitations that their Fourier-sparse learning algorithms are only 2-agnostic where 1-agnostic would be ideal, and that their verification procedures do not work for arbitrary unknown functions or distributions but require prior assumptions.",
+     "anchor": "Section 1.5, p.11",
+     "quotes": [
+      "our learning algorithms are 2-agnostic",
+      "Ideally, however, one would like to give 1-agnostic learning algorithms.",
+      "Secondly, our verification procedures do not work for arbitrary unknown functions or distributions, but require prior assumptions."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 1.5 states these limits.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-hardness-of-superposition-examples-unknown",
+     "value": "The authors state that no technique for Fourier sampling from standard superposition examples in the distributional agnostic setting has been developed, that there are no established hardness results, and that it is unclear whether mixture-of-superpositions examples are strictly more powerful, so a separation between the two oracle models is an open question.",
+     "anchor": "Section 1.5, p.11",
+     "quotes": [
+      "However, while no such techniques have been developed to date, there are no established hardness results."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 1.5 states this open problem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table1-only-known-distributional-access",
+     "value": "The authors state in the caption of the summary table that mixture-of-superpositions examples are the only form of quantum data access currently known to enable quantum Fourier sampling and agnostic learning in the distributional setting.",
+     "anchor": "Section 1.2, Table 1, p.6",
+     "quotes": [
+      "are the only form of quantum data access currently known to enable quantum Fourier sampling and agnostic learning in the distributional setting"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-first-distributional-agnostic-algorithms",
+     "value": "The authors state that, to their knowledge, these are the first agnostic quantum learning algorithms for any model class for the problem of distributional agnostic learning.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "To the best of our knowledge, these are the first agnostic quantum learning algorithms for any model class for the problem of distributional agnostic learning."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-separation-restricted-class",
+     "value": "The authors state that the distribution class used in their separation theorem cannot be meaningfully enlarged without significant losses in the efficiency of the classical verifier, and that the restricted learning task is still classically hard because it contains Learning Parity with Noise as a special case.",
+     "anchor": "Section 1.2 and Section 1.4, pp.6, 10",
+     "quotes": [
+      "cannot be meaningfully enlarged without significant losses in the efficiency of the classical verifier.",
+      "This classical hardness is based on the Learning Parity with Noise (LPN) problem, which is a special case of our more general distributional agnostic learning task."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: hardness is conditional on LPN; the enlargement statement is proved in Section 6.3 through Theorem 13.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "motivation-delegation-scenario",
+     "value": "The authors state their motivating scenario: the most realistic future is that quantum devices will be accessed remotely and only certain parties will hold hard-to-prepare, hard-to-store quantum data, so classical clients need to verify what untrusted quantum servers return.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "However, the most realistic future scenario is that quantum devices will be accessed remotely, and that only certain parties have access to hard-to-prepare and hard-to-store quantum data."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-quantum-data-power-not-unlimited",
+     "value": "The authors conclude that the potential power of quantum data for learning tasks, while not unlimited, can be utilized by classical agents through interaction with untrusted quantum entities.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Our results demonstrate that the potential power of quantum data for learning tasks, while not unlimited, can be utilized by classical agents through interaction with untrusted quantum entities."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "All results are theorems about idealized oracles; no implementation or hardware experiment is reported."
+    },
+    {
+     "id_suggestion": "setup-no-experiments",
+     "value": "The paper reports no numerical experiments or hardware runs; all results are theorems or proofs about learning and verification with idealized quantum data oracles.",
+     "anchor": "Whole paper",
+     "quotes": [
+      "This result serves as a proof-of-principle demonstration that classical clients can indeed reap the benefits of quantum advantages in learning"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result or claim as the paper reports it.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Absence-of-experiments is the reader's observation after reading all 81 pages; the quote is the authors' own description of the result as a proof of principle."
+    }
+   ]
+  },
+  {
+   "record_id": "chan-2024-measurement-based-infused-circuits-variational",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Chan-et-al._2023_Hybrid-variational-quantum-eigensolvers-merging-computational-models__2305.19200.pdf",
+   "title_in_file": "Measurement-Based Infused Circuits for Variational Quantum Eigensolvers",
+   "version_note": "The file name carries an earlier arXiv title (Hybrid variational quantum eigensolvers: merging computational models), but the text is arXiv 2305.19200v3, 1 Jun 2024, titled 'Measurement-Based Infused Circuits for Variational Quantum Eigensolvers': the same paper, later version, with the supplemental material appended. The text layer holds the paper twice (two layouts); the first copy was read and the second used to check quotes. Figure text (circuit diagrams) came out as garbled symbols and was skipped; captions and surrounding text were read.",
+   "pages": 33,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A VQE paper that borrows measurement-based quantum computing ideas (graph-state ansatz modification and ancilla-measured Pauli gadgets) and demonstrates them on IBM superconducting devices for a perturbed planar code, a Z2 lattice gauge theory, a 1D QCD model and LiH, with supplemental simulations on larger systems.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "chan-first-circuit-vqe-demos",
+     "verdict": "confirmed",
+     "note": "The sentence is the authors' priority claim; the paper gives no literature check beyond its references.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "chan-lih-ibm-perth",
+     "verdict": "confirmed",
+     "note": "Table SVI in the supplement adds: Ns of 10000, 99 function evaluations, 7 CX gates, E_VQE of -7.794 Ha against E0 of -7.881 Ha (ΔE/E0 of 0.0110), F of 0.782, and the note that self-mitigation was not applied to the final energy because convergence behavior is analyzed. Ns was chosen from trial-and-error runs on fake backends.",
+     "value": "",
+     "anchor": "Main text, Quantum chemistry, Fig. 2(e); Supplement Table SVI, pp.3, 15",
+     "quotes": [
+      "The progress plots in Fig. 2(e) verify the effective performance of the ansatz, as the VQE converges within 1.1% of E0 ≈ −7.88 Ha after 99 function evaluations, with F improving from 0.067 to 0.78."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "chan-lih-single-gadget-limit",
+     "verdict": "confirmed",
+     "note": "Also: the 4-qubit Hamiltonian has 99 Pauli terms and the ansatz uses a single 4-body gadget; a multi-gadget use case is given only as a numerical simulation of rectangular H4 in the supplement.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "chan-pauli-gadget-cz-count",
+     "verdict": "narrowed",
+     "note": "The supplement states that the gate-count saving does not unambiguously improve the implementation on NISQ hardware, because ancilla measurement mid-circuit adds delay times and measurement-error sources; the net effect depends on platform and protocol.",
+     "value": "The authors state that a Pauli gadget uses n CZs instead of 2(n − 1) cascaded CXs in the ancilla-free implementation, describe this as a factor-of-two reduction in entangling gates with constant overhead, and add in the supplement that the use of mid-circuit measurement does not unambiguously improve the implementation of Pauli gadget unitaries on NISQ devices, since it adds new sources of error.",
+     "anchor": "Main text, Background (Pauli gadgets); Supplement S2 (dynamical circuits), pp.2, 8",
+     "quotes": [
+      "n CZs instead of the 2(n − 1) cascaded CXs in the",
+      "This factor-of-two reduction in entangling gates with constant overhead is relevant for NISQ implementations",
+      "this approach does not unambiguously improve the implementation of Pauli gadget unitaries on NISQ devices."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: a gate count from the circuit construction with a hardware caveat, not checked by the coordinator.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "scope-systems-and-hardware",
+     "value": "The authors state that they showcase the approach on real superconducting quantum computers with VQE simulations of a perturbed planar code, a Z2 lattice gauge theory, 1D quantum chromodynamics and the LiH molecule.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "We showcase our approach on real superconducting quantum computers by performing VQE simulations of testbed systems including the perturbed planar code, Z2 lattice gauge theory, 1D quantum chromodynamics, and the LiH molecule."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The abstract states the systems and platform covered.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pauli-gadget-definition",
+     "value": "The authors build the Pauli gadget from a resource graph: n vertices (input and output qubits) connected to a single ancilla initialized in |+⟩ and measured in the R(θ) basis, realizing an n-body Z interaction, with local Clifford gates changing the interaction basis of each qubit.",
+     "anchor": "Main text, Variational measurements and Pauli gadgets, p.2",
+     "quotes": [
+      "G consists of n vertices (input and output) connected to a single ancilla initialized in |+⟩ and measured in the R(θ)-basis.",
+      "thereby forming an nqubit Pauli gadget"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the gadget in the main text.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "planar-code-demo",
+     "value": "The authors report running a 7-qubit, 11-parameter ansatz for the perturbed planar code with two vertical plaquettes on ibm_perth and ibm_lagos for 10−2 ≤ ξ ≤ 101, with the energy differences from the exact ground state between 0.091 and 0.556 of the exact first energy gap.",
+     "anchor": "Main text, Ansatz modification, Fig. 2(a,b), p.2",
+     "quotes": [
+      "exploit model symmetries to obtain the 7-qubit, 11-parameter (2 × 4 + 3) variational circuit",
+      "We ran the circuit on ibm_perth and ibm_lagos for 10−2 ≤ ξ ≤ 101.",
+      "as confirmed by the small differences ∆E = EVQE − E0 attained, 0.091 ≤ |∆E/Eg| ≤ 0.556"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "An error of up to 0.556 of the first gap is described by the authors as agreeing closely with the exact energies; the supplement's Table SVII lists ΔE/E0 up to 0.123 over its 12 values of ξ."
+    },
+    {
+     "id_suggestion": "qcd-demo",
+     "value": "The authors report a VQE for a 1D QCD unit cell (three quarks, three antiquarks, zero baryon number) on ibm_lagos and ibm_peekskill at x = 0.8 for reduced mass between -1 and 1, using a single 3-body gadget with free parameters reduced from 10 to 4; they report F ≥ 0.834 with |ΔE/Eg| ≤ 9.92 × 10−2 for |m| > 0.2 and F ≥ 0.77 with |ΔE/Eg| ≤ 3.11 × 10−1 in the transition region, and attribute the lower fidelity there to smaller energy gaps.",
+     "anchor": "Main text, 1D lattice QCD, Fig. 2(c), p.3",
+     "quotes": [
+      "We conducted a VQE on ibm_lagos and ibm_peekskill to determine the GS of HˆQCD for x = 0.8 and m ̃ ∈ [−1, 1].",
+      "we reduce the number of free parameters from 10 (3 × 3 + 1) to 4",
+      "(F ≥ 0.834; |∆E/Eg| ≤ 9.92 × 10−2), and in the transition region |m ̃ | ≤ 0.2 (F ≥ 0.77; |∆E/Eg| ≤ 3.11 × 10−1)",
+      "The lower fidelity in the latter is attributed to smaller energy gaps between the ground and first excited states.",
+      "We note that a single gadget with local rotations suffices to resolve the gaps while maintaining F > 0.75."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "z2-lattice-gauge-demo",
+     "value": "The authors report a VQE for a single-plaquette Z2 lattice gauge theory on ibm_peekskill for coupling 0.5 ≤ λ ≤ 3.3 with a 4-body gadget and parameters reduced from 13 to 4, and say the crossover near λ = 2 is well captured with 0.768 ≤ F ≤ 0.862 and |ΔE/Eg| ≤ 0.573.",
+     "anchor": "Main text, 2D gauge theory, Fig. 2(d), p.3",
+     "quotes": [
+      "We performed a VQE simulation on ibm_peekskill for a single plaquette",
+      "for 0.5 ≤ λ ≤ 3.3, where (np, nq) = (4, 1)",
+      "as evidenced by 0.768 ≤ F ≤ 0.862 and consistent resolution of the energy gap (|∆E/Eg| ≤ 0.573)",
+      "The model symmetries allow reduction of the number of circuit parameters from 13 (3 × 4 + 1) to 4",
+      "The crossover regime around λ = 2 is well captured by the VQE"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "z2-large-lambda-limit",
+     "value": "The authors state that the VQE runs for λ ≥ 2.65 yielded |ΔE/Eg| > 0.9, so the measured energies were close to or above the first excited state, and they explain this by the near-degeneracy at these points (energy gap at most 0.2349) and the limited resource budget.",
+     "anchor": "Main text, footnote 88, p.6",
+     "quotes": [
+      "The VQE runs for λ ≥ 2.65 yielded |∆E/Eg| > 0.9, indicating measured energies close to or above E1.",
+      "However, this is expected given the near-degeneracy (Eg ≤ 0.2349) at these points and the limited resource budget."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of their own demonstration in a footnote.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Table SIV lists |ΔE/Eg| of 0.904, 1.282 and 2.569 at λ of 2.65, 2.88 and 3.3."
+    },
+    {
+     "id_suggestion": "lih-demo-setup",
+     "value": "The authors report a VQE for the LiH molecule at interatomic distance R = 1.6 Å on ibm_perth, using a reduced 4-qubit Hamiltonian of 99 Pauli terms and a single 4-body gadget with 9 optimization parameters, all of which the authors state are necessary.",
+     "anchor": "Main text, Quantum chemistry, Fig. 2(e), p.3",
+     "quotes": [
+      "We determine the GS of the LiH molecule, following Ref. [15] to obtain a reduced 4-qubit Hamiltonian consisting of 99 Pauli terms",
+      "We executed a VQE on ibm_perth at an interatomic distance R = 1.6 Å.",
+      "all 9 (2 × 4 + 1) optimization parameters are necessary"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The main text states the LiH setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lih-table-svi-numbers",
+     "value": "The authors report in Table SVI for LiH on ibm_perth with COBYLA: Ns of 10000, 99 function evaluations, 7 CX gates, a VQE energy of -7.794 Ha against an exact ground-state energy of -7.881 Ha, fidelity 0.782 and ΔE/E0 of 0.0110; they did not apply self-mitigation to the final energy because convergence behavior is analyzed, and chose Ns from trial-and-error runs on fake IBM backends.",
+     "anchor": "Supplement S3, Table SVI, p.15",
+     "quotes": [
+      "ibm_perth COBYLA 10000a, 99 7 1 −6.967 −7.794b −7.881 −7.766 −7.748 0.0673c 0.782c 0.000534 0.0110",
+      "Since convergence behavior is analyzed, we do not apply self-mitigation to the final energy.",
+      "Ns chosen from trial-and-error runs on fake IBM backends, as a minimal value yielding acceptable convergence and statistical errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mitigation-and-optimizer-setup",
+     "value": "The authors describe the hardware protocol: readout mitigation with a calibration matrix from 104 measurement shots (ten to the fourth, as the text layer prints it) per basis circuit, resets and delays, dynamical decoupling, self-mitigation of CX errors at the end of each run, full state tomography for fidelity, and the COBYLA and DIRECT classical optimizers (DIRECT followed by a local COBYLA).",
+     "anchor": "Supplement S2, pp.5-8",
+     "quotes": [
+      "In all demonstrations, we employ 104 measurement shots for each basis circuit used to determine M .",
+      "At the conclusion of the VQE run, we employ the self-mitigation technique [21, 22].",
+      "We employ the COBYLA and DIRECT methods for the classical optimization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Supplement S2 states the methods used.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shot-budget-rule",
+     "value": "The authors choose the number of measurement shots Ns from the size of the first energy gap and the largest coefficient sum of a commuting group, and impose that Ns lies between 2.5 × 102 and 5 × 104 to ensure a representative sample while avoiding large processing demands.",
+     "anchor": "Supplement S2, Eq. (S26), p.6",
+     "quotes": [
+      "Here, we impose that 2.5 × 102 ≤ Ns ≤ 5 × 104, which ensures a sufficiently representative sample while avoiding large processing demands on the hardware."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Supplement S2 states the rule.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-initial-parameters-tuned-on-simulators",
+     "value": "The authors state that all initial variational parameters were chosen from trial-and-error runs on fake IBM backends that yielded satisfactory results, prior to the runs on the real backends, and that data points were collected over multiple IBM systems because of logistical challenges.",
+     "anchor": "Supplement S3, Tables SV and SVIII footnotes, p.14-16",
+     "quotes": [
+      "were chosen from trial-and-error runs on fake IBM backends that yielded satisfactory results, prior to runs on the corresponding real backends.",
+      "Owing to logistical challenges with the IBM Quantum platform, data points were collected over multiple systems."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The supplement states how parameters and systems were chosen.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-mid-circuit-measurement-tradeoff",
+     "value": "The authors state that variational measurement introduces a trade-off between reduced circuit depth and additional noise from mid-circuit measurement (delay times in which unmeasured qubits decohere, and measurement errors that affect byproduct operators), that the net effect depends on platform and protocol, and that mid-circuit measurements are becoming higher quality.",
+     "anchor": "Supplement S2, Dynamical circuits, p.7-8",
+     "quotes": [
+      "Therefore, the variational measurement approach introduces a trade-off between the reduced circuit depth on the one hand",
+      "The net effect of this trade-off ultimately depends on the platform and the concrete form of the protocol."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The supplement states the limit of the gadget approach.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ansatz-scaling-claim",
+     "value": "The authors state that the ansatz modifications incur modest parameter overhead of order nq to the power 1.5 times L, where nq is the number of qubits and L the number of layers, and give modest entanglement tunability for all ξ when the lattice (M, N) is small; the main text calls the design systematic and scalable with at most order n squared parameters.",
+     "anchor": "Main text, Ansatz modification, p.1-2; Supplement S4, Eq. (S39)",
+     "quotes": [
+      "Both modifications incur modest overheads of O(nq1.5L) parameters and provide sufficient entanglement tunability for all ξ when (M, N ) is small",
+      "Our ansatz design is systematic, scalable (O(n2) parameters at most), and problem-informed when simulating models with graph state representations."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The main text's bound of order n squared and the supplement's nq to the 1.5 L are stated in different places for related quantities; neither is tied to a demonstration larger than 12 qubits."
+    },
+    {
+     "id_suggestion": "planar-code-scaling-simulation",
+     "value": "The authors report noiseless classical simulations of the modified planar-code ansatz for lattices (M, N) of (2, 1), (3, 1) and (2, 2) with up to 3 layers, and say that for each lattice studied all errors fell below those of the first excited state for L ≥ 2; they give the parameter counts after symmetry as 6L + 5, 20L + 2 and 18L + 3.",
+     "anchor": "Supplement S4, Fig. S7, pp.17-19",
+     "quotes": [
+      "we find that with the chosen modifications, (2, 1, L), (3, 1, L) and (2, 2, L) require 6L + 5, 20L + 2 and 18L + 3 parameters respectively",
+      "For each (M, N ) studied, all errors fell below those of E1 for L ≥ 2",
+      "FIG. S7. Noiseless VQE simulation of ansatz modification, applied to the M × N planar code."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "This is a state-vector simulation up to 12 qubits; it carries no device noise."
+    },
+    {
+     "id_suggestion": "planar-code-barren-plateau-hypothesis",
+     "value": "The authors report that for (M, N, L) = (2, 2, 3) errors in the crossover regime were smaller (about 10−12) but slightly larger than those of (2, 2, 2) toward the limiting cases, and suggest this may be due to the search landscape being high-dimensional and so more susceptible to barren plateaus.",
+     "anchor": "Supplement S4, p.19",
+     "quotes": [
+      "Of peculiarity is the (M, N, L) = (2, 2, 3) result, where we observe smaller errors of 10−12 in the crossover regime but slightly larger errors than those of (2, 2, 2) toward the limiting cases.",
+      "This may be attributed to the search landscape being sufficiently high-dimensional, resulting in increased ansatz susceptibility to barren plateaus."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The explanation is the authors' hypothesis; no experiment isolates barren plateaus."
+    },
+    {
+     "id_suggestion": "planar-code-crossover-points",
+     "value": "The authors report numerical crossover points of ξ of about 2.059, 2.25 and 1.3 for the lattices (M, N) of (2, 1), (3, 1) and (2, 2).",
+     "anchor": "Supplement S4, p.19",
+     "quotes": [
+      "Numerically, we find these crossover points to be around ξ = 2.059, 2.25, 1.3 for (M, N ) = (2, 1), (3, 1), (2, 2) respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rectangular-h4-simulation",
+     "value": "The authors report noiseless classical state-vector simulations of the rectangular H4 molecule with 3, 5 and 7 Pauli gadgets per layer, with fidelities F > 0.8718, 0.9977 and 0.9999 for 0.3 ≤ R ≤ 2.5 Å, chemical accuracy for 5 gadgets except near R = 1.5 Å, and errors of 10−11 to 10−10 for 7 gadgets.",
+     "anchor": "Supplement S4, Fig. S8, p.20-21",
+     "quotes": [
+      "We simulate VQE on a classical computer using state vectors, so that both statistical noises and device noises are absent.",
+      "For g = 3, 5, 7 respectively, we obtain F > 0.8718, 0.9977, 0.9999 for 0.3 ≤ R ≤ 2.5Å.",
+      "except in a very small neighbourhood of R = 1.5Å",
+      "remarkably, the errors improve by orders of magnitude (∆E = 10−11 − 10−10) with only four additional gadgets (g = 7)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The multi-gadget case is a noiseless 8-qubit simulation; no multi-gadget hardware run is reported."
+    },
+    {
+     "id_suggestion": "mbqc-pattern-reduction-example",
+     "value": "The supplement works an example: the circuit for a 3-body Z interaction maps to a 31-qubit measurement pattern that is reduced to 15 qubits with graph-theoretic simplifications and then to a 4-qubit (3 plus 1 ancilla) pattern, a three-pointed star graph, using the stabilizer formalism.",
+     "anchor": "Supplement S1, pp.2-4",
+     "quotes": [
+      "which yields a 31-qubit pattern [Fig. S1].",
+      "which enables a reduction from 31 to 15 qubits.",
+      "V reduces to a 4-qubit (3 + 1 ancilla) pattern"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: a worked example whose pattern equations are glyph-laden.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "planar-code-perturbation-theory",
+     "value": "The authors state, from second-order perturbation theory for the planar code, that increasing the perturbation ξ shifts the ground-state energy downwards and the ground state towards a superposition dominated by basis states with a majority of qubits in |1⟩, which guarantees a crossover to the product state as ξ → ∞.",
+     "anchor": "Supplement S5, p.23-24",
+     "quotes": [
+      "From these equations, we observe that increasing the perturbation ξ shifts E0 downwards",
+      "guarantee a crossover to |1⟩⊗nq as ξ → ∞."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: a perturbative result whose equations are glyph-laden; only the conclusion is quotable.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-viability",
+     "value": "The authors conclude that, by capturing ground-state properties with high fidelities, their VQE simulations on IBM Quantum confirm the viability of measurement-based-infused circuits, and that the techniques extend to the broader class of variational quantum algorithms such as quantum neural networks and quantum machine learning.",
+     "anchor": "Conclusions and Outlook, p.4",
+     "quotes": [
+      "By successfully capturing GS properties with high fidelities, our VQE simulations on IBM Quantum confirm the viability of MB-infused circuits.",
+      "Our VQE techniques can be extended to the broader class of variational quantum algorithms"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The viability claim rests on small systems (4 to 7 qubits on hardware) and fidelities that range from 0.067 at the start of the LiH run to about 0.92 in the QCD runs."
+    },
+    {
+     "id_suggestion": "limit-planar-code-fidelity-not-computed",
+     "value": "The authors state in the supplement that for the 7-qubit planar-code demonstration full state tomography is impractical, so the fidelities F were not calculated, although the main-text figure caption lists state fidelity among the quantities shown as functions of the perturbation strength ξ.",
+     "anchor": "Supplement S3, Table SVII note a; main text Fig. 2 caption, pp.3, 16",
+     "quotes": [
+      "Since 7 qubits are used in this demonstration, performing full state tomography is impractical and therefore the fidelities F were not calculated.",
+      "E0, EVQE, relative error (∆E/E0) and state fidelity (F ) are shown as functions of perturbation strength ξ."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The supplement states this limit of the planar-code demonstration.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The two statements conflict as printed: the caption of Fig. 2 mentions fidelity for the planar-code panel, the supplement says it was not computed for this system."
+    }
+   ]
+  },
+  {
+   "record_id": "chatterjee-2024-solving-various-np-hard-problems",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Chatterjee-Bourreau-Rancic_2023_Solving-various-NP-Hard-problems-using-exponentially-fewer__2301.06978.pdf",
+   "title_in_file": "Solving various NP-Hard problems using exponentially fewer qubits on a Quantum Computer",
+   "version_note": "arXiv 2301.06978v2, 12 Jan 2024 (dated 15 January 2024 on the first page). The text layer holds the paper twice (two layouts); the first copy was read and the second used to check quotes. Several tables (Table IV, V, VI, and the Table I solution columns) came out partly or fully without their numbers, and figures 3 to 6 are plots; the captions and surrounding text were read.",
+   "pages": 13,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A hybrid variational method that encodes a Maximum Cut instance of n nodes in ceil(log2 n) qubits (after Rancic), extended by reductions and a QUBO reformulation to other NP-hard problems, tested on a simulator up to 128 nodes and on IBM devices up to 256 nodes.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "chatterjee-cnot-count",
+     "verdict": "confirmed",
+     "note": "The count |V| − 1 is given without derivation, and the comparison with p|E| relies on the authors' statement that it is easy to see p|E| ≫ |V| at higher densities, with p ≫ 1 for practical purposes. No transpiled gate counts after hardware mapping are reported.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "chatterjee-log-qubit-encoding",
+     "verdict": "confirmed",
+     "note": "The log-qubit encoding is from Rančić (reference 26); this paper builds on it. The sentence is a statement of a cited result, not a new one.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "chatterjee-qpu-queue-limit",
+     "verdict": "confirmed",
+     "note": "Also: the QPU times in Table VI exclude queue time; the stated real-world time of hours or days is the reason larger instances were not run.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: as the paper reports it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "chatterjee-results-90-percent",
+     "verdict": "narrowed",
+     "note": "The 'nearly or over 90% of the optimal cut' sentence is made for the 64-node instances, where the ILP optimum (to a 4% integrality gap) is the benchmark. For 128 and 256 nodes the ILP did not converge in 2 days, so the benchmark is the Goemans-Williamson (GW) range, and QPU results there are 82.5 to 92.8 percent of the GW range. The QPU run on 32 nodes is 83.58 percent of optimal.",
+     "value": "The authors report that for the 64-node Maximum Cut instances all results are nearly or over 90% of the optimal cut found by an ILP solver, that for 128 and 256 nodes the ILP did not converge in more than 2 days so the Goemans Williamson method was used for benchmarking, and that a real quantum computer was used for instances up to 256 nodes.",
+     "anchor": "Abstract; Section III.A, pp.1, 6-7",
+     "quotes": [
+      "In order to demonstrate the scalability of the algorithm, we further test the algorithm on problem instances of 64, 128 and 256 nodes (6, 7 and 8 qubits respectively).",
+      "We can see that for all cases, the results are nearly or over 90% of the optimal cut.",
+      "the Goemans Williamson (GW) method [45] is used for benchmarking. This is because the ILP took longer than 2 days without converging (Gurobi optimizer) on a PC.",
+      "these algorithms are tested on a quantum simulator with graph sizes of over a hundred nodes and on a real quantum computer up to graph sizes of 256"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: an empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Read against all of Section III.A, 'up to 256' with 'over 90% of the ILP optimum' joins two things the paper keeps apart: the ILP benchmark covers up to 64 nodes only."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "encoding-qubit-count-and-ansatz",
+     "value": "The authors state that the algorithm needs ceil(log2 n) qubits for a problem of size n, builds the ansatz by Hadamard gates on all qubits followed by a diagonal gate whose phases are set by binarized variables, and minimizes the negative of the Laplacian expectation value with classical black-box optimizers such as COBYLA, Nelder-Mead or a genetic algorithm.",
+     "anchor": "Section II.B, pp.2-3",
+     "quotes": [
+      "For a problem of size n, the number of qubits required is ⌈log2 n⌉.",
+      "The function R converts a continuous variable into a binary one, which is what we need.",
+      "Using classical black-box meta optimizers such as COBYLA, Nelder-Mead or Genetic Algorithm (as detailed in Algorithm 2), we then obtain"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II.B describes the method.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scope-approximate-solutions-search-space-unchanged",
+     "value": "The authors state that to solve a problem here means to obtain an approximate solution, and that the search space remains the same as the classical search space, so the number of variables to optimize is not reduced.",
+     "anchor": "Section II.B, pp.2-3",
+     "quotes": [
+      "Note that to solve a problem here implies to obtain an approximate solution.",
+      "In our study, the search space remains the same as that of the classical search space."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section II.B states the scope.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-qubit-savings-examples",
+     "value": "The authors state that QAOA needs 128 qubits for a 128-node Maximum Cut problem while the proposed algorithm uses only 7 qubits, and that a problem with over a million nodes can be represented with just 20 qubits.",
+     "anchor": "Section II.B.2, p.3",
+     "quotes": [
+      "Algorithms like the QAOA, for example, require 128 qubits to represent a 128-node Maximum Cut problem.",
+      "The same problem can be solved by the proposed algorithm using only 7 qubits.",
+      "A problem with over a million nodes can be represented with just 20 qubits"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Qubit count is for representation; the optimization still has n classical variables, and quality was measured only to 256 nodes."
+    },
+    {
+     "id_suggestion": "claim-logarithmic-scaling-proprietary",
+     "value": "The authors state that they build on a proprietary methodology which scales logarithmically with problem size, and disclose that a part of the methodology is protected by a provisional patent claim; they also state that QAOA scales linearly with problem size.",
+     "anchor": "Abstract; Section V.D, pp.1, 9",
+     "quotes": [
+      "we build upon a proprietary methodology which scales logarithmically with problem size",
+      "A part of the methodology presented in the manuscript is protected by a provisionally patent claim"
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Moderate: authors from a company describe their own methodology and disclose a patent claim.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "The authors are affiliated with TotalEnergies and a university lab; funding is from an EU project."
+    },
+    {
+     "id_suggestion": "reductions-to-maxcut",
+     "value": "The paper gives reductions of Minimum Partition, Maximum 2-Sat and (via 2-Sat) Maximum Clique to Maximum Cut; Minimum Partition uses an edge of weight wi times wj for every pair, an n-variable Maximum 2-Sat becomes a 2n-node Maximum Cut, an n-node Maximum Clique becomes a 2(n + 1)-node Maximum Cut, and the authors note the conversions may not scale one to one.",
+     "anchor": "Section II.C and Section III.C, pp.4, 7",
+     "quotes": [
+      "For every pair of nodes (i, j), connect them using an edge of weight wi ∗ wj.",
+      "For example, an n variable Maximum 2-Sat problem requires us to solve a 2n node Maximum Cut problem.",
+      "After the conversion, a n-node Maximum Clique problem requires the solution of a 2(n + 1)-node Maximum Cut.",
+      "Note, however, that these conversions might not have a one-to-one scaling."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: the reductions are described step by step but not proved in the paper.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The 2(n + 1) blow-up for Maximum Clique means the log-qubit saving is partly offset by a doubled node count."
+    },
+    {
+     "id_suggestion": "sqUBO-reformulation",
+     "value": "The authors introduce a spin-QUBO (sQUBO) reformulation so that any QUBO can be used: it is a matrix of size 2n by 2n with n fixed variables, requiring ceil(log2 2n) = 1 + ceil(log2 n) qubits, one more qubit than the original algorithm.",
+     "anchor": "Section II.D, p.5",
+     "quotes": [
+      "This is our reformulated QUBO, which we shall call the spin-QUBO(sQUBO). This is a matrix of size 2n×2n.",
+      "It will require ⌈log2 2n⌉ = (1 + ⌈log2 n⌉) qubits, or, in other words, 1 more qubit than the original algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II.D defines the reformulation.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "setup-graphs-and-benchmarks",
+     "value": "The authors generated the graph instances with the networkx fast_gnp_random_graph function with seed 0, benchmarked 64-node cases against an integer linear program solved to an integrality gap of 4%, and benchmarked 128- and 256-node cases against the Goemans-Williamson method over 50 runs because the ILP did not converge in 2 days.",
+     "anchor": "Section III.A, p.6",
+     "quotes": [
+      "In order to demonstrate the scalability of the algorithm, we further test the algorithm on problem instances of 64, 128 and 256 nodes (6, 7 and 8 qubits respectively).",
+      "All graph instances in this section are generated using the f ast gnp random graph() function of the networkx Python package, with seed = 0 for all cases.",
+      "The model solved the problem upto a specified integrality gap of 4%.",
+      "The GW range is based on 50 runs.",
+      "This is because the ILP took longer than 2 days without converging (Gurobi optimizer) on a PC."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.A states the benchmark setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "maxcut-32-node-simulator-vs-qpu",
+     "value": "The authors report for one 32-node Maximum Cut instance that the simulator reaches 90.04% of the optimal with the genetic algorithm and 91.04% with COBYLA, and the QPU run reaches 83.58% of the optimal, noting that only a single instance and a single QPU run were used because queue times make hardware runs time consuming.",
+     "anchor": "Section III.A, Fig. 3a, p.6",
+     "quotes": [
+      "a) Performance of the algorithm on a 32-Node graph instance.",
+      "90.04% of the optimal for the genetic algorithm and 91.04% of the optimal for COBYLA",
+      "The result from the QPU is slightly worse (83.58% of the optimal), as is expected due to the noise present in the current devices.",
+      "Note that only a single instance has been considered here as opposed to multiple."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "maxcut-density-and-optimizer-comparison",
+     "value": "The authors report, from 10 random 32-node instances with 50 runs each, that the increase in edges does not heavily impact accuracy, that the genetic algorithm performed better than COBYLA in most instances, and that GA results vary run to run while COBYLA results are the same in each run.",
+     "anchor": "Section III.A, Fig. 3b, p.6",
+     "quotes": [
+      "In Figure 3b), 10 randomly generated 32-Node instances are tested with increasing graph density.",
+      "For each instance, data was collected for 50 runs",
+      "We can see that the increase in the number edges does not heavily impact the accuracy of the algorithm.",
+      "In most instances, the genetic algorithm (GA) performed better than COBYLA.",
+      "While the GA results vary with each run, the results from COBYLA are the same in each run."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The authors suggest GA does better because it covers a larger search space; no experiment isolates that."
+    },
+    {
+     "id_suggestion": "maxcut-64-node-ilp-and-times",
+     "value": "The authors report for 64-node instances that the results are nearly or over 90% of the ILP optimum and increase in graph density does not affect performance whatsoever, while ILP time rises quickly with density; for density 0.45 the text gives 1375.2 seconds for ILP and 272 and 518 seconds for the simulator and QPU, whereas the table row lists 1375.2, 3.98, 512.8 and 272.",
+     "anchor": "Section III.A, Table I, p.6",
+     "quotes": [
+      "For the case of 64 node graphs, as shown in Table I, each instance is run 10 times on the quantum simulator",
+      "The data represented in the table is given as a percent of the solution obtained from ILP.",
+      "We can see that for all cases, the results are nearly or over 90% of the optimal cut.",
+      "It is seen again that increase in graph density does not affect performance whatsoever.",
+      "the execution time of ILP increases rapidly with graph density whereas it remains more or less the same for both the simulator and the QPU.",
+      "For example in the graph with density 0.45, the ILP takes 1375.2 seconds whereas the quantum simulator and QPU take 272 seconds and 518 seconds respectively.",
+      "0.45 1375.2 3.98 512.8 272"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text puts 272 seconds on the simulator and 518 on the QPU; the table row reads 512.8 then 272 in the simulator and QPU columns. The two do not match as printed, and the Solution columns of Table I are missing from the text layer."
+    },
+    {
+     "id_suggestion": "maxcut-128-256-simulator-vs-gw",
+     "value": "The authors report simulator results for 128- and 256-node Maximum Cut, as a percentage of the Goemans-Williamson range, from 88.7 to 92.3 percent (128 nodes, density 0.3) up to 94.9 to 96.2 percent (256 nodes, density 0.6).",
+     "anchor": "Section III.A, Table II, p.6",
+     "quotes": [
+      "Table II. 128 and 256-Node Maximum Cut results using a quantum simulator.",
+      "0.3 1376 - 1431 1270 88.7 - 92.3 5408 - 5587 5066 90.7 - 93.7",
+      "0.6 2618 - 2679 2501 93.3 - 95.5 10356 - 10504 9967 94.9 - 96.2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The benchmark is the range reached by GW over 50 runs, not the optimum; a percentage of the GW range is not a percentage of the optimal cut."
+    },
+    {
+     "id_suggestion": "maxcut-128-256-qpu-vs-gw",
+     "value": "The authors report QPU results (genetic algorithm) of 82.5 to 85.6 percent of the GW range for 128 nodes at density 0.4, 89.0 to 92.5 percent for 128 nodes at density 0.5, and 90.9 to 92.8 percent for 256 nodes at density 0.5, using ibmq mumbai for 128 nodes and ibmq guadalupe for 256 nodes.",
+     "anchor": "Section III.A, Table III, p.6",
+     "quotes": [
+      "Size=128, Density=0.4 1538 1796 - 1864 82.5 - 85.6 Size=128, Density=0.5 2022 2186 - 2271 89.0 - 92.5 Size=256, Density=0.5 8079 8701 - 8880 90.9 - 92.8",
+      "The ibmq mumbai backend was used for the instances of size 128 while the ibmq guadalupe was used for the instance of size 256."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Three QPU instances in total at these sizes; the 256-node case is a single instance."
+    },
+    {
+     "id_suggestion": "min-partition-results",
+     "value": "The authors report that Minimum Partition solved by conversion to Maximum Cut gives a mean of 98% for 32 integers on the simulator, a mean better than 85% for 64 numbers, and about 97% for 128 numbers on the simulator, with QPU data from a single run on ibmq mumbai, using a normalization by 50 times N rather than by the optimal value.",
+     "anchor": "Section III.B, Fig. 4, p.7",
+     "quotes": [
+      "For 32 integers, we have a mean value of 98% and a very small dispersion using the quantum simulator.",
+      "For 64-number Minimum Partition, the mean values are better than 85% for all instances.",
+      "The problem of size 128 has mean values of about 97% on a quantum simulator.",
+      "For simplicity we use 50 in pnorm.",
+      "The QPU data are based on a single run.",
+      "All QPU runs in this section are done on ibmq mumbai."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The normalized difference is scaled by a fixed 50 N (the average of numbers in 1 to 100) rather than by the optimal partition difference, so a high percentage does not mean a near-optimal partition."
+    },
+    {
+     "id_suggestion": "max-clique-results",
+     "value": "The authors report that for Maximum Clique run on a simulator in half of the instances the best solution is the optimal one as found with numpy, and they note that the approach finds a dense subgraph and then removes the nodes of lowest degree iteratively.",
+     "anchor": "Section III.C, Table IV, p.7",
+     "quotes": [
+      "It is seen that in half of the instances, the best solution is the optimal solution as obtained using numpy.",
+      "It should be noted that our approach finds a dense subgraph and then removes the nodes with lowest degree iteratively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Table IV's numbers are missing from the text layer; the extra classical node-removal step means the result is not purely the quantum routine's output."
+    },
+    {
+     "id_suggestion": "mwis-qubo-results",
+     "value": "The authors report for Maximum Weighted Independent Set solved through the QUBO method, normalized to the CPLEX optimum, mean values above 80% with the best result optimal on every 32-node instance and mean values above 60% with the best on average over 80% for 64-node graphs, counting only feasible solutions, with 50, 100 and 200 genetic-algorithm iterations for sizes 32, 64 and 128.",
+     "anchor": "Section III.D, Fig. 5, Table V, p.7",
+     "quotes": [
+      "For graphs of size 32, the mean values for all instances are above 80% and the best obtained result is optimal for every instance.",
+      "For graphs of size 64, the mean values for all instances are above 60% and the best obtained result is on an average over 80%.",
+      "The data represented only takes into account the feasible solutions produced.",
+      "The number of GA iterations used for the experiments for sizes 32, 64, and 128 are 50, 100 and 200 respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Infeasible runs are dropped from the statistics; Table V's percentage of feasible results is missing from the text layer."
+    },
+    {
+     "id_suggestion": "time-comparison-simulator-vs-qpu",
+     "value": "The authors state that QPU time does not grow exponentially as simulator time does, that at larger instances it is quicker to run on the QPU than to simulate, and that the QPU time excludes queue or waiting time.",
+     "anchor": "Section III.E, Table VI, Fig. 6, p.8",
+     "quotes": [
+      "While the quantum computer still takes a significant amount of time to solve the problem, the time taken does not increase exponentially as in the case of the simulator.",
+      "As we move towards larger instances, we reach a point where it is quicker to run a problem on a QPU than using a simulator.",
+      "Note that the QPU time here does not take into account the queue time or waiting time for the QPU runs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result or claim as the paper reports it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The comparison is against a classical simulation of the quantum circuit, not against a classical Maximum Cut solver."
+    },
+    {
+     "id_suggestion": "claim-largest-problems-on-nisq",
+     "value": "The authors state that, to their knowledge, these are the largest realistic combinatorial optimization problems ever run on a NISQ device, exceeding previous problem sizes almost tenfold, and the first time graph problems of sizes 256 Maximum Cut and 64 Minimum Partition have been executed on real universal gate-based quantum computers.",
+     "anchor": "Abstract; Section IV, pp.1, 8",
+     "quotes": [
+      "To our knowledge, these constitute the largest realistic combinatorial optimization problems ever run on a NISQ device, overcoming previous problem sizes by almost tenfold.",
+      "To our knowledge, it is the first time that graph problems of such sizes (256 Maximum Cut, 64 Minimum Partition) have been executed on real universal gatebased quantum computers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result or claim as the paper reports it.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "field-hardware-statement-osprey",
+     "value": "The authors state that at the time of writing the largest available universal gate-based quantum computer is IBM's Osprey device with 433 qubits, that not all its qubits are of the same quality and that limited connectivity forces SWAP gates and noise.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "At the moment, the largest available universal gate-based quantum computer is IBM's Osprey device, containing 433 qubits."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: field result or claim as the paper reports it.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": "A hardware statement as of the paper's date; it may be out of date."
+    },
+    {
+     "id_suggestion": "limit-data-availability",
+     "value": "The authors state that they will make all data available upon reasonable requests, and the numerical tables for Table IV, Table V and Table VI are only partly available in the paper text.",
+     "anchor": "Section V.C, p.9",
+     "quotes": [
+      "The authors will make all data available upon reasonable requests."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V.C states the data availability.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "No code or data repository is cited."
+    }
+   ]
+  }
+ ]
+}

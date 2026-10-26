@@ -1,0 +1,2991 @@
+{
+ "group": "g002",
+ "papers": [
+  {
+   "record_id": "almasri-2024-multi-valued-quantum-neurons",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\AlMasri_2023_Multi-Valued-Quantum-Neurons__2305.02018.pdf",
+   "title_in_file": "Multi-Valued Quantum Neurons (arXiv:2305.02018v5)",
+   "version_note": "The text layer carries the paper twice (two extraction passes of the same arXiv v5 text, 14 pdf pages in all); both copies were read and agree.",
+   "pages": 14,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short theory paper that defines a multi-valued quantum neuron with roots-of-unity inputs, weights and outputs, maps energy levels to those roots, and works a max/min example by hand; no experiment or numerical training run.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "mvqn-convergence-claim",
+     "verdict": "confirmed",
+     "note": "The claim is stated in the abstract only. The body supports no comparison: the high-functionality statement is attributed to cited work on complex-valued networks, and the paper reports no convergence experiment.",
+     "value": "",
+     "anchor": "Abstract; Section IV",
+     "quotes": [
+      "Such neural networks enjoy fast convergence and higher functionalities compared with quantum neural networks based on binary input with the same number of neurons and layers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper contains no training run, no convergence measurement and no comparison with a binary-input quantum neural network. The nearest support is the citation in Section IV about complex-valued networks versus real-valued ones, which is not a quantum-versus-binary comparison."
+    },
+    {
+     "id": "mvqn-no-hardware-yet",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract; Section V closing",
+     "quotes": [
+      "The next step is to realize multi-valued quantum neurons experimentally.",
+      "Possible practical applications can be found using the quantum neural networks built from orbital angular momentum (OAM) of light"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V closing states the neuron is not yet realized experimentally.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The closing text sits in Section V (Applications)."
+    },
+    {
+     "id": "mvqn-radix-three-cost",
+     "verdict": "narrowed",
+     "note": "The paper itself calls its hardware complexity terminology qualitative, and the argument takes the radix as the count of basis states; the quote that limits the value is added.",
+     "value": "The paper states that, under its hardware cost model, the minimum cost happens when r = 3, and describes its own hardware complexity terminology as qualitative.",
+     "anchor": "Section II, Qubits and Complexity",
+     "quotes": [
+      "Since the radix r must be an integer, the minimum cost happens when r = 3.",
+      "our terminology of the hardware complexity here is of a qualitative signature"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Equation (1) is cost = k times r times d with d = log N / log r. The real minimum is at r = e, and among integers 3 gives 3/ln 3 = 2.73 against 2/ln 2 = 2.89 for r = 2, so the integer step is correct arithmetic. The step from radix 3 to |0>, |1> and one superposition state is the author's reading."
+    },
+    {
+     "id": "mvqn-roots-of-unity",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract; Section III Eq. 2",
+     "quotes": [
+      "the truth values are represented naturally as unique roots of unity placed on the unit circle",
+      "based on the principles of multiple-valued threshold logic over the field of complex numbers"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The abstract and Section III define the construction.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "mvqn-k-roots-alphabet",
+     "value": "The paper defines the multiple-valued alphabet as the k roots of unity in the complex domain, placed at distinct positions on the unit circle.",
+     "anchor": "Section III, Eq. 2",
+     "quotes": [
+      "The generalization of E2 to multiple-valued logic can be achieved using k roots of unity in the complex domain [33]",
+      "Therefore, we have k roots of unity positioned on the unit circle."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III defines the alphabet in Eq. 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mvqn-neuron-definition",
+     "value": "The paper defines the multi-valued quantum neuron as a map from n inputs to a single output with n + 1 complex-valued weights, through a discrete activation function P.",
+     "anchor": "Section IV, Eqs. 16-17",
+     "quotes": [
+      "The multi-valued quantum neuron (MVQN) performs a mapping between n inputs and a single output described by a multiple-valued function f of n variables",
+      "with n + 1 complex-valued weights",
+      "where P is the discrete activation function of MVQN"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section IV defines the neuron in Eqs. 16 and 17.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mvqn-energy-level-association",
+     "value": "The paper associates each distinct energy level of a quantum system with a unique root of unity, and associates all equal (degenerate) levels with one root of unity.",
+     "anchor": "Section IV, before Eq. 16",
+     "quotes": [
+      "We associate each energy level with a unique root of unity as",
+      "In case of degeneracy, we associate all equal energy levels into one root of unity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section IV states the mapping used for all later results.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mvqn-spin-mapping",
+     "value": "The paper maps the Bargmann-space spin state functions to products of roots of unity, with N = 2j +1 the number of distinct states for spin number j, and tabulates the mapping for j = 1/2, 1 and 2.",
+     "anchor": "Section III, Eq. 14 and Table I",
+     "quotes": [
+      "N = 2j +1 is the number of possible distinct states for a particle or multi-level system with spin number j.",
+      "The mapping between the roots of unity and the state functions for j = 1/2, 1, and 2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III states the mapping and Table I lists it.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Quotes lose the superscripts and subscripts of the epsilon symbols; the table entries are not quoted for that reason."
+    },
+    {
+     "id_suggestion": "mvqn-harmonic-oscillator-example",
+     "value": "The paper illustrates the association with a four-level harmonic oscillator that has a zero-energy ground state, each level mapped to a root of unity.",
+     "anchor": "Section III, Figure 2",
+     "quotes": [
+      "In Figure 2, we show the case of a four-level system with a zero energy ground state for the harmonic oscillator and the corresponding roots of unity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III states the illustration; no result depends on it.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mvqn-fermion-bargmann",
+     "value": "The author states that the Bargmann representation cannot be applied directly to fermions such as electrons, and that the Bargmann representation of the Jordan-Schwinger mapping, as discussed in the author's earlier papers, resolves this.",
+     "anchor": "Section III",
+     "quotes": [
+      "it is not possible to apply the Bargmann representation directly to fermions such as electrons.",
+      "this issue can be solved gently using the Bargmann representation of the Jordan-Schwinger mapping"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The solution is referenced to the author's earlier work [36, 37]; this paper does not re-derive it."
+    },
+    {
+     "id_suggestion": "mvqn-hebbian-rule",
+     "value": "The paper gives a Hebbian learning rule in which each weight is computed as the dot product of the desired-output vector with the corresponding input vector, and a normalized form divided by the number of samples.",
+     "anchor": "Section IV.A, Eqs. 18-19",
+     "quotes": [
+      "The Hebbian learning rule states that the weights ω1, ω2, . . . , ωn must be calculated as dot products of f and vectors x1, x2, . . . xn respectively",
+      "The normalized Hebbian rule is given by division over d"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section IV.A states the rule.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text writes the index j as running from 0 to n although the weights listed start at 1; this is a notational slip in the paper."
+    },
+    {
+     "id_suggestion": "mvqn-error-correction-rule",
+     "value": "The paper gives an error-correction learning rule in which the weight vector is updated in proportion to the difference between the desired and the actual root of unity.",
+     "anchor": "Section IV.B, Eq. 20",
+     "quotes": [
+      "This in turn suggests the need for using an error-correction learning rule that determines how the weights must be adjusted",
+      "δ is the difference between the desired"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section IV.B states the rule.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The second quote is cut before the symbols that the text layer garbles."
+    },
+    {
+     "id_suggestion": "mvqn-unit-circle-training",
+     "value": "The author states that training a multi-valued quantum neuron is equivalent to movement along the unit circle, and that, because the output and desired values both lie on it, the movement of the output towards the desired value is always in the correct direction.",
+     "anchor": "Section IV.B, Eq. 21",
+     "quotes": [
+      "The multi-valued quantum neuron training is equivalent to movement along the unit circle.",
+      "Since both the output and desired values are positioned on the unit circle, the movement of the output value towards the desired value will always be in the correct direction."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Equation 21 shows the weighted sum moves by the learning rate times the error. No convergence theorem or bound on the number of steps is stated."
+    },
+    {
+     "id_suggestion": "mvqn-learns-spectrum-claim",
+     "value": "The author states that the complex-valued network, with measured energy levels as roots-of-unity inputs, is capable of learning the patterns of the energy spectrum of a quantum system.",
+     "anchor": "Section IV, closing paragraph",
+     "quotes": [
+      "Such a complex-valued neural network is capable of learning the patterns of the energy spectrum a quantum system can have."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No training run on any quantum system is reported."
+    },
+    {
+     "id_suggestion": "mvqn-prior-high-functionality-cited",
+     "value": "The paper attributes to cited work that complex-valued neural networks with roots-of-unity inputs and outputs enjoy high functionality compared with real-valued networks with the same number of neurons, and that a single complex-valued neuron can solve the xor-problem.",
+     "anchor": "Section IV, opening",
+     "quotes": [
+      "It was shown that such complex-valued neural networks enjoy high functionality compared with real-valued neural networks with the same number of neurons",
+      "a single complex-valued neuron is capable of solving the well-known xor-problem"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "This is the only support in the paper for the abstract's higher-functionality statement, and it compares complex-valued with real-valued classical networks, not quantum networks with binary inputs."
+    },
+    {
+     "id_suggestion": "mvqn-differs-from-other-neurons",
+     "value": "The author states that the neuron differs from other existing quantum neuron models in that its inputs, outputs, weights and activation functions are written as roots of unity, and that it is physically based on the measured energy eigenstates of the system under study.",
+     "anchor": "Section IV",
+     "quotes": [
+      "The multi-valued quantum neurons presented here is different from other existing quantum neuron models",
+      "Physically, it is based on the measured energy eigenstates of the physical system under study."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No comparison with another neuron model is carried out."
+    },
+    {
+     "id_suggestion": "mvqn-max-weight-vector",
+     "value": "The authors state that, for a three-level system with inputs in E3, the weight vector W = (−2 − 4ε3, 4 + 5ε3, 4 + 5ε3) implements the max function of two inputs, and they check it by direct computation on two of the nine possible input pairs.",
+     "anchor": "Section V, Eqs. 22-26",
+     "quotes": [
+      "the weight vector that implements the max-function fmax = max(x1, x2) is W = (−2 − 4ε3, 4 + 5ε3, 4 + 5ε3)",
+      "We may verify this by direct computations of the activation functions and equating the results with the action of the max-function."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The reader computed all nine input pairs numerically with the stated weights and the stated activation function. All nine return the maximum. The paper itself shows two."
+    },
+    {
+     "id_suggestion": "mvqn-min-weight-vector",
+     "value": "The authors state that the weight vector W = (2 + 4ε3, 4 + 5ε3, 4 + 5ε3) is associated with the min function of two inputs, and they work two sample inputs by hand.",
+     "anchor": "Section V, Eqs. 27-28",
+     "quotes": [
+      "The min-function fmin = min(x1, x2) can be associated with the weight vector W = (2 + 4ε3, 4 + 5ε3, 4 + 5ε3)",
+      "The other remaining possibilities can be computed using similar steps."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The reader computed all nine input pairs numerically; all return the minimum. In the first worked example the paper prints arg(z) = 0.662, and the reader computes 0.766; the sector, and so the result, is the same."
+    },
+    {
+     "id_suggestion": "mvqn-ternary-spin-half-speculation",
+     "value": "The author states that a ternary basis of two basis states and one superposition state can lead to a minimum computational cost, and says that this fact may explain why fermions have spin-1/2.",
+     "anchor": "Section I",
+     "quotes": [
+      "can lead to a minimum computational cost. This fact may explain why, at the very basic level of the universe, quantum matter particles (Fermions) have spin-1/2.",
+      "Consequently, nature at its most fundamental level operates at the minimum computational cost."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper offers no argument linking the radix cost model to fermion spin; the wording is 'may explain'."
+    },
+    {
+     "id_suggestion": "mvqn-qudit-advantage-cited",
+     "value": "The paper attributes to cited work that the main advantage of qudits over qubits is a logarithmic reduction in the number of separate quantum systems needed to span the quantum memory.",
+     "anchor": "Section I",
+     "quotes": [
+      "The main advantage of qudits over qubits is the logarithmic reduction of separate quantum systems needed to span the quantum memory"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mvqn-scale-difficulty",
+     "value": "The author states that building quantum neural networks with many neurons is still challenging, as is building any quantum computational device with many qubits.",
+     "anchor": "Section I",
+     "quotes": [
+      "building quantum neural networks with many neurons is still challenging.",
+      "The same difficulty is seen in building any quantum computational device with many qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section I states the limit the construction does not remove.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mvqn-future-directions",
+     "value": "The author names as further work an experimental realization with the orbital angular momentum of light or molecular spin qudits such as GdW30 molecules, and multilayer complex-valued quantum neural networks trained to predict the energy configurations of many-body quantum systems.",
+     "anchor": "Section V, closing",
+     "quotes": [
+      "One possible experimental application could be found in the orbital angular momentum of light [42].",
+      "Other possible systems are molecular spin qudits such as GdW30 molecules[43].",
+      "one further direction is to consider multilayer complex-valued quantum neural networks"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V states what is not yet done.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper's network (Figure 3) is described as a complex-valued network; no multilayer quantum network is built or trained."
+    }
+   ]
+  },
+  {
+   "record_id": "angara-2025-scoop-quantum-computing-framework-constrained",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Angara-et-al._2025_SCOOP-A-Scalable-Quantum-Computing-Framework-to-Constrained-Combinatorial__2504.10897.pdf",
+   "title_in_file": "SCOOP: A Quantum-Computing Framework for Constrained Combinatorial Optimization (arXiv:2504.10897v2)",
+   "version_note": "The text layer carries the paper twice (two extraction passes); both agree. Figures 2 to 4 are plots: the pages were also viewed as images, and plotted values are used only in reader_inference, read by eye.",
+   "pages": 11,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A framework paper (SCOOP) that turns constrained combinatorial problems into unconstrained profit problems for QAOA with classical post-processing, with three theorems on twin problems and PennyLane simulations on 3-regular graphs of 6, 8 and 10 nodes.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "scoop-minds-theorem",
+     "verdict": "widened",
+     "note": "The paper gives the statement and its conditions: the theorem is attributed to reference 36, applies to simple undirected graphs without isolated vertices, and is proved only as a sketch. The stored value gave sentences about the theorem, not its statement.",
+     "value": "The paper states as Theorem 1, attributed to reference 36, that for any graph G a dominating set of size k exists if and only if G has a vertex subset PD with profit pPD = |V | − k; the section covers simple undirected graphs without isolated vertices; the proof is given as a sketch.",
+     "anchor": "Section IV, Theorem 1 and footnote 1",
+     "quotes": [
+      "Theorem 1. [36] For any graph G = (V, E), G has a dominating set DS",
+      "⊆ V of size k if and only if G has a subset PD ⊆ V with profit pPD = |V | − k.",
+      "In this section, we refer to simple undirected graphs without isolated vertices.",
+      "Proof. (Sketch)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Section IV states the theorem with its conditions; the proof is a sketch and the theorem is credited to reference 36.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "In the sketch of the forward direction the paper writes pPD = |E| − k, where the theorem says |V | − k; this reads as a typo for |V |. The sentence 'Theorem 1 below concludes the proof that MINDS and MAXPD are SCOOP twins' also uses the theorem as the last step of the twin proof."
+    },
+    {
+     "id": "scoop-p1-probability",
+     "verdict": "narrowed",
+     "note": "The 60% figure is a summed probability over the best solutions (the paper counts the second and third best as near-optimal), averaged over 10 random graphs; it is not the probability of the single best solution, which the paper puts lower.",
+     "value": "The authors report over 60% probability of sampling near-optimal solutions at p = 1 for n ∈ {6, 8, 10} on 3-regular graphs, where near-optimal includes the second and third best solutions.",
+     "anchor": "Section VII (metrics) and Section VIII, results discussion",
+     "quotes": [
+      "Our approach yields over 60% probability of sampling nearoptimal solutions at p = 1 for n ∈ {6, 8, 10}",
+      "(we include the second and third best solutions)",
+      "our method achieves an average probability of 10% − 40% of sampling the best solution at p = 1 for 3-regular graphs with up to 10 nodes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Read by eye from Figure 3, the over-60% value holds for the SCOOP profit-domination curve. The penalty-based dominating-set curve in the third column is lower at p = 1 for n = 10 (about 0.3 against about 0.9)."
+    },
+    {
+     "id": "scoop-simulation-scope",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section IX, Conclusions and Future Work",
+     "quotes": [
+      "These experiments were conducted using Xanadu's PennyLane simulator on 3-regular graphs with up to ten qubits and eight layers of QAOA.",
+      "we intend to execute both QUBO and HUBO formulations of the unconstrained SCOOP twins on IBM's quantum hardware."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section IX states the scope.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The M3 twin MAXPES has one binary variable per edge. A 3-regular graph on 10 nodes has 15 edges, so that case would need 15 qubits, not ten; the paper's 'up to ten qubits' reads as true for the vertex-based problem only. The paper does not state this."
+    },
+    {
+     "id": "scoop-twin-framework",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section IX, Conclusions",
+     "quotes": [
+      "Our framework guides the derivation of an unconstrained COP from the constrained COP. This process results in a penalty-free cost Hamiltonian that is well-suited for QAOA.",
+      "Subsequently, the viable solutions obtained by QAOA are efficiently post-processed."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "scoop-twin-definition",
+     "value": "The paper defines SCOOP twins by four conditions on a constrained and an unconstrained problem: identical input domains, solution containment, objective function compatibility through a polynomial-time computable function, and solution enhance-ability by polynomial-time post-processing.",
+     "anchor": "Section III, definition of SCOOP twins",
+     "quotes": [
+      "Identical Input Domains: The problems share the same input domain I, i.e., I = IC = IU .",
+      "Solution Containment: for every instance x ∈ I, SolC (x) ⊆ SolU (x).",
+      "Objective Function Compatibility: For any x ∈ I there exists a polynomial-time computable function fx",
+      "Solution Enhance-ability: For each x ∈ I, and each s ∈ SolU"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III states the definition on which every later result depends.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scoop-derivation-steps",
+     "value": "The paper gives a five-step process to derive an unconstrained twin from a constrained problem: identify the constraints, quantify how far an infeasible solution satisfies them, build the objective, prove objective function compatibility, and prove solution enhance-ability.",
+     "anchor": "Section III",
+     "quotes": [
+      "Step 1 Identify the constraints of PC.",
+      "Step 4 Prove",
+      "objective function compatibility. Step 5 Prove solution enhance-ability."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III states the process.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The paper says the process 'may allow' a derivation; it is a recipe, not a guarantee that a twin exists for every constrained problem."
+    },
+    {
+     "id_suggestion": "scoop-twin-nphard-transfer",
+     "value": "The authors state that the existence of a SCOOP twin for a constrained problem yields NP-hardness of the twin whenever the constrained problem is NP-hard.",
+     "anchor": "Section III",
+     "quotes": [
+      "Note that the existence of the SCOOP twin PU for a given PC yields NP-hardness for PU as long as PC is NP-hard."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Stated in one sentence with no proof; the conclusion that MAXPES and MAXPSC are NP-hard rests on it."
+    },
+    {
+     "id_suggestion": "scoop-theorem-2-m3",
+     "value": "The paper states as Theorem 2 that, for an undirected simple graph G, G has a maximal matching of size k if and only if G has an edge subset PES with profit pPES = |E| − k, and gives a proof sketch that uses its post-processing algorithms for the reverse direction.",
+     "anchor": "Section V, Theorem 2",
+     "quotes": [
+      "Theorem 2. Let G = (V, E) be an undirected simple graph.",
+      "G has a maximal matching MM ⊆ E of size k if and only if G has a subset PES ⊆ E with profit pPES = |E| − k.",
+      "Proof. (Sketch)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Section V states the theorem and its condition; the proof is a sketch.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scoop-theorem-3-setcover",
+     "value": "The paper states as Theorem 3 that, for a universe U and a family C of subsets whose union equals U, U has a set cover of size k if and only if there is a subfamily PSC with profit pPSC = |U | − k, and gives a proof sketch.",
+     "anchor": "Section VI, Theorem 3",
+     "quotes": [
+      "Theorem 3. For any universe U and family C of subsets of U whose union equals U , U has a set cover of size k if and only if there is a subfamily PSC",
+      "⊆ C with profit pPSC = |U | − k."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Section VI states the theorem and its condition; the proof is a sketch.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scoop-post-processing-polynomial",
+     "value": "The authors state that Algorithm 1 converts a MAXPD solution to a dominating set in polynomial time while preserving solution quality, that the algorithm never reduces the profit when it expands PD, and that a maximal profitable edge set can be converted in polynomial time into a maximal matching.",
+     "anchor": "Sections IV and V, Algorithms 1 to 3",
+     "quotes": [
+      "Alg. 1 describes a polynomial-time post-processing",
+      "Note that the algorithm at no step when expanding PD reduces the profit.",
+      "can be converted in polynomial time into a maximal matching"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Each algorithm is a few lines of pseudo-code with a one-sentence argument; no complexity bound beyond 'polynomial' is given."
+    },
+    {
+     "id_suggestion": "scoop-maxpd-hubo",
+     "value": "The authors state that they formulated the HUBO of the constrained problem MINDS following the guidelines of Glover et al., that its penalty term applies to vertices not dominated, and that for the unconstrained problem MAXPD the goal is to maximize the unconstrained objective.",
+     "anchor": "Section IV, cost Hamiltonians",
+     "quotes": [
+      "We formulated the HUBO of the constrained COP MINDS following the guidelines of Glover et al. [11].",
+      "imposes a penalty for vertices that are not dominated by a factor of A.",
+      "For the unconstrained COP MAXPD, the goal is to maximize the unconstrained objective"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV states the formulation used in the experiments.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The penalty weights satisfy A > B in the paper's own notation; the experiments use A = 3 and B = 2 for the penalty baseline (Section VIII)."
+    },
+    {
+     "id_suggestion": "scoop-m3-penalty-qubo",
+     "value": "The paper presents Lucas's QUBO for the constrained problem M3, with a penalty term for two matched edges at one vertex, a penalty term for edges that could still be added, and a term that counts matched edges, for comparison with MAXPES.",
+     "anchor": "Section V, cost Hamiltonians for MAXPES and M3",
+     "quotes": [
+      "penalizes having two matched edges incident to the same vertex",
+      "penalizes states where an edge (u, v) could be added to the matching",
+      "thus enforcing maximality.",
+      "counts the number of matched edges, the optimal value of the total Hamiltonian corresponds to a minimum maximal"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The M3 penalty formulation needs auxiliary variables; the paper's experiments report M3 only through the MAXPES approximation ratio (Figure 4), not against this penalty form."
+    },
+    {
+     "id_suggestion": "scoop-maxpsc-hubo-no-penalty",
+     "value": "The authors state that for set cover the QUBO uses penalties to enforce that each element is covered, while MAXPSC is formulated as a HUBO that counts each element only once even if it appears in several subsets, without penalty terms.",
+     "anchor": "Section VI",
+     "quotes": [
+      "For MINSC, the QUBO formulation uses penalties",
+      "In contrast, we formulate MAXPSC as a HUBO",
+      "without the need for penalty terms."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VI states the formulation.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scoop-experimental-setup-simulator",
+     "value": "The authors report that all simulations used PennyLane's default qubit simulator with the RMSProp optimizer over 400 steps, a basic Pauli-X mixer, and layers up to 8.",
+     "anchor": "Section VII",
+     "quotes": [
+      "with classical optimization performed using the RMSProp (Root Mean Squared Propagation) optimizer over 400 steps.",
+      "a basic Pauli-X mixer",
+      "We performed QAOA simulations with the number of layers up to 8."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VII states the setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The paper reports a noiseless statevector simulator; no hardware or noise model is used."
+    },
+    {
+     "id_suggestion": "scoop-experimental-instances",
+     "value": "The authors report that the instances were random 3-regular graphs with n = {6, 8, 10} nodes, that results were averaged over 10 randomly generated graphs, and that exact MINDS solutions came from an integer linear program solved with the PuLP library.",
+     "anchor": "Section VII",
+     "quotes": [
+      "we generated random 3-regular graphs with n = {6, 8, 10} nodes.",
+      "The results, averaged over 10 randomly generated graphs, are presented in Fig. 4.",
+      "formulating the problem as an integer linear program and solving it with the PuLP library in Python."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VII states the instances and the baseline.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Ten graphs per size and sizes of at most ten nodes are a small test set."
+    },
+    {
+     "id_suggestion": "scoop-hubo-degree-four",
+     "value": "The authors state that on these regular graphs the dominating-set HUBO has higher-order terms of maximum degree four (quartic interactions), so QAOA runs on a cost function of degree 4 rather than the degree 2 typical of QUBOs.",
+     "anchor": "Sections VII and VIII",
+     "quotes": [
+      "results in higher-order terms in the HUBO with a maximum degree of four (quartic interactions).",
+      "the QAOA operates on a cost function of degree 4, rather than the more typical degree 2 in QUBOs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Sections VII and VIII state this property of the instances.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scoop-fig2-high-probability",
+     "value": "The authors report that, on the five-node sample graph with p in {1, 3, 5} layers, the probability of obtaining the optimal result is high (greater than 0.8) as the number of layers increases.",
+     "anchor": "Section VIII, Figure 2",
+     "quotes": [
+      "As the number of layers increases, we can see a high probability (greater than 0.8) of obtaining the optimal result.",
+      "for the five node graph shown in the inset of Fig. 2",
+      "MINDS with p ∈ {1, 3, 5} layers"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The sentence does not say whether the 0.8 applies to MAXPD, MAXPD after post-processing, or MINDS. The Figure 2 bars were not legible at page resolution."
+    },
+    {
+     "id_suggestion": "scoop-ratio-carries-to-constrained",
+     "value": "The authors claim that the approximation ratio derived for the SCOOP variants also holds for the constrained problems, and that Theorems 1 and 2 guarantee it remains valid under the constraints of MINDS and M3.",
+     "anchor": "Section VIII and Figure 4 caption",
+     "quotes": [
+      "Specifically, Theorem 1 and Theorem 2 guarantee that the approximation ratio remains valid under the imposed constraints of MINDS and M3.",
+      "Algs. 2 and 3 imply that this approximation ratio also applies to M3."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The ratio in the paper is a ratio of profits (expected profit over the maximum profit). The theorems relate solution size to profit by the map |V | − k, not by a ratio, so a profit ratio does not give a ratio on dominating-set size. The theorems show the post-processed set is no worse in profit, not that the ratio carries over. The paper states no such mapping."
+    },
+    {
+     "id_suggestion": "scoop-post-processing-never-worse",
+     "value": "The authors state that, because of the direct relationship with the constrained twin MINDS, post-processing the sampled solutions can only make the probability better, not worse, citing Theorem 1.",
+     "anchor": "Section VIII",
+     "quotes": [
+      "post-processing these solutions will only make the probability better (but not worse, see Theorem 1)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scoop-penalty-free-scales-claim",
+     "value": "The authors state that their approach scales for all inputs because it avoids penalizing solutions that do not satisfy the constraints, and that it supports the determination of near-optimal solutions.",
+     "anchor": "Section IX",
+     "quotes": [
+      "Our approach comes with the benefits that it scales for all inputs as it avoids penalizing solutions that do not satisfy the constraints"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The largest instance simulated is 10 nodes; no run supports 'scales for all inputs'."
+    },
+    {
+     "id_suggestion": "scoop-novelty-claim",
+     "value": "The authors state that, to their knowledge, experimental results for MINDS and M3 using quantum techniques were unexplored in the literature, while a later section says comprehensive MINDS experiments exist only on quantum annealing hardware (Dinneen et al., 2017).",
+     "anchor": "Section I contribution 5; Section VIII",
+     "quotes": [
+      "To the best of our knowledge, experimental results for both MINDS and M3 using quantum techniques remain unexplored in",
+      "In the past, for MINDS, comprehensive experiments have been done only on quantum annealing hardware by Dinneen et al. in 2017 [37]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The two statements differ unless 'quantum techniques' in the first means gate-based or QAOA methods; the paper does not say so."
+    },
+    {
+     "id_suggestion": "scoop-prior-penalty-challenge-cited",
+     "value": "The paper attributes to cited work that the penalty approach guarantees to retain optimal solutions but can encourage non-optimal infeasible solutions because choosing optimal penalty values is challenging.",
+     "anchor": "Section I",
+     "quotes": [
+      "While this approach guarantees",
+      "to retain optimal solutions, it can encourage nonoptimal infeasible solutions, since choosing optimal penalty values is challenging [12], [13]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scoop-prior-angara-cited",
+     "value": "The paper attributes to an earlier paper by Angara et al. (reference 8) a penalty-free approach with unconstrained profit variants of three problems, with improved approximation ratios and summed optimal and near-optimal probabilities, and QTensor simulation of QUBOs on graphs of up to 70 nodes.",
+     "anchor": "Section I; Section IX future work",
+     "quotes": [
+      "A third alternative, distinct from both penalty-based methods and feasibility-preserving approaches, was recently proposed by Angara et al. [8].",
+      "In Angara et al. [8], QTensor is used to simulate QUBOs for the unconstrained twins of constrained optimization problems on sparse and 3-regular graphs with up to 70 nodes."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scoop-other-twins-claim",
+     "value": "The authors state that the framework also applies to the three transformational equivalent problems MINVC, MAXIS and MAXCL featured in reference 8, and to MINEDS and MINIEDS through the twin MAXPES.",
+     "anchor": "Section V; Section IX; Table I",
+     "quotes": [
+      "Our SCOOP framework not only applies to the problems reported in this paper, but also to other NP-hard constrained COPs such as the three transformational equivalent problems (MINVC, MAXIS, and MAXCL) featured in [8].",
+      "MAXPES, however, again serves a SCOOP twin for MINIEDS"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reader's suggestion; coordinator grades.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scoop-future-work-limits",
+     "value": "The authors list as future work: extending the framework to a broader class of problems, analyzing the cost landscapes of HUBO formulations against quadratized counterparts, running QUBO and HUBO twins on IBM hardware, and extending QTensor, which can now formulate only QUBOs.",
+     "anchor": "Section IX, Future Work",
+     "quotes": [
+      "As part of future work, we aim to extend our framework to a broader class of constrained optimization",
+      "We plan to investigate HUBO formulations within the context of QAOA",
+      "In its current state, only QUBOs can be formulated for tensor network simulation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section IX states what is not yet done.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scoop-hubo-instance-dependent",
+     "value": "The authors note that whether higher-order terms must be used, and so whether a HUBO encodes into a cost Hamiltonian, is instance dependent and needs the structural properties of the problem.",
+     "anchor": "Section II",
+     "quotes": [
+      "We note that the feasibility of the encoding of HUBOs or HOTs into a cost Hamiltonians is instance dependent"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section II states the dependence.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "arrasmith-2021-effect-barren-plateaus-gradient-free",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2020-11_Arrasmith_Effect-of-barren-plateaus-on-gradient-free-optimization.pdf",
+   "title_in_file": "Effect of barren plateaus on gradient-free optimization (arXiv:2011.12245v2; published in Quantum 2021)",
+   "version_note": "The text layer carries the paper twice (two extraction passes); both agree. Figure 3 was not viewed as an image; its plotted values are not used.",
+   "pages": 12,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory-plus-simulation paper that proves cost-function differences are exponentially suppressed in a barren plateau (Proposition 1, Corollary 1) and shows by simulation that shot counts for Nelder-Mead, Powell and COBYLA grow exponentially with qubit number on a variational compiling task.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "arrasmith-cost-differences",
+     "verdict": "narrowed",
+     "note": "The result is a statement about the variance of the cost difference, with the mean zero, under stated conditions: the cost has the form of Eq. 1, it exhibits a barren plateau by Definition 1, and the number of parameters and the distance between the points are polynomial in the number of qubits. The proof gives an upper bound on the second moment.",
+     "value": "The paper proves in Proposition 1 that, if the cost exhibits a barren plateau according to Definition 1, the expected difference of the cost between two points is zero and its variance is exponentially vanishing with the number of qubits, under the assumptions that the number m of parameters is polynomial in the number of qubits and that each parameter sets a unitary generated by an operator with two distinct non-zero eigenvalues.",
+     "anchor": "Section 3.1, Proposition 1; Appendix A",
+     "quotes": [
+      "The following proposition constitutes the main result of our work. The proof is presented in the Appendix.",
+      "If the cost exhibits a barren plateau according to Definition 1, then the expectation value of the difference",
+      "and the variance is exponentially vanishing with n as",
+      "we assume that the number m of parameters in θ is in O(poly(n)).",
+      "This proposition asserts that the variance of cost function differences is exponentially suppressed in a barren plateau."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 1 is stated in Section 3.1 with its conditions and proved in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The Appendix bounds the second moment from above (a Cauchy-Schwartz bound giving m squared times L squared times F(n)). This is an upper bound on how large typical differences are; it does not say that every pair of points has a small difference."
+    },
+    {
+     "id": "arrasmith-scope",
+     "verdict": "confirmed",
+     "note": "The Discussion also states that careful choice of optimization strategy may extend the size limits of trainable problems, and that the exponential scaling is asymptotic; see the new assertions.",
+     "value": "",
+     "anchor": "Section 5, Discussion",
+     "quotes": [
+      "Our work casts doubt on the notion that the choice of optimizer could provide a strategy to avoid barren plateaus.",
+      "Proposition 1 is relevant to gradient-free optimizers that search through the landscape starting from a (random) initial point."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 5 states the scope of the result.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "arrasmith-shots-scaling",
+     "verdict": "narrowed",
+     "note": "The scaling is reported for one task (variational quantum compiling of the identity with a local cost, qubits 5 to 11), as the shots needed to reach a cost of 0.4. It is exponential for Powell, super-exponential for Nelder-Mead and only consistent with at least exponential for COBYLA, not exponential for all three as the stored value says.",
+     "value": "The authors report that, on a variational quantum compiling task for numbers of qubits n = 5, 6, . . . , 11, the total number of shots needed to reach a cost value C = 0.4 scales exponentially with n for the Powell method, super-exponentially for Nelder-Mead, and for COBYLA in a way that is not very regular but consistent with at least an exponential increase.",
+     "anchor": "Section 4, Figure 3",
+     "quotes": [
+      "In our numerics we simulated the aforementioned quantum compilation task for different numbers of qubits n = 5, 6, . . . , 11.",
+      "we ran the optimizer until a cost function value C = 0.4 was achieved or until a maximal total number of shots used throughout the optimization was surpassed.",
+      "Here we can see that the total number of shots scales exponentially with n for the Powell method, and scales super-exponentially for the Nelder-Mead optimizer.",
+      "For the COBYLA method, the Ntotal behavior as a function of n is not very regular but it is consistent with at least an exponential increase."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study on one task.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Seven qubit counts and 20 runs per point support a trend, not a fitted law."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "arrasmith-def-barren-plateau",
+     "value": "The paper defines a barren plateau for a cost function: the expectation of each cost partial derivative is zero and its variance vanishes exponentially with the number of qubits, taken over the parameters.",
+     "anchor": "Section 2.3, Definition 1",
+     "quotes": [
+      "This cost exhibits a barren plateau if, for all θμ ∈ θ, the expectation value of the cost function partial derivative",
+      "and its variance vanishes exponentially with the number of qubits n as"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2.3 states Definition 1, on which the proposition depends.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-bp-probabilistic",
+     "value": "The authors state that the barren plateau phenomenon is a probabilistic statement, and that by randomly initializing the parameters there is a high probability of ending in a flat region of the landscape where gradients are exponentially suppressed.",
+     "anchor": "Section 2.3",
+     "quotes": [
+      "the barren plateau phenomenon is a probabilistic statement.",
+      "by randomly initializing the",
+      "parameters θ, there is a high probability that one ends up in a flat region of the landscape where the gradients are exponentially suppressed."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 2.3 states how the definition is to be read.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-cost-setting",
+     "value": "The paper takes a general cost function summed over a training set of input states, assumes the number of parameters m is polynomial in the number of qubits, and states that this covers the mean squared error of a binary classifier and the cost of several variational quantum algorithms.",
+     "anchor": "Section 2.1, Eq. 1",
+     "quotes": [
+      "we assume that the number m of parameters in θ is in O(poly(n)).",
+      "In addition, the cost of several Variational Quantum Algorithms is covered by (1)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 2.1 states the setting of all later results.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-corollary-1",
+     "value": "The paper states as Corollary 1 that for two randomly chosen points in parameter space, under the same barren plateau condition, the expected cost difference is zero and its variance is exponentially vanishing in the number of qubits, with L the average distance between points, and says the proof follows from Proposition 1.",
+     "anchor": "Section 3.1, Corollary 1",
+     "quotes": [
+      "Corollary 1. Consider the cost function of Eq. (1). Let θA and θB be two randomly chosen points in parameter space.",
+      "is the average distance between any two points in parameter space.",
+      "The proof of Corollary 1 readily",
+      "follows from Proposition 1 by additionally computing the expectation value over L and"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Section 3.1 states the corollary and its derivation from Proposition 1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-high-probability-small-difference",
+     "value": "The authors state that, using the Chebyshev bound, the cost difference is with high probability exponentially vanishing with the system size, whether the two points are dependent or independent.",
+     "anchor": "Section 3.1, after Corollary 1, Eq. 12",
+     "quotes": [
+      "This implies that, with high probability, the difference ∆C will be exponentially vanishing with the system size, for both cases when θA and θB are dependent or independent."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A consequence stated in the text; the inequality's own sign is lost in the text layer, so its statement could not be quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-proof-method",
+     "value": "The authors prove Proposition 1 in Appendix A by writing the cost difference as a path-independent integral of the gradient along the line segment between the two points, taking the second moment, and bounding the covariances by variances with the Cauchy-Schwartz inequality, which gives a bound of m squared times L squared times F(n).",
+     "anchor": "Appendix A, proof of Proposition 1",
+     "quotes": [
+      "Proof of Proposition 1 We now prove our main result.",
+      "Note that as we are integrating over gradients (which form a conservative vector field by definition) this integral is path independent.",
+      "Next, we upper bound this covariance using the product of the variances using the Cauchy-Schwartz inequality"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Appendix A gives the proof in full.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound is an upper bound on the second moment."
+    },
+    {
+     "id_suggestion": "arrasmith-no-progress-claim",
+     "value": "The authors state that, without exponential precision, gradient-free optimizers will not make progress in the optimization, and that if an optimizer's precision requirement is not met each decision becomes randomly chosen by shot noise, so many optimizers become random walks or random sampling.",
+     "anchor": "Abstract; Section 3.2",
+     "quotes": [
+      "Hence, without exponential precision, gradient-free optimizers will not make progress in the optimization.",
+      "then each decision the method makes becomes randomly chosen by shot noise, leading"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An implication argued from Proposition 1, not proved separately.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Proposition 1 bounds the size of cost differences; the step to no progress rests on the assumption that decisions need differences larger than the shot noise."
+    },
+    {
+     "id_suggestion": "arrasmith-pertains-to-comparison-optimizers",
+     "value": "The authors state that the results of Proposition 1 pertain to gradient-free optimizers that compare points a given distance and direction apart, for example simplex-based methods such as Nelder-Mead.",
+     "anchor": "Section 3.2",
+     "quotes": [
+      "The results in Proposition 1 pertain to gradient-free optimizers that compare points that are a given distance and",
+      "direction apart."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 3.2 states which optimizers the proposition covers.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-random-methods-claim",
+     "value": "The authors state that random search methods and methods that use random initialization, such as Bayesian optimization, will also struggle in barren plateau landscapes, and that using randomness in selecting points cannot evade the exponential scaling result.",
+     "anchor": "Section 3.2",
+     "quotes": [
+      "that use random initialization, such as Bayesian optimization [54], will also struggle with barren plateau landscapes.",
+      "Therefore, using randomness",
+      "in the selection of points cannot evade this exponential scaling result."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An implication of Corollary 1 stated without a separate proof.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No simulation of Bayesian optimization is reported."
+    },
+    {
+     "id_suggestion": "arrasmith-distance-assumption",
+     "value": "The authors state that Proposition 1 and Corollary 1 make no assumption about how close or far the two points are, other than that the distance is polynomial in the number of qubits, and conclude that the results hold for both local and global optimizers.",
+     "anchor": "Section 3.2",
+     "quotes": [
+      "Let us finally remark that Proposition 1 and Corollary 1 make no assumption about how close (or far) the parameters θA and θB",
+      "are in parameter space other than that L",
+      "This means that our results are valid for both",
+      "local and global optimizers as sampling points that are further apart cannot overcome the suppressed slope."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 3.2 states the condition on the distance.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-quantum-speedup-claim",
+     "value": "The authors state that exponentially scaling sampling requirements hinder the possibility of achieving quantum speedup with such an algorithm.",
+     "anchor": "Section 3.2",
+     "quotes": [
+      "Exponentially scaling sampling requirements, in turn, hinder the possibility of achieving quantum speedup with such an"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own statement of the consequence.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-numerics-setup",
+     "value": "The authors report that the numerics simulate a variational quantum compiling task, with Nelder-Mead run in MATLAB and Powell and COBYLA run in SciPy, a layered hardware-efficient ansatz with the number of layers equal to the number of qubits, and each data point from a sample of 20 runs started at random angles.",
+     "anchor": "Section 4; Figure 3 caption",
+     "quotes": [
+      "These simulations were performed using MATLAB (Nelder-Mead) and SciPy (Powell and COBYLA).",
+      "Letting p be the number of layers in the ansatz in Fig. 2, we choose p = n, so that the depth grows linearly in n.",
+      "Each data point was obtained from",
+      "a sample of 20 runs initialized by random initial angles θ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 4 states the setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Nelder-Mead and the other two optimizers ran in different software, and default hyperparameters were used apart from termination; the paper states both."
+    },
+    {
+     "id_suggestion": "arrasmith-numerics-scope-threshold",
+     "value": "The authors state that they chose a relatively large cost threshold, C = 0.4, because they are interested in the initial stages of training, whether one can get past the barren plateau, so the shot count reflects only the burden of the barren plateau, not the difficulty of finding a minimum.",
+     "anchor": "Section 4",
+     "quotes": [
+      "We note that we chose a relatively large value (C = 0.4) for the cost threshold because we are interested in the initial",
+      "stages of the training process, i.e., the question of whether one can get past the barren plateau.",
+      "it only reflects the burden of the barren plateau."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 4 states what the experiment measures.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-gradient-descent-reference",
+     "value": "The authors report a custom gradient-descent optimizer as a reference in Figure 3, and state that, as expected, its total number of shots also scales exponentially.",
+     "anchor": "Section 4, Figure 3",
+     "quotes": [
+      "we also show in Fig. 3 results obtained with a custom gradientdescent optimizer",
+      "total number of shots also scales exponentially in this case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-scaling-caveats",
+     "value": "The authors state that the exponential scaling is a lower bound on the asymptotics, attribute the super-exponential Nelder-Mead scaling to likely premature shrinking of the simplex, say a similar effect for COBYLA is not clearly demonstrated in their data, and say it is likely that Powell scales better because statistical noise does not accumulate in its state.",
+     "anchor": "Section 5, Discussion",
+     "quotes": [
+      "We note that this exponential scaling is a lower bound",
+      "For the Nelder-Mead we find super-exponential scaling, likely due to the chances of prematurely shrinking the simplex when it is hard to order the cost values [46].",
+      "though this is not clearly demonstrated in our data.",
+      "It is likely that the reason Powell shows better scaling is that, unlike the other optimizers, statistical noise does not have a cumulative effect on the state of the optimizer."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' explanations are conjectures and are labelled likely.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No experiment isolates these mechanisms."
+    },
+    {
+     "id_suggestion": "arrasmith-constants-may-improve",
+     "value": "The authors state that, while the asymptotically exponential scaling cannot be avoided, a careful choice of optimization strategy, such as neural-network-based techniques or natural evolutionary strategies, may improve the constants multiplying the exponential scaling, and that all such strategies still require comparing cost values and so are subject to their scaling analysis.",
+     "anchor": "Section 5, Discussion",
+     "quotes": [
+      "While the asymptotically exponential scaling cannot be avoided, we note that the size",
+      "limits of trainable problems may be extended by a careful choice of optimization strategy.",
+      "may improve the",
+      "constants multiplying the exponential scaling.",
+      "at minimum require the comparison of cost function values at different points and thus are subject to our"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' statement of a limit of their result; the improvement is a possibility, not shown.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-future-work",
+     "value": "The authors state that future work should continue to develop strategies to avoid barren plateaus, and that they hope to develop a unified treatment of the impact of barren plateaus on gradient-based and gradient-free optimizers.",
+     "anchor": "Section 5, Discussion",
+     "quotes": [
+      "Future work certainly should continue to develop strategies to avoid them.",
+      "we hope to develop a unified treatment that covers the impact of barren plateaus on various types of optimizers, gradient-based and gradient-free."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 5 states that the treatment here is not unified.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-debate-cited",
+     "value": "The paper states that whether gradient-free optimizers are affected by barren plateaus is a topic of debate, with some arguing they are unaffected, and that it is widely believed that gradient-based optimizers are directly impacted.",
+     "anchor": "Abstract; Section 1",
+     "quotes": [
+      "whether or not gradient-free optimizers are impacted is a topic of debate",
+      "It is widely believed that gradientbased optimizers will be directly impacted by barren plateaus"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Background the paper reports, not its own result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-bp-causes-cited",
+     "value": "The paper attributes to cited work that deep random unstructured circuits forming 2-designs exhibit barren plateaus, that global cost functions exhibit barren plateaus for any circuit depth while local cost functions are trainable at depth logarithmic in the number of qubits, and that noise before and after each layer causes barren plateaus for circuits of linear or super-linear depth.",
+     "anchor": "Section 2.3",
+     "quotes": [
+      "deep random unstructured circuits which form 2-designs on n qubits will exhibit barren plateaus.",
+      "Hilbert spaces) exhibit barren plateaus for any circuit depth.",
+      "are trainable when",
+      "the ansatz depth is in O(log(n))",
+      "leads to exponentially vanishing gradients for circuits with linear or super-linear depth."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-higher-derivatives-cited",
+     "value": "The paper attributes to cited work that higher-order derivatives are also exponentially suppressed in a barren plateau, so optimizers that use them are also impacted.",
+     "anchor": "Section 1",
+     "quotes": [
+      "higher-order derivatives are also exponentially suppressed",
+      "in a barren plateau [23], so optimizers based on such derivatives will also be impacted."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to reference 23.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "arrasmith-nelder-mead-noise-cited",
+     "value": "The paper attributes to cited work that Nelder-Mead is vulnerable, when cost values carry errors large enough to cause comparison mistakes, to performing shrink operations prematurely, which slows the optimization and may give a false appearance of convergence.",
+     "anchor": "Section 2.2.1",
+     "quotes": [
+      "this algorithm is vulnerable to performing shrink operations prematurely, which slows the optimization down and may lead to a false appearance of convergence [46]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to reference 46.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "arunachalam-2025-testing-learning-structured-quantum-hamiltonians",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Arunachalam-Dutt-Escudero-Gutierrez_2024_Testing-and-learning-structured-quantum-Hamiltonians__2411.00082.pdf",
+   "title_in_file": "Testing and learning structured quantum Hamiltonians (arXiv:2411.00082v2, 6 Jun 2025)",
+   "version_note": "The text layer carries the paper twice (two extraction passes); the first was read in full and the second used to check quotes. Exponents, fractions and hats are printed flat in the text layer, so every bound is said in words in the values. Table 2 is scrambled in the text layer.",
+   "pages": 54,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper giving query-complexity upper bounds for testing and learning k-local and s-sparse n-qubit Hamiltonians from queries to e^{-iHt}, with and without n-qubit quantum memory (Pauli hashing for memory-less sparsity testing), plus lower bounds that the authors call polynomially weaker.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "hamiltonian-learning-memory-tradeoff",
+     "verdict": "widened",
+     "note": "Theorem 5.1 gives the memory-less bounds in full. The unstructured and sparse cases show the squared dependence on the norm and on epsilon; the local case shows only a log(n/delta) factor, because the squaring is hidden inside the constant in the exponent.",
+     "value": "The authors state in Theorem 5.1 that memory-less algorithms learn H up to error ε in l∞ error with a number of queries of order the eighth power of the norm of H times n over ε to the eighth power; for k-local H, in ε error in l2 norm using exp(O(k2+k log(∥H∥2/ε))) log(n/δ) queries and total evolution time; and for s-sparse H, with a number of queries of order the eighth power of the norm times s to the fourth power times n over ε to the eighth power. They explain that the memory-less subroutines incur quadratically more queries and an extra factor from a union bound over the possibly non-zero Pauli coefficients, a factor k log(n) for local Hamiltonians and a factor n when only sparsity is promised.",
+     "anchor": "Section 5.1, Theorem 5.1 and the text after it, p.32",
+     "quotes": [
+      "Theorem 5.1. Let H be a n-qubit traceless Hamiltonian. There",
+      "are memory-less algorithms with probability ≥ 1 − δ such that",
+      "they learn H up to error ε in l∞ error using O(∥H∥8n/ε8) queries",
+      "they learn H in ε error in l2 norm using just exp(O(k2+k log(∥H∥2/ε))) log(n/δ) queries and total evolution time.",
+      "using just O(∥H∥8s4n/ε8) queries",
+      "The memory-less subroutines, Lemmas 3.3 and 3.6, incur in quadratically more",
+      "factor due to the union bound over the set of potentially non-zero Pauli coefficients of H that appears in the proof of Lemma 3.3.",
+      "so in this case we pay just a factor k log(n) when applying Lemma 3.3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5.1 is stated with its conditions in Section 5.1; its proof is a short reduction to Theorems 4.6, 4.7 and 4.9.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "For the local case the squaring of the query count is absorbed in the O inside the exponent, so the abstract's 'squaring the query complexity' is visible only for the unstructured and sparse cases. The abstract's own wording for the sparse case, a factor n, matches the theorem."
+    },
+    {
+     "id": "learning-needs-n-qubit-memory",
+     "verdict": "narrowed",
+     "note": "The independence of n is for the query count and total evolution time. The unstructured learner's classical time complexity is polynomial in n, which the same theorem states.",
+     "value": "The authors state that their learning results have no dependence on the system size n but require n-qubit quantum memory; the theorem for the unstructured learner states that the algorithm uses n ancilla qubits and that its time complexity is polynomial in n, 1/ε and the norm of H.",
+     "anchor": "Abstract item 3; Section 4.3, Theorem 4.6",
+     "quotes": [
+      "The learning results stated above have no dependence on the system size n, but require n-qubit quantum memory.",
+      "the algorithm uses n ancilla qubits and only one round of adaptivity, and the time complexity is poly(n, 1/ε, ∥H∥)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The abstract and Theorem 4.6 state the memory requirement and the time complexity.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "'No dependence on n' means queries and evolution time; classical processing still scales with n."
+    },
+    {
+     "id": "no-spam-robustness",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 1.4, item 2, p.8",
+     "quotes": [
+      "It would be desirable to make the protocols introduced in this work to be robust to SPAM noise.",
+      "A potential approach is to adapt strategies in [FW20]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 1.4 lists robustness to SPAM noise as an open item.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "ham-setup-pauli-queries",
+     "value": "The paper sets the problem as testing and learning an n-qubit Hamiltonian expanded in the Pauli basis from queries to its evolution operator, where a query prepares a state, applies the evolution operator (possibly tensored with identity) and measures.",
+     "anchor": "Abstract; Section 1.1, p.4",
+     "quotes": [
+      "We consider the problems of testing and learning an n-qubit",
+      "prepare a desired state, apply U (t) or tensor products of U (t) with identity to the state, and finally measure in a chosen basis."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The Abstract and Section 1.1 state the model.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-setup-normalization-distance",
+     "value": "The paper imposes the normalization that the operator norm of H is at most one, and takes the normalized Frobenius norm as the distance between Hamiltonians, which equals the l2 norm of the Pauli spectrum.",
+     "anchor": "Section 1.1, p.4",
+     "quotes": [
+      "It is usual to impose the normalization condition ∥H∥op ≤ 1",
+      "Throughout this paper, we will consider the normalized Frobenius norm as the distance between Hamiltonians, unless otherwise stated."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 1.1 states the normalization and distance.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-setup-closeness-problems",
+     "value": "The paper defines a Hamiltonian as ε-far from a property if its distance exceeds ε for every Hamiltonian with the property, and otherwise ε-close; Problem 1.1 is tolerant testing between ε1-close and ε2-far, and Problem 1.2 is learning to error ε, for an unknown H with operator norm at most one and zero trace.",
+     "anchor": "Section 1.1, p.4",
+     "quotes": [
+      "if d(H, H′) > ε for every H′ ∈ H, and otherwise is ε-close.",
+      "Let H be a property and let H be an unknown Hamiltonian with ∥H∥op ≤ 1 and Tr[H] = 0.",
+      "Problem 1.1 (Tolerant testing). Promised H is either ε1-close or ε2-far from satisfying property H, decide which is the case by making queries to U (t).",
+      "Problem 1.2 (Hamiltonian learning). Promised H"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 1.1 defines the problems.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-setup-local-sparse-defs",
+     "value": "The paper defines s-sparse Hamiltonians as those whose Pauli expansion has at most s non-zero Pauli operators, and k-local Hamiltonians as those involving Pauli operators acting non-trivially on a limited number of qubits.",
+     "anchor": "Section 1, p.4; Section 2.1",
+     "quotes": [
+      "s-sparse Hamiltonians whose Pauli expansion contains at most s non-",
+      "zero Pauli operators i.e., |S| ≤ s.",
+      "k-local Hamiltonians which involve Pauli operators that act non-trivially on all but at most k qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 1 gives the definitions.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The sentence says 'act non-trivially on all but at most k qubits', which read literally means non-trivial on at least n minus k qubits. Section 2.1 defines the weight |x| as the number of non-identity positions and H>k by |x|>k, so the intended meaning is at most k non-identity positions."
+    },
+    {
+     "id_suggestion": "ham-distance-to-structure",
+     "value": "The paper states that the distance of H to the k-local Hamiltonians is the norm of the part of H with Pauli weight above k, and that the closest s-sparse Hamiltonian is the one keeping the s largest-magnitude Pauli coefficients.",
+     "anchor": "Section 2.1, p.10",
+     "quotes": [
+      "We note that the distance of a Hamiltonian H from the space of k-local Hamiltonians",
+      "is given by ∥H>k∥2, as H≤k is the k-local Hamiltonian closest to H.",
+      "is the closest s-sparse Hamiltonian to H, so the l2-distance of H to the space of s-sparse Hamiltonians is"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2.1 states the distances used throughout.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-fact-2-1-pauli-sampling",
+     "value": "The paper states as Fact 2.1 that, given access to a unitary U, one can sample from the distribution of its squared Pauli coefficients, by applying U tensor identity to n EPR pairs and measuring in the Bell basis, which uses an n-qubit ancilla.",
+     "anchor": "Section 2.2, Fact 2.1, p.11",
+     "quotes": [
+      "Fact 2.1. Given access to a unitary U , one can sample from the distribution {|Ux|2}x.",
+      "The proof simply follows by applying U ⊗ Id2n to n EPR pairs (i.e., preparing the",
+      "ChoiJamiolkowski state of U ) and measuring in the Bell basis"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Fact 2.1 is stated with its short proof in Section 2.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-taylor-expansion",
+     "value": "The paper uses a first-order Taylor expansion of the evolution operator with a remainder whose operator norm is at most one, for t at most one half, with c a constant.",
+     "anchor": "Section 2.2, Eq. 1, p.11",
+     "quotes": [
+      "U (t) = e−itH = Id2n −itH + ct2R1(t)∥H∥2op (1) for t ≤",
+      "1/2, where the first order remainder R1(t) is bounded ∥R1(t)∥op ≤ 1 and c > 1 is a constant."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 2.2 states the expansion all short-time arguments rely on.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-claim-2-7-pauli-channel-distance",
+     "value": "The paper states as Claim 2.7 that for an n-qubit Pauli channel E, if the distance of E to s-sparse channels is at most ε1 then the energy of its top s error rates is at least 1 − 2ε1, and if the distance is at least ε2 then that energy is at most 1 − ε2, with distance the total variation distance between error rates.",
+     "anchor": "Section 2.6, Claim 2.7, p.13",
+     "quotes": [
+      "Claim 2.7. Let E be an n-qubit Pauli channel. Then, distance d(E, s-sparse) of E to the set of s-sparse Pauli channels satisfies (a) d(E, s-sparse) ≤ ε1 =⇒ Energy(E; s) ≥ 1 − 2ε1, (b) d(E,",
+      "s-sparse) ≥ ε2 =⇒ Energy(E; s) ≤ 1 − ε2.",
+      "as the total variation distance between the error rates"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Claim 2.7 is stated and proved in Section 2.6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-lemma-3-1-local-gap",
+     "value": "The paper states as Lemma 3.1 that, for 0 ≤ ε1 < ε2, α = (ε2 − ε1)/(3c) and an n-qubit H with operator norm at most one, the non-local part of the short-time evolution operator has 2-norm below one bound when H is ε1-close to k-local and above a larger bound when H is ε2-far from k-local; the bounds are printed in the text layer as quoted.",
+     "anchor": "Section 3.1, Lemma 3.1, p.14",
+     "quotes": [
+      "Lemma 3.1. Let 0 ≤ ε1 < ε2. Let α = (ε2 − ε1)/(3c) and H be an n-qubit Hamiltonian with ∥H∥op ≤ 1, where c is the constant appearing in Eq. (1).",
+      "k-local, then ∥U (α)>k∥2 ≤ (ε2 − ε1 ) 2ε1 + 9c ε2 , and if H is ε2-far from being k-local, then ∥U (α)>k∥2 ≥ (ε2 − ε1) ε1 + 2ε2 9c ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 3.1 is stated with its conditions and proved in Section 3.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The reader rechecked the algebra from the proof: with alpha as stated the two bounds are (ε2 − ε1)(2ε1 + ε2)/(9c) and (ε2 − ε1)(ε1 + 2ε2)/(9c), whose gap is (ε2 − ε1) squared over 9c. The text layer prints the fractions flat."
+    },
+    {
+     "id_suggestion": "ham-lemma-3-2-sparse-gap",
+     "value": "The paper states as Lemma 3.2 that, for H with operator norm at most one and zero trace and t in (0, 1), the top energy at time t is at least one minus ε1 squared times t squared minus a term of order t cubed times s when H is ε1-close to s-sparse, and at most one minus ε2 squared times t squared plus a term of order t cubed times s when H is ε2-far from s-sparse.",
+     "anchor": "Section 3.2, Lemma 3.2, p.15",
+     "quotes": [
+      "Lemma 3.2. Let H be a n-qubit Hamiltonian with ∥H∥op ≤ 1 and Tr[H] = 0. Let t ∈ (0, 1).",
+      "if H is ε1-close to s-sparse, then TopEnergy(t; s) ≥ 1 − ε21t2 − O(t3s).",
+      "if H is ε2-far from s-sparse, then",
+      "TopEnergy(t; s) ≤ 1 − ε22t2 + O(t3s)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 3.2 is stated with its conditions and proved in Section 3.2 by a second-order Taylor expansion.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof uses a second-order expansion; the O(t3 s) term means t must be small compared with 1/s for the gap to survive, which is why the testers take t of order (ε2 squared minus ε1 squared)/s."
+    },
+    {
+     "id_suggestion": "ham-prop-3-7-hashing",
+     "value": "The paper states as Proposition 3.7 properties of a random subgroup of Pauli strings, including that a dimension t of at least 2 log s + log(3) makes all elements of any set of at most s + 1 strings fall into different buckets with probability at least 2/3, and that the indicator variables of two distinct strings in a bucket are independent.",
+     "anchor": "Section 3.4.1, Proposition 3.7, p.22",
+     "quotes": [
+      "Proposition 3.7. The following facts are true for the random coset structure described so far.",
+      "(iii) Suppose S ⊂ F22n with |S| ≤ s + 1. Then, t ≥ 2 log s + log(3) ensures all elements in S fall into different buckets with probability at least 2/3.",
+      "i.e., the random variables [α ∈ C(b)] and [α′ ∈ C(b)] are independent."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 3.7 is stated and proved in Section 3.4.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-fact-3-9-weight-estimation",
+     "value": "The paper states as Fact 3.9 that the weight of a function f on a coset a + V can be estimated up to ε error with probability 1 − δ using O(1/ε2 log(1/δ)) queries to f, by the Hoeffding bound.",
+     "anchor": "Section 3.4.2, Fact 3.9, p.23",
+     "quotes": [
+      "Fact 3.9. The weight of the function f on a coset a + V can be evaluated as",
+      "This can be estimated up to ε-error with probability 1 − δ using O(1/ε2 log(1/δ)) queries to f"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Fact 3.9 is stated and proved in Section 3.4.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-lemma-3-3-memoryless-pauli-sampling",
+     "value": "The paper states as Lemma 3.3 that, for an n-qubit unitary and a set S of Pauli labels, a memory-less algorithm making O log(|S|/δ)/ε2 queries on stabilizer states with Clifford measurements estimates each squared Pauli coefficient in S to within ε; the proof uses mutually unbiased bases forming a 2-design.",
+     "anchor": "Section 3.3.1, Lemma 3.3, p.17-19",
+     "quotes": [
+      "Lemma 3.3. Let U be a n-qubit unitary,",
+      "let S ⊆ {0, 1}2n. There is an memory-less algorithm that makes O log(|S|/δ)/ε2 queries to the unitary on stabilizer states and performing Clifford measurements can provides estimates",
+      "Also, Bi are mutually unbiased bases and form a 2-design, meaning that"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 3.3 is stated with its conditions and proved in Section 3.3.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The |S| inside the logarithm is the source of the extra factor n or k log n in Theorem 5.1, because S must contain every possibly non-zero Pauli coefficient."
+    },
+    {
+     "id_suggestion": "ham-lemma-3-4-cited-junta",
+     "value": "The paper attributes to Wang [Wan11] Lemma 3.4: if an n-qubit unitary is ε1-close to a k-junta in 2-norm, some set K of k qubits holds Pauli weight at least one minus ε1 squared, and if it is ε2-far, every such set holds at most one minus ε2 squared over four.",
+     "anchor": "Section 3.3.1, Lemma 3.4, p.19",
+     "quotes": [
+      "Lemma 3.4 ([Wan11]). Let U be an n-qubit unitary. If U is",
+      "ε1-close to k-junta in 2-norm, then there exists K ⊆ [n] of size k such that"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A lemma the paper attributes to reference Wan11.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The far-case bound is printed in the text layer as '− ε22 4'; the statement could not be quoted in full."
+    },
+    {
+     "id_suggestion": "ham-prop-3-5-junta-tester",
+     "value": "The paper states as Proposition 3.5 that, for an n-qubit unitary with 0 < 2ε1 < ε2, one can test ε2-far versus ε1-close to k-junta in 2-norm with a number of queries of order 16 to the power k over (ε2 − ε1) to the fourth power using n qubits of memory, and 16 to the power k times n over the same factor without memory.",
+     "anchor": "Section 3.3.1, Proposition 3.5, p.19",
+     "quotes": [
+      "Proposition 3.5. Let U be an n-qubit unitary and 0 < 2ε1 < ε2.",
+      "One can test whether U is ε2-far or ε1-close to k-junta in 2-norm by making O(16k/(ε2 −ε1)4) queries to U with n",
+      "qubits of memory. In absence of memory, O(16kn/(ε2 − ε1)4) queries are sufficient."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 3.5 is stated with its conditions and proved in Section 3.3.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Three different bases appear for the k-dependence of the same tester: 'O(4k)' in Section 1.3 (printed flat, so 4 to the k), 'O(exp(k) poly(1/(ε2 − ε1)))' in the paragraph before Lemma 3.4, and 16 to the k in Proposition 3.5. All are exponential in k; the constants differ."
+    },
+    {
+     "id_suggestion": "ham-lemma-3-6-memoryless-coefficient",
+     "value": "The paper states as Lemma 3.6 that, for a traceless n-qubit Hamiltonian, a memory-less algorithm (Algorithm 3) making O(∥H∥4/ε4) queries to U (ε/∥H∥2) on a product state with Pauli measurements outputs an estimate of any Pauli coefficient within ε.",
+     "anchor": "Section 3.3.2, Lemma 3.6, p.20",
+     "quotes": [
+      "Lemma 3.6. Let x ∈ {0, 1}2n and let H be an n-qubit traceless Hamiltonian.",
+      "There is a memoryless algorithm (Algorithm 3) that by making O(∥H∥4/ε4) queries to U (ε/∥H∥2) on a product state and making Pauli measurements can output an estimate"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 3.6 is stated and proved in Section 3.3.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-theorem-4-1-locality-tester",
+     "value": "The paper states as Theorem 4.1 that Algorithm 4 solves the locality testing problem (Problem 1.1 with the property of being k-local) with probability at least 1 − δ using a number of queries of order one over (ε2 − ε1) to the fourth power times log(1/δ), and a total evolution time of order one over (ε2 − ε1) cubed times log(1/δ), with no dependence on n.",
+     "anchor": "Section 4.1, Theorem 4.1, p.24",
+     "quotes": [
+      "Theorem 4.1. Algorithm 4 solves the locality testing problem (Problem 1.1 with the property of being k-local) with probability ≥ 1 − δ, by making O(1/(ε2 −",
+      "ε1)4 · log(1/δ)) queries to the evolution operator and with O(1/(ε2 − ε1)3 · log(1/δ)) total evolution time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.1 is stated and proved in Section 4.1; its conditions are those of Problem 1.1 (operator norm at most one, zero trace).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The algorithm needs n EPR pairs, so it uses n qubits of quantum memory."
+    },
+    {
+     "id_suggestion": "ham-theorem-4-2-multiple-supports",
+     "value": "The paper states as Theorem 4.2 that, with O(1/(ε2 − ε1)4 log(M/δ)) queries and O(1/(ε2 − ε1)3 log(M/δ)) total evolution time, one can simultaneously test for M supports whether H is ε1-close or ε2-far from being supported on each of them.",
+     "anchor": "Section 4.1, Theorem 4.2, p.24",
+     "quotes": [
+      "Then, with O(1/(ε2 − ε1)4 log(M/δ)) queries and O(1/(ε2 − ε1)3 log(M/δ)) total evolution time one can simultaneously, for every i",
+      "Theorem 4.2.",
+      "test if H is ε1-close or or ε2-far from being supported on Si."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.2 is stated in Section 4.1 as a union-bound extension of Theorem 4.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The statement is printed with parts missing in the text layer; the first quote is the label and the other two are the readable parts of the claim."
+    },
+    {
+     "id_suggestion": "ham-theorem-4-3-sparsity-tester",
+     "value": "The paper states as Theorem 4.3 that Algorithm 5 solves the s-sparsity testing problem with probability at least 1−δ using a number of queries of order s to the sixth power over (ε22 − ε12) to the sixth power times log(1/δ), and a total evolution time of order s to the fifth over the same factor to the fifth.",
+     "anchor": "Section 4.2, Theorem 4.3, p.26",
+     "quotes": [
+      "Theorem 4.3. Algorithm 5 solves the s-sparsity testing problem with",
+      "by making O(s6/(ε22 − ε12)6 · log(1/δ)) queries to the evolution operator and with O(s5/(ε22 − ε12)5 · log(1/δ)) total evolution time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.3 is stated and proved in Section 4.2 using Lemma 3.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The probability condition '≥ 1−δ' is cut by the text layer between the two quotes. The proof estimates TopEnergy to accuracy of order (ε2 squared minus ε1 squared) cubed over s squared, from which the sixth and fifth powers follow."
+    },
+    {
+     "id_suggestion": "ham-theorem-4-4-not-so-tolerant",
+     "value": "The paper states as Theorem 4.4 that, for a traceless Hamiltonian with operator norm at most one and ε1 of order ε2 over the square root of s, Algorithm 6 solves s-sparsity testing with a number of queries of order s squared over ε2 to the fourth times log(1/δ) and total evolution time of order s to the 1.5 over ε2 cubed times log(1/δ).",
+     "anchor": "Section 4.2, Theorem 4.4, p.27",
+     "quotes": [
+      "Theorem 4.4. Let H be a traceless Hamiltonian with ∥H∥op ≤ 1. Algorithm 6 solves the s-sparsity testing problem with probability ≥ 1−δ for ε1 = O(ε2/s0.5).",
+      "operator and uses O(s1.5/ε23 · log(1/δ)) total evolution time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.4 is stated with its regime and proved in Section 4.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof sets the failure probability to one third and invokes majority voting for smaller values."
+    },
+    {
+     "id_suggestion": "ham-lemma-4-5-clifford-shadows-coeffs",
+     "value": "The paper states as Lemma 4.5 that, for a traceless n-qubit Hamiltonian and a set X of Pauli labels, Algorithm 7 estimates the coefficients in X with success probability at least 1 − δ using O((log |X |/δ)∥H∥4/ε4) queries and O(log(|X |/δ)∥H∥2/ε3) total evolution time, with n ancillas and a minimum evolution time of ε/∥H∥2.",
+     "anchor": "Section 4.3, Lemma 4.5, p.29",
+     "quotes": [
+      "Lemma 4.5. Let H be an n-qubit",
+      "Then, Algorithm 7 allows to estimate the Pauli coefficients corresponding to X with success probability ≥ 1 − δ. It uses O((log |X |/δ)∥H∥4/ε4) queries and",
+      "O(log(|X |/δ)∥H∥2/ε3) total evolution time. The minimum evolution time is ε/∥H∥2, the number of ancillas is n,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 4.5 is stated and proved in Section 4.3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-theorem-4-6-unstructured-learning",
+     "value": "The paper states as Theorem 4.6 that, for an n-qubit traceless Hamiltonian, Algorithm 8 ε-learns H in the l∞ norm with success probability at least 1 − δ using O((∥H∥/ε)4) queries and O(∥H∥2/ε3) total evolution time, n ancilla qubits and one round of adaptivity, with time complexity poly(n, 1/ε, ∥H∥).",
+     "anchor": "Section 4.3, Theorem 4.6, p.30",
+     "quotes": [
+      "Theorem 4.6 (Learning unstructured Hamiltonians). Let H be an n-qubit and traceless",
+      "Then, Algorithm 8 ε-learns H in the l∞ norm with success probability ≥ 1 − δ. It uses O((∥H∥/ε)4) queries to the evolution operator and O(∥H∥2/ε3) total evolution time.",
+      "the algorithm uses n ancilla qubits and only one round of adaptivity, and the time complexity is poly(n, 1/ε, ∥H∥)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.6 is stated with its conditions and proved in Section 4.3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "In the proof the query count is written 2T = Õ(∥H∥4/ε4) with a logarithmic factor, while the theorem and the abstract state O(1/ε4). The tilde is the paper's own."
+    },
+    {
+     "id_suggestion": "ham-proof-4-6-query-count",
+     "value": "The paper's proof of the unstructured learning theorem states that the query complexity is 2T = Õ(∥H∥4/ε4) with minimum evolution time Θ(ε/∥H∥2) and total time evolution O(∥H∥2/ε3).",
+     "anchor": "Section 4.3, proof of Theorem 4.6, p.30",
+     "quotes": [
+      "The query complexity is 2T = O ̃(∥H∥4/ε4), the minimum evolution time t0 = Θ(ε/∥H∥2) and the total time evolution 2T t0 = O(∥H∥2/ε3)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The proof states the count with the logarithmic factor hidden by the tilde.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-theorem-4-7-local-learning",
+     "value": "The paper states as Theorem 4.7 that, for an n-qubit k-local Hamiltonian, Algorithm 9 outputs an estimate within ε in l2 norm with probability at least 1−δ, using exp(O(k2+k log(∥H∥2/ε)) log(1/δ) queries and the same total evolution time, and proves it with the non-commutative Bohnenblust-Hille inequality.",
+     "anchor": "Section 4.3.1, Theorem 4.7, p.30",
+     "quotes": [
+      "Theorem 4.7. Given a n-qubit k-local Hamiltonian H, Algorithm 9 outputs H such that with probability ≥ 1−δ satisfies ∥H",
+      "−H∥l2 ≤ ε.",
+      "The algorithm makes exp(O(k2+k log(∥H∥2/ε)) log(1/δ) queries to the evolution operator"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.7 is stated and proved in Section 4.3.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The statement does not repeat the traceless condition of Theorem 4.6, on which it rests. The abstract and Result 1.6 write the bound as O(exp(k2 + k log(1/ε))), with the O outside the exponential; the theorem writes exp(O(...)) with the O inside. From the proof's parameters, gamma is (ε/∥H∥2) to the k+1 times exp(−k(k+1)/2) and beta is gamma times ε/∥H∥, and Algorithm 8 then needs about one over beta to the fourth queries, which gives constants of two and four on k squared and k log(1/ε) in the exponent. The O inside the exponent is what the proof supports. Equation 32 ends in O(ε) although the sentence introducing it says each term is at most O(ε2)."
+    },
+    {
+     "id_suggestion": "ham-theorem-4-8-bohnenblust-hille-cited",
+     "value": "The paper uses, as Theorem 4.8, the non-commutative Bohnenblust-Hille inequality for k-local Hamiltonians with a universal constant C, citing Volberg and Zhang [VZ23].",
+     "anchor": "Section 4.3.1, Theorem 4.8, p.30",
+     "quotes": [
+      "Theorem 4.8 (Non-Commutative Bohnenblust-Hille inequality).",
+      "Then, there is a universal constant C such that",
+      "Bohnenblust-Hille inequality [VZ23]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to reference VZ23.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The inequality itself is printed with its exponents flat in the text layer, so it is not quoted."
+    },
+    {
+     "id_suggestion": "ham-theorem-4-9-sparse-learning",
+     "value": "The paper states as Theorem 4.9 that, for an s-sparse Hamiltonian, the sparse learner outputs an estimate within ε in l∞ with probability at least 1 − δ using O(∥H∥4/ε4 · log(1/δ)) queries, never outputs a non-zero coefficient where the true coefficient is zero, and with ε = ε′/√s achieves l2 error ε′ using O(∥H∥4s2/ε′4 · log(1/δ)) queries.",
+     "anchor": "Section 4.3.2, Theorem 4.9, p.31",
+     "quotes": [
+      "Theorem 4.9 (Sparse Hamiltonian learning). Given an n-qubit, s-sparse Hamiltonian H,",
+      "uses O(∥H∥4/ε4 · log(1/δ)) queries and O(∥H∥2/ε3 · log(1/δ)) total evolution time.",
+      "In this case, the algorithm uses O(∥H∥4s2/ε′4 · log(1/δ)) queries and O(∥H∥2s1.5/ε′3 · log(1/δ)) total evolution time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.9 is stated and proved in Section 4.3.2 from Theorem 4.6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-testing-vs-learning-remark",
+     "value": "The authors state that their testing complexity is larger than their learning complexity, which might make testing seem trivial, but that tolerant testing is a harder framework in which it is unclear whether proper learning algorithms imply tolerant testing algorithms.",
+     "anchor": "Section 4.3.2, p.32",
+     "quotes": [
+      "We remark here that, our",
+      "testing complexity is larger than our learning complexity, which might make it seem as if our testing result is trivial.",
+      "in this harder framework, it is unclear if proper learning algorithms imply tolerant testing algorithms."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own remark.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-claim-5-2-bucket-energy",
+     "value": "The paper states as Claim 5.2 that, for a subspace of dimension t, the energy of each bucket can be estimated to error ε with probability 1 − δ using O(2t/ε2 log(2t/δ)) queries, requiring only Pauli eigenstate preparation and Pauli measurements.",
+     "anchor": "Section 5.2.1, Claim 5.2, p.34",
+     "quotes": [
+      "Claim 5.2. Let H be a subspace of dimension t. Then, the energy E(b) of each bucket b ∈ F2t can be estimated upto error ε with probability 1 − δ using O(2t/ε2",
+      "· log(2t/δ)) queries. This only requires preparation of Pauli eigenstates and Pauli measurements."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Claim 5.2 is stated and proved in Section 5.2.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-theorem-5-3-pauli-channel-sparsity",
+     "value": "The paper states as Theorem 5.3 that one can test whether an n-qubit Pauli channel is ε1-close or ε2-far from s-sparse in diamond norm with probability at least 0.9 using a number of queries of order s squared over (ε2 − ε1) to the sixth power times logarithmic factors, with no quantum memory and only Pauli eigenstate preparations or Pauli measurements.",
+     "anchor": "Section 5.2.2, Theorem 5.3, p.34",
+     "quotes": [
+      "Theorem 5.3. Let E be an n-qubit Pauli channel. We can test if E is ε1-close or ε2-far from being s-sparse in diamond norm with probability ≥ 0.9 using s2 O (ε2 − ε1)6 log + log s (ε2 − ε1) queries to E.",
+      "These queries involve no quantum memory and only Pauli eigenstate preparations or Pauli measurements."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5.3 is stated in Section 5.2.2 with its conditions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Algorithm 11 requires 0 ≤ 2ε1 < ε2 < 1 and sets its accuracy to (ε2 − 2ε1)/3, while the theorem is stated for any ε1 below ε2 with the count in (ε2 − ε1). The proof of Theorem 5.3 substitutes (ε2 − ε1) for (ε2 − 2ε1) in the query count. The count in the accuracy actually used would be of order s squared over (ε2 − 2ε1) to the sixth, which is larger as ε2 approaches 2ε1."
+    },
+    {
+     "id_suggestion": "ham-algorithm-11-requirement",
+     "value": "The paper's Algorithm 11 for testing s-sparsity of Pauli channels takes error parameters with 2ε1 less than ε2 and less than one, samples a random subgroup of dimension of order log s, and accepts or rejects by comparing the top-s bucket energy with thresholds.",
+     "anchor": "Section 5.2.1, Algorithm 11, p.34",
+     "quotes": [
+      "Algorithm 11 Testing s-sparsity of Pauli channels Input: A Pauli channel E, sparsity",
+      "parameter s, error parameters 0 ≤ 2ε1 < ε2 < 1 1: Randomly sample a subgroup H of dimension t = O(log s)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The algorithm box states its own input condition.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-lemma-5-4-hashing-error",
+     "value": "The paper states as Lemma 5.4 that, for ε in (0, 1/2] and a random subgroup of dimension t at least log(2s/ε2), the hashing error is at most 6ε with probability at least 0.96, and proves it with Chebyshev's inequality using Claim 5.5.",
+     "anchor": "Section 5.2.2, Lemma 5.4, p.36",
+     "quotes": [
+      "Lemma 5.4. Let ε ∈ (0, 1/2]. Suppose H is a random subgroup of dimension t ≥ log(2s/ε2), then PrH [err(E; H, s) ≤ 6ε] ≥ 0.96 .",
+      "Using Chebyshev's inequality along with Claim 5.5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 5.4 is stated and proved in Section 5.2.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The reader checked the end of the proof: with t equal to log(2s/ε2) the mean and variance bounds are ε and ε squared, and a equal to 5 in Chebyshev gives 6ε with probability 0.96."
+    },
+    {
+     "id_suggestion": "ham-claim-5-6-estimation-error",
+     "value": "The paper states as Claim 5.6 that, for a random subgroup of dimension t at least log(2s/ε2), a query count of order s squared over ε to the sixth times logarithmic factors makes the estimate of the top-s energy accurate to ε with probability at least 0.92.",
+     "anchor": "Section 5.2.2, Claim 5.6, p.37",
+     "quotes": [
+      "Claim 5.6. Suppose H is a random subgroup of dimension t. If t ≥ log(2s/ε2), then with query complexity O s2 ε6 log 1 ε + log s , we have PrH [|Γ − Energy(E; s)| ≤ ε] ≥ 0.92 ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Claim 5.6 is stated and proved in Section 5.2.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof says the hashing error is at most ε/2 for t at least log(2s/ε2); Lemma 5.4 gives 6ε for that t, so a constant factor in t, and so in the query count, is needed. It does not change the order."
+    },
+    {
+     "id_suggestion": "ham-theorem-5-7-memoryless-sparsity-testing",
+     "value": "The paper states as Theorem 5.7 that, for H with operator norm at most one, one can test ε1-close versus ε2-far from s-sparse in normalized Frobenius norm with probability above 0.9, with no quantum memory, using a number of queries of order s to the fourteenth over (ε22 − ε21) to the eighteenth times logarithmic factors for t of order (ε22 − ε12)/s, and a total evolution time of order s to the thirteenth times log s over (ε22 − ε12) to the seventeenth.",
+     "anchor": "Section 5.3, Theorem 5.7, p.38",
+     "quotes": [
+      "Theorem 5.7. Let H be an n-qubit Hamiltonian such that ∥H∥op ≤ 1. We can test if H is ε1-close (in normalized Frobenius norm) or",
+      "ε2-far from s-sparse Hamiltonians with probability > 0.9 using s14 s2 O (ε22 − ε21)18 log (ε22 − ε12)3 + log s queries to the evolution operator U (t) = exp(−iHt) for a choice of t = O((ε22 − ε12)/s)",
+      "and with a total evolution time of O((s13 log s)/(ε22 − ε12)17)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5.7 is stated in Section 5.3 and proved there from Lemma 3.2 and Corollary 5.10.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The reduction uses the Pauli-twirled evolution channel. Footnote 9 says Equation 52 holds provided the identity is not among the top s error rates, and Algorithm 13 handles the identity separately. The zero-trace condition of Problem 1.1 is not restated in the theorem."
+    },
+    {
+     "id_suggestion": "ham-claim-5-8-hamiltonian-bucket-energy",
+     "value": "The paper states as Claim 5.8 that, for a random subspace of dimension d, Algorithm 12 estimates the energy of each bucket of the twirled evolution channel to error ε with probability 1−δ using O(2d/ε2·log(2d/δ)) queries with only Pauli eigenstates and Pauli measurements.",
+     "anchor": "Section 5.3.1, Claim 5.8, p.40",
+     "quotes": [
+      "Claim 5.8. Let G be a random subspace of dimension d. Then using Algorithm 12, the energy E(b) of each bucket b ∈ Fd2 can",
+      "be estimated to within error ε with probability 1−δ with O(2d/ε2·log(2d/δ)) queries. This only requires preparation of Pauli eigenstates and Pauli measurements."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Claim 5.8 is stated and proved in Section 5.3.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-corollaries-5-9-5-10",
+     "value": "The paper states as Corollary 5.9 the Hamiltonian analogue of Lemma 5.4 (error at most 6ε with probability at least 0.96 for a random subgroup of dimension t at least log(2s/ε2)) and says its proof is not included because it is very similar to that of Lemma 5.4; Corollary 5.10 gives accuracy ε for the top-energy estimate with probability at least 0.92 using O s2/ε6 log 1 ε + log s queries.",
+     "anchor": "Section 5.3.2, Corollaries 5.9 and 5.10, p.41-42",
+     "quotes": [
+      "Corollary 5.9. Fix ε ∈ (0, 1/2]. If G is a random subgroup of dimension t ≥ log(2s/ε2), then PrG err(HtT ; G, s) ≤ 6ε ≥ 0.96 .",
+      "We remark that the proof of Corollary 5.9 is very similar to that of Lemma 5.4 and is thus not included.",
+      "Corollary 5.10. Suppose G is a random subgroup of dimension d.",
+      "we have PrH [|Γ − TopEnergy(t; s)| ≤ ε] ≥ 0.92 ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Corollary 5.9's proof is stated to be omitted, and Theorem 5.7 depends on it; the statement is quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The omitted proof must additionally handle the identity's bucket, which the paper only mentions (the bucket C(0d))."
+    },
+    {
+     "id_suggestion": "ham-claim-first-n-independent",
+     "value": "The authors state that, to their knowledge, this is the first work with complexities independent of n (with memory) and not assuming knowledge of the support, and a footnote notes that Bakshi et al. soon afterwards presented a learning algorithm needing no prior knowledge of the support and reaching Heisenberg scaling.",
+     "anchor": "Section 1.2, remark (i) and footnote 2, p.4-5",
+     "quotes": [
+      "As far as we know, this is the first work: (a) with complexities that are independent of n (with",
+      "memory)1, and (b) that does not assume knowledge of the support.2",
+      "Bakshi et al. [BLMT24] presented a learning algorithm that does not require prior knowledge of the support, achieving Heisenberg scaling using heavy machinery."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own priority claim, qualified by their footnote.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Section 1 also says [BLMT24] considered learning Hamiltonians that are both local and sparse without prior knowledge of the support, so the claim is qualified in the paper itself."
+    },
+    {
+     "id_suggestion": "ham-claim-first-sparse-learner",
+     "value": "The authors state that they give the first learning algorithm for Hamiltonians that are only promised to be sparse and not necessarily local, and that their local Hamiltonian learning does not assume geometric locality.",
+     "anchor": "Section 1.2, remark (ii), p.5",
+     "quotes": [
+      "We give the first learning algorithm for Hamiltonians that are only promised to be sparse, and not necessarily local.",
+      "our local Hamiltonian learning problem doesn't assume geometric locality"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own priority claim.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-claim-tolerant-testers",
+     "value": "The authors state that their testing algorithms are tolerant, that is they handle ε1 not equal to zero, and that as far as they know only a handful of polynomial-time tolerant testers for quantum objects exist.",
+     "anchor": "Section 1.2, remark (iii), p.5",
+     "quotes": [
+      "Our testing algorithms are tolerant, i.e., they can handle the setting where ε1",
+      "As far as we know, there are only a handful of polynomial-time tolerant testers for quantum objects."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own characterization.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-claim-memoryless-translation",
+     "value": "The authors state that all their learning protocols with quantum memory can be translated to ones that need none, with only a log n factor overhead for local Hamiltonians and an n factor for sparse ones, and that they give a tolerant s-sparse tester without memory based on Pauli hashing whose query complexity is polynomial in s and independent of n.",
+     "anchor": "Section 1.2, remarks (iv) and (v), p.5",
+     "quotes": [
+      "We show that all our learning protocols with quantum memory can be translated to ones",
+      "which require no quantum memory.",
+      "a protocol with only a factor log n overhead for local Hamiltonians and a protocol with a factor n overhead",
+      "The query complexity is",
+      "O(poly(s)) and is notably independent of dimension n."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A summary of Theorems 5.1 and 5.7 in the introduction; the theorems carry the proof.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The local-case statement is a log n factor on top of the exponential-in-k-squared bound; Table 1 lists the memory-less local entry as (log n) times exp(k2)."
+    },
+    {
+     "id_suggestion": "ham-claim-best-unstructured",
+     "value": "The authors state that their subroutine estimates arbitrary n-qubit Hamiltonians with O(1/ε4) queries in the l∞ norm of the Pauli coefficients, as far as they know the best result for unstructured Hamiltonians and the first time-efficient proposal, the only previous one being not time efficient.",
+     "anchor": "Section 1.2, remark (vi); Section 1.3, p.5-8",
+     "quotes": [
+      "Our learning algorithms are based on a subroutine that estimates arbitrary n-qubit Hamilotmians with O(1/ε4) queries",
+      "As far as we know, this is the best result for unstructured Hamiltonians. Notably, it is also the first time-efficient proposal for this problem.",
+      "only previous one is not [Car23]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own comparison with prior work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "O(1/ε4) is the bound for operator norm at most one; the proof of Theorem 4.6 carries a log factor."
+    },
+    {
+     "id_suggestion": "ham-claim-comparison-constant-eps",
+     "value": "The authors state that for constant ε their results achieve better dependence on n, s and k than previous work while using the weaker incoherent query model, in which only one query is performed before measuring, as opposed to the coherent model.",
+     "anchor": "Section 1.3, Direct comparison to previous work, p.8",
+     "quotes": [
+      "As a summary, one can say that for",
+      "constant ε our results achieve better dependence on the parameters n, s, k than previous work, while also using the weaker model of incoherent queries, where one can perform only one query before",
+      "measuring, as opposed to the coherent query model."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own summary of Table 2.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The statement is limited to constant ε. Section 1.4 item 1 says the dependence on ε is not optimized and that Heisenberg scaling has been shown possible in particular cases, which Table 2's entries for other works reflect."
+    },
+    {
+     "id_suggestion": "ham-claim-abstract-support-short-time",
+     "value": "The authors state that their algorithms use short time evolutions and do not assume prior knowledge of the terms on which the Pauli spectrum is supported.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Furthermore, our algorithms use short time evolutions and do not assume prior knowledge of the terms on which the Pauli spectrum is",
+      "supported on, i.e., we do not require prior knowledge about the support of the Hamiltonian terms."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated in the abstract; the minimum evolution times are in the theorems (for Theorem 4.6, of order ε over the squared norm).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-claim-new-result-1-9-label",
+     "value": "The paper states as Result 1.9 that there is an algorithm with no quantum memory for s-sparse Hamiltonians with poly(s/ε) queries and total evolution time.",
+     "anchor": "Section 1.3, Result 1.9, p.7",
+     "quotes": [
+      "Result 1.9. There is an algorithm with no quantum memory for Problem 1.2 for s-sparse Hamiltonians by",
+      "making poly(s/ε) queries to the evolution operator with poly(s/ε) total evolution time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An informal summary of Theorem 5.7.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paragraph introducing Result 1.9 is about memory-less testing, which is Problem 1.1; the result names Problem 1.2, which is learning. This reads as a label error."
+    },
+    {
+     "id_suggestion": "ham-note-added-bco",
+     "value": "The authors note that, after being shown Theorem 4.1, Bluhm et al. independently improved their own testing analysis to O(1/(ε2 − ε1)3ε2) queries and O(1/(ε2 − ε1)2.5ε02.5) total evolution time, very similar to Theorem 4.1, and that for a wide range of k their algorithm needs no auxiliary qubits.",
+     "anchor": "Section 1.4, Note added, p.9",
+     "quotes": [
+      "After sharing Theorem 4.1 with Bluhm et al., they independently improved the analysis of their testing",
+      "algorithm and showed that it only requires O(1/(ε2 − ε1)3ε2) queries and O(1/(ε2 − ε1)2.5ε02.5) total evolution time, which is very similar to our Theorem 4.1 [BCO24b]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to reference BCO24b.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "This sits next to the abstract's claim of solving the two open questions posed in [BCO24a]; the note says the other group reached a similar bound independently."
+    },
+    {
+     "id_suggestion": "ham-claim-open-questions-solved",
+     "value": "The authors state that their locality tester solves two open questions posed by Bluhm, Caro and Oufkir: whether the dependence on n can be removed and whether an efficient tolerant tester is possible.",
+     "anchor": "Abstract; Section 1.3, p.1 and p.5",
+     "quotes": [
+      "thereby solving two open questions posed in a recent work by",
+      "They posed as open questions whether",
+      "the dependence on n could be removed and whether an efficient tolerant-tester was possible [BCO24a, Section 1.5]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' statement, resting on Theorem 4.1.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "See the Note added in Section 1.4."
+    },
+    {
+     "id_suggestion": "ham-claim-pauli-hashing-near-term",
+     "value": "The authors state that Pauli hashing only requires the preparation of Pauli eigenstates and Pauli measurements, making it suitable for the near term.",
+     "anchor": "Section 1.3, p.7",
+     "quotes": [
+      "We remark that Pauli Hashing only requires the preparation of Pauli eigenstates and Pauli measurements"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own remark; no hardware resource estimate is given.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-prior-learning-hard-cited",
+     "value": "The paper attributes to cited work that learning an n-qubit Hamiltonian is known to be difficult, requiring complexity that scales exponentially in the number of qubits unless a coarse metric is used.",
+     "anchor": "Section 1, p.4",
+     "quotes": [
+      "learning an n-qubit Hamiltonian is",
+      "known to be difficult, requiring complexity that scales exponential in the number of qubits unless a coarse metric is used [Car23]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to reference Car23.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-prior-structure-learning-cited",
+     "value": "The paper attributes to cited work that, when the Hamiltonian is local or sparse, learning can be done with a number of queries polynomial in n, and that the only testing result for sparse Hamiltonians it knows of requires O(sn) queries and time O(4ns).",
+     "anchor": "Section 1, p.4; Section 1.3, p.6",
+     "quotes": [
+      "learning can be performed with only poly(n) query complexity",
+      "The only testing result that we are aware of requires O(sn) queries and time O(4ns) [BCO24b, Remark B.2]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-lemma-6-2-boolean-embedding",
+     "value": "The paper states as Lemma 6.2 that, given quantum query access to a Boolean function f with values in {−1, 1}, one can simulate the diagonal Hamiltonian built from f for time t with precision ε using O(t log(1/ε)) queries, which reduces Hamiltonian learning lower bounds to Boolean function lower bounds.",
+     "anchor": "Section 6, Lemma 6.2, p.44",
+     "quotes": [
+      "Lemma 6.2. Let t ≥ 0. Let f : {0, 1}n → {−1, 1} be a Boolean function.",
+      "for time t ∈ R with",
+      "precision ε making O(t log(1/ε)) queries to Uf ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 6.2 is stated and proved in Section 6, from Theorem 6.1 (cited).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof of Theorem 6.6 then defines the class C by functions with values in {0, 1}, while Lemma 6.2 is stated for {−1, 1}; constants are not tracked."
+    },
+    {
+     "id_suggestion": "ham-theorem-6-1-cited",
+     "value": "The paper uses as Theorem 6.1 a result attributed to Gilyen, Arunachalam and Wiebe [GAW19, Theorem 14] for implementing an approximate phase oracle from a probability oracle with O(log(1/ε)) applications.",
+     "anchor": "Section 6, Theorem 6.1, p.44",
+     "quotes": [
+      "Theorem 6.1 ([GAW19, Theorem 14]).",
+      "using O(log(1/ε)) applications of Up and Up†"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theorem the paper attributes to reference GAW19.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-theorem-6-5-adaptive-lower-bound",
+     "value": "The paper states as Theorem 6.5 that there is a class of Hamiltonians with ∥H∥2 ≤ 1 for which learning s-sparse n-qubit Hamiltonians without quantum memory up to error ε using time step t needs Ω of s (log 1/ε)/(t log s) adaptive quantum queries, proved through an ε-net and Holevo's bound.",
+     "anchor": "Section 6.1, Theorem 6.5, p.45",
+     "quotes": [
+      "Theorem 6.5. There exists a class of Hamiltonians with ∥H∥2 ≤ 1 such that learning s-sparse n-qubit Hamiltonians without quantum memory upto",
+      "error ε using time step t, need to make Ω s(log 1/ε)/(t log s) adaptive quantum queries.",
+      "Now we use Holevo's bound to conclude the proof"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 6.5 is stated and proved in Section 6.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The hard class is supported on the first log s qubits and is diagonal, with the support known to the learner. The Holevo argument counts the information per query and does not visibly use the absence of quantum memory."
+    },
+    {
+     "id_suggestion": "ham-claim-6-7-subspace-count",
+     "value": "The paper states as Claim 6.7 that the number of distinct (log s)-dimensional subspaces of the n-bit strings is at least s to the power Ω of (n − log s).",
+     "anchor": "Section 6.2, Claim 6.7, p.48",
+     "quotes": [
+      "Claim 6.7. The number of distinct (log s)-dimensional subspaces of F2n is at least sΩ(n−log s)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Claim 6.7 is stated and proved in Section 6.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-theorem-6-6-nonadaptive-lower-bound",
+     "value": "The paper states as Theorem 6.6 that learning s-sparse n-qubit Hamiltonians without quantum memory up to error 1/2s using time step t requires Ω of (s log s)/t non-adaptive quantum queries, via a three-step information-theoretic argument similar to Arunachalam and De Wolf.",
+     "anchor": "Section 6.2, Theorem 6.6, p.46-49",
+     "quotes": [
+      "Theorem 6.6. Learning s-sparse n-qubit Hamiltonians without quantum memory upto error 1/2s using time step t,",
+      "requires Ω (s log s)/t non-adaptive quantum queries.",
+      "We prove the lower bound for C using a three-step information-theoretic technique."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proof omits the details of its first two steps and the class uses {0, 1}-valued functions where the embedding is stated for {−1, 1}-valued ones.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The paper says 'we omit the details of the first two steps here'. The error measure in the proof moves between the sum of squared coefficient differences and the Hamming distance, so the constant in 'error 1/2s' is not checked here."
+    },
+    {
+     "id_suggestion": "ham-claim-lower-bounds-weaker",
+     "value": "The authors state that they complement their learning algorithms with lower bounds that are polynomially weaker, and that these certify that the dependence on s, k and the tolerance cannot be completely avoided, while obtaining optimal results is a future direction.",
+     "anchor": "Abstract; Section 1.3, p.1 and p.7",
+     "quotes": [
+      "learning algorithms with lower bounds that are polynomially weaker.",
+      "Reducing to classical Boolean functions, we show lower bounds without memory that certify that the dependence on these parameters cannot be completely",
+      "avoided, but an interesting and important future direction is to obtain the optimal results for these near-term relevant problems."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The abstract and Section 1.3 state the gap between the bounds.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-limit-exponents-drawback",
+     "value": "The authors state that one drawback of their algorithms is the exponent of the sparsity parameter s, the locality parameter k and the tolerance (ε2 − ε1).",
+     "anchor": "Section 1.3, p.7",
+     "quotes": [
+      "One drawback of our learning and testing algorithms is the exponent of the sparsity parameter s,",
+      "locality parameter k and the tolerance (ε2 − ε1)."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 1.3 states the limit.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-open-questions-list",
+     "value": "The paper lists as open directions: improving the dependence on ε1 and ε2 and possibly reaching Heisenberg-limited scaling; adaptive strategies for structured Hamiltonians; testing and learning with limited quantum memory; and testing structured Hamiltonians from Gibbs states, which remains wide open.",
+     "anchor": "Section 1.4, p.8-9",
+     "quotes": [
+      "It is natural to ask if we could improve the dependence on the",
+      "error parameters and perhaps achieve Heisenberg limited scaling",
+      "Another direction is to then explore adaptive protocols for testing structured",
+      "answering the question of testing",
+      "structured Hamiltonians given access to copies of the Gibbs state remains wide open."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 1.4 states the open directions.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-claim-limited-memory-marginal",
+     "value": "The authors state that, given the separation between the query complexities with n-qubit quantum memory and without any (Table 1), only marginal gains in complexity are expected from limited quantum memory.",
+     "anchor": "Section 1.4, item 4, p.9",
+     "quotes": [
+      "it should be noted that given the separation between the query complexities (see Table 1) with access to n-qubit quantum memory and without any, only marginal gains in complexity are expected",
+      "from having access to limited quantum memory."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' expectation, not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ham-table-1-summary",
+     "value": "The paper summarizes in Table 1 the query complexity of testing and learning k-local and s-sparse Hamiltonians for constant accuracy, with and without quantum memory, naming the theorem for each entry and showing the dependence on n and on the structural parameter only.",
+     "anchor": "Section 1.2, Table 1, p.5",
+     "quotes": [
+      "Table 1: Query complexity for learning and testing n-qubit structured",
+      "Hamiltonians. Dependence on n and the structural property is shown for constant accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The caption states what the table shows.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The table cells are scrambled in the text layer. The memory-less local-testing entry is credited to [BCO24b], not to this paper."
+    }
+   ]
+  },
+  {
+   "record_id": "asgrim-2026-quantum-kernels-spectral-tensor-networks",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Asgrim-Markidis_2026_Quantum-Kernels-are-Spectral-Tensor-Networks__2606.20402.pdf",
+   "title_in_file": "Quantum Kernels are Spectral Tensor Networks (arXiv:2606.20402v1, 18 Jun 2026)",
+   "version_note": "The text layer carries the paper twice (two extraction passes); both agree. Pages 3 and 4 were also viewed as images for Figures 2 and 3; plotted values appear only in reader_inference, read by eye.",
+   "pages": 7,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short letter with three exact identities (Fourier expansion of a quantum kernel as an entangling tensor kernel contraction, feature-wise grouping, and kernel target alignment as a Fourier-coefficient cosine similarity) and a numerical test of MPO compressibility on random layered feature maps with two and three features.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "compressibility-limited-to-random-maps",
+     "verdict": "confirmed",
+     "note": "Confirmed. The same paragraph adds that other encodings may need larger bond dimension and that compressibility is a per-kernel diagnostic; the numerics cover only two and three input features.",
+     "value": "",
+     "anchor": "Numerical experiments, closing paragraph, p.4",
+     "quotes": [
+      "The numerical evidence for small bond dimension, however, is restricted to the random layered feature maps considered here.",
+      "Thus, spectral compressibility should be viewed as a diagnostic property of a given quantum kernel, rather than a universal feature of quantum kernels."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The numerical section states the limit in its own words.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Figures 2 and 3 show only two and three input features (d = 2 and d = 3); that limit is not stated in these sentences."
+    },
+    {
+     "id": "fourier-expansion-is-etk",
+     "verdict": "narrowed",
+     "note": "The identity holds for kernels that have the finite Fourier expansion of Eq. 2, which the paper takes for feature maps of single-qubit data-encoding rotations interleaved with data-independent unitaries; the stored value said any quantum kernel. The derivation in Appendix A treats single-qubit Z rotations.",
+     "value": "The authors state that the spectral tensor network identity is structural and applies to any quantum kernel admitting the finite Fourier representation in Eq. (2), which they take for feature maps in which the data enter through layers of single-qubit data-encoding rotation gates interleaved with data-independent unitaries; the derivation in Appendix A treats single-qubit Z rotations.",
+     "anchor": "Introduction p.1; Numerical experiments p.4; Appendix A",
+     "quotes": [
+      "The spectral tensor network identity is structural and applies to any quantum kernel admitting the finite Fourier representation in Eq. (2).",
+      "For feature maps in which the data enter through layers of single-qubit data-encoding rotation gates interleaved with data-independent unitaries, the kernel has a finite",
+      "We consider an L-layer feature map in which the data enter through single-qubit Z rotations interleaved with data-independent unitaries [3–5]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Appendix A derives the identity under the stated feature-map form; the scope sentence is in the main text.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The Appendix A derivation is a path expansion of the feature-state overlap for Rz data-encoding gates. A kernel with a finite Fourier expansion from other encodings is covered only by the paper's word 'any', with no separate derivation."
+    },
+    {
+     "id": "small-bond-dimension-alignment",
+     "verdict": "confirmed",
+     "note": "Confirmed. Setup the stored value omits: random layered feature maps with one qubit per feature, averages over five realizations, and 100 test points; the MPO is optimized to maximize the alignment on the grid.",
+     "value": "",
+     "anchor": "Numerical experiments, p.4, Figure 3(a)",
+     "quotes": [
+      "Fig. 3(a) shows that, for L = 6 layers, the alignment increases rapidly with bond dimension and approaches unity for both d = 2 and d = 3, on both the frequencyresolving grid and independently sampled test points."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Read by eye from Figure 3(a): at the largest bond dimension (16) the d = 3 alignment is about 0.99 on the grid, and the d = 2 curve reaches about 1.0 near bond dimension 8."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "asgrim-kernel-setting",
+     "value": "The paper takes a pure-state quantum feature map and the kernel given by the squared overlap of feature states, notes this is a fidelity kernel for a parametrized quantum state, and states the spectral tensor network representation therefore applies beyond supervised learning.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "Although motivated by quantum machine learning, this is more generally a fidelity kernel for a parametrized quantum state [9].",
+      "The spectral tensor network representation therefore applies beyond supervised learning"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The Introduction defines the object all results are about.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asgrim-local-frequency-range",
+     "value": "The paper states that for the single-qubit Pauli-rotation encodings it considers, each local gate-level frequency index takes values in {-1, 0, 1}, and that the Fourier coefficients define the spectral object of Figure 1.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "μa, νa ∈ {−1, 0, 1}. The coefficients cμ,ν define the spectral object illustrated in Fig. 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The Introduction defines the frequency indices.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asgrim-etk-cited",
+     "value": "The paper attributes to cited work (reference 5) the introduction of entangling tensor kernels, given by contractions of data-dependent product states with a matrix product operator, and attributes the finite Fourier expansion of the kernel to references 3 and 4.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "Entangling tensor kernels (ETKs) were",
+      "recently introduced as an alternative representation of quantum kernels",
+      "with a matrix product operator (MPO) [5].",
+      "the kernel has a finite",
+      "Fourier expansion [3, 4]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to references 3, 4 and 5.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asgrim-mpo-bond-dimension-meaning",
+     "value": "The authors state that, in the spectral tensor network, the bond dimension measures the correlations required to represent the kernel's Fourier modes, that this notion differs from the entanglement-based bond dimension of quantum states, and that a low-rank spectral structure can exist even when the feature map acts on an exponentially large Hilbert space.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "This notion of bond dimension differs from the usual tensor network description of quantum states",
+      "can exhibit a low-rank spectral",
+      "structure even when the feature map acts on an exponentially large Hilbert space."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' interpretation of their identity.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asgrim-operator-schmidt-rank",
+     "value": "The authors state that the singular values of the matricization across a cut are the operator Schmidt coefficients, that the minimum exact MPO bond dimension is the number of their nonzero entries (the operator Schmidt rank), and that truncating to a smaller bond dimension gives an approximation whose error is controlled by the discarded Schmidt weight.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "the minimum exact MPO bond dimension is their number of nonzero entries, i.e. the operator Schmidt rank.",
+      "Truncating to a smaller",
+      "bond dimension retains only the leading Schmidt coefficients and gives a low-bond-dimension approximation of the quantum kernel whose error is controlled by the discarded Schmidt weight."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated without proof in the paper; it is a standard tensor-network fact the paper does not derive.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asgrim-feature-wise-grouping",
+     "value": "The paper states that, for encodings in which each data-encoding gate carries a single raw input feature, grouping all gate-level configurations that generate the same feature-wise frequency gives an exact representation in terms of feature-wise Fourier modes and a more compact entangling tensor kernel representation.",
+     "anchor": "Introduction p.1-2; Appendix B",
+     "quotes": [
+      "we now restrict to",
+      "encodings in which each data-encoding gate carries a single raw input feature",
+      "Grouping all gate-level configurations that generate the same featurewise frequency yields an exact representation in terms of feature-wise Fourier modes"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The grouping is derived in Appendix B for the stated simplified encoding.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asgrim-coefficient-counts",
+     "value": "The authors state that for layered feature maps with d input features and L layers, each uploaded once per layer, the gate-level representation carries three to the power two d L Fourier coefficients while the feature-wise representation carries two L plus one, to the power two d, so the gate-level count grows exponentially in the number of uploads and the feature-wise count grows only polynomially in L for fixed d.",
+     "anchor": "Introduction p.2, Figure 2(c); Appendix B",
+     "quotes": [
+      "For layered feature maps with d input features and L layers, in which each feature is uploaded once per layer, the gate-level representation carries 32dL",
+      "reducing the coefficient count to (2L+1)2d.",
+      "The gate-level count therefore grows exponentially in the number of uploads, whereas the feature-wise count",
+      "grows only polynomially in L for fixed d."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The counts follow from the stated index ranges and are given in Appendix B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints the exponents flat. With three allowed values for each of the two indices of each of dL gates, the gate-level count is 3 to the 2dL, and with 2L+1 values per feature frequency on each side the feature-wise count is (2L+1) to the 2d, consistent with the paper. For d = 2 and d = 3 these are small."
+    },
+    {
+     "id_suggestion": "asgrim-spectral-alignment-identity",
+     "value": "The paper states that kernel target alignment compares coefficient tensors through the metric G, and that on a frequency-resolving grid over a periodic data domain [0, 2π) to the power d, where discrete Fourier orthogonality gives G equal to the identity, it reduces to the Frobenius cosine similarity between the Fourier coefficient tensors.",
+     "anchor": "Introduction p.3, Eqs. 13-15; Appendix B",
+     "quotes": [
+      "Assuming a periodic data domain X = [0, 2π)d, this comparison becomes direct",
+      "On this grid, discrete Fourier orthogonality gives G = I, and Eq. (13) reduces to",
+      "KTA therefore becomes the cosine similarity between Fourier coefficient",
+      "where ωjmax = |Aj| in the repeated-upload setting considered here."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Appendix B derives the identity under the stated grid condition and domain.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The grid must have at least 2 times the largest per-feature frequency plus one points in each dimension, so its size grows exponentially with the number of features."
+    },
+    {
+     "id_suggestion": "asgrim-kta-background-cited",
+     "value": "The paper attributes to cited work that kernel target alignment was introduced in machine learning as a measure for comparing and learning kernels, and has been used to optimize quantum kernels.",
+     "anchor": "Introduction, p.1 and p.3",
+     "quotes": [
+      "originally introduced in machine learning as a measure for comparing and learning kernels [6–8]",
+      "and has also been used to optimize quantum kernels [13]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Background the paper attributes to references 6 to 8 and 13.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asgrim-numerics-setup",
+     "value": "The authors report that the experiments use layered feature maps with one qubit per feature and one upload of each feature per layer, each layer built from Haar-random single-qubit unitaries and a cyclic CNOT chain followed by data-encoding Rz gates, with quantities averaged over five random realizations.",
+     "anchor": "Numerical experiments, p.3-4; Appendix C",
+     "quotes": [
+      "We consider layered feature maps with one qubit per feature and one upload of each feature per layer",
+      "followed by a cyclic CNOT chain and a layer of data-encoding Rz rotations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The numerical section states the setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Only five random realizations and feature counts of two and three are used."
+    },
+    {
+     "id_suggestion": "asgrim-optimization-protocol",
+     "value": "The authors report that the positive semidefinite coefficient operator is represented in locally purified form, its matrix product operator entries are optimized with Adam to maximize the alignment on the frequency-resolving grid, and the result is evaluated on 100 independently sampled held-out test points.",
+     "anchor": "Numerical experiments p.4; Appendix C",
+     "quotes": [
+      "The resulting kernel is also evaluated on 100 independently sampled test points from the domain [0, 2π)d.",
+      "We use the Adam optimizer [16] with learning rate",
+      "The grid points are used in the KTA optimization, while the test points are held out and used only to assess how well the learned kernel extends beyond the discrete frequency-resolving grid."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The numerical section and Appendix C state the protocol.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The target is the quantum kernel's own coefficient tensor on the full grouped Fourier basis, so each optimization needs the exact target tensor, which has the feature-wise count of coefficients."
+    },
+    {
+     "id_suggestion": "asgrim-chi99-definition",
+     "value": "The paper defines the quantity chi 99% as the smallest bond dimension for which the average kernel target alignment over the random feature maps exceeds 0.99.",
+     "anchor": "Appendix C, p.7",
+     "quotes": [
+      "The quantity χ99% is defined as the smallest bond dimension for which the average kernel target alignment over the random",
+      "feature maps exceeds 0.99."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Appendix C defines the quantity.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asgrim-chi99-saturation",
+     "value": "The authors report that the minimum bond dimension needed to exceed average alignment 0.99 grows much more slowly than the number of accessible Fourier coefficients and saturates over the largest depths tested.",
+     "anchor": "Numerical experiments, p.4, Figure 3(b)",
+     "quotes": [
+      "required to exceed average alignment 0.99 as a function of depth.",
+      "This quantity grows much more slowly than the number of accessible Fourier coefficients and saturates over the",
+      "largest depths tested."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Read by eye from Figure 3(b), the d = 3 curve reaches 16 at L = 5 and L = 6, which equals the largest bond dimension on the axis of Figure 3(a); the plateau may be the scan limit, not a measured saturation. The d = 2 curve levels near 7."
+    },
+    {
+     "id_suggestion": "asgrim-schmidt-decay",
+     "value": "The authors report that the operator Schmidt spectrum of the Fourier coefficient tensor across the first bond decays rapidly, so only a small number of spectral correlations dominate, and conclude the effective spectral complexity of these kernels can be much smaller than the number of accessible Fourier coefficients.",
+     "anchor": "Numerical experiments, p.4, Figure 3(c)",
+     "quotes": [
+      "shows that only a small number of spectral correlations dominate.",
+      "Together, these results indicate that the effective spectral complexity of these kernels can be much",
+      "smaller than the number of accessible Fourier coefficients."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, for the L = 6 and bond dimension 16 case.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Read by eye from Figure 3(c), the d = 3 weights decay more slowly than the d = 2 weights over the shown range."
+    },
+    {
+     "id_suggestion": "asgrim-other-maps-may-need-more",
+     "value": "The authors state that other data encodings, circuit families or problem-specific feature maps may exhibit slower operator Schmidt decay and therefore require larger bond dimension.",
+     "anchor": "Numerical experiments, p.4",
+     "quotes": [
+      "Other data encodings, circuit families, or problem-specific feature maps may",
+      "exhibit slower operator Schmidt decay and therefore require larger bond dimension."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The numerical section states the limit.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asgrim-quantum-advantage-diagnostic",
+     "value": "The authors state that a feature map generating a large Hilbert space does not by itself imply a hard kernel, that kernels with rapidly decaying operator Schmidt spectra can be evaluated classically with small bond dimension and are unlikely to give an advantage based on kernel evaluation alone, and that slowly decaying spectra identify stronger candidates for quantum advantage.",
+     "anchor": "Discussion, p.4",
+     "quotes": [
+      "but this does not by itself imply a hard kernel.",
+      "the kernel admits a compact spectral",
+      "tensor network representation and can be evaluated classically with small bond dimension.",
+      "Such kernels are therefore unlikely to provide an advantage that relies on the complexity of kernel evaluation alone.",
+      "are stronger candidates for quantum advantage based on kernel evaluation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own interpretation, not tested for any real dataset.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The optimization in the paper uses the target kernel's exact coefficient tensor, which for many features is exponentially large. The paper does not show that the small-bond-dimension MPO can be obtained without that tensor, so it is not shown that the kernel can be evaluated classically by this route."
+    },
+    {
+     "id_suggestion": "asgrim-central-diagnostic-claim",
+     "value": "The authors state that the compressibility of the Fourier coefficient tensor should be treated as a central diagnostic for quantum kernels, and that classical representability is governed by correlations in frequency space rather than only by circuit depth, Hilbert space dimension or entanglement in the feature state.",
+     "anchor": "Discussion, p.4",
+     "quotes": [
+      "Our results therefore suggest that the compressibility of the Fourier coefficient tensor should be treated as a central",
+      "diagnostic for quantum kernels.",
+      "their classical representability is governed by correlations in frequency space rather than only by circuit depth, Hilbert space dimension, or entanglement in the feature state."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "'Suggest' in the first sentence is weaker than 'is governed by' in the second."
+    },
+    {
+     "id_suggestion": "asgrim-complexity-rank-claim",
+     "value": "The authors state that, in the spectral tensor network representation, the complexity of the kernel is governed by the rank structure of the Fourier coefficient tensor, and that low rank signals spectral compressibility.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "the complexity of the kernel is governed by the rank structure of the Fourier coefficient tensor, and low rank signals spectral",
+      "compressibility."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own statement of the representation's meaning.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asgrim-data-code-available",
+     "value": "The paper states that the data and code supporting the numerical findings are available at two archived record identifiers.",
+     "anchor": "Data availability, p.4",
+     "quotes": [
+      "The data and code supporting the numerical findings of this study are available at [17] and [18], respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states where its data and code are.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

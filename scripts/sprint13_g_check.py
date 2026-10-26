@@ -10,7 +10,9 @@ writes nothing and never opens the store.
 
 Usage:
   python scripts/sprint13_g_check.py <group file> <group brief>
+  python scripts/sprint13_g_check.py <one paper's done file> <group brief> --partial
 Prints one line per problem and ends "N problems"; 0 is the reader's finish line.
+With --partial the file need not hold every record of the brief.
 """
 from __future__ import annotations
 
@@ -111,8 +113,10 @@ def main(argv: list[str] | None = None) -> int:
     brief = json.loads(Path(args[1]).read_text(encoding="utf-8"))
     given = {r["record_id"]: {e["id"] for e in r.get("stored_assertions", [])} for r in brief["records"]}
     files = {r["record_id"]: r["file"] for r in brief["records"]}
-    problems = [f"{rid}: no entry for this record" for rid in sorted(set(given) - {p.get("record_id")
-                                                                                   for p in data.get("papers", [])})]
+    held = {p.get("record_id") for p in data.get("papers", [])}
+    # --partial: one finished paper saved on its own (the reader prompt's "Progress and restart"), not the group file
+    problems = [] if "--partial" in args else [f"{rid}: no entry for this record" for rid in sorted(set(given) - held)]
+    problems += [f"{rid}: not a record of this brief" for rid in sorted(held - set(given))]
     problems += [x for p in data.get("papers", []) for x in paper_problems(p, given.get(p.get("record_id"), set()),
                                                                            files.get(p.get("record_id"), ""))]
     for x in problems:

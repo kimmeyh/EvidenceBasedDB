@@ -71,3 +71,18 @@ def test_every_reader_prompt_from_task_g_on_forbids_hook_override_tokens():
     g014 ran it, before the "never use a hook override token" paragraph."""
     missing = [p for p in prompts() if "never use a hook override token" not in instructions(p).lower()]
     assert missing == [], f"reader prompts that do not forbid hook override tokens: {missing}"
+
+
+RESTART = ("## Progress and restart", "progress.json", "done\\", "partial\\", "last_page_read", "start here, every time",
+           "--partial")
+
+
+def test_every_reader_prompt_from_task_g_on_saves_its_progress_and_starts_from_it():
+    """Team lead, 2026-10-26: readers g016 to g019 stopped at a usage limit
+    with their work only in memory; "make future agent runs setup to not
+    loose anything if we cross current or weekly session limits". Proven to
+    fail, 2026-10-26: run on Task G's instructions with the "Progress and
+    restart" section and the --partial paragraph cut, the check named all
+    seven phrases missing."""
+    missing = {p: [w for w in RESTART if w.lower() not in instructions(p).lower()] for p in prompts()}
+    assert {p: m for p, m in missing.items() if m} == {}

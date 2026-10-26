@@ -270,6 +270,40 @@ this project keeps having to replace with a step.
   green with both label guards removed; each guarded case now removes its
   own guard in the test and must turn glossed. No stored value changes
   (Issue #138)
+- **fix**: the fresh-eyes review of 44e2512 (2026-10-26) found labels and
+  the real plane still glossed ("rules R2", "Tables S1 and R2", "R1/R2",
+  "in R² 3 points", "R2 from 2020"), common phrasings missed ("R2
+  (0.93)", "R2 = .93", "the R2 of the model was 0.9", "R2 and RMSE of 0.9
+  and 0.1", "R2 improved"), a second gloss after "coefficient of
+  determination (R squared)", and a LaTeX token or a code call split. Each
+  has a test; each guarded case removes its own guard and must turn
+  glossed. Sprint 12 Task G's apply that morning glossed one more stored
+  value ("coefficients of determination", plural) (Issue #138)
+- **chore**: Task G (F113, 01338ff, 2026-10-25): the reader prompt forbids
+  hook override tokens, after the g007 reader used one in its scratch
+  folder; `tests/test_reader_prompts.py` fails on a prompt without the
+  rule (Issue #138)
+- **fix**: Task G (F113, 0765e9a and its review, 2026-10-26): an older
+  reading script's sync no longer puts a partial read's value back over a
+  row re-read in full. The first guard refused every later correction
+  too; it now refuses only a sync dated on or before the full read's
+  (`store.ingest.sync_assertion`), proven red by removing the date test
+  (Issue #138)
+- **feat**: Task G (F113, 2026-10-26): `scripts/sprint13_g_reading.py`
+  enters the reviewed groups from `manifests/sprint13_g_reviews/` (one
+  coordinator review per group, g001 to g016 so far) and their reader
+  files; `ID_FIX` stores a new assertion under another id where the
+  reader's suggestion is already another source's. Dry run only; nothing
+  applied yet (Issue #138)
+- **feat**: Task G (F113, 2026-10-26, after readers g016 to g019 stopped
+  at a usage limit): a reader saves its progress as it goes and starts
+  from it. The reader prompt's "Progress and restart" section saves a
+  partial file about every 10 pages and a done file per finished paper;
+  `scripts/sprint13_g_check.py --partial` checks a part-finished group;
+  `scripts/sprint13_g_status.py` computes each group's state from its
+  files. `tests/test_reader_prompts.py` fails on a prompt without the
+  section, and `tests/test_sprint13_g_restart.py` on the check and the
+  status, each proven red by injection (Issue #138)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

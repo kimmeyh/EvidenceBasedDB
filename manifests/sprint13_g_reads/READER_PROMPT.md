@@ -30,6 +30,16 @@ g009 on, the launch message carried the same rule): the paragraph marked
 "Added 2026-10-25" below. An override token is the team lead's and the
 coordinator's, never a reader's.
 
+Added 2026-10-26, after readers g016 to g019 stopped at a usage limit and
+held their work only in memory (team lead: "make future agent runs setup to
+not loose anything if we cross current or weekly session limits and can
+re-start them so that they know what was done and what was not done"; groups
+g001 to g023 ran without it): the section "Progress and restart" below. A
+reader saves each finished paper, and its notes on a long paper every 10
+pages, in its scratch folder; a resumed or new reader starts from them.
+`scripts/sprint13_g_status.py` reads the same files to say where each group
+stands.
+
 ---
 
 You are a first-pass reader for the Evidence Based DB (repository
@@ -71,6 +81,35 @@ Added 2026-10-25: never use a hook override token (any "allow_..." word
 or comment in a command). If a hook blocks a command, do the work another
 way: write a file with the Write tool, for example, instead of from a
 script.
+
+## Progress and restart
+
+A usage limit can stop you at any time, and whatever is only in your
+memory is then lost. So save as you go, and start from what is saved.
+Every file below is in your scratch folder,
+`C:\Users\kimme\AppData\Local\Temp\claude\D--Data-Harold-github-EvidenceBasedDB\s13g\tmp_{GROUP}\`.
+
+1. **Start here, every time** (a first start, a resume, or a new reader
+   after a stop). Read `progress.json`, every file in `done\`, and every
+   file in `partial\`, if they exist. A record with a file in `done\` is
+   finished: do not read it again. A record with a file in `partial\`
+   continues from the page after `last_page_read` in `progress.json`,
+   keeping the verdicts and assertions already in that file. Say in your
+   final reply which records you resumed and from which page.
+2. **While you read a paper**, after about every 10 pages, write
+   `partial\<record id>.json` (the paper's entry so far, in the shape
+   below) and `progress.json`:
+   `{"record_id": "...", "pages": 0, "last_page_read": 0, "text_file": "<your text file>", "note": "what is next"}`.
+   A short paper is saved at least once, when its last page is read.
+3. **When a paper is finished**, write it to `done\<record id>.json` as
+   `{"papers": [<the paper's entry>]}` and run the check on that file
+   alone, with `--partial` (see "Check before you finish"). Fix it until
+   it prints "0 problems". Then delete its `partial\` file.
+4. **When every paper is in `done\`**, write the group file from them,
+   with the papers in the brief's order, and run the full check.
+
+Write each of these files with the Write tool. Never keep finished work
+only in memory.
 
 ## What to return for each paper
 
@@ -185,5 +224,9 @@ Run, and fix every problem it prints, until it prints "0 problems":
 
     python -X utf8 D:\Data\Harold\github\EvidenceBasedDB\scripts\sprint13_g_check.py <your group file> C:\Users\kimme\AppData\Local\Temp\claude\D--Data-Harold-github-EvidenceBasedDB\s13g\briefs\{GROUP}.json
 
+For one finished paper in `done\`, add `--partial` after the brief: it
+checks that paper and does not ask for the others.
+
 When done, reply with one line per paper: record id, pages read, verdict
-counts, new assertion count, and anything you could not read.
+counts, new assertion count, anything you could not read, and whether it
+was resumed from saved progress.
