@@ -6,8 +6,8 @@
    "title_in_file": "Characterizing Continual Learning Scenarios for Tumor Classification in Histopathology Images",
    "version_note": "The text is the arXiv v1 preprint (2208.03609v1, 7 Aug 2022, eess.IV); the running head reads 'Continual Learning for Tumor Classification in Histopathology Images' and the file name matches the record.",
    "pages": 13,
-   "read_extent": "partial",
-   "not_read": "pages after the last page read are pending",
+   "read_extent": "full",
+   "not_read": "",
    "what_it_is": "A MICCAI 2022 style study that defines four continual learning scenarios for histopathology and benchmarks EWC, Online EWC, LwF, iCaRL, A-GEM and CoPE on a stain-augmented colorectal cancer dataset and on CRC plus PatchCam.",
    "bears_on_context": "ml",
    "why_not": "",
@@ -549,6 +549,471 @@
      "result_type": "setup",
      "context": "ml",
      "reader_inference": "The sentence reads as if weight decay is applied after epochs 10 and 13, which may mean a learning-rate decay schedule; the text does not clarify. Each result is a mean over only 3 to 5 repeats."
+    },
+    {
+     "id_suggestion": "joint-baseline-accuracy-table-s1",
+     "value": "The authors report in Table S1 mean accuracy ± standard deviation for the Joint baseline of 90.48 ± 5.12 (Data-IL), 89.43 ± 2.15 (Domain-IL), 89.58 ± 5.27 (Task-IL) and 85.94 ± 4 (Class-IL). They state that the accuracy of the joint baseline was comparable across scenarios.",
+     "anchor": "Section 4.1, p.6; Table S1, p.12",
+     "quotes": [
+      "90.48 ± 5.12 89.43 ± 2.15 89.58 ± 5.27 85.94 ± 4",
+      "Overall, the accuracy of joint baseline was comparable across scenarios"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Standard deviations of 5 points in three of four scenarios mean most pairwise differences among methods in Data-IL and Task-IL lie within one standard deviation. The Class-IL joint value is about 3.5 to 4.5 points lower than the others."
+    },
+    {
+     "id_suggestion": "finetuning-baseline-accuracy-table-s1",
+     "value": "The authors report in Table S1 mean accuracy ± standard deviation for the finetuning baseline of 88.49 ± 3.15 (Data-IL), 61.42 ± 2.55 (Domain-IL), 80.1 ± 5.51 (Task-IL) and 26.61 ± 0.4 (Class-IL). They state that finetuning performance varies among scenarios, with best performance on Data-IL and worst on Class-IL.",
+     "anchor": "Section 4.1, p.6; Table S1, p.12",
+     "quotes": [
+      "88.49 ± 3.15 61.42 ± 2.55 80.1 ± 5.51 26.61 ± 0.4",
+      "the performance of ﬁnetuning varies among scenarios with best performance on Data-IL and worst on Class-IL"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The Class-IL finetuning accuracy of 26.61 is consistent with forgetting of all but the latest classes (a 9-class, five-experience setup), but the paper does not give the chance level."
+    },
+    {
+     "id_suggestion": "offline-methods-table-s1-all-scenarios",
+     "value": "The authors report in Table S1 accuracy ± standard deviation for EWC of 86.77 ± 4.37, 63.64 ± 3.2, 78.41 ± 3.35 and 27.3 ± 0.63; for Online EWC of 83.29 ± 10.02, 67.51 ± 3.07, 76.83 ± 2.64 and 26.79 ± 0.37; for LwF of 91.32 ± 0.83, 66.24 ± 3.57, 80.59 ± 4.95 and 28.88 ± 2.08; and for iCaRL of 80.97 ± 4.51 (Data-IL), 73.41 ± 3.12 (Domain-IL) and 72.06 ± 3.2 (Class-IL), in the order Data-IL, Domain-IL, Task-IL, Class-IL (iCaRL has no Task-IL entry).",
+     "anchor": "Table S1, p.12",
+     "quotes": [
+      "86.77 ± 4.37 63.64 ± 3.2 78.41 ± 3.35 27.3 ± 0.63",
+      "83.29 ± 10.02 67.51 ± 3.07 76.83 ± 2.64 26.79 ± 0.37",
+      "91.32 ± 0.83 66.24 ± 3.57 80.59 ± 4.95 28.88 ± 2.08",
+      "80.97 ± 4.51 73.41 ± 3.12 -",
+      "72.06 ± 3.2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "In the text layer the iCaRL row is split across two lines and the Task-IL cell is a dash; the Class-IL value 72.06 is read from the last cell. In Task-IL and Class-IL the LwF differences from finetuning (80.59 against 80.1; 28.88 against 26.61) are smaller than the reported standard deviations."
+    },
+    {
+     "id_suggestion": "lwf-icarl-better-than-finetuning-claim",
+     "value": "The authors state that, of the offline CL methods tested, LwF and iCaRL performed much better than finetuning in all scenarios except for Data-IL. They state that the accuracy of EWC and Online EWC was comparable to finetuning in all scenarios except for Domain-IL.",
+     "anchor": "Section 4.1, p.6-7",
+     "quotes": [
+      "Of the oﬄine CL methods tested, LwF and iCaRL performed much better than ﬁnetuning in all scenarios",
+      "except for Data-IL. Accuracy of EWC/online EWC was comparable to ﬁnetuning in all scenarios except for Domain-IL"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table S1 does not support 'much better' for LwF in Task-IL (80.59 ± 4.95 against 80.1 ± 5.51) or in Class-IL (28.88 ± 2.08 against 26.61 ± 0.4), and iCaRL has no Task-IL entry. The statement holds clearly only for iCaRL in Domain-IL and Class-IL and, more weakly, LwF in Domain-IL (66.24 against 61.42)."
+    },
+    {
+     "id_suggestion": "online-ewc-domain-il-6-09-claim",
+     "value": "The authors state that in Domain-IL online EWC was 6.09% higher than EWC.",
+     "anchor": "Section 4.1, p.7",
+     "quotes": [
+      "where online EWC was 6.09% higher than EWC."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table S1 gives Online EWC 67.51 and EWC 63.64 in Domain-IL, a difference of 3.87 points. The figure 6.09 equals the difference between Online EWC (67.51) and finetuning (61.42), so the sentence appears to compare to finetuning rather than EWC."
+    },
+    {
+     "id_suggestion": "computation-time-joint-vs-cl",
+     "value": "The authors report that the computation time for the joint baseline was much longer (250 ± 18 minutes) than for CL methods across scenarios (70 ± 8 minutes), and state in the discussion that CL methods took only about 28% of the runtime of joint training.",
+     "anchor": "Section 4.1, p.7; Section 4.2, p.9",
+     "quotes": [
+      "the computation time for joint baseline was much longer (250 ± 18 minutes) compared to that of for CL methods across scenarios (70 ± 8 minutes)",
+      "CL methods were also computationally eﬃcient, taking only about 28% of the runtime as joint training."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "70 divided by 250 is 0.28, matching the stated percentage. The paper does not say whether the times are per run, per method, or averaged over methods, nor whether hyperparameter search is included."
+    },
+    {
+     "id_suggestion": "data-il-lwf-above-finetuning-and-joint",
+     "value": "The authors report that in Data-IL only LwF (accuracy 91.32%) outperformed finetuning, and state that this was 2.87% higher than the upper bound joint training. They report that iCaRL, the best method in the other scenarios, was 7.52% lower than finetuning in Data-IL.",
+     "anchor": "Section 4.1, p.7",
+     "quotes": [
+      "we found that only LwF (accuracy: 91.32%) outperformed ﬁnetuning and even 2.87% higher than the upper bound joint training.",
+      "While iCaRL was the best method for other scenarios, it was 7.52% lower than ﬁnetuning."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table S1 gives Data-IL Joint 90.48, so LwF (91.32) is 0.84 points above it, not 2.87; 91.32 minus finetuning (88.49) is 2.83. iCaRL (80.97) is 7.52 below finetuning (88.49), which matches. LwF exceeds finetuning by less than finetuning's standard deviation (3.15)."
+    },
+    {
+     "id_suggestion": "icarl-data-il-memory-hypothesis",
+     "value": "The authors state that iCaRL was designed and tested for Class-IL with replay memory divided equally across classes, and that in their Data-IL setting the allocated memory for each class was split further across the five domains. They state a hypothesis that a bigger memory with more examples per class per domain could have produced better results.",
+     "anchor": "Section 4.1, p.7",
+     "quotes": [
+      "iCaRL was designed and tested for Class-IL in [20] and the replay memory was divided equally to store examples from each class.",
+      "In our Data-IL setting, the allocated memory for each class was split further for each of the ﬁve domains.",
+      "We hypothesized a bigger memory with more examples for each class per domain could have produced better results."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The hypothesis is not tested in the paper; memory sizes used are not stated in the text."
+    },
+    {
+     "id_suggestion": "domain-il-icarl-best",
+     "value": "The authors report that in Domain-IL iCaRL achieved the best accuracy of 73.41%, and state that while other methods show a reduction in performance after learning Domain 2 and 4, the performance of iCaRL continued to improve (Fig. 2).",
+     "anchor": "Section 4.1, p.7; Fig. 2",
+     "quotes": [
+      "In Domain-IL, iCaRL achieved the best accuracy of 73.41%.",
+      "while other methods show a reduction in performance after learning Domain 2 and 4, the performance of iCaRL continued to improve (Fig. 2)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The per-experience curves are in a figure not available in the text layer; the value rests on the stated sentence. Table S1 gives 73.41 ± 3.12 for iCaRL against 89.43 ± 2.15 for Joint in Domain-IL."
+    },
+    {
+     "id_suggestion": "domain-il-forgetting-by-domain",
+     "value": "The authors state that Domain 1 and Domain 4 showed minimal forgetting (Fig. S2), while Domains 2 and 3 with eosin intensity changes were much harder for CL. They suggest that intensity changes in practice, due for example to scanner differences, may lead to larger challenges for CL than hue/saturation changes, and state that Domains 2 and 3 were the farthest from baseline DP settings in appearance.",
+     "anchor": "Section 4.1, p.7; Fig. S2, p.13",
+     "quotes": [
+      "Domain 1 (original stain-normalized images) and Domain 4 (change of hue and saturation)",
+      "showed minimal forgetting (Fig. S2), while Domains 2 and 3 with eosin intensity changes were much harder for CL",
+      "suggesting that intensity changes in practice due to, for example, scanner differences, may lead to larger challenges for CL than hue/saturation changes",
+      "These 2 domains were the farthest from baseline DP settings in appearance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The same passage labels Domain 4 'change of hue and saturation', whereas Section 3.2 defines Domain 4 as hue only. The sentence also mentions forgetting after Domain 4 for most methods (domain-il-icarl-best), which sits in tension with 'minimal forgetting' for Domain 4. Domains 2 and 3 are also the domains with the largest augmentation ranges, so intensity and magnitude of shift are confounded."
+    },
+    {
+     "id_suggestion": "domain-gap-limitation-stain-normalization",
+     "value": "The authors state that the five domains were designed to have relatively large domain gaps with non-overlapping augmentation settings, and that in practice, by performing stain normalization during model training or for datasets with smaller domain shifts, the domain gaps would be reduced and CL performance potentially improved.",
+     "anchor": "Section 4.1, p.7",
+     "quotes": [
+      "Note that here the 5 domains were designed to have relatively large domain gaps with non-overlapping augmentation settings",
+      "by performing stain normalization during model training or for datasets with smaller domain shifts, the domain gaps would be reduced and thus potentially improving CL performance."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the scope and a limit of its own augmented benchmark here.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The improvement from stain normalization is not tested; the data were already Macenko stain-normalized before augmentation (Section 3.1)."
+    },
+    {
+     "id_suggestion": "task-il-finetuning-higher-than-class-il",
+     "value": "The authors state that in Task-IL finetuning accuracy was much higher than in Class-IL, which they say was likely due to the presence of task-specific network modules and additional information (task IDs) used during inference.",
+     "anchor": "Section 4.1, p.7",
+     "quotes": [
+      "In Task-IL, ﬁnetuning accuracy was much higher than that of Class-IL, likely due to the presence of task-speciﬁc network modules and additional information leveraged (taks IDs) during inference."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table S1: finetuning 80.1 ± 5.51 in Task-IL against 26.61 ± 0.4 in Class-IL. The explanation is the authors' and is not tested by an ablation."
+    },
+    {
+     "id_suggestion": "task-il-only-lwf-above-finetuning",
+     "value": "The authors state that in Task-IL, unlike what references 19, 27 and 28 have reported, LwF was the only method that performed better than finetuning. They say this could be because in their network design task identities were only used in the output layer, while embedding task identities in hidden layers was reported to be more effective.",
+     "anchor": "Section 4.1, p.7; Fig. S3",
+     "quotes": [
+      "However, unlike [19, 27, 28] have reported, LwF was the only method that performed better than ﬁnetuning (Fig. 1 Right and S3).",
+      "This could be because in our network design task identities were only used in the output layer, while it was reported to be more eﬀective to embed task identities in hidden layers [10]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table S1 Task-IL: LwF 80.59 ± 4.95, finetuning 80.1 ± 5.51, EWC 78.41 ± 3.35, Online EWC 76.83 ± 2.64. The LwF advantage of 0.49 is far inside the standard deviation. The mechanism offered is a hypothesis; no hidden-layer task-ID variant was run."
+    },
+    {
+     "id_suggestion": "class-il-forgetting-and-icarl-best",
+     "value": "The authors state that Class-IL is the most difficult learning scenario and that, as expected, most methods suffered from severe forgetting of previous knowledge. They report that iCaRL had the best overall accuracy of 72.06% with a random ordering of classes (Fig. S4), and state that this is consistent with reference 27 that replay methods are more effective in Class-IL than regularization methods.",
+     "anchor": "Section 4.1, p.7-8; Fig. S4, p.13",
+     "quotes": [
+      "Class-IL is the most diﬃcult learning scenario and as expected most methods suﬀered from severe forgetting of previous knowledge.",
+      "iCaRL had the best overall accuracy of 72.06% when tested with a random ordering of classes (Fig. S4).",
+      "This is consistent with [27] that replay methods are more eﬀective in Class-IL than regularization methods."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table S1 Class-IL: iCaRL 72.06 ± 3.2 against finetuning 26.61 ± 0.4, EWC 27.3, Online EWC 26.79, LwF 28.88 and Joint 85.94 ± 4. In Table S2 the value 72.06 appears in the row 'grouping:2223', whereas the 'random1' and 'random2' orders give 68.78 and 68.57; the text's 'random ordering' label for 72.06 does not match Table S2."
+    },
+    {
+     "id_suggestion": "icarl-class-order-grouping-number-of-classes",
+     "value": "The authors report in Table S2 (iCaRL, Class-IL) accuracy ± standard deviation of 78.24 ± 4.11 for the default class order (123456789), 81.11 ± 3.6 for a manual order (182736945), 68.78 ± 7.59 for random1 (794631852) and 68.57 ± 5.79 for random2 (674398125). By class grouping they report 72.06 ± 3.2 for grouping 2223, 56.89 ± 4.69 for grouping 3222 and 46.55 ± 1.89 for grouping 333, and by number of classes 46.55 ± 1.89 for 9 classes and 76.69 ± 2.01 for 6 classes. They state that the results were consistent with the curriculum learning hypothesis that knowledge is better captured if harder tasks follow easier tasks.",
+     "anchor": "Section 4.1, p.8; Table S2 left, p.12",
+     "quotes": [
+      "default (123456789) manual (182736945)",
+      "78.24 ± 4.11 81.11 ± 3.6",
+      "random1 (794631852)",
+      "68.78 ± 7.59",
+      "random2 (674398125)",
+      "68.57 ± 5.79",
+      "grouping:2223 grouping:3222 grouping:333",
+      "72.06 56.89 46.55",
+      "3.2 4.69 1.89",
+      "Number 9 classes",
+      "46.55 ± 1.89",
+      "76.69 ± 2.01",
+      "The results (Table S2) were consistent with the hypothesis of curriculum learning that knowledge is better captured if harder tasks follow easier tasks [6]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The text layer flattens Table S2; values are matched to labels by order (the grouping row lists three means and three standard deviations separately). The 9-class entry 46.55 ± 1.89 equals the grouping:333 entry, and the main Class-IL result 72.06 ± 3.2 equals the grouping:2223 entry, so the table does not make clear which setting is the main experiment. The class-order spread (68.57 to 81.11) is larger than the Class-IL differences among non-replay methods, so class order is a substantial uncontrolled factor. The curriculum interpretation is the authors' and is not tested directly."
+    },
+    {
+     "id_suggestion": "agem-task-il-online-results",
+     "value": "The authors state that A-GEM outperformed the online joint baseline for A-GEM in Task-IL by 6%, but suffered from catastrophic forgetting without task identity. They report in Table S1 A-GEM accuracy of 72.41 ± 1.81 (Task-IL) and 21.62 ± 3.45 (Class-IL), against finetuning (A-GEM) of 64.93 ± 9.13 and 19.57 ± 7.35 and Joint (A-GEM) of 65.58 ± 13.19 and 90 ± 2.72 in the same scenarios.",
+     "anchor": "Section 4.1, p.8; Fig. 3 left; Table S1, p.12",
+     "quotes": [
+      "A-GEM outperformed the online joint baseline for A-GEM (Fig. 3 Left) in Task-IL by 6%, but suﬀered from catastrophic forgetting without task identity.",
+      "64.93 ± 9.13 19.57 ± 7.35",
+      "72.41 ± 1.81 21.62 ± 3.45",
+      "65.58 ± 13.19 90 ± 2.72"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "72.41 minus 65.58 is 6.83 points, not 6. The Joint (A-GEM) Task-IL value (65.58 ± 13.19) is lower than the Joint (A-GEM) Class-IL value (90 ± 2.72) and has a very wide standard deviation, so the 'upper bound' comparison is noisy. The Class-IL A-GEM figure (21.62) is within the standard deviation of its finetuning baseline (19.57 ± 7.35)."
+    },
+    {
+     "id_suggestion": "cope-online-results",
+     "value": "The authors state that CoPE was worse than finetuning in Data-IL and Class-IL, but 6% better in Domain-IL (Fig. 3 Right), and that knowledge retention (backward transfer) with CoPE was much better in Data-IL and Domain-IL despite lower performance compared to offline methods. They report in Table S1 CoPE accuracy of 82.16 ± 4.63 (Data-IL), 66.71 ± 2.49 (Domain-IL) and 19.15 ± 6.16 (Class-IL), against finetuning (CoPE) of 84.92 ± 4.41 (Data-IL) and 60.85 ± 6.04 (Domain-IL).",
+     "anchor": "Section 4.1, p.8; Fig. 3 right, Fig. S1, S2; Table S1, p.12",
+     "quotes": [
+      "CoPE was worse than ﬁnetuning in Data-IL and Class-IL, but was 6% better in Domain-IL (Fig. 3 Right)",
+      "knowledge retention (backward transfer) with CoPE was much better in Data-IL and Domain-IL (Fig. S1 and S2)",
+      "82.16 ± 4.63 66.71 ± 2.49",
+      "19.15 ± 6.16",
+      "84.92 ± 4.41 60.85 ± 6.04"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "In Table S1, CoPE minus finetuning is 5.86 points in Domain-IL (matching '6%'), but the Data-IL gap (2.76 lower) is within the standard deviation. Joint (CoPE) values are 86.5 ± 5.19 (Data-IL), 77.78 ± 8.82 (Domain-IL) and 75.7 ± 0 (Class-IL). Table S1 gives finetuning (CoPE) 23.76 ± 0 and Joint (CoPE) 75.7 ± 0 in Class-IL, standard deviations of 0 that suggest a single effective repeat."
+    },
+    {
+     "id_suggestion": "cope-sensitivity-and-online-challenge",
+     "value": "The authors state that CoPE was sensitive to softmax temperature and that further finetuning could help improve forward transfer. They state that the online results demonstrate that online CL poses challenges, which calls for more attention in research.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "We note that CoPE was sensitive to softmax temperature and further ﬁnetuning could help improve forward transfer.",
+      "demonstrating that online CL poses challenges, which calls for more attention in research"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The temperature sensitivity is reported without numbers or a sweep in the text; whether the CoPE results were tuned for temperature is not stated."
+    },
+    {
+     "id_suggestion": "multiple-tumor-types-lwf-domain-il",
+     "value": "The authors report testing a dramatic domain shift by training with the original CRC images in one experience and the PatchCam dataset in another, using LwF in a Domain-IL setting with each tumor type as one domain, and varying the order of the domains and the volume of PatchCam data. They state that joint baseline accuracy was around 80%, and that LwF performed better than finetuning when PatchCam was introduced first, followed by CRC.",
+     "anchor": "Section 4.1, p.8; Fig. 4",
+     "quotes": [
+      "We tested a dramatic domain shift in data streams by training a model with the original CRC images in one experience and PatchCam dataset in another experience.",
+      "We experimented with LwF for continually learning the two datasets in a Domain-IL setting, where each tumor type is considered as one domain.",
+      "As shown in Fig. 4, joint baseline accuracy was around 80%.",
+      "LwF performed better than ﬁnetuning when PatchCam was introduced ﬁrst during training followed by CRC in the subsequent experience."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Only LwF was tested in this experiment, and only two orders and two data ratios."
+    },
+    {
+     "id_suggestion": "table-s2-crc-patchcam-lwf-values",
+     "value": "The authors report in Table S2 (right) LwF Domain-IL accuracy ± standard deviation on CRC and PatchCam (CAM) in these orderings and data ratios: CRC then CAM, finetuning 77.84 ± 0.94, LwF 76.39 ± 6.34, Joint 78.44 ± 7.54; 1:3 CRC/CAM, finetuning 80.04 ± 2.52, LwF 79.84 ± 3.34, Joint 81.02 ± 4.7; CAM then CRC, finetuning 63.44 ± 1.71, LwF 65.48 ± 2.95, Joint 80.54 ± 4.27; 3:1 CAM/CRC, finetuning 67.62 ± 4.78, LwF 76.57 ± 3.11, Joint 82.38 ± 2.5.",
+     "anchor": "Table S2 right, p.12",
+     "quotes": [
+      "77.84 ± 0.94",
+      "76.39 ± 6.34",
+      "78.44 ± 7.54",
+      "1:3 CRC/CAM Finetuning 80.04 ± 2.52",
+      "79.84 ± 3.34",
+      "81.02 ± 4.7",
+      "CAM/CRC Finetuning 63.44 ± 1.71",
+      "65.48 ± 2.95",
+      "80.54 ± 4.27",
+      "3:1 CAM/CRC Finetuning 67.62 ± 4.78",
+      "76.57 ± 3.11",
+      "82.38 ± 2.5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The text layer drops the row labels for the first group and for the 'LwF' rows; the method for each number is assigned by order (finetuning, LwF, Joint). With CRC first, LwF is below finetuning in both ratios (76.39 against 77.84; 79.84 against 80.04), within the standard deviation. With CAM first, LwF is above finetuning by 2.04 (1:1) and 8.95 (3:1)."
+    },
+    {
+     "id_suggestion": "three-times-more-data-improves-by-11",
+     "value": "The authors state that including 3 times more data in training improved accuracy by over 11% (Table S2).",
+     "anchor": "Section 4.1, p.8; Table S2 right, p.12",
+     "quotes": [
+      "As expected, including 3 times more data in training improved accuracy by over 11% (Table S2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with 3 to 5 repeats.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "From Table S2, the over-11 figure matches only LwF in the CAM-first order (65.48 to 76.57, a gain of 11.09). For the same increase in CRC/CAM order, LwF gains 3.45 (76.39 to 79.84), finetuning 2.2 and Joint 2.58. The statement does not say which comparison it refers to, so it is order- and method-specific."
+    },
+    {
+     "id_suggestion": "discussion-regularization-versus-rehearsal",
+     "value": "The authors state that, although regularization-based methods performed well in Data-IL and Domain-IL, only iCaRL, a rehearsal method, is effective in the most challenging Class-IL. They state that Task-IL scenarios may surprisingly not be as easy to learn for DP as for other domains.",
+     "anchor": "Section 4.2, p.8-9",
+     "quotes": [
+      "We found that though regularization-based methods performed",
+      "well in Data-IL and Domain-IL, only iCaRL, a rehearsal method, is eﬀective in the most challenging Class-IL.",
+      "Surprisingly, Task-IL scenarios may not be as easy to learn for DP as for other domains."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table S1 does not clearly show regularization methods performing well: in Data-IL, EWC (86.77) and Online EWC (83.29) are below finetuning (88.49), and in Domain-IL the regularization methods (63.64 to 67.51) are 22 to 26 points below Joint (89.43). The Task-IL remark rests on the Task-IL finetuning and CL accuracies not exceeding finetuning."
+    },
+    {
+     "id_suggestion": "fda-no-approved-cl-algorithms",
+     "value": "The authors state, citing reference 28, that the FDA has not approved algorithms based on CL, and that extensive research is needed to establish regulations for safely incorporating CL in clinical settings. They state that their evaluation approaches and method to generate domain-shifted datasets can potentially serve as a first step towards this goal.",
+     "anchor": "Section 4.2, p.9",
+     "quotes": [
+      "FDA has not approved algorithms based on CL [28] and extensive research is needed to establish regulations for safely incorporating CL in clinical settings.",
+      "Our evaluation approaches and proposed method to generate domain-shifted datasets can potentially serve as the ﬁrst step towards this goal."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "world",
+     "reader_inference": "Time-sensitive: the regulatory status is as of the 2021 Lancet Digital Health commentary (reference 28) and the 2022 preprint; it should not be read as current."
+    },
+    {
+     "id_suggestion": "abstract-online-few-shot-claim",
+     "value": "The authors state in the abstract that they evaluated CL methods in an online few-shot setting under the constraints of annotation and computational resources, and that they revealed promising results of CL in DP applications, potentially paving the way for application of these methods in clinical practice.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "In addition, we evaluated CL methods in an online few-shot setting under the constraints of annotation and computational resources.",
+      "We revealed promising results of CL in DP applications, potentially paving the way for application of these methods in clinical practice."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The body of the paper never uses the term few-shot and does not describe an experiment with reduced annotation; its online experiments use A-GEM and CoPE with 1 epoch and mini experiences of 128 samples. The online results are mixed (A-GEM and CoPE below or near finetuning in most scenarios), so 'promising results' is the authors' framing."
     }
    ]
   }
