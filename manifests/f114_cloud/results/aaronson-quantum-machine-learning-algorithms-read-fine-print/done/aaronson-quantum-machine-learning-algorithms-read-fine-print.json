@@ -1,0 +1,491 @@
+{
+ "papers": [
+  {
+   "record_id": "aaronson-quantum-machine-learning-algorithms-read-fine-print",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\NonArxiv\\Aaronson_2015_Quantum-Machine-Learning-Algorithms-Read-the-Fine-Print.pdf",
+   "title_in_file": "Quantum Machine Learning Algorithms: Read the Fine Print",
+   "version_note": "",
+   "pages": 5,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A 2015 short perspective article by Scott Aaronson on the caveats of HHL and later quantum machine learning algorithms.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "hhl-goal-log-time",
+     "value": "The author states that the goal of HHL is to approximately solve the system Ax = b for x, given an n by n real matrix A and a vector b, in time that scales only logarithmically with n, the number of equations and unknowns.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "Given an n × n real matrix A and a vector b, the goal of HHL is to (approximately) solve the system",
+      "and to do so in an amount of time that scales only logarithmically with n, the number of equations and unknowns."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the task HHL addresses.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-steps-to-read-and-write",
+     "value": "The author states that classically n squared steps (printed flat as n2) would be needed even to examine all entries of A, and n steps even to write down the solution vector x.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "since n2 steps would be needed even to examine all the entries of A, and n steps would be needed even to write down the solution vector x."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the classical input and output sizes.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-four-caveats",
+     "value": "The author states that HHL solves Ax = b in logarithmic time only with four caveats, each of which can be crucial in practice.",
+     "anchor": "Section on HHL, p.1",
+     "quotes": [
+      "the HHL algorithm “solves Ax = b in logarithmic time,” but it does so only with the following four caveats, each of which can be crucial in practice."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of the HHL speedup claim.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "caveat1-state-preparation",
+     "value": "The author states that the vector b must be loaded quickly into the quantum computer's memory so that a state whose n amplitudes encode b's entries can be prepared, and that if preparing this state already takes n to the power c steps (printed nc) for some constant c, the exponential speedup of HHL vanishes in the very first step.",
+     "anchor": "Caveat (1), pp.1-2",
+     "quotes": [
+      "(1) The vector b = (b1, . . . , bn) somehow needs to be loaded quickly into the quantum computer’s memory,",
+      "n amplitudes encode b’s entries.",
+      "quantum RAM. Either way, though, if preparing |b already takes nc steps for some constant c, then",
+      "the exponential speedup of HHL vanishes in the very"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Caveat (1) states the limit in the paper's own words.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "caveat1-qram-uniform",
+     "value": "The author states that a quantum RAM can in theory store the classical values b_i and let all be read at once in superposition, but that it is essential either that b is relatively uniform, without a few b_i vastly larger than the others, or that the quantum RAM holds partial sums or pointers to b's large entries; alternatively, a simple explicit formula for b may let the quantum computer prepare the state itself.",
+     "anchor": "Caveat (1), pp.1-2",
+     "quotes": [
+      "bi, and that allows them all to be read at once, in quantum superposition. Even then, however, it’s essential either that b is relatively uniform, without a few bi’s that are vastly larger than the others,",
+      "rather than just the bi’s themselves. Alternatively, if b is described by a simple, explicit formula, then"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Caveat (1) states the conditions.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "footnote1-black-box-search",
+     "value": "The author states in a footnote that if HHL could be adapted to the case where a single b_i is 1 and all others are 0, it would contradict the impossibility of an exponential speedup for black-box quantum search, which the author attributes to Bennett, Bernstein, Brassard and Vazirani.",
+     "anchor": "Footnote 1, p.1",
+     "quotes": [
+      "If the HHL algorithm could be adapted to the case where (say) a single bi is 1 and all the others are 0, then it would contradict the impossibility of an exponential speedup for black-box quantum search,"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper attributes the result to reference [3].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "caveat2-unitary-exp",
+     "value": "The author states that the quantum computer must be able to apply unitary transformations of the form e to the minus iAt for various t; if A is sparse and a quantum RAM stores the locations and values of each row's nonzero entries, this is known to take time growing nearly linearly with s, but if applying it takes n to the power c time the exponential speedup disappears.",
+     "anchor": "Caveat (2), p.2",
+     "quotes": [
+      "(2) The quantum computer also needs to be able to apply unitary transformations of the form e−iAt, for various values of t.",
+      "of time that grows nearly linearly with s [4]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Caveat (2) states the requirement.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "caveat3-condition-number",
+     "value": "The author states that A must be robustly invertible (well-conditioned), that the time of HHL grows nearly linearly with the condition number kappa, the ratio in magnitude of A's largest to smallest eigenvalue, and that if kappa grows like n to the power c the exponential speedup is gone.",
+     "anchor": "Caveat (3), p.2",
+     "quotes": [
+      "(3) The matrix A needs to be not merely invertible, but robustly invertible, or “well-conditioned.” More",
+      "Then the amount of time needed by HHL grows nearly linearly with κ. If κ grows like nc, then the exponential speedup is gone."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Caveat (3) states the requirement.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "caveat4-output-is-state",
+     "value": "The author states that HHL outputs not x itself but a quantum state of log base 2 of n qubits that approximately encodes the entries of x in its amplitudes, and that learning a specific entry x_i will in general require repeating the algorithm roughly n times, which would again kill the exponential speedup.",
+     "anchor": "Caveat (4), p.2",
+     "quotes": [
+      "its output is not x itself, but rather a quantum state |x of log2 n qubits, which (approximately) encodes the entries of x in its amplitudes.",
+      "require repeating the algorithm roughly n times, which would once again kill the exponential speedup."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Caveat (4) states the output limit.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-actual-task-and-runtime",
+     "value": "The author states that HHL is an algorithm for approximately preparing a superposition |x> where x solves Ax = b, assuming rapid ability to prepare |b> and to apply e to the minus iAt, in time growing roughly like log(n) times kappa s divided by epsilon, where n is the system size, kappa the condition number, s the sparsity and epsilon the desired error.",
+     "anchor": "Summary of caveats, p.2",
+     "quotes": [
+      "Rather, it’s an algorithm for approximately preparing a quantum superposition of the form |x , where x is the solution to a linear system Ax = b,",
+      "and using an amount of time that grows roughly like log (n) · κs/ε,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of what HHL does and its running time.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-as-template",
+     "value": "The author states that perhaps the best way to see HHL is as a template for other quantum algorithms, filled in for a case by showing how to prepare |b>, apply e to the minus iAt and measure |x>, then analyzing performance against the best known classical algorithm for that case.",
+     "anchor": "p.2",
+     "quotes": [
+      "perhaps the best way to see HHL is as a template for other quantum algorithms."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author's view, offered without a proof.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "clader-em-scattering-only-worked-example",
+     "value": "The author states that, to his knowledge, one attempt exists to work an application of the HHL template from start to finish: Clader, Jacobs and Sprouse argued HHL could speed up calculation of electromagnetic scattering cross-sections for smooth geometric figures, which needed A sparse, the condition number apparently bounded from numerical data with preconditioning, |b> preparable explicitly for regular objects, and only specific observables of x needed.",
+     "anchor": "p.2",
+     "quotes": [
+      "Clader, Jacobs, and Sprouse [6] argued that HHL could be used to speed up the calculation of electromagnetic scattering cross-sections,",
+      "at least from numerical data, the condition number κ appears to be bounded, at least if careful “preconditioning” is done;"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author reports reference [6] and dates the claim to the time of writing.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "clader-no-classical-ruleout",
+     "value": "The author states that Clader et al. could not rule out a classical algorithm that gives the answer in nearly the same time as HHL once the problem is restricted in all these ways.",
+     "anchor": "p.3",
+     "quotes": [
+      "Crucially, Clader et al. could not rule out the possibility that, once the problem of solving a linear system has been restricted in all these ways,"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author reports reference [6].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-task-definition",
+     "value": "The author states that the task cannot be defined as solving an arbitrary linear system, since HHL cannot do that, but must be defined as estimating certain observables of x for special systems where HHL can estimate them, which makes it far less obvious whether a clever classical solution exists.",
+     "anchor": "p.3",
+     "quotes": [
+      "And that makes it far less obvious whether there might be a clever classical solution as well."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author's argument, without a proof.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-universal-for-quantum-computation",
+     "value": "The author states that Harrow et al. showed HHL is universal for quantum computation: a quantum algorithm such as Shor's can be encoded as a system of linear equations and simulated by HHL.",
+     "anchor": "p.3",
+     "quotes": [
+      "Namely, they showed that HHL is “universal for quantum computation.”"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author reports reference [9] in summary; the theorem is not quoted in full.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-universal-systems-artificial",
+     "value": "The author states that the linear systems produced by the universality reduction will be extremely artificial, and one might argue the insight behind the exponential speedup comes from Shor's algorithm or whatever algorithm is simulated rather than from HHL.",
+     "anchor": "p.3",
+     "quotes": [
+      "The essential insight behind the exponential speedup, one might argue, is provided by Shor’s algorithm"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author's opinion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "other-algs-inherit-hhl-caveats",
+     "value": "The author states that quantum algorithms proposed for k-means clustering, support vector machines, data fitting and Google PageRank vector properties inherit many of the caveats of HHL, including how to load classical data and that measurement reveals only a tiny probabilistic sketch.",
+     "anchor": "p.3",
+     "quotes": [
+      "It’s fair to say that all of these algorithms inherit many of the caveats of HHL."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author's assessment.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lmr-classification-task",
+     "value": "The author describes the Lloyd, Mohseni and Rebentrost supervised learning task: classify a state |u> into one of two clusters by deciding which cluster mean it is closer to, and states that they argue their algorithm is an exponential speedup over classical inner-product computation.",
+     "anchor": "p.3",
+     "quotes": [
+      "The problem is to classify |u into one of the two clusters, by deciding which mean it is closer to:",
+      "They argue that this represents an exponential speedup over classical inner-product computation."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author describes reference [11].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lmr-classical-sampling",
+     "value": "The author states that if the states are prepared from amplitude lists in a quantum RAM, then if the amplitudes are uniform it is not hard to show that the inner products can also be estimated by a classical random sampling algorithm in about log(mn)/epsilon squared steps, so a classical algorithm exists that is at most quadratically slower, at least in this example.",
+     "anchor": "p.3",
+     "quotes": [
+      "But if the amplitudes are uniform in the required way, then it’s not hard to show that we can also estimate the inner products u|v and u|w using a classical random sampling algorithm, in about log (mn) /ε2 steps!"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated as not hard to show, with no proof in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "forrelation-classical-lower-bound",
+     "value": "The author states that if the task is to estimate <u|F|v> with F an n by n unitary applying a Fourier transform, any classical algorithm needs at least about n to the 1/4 steps, which later work with Ambainis improved to nearly matching an upper bound of root n steps.",
+     "anchor": "pp.3-4",
+     "quotes": [
+      "an n × n unitary matrix that applies a Fourier transform, then any classical algorithm would need at least about n1/4"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author reports references [1] and [2]; square roots are printed as separate signs in the text layer.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qc-estimates-fourier-inner-product",
+     "value": "The author states that a quantum computer can estimate <u|F|v> just as easily as <u|v>, in only a logarithmic number of steps, so if one vector is given only via its Fourier transform there is an exponential quantum speedup in comparing them.",
+     "anchor": "p.4",
+     "quotes": [
+      "On the other hand, a quantum computer can estimate u|F |v just as easily as it can estimate u|v , in only a logarithmic number of steps."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author reports the quantum side of references [1] and [2].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "forrelation-conditions",
+     "value": "The author states that the theorem of Ambainis and the author applies only if u and v are both random when considered individually, and that quantum estimation in logarithmic time needs the vectors to be reasonably uniform with no sharp peaks; take away either condition and the exponential speedup can disappear.",
+     "anchor": "p.4",
+     "quotes": [
+      "applies only if u and v are both random when considered individually.",
+      "neither u nor v can have sharp “peaks.” Take away either of these conditions, and the exponential quantum speedup can once again disappear."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author states the conditions on the cited theorem.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "general-rule-superposition",
+     "value": "The author states a general rule: for an exponential quantum speedup there must be an extremely fast way to create a certain kind of superposition and no fast way to create an analogous probability distribution classically.",
+     "anchor": "p.4",
+     "quotes": [
+      "The general rule here is: if we want an exponential quantum speedup, then we need there to be an extremely fast way to create a certain kind of superposition,"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author's rule.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "betti-algorithm",
+     "value": "The author states that Lloyd, Garnerone and Zanardi proposed a polynomial-time quantum algorithm for estimating topological features of data such as Betti numbers, from only the pairwise distances between points, avoiding loading a huge amount of data from a quantum RAM.",
+     "anchor": "p.4",
+     "quotes": [
+      "proposed a polynomial-time quantum algorithm for estimating certain topological features of data: most notably Betti numbers,",
+      "the new algorithm avoids the expensive need to load in a huge amount of data from a quantum RAM;"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author describes reference [10].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "betti-drawback",
+     "value": "The author states that if S, the total number of simplices, is much smaller than 2 to the n, as it will often be in practice, the Betti number algorithm can require exponential time.",
+     "anchor": "p.4",
+     "quotes": [
+      "So if S is much smaller than 2n, as it will often be in practice, the algorithm can require exponential time."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author states the limit of reference [10].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-excited-but-sober",
+     "value": "The author concludes that HHL and its offshoots are real advances in quantum algorithm theory that would probably find practical uses in a world with quantum computers, but that a sober understanding of what they would and would not do is needed.",
+     "anchor": "p.4",
+     "quotes": [
+      "we ought to maintain a sober understanding of what these algorithms would and wouldn’t do:"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author's conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-check-fine-print-and-classical",
+     "value": "The author concludes that for each intended application of the template one must check whether the application satisfies all the fine print and whether, with the fine print included, a fast classical algorithm also provides the same information.",
+     "anchor": "p.4",
+     "quotes": [
+      "But for each intended application of the template, one still needs to invest a lot of work to see whether"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author's conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
