@@ -1,0 +1,751 @@
+{"papers": [{
+  "record_id": "yang-2024-quantum-resonant-dimensionality-reduction-application",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Yang-et-al._2024_Quantum-Resonant-Dimensionality-Reduction-and-Its-Application-in-Quantum__2405.12625.pdf",
+  "title_in_file": "Quantum Resonant Dimensionality Reduction and Its Application in Quantum Machine Learning",
+  "version_note": "arXiv:2405.12625v1 [quant-ph], 21 May 2024. The text layer is the 11-page preprint, read once; the equations are partly garbled by the layer, so equation content is quoted from the prose lines and from the lines where the layer kept the formula whole.",
+  "pages": 11,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A theory-plus-simulation paper that proposes quantum resonant dimensionality reduction (QRDR), derives its error and complexity, and simulates it classically as a preprocessing step for a quantum support vector machine (Sonar data) and a quantum convolutional neural network (1D transverse-field Ising phases).",
+  "bears_on_context": "qml",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "qrdr-complexity",
+      "verdict": "narrowed",
+      "note": "The abstract sentence is stored cut short. The paper derives its bound only under stated conditions (R = O(polylog N), the energy gap, an O(1) matrix norm) and the bound also carries the sparsity d of A. The comparison is against QPE-based dimensionality reduction, whose runtime the paper states without its own derivation.",
+      "value": "The authors state that QRDR operates with polylogarithmic time complexity and reduces the error dependency from the order of 1/ϵ cubed to the order of 1/ϵ, compared to existing algorithms; the paper derives the simplified bound O(d, polylog(M N )/ϵ) only under the conditions that R = O(polylogN ) eigenvalues can reconstruct the covariance matrix A, that ∆min = O(ϵ0.5/R) (epsilon to the power 0.5) and that ∥A∥max is O(1) order.",
+      "anchor": "Abstract; Section II C, p.5",
+      "quotes": [
+        "reduces the error dependency from the order of 1/ϵ3 to the order of 1/ϵ, compared to existing algorithms.",
+        "Under the condition that R = O(polylogN ) eigenvalues can reconstruct the covariance matrix A, and ∆min = O(ϵ0.5/R), the time complexity is simplified to O(d, polylog(M N )/ϵ).",
+        "The complexity of QRDR is O(d, polylog(M N )/ϵ) under the assumption that ∥A∥max is O(1) order."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A derivation in prose and equations, not a numbered theorem; the conditions are quoted, the full derivation is not.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The phrase 'polylogarithmic' hides a linear dependence on the sparsity d and on R-dependent terms; the stated 1/epsilon scaling needs the gap condition Delta_min = O(epsilon^0.5 / R), which ties the eigenvalue gap to the accuracy target. The paper gives no argument that real data meets that condition."
+    },
+    {
+      "id": "qrdr-qsvm-sonar-simulation",
+      "verdict": "confirmed",
+      "note": "Confirmed. Anchor fix: the Sonar data set is first named on p.5 (Section III A), and the two accuracies are on p.6 to p.7. The figures are an average over eight cross-validation folds of a classical simulation, with M = 208 samples; no spread is given in the text.",
+      "value": "In a classical simulation on the Sonar mines-versus-rocks dataset, the authors report average QSVM accuracy of 0.8625 on the original data with N = 60 features and 0.8937 after reduction to R = 16.",
+      "anchor": "Section III A, p.5 (data set) and p.6 to p.7 (accuracies)",
+      "quotes": [
+        "Connectionist Bench (Sonar, Mines vs. Rocks) Data Set is used to evaluate our QRDR algorithm.",
+        "N = 60 features, the accuracy is 0.8625. For R = 16, the accuracy improves to 0.8937.",
+        "Eight QSVM models are trained, and the average accuracy across these models is taken as the final accuracy."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study on one data set.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The 0.0312 difference rests on one data set of 208 samples and one cross-validation split; the text gives no per-fold spread or significance test for this pair."
+    },
+    {
+      "id": "qrdr-simulation-only-limit",
+      "verdict": "widened",
+      "note": "The same sentence continues: the second classifier is a quantum convolutional neural network. The sentence is in Section I (p.2), not in Section III. The Discussion repeats that both are simulations only, and the QCNN runs on a simulator platform.",
+      "value": "The authors state that they simulate the QRDR algorithm numerically and evaluate its performance using quantum support vector machines and quantum convolutional neural networks (QCNN).",
+      "anchor": "Section I, p.2",
+      "quotes": [
+        "We simulate the QRDR algorithm numerically and evaluate its performance using quantum support vector machines and quantum convolutional neural networks (QCNN)."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its setup, in Section I; Section III and the figure captions repeat it.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "No quantum hardware run is reported anywhere in the paper."
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "qrdr-qpe-ancilla-reduction",
+      "value": "The authors state that employing quantum resonant transitions instead of QPE reduces the number of ancilla qubits from O(1/ϵ + log R) to O(log R), independent of the accuracy ϵ, and that QPE requires an extra O(1/ϵ) qubits to recover the eigenvalues whereas QRDR does not require this extra register.",
+      "anchor": "Section I, p.2; Section II C, p.5",
+      "quotes": [
+        "By employing QRT instead of QPE, the number of ancilla qubits is reduced from O(1/ϵ + log R) to O(log R) in QRDR that is independent of the accuracy ϵ",
+        "Additionally, QPE requires an extra O(1/ϵ) qubits to recover the eigenvalues, whereas QRDR does not require this extra quantum register."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A resource-count claim argued in prose; no numbered theorem and no count of the registers of the full circuit including the disentangling step.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The count covers the registers named in the Hamiltonian; the paper does not add the qubits needed for the Hamiltonian simulation method of reference 28 or for the QRAM state preparation."
+    },
+    {
+      "id": "qrdr-vs-vqa-exact-complexity-claim",
+      "value": "The authors state that, in contrast to variational quantum algorithm dimensionality reduction, their QRDR presents an exact time complexity, and that variational algorithms are generally seen as friendly for NISQ devices but become increasingly challenging to analyze as the number of qubits grows.",
+      "anchor": "Section I, p.1 and p.2",
+      "quotes": [
+        "In contrast to VQA-DR, our QRDR presents an exact time complexity.",
+        "complexity becomes increasingly challenging to analyze as the number of qubits grows."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author claim; no variational baseline is run or analyzed in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The bound the paper derives is a big-O expression under asymptotic conditions, not an exact count; 'exact' is stronger than what Section II C shows."
+    },
+    {
+      "id": "qrdr-qpe-dr-challenges",
+      "value": "The authors state that QPE-based dimensionality reduction algorithms have reduced time complexity compared to QPCA but still face challenges related to the required number of ancilla qubits and evolution time, which pose difficulties for current quantum computers.",
+      "anchor": "Section I, p.1",
+      "quotes": [
+        "QPE-based algorithms have reduced time complexity compared to QPCA. They still face challenges related to the required number of ancilla qubits and evolution time, posing difficulties for current state-of-the-art quantum computers."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A background statement by the authors about prior algorithms, not backed by a measurement in this paper.",
+      "result_type": "field",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "qrdr-pca-definitions",
+      "value": "The authors define the covariance matrix A as the transpose of the data matrix X times X, and the reduced data matrix as Z = X times the transpose of V_R, where V_R is a projection matrix composed of the first R singular vectors, so that reducing the dimension from N to R keeps the R largest singular values.",
+      "anchor": "Section II A, p.2",
+      "quotes": [
+        "The covariance matrix of this data, denoted as A ∈ RN×N = XT X.",
+        "the data matrix Z ∈ RM×R after dimensionality reduction can be represented by the formula Z = XVRT",
+        "The matrix VR is a projection matrix composed of the first R singular vectors"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "Definitions the algorithm and its error analysis rest on, stated in Section II A.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "qrdr-scope-basic-pca-only",
+      "value": "The authors state that the paper focuses on the basic PCA method and leaves out advanced techniques such as kernel methods and centering, which they refer to references 12 and 13 for.",
+      "anchor": "Section II A, p.2",
+      "quotes": [
+        "In this paper, we focus on the basic PCA method, leaving out advanced techniques such as kernel methods and centering, which are detailed in references [12, 13]."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper's own statement of scope in Section II A.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The Sonar and Ising experiments therefore use uncentered, linear PCA; the paper does not say whether the data were centered before the classical reference reduction."
+    },
+    {
+      "id": "qrdr-qubit-registers-setup",
+      "value": "The authors state that the algorithm uses one probe qubit to find the eigenstate, n = ⌈log2 N ⌉ qubits (log base 2) to store the state of the original data, and r = ⌈log2 R⌉ qubits to store the state after dimensionality reduction.",
+      "anchor": "Section II B, p.2",
+      "quotes": [
+        "Our algorithm utilizes one probe qubit to find the eigenstate, n = ⌈log2 N ⌉ qubits to store the state corresponding to the original data, and r = ⌈log2 R⌉ qubits to store the state after dimensionality reduction."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The register layout is the paper's own definition of the algorithm, Section II B.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "qrdr-hamiltonian-structure",
+      "value": "The authors state that the Hamiltonian of Eq. (5) has three terms, the Hamiltonian of the probe qubit, the problem Hamiltonian and their interaction, that the problem Hamiltonian is Hp = Hλ tensor identity plus identity tensor A, and that Hλ is a diagonal matrix encoding the R eigenvalues λk = σk squared of the covariance matrix A with diagonal elements hk = −λk.",
+      "anchor": "Section II B, p.2 to p.3",
+      "quotes": [
+        "(5) correspond to the Hamiltonian of the probe qubit, the",
+        "problem Hamiltonian, and their interaction, respectively.",
+        "Hp = Hλ ⊗ I2⊗n + I2⊗r ⊗ A,",
+        "where Hλ is a diagonal matrix that encodes the R eigenvalues λk = σk2 of the covariance matrix A. The diagonal elements of Hλ are given by hk = −λk."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The Hamiltonian is the paper's own definition of the algorithm, Section II B, Eqs. (5) and (6).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "Constructing Hλ requires the first R eigenvalues of A to be known beforehand; the cost of getting them is counted separately in Section II C."
+    },
+    {
+      "id": "qrdr-input-requirements",
+      "value": "The authors list as inputs of Algorithm 1 the dataset state, the covariance matrix A and its first R eigenvalues, and state that preparing the input state typically requires specialized quantum devices such as quantum random access memory (QRAM).",
+      "anchor": "Algorithm 1, p.3; Section II B, p.3",
+      "quotes": [
+        "Inputs: Dataset state |X⟩, covariance matrix A and its first R eigenvalues λk, k ∈ [1, R].",
+        "This typically requires specialized quantum devices such",
+        "as quantum random access memory (QRAM) [25] to im-"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper's own statement of the algorithm's inputs and preconditions, Algorithm 1 and Section II B.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The first R eigenvalues of A must come from somewhere before QRDR starts; the paper charges their cost in Eq. (23) (via reference 27) but the sampled-data loading cost into QRAM is not analyzed."
+    },
+    {
+      "id": "qrdr-algorithm-steps",
+      "value": "The authors give Algorithm 1 as five steps: prepare the initial state, set an appropriate resonant parameter c, simulate the Hamiltonian H for a duration t = 1/c, measure the probe qubit and proceed only if the result is |1⟩, and disentangle the second and third registers using the inverse reference-state unitary; the output is |1⟩|Z⟩|0⟩ tensor power n.",
+      "anchor": "Algorithm 1, Section II B, p.3",
+      "quotes": [
+        "step 1: Prepare the initial state |0⟩|0⟩⊗r|X⟩. step 2: Set appropriate resonant parameter c.",
+        "step 3: Simulate the Hamiltonian H for a duration time of t = 1/c. step 4: Measure the probe qubit and proceed if the measurement result is |1⟩.",
+        "step 5: Disentangle the second and third registers using Uψ−1|ψ⟩."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The algorithm as the paper defines it, Algorithm 1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The post-selection in step 4 is why the success probability in Section II C matters; the disentangling step 5 reuses the method of reference 13."
+    },
+    {
+      "id": "qrdr-off-resonance-assumption",
+      "value": "The authors assume that c is much smaller than the minimum difference between eigenvalues of H, which allows them to neglect the effects of off-resonance in the state after the evolution operator.",
+      "anchor": "Section II B, p.3",
+      "quotes": [
+        "It is assumed that c is much smaller than the minimum difference between eigenvalues of H, allowing us to neglect the effects of off-resonance."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper's own stated assumption, Section II B, before the error analysis of Section II C.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "qrdr-resonant-transition-derivation",
+      "value": "The authors derive, for an input that is an eigenstate of A with k at most R, that resonant transitions happen only between |0⟩|0⟩ tensor power r |vk⟩ and |1⟩|k⟩|vk⟩, and that setting t = 1/c leaves the state |1⟩|k⟩|vk⟩ after the evolution step.",
+      "anchor": "Section II C, Eqs. (13) to (16), p.3 to p.4",
+      "quotes": [
+        "where k ≤ R. Without considering interaction term",
+        "resonant transitions just happens between |0⟩|0⟩⊗r|vk⟩",
+        "and |1⟩|k⟩|vk⟩. So the state in Eq. (13) after evolution",
+        "In setting t = 1/c, the state is |1⟩|k⟩|vk⟩ after this step."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A short derivation in prose and equations, not labeled as a theorem; the equations are partly lost in the text layer.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The result is exact only for the idealized two-level subspace; Eq. (16) gives cos and sin of c pi t / 2, so the full transfer at t = 1/c depends on the interaction strength being c pi / 2."
+    },
+    {
+      "id": "qrdr-off-resonance-error-bound",
+      "value": "The authors state that the off-resonance amplitude is O(c/∆min), where ∆min is the minimum energy gap, that the amplitude of the target component satisfies |αk| squared at least 1 − O(c squared over ∆min squared), and that they define the fidelity error as ϵ = 1 − |⟨Z|Ψ⟩out| squared = O(c squared over ∆min squared).",
+      "anchor": "Section II C, Eqs. (18) to (21), p.4",
+      "quotes": [
+        "where ∆min denotes the min erengy gap ∆min = min |Ei+1 − Ei|.",
+        "Because the sum of 1/n2 sequences is converged, it has",
+        "= 1 − O(c2/∆m 2 in).",
+        "Defining the fidelity as",
+        "ϵ = 1 − |⟨Z|Ψ⟩out|2 = O(c2/∆2min),"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A chain of inequalities with garbled equations in the text layer; the statement is quoted but the full proof steps are not reproduced.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The convergent-series step uses a gap lower bound proportional to |j − k| times the minimum gap; the paper does not state when that lower bound holds for the covariance spectrum of real data."
+    },
+    {
+      "id": "qrdr-evolution-query-complexity",
+      "value": "The authors state that the query complexity of the time evolution step is O(d∥A∥max polylog(M N ) divided by ∆min ϵ to the power 0.5), where d is the sparsity of A.",
+      "anchor": "Section II C, Eq. (22), p.4 to p.5",
+      "quotes": [
+        "so that the query complexity for time evolution step is",
+        "O(d∥A∥maxpolylog(M N )/∆minϵ0.5).",
+        "Here d is the sparsity of A."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A derived complexity expression with no numbered theorem; quoted from Eq. (22).",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The 1/epsilon^0.5 factor follows from c = O(Delta_min epsilon^0.5) in Eq. (21); the bound still has 1/Delta_min in front."
+    },
+    {
+      "id": "qrdr-eigenvalue-cost-cited",
+      "value": "The authors state that previous work (reference 27) proved that the error ϵ is proportional to the accuracy of the eigenvalues, and that the complexity of obtaining the first R eigenvalues is O(Rd∥A∥maxpolylog(M N )/ϵ).",
+      "anchor": "Section II C, p.5",
+      "quotes": [
+        "matrix A. In previous work [27], it has been proved",
+        "that the error ϵ is proportional to accuracy of eigenval-",
+        "values is O(Rd∥A∥maxpolylog(M N )/ϵ). For the ini-"
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to earlier work by overlapping authors, not proved here.",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": "The first term of Eq. (23) rests entirely on reference 27, a self-citation."
+    },
+    {
+      "id": "qrdr-decoupling-cost-cited",
+      "value": "The authors state that the query complexity of the decoupling, step 5, is O(R to the power 1.5 times d∥A∥max polylog(M N ) divided by ϵ), citing reference 13, and that the probability of success in step 4 is constant if the first R eigenvalues are enough to reconstruct A.",
+      "anchor": "Section II C, p.5",
+      "quotes": [
+        "In step 4, the proba-",
+        "bility of success is constant if the first R eigenvalues",
+        "are enough to reconstruct A as",
+        "5 is O(R1.5d∥A∥maxpolylog(M N )/ϵ) [13]. We use the"
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The decoupling cost is taken from reference 13; the constant-success claim is stated without a derivation.",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": "The constant-success-probability claim depends on the first R squared singular values summing to about the full sum, a data-dependent condition the paper does not test on the Sonar or Ising data."
+    },
+    {
+      "id": "qrdr-total-time-complexity-eq23",
+      "value": "The authors give the total time complexity of QRDR as the sum of three terms: O(Rd∥A∥max polylog(M N ) divided by ϵ), O(d∥A∥max polylog(M N ) divided by ∆min ϵ to the power 0.5), and O(R to the power 1.5 times d∥A∥max polylog(M N ) divided by ϵ).",
+      "anchor": "Section II C, Eq. (23), p.5",
+      "quotes": [
+        "In conclusion, the total time complexity of QRDR is",
+        "O(Rd∥A∥maxpolylog(M N )/ϵ+",
+        "d∥A∥maxpolylog(M N )/∆minϵ0.5+",
+        "R1.5d∥A∥maxpolylog(M N )/ϵ)."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A sum of three costs, two of them cited or assumed; no numbered theorem.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The R^1.5 / epsilon term is larger than the R / epsilon term in the unsimplified sum, so the 'simplified' 1/epsilon bound relies on treating R as polylogarithmic in N."
+    },
+    {
+      "id": "qrdr-qpe-dr-comparison",
+      "value": "The authors state that the runtime of QPE-based dimensionality reduction is O(d, polylog(M N )/ϵ cubed), and that with ∆min = O(ϵ0.5/R) their algorithm provides an advantage of polynomial order in the accuracy ϵ over QPE-based quantum dimensionality reduction.",
+      "anchor": "Section II C, p.5",
+      "quotes": [
+        "The runtime of this QPE-based DR algorithm is O(d, polylog(M N )/ϵ3).",
+        "In the circumstances ∆min = O(ϵ0.5/R), our algorithm provides the advantage of polynomial order in accuracy ϵ compared to QPE-based QDR."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The baseline runtime is stated without derivation and attributed to prior work; the advantage depends on the gap condition.",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": "The comparison assumes the same R = O(polylog N) condition for both algorithms and a gap that scales with the accuracy; it is a comparison of upper bounds, not of measured runtimes."
+    },
+    {
+      "id": "qrdr-qpca-complexity",
+      "value": "The authors state that QPCA and resonant QPCA can reduce the dimension of the quantum state but must solve each of the R eigenvalues and M samples one by one, giving a complexity of O(M R).",
+      "anchor": "Section II C, p.5",
+      "quotes": [
+        "QPCA [9] and Resonant QPCA [24] can reduce the dimension of the quantum state, but they must solve each of the R eigenvalues and M samples one by one, as shown in Fig. 1, resulting in a complexity of O(M R)."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A statement about prior algorithms, not derived in the paper.",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": "The text gives O(M R) for QPCA while Table I lists O(M polylog(M N )/ϵ3) for the same row; the two expressions are not reconciled in the paper."
+    },
+    {
+      "id": "qrdr-table1-complexity-comparison",
+      "value": "The authors tabulate in Table I a time complexity of O(d, polylog(M N )/ϵ) and a space complexity of O(log R + log(M N )) for QRDR; for QPE-DR (references 12 and 13) a time complexity of O(d, polylog(M N )/ϵ cubed) and a space complexity of O(log 1/ϵ + log R + log(M N )); and for QPCA (references 9 and 24) a time complexity of O(M polylog(M N )/ϵ cubed) and a space complexity of O(log(M N )).",
+      "anchor": "Table I, p.6",
+      "quotes": [
+        "O(d, polylog(M N )/ϵ)",
+        "O(log R + log(M N ))",
+        "QPE-DR [12, 13] O(d, polylog(M N )/ϵ3) O(log 1/ϵ + log R + log(M N ))",
+        "QPCA [9, 24] O(M polylog(M N )/ϵ3)",
+        "O(log(M N ))"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A summary table of asymptotic expressions, two of three rows from prior work.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The table ranks QRDR best in both time and space only because its row carries the unstated side conditions of Section II C; QPCA has a space cost lower than QRDR in the table."
+    },
+    {
+      "id": "qrdr-sonar-setup",
+      "value": "The authors report that the Sonar data set contains M = 208 samples with N = 60 features each, that they set R = 16 and varied the resonance parameter c proportionately from 0.001 to 0.032, and that the QSVM component is not covered in detail because the paper focuses on dimensionality reduction.",
+      "anchor": "Section III A, p.6",
+      "quotes": [
+        "This dataset contains M = 208 samples, each with N = 60 features.",
+        "We set R = 16 and varied c proportionately from 0.001 to 0.032.",
+        "This paper primarily focuses on dimensionality reduction, so the QSVM component is not covered in detail."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its experimental setup, Section III A.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "qrdr-classical-simulation-scope",
+      "value": "The authors state in a figure caption that the two blue parts of the simulation schematic are the simulated result of quantum algorithms on the classical computer, and that the error-versus-c figure shows simulating results of QSVM in classical computer for R = 16 and R = 8.",
+      "anchor": "FIG. 2 and FIG. 3 captions, p.6",
+      "quotes": [
+        "The two blue parts are the simulated result of quantum algorithms in the classical computer.",
+        "Red points are simulating results of QSVM in classical computer in R = 16 and blue line is in R = 8."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper's own statement that the quantum parts are simulated on a classical computer, in two figure captions.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The text refers to the error figure as 'Fig. 2' where Fig. 3 is the error figure; the schematic is Fig. 2."
+    },
+    {
+      "id": "qrdr-error-vs-c-fit",
+      "value": "The authors report that the discrepancy between the QRDR output and theoretical expectations aligns with the theoretical predictions based on the parameter c, with a correlation coefficient of 0.9835 for R = 16 and 0.9948 for R = 8 between log(1/c) and log(1/ϵ0.5) (epsilon to the power 0.5), and state that this confirms the accuracy of their theoretical analysis.",
+      "anchor": "Section III A, Fig. 3, p.6",
+      "quotes": [
+        "By calculating the linear fitting coefficients of log(1/c) and log(1/ϵ0.5), we can evaluate whether the two parameters are linearly correlated.",
+        "For R = 16, the correlation coefficient is 0.9835, while for R = 8, it is 0.9948.",
+        "This strong linear correlation between c and ϵ0.5 confirms the accuracy of our theoretical analysis."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study on one data set.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "A correlation coefficient measures straight-line fit, not slope; the prediction epsilon proportional to c squared needs a log-log slope of 1 for log(1/epsilon^0.5) against log(1/c), which the text does not report. The error values and the number of c values are in the figure only."
+    },
+    {
+      "id": "qrdr-qsvm-crossvalidation-setup",
+      "value": "The authors report that the data are divided into 8 groups of 26 samples following the standard K-fold cross-validation procedure, with seven groups for training and one for testing, and that eight QSVM models are trained.",
+      "anchor": "Section III A, p.6",
+      "quotes": [
+        "The data is divided into 8 groups, each containing 26 samples, following the standard K-fold cross-validation procedure.",
+        "Seven sets of data are used as the training set, while one set serves as the test set."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its evaluation protocol, Section III A.",
+      "result_type": "setup",
+      "context": "method",
+      "reader_inference": "The text does not say whether QRDR (and its eigenvalues) were computed on all samples before the split, which would let test samples influence the reduction."
+    },
+    {
+      "id": "qrdr-qsvm-dimension-scan",
+      "value": "The authors report that, selecting 20 random samples as a validation set and repeating the process eight times, QSVM performs very well with R = 8, with only a marginal increase in accuracy at R = 16 and R = 32, and that this suggests only around 8 parameters are necessary to capture the features of this data set; the Fig. 4 caption states that apart from R = 4 QSVM is effective at classifying the data.",
+      "anchor": "Section III A, p.7; FIG. 4, p.7",
+      "quotes": [
+        "Next, we select 20 random samples as the validation set and use the remaining data to train the parameters, repeating the process eight times",
+        "We observe that QSVM performs very well with R = 8. When using higher dimensions like R = 16 and R = 32, there is only a marginal increase in accuracy.",
+        "This suggests that only around 8 parameters are necessary to capture the features of the samples in this dataset.",
+        "Apart from R = 4, QSVM is effective at classifying the data"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study on one data set; the accuracies are in Fig. 4 only.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "This scan uses a different split protocol (20 random validation samples, eight repeats) from the 8-fold cross-validation behind 0.8625 and 0.8937, so the two sets of numbers are not on the same footing."
+    },
+    {
+      "id": "qrdr-qsvm-complexity-speedup-claim",
+      "value": "The authors state that the complexity of QSVM is O(log M N ), citing references 8 and 37, and that if the dimensionality after QRDR is set to R = O(log N ), the complexity of QSVM with QRDR becomes O(log M log N ), providing a speedup at this stage.",
+      "anchor": "Section III A, p.7",
+      "quotes": [
+        "The complexity of QSVM is O(log M N ), where N is the dimensionality and M is the number of samples [8, 37].",
+        "If the dimensionality after QRDR is set to R = O(log N ), the complexity of QSVM with QRDR becomes O(log M log N ), providing a speedup at this stage."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author claim with the baseline attributed to other work and no derivation.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "O(log M N ) equals O(log M + log N ), and a product log M times log N is not smaller than that sum for large M and N; as written the quoted expressions do not show a speedup. The QRDR cost itself is not added to the QSVM cost in this comparison."
+    },
+    {
+      "id": "qrdr-qsvm-conclusion-claim",
+      "value": "The authors state that, by simulating QRDR and QSVM, the error rate of QRDR aligns with their expectations while the accuracy of QSVM improves and complexity decreases, and that QRDR enhances the accuracy and speed of QSVM classification, demonstrating its practical value.",
+      "anchor": "Section III A, p.7",
+      "quotes": [
+        "By simulating the QRDR and QSVM, the error rate of QRDR aligns with our expectations, while the accuracy of QSVM improves and complexity decreases.",
+        "Our QRDR algorithm enhances the accuracy and speed of QSVM classification, demonstrating its practical value."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author conclusion drawn from one simulated data set.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The simulation measures accuracy only; no run time or resource count is measured, so 'speed' rests on the asymptotic argument above."
+    },
+    {
+      "id": "qrdr-qsvm-linear-system-background",
+      "value": "The authors state that the core step of QSVM is to solve a linear equation using a quantum computer, and that several quantum algorithms are available for this, such as the HHL method.",
+      "anchor": "Section III A, Eq. (26), p.5",
+      "quotes": [
+        "The core step of QSVM is to solve the following linear equation using a quantum computer",
+        "ing this problem, such as the HHL method [32], varia-"
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "Background on the QSVM method, attributed to other work.",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": "The paper does not say which solver the simulation actually used."
+    },
+    {
+      "id": "qrdr-tfim-physics-background",
+      "value": "The authors state that the one-dimensional transverse-field Ising model has a quantum phase transition at the critical point h/J = 1, with a disordered paramagnetic phase for h > J and an ordered ferromagnetic phase for h < J in which the Z2 symmetry is spontaneously broken in the thermodynamic limit.",
+      "anchor": "Section III B, p.7",
+      "quotes": [
+        "quantum phase transition appears at the critical point h/J = 1.",
+        "In the region h > J, there is a unique ground state that preserve the Z2 symmetry and this system is in a disordered paramagnetic phase.",
+        "In the region h < J, Z2 symmetry is spontaneously broken in the thermodynamic limit, this system is in an ordered ferromagnetic phase."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "Background physics stated without citation or derivation in the paper.",
+      "result_type": "field",
+      "context": "qc",
+      "reader_inference": "The paper does not say how many spins, which h/J values or how labels were assigned in its 200 data points."
+    },
+    {
+      "id": "qrdr-qcnn-architecture",
+      "value": "The authors report that the simulated model includes a dimension reduction layer, a convolutional layer, a pooling layer and a full-connected layer, that the ansatz for the four ancillary qubits contains 28 trainable parameters, that the pooling layer uses Ry(θ = 0), and that the entire QCNN network consists of 3 layers with a total of 84 trainable parameterized quantum gates.",
+      "anchor": "Section III B, p.7; FIG. 5 and FIG. 6, p.8",
+      "quotes": [
+        "we simulate a complete quantum convolutional neural network model, including a dimension reduction layer, a convolutional layer, a pooling layer, and a full-connected layer",
+        "The ansatz[39] we used for the four ancillary qubits contains 28 trainable parameters, and is shown in Fig. 6(a).",
+        "Here we choose Ry(θ = 0).",
+        "The entire QCNN network consists of 3 layers with a total of 84 trainable parameterized quantum gates."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its model setup, Section III B.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "A rotation Ry with angle 0 is the identity, so as written the pooling layer would not change the state; the text does not explain this choice."
+    },
+    {
+      "id": "qrdr-qcnn-convolution-gate-count",
+      "value": "The authors state that the operator E1 used in the convolutional layer can be constructed using a combination of O(r cubed) CNOT gates and Pauli X gates, as illustrated in Fig. 6(b).",
+      "anchor": "Section III B, p.7; FIG. 6(b), p.8",
+      "quotes": [
+        "E1 can be constructed using a combination of O(r3) CNOT gates and Pauli X gates, as illustrated in Fig. 6(b)."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A gate-count statement whose construction is in a circuit figure, not reproduced in the text.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "qrdr-qcnn-training-setup",
+      "value": "The authors report that the classical neural network is composed of three fully connected layers of 128 neurons each, that in both models a total of 200 data points were randomly divided into 160 training and 40 testing points, with batch size 20 and 20 epochs, using the Adam optimizer and a cross-entropy loss function.",
+      "anchor": "Section III B, p.7 to p.8",
+      "quotes": [
+        "the classical neural network is composed of three fully connected layers, each containing 128 neurons.",
+        "In both models, we randomly divided a total of 200 data points into 160 training data and 40 testing data.",
+        "The training set utilized a batch size of 20, and the training process was performed for 20 epochs.",
+        "Adam, and the loss function employed was the crossentropy loss function."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its training setup, Section III B.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The text does not give the Ising chain length, the h/J range or the labeling rule for the 200 data points, so the data set cannot be rebuilt from the paper alone."
+    },
+    {
+      "id": "qrdr-qcnn-simulation-result",
+      "value": "The authors report that the numerical simulation was carried out on the 'MindSore Quantum' platform and state that the results indicate QRDR can improve the performance of both QCNN and CNN, and that QCNN with QRDR can extremely reduce the training parameter and computation complexity, achieving higher accuracy; the accuracy curves are shown in Fig. 7 as averages over 10 simulation runs.",
+      "anchor": "Section III B, p.8; FIG. 7, p.8",
+      "quotes": [
+        "The numerical simulation is carried out on ’MindSore Quantum’ platform and the results indicate that QRDR can improve both the performance of QCNN and CNN.",
+        "Moreover, QCNN with QRDR can extremly reduce the training parameter and computation complexity, achieving higher accuracy.",
+        "The simulation results are shown in Fig. 7.",
+        "The shadow areas of the corresponding color denote the accuracy fluctuation range in the 10 times simulation results."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study on one model system; the accuracies appear in a figure only.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The text gives no accuracy values for this experiment and no count of parameters saved; 'extremely reduce' is not quantified in the text."
+    },
+    {
+      "id": "qrdr-topological-phase-claim",
+      "value": "The authors state that the Ising Hamiltonian can be directly linked to a p-wave superconducting Hamiltonian via the Jordan-Wigner transformation, that two dangling Majorana fermions can be found at the end of the chain under open boundary conditions, and that this implies QRDR can be used to distinguish different symmetry-protected topological phases as well as genuine topological phases.",
+      "anchor": "Section III B, p.8",
+      "quotes": [
+        "The Hamiltonian in Eq. (28) can be directly linked to a p-wave superconducting Hamiltonian via the JordanWigner transformation.",
+        "This implies that our QRDR method can be used to distinguish between",
+        "ferent symmetry-protected topological phases as well as genuine topological phases."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author claim; the paper runs no topological-phase experiment.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "Only the transverse-field Ising model was simulated; the statement about topological phases is an extrapolation with no data."
+    },
+    {
+      "id": "qrdr-overall-conclusion",
+      "value": "The authors state that the simulation results demonstrate an effective reduction of dimensionality in quantum data, thereby enhancing the performance and speed of subsequent algorithms, and that QRDR is poised to play a significant role in the future era of general quantum computing.",
+      "anchor": "Abstract, p.1; Section IV, p.9",
+      "quotes": [
+        "The simulation results indicate that reduced data improved the processing efficiency and accuracy following the application of QRDR.",
+        "The simulation results demonstrate its effective reduction of dimensionality in quantum data, thereby enhancing the performance and speed of subsequent algorithms.",
+        "QRDR is poised to play a significant role in the future era of general quantum computing."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author conclusion; the evidence is two classical simulations.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "Speed and processing efficiency are not measured in the simulations reported; the evidence in the text is classification accuracy on two tasks."
+    },
+    {
+      "id": "qrdr-nisq-demonstration-limit",
+      "value": "The authors state that despite their reduction in quantum resource consumption, achieving large-scale algorithm demonstrations on NISQ devices still presents many challenges.",
+      "anchor": "Section IV, p.9",
+      "quotes": [
+        "Despite our reduction in quantum resource consumption, achieving large-scale algorithm demonstrations on NISQ",
+        "devices still presents many challenges."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper's own statement of a limit, in the Discussion.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "qrdr-data-availability",
+      "value": "The authors state that the data that support the findings of the study are available at reference 40, which is given as MindQuantum version 0.6.0 (March 2021) with a path ending in a quantum resonant dimensionality reduction research-paper-with-code folder.",
+      "anchor": "Section VI, p.9; reference [40], p.10 to p.11",
+      "quotes": [
+        "The data that support the findings of this study are available on [40].",
+        "MindQuantum Developer. Mindquantum, version 0.6.0, March 2021."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper's own data availability statement and its reference entry.",
+      "result_type": "setup",
+      "context": "method",
+      "reader_inference": "The pointer is a research branch of a code repository; whether it holds the Sonar and Ising data was not checked."
+    }
+  ]
+}]}
