@@ -1,0 +1,986 @@
+{
+ "papers": [
+  {
+   "record_id": "yu-2024-quantum-algorithms-hypergraph-simplex-finding",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Yu-Ben-David_Quantum-algorithms-for-hypergraph-simplex-finding__2409.00239.pdf",
+   "title_in_file": "Quantum algorithms for hypergraph simplex finding",
+   "version_note": "arXiv:2409.00239v1 [quant-ph], 30 Aug 2024, authors Shalev Ben-David and Zhiying Yu. The text layer is this paper. Mathematics is partly garbled LaTeX: the formulas of Theorem 1, Theorem 19, Lemma 18, Lemma 25 (cost bound) and Table 1 are not cleanly readable, so those results are quoted from the surrounding prose where possible.",
+   "pages": 31,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper on quantum query complexity of simplex finding in hypergraphs: a rank-reduction reduction from triangle finding, a conversion of nested Johnson-graph quantum walks into adaptive learning graphs, and an O(n^2.455) quantum query algorithm for 4-simplex finding.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "simplex-4-algorithm",
+     "verdict": "confirmed",
+     "note": "Right as stored. The anchor is slightly off: the phrase 'improving the trivial' is in the abstract (and the trivial O(n^2.5) bound is stated in Section 1.3 and Section 5), not in Theorem 3. Theorem 27 (Section 5) restates the result as O(n^2.4548) and the abstract rounds it to O(n^2.46); these agree.",
+     "value": "The paper proves an adaptive learning graph algorithm for 4-simplex finding with n to the power 2.455 quantum queries, improving the trivial n to the power 2.5 algorithm.",
+     "anchor": "Theorem 3, Section 1.2, p.4; Abstract; Theorem 27, Section 5, p.22",
+     "quotes": [
+      "There is an adaptive learning graph algorithm that computes 4-simplex finding with O(n2.455) quantum queries.",
+      "improving the trivial O(n2.5) algorithm"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 (Section 1.2) is proved as Theorem 27 in Section 5 and Appendix A.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The algorithm rests on a linear program over 30 parameters whose optimum is reported as approximate numerical values; the paper gives no program or certificate for the optimum itself."
+    },
+    {
+     "id": "simplex-lower-bound-gap",
+     "verdict": "confirmed",
+     "note": "Right as stored. The paper ties the claim to constant-sized subgraphs: the best lower bound known for checking subgraph containment is the trivial Omega(n), and gives the certificate barrier of the positive-weight adversary method as the reason.",
+     "value": "The authors state that no non-trivial lower bound is known for any graph search problem.",
+     "anchor": "Section 1.1, p.2",
+     "quotes": [
+      "In fact, no non-trivial lower bound is known for any graph search problem"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about the state of the literature, not about the paper's own work.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "simplex-rank-reduction",
+     "verdict": "confirmed",
+     "note": "Right as stored. The formal statements are Theorem 1 (Section 1.2) and Theorem 19 (Section 3.2, proved by a randomized reduction, rank r at least 2). The formulas of both are garbled in the text layer, but the authors state the consequence in prose in the abstract, in Section 1.2 and as Corollary 20; better quotes given.",
+     "value": "The paper shows that, for any specific constant rank r, an algorithm for simplex finding in rank-r hypergraphs with n to the power r/2 queries would imply an O(n) algorithm for triangle finding.",
+     "anchor": "Abstract; Theorem 1, Section 1.2, p.3; Theorem 19, Section 3.2, p.14",
+     "quotes": [
+      "we show that for any constant rank r, an O(nr/2) quantum algorithm for finding a simplex in rank-r hypergraphs would imply an O(n) quantum algorithm for triangle finding",
+      "an O(nr/2) algorithm for simplex finding in rank r hypergraphs (for any specific constant r) implies an O(n) algorithm for triangle finding"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The formula of Theorem 1 and of Theorem 19 is unreadable in the text layer, so the formal statement could not be quoted; the claim is quoted from the authors' prose.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The prose claim is consistent with Corollary 20 (tetrahedron in o(n^1.75) gives triangle in o(n^1.25)): each rank step divides the exponent by one half."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "simplex-definition",
+     "value": "The authors define an r-simplex as a clique in an r-uniform hypergraph consisting of r + 1 vertices, each r of which are connected by a hyperedge.",
+     "anchor": "Section 1.2, p.3",
+     "quotes": [
+      "we are searching for an r-simplex, which is a clique in an r-uniform hypergraph consisting of r + 1 vertices, each r of which are connected by a hyperedge"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the term in Section 1.2 and again formally in Section 3.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "value": "The paper notes that simplex finding with rank two is triangle finding and with rank three is tetrahedron finding.",
+     "anchor": "Section 3.1, p.14",
+     "quotes": [
+      "is triangle finding and \\ttS \\ttF n,3 is tetrahedron finding"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the problem SF in Section 3.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "simplex-rank-two-three-names"
+    },
+    {
+     "value": "The authors assume the rank r is a constant, so the trivial algorithm of querying every hyperedge uses O(n to the power r) queries.",
+     "anchor": "Section 1.2, p.3; Section 2.1, p.8",
+     "quotes": [
+      "We assume r is constant, so the trivial algorithm of querying everything uses O(nr) queries.",
+      "We only consider the rank r as a constant relative to n."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its scope in Section 1.2 and Section 2.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Every upper bound in the paper hides a constant that may grow with r.",
+     "id_suggestion": "simplex-constant-rank-assumption"
+    },
+    {
+     "value": "The paper proves, as Lemma 18, that for any constant rank r the quantum query complexity of simplex finding is O of n to the power (r+1)/2 and Omega of n to the power r/2, and calls these the trivial bounds.",
+     "anchor": "Lemma 18, Section 3.1, p.14; Section 1.2, p.3",
+     "quotes": [
+      "Lemma 18. For any constant rank r, we have",
+      "= O(n(r+1)/2) and \\mathrm{(\\ttS \\ttF n,r) = \\Omega (nr/2)",
+      "We call these the trivial bounds on"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 18 and its proof (Grover search over (r+1)-subsets; a promise reduction from unordered search) are in Section 3.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The symbol Q for quantum query complexity is lost in the text layer, which prints a bare mathrm group; the context (the trivial bounds on the complexity of SF) fixes the meaning. For rank four the upper bound is the n to the power 2.5 that Theorem 3 improves.",
+     "id_suggestion": "simplex-trivial-bounds-lemma18"
+    },
+    {
+     "value": "The authors state that the trivial lower bound for simplex finding is still the best known lower bound in every rank r.",
+     "anchor": "Section 3.2, p.14; Section 1.2, p.3",
+     "quotes": [
+      "is still the best known lower bound for simplex finding in every rank r",
+      "the best-known lower bound for simplex finding remains trivial even when the rank r is large"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about the state of the literature.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "simplex-no-better-lower-bound"
+    },
+    {
+     "value": "The paper proves, as Theorem 19, for any rank r at least 2, a lower bound on the quantum query complexity of simplex finding on 2n vertices with one higher rank, of order the square root of n times the complexity of rank r simplex finding on n vertices, and says it implies Theorem 1 because the growth of that complexity is polynomial in n.",
+     "anchor": "Theorem 19, Section 3.2, p.14",
+     "quotes": [
+      "Theorem 19. For any rank r \\geq  2, we have",
+      "is polynomial in n, this theorem implies Theorem 1.",
+      "It remains to prove Theorem 19, which we will do with a randomized reduction."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The displayed inequality of Theorem 19 is garbled in the text layer; the value rests on the condition quoted and on the final line of the proof, which is garbled too.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Reading the printed formula and the last line of the proof together gives Q(SF_{2n,r+1}) = Omega(sqrt(n) * Q(SF_{n,r})), which matches Corollary 20 and Theorem 1.",
+     "id_suggestion": "simplex-theorem19-statement"
+    },
+    {
+     "value": "The paper states, as a direct consequence of Theorem 1, that a quantum algorithm solving tetrahedron finding with o(n to the power 1.75) queries would give a quantum algorithm solving triangle finding with o(n to the power 1.25) queries.",
+     "anchor": "Corollary 20, Section 3.2, p.15",
+     "quotes": [
+      "Corollary 20. If there is a quantum algorithm solving Tetrahedron with o(n1.75) queries, then there is a quantum algorithm solving Triangle with o(n1.25) queries.",
+      "the following corollary is a direct consequence of Theorem 1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary 20, Section 3.2, derived from Theorem 1 and Theorem 19 with the condition stated in the corollary.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Triangle finding has a known O(n^1.25) upper bound, so the corollary links any sub-n^1.75 tetrahedron algorithm to a new triangle record.",
+     "id_suggestion": "simplex-corollary20-tetrahedron-triangle"
+    },
+    {
+     "value": "The authors describe a randomized reduction that solves the OR of n instances of rank r simplex finding using one simplex finding instance of one higher rank on twice as many vertices, with extra hyperedges from a random complete partite hypergraph so that a simplex using only the second vertex set cannot arise, and they state that the success probability is a constant when r is constant.",
+     "anchor": "Section 1.3, p.4; proof of Theorem 19, Section 3.2, p.15",
+     "quotes": [
+      "we show that we can complete this search using a hypergraph search with one additional rank",
+      "this happens with constant probability, as the number of partitions is constant",
+      "is a constant when r is a constant"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Construction and probability argument in the proof of Theorem 19, Section 3.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The probability that the r + 1 simplex vertices land in different parts is a constant that depends on r, so the reduction loses a factor that grows with r.",
+     "id_suggestion": "simplex-reduction-construction"
+    },
+    {
+     "value": "The authors state that the proof of the composition fact used by the reduction uses the negative-weight-adversary characterization of quantum query complexity, so the reduction technically uses the negative-weight adversary method.",
+     "anchor": "Section 1.3, p.5",
+     "quotes": [
+      "We note that the proof of the latter fact uses the negative-weight-adversary characterization of quantum query complexity, so our reduction technically uses the negative-weight adversary method."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state which method the reduction depends on (Section 1.3).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "simplex-reduction-uses-negative-adversary"
+    },
+    {
+     "value": "The paper cites the result that, for any possibly partial Boolean functions f and g, the quantum query complexity of the composed function is equivalent to the product of the quantum query complexities of f and g, and uses it to say the OR of n copies needs a factor of order the square root of n more queries.",
+     "anchor": "Theorem 5, Section 2.2, p.9; Section 1.3, p.5",
+     "quotes": [
+      "is equivalent to the product of quantum query complexities of f and g.",
+      "since bounded-error quantum query complexity composes multiplicatively"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (Hoyer, Lee and Spalek; Reichardt; Lee, Mittal, Reichardt, Spalek and Szegedy; Kimmel).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "composition-theorem-cited"
+    },
+    {
+     "value": "The authors report that work on triangle finding culminated in an algorithm using O(n to the power 5/4) quantum queries, down from the trivial O(n squared) cost of querying all the edges.",
+     "anchor": "Section 1.1, p.2",
+     "quotes": [
+      "These works culminated in a triangle finding algorithm that uses O(n5/4) quantum queries",
+      "down from the trivial O(n2) cost of querying all the edges"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to earlier work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "triangle-finding-best-upper-bound"
+    },
+    {
+     "value": "The authors state that for triangle finding the only lower bound known is the trivial Omega of n, which follows via a reduction from unordered search.",
+     "anchor": "Section 1.1, p.2",
+     "quotes": [
+      "In the lower bound direction, we only know the trivial \\Omega (n), which follows via a reduction from"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about the state of the literature.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "triangle-finding-trivial-lower-bound"
+    },
+    {
+     "value": "The authors state that the lack of good lower bounds is a consequence of the certificate barrier for the positive-weight quantum adversary method, and that when searching for certificates of constant size the best lower bound this technique can give is the square root of the input size.",
+     "anchor": "Section 1.1, p.2",
+     "quotes": [
+      "The lack of good lower bounds is a consequence of the certificate barrier for the positive-weight quantum adversary method",
+      "In particular, when searching for certificates of constant size, the best lower bound this technique can give is the square root of the"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A barrier the paper attributes to Spalek and Szegedy.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "certificate-barrier-cited"
+    },
+    {
+     "value": "The authors report, citing earlier work, that Ambainis's quantum walk algorithm achieves O(n to the power 2/3) queries for element distinctness, which is known to be tight.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "an algorithm by Ambainis based on quantum walks [Amb07] achieves O(n2/3) queries, which is known to be tight [AS04]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "element-distinctness-cited"
+    },
+    {
+     "value": "The authors state that the asymptotic complexity of the best possible quantum algorithm for k-distinctness is not known for any constant value of k greater than 2.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "the asymptotic complexity of the best possible quantum algorithm is not known for any constant values k > 2"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about the state of the literature.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "k-distinctness-open-cited"
+    },
+    {
+     "value": "The authors state that the decision version of a search problem is easily seen to be equivalent, up to low-order terms, to the search version when the certificate searched for is of constant size, and so they treat the two interchangeably.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "easily seen to be equivalent, up to low-order terms, to the search version of the problem"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state this as a convention of the paper in Section 1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The equivalence is asserted without proof in the paper.",
+     "id_suggestion": "decision-search-equivalence"
+    },
+    {
+     "value": "The authors state that the best separation between classical and quantum query complexity for total functions is at most polynomial, citing Beals et al. and Aaronson et al.",
+     "anchor": "Section 2.2, p.9",
+     "quotes": [
+      "the best separation between classical and quantum query complexity for total functions is at most polynomial"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "polynomial-separation-total-functions-cited"
+    },
+    {
+     "value": "The paper cites the result of Magniez, Nayak, Roland and Santha that, for an ergodic, reversible Markov chain, a quantum algorithm finds a marked vertex with constant probability at a cost set by the setup, update and checking costs, the lower bound on the marked probability and the spectral gap.",
+     "anchor": "Theorem 6, Section 2.3, p.10",
+     "quotes": [
+      "Let P be an ergodic, reversible Markov Chain.",
+      "Then there is a quantum algorithm that finds a marked vertex with constant"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "mnrs-quantum-walk-cited"
+    },
+    {
+     "value": "The paper states that the symmetric walk on the Johnson graph J(n, k) is ergodic and reversible and has spectral gap 1/k + 1/(n - k), which is of order 1/k.",
+     "anchor": "Section 2.3, p.10",
+     "quotes": [
+      "The spectral gap of P is 1/k + 1/(n - k) = \\Theta (1/k)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated in Section 2.3 for the symmetric walk on J(n, k); no proof is given, the fact is standard.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The paper gives no derivation; the fact is a standard property of Johnson graphs.",
+     "id_suggestion": "johnson-walk-spectral-gap"
+    },
+    {
+     "value": "The paper states, as Corollary 8, that for k at most n/2 and a number of special elements of order the square root of k, the quantum walk on J(n, k) with vertices marked when they contain all the special elements finds a marked vertex with constant success probability, at a query cost of the setup cost plus (n/k) to the power ell/2 times the sum of the square root of k times the update cost and the checking cost.",
+     "anchor": "Corollary 8, Section 2.3, p.10",
+     "quotes": [
+      "Corollary 8. Let k \\leq  n/2 and let",
+      "finds a marked vertex of the Johnson graph with constant success probability using",
+      "(n/k)\\el /2( k \\cdot  \\bfitU  + \\bfitC )) queries"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Obtained from the cited Theorem 6; the paper gives no separate proof, and the square root symbols are garbled in the text layer.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The ell in the quotes is the number of certificate elements; the square roots are lost in the text layer.",
+     "id_suggestion": "johnson-walk-corollary8"
+    },
+    {
+     "value": "The paper states that every learning graph for a Boolean function corresponds to a quantum query algorithm for it, via the generalized adversary bound, and that a dual adversary reduction for adaptive learning graphs gives a similar upper bound.",
+     "anchor": "Theorem 11, Section 2.4, p.11; Theorem 16, Section 2.4, p.13",
+     "quotes": [
+      "Therefore, every learning graph",
+      "for f corresponds to a quantum query algorithm for f",
+      "There is also a dual adversary reduction for adaptive learning graphs [CLM19], and we get a similar upper bound result."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to Belovs and Lee and to Carette, Lauriere and Magniez.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "learning-graph-implies-quantum-algorithm-cited"
+    },
+    {
+     "value": "The paper defines an adaptive learning graph as one in which the weight of an L-edge may depend on the queried entries of the input.",
+     "anchor": "Definition 14, Section 2.4, p.12",
+     "quotes": [
+      "In an adaptive learning graph, the weight of an L-edge may depend on queried entries of the input z to f"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 14, Section 2.4.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "adaptive-learning-graph-definition"
+    },
+    {
+     "value": "The paper cites, as Lemma 13, that a symmetric stage with speciality T can be weighted so that its negative complexity is at most T times the square of the average length of the L-edges receiving positive flow and its 1-complexity is at most 1.",
+     "anchor": "Lemma 13, Section 2.4, p.12",
+     "quotes": [
+      "Lemma 13 ([LMS17; CLM19]).",
+      "C1(\\scrF  , y) \\leq  1."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Lee, Magniez and Santha and to Carette, Lauriere and Magniez.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "symmetric-stage-lemma13-cited"
+    },
+    {
+     "value": "The paper cites, as Lemma 17 of Carette, Lauriere and Magniez, that a quantum walk on a Johnson graph whose checking part is implemented by learning graphs can be implemented by an adaptive learning graph with the same cost.",
+     "anchor": "Lemma 17, Section 2.4, p.13",
+     "quotes": [
+      "Lemma 17 (Learning graph for Johnson walk, [CLM19])",
+      "a quantum walk on a Johnson graph which computes f using the data structure D can also be implemented by an adaptive learning graph with the same cost"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "johnson-walk-learning-graph-lemma17-cited"
+    },
+    {
+     "value": "The paper states, as Theorem 2 (informal, formalized as Lemma 25), that every nested quantum walk on Johnson graphs can be converted into an adaptive learning graph for the same task and with the same query cost, so long as the checking step of the walk can itself be implemented with a learning graph.",
+     "anchor": "Theorem 2, Section 1.2, p.4; Lemma 25, Section 4.3, p.20",
+     "quotes": [
+      "Theorem 2 (Informal; see Lemma 25). Every nested quantum walk on Johnson graphs can be converted into an adaptive learning graph for the same task and with the same query cost, so long as the",
+      "step of the walk can itself be implemented with a learning graph"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated informally in Section 1.2 with its condition quoted; proved as Lemma 25 in Section 4.3.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Lemma 25 gives the exact cost bound as a formula that is garbled in the text layer, so the formal bound could not be quoted.",
+     "id_suggestion": "nested-walk-conversion-theorem2"
+    },
+    {
+     "value": "The paper proves, as Lemma 25, the existence of an adaptive learning graph for an r-level nested Johnson walk under an admissible configuration, built from setup, update and checking stages analogous to the procedures of the nested quantum walk, with all setup and update stages alpha-symmetric.",
+     "anchor": "Lemma 25, Section 4.3, p.20-21",
+     "quotes": [
+      "Lemma 25 (Learning Graph for Nested Johnson Walk).",
+      "consisting of the setup, update, and checking stages analogous to the procedures of a nested quantum walk",
+      "All setup and update stages in \\scrG  are \\alpha -symmetric."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The cost bound of Lemma 25 and its conditions on the expected data-structure sizes are formulas garbled in the text layer, so the full statement could not be quoted.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "nested-walk-lemma25-construction"
+    },
+    {
+     "value": "The paper defines the L-vertices of the nested-walk learning graph as ordered partial subsets rather than unordered subsets, with a star placeholder for an element not yet determined, so that the state space of an inner walk can depend on the state of the outer walks.",
+     "anchor": "Section 4.1, p.17",
+     "quotes": [
+      "we label the L-vertices of our learning graph by ordered partial subsets instead of subsets"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition in Section 4.1 (equations 5 and 6).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "ordered-partial-subsets-definition"
+    },
+    {
+     "value": "The paper defines an alpha-symmetric stage with constant s as a stage that can be obtained from a fully symmetric stage by slightly altering its flows, namely by removing a small fraction of L-vertices from the flows and redistributing the flow to the remaining vertices.",
+     "anchor": "Definition 23, Section 4.2, p.18; Section 1.3, p.6",
+     "quotes": [
+      "is a stage that can be obtained from a fully-symmetric stage",
+      "if it can be obtained via the following operations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 23, Section 4.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "alpha-symmetric-stage-definition"
+    },
+    {
+     "value": "The paper proves, as Lemma 24, that an alpha-symmetric stage with constant s can be weighted so that its 0-complexity is at most the speciality T times the square of the average length L of the L-edges receiving positive flow in the underlying symmetric stage, and its 1-complexity is at most (1 minus alpha) to the power minus 2(s+1), which is O(1).",
+     "anchor": "Lemma 24, Section 4.2, p.19",
+     "quotes": [
+      "Lemma 24. Let \\scrF  be an \\alpha -symmetric stage of \\scrG  with constant s",
+      "C0(\\scrF  ) \\leq  T \\cdot  L2 and C1(\\scrF  , y) \\leq  (1  -  \\alpha ) - 2(s+1) = O(1)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 24 is stated with its conditions and proved in Section 4.2 by reduction to Lemma 13.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The bound is a constant only because the number of stages, and so s, is a constant; alpha must also be small.",
+     "id_suggestion": "alpha-symmetric-stage-lemma24"
+    },
+    {
+     "value": "The authors state that in rare cases the learning graph may load vertices whose degree becomes too large and they want to remove such vertices, which makes the stages not fully symmetric but not far from symmetric; alpha-symmetric stages capture this case.",
+     "anchor": "Section 1.3, p.6",
+     "quotes": [
+      "In rare cases, the learning graph may load vertices whose degree becomes too large; we wish to remove such vertices."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' motivation, stated without evidence beyond the later construction.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "alpha-symmetric-motivation"
+    },
+    {
+     "value": "The authors state that before this work there was no nontrivial quantum algorithm for simplex finding when r = 4, nontrivial meaning o(n to the power 2.5).",
+     "anchor": "Section 5, p.22",
+     "quotes": [
+      "Before this work, there was no nontrivial (i.e. o(n2.5)) quantum algorithm for simplex finding when r = 4."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about the state of the literature.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "prior-no-nontrivial-rank4"
+    },
+    {
+     "value": "The authors report that the best-known algorithm for 3-simplex finding uses O(n to the power 1.883) quantum queries, from Le Gall, Nishimura and Tani, and that it does not use an adaptive learning graph.",
+     "anchor": "Section 5, p.22",
+     "quotes": [
+      "Currently, the best-known algorithm for 3-simplex finding uses O(n1.883) quantum queries [LNT16].",
+      "this algorithm doesn't use an adaptive learning graph"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "prior-3-simplex-lnt16-cited"
+    },
+    {
+     "value": "The paper proves, as Theorem 27, an adaptive learning graph algorithm for the 4-simplex finding problem with O(n to the power 2.4548) quantum queries.",
+     "anchor": "Theorem 27, Section 5, p.22",
+     "quotes": [
+      "Theorem 27. There is an adaptive learning graph algorithm for computing the 4-simplex finding problem with O(n2.4548) quantum queries."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 27, Section 5, proved in Sections 5.1 and 5.2 and Appendix A.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Theorem 3 (O(n^2.455)) and the abstract (O(n^2.46)) are roundings of the same exponent.",
+     "id_suggestion": "simplex-4-theorem27"
+    },
+    {
+     "value": "The authors describe the 4-simplex algorithm as a nested quantum walk with 30 levels: five levels that search for the vertices of a 4-simplex, ten for pairs of vertices, ten for triples of vertices and five for the 4-hyperedges.",
+     "anchor": "Section 5.1, p.23-24; Section 1.3, p.6",
+     "quotes": [
+      "There are r\\prime  = 30 levels to this walk.",
+      "that finds this 4-simplex",
+      "We label the next 10 levels by pairs of indices",
+      "The next 10 levels are labeled by triples of indices",
+      "The last 5 levels are labeled by quadruples of indices"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own construction in Section 5.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "simplex-4-nested-walk-levels"
+    },
+    {
+     "value": "The authors define the dependent value m_ijk as b_ij plus b_ik plus b_jk minus a_i minus a_j minus a_k, and call the set of 30 parameters admissible if a set of possibly strict linear conditions holds.",
+     "anchor": "Section 5.1, p.22",
+     "quotes": [
+      "mijk = bij + bik + bjk  -  ai  -  aj  -  ak",
+      "if the following set of (possibly strict) linear conditions hold",
+      "This nested quantum walk utilizes 30 real parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of admissibility in Section 5.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "simplex-4-parameters-admissible"
+    },
+    {
+     "value": "The authors define a pair state B_ij as marked if it contains the pair u_i u_j and meets degree constraints on the partners of each vertex and a constraint on common neighbors across pair levels, define a triple state C_ijk as marked by similar conditions, and define a quadruple state D_ijkl as marked if and only if it contains the four vertices u_i, u_j, u_k, u_l.",
+     "anchor": "Section 5.1, p.23-24",
+     "quotes": [
+      "We say Bij is marked if it satisfies the following conditions.",
+      "whenever k is an index such that the level ik comes before ij in the nested structure",
+      "We say Cijk is marked if it satisfies the following conditions.",
+      "We say that Dijk\\el  is marked if and only if uiujuku\\el  \\in  Vijk\\el ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definitions in Section 5.1; the degree constraints are what make the state spaces small.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "simplex-4-marked-state-definitions"
+    },
+    {
+     "value": "The authors state that a lemma presented by Le Gall, Nishimura and Tani (Lemma 28) shows that the fraction of pair states B_ij for which conditions 2, 3 or 4 do not hold is small, and that provided the parameters are admissible alpha can be taken as an exponentially decreasing function of n.",
+     "anchor": "Lemma 28, Section 5.1, p.23",
+     "quotes": [
+      "Lemma 28. Given marked states",
+      "The following lemma is presented in [LNT16] and shows that the fraction of Bij for which condition 2, 3, or 4 doesn't hold is small.",
+      "Provided the set of parameters is admissible, we can take \\alpha (n) an exponentially decreasing function."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work; its proof is not restated.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "simplex-4-lemma28-lnt16-cited"
+    },
+    {
+     "value": "The paper states, as Lemma 29, and proves in Appendix A, that given marked earlier states the probability that the triple state C_ijk fails the degree conditions is exponentially close to 0 with respect to n, provided the set of parameters is admissible.",
+     "anchor": "Lemma 29, Section 5.1, p.24; proof in Appendix A, p.29-30",
+     "quotes": [
+      "Lemma 29. Given marked states",
+      "we show that the fraction of Cijk for which conditions 2 to 5 don't hold is also small",
+      "is an exponentially close to 0 with respect to n, provided the set of parameters are admissible"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 29 with its condition (admissible parameters) is quoted; proof in Appendix A uses the hypergeometric tail bound of Lemma 26 and a union bound.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "simplex-4-lemma29"
+    },
+    {
+     "value": "The authors state that the cost of setup is bounded by a sum of n to the power d_ijkl over the quadruples, and that once the query information is in the data structure it is trivial to check whether the five vertices form a 4-simplex, so the checking cost is 0.",
+     "anchor": "Section 5.1, p.25",
+     "quotes": [
+      "The cost of setup is",
+      "form a 4-simplex.",
+      "Thus, the cost of checking \\bfitC  is 0 and it remains to find and justify the update costs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Section 5.1 derives the setup and checking costs of the learning graph.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "simplex-4-setup-and-checking-cost"
+    },
+    {
+     "value": "The paper states, as Lemma 30, that loading a random element into the state A_i of a vertex level changes the expected size of the quadruple set V_ijkl by O of n to the power (d_ijkl minus a_i), and so the update cost of that level is a sum of such terms over the other indices.",
+     "anchor": "Lemma 30, Section 5.2, p.25; proof in Appendix A, p.30",
+     "quotes": [
+      "Lemma 30. Let",
+      "obtained after loading a random element s to Ai",
+      "= O(ndijk\\ell  - ai )."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The lemma's formula is partly garbled in the text layer; the proof in Appendix A is probabilistic counting with expectation bounds.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "simplex-4-update-cost-vertex-level"
+    },
+    {
+     "value": "The paper states, as Lemma 31, that loading an index into the state B_ij of a pair level changes the expected size of the quadruple set V_ijkl by O of n to the power (d_ijkl minus b_ij).",
+     "anchor": "Lemma 31, Section 5.2, p.25; proof in Appendix A, p.30-31",
+     "quotes": [
+      "Lemma 31. Let",
+      "= O(ndijk\\ell  - bij )"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The lemma's formula is partly garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "simplex-4-update-cost-pair-level"
+    },
+    {
+     "value": "The paper states, as Lemma 32, that loading a random triple into the state C_ijk of a triple level changes the expected size of the quadruple set V_ijkl by O of n to the power (d_ijkl minus c_ijk), and that the update cost of a quadruple level is at most 1.",
+     "anchor": "Lemma 32 and update stage ijkl, Section 5.2, p.26; proof in Appendix A, p.31",
+     "quotes": [
+      "Lemma 32. Let",
+      "= O(ndijk\\ell  - cijk )",
+      "the cost of update is at most \\bfitU  ij k\\el   =  1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The lemma's formula is partly garbled in the text layer, and the value 1 for the quadruple-level update cost is printed in a garbled line.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "simplex-4-update-cost-triple-level"
+    },
+    {
+     "value": "The authors state that, by Lemma 25, the query complexity of the 4-simplex learning graph is the setup cost plus a sum over the 30 levels, each term a product of square roots of the ratios n_j/k_j of the levels so far, the square root of k_i and the update cost U_i.",
+     "anchor": "Section 5.2, p.26",
+     "quotes": [
+      "By Lemma 25, the query complexity of this learning graph is",
+      "There are r\\prime  = 30 levels to this walk.",
+      "We summarize the parameters that appear in the above complexity in Table 1.",
+      "that finds this 4-simplex"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The displayed formula is garbled in the text layer, so the exact expression could not be quoted.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Reading the printed fragments gives O(S + sum over levels i of the product over j up to i of sqrt(n_j/k_j) times sqrt(k_i) times U_i).",
+     "id_suggestion": "simplex-4-total-complexity-lemma25"
+    },
+    {
+     "value": "The authors report that optimizing a linear program over the 30 parameters gives a complexity of O(n to the power 2.455), by taking approximate numerical parameter values, of which the paper lists, for the five vertex levels, a1 = 0.30435, a2 = 0.65217, a3 = 0.82609, a4 = 0.91304 and a5 = 0.95652.",
+     "anchor": "Section 5.2, p.26",
+     "quotes": [
+      "the optimal complexity comes down to O(n2.455) by taking (approximate) parameter values",
+      "a1 = 0.30435, a2 = 0.65217, a3 = 0.82609, a4 = 0.91304, a5 = 0.95652",
+      "This nested quantum walk utilizes 30 real parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical optimization reported with rounded parameter values and without the program or a check of the admissibility conditions.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The paper does not show the linear program or that the listed rounded values satisfy the admissibility conditions; the claimed exponent rests on that unreported computation.",
+     "id_suggestion": "simplex-4-lp-optimization"
+    },
+    {
+     "value": "The authors state that the 30 parameters satisfy 0 at most each parameter and each parameter less than 1, and list approximate optimized values of which some exceed 1, for example b13 equals 1.13043 and d1234 equals 2.25911.",
+     "anchor": "Section 5.1, p.22; Section 5.2, p.26",
+     "quotes": [
+      "utilizes 30 real parameters 0 \\leq  ai, bij, cijk, dijk\\el  < 1",
+      "b13 = 1.13043",
+      "d1234 = 2.25911"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The stated range and the listed values disagree within the paper.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The stated range of less than 1 contradicts the listed optimum, so it is probably a misprint (the walk J(n^(a_i+a_j), n^(b_ij)) allows b_ij above 1); a reader who needs the parameter range should not rely on the stated bound.",
+     "id_suggestion": "simplex-4-parameter-range-inconsistency"
+    },
+    {
+     "value": "The authors pose as Open Problem 1 whether there is an Omega of n to the power r/2 + 0.01 lower bound for simplex finding in any rank r.",
+     "anchor": "Open Problem 1, Section 1.4, p.7",
+     "quotes": [
+      "Open Problem 1. Is there an \\Omega (nr/2+0.01) lower bound for simplex finding in any rank r?"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the open problem in Section 1.4.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "open-problem-1-lower-bound"
+    },
+    {
+     "value": "The authors state that by Theorem 1 the exponents a_r, defined by the quantum query complexity of rank r simplex finding being O of n to the power r/2 + a, satisfy 0 at most a_2 at most a_3 and so on at most 1/2, and ask as Open Problem 2 whether this sequence is strictly increasing and what its limit is.",
+     "anchor": "Open Problem 2, Section 1.4, p.7",
+     "quotes": [
+      "We know by Theorem 1 that",
+      "0 \\leq  a2 \\leq  a3 \\leq  \\cdot  \\cdot  \\cdot  \\leq  1/2.",
+      "Is this sequence strictly increasing?"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the chain of exponents and the open question in Section 1.4.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "open-problem-2-exponent-sequence"
+    },
+    {
+     "value": "The authors pose as Open Problem 3 whether Theorem 3 can be generalized to a nontrivial quantum algorithm for r-simplex finding for all r at least 4, and state that a nontrivial algorithm for all r would imply a_r less than 1/2 for every r.",
+     "anchor": "Open Problem 3, Section 1.4, p.7",
+     "quotes": [
+      "Can Theorem 3 be generalized to a nontrivial quantum algorithm for r-simplex finding, for all r \\geq  4?",
+      "this would at least imply that ar < 1/2 for every r"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the open problem in Section 1.4: the 4-simplex algorithm is not known to extend to higher rank.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "open-problem-3-higher-rank"
+    },
+    {
+     "value": "The authors ask as Open Problem 4 whether their techniques can be used to find new algorithms for other hypergraph search problems, and whether there are other reductions between natural families of such problems similar to Theorem 1.",
+     "anchor": "Open Problem 4, Section 1.4, p.7",
+     "quotes": [
+      "Open Problem 4. Can our techniques be used to find new algorithms for other (hyper)graph search problems?",
+      "Are there other reductions between natural families of (hyper)graph search problems, similar to Theorem 1?"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the open problem in Section 1.4.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "open-problem-4-other-problems"
+    },
+    {
+     "value": "The authors state that the alpha-symmetric learning graph framework has the potential to generalize, giving a possible direction for nontrivially solving large-rank hypergraph search problems, and that their work has the potential to be useful in the design and analysis of complicated quantum search algorithms.",
+     "anchor": "Section 1.2, p.4",
+     "quotes": [
+      "this framework has the potential to generalize, giving a possible direction for nontrivially solving large-rank hypergraph search problems in more generality",
+      "Our work has the potential to be useful in the design and analysis of complicated quantum search algorithms."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about potential, without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "authors-generalization-claims"
+    }
+   ]
+  }
+ ]
+}
