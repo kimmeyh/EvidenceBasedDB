@@ -1,0 +1,1143 @@
+{
+ "papers": [
+  {
+   "record_id": "borle-2025-non-negative-matrix-factorization-non",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2025-12_Borle_Non-Negative-Matrix-Factorization-Using-Non-Von-Neumann-Computers.pdf",
+   "title_in_file": "Non-Negative Matrix Factorization Using Non-Von Neumann Computers",
+   "version_note": "arXiv:2512.00675v1 [quant-ph], 30 Nov 2025. The text layer is two-column; on pages 8 and 9 (Experiment III) it interleaves the two columns line by line, so quotes from that passage are fragments that sit on one layer line. Single-digit and number-only table cells (for example the Table I, II, V and VI counts) are not recoverable as quotes; those figures are named in anchors and reader_inference only.",
+   "pages": 14,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A preliminary experimental study that formulates non-negative matrix factorization as a quartic polynomial (for the Dirac-3 entropy computer) and as a QUBO, and compares Dirac-3 with scikit-learn (real matrices) and with Google CP-SAT (integer matrices) on matrices of at most 4 by 8.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "borle-39-variable-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that the Dirac-3 machine can have up to 39 variables for a quartic objective function, which limits the preliminary experiments to 39 variables.",
+     "anchor": "Section IV, p.4",
+     "quotes": [
+      "Dirac-3 machine can have up to 39 variables for a quartic objective function [45]. Therefore, in the preliminary experiments we now describe, we are limited to 39 variables."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section IV states the device limit and that all experiments are held to it.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The 39 figure is cited to the vendor spec sheet (reference 45), so it is the vendor's number for the machine as of the paper's date."
+    },
+    {
+     "id": "borle-fusion-result",
+     "verdict": "narrowed",
+     "note": "The paper limits this to Experiment II (rectangular real matrices, two test sets of one hundred cases each). The fusion wins in a majority of cases, but the median improvement is close to zero for test set A and between 70-75% for test set B, and the Dirac-3 output alone was always inferior to scikit-learn. Tables III and IV (anchors only, not quotable) also show the fusion can be much worse in single cases.",
+     "value": "The authors report that in Experiment II the matrix reconstructed from Dirac-3 output alone was always inferior in relative error to the scikit-learn result, and that the fusion (Dirac-3 output used as the initial factor matrices of scikit-learn) outperformed scikit-learn alone in the majority of cases for both relaxation schedules; the median improvement was between 70-75% for test set B and close to zero for test set A.",
+     "anchor": "Section IV-B2, p.6-8, Tables I to IV",
+     "quotes": [
+      "was always inferior, in terms of relative error, to that produced with the sklearn approach",
+      "Tables I and II show that for the majority of cases, for both relaxation schedules (labeled RS), the fusion approach outperforms the plain sklearn method in terms of relative error.",
+      "In fact, while the median improvement for test set B is between 70-75%, the median improvement for test set A is close to zero."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on generated matrices with a small number of variables.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table I (test set A) counts, as printed: fusion better 78 and 77, scikit-learn better 22 and 23, for relaxation schedules 1 and 2. Table II (test set B): fusion better 75 and 90, scikit-learn better 25 and 10. I recomputed the one-sided binomial p-values from these counts and they match the paper's. The comparison is Dirac-3 median-energy run fed to scikit-learn against scikit-learn started from its default initialization, so the fusion is a different initialization, not an extra optimization step with equal information."
+    },
+    {
+     "id": "borle-integer-cpsat",
+     "verdict": "narrowed",
+     "note": "The advantage over CP-SAT is for Experiment IV only (rectangular integer matrices, CP-SAT given the same run time as Dirac-3) and varies by test set, objective function and processor mode; in Experiment III CP-SAT was marginally better than QuarDP on Dirac-3. Against parallel CP-SAT, Dirac-3 won about half the cases for one objective in test set A and none in test set B.",
+     "value": "The authors report that in Experiment IV Dirac-3 outperformed CP-SAT restricted to one processor in every problem instance of test set A and in fewer instances of test set B, that when CP-SAT used all 12 available processors the advantage went down to about half of the test cases for the sum-of-absolute-differences objective of Equation 23, and that in test set B there were no cases where Dirac-3 performed better than parallel CP-SAT; for Experiment III they report that CP-SAT variants were marginally better than QuarDP on Dirac-3.",
+     "anchor": "Section IV-C2 p.8-9; Section IV-D2 p.9-10; Tables V and VI",
+     "quotes": [
+      "Table V shows that Dirac-3 outperformed CP-SAT in every problem instance when the latter was restricted to one processor.",
+      "When CP-SAT was allowed to use all 12 available processors, that advantage went down to about half of the test cases for the objective function based on the sum of absolute differences as in Equation 23.",
+      "When it comes to Table VI (test set B), we can see that Dirac-3 outperforms single-processor CP-SAT on fewer instances.",
+      "In addition, there were no cases where Dirac3 performed better than CP-SAT in its parallel processing configuration.",
+      "formed better than the QuarDP formulation on Dirac-3 (albeit",
+      "marginally) even though they need more variables than Dirac-"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on generated matrices.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The conclusion's phrase 'an advantage in a majority of the test cases' holds only when serial cases are pooled: by Tables V and VI the serial counts of Dirac-3 wins are 100 and 100 (test set A, both objectives) and 59 and 41 (test set B, absolute and squared differences), so for the squared-difference objective on test set B Dirac-3 won a minority (41 of 100). The comparison fixes CP-SAT's time limit to Dirac-3's run time, so it measures quality at a short, device-set time budget."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "borle-ec-definition",
+     "value": "The authors state that entropy computing is a photonic-based computing technology that uses an open quantum system to solve non-convex optimization problems by minimizing an objective function, proposed and implemented by Quantum Computing Inc.",
+     "anchor": "Section II-A3, p.3",
+     "quotes": [
+      "Entropy computing (EC) is a photonic-based computing technology that uses an open quantum system to solve non-convex optimization problems by minimizing an objective function.",
+      "EC is a technology, proposed and currently implemented by Quantum Computing Inc (QCi)"
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A description of QCi's own technology; two authors are affiliated with QCi.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "Co-authors Chukwu, Miri and Chancellor list a QCi affiliation, so the device description is not independent."
+    },
+    {
+     "id_suggestion": "borle-dirac3-hybrid-architecture",
+     "value": "The authors state that the Dirac-3 is the state-of-the-art entropy computer and implements entropy computing through a photonic-electronic hybrid architecture, and that an all-optical implementation would have been preferred.",
+     "anchor": "Section II-A3, p.3; Appendix, p.12",
+     "quotes": [
+      "At this time, the state-of-the-art entropy computer is the Dirac-3, which implements the EC concept through a photonic-electronic hybrid architecture.",
+      "Although an all-optical implementation of entropy computing would have been preferred"
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor-affiliated description of its own product.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-dirac3-resolution-levels",
+     "value": "The authors state that Dirac-3 has a maximum resolution of 10,000 discrete levels for real-valued variables, and that as an integer or binary solver it has a total of 954 levels available collectively.",
+     "anchor": "Section II-A3, p.3",
+     "quotes": [
+      "Given the device’s maximum resolution of 10,000 discrete levels, this interval is partitioned into ten thousand equally-spaced values.",
+      "with a total of 954 levels available collectively."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Device specification stated by vendor-affiliated authors.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "In Experiment I the sum constraint R equals 2n squared, so for the 4 by 4 case R is 32 and one level is 32/10000 = 0.0032 wide, coarse next to the two-decimal rounding of the generated matrices. The paper does not state this."
+    },
+    {
+     "id_suggestion": "borle-dirac3-sum-constraint-slack",
+     "value": "The authors state that, for non-negative real variables, the sum of all variable values on Dirac-3 must equal a parameter R chosen by the user, and that a slack variable with a zero coefficient absorbs the part of R the objective does not use.",
+     "anchor": "Section II-A3, p.3; Section III-A, p.4",
+     "quotes": [
+      "The sum of all variable values must be equal to R.",
+      "The purpose of this slack variable is to absorb a portion of R that is not used by the main objective function while still satisfying the summation constraint of Equation 6."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A description of the vendor's device interface.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-dirac3-ising-mode",
+     "value": "The authors state that Dirac-3 can function as an Ising machine but is not restricted to the Ising and QUBO models, since its primary objective function is more general.",
+     "anchor": "Section II-A2, p.3",
+     "quotes": [
+      "although the Dirac3 can function as an Ising machine, it is not restricted to the Ising/QUBO models, as its primary objective function is more general in nature."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A description of the vendor's own device.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-nmf-np-hard-cited",
+     "value": "The authors state, citing reference 21, that the general version of the NMF problem is NP-hard, and that most applications use polynomial-time heuristics that reach a local minimum.",
+     "anchor": "Section II-A1, p.2",
+     "quotes": [
+      "The general version of the NMF problem is NP-hard [21] in",
+      "nature, and most applications use polynomial-time heuristics"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (Vavasis, reference 21).",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-quardp-definition",
+     "value": "The authors define their QuarDP formulation as the expansion of the squared Frobenius-norm objective, which they describe as the essence of the quartic degree polynomial objective; the Dirac-3 variables are assigned to the individual elements of W and H, and a slack variable with a zero coefficient is added so the sum constraint does not interfere.",
+     "anchor": "Section III-A, p.4; Contribution 1, p.1",
+     "quotes": [
+      "A formulation that converts the NMF problem into a quartic-degree polynomial (QuarDP) function with continuous or integer variables.",
+      "Equation 11 is the essence of our quartic degree polynomial",
+      "To make sure that the sum constraint does not interfere with Dirac-3’s ability to minimize the main objective function, we also introduce a slack variable xs multiplied with a zero coefficient"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III-A defines the formulation the experiments use.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-quardp-only-quartic-solver",
+     "value": "The authors state that at the time of writing Dirac-3 is the only continuous variable solver that supports a quartic degree objective function.",
+     "anchor": "Contribution 1, p.1",
+     "quotes": [
+      "However, at the time of writing, Dirac-3 is the only continuous variable solver that supports a quartic degree objective function."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor-affiliated statement about its own product, undated beyond 'at the time of writing'.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-qubo-quadratization",
+     "value": "The authors describe the QUBO formulation as approximating continuous and integer variables with binary ones and reducing the degree of the binary expression from quartic to quadratic by adding additional variables and penalties, and state that they used the make_quadratic() functionality in D-wave's Ocean SDK for the quadratization.",
+     "anchor": "Contribution 2, p.1; Section III-B, p.4",
+     "quotes": [
+      "(ii) reducing the degree of the binary expression from quartic to quadratic by adding addition variables and penalties.",
+      "In our work, we used the make_quadratic() functionality in D-wave’s Ocean SDK for quadratization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III-B defines the QUBO construction and the tool used.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-binary-encoding-example",
+     "value": "The authors state that, in their binary encoding of a real or integer variable, N = 3, kappa = 1 and C = −4 gives all nine integers in the interval [−4, 4].",
+     "anchor": "Section III-B1, p.4",
+     "quotes": [
+      "For example, N = 3, κ = 1 and C = −4 gives us all nine integers in the interval [−4, 4]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An unproved author example that does not match the printed encoding.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "As printed, Equation 12 sums kappa times 2 to the j times q(j) for j from 0 to N, so N = 3 uses four binary variables and, with kappa = 1, covers the sixteen integers 0 to 15 before the offset; with C = −4 that is −4 to 11, not the nine integers −4 to 4. The example is inconsistent with the equation. It does not affect the experiments, which use two levels (0 or 1) per variable for QUBO."
+    },
+    {
+     "id_suggestion": "borle-variable-count-formula",
+     "value": "The authors state that the dimensions p, n and m must satisfy p(n + m) + 1 ≤ 39, where p(n + m) is the total number of elements of W and H combined and one additional variable is the slack variable.",
+     "anchor": "Section IV, Equation 18, p.4-5",
+     "quotes": [
+      "p(n + m) + 1 ≤ 39",
+      "Here, p(n + m) is the total number of elements of the factor matrices W and H combined, and an additional variable is used as the slack variable"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Equation 18 and the sentence after it state the size limit and its accounting.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The largest problems run (4 by 4 square, and 4 by 8 with p = 3) use 33 and 37 variables, under the limit."
+    },
+    {
+     "id_suggestion": "borle-setup-hardware-software",
+     "value": "The authors report that each test case in all experiments was run 10 times, on an ordinary laptop with an Intel i5-1335U processor and 32 GB of RAM, using scikit-learn v1.3.1 for real-valued NMF and Or-Tools v9.14.6206 for integer NMF.",
+     "anchor": "Section IV, p.5",
+     "quotes": [
+      "Each test case in all our experiments was run 10 times.",
+      "ordinary laptop with an IntelTM i5-1335U processor and 32 GB of RAM",
+      "Scikit-learn v1.3.1 [15] for NMF with real-valued matrices",
+      "Or-Tools v9.14.6206 [46]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup (Section IV).",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-laptop-comparison-rationale",
+     "value": "The authors state that using a laptop as the classical baseline is justified because the problem sizes are small, the laptop CPU is representative of mid-range laptop CPUs, and Dirac-3 technology is nascent so a comparison against more powerful desktop or server CPUs would not be equitable.",
+     "anchor": "Section IV, p.5",
+     "quotes": [
+      "Our use of a mere laptop when comparing against Dirac-3 is justified because (i) the problem sizes we are dealing with are relatively small",
+      "the technology for Dirac-3 is still in its nascent stages such that a comparison against more powerful desktop/server CPUs would not be equitable."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author justification, not a measured result.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The classical baselines are therefore not state-of-the-art hardware; every comparison is against a mid-range laptop."
+    },
+    {
+     "id_suggestion": "borle-real-nmf-factor-range",
+     "value": "The authors state that all real-valued test cases use factor matrices W and H with entries in [0, 1) in order to work better with Dirac-3, and that any non-negative real matrix can be scaled so that V has entries in [0, 1).",
+     "anchor": "Section IV, p.5",
+     "quotes": [
+      "The test cases for real NMF all have factor matrices W ∈ [0, 1)n×p, H ∈ [0, 1)p×m in order to better work with Dirac3.",
+      "we can scale the values of any arbitrary non-negative real matrix to V ∈ [0, 1)n×m"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the range of its real-valued test cases.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The paper adds that V in [0, 1) implies W and H in [0, 1). That does not hold for arbitrary factorizations, since NMF factors can be rescaled (multiply W by 100 and H by 1/100); it can hold only for a chosen scaling or when the factors are generated in the range, as the test cases are."
+    },
+    {
+     "id_suggestion": "borle-exp1-setup",
+     "value": "The authors report that Experiment I used square matrices of sizes 1 × 1, 2 × 2, 3 × 3 and 4 × 4 with n = m = p, 100 test cases per size, each V built by multiplying random W and H rounded to the hundredth place, and that sizes 5 × 5 and above were not run because they would involve more than 39 variables.",
+     "anchor": "Section IV-A1, p.5",
+     "quotes": [
+      "This was done for square matrices of size 1 × 1, 2 × 2, 3 × 3 and 4 × 4. We could not go to 5 × 5 or higher as that would involve more than 39 variables.",
+      "A total of 100 test cases were generated for each size.",
+      "generated using the rand() function from the numpy package and then rounding it to the hundredth place"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own Experiment I setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-exp1-schedules-and-R",
+     "value": "The authors report that Experiment I test cases were run on Dirac-3 with relaxation schedules 1, 2 and 3, with R set to the count of all values in W and H combined, 2n2 in the source's flat text, since no value in W or H could exceed one; they state schedule 1 is the fastest but least thorough, schedule 3 the opposite, and that Dirac-3's run time was set by the qci_client package, not by them.",
+     "anchor": "Section IV-A1 and IV-A2, p.5-6",
+     "quotes": [
+      "The test case was then sent to the machine to be processed with relaxation schedules 1,2 and 3.",
+      "Of the three, relaxation schedule 1 is the fastest but the least thorough, while relaxation schedule 3 is the opposite.",
+      "The value of R was taken to be n×p+p×m = p(n+m) = 2n2 as 2n2 is the count of all the values in W and H combined",
+      "We did not set Dirac-3’s run time: it was set by the qci_client package based on the relaxation schedule and the size of the problem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own Experiment I setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-exp1-comparison-protocol",
+     "value": "The authors report that in Experiment I they compared the Dirac-3 run with the lowest relative error against scikit-learn's NMF with default parameter settings, including the NNDSVDA initialization, and measured quality by the relative Frobenius-norm error of the reconstruction.",
+     "anchor": "Section IV-A1, p.5",
+     "quotes": [
+      "We compared the results from Dirac-3, selecting the run with the lowest relative error, with the results obtained from Scikit-learn’s NMF implementation.",
+      "For the latter, we used the default parameter settings provided by the package, including the popular NNDSVDA (Non-negative double singular value decomposition with averaging) algorithm [22]",
+      "Equations 19 and 20 use the Frobenius norm for the sake of consistency with our objective function being based on the same norm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own comparison protocol.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The Dirac-3 side is the best of its runs by relative error, while scikit-learn is one deterministic default run, so the protocol favors Dirac-3 and Dirac-3 still lost."
+    },
+    {
+     "id_suggestion": "borle-sklearn-defaults-claim",
+     "value": "The authors state that the default parameters used in Scikit-learn models are established through rigorous evaluation by domain experts and represent well-validated baselines, which makes them the most appropriate benchmarks available to the authors.",
+     "anchor": "Section IV-A1, p.5",
+     "quotes": [
+      "The default parameters used in Scikit-learn models are established through rigorous evaluation by domain experts and represent wellvalidated baselines for comparative analysis [15]"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim citing the scikit-learn paper, not tested here.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The paper itself later says changing sklearn's defaults may produce different results (Section IV-B2)."
+    },
+    {
+     "id_suggestion": "borle-exp1-result",
+     "value": "The authors report that Experiment I appears to suggest that, compared directly with scikit-learn, Dirac-3 returns lower quality results in terms of relative error, for higher computational run times, at least for small problems.",
+     "anchor": "Section IV-A2, p.5-6, Figure 1",
+     "quotes": [
+      "This preliminary experiment appears to suggest that when compared directly against industry standard tools like Scikit learn, Dirac-3 returns lower quality results, in terms of δV , for higher computational run times, at least for small problems."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on square matrices up to 4 by 4; the values are in Figure 1, not in the text layer.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-dirac3-precision-limit",
+     "value": "The authors state that Dirac-3's precision for representing variables with real values, while impressive for a nascent technology, is no match for the floating point capability of a traditional computer.",
+     "anchor": "Section IV-A2, p.6",
+     "quotes": [
+      "Dirac-3’s precision for representing variables with real values, while impressive for a nascent technology, is no match for the floating point capability of a traditional computer"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of a device limit, offered as one reason for the Experiment I result.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-exp1-curve-fit-choice",
+     "value": "The authors state that for run time they chose exponential curves although logistic curves provided a better statistical fit, because exponential curves are more theoretically consistent with NP-hard computational complexity.",
+     "anchor": "Section IV-A2, p.5",
+     "quotes": [
+      "While logistic curves provided a better statistical fit for run time, we chose exponential curves as they are more theoretically consistent with NP-hard computational complexity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author choice of analysis method.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": "The dashed curves in Figure 1 are fits through four size points, so they say nothing reliable about scaling beyond 4 by 4."
+    },
+    {
+     "id_suggestion": "borle-exp2-setup",
+     "value": "The authors report that Experiment II used V in R4×8 (read as 4 by 8, the text layer printed the exponent flat) with W in R4×3 and H in R3×8, as problems more representative of real-world NMF since p is less than min(n, m); test set A is one hundred random V matrices rounded to the hundredth place, test set B is one hundred V built as a product of random W and H.",
+     "anchor": "Section IV-B1, p.6",
+     "quotes": [
+      "we generate matrices V ∈ R4×8 for which we seek to find factor matrices W ∈ R4×3 and H ∈ R3×8",
+      "Test set A: One hundred test cases where, for each test case, the matrix V ∈ R4×8 is generated using the rand() function in numpy and then rounded to the hundredth place.",
+      "Test set B: One hundred test cases where, for each test case, we first generate factor matrices W ∈ R4×3 and H ∈ R3×8"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own Experiment II setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-exp2-exact-factorization",
+     "value": "The authors state that test set B is guaranteed to have an exact factorization because V is constructed as W H, whereas for test set A there is no guarantee that an exact decomposition exists.",
+     "anchor": "Section IV-B1, p.6",
+     "quotes": [
+      "these matrices are guaranteed to have an exact factorization since they are constructed as V = W H. In contrast, test set A represents datasets for which there is no guarantee that an exact decomposition exists."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition of the two test sets by construction.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "A random V of this shape has rank at most 4, and an exact non-negative factorization at inner dimension 3 would be rare, so set A is effectively a no-exact-solution set; the paper says only that it is not guaranteed."
+    },
+    {
+     "id_suggestion": "borle-exp2-variables-schedules",
+     "value": "The authors report that each Experiment II problem has 37 variables in Dirac-3, that each was run 10 times with relaxation schedules 1 and 2, and that schedule 3 was not chosen because of the disproportionately long runtimes for this problem size.",
+     "anchor": "Section IV-B1, p.6",
+     "quotes": [
+      "the total number of variables for each of these problems in Dirac-3 is 37. We ran each problem 10 times on Dirac-3 using relaxation schedules 1 and 2. Relaxation schedule 3 was not chosen because of the disproportionately long runtimes for our problem size."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own Experiment II setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-fusion-protocol",
+     "value": "The authors define the fusion approach as: take the Dirac-3 result whose energy is closest to the median energy of the ten runs over all schedules involved, decode its factor matrices, and use them as the initial matrices W0 and H0 of scikit-learn's NMF run with default parameter settings.",
+     "anchor": "Section IV-B1, p.6",
+     "quotes": [
+      "we compute the median of their energies (or objective function values) and select the result with the energy closest to the median.",
+      "We use sklearn on the problem with default parameter settings, but with the initial matrices given by"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section IV-B1 defines the fusion procedure.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The fusion starts from the median-energy Dirac-3 run, not the best, so it does not use the best Dirac-3 result."
+    },
+    {
+     "id_suggestion": "borle-binomial-test",
+     "value": "The authors state that they test significance with a one-sided binomial test over the counts of test cases where the expected winner did better or worse, with the null hypothesis that the fusion approach is not better than plain scikit-learn, and take p below 0.05 as statistically significant support for the alternative hypothesis.",
+     "anchor": "Section IV-B2, p.6-7, Equation 21",
+     "quotes": [
+      "In this one-sided test, the null-hypothesis H0 is that the fusion approach is not better than the plain sklearn approach",
+      "we shall take p < 0.05 to indicate statistically significant support for the alternative hypothesis H1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own test and threshold.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The test counts wins and losses only, ignoring size of difference, and treats the 100 generated problems per set as independent draws from one distribution; the p-values say a win rate above one half is unlikely by chance, not that the gain is large (see the near-zero median in test set A). The paper does not correct for the several tests run."
+    },
+    {
+     "id_suggestion": "borle-exp2-table1-pvalues",
+     "value": "The authors report, for test set A, one-sided binomial p-values for the fusion being better than scikit-learn of 7.95e-9 for relaxation schedule RS=1 and 2.75e-8 for RS=2.",
+     "anchor": "Table I, p.7 (counts are in the table, not quotable)",
+     "quotes": [
+      "RS (for fusion) RS=1 RS=2",
+      "p-value (fusion better) 7.95e-9 2.75e-8"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table I counts as printed: fusion better 78 and 77, sklearn better 22 and 23. I recomputed the one-sided binomial p-values from these counts and they match: 7.95e-9 and 2.76e-8."
+    },
+    {
+     "id_suggestion": "borle-exp2-table2-pvalues",
+     "value": "The authors report, for test set B, one-sided binomial p-values for the fusion being better than scikit-learn of 2.82e-7 for relaxation schedule RS=1 and 1.53e-17 for RS=2.",
+     "anchor": "Table II, p.7 (counts are in the table, not quotable)",
+     "quotes": [
+      "RS (for fusion) RS=1",
+      "p-value (fusion better) 2.82e-7 1.53e-17"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table II counts as printed: fusion better 75 and 90, sklearn better 25 and 10. The recomputed one-sided binomial p-values match: 2.82e-7 and 1.53e-17."
+    },
+    {
+     "id_suggestion": "borle-exp2-schedule-effect",
+     "value": "The authors report that for test set A moving from relaxation schedule 1 to 2 does not increase the number of cases where the fusion approach performs better, but it does for test set B; they suggest this may be because test set B cases have at least one pair of factor matrices, and state it is too early to characterize the effect of relaxation schedules from this one result.",
+     "anchor": "Section IV-B2, p.7",
+     "quotes": [
+      "For test set A, moving from RS 1 to RS 2 does not increase the number of cases where the fusion approach performs better, but it does increase them for test set B.",
+      "it is too early to characterize the effect of relaxation schedules using just this one result."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with an untested explanation.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "In the printed counts the schedule 2 gain on test set B is 75 to 90 wins; for test set A it is 78 to 77."
+    },
+    {
+     "id_suggestion": "borle-exp2-percent-decrease-definition",
+     "value": "The authors define the percentage decrease in relative error as the scikit-learn relative error minus the fusion relative error, divided by the scikit-learn relative error, times 100, and state that it lies in (−∞, 100] with negative values meaning an increase.",
+     "anchor": "Section IV-B2, Equation 22, p.7",
+     "quotes": [
+      "From Equation 22, we can see that ∆δV ∈ (−∞, 100]. A case where ∆δV is negative implies a percentage increase rather than a percentage decrease"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition the Experiment II tables use.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-exp2-table3-set-a",
+     "value": "The authors report for test set A (Table III) a best improvement of 11.5768% for both relaxation schedules, worst changes of a 9.2894% increase and a 9.7023% increase for the two schedules respectively, and a median improvement of 0.0001% for both.",
+     "anchor": "Table III, p.8",
+     "quotes": [
+      "Best Improvement 11.5768% 11.5768%",
+      "Worst Change 9.2894% increase 9.7023% increase",
+      "Median Improvement Value 0.0001 % 0.0001%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "A median improvement of 0.0001% means that on test set A the fusion and scikit-learn reach practically the same relative error in the typical case, although the fusion wins about three cases in four; the win count carries little practical gain."
+    },
+    {
+     "id_suggestion": "borle-exp2-table4-set-b",
+     "value": "The authors report for test set B (Table IV) best improvements of 99.8797% and 99.5046% and worst changes of a 2706.4505% increase and a 507.4047% increase, in the order of the two relaxation schedules; the text states the median improvement is between 70-75%.",
+     "anchor": "Table IV, p.8",
+     "quotes": [
+      "Schedule 1 99.8797% 2706.4505% increase 70.3181%",
+      "99.5046% 507.4047% increase",
+      "the median improvement for test set B is between 70-75%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The table also prints median improvements of 70.3181% and 75.1576% and MAD values of 14.8157 and 12.7089 for schedules 1 and 2. The worst case, a more than twenty-seven-fold increase in relative error, shows the fusion can be far worse in single cases."
+    },
+    {
+     "id_suggestion": "borle-exp2-exact-factor-hypothesis",
+     "value": "The authors state that, since the fusion results are better for test set B than test set A, there may be a larger scope for improvement in cases where one or more matrix pairs W, H exist with a small, if not zero, residual; they also state that sklearn's default parameters may have influenced the results and that these results were not yet subjected to statistical tests.",
+     "anchor": "Section IV-B2, p.7",
+     "quotes": [
+      "These results, although not yet subjected to statistical tests, indicate that there may be a larger scope for improvement in cases where there exists one or more matrix pairs W, H such that ∥V − W H∥ is small, if not 0.",
+      "and changing them may produce different results."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation, stated by them as untested.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-exp3-setup",
+     "value": "The authors report that Experiment III used 100 test cases per size with square integer matrices W and H with entries from 0 to 7, for n in 1, 2, 3 and 4, with V built as W H; the QUBO problems used two discrete levels (0 or 1) per variable and the QuarDP problems eight discrete levels (0 to 7), both with relaxation schedule 1.",
+     "anchor": "Section IV-C1, p.8",
+     "quotes": [
+      "We created 100 test cases with square matrices W, H ∈ {i ∈ Z|0 ≤ i ≤ 7}n×n per n ∈ {1, 2, 3, 4} from which V ← W H was generated.",
+      "problems with two discrete levels (0 or 1) per variable and",
+      "our QuarDP problems with eight discrete levels (0 to 7) per",
+      "both using the relaxation schedule 1 setting on the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own Experiment III setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-cpsat-objectives-and-protocol",
+     "value": "The authors report that CP-SAT was run with two objective functions, Equation 23, the sum of absolute differences, and Equation 24, the sum of squared differences (equivalent to the QuarDP objective); CP-SAT was run ten times per test case restricted to a single processor in performance mode with its time limit set to the time Dirac-3 required for the same case, and the best of the ten runs was taken.",
+     "anchor": "Section IV-C1, p.8",
+     "quotes": [
+      "Equation 23 measures error as the sum",
+      "of absolute differences and Equation 24 measures error as",
+      "the sum of squared differences; the latter being equivalent to",
+      "we ran CP-SAT ten times per test case and restricted it to a single processor on the laptop described before, but set to performance mode, a power",
+      "The time limit for each CP-SAT run was set to the",
+      "time Dirac-3 required to solve the same test case for QuarDP"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own CP-SAT setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "Dirac-3's run time was set by the vendor package, so CP-SAT's budget is whatever Dirac-3 happened to use, not a budget chosen for CP-SAT."
+    },
+    {
+     "id_suggestion": "borle-exp3-qubo-worst",
+     "value": "The authors report that in Experiment III the QUBO formulation on Dirac-3 performed the worst of all the solvers, which they attribute mainly to its largest number of variables, a byproduct of the auxiliary variables needed to make the quartic formulation quadratic, and that the 4 × 4 QUBO case did not fit on the machine.",
+     "anchor": "Section IV-C2, p.8-9, Figure 3",
+     "quotes": [
+      "inaccurate. From Figure 3a, we see that Dirac-3, with the",
+      "QUBO formulation, performs the worst of all the different",
+      "In (a), the 4 × 4 data point is missing for QUBO because Dirac-3 was not able to accommodate the problem size."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on matrices up to 3 by 3 for QUBO.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The text layer interleaves two columns here, so the 'attributed mainly to the number of variables' part is read from lines I could not quote contiguously: 'This can be attributed mainly to the fact that it has the largest number of variables to optimize'. The numbers behind Figure 3b are not in the text."
+    },
+    {
+     "id_suggestion": "borle-exp3-cpsat-better",
+     "value": "The authors report that in Experiment III both CP-SAT variants performed better than the QuarDP formulation on Dirac-3, albeit marginally, even though they need more variables than Dirac-3 for the same matrix size, and that CP-SAT consistently achieved zero relative error across multiple matrices.",
+     "anchor": "Section IV-C2, p.8-9",
+     "quotes": [
+      "formed better than the QuarDP formulation on Dirac-3 (albeit",
+      "marginally) even though they need more variables than Dirac-",
+      "CP-SAT consistently achieving zero relative",
+      "error across multiple matrices, making curve-fitting even more"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Experiment III test cases always have an exact factorization and compare the best of ten runs, the setting where the paper later says CP-SAT is advantaged."
+    },
+    {
+     "id_suggestion": "borle-exp3-explanations",
+     "value": "The authors state, without conclusive proof, that CP-SAT is a mature hybrid SAT-based solver enhanced with constraint propagation and linear programming relaxations while Dirac-3 is nascent, and that because Experiment III matrices have an exact factorization a SAT-capable solver can halt instantly at V = W H whereas Dirac-3, a stochastic energy-based minimizer, cannot check satisfiability during its computation.",
+     "anchor": "Section IV-C2, p.9",
+     "quotes": [
+      "While we do not have conclusive",
+      "First, CP-SAT is a mature, sophisticated hybrid SAT-based",
+      "This makes it easy for a solver with SAT solving capability to halt instantly when a perfect solution is reached, that is, when V = W H.",
+      "cannot check for satisfiability conditions in the middle of its computation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author explanations they say are not conclusively proven.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-exp4-setup",
+     "value": "The authors report that Experiment IV compared QuarDP on Dirac-3 with CP-SAT for rectangular integer matrices V with entries 0 to 7, in two sets of one hundred cases: test set A with random V, and test set B with V built as W H from random W and H with entries 0 to 7.",
+     "anchor": "Section IV-D1, p.9",
+     "quotes": [
+      "Test set A: One hundred test cases where, for each test case, the matrix V ∈ {i ∈ Z|0 ≤ i ≤ 7}4×8 is generated using the randint() function in numpy.",
+      "Test set B: One hundred test cases where, for each test case, we first generate factor matrices W ∈ S4×3 and H ∈ S3×8 where S = {i ∈ Z|0 ≤ i ≤ 7}"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own Experiment IV setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-exp4-protocol",
+     "value": "The authors report that Experiment IV compared median runs (the run with relative error closest to the median) rather than best runs, used relaxation schedule 1 on Dirac-3 with CP-SAT's time limit matched to Dirac-3's run time, and ran CP-SAT in a serial configuration restricted to a single processor and a parallel configuration using all 12 processors of the chip.",
+     "anchor": "Section IV-D1, p.9",
+     "quotes": [
+      "The previous experiment compared the best runs from each solver/formulation. Here in Experiment IV, we compare the median runs (run with δV closest to the median)",
+      "As before, we used the relaxation schedule 1 setting to run the test cases on Dirac-3",
+      "CP-SAT’s time limit was then set to match the run time of Dirac-3 for every test case.",
+      "the other where CP-SAT was allowed to use all 12 processors in our Intel i51335U chip (parallel processing)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own Experiment IV protocol.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "Experiment III compares best-of-ten and Experiment IV compares median runs, so their results cannot be set side by side."
+    },
+    {
+     "id_suggestion": "borle-exp4-table5-pvalues",
+     "value": "The authors report for test set A (Table V) one-sided binomial p-values for Dirac-3 being better than CP-SAT of 7.8e-31, 0.46 and 7.8e-31 for the first three configurations in the table; the text states these fail to reach significance for parallel CP-SAT in both test sets under the squared-difference objective.",
+     "anchor": "Table V, p.10",
+     "quotes": [
+      "7.8e-31 0.46 7.8e-31",
+      "In fact, the calculated p-values fail reach the level needed to reject the null hypothesis for parallel CP-SAT for both test sets."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table V as printed: absolute-difference objective, serial 100 Dirac-3 wins and 0 CP-SAT wins, parallel 51 and 49; squared-difference objective, serial 100 and 0, parallel 0 and 100; p-values 7.8e-31, 0.46, 7.8e-31 and 1. I recomputed them and they match. The perfect serial record is 100 of 100 on random integer V with no exact factor in most cases."
+    },
+    {
+     "id_suggestion": "borle-exp4-table6-set-b",
+     "value": "The authors report that for test set B (Table VI) Dirac-3 beat single-processor CP-SAT in fewer instances than in test set A, that there were no cases where Dirac-3 beat parallel CP-SAT, and that the only statistically significant result in favor of Dirac-3 is against single-processor CP-SAT with the objective of Equation 23.",
+     "anchor": "Section IV-D2 and Table VI, p.10",
+     "quotes": [
+      "Here, the only statistically significant result in support of our alternative hypothesis is against CP-SAT running on a single processor with Equation 23 as the objective function."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table VI as printed: absolute-difference objective, serial 59 Dirac-3 wins and 41 CP-SAT wins, parallel 0 and 100; squared-difference objective, serial 41 and 59, parallel 0 and 100; printed p-values 0.04, 1, 0.46 and 1. By Equation 21 the squared-difference serial count (41 of 100) gives p of about 0.97, not the printed 0.46, which is the value for 51 of 100; the printed 0.46 appears to be an error, and it does not change the conclusion."
+    },
+    {
+     "id_suggestion": "borle-exp4-median-advantage",
+     "value": "The authors report that against single-processor CP-SAT, over both objective functions, the median improvement in relative error was ≈ 15% for test set A and ≈ 18% for test set B, and that against parallel CP-SAT with the sum of absolute differences objective, where Dirac-3 won half the cases in test set A, the median advantage was only approximately 4%.",
+     "anchor": "Section IV-D2, p.10, Figure 4",
+     "quotes": [
+      "For CP-SAT running on a single processor, considering both the objective functions, the median improvement was ≈ 15% (for test set A) and ≈ 18% (for test set B).",
+      "though the median advantage was only approximately 4%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "These medians are over the cases Dirac-3 won, not over all cases."
+    },
+    {
+     "id_suggestion": "borle-exp4-variable-counts",
+     "value": "The authors report that CP-SAT required 261 and 229 variables for Equations 23 and 24 in Experiment IV, compared to 161 and 145 in Experiment III, whereas Dirac-3 required only 37 variables, an increase of just 5 from Experiment III; they suggest this growth may have brought CP-SAT to a crossover point where Dirac-3 became competitive.",
+     "anchor": "Section IV-D2, finding 1, p.10",
+     "quotes": [
+      "Specifically, CP-SAT required 261 and 229 variables for Equations 23 and 24) respectively, compared to 161 and 145 variables in Experiment III. In contrast, Dirac-3 required only 37 variables for these problems, an increase of just 5 variables from Experiment III.",
+      "This rapid growth in CPSAT’s variable count may have caused it to reach a crossover point where Dirac-3’s performance became competitive."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A reported count with an author hypothesis, from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Variable counts of different solvers are not a like-for-like cost, since CP-SAT's include auxiliary variables."
+    },
+    {
+     "id_suggestion": "borle-exp4-exact-factor-explanation",
+     "value": "The authors state that Dirac-3 was more competitive against CP-SAT for test set A than for test set B, which they suggest may be due to the nature of the problems since a problem with an exact factorization lets CP-SAT halt once equality holds, and they believe test set A, lacking exact factor matrices, may be a better match for a solver like Dirac-3.",
+     "anchor": "Section IV-D2, findings 2 and 3, p.10-11",
+     "quotes": [
+      "On closer inspection, we find that Dirac-3 was more competitive against CP-SAT for test set A than for test set B.",
+      "This makes it easier for CP-SAT to halt as soon as the equality condition is satisfied, or to store/remember a solution that satisfies the equality condition.",
+      "we believe this type of a problem may be a better match for a solver like the Dirac-3."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author explanation, not tested.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-exp4-objective-metric-match",
+     "value": "The authors state that wherever CP-SAT performed better it did so more with the squared-difference objective of Equation 24 than the absolute-difference objective of Equation 23, which they suggest may be because relative error is measured with the Frobenius norm that is very similar to Equation 24.",
+     "anchor": "Section IV-D2, finding 4, p.11",
+     "quotes": [
+      "Collectively, wherever CP-SAT performed better, it did so more with the objective function based on Equation 24 than for the function based on Equation 23.",
+      "This may be the case because we measure δV and ∆δV with the Frobenius norm, which is very similar to Equation 24."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author explanation, not tested.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-exp4-hybrid-bottleneck-claim",
+     "value": "The authors state that the current Dirac-3 implementation has a computational bottleneck in the measurement-feedback loop, specifically in the tomography used to determine variable values for candidate solutions, which limits the iteration rate, and that a more equitable comparison for parallel CP-SAT would be an all-optical entropy computer or one with multiple optimization processes at once.",
+     "anchor": "Section IV-D2, finding 5, p.11",
+     "quotes": [
+      "CP-SAT’s parallel processing is highly effective, even when running on an ordinary laptop.",
+      "specifically in the tomography process used to determine variable values for candidate solutions. This bottleneck limits the iteration rate of the optimization.",
+      "A more equitable comparison for parallel CP-SAT would be against an all optical implementation of entropy computing, or against an entropy computer with multiple optimization processes running at once."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An untested author claim about a vendor device.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "No timing breakdown of the loop is reported, so the bottleneck is asserted, not measured."
+    },
+    {
+     "id_suggestion": "borle-energy-efficiency-claim",
+     "value": "The authors state that photonic architectures are expected to consume less power than electronic ones and that entropy computers may offer power consumption advantages over CPUs and GPUs, especially for larger problem sizes, and that further studies are needed to confirm the performance-per-watt claim.",
+     "anchor": "Section II-A3, p.3; Section IV-D2, finding 6, p.11",
+     "quotes": [
+      "Since photonic architectures are expected to consume less power than electronic ones [32], [33], entropy computers may offer power consumption advantages over CPUs and GPUs, especially for larger problem sizes.",
+      "Further studies are needed to confirm this."
+     ],
+     "kind": "cited",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited expectation with no power measurement in this paper.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The paper does not measure power for either device."
+    },
+    {
+     "id_suggestion": "borle-conclusion-quardp-over-qubo",
+     "value": "The authors state that they found their quartic QuarDP formulation for integer and continuous values to be better than the binary QUBO model approach, and that the larger number of variables in the QUBO version seems to give a poorer quality result.",
+     "anchor": "Conclusion, p.11; Contribution 4, p.2",
+     "quotes": [
+      "We found our quartic formulation QuarDP for integer/continuous values to be better than the binary QUBO model approach.",
+      "The larger number of variables in the QUBO version of the problem seems to give us a poorer quality result."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical conclusion from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The QUBO side was run only up to 3 by 3 and with a library quadratization, so the comparison reflects Dirac-3's variable limit as much as the formulation."
+    },
+    {
+     "id_suggestion": "borle-conclusion-fusion-exact-factors",
+     "value": "The authors conclude that for real-valued NMF Dirac-3 was not able to directly outperform sklearn's NMF procedure, that the fusion approach outperformed the standard version in terms of relative error, and that a notable improvement was seen for test cases where the NMF problems had exact factors.",
+     "anchor": "Conclusion, p.11",
+     "quotes": [
+      "the Dirac-3 entropy computer was not able to directly outperform sklearn’s NMF procedure",
+      "a fusion approach that used Dirac-3’s solutions as the initial matrices W0, H0 in the sklearn’s NMF procedure outperformed the standard version of the same, in terms of relative error.",
+      "In particular, a notable improvement was seen for test cases where the NMF problems had exact factors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical conclusion from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-conclusion-hybrid-bottleneck-expectation",
+     "value": "The authors state that they believe a primary reason parallel CP-SAT was generally better than Dirac-3 could be a computational bottleneck due to Dirac-3's hybrid architecture, and that they would expect an all optical implementation of entropy computing to yield better results.",
+     "anchor": "Conclusion, p.11",
+     "quotes": [
+      "We believe that one of the primary reasons for this could be a computational bottleneck due to Dirac3’s hybrid architecture; and we would expect an all optical implementation of entropy computing to yield better results."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An untested author belief about a vendor device.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-abstract-scale-limit",
+     "value": "The authors state that current devices cannot solve large NMF problems, and that the results of their preliminary experiments are promising enough to warrant further research.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Although current devices cannot solve large NMF problems, the results of our preliminary experiments are promising enough to warrant further research."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The abstract states the scale limit of current devices as the paper's own scope.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The largest instance run is 4 by 8 with inner dimension 3."
+    },
+    {
+     "id_suggestion": "borle-future-work-limits",
+     "value": "The authors list future work: adding regularization terms for W and H; a hybrid method for larger problems in which Dirac-3 optimizes a limited number of elements of W and H while the rest are held fixed, iterated until convergence; testing an all-optical entropy computer against parallel CP-SAT; analyzing energy requirements; and finding application domains and integer NMF variants where Dirac-3 has a clearer advantage.",
+     "anchor": "Section V, p.11",
+     "quotes": [
+      "First, an extension of this work to include regularization terms for the matrices W and H can increase its utility and",
+      "designating a limited number of elements (that can fit on Dirac-3) in W and H as variables and the rest as constants",
+      "Third, it would be interesting to see if an all-optical implementation of an entropy computer can outperform parallel CPSAT",
+      "It may be interesting to find application domains and variants of the integer NMF problems where Dirac-3 and other NVN optimizers have a clearer advantage."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V states what the paper leaves open.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The paper does not claim any application where Dirac-3 beats the best classical alternative."
+    },
+    {
+     "id_suggestion": "borle-related-work-simultaneous-factors",
+     "value": "The authors state that, unlike O'Malley et al., whose nonnegative/binary matrix factorization with quantum annealers uses an alternating least squares scheme, their method works on the standard and integer variants of NMF and computes the factor matrices W and H simultaneously, and that Malik et al. also computed both binary factor matrices simultaneously on a digital annealer.",
+     "anchor": "Section II-B, p.3",
+     "quotes": [
+      "However, unlike their method, ours (i) works on the standard and integer variants of NMF, and (ii) computes the factor matrices W and H simultaneously while theirs use an ALS scheme.",
+      "Unlike alternating optimization methods, their approach calculated both factor matrices simultaneously, which we do also."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A characterization of other work by the authors.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-appendix-ec-mechanism",
+     "value": "The authors state that in entropy computing candidate solutions are encoded as photonic quantum states, the objective is encoded as a Hamiltonian that sets a differential loss rate so that higher-cost candidates are attenuated more, and amplifier-induced fluctuations proportional to the attenuation change bad candidates more than good ones, iterated with a relaxation schedule.",
+     "anchor": "Appendix, p.12",
+     "quotes": [
+      "A candidate solution that has a higher cost will have its photonic state attenuated more than a candidate solution with a lower cost",
+      "In other words, bad candidate solutions have their values changed more than good candidate solutions."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor-affiliated description of its own technology.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-appendix-fpga-tomography",
+     "value": "The authors state that in the Dirac-3 the loss rate of a candidate solution is calculated by field programmable gate arrays, which requires converting the photonic state to electrical signals through quantum tomography, measuring the prepared state multiple times with a single photon detector.",
+     "anchor": "Appendix, p.12",
+     "quotes": [
+      "The most important among these components are field programmable gate arrays (FPGAs) that calculates the loss rate of a candidate solution for the given problem Hamiltonian.",
+      "This requires us to do a quantum tomography of the state by measuring our prepared photonic state multiple times (shots)"
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor-affiliated description of its own device.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "borle-ai-declaration",
+     "value": "The authors declare that a large language model (Anthropic's Claude Sonnet 4.5) was used for grammar checking and sentence restructuring, to generate starter code for the CP-SAT solver, which the authors state was subsequently verified, and to fit curves for the data points in Figure 3b.",
+     "anchor": "AI Declaration Statement, p.12",
+     "quotes": [
+      "Anthropic’s ClaudeTM Sonnet 4.5 large language model (LLM)",
+      "was used for grammar checking and sentence restructuring, as well as to generate starter code for the CP-SAT solver (which was subsequently verified by the authors).",
+      "the LLM was also used to fit curves for the data points in Figure 3b."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own declaration of how it was produced.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The CP-SAT baseline, on which the main integer comparison rests, started as model-generated code; the paper states only that the authors verified it."
+    },
+    {
+     "id_suggestion": "borle-code-data-availability",
+     "value": "The authors state that the code and data associated with the paper are available at the GitHub repository aborle1/NMF NVN.",
+     "anchor": "Code and Data Availability, p.12",
+     "quotes": [
+      "The code and data associated with this paper can be found at https://github.com/aborle1/NMF NVN/."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of where its materials are.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "Not checked here; no download was made."
+    }
+   ]
+  }
+ ]
+}
