@@ -1,0 +1,820 @@
+{
+ "papers": [
+  {
+   "record_id": "asaoka-2025-quantum-autoencoders-image-classification",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Asaoka-Kudo_2025_Quantum-autoencoders-for-image-classification__2502.15254.pdf",
+   "title_in_file": "Quantum autoencoders for image classification",
+   "version_note": "arXiv:2502.15254v2 (27 May 2025). Page 6 of the text layer carries a stray header 'QAE for image classification, Hinako ASAOKA December 2024' from a figure; it is not part of the paper body.",
+   "pages": 35,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation study that trains a quantum autoencoder with class labels encoded in the reference qubits to classify MNIST, Fashion-MNIST and KMNIST images, compares seven ansatz structures, and compares the best against NBMF, FCNN, SNN, QCNN and CNN.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "asaoka-eight-class-drop",
+     "verdict": "confirmed",
+     "note": "The text states both parts. Numbers are in Table 5 and the Discussion (four classes 90.4%, eight classes 49.4%); they are entered as a new assertion.",
+     "value": "The authors report that in the eight-class task the test accuracy decreases significantly, and that the accuracy did not reach the level achieved in the four-class classification task.",
+     "anchor": "Section 5, p.20 (text around Table 5)",
+     "quotes": [
+      "As expected, the test accuracy decreases significantly.",
+      "however, the accuracy did not reach the level achieved in the four-class classification task."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "asaoka-noise-free-simulation",
+     "verdict": "confirmed",
+     "note": "Section 4.1 repeats it: noise-free simulator, device noise excluded.",
+     "value": "The authors state that the experiments assume an ideal situation in which quantum circuits yield perfect results, using a numerical simulator of quantum circuit measurements with noise-free conditions and a statevector simulator.",
+     "anchor": "Abstract, p.1; Section 4.1, p.10-11",
+     "quotes": [
+      "An ideal situation in which quantum circuits yield perfect results is assumed, and a numerical simulator of quantum circuit measurements is used.",
+      "This experiment excluded the influence of device noise on computational accuracy, presenting results obtained under ideal conditions"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its simulation setup (Abstract and Section 4.1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "asaoka-parameter-reduction-accuracy-cost",
+     "verdict": "confirmed",
+     "note": "Numbers match Table 6 (168 parameters against 8356 for FCNN and 2198 for NBMF at 74% sparsity; averages 74.3%, 88.2%, 83.5%).",
+     "value": "The authors report that QAE classification reduces the number of trainable parameters by 98.0% compared with an FCNN with 0% sparsity and by 92.4% compared with NBMF with 74% sparsity, while its average accuracy is 9.2 and 13.9% lower than NBMF and FCNN, respectively.",
+     "anchor": "Section 5, p.21 (text before Table 6)",
+     "quotes": [
+      "98.0% compared to FCNN with 0% sparsity",
+      "92.4% compared to NBMF with 74% sparsity",
+      "Despite this significant parameter reduction, QAE classification maintains 9.2 and 13.9% average accuracy reductions compared to NBMF and FCNN, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 9.2 and 13.9 are differences in percentage points of the Table 6 averages (83.5 minus 74.3, and 88.2 minus 74.3), not relative reductions."
+    },
+    {
+     "id": "asaoka-qcnn-vs-cnn",
+     "verdict": "confirmed",
+     "note": "Table 7 gives averages of 89.0% (QCNN) and 88.6% (CNN); both use 1000 epochs and a QCNN whose quantum layer replaces only part of the network.",
+     "value": "The authors report that, under identical training and testing data conditions, QCNN performance shows little to no significant improvement over the classical CNN.",
+     "anchor": "Section 5, p.22 (Table 7 and text)",
+     "quotes": [
+      "under identical training and testing data conditions.",
+      "its performance shows little to no significant improvement over the classical CNN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qae-classifier-label-encoding",
+     "value": "The authors state that their approach encodes both image and label information into the quantum circuit, setting the reference state B' with a circuit VL(y), and optimizes the parameters to minimize the error between the reconstructed output and the label information.",
+     "anchor": "Section 1, p.3; Section 3, p.7",
+     "quotes": [
+      "Our approach encodes both image and label information into the quantum circuit and optimizes parameters to minimize the error between the reconstructed output and label information.",
+      "To adapt the QAE for image classification, the reference state B′ is set using the circuit VL(y)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own method in Section 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qae-classifier-class-capacity",
+     "value": "The authors state that if B' comprises l qubits there are 2 to the power l (printed flat as 2l) possible quantum states, allowing up to 2 to the power l different classes to be assigned.",
+     "anchor": "Section 3, p.8",
+     "quotes": [
+      "If B′ comprises l qubits, there are 2l possible quantum states, allowing for assigning up to 2l different classes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the label encoding in Section 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qae-classifier-training-objective",
+     "value": "The authors state that an objective function that minimizes the probability of measuring |1> on the swap-test auxiliary qubit is defined, so that the parameter theta is optimized to align the states of B and B'.",
+     "anchor": "Section 2.3, p.7",
+     "quotes": [
+      "by defining an objective function that minimizes the probability of measuring |1⟩, the parameter θ is optimized to align the states of B and B′."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the training objective.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qae-classifier-prediction-rule",
+     "value": "The authors state that the predicted class is the class corresponding to the quantum state with the highest probability among the measurement results of the trash register B.",
+     "anchor": "Section 3, p.9",
+     "quotes": [
+      "The predicted result is the class corresponding to the quantum state with the highest probability among the measurement results."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the prediction rule.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-data-subsets",
+     "value": "The authors report that the experiments used subsets built by randomly selecting images of four classes from each of three datasets (MNIST, Fashion-MNIST, KMNIST), with a training set of 500 images and another 500 for the test set, and nearly equal numbers of samples per class.",
+     "anchor": "Section 4.1, p.9-10",
+     "quotes": [
+      "experiments were conducted using three different datasets.",
+      "The training set comprised 500 images, whereas the test set comprised",
+      "another 500. The dataset was constructed to contain a nearly equal number of samples for each class"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "A single random subset of 500 test images is used; no repeated draws or error bars are reported in the text read."
+    },
+    {
+     "id_suggestion": "asaoka-small-scale-grayscale-scope",
+     "value": "The authors state that the conditions are restricted to grayscale image classification and that, as the initial verification of QAE classification, the experiment observes results under a small-scale problem setting.",
+     "anchor": "Section 4.1, p.9",
+     "quotes": [
+      "In this experiment, the conditions are restricted to grayscale image classification.",
+      "since this is the initial verification of QAE classification, the experiment aims to observe the results under a small-scale problem setting."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its experiments.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-amplitude-encoding-16x16",
+     "value": "The authors report that amplitude encoding is used as the image encoder V(x), that the image size was primarily set to 16 × 16 with variations in certain cases, and that the AB system consequently comprised n = 8 qubits.",
+     "anchor": "Section 4.1, p.10",
+     "quotes": [
+      "amplitude encoding is used as the image encoder V (x)",
+      "the image size was primarily set to 16 × 16, with variations applied in certain cases. Consequently, the AB system comprised n = 8 qubits when using amplitude encoding."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-qubit-allocation",
+     "value": "The authors report that the trash state B was set to l = 3 qubits so that an eight-class task could use a circuit of the same structure, that the latent state A used the remaining k = n - l qubits, and that n + l + 1 qubits were used in total, one being the swap-test qubit.",
+     "anchor": "Section 4.1, p.10",
+     "quotes": [
+      "The trash state B, which encodes class information, was set to l = 3 qubits.",
+      "The remaining k = n − l qubits in AB were used for the latent state A.",
+      "Thus, n + l + 1 qubits were used in this QAE classification experiment."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "With n = 8 and l = 3 the latent register has 5 qubits and the circuit has 12 qubits; the paper states the latent size k = 5 in Section 5."
+    },
+    {
+     "id_suggestion": "asaoka-cobyla-5000-epochs",
+     "value": "The authors report that the ansatz parameters were optimized with the gradient-free method COBYLA, primarily for 5000 epochs.",
+     "anchor": "Section 4.1, p.10",
+     "quotes": [
+      "A key characteristic of COBYLA is that it does not require gradient information.",
+      "In this experiment, parameter optimization with COBYLA was primarily performed for 5000 epochs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-seeded-simulation",
+     "value": "The authors state that a seed value was set for all processes that would otherwise produce stochastic results, ensuring reproducibility.",
+     "anchor": "Section 4.1, p.11",
+     "quotes": [
+      "A seed value was set for all processes that would otherwise produce stochastic results, ensuring reproducibility."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "A fixed seed gives repeatability of one run; it gives no estimate of run-to-run spread, and none is reported in the text read."
+    },
+    {
+     "id_suggestion": "asaoka-circuit3-circular-definition",
+     "value": "The authors define the circular pattern (the pattern of the best-scoring ansatz) as the linear CNOT pattern with an added CNOT gate that controls the first qubit from the last qubit before the entanglement among adjacent qubits.",
+     "anchor": "Section 4.2, p.13 (Figure 6c)",
+     "quotes": [
+      "A variation similar to the linear pattern, the circular pattern, adds a CNOT gate to control the first qubit from the last qubit before establishing entanglement among adjacent qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the ansatz used for the main results.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-circuit3-best-average-accuracy",
+     "value": "The authors report that, although the ansatz with the highest accuracy varies across the three datasets, Circuit 3 consistently demonstrates the highest average accuracy; the Table 3 average accuracies, listed in table order, are 72.5%, 71.9%, 74.3%, 72.1%, 69.5%, 22.1%, 59.3%, 65.7%, 70.5%, 56.1% and 58.2%.",
+     "anchor": "Section 5, p.17-18 (Tables 1 and 3)",
+     "quotes": [
+      "Although the ansatz that achieved the highest accuracy varies across the three datasets, Circuit 3 consistently demonstrates the highest average accuracy.",
+      "72.5% 71.9% 74.3% 72.1% 69.5% 22.1% 59.3% 65.7% 70.5% 56.1% 58.2%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (single run per configuration, 500 test images).",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 3 lists Circuits 1, 2, 3, 4, 5 (RY), 5 (X), 6 (RZ), 6 (RX), 6 (X), 7 (RZ), 7 (RX) in that order, so 74.3% is Circuit 3. The spread between Circuits 1 to 4 is under 3 points on 500 test images."
+    },
+    {
+     "id_suggestion": "asaoka-circuit3-mnist-four-class-accuracy",
+     "value": "The authors report that the best ansatz reached 90.4% test accuracy on four-class MNIST, and that extending to an eight-class task dropped the test accuracy to 49.4%.",
+     "anchor": "Section 6, p.24 (Table 5)",
+     "quotes": [
+      "Extending the QAE classification model from the four-class task (where it achieved 90.4% test accuracy) to an eight-class task resulted in the test accuracy significantly dropping to 49.4%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-eight-class-remedies",
+     "value": "The authors report test accuracies for the best ansatz on MNIST (eight-class conditions table) of 90.4%, 49.4%, 55.2%, 63.6% and 56.4%, in column order: four classes, eight classes at the baseline, eight classes with ansatz repetitions increased from 20 to 30, with the training set expanded from 500 to 800 images, and with the input image size expanded from 16 × 16 to 32 × 32.",
+     "anchor": "Section 5, p.19-20 (Table 5)",
+     "quotes": [
+      "90.4% 49.4% 55.2% 63.6% 56.4%",
+      "Increasing the number of ansatz repetitions from 20 to 30",
+      "Expanding the training dataset from 500 to 800 images.",
+      "Expanding the input image size from 16 × 16 to 32 × 32."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The mapping of the five accuracies to the Table 5 rows is by column order in the text layer; 63.6% is confirmed for the 800-image case by the Figure 8 text."
+    },
+    {
+     "id_suggestion": "asaoka-larger-latent-no-gain",
+     "value": "The authors report that increasing the input image resolution so that the latent state could be expanded to k = 7 qubits gave no significant improvement in test accuracy, contrary to expectation.",
+     "anchor": "Section 5, p.20",
+     "quotes": [
+      "the latent state could be expanded to k = 7 qubits.",
+      "However, there was no significant improvement in test accuracy away from expectations."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 5 gives 56.4% for this case against 49.4% at baseline, so it is an improvement of about 7 points that the authors call not significant."
+    },
+    {
+     "id_suggestion": "asaoka-eight-class-weak-digits",
+     "value": "The authors report that the confusion matrix for the eight-class task reveals that certain digit classes exhibit significantly lower classification accuracy, and they suggest a weakness in recognizing specific numerical shapes.",
+     "anchor": "Section 6, p.25 (Figure 8)",
+     "quotes": [
+      "Analysis of the confusion matrix (Figure 8) reveals that certain digit classes exhibit significantly lower classification accuracy, suggesting a weakness in recognizing specific numerical shapes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, read from a figure.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-eight-class-cause-claim",
+     "value": "The authors state that the weak digit classes likely arise because the QAE classification architecture, as implemented in this experiment, fails to adequately capture the relevant features of these digit shapes.",
+     "anchor": "Section 6, p.25",
+     "quotes": [
+      "This issue likely arises because the QAE classification architecture, as implemented in this experiment, fails to adequately capture the relevant features of these digit shapes."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's explanation stated as likely, with no test in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-ansatz-same-params-different-accuracy",
+     "value": "The authors state that although the number of trainable parameters was nearly identical across different ansatz configurations, their test accuracies differed, and they conclude that the quantum gate configuration directly impacts learning performance.",
+     "anchor": "Section 6, p.23 (Table 1)",
+     "quotes": [
+      "Although the number of trainable parameters was nearly identical across different ansatz configurations, their test accuracies differed.",
+      "This suggests that the feature extraction enabled by the quantum gate configurations directly impacts learning performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result and author's interpretation from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 1 parameter counts are 168 for Circuits 1 to 4, 216 for Circuit 5 (RY) and 160 for Circuit 6, so 'nearly identical' holds only loosely."
+    },
+    {
+     "id_suggestion": "asaoka-cnot-only-circuits-high",
+     "value": "The authors state that Circuits 1 through 3 consistently achieved high classification accuracy across all datasets and are characterized by a simple structure that entangles qubits using only CNOT gates.",
+     "anchor": "Section 6, p.23",
+     "quotes": [
+      "Circuits 1 through 3 consistently achieved high classification accuracy across all datasets and are characterized by a simple structure that entangles qubits using only CNOT gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 1 shows Circuit 2 at 58.8% on Fashion-MNIST, below Circuit 4 (69.6%) and Circuit 5 RY (68.2%); 'consistently high' is the authors' wording."
+    },
+    {
+     "id_suggestion": "asaoka-more-cnots-not-better",
+     "value": "The authors report that Circuit 5, which applies CNOT gates between all possible pairs of qubits, has significantly more CNOT gates than other ansatzes yet exhibited substantially lower classification accuracy, and conclude that simply increasing circuit depth by adding CNOT gates is insufficient for improving accuracy.",
+     "anchor": "Section 6, p.23 (Tables 1 and 2)",
+     "quotes": [
+      "Circuit 5, which applies CNOT gates between all possible pairs of qubits, has significantly more CNOT gates than other ansatzes, as shown in Table 2.",
+      "This suggests that simply increasing circuit depth by adding CNOT gates is insufficient for improving accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result and author's interpretation from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In Tables 1 to 3 the CNOT version is the Circuit 5 row with X as the arbitrary gate (average 22.1%). The Discussion mixes circuit numbers in places (it calls the CRX circuit Circuit 7 and the RY circuit Circuit 4) relative to the tables."
+    },
+    {
+     "id_suggestion": "asaoka-gate-placement-matters",
+     "value": "The authors state that two of the ansatzes share an identical number and type of quantum gates but their classification accuracies differed, which they take to indicate that the placement of gates must be carefully considered.",
+     "anchor": "Section 6, p.23 (Table 1)",
+     "quotes": [
+      "Although these two circuits share an identical number and type of quantum gates, their classification accuracies differed, indicating that the placement of gates must be carefully considered."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result and author's interpretation from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Average accuracies are 72.5% for Circuit 1 and 74.3% for Circuit 3, a gap of 1.8 points on 500 test images per dataset."
+    },
+    {
+     "id_suggestion": "asaoka-z-rotation-explanation",
+     "value": "The authors state that applying rotations along the Z-axis to the class states may not contribute meaningfully to their transformation, which likely accounts for the reduced performance of the circuits that include CRZ gates.",
+     "anchor": "Section 6, p.23-24",
+     "quotes": [
+      "Applying rotations along the Z-axis to these states may not contribute meaningfully to their transformation, which likely accounts for the reduced performance observed in these circuits."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's explanation stated as likely, with no test in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-log-loss-accuracy-relation",
+     "value": "The authors report that average logarithmic loss and average accuracy for each ansatz do not exhibit a perfectly corresponding relationship, but that higher classification accuracy tends to be associated with lower logarithmic loss.",
+     "anchor": "Section 5, p.18 (Table 3)",
+     "quotes": [
+      "Although the average logarithmic loss and average accuracy for each ansatz do not exhibit a perfectly corresponding relationship, it can be observed that higher classification accuracy tends to be associated with lower logarithmic loss."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Table 3 losses are 0.9545, 0.9579, 0.9558 for the first three circuits, so the lowest loss belongs to Circuit 1, not to Circuit 3 whose accuracy is highest."
+    },
+    {
+     "id_suggestion": "asaoka-expressibility-setup",
+     "value": "The authors report that expressibility was measured as the Kullback-Leibler divergence DKL between the output-state distribution of each ansatz and the Haar distribution, using 2000 randomly generated normalized real inputs amplitude-encoded and parameters randomly generated from 0 to 2π.",
+     "anchor": "Section 5, p.19",
+     "quotes": [
+      "For this measurement, 2000 patterns of randomly generated, normalized real values were used as input.",
+      "using the parameters randomly generated from 0 to 2π"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own measurement setup.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-circuit3-lowest-dkl",
+     "value": "The authors report that, among the tested ansatzes, Circuit 3 exhibited the lowest DKL value, and that the circuits achieving higher accuracy tend to exhibit lower DKL values.",
+     "anchor": "Section 5, p.19; Section 6, p.24 (Table 4)",
+     "quotes": [
+      "The circuits achieving higher accuracy tend to exhibit lower DKL values.",
+      "Circuit 3 exhibited the lowest DKL value, suggesting it possesses the broadest capacity to represent diverse quantum states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 4 DKL is 1.409319 for Circuit 3 against 1.417831 and 1.423058 for Circuits 1 and 2, a small margin."
+    },
+    {
+     "id_suggestion": "asaoka-expressibility-caveat",
+     "value": "The authors state that lower DKL does not necessarily lead to improved classification performance, that there is not always a clear causal relationship between the two, and that expressibility should be a supplementary metric and not the sole indicator.",
+     "anchor": "Section 6, p.24",
+     "quotes": [
+      "This suggests that lower DKL does not necessarily lead to improved classification performance.",
+      "indicating that there is not always a clear causal relationship between the two",
+      "Expressibility should not be used as the sole indicator when evaluating quantum circuits"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit of the expressibility metric (Section 6).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The example cited is the circuit with RY as the arbitrary gate, which Table 4 shows as Circuit 5 (RY) with higher DKL 1.545853 and average accuracy 69.5%."
+    },
+    {
+     "id_suggestion": "asaoka-comparison-setup-classical",
+     "value": "The authors report that the classical comparison used a latent dimension of k = 5 for QAE classification and set the feature dimension of the classical methods to 2k = 32, with FCNN a three-layer network with 2k = 32 hidden nodes, sigmoid activation and the Adam optimizer, all trained for 5000 epochs on the same data.",
+     "anchor": "Section 4.3.2, p.15; Section 5, p.20",
+     "quotes": [
+      "a three-layer FCNN (input, hidden, and output) was used with 2k = 32 nodes in the hidden layer",
+      "employing the sigmoid function as the activation function",
+      "The Adam optimizer was employed for parameter optimization",
+      "Parameter optimization was performed for 5000 epochs, similar to that in QAE classification.",
+      "Given that the dimensionality of the latent space in QAE classification is k = 5, the feature dimension in all other classical methods was set to 2k = 32."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own comparison setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-table6-accuracies",
+     "value": "The authors report in the comparison table average test accuracies of 74.3% for QAE classification, and 83.5%, 31.8%, 88.2%, 87.3% and 50.6% for the other rows, in table order: NBMF at 74% sparsity, NBMF at higher sparsity, FCNN, SNN at 74% sparsity and SNN at higher sparsity, with 168 trainable parameters for QAE classification and 2198, 247, 8356, 2192 and 174 for those rows.",
+     "anchor": "Section 5, p.22 (Table 6)",
+     "quotes": [
+      "168 2198 247 8356 2192 174",
+      "74.3% 83.5% 31.8% 88.2% 87.3% 50.6%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Row labels come from the Table 6 row order in the text layer. Sparsity values 74%, 97%, 0%, 74%, 98% appear on separate lines of the table; row order matches the parameter order."
+    },
+    {
+     "id_suggestion": "asaoka-param-matched-baselines-lower",
+     "value": "The authors state that when the number of parameters of NBMF and FCNN is adjusted to approximate that of QAE classification, their classification accuracy significantly decreases.",
+     "anchor": "Section 5, p.21",
+     "quotes": [
+      "Conversely, when the number of parameters is adjusted to approximate that of QAE classification, the classification accuracy of NBMF and FCNN significantly decreases, further widening the performance gap with QAE classification."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 6 shows the parameter-matched rows at 31.8% (NBMF) and 50.6% (SNN), below QAE's 74.3%; the sentence's 'FCNN' refers to the SNN row, and QAE then outperforms these baselines."
+    },
+    {
+     "id_suggestion": "asaoka-fcnn-higher-accuracy",
+     "value": "The authors state that FCNN achieved the highest average test accuracy and that the classical FCNN achieves superior test accuracy, that FCNNs on classical hardware are far more accessible and resource-efficient than QAE classification, and that training convergence is significantly faster with classical methods.",
+     "anchor": "Section 5, p.21; Section 6, p.26",
+     "quotes": [
+      "FCNN achieved the highest average test accuracy",
+      "However, it is important to acknowledge that the classical FCNN achieves superior test accuracy.",
+      "Additionally, training convergence is significantly faster with classical methods."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limits of their method in Section 6.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-qcnn-architecture",
+     "value": "The authors report that the QCNN used applies quantum convolution only to a portion of the network, with image patches extracted by a 2×2 kernel with a stride of 2, a four-qubit circuit per patch, 64 four-dimensional outputs as the quantum feature vector, and a fully connected layer with a 32-dimensional hidden layer trained with Adam.",
+     "anchor": "Section 4.3.3, p.15",
+     "quotes": [
+      "a QCNN architecture was employed in which quantum convolution is applied only to a portion of the network",
+      "image patches are extracted using a 2×2 kernel with a stride of 2",
+      "The circuit consists of four qubits",
+      "A total of 64 four-dimensional outputs obtained from the entire image serve as the quantum feature vector",
+      "via a 32-dimensional hidden layer"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own comparison setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-table7-qcnn-cnn-accuracy",
+     "value": "The authors report in the comparison table average test accuracies of 66.1% for QAE classification at 1000 epochs, 89.0% for QCNN and 88.6% for CNN, with 168, 8372 and 8376 parameters, and state that the test accuracy of QCNN and CNN exceeds that of QAE classification.",
+     "anchor": "Section 5, p.22 (Table 7)",
+     "quotes": [
+      "168 8372 8376",
+      "66.1% 89.0% 88.6%",
+      "The test accuracy of QCNN and CNN exceeds that of QAE classification.",
+      "the QAE-based classification results at 1000 epochs are also reported"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The QAE row at 1000 epochs (66.1%) is lower than the 5000-epoch QAE average (74.3%) in Table 6."
+    },
+    {
+     "id_suggestion": "asaoka-qcnn-benefit-questioned",
+     "value": "The authors state that, despite the introduction of quantum computation in QCNN, its performance shows little to no significant improvement over the classical CNN, raising questions about the actual benefits of integrating quantum computation in the QCNN architecture, and that quantum convolutional layers are applied to only a portion of the network so the benefits of quantum machine learning are minimally realized.",
+     "anchor": "Section 5, p.22; Section 6, p.27",
+     "quotes": [
+      "raising questions about the actual benefits of integrating quantum computation in the QCNN architecture",
+      "As a result, the benefits of quantum machine learning are minimally realized."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's interpretation of one comparison.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-amplitude-encoding-loss",
+     "value": "The authors state that amplitude encoding can compress O of 2 to the power n (printed flat as O(2n)) classical data into O(n) quantum states, but inevitably leads to the loss or inability to represent certain information.",
+     "anchor": "Section 6, p.25",
+     "quotes": [
+      "Although amplitude encoding can compress O(2n) classical data into O(n) quantum states, it inevitably leads to the loss or inability to represent certain information."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state a limit of the encoding they use (Section 6).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-basis-encoding-256-qubits",
+     "value": "The authors state that encoding the 16 × 16 images with basis encoding or angle encoding would need 256 qubits, and cite the Heron r2 processor, the IBM device with the largest number of qubits publicly available as of 2025, as equipped with 156 qubits, so this problem size remains difficult to calculate.",
+     "anchor": "Section 6, p.25",
+     "quotes": [
+      "to encode the 16 × 16 images used in this experiment with basis encoding or angle encoding, 256 qubits would be necessary.",
+      "Considering that the Heron r2 processor, which has the largest number of qubits publicly available from IBM as of 2025, is equipped with 156 qubits"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited hardware figure (AbuGhanem, 2025) and the authors' qubit count argument.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "256 equals 16 × 16, one qubit per pixel, consistent with the paper's description of basis and angle encoding."
+    },
+    {
+     "id_suggestion": "asaoka-qas-cost-concern",
+     "value": "The authors state that Quantum Architecture Search is a possible way to improve the ansatz design but that both the selection of gates and the optimization of ansatz parameters must be performed, leading to a higher computational cost than a predetermined ansatz structure.",
+     "anchor": "Section 6, p.25-26",
+     "quotes": [
+      "One concern with this method is that both the selection of gates and the optimization of ansatz parameters must be performed, leading to a higher computational cost compared to cases where the ansatz structure is predetermined."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state a limit of the proposed improvement (Section 6).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-parameter-efficiency-claim",
+     "value": "The authors state that QAE classification achieves comparable test accuracy to classical machine-learning methods while substantially reducing the number of optimized parameters, and that QAE-based classification can perform both feature learning and multi-class classification using a small-scale parameterized quantum circuit.",
+     "anchor": "Section 6, p.26-27; Section 7, p.27",
+     "quotes": [
+      "QAE classification achieves comparable test accuracy while substantially reducing the number of optimized parameters",
+      "QAE-based classification offers a significant advantage in that it can perform both feature learning and multi-class classification using a small-scale parameterized quantum circuit"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's characterization of one study's results.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Table 6 gives QAE a 74.3% average against 83.5% (NBMF) and 88.2% (FCNN), and 90.4% on MNIST but 67.2% on Fashion-MNIST and 65.4% on KMNIST, so 'comparable' is the authors' wording. All results are from noise-free simulation."
+    },
+    {
+     "id_suggestion": "asaoka-multiclass-scalability-limit",
+     "value": "The authors state that the model's scalability to multiclass classification remains a challenge: as the number of classes increased, accuracy declined significantly, and even with additional training data or deeper circuits, recovery was limited.",
+     "anchor": "Section 7, p.28",
+     "quotes": [
+      "However, the model’s scalability to multiclass classification remains a challenge.",
+      "As the number of classes increased, accuracy declined significantly, and even with additional training data or deeper circuits, recovery was limited."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The conclusion states the limit of the method.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "asaoka-hardware-simulation-limit",
+     "value": "The authors state that current hardware limitations and simulation costs restrict practical implementation, and that QAE classification relies on quantum simulators or, ideally, future fault-tolerant quantum computers.",
+     "anchor": "Section 6, p.26; Section 7, p.28",
+     "quotes": [
+      "Although current hardware limitations and simulation costs restrict practical implementation",
+      "which relies on quantum simulators or, ideally, future fault-tolerant quantum computers"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit of the experiments (Sections 6 and 7).",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "No result in the paper was run on quantum hardware."
+    },
+    {
+     "id_suggestion": "asaoka-novelty-claim",
+     "value": "The authors state that, to the best of their knowledge, no prior work has demonstrated the application of QAEs to tasks other than data compression and reconstruction, and that their approach constitutes a supervised autoencoder not found in conventional QAEs.",
+     "anchor": "Section 1, p.3; Section 3, p.9",
+     "quotes": [
+      "However, to the best of our knowledge, no prior work has demonstrated the application of QAEs to other tasks.",
+      "This approach constitutes a supervised autoencoder and represents a methodology not found in conventional QAEs or classifications using classical autoencoders."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's novelty claim without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Section 2.3 says that in several cases classification problems have been addressed with QAE-extracted features (Srikumar et al., 2021; Mangini et al., 2022), so the claim is limited to classification inside the QAE with no separate classifier."
+    }
+   ]
+  }
+ ]
+}
