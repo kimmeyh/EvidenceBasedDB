@@ -1,0 +1,509 @@
+{
+ "papers": [
+  {
+   "record_id": "acedo-2026-pulsed-learning-quantum-data-re",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Acedo-et-al._2025_Pulsed-learning-for-quantum-data-re-uploading-models__2512.10670.pdf",
+   "title_in_file": "Pulsed learning for quantum data re-uploading models",
+   "version_note": "arXiv:2512.10670v2, dated 22 Jul 2026 on the page.",
+   "pages": 17,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation study that replaces gate parameters of a two-qubit data re-uploading classifier with trainable microwave pulse parameters and compares it with the gate version under IBM Brisbane noise.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "pulsed-noise-range",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section IV-C, p.10",
+     "quotes": [
+      "We note that the depolarizing probabilities explored here exceed typical single-gate error rates",
+      "they provide a controlled stress test that reveals relative robustness differences"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors set the scope of the noise sweep in Section IV-C.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "pulsed-outperforms-gate",
+     "verdict": "narrowed",
+     "note": "The abstract says the pulse model consistently outperforms the gate model. The body limits this: the gap is largest on Digits and Iris, and on Corners and Helix the pulse model is higher or comparable. The layer experiment is described as comparable or superior test accuracy, and the noise advantage is stated for the low to moderate noise range. Both models converge to the random guessing baseline at high noise.",
+     "value": "The authors report that the pulse-based model has higher or comparable accuracy than the gate-based model under noise, with the gap most pronounced on the Digits and Iris datasets and smaller on the Corners and Helix datasets, and that both models saturate near the random-guessing baseline for p above about 0.2.",
+     "anchor": "Section IV-C, p.9; Fig. 6 caption, p.8",
+     "quotes": [
+      "This advantage is most pronounced on the Digits and Iris datasets",
+      "On the Corners and Helix datasets the gap is comparatively smaller, yet the Pulsed model still maintains higher or comparable accuracy throughout most of the noise range.",
+      "For p ≳ 0.2, the performance of both models saturates near the random-guessing baseline"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "pulsed-sim-setup",
+     "verdict": "widened",
+     "note": "The paper adds the data split sizes, the PCA step for MNIST, and that the noise comes from public device datasheet parameters, not a run on the device. The stored value is right. Widening is optional: these details are also entered as separate assertions.",
+     "value": "The authors state that the results come from numerical simulation of two qubit configurations, benchmarked under noise extracted from the IBM Brisbane device, on four binary classification tasks, with all experiments repeated over five random seeds.",
+     "anchor": "Sections I and IV-A, p.2 and p.8",
+     "quotes": [
+      "benchmark it under realistic noise extracted from the IBM Brisbane device",
+      "across four distinct binary classification tasks (MNIST digits, Iris, Corners, and Helix)",
+      "we restrict our analysis to two-qubit configurations",
+      "All experiments are repeated over five different random seeds."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Sections I and IV-A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "pulsed-stated-limits",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section V, p.11",
+     "quotes": [
+      "First, computational cost restricted our simulations to two-qubit systems",
+      "Second, the encoding stage remains gate-based in the present work"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V states two main limitations.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "pulsed-method-translation",
+     "value": "The authors state that their framework translates any gate-based variational QML architecture into a pulse-level implementation, with parameterized gates replaced by native control pulses whose amplitude, phase and detuning are trainable.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "Our framework provides a general methodology for translating any gate-based variational QML architecture into a pulse-level implementation"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Only a data re-uploading QNN on two qubits is run, so the generality is not tested in the paper."
+    },
+    {
+     "id_suggestion": "pulsed-single-qubit-params",
+     "value": "The authors state that each parameterized single-qubit pulse has four trainable parameters, two virtual-Z rotation angles and the pulse amplitude and phase, with the pulse duration and shape fixed, and that this replacement does not enhance expressivity.",
+     "anchor": "Section III-A, p.5-6",
+     "quotes": [
+      "each parameterized single-qubit pulse in our ansatz is defined by four parameters: two virtual-Z rotation angles, and the amplitude and phase of the pulse",
+      "this single-qubit gate replacement does not enhance expressivity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III-A defines the ansatz.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-two-qubit-params",
+     "value": "The authors state that each two-qubit interaction is a single microwave pulse inspired by the cross-resonance gate, with three learnable parameters: the amplitude, the phase and the frequency detuning.",
+     "anchor": "Section III-B, p.6-7",
+     "quotes": [
+      "we entangle two qubits using a single microwave pulse applied to one qubit at or near the resonance frequency of the other",
+      "each two-qubit interaction is characterized by three learnable parameters of the pulse: the amplitude, the phase, and the frequency detuning"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III-B defines the two-qubit block.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-pulse-shape",
+     "value": "The authors state that the pulsed model uses a sinusoidal control field of constant amplitude, for which the rotation angle of a single-qubit operation scales linearly with the product of amplitude and duration.",
+     "anchor": "Section IV-A, p.7",
+     "quotes": [
+      "The control fields used in our pulsed model follow a sinusoidal form of constant amplitude",
+      "the effective rotation angle of a single-qubit operation scales linearly with the product ΩT"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV-A states the pulse shape used.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-warm-start",
+     "value": "The authors state that the two-qubit QNN is initialized from the optimized single-qubit QNN, with the first-qubit parameters copied, the second-qubit parameters random and the two-qubit gate parameters set to zero, so the initial cost equals the final single-qubit cost.",
+     "anchor": "Section II-B, p.3-4",
+     "quotes": [
+      "the two-qubit gate parameters are initialized at zero, effectively decoupling the two qubits at the start of training."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II-B states the training initialization.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-loss-targets",
+     "value": "The authors state that training uses the fidelity-based loss of reference 13, with class target states that are general single-qubit states whose angles theta and phi are learnable.",
+     "anchor": "Section IV-A, p.7",
+     "quotes": [
+      "As the training cost function, we employ the fidelity-based loss introduced in [13]",
+      "with both θ and φ treated as learnable parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section IV-A defines the loss and targets.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-datasets-splits",
+     "value": "The authors state that the tasks are MNIST digits 0 and 8 projected by classical PCA onto three dimensions, Iris versicolor against virginica, and synthetic Corners and Helix data; MNIST, Corners and Helix use 300 training and 100 test samples, and Iris uses 70 training and 30 test samples.",
+     "anchor": "Section IV-A, p.7",
+     "quotes": [
+      "distinguishing digits 0 and 8",
+      "MNIST images are first projected onto a three-dimensional feature space using classical PCA",
+      "we randomly select 300 samples for training and 100 samples for testing",
+      "a split of 70 training samples and 30 testing samples"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV-A states the data setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-simulation-method",
+     "value": "The authors state that the simulations use a custom extension of the pennylane framework, in which pulses are simulated by the Trotter-Suzuki approximation with each pulse divided into dozens of gates.",
+     "anchor": "Section IV-A, p.8; reference 58, p.16",
+     "quotes": [
+      "The simulations presented in this work were performed using a custom extension of the pennylane [59] framework developed specifically for this research.",
+      "pulses are simulated using the Trotter-Suzuki approximation, with each pulse divided into dozens of gates"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV-A and note 58 state the simulator.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-noise-model",
+     "value": "The authors state that the noise model applies depolarizing, amplitude damping and phase damping channels after each control pulse or single-qubit gate, adds classical readout flips, takes the two-qubit depolarizing probability from the ECR gate error, and averages the single-qubit gate error rates to estimate the single-qubit depolarizing probability.",
+     "anchor": "Appendix B, p.12-13",
+     "quotes": [
+      "Depolarizing error probabilities p are not directly reported in the device datasheet.",
+      "For two-qubit operations, the depolarizing probability is taken directly from the characterized error of the ECR gate.",
+      "depolarizing, amplitude damping, and phase damping channels are applied after each electromagnetic control pulse or single-qubit gate"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Appendix B states the noise model.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-device-params",
+     "value": "The authors state that the device parameters for Brisbane qubits 1 and 2, including readout and gate errors, are taken from the official public device datasheet.",
+     "anchor": "Table I, p.7",
+     "quotes": [
+      "Table I. Statistics for Brisbane qubits 1 and 2, including readout and gate errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Table I caption states the source of the device parameters.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-generalization-layers",
+     "value": "The authors report that, as the number of re-uploading layers grows, the gate-based model shows a pronounced train-test gap for more than 10 layers, especially on Helix and Digits, while the pulse-based model keeps a closer train-test correspondence and a delayed onset of overfitting.",
+     "anchor": "Section IV-B, p.8; Fig. 6",
+     "quotes": [
+      "the gate-based model develops a pronounced train–test gap for L > 10",
+      "the onset of overfitting is consistently delayed, and competitive test accuracy is frequently achieved with fewer layers than the gate-based model requires"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text names training and testing accuracy curves in Fig. 6 and Table II. At one layer on Corners the gate model has the higher test accuracy."
+    },
+    {
+     "id_suggestion": "pulsed-layer-claim-caption",
+     "value": "The authors state in the figure caption that the pulse model achieves comparable or superior test accuracy with fewer layers and delays the onset of overfitting.",
+     "anchor": "Fig. 6 caption, p.8",
+     "quotes": [
+      "The pulse model achieves comparable or superior test accuracy with fewer layers and exhibits a delayed onset of overfitting."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-noise-sweep-setup",
+     "value": "The authors state that the noise experiment fixes the number of layers at 20, keeps the noise parameters of Table I, and varies only the depolarizing probability p from 0 to 0.3.",
+     "anchor": "Section IV-C, p.9",
+     "quotes": [
+      "We fix the number of layers at 20, keep all noise parameters from Table I constant, and vary only the depolarizing channel probability p from 0 to 0.3 (Fig. 7)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV-C states the sweep setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-noise-moderate-regime",
+     "value": "The authors report that the pulse-based model retains classification performance into the moderate-noise regime p up to about 0.15, whereas the gate-based model degrades earlier, and that both models decline monotonically toward the random-guessing baseline.",
+     "anchor": "Section IV-C, p.8-9; Fig. 7",
+     "quotes": [
+      "the pulse-based model retains classification performance well into the moderate-noise regime (p ≲ 0.15)",
+      "both models exhibit a monotonic degradation in accuracy as p increases"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-both-curves-inference",
+     "value": "The authors report that the pulse advantage under noise appears on both the training and testing curves, and they conclude it is a structural robustness of the pulse ansatz and not only reduced overfitting.",
+     "anchor": "Section IV-C, p.9",
+     "quotes": [
+      "The fact that the improvement appears on both curves is particularly significant",
+      "it rules out the possibility that the Pulsed model’s advantage is merely a byproduct of reduced overfitting"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper offers no ablation that separates the cause; the claim rests on the curve comparison."
+    },
+    {
+     "id_suggestion": "pulsed-wider-bands",
+     "value": "The authors report that the pulsed model shows wider confidence bands in several benchmarks, and they say this may reflect a higher sensitivity of its continuous parameterization to stochastic noise realizations.",
+     "anchor": "Section IV-C, p.9",
+     "quotes": [
+      "the Pulsed model exhibits wider confidence bands in several benchmarks"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table III standard deviations are larger for the pulsed model than for the gate model at several settings."
+    },
+    {
+     "id_suggestion": "pulsed-digits-noise-test",
+     "value": "The authors report that on Digits the noise-resilience gain comes with a systematic increase in test accuracy relative to the gate-based model.",
+     "anchor": "Section IV-C, p.9",
+     "quotes": [
+      "Notably, on Digits, the improvement in noise resilience is accompanied by a systematic increase in test accuracy relative to the gate-based model"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-barren-plateau-cited",
+     "value": "The authors cite reference 22 for the statement that pulse-level parameterization partially alleviates barren plateaus by producing smoother optimization landscapes. The paper does not measure trainability or gradients itself.",
+     "anchor": "Section III, p.5",
+     "quotes": [
+      "Pulse-level parameterization has been shown to partially alleviate this effect by producing smoother and more favorable optimization landscapes [22]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-expressivity-cited",
+     "value": "The authors cite reference 31 for the statement that pulse-level work affords enhanced expressivity without necessarily requiring deeper circuits.",
+     "anchor": "Section III, p.4",
+     "quotes": [
+      "Working at the pulse level affords enhanced expressivity without necessarily requiring deeper circuits [31]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-conclusion-three-findings",
+     "value": "The authors conclude that the pulse-based model achieves competitive or superior test accuracy with fewer layers, sustains useful accuracy across a wider range of depolarizing error probabilities, and shows these trends on four binary classification benchmarks.",
+     "anchor": "Section V, p.10",
+     "quotes": [
+      "the pulse-based model achieves competitive or superior test accuracy with fewer re-uploading layers",
+      "Third, these trends hold on four qualitatively different binary classification benchmarks"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-seed-dispersion-open",
+     "value": "The authors state that the wide dispersion in final accuracy across seeds strongly suggests a rugged optimization landscape, and they name a formal analysis of the loss landscape of pulse-parameterized models as a direction for future research.",
+     "anchor": "Section V, p.11",
+     "quotes": [
+      "A particularly compelling direction for future research is a formal analysis of the loss landscape of pulse-parameterized models.",
+      "The wide dispersion in final accuracy observed across seeds (Figures 6 and 7) strongly suggests a rugged optimization landscape"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V states this as an open problem.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-scaling-open",
+     "value": "The authors state that extending the evaluation beyond two-qubit systems is currently constrained by simulation cost, and that scaling to larger registers needs community investment in pulse-level simulation infrastructure and differentiation toolkits.",
+     "anchor": "Section V, p.11",
+     "quotes": [
+      "scaling to larger registers will require community investment in pulse-level simulation infrastructure and differentiation toolkits"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V states this limit.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pulsed-encoding-confound",
+     "value": "The authors state that extending the encoding stage to the pulse level could further enhance hardware alignment but introduces additional experimental confounders that merit a dedicated study.",
+     "anchor": "Section V, p.11",
+     "quotes": [
+      "it introduces additional experimental confounders that merit a dedicated study"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V states this as a next step and limit.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
