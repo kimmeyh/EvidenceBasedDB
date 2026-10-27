@@ -1,0 +1,957 @@
+{
+ "papers": [
+  {
+   "record_id": "abdelrahman-2025-generalized-probabilistic-approximate-optimization-algorithm",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Abdelrahman-et-al._2025_Probabilistic-Approximate-Optimization-A-New-Variational-Monte-Carlo__2507.07420.pdf",
+   "title_in_file": "Generalized Probabilistic Approximate Optimization Algorithm",
+   "version_note": "arXiv:2507.07420v3 of 8 Dec 2025; the supplementary information is headed Probabilistic Approximate Optimization: A New Variational Monte Carlo Algorithm (the earlier title). The main text refers to Supplementary Sections 3 and 4, which are numbered 14 and 15 in the supplement.",
+   "pages": 20,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A classical variational Monte Carlo framework (PAOA) that tunes the couplings or temperature schedules of a p-bit sampler, with an FPGA implementation, a comparison against QAOA on 26-spin Sherrington-Kirkpatrick instances and a heavy-tailed multi-schedule annealing study.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "paoa-no-interference",
+     "verdict": "confirmed",
+     "note": "Right and complete as stored. Page 3 as printed is confirmed.",
+     "value": "The authors state that the absence of complex phases in the classical evolution means that PAOA proceeds without the possibility of quantum interference.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "The absence of complex phases in the classical evolution means that PAOA proceeds without the possibility of quantum interference."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own statement of what their classical model lacks.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "paoa-qaoa-advantage-uncertain",
+     "verdict": "confirmed",
+     "note": "Right and complete as stored. Page 2 as printed is confirmed.",
+     "value": "The authors state that the practical performance advantages of QAOA over classical and probabilistic alternatives remain uncertain.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "This may not be surprising, as the practical performance advantages of QAOA over classical and probabilistic alternatives remain uncertain."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "paoa-vs-qaoa-sk26",
+     "verdict": "narrowed",
+     "note": "The comparison holds only under the paper's stated protocol: PAOA uses a two-schedule ansatz with 2p parameters, trained on 30 training instances, averaged and applied to 30 disjoint test instances, for depth p from 1 to 17; QAOA uses optimal parameters from prior work, not re-run per instance by the authors in Fig. 4. The two quoted sentences are on page 8 as printed, not page 9. The ratios themselves are only in Fig. 4b; the text gives no numbers.",
+     "value": "The authors report that, on Sherrington-Kirkpatrick instances of fixed size N = 26, PAOA with a two-schedule ansatz of exactly 2p parameters, whose schedules were trained on 30 training instances, averaged, and applied without further adjustment to a disjoint set of 30 test instances, achieves a consistently higher approximation ratio than standard QAOA across all depths, with QAOA results using optimal parameters from prior work.",
+     "anchor": "Section VI p.8; Fig. 4 caption p.7",
+     "quotes": [
+      "we stick to a fixed size of N = 26, a typically studied SK-model, to enable a direct comparison with QAOA.",
+      "we evaluate PAOA using a two-schedule ansatz with exactly 2p parameters, matching the parameter count of depth-p QAOA.",
+      "The resulting schedules are then averaged and applied without further adjustment to a disjoint set of 30 test instances.",
+      "QAOA results plotted in Fig. 4a use optimal parameters from prior work [7, 27].",
+      "PAOA achieves a consistently higher approximation ratio than standard QAOA across all depths."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study at one size.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Only the figure carries the ratios; the text reports no numeric gap or test of significance beyond the 95% bootstrap error bars in the caption."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "paoa-two-level-loop",
+     "value": "The authors state that PAOA treats the landscape itself as a variational object, using a two-level loop in which an outer loop has a classical optimizer adjust variational parameters θ and an inner loop has a probabilistic computer sample states from the variational landscape currently parameterized by θ.",
+     "anchor": "Section II, p.2",
+     "quotes": [
+      "PAOA treats the landscape itself as a variational object to be optimized.",
+      "In an outer loop, a classical optimizer adjusts a set of variational parameters, θ. In an inner loop, a probabilistic computer samples states from the variational landscape currently parameterized by θ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II defines the algorithm's structure.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-ansatz-gamma-definition",
+     "value": "The authors define four variational ansatze by the number of free parameters per layer Γ: a single global inverse temperature (Γ = 1), two independent schedules for distinct parts of the graph (Γ = 2), a local schedule for each node (Γ = N), and the entire symmetric coupling matrix (Γ = N (N − 1)/2).",
+     "anchor": "Section II, A Spectrum of Variational Ansatze, pp.2-3",
+     "quotes": [
+      "When Γ = 1, the landscape is scaled by a single, learned inverse temperature β(k) at each layer k.",
+      "When Γ = 2, two independent schedules are assigned to distinct parts of the graph",
+      "When Γ = N , each node is assigned a local schedule",
+      "When Γ = N (N − 1)/2, the entire symmetric coupling matrix"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its four ansatze in Section II.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-p-bit-update-rule",
+     "value": "The authors state that a p-bit updates its state as mi = sgn[tanh(βIi) − randu(−1, 1)], and that as long as connected p-bits are updated sequentially, in any random order, this update rule generates samples from a Boltzmann distribution P ({m}) ∝ exp[−βE({m})] over time.",
+     "anchor": "Section II, Implementation via Probabilistic Computers, p.3",
+     "quotes": [
+      "mi = sgn[tanh(βIi) − randu(−1, 1)]",
+      "As long as connected p-bits are updated sequentially, in any random order, this update rule generates samples from a Boltzmann distribution P ({m}) ∝ exp[−βE({m})] over time"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the sampler it uses (Eqs. 1 to 3); the Boltzmann property is stated, not derived here.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The Boltzmann-sampling statement is the framework's cited property (reference 19), not proved in this paper."
+    },
+    {
+     "id_suggestion": "paoa-markov-flow-formalism",
+     "value": "The authors define the distribution after k layers as a product of layer transition matrices applied to an initial distribution, where each transition matrix is a 2N × 2N matrix (two to the power N by two to the power N, printed flat) parameterized by the variational parameters θ(k) for that layer.",
+     "anchor": "Section II, Formalism and connection to Markov chains, p.3",
+     "quotes": [
+      "where ρ0 ∈ R2N is the initial distribution and each W (k) is a 2N × 2N transition matrix parameterized by the variational parameters θ(k) for that layer."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Eq. 4 and its text define the exact Markov flow.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-stochastic-vs-unitary",
+     "value": "The authors state that each layer matrix in PAOA is a norm-one-preserving stochastic matrix that mixes non-negative probabilities, whereas each U in QAOA is a norm-two-preserving unitary matrix that rotates complex vectors, and that the layered application of stochastic matrices to a probability vector is the direct classical analog of applying unitary operators to a wavefunction in QAOA.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "This layered application of stochastic matrices to a probability vector ρ is the direct classical analog of applying unitary operators",
+      "mixes non-negative probabilities, whereas each U (k) is a norm-two-preserving unitary matrix that rotates complex vectors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper states the structural distinction between its model and QAOA.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-no-interference-consequence",
+     "value": "The authors state that, for optimization problems where a constructive interference mechanism for QAOA is unclear, the advantage of QAOA over classical alternatives is not guaranteed.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "Consequently, for optimization problems where a constructive interference mechanism for QAOA is unclear, its advantage over classical alternatives is not guaranteed."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim stated without proof.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-shallow-nonequilibrium-limits",
+     "value": "The authors state that because PAOA samples come from a shallow Markov process (small p) the system typically remains out of equilibrium, that strong dependence on the initial distribution ρ0 or overfitting may prevent learned heuristics from generalizing, and that the same ρ0 used during training should also be used during inference.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "Because the samples are generated from a shallow Markov process (small p), the system typically remains out of equilibrium.",
+      "strong dependence on the initial distribution ρ0 or overfitting may prevent the learned heuristics from generalizing",
+      "Therefore, the same ρ0 used during training should also be used during inference."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of shallow PAOA in Section II.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-deep-circuits-no-initial-dependence",
+     "value": "The authors state that for deep PAOA circuits initialization dependence is not an important concern, and that deep PAOA circuits do not exhibit any initial condition dependence, especially with small initial β that randomizes spins.",
+     "anchor": "Section II p.3-4; Section III p.5",
+     "quotes": [
+      "PAOA circuits do not exhibit any initial condition dependence",
+      "especially with small initial β that randomizes spins (see Section IV).",
+      "for deep PAOA circuits, initialization dependence is not an important concern."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; Section IV is cited as support but no direct test of initial-condition dependence is reported there.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "Section IV uses a uniform start (beta = 0 layer prepended) in every run, so the text reports no run with a different initial distribution."
+    },
+    {
+     "id_suggestion": "paoa-generality-claim",
+     "value": "The authors state that the cost function being minimized can be any computable function over the states {m}, including higher-order k-local Hamiltonians or likelihood functions for machine learning tasks, and that the approach is compatible with any model from which one can efficiently draw samples via MCMC, such as Potts models.",
+     "anchor": "Section II, p.4",
+     "quotes": [
+      "it can be any computable function over the states {m}, including higher-order k-local Hamiltonians or likelihood functions for machine learning tasks",
+      "The PAOA approach is compatible with any model from which one can efficiently draw samples via MCMC, such as Potts models."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no experiment in the paper uses a cost or sampler outside the Ising p-computer setting.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-hidden-spins-future-work",
+     "value": "The authors state that they set M = N, the number of spins in the ansatz equal to the number of visible spins, in the remainder of the paper for simplicity, and leave the possibility of introducing hidden spins for better representation to future work.",
+     "anchor": "Section II, p.2-3",
+     "quotes": [
+      "Unless otherwise stated, we set M =N in the remainder of the paper, for simplicity, and leave the possibility of introducing hidden spins for better representation to future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope: no hidden spins are tested.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-expressiveness-overfitting",
+     "value": "The authors state that more expressive schedules allow the system to reach useful non-equilibrium distributions in fewer layers (for example, a single layer for a fully parameterized AND gate, shown in Supplementary Figs. S2 and S3), but may also increase the risk of overfitting, and that the balance between expressiveness and generalization remains a key consideration when selecting an ansatz.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "more expressive schedules allow the system to reach useful non-equilibrium distributions in fewer layers (e.g., a single layer for a fully parameterized AND gate, as we show in Supplementary Figs. S2 and S3)",
+      "but may also increase the risk of overfitting. The balance between expressiveness and generalization remains a key consideration when selecting an ansatz."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim supported by one small example (AND gate) and not tested across ansatze.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-majority-gate-exact-vs-sampled",
+     "value": "The authors report that on a four-node majority gate, starting from a fully connected Ising graph with Jij = +1 and no biases, optimized over two layers (p = 2) with node-specific schedules, gradient-based optimization of the exact Markov flow and COBYLA using sampling with 107 independent runs (printed flat) converge to nearly identical minima, and that the sampled distributions closely match the exact dynamics.",
+     "anchor": "Section III, Fig. 2, pp.4-5",
+     "quotes": [
+      "As a starting graph, we consider a fully connected Ising graph with Jij = +1 and no biases.",
+      "optimize over two layers (p = 2) with a uniform initial distribution ρ0 = 1/16",
+      "In the MCMC-based approach, the same initial condition is used, but sampling is performed using 107 independent runs.",
+      "Results are shown in Fig. 2b, where the two curves converge to nearly identical minima.",
+      "The approximated distributions closely match the exact dynamics."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on one four-node example.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "A four-node example (sixteen states) tests the sampled optimizer against the exact gradient only where the full matrix is tractable."
+    },
+    {
+     "id_suggestion": "paoa-fulladder-exact-vs-sampled",
+     "value": "The authors report that on a 5-node full-adder circuit with the fully parameterized coupling ansatz and three layers (p=3), the resulting distributions demonstrate tight correspondence between exact and approximate optimization at each layer.",
+     "anchor": "Section III p.5; Supplementary Section 12, Fig. S1, pp.12-13",
+     "quotes": [
+      "We also test the same procedure on a 5-node full-adder circuit using the fully-parameterized Jij(p) ansatz.",
+      "The resulting distributions (see Supplementary Fig. S1) once again demonstrate tight correspondence between exact and approximate optimization at each layer.",
+      "We use a finite Markov chain with three layers (p=3)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on one five-node example.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-derivative-free-correspondence-claim",
+     "value": "The authors state in the abstract that they establish a direct correspondence between derivative-free updates and the gradient of the full Markov flow over the exponentially large state space, and state that the agreement between the exact Markov flow and the sampled histogram confirms that derivative-free optimization closely tracks the true gradient.",
+     "anchor": "Abstract; Section III, p.5",
+     "quotes": [
+      "We establish a direct correspondence between derivative-free updates and the gradient of the full Markov flow over the exponentially large state space",
+      "The agreement between the exact Markov flow and the sampled histogram confirms that derivative-free optimization closely tracks the true gradient."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper shows numerical agreement on small examples only.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "No theorem or proof of the correspondence appears in the text; the support is numerical agreement on the four-node and five-node examples."
+    },
+    {
+     "id_suggestion": "paoa-matrix-intractability",
+     "value": "The authors state that although analytical optimization is feasible for small N, the 2N × 2N transition matrix (printed flat) becomes intractable for larger systems, and that for large N the exact distribution is replaced by an empirical distribution estimated from NE independent MCMC samples.",
+     "anchor": "Section III p.5; Section II p.3",
+     "quotes": [
+      "Although analytical optimization is feasible for small N , the 2N × 2N transition matrix becomes intractable for larger systems.",
+      "In practice, as the exact computation of ρp is intractable for large N , it is replaced by an empirical distribution"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of the exact formulation.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-negative-beta",
+     "value": "The authors state that optimal β values may be negative, corresponding to negative temperatures without a clear interpretation in the statistical physics-based context.",
+     "anchor": "Section III, p.5",
+     "quotes": [
+      "For example, optimal β values may be negative, corresponding to negative temperatures without a clear interpretation in the statistical physics-based context."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement; the supplement's majority-gate parameters (Eq. S.6) list one negative entry as printed in the text layer.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-estimate-deviation-bound",
+     "value": "The authors state that using ten million experiments bounds the deviation of the estimated distribution from the true distribution to approximately 3.2 × 10−4 (exponent printed flat).",
+     "anchor": "Supplementary, after Eq. S.2, p.12",
+     "quotes": [
+      "For accurate estimation, we use ten million experiments, which bounds the deviation from the true distribution to approximately 3.2 × 10−4."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of a bound with no derivation in the text.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-and-gate-analytic-setup",
+     "value": "The authors state that for the AND gate they set p = 1 (a single layer), which suffices to obtain the desired states, and that the final optimal parameters will be valid only for the specific initial choice of ρ0, although the approach generalizes to arbitrary ρ0.",
+     "anchor": "Supplementary Section 14, p.16",
+     "quotes": [
+      "For simplicity, we set p = 1 (a single layer), which suffices to obtain the desired states.",
+      "the final optimal parameters will be valid only for this specific initial choice",
+      "although the approach generalizes to arbitrary ρ0"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Supplementary Section 14.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-and-gate-gradient-training",
+     "value": "The authors report training the AND gate analytically by gradient descent with η = 0.02, maximum iterations of 2000 and uniform random initialization of weights and biases, and that the rounded optimal weights and biases are given in Eq. (S.16).",
+     "anchor": "Supplementary Section 14, p.17 (Eq. S.16, Fig. S3)",
+     "quotes": [
+      "Using the method explained above with η = 0.02, maximum iterations of 2000, tolerance in the gradient of 10−6, and uniform",
+      "random initialization of weights and biases, specifically, θ ∼ randu[−0.5, 0.5], we get the following rounded optimal weights and biases:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on one three-node example.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The matrix values (about 2.25) are only in the garbled equation text, so they are not entered."
+    },
+    {
+     "id_suggestion": "paoa-sa-3d-setup",
+     "value": "The authors state that they apply PAOA with the Γ = 1 global annealing ansatz, forming a schedule of total length p ∈ {5, 10, 15}, to a 3D cubic lattice of size L3 = 63 (printed flat) with 216 nodes, with 720 Monte Carlo sweeps per layer and a uniform initial distribution achieved by appending β = 0 to the beginning of the schedule.",
+     "anchor": "Section IV p.5-6; Table I, p.6",
+     "quotes": [
+      "We apply PAOA to a 3D cubic lattice of size L3 = 63, which yields a sparse bipartite interaction graph.",
+      "We employ the simplest Γ = 1 global annealing ansatz, where all nodes share the same scalar inverse temperature β(k) at each layer k, forming a schedule of total length p ∈ {5, 10, 15}.",
+      "216 720 {5, 10, 15} 2 10−4 5000 105",
+      "Sampling is performed on hardware using 720 Monte Carlo sweeps per layer. We choose a uniform initial distribution, achieved by appending β = 0 to the beginning of the schedule."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup (Section IV, Table I).",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-sa-putative-ground-state",
+     "value": "The authors state that the putative ground state at E = −360 for the single instance was independently found using a linear SA (from β = 0.1 to 5) schedule with 106 MCS (exponent printed flat).",
+     "anchor": "Section IV, p.6",
+     "quotes": [
+      "increasing the probability of reaching the putative ground state at E = −360, which was independently found using a linear SA (from β = 0.1 to 5) schedule with 106 MCS."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how its reference energy was obtained.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The state is putative: the text does not claim a proof that E = −360 is the ground state."
+    },
+    {
+     "id_suggestion": "paoa-sa-success-probability-definition",
+     "value": "The authors state that after training each candidate schedule is evaluated on a fresh batch of 105 runs (printed flat) and assigned a success probability, defined as the fraction of runs that reach the putative ground-state energy at the final layer, and that the best schedule is the one with the highest success probability out of this independent batch.",
+     "anchor": "Section IV, p.6",
+     "quotes": [
+      "each candidate schedule is evaluated on a fresh batch of 105 runs and assigned a success probability, defined as the fraction of runs that reach the putative ground-state energy at the final layer.",
+      "we mean the schedule that achieves the highest success probability out of this independent batch."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its success probability and its best schedule.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The best schedule is chosen among 100 optimizer runs by the evaluation score itself, which favors the reported best curves."
+    },
+    {
+     "id_suggestion": "paoa-sa-learned-cooling",
+     "value": "The authors report that, without any constraints on monotonicity, PAOA with the global schedule ansatz consistently learns schedules that begin at high temperature (low β) and gradually cool (increase β), resembling classical SA, starting from a flat β = 2 schedule, and conclude that SA emerges as a special case of variational Monte Carlo, recoverable from the global schedule ansatz.",
+     "anchor": "Section IV, pp.6-7; Fig. 3c",
+     "quotes": [
+      "Notably, without any constraints on monotonicity, PAOA consistently learns schedules that begin at high temperature (low β) and gradually cool (increase β), resembling classical SA despite starting",
+      "from a flat β = 2 schedule.",
+      "These results demonstrate that SA emerges as a special case of variational Monte Carlo, recoverable from the global schedule ansatz."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one 3D instance and three depths.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The Γ = 1 ansatz contains SA-like schedules by construction, so the result is that the optimizer finds cooling shapes from a flat start, not a derivation of SA."
+    },
+    {
+     "id_suggestion": "paoa-sa-depth-variability",
+     "value": "The authors report that deeper architectures improve the average success probability and reduce run-to-run variability, that across 100 optimizer runs performance remains stable even for non-monotonic schedules, with the smallest variance in success probabilities for deeper schedules (p = 15), and that many distinct β profiles achieve nearly identical success probabilities.",
+     "anchor": "Section IV p.7; Fig. 3 caption p.6",
+     "quotes": [
+      "success probabilities, demonstrating that deeper architectures improve the average success probability (⟨ps⟩) and reduce run-to-run variability.",
+      "The inset histograms show that while individual schedules vary across 100 optimizer runs, performance remains stable (even for non-monotonic schedules) with the smallest variance in success probabilities for deeper schedules (p = 15).",
+      "Many distinct β profiles achieve nearly identical success probabilities"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one instance.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The success probability values are only in the Fig. 3c insets; the text gives no numbers."
+    },
+    {
+     "id_suggestion": "paoa-sa-first-step-degeneracy",
+     "value": "The authors state that the elevated β at the first step (p =1) for the 15-layer case may be a result of the substantial degeneracy among near-optimal schedules.",
+     "anchor": "Section IV, p.7",
+     "quotes": [
+      "The elevated β at the first step (p =1) for the 15-layer case may be a result of the substantial degeneracy among near-optimal schedules."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conjecture, not tested.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-majorization-not-proof",
+     "value": "The authors state that deeper runs appear to majorize the shallower ones but that they only show energy marginals, so this is suggestive rather than proof.",
+     "anchor": "Section IV, p.7",
+     "quotes": [
+      "In majorization language, the deeper runs appear to majorize the shallower ones, but we only show energy marginals, therefore, this is suggestive rather than proof."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of their evidence.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-sa-no-constraints",
+     "value": "The authors state that constraints such as linear, exponential or monotonic cooling profiles could be added using inequality constraints in COBYLA, that they did not use such constraints to avoid biasing the solution toward SA, and that PAOA points to the possibility of alternative non-monotonic schedules with comparable performance.",
+     "anchor": "Section IV, p.7",
+     "quotes": [
+      "We did not use such constraints to avoid biasing the solution toward SA.",
+      "PAOA proves to be more general, as it points to the possibility of alternative non-monotonic schedules with comparable performance"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from the three-depth experiment.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-fpga-wallclock-speedup",
+     "value": "The authors report that their FPGA architecture with on-chip annealing, using 10 independent replicas of the L3 = 63 spin-glass graph that update 2160 p-bits per cycle, achieves an 800fold reduction (printed as given) in wall-clock time compared to an optimized CPU implementation with graph-colored Gibbs sampling.",
+     "anchor": "Section V, p.7; Table II, p.7",
+     "quotes": [
+      "Due to the size of the FPGA we use, we instantiate 10 independent replicas of the L3 = 63 spin-glass graph, enabling parallel updates of 2160 p-bits per cycle.",
+      "Our FPGA architecture with on-chip annealing capability achieves about approximately an 800fold reduction in wall-clock time in the FPGA compared to an optimized CPU implementation with graph-colored Gibbs sampling (Table II)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical timing result from one implementation.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table II lists CPU times of 1953, 3800 and 5850 s against FPGA times of 2.46, 4.90 and 7.36 s for 5, 10 and 15 layers, ratios of about 794, 776 and 795. The Table II caption says 104 independent runs while Methods say FPGA times were averaged over 100 experiments and CPU times used 1000 runs each."
+    },
+    {
+     "id_suggestion": "paoa-fpga-wallclock-caveat",
+     "value": "The authors state that the wall-clock numbers in Table II are an implementation case study rather than a universal hardware comparison.",
+     "anchor": "Section V, pp.7-8",
+     "quotes": [
+      "The wall-clock numbers in Table II are an implementation case study rather than a universal",
+      "hardware comparison."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of the timing comparison.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-fpga-platform-precision",
+     "value": "The authors state that the FPGA-based p-computer was implemented on the Xilinx VCU128 data center accelerator card and operates in fixed-point arithmetic with s{4}{5} precision (a sign bit, 4 integer bits and 5 fractional bits) for both β(k) and Jij.",
+     "anchor": "Section V p.7; Supplementary Section 15, p.18",
+     "quotes": [
+      "The FPGA operates in fixed-point arithmetic with s{4}{5} precision (where s denotes the sign bit, followed by 4 integer and 5 fractional bits) for both β(k) and Jij.",
+      "implemented on the Xilinx VCU128 data center accelerator card."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the hardware it used.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-simulation-precision-and-qaoa-source",
+     "value": "The authors state that numerical simulation uses double precision (64-bit) in C++ to generate results for PAOA in Fig. 2d, Fig. 4a, and Supplementary Fig. S1d, and that QAOA results were reproduced from [39].",
+     "anchor": "Section IX Methods, p.10",
+     "quotes": [
+      "Numerical simulation uses double precision (64-bit) in C++ to generate results for PAOA in Fig. 2d, Fig. 4a, and Supplementary Fig. S1d. QAOA results were reproduced from [39]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how its results were generated.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The Fig. 4 caption cites references 7 and 27 for QAOA parameters and the Methods cite reference 39, so the QAOA curves rest on prior work, not on QAOA runs by these authors."
+    },
+    {
+     "id_suggestion": "paoa-sk-comparison-protocol",
+     "value": "The authors state that for the Sherrington-Kirkpatrick comparison they use a two-schedule ansatz with exactly 2p parameters, matching the parameter count of depth-p QAOA, assign each schedule to one half of the graph split uniformly at random, generate 30 training instances at N = 26 and optimize PAOA separately for each instance and layer depth p from 1 to 17, apply the averaged schedules without further adjustment to a disjoint set of 30 test instances, and compute exact ground states by exhaustive search.",
+     "anchor": "Section VI, p.8",
+     "quotes": [
+      "we evaluate PAOA using a two-schedule ansatz with exactly 2p parameters, matching the parameter count of depth-p QAOA.",
+      "Each schedule is assigned to one half of the graph, split uniformly at random.",
+      "For N = 26, we randomly generate 30 training instances and optimize PAOA separately for each instance and layer depth p ∈ {1, . . . , 17}.",
+      "The resulting schedules are then averaged and applied without further adjustment to a disjoint set of 30 test instances.",
+      "For each instance, exact ground states are computed by exhaustive search."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the benchmark setup in Section VI.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Parameter count is matched but the training budget is not: PAOA parameters are optimized with sampled energies per instance, while the QAOA parameters come from published optima."
+    },
+    {
+     "id_suggestion": "paoa-sk-energy-generalization",
+     "value": "The authors report that the PAOA average energy per spin consistently decreases with layer depth and that schedules trained on N = 26 generalize well to much larger instances up to N = 500; for 30 random instances with N ∈ {400, 500} the average energy decreases as the number of layers increases, and the authors suggest that remaining fluctuations are primarily due to finite-size effects.",
+     "anchor": "Section VI p.8; Supplementary Section 16, Fig. S5, p.19",
+     "quotes": [
+      "the average energy per spin consistently decreases with layer depth, and schedules trained on N = 26 generalize well to much larger instances up to N = 500",
+      "The average energy per spin ⟨E⟩/N for 30 random large SK instances of size N ∈ {400, 500} using parameters trained on N =26",
+      "As the number of PAOA layers increases, the average energy decreases",
+      "This behavior suggests that the optimized schedules generalize effectively to larger system sizes, and that the remaining fluctuations are primarily due to finite-size effects."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the values are in Figs. 4a and S5 only.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-approx-ratio-definition",
+     "value": "The authors define the approximation ratio reported in Fig. 4b as the energy of the sampled configuration divided by E({msol}), the cost of the exact ground state.",
+     "anchor": "Section VI, Eq. 8, p.8",
+     "quotes": [
+      "To formalize this comparison, we report the approximation ratio in Fig. 4b, defined as",
+      "where E({msol}) is the cost of the exact ground state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its metric.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The ratio form is read from the garbled equation layout (numerator E({m}), denominator E({msol})); the text does not say whether it is a ratio of averages or an average of ratios."
+    },
+    {
+     "id_suggestion": "paoa-fig4-error-bars",
+     "value": "The authors state that in the PAOA versus QAOA comparison the approximation ratios of PAOA and QAOA are averaged across the 30 instances, with error bars showing 95% confidence intervals computed from 104 bootstrap samples with replacement (exponent printed flat).",
+     "anchor": "Fig. 4 caption, p.7",
+     "quotes": [
+      "(b) Approximation ratios of PAOA (red squares) and QAOA (blue circles), averaged across the 30 instances.",
+      "Error bars indicate the 95% confidence intervals computed from 104 bootstrap samples with replacement."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The caption states how the intervals were computed.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-comparable-to-hybrid-qaoa",
+     "value": "The authors state that the performance of vanilla PAOA is comparable to that of recently proposed hybrid quantum-classical methods that use classical techniques to improve the performance of QAOA, suggesting that a definitive quantum advantage on this problem has yet to be firmly established.",
+     "anchor": "Section VI, p.8",
+     "quotes": [
+      "Notably, the performance of vanilla PAOA is comparable to that of recently proposed hybrid quantum-classical methods",
+      "suggesting that a definitive quantum advantage on this problem has yet to be firmly established."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the comparison to reference 32 is not shown in a figure or table in this paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-interference-advantage-expectation",
+     "value": "The authors state that a clear quantum advantage over classical algorithms is expected to emerge in problems where interference plays an explicit role, such as the synthetic examples constructed by Montanaro et al. [12], and that these interference-dominated regimes are where they do not expect PAOA, or any classical sampler, to compete.",
+     "anchor": "Section I p.2; Section VI pp.8-9",
+     "quotes": [
+      "A clear quantum advantage is expected to emerge in problems where interference plays an explicit role, such as in the synthetic examples constructed by Montanaro et al. [12].",
+      "These interference-dominated regimes are precisely where we do not expect PAOA, or any classical sampler, to compete."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim resting on cited work.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-no-qaoa-advantage-expected",
+     "value": "The authors state that unless interference-driven advantages are clearly identified and demonstrated more broadly across practical problem classes, they do not expect any significant quantum advantage from QAOA.",
+     "anchor": "Section VI, p.8",
+     "quotes": [
+      "unless such interference-driven advantages are clearly identified and demonstrated more broadly across practical problem classes, we do not expect any significant quantum advantage from QAOA."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author opinion stated as an expectation.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-sign-problem-cited",
+     "value": "The authors state that classical probabilistic samplers struggle to reproduce interference patterns due to the sign problem, and cite a reference for the result that a probabilistic formulation of generic unitary evolutions yields complex (often purely imaginary) weights, so sampling effectively becomes randomized, and that while post-phase corrections recover unbiased estimates, the number of samples grows exponentially.",
+     "anchor": "Section VI, pp.8-9",
+     "quotes": [
+      "an effect that classical probabilistic samplers struggle to reproduce due to the well-known",
+      "a probabilistic formulation of generic unitary evolutions yields complex (often purely imaginary) weights, so sampling effectively becomes randomized",
+      "While post-phase corrections recover unbiased estimates, the number of samples grows exponentially."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to references 33 and 34.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-scalable-benchmark-claim",
+     "value": "The authors state that PAOA offers a rigorous, scalable and high-performing benchmark for variational sampling at problem sizes beyond the reach of current quantum devices.",
+     "anchor": "Section VI, p.8",
+     "quotes": [
+      "Meanwhile, PAOA offers a rigorous, scalable and high-performing benchmark for variational sampling at problem sizes beyond the reach of current quantum devices."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-levy-setup",
+     "value": "The authors state that for the Lévy SK model they use the coupling distribution with α = 0.9, which produces a distribution with diverging variance dominated by rare, large couplings, define a coupling strength per node, sort nodes by it and split them into a heavy group (top 20%) and a light group (bottom 80%), and confirmed that a 50%-50% partition following the same procedure yields similar results.",
+     "anchor": "Section VII, pp.8-9",
+     "quotes": [
+      "We use α = 0.9, which produces a distribution with diverging variance, dominated by rare, large couplings.",
+      "We then sort nodes by λi and split into a heavy group (top 20%) and a light group (bottom 80%), as shown in Fig. 5a.",
+      "The split here is arbitrary and we confirmed that a 50%-50% partition following the same procedure yields similar results (see Supplementary Fig. S6)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the benchmark setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-levy-shallow-training",
+     "value": "The authors report that, after identifying a near-optimal single schedule by simulated annealing at depth p = 17, letting COBYLA optimize two schedules freely and averaging the schedules across instances, heavy nodes are assigned a higher-temperature (lower β) profile and light nodes anneal faster, and that the different schedules lead to higher success probability for the double schedule over the single schedule although the differences are not appreciably large at that shallow depth.",
+     "anchor": "Section VII, pp.8-9; Fig. 5b",
+     "quotes": [
+      "we first identify a near-optimal single-schedule using simulated annealing at shallow depth (p = 17).",
+      "As shown in Fig. 5b, the optimized schedules exhibit a qualitative separation: heavy nodes are assigned a higher-temperature (lower β) profile, and light nodes anneal faster.",
+      "Due to the shallow depth (p = 17) however the differences are not appreciably large."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from 50 instances at N = 50.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-levy-deep-extrapolation-result",
+     "value": "The authors report that, when the double schedules discovered by PAOA are extrapolated to much deeper layers, the two-schedule ansatz outperforms the single schedule on 500 unseen instances for N = 50, with a clear gap in success probabilities between the two approaches.",
+     "anchor": "Section VII, p.9; Fig. 5c-e",
+     "quotes": [
+      "However, when extrapolating the double-schedules discovered by PAOA to much deeper layers (Fig. 5c), we observe a clear difference against single-schedule SA.",
+      "The results, shown in Fig. 5d for N = 50 and 500 unseen instances, show that the twoschedule ansatz outperforms the single schedule, with a clear gap in success probabilities between the two approaches"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one problem family at one size.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The deep schedules are built by grid search and a scaling factor, not trained by PAOA at those depths (see the methods entry), so the result supports heterogeneous schedules, not deep-depth PAOA training."
+    },
+    {
+     "id_suggestion": "paoa-levy-schedule-construction",
+     "value": "The authors state that the benchmark schedules were generated via a grid search on a geometric functional form, that the single-schedule baseline is the single geometric schedule with the lowest average energy across all instances found by a grid search over βfinal, and that for the two-schedule PAOA the baseline schedule is assigned to the heavy nodes, the light-node schedule is the baseline scaled up by a factor reflecting the separation proposed by PAOA, and both geometric schedules are extrapolated to a large number of layers.",
+     "anchor": "Section IX Methods, p.10; Supplementary Section 17, pp.19-20",
+     "quotes": [
+      "The schedules for these strategies were generated via a grid search based on a geometric functional form:",
+      "We performed a grid search over βfinal to find the single geometric schedule that produced the lowest average energy across all instances.",
+      "For light nodes, we scale up the baseline schedule by a scaling factor that reflects the separation proposed by PAOA.",
+      "Then, both geometric schedules are extrapolated to large number of layers to study the effect of deep PAOA."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how the Fig. 5d schedules were built.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The main-text caption of Fig. 5 assigns beta 2 to heavy nodes and beta 1 to light nodes, while Supplementary Section 17 and the Methods assign the baseline beta 1 to heavy nodes; the two descriptions disagree."
+    },
+    {
+     "id_suggestion": "paoa-levy-success-probability-method",
+     "value": "The authors state that for the Lévy SK comparison they define success probability as the ratio of the number of runs that hit the putative ground state to the total number of runs (i.e., 100 independent runs), and that the putative ground state was found by running a long simulated annealing with one million sweeps and ten independent runs, then choosing the lowest energy among all ten million states.",
+     "anchor": "Section IX Methods, p.10",
+     "quotes": [
+      "we define success probability as the ratio of the number of runs that hit the putative ground state to the total number of runs (i.e., 100 independent runs).",
+      "The putative ground state was found by running a long simulated annealing with one million sweeps and ten independent runs; then choosing the lowest energy among all ten million states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the metric and how its reference energy was obtained.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The reference energy comes from the same SA family used as the baseline, so it is putative and could be above the true ground state."
+    },
+    {
+     "id_suggestion": "paoa-novelty-claims",
+     "value": "The authors state that by implementing the dynamics on an FPGA they demonstrate for the first time a scalable, hardware-based path for executing the PAOA, and that they are not aware of prior variational algorithms for non-equilibrium sampling that systematically learn adaptive schedules from data.",
+     "anchor": "Section I p.1; Section VII p.9",
+     "quotes": [
+      "By implementing these dynamics on an FPGA, we demonstrate for the first time a scalable, hardware-based path for executing the PAOA.",
+      "we are not aware of prior variational algorithms for non-equilibrium sampling that systematically learn them from data"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Priority claims made by the authors.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-outlook-conclusions",
+     "value": "The authors conclude that on the Sherrington-Kirkpatrick model PAOA exceeded the performance of QAOA under iso-parametric conditions while scaling to system sizes beyond those accessible to quantum devices, and that in a heavy-tailed variant PAOA learned to assign slower annealing schedules to strongly coupled nodes, reproducing hand-crafted heuristics from prior work.",
+     "anchor": "Section VIII, pp.9-10",
+     "quotes": [
+      "On the Sherrington-Kirkpatrick (SK) model, PAOA exceeded the performance of QAOA under iso-parametric conditions, while scaling to system sizes beyond those accessible to quantum devices.",
+      "PAOA automatically learned to assign slower annealing schedules to strongly coupled nodes, reproducing hand-crafted heuristics from prior work."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusions, resting on single-study benchmarks.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "paoa-optimizer-choice-limit",
+     "value": "The authors state that they used COBYLA as the outer optimizer, that the performance of PAOA may depend on the choice of classical optimizer, and that a detailed comparison of different optimization techniques is beyond the scope of this work.",
+     "anchor": "Section IX Methods, p.10",
+     "quotes": [
+      "For the outer optimization loop, we used the COBYLA algorithm",
+      "While the performance of PAOA may depend on the choice of classical optimizer, a detailed comparison of different optimization techniques is beyond the scope of this work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit in the Methods.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
