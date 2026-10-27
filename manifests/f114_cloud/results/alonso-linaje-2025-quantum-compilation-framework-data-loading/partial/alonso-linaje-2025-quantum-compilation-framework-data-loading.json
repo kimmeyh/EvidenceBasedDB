@@ -1,0 +1,1325 @@
+{
+ "record_id": "alonso-linaje-2025-quantum-compilation-framework-data-loading",
+ "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Alonso-Linaje-et-al._2025_Quantum-compilation-framework-for-data-loading__2512.05183.pdf",
+ "title_in_file": "Quantum compilation framework for data loading",
+ "version_note": "",
+ "pages": 20,
+ "read_extent": "full",
+ "not_read": "",
+ "what_it_is": "A Xanadu and Rolls-Royce preprint presenting a PennyLane-based framework that selects and parameterizes quantum state-preparation and diagonal-encoding methods under a partitioned precision and approximation error budget, with Gaussian, BeH2 and CFD matrix-inversion case studies.",
+ "bears_on_context": "qc",
+ "why_not": "",
+ "existing": [
+  {
+   "id": "dataloading-cfd-four-orders",
+   "verdict": "confirmed",
+   "note": "",
+   "value": "The authors report that, in a 20-qubit matrix inversion workflow for computational fluid dynamics, the framework selected an MPS state preparation and a Walsh-based diagonal encoding, which with a novel Walsh-based measurement strategy gave resource reductions of more than four orders of magnitude compared to uninformed approaches.",
+   "anchor": "Section V Conclusion, p.11; Abstract; Fig. 7, Section IV.C, p.9",
+   "quotes": [
+    "In the 20-qubit matrix inversion workflow for computational fluid dynamics using quantum singular value transformation, the framework automatically selected an MPS state preparation with modest bond dimension and a Walsh-based diagonal encoding.",
+    "Coupled with a novel Walsh-based measurement strategy, this led to reductions in resource requirements by more than four orders of magnitude compared to uninformed approaches."
+   ],
+   "kind": "shown",
+   "claim_type": "vendor-self-claim",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "The authors' own estimator output for one 20-qubit instance, reported by the maker of the estimator; not independently checked.",
+   "result_type": "vendor",
+   "context": "qc",
+   "reader_inference": "Fig. 7 totals (2 x 10^20 against 9 x 10^15 T gates) give a ratio near 2.2 x 10^4, so the claim matches the figure. The ratio splits roughly into 300 (block encoding, 9 x 10^7 against 3 x 10^5 T per iteration) times 67 (shots, 2 x 10^4 against 3 x 10^2). The MPS state preparation (1 x 10^5 against 1 x 10^7 T) is negligible in these totals, so the reduction does not come mainly from the MPS choice. The baseline is the generic approach with no structural information, for one instance."
+  },
+  {
+   "id": "dataloading-error-budget-partition",
+   "verdict": "confirmed",
+   "note": "",
+   "value": "The authors state the framework partitions the total error budget between precision and approximation errors and compares methods on resource costs such as T-gate and CNOT counts.",
+   "anchor": "Section V Conclusion, pp.10-11; Abstract",
+   "quotes": [
+    "By explicitly partitioning the error budget into approximation and precision components",
+    "grounding choices in concrete resource costs such as T-gate and CNOT counts"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "setup",
+   "certainty_reason": "Section II defines the partition with a weight and a grid search; the Conclusion restates it.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "The partition is a weighted split of one budget (a grid search over the weight, Section II), not a joint optimization over separate budgets."
+  },
+  {
+   "id": "dataloading-no-universal-method",
+   "verdict": "confirmed",
+   "note": "",
+   "value": "The authors state that efficiency is not found in a universal data-loading method, but in recognizing and exploiting the hidden structure of each problem instance.",
+   "anchor": "Section V Conclusion, p.10",
+   "quotes": [
+    "efficiency is not found in a universal method, but in recognizing and exploiting the hidden structure of each problem instance"
+   ],
+   "kind": "claimed",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "The authors' own generalization from three case studies; not tested beyond them.",
+   "result_type": "claim",
+   "context": "qc",
+   "reader_inference": "The three cases are one Gaussian state, the BeH2 ground state and CFD states; the principle is drawn from these only."
+  }
+ ],
+ "assertions": [
+  {
+   "id_suggestion": "affiliations-xanadu-rolls-royce",
+   "value": "The paper lists Xanadu (Toronto, Canada) and Rolls-Royce plc (Derby, United Kingdom) as the authors' affiliations.",
+   "anchor": "Title block, p.1",
+   "quotes": [
+    "1Xanadu, Toronto, ON, M5G 2C8, Canada",
+    "2Rolls-Royce plc., P.O. Box 31, Derby, DE24 8BJ, United Kingdom"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "setup",
+   "certainty_reason": "Stated in the paper's own title block.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "The framework is built on PennyLane, a Xanadu product, and reference 18 lists an author of this paper among the PennyLane authors, so the evaluation is by the maker of the tool."
+  },
+  {
+   "id_suggestion": "framework-inputs-and-selection",
+   "value": "The authors state that, given an input vector and a user-defined error tolerance ε, the framework evaluates multiple data-loading strategies and identifies the optimal method requiring the fewest resources, built on a resource-estimation workflow in PennyLane.",
+   "anchor": "Section I, p.1",
+   "quotes": [
+    "Given an input vector and a user-defined error tolerance ε, we systematically evaluate multiple data-loading strategies and identify the optimal method requiring the fewest resources [17].",
+    "At its core, the framework integrates a dedicated and extensible resource-estimation workflow built upon the PennyLane quantum software library [18]."
+   ],
+   "kind": "claimed",
+   "claim_type": "vendor-self-claim",
+   "fidelity": "exact",
+   "certainty_suggestion": "moderate",
+   "high_basis": "",
+   "certainty_reason": "A vendor's description of its own product.",
+   "result_type": "vendor",
+   "context": "qc",
+   "reader_inference": "The optimum is over the listed portfolio of methods and a grid of error weights, not over all possible circuits."
+  },
+  {
+   "id_suggestion": "framework-workflow-three-steps",
+   "value": "The authors describe the workflow as three steps: set the error budget from a weight ω with ω in [0, 1]; compute hyperparameters for each algorithm; calculate the cost using PennyLane Resource Estimation, repeated until resources are minimized.",
+   "anchor": "Fig. 1, Section II, p.2",
+   "quotes": [
+    "Step 1. Set error budget for error analysis {εp = ωε, εa = (1 − ω)ε} with ω ∈ [0, 1]",
+    "Step 2. Compute hyperparameters (Table I)",
+    "Step 3. Calculate cost using PennyLane Resource Estimation [18]",
+    "Repeat until resources are minimized"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "setup",
+   "certainty_reason": "The paper's own statement of its workflow in Fig. 1.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id_suggestion": "error-budget-definition",
+   "value": "The authors define the approximation error as εa = (1 − ω) ε ≥ 0, introduced deliberately to allow reductions in circuit depth or gate count, and the precision error as εp = ω ε > 0, which arises from finite precision of rotation angles and gate synthesis; a grid search determines the best partition.",
+   "anchor": "Section II, p.3",
+   "quotes": [
+    "(i) an approximation error εa = (1 − ω) ε ≥ 0, which is deliberately introduced to allow potential reductions in circuit depth or gate count compared to exact data loading",
+    "(ii) precision error εp = ω ε > 0, which arises unavoidably from the finite precision of gate operations in specifying rotation angles and synthesizing high-level operations into native gates",
+    "A grid search is used to determine the best partition."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "definition",
+   "certainty_reason": "Defined in Section II.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id_suggestion": "omega-range-text-versus-figure",
+   "value": "The paper gives the range of the weighting parameter ω as (0, 1] in the text and as [0, 1] in the workflow figure.",
+   "anchor": "Section II p.3; Fig. 1 p.2",
+   "quotes": [
+    "balanced by a weighting parameter ω ∈ (0, 1]",
+    "with ω ∈ [0, 1]"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "setup",
+   "certainty_reason": "Both ranges are the paper's own statements; they differ.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "The text requires εp = ωε > 0, which excludes ω = 0, so the closed endpoint in the figure is a minor inconsistency in the paper."
+  },
+  {
+   "id_suggestion": "target-problem-definitions",
+   "value": "The authors define state preparation as finding a circuit whose loaded vector is within ε of the target vector in the ℓ2-norm, and diagonal encoding as finding a circuit whose operator is within ε of the target, where in the diagonal case the norm is associated with the block-encoded matrix instead of the total matrix operator.",
+   "anchor": "Section II, Eq. (1), p.3",
+   "quotes": [
+    "with ∥α⃗ − α⃗ ′∥2 ≤ ε",
+    "where ∥ · ∥2 denotes the ℓ2-norm, and in the diagonal case it is associated with the block-encoded matrix instead of the total matrix operator."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "high",
+   "high_basis": "definition",
+   "certainty_reason": "The paper's own definition of the two target problems (Eq. 1).",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "Appendix B later adopts the infinity norm as the default norm for diagonal encoding, so the norm in Eq. (1) for the diagonal case is not the one used in the diagonal error analysis."
+  },
+  {
+   "id_suggestion": "diagonal-norm-is-infinity-norm",
+   "value": "The authors state that for a diagonal matrix and its diagonal approximation the spectral norm of their difference simplifies to the infinity norm of the vector of their differences, and so they adopt the infinity norm as the default norm for diagonal loading vectors.",
+   "anchor": "Appendix B, p.18",
+   "quotes": [
+    "then the spectral norm of their difference ∥U − U ′∥2 simplifies to the infinity norm of the vector of their differences",
+    "Consequently, we adopt the infinity norm of the associated vector as the default norm for this family of loading vectors."
+   ],
+   "kind": "cited",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "A standard fact the paper attributes to reference 54, not proved in the paper.",
+   "result_type": "cited",
+   "context": "qc",
+   "reader_inference": "Equal to the largest absolute difference of diagonal entries; this is the norm the Walsh and QSP error bounds actually control."
+  },
+  {
+   "id_suggestion": "diagonal-encoding-normalization-constraint",
+   "value": "The authors state that diagonal encoding requires the input vector to have infinity norm at most one, which they describe as substantially less restrictive than the ℓ2-norm requirement of state preparation.",
+   "anchor": "Appendix B, p.18",
+   "quotes": [
+    "the input vector must satisfy ∥α⃗ ∥∞ ≤ 1",
+    "This is substantially less restrictive than the ℓ2-norm requirement of state preparation ∥α⃗ ∥2 ≤ 1"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "high",
+   "high_basis": "scope",
+   "certainty_reason": "The paper's own statement of the input condition of the method.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id_suggestion": "table1-hyperparameter-definitions",
+   "value": "The authors define in the caption of Table I the hyperparameters of the error analysis: δG ≥ 0 is the per-gate rotation synthesis error, χ is the MPS bond dimension, and d, D, κ > 0 are truncation orders specifying the number of terms used for approximation.",
+   "anchor": "Table I caption, p.3",
+   "quotes": [
+    "Sources of precision εp and approximation εa errors for data-loading methods.",
+    "Moreover, the δG ≥ 0 is the per-gate rotation synthesis error, χ is the bond dimension that relates to the compressibility of the MPS, and d, D, κ > 0 refers to the truncation order specifying the number of terms used for approximation."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "definition",
+   "certainty_reason": "Definitions in the paper's own table caption.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "The text layer lost the row-by-row mapping of methods to error sources in Table I. The symbol κ means a truncation order in Table I but the matrix condition number in Section IV.C, a notation clash."
+  },
+  {
+   "id_suggestion": "hybrid-state-preparation-capability",
+   "value": "The authors state that the framework also supports hybridization of approaches, preparing a target state with multiple algorithms applied to different segments of the input vector.",
+   "anchor": "Section II, Fig. 2, p.4",
+   "quotes": [
+    "Beyond selecting a single algorithm, the framework also supports hybridization of approaches [31], allowing the preparation of a target state using multiple algorithms applied to different segments of the input vector."
+   ],
+   "kind": "claimed",
+   "claim_type": "vendor-self-claim",
+   "fidelity": "exact",
+   "certainty_suggestion": "moderate",
+   "high_basis": "",
+   "certainty_reason": "A vendor's description of its own product.",
+   "result_type": "vendor",
+   "context": "qc",
+   "reader_inference": "Fig. 2 only illustrates the idea. No reported result in Section IV or Table II uses a hybrid preparation, so no cost of a hybrid circuit is given."
+  },
+  {
+   "id_suggestion": "hybrid-state-preparation-alignment-limit",
+   "value": "The authors state that the partitions in hybrid state preparation are enforced with binary control logic, which requires each subvector to correspond to a contiguous block of the Hilbert space aligned with binary index boundaries.",
+   "anchor": "Section II, p.4",
+   "quotes": [
+    "The partitions are enforced using binary control logic, which requires that each subvector correspond to a contiguous block of the Hilbert space aligned with binary index boundaries."
+   ],
+   "kind": "shown",
+   "claim_type": "absence",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "stated limit",
+   "certainty_reason": "The paper states this condition on its own hybrid method.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id_suggestion": "synthesis-error-l2-accumulation",
+   "value": "The authors state that they measure synthesis error using the ℓ2-norm of individual gate errors, while noting that other approaches, such as cumulative-error models, are also common in the literature.",
+   "anchor": "Section II, p.4",
+   "quotes": [
+    "we measure synthesis error using the ℓ2-norm of individual gate errors, while noting that other approaches, such as cumulative-error models, are also common in the literature [29]."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "setup",
+   "certainty_reason": "The paper's statement of its own error model.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "Every per-gate bound (A.1, A.4, B.1, B.2 and the Walsh bound) scales with the inverse square root of the gate count because of this choice; a linear (cumulative) model would demand a smaller per-gate error and more T gates, so reported T counts depend on it."
+  },
+  {
+   "id_suggestion": "pennylane-resource-estimation-accuracy-claim",
+   "value": "The authors state that PennyLane resource estimation functionality provides accurate estimates without explicit construction of large circuits.",
+   "anchor": "Section II, p.4",
+   "quotes": [
+    "we employ PennyLane’s resource estimation functionality, which provides accurate estimates without explicit construction of large circuits."
+   ],
+   "kind": "claimed",
+   "claim_type": "vendor-self-claim",
+   "fidelity": "exact",
+   "certainty_suggestion": "moderate",
+   "high_basis": "",
+   "certainty_reason": "A vendor's description of its own product.",
+   "result_type": "vendor",
+   "context": "qc",
+   "reader_inference": "The paper reports no comparison of the estimates against explicitly built circuits, and every T and CNOT count in Table II and Fig. 7 is an estimator output."
+  },
+  {
+   "id_suggestion": "framework-error-budget-examples",
+   "value": "The authors state that a larger approximation error might permit a lower MPS bond dimension, or fewer coefficients for a Fourier series loader, potentially leading to a shallower circuit.",
+   "anchor": "Section II, p.3",
+   "quotes": [
+    "For example, a larger approximation error εa might permit a lower bond dimension for an MPS, or fewer coefficients for a Fourier series loader (FSL), potentially leading to a shallower circuit."
+   ],
+   "kind": "claimed",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "The authors' own statement of expected behavior, not tested in this passage.",
+   "result_type": "claim",
+   "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id_suggestion": "d-diagonal-single-adder-claim",
+   "value": "The authors state that their d-diagonal block-encoding method reduces the arithmetic overhead to a single operator, because one adder applied in superposition replaces the d adders that previous work applies sequentially, whose number grows linearly with the number of diagonals.",
+   "anchor": "Section III.A, Fig. 3a, pp.4-5",
+   "quotes": [
+    "We present an improved method that reduces the arithmetic overhead to a single operator.",
+    "This technique has been employed in prior works such as [32], where the number of arithmetic operators grows linearly with the number of diagonals.",
+    "A single application of this adder generates a coherent superposition over all d in-place adders that would otherwise need to be applied sequentially."
+   ],
+   "kind": "claimed",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "A construction described step by step without a proof or a stated cost comparison.",
+   "result_type": "claim",
+   "context": "qc",
+   "reader_inference": "No gate count or T count for the new circuit against the d-adder circuit is reported; the saving is argued by structure only."
+  },
+  {
+   "id_suggestion": "d-diagonal-unification-claim",
+   "value": "The authors state that, unlike previous approaches, their d-diagonal circuit enables the unification of all diagonals into a single, larger diagonal, which allows the simultaneous approximation of all diagonals using a single algorithm.",
+   "anchor": "Section III.A, p.5",
+   "quotes": [
+    "it enables the unification of all diagonals into a single, larger diagonal. This feature allows the simultaneous approximation of all diagonals using a single algorithm."
+   ],
+   "kind": "claimed",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "The authors' own claim about their construction, not tested separately.",
+   "result_type": "claim",
+   "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id_suggestion": "d-diagonal-bottleneck-limit",
+   "value": "The authors state that in their d-diagonal block-encoding construction the bottleneck remains in synthesizing the block encoding Dk of each diagonal.",
+   "anchor": "Section III.A, p.5",
+   "quotes": [
+    "While the given construction reduces the overall cost of the algorithm, the bottleneck remains in synthesizing Dk."
+   ],
+   "kind": "shown",
+   "claim_type": "absence",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "stated limit",
+   "certainty_reason": "The paper states this limit of its own construction.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id_suggestion": "kinetic-operator-exact-qsp-block-encoding",
+   "value": "The authors state that the kinetic energy operator decomposes into three block encodings, each 1-diagonal and implementable exactly (εa = 0) with a degree-2 polynomial through quantum signal processing; that the framework detected that with d = 2 this technique was the most resource-efficient; and that other methods building an arithmetic square operator achieve similar results at the cost of more qubits.",
+   "anchor": "Section III.B, Fig. 4, p.6",
+   "quotes": [
+    "Each of these block encodings is 1-diagonal, and they can be exactly implemented (εa = 0) via a degree-2 polynomial.",
+    "Notably, our framework was able to automatically detect that with d = 2, this technique was actually the most resource-efficient.",
+    "This contrasts with other methods that build an arithmetic square operator [33], achieving similar results but at the cost of an increased number of qubits."
+   ],
+   "kind": "claimed",
+   "claim_type": "vendor-self-claim",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "A claim about the authors' own construction with no resource figures reported.",
+   "result_type": "vendor",
+   "context": "qc",
+   "reader_inference": "No T count, qubit count or table supports 'most resource-efficient' or 'similar results'; the comparison with the arithmetic square operator is qualitative."
+  },
+  {
+   "id_suggestion": "gaussian-11-qubit-setup-and-result",
+   "value": "The authors report that for a discretized Gaussian state over 11 qubits with zero mean and standard deviation σ = 0.5 and a target approximation error of ε = 1e−3, the framework determined a 60% precision error and 40% approximation error split, and the Fourier series loader required only 32 Fourier coefficients.",
+   "anchor": "Section IV.A, p.7",
+   "quotes": [
+    "we consider the preparation of a discretized Gaussian state over 11 qubits, with zero mean and standard deviation σ = 0.5, targeting an approximation error of ε = 1e−3.",
+    "ultimately determining that a weighted error of 60% for the precision error εp and 40% for the approximation error εa provides an optimal balance",
+    "requires only 32 Fourier coefficients to meet the specified accuracy"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An empirical estimator result from one instance in one study.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "The Fig. 5a caption says only 8 coefficients reach ε = 1e−4 for an 11-qubit Gaussian, fewer coefficients for a tighter tolerance than the 32 here for ε = 1e−3. The paper does not say the instances differ, so either the Gaussian differs (σ is not given for Fig. 5a) or one number is in error."
+  },
+  {
+   "id_suggestion": "gaussian-fig5a-eight-coefficients",
+   "value": "The authors state in a figure caption that only 8 Fourier coefficients are required to prepare a discretized Gaussian state over 11 qubits with the Fourier Series Loader to an approximation error of ε = 1e−4.",
+   "anchor": "Fig. 5a caption, p.7",
+   "quotes": [
+    "Efficient preparation of a discretized Gaussian state over 11 qubits using the Fourier Series Loader (FSL).",
+    "Only 8 Fourier coefficients are required to achieve an approximation error of ε = 1e−4."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An empirical result from one instance, in a caption only.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "The standard deviation and the grid for this state are not stated in the caption; see the note on the 32-coefficient result."
+  },
+  {
+   "id_suggestion": "gaussian-fig5b-error-allocation-tradeoff",
+   "value": "The authors plot, for a 14-qubit Gaussian state (σ = 0.9), the estimated T-gate count against the fraction of the error budget assigned to precision error, with one curve for each total error ε in {5e−1, 5e−2, 5e−3, 5e−4}, and state that different error allocations can result in different behaviours; the curve values are given only in the figure.",
+   "anchor": "Fig. 5b caption and Section IV.A, p.7",
+   "quotes": [
+    "(b) Trade-off for a 14-qubit Gaussian state (σ = 0.9).",
+    "Each curve corresponds to a different total error ε ∈ {5e−1, 5e−2, 5e−3, 5e−4}.",
+    "where different error allocations can result in different behaviours"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An empirical estimator result for one state in one study.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "The curves are not in the text layer, so the size of the T-count change with the allocation cannot be read here."
+  },
+  {
+   "id_suggestion": "gaussian-fourier-narrowing-explanation",
+   "value": "The authors attribute the sparse, efficient Fourier-domain representation of a Gaussian to the standard deviation of the Gaussian narrowing under the transformation, citing related work, and note that one might expect Fourier-based methods to perform poorly because the Fourier transform of a Gaussian is itself a Gaussian.",
+   "anchor": "Section IV.A, p.7",
+   "quotes": [
+    "Given that the Fourier transform of a Gaussian is itself a Gaussian, one might expect Fourier-based methods to perform poorly due to the lack of sparsity in the frequency domain.",
+    "because the standard deviation of the Gaussian narrows under the transformation [19], the Fourier profile becomes more concentrated, enabling a sparse and efficient representation"
+   ],
+   "kind": "cited",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An explanation attributed to related work and not derived in the paper.",
+   "result_type": "cited",
+   "context": "qc",
+   "reader_inference": "Whether a discretized Gaussian narrows or widens in the Fourier domain depends on the grid width and σ, which the paper does not give; the explanation is tied to the stated instance only."
+  },
+  {
+   "id_suggestion": "gaussian-larger-error-switches-to-mps",
+   "value": "The authors state that when the total error is increased the framework shifts its recommendation for Gaussian states from the Fourier Series Loader to an MPS-based approach, and that small changes in parameters within a single functional family can drastically alter the most efficient encoding strategy.",
+   "anchor": "Section IV.A, p.7",
+   "quotes": [
+    "For example, when the total error is increased, the framework shifts its recommendation from the Fourier Series Loader to an MPS-based approach.",
+    "even within a single functional family, small changes in parameters can drastically alter the most efficient encoding strategy"
+   ],
+   "kind": "claimed",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "A result reported without data in the text.",
+   "result_type": "claim",
+   "context": "qc",
+   "reader_inference": "No error value at which the switch happens is given."
+  },
+  {
+   "id_suggestion": "gaussian-table-ii-costs",
+   "value": "The authors report in Table II, for the Gaussian state, CNOT counts of 1.91 × 102, 6.25 × 102, 2.23 × 104, 4.09 × 103 and 2.23 × 104 and T-gate counts of 8.86 × 103, 3.15 × 104, 1.89 × 104, 1.35 × 105 and 1.90 × 104, for the Fourier Series Loader, Matrix Product State, Sum of Slaters, Mottonen state preparation and QROM state preparation respectively (exponents printed flat in the text layer; values follow the order of the method column).",
+   "anchor": "Table II, Gaussian state columns, p.8",
+   "quotes": [
+    "1.91 × 102 6.25 × 102 2.23 × 104 4.09 × 103 2.23 × 104",
+    "8.86 × 103 3.15 × 104 1.89 × 104 1.35 × 105 1.90 × 104",
+    "The best-performing methods, i.e., ones with the lowest T-gates, for each state vector are highlighted in bold."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "Estimator outputs for one instance in one study; the pairing of rows with methods is read from the order of the text layer.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "The lowest T count is the Fourier Series Loader at 8.86e3, about twice the next (QROM, 1.90e4) and 15 times the Mottonen count. Alias sampling, listed in Table I, is not among the five compared methods. The error tolerance used for each row is not stated in the table."
+  },
+  {
+   "id_suggestion": "beh2-setup",
+   "value": "The authors state that the quantum chemistry case is the BeH2 molecule from the PennyLane molecules dataset, in the STO-3G basis set with a Be to H bond length of 1.33 angstrom.",
+   "anchor": "Section IV.B, pp.7-8",
+   "quotes": [
+    "We consider this challenge in the context of the BeH2 molecule from the Pennylane molecules dataset [37]",
+    "using the STO-3G basis set and Be−H bond length of 1.33 ˚A."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "setup",
+   "certainty_reason": "The paper's statement of its own test case.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "The qubit count and error tolerance for this case are not stated in the text."
+  },
+  {
+   "id_suggestion": "beh2-sparse-selected-error-split",
+   "value": "The authors report that for the BeH2 ground state the framework selects the sparse state preparation strategy, which explicitly initializes only the significant amplitudes, with a balanced error model assigning 50% of the total error budget to precision error εp and 50% to approximation error (printed as εp in the text).",
+   "anchor": "Section IV.B, p.8",
+   "quotes": [
+    "For this problem, the framework selects the sparse state preparation strategy, which constructs the quantum state by explicitly initializing only the significant amplitudes [15].",
+    "Here, the framework adopts a balanced error model, assigning 50% of the total error budget to precision error εp and 50% to approximation error εp."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An empirical estimator result from one molecule in one study.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "The second symbol in the sentence is a typo for the approximation error εa."
+  },
+  {
+   "id_suggestion": "sparse-prep-assumes-classical-description",
+   "value": "The authors state that the sparse state preparation approach assumes a classical description of the dominant components of the state.",
+   "anchor": "Section IV.B, p.8",
+   "quotes": [
+    "This approach assumes a classical description of the dominant components."
+   ],
+   "kind": "shown",
+   "claim_type": "absence",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "stated limit",
+   "certainty_reason": "The paper states this condition on its own method.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "For BeH2 the dominant determinants and amplitudes must be known classically before the circuit is built; the cost of getting them is not counted."
+  },
+  {
+   "id_suggestion": "beh2-table-ii-costs",
+   "value": "The authors report in Table II, for the BeH2 ground state, CNOT counts of 3.30 × 104, 4.19 × 104, 4.75 × 103, 3.28 × 104 and 3.15 × 105 and T-gate counts of 1.13 × 106, 1.59 × 106, 5.42 × 103, 1.11 × 106 and 2.33 × 105, for the Fourier Series Loader, Matrix Product State, Sum of Slaters, Mottonen state preparation and QROM state preparation respectively (exponents printed flat in the text layer; values follow the order of the method column).",
+   "anchor": "Table II, BeH2 ground state columns, p.8",
+   "quotes": [
+    "3.30 × 104 4.19 × 104 4.75 × 103 3.28 × 104 3.15 × 105",
+    "1.13 × 106 1.59 × 106 5.42 × 103 1.11 × 106 2.33 × 105"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "Estimator outputs for one molecule in one study; the pairing of rows with methods is read from the order of the text layer.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "The Sum of Slaters (sparse) T count of 5.42e3 is about 43 times below QROM (2.33e5) and about 200 times below the Mottonen count (1.11e6). The text refers to this column as column 3."
+  },
+  {
+   "id_suggestion": "larger-molecules-t-counts",
+   "value": "The authors report T-counts of 6.0 × 104, 4.6 × 105 and 2.3 × 105 for preparing the ground states of C2H4, C2 and BH3 respectively with the STO-3G basis set.",
+   "anchor": "Section IV.B, p.8",
+   "quotes": [
+    "Furthermore, we confirm its robust performance by preparing the ground states of even larger molecules with the STO-3G basis set, such as C2H4, C2, and BH3, yielding T-counts of 6.0 × 104, 4.6 × 105, and 2.3 × 105, respectively."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "Estimator outputs for three molecules in one study.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "No qubit counts, error tolerances or competing-method counts are given for these molecules, so 'robust performance' and 'larger' are not backed by numbers in the text."
+  },
+  {
+   "id_suggestion": "chemistry-sparsity-attribution",
+   "value": "The authors state that in many instances the ground state of a molecular Hamiltonian can be well approximated by a linear combination of a small number of Slater determinants with dominant amplitudes, and attribute the consistent behaviour of the sparse method to the high sparsity of the ground states, which prevents the resource requirements from scaling steeply with the number of qubits.",
+   "anchor": "Section IV.B, pp.7-8",
+   "quotes": [
+    "In many instances, the ground state of a molecular Hamiltonian can be well-approximated by a linear combination of a small number of Slater determinants with dominant amplitudes.",
+    "This consistent behaviour can be attributed to the high sparsity of the corresponding ground states, which prevents the quantum resource requirements from scaling steeply with the number of qubits."
+   ],
+   "kind": "claimed",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "The authors' own explanation, not tested in the paper.",
+   "result_type": "claim",
+   "context": "qc",
+   "reader_inference": "Four molecules are reported and no scaling with qubit number is plotted, so the statement about scaling is not shown by the data in the paper."
+  },
+  {
+   "id_suggestion": "ldc-cfd-setup",
+   "value": "The authors state that for the two-dimensional lid-driven cavity flow benchmark they use the SIMPLE algorithm, whose discretized pressure-correction equation yields a banded matrix, and that the problem maps to quantum algorithms by preparing an initial quantum state and a d-diagonal matrix and solving with techniques such as the quantum singular value transform.",
+   "anchor": "Section IV.C, p.8",
+   "quotes": [
+    "To solve the Navier–Stokes equations, we employ the SIMPLE (Semi-Implicit Method for Pressure-Linked Equations) algorithm [39]",
+    "In particular, the discretized pressure-correction equation yields a banded matrix.",
+    "both an initial quantum state and a d-diagonal matrix representing the linear system are prepared and subsequently solved using techniques such as the quantum singular value transform (QSVT) [41–43]"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "high",
+   "high_basis": "setup",
+   "certainty_reason": "The paper's statement of its own test case and formulation.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id_suggestion": "ldc-mps-tendency-11-to-20-qubits",
+   "value": "The authors report that, applying the framework to cavity-flow state instances from 11 to 20 qubits, they observed a clear tendency toward preparation via matrix product states.",
+   "anchor": "Section IV.C, p.8",
+   "quotes": [
+    "Beginning with the initial state, we applied our framework to instances ranging from 11 to 20 qubits, observing a clear tendency toward preparation via matrix product states (MPS)."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An empirical estimator result from the authors' cavity-flow instances in one study.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "Only the 11-qubit case is detailed; per-instance method choices are not tabulated."
+  },
+  {
+   "id_suggestion": "ldc-mps-11-qubit-bond-dimension-two",
+   "value": "The authors report that for an 11-qubit cavity-flow state and a target accuracy of ε = 1e−3, a bond dimension as small as 2 suffices to reconstruct the state, recovering 211 amplitudes (two to the eleventh power, printed flat) using only 11 two-qubit gates, with a 70% precision error and 30% approximation error split.",
+   "anchor": "Section IV.C, Fig. 6a, p.8",
+   "quotes": [
+    "As shown in Fig. 6a, for an 11-qubit system and a target accuracy of ε = 1e−3, a bond dimension as small as 2 suffices to reconstruct the desired state accurately.",
+    "it enables the recovery of 211 amplitudes using only 11 two-qubit gates",
+    "a weighted error model was adopted, assigning 70% of the budget to the precision error εp and 30% to the approximation error εa"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An empirical result from one instance in one study.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "Table II lists the MPS cost for this state as 2.22e2 CNOT and 6.24e3 T gates, so the 11 two-qubit gates count the blocks before decomposition."
+  },
+  {
+   "id_suggestion": "ldc-mps-error-vs-bond-dimension",
+   "value": "The authors report that for cavity-flow states with 211 to 220 amplitudes (exponents printed flat), in all considered cases a bond dimension of χ = 25 or greater (exponent printed flat) is sufficient to reduce the reconstruction error below 10−4.",
+   "anchor": "Section IV.C, Fig. 6b, p.9",
+   "quotes": [
+    "the effective Hilbert space dimension ranges from 211 to 220, as indicated in the legend",
+    "Notably, in all considered cases, a bond dimension of χ = 25 or greater is sufficient to reduce the reconstruction error below 10−4"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An empirical result on ten cavity-flow states in one study.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "The axis labels of Fig. 6b read 23, 26, 29, 212, 215, 218, which are powers of two, so χ = 25 is probably two to the fifth power, a bond dimension of 32. The reconstruction error is the l2 distance to the target state, not a cost."
+  },
+  {
+   "id_suggestion": "ldc-table-ii-costs",
+   "value": "The authors report in Table II, for the two-dimensional lid-driven cavity state, CNOT counts of 2.59 × 104, 2.22 × 102, 1.59 × 104, 4.09 × 103 and 1.62 × 104 and T-gate counts of 2.53 × 104, 6.24 × 103, 1.13 × 104, 1.11 × 105 and 1.15 × 104, for the Fourier Series Loader, Matrix Product State, Sum of Slaters, Mottonen state preparation and QROM state preparation respectively (exponents printed flat in the text layer; values follow the order of the method column).",
+   "anchor": "Table II, 2D-LDC state columns, p.8",
+   "quotes": [
+    "2.59 × 104 2.22 × 102 1.59 × 104 4.09 × 103 1.62 × 104",
+    "2.53 × 104 6.24 × 103 1.13 × 104 1.11 × 105 1.15 × 104"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "Estimator outputs for one state in one study; the pairing of rows with methods is read from the order of the text layer.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "The lowest T count is the MPS at 6.24e3, about 1.8 times below the next (Sum of Slaters, 1.13e4) and about 18 times below the Mottonen count. The text says 'column 1' for this result, which does not match the table layout; the instance size for the table is not stated."
+  },
+  {
+   "id_suggestion": "walsh-11-qubit-diagonal-result",
+   "value": "The authors report that for an example 11-qubit diagonal, a Walsh-function approximation with the leading 64 coefficients achieves an error below ε = 10−4 (exponent printed flat), with resources of 1.5 × 103 CNOT gates and 1.7 × 102 RZ gates.",
+   "anchor": "Section IV.C, Fig. 3b, p.9",
+   "quotes": [
+    "Taking as an example an 11-qubit diagonal, we find that an approximation based on Walsh functions, employing the leading 64 coefficients, suffices to achieve an error below ε = 10−4.",
+    "The required resources amount to 1.5 × 103 CNOT gates and 1.7 × 102 RZ gates."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An empirical result from one diagonal in one study.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "Only an 11-qubit diagonal is reported. The coefficient count and error for the 20-qubit diagonal behind the Walsh block-encoding cost in Fig. 7 (3 x 10^5 T) are not given."
+  },
+  {
+   "id_suggestion": "matrix-inversion-instance-setup",
+   "value": "The authors state that the complete workflow instance is a CFD problem discretized over a 20-qubit space, requiring the embedding of a 220 × 220 tridiagonal matrix and the preparation of a 20-qubit initial state vector, and that matrix inversion needed the construction of a polynomial of degree 108 (exponents printed flat).",
+   "anchor": "Section IV.C, p.9",
+   "quotes": [
+    "the complete workflow, we consider a CFD instance discretized over a 20-qubit space, requiring the embedding of a 220 × 220 tridiagonal matrix and the preparation of a 20-qubit initial state vector.",
+    "Achieving matrix inversion in this case necessitated the construction of a polynomial of degree 108."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "setup",
+   "certainty_reason": "The paper's statement of its own test instance.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "The degree is probably ten to the eighth: Fig. 7 gives d = 108 and its totals check as 9 x 10^7 T per iteration times 10^8 equals 9 x 10^15. The condition number κ of the instance is not stated."
+  },
+  {
+   "id_suggestion": "matrix-inversion-baseline-generic",
+   "value": "The authors state that the resource comparison for the matrix inversion workflow is made against the previously employed generic approach, which assumed no structural information about the input.",
+   "anchor": "Section IV.C, p.9",
+   "quotes": [
+    "Figure 7 presents a resource comparison against the previously employed generic approach, which assumed no structural information about the input."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "setup",
+   "certainty_reason": "The paper's statement of the baseline of its main comparison.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "The baseline is a generic, structure-blind pipeline, so the headline factor measures the value of using structure, not a comparison with another structure-aware method."
+  },
+  {
+   "id_suggestion": "fig7-total-t-costs",
+   "value": "The authors report in a figure comparing the exact and approximate schemes for the matrix inversion workflow a total T cost of 2 · 1020 with 2 · 104 shots for the exact scheme and a total T cost of 9 · 1015 with 3 · 102 shots for the approximate scheme (exponents printed flat).",
+   "anchor": "Fig. 7, p.9",
+   "quotes": [
+    "Comparison of T costs for exact (left) and approximate (right) schemes in the matrix inversion workflow.",
+    "× 2 · 104 shots Total T = 2 · 1020",
+    "× 3 · 102 shots Total T = 9 · 1015"
+   ],
+   "kind": "shown",
+   "claim_type": "vendor-self-claim",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "Estimator outputs for one instance, reported by the maker of the estimator.",
+   "result_type": "vendor",
+   "context": "qc",
+   "reader_inference": "The ratio 2 x 10^20 over 9 x 10^15 is about 2.2 x 10^4. The shot counts are for a KL divergence tolerance of 0.1 (Fig. 8). The approximate scheme's total error against the exact answer is not reported."
+  },
+  {
+   "id_suggestion": "fig7-component-t-costs",
+   "value": "The authors report in the matrix inversion workflow figure state-preparation costs of T = 1 · 107 for QROM (exact scheme) and T = 1 · 105 for MPS (approximate scheme), block-encoding costs of T = 9 · 107 for a multiplexer and T = 3 · 105 for a Walsh encoding, and a projector cost of T = 1 · 102 (exponents printed flat).",
+   "anchor": "Fig. 7, p.9",
+   "quotes": [
+    "(QROM) T = 1 · 107",
+    "(MPS) T = 1 · 105",
+    "(multiplexer) T = 9 · 107",
+    "(Walsh) T = 3 · 105",
+    "(PCPhase) T = 1 · 102"
+   ],
+   "kind": "shown",
+   "claim_type": "vendor-self-claim",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "Estimator outputs for one instance, reported by the maker of the estimator.",
+   "result_type": "vendor",
+   "context": "qc",
+   "reader_inference": "The block encoding is repeated d times (about 10^8), so it dominates the total: 9 x 10^7 times 10^8 is 9 x 10^15. The state preparation costs (10^7, 10^5) are tiny against that, so the MPS choice has negligible weight in the totals."
+  },
+  {
+   "id_suggestion": "walsh-measurement-claim",
+   "value": "The authors state that using the Walsh transform for measurement is an additional innovation of their approach, that full state tomography is prohibitively expensive at this scale, and that applying transformations that redistribute the amplitude distribution facilitates measurement by producing states that are easier to sample.",
+   "anchor": "Section IV.C, p.9",
+   "quotes": [
+    "An additional innovation in our approach is the use of the Walsh transform for measurement.",
+    "In systems of this scale, extracting information from the solution state is challenging, as performing full state tomography is prohibitively expensive.",
+    "applying transformations that redistribute the amplitude distribution facilitates the measurement process by producing states that are easier to sample"
+   ],
+   "kind": "claimed",
+   "claim_type": "vendor-self-claim",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "The authors' own claim about their method, with no derivation in the paper.",
+   "result_type": "vendor",
+   "context": "qc",
+   "reader_inference": "No argument is given for why a Walsh transform of the output state yields fewer shots, and the application to a general solution state is not shown."
+  },
+  {
+   "id_suggestion": "walsh-measurement-fewer-shots-fig8",
+   "value": "The authors report that, comparing the Kullback-Leibler divergence between output distributions as a function of the number of shots with an assumed divergence tolerance of 0.1, the Walsh transform requires significantly fewer shots than the QFT output transformation to achieve lower estimation errors.",
+   "anchor": "Fig. 8 and Section IV.C, p.10",
+   "quotes": [
+    "As shown, the Walsh transform requires significantly fewer shots to achieve lower estimation errors.",
+    "we assume a divergence tolerance of 0.1 between the resulting output distributions"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An empirical result from one instance in one study.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "The curves are only in the figure. The state, qubit count and number of repetitions behind Fig. 8 are not stated; the shot counts 2 x 10^4 and 3 x 10^2 appear in Fig. 7."
+  },
+  {
+   "id_suggestion": "workflow-saving-factor-over-1e4",
+   "value": "The authors report that the complete, structure-aware workflow yields resource savings by a factor of over ∼10 4 (printed with a space; ten to the fourth) compared to an exact approach.",
+   "anchor": "Section IV.C, p.10",
+   "quotes": [
+    "Remarkably, our complete, structure-aware workflow yields resource savings by a factor of over ∼10 4 compared to an exact approach."
+   ],
+   "kind": "shown",
+   "claim_type": "vendor-self-claim",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "Estimator output for one instance, reported by the maker of the estimator.",
+   "result_type": "vendor",
+   "context": "qc",
+   "reader_inference": "Matches the Fig. 7 totals (about 2.2 x 10^4). It is the product of the Walsh block-encoding saving and the Walsh measurement saving, for a single 20-qubit instance."
+  },
+  {
+   "id_suggestion": "mps-higher-fidelity-claim",
+   "value": "The authors state that in CFD simulations representing smooth, continuous-like velocity fields their framework consistently found that matrix product state methods achieved significantly higher fidelity than competing approaches.",
+   "anchor": "Section I, p.2",
+   "quotes": [
+    "our framework consistently found that matrix product state (MPS) methods [15, 20, 21] achieved significantly higher fidelity than competing approaches."
+   ],
+   "kind": "claimed",
+   "claim_type": "vendor-self-claim",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "The authors' own claim about their framework's finding, stated in the introduction.",
+   "result_type": "vendor",
+   "context": "qc",
+   "reader_inference": "Section IV compares CNOT and T counts at a fixed tolerance and shows MPS reconstruction error, but reports no fidelity values for competing methods, so this sentence is not backed by a reported fidelity comparison."
+  },
+  {
+   "id_suggestion": "gaussian-qft-trick-discovered-claim",
+   "value": "The authors state that their framework discovered that certain Gaussian states can be implemented more efficiently by applying a quantum Fourier transform to a related but distinct Gaussian profile that is trivial to generate in the computational basis, that it was discovered automatically without prior human input, and that it has been corroborated in related work.",
+   "anchor": "Section I, pp.1-2",
+   "quotes": [
+    "our framework discovered that certain Gaussian states can be implemented more efficiently by applying a quantum Fourier transform",
+    "to a related, but distinct, Gaussian profile that is trivial to generate in the computational basis.",
+    "was discovered automatically by our system without prior human input and has been corroborated in related work [19]"
+   ],
+   "kind": "claimed",
+   "claim_type": "vendor-self-claim",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "The authors' own claim about their framework.",
+   "result_type": "vendor",
+   "context": "qc",
+   "reader_inference": "The same insight is credited to reference 19 (Xie and Ben-Ami), so 'discovered without prior human input' cannot be told apart from reproducing a known construction."
+  },
+  {
+   "id_suggestion": "approximate-states-cost-reduction-claim",
+   "value": "The authors state that across several applications preparing approximate states yields significant cost reductions compared to exact methods, and that the required resources can be automatically reduced by orders of magnitude in comparison with exact approaches.",
+   "anchor": "Section I p.1; Section IV intro p.6",
+   "quotes": [
+    "Across several applications, preparing approximate states yields significant cost reductions compared to exact methods.",
+    "These results reveal that, in comparison with exact approaches, the required resources can be automatically reduced by orders of magnitude."
+   ],
+   "kind": "claimed",
+   "claim_type": "vendor-self-claim",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "The authors' own summary of their results.",
+   "result_type": "vendor",
+   "context": "qc",
+   "reader_inference": "In Table II the best method is about 15 to 200 times below the Mottonen T count for the three states; 'orders of magnitude' holds at one to two orders there and at four orders only for the full workflow."
+  },
+  {
+   "id_suggestion": "conclusion-method-chosen-per-problem-family",
+   "value": "The authors state that the framework selects matrix product states for fluid dynamics simulations that appear smooth and continuous, where Fourier-based methods might have been the intuitive choice; identifies Fourier loaders as efficient for Gaussian states because of the narrowing of the Gaussian under the Fourier transform; and selects sparse preparation techniques for molecular ground states.",
+   "anchor": "Section V Conclusion, p.10",
+   "quotes": [
+    "the framework selects matrix product states for fluid dynamics simulations that appear smooth and continuous, problems where Fourier-based methods might have been the intuitive choice",
+    "Conversely, for Gaussian states, it identifies Fourier loaders as efficient due to the narrowing of the Gaussian under the Fourier transform.",
+    "selecting sparse preparation techniques that scale with the number of dominant amplitudes rather than the full Hilbert space dimension"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "Summary of estimator results from three instances in one study.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "Each choice rests on one reported instance (an 11-qubit Gaussian, BeH2, cavity-flow states), so the family-level wording generalizes beyond them."
+  },
+  {
+   "id_suggestion": "two-new-circuit-constructions-claim",
+   "value": "The authors state that they introduce two new circuit constructions, a more efficient encoding for d-diagonal matrices and an optimized block encoding for kinetic energy operators, developed and validated through the same systematic methodology, and describe them as secondary to the central workflows.",
+   "anchor": "Section V Conclusion, p.11",
+   "quotes": [
+    "we also introduce two new circuit constructions: (i) a more efficient encoding for d-diagonal matrices, and (ii) an optimized block encoding for kinetic energy operators, developed and validated through the same systematic methodology",
+    "While secondary to the central workflows, these advances highlight the broader value of combining rigorous resource estimation with careful algorithmic design."
+   ],
+   "kind": "claimed",
+   "claim_type": "vendor-self-claim",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "The authors' own claim about their constructions.",
+   "result_type": "vendor",
+   "context": "qc",
+   "reader_inference": "No separate numerical validation of either construction is reported beyond the d-diagonal use inside the CFD workflow."
+  },
+  {
+   "id_suggestion": "hardware-outlook-frameworks-essential",
+   "value": "The authors state that as quantum hardware matures with more detailed device-level performance models and noise characteristics, frameworks of this kind will likely be essential.",
+   "anchor": "Section V Conclusion, p.11",
+   "quotes": [
+    "As quantum hardware continues to mature, with increasingly detailed device-level performance models and noise characteristics, frameworks of this kind will likely be essential."
+   ],
+   "kind": "claimed",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An outlook statement by the authors, not tested.",
+   "result_type": "claim",
+   "context": "qc",
+   "reader_inference": "All reported costs are logical T and CNOT counts from an estimator; no noise model or hardware run appears in the paper."
+  },
+  {
+   "id_suggestion": "code-availability-xanadu-repository",
+   "value": "The authors state that the complete code implementing the framework is available in a GitHub repository, and reference 17 gives it as XanaduAI/RR-REQVL, Resource Efficient Quantum Vector Loading (2025).",
+   "anchor": "Section I p.1; Code section and reference 17, pp.11",
+   "quotes": [
+    "The complete code implementing the quantum compilation framework is available in the following GitHub repository.",
+    "[17] U. Azad and G. Alonso-Linaje, Resource Efficient Quantum Vector Loading, https://github.com/XanaduAI/RR-REQVL (2025)."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "high",
+   "high_basis": "setup",
+   "certainty_reason": "The paper's own statement and reference.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "The text layer does not print the repository link in the sentence; the reference list holds it."
+  },
+  {
+   "id_suggestion": "multiplexer-state-prep-rotation-count",
+   "value": "The authors state that multiplexer-based state preparation requires exactly 2n − 1 rotations (two to the n minus one, exponent printed flat) for n qubits, and that the per-gate synthesis error δG influences the T-count as O(log2(1/δG)).",
+   "anchor": "Appendix A, Eq. (A.1), p.13",
+   "quotes": [
+    "In the multiplexer-based state preparation scheme, exactly 2n − 1 rotations are required [25], where n > 0 is the number of qubits.",
+    "Since δG directly influences the T-count as O(log2(1/δG))"
+   ],
+   "kind": "cited",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "A result the paper attributes to earlier work.",
+   "result_type": "cited",
+   "context": "qc",
+   "reader_inference": "Eq. (A.1) bounds the per-gate error by εp divided by the square root of (two to the n minus one); the text layer shows the formula in garbled form."
+  },
+  {
+   "id_suggestion": "phase-gradient-removes-synthesis-error",
+   "value": "The authors state that integrating a phase-gradient resource state replaces explicit RZ rotations with controlled modular additions, which eliminates synthesis errors originating from Clifford+T decomposition and effectively sets the per-gate synthesis error to δG = 0.",
+   "anchor": "Appendix A, Fig. 9c, p.13",
+   "quotes": [
+    "This optimized approach is significant because it eliminates synthesis errors originating from Clifford+T [30] decomposition, effectively setting the per-gate synthesis error to δG = 0."
+   ],
+   "kind": "claimed",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "The authors' statement about a construction attributed to earlier work.",
+   "result_type": "claim",
+   "context": "qc",
+   "reader_inference": "The remaining error is the finite-precision truncation of the angles to m bits, bounded in the next derivation."
+  },
+  {
+   "id_suggestion": "phase-gradient-angle-truncation-bound",
+   "value": "The authors derive, using a first-order Taylor series expansion, that truncating a rotation angle to m binary digits gives a rotation difference below 2−mπ, and from this a minimum number of precision qubits m, printed as m ≥ log2 πεp−1 2n − 1 (square-root signs lost in the text layer).",
+   "anchor": "Appendix A, Eq. (A.2), p.13",
+   "quotes": [
+    "Then, the difference between the corresponding rotations can be bounded as ∥RZ(2πθ) − RZ(2πθ′)∥2 < 2−mπ by using a first-order Taylor series expansion.",
+    "m ≥ log2 πεp−1 2n − 1"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "A short derivation in an appendix with a first-order expansion; the final formula is garbled in the text layer, so the statement could not be quoted cleanly.",
+   "result_type": "theoretical",
+   "context": "qc",
+   "reader_inference": "With RZ(φ) = exp(−iφZ/2) the operator-norm difference for an angle gap of 2π·2^−m is 2 sin(π·2^−m/2), about π·2^−m, so the bound is consistent with the usual convention; the paper does not state its convention."
+  },
+  {
+   "id_suggestion": "multiplexer-methods-leading-exact-claim",
+   "value": "The authors state that multiplexer methods are the leading approaches for state preparation without approximation errors.",
+   "anchor": "Appendix A, p.13",
+   "quotes": [
+    "Multiplexer methods are the leading approaches for state preparation without approximation errors [22]."
+   ],
+   "kind": "cited",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "A claim the paper attributes to earlier work.",
+   "result_type": "cited",
+   "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id_suggestion": "ancilla-count-tunable-hyperparameter",
+   "value": "The authors state that the number of auxiliary wires is treated as a tunable hyperparameter in their implementation, automatically optimized to trade off qubit overhead against gate complexity.",
+   "anchor": "Appendix A, p.13",
+   "quotes": [
+    "Ultimately, the number of auxiliary wires is treated as a tunable hyperparameter in our implementation, allowing it to be automatically optimized to trade off qubit overhead against gate complexity."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "setup",
+   "certainty_reason": "The paper's statement of its own implementation.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "The number of ancilla qubits chosen for each reported result is not given."
+  },
+  {
+   "id_suggestion": "sparse-sos-cost-scales-with-nonzero-amplitudes",
+   "value": "The authors state that the sum-of-states algorithm is the most asymptotically efficient method in the sparse category, with a cost that scales with the number of non-zero amplitudes D rather than the full dimension 2n (two to the n, printed flat).",
+   "anchor": "Appendix A, p.13",
+   "quotes": [
+    "asymptotically efficient method in this category is the sum-of-states (SOS) algorithm [15], whose cost scales with the",
+    "number of non-zero amplitudes D rather than the full dimension 2n."
+   ],
+   "kind": "cited",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "A result the paper attributes to earlier work (reference 15).",
+   "result_type": "cited",
+   "context": "qc",
+   "reader_inference": "The sentence is split across two lines in the text layer, so the two quotes are consecutive lines of one statement."
+  },
+  {
+   "id_suggestion": "sparse-prep-truncation-as-approximation",
+   "value": "The authors state that the sum-of-states algorithm can be regarded as an approximation technique: even when the target state is not sparse, one can truncate the amplitudes by retaining only the d most significant components, introducing a controlled approximation error; the sparsity level and the error split are tunable hyperparameters.",
+   "anchor": "Appendix A, p.14",
+   "quotes": [
+    "Even when the target state is not sparse, one can truncate the amplitudes by retaining only the d most significant components, zeroing out the rest of the coefficients, thereby introducing a controlled approximation error.",
+    "the sparsity level d and the allocation of the error budget between εa and εp are treated as tunable hyperparameters in our framework"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "high",
+   "high_basis": "definition",
+   "certainty_reason": "The paper's own definition of how the sparse method is used as an approximation.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "Table I writes the truncation as the top D amplitudes while the appendix calls it d, a notation drift."
+  },
+  {
+   "id_suggestion": "mps-error-sources-and-bond-dimension-search",
+   "value": "The authors state that in the MPS method the bond dimension χ controls the approximation error εa, that the framework performs a binary search over χ values to find the smallest value meeting the target accuracy by contracting the MPS tensors and measuring the distance to the target state, and that the precision error εp arises from synthesizing each block Gi into Clifford+T gates.",
+   "anchor": "Appendix A, p.15",
+   "quotes": [
+    "The bond dimension χ controls the approximation error εa.",
+    "our framework performs a binary search over χ values to find the smallest value meeting",
+    "the target accuracy, which is calculated by contracting MPS tensors and measuring the distance to the target state.",
+    "The second error source, the precision error εp, arises from synthesizing each block Gi into Clifford+T gates using"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "definition",
+   "certainty_reason": "The paper's own description of its MPS error handling.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "The classical contraction and search costs of the framework itself are not discussed."
+  },
+  {
+   "id_suggestion": "mps-rotation-count-and-error-constraint",
+   "value": "The authors state that the number of rotation gates required to implement the m-qubit block Gi unitary is 4m (exponent printed flat in the text layer), that the MPS method has two tunable error sources, approximation error from tensor compression and precision error from gate synthesis, and that the framework jointly optimizes to minimize resource cost under the global constraint ε = εa + εp.",
+   "anchor": "Appendix A, Eq. (A.4), p.15",
+   "quotes": [
+    "The number of rotation gates required to implement the m-qubit Gi unitary is 4m,",
+    "Therefore, the MPS method introduces two tunable error sources, εa from tensor compression [52] and εp from gate synthesis.",
+    "Our framework jointly optimizes to minimize resource cost under the global constraint ε = εa + εp."
+   ],
+   "kind": "cited",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "A count the paper takes from the ZXZ decomposition references; the per-block formula in terms of bond dimension is garbled in the text layer.",
+   "result_type": "cited",
+   "context": "qc",
+   "reader_inference": "The per-gate bound (A.4) uses the total rotation count over all blocks; its text-layer form is garbled."
+  },
+  {
+   "id_suggestion": "fsl-scope-smooth-function-assumption",
+   "value": "The authors state that the Fourier Series Loader assumes the amplitude profile of an n-qubit target state can be expressed using a smooth or structured function f from [0, 1] to the complex numbers, and prepares the state by encoding a truncated set of Fourier coefficients and applying an inverse quantum Fourier transform.",
+   "anchor": "Appendix A, pp.15-16",
+   "quotes": [
+    "A second approximate state preparation technique implemented in our framework is the Fourier Series Loader (FSL) [26], which leverages compact functional descriptions of many quantum states.",
+    "amplitude profile of an n-qubit target state can be expressed using a smooth or structured function f : [0, 1] → C as",
+    "Then, an inverse quantum Fourier transform (QFT†) is applied to transform this frequency-domain encoding into the"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "high",
+   "high_basis": "scope",
+   "certainty_reason": "The paper's own statement of the condition under which its FSL method applies.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id_suggestion": "fsl-classical-error-evaluation-cost",
+   "value": "The authors state that the approximation error of the Fourier Series Loader is evaluated by computing the Euclidean distance between the target state and the state from the inverse discrete Fourier transform of the truncated coefficients, a procedure with a classical computational complexity of O(2nn), where n is the number of qubits (two to the n times n, exponent printed flat).",
+   "anchor": "Appendix A, p.16",
+   "quotes": [
+    "We evaluate εa by computing the Euclidean distance between the target state and the state obtained from the inverse discrete Fourier transform of the truncated coefficients",
+    "a procedure that has a classical computational complexity of O(2nn) [53], where n is the number of qubits."
+   ],
+   "kind": "shown",
+   "claim_type": "absence",
+   "fidelity": "scoped",
+   "certainty_suggestion": "high",
+   "high_basis": "stated limit",
+   "certainty_reason": "The paper states the classical cost of its own error-evaluation step.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "The framework needs the full target vector classically and spends time exponential in n to select a method, so it does not scale past the sizes where the vector can be held classically; the paper does not discuss this."
+  },
+  {
+   "id_suggestion": "fsl-fourier-coefficients-decay-claim",
+   "value": "The authors state that for smooth or highly structured functions the Fourier coefficients decay rapidly, making it possible to achieve small approximation error with only a few terms, and that the framework balances εa and εp within the global error budget ε = εa + εp.",
+   "anchor": "Appendix A, p.16",
+   "quotes": [
+    "structured functions f , the Fourier coefficients decay rapidly, making it possible to achieve small εa with only a few terms.",
+    "Our framework automatically balances εa and εp within the global error budget ε = εa + εp."
+   ],
+   "kind": "claimed",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "The authors' general statement without a bound in the paper.",
+   "result_type": "claim",
+   "context": "qc",
+   "reader_inference": "Decay rates depend on smoothness of the periodic extension; no rate or condition is stated."
+  },
+  {
+   "id_suggestion": "alias-sampling-no-approximation-error",
+   "value": "The authors state that the alias sampling state preparation technique (also known as SubPrepare) introduces no approximation error, reproducing the target state exactly apart from discretization effects, and that its only error source is the precision error εp from representing each of the L amplitudes with a finite number of bits µ.",
+   "anchor": "Appendix A, Eq. (A.6), p.17",
+   "quotes": [
+    "this state preparation technique (also known as SubPrepare) introduces no approximation error; the target state is reproduced exactly apart from discretization effects.",
+    "The only error source is the precision error εp from representing each of L amplitudes with a finite number of bits (µ)."
+   ],
+   "kind": "cited",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "A property the paper takes from reference 27 and does not prove.",
+   "result_type": "cited",
+   "context": "qc",
+   "reader_inference": "Alias sampling appears in Table I but not in the Table II comparison or any selected result in Section IV."
+  },
+  {
+   "id_suggestion": "alias-sampling-entangled-register-limit",
+   "value": "The authors state that alias sampling prepares a state in which an auxiliary register is entangled with the index register, that allowing such registers can give more efficient preparations, that the state is not necessarily useful in all scenarios, and that its key application is in block encodings of LCUs.",
+   "anchor": "Appendix A, p.16",
+   "quotes": [
+    "By allowing the presence of such entangled registers, one can achieve",
+    "more efficient preparations; however, this state is not necessarily useful in all scenarios.",
+    "state arises in the context of block encodings of LCUs."
+   ],
+   "kind": "shown",
+   "claim_type": "absence",
+   "fidelity": "scoped",
+   "certainty_suggestion": "high",
+   "high_basis": "stated limit",
+   "certainty_reason": "The paper states this scope limit on the method itself.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "The prepared state is not the plain target vector, which is why it does not compete directly with the other state-preparation methods for amplitude loading."
+  },
+  {
+   "id_suggestion": "multiplexer-diagonal-encoding-rotations-and-bound",
+   "value": "The authors state that a multiplexer-based diagonal encoder sets the angle of the ith controlled rotation to 2 arccos(αi), that an exact encoder (εa = 0) requires 2n rotation gates (two to the n, exponent printed flat), and that a per-gate synthesis error δG < εp · 2−n/2 meets the target precision.",
+   "anchor": "Appendix B, Eq. (B.1), p.18",
+   "quotes": [
+    "setting the angle of the ith controlled rotation to 2 arccos(αi), thereby producing a unitary operator with the desired diagonal elements [22]",
+    "When such an encoder is implemented exactly, i.e., taking εa = 0, these methods require 2n rotation gates.",
+    "δG < εp · 2−n/2"
+   ],
+   "kind": "cited",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "A construction and count the paper takes from reference 22 and bounds under its own error model.",
+   "result_type": "cited",
+   "context": "qc",
+   "reader_inference": "The 2^(-n/2) scaling follows from the ℓ2 accumulation of 2^n equal gate errors."
+  },
+  {
+   "id_suggestion": "qsp-diagonal-encoding-setup",
+   "value": "The authors state that quantum signal processing approximates a diagonal operator within an εa-tolerance by treating the diagonal entries as samples of a smooth function f from [0, 1] to the complex numbers, evaluated at discrete grid points, and selecting a polynomial of degree d that matches f.",
+   "anchor": "Appendix B, p.18",
+   "quotes": [
+    "Another approach for approximating a diagonal operator within an εa-tolerance is based on quantum signal processing (QSP) [28, 55].",
+    "The core idea is to treat the diagonal entries as samples of a smooth function f : [0, 1] → C, evaluated at the discrete points xi = i/N ."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "high",
+   "high_basis": "scope",
+   "certainty_reason": "The paper's statement of the condition under which its QSP encoding applies.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id_suggestion": "qsp-diagonal-synthesis-error-bound",
+   "value": "The authors state that the QSP sequence involves O(d) single-qubit rotations so the per-rotation synthesis error must satisfy δG ≤ εp/√d, and that a higher-degree polynomial d can reduce the approximation error εa but increases the number of gates and the resources needed to meet the precision error εp.",
+   "anchor": "Appendix B, Eq. (B.2), p.19",
+   "quotes": [
+    "involves O(d) single-qubit rotations, the synthesis error δG of each rotation must satisfy:",
+    "√ δG ≤ εp/ d,",
+    "a higher-degree polynomial d can reduce the approximation error εa, but it increases the number of gates and thus the resources required to meet the precision error εp."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "A bound stated without derivation, under the paper's own l2 accumulation model.",
+   "result_type": "theoretical",
+   "context": "qc",
+   "reader_inference": "The 1/√d scaling follows from the ℓ2 accumulation of d equal gate errors."
+  },
+  {
+   "id_suggestion": "walsh-encoding-real-valued-cnot-ladders",
+   "value": "The authors state that the Walsh transform technique provides a synthesis of diagonal unitaries from real-valued data, and that its circuits are composed of CNOT ladders and a single RZ rotation per retained Walsh term.",
+   "anchor": "Appendix B, Fig. 13, pp.19-20",
+   "quotes": [
+    "Another versatile technique for diagonal block encoding utilizes the Walsh transform, which provides an efficient synthesis of diagonal unitaries from real-valued data.",
+    "This structure leads to efficient circuits composed of CNOT ladders and a single RZ(−2ck) rotation (Fig. 13b)."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "high",
+   "high_basis": "definition",
+   "certainty_reason": "The paper's own description of the Walsh encoding it uses.",
+   "result_type": "setup",
+   "context": "qc",
+   "reader_inference": "The method is stated for real-valued data; the Walsh basis expansion is of the angle function g, not of the amplitudes."
+  },
+  {
+   "id_suggestion": "walsh-truncation-and-synthesis-error",
+   "value": "The authors state that if the angle function g is sparse or varies smoothly the truncation order d = |K| will be small, meaning only a subset of Walsh terms is needed; that under an incoherent error model the per-rotation synthesis error should satisfy δG < εp · d −1/2; and that the total error is the sum (or, for incoherent errors, the root-sum-square) of the synthesis error and the truncation error.",
+   "anchor": "Appendix B, Eq. (B.3), p.20",
+   "quotes": [
+    "if g is sparse or varies smoothly, the truncation order d = |K| will be small, meaning only a subset of Walsh terms is needed",
+    "which under an incoherent error model should satisfy δG < εp · d −1/2 to meet the target precision error (εp)",
+    "The total error is the sum (or, for incoherent errors, the root-sum-square) of the synthesis error and the truncation error from omitting small Walsh coefficients"
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "exact",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "Bounds stated without derivation under the paper's own error model.",
+   "result_type": "theoretical",
+   "context": "qc",
+   "reader_inference": "The statement that the total error is a sum or a root-sum-square is looser than the fixed linear constraint ε = εa + εp used elsewhere in the paper."
+  }
+ ]
+}
