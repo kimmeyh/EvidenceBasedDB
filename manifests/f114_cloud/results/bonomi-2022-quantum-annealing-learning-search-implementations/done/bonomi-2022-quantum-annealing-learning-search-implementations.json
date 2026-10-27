@@ -1,0 +1,1061 @@
+{
+ "papers": [
+  {
+   "record_id": "bonomi-2022-quantum-annealing-learning-search-implementations",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Bonomi-et-al._2022_Quantum-Annealing-Learning-Search-Implementations__2212.11132.pdf",
+   "title_in_file": "Quantum Annealing Learning Search Implementations",
+   "version_note": "arXiv:2212.11132v1 [cs.ET] 21 Dec 2022; the text layer is the paper named by the record. Tables 2 and 4 and the algorithm listings are flattened in the text layer, so table cell alignment is inferred from row and column order.",
+   "pages": 26,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An implementation and empirical test paper for QALS, a hybrid quantum-classical QUBO heuristic, run on a D-Wave Advantage 1.1 annealer on number partitioning and travelling salesman instances against D-Wave Hybrid, Embedding Composite, a classical exact algorithm and brute force.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qals-implementation-setup",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that the two implementations are in C++ and Python, run on the D-Wave machine, and are compared with the Hybrid procedure of the D-Wave suite as a baseline.",
+     "anchor": "Section 6, p.24",
+     "quotes": [
+      "The two implementations are in C++ and Python, respectively and they run on the D-Wave machine.",
+      "As a baseline, we compared the results with the Hybrid procedure available in the D-wave suite."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 6 p.24 states the paper's own setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "qals-npp-classical-exact-outperforms",
+     "verdict": "narrowed",
+     "note": "The paper's own NPP discussion limits the conclusion: the annealer-based results come from a single (or rarely double) run because machine time was short, and the authors say QALS performance could probably improve with a much higher number of annealer measurements.",
+     "value": "The authors report that on the number partitioning problem the classical exact algorithm outperforms both QALS and the D-Wave Hybrid procedure, and they state that quantum annealing and QALS are not of any practical use for this problem. They also state that the annealer-based results come from a single (or rarely double) run and that QALS performance could probably improve with a much higher number of annealer measurements.",
+     "anchor": "Section 6 p.24; Section 5 (introduction) p.15; Section 5.1 NPP results discussion p.18",
+     "quotes": [
+      "The results obtained on NPP show that quantum annealing, in general, and QALS, in particular, are not of any practical use in this case.",
+      "the classical exact algorithm used for NPP outperforms both QALS and Hybrid",
+      "have been obtained with a single (or rarely double) run.",
+      "The performance of QALS could probably improve by considering a much higher number of annealer measurements"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study. NOT upgraded.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Table 2 as read from the text layer also carries Sets Difference pairs in which the Hybrid entry is larger than the QALS entry (see new assertion qals-npp-table2-hybrid-worse-cells), which sits uneasily with the discussion's statement that Hybrid was better than QALS in results. Table cell alignment is from a flattened layer and should be checked against the PDF."
+    },
+    {
+     "id": "qals-tsp-larger-than-embedding-composite",
+     "verdict": "widened",
+     "note": "The paper gives the sizes: Embedding Composite is limited to QUBO matrices up to 196 x 196 (n = 14), while QALS and Hybrid were run for n between 32 and 72. The reported QALS and Embedding Composite results use a solution refinement step.",
+     "value": "The authors report that QALS processes travelling salesman problems of higher size than the Embedding Composite procedure used to map the problem to the topology: Embedding Composite handles up to n = 14 (QUBO matrix size 196), while for n between 32 and 72 only QALS and Hybrid work.",
+     "anchor": "Section 6 p.24; Section 4.2 p.14; Section 5.2 TSP results discussion p.23",
+     "quotes": [
+      "QALS is able to process problems with a higher size than the Embedding Composite procedure used to map the problem to the topology",
+      "EmbeddingComposite has an intrinsic limit: it works for QUBO matrices of size up to 196 × 196.",
+      "Regarding n = 14, which is the biggest dimension that Embedding Composite is able to manage",
+      "As concerns n between 32 and 72, only QALS and Hybrid work"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study. NOT upgraded.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "qals-tsp-solution-not-valid",
+     "verdict": "widened",
+     "note": "The paper adds that the unrefined solutions of both methods never satisfied the H_A constraints and that the reported TSP results are after a classical solution refinement step.",
+     "value": "The authors state that both QALS and Embedding Composite do not directly provide a valid solution on the travelling salesman problem, and the solution has to be manipulated to become valid. They report that the solutions found by QALS and Embedding Composite without refinement have never satisfied the HA constraints, so only results after refinement are reported.",
+     "anchor": "Section 6 p.24; Section 5.2 Solution refinement p.22",
+     "quotes": [
+      "However, both QALS and EC do not directly provide a valid solution; indeed, the solution has to be manipulated in order to become valid for the problem.",
+      "The solutions found by QALS and Embedding Composite without reﬁnement have never satisﬁed the HA constraints",
+      "both Embedding Composite and QALS have never produced valid TSP solutions, hence their results without reﬁnement have not been reported here."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study. NOT upgraded.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Every QALS and Embedding Composite TSP cost in Table 4 is after a randomised classical repair, so those costs are not costs of annealer-valid tours."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qals-abstract-scope-npp-tsp",
+     "value": "The authors state that the present work tests QALS on the Number Partitioning Problem (NPP) and the Travelling Salesman Problem (TSP).",
+     "anchor": "Abstract, p.1; Section 5, p.15",
+     "quotes": [
+      "The present work considers the Number Partitioning Problem (NPP) and the Travelling Salesman Problem (TSP) for the testing of QALS.",
+      "Two problems have been selected to test the performance of QALS:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Abstract and Section 5 state the paper's test scope.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-definition-guided-metaheuristic",
+     "value": "The authors define QALS as a guided meta-heuristic approach designed specifically to solve optimization problems that cannot be directly represented into the architecture of a quantum annealer.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "Quantum Annealing Learning Search (QALS) is a guided meta-heuristic approach designed specifically to solve optimization problems that cannot be directly represented into the architecture of a quantum annealer."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 3 opens with the paper's definition of QALS.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-tabu-matrix-definition",
+     "value": "The authors describe the tabu matrix S of QALS as a sum of outer products of the solutions to be penalized, whose contribution is to penalize already visited solutions and so prevent a redundant search in the solution space. The paper attributes the approach to earlier work.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "The idea of the approach suggested in [6] and further generalized in [7] is to initialize the QA by adding the so-called tabu matrix S to the weight matrix",
+      "The contribution of S is to penalize already visited solutions preventing a redundant search in the solution space.",
+      "The matrix S is constructed as the sum of outer products of the solutions to be penalized:"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited description of earlier work [6], [7]; not this paper's result.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-prior-convergence-argument",
+     "value": "The authors state that the original QALS proposal presented an argument for asymptotic convergence of the external annealing loop by reducing to a result on general tabu search, and that the original work did not include an empirical evaluation of QALS.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "The authors, by reducing to a result on general tabu search, presented an argument for the asymptotic convergence of the external annealing loop (i).",
+      "However, the work did not include an empirical evaluation of QALS."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result of earlier work [6].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "This paper proves no convergence result for its implementations; convergence is only inherited by citation."
+    },
+    {
+     "id_suggestion": "qals-prior-not-on-real-hardware",
+     "value": "The authors state that the tabu-based schema had not been applied to real problems on a real quantum computing architecture before this work, and that this motivates the present work.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Still, the tabu-based schema (ii) was not applied to real problems on a real quantum computing architecture, consideration that motivates the present work."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement of motivation and prior art.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-impl-differs-from-original",
+     "value": "The authors state that both implementations required systematic testing and some optimizations with respect to the original, mainly mathematical, formulation of QALS.",
+     "anchor": "Section 4, p.7",
+     "quotes": [
+      "Both required systematic testing and some optimizations with respect to the original, mainly mathematical, formulation of QALS"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 4 states the implementations depart from the original formulation.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-correctness-test-exhaustive-search",
+     "value": "The authors state that, because available quantum annealer time was very short, they checked the correctness of the implementations by replacing the annealer call with an exhaustive search on the energy equation that D-Wave minimizes, and that this does not simulate a quantum annealer, which is a probabilistic machine.",
+     "anchor": "Section 4, p.7",
+     "quotes": [
+      "the available machine time at our disposal was very short.",
+      "the call to the annealer was replaced with an exhaustive search on the same equation that D-Wave minimizes",
+      "we were not simulating the behaviour of a quantum annealer since it is a probabilistic machine."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 4 states the authors' own test setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-pt-q-p-cost-measured",
+     "value": "The authors report that computing the product of the permutation matrix transpose, the QUBO matrix and the permutation matrix could take up to 100 seconds, and that a sparse representation of the permutation matrix reduced the time to about 1.5 seconds.",
+     "anchor": "Section 4, pp.7-9",
+     "quotes": [
+      "the time required to compute it could",
+      "take up to 100 seconds.",
+      "The execution time for this computation was reduced to ≈ 1.5 seconds, but there was still room for improvement."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study. No machine or instance size is given.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-permutation-vector-complexity",
+     "value": "The authors state that permuting the matrix P has complexity O of n squared (printed O(n2)), that permuting the permutation vector perm has complexity O(n log n), and that with an inverse permutation vector the search operation becomes O(1).",
+     "anchor": "Section 4, pp.9-10",
+     "quotes": [
+      "The computational complexity of the permutation of P is O(n2). Instead, the permutation of perm has a complexity of O(n log n)",
+      "The resulting complexity for the search operation becomes O(1):"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Complexity statements without a stated proof or measurement.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-cpp-lack-of-apis",
+     "value": "The authors state that at the time of writing D-Wave provides only Python APIs, so a C++ program cannot directly interface with the D-Wave QPUs.",
+     "anchor": "Section 4.1, p.10",
+     "quotes": [
+      "At the time of writing, D-Wave provides only Python APIs. Therefore, a C++ program can not directly interface with D-Wave’s QPUs."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement about a vendor interface at one date.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-cpp-fork-pipe-design",
+     "value": "The authors state that the C++ implementation, because the Leap IDE does not provide the Python.h header, starts a Python child process by a fork operation and exchanges the topology, the problem entries and the solution with it through anonymous pipes.",
+     "anchor": "Section 4.1, pp.10-12",
+     "quotes": [
+      "the QALS algorithm is run on the Leap IDE, which does not provide the required Python.h header.",
+      "In the second approach (the one that has been used), at the startup, the C++ executable generates a Python child process by means of a fork operation.",
+      "the Python process ﬁrst retrieves the annealer’s topology and sends it to the C++ process via an anonymous pipe."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 4.1 describes the paper's own implementation design.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-cpp-pipe-overhead-measured",
+     "value": "The authors report that the message exchange between the C++ process and the Python process took about 1 second with 5000 variables, measured without calling the quantum annealer, and they state that this might cancel the benefit of using C++ instead of Python.",
+     "anchor": "Section 4.1, p.12",
+     "quotes": [
+      "The transmission took ≈ 1 second using 5000 variables, which is almost the Pegasus architecture limit.",
+      "it might cancel the beneﬁt of using C ++ instead of Python."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-rand-modulo-bias-period",
+     "value": "The authors state that the modulo operation on C++ rand() does not give numbers with equal probability, that the period of rand() is typically the value printed as 232 (an exponent printed flat, two to the power thirty-two) but depends on the implementation, and that rand() was therefore not a reasonable choice for permuting vectors with more than 5000 variables.",
+     "anchor": "Section 4.1, pp.12-13",
+     "quotes": [
+      "the modulo operation (used to restrict the generated numbers to the required range) does not yield numbers with equal probability.",
+      "The period of rand() is typically 232, but it depends on the implementations.",
+      "Since the algorithm presented in [6] has to permute vectors with more than 5000 variables, rand() was not a reasonable choice."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's argument with a textbook modulo-bias example; no measurement.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-qrng-rejected-cost",
+     "value": "The authors report that generating random numbers with the quantum annealer would need 13 runs of about 0.3 seconds each, about 3.9 seconds of overhead per QALS iteration, and they state that it is not a feasible approach.",
+     "anchor": "Section 4.1, p.13",
+     "quotes": [
+      "each run of Algorithm 7 requires around 0.3 seconds (on average).",
+      "the overhead for each iteration of QALS would be around 3.9 seconds.",
+      "the quantum annealer would be called 13 times more than usual",
+      "Obviously, it is not a feasible approach."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study. An estimate from the stated figures.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-mersenne-twister-choice",
+     "value": "The authors state that they chose the Mersenne Twister, with a period printed as 219937 − 1 (an exponent printed flat, two to the power nineteen thousand nine hundred thirty-seven, minus one), for the C++ random numbers.",
+     "anchor": "Section 4.1, p.13",
+     "quotes": [
+      "In the end, we chose the Mersenne Twister, which uses a period of 219937 − 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 4.1 states the paper's own implementation choice.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-mersenne-twister-limit",
+     "value": "The authors state that the Mersenne Twister does not guarantee quality in random number generation and is not sufficient to produce all possible sequences, and call it the best compromise they found between efficiency and coverage of the space of permutations.",
+     "anchor": "Section 4.1, p.13",
+     "quotes": [
+      "This does not guarantee quality in random numbers generation",
+      "Although it is not suﬃcient to produce all possible sequences, it is the best compromise we found between eﬃciency and coverage of the space of permutations."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 4.1 states the limit of the authors' own generator choice.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-embeddingcomposite-limit-196",
+     "value": "The authors state that EmbeddingComposite works for QUBO matrices of size up to 196 by 196, and that a custom embedding algorithm was therefore the best choice for the Python implementation, also used in the C++ implementation.",
+     "anchor": "Section 4.2, p.14",
+     "quotes": [
+      "EmbeddingComposite has an intrinsic limit: it works for QUBO matrices of size up to 196 × 196.",
+      "Therefore, a custom algorithm was the best choice for us.",
+      "this custom algorithm has been implemented in Python and used also in the C++ implementation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "196 is 14 squared, which matches the TSP size 14 and QUBO size 196 row of Table 4."
+    },
+    {
+     "id_suggestion": "qals-pegasus-working-qubits",
+     "value": "The authors state that 97% of the total number of qubits is actually available and that the D-Wave function lists only 5436 qubits for the Pegasus topology.",
+     "anchor": "Section 4.2, p.14",
+     "quotes": [
+      "97% of the total number of qubits is actually available",
+      "for instance, the function returns only 5436 qubits for the Pegasus topology."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A device-instance count at the time of the runs, from one machine.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-pegasus-vendor-description",
+     "value": "The authors describe Pegasus as the successor of Chimera with 5700 qubits, with each qubit linked to 12 other qubits by internal couplers, and give 2048 qubits for Chimera.",
+     "anchor": "Section 1, p.2; Section 2.2, p.4",
+     "quotes": [
+      "(2048 for Chimera and 5700 for Pegasus)",
+      "Pegasus is the successor of Chimera and presents 5700 qubits.",
+      "each qubit is linked to 12 other qubits by means of internal couplers"
+     ],
+     "kind": "cited",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "The paper restates a vendor's description of its own hardware [11].",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-hybrid-default-config",
+     "value": "The authors state that the default hybrid configuration provided by D-Wave was used, that Hybrid does not support the number of reads parameter, and that Hybrid would fail if launched in parallel with other Hybrid processes.",
+     "anchor": "Section 2.4, p.5; Section 4.2, p.15; Section 5.2, p.21",
+     "quotes": [
+      "the default hybrid conﬁguration provided by D-Wave has been used",
+      "whereas Hybrid does not support it.",
+      "Hybrid would fail if launched in parallel with other Hybrid processes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own baseline setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-npp-run-count-limit",
+     "value": "The authors state that in all NPP tests the annealer-based results come from a single (or rarely double) run because the time available on the quantum annealer was too little, and that TSP was run multiple times because it needs less QPU usage per run.",
+     "anchor": "Section 5, p.15",
+     "quotes": [
+      "In all NPP tests, the results for the approaches that make use of the quantum annealer have been obtained with a single (or rarely double) run.",
+      "Indeed, the time available on the quantum annealer was too little to perform more of them.",
+      "Instead, in TSP, we have performed multiple runs due to the less QPU usage per run."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 5 states the limit of the paper's own experimental design.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "With one run per NPP cell no variance can be estimated for the QALS and Hybrid NPP figures."
+    },
+    {
+     "id_suggestion": "qals-npp-qubo-formulation",
+     "value": "The authors state that the NPP QUBO formulation used, taken from a tutorial, minimises the squared difference of the two subset sums and gives the matrix entries Qii = si (si − c) and Qij = Qji = sisj, where c is the sum of the numbers.",
+     "anchor": "Section 5.1, p.16",
+     "quotes": [
+      "experiments has been taken from [20].",
+      "Qii = si (si − c) Qij = Qji = sisj",
+      "Instead of directly minimizing the diﬀerence, let us minimize its value squared"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A formulation cited from Glover et al. [20].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-npp-worked-example",
+     "value": "The authors give a worked example with eight numbers (8, 21, 6, 7, 16, 9, 10, 27) in which c squared is 10816, the QUBO solution is x = (1,1,1,1,0,0,1,0) with y = -2704, and the squared difference is 0.",
+     "anchor": "Section 5.1 Example, p.17",
+     "quotes": [
+      "S = [8, 21, 6, 7, 16, 9, 10, 27] It follows that c2 = 10816",
+      "The solution to the QUBO problem is x = (1,1,1,1,0,0,1,0), for which y = -2704",
+      "10816 + 4 · (−2704) = 10816 − 10816 = 0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An arithmetic illustration; not an experiment.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The listed x selects 8, 21, 6, 7 and 10 (index 7, 1-based), summing to 52 of the total 104, which matches a zero difference."
+    },
+    {
+     "id_suggestion": "qals-npp-classical-ckk",
+     "value": "The authors state that the classical comparison for NPP is the Complete Karmarkar-Karp algorithm (CKK), an exact algorithm of exponential time complexity in the worst case, using the implementation provided by Pedroso and Kubo [23].",
+     "anchor": "Section 5.1, p.17",
+     "quotes": [
+      "The latter is the basis of an exact (and exponential time) algorithm originally proposed in [22] and tested in [23], i.e., the Complete Karmarkar-Karp algorithm (CKK).",
+      "The complexity of the algorithm is exponential in the worst case",
+      "In this work, the implementation of CKK provided by [23] has been used for comparison in the experiments."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 5.1 states the paper's own classical comparator.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-npp-setup-hardware",
+     "value": "The authors state that the NPP runs were launched on the Leap cloud, one at a time, that the annealing parameters were the defaults on the Advantage 1.1 system for QALS, that Hybrid manages these properties autonomously, and that all NPP results came from the C++ implementation, checked with the Python implementation.",
+     "anchor": "Section 5.1, p.17-18",
+     "quotes": [
+      "The runs have been launched on the Leap cloud from the command line.",
+      "the default values have been used for QALS (the system used is Advantage 1.1)",
+      "all NPP results have been obtained using the C++ implementation, whereas the Python implementation has been exploited to check them."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 5.1 states the paper's own experimental setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-npp-qals-parameters",
+     "value": "The authors report the QALS parameters used in all NPP tests (Table 1) as the values 0.1, 0.01, 0.2, 10, 1.5, 10, 100 and 70, in the order of the parameters minimum permutation probability, decreasing rate, perturbation probability, N, initial balancing factor, k, Nmax and dmin.",
+     "anchor": "Table 1, Section 5.1, p.18; parameter legend, Section 5, p.15",
+     "quotes": [
+      "0.1 0.01 0.2 10 1.5 10 100 70",
+      "k is the number of annealer measurements for each problem submitted to it"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Table 1 states the paper's own parameter values.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The order is the column order of Table 1 as flattened in the text layer; Nmax and dmin are the termination parameters of Algorithm 1."
+    },
+    {
+     "id_suggestion": "qals-npp-instance-generation",
+     "value": "The authors state that NPP instances were vectors of integers in the range [1, Range], for example 500 integers in [1, 100], and that Sets Difference is the difference between the two resulting sets.",
+     "anchor": "Section 5.1, p.18",
+     "quotes": [
+      "Range represents the upper limit of the number generation interval ( [1, Range] )",
+      "a vector of 500 integer numbers in the range [1, 100] is used",
+      "Sets Diﬀerence corresponds to the diﬀerence between the two resulting sets."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 5.1 defines the paper's own instance family.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-npp-hybrid-faster-better-text",
+     "value": "The authors report that on NPP the QALS algorithm did not perform as well as expected, that Hybrid was better in results and faster than QALS, and that the classical algorithm was very fast and always returned the best solution for the given set.",
+     "anchor": "Section 5.1 NPP results discussion, p.18",
+     "quotes": [
+      "The QALS algorithm did not perform as well as expected.",
+      "Hybrid turned out to be better in terms of results and faster in terms of computational time.",
+      "the classical algorithm used for comparison proved to be very fast and always returned the best solution for the given set S."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Table 2 as flattened shows three pairs where the Hybrid Sets Difference is larger than QALS (see qals-npp-table2-hybrid-worse-cells), so 'Hybrid better' is not true in every cell."
+    },
+    {
+     "id_suggestion": "qals-npp-table2-time-large",
+     "value": "The authors' NPP results table lists Time(s) groups of three values, read as QALS, Hybrid and Classical: 9414, 260 and 0.318; 9413, 267 and 0.437; 9168, 263 and 0.464; 9507, 260 and 0.479; and, in another block, 2172, 6 and 0.003; 2157, 9 and 0.005; 2151, 12 and 0.004; 1992, 14 and 0.005.",
+     "anchor": "Table 2, pp.18-19 (Time(s) columns)",
+     "quotes": [
+      "9414 260 0.318 9413 267 0.437 9168 263 0.464 9507 260 0.479",
+      "2172 6 0.003 2157 9 0.005 2151 12 0.004 1992 14 0.005"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The first block is the last block of the table (5436 numbers), the second is the first block (500 numbers); QALS takes thousands of seconds against under half a second for the classical algorithm. The group-to-Dimension mapping comes from the flattened table and should be checked against the PDF."
+    },
+    {
+     "id_suggestion": "qals-npp-table2-hybrid-worse-cells",
+     "value": "The authors' NPP results table lists Sets Difference value pairs 475860 and 2340912, 145982 and 186624, and 303833 and 781440, each listed in the QALS then Hybrid order for the same Dimension and Range.",
+     "anchor": "Table 2, pp.18-19 (Sets Difference column)",
+     "quotes": [
+      "475860 2340912",
+      "145982 186624",
+      "303833 781440"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Read in that order, the Hybrid Sets Difference is larger (worse) than QALS in these three cells (dimensions 500 and 1200), against the text's statement that Hybrid was better in results. The row alignment comes from a flattened table layer; verify against the PDF before relying on it."
+    },
+    {
+     "id_suggestion": "qals-npp-more-measurements-limit",
+     "value": "The authors state that the time at their disposal was too little to use more annealer measurements, and that the annealer is subject to noise and temperature effects, with larger output samples increasing the probability of obtaining a solution close to the optimum.",
+     "anchor": "Section 5.1, p.18",
+     "quotes": [
+      "the D-Wave quantum annealer is subjected to noise and temperature eﬀects, and larger output samples would increase the probability of obtaining a solution close to the optimum.",
+      "Nevertheless, the time at our disposal was too little to consider higher k values."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 5.1 states the limit of the paper's own experiments.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-tsp-qubo-formulation-and-penalties",
+     "value": "The authors state that the TSP QUBO uses a Hamiltonian from Lucas with a constraint part HA and a route-length part HB, that the constants must satisfy 0 < B(max(Wuv)) < A, and that in the experiments B was set to 1 and A to n times max(Wuv).",
+     "anchor": "Section 5.2, p.19",
+     "quotes": [
+      "there exists a QUBO formulation for it.",
+      "relationship must be satisﬁed: 0 < B(max(Wuv)) < A.",
+      "In the experiments, B was set to 1 and A was set to n × max(Wuv)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited formulation [24] plus the paper's own constants.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-tsp-edge-weights-range",
+     "value": "The authors state that in all TSP experiments the edge weights (city distances) are real numbers in the range [0, 10].",
+     "anchor": "Section 5.2, p.21",
+     "quotes": [
+      "the Wu,v edge weights (city distances) are real numbers in the range [0, 10]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 5.2 states the paper's own instance setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-tsp-setup-parameters",
+     "value": "The authors report that the TSP QALS parameters were the values 0.1, 0.2, 0.2, 5, 1.5, 5, 100 and 70, that the same number of annealer measurements (k = 5) was used for Embedding Composite, that default annealing parameters were used on Advantage 1.1, and that results came mainly from the Python implementation with the C++ implementation used to check them and Brute Force run in C++.",
+     "anchor": "Table 3 and Section 5.2, p.21",
+     "quotes": [
+      "0.1 0.2 0.2 5 1.5 5 100 70",
+      "the same number of annealer measurements (k = 5) has been used for Embedding Composite",
+      "the default values have been used for both Embedding Composite and QALS (the system used is Advantage 1.1)",
+      "Brute Force has been executed using a C++ implementation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 5.2 states the paper's own setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-tsp-refinement-never-valid",
+     "value": "The authors state that solutions from QALS and Embedding Composite without refinement never satisfied the HA constraints, as opposed to Hybrid, and that they explain this for QALS by the fact that only a subpart of the problem including the constraints is mapped to the annealer at each iteration. They note these statements rest on the empirical results obtained.",
+     "anchor": "Section 5.2 Solution refinement, p.22",
+     "quotes": [
+      "as opposed to the ones generated by Hybrid.",
+      "since only a subpart of the entire problem (including the encoding of the constraints) is mapped to the annealer at each iteration",
+      "These statements are based on the empirical results obtained."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study. The cause given for QALS is the authors' explanation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-tsp-refinement-procedure",
+     "value": "The authors describe a refinement procedure that turns a non-valid annealer solution into a valid TSP tour by keeping the positions that are already unique, then choosing randomly among available nodes and shuffling duplicates, and they state that it does not affect an already valid solution or the nodes whose position is already unique.",
+     "anchor": "Section 5.2 Solution refinement, p.23",
+     "quotes": [
+      "a random value d ∈ Di is chosen",
+      "The reﬁnement procedure does not aﬀect the original solution if it is already valid; if the solution is not valid, the algorithm does not aﬀect the nodes whose position is already unique in the cycle.",
+      "a random value l ∈ L is chosen"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 5.2 defines the paper's own refinement procedure.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The refinement is classical and random, so the quality of the 'with S.R.' costs mixes annealer output with the repair; the paper reports no cost for the unrefined solutions because none were valid."
+    },
+    {
+     "id_suggestion": "qals-tsp-table4-size10-12-14-costs",
+     "value": "The authors' TSP results table lists mean TSP costs, in the order Brute Force, Hybrid, E.C. with S.R. and QALS with S.R., of 35.20, 36.94, 55.13 and 49.95 for size 10; 26.21, 33.43, 52.91 and 54.77 for size 12; and 33.94, 49.48, 67.50 and 74.58 for size 14.",
+     "anchor": "Table 4, p.22 (the mean cost column)",
+     "quotes": [
+      "TSP Size 10 12 14 32 64 72 74",
+      "35.20 36.94 55.13 49.95",
+      "26.21 33.43 52.91 54.77",
+      "33.94 49.48 67.50 74.58"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The table is flattened; the order of approaches is the order printed in the Approach column. QALS is the better of the two annealer-based methods only at size 10."
+    },
+    {
+     "id_suggestion": "qals-tsp-table4-size10-12-14-times",
+     "value": "The authors' TSP results table lists average times in seconds, in the order Brute Force, Hybrid, E.C. with S.R. and QALS with S.R., of 48, then 13.78, 94.66 and 64.83 for size 10; 56.8, 14.86, 132.96 and 265.3 for size 12; and 10630, 15.7, 465 and 180 for size 14.",
+     "anchor": "Table 4, p.22 (the Avg. Time column)",
+     "quotes": [
+      "TSP Size 10 12 14 32 64 72 74",
+      "Avg. Time (s) 48",
+      "13.78 94.66 64.83",
+      "56.8 14.86 132.96 265.3",
+      "10630 15.7 465 180"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "At size 14 QALS (180 s) is faster than Embedding Composite (465 s) but slower than Hybrid (15.7 s); at size 12 it is slower than both."
+    },
+    {
+     "id_suggestion": "qals-tsp-qals-vs-ec-small",
+     "value": "The authors report that at n = 10 QALS performed better than Embedding Composite but not as well as Hybrid, while at n = 12 and n = 14 Embedding Composite gave better solutions than QALS.",
+     "anchor": "Section 5.2 TSP results discussion, p.23",
+     "quotes": [
+      "Starting from the smallest problem (with n = 10), QALS has performed better than Embedding Composite but not as good as Hybrid",
+      "Regarding n = 14, which is the biggest dimension that Embedding Composite is able to manage",
+      "Instead, with n = 12, Embedding Composite has turned out to be better.",
+      "the approach just mentioned has produced again better solutions w.r.t. QALS."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Where Embedding Composite can run (n up to 14) it beats QALS on cost at 2 of the 3 sizes; QALS's advantage is reach, not cost."
+    },
+    {
+     "id_suggestion": "qals-tsp-hybrid-always-better-large",
+     "value": "The authors report that for n between 32 and 72 Hybrid was always faster and better than QALS, and that only Hybrid supports n = 74, even though the QUBO size of 5476 exceeds the number of available qubits.",
+     "anchor": "Section 5.2 TSP results discussion, p.23; Table 4, p.22",
+     "quotes": [
+      "with Hybrid being always faster and better than QALS.",
+      "Finally, only Hybrid supports problem with n = 74.",
+      "As concerns n between 32 and 72, only QALS and Hybrid work",
+      "QUBO Size 100 144 196 1024 4096 5184 5476"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "This conflicts with the Introduction's sentence that the proposed method tackles bigger problems than the standard hybrid solution: at n = 74 only Hybrid ran."
+    },
+    {
+     "id_suggestion": "qals-intro-bigger-than-hybrid-claim",
+     "value": "The authors state in the Introduction that the results show the proposed method permits to tackle bigger problems with respect to the standard hybrid solution.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "The results show that the proposed method permits to tackle bigger problems w.r.t. the standard hybrid solution."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's summary claim; contradicted in detail by Section 5.2 (only Hybrid supports n = 74).",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The body and conclusion support only that QALS handles larger sizes than Embedding Composite; Section 5.2 shows Hybrid reaching a larger size than QALS."
+    },
+    {
+     "id_suggestion": "qals-tsp-hybrid-explanation-speculative",
+     "value": "The authors state that Hybrid probably ignores the non-connected edges of an incomplete graph (none of their graphs is complete), saving unused qubits, and that Hybrid's good results are mostly related to its running multiple solvers in parallel.",
+     "anchor": "Section 5.2 TSP results discussion, pp.23-24",
+     "quotes": [
+      "Probably, if a graph",
+      "is not complete (none of ours is complete), Hybrid ignores the non-connected edges saving a lot of unused qubits.",
+      "Hybrid’s good results are mostly related to the nature of the method, which runs multiple solvers in parallel."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conjecture, stated with 'Probably'.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-tsp-more-measurements-limit",
+     "value": "The authors state that Embedding Composite and QALS performance could probably improve with a far higher number of annealer measurements, and that the time available was again too little to consider higher k values.",
+     "anchor": "Section 5.2, p.24",
+     "quotes": [
+      "the performance of both Embedding Composite and QALS could probably improve by considering a far higher number of annealer measurements",
+      "Nevertheless, the time available to us was, again, too little to consider higher k values."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 5.2 states the limit of the paper's own experiments.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-abstract-unexpected-results",
+     "value": "The authors state in the Abstract that the results turn out to be quite unexpected, with QALS not being able to perform as well as the other considered methods, especially in NPP, where classical methods outperform quantum annealing in general.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "The results turn out to be quite unexpected, with QALS not being able to perform as well as the other considered methods, especially in NPP, where classical methods outperform quantum annealing in general."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-conclusion-primary-goal-fulfilled",
+     "value": "The authors conclude that the goal of introducing QALS, namely treating QUBO problems not directly mappable to the machine topology, has been empirically fulfilled, because QALS processes problems of higher size than the Embedding Composite procedure.",
+     "anchor": "Abstract p.1; Section 6, p.24",
+     "quotes": [
+      "Nevertheless, looking at the TSP tests, QALS has fulﬁlled its primary goal, i.e., processing QUBO problems not directly mappable to the QPU topology.",
+      "this shows that the goal of the introduction of QALS, namely treating QUBO problems not directly mappable to the machine topology, has been empirically fulﬁlled."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion from one study on one problem family.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The tested sizes reach QUBO size 5184 (n = 72) only on TSP, with a classical repair step needed for validity."
+    },
+    {
+     "id_suggestion": "qals-conclusion-npp-not-quantum-advantage-opinion",
+     "value": "The authors state as their opinion that NPP, despite its natural representability as a QUBO problem, is not the kind of problem on which an advantage can be expected using the quantum architecture, and they argue that Hybrid works well on it because it exploits classical efficiency.",
+     "anchor": "Section 6, p.24",
+     "quotes": [
+      "In our opinion, NPP, despite its natural representability as a QUBO problem, is not the kind of problem on which we can expect an advantage using the quantum architecture.",
+      "Hybrid includes classical methods, so we argue that it works well on this particular problem because it exploits the classical eﬃciency."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's opinion.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-conclusion-npp-practically-solved",
+     "value": "The authors state that the number partitioning problem can be considered practically solved by the available classical exact solution.",
+     "anchor": "Section 6, p.24",
+     "quotes": [
+      "the problem can be considered practically solved by the available classical exact solution."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's judgment.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-conclusion-cpp-python-competitive",
+     "value": "The authors state that the C++ implementation has better performance in the classical part but pays the price of coupling with the D-Wave APIs, which are available in Python only, and that for this reason the Python implementation proves to be competitive.",
+     "anchor": "Section 6, p.24",
+     "quotes": [
+      "The implementation in C++ has the advantage of having better performance in the classical part",
+      "for this very reason, the Python implementation proves to be competitive."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; no head-to-head timing of the two implementations is reported in the text.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-conclusion-cpp-interface-argument",
+     "value": "The authors argue that the availability of C++ interfaces to the D-Wave machines, once present and now apparently discontinued, would make the development of efficient hybrid algorithms easier.",
+     "anchor": "Section 6, p.24",
+     "quotes": [
+      "We argue that the availability of C++ interfaces to the D-Wave machines, once present and now apparently discontinued, would make the development of eﬃcient hybrid algorithms easier."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's argument.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-conclusion-hybrid-not-a-competitor",
+     "value": "The authors state that the comparison with Hybrid is a necessary baseline but, because Hybrid is a race among different algorithms, it cannot be an effective competitor for drawing scientific conclusions.",
+     "anchor": "Section 6, p.24",
+     "quotes": [
+      "We note that the comparison with respect to Hybrid is a necessary baseline but, given its nature of race among diﬀerent algorithms, cannot be an eﬀective competitor for drawing scientiﬁc conclusions."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 6 states a limit on what the Hybrid comparison supports.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-conclusion-practical-potential-tsp",
+     "value": "The authors conclude that their implementations of QALS work on TSP and could have practical potential on hard problems where the QUBO representation is not directly mappable to the topology.",
+     "anchor": "Section 6, p.24",
+     "quotes": [
+      "We conclude that our implementations of QALS work on TSP and could have practical potential on hard problems where the QUBO representation is not directly mappable to the topology."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion, hedged with 'could'.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qals-expectation-annealer-outperform",
+     "value": "The authors state that the large qubit counts of commercial annealers led to the expectation that annealers could in principle, for specific problems, provide solutions that outperform classical counterparts.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "This led to the expectation that the application of quantum annealers could in principle, for speciﬁc problems, provide solutions that outperform classical counterparts"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement of background expectation.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
