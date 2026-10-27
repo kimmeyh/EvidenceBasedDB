@@ -1,0 +1,973 @@
+{
+ "papers": [
+  {
+   "record_id": "benedetti-2021-variational-inference-quantum-computer",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2021-03_Benedetti_Variational-Inference-with-a-Quantum-Computer.pdf",
+   "title_in_file": "Variational inference with a quantum computer",
+   "version_note": "arXiv:2103.06720v3, dated October 28, 2021 (arXiv stamp 4 Nov 2021).",
+   "pages": 17,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A paper that uses quantum Born machines as variational distributions for approximate inference in classical Bayesian networks, with an adversarial KL objective and a kernelized Stein discrepancy objective, tested in simulation and on a five-qubit IBM processor.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "born-machines-two-vi-methods",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that they use quantum Born machines as variational distributions over discrete variables and adopt two realizations: one with an adversarial objective and one based on the kernelized Stein discrepancy.",
+     "anchor": "Abstract, page 1",
+     "quotes": [
+      "we use quantum Born machines as variational distributions over discrete variables.",
+      "we adopt two specific realizations: one with an adversarial objective and one based on the kernelized Stein discrepancy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Abstract, and Sections IV A and IV B, state the two methods.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "claimed-beyond-classical-representable",
+     "verdict": "narrowed",
+     "note": "Appendix A limits the claim: it discusses only representational power, not learnability, and leaves the construction of such a posterior to future work.",
+     "value": "The authors claim in the abstract that their techniques enable efficient variational inference with distributions beyond those that are efficiently representable on a classical computer. Appendix A states that they are discussing only representational power and not learnability, and that the construction of an intractable posterior from the prior and likelihood is left for future work.",
+     "anchor": "Abstract, page 1; Appendix A, page 11",
+     "quotes": [
+      "Our techniques enable efficient variational inference with distributions",
+      "beyond those that are efficiently representable on a classical computer.",
+      "We leave this construction for future work.",
+      "we are discussing only representational power and not learnability, which is a separate issue."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "hardware-lung-cancer-network-degraded",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors report that on the five-qubit ibmq rome processor the trained hardware model was still able to pick three out of four highest probability configurations of the lung cancer network, although performance suffers on the hardware compared with the simulated Born machine.",
+     "anchor": "Section V C, page 9",
+     "quotes": [
+      "but the performance suffers on the hardware.",
+      "the trained hardware model is still able to pick three out of four highest probability configurations of the network"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "ksd-method-needs-explicit-priors",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that a limitation of the kernelized Stein discrepancy approach is that it requires explicit priors and likelihoods.",
+     "anchor": "Section VI, page 10",
+     "quotes": [
+      "A limitation of this approach is that it requires explicit priors and likelihoods."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section VI states the limit of the method.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "born-machine-definition",
+     "value": "The authors define the Born machine as a normalized quantum state parameterized by theta that outputs n-bit strings with probabilities given by the squared magnitude of the overlap of each computational basis state with that state, and to allow amortization they let the observed variables x play the role of additional parameters.",
+     "anchor": "Section III, page 3",
+     "quotes": [
+      "The Born machine is a normalized quantum state",
+      "that outputs n-bit strings with probabilities",
+      "we let x play the role of additional parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III defines the model used throughout.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "born-machine-implicit-model",
+     "value": "The authors state that Born machines can be effectively regarded as implicit models: an unbiased sample is easy to obtain by executing the circuit and measuring the computational basis, but estimating the probability of a sample with multiplicative error requires exponential resources.",
+     "anchor": "Section III, page 4",
+     "quotes": [
+      "Born machines can be effectively regarded as implicit models.",
+      "it requires exponential resources to estimate the probability of a sample with multiplicative error."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "iqp-born-machines-hard-cited",
+     "value": "The authors state, citing other work, that instantaneous quantum polytime circuits are Born machines with polynomially many parameters that yield classically intractable distributions in the average case under widely accepted complexity theoretic assumptions.",
+     "anchor": "Section III, page 3",
+     "quotes": [
+      "instantaneous quantum polytime (IQP) circuits are Born machines with O(poly(n)) parameters that yield classically intractable distributions in the average case under widely accepted complexity theoretic assumptions [81]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "born-expressive-power-cited",
+     "value": "The authors state that quantum Born machines have expressive power larger than that of classical models, including neural networks and partially matrix product states, citing other work.",
+     "anchor": "Section III, page 3",
+     "quotes": [
+      "Thus, quantum Born machines have expressive power larger than that of classical models, including neural networks [85] and partially matrix product states [86]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "born-intractable-throughout-training-cited",
+     "value": "The authors state, citing other work, that it can be shown that the model remains classically intractable throughout training.",
+     "anchor": "Section III, pages 3 to 4",
+     "quotes": [
+      "It can be shown that the model remains",
+      "intractable throughout training [43]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "inference-hardness-cited",
+     "value": "The authors state that Roth, extending results of Cooper, showed that exact inference in Bayesian networks with discrete variables is sharpP-complete, and that Dagum and Luby showed that even approximate inference is NP-hard.",
+     "anchor": "Section II, page 3",
+     "quotes": [
+      "showed that exact inference in Bayesian networks with discrete variables is sharpP-complete.",
+      "showed that even approximate inference is NP-hard."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mcmc-versus-vi-tradeoff",
+     "value": "The authors state that MCMC methods have nice theoretical guarantees but may converge slowly in practice, whereas VI is often faster in high dimensions but does not come with guarantees.",
+     "anchor": "Section II, page 3",
+     "quotes": [
+      "MCMC methods have nice theoretical guarantees, but they may converge slowly in practice [9].",
+      "In contrast, VI is often faster in high dimensions but does not come with guarantees."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "implicit-models-hard-to-train",
+     "value": "The authors state that implicit models are challenging to train with standard methods because likelihoods are prohibited, and that valid objectives involve only statistical quantities, such as expectation values, that can be efficiently estimated from samples.",
+     "anchor": "Section III, page 4",
+     "quotes": [
+      "Implicit models are challenging to train with standard methods.",
+      "Valid objectives involve only statistical quantities (such as expectation values) that can be efficiently estimated from samples [90]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scope-classical-graphical-models",
+     "value": "The authors state that, unlike the approaches that use variational ideas for thermal states and quantum data, and unlike those that encode Bayesian networks in a quantum state for exact inference, their inference methods apply to classical graphical models and classical data and are approximate and efficient.",
+     "anchor": "Section III, page 4",
+     "quotes": [
+      "In contrast, our inference methods apply to classical graphical models and classical data.",
+      "In contrast, our inference methods are approximate, efficient, and apply also to graphical models that are not Bayesian networks."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section III states the scope of the methods.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "opvi-framework-conditions-cited",
+     "value": "The authors state, citing operator variational inference, that it uses mathematical operators to design objectives for the approximate posterior, and that suitable operators are those for which the minima of the variational objective is attained at the true posterior and the objective can be estimated without computing the true posterior.",
+     "anchor": "Section IV, page 4",
+     "quotes": [
+      "Operator variational inference (OPVI) [96] is a rather general method that uses mathematical operators to design objectives for the approximate posterior.",
+      "(i) the minima of the variational objective is attained at the true posterior, and (ii) it is possible to estimate the objective without computing the true posterior."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tvd-benchmark-choice",
+     "value": "The authors state that the KL divergence is an f divergence and the Stein discrepancy is an integral probability metric, that these two families intersect nontrivially only at the total variation distance as shown in other work, and that for this reason they choose the total variation distance as the benchmark in the numerical results.",
+     "anchor": "Section IV, page 4",
+     "quotes": [
+      "As shown in Ref. [97], these two families intersect nontrivially only at the total variation distance (TVD).",
+      "It is for this reason that we choose the TVD as our benchmark in later numerical results."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kl-objective-definition",
+     "value": "The authors obtain the KL-divergence objective from the operator variational objective by choosing h to be the identity function and state that, assuming the posterior is positive for all x and z, the objective's minimum is zero and is attained by the true posterior.",
+     "anchor": "Section IV A, pages 4 to 5",
+     "quotes": [
+      "This is obtained from Eq. (1) by choosing h to",
+      "be the identity function",
+      "To avoid singularities we assume that p(z|x) > 0 for all x and all z.",
+      "The objective's minimum is zero and is attained by the true posterior"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section IV A defines the objective and states its condition.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adversarial-ratio-estimation-method",
+     "value": "The authors state that, because the Born machine is implicit, the ratio of its density to the prior cannot be computed efficiently, so they estimate it from the output of a binary classifier trained on samples from the Born machine and from the prior, and use the classifier's log odds in the Born machine objective.",
+     "anchor": "Section IV A, page 5",
+     "quotes": [
+      "cannot be computed efficiently. Therefore, we introduce an adversarial method for approximately estimating the ratio above.",
+      "this ratio can be estimated from the output of a binary classifier [87]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV A describes the method.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "logit-approximates-log-ratio",
+     "value": "The authors state that the log odds given by the trained classifier are an approximation to the log ratio of the Born machine distribution and the prior, and that the approximation is exact if the classifier is the optimal classifier.",
+     "anchor": "Section IV A, page 5",
+     "quotes": [
+      "The log odds are an approximation to the log ratio of the two distributions, i.e.,",
+      "which is exact if"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV A states the approximation and its exact case.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "optimal-classifier-gradient-vanishes",
+     "value": "The authors state in Appendix B that, assuming the optimal discriminator has been found, the gradient of its expectation vanishes, and show that the second term of the product-rule expansion is zero because the probabilities sum to a constant.",
+     "anchor": "Appendix B, page 11",
+     "quotes": [
+      "Assuming that the optimal discriminator",
+      "the gradient of its expectation vanishes.",
+      "The second term is zero since"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Appendix B derives the vanishing term under the stated assumption of an optimal discriminator.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "parameter-shift-gradient-adversarial",
+     "value": "The authors state that, for circuit gates generated by a Hermitian operator whose eigenvalues are ±1, such as single-qubit rotations, the derivative of the output probabilities can be evaluated with the parameter shift rule, and they give the partial derivative of the adversarial objective with respect to a circuit parameter given the optimal discriminator.",
+     "anchor": "Appendix B, page 11",
+     "quotes": [
+      "has eigenvalues ±1 (e.g., single-qubit rotations)",
+      "can be evaluated with the parameter shift rule [126–128]:",
+      "In summary, the partial derivative of the objective"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Appendix B states the gate condition and the resulting derivative.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "stein-operator-definition",
+     "value": "The authors state that a Stein operator is independent from q and is characterized by having zero expectation under the true posterior for all functions f in the chosen family.",
+     "anchor": "Section IV B, page 5",
+     "quotes": [
+      "A Stein operator is independent from q and is characterized by having zero expectation under the true posterior for all functions f in the chosen family"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section IV B defines it.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "stein-operator-valid-binary-proof",
+     "value": "The paper proves, for binary variables, that the stated operator satisfies Stein's identity, that is, has zero expectation under the true posterior, for any function f and any posterior mass function that is positive on all binary vectors, so it is a valid Stein operator.",
+     "anchor": "Appendix C, pages 11 to 12",
+     "quotes": [
+      "and probability mass function p(z|x) > 0 on",
+      "Thus, the operator Op satisfies Stein's identity",
+      "and is a valid Stein operator."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Appendix C states the conditions and gives the summation proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ksd-closed-form-from-samples-cited",
+     "value": "The authors state that, taking F to be a reproducing kernel Hilbert space with the norm of f at most one, the supremum in the Stein discrepancy can be calculated in closed form using a kernel, and that the resulting kernelized Stein discrepancy can be calculated from samples of the approximate posterior alone.",
+     "anchor": "Section IV B, page 6",
+     "quotes": [
+      "the supremum in Eq. (11) can be calculated in closed form using a kernel [101].",
+      "Equation (12) shows that the discrepancy between the approximate and true posteriors can be calculated from samples of the approximate posterior alone."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hamming-kernel-valid-cited",
+     "value": "The authors state that for n unobserved Bernoulli variables one possible kernel is the generic Hamming kernel, and that the kernelized Stein discrepancy is a valid discrepancy measure if the internal kernel is positive definite, which is the case for the Hamming kernel.",
+     "anchor": "Section IV B, page 6",
+     "quotes": [
+      "The KSD is a valid discrepancy measure if this",
+      "kernel, k, is positive definite, which is the case for the Hamming kernel [101]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ksd-suitable-for-vi-score-efficient",
+     "value": "The authors state that VI is a suitable application of the kernelized Stein discrepancy because the joint is known, and that the score can be computed efficiently even if the joint is in unnormalized form.",
+     "anchor": "Section IV B, page 6",
+     "quotes": [
+      "VI is a suitable application of the KSD because in this context we do know the joint p(z, x).",
+      "Moreover the score in Eq. (9) can be computed efficiently even if we have the joint in unnormalized form."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ksd-gradient-parameter-shift",
+     "value": "The authors state in Appendix D that the gradient of the kernelized Stein objective follows from the parameter shift rule, that its relatively simple form is due to the Stein kernel not depending on the variational distribution, and that it can be estimated by sampling from the Born machine and its parameter shifted versions.",
+     "anchor": "Appendix D, page 12",
+     "quotes": [
+      "The relatively simple form of the gradient is due to the fact that the Stein kernel,",
+      "This gradient can be estimated in a similar way to the KSD itself, by sampling from the original Born machine,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Appendix D gives the gradient under the same assumptions as Appendix B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sprinkler-setup-instances-ansatz",
+     "value": "The authors report that they classically simulated the methods on 30 randomly generated instances of the sprinkler network, with each probability table entry drawn from a uniform distribution on 0.01 to 0.99, conditioning on grass wet being true, using the three-qubit hardware-efficient ansatz with a layer of Hadamard gates as state preparation and parameters initialized to approximately 0.",
+     "anchor": "Section V A, pages 6 to 7",
+     "quotes": [
+      "we classically simulate the methods on the",
+      "we randomly generate the entries of each probability table from the uniform distribution U([0.01, 0.99]) and produce a total of 30 instances of this network.",
+      "using the three-qubit version of the hardware-efficient ansatz shown in Fig. 5.",
+      "We use a layer of Hadamard gates as a state preparation, S(x) = H ⊗ H ⊗ H, and initialize all parameters to approximately 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V A states the experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sprinkler-setup-training",
+     "value": "The authors report that the classifier for the KL objective is a multilayer perceptron with three input units, six hidden rectified linear units and one sigmoid output unit, trained on 100 samples from the prior and 100 from the Born machine by stochastic gradient descent with batches of size ten and a learning rate of 0.03, and that the Born machine is trained with 100 samples per expectation value and vanilla gradient descent with a learning rate of 0.003 for 1000 epochs, with a 68% confidence interval obtained by bootstrapping.",
+     "anchor": "Section V A, page 7",
+     "quotes": [
+      "made of three input units, six hidden rectified linear units, and one sigmoid output unit",
+      "The classifier is trained with a dataset of 100 samples from the prior p(C, R, S) and 100 samples from the Born machine",
+      "stochastic gradient descent with batches of size ten and a learning rate of 0.03.",
+      "using 100 samples to estimate each expectation value for the gradients, and using vanilla gradient descent with a small learning rate of 0.003.",
+      "instances for 1000 epochs of training for the KL (KSD)",
+      "A shaded area indicates a 68% confidence"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V A states the training setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-efficient-ansatz-barren-plateau-limit",
+     "value": "The authors state that hardware-efficient ansatze, while simple, have been shown to be vulnerable to barren plateaus, regions of exponentially vanishing gradient magnitudes that make training untenable, and that they leave investigation of ansatze that avoid this to future work.",
+     "anchor": "Section V A, page 7",
+     "quotes": [
+      "have been shown to be vulnerable to barren plateaus [103–106], or regions of exponentially vanishing gradient magnitudes that make training untenable.",
+      "but we leave such investigation to future work."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tvd-not-efficiently-computable",
+     "value": "The authors state that the total variation distance cannot be efficiently computed in general and can be shown only for small examples.",
+     "anchor": "Section V A, page 7",
+     "quotes": [
+      "TVD cannot be efficiently computed in general and can be shown only for small examples."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V A states it as the limit of the benchmark.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sprinkler-more-layers-better",
+     "value": "The authors report that, over the 30 sprinkler instances, increasing the number of layers leads to better approximations to the posterior in all cases, for both the KL and KSD objectives.",
+     "anchor": "Section V A, page 7; Figure 6",
+     "quotes": [
+      "Increasing the number",
+      "of layers leads to better approximations to the posterior",
+      "in all cases.",
+      "(Fig. 6b) shows the median TVD out of the 30"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sprinkler-kl-beats-full-factorization",
+     "value": "The authors report that Born machines with L > 0 layers trained with the KL objective systematically outperform the best full factorization, found by exhaustive search, in median total variation distance across the 30 instances.",
+     "anchor": "Section V A, page 7; Figure 6a",
+     "quotes": [
+      "machines with L > 0 layers trained with the KL objective systematically outperform the full factorization.",
+      "show the median TVD across the 30 instances for the full factorization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sprinkler-zero-layer-misses-factorized",
+     "value": "The authors report that the 0-layer Born machine, which generates unentangled states and could in principle match the full factorization line, does not do so, which they say indicates the challenges of optimizing a fully factorized Born machine.",
+     "anchor": "Section V A, page 7",
+     "quotes": [
+      "The 0-layer Born machine generates unentangled states and could in principle match the horizontal line.",
+      "not happen, which indicates the challenges of optimizing a fully factorized Born machine."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sprinkler-ksd-worse-than-kl",
+     "value": "The authors report that Born machines trained with the kernelized Stein discrepancy objective yield suboptimal results in comparison to the KL objective on the small sprinkler problems, where the adversarial method gives better results on average, so they choose it as the primary method in later experiments.",
+     "anchor": "Section V A, pages 7 to 8",
+     "quotes": [
+      "Born machines trained with the KSD objective yield",
+      "mal results in comparison to the KL objective.",
+      "the adversarial method gives better results on average,",
+      "so we choose it as the primary method in all subsequent"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kl-faster-than-ksd-scaling-claims",
+     "value": "The authors state that optimizing the KL objective is faster than the KSD objective because training the classifier has cost linear in the input dimension while calculating the Stein kernel has quadratic cost, that classifier quality may suffer at large scale due to the intractability of computing the KL divergence, and that the kernelized method is sample efficient at all scales.",
+     "anchor": "Section V A, pages 7 to 8",
+     "quotes": [
+      "Optimizing the KL objective is faster than the KSD",
+      "has cost linear in the dimension of the input, while calculating the Stein kernel in Eq. (13) has quadratic cost.",
+      "may suffer in quality, if kept efficient, due to the intractability of computing the KL divergence [109].",
+      "In contrast, the kernelized method is sample efficient at all scales."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hmm-setup",
+     "value": "The authors report that the second experiment simulated the adversarial VI method on a hidden Markov model with T = 8 time steps and Bernoulli latent variables with Gaussian observed variables, using a single amortized Born machine on eight qubits with rotation encoding of the observations, a classifier with 16 inputs, 24 rectified linear units and one sigmoid unit, trained for 3000 epochs with learning rates of 0.006 for the Born machine and 0.03 for the classifier.",
+     "anchor": "Section V B, page 7",
+     "quotes": [
+      "We set up the HMM for T = 8 time steps",
+      "We used the ansatz in Fig. 5 for eight qubits with a state preparation layer",
+      "a MLP classifier with 16 inputs, 24 rectified linear units, and one sigmoid unit, and the system is trained for 3000 epochs.",
+      "The learning rates are set to be 0.006 for the Born machine and 0.03 for the MLP."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V B states the setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hmm-modes-recovered",
+     "value": "The authors report that for the first sampled time series the Born machine mode 01100011 coincides with the true posterior mode, and for the second the Born machine mode 10001000 differs from the true posterior mode 10000000 by a single bit, and conclude the regime switching has been modeled with high accuracy.",
+     "anchor": "Section V B, page 8; Figure 7",
+     "quotes": [
+      "the inferred most likely explanation is |01100011 (i.e., the mode of the Born machine).",
+      "This coincides with the true posterior mode.",
+      "the inferred mode is |10001000 , which differs from the true posterior mode |10000000 by a single bit.",
+      "The regime switching has therefore been modeled with high accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hmm-classically-tractable",
+     "value": "The authors state that inference in this hidden Markov model can be performed exactly and efficiently with classical algorithms, that the most likely explanation can be found with the Viterbi algorithm in time O(T |S|2) (the exponent two printed flat), and that for factorial hidden Markov models, which have multiple chains, exact inference is typically replaced by approximate inference.",
+     "anchor": "Section V B, page 8",
+     "quotes": [
+      "inference in this HMM can be performed exactly and efficiently with classical algorithms.",
+      "can be found with the Viterbi algorithm in time O(T |S|2)",
+      "and is typically replaced by approximate inference [113, 114]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V B states that this experiment is not a case where quantum is needed.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lung-cancer-setup",
+     "value": "The authors report that the hardware experiment used the five-qubit ibmq rome processor, conditioning on the evidence variables X, D and I with five latent variables requiring five qubits, a two-layer ansatz, 1024 shots from the Born machine, and a classifier with five inputs and ten hidden rectified linear units trained with the KL objective.",
+     "anchor": "Section V C, pages 8 to 9",
+     "quotes": [
+      "specifically using the fivequbit ibmq rome quantum processor.",
+      "The remaining five are the latent variables, z, so we will require five qubits.",
+      "with five inputs and ten hidden rectified linear units using the KL objective, which we observed to give the best results.",
+      "We employ a two-layer ansatz in Fig. 5 (L = 2), and 1024 shots are taken from the Born machine in all cases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V C states the setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lung-cancer-training-epochs-simulated-vs-hardware",
+     "value": "The authors report that the plotted results used the best parameters found after about 400 epochs in simulation and about 50 epochs on the processor.",
+     "anchor": "Section V C, page 9",
+     "quotes": [
+      "(after about 400 epochs simulated and about 50 epochs on the processor)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lung-cancer-simulated-learns-well",
+     "value": "The authors report that the simulated Born machine is able to learn the true posterior of the lung cancer network very well with these parameters.",
+     "anchor": "Section V C, page 9; Figure 8",
+     "quotes": [
+      "We observe that the simulated Born machine is able to learn the true posterior very well with these parameters,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lung-cancer-error-mitigation-claim",
+     "value": "The authors state that the hardware results could likely be improved with error mitigation techniques.",
+     "anchor": "Section V C, page 9",
+     "quotes": [
+      "The hardware results could likely be improved with error mitigation techniques."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lung-cancer-network-modified",
+     "value": "The authors state that the lung cancer network was modified from the original: the deterministic or variable either, which yields zero probabilities in some posterior distributions, was replaced by an illness variable through additive (Laplace) smoothing, because their methods assume nonzero posterior probabilities.",
+     "anchor": "Section V C, page 8; Appendix F, page 12 to 13",
+     "quotes": [
+      "We derived our VI methods under the assumption of nonzero posterior probabilities.",
+      "This variable is a deterministic or function of its parent variables and yields zero probabilities in some posterior distributions.",
+      "This simple techniques is known as additive smoothing, or Laplace smoothing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Appendix F states the assumption and the modification.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adversarial-method-requirements-and-risks",
+     "value": "The authors state that the adversarial training may be challenging due to the large number of hyperparameters and well-known stability issues, and that the method only requires the ability to sample from the prior, sample from the Born machine and calculate the likelihood.",
+     "anchor": "Section VI, page 10",
+     "quotes": [
+      "The resulting adversarial training may be challenging due to the large number of hyperparameters and well-known stability issues [118, 119].",
+      "it only requires the ability to (i) sample from the prior p(z), (ii) sample from the Born machine"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section VI states the limits and requirements.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ksd-kernel-flexibility-future-kernels",
+     "value": "The authors state that the kernelized approach provides plenty of flexibility in the choice of kernel, that a graph-based kernel could yield improved results, and that one could attempt a demonstration of quantum advantage in VI using classically intractable kernels arising from quantum circuits.",
+     "anchor": "Section VI, page 10",
+     "quotes": [
+      "On the other hand, it provides plenty of flexibility in the choice of kernel.",
+      "that takes into account the structure could yield improved results.",
+      "one could attempt a demonstration of quantum advantage in VI using classically intractable kernels arising from quantum circuits"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "learning-curves-unsuccessful-instance",
+     "value": "The authors report that among the 30 sprinkler instances they cherrypicked two with a one-layer Born machine, and that in the unsuccessful one the classifier tracks the ideal classifier but the Born machine is not able to find a direction that minimizes the loss between epochs 400 and 1000, while a more powerful two-layer Born machine performs much better for that instance (not shown).",
+     "anchor": "Appendix E, pages 12 to 13; Figure 9",
+     "quotes": [
+      "We cherrypick two out of the 30 instances where a one-layer Born machine is employed.",
+      "the MLP tracks the ideal classifier, but the Born machine is not able to find a",
+      "(see epochs 400 to 1000). We verified that a more powerful two-layers Born machine performs much better for this instance (not shown)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "need-for-training-assessment-techniques",
+     "value": "The authors state that it is challenging to assess the training from the sample-estimable quantities, that this emphasizes the need for new techniques to assess the models, and that this is a common problem among adversarial approaches.",
+     "anchor": "Appendix E, page 13",
+     "quotes": [
+      "It is challenging to assess the training looking at the gray lines.",
+      "emphasize the need for new techniques to assess the models.",
+      "This is a common problem among adversarial approaches."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "appendix-a-quantum-advantage-argument",
+     "value": "The authors state that, because the posterior must be a conditional distribution that at least requires a Born machine to represent it, quantum advantage in inference may be sought in posteriors of the form of squared Ising partition functions with a diagonal Hamiltonian whose coefficients depend on both z and x, and that boson sampling and random circuits could give alternative candidates.",
+     "anchor": "Appendix A, pages 10 to 11",
+     "quotes": [
+      "Thus, for a demonstration of quantum advantage in inference, we may seek posterior distributions of the form",
+      "Here the Ising Hamiltonian H(z, x) is diagonal and its coefficients depend on both z and x.",
+      "Alternative"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "appendix-a-random-circuit-experiments-cited",
+     "value": "The authors cite two random circuit experiments as showing the physical existence of candidate distributions: the Sycamore experiment with 53 qubits and 20 cycles, with average single- and two-qubit gate error 0.13% and 0.36% and benchmarking fidelity of 0.1%, and the Zuchongzhi experiment with 56 qubits, 20 cycles, gate errors 0.14% and 0.59% and fidelity of approximately 0.07%.",
+     "anchor": "Appendix A, page 11",
+     "quotes": [
+      "used 53 qubits in the Sycamore quantum chip with 20",
+      "The average (isolated) single- (two-)qubit gate error is estimated to be 0.13% (0.36%) in this experiment",
+      "benchmarking fidelity of 0.1%.",
+      "The latter [125] repeated this experiment by using 56 qubits from the Zuchongzhi processor, again with 20 cycles.",
+      "the single- (two-)qubit gates carried an average error of 0.14% (0.59%) to achieve a fidelity of approximately 0.07%."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "appendix-a-intractable-posterior-likely",
+     "value": "The authors state that quantum processors exist that can express classically intractable distributions and so are also likely capable of representing intractable posterior distributions for suitably constructed examples, and that they leave the construction of such a posterior to future work.",
+     "anchor": "Appendix A, page 11",
+     "quotes": [
+      "Clearly, quantum processors exist that can express classically intractable distributions, and so are also likely capable of representing intractable posterior distributions for suitably constructed examples.",
+      "We leave this construction for future work."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "appendix-a-learnability-open",
+     "value": "The authors state that it is still unknown whether a distribution family exists that is learnable by near-term quantum means but not classically, and that their discussion concerns representational power and not learnability.",
+     "anchor": "Appendix A, page 11",
+     "quotes": [
+      "It is still unknown whether a distribution family (a posterior or otherwise) exists that is learnable by (near-term) quantum means, but not classically.",
+      "we are discussing only representational power and not learnability, which is a separate issue."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Appendix A states the open problem.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
