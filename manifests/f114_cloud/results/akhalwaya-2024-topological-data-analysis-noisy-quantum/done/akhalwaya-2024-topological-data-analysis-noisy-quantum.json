@@ -1,0 +1,983 @@
+{
+ "papers": [
+  {
+   "record_id": "akhalwaya-2024-topological-data-analysis-noisy-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Akhalwaya-et-al._2022_Exponential-advantage-on-noisy-quantum-computers__2209.09371.pdf",
+   "title_in_file": "TOPOLOGICAL DATA ANALYSIS ON NOISY QUANTUM COMPUTERS",
+   "version_note": "The text is the ICLR 2024 conference version (arXiv 2209.09371v4, 19 Mar 2024), titled Topological data analysis on noisy quantum computers. The record's file name carries the earlier title, Exponential advantage on noisy quantum computers, with the same arXiv number. The abstract here matches the stored quotes. The footnote on p.25 and the acknowledgements say an earlier version had a flaw in the algorithm that was fixed with qubitization.",
+   "pages": 34,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A conference paper presenting NISQ-TDA, a hybrid quantum-classical algorithm that estimates normalized Betti numbers with a short-depth circuit, an error analysis, small hardware and noisy-simulation runs, and classical CMB-style experiments.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "nisq-tda-abstract-claim",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract p.1",
+     "quotes": [
+      "we present NISQ-TDA, a fully implemented end-to-end quantum machine learning algorithm needing only a short circuit-depth, that is applicable to high-dimensional classical data, and with provable asymptotic speedup for certain classes of problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The hardware runs shown in Section 4 are Laplacian applications on an edge, a square and a cube, and the Betti-number estimates come from noisy simulations, so 'fully implemented' is the authors' wording and not a full end-to-end hardware run."
+    },
+    {
+     "id": "nisq-tda-few-high-betti-examples",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 3, remark after Theorem 1, p.7",
+     "quotes": [
+      "We wish to remark that known examples of simplicial complexes with exponentially many holes (Betti number) are limited."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "nisq-tda-likely-exponential-advantage",
+     "verdict": "narrowed",
+     "note": "The paper limits the claim elsewhere: it says it is unclear whether the algorithm gives substantial speedups on arbitrary data for Betti number estimation, and that it is unlikely to give quantum advantage for exact Betti numbers of clique complexes.",
+     "value": "The authors state that their algorithm still likely achieves exponential advantage over known classical approaches in efficiently answering whether a given simplicial complex has exponentially many holes. In Appendix A they also state that it is unclear whether NISQ-TDA will achieve substantial speedups on arbitrary data for Betti number estimation, and that NISQ-TDA is unlikely to achieve quantum advantage for estimation of exact Betti numbers of clique complexes.",
+     "anchor": "Section 3, remark after Theorem 1, p.7; Appendix A.1, p.17 footnote 2 and p.18-19",
+     "quotes": [
+      "More importantly, our algorithm still likely achieves exponential advantage over known classical approaches in efficiently answering the question: does the given simplicial complex have exponentially many holes or not?",
+      "it is unclear whether NISQ-TDA will achieve substantial speedups on arbitrary data for Betti number estimation",
+      "NISQ-TDA is unlikely to achieve quantum advantage for estimation of exact Betti numbers of clique complexes"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "nisq-tda-small-datasets-preliminary",
+     "verdict": "narrowed",
+     "note": "The hardware results (Figure 1) are Laplacian applications (circuit depths and probability histograms), not Betti-number estimates; the Betti-number errors come from noisy simulations of the non-qubitized version. Results for larger n are extrapolated, not run.",
+     "value": "The authors state that the algorithm was successfully executed on quantum computing devices and on noisy quantum simulators, applied to small datasets, and that preliminary empirical results suggest it is robust to noise. The hardware results are Laplacian applications on a 12-qubit trapped-ion machine, and the noisy-simulation results are for the non-qubitized version of the algorithm; the surface for 16 to 64 vertices is an extrapolation.",
+     "anchor": "Abstract p.1; Section 4, p.8-9 and Figures 1 and 2",
+     "quotes": [
+      "The algorithm was successfully executed on quantum computing devices, as well as on noisy quantum simulators, applied to small datasets.",
+      "Preliminary empirical results suggest that the algorithm is robust to noise.",
+      "Figure 1: Results from real hardware of Laplacian applications",
+      "we employed the public-cloud accessible 'H1' 12-qubit trappedion quantum computer from Quantinuum",
+      "we present results from extensive noisy quantum simulations of the non-qubitized version of the algorithm",
+      "the translucent region (from 16 to 64 vertices) corresponds to an extrapolation of the surface for larger n"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The abstract wording 'successfully executed' covers hardware runs of the Laplacian circuit only; no hardware run of the full Betti-number estimation is reported in the text."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "bne-problem-definition",
+     "value": "The paper defines normalized Betti number estimation (BNE), following Gyurik et al. (2020), as: given a set of n points, its Vietoris-Rips complex, an order k and two parameters, find a value in the unit interval that is within an additive error of the normalized Betti number with the stated probability.",
+     "anchor": "Section 2, p.4",
+     "quotes": [
+      "of normalized Betti number estimation (BNE) is defined as (Gyurik et al., 2020): Given a set of n points, its corresponding Vietoris–Rips complex Γ, an integer 0 ≤ k ≤ n − 1,",
+      "find the value χk ∈ [0, 1] that satisfies with probability 1 − η the condition"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Defined in Section 2, p.4, equation (3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "betti-number-definition",
+     "value": "The paper defines the kth Betti number as the dimension of the k-homology group, and states through the Hodge theorem that it equals the dimension of the kernel of the combinatorial Laplacian.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "The kth Betti Number βk is the dimension of this k-homology group, namely βk := dim Hk.",
+      "βk := dim ker(∆k)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition in Section 2, p.3, equation (2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vietoris-rips-construction",
+     "value": "The paper builds the Vietoris-Rips complex by connecting points whose distance under the metric is at most a scale, and adding a simplex for every clique of connected points.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "connecting points xi and xj whenever D(xi, xj) ≤ ε, forming a so-called 1-skeleton",
+      "for every k-clique, the associated k-simplex is added"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition in Section 2, p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "algorithm-three-components",
+     "value": "The authors state that NISQ-TDA has three key components: a representation of the full boundary operator as a sum of Pauli operators, a quantum rejection sampling technique that projects onto the data-defined simplicial complex, and a stochastic rank estimation method that estimates the Betti numbers.",
+     "anchor": "Section 3, p.4",
+     "quotes": [
+      "(a) an efficient representation of the full boundary operator as a sum of Pauli operators; (b) a quantum rejection sampling technique to project onto the data-defined simplicial complex; and (c) a stochastic rank estimation method to estimate the output signature Betti numbers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 3, p.4 sets out the algorithm's design.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "input-is-pairwise-distances-edges",
+     "value": "The authors state that the algorithm needs only the pairwise distances of the data points, and that the edge data is not stored on the quantum computer but enters through the presence or absence of multiqubit control gates of the projector.",
+     "anchor": "Section 1 p.2; Section 3, p.5",
+     "quotes": [
+      "The algorithm only requires pairwise distances of the n data-points as input",
+      "The input edge data is not stored on the quantum computer but enters through the presence or absence of the multiqubit control gates of the projector."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own input model, Section 3, p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fermionic-boundary-resources",
+     "value": "The authors state that the fermionic boundary operator B needs n qubits, a number of gates of order n squared and a depth of order n in the overview, and a circuit of order n gates in the complexity discussion; details are deferred to earlier work by some of the same authors.",
+     "anchor": "Section 3, p.4 and p.7; Appendix C.2, p.28",
+     "quotes": [
+      "The implementation of this fermionic boundary operator B on a quantum computer requires only n qubits, O(n2) gates, and an O(n)-depth circuit",
+      "The operator B, involving the sum of n Pauli operators, can be implemented using a circuit with O(n) gates."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The two gate counts for B differ (order n squared against order n); the paper does not reconcile them in the text."
+    },
+    {
+     "id_suggestion": "projection-onto-complex-mechanism",
+     "value": "The authors describe the projection onto the complex as checking pairs of vertices in parallel with Toffoli gates into a flag register, measuring the register in each round, proceeding only on all zeros, and repeating until the all-in flag is read; the procedure succeeds when repeated 1/ζk times, where ζk is the fraction of order-k simplices that are in the complex.",
+     "anchor": "Section 3, p.4-5",
+     "quotes": [
+      "we measure the flag register and proceed only if we receive all zeros",
+      "The procedure succeeds when repeated 1 ζk times, where ζk is the fraction of all possible simplices of order k that are in Γ"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "data-defined-laplacian-form",
+     "value": "The paper writes the all-orders data-defined Laplacian as the product PΓ B PΓ B PΓ of the complex projector and the boundary operator, and the order-k Laplacian as Pk applied to it on both sides.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "The 'all-orders' data-defined Laplacian can thus be expressed as ∆ = PΓBPΓBPΓ.",
+      "The data-defined Laplacian corresponding to simplicial order k can thus be written as ∆k = Pk∆Pk."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the operator in Section 3, p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "order-projection-depth",
+     "value": "The authors state that the projection onto a simplicial order uses controlled-increment circuits into a count register and costs a depth of order log squared n.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "The cost in depth is only O(log2 n)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "partial-self-correction-claim",
+     "value": "The authors state that, because the data is injected afresh by each projection, NISQ-TDA is suggested to be partially self-correcting, with the last application of the projector mitigating noise.",
+     "anchor": "Section 3, p.5; Appendix A.1, p.18",
+     "quotes": [
+      "This suggests that NISQ-TDA is partially selfcorrecting, and under noise presence, the last application of PΓ mitigates the noise."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No experiment in the text isolates this effect from the other noise-mitigating factors."
+    },
+    {
+     "id_suggestion": "stochastic-chebyshev-method",
+     "value": "The paper states that the Betti number is estimated as the dimension of the Laplacian kernel by a stochastic rank estimate, the trace of a step function of the Laplacian, approximated with a truncated Chebyshev series and Hutchinson's stochastic trace estimator, using random Hadamard columns as the random vectors.",
+     "anchor": "Section 3, p.5-6",
+     "quotes": [
+      "Stochastic rank estimation recasts the eigen-decomposition problem into the estimation of the matrix function trace.",
+      "It can be shown that a set of random columns of the Hadamard matrices works well as",
+      "Sampling a random Hadamard state vector in a quantum computer can be conducted with a short-depth circuit."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-1-betti-estimate-error",
+     "value": "The paper states Theorem 1: given the pairwise distances of any n data points and the encoding of the close pairs, an order k and parameters, and assuming the eigenvalues of the scaled Laplacian lie in the set containing zero together with the interval from δ to 1, then for the stated choices of nv and m the NISQ-TDA estimate χk satisfies, with probability at least 1 − η, an absolute difference from βk over |Sk| of at most ϵ.",
+     "anchor": "Theorem 1, Section 3, p.6; proof in Appendix C.1, p.26-28",
+     "quotes": [
+      "Theorem 1. Assume we are given the pairwise distances of any n data points and the encoding of the corresponding ε-close pairs, together with an integer 0 ≤ k ≤ n − 1 and the parameters (ϵ, δ, η) ∈ (0, 1).",
+      "Further assume the eigenvalues of the scaled Laplacian ∆˜ k are in the interval {0} ∪ [δ, 1], and choose nv and m such that",
+      "Then, the Betti number estimation χk ∈ [0, 1] by NISQ-TDA, with probability at least 1 − η, satisfies"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from Theorem 1 (p.6); the proof is in Appendix C.1 (p.26-28).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof bounds the polynomial approximation, the stochastic trace estimator and shot noise; hardware noise is not bounded (see the separate assertion). The sample-count and degree formulas (nv of order log(1/η) over ϵ squared; m above log(1/ϵ) over the square root of δ) are printed in a garbled layout in the text. The proof applies Lemma 1 with the matrix size set to |Sk|; I did not check that step."
+    },
+    {
+     "id_suggestion": "theorem-1-excludes-hardware-noise",
+     "value": "The authors state that hardware noise is much harder to characterize than shot noise, that it depends on hardware and technology, and that to account for it the whole experiment must be repeated several times and statistics drawn; the proof of the main theorem therefore bounds approximation, trace-estimator and shot-noise errors only.",
+     "anchor": "Appendix C.1, p.28; Section 3, p.6",
+     "quotes": [
+      "The hardware noise is much more difficult to characterize, since it is hardware and technology dependent.",
+      "we will need to repeat the whole experiment several times and draw statistics to compute the Betti numbers",
+      "Our analysis accounts for errors due to (a) polynomial approximation of the step function; (b) stochastic trace estimator; and (c) also shot noise"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its own error analysis in Appendix C.1, p.28.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "proposition-1-chebyshev-surrogate",
+     "value": "The paper states Proposition 1: for the surrogate polynomial of Lemma 2 with α = (1 − δ) and a degree m at least log(1/ϵ) over the square root of δ, the estimate ξ obtained from the trace of the polynomial of the scaled Laplacian, divided by |Sk|, is within ϵ of βk over |Sk|; the proof assumes the Laplacian eigenvalues lie in {0} ∪ [δ, 1].",
+     "anchor": "Proposition 1, Appendix C.1, p.27",
+     "quotes": [
+      "Proposition 1. The Betti number estimate ξ given by",
+      "where p˜(x) = p(1 − x) and p(·) is the polynomial in Lemma 2, for parameters α = (1 − δ), and",
+      "Proof. Suppose the eigenvalues of ∆˜ k are in the interval {0} ∪ [δ, 1]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from Proposition 1 and its proof, Appendix C.1, p.27.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma-1-hadamard-trace-cited",
+     "value": "The paper states Lemma 1, attributed to Theorem 16 of Avron and Toledo: for a Hermitian matrix, random Hadamard columns and a sufficient sample count, the stochastic trace estimate is within ϵ times N of the trace with probability at least 1 − η.",
+     "anchor": "Lemma 1, Appendix C.1, p.26",
+     "quotes": [
+      "Lemma 1. (Avron & Toledo, 2011, Theorem 16) Assume we are given a Hermitian matrix A ∈",
+      "where rH (A) = maxi Aii, we have"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma-2-chebyshev-minimizing-cited",
+     "value": "The paper states Lemma 2, attributed to Musco and Musco (2015): a degree m polynomial p exists with p equal to (1 + γ)α at (1 + γ)α, p(x) at least x for all x at least (1 + γ)α, and a bound on |p(x)| on the interval from 0 to α.",
+     "anchor": "Lemma 2, Appendix C.1, p.27",
+     "quotes": [
+      "Lemma 2 (Chebyshev Minimizing Polynomial (Musco & Musco, 2015)). Let α > 0 be a specified parameter, and the gap γ ∈ (0, 1], and let q ≥ 1.",
+      "p((1 + γ)α) = (1 + γ)α,",
+      "p(x) ≥ x for all x ≥ (1 + γ)α,"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shot-noise-bound",
+     "value": "The paper states that, under an independent-noise assumption, the shot-noise error in the Chebyshev moments propagates to the Betti number estimate as the sum of the absolute coefficients times the moment error, and that with the step-function expansion the coefficient bound gives an error of at most four times the moment error.",
+     "anchor": "Appendix C.1, p.28",
+     "quotes": [
+      "If we use the step function expansion, then we have |cj| ≤ (2/j) and the shot noise error will be errshot ≤ 4εT"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "A coefficient bound of 2/j summed over the degrees j grows with the degree, so the constant four is not derived in the text; I did not verify it."
+    },
+    {
+     "id_suggestion": "total-time-complexity",
+     "value": "The authors state that the total time complexity of the algorithm is of order one over ϵ squared times the larger of two terms, n log(1/ϵ) over the square root of δ and n over ζk.",
+     "anchor": "Section 3, p.7; Appendix C.2, p.28-29",
+     "quotes": [
+      "Therefore, the total time complexity of our algorithm is",
+      "1 ϵ2 max n lo√g(1/ϵ) , n δ ζk"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Derived by operation counting in Appendix C.2, not stated as a theorem. Table 1 prints the time entry for Approach 1 in a different form (the text layer garbles it)."
+    },
+    {
+     "id_suggestion": "speedup-conditions",
+     "value": "The authors state that QTDA algorithms can achieve superpolynomial to exponential speedups over the best-known classical algorithms whenever three conditions hold: the complex is simplices/clique dense, the spectral gap is not exponentially small, and the Betti number is large.",
+     "anchor": "Section 3, p.7",
+     "quotes": [
+      "speedups over the best-known classical algorithms whenever we have:",
+      "Simplices/Clique dense complexes – the given complex Γ is simplices/clique dense, i.e., ζk is large or |Sk| ∼ O(poly(n));",
+      "Large Betti number – the Betti number βk (and the ratio βk/|Sk|) needs to be large so that a large ϵ suffices to estimate it to a reasonable precision."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the conditions of its speedup claim in Section 3, p.7.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "best-known-classical-complexity-cited",
+     "value": "The authors state that the best-known classical algorithm for Betti number estimation of order k has a time complexity attributed to Gyurik et al. and to Apers et al.",
+     "anchor": "Section 3, p.7",
+     "quotes": [
+      "The best-known classical algorithm for Betti number estimation of order k has a time complexity of O(poly(nk)) (Gyurik",
+      "or O(n1/δ log(1/ϵ)) (Apers et al., 2022)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "exact-betti-hard-for-quantum",
+     "value": "The authors state that recent results show estimating exact Betti numbers of clique complexes to be hard even for quantum computers, and that NISQ-TDA is therefore unlikely to achieve quantum advantage for exact Betti numbers of clique complexes.",
+     "anchor": "Appendix A.1, footnote 2, p.17; Section 2, p.4",
+     "quotes": [
+      "have shown the problem of estimating exact Betti numbers of clique complexes to be hard (QMA-1 and NP hard) even for quantum computers",
+      "decision clique homology has been proven to be QMA1-hard (Crichigno & Kohler, 2022) for clique complexes"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bne-dqc1-hardness-cited",
+     "value": "The authors state that normalized Betti number estimation has been shown DQC1-hard for general chain complexes by Cade and Crichigno (2021), and is conjectured to hold for clique complexes.",
+     "anchor": "Section 2, p.4",
+     "quotes": [
+      "This normalized Betti number estimation problem has been shown to be DQC1-hard for general chain complexes (Cade & Crichigno, 2021) and is conjectured to hold for clique complexes"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qtda-fault-tolerance-claim",
+     "value": "The authors state that many components of the Lloyd et al. (2016) algorithm require fault tolerance: Grover's search, quantum phase estimation, and repeated access to the input data.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Many components of the Lloyd et al. (2016) algorithm require fault-tolerance: Grover’s search (Grover, 1996), Quantum Phase Estimation (Nielsen & Chuang, 2010), and repeated access to the input data."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "prior-qtda-assumes-oracle-access",
+     "value": "The authors state that Gunn and Kornerup and Gyurik et al. do not address the efficient quantum construction of the boundary operator or Laplacian from pairwise distances, and assume oracle access to its nonzero entries.",
+     "anchor": "Appendix A.3, Remark 1, p.20",
+     "quotes": [
+      "do not address the issue of efficient quantum construction of B˜ or ∆k from the pairwise distances of the n points, and assume that oracle access is given to the nonzero entries of B˜ and their locations."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fault-tolerance-years-away",
+     "value": "The authors state that fault tolerance has not been achieved on currently available quantum devices and is likely several years away from full realization.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "is likely several years away from full realization"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-practical-quantum-advantage-yet",
+     "value": "The authors state that quantum advantage, meaning quantum computers outperforming current classical supercomputers, has not yet been achieved for any problem of practical value.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "However, this has not yet been achieved for any problem of practical value."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "first-generically-useful-nisq-claim",
+     "value": "The authors state that their theoretical and numerical results demonstrate that NISQ-TDA has the potential to be the first generically useful NISQ algorithm.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Our presented theoretical and numerical results demonstrate that NISQ-TDA has the potential to be the first generically useful NISQ algorithm."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "linear-connectivity-claim",
+     "value": "The authors state that the circuit for the complex projection needs all-to-all connectivity as used in their experiments, and that it could be implemented on devices with only linear connectivity using a sorting-network approach; the conclusions list efficient deployment on sparsely connected devices as future work.",
+     "anchor": "Section 3, p.5; Section 5, p.9",
+     "quotes": [
+      "suggests a requirement of quantum computers with all-to-all connectivity (as used in our experiments)",
+      "we can indeed implement it on quantum computers with only linear qubit connectivity using a sorting network approach",
+      "improvements to the algorithm in order to efficiently deploy it on sparsely connected quantum devices"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-tda-cannot-do-64-vertices",
+     "value": "The authors state that currently optimized classical TDA algorithms cannot compute all Betti numbers for 64 generic vertices, that they empirically verified this with GUDHI, and that quantum advantage could therefore possibly be achieved by running NISQ-TDA on 64 vertices; no run or timing is reported in the text.",
+     "anchor": "Section 4, p.7",
+     "quotes": [
+      "Currently optimized classical TDA algorithms cannot compute all Betti numbers for 64 generic vertices",
+      "Hence, quantum advantage could possibly be achieved when running NISQ-TDA on 64 vertices."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No NISQ-TDA run on 64 vertices is reported; the largest hardware complex has 8 vertices."
+    },
+    {
+     "id_suggestion": "hardware-depth-linear-in-vertices",
+     "value": "The authors report that the circuit depth for the Laplacian scales linearly with the number of data points, as measured on the Quantinuum H1 compiler and a simulator for degree m = 1 and 3; the edge count chosen was the most conservative, to cover the worst-case depth.",
+     "anchor": "Section 4, Figure 1A, p.8",
+     "quotes": [
+      "We observe that the circuit depth for the Laplacian scales linearly with respect to the number of data points.",
+      "Circuit depth versus the number of vertices for degree m = 1 and 3",
+      "We selected the most conservative number of edges to cover the worst-case depth scenario."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-histograms-agreement",
+     "value": "The authors report that, on the trapped-ion hardware, the top-probability simplices for an edge (2 vertices), a square (4 vertices) and a cube (8 vertices) agree with noise-free simulation, and name three visible error types: reduced probability mass on correct simplices, some mass on incorrect simplices, and correct simplices with incorrect flag readings.",
+     "anchor": "Section 4, Figure 1B-D, p.8",
+     "quotes": [
+      "These sub-figures clearly show that there is agreement between hardware and noise-free simulations on which simplices receive the top probability measurements.",
+      "Three types of errors are, however, visible by the hardware: reduced probability mass for correct simplices, some small probability mass on incorrect simplices",
+      "for three different datasets namely, an edge (2 vertices), a square (4 vertices), and a cube (8 vertices)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Three complexes of at most 8 vertices; the text gives no numeric error rates for these runs."
+    },
+    {
+     "id_suggestion": "hardware-coherence-claim",
+     "value": "The authors state that Figure 1 unequivocally demonstrates that at real-world noise levels there is sufficient coherence to reproduce the correct interference at the depths of these circuits.",
+     "anchor": "Section 4, p.8",
+     "quotes": [
+      "Even with these errors, Figure 1 unequivocally demonstrates that at real-world noise-levels there is sufficient coherence to reproduce the correct interference at the depths of these circuits."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The evidence is three small complexes; 'unequivocally' is the authors' word."
+    },
+    {
+     "id_suggestion": "cube-is-not-vietoris-rips",
+     "value": "The authors state that the cube used in the 8-vertex experiment is not a Vietoris-Rips complex, since the cube would then have been filled in, but is a complex with a three-dimensional hole on 8 vertices.",
+     "anchor": "Appendix A.1, p.18",
+     "quotes": [
+      "the cube (n = 8 instance) considered in our experiments is not a Vietoris-Rips complex (in that case, the cube would have been filled in)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its own test complexes, Appendix A.1, p.18.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noisy-simulation-setup",
+     "value": "The authors state that for the noisy simulations they chose complexes with large eigenvalue gaps and sufficiently many random vectors and shots, set the Chebyshev parameters so that the noise-free algorithm is almost exact, and take an error below 0.5 as tolerable since it rounds to the correct Betti number.",
+     "anchor": "Section 4, p.8-9",
+     "quotes": [
+      "For this we chose complexes with large eigenvalue gaps, and sufficiently many random vectors and shots.",
+      "the error that can naturally be considered tolerable is 0.5, since any error less than 0.5 rounds to exactly the correct Betti number"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Setup stated in Section 4, p.8-9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noisy-simulation-mean-converges",
+     "value": "The authors report that in noisy simulation with 8 vertices, degree 5 and noise level (0.001, 0.01), the estimated Betti number converges to about 1.84 against a true value of 2, and the variance falls as the number of random vectors increases.",
+     "anchor": "Section 4, Figure 2B, p.9",
+     "quotes": [
+      "Mean and the variance of the Betti number estimated as a function of the number of random vectors nv with n = 8 vertices, degree m = 5 and the noise-level: (0.001, 0.01).",
+      "We note that the mean converges to ∼ 1.84 (the true Betti number is β0 = 2) and, most importantly, the variance reduces as we increase nv."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The error of about 0.16 is below the 0.5 tolerance the authors set; this is one complex and one noise level."
+    },
+    {
+     "id_suggestion": "error-surface-extrapolation",
+     "value": "The authors state that the mean-error surface is simulated for 2 to 8 vertices and extrapolated for 16 to 64 vertices, that even 16 vertices could not be simulated on a large classical machine with 2 GPUs, and that the extrapolation provides the minimum noise-level requirements for future larger NISQ devices.",
+     "anchor": "Section 4, Figure 2A, p.9",
+     "quotes": [
+      "the solid region (for n = 2 to n = 8) corresponds to actual noisy simulations and the translucent region (from 16 to 64 vertices) corresponds to an extrapolation",
+      "even n = 16 was not simulatable using a large classical machine with 2 GPUs",
+      "The surface plot extrapolations provide the minimum noise-level requirements for NISQ-TDA to successfully run on future larger NISQ devices."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The requirements for 16 to 64 vertices rest on an extrapolation, not on a run."
+    },
+    {
+     "id_suggestion": "chebyshev-moments-as-features",
+     "value": "The authors state that the Chebyshev moments carry more information than the Betti numbers, and that the PΓ-corrected noisy moments could be used directly as input features for downstream machine learning classification.",
+     "anchor": "Section 3, p.7",
+     "quotes": [
+      "the Chebyshev moments capture the spectral information of ∆k and have even more information than the Betti numbers.",
+      "noisy moments to be used directly as input features in downstream contexts such as machine learning classification"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "desiderata-self-assessment",
+     "value": "The authors propose seven criteria for a useful quantum algorithm and assess NISQ-TDA against them: provable speedup is likely satisfied for certain instances, noise resilience seems satisfied as suggested by preliminary simulation and hardware results, and usefulness is likely satisfied.",
+     "anchor": "Appendix A.1, p.17-19",
+     "quotes": [
+      "Criterion 2, that of NISQ-TDA achieving provable asymptotic speedups is likely satisfied for certain instances and classes of complexes",
+      "Criterion 4 seems to be satisfied as suggested by the preliminary simulation and hardware implementation results, which show that NISQ-TDA is noise-resilient.",
+      "Criterion 7 is likely satisfied in that it can certainly solve interesting useful problems"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Self-assessment by the authors; the paper itself says it is unclear whether speedups hold on arbitrary data."
+    },
+    {
+     "id_suggestion": "spectral-gap-random-dense-cited",
+     "value": "The authors cite Adhikari et al. (2020) for the limiting spectral gap of the normalized Laplacian of random dense complexes approaching 1/2, and conclude that random dense complexes will likely have a large spectral gap.",
+     "anchor": "Appendix C.3, p.30",
+     "quotes": [
+      "It was recently shown by Adhikari et al. (2020) that, for random dense graphs/complexes, the limiting spectral gap (between zero and nonzero eigenvalues) of the",
+      "approaches 1/2.",
+      "These results therefore suggest that random dense complexes will likely have a large spectral gap between zero and nonzero eigenvalues."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "approximate-bne-filter",
+     "value": "The authors state that when the spectral gap is below the chosen threshold, the algorithm solves the approximate Betti number estimation problem defined by Gyurik et al. (2020), filtering out small eigenvalues and counting only the larger ones.",
+     "anchor": "Appendix C.3, p.30-31",
+     "quotes": [
+      "This was defined in Gyurik et al. (2020) as the problem of approximate Betti number estimation (ABNE).",
+      "our method provides an approach to filter out small (noisy) eigenvalues and only consider larger (dominant) eigenvalues for estimating the Betti number"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Scope stated in Appendix C.3, p.30-31.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-chebyshev-experiment",
+     "value": "The authors report from classical runs on eight-vertex complexes that a small polynomial degree gives fairly accurate Betti numbers for well-connected complexes with a large spectral gap, while a higher degree is required for weakly connected complexes with a small spectral gap.",
+     "anchor": "Appendix D.1, Figure 7A-B, p.31-32",
+     "quotes": [
+      "We note that the Betti number estimated by our method for such complexes are fairly accurate and a small degree polynomial approximation suffices to get a good estimate of the Betti numbers.",
+      "We note that, we require a higher degree approximation for accurate Betti number estimation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellinger-fidelity-vs-depth",
+     "value": "The authors report from noisy simulations that the Hellinger distance between noisy and noiseless output probabilities, restricted to the top 10% of the noise-free outcomes, increases with circuit depth, for four noise levels.",
+     "anchor": "Appendix D.1, Figure 7C, p.32",
+     "quotes": [
+      "We plot the Hellinger distance restricted to the top 10% of the noise-free outcomes",
+      "As expected, the Fidelity/noise-error increases as the circuit depth (and number of qubits) increase."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cmb-experiment-setup",
+     "value": "The authors report a classical experiment on simulated data: 64 sample points in three dimensions drawn from Gaussian and exponential distributions, forced to zero mean and unit variance, 50 sample sets split 30 train and 20 test, persistence diagrams from GUDHI, and a Bayesian classifier (BayesTDA) scored by area under the curve.",
+     "anchor": "Appendix D.2, Figures 8-9, p.32-34",
+     "quotes": [
+      "We consider random sets of n = 64 sample points in three dimensions from Gaussian and exponential distributions.",
+      "(forced to have zero-mean and unit-variance, making the task much more difficult)",
+      "of all 50 sample sets (30 train and 20 test)",
+      "we simply calculate the Area Under the Curve (AUC) measure of classification accuracy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Setup stated in Appendix D.2, p.32-34.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cmb-experiment-result",
+     "value": "The authors report that the Bayes factors clearly distinguish the Gaussian and exponential distributions using the first and second Betti numbers, and that the different Betti numbers contain independent valuable information; the AUC values are in the figure and are not in the text.",
+     "anchor": "Appendix D.2, Figure 9, p.34",
+     "quotes": [
+      "We observe that we can clearly distinguish the two distributions using the Bayes factors.",
+      "Moreover, we note that the different Betti numbers contain independent valuable information."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Betti numbers were computed classically with GUDHI; NISQ-TDA was not run on this data."
+    },
+    {
+     "id_suggestion": "cmb-expected-sensitivity-claim",
+     "value": "The authors state that by computing all relevant Betti numbers of the CMB data with NISQ-QTDA they expect to detect non-Gaussianity in the CMB data at higher sensitivity than is possible classically.",
+     "anchor": "Appendix D.2, p.34",
+     "quotes": [
+      "we expect to detect non-Gaussianity in the CMB data to higher sensitivity levels than is possible classically"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "earlier-version-flaw-qubitization",
+     "value": "The authors state that a previous version of the paper proposed an algorithm without qubitization that used the relationship between Chebyshev polynomials and moments of the Laplacian, and that this approach had key limitations pointed out by two readers, which necessitated the qubitization method; the acknowledgements thank them for pointing out a flaw in an earlier version.",
+     "anchor": "Appendix B.3, footnote 6, p.25; Acknowledgements, p.10",
+     "quotes": [
+      "A previous version of this paper proposed an algorithm that did not make use of qubitization",
+      "pointing out a flaw in the algorithm of an earlier version of the paper"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Version history stated by the authors in footnote 6, p.25, and the acknowledgements, p.10.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-full-algorithm-demonstrated",
+     "value": "The authors conclude that the implementation and successful execution of the entire algorithm on real quantum hardware and noisy simulations was demonstrated, illustrating noise-resiliency at realistic noise levels.",
+     "anchor": "Section 5, p.9",
+     "quotes": [
+      "The implementation and successful execution of the entire algorithm on real quantum hardware and noisy simulations was demonstrated, illustrating noise-resiliency at realistic noise-levels."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Section 4 reports hardware results for the Laplacian circuit only; the Betti-number errors come from noisy simulation."
+    },
+    {
+     "id_suggestion": "conclusion-data-loading-fault-tolerance",
+     "value": "The authors conclude that the algorithm neither suffers from the data-loading problem nor likely requires fault-tolerant coherence for even mid-size datasets.",
+     "anchor": "Section 5, p.9",
+     "quotes": [
+      "Our algorithm neither suffers from the data-loading problem nor does it likely require fault-tolerant coherence for even mid-size datasets."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-future-directions",
+     "value": "The authors list as future directions: improving the algorithm for efficient deployment on sparsely connected devices, achieving substantial asymptotic speedups under more general settings, and identifying domain problems where NISQ-TDA can be used for practical purposes.",
+     "anchor": "Section 5, p.9",
+     "quotes": [
+      "achieving substantial asymptotic speedups under more general settings; and identifying interesting domain problems for which NISQ-TDA can be employed for practical purposes."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Open problems stated by the authors in Section 5, p.9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
