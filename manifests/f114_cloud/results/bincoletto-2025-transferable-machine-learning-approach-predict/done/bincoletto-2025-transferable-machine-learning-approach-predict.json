@@ -1,0 +1,649 @@
+{
+ "papers": [
+  {
+   "record_id": "bincoletto-2025-transferable-machine-learning-approach-predict",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Bincoletto-et-al._2025_A-Transferable-Machine-Learning-Approach-to-Predict-Quantum-Circuit__2511.03726.pdf",
+   "title_in_file": "A Transferable Machine Learning Approach to Predict Quantum Circuit Parameters for Electronic Structure Problems",
+   "version_note": "arXiv:2511.03726v1, 5 Nov 2025; the text is the paper named by the record.",
+   "pages": 14,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A preprint that trains GAT and SchNet-based models on small hydrogen systems to predict separable-pair-ansatz VQE angles and tests them zero-shot on hydrogen systems up to H12.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "bincoletto-evaluation-setup",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that the evaluation used datasets of 500 random instances with molecule sizes from H2 to H12, in a minimal basis with one orbital, or two qubits, for each hydrogen atom.",
+     "anchor": "Section II.A Data generation, p.3",
+     "quotes": [
+      "For the evaluation we produced several datasets of 500 random instances with varying molecule sizes (ranging from H2 to H12).",
+      "Here we chose a minimal basis approach (one orbital, or two qubits, for each hydrogen atom)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II.A states the evaluation datasets and the minimal basis as the paper's own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "bincoletto-mixed-schnet-small-data",
+     "verdict": "confirmed",
+     "note": "Confirmed. The comparison is for ring instances (Figures 4 and 5, shown as plots), the quote is from Section III.B Structured Instance Evaluation, not III.A.",
+     "value": "The authors report that, compared with the linear SchNet results, the accuracy improved by one order of magnitude, which they call remarkable given the size of the training set.",
+     "anchor": "Section III.B Structured Instance Evaluation, p.7, Figures 4 and 5",
+     "quotes": [
+      "Comparing this results with the linear SchNet ones shows that the accuracy improved by one order of magnitude, which is remarkable given the size of the training set."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, read off log-scale plots.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The comparison is between the mixed SchNet (small mixed training set) and the linear SchNet (large linear training set) on ring instances only, and the one-order claim is read from log-scale error plots."
+    },
+    {
+     "id": "bincoletto-scope-hydrogenic-only",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that in this work they focus on hydrogenic systems because they are relatively simple to treat.",
+     "anchor": "Section II.A Data generation, p.3",
+     "quotes": [
+      "In this work, we focus on hydrogenic systems because they are relatively simple to treat"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section II.A states the scope of the work.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "bincoletto-transferable-parameter-prediction",
+     "verdict": "narrowed",
+     "note": "The paper limits the transfer in accuracy: errors grow with molecule size, and the largest number of energy outliers is at H12, the size furthest from the training data. The trained sizes are H4 and H6, so the transfer is to larger hydrogenic chains, rings and random geometries only.",
+     "value": "The authors report parameter prediction for hydrogenic systems that is transferable to instances larger than the training instances, generalizing to unseen system sizes up to H12, with accuracy that drops as molecule size increases and with the largest number of energy outliers at H12.",
+     "anchor": "Abstract; Section III.A and III.B; Section IV, pp.1, 6-7",
+     "quotes": [
+      "we show parameter prediction that is systematically transferable to instances significantly larger than the training instances.",
+      "generalizing for unseen system sizes up to H12",
+      "accuracy drops as molecule size increases",
+      "the largest amount of energy outliers occur for the H12 system"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table II shows errors growing with size for every model, e.g. the mixed SchNet error is far larger at H12 than at H2 (the table cells are in the text layer without column labels, so the exact pairing of ME and MSE cells is not certain)."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "three-architectures-gat-schnet-mixed",
+     "value": "The authors state that they developed three architectures for the parameter prediction problem: a Graph Attention Network, a SchNet-based model trained on linear instances, and a mixed SchNet-based model.",
+     "anchor": "Section II Methodology, p.2; Table I, p.3",
+     "quotes": [
+      "To tackle the parameter prediction problem, we developed three architectures.",
+      "The models have been developed sequentially in the order presented with the goal to further refine their capabilities and allow training with reduced training sets."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II states the paper's own model set.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "training-datasets-large-and-small",
+     "value": "The authors state that two training datasets were generated: a large one of 230.000 linear H4 instances, and a small one of 1.000 linear H4 instances and 2.000 random H6 instances.",
+     "anchor": "Section II.A, pp.2-3; Table I",
+     "quotes": [
+      "a large one, made of 230.000 linear H4 instances, and a small one, made of 1.000 linear instances",
+      "of H4 and 2.000 random instances of H6"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II.A states the training sets.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Table I lists 302,625 (GAT), 28,273 (linear SchNet) and 472,450 (mixed SchNet) trainable parameters; the numbers are cells without a quotable line."
+    },
+    {
+     "id_suggestion": "training-set-purposes",
+     "value": "The authors state that the large dataset is mainly meant to give a good estimate of the best possible result when training only on linear H4 instances, and that the small training set was chosen to show that comparable or improved quality is possible with significantly smaller training sets that contain only small instances.",
+     "anchor": "Section II.A, p.3",
+     "quotes": [
+      "The purpose of the large dataset is mainly to get a good estimate of the best possible result when only training on linear H4 instances.",
+      "Where the smaller training set was chosen to demonstrate that comparable, or improved, quality can be obtained with significantly smaller training sets that still contain only small instances."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II.A states the design intent of the two training sets.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "data-generation-pipeline",
+     "value": "The authors state that each dataset instance is made by generating coordinates, heuristically determining a perfect matching graph with minimal edge weight, building the separable pair ansatz circuit and its orbital-optimized Hamiltonian, and minimizing the energy expectation value with a VQE to obtain the energy and the parameters.",
+     "anchor": "Section II.A, p.2; Figure 1, p.3",
+     "quotes": [
+      "We used scaled Euclidean distances as edge weights and heuristically determined a perfect matching graph G with minimal edge weight.",
+      "Minimize the expectation value ⟨USPA|Hopt|USPA⟩ with a VQE, to obtain the corresponding energy ESPA and parameters θ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II.A lists the data-generation steps.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "random-coordinates-constraint",
+     "value": "The authors state that for the random geometries each new atom is placed at a random point at a distance between 0.5 and 2.5 angstrom from an existing atom, with a minimum separation of 0.5 angstrom.",
+     "anchor": "Section II.A, p.2; Algorithm 1, p.3",
+     "quotes": [
+      "each new atom is placed at a random point with a distance between 0.5 and 2.5",
+      "ensuring a minimum separation of 0.5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II.A states the geometry constraint of the random dataset.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Algorithm 1 samples a point in a unit cube scaled by a maximum displacement from a randomly chosen existing atom and rejects distances at or below the minimum, which is not the same wording as the prose; the unit of the minimum separation is the same as the one in the prose."
+    },
+    {
+     "id_suggestion": "bond-lengths-and-angles-regression",
+     "value": "The authors state that the model gives circuit parameters (angles) that are continuous values, so the task is a regression problem.",
+     "anchor": "Section II.B, p.4",
+     "quotes": [
+      "As these angles are continuous values, θ ∈ [−2π, 2π], this is a regression problem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II.B defines the learning task.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zero-shot-fixed-variable-evaluation",
+     "value": "The authors state that the evaluation is zero-shot with fixed variables: the energy of the circuit with the model-predicted angles applied directly is compared with the baseline energy found by the VQE optimization.",
+     "anchor": "Section III, p.6",
+     "quotes": [
+      "For this we do zero-shot, fixed variable evaluation of the circuit.",
+      "we focus on comparing the result of the baseline energy with the energy that the respective predictor can achieve when directly applying its variables to the circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III defines the evaluation protocol and the baseline.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "random-instance-evaluation-setup",
+     "value": "The authors state that for the random instance evaluation they generated 500 samples for each hydrogenic system size from 2 to 12 atoms and ran them through the SPA optimization using the edge heuristic.",
+     "anchor": "Section III.A, p.6",
+     "quotes": [
+      "We generated 500 samples for each size s ∈ {2, 4, 6, 8, 10, 12} of hydrogenic systems which we then run through the SPA optimization using the edge heuristic."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.A states the evaluation set.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "error-metrics-definition",
+     "value": "The authors define the mean squared error and a mean error as averages, over the sample set, of the squared and the signed difference between the baseline energy and the method energy, and say they prefer the signed form so as not to lose information on instances where the method energy is below the baseline.",
+     "anchor": "Section III.A, Equation (1), p.6",
+     "quotes": [
+      "MSE = x∈S (Bx − Mx)2 |S| (1)",
+      "ME = x∈S(Bx − Mx) |S|",
+      "where Bx is the baseline energy of the x-th sample, and Mx is the corresponding method energy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III.A defines the metrics used in Table II.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text then speaks of the mean absolute error (MAE) and 'the former', while the reported columns are ME and MSE, and the printed ME formula has no absolute value; the extracted equation also loses the summation signs, so the exact form is not fully readable from the text layer."
+    },
+    {
+     "id_suggestion": "schnet-beats-gat-for-larger-systems",
+     "value": "The authors report from the fixed-variable comparison in Table II that for larger system sizes the SchNet-based models perform better than the GATConv-based model, which they take to indicate comparatively best generalization capabilities for the SchNet architecture.",
+     "anchor": "Section III.A, Table II, p.6",
+     "quotes": [
+      "We observe that for larger system sizes, the SchNet-based models perform better than the GATConv-based model, indicating comparatively best generalization capabilities provided by the architecture.",
+      "The best model of each architecture is compared against the baseline, grouped by system size."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In Table II the linear SchNet and the GAT are close at H12 (cells 188 and 185 for the first column), so the SchNet advantage at large size in the table is mainly the mixed SchNet, which has a different training set; the architecture and the training data are confounded."
+    },
+    {
+     "id_suggestion": "mixed-schnet-small-data-sufficient",
+     "value": "The authors report that for the mixed SchNet model the results indicate that small datasets are sufficient to capture the required information and predict ground state energies with adequate accuracy.",
+     "anchor": "Section III.A, Table II, p.6",
+     "quotes": [
+      "In particular, for the mixed SchNet model, the results indicate that small datasets are sufficient to capture the required information and predict ground state energies with adequate accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; 'adequate accuracy' is the authors' own wording.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table II lists mixed SchNet errors of tens of mEh at the larger sizes, which is large compared with the usual chemical accuracy threshold of about 1.6 mEh; the paper does not state a threshold for 'adequate'."
+    },
+    {
+     "id_suggestion": "mixing-dataset-improves-generalizability",
+     "value": "The authors report that mixing linear and random instances in the training set has a positive effect on generalizability, with significant improvements when testing on randomized structures, while the extra price of computing H6 instead of H4 training instances was relatively small.",
+     "anchor": "Section III.A, p.6",
+     "quotes": [
+      "The mixture of the dataset also has a positive effect for the generalizability where significant improvements where achieved when testing on randomized structures while the price of computing training instances of H6 instead of H4 was relatively small."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The mixed and linear models differ in the dataset, the head, the coordinate reordering and the number of parameters at once, so the gain cannot be assigned to the mixing of geometries alone."
+    },
+    {
+     "id_suggestion": "outliers-largest-at-h12",
+     "value": "The authors report from the outlier analysis of the linear SchNet model against the baseline that, as expected, the largest number of energy outliers occurs for the H12 system, the instances that differ most from the linear H4 training data and need the greatest transferability.",
+     "anchor": "Section III.A, Figure 3, pp.6-7",
+     "quotes": [
+      "As expected, in our evaluation of the SchNet-based model, the largest amount of energy outliers occur for the H12 system",
+      "i.e., the instances which differ the most from the linear H4 training dataset and require the greatest transferability from the models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (Figure 3).",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "structured-instances-setup",
+     "value": "The authors state that for the structured evaluation they looked at predicted ground state energies for linear and ring Hn molecules, with the bond length ranging from 0.5 angstrom upward (the upper end is named in the paper's text).",
+     "anchor": "Section III.B, p.7; Algorithms 2 and 3",
+     "quotes": [
+      "we looked at the predicted ground state energies for linear and ring Hn molecules",
+      "ranging form 0.5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.B states the structured evaluation setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The upper end, 4.0 angstrom, is in the text after the unit symbol, which the quote rule here does not let me copy; it is in the same sentence."
+    },
+    {
+     "id_suggestion": "linear-instances-consistency-check",
+     "value": "The authors state that the linear dataset is redundant because it is also partly in the training set, but call it a good proof of consistency that the SchNet-based models can transfer the learned structure to larger structured instances.",
+     "anchor": "Section III.B, Figure 4, p.7",
+     "quotes": [
+      "The linear dataset is redundant since it is also partially in the training set, but it is a good proof of consistency that the SchNet-based models can transfer the learned structure to larger structured instances."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the linear test overlaps the training geometry type.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "accuracy-drops-but-physically-sound",
+     "value": "The authors report that, as expected, the model accuracy drops as molecule size increases, and that the prediction still remains physically sound while the chains and rings dissociate.",
+     "anchor": "Section III.B, Figure 4, p.7",
+     "quotes": [
+      "accuracy drops as molecule size increases",
+      "the prediction still remains physically sound while the chains and rings dissociate"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study read from plots.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mixed-schnet-generalizes-to-rings",
+     "value": "The authors report that the mixed SchNet model was able to generalize from linear and random instances to structured ring instances.",
+     "anchor": "Section III.B, Figure 5, p.7",
+     "quotes": [
+      "Notably, the mixed model was able to generalize from linear and random instances to structured ring instances."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-only-coordinates-and-edges",
+     "value": "The authors state in the conclusion that the forward pass of all three models requires only the coordinates and the edges of the best perfect matching graph, and conclude that such a fundamental data representation is sufficient to model molecular systems.",
+     "anchor": "Section IV, p.7",
+     "quotes": [
+      "Notably, the forward pass of all three models requires only the coordinates and the edges of the best perfect matching graph for their predictions",
+      "showing that such fundamental data representation is sufficient to model molecular systems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion from one hydrogenic study.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The sufficiency claim was tested only for minimal-basis hydrogen systems, and the energy errors in Table II are large at the larger sizes."
+    },
+    {
+     "id_suggestion": "conclusion-perfect-matching-local-correlation",
+     "value": "The authors state in the conclusion that the use of edges, which need a preprocessing step, shows that perfect matching graphs accurately describe electronic correlation in a local manner.",
+     "anchor": "Section IV, p.7",
+     "quotes": [
+      "In particular, the use of edges, which require a preprocessing step, show that perfect matching graphs accurately describe electronic correlation in a local manner."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation; the paper has no ablation that tests it.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-mixing-geometries-accuracy",
+     "value": "The authors state in the conclusion that by mixing the structure of the geometries in the training dataset they achieve a significant increase in accuracy, using linear and random molecule structures, and that this model was trained with a relatively small amount of data.",
+     "anchor": "Section IV, p.8",
+     "quotes": [
+      "we have shown that by mixing the structure of the geometries in the training dataset we achieve a significant increase in accuracy.",
+      "Moreover, this last mixed model was trained with relatively small amount of data"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, stated in the conclusion.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "novelty-no-known-structure-aware-large-transfer",
+     "value": "The authors state that they are not aware of a method that accurately leverages molecular structure and is capable of generalizing to large-size systems, and that their method aims at a scalable model that extends to multiple molecule sizes.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "we are currently not aware of a method that accurately leverages molecular structure and is capable of generalizing to largesize systems.",
+      "our method aims at building a scalable model that can extend to multiple molecule sizes."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's novelty claim without a systematic survey in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-hydrogenic-size-simulation-cost",
+     "value": "The authors state that the evaluation is on hydrogenic systems up to H12, which at this time is limited due to simulation cost.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "We evaluate our models on hydrogenic systems up to H12 (at this time, limited due to simulation cost)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section I states the size limit of the evaluation.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-minimal-basis-hydrogenic-next-step",
+     "value": "The authors state that a natural next step is to extend the most promising mixed SchNet approach from minimal basis hydrogenic systems to organic molecules in more chemically accurate bases, so the work has not shown this extension.",
+     "anchor": "Section IV, p.8",
+     "quotes": [
+      "A natural next step is to extend the most promising (mixed SchNet) approach of this work from minimal basis hydrogenic systems to (organic) molecules in more chemically accurate bases."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section IV states the open extension beyond minimal-basis hydrogen systems.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-non-hydrogenic-assumed-possible",
+     "value": "The authors state that, given larger and extended datasets and increased computational resources, they assume it is possible to enhance the models, and that this could facilitate initialization of larger systems and generalization to non-hydrogenic systems.",
+     "anchor": "Section IV, p.8",
+     "quotes": [
+      "Given larger and extended datasets and increased computational resources, we assume it is possible to enhance the models, improving on accuracy and transferability across various geometries.",
+      "This could facilitate initialization of larger system sizes, as well as generalization to non-hydrogenic systems."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author expectation, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-vqe-label-quality-global-minimum",
+     "value": "The authors state that the quality of the VQE-based solutions that serve as training labels can be increased, because of the challenge of finding the global minimum of the optimization landscape.",
+     "anchor": "Section IV, p.8",
+     "quotes": [
+      "computational complexity can be increased not only through larger training datasets but also through greater quality in the VQE-based solutions.",
+      "This is due to the challenge in finding the global minimum of the optimization landscape."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section IV states a limit of the training labels.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The baseline energy in the evaluation is the same VQE result, so a model can only be judged against a baseline that may not be the global minimum; the paper notes that a method energy below the baseline is possible."
+    },
+    {
+     "id_suggestion": "more-expressive-circuit-designs-grander-challenge",
+     "value": "The authors state that a grander challenge remains in adopting the methodology to more expressive circuit designs, naming extended graph-based designs, localized hierarchical approaches and established coupled-cluster methods, which all contain the separable pair design as a substructure.",
+     "anchor": "Section IV, p.8",
+     "quotes": [
+      "A grander challenge remains in adopting the methodology to more expressive circuit designs",
+      "Note that all three contain the here used separable pair design as substructure."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section IV states the open problem of other circuit designs.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "spa-definition-pair-product",
+     "value": "The authors state that the separable pair approximation assumes that the total wavefunction is a product of individual electron pairs, in a form that is highly optimized for gate count and circuit depth.",
+     "anchor": "Appendix B, p.12",
+     "quotes": [
+      "In this work, we use the approximation which assumes that the total wavefunction is a product of individual electron pairs and comes in a highly optimized form with regards to gate-count and circuit-depth."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Appendix B defines the circuit design used.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "spa-orbital-rotations-not-in-circuit",
+     "value": "The authors state that the energy expectation values of SPA circuits are not invariant with respect to orbital rotations, and that, since the rotations can be optimized classically, they are not included in the circuit in this work.",
+     "anchor": "Appendix B, p.12",
+     "quotes": [
+      "The energy expectation values of SPA circuits are not invariant with respect to orbital rotations",
+      "As they can be optimized classically, we do not explicitly include them into the circuit within this work."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Appendix B states how orbital rotations are handled.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "schnet-head-and-mixed-angles-per-pair",
+     "value": "The authors state that for the SchNet-based models they cut off the original SchNet after the interaction blocks and add a custom head, and that for the mixed model the circuit ansatz needs one angle for each electron pair.",
+     "anchor": "Section II.B.2 and II.B.3, pp.5-6",
+     "quotes": [
+      "we cut off the original SchNet after the interaction blocks and add a custom head to it.",
+      "ansatz needs one angle for each electron pair"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II.B describes the model design.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-initial-state-preparation-use",
+     "value": "The authors state that, while there are good arguments that VQEs alone will not reach verifiable quantum advantage, they are still useful for initial state preparation, because once the circuit is trained the preparation cost is typically cheap.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "While there are good arguments, that VQEs alone will not reach verifiable quantum advantage they are still useful for the task of initial state preparation",
+      "once the circuit is trained, the preparation cost is typically cheap."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement without evidence in this paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-overhead-measurement-noise",
+     "value": "The authors state that VQEs need lower quantum resources in circuit depth and qubit coherence time than traditional algorithms such as quantum phase estimation, with a trade-off of a significant overhead from measurement repetitions and classical processing, and that measurement can be affected by noise.",
+     "anchor": "Appendix A, p.12",
+     "quotes": [
+      "VQEs require lower quantum resources in terms of circuit depth and qubit coherence time than traditional quantum algorithms such as Quantum Phase Estimation.",
+      "The trade-off of such algorithm is a significant overhead due to measurement repetitions and classical processing."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general statement the paper cites to other work, not shown here.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
