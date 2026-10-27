@@ -1,0 +1,1054 @@
+{
+ "papers": [
+  {
+   "record_id": "benedetti-2021-hardware-efficient-variational-quantum-algorithms",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2020-09_Benedetti_Hardware-efficient-variational-quantum-algorithms-for-time-evolution.pdf",
+   "title_in_file": "Hardware-efficient variational quantum algorithms for time evolution",
+   "version_note": "The text is arXiv:2009.12361v5, dated July 22, 2021 (arXiv stamp 27 Jul 2021). The text layer holds the paper once. Page numbers below count the page-number markers in the text layer as the top of each page; the stored anchors for the Discussion say p. 8, but in this layer those two sentences sit before the page-8 marker.",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A variational quantum simulation paper that replaces the matrix-inversion step of the time-dependent variational principle with Trotterized, causal-cone, coordinatewise update rules (cone, block and angle update), tested by exact classical simulation on small quantum Ising chains.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "hweff-timeevo-angle-update-ground-state",
+     "verdict": "narrowed",
+     "note": "The sentence about angle update is stated as in the stored value. The second half is limited by Sec. III C: cone update converges to the optimal objective value of one only for the four-qubit causal cone, block and angle update do not benefit from more sweeps, and for the six-qubit cone no method reaches one. The ground-state evidence is exact simulation of small quantum Ising chains (Figs. 1 and 7), where all three methods reach similar low energies for the chosen time step. The stored page anchor (p. 8) is p. 7 in this text layer.",
+     "value": "The authors state that angle update, their most efficient algorithm, performed remarkably well at finding ground states by imaginary time evolution, and that they presented numerical evidence that block and cone update achieve the high accuracy required for real time evolution. In Sec. III C they report that cone update converges to the optimal objective value of one for the four-qubit causal cone while block and angle update do not benefit from an increased number of sweeps, that none of the methods converge to the optimal value of one in the six-qubit case, and that for imaginary time evolution on the quantum Ising chain all methods reach similar low energies for their choice of time step.",
+     "anchor": "Sec. IV Discussion, p. 7; Sec. III C, p. 7; Fig. 6 and Fig. 7, p. 6",
+     "quotes": [
+      "Our most eﬃcient algorithm, angle update, performed remarkably well at this task.",
+      "We presented numerical evidence that block and cone update achieve the high accuracy required.",
+      "cone update outperforms and converges to the optimal value of one,",
+      "while block and angle update do not beneﬁt from an increased number of sweeps.",
+      "However, none of the methods converge to the optimal",
+      "For our choice of hyperparameter τ , all methods reach similar low energies."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim, supported only by exact (noise-free) simulation of small systems.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The Discussion sentence about block and cone update is broader than the Sec. III C result: only cone update shows convergence of the objective toward one, and only in the four-qubit cone; the block update curve in Fig. 6 does not improve with sweeps."
+    },
+    {
+     "id": "hweff-timeevo-no-matrix-inversion",
+     "verdict": "narrowed",
+     "note": "Confirmed as to the claim, with one limit the value omits: every numerical result is from classical simulation in which expectations and Hadamard tests are calculated exactly, with no finite-sampling noise and no hardware noise (Appendix G).",
+     "value": "The authors present alternatives to the time-dependent variational principle that are hardware-efficient and do not require matrix inversion, and analyze them numerically on quantum Hamiltonians with local interactions. The numerical simulations calculate expectations and Hadamard tests exactly and include no finite-sampling noise or hardware noise.",
+     "anchor": "Abstract, p. 1; Appendix G, p. 15",
+     "quotes": [
+      "Here we present alternatives to the time-dependent variational principle that are hardware-eﬃcient and do not require matrix inversion.",
+      "We numerically analyze the performance of our algorithms using quantum Hamiltonians with local interactions.",
+      "Expectations and Hadamard tests are calculated exactly. We do not include ﬁnite-sampling noise or hardware noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim; the numerical analysis is classical and noise-free.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "hweff-definition-hardware-efficient",
+     "value": "The authors define, for this work, a hardware-efficient variational quantum algorithm as any such algorithm that either (i) can use parameterized quantum circuits tailored to the physical device or (ii) exploits other concepts that reduce the number of qubits or gates, such as causal cones.",
+     "anchor": "Sec. I Introduction, p. 1",
+     "quotes": [
+      "In this work, we call hardware-eﬃcient any variational quantum algorithm that (i) can use parameterized quantum circuits tailored to the physical device [42] or (ii) exploits other concepts that reduce the number of qubits or gates [43, 44] such as causal cones."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper states its own definition of the term in Sec. I.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-setup-trotter-pauli-hamiltonian",
+     "value": "The authors assume a Hamiltonian that is a sum of terms with real coefficients, each term a tensor product of Pauli operators, with the number of terms K of order polynomial in n (K ∼ O(poly(n))). They approximate real time evolution by a sequence of short-time evolutions using the Trotter product formula and simulate the terms variationally one at a time.",
+     "anchor": "Sec. II A, pp. 1-2",
+     "quotes": [
+      "where Hˆk are tensor products of Pauli operators, hk are",
+      "real numbers, and K ∼ O(poly(n)). We approximate",
+      "using the well-known Trotter product formula. With N",
+      "We variationally simulate the sequence of Trotter"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the Hamiltonian form and the Trotter splitting it works under in Sec. II A and Appendix A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-definition-objective-overlap",
+     "value": "The authors define, for the kth Trotter term, the variational error as the squared Euclidean distance between the variational state and the exponentiated term applied to the previous variational state, and minimize it by maximizing an objective equal to the real part of the overlap of the previous state, acted on by the inverse short-time evolution term, with the current variational state.",
+     "anchor": "Sec. II A, Eq. (1), p. 2; Appendix A, Eq. (A5), p. 9",
+     "quotes": [
+      "via the variational parameters θ by maximizing the",
+      "For the kth Trotter term, the variational error is simply the objective function in Eq. (1).",
+      "The minimization of Cl(θl) is equivalent to the maximization of the following objective function:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The objective and the error it measures are defined in Eq. (1) and Eq. (A5).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The text layer prints the equation symbols loosely, so the value names the objective in words; Eq. (1) and Eq. (A5) are the places to check."
+    },
+    {
+     "id_suggestion": "hweff-derivation-cost-reduces-to-overlap",
+     "value": "The authors derive that the squared Euclidean cost at step l equals a constant minus twice the real part of the overlap, and state the assumption that the variational state has constant norm, which holds when the Ansatz is implemented by a PQC.",
+     "anchor": "Appendix A, Eq. (A4), pp. 8-9",
+     "quotes": [
+      "= const. − 2 Re ψl−1| eiζ¯hlHˆl |ψ(θl)",
+      "This is the case, for example, if the Ansatz is implemented by a PQC."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Eq. (A4) is a direct algebraic derivation in Appendix A, with its norm assumption stated.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-derivation-real-time-objective-closed-form",
+     "value": "The paper gives the real time objective in closed form as a cosine-weighted real part of the overlap minus a sine-weighted imaginary part of the term expectation, using the property that each Hamiltonian term, a tensor product of Pauli operators, squares to the identity.",
+     "anchor": "Appendix A, Eq. (A6), p. 9",
+     "quotes": [
+      "eiτhlHl = cos(τ hl)1 + i sin(τ hl)Hˆl.",
+      "Fl,real(θl) = cos(τ hl) Re ψl−1|ψ(θl) − sin(τ hl) Im ψl−1| Hˆl |ψ(θl) ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Direct algebra from the stated Pauli-term property in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-derivation-imaginary-time-objective-closed-form",
+     "value": "The paper gives the imaginary time objective in closed form as a hyperbolic-cosine-weighted real part of the overlap minus a hyperbolic-sine-weighted real part of the term expectation.",
+     "anchor": "Appendix A, Eq. (A7), p. 9",
+     "quotes": [
+      "e−τhlHl = cosh(τ hl)1 − sinh(τ hl)Hˆl.",
+      "Fl,imag(θl) = cosh(τ hl) Re ψl−1|ψ(θl) − sinh(τ hl) Re ψl−1| Hˆl |ψ(θl) ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Direct algebra from the same Pauli-term property as the real time case.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-scope-causal-cone-qubit-count",
+     "value": "The authors state that the expectation of an operator acting on a few qubits depends only on the blocks inside its causal cone, and that for a two-qubit operator the expectation can be estimated with a quantum circuit of six qubits and five blocks regardless of the overall size of the PQC Ansatz. They state that the number of required physical qubits depends only on the depth of the Ansatz and on the Trotter term.",
+     "anchor": "Sec. II B, p. 2 and p. 3",
+     "quotes": [
+      "An interesting property is that the expectation of an operator acting on a few qubits depends only on the blocks inside its causal cone.",
+      "The expectation can be estimated with a quantum circuit of six qubits and ﬁve blocks, regardless of the overall size of the PQC Ansätze.",
+      "of the Ansatz and on the Trotter term."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated without derivation in the paper; the six-qubit figure holds for the depth D = 2 Ansatz used throughout.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The qubit count depends on the depth, so the six-qubit figure is specific to the depth-2 Ansatz of Fig. 3 (a); the paper also says it uses depth 2 throughout."
+    },
+    {
+     "id_suggestion": "hweff-claim-causal-cones-exceed-hardware-size",
+     "value": "The authors state that the variational algorithm requires only the preparation of circuits on quantum hardware of a size restricted by the causal cone, which allows variational states larger than the size allowed by the quantum computer. They state that periodic boundary conditions can be included with no additional hardware requirements and that the corresponding physical qubit-to-qubit connectivity is not required when using causal cones.",
+     "anchor": "Sec. II B, pp. 2-3",
+     "quotes": [
+      "Thus our variational algorithm requires just the preparation of circuits on quantum hardware of a size restricted by the causal cone.",
+      "periodic boundary conditions can be included with no",
+      "additional hardware requirements. In Fig. 3 (a), block",
+      "is not required when using causal cones."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the experiments are classical simulations that use causal cones to reduce the simulation size.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-scope-several-causal-cones",
+     "value": "The authors state that for long-range operators, or operators acting on more than two qubits, one can obtain several causal cones.",
+     "anchor": "Sec. II B, p. 3",
+     "quotes": [
+      "operators or operators acting on more than two qubits",
+      "one can obtain several causal cones."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement without derivation or experiment; all experiments use one- and two-qubit nearest-neighbor terms.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-setup-ansatz-depth-two",
+     "value": "The authors state that throughout the paper they use the Ansatz of Fig. 3 (a) with the first nontrivial depth D = 2, and that each two-qubit block uses three CNOTs and Np = 15 adjustable parameters, a construction universal for two-qubit unitaries up to a global phase.",
+     "anchor": "Sec. II B, p. 3; Appendix G, Fig. 10, p. 14",
+     "quotes": [
+      "Throughout this paper we consider the Ansatz in Fig. 3 (a) with the ﬁrst nontrivial depth D = 2.",
+      "Each block has three CNOTs and Np = 15 adjustable parameters consisting of angles of rotation about the canonical x and z axes.",
+      "This construction has Np = 15 parameters and is universal for two-qubit unitaries up to a global phase."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own Ansatz depth and block construction in Sec. II B and Appendix G.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-claim-depth-increase-untested",
+     "value": "The authors state that the performance of their algorithms could be systematically improved by successively increasing the depth D, and that when the variational error becomes too large during the time evolution a new column of blocks initialized to 1 can be included at the end of the PQC to increase its expressive power.",
+     "anchor": "Sec. II B, p. 3",
+     "quotes": [
+      "The performance of our algorithms could be systematically improved by successively increasing the depth D.",
+      "we can include a new column of blocks initialized to 1 at the end of the PQC to increase its expressive power."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proposal stated without an experiment; every experiment uses depth D = 2.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-definition-pqc-parametrization",
+     "value": "The authors consider PQCs of the form U(θ) = UD ··· U1 in which each gate is either fixed, for example a CNOT, or parameterized as Ud = exp(−iθdGd), with θd in (−π, π] and Gd a Hermitian and unitary matrix whose square is the identity.",
+     "anchor": "Sec. II C, p. 3; Appendix B, p. 9",
+     "quotes": [
+      "Let us consider a circuit of the form U (θ) = UD · · · U1, where each gate is either ﬁxed, e.g., a CNOT, or parameterized as Ud = exp(−iθdGd), where θd ∈ (−π, π] and Gd is a Hermitian and unitary matrix such that G2d = 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The class of circuits to which the update rule applies is defined in Appendix B (and Sec. II C).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The exponent in G2d is printed flat by the text layer; the source states that the square of Gd is the identity."
+    },
+    {
+     "id_suggestion": "hweff-theorem-sinusoidal-coordinatewise-objective",
+     "value": "The paper shows that for a PQC with fixed gates and gates exp(−iθdGd), where Gd is Hermitian and unitary, the coordinatewise objective (the real part of the trace of an observable, a PQC applied to the initial state, and a fixed circuit) is a sinusoid in a single parameter with the others fixed, with amplitude A, phase B and a period, so its maximum can be found in closed form without the gradient or the Hessian.",
+     "anchor": "Appendix B, Eqs. (B1)-(B3), pp. 9-10; Sec. II C, p. 3",
+     "quotes": [
+      "Here we present a similar derivation for objective functions of the form Re(tr M U ρV † ) where U is a PQC and V is a ﬁxed circuit.",
+      "Let us consider a circuit of the form U (θ) = UD · · · U1, where each gate is either ﬁxed, e.g., a CNOT, or parameterized as Ud = exp(−iθdGd), where θd ∈ (−π, π] and Gd is a Hermitian and unitary matrix such that G2d = 1.",
+      "The objective function as a function of a single parameter has sinusoidal form with amplitude A, phase B, and period",
+      "Hessian. The procedure sweeps through all parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Appendix B derives the sinusoidal form for the stated circuit class (a cosine and sine expansion of the single-parameter gate).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The paper credits the same sinusoidal property for expectation values to earlier work (Refs. 36 to 39) and extends it to the overlap-type objective."
+    },
+    {
+     "id_suggestion": "hweff-derivation-update-rule-two-evaluations",
+     "value": "The paper gives a closed-form coordinatewise update that sets a parameter to the maximizer of its sinusoidal objective, computed with the arctan2 function from objective evaluations at two parameter values a quarter period (π/2) apart, and states that the arctan2 function must be used to handle the sign of numerator and denominator and the case of a zero denominator. It states that the procedure sets the parameter to a value in (−π, π].",
+     "anchor": "Appendix B, Eq. (B6), p. 10; Sec. II C, Eq. (2), p. 4",
+     "quotes": [
+      "Note that we must use the arctan2 function in order to correctly handle the sign of numerator and denominator,",
+      "In practice, we choose k such that θd∗ ∈ (−π, π]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Eq. (B6) follows from the sinusoidal form proved in Appendix B.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The quarter-period spacing is shown in Fig. 9 and Eq. (B3); the quotes here carry the stated implementation condition."
+    },
+    {
+     "id_suggestion": "hweff-derivation-single-evaluation-recycling",
+     "value": "The paper shows that, in cone update, the objective value at the current parameter equals the amplitude found at the previous parameter update, so each parameter update needs a single new evaluation of the objective instead of two.",
+     "anchor": "Appendix C, Eqs. (C1)-(C2), pp. 10-11; Sec. II C, p. 4",
+     "quotes": [
+      "recycle information from previous steps and use a single evaluation.",
+      "At no additional cost, we calculate"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Appendix C derives the recycling from the sinusoidal form, for the case where the objective does not change between updates.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Appendix E states this recycling cannot be done exactly in angle update, because the objective changes after each parameter update."
+    },
+    {
+     "id_suggestion": "hweff-definition-cone-update",
+     "value": "The authors define cone update as optimizing only the blocks in the causal cone of the Trotter term, with each Hadamard test requiring a number of controlled gates of order the product of the number of blocks in the causal cone and the number of parameters in a block.",
+     "anchor": "Sec. II D, p. 4",
+     "quotes": [
+      "We call this approach the cone update.",
+      "Hadamard test requires O(NbNp) controlled gates where Nb is the number of blocks in the causal cone, and Np is the number of parameters in a block."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Defined in Sec. II D.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-definition-block-update",
+     "value": "The authors define block update as replacing the previous variational state in the objective with the current variational state after a block has been updated, so that the two circuits differ by order Np parameters. For real time evolution it uses a time step τ /Nb in the objective, and the division is not necessary when τ is a hyperparameter, as in imaginary time evolution.",
+     "anchor": "Sec. II D, p. 4",
+     "quotes": [
+      "with the current variational state |ψ(θ) after a block has been updated.",
+      "Hence, to eﬀectively simulate time step τ we use a time step τ /Nb in the objective.",
+      "We call this approach the block update."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Defined in Sec. II D.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-definition-angle-update",
+     "value": "The authors define angle update as replacing the previous variational state in the objective with the current variational state after an angle has been updated, so that the two circuits differ by one parameter at all times. For real time evolution it uses a time step τ /(NbNp) in the objective, since the replacement is done NbNp times.",
+     "anchor": "Sec. II D, p. 4",
+     "quotes": [
+      "The second level of approximation consists of replacing |ψk−1 in the objective with |ψ(θ) after an angle has been updated.",
+      "This guarantees that U and V diﬀer by one parameter at all times.",
+      "Since the replacement is done NbNp times, we use a time step τ /(NbNp) in the objective."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Defined in Sec. II D.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-description-hadamard-test-cone",
+     "value": "The authors describe a Hadamard test with one ancilla qubit in which only the local differences between the two circuits are applied as gates controlled by the ancilla, so the ancilla subspaces hold the two states. The real part comes from the expectation of a Pauli Z on the ancilla times the Hamiltonian term, the imaginary part from the same procedure with a phase gate after the first Hadamard gate, and the test requires a number of controlled operations of order the number of blocks times the parameters per block.",
+     "anchor": "Appendix D, p. 11; Sec. II D, p. 4",
+     "quotes": [
+      "only locally to simplify the Hadamard test.",
+      "For the imaginary part, we follow the same procedure, but we include a phase gate after the ﬁrst Hadamard gate.",
+      "Nb blocks, each with Np parameterized gates, the Hadamard test requires O(NbNp) controlled operations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Appendix D states the circuit it uses and its controlled-gate count.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-scope-angle-update-direct-measurement",
+     "value": "The authors state that angle update can be further simplified by replacing the indirect measurement with direct ones, which removes the need for the ancillary qubit and the controlled gate (Fig. 4 (c)). They state the cost in Appendix E: the ancilla-free version requires the execution of additional circuits.",
+     "anchor": "Sec. II D, p. 4; Appendix E, p. 11",
+     "quotes": [
+      "This removes the need for the ancillary qubit and the controlled gate resulting in the circuit shown in Fig. 4 (c).",
+      "We can avoid the use of those while requiring the execution of additional circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Appendix E states the ancilla-free version and the extra circuits it needs.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-limit-angle-update-ancilla-version",
+     "value": "The authors state that the ancilla-based angle update is efficient in terms of circuit depth but still uses an ancilla qubit and a controlled operation which may be challenging to realize on existing hardware.",
+     "anchor": "Appendix E, p. 11",
+     "quotes": [
+      "angle update is eﬃcient in terms of circuit depth, but still uses an ancilla qubit and a controlled operation which may be challenging to realize on existing hardware."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of the ancilla-based version in Appendix E.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-derivation-angle-update-direct-expectations",
+     "value": "The paper derives, for angle update without ancilla or controlled gates, a closed-form update using two expectations for real time evolution and three expectations for imaginary time evolution, all estimated by direct measurements.",
+     "anchor": "Appendix E, Eqs. (E4) and (E7), p. 12",
+     "quotes": [
+      "Putting everything together, Eq. (E1) is maximized in closed form using two",
+      "Putting everything together, Eq. (E5) is maximized in closed form using three expectations:",
+      "All quantities are estimated by direct measurements, without using ancilla qubits or controlled gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Appendix E derives both closed forms from the shift identity for the gate exp(−iθG) with its generator a Pauli operator.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The derivation uses the technique of Refs. 52 and 53 for replacing indirect with direct measurements, which the paper cites."
+    },
+    {
+     "id_suggestion": "hweff-claim-angle-update-recycling-two-circuits",
+     "value": "The authors state that, for imaginary time and assuming the change in objective function value is small, information from previous steps can approximately be recycled, bringing the total number of circuits to two, and that the error of this approximation is proportional to the modification of the previous parameter and can be reduced by decreasing τ.",
+     "anchor": "Appendix E, p. 12",
+     "quotes": [
+      "bringing the total number of circuits to two.",
+      "For small values of τ , the error of this approximation is proportional to the modiﬁcation δθd−1 of the previous parameter."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An approximate argument stated without a test of the approximation's accuracy.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-table1-hardware-comparison",
+     "value": "The authors tabulate (Table I) the characteristics of cone, block and angle update along with the tdvp methods of the cited prior work: circuits per sweep are of order the product of the number of blocks in the causal cone and the parameters per block for cone, block and angle update, and of order the square of that product for tdvp; matrix inversion is No for the three update methods and Yes for tdvp; controlled gates per circuit are of order the product for cone update, of order the parameters per block for block update, and of order one for angle update and for tdvp.",
+     "anchor": "Table I, p. 5; Sec. III B, p. 5",
+     "quotes": [
+      "TABLE I. Characteristics of cone, block, and angle update along with the tdvp methods of Ref. [16].",
+      "O(NbNp) O(NbNp) O(NbNp) O(Nb2Np2)",
+      "Matrix inversion No No No Yes",
+      "Controlled gates per circuit O(NbNp) O(Np) O(1) O(1)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A table of the authors' own cost counts, given without derivation in the text; the tdvp column is their reading of a cited method.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Nb2Np2 is printed flat by the text layer and reads as the number of blocks squared times the parameters per block squared. The comparison is of asymptotic counts; the paper runs no head-to-head experiment against tdvp."
+    },
+    {
+     "id_suggestion": "hweff-conclusion-angle-update-least-resources",
+     "value": "The authors conclude from the comparison that angle update requires the smallest amount of resources per sweep and no matrix inversion, which they say makes it a stable and efficient algorithm for simulating time evolution, and that block update interpolates between angle and cone update in a natural way.",
+     "anchor": "Sec. III B, p. 5",
+     "quotes": [
+      "We conclude that angle update requires the smallest amount of resources per sweep and no matrix inversion",
+      "block update interpolates between angle and cone update in a natural way."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion from Table I's cost counts.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Table I gives angle update the same circuits per sweep as cone update and block update; the smaller figure is the controlled-gate count per circuit."
+    },
+    {
+     "id_suggestion": "hweff-claim-imaginary-time-hardware-reduction",
+     "value": "The authors state that for imaginary time evolution their algorithm significantly reduces the hardware requirements over existing methods and produces accurate ground state approximations, and that for real time evolution they present a hierarchy of algorithms in which the accuracy can be systematically improved by utilizing more hardware resources.",
+     "anchor": "Sec. I Introduction, p. 1",
+     "quotes": [
+      "show that for imaginary time evolution our algorithm signiﬁcantly reduces the hardware requirements over existing methods and produces accurate ground state approximations.",
+      "We present a hierarchy of algorithms where the accuracy can be systematically improved by utilizing more hardware resources."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the support is the Table I cost counts and small-system exact simulations.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "No experiment in the paper compares the hardware use of these algorithms with the tdvp methods; the comparison is by operation counts."
+    },
+    {
+     "id_suggestion": "hweff-cited-matrix-inversion-instability",
+     "value": "The authors state, citing a numerical analysis text, that matrix inversion is numerically unstable when the condition number of the matrix is large and small errors in the matrix can become large errors in the matrix inverse. They state that the tdvp methods of the cited prior work require measurements of order 1/ε² (printed 1/ 2) for a desired accuracy per matrix element.",
+     "anchor": "Sec. III B, p. 5",
+     "quotes": [
+      "Matrix inversion is numerically unstable when the condition number of the matrix is large and small errors in the matrix can become large errors in the matrix inverse [57].",
+      "For a desired accuracy per matrix element, this procedure requires O(1/ 2) measurements."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (Golub and Van Loan; Ref. 16).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The epsilon in the measurement count was lost by the text layer."
+    },
+    {
+     "id_suggestion": "hweff-derivation-tdvp-measurement-scaling",
+     "value": "The authors state that for a desired accuracy in the time-evolved parameters the number of measurements for the tdvp update scales as O(κ2/ 2) in the worst case, where κ is the condition number and the printed exponents are the square of κ and the square of the accuracy; Appendix F derives an upper bound on the relative accuracy of the solution vector B proportional to κ divided by the square root of the number of measurements m, ignoring the product of the two error terms δAδB, with the matrix elements assumed to carry a Monte Carlo sampling error that falls with the square root of the number of measurements.",
+     "anchor": "Sec. III B, p. 6; Appendix F, Eqs. (F9)-(F10), pp. 13-14",
+     "quotes": [
+      "We show in Appendix F that for a desired accuracy in the time-evolved parameters the required number of measurements scales as O(κ2/ 2) in the worst case.",
+      "where we have used AB = C, ignored δAδB, and where · is a norm.",
+      "Equivalently, Eq. (F10) states that for a desired accuracy in B we need the number of measurements m to scale like O(κ2/ 2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A first-order perturbation bound that drops the product of the two error terms and is stated for the worst case, not a proved tight scaling.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The bound is on the tdvp methods the paper compares against, not on the paper's own algorithms. Exponents and the accuracy symbol were lost by the text layer."
+    },
+    {
+     "id_suggestion": "hweff-conclusion-tdvp-cost-kappa-squared",
+     "value": "The authors conclude that the matrix inversion required in the original tdvp methods leads to a computational cost scaling like O(κ2/ 2) for accuracy ε (printed with the symbols lost), and that the additional factor of κ squared compared with the standard measurement error can be computationally challenging, especially for ill-conditioned matrices A.",
+     "anchor": "Appendix F, p. 14",
+     "quotes": [
+      "We conclude that the matrix inversion required in the original tdvp methods [15, 16] leads to a computational cost scaling like O(κ2/ 2) for accuracy .",
+      "Compared with the standard measurement error O(1/ 2) the additional factor of κ2 can be computationally challenging especially for ill-conditioned matrices A."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Follows from the Appendix F bound; stated as a worst-case scaling.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-measured-condition-number-growth",
+     "value": "The authors report the median condition number of 100 random initializations of their Ansatz, ignoring singular values smaller than 10−7: κ̃ ≈ 16 with 15 parameters, κ̃ ≈ 5001 with 45 parameters, and κ̃ ≈ 17085 with 75 parameters.",
+     "anchor": "Sec. III B, p. 6",
+     "quotes": [
+      "We obtain some numerical evidence by computing the median condition number κ˜ of 100 random initializations of our Ansatz.",
+      "To avoid instabilities, we ignore singular values smaller than 10−7.",
+      "With 15 parameters we have κ˜ ≈ 16, with 45 parameters we have κ˜ ≈ 5001, and with 75 parameters we have κ˜ ≈ 17085."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one numerical study with exact simulation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The paper does not say in this passage which matrix the condition number refers to; from Appendix F it is the tdvp matrix A. The parameter counts match the causal cones of Fig. 6 (45 and 75 parameters) and a single block (15 parameters)."
+    },
+    {
+     "id_suggestion": "hweff-claim-condition-number-scaling-interpretation",
+     "value": "The authors state that the rapid increase of the condition number as a function of the number of variational parameters indicates a challenging scaling of tdvp cost for their choice of Ansatz.",
+     "anchor": "Sec. III B, p. 6",
+     "quotes": [
+      "This rapid increase of the condition number as a function of the number of variational parameters indicates a challenging scaling of tdvp cost for our choice of Ansatz."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's interpretation of three measured medians; no scaling law is fitted.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Three parameter counts do not fix a growth rate."
+    },
+    {
+     "id_suggestion": "hweff-derivation-tdvp-linear-system",
+     "value": "The paper derives, for a PQC with real parameters, the tdvp equation as a linear system in which the real part of the matrix A (elements Aj,k built from derivatives of the state) times the parameter-velocity vector B equals the imaginary part of the vector C, and states that imaginary time evolution leads to similar systems of linear equations.",
+     "anchor": "Appendix F, Eqs. (F7)-(F8), pp. 12-13",
+     "quotes": [
+      "Re(Aj,k)Bk = Im(Cj).",
+      "This leads to the ﬁnal tdvp equation:",
+      "other applications such as imaginary time evolution lead"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Appendix F derives the equation by minimizing the stated squared distance over real parameter velocities.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-error-trotter-order-scaling",
+     "value": "The authors state that a pth-order Trotter product formula has an error scaling as O(τ p+1) per time step τ (printed flat, tau to the power p plus 1) for sufficiently small values of τ, and that the total Trotter error for the complete time evolution over N = t/τ time steps scales as O(τ p).",
+     "anchor": "Sec. III A, p. 5",
+     "quotes": [
+      "A pth-order Trotter product formula has an error scaling as O(τ p+1) per time step τ for suﬃciently small values of τ .",
+      "Then the total Trotter error for the complete time evolution over N = t/τ time steps scales as O(τ p)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated without derivation as a known property of product formulas.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-claim-variational-error-decreases",
+     "value": "The authors state that there are two sources of error, a Trotter error and a variational error due to the limitations of the PQC Ansatz and optimization methods, that both can be quantified and systematically decreased, and that the variational error can be decreased by adding new blocks to the PQC and performing more optimization sweeps.",
+     "anchor": "Sec. III A, p. 5",
+     "quotes": [
+      "In our methods there exist two sources of error.",
+      "Both errors can be quantiﬁed and systematically decreased.",
+      "can be decreased by adding new blocks to the PQC and performing more optimization sweeps."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; Fig. 6 shows that block and angle update do not benefit from more sweeps, and only depth 2 was tested.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The statement that more sweeps lower the variational error is supported in the paper only for cone update (Fig. 6); the paper reports no experiment that adds blocks."
+    },
+    {
+     "id_suggestion": "hweff-measured-second-order-trotter-benefit",
+     "value": "The authors report real time evolution of the zero state under the quantum Ising chain with J = 1, λ = 0.2, n = 6 and t = 2, using cone update with six sweeps, and that the second-order Trotter method resulted in smaller errors than the first-order method for all values of τ tested.",
+     "anchor": "Sec. III A, Fig. 5, p. 5",
+     "quotes": [
+      "We perform real time evolution of the |0 state under the quantum Ising chain with J = 1, λ = 0.2, n = 6, and t = 2.",
+      "In order to achieve a small variational error we use our most accurate algorithm, cone update, with six sweeps.",
+      "The second-order method resulted in smaller errors for all values of τ ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one exact simulation of one six-qubit system.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The tested values of τ are given only on the axis of Fig. 5 (the text layer lists 0.25, 0.5, 1, 2); the quotes do not carry them."
+    },
+    {
+     "id_suggestion": "hweff-measured-trotter-variational-crossover",
+     "value": "The authors report that for the larger values of τ the Trotter error is larger than the variational error, and for the smaller values of τ the variational error accumulates over more time steps and rapidly becomes larger than the Trotter error, consistent with similar studies for matrix product states.",
+     "anchor": "Fig. 5 caption, p. 5",
+     "quotes": [
+      "We observe that for the larger values of τ , i.e., fewer time steps making up the total evolution, the Trotter error is larger than the variational error.",
+      "For the smaller values of τ , i.e., more time steps in the entire evolution, the variational error accumulates over more time steps and rapidly becomes larger than the Trotter error.",
+      "This observation is consistent with similar studies that were carried out for matrix product states [56]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from one simulation of one system.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-setup-objective-accuracy-experiment",
+     "value": "The authors set up an experiment on the accuracy of cone, block and angle update using the depth D = 2 Ansatz with periodic boundary conditions and randomly initialized parameters, with a time step of 0.1 for cone update, and, for block update, a step of 0.1/(NsNb) and, for angle update, 0.1/(NsNbNp), where Ns is the number of sweeps. The four-qubit causal cone encloses three blocks and 45 parameters; the six-qubit cone encloses five blocks and 75 parameters; the results average over 25 random initial states and random Pauli-product Trotter terms.",
+     "anchor": "Sec. III C, p. 7; Fig. 6 caption, p. 6",
+     "quotes": [
+      "We use the Ansatz in Fig. 3 (a) with depth D = 2,",
+      "a time step of 0.1. Recall that for real time evolution",
+      "angle and block update require a corrected time step.",
+      "For block update we use a step of 0.1/(NsNb) and for angle update we use 0.1/(NsNbNp), where Ns is the number of sweeps.",
+      "FIG. 6. Mean objective function in Eq. (1) and standard deviation for 25 random initial states and Trotter terms of the form",
+      "Its causal cone encloses four qubits and three blocks, for a total of 45 parameters.",
+      "Its causal cone encloses six qubits and ﬁve",
+      "blocks, for a total of 75 parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the settings of its own experiment in Sec. III C and the Fig. 6 caption.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The form of the Trotter term (a Pauli product with a small coefficient) is garbled in the text layer, so its coefficient is not carried in the quotes."
+    },
+    {
+     "id_suggestion": "hweff-measured-cone-update-converges-four-qubit",
+     "value": "The authors report that for the four-qubit causal cone cone update outperforms the other methods and converges to the optimal objective value of one, while block and angle update do not benefit from an increased number of sweeps.",
+     "anchor": "Sec. III C, Fig. 6 (a), p. 7",
+     "quotes": [
+      "cone update outperforms and converges to the optimal value of one,",
+      "while block and angle update do not beneﬁt from an increased number of sweeps."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from exact simulation of random instances at one depth.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The axis of Fig. 6 in the text layer runs from about 0.994 to 1.000, so the differences between methods are small in absolute terms."
+    },
+    {
+     "id_suggestion": "hweff-measured-six-qubit-cone-no-convergence",
+     "value": "The authors report that for the six-qubit causal cone a similar behavior is observed, but none of the methods converge to the optimal value of one, which they attribute to the limitations of the shallow PQC Ansatz.",
+     "anchor": "Sec. III C, Fig. 6 (b), p. 7",
+     "quotes": [
+      "However, none of the methods converge to the optimal",
+      "value of one, reﬂecting the limitations of the shallow PQC"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from exact simulation; the attribution to the shallow Ansatz is the authors' reading and was not tested at a greater depth.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "This limits the Discussion claim that cone and block update achieve the high accuracy required for real time evolution: in the harder six-qubit case none reaches the optimum."
+    },
+    {
+     "id_suggestion": "hweff-setup-ising-imaginary-time-experiment",
+     "value": "The authors set up an imaginary time experiment on the 1d quantum Ising Hamiltonian with n = 8 qubits, the depth D = 2 Ansatz with open boundary conditions, a time step τ = 0.1 treated as a hyperparameter in all cases, and 20 random initializations, with a transverse field λ = 1 (critical for the corresponding infinite system) and λ = 4 (noncritical).",
+     "anchor": "Sec. III C, Fig. 7 caption, p. 6; text, p. 7",
+     "quotes": [
+      "For n = 8 qubits we use the PQC Ansatz in Fig. 3 (a) with depth D = 2 and open boundary conditions.",
+      "FIG. 7. Mean energy and standard deviation of 20 random initializations for imaginary time evolution on the 1d quantum Ising model for eight qubits.",
+      "The time step is a hyperparameter, which we set at τ = 0.1 in all cases.",
+      "(a) The transverse ﬁeld is set to λ = 1 where the corresponding inﬁnite system is critical.",
+      "(b) The transverse ﬁeld is set to λ = 4 where the corresponding inﬁnite system is noncritical."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the settings of its own experiment in the Fig. 7 caption and Sec. III C.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The text says J = λ = 1 for panel (a) and the caption says λ = 1; the two agree with J = 1."
+    },
+    {
+     "id_suggestion": "hweff-measured-ising-ground-state-methods-similar",
+     "value": "The authors report that, for the quantum Ising chain with eight qubits at their choice of time step, all methods reach similar low energies at the critical transverse field, and that at the noncritical field all methods converge rapidly, producing states very close to the ground state; they state that the circuits for angle update are much simpler than those for cone update.",
+     "anchor": "Sec. III C, Fig. 7, pp. 6-7",
+     "quotes": [
+      "For our choice of hyperparameter τ , all methods reach similar low energies.",
+      "All methods converge rapidly, producing states that are very close to the ground state.",
+      "emphasize that the circuits for angle update are much simpler than those for cone update."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from exact simulation of one small system family.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "At this time step the three methods are not separated by final energy, so the experiment does not show a ground-state accuracy advantage of one method; the case for angle update rests on circuit simplicity."
+    },
+    {
+     "id_suggestion": "hweff-measured-fig1-angle-update-12-qubits",
+     "value": "The authors report, for the quantum Ising chain with J = 1, λ = 0.2 and length n = 8, 10 and 12, using a PQC Ansatz of depth D = 2 whose causal cones need only six qubits, that angle update with one sweep from a randomly initialized PQC, for 50 time steps of size 0.05, then 50 of size 0.03, and then 50 of size 0.01, achieves relative energy errors below 10−3 in imaginary time evolution.",
+     "anchor": "Fig. 1 (a), p. 1",
+     "quotes": [
+      "with J = 1, λ = 0.2",
+      "and length n = 8 (dotted line), 10 (dashed line), and 12",
+      "We use a PQC Ansatz of depth D = 2, which is",
+      "sweep for 50 time steps of size 0.05, then 50 time steps of",
+      "size 0.03, and then 50 time steps of size 0.01.",
+      "The algorithm achieves relative energy errors below 10−3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one exact simulation of one Hamiltonian family.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The time-step schedule is hand-chosen and shrinks across the run; the figure shows one run per length."
+    },
+    {
+     "id_suggestion": "hweff-measured-fig1-cone-update-real-time",
+     "value": "The authors report, for real time evolution of the all-zero initial state under the same Ising chain, using cone update with six sweeps and time step size 0.01, that a squared Euclidean distance of 0.05 between the variational state and the exact evolved state is obtained at the end of the simulation (time in units of 1/J).",
+     "anchor": "Fig. 1 (b), p. 1",
+     "quotes": [
+      "use cone update with six sweeps and time step size 0.01.",
+      "units of 1/J). A 0.05 distance is obtained at the end of the",
+      "state |ψ(θ) and the exact evolved state |ψ versus time t (in"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one exact simulation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The caption does not give the final time of the run in the text layer (the axis ticks read 0.25 to 1), so the figure of 0.05 refers to the end of that axis."
+    },
+    {
+     "id_suggestion": "hweff-limit-simulation-noise-free",
+     "value": "The authors state that expectations and Hadamard tests are calculated exactly in the numerical simulations and that they do not include finite-sampling noise or hardware noise; the simulations use the qutip library in python.",
+     "anchor": "Appendix G, p. 15",
+     "quotes": [
+      "Expectations and Hadamard tests are calculated exactly.",
+      "We do not include ﬁnite-sampling noise or hardware noise.",
+      "All numerical simulations are programed in python using the qutip library [66]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of their numerical study in Appendix G.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Hardware efficiency is argued by operation counts; no result in the paper is from a quantum device or a noisy or sampled simulation."
+    },
+    {
+     "id_suggestion": "hweff-setup-numerical-qubit-range",
+     "value": "The authors state that for the numerical simulations they use the PQC Ansatz with depth D = 2 and number of qubits n in {4, 6, 8} depending on the experiment, and that for one-qubit and two-qubit nearest-neighbor Trotter terms the causal cones involve at most six qubits, also with periodic boundary conditions.",
+     "anchor": "Appendix G, p. 14",
+     "quotes": [
+      "For the numerical simulations we use the PQC Ansatz shown in Fig. 3 (a), with depth D = 2 and number of",
+      "qubits n ∈ {4, 6, 8} depending on the experiment.",
+      "involve at most six qubits. This remains true if we include periodic boundary conditions in the Ansatz, such as the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the settings of its own numerical study in Appendix G.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Fig. 1 uses n = 8, 10 and 12, which is outside the set {4, 6, 8} that Appendix G lists, so that list does not cover all experiments in the paper."
+    },
+    {
+     "id_suggestion": "hweff-setup-trotter-formulas-ising-split",
+     "value": "The authors use, for the Ising chain, the first-order and second-order Trotter product formulas obtained by splitting the Hamiltonian into two noncommuting parts, the Z-Z coupling part and the transverse-field part, whose terms commute within each part.",
+     "anchor": "Appendix G, Eqs. (G1)-(G4), p. 14",
+     "quotes": [
+      "For real time evolution, we use the following ﬁrst- and second-order Trotter product formulas:",
+      "of the quantum Ising Hamiltonian in Eq. (3) into two noncommuting parts. All terms inside HˆZZ and inside HˆX",
+      "commute with each other and therefore we use the additional decompositions:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the product formulas it simulates in Appendix G.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-claim-angle-then-refine",
+     "value": "The authors state that, in practice, once angle update converges one could switch to more demanding algorithms, such as block or cone update, in order to fine-tune the result, and that they expect angle update to be useful for specific applications, such as the computation of steady states, where accuracy per time step is not crucial.",
+     "anchor": "Sec. IV Discussion, pp. 7-8",
+     "quotes": [
+      "In practice, once angle update converges one could switch to more demanding algorithms, such as block or cone update, in order to ﬁne-tune the result.",
+      "We also expect our angle update to be useful for speciﬁc applications, such",
+      "as the computation of steady states, where accuracy per time step is not crucial."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own proposal and expectation, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-claim-overlap-maximization-variant",
+     "value": "The authors state that combining a published state-overlap maximization method with their cone strategy leads to a promising hardware-efficient algorithm that can also use hardware-efficient overlap computation, and that the coordinatewise update rules for it are already known from cited work because overlap maximization is equivalent to expectation minimization for a Hermitian operator.",
+     "anchor": "Sec. IV Discussion, Fig. 8, p. 7-8",
+     "quotes": [
+      "combining this method with our cone strategy leads to a promising hardware-eﬃcient algorithm that can additionally make use of hardware-eﬃcient overlap computation [58, 59].",
+      "Here the coordinatewise update rules are already known [36–39] as the overlap maximization is equivalent to the expectation minimization for the Hermitian operator M = − |0 0|."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about an algorithm that is proposed but not run in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Fig. 8 shows circuits only; no result from this variant is reported."
+    },
+    {
+     "id_suggestion": "hweff-claim-tensor-network-causal-cone-vision",
+     "value": "The authors state that their work contributes to a line of research implementing tensor network techniques via parameterized quantum circuits, bringing PQC and tensor network optimization closer together, that causal cones enable simulations of finite systems larger than the size of the underlying quantum hardware, and that they envision such techniques will ultimately enable attacking large problems and obtaining a quantum advantage.",
+     "anchor": "Sec. IV Discussion, pp. 7-8",
+     "quotes": [
+      "Our work contributes to this line of research, bringing PQC",
+      "and tensor network optimization closer together.",
+      "We envision that such techniques that detach the logical model from some of the hardware limitations will ultimately enable us to attack large problems and obtain a quantum advantage."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement of the authors' expectation without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-conclusion-no-matrix-inversion-adjustable-hardware",
+     "value": "The authors conclude that variational simulations of time evolution can be performed without inverting a possibly ill-conditioned matrix at each time step, and that they derived algorithms whose hardware requirements can be adjusted to match the experimental capabilities.",
+     "anchor": "Sec. IV Discussion, p. 7",
+     "quotes": [
+      "Variational simulations of time evolution can be performed without inverting a possibly ill-conditioned matrix at each time step.",
+      "To this end, we derived suitable algorithms whose hardware requirements can be adjusted to match the experimental capabilities."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion, supported by the update-rule derivations and by exact simulations of small systems.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-cited-time-evolution-advantage",
+     "value": "The authors state, citing earlier work, that the simulation of time evolution of quantum systems is an example of a problem where the advantage of using a quantum computer over a classical one is well understood.",
+     "anchor": "Sec. I Introduction, p. 1",
+     "quotes": [
+      "where the advantage of using a quantum computer over a classical one is well understood [1–5]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (Refs. 1 to 5).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-cited-tdvp-requires-matrix-inversion",
+     "value": "The authors state that existing proposals are based on the time-dependent variational principle or variants of it, that these approaches require matrix inversion, which poses computational challenges for ill-conditioned matrices, and that their contribution is a set of alternative techniques that do not need matrix inversion.",
+     "anchor": "Sec. I Introduction, p. 1",
+     "quotes": [
+      "Existing proposals are based on the time-dependent variational principle or variants thereof [15, 16].",
+      "These approaches require matrix inversion which poses computational challenges for ill-conditioned matrices."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about prior work (Refs. 15 and 16) that the paper attributes to those works.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hweff-scope-companion-paper-combinatorial",
+     "value": "The authors state that in a companion paper they apply their algorithm to combinatorial optimization problems of up to 23 qubits.",
+     "anchor": "Sec. I Introduction, p. 1",
+     "quotes": [
+      "In a companion paper [50] we apply our algorithm to combinatorial optimization problems of up to 23 qubits."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to a separate paper (Ref. 50).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
