@@ -1,0 +1,683 @@
+{
+ "papers": [
+  {
+   "record_id": "attisara-2025-quantum-machine-learning-optimizing-entanglement",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Ashok-Attisara-Kumar_2025_Quantum-Machine-Learning-for-Optimizing-Entanglement-Distribution__2508.21252.pdf",
+   "title_in_file": "Quantum Machine Learning for Optimizing Entanglement Distribution in Quantum Sensor Circuits",
+   "version_note": "",
+   "pages": 11,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short conference-style paper that trains a Double Deep Q-Network reinforcement-learning agent, in Qiskit simulation up to 20 qubits, to edit quantum circuits so that Quantum Fisher Information and entanglement entropy rise while depth and gate count fall.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "no-hardware-validation",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors list testing and validating the optimized circuits on real quantum hardware as future work.",
+     "anchor": "Section VI, Conclusion and future work, p.10",
+     "quotes": [
+      "Extending our work to test and validate the optimized quantum circuits on real quantum hardware, exploring performance metrics under practical conditions."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit in its future-work paragraph; every experiment in the paper is a simulation (Qiskit AER, state vector).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qfi-entropy-depth-reduction",
+     "verdict": "narrowed",
+     "note": "The abstract's 0.84-1.0 and 20-86% are not one claim in the body. The body says the 0.84 to 1.0 figure is a MAXIMUM QFI and entropy, and that the 20-81% figure is an AVERAGE depth and gate count reduction after the entanglement-focused techniques. The 86% figure appears only as a maximum, in the Table 2 caption (and 85.71% as a maximum in Table 4). The abstract's 20-86% range is therefore not stated in the body as an average range.",
+     "value": "The authors report maximum QFI and entropy of 0.84 to 1.0 with average depth and gates count reduction of 20-81% after applying the entanglement-focused optimization techniques, and state in a results-table caption a maximum reduction of 86%.",
+     "anchor": "Abstract p.1; Section V p.5; Table 2 caption p.8",
+     "quotes": [
+      "the results have been improved with maximum QFI and entropy of 0.84 to 1.0 with average depth and gates count reduction of 20-81%",
+      "of average 0.80 to 0.92 and max of 1.0 along with the average depth and gate counts reduction by 25% and maximum by 86%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The per-qubit depth reductions in the Table 2 rows (as the text layer prints them, about -3.89 to 25.15) do not reach the 20-81% average the body states; the large figures match the Table 4 maxima for 2 and 3 qubits (85.71%). The aggregate figures cannot be traced to a single table."
+    },
+    {
+     "id": "scaling-limit-20-qubits",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that the optimization algorithm has exponential complexity in the number of qubits, and that simulations up to 20 qubits were successful while larger systems remain challenging.",
+     "anchor": "Section VI, Conclusion and future work, p.10",
+     "quotes": [
+      "The optimization algorithm exhibits exponential complexity with respect to the number of qubits.",
+      "While simulations up to 20 qubits were successful, scaling to larger systems remain challenging."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit in its conclusion and future-work section.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "ddqn-mdp-setup",
+     "value": "The authors state that the method uses a Double Deep Q-Network (DDQN) agent that iteratively modifies an initial quantum circuit, and that the environment is modeled as a Markov Decision Process.",
+     "anchor": "Section IV, Methodology, p.2",
+     "quotes": [
+      "leverages reinforcement learning, specifically a Double Deep QNetwork (DDQN) agent, to optimize quantum circuits.",
+      "The environment is modeled as a Markov Decision Process (MDP)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own method setup in Section IV.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The agent is a classical neural-network RL agent; the quantum circuit is the environment, simulated classically."
+    },
+    {
+     "id": "state-encoding-matrix",
+     "value": "The authors state that the circuit state is encoded as a 2D matrix of shape(M,5N+3), where M is the maximum number of gates and N is the number of qubits.",
+     "anchor": "Section IV, p.3",
+     "quotes": [
+      "The circuit state is encoded as a 2D matrix of shape(M,5N+3) , where M is the maximum number of gates and N is the number of qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own state encoding.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The same paragraph says 'The last 3 features' and then lists four features (average layer entanglement, current entanglement, normalized depth, normalized gate count), so the encoding description is internally inconsistent with the stated shape."
+    },
+    {
+     "id": "ddqn-update-and-loss",
+     "value": "The authors give the Q-value update Q(s,a) ← Q(s,a) + α[r + γ Q'(s',argmax_a Q(s',a)) - Q(s,a)] and, in the algorithm listing, state the training loss as L = (r + γ * max_{a'} Q(s', a'; θ-) - Q(s, a; θ))^2.",
+     "anchor": "Section IV Eq. (1), p.3; Algorithm 1, p.3",
+     "quotes": [
+      "Q(s,a) ← Q(s,a) + α[r + γ Q'(s',argmax_a Q(s',a)) - Q(s,a)] (1)",
+      "L = (r + γ * max_{a'} Q(s', a'; θ-) - Q(s, a; θ))^2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its update rule and loss in Section IV and Algorithm 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Equation (1) selects the action with the main network and evaluates it with the target network (Double DQN), but the Algorithm 1 loss takes max over a' of the target network, which is the plain DQN target. The two statements differ."
+    },
+    {
+     "id": "reward-weighted-sum",
+     "value": "The authors state that the reward is a weighted sum R = w1*ΔQFI + w2*ΔDepth + w3*ΔEntropy + w4* ΔGates, with weight parameters w1, w2, w3, w4 of 50,30,10,10 chosen after careful evaluation to prioritize the entanglement.",
+     "anchor": "Section IV.B, Eq. (3), p.4",
+     "quotes": [
+      "R = w1*ΔQFI + w2*ΔDepth + w3*ΔEntropy + w4* ΔGates (3)",
+      "w1, w2, w3, w4 are weight parameters with 50,30,10,10 as weights considered after careful evaluation to prioritize the entanglement"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own reward setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "By the order in Eq. (3) the weights are QFI 50, depth 30, entropy 10, gates 10. The text says the weights prioritize entanglement, yet entropy has the lowest weight, and the paper shows no weight sweep or ablation behind 'careful evaluation'."
+    },
+    {
+     "id": "qfi-definition-fixed-theta",
+     "value": "The authors define the QFI as Q(θ) = 4 * [<∂θψ(θ)|∂θψ(θ)> - |<∂θψ(θ)|ψ(θ)>|^2] and apply parameterized rotations RX(θ),RZ(θ) with the sensing parameter fixed at θ=π/2.",
+     "anchor": "Section IV.B.1, Eq. (4), p.4",
+     "quotes": [
+      "Q(θ) = 4 * [<∂θψ(θ)|∂θψ(θ)> - |<∂θψ(θ)|ψ(θ)>|^2]",
+      "parameterized rotations RX(θ),RZ(θ) are applied with the sensing parameter fixed at θ=π/2 to ensure consistency with quantum sensing protocols."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the metric its results depend on.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "QFI is evaluated at one fixed parameter value, not across a range. Eq. (4) is the pure-state QFI, which is not bounded by 1 in general, yet the tables report QFI values of at most 1.0; the paper does not state a normalization."
+    },
+    {
+     "id": "entanglement-entropy-definition",
+     "value": "The authors state that entanglement is quantified by the von Neumann entropy of the reduced density matrix, S(ρA) = -Tr(ρA log2ρA).",
+     "anchor": "Section IV.B.2, Eq. (5), p.4",
+     "quotes": [
+      "The entanglement is quantified using the von Neumann entropy of the reduced density matrix.",
+      "S(ρA) = -Tr(ρA log2ρA)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the metric its results depend on.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper does not say which bipartition is used for an n-qubit circuit or how entropy is normalized to the 0 to 1 range its tables report."
+    },
+    {
+     "id": "depth-gate-ratio-definitions",
+     "value": "The authors define Depth Ratio = Din – Dout / Din and Gate Ratio = Gin – Gout / Gin, where Din and Gin are the depth and gate count of the input circuit and Dout and Gout those of the output circuit.",
+     "anchor": "Section IV.B.3-4, Eqs. (6)-(7), p.5",
+     "quotes": [
+      "Depth Ratio = Din – Dout / Din",
+      "Gate Ratio = Gin – Gout / Gin"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions of the reduction metrics its results use.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "As printed, without parentheses, the expressions read Din − (Dout/Din). The intended meaning is almost certainly (Din − Dout)/Din, which the negative depth-reduction entries in Table 2 are consistent with."
+    },
+    {
+     "id": "entanglement-boosting-threshold",
+     "value": "The authors state that entanglement boosting adds gates when the overall entanglement entropy drops below a threshold set to 0.7.",
+     "anchor": "Section IV.A, p.4; Table 1, p.5",
+     "quotes": [
+      "Entanglement Boosting involves periodic reinforcement of entanglement across the circuit when the overall entanglement entropy drops below the threshold (set to 0.7).",
+      "Boosting is performed by adding additional gates in specific regions to maintain high sensitivity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own technique and hyperparameter.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Fig. 13b reports an optimized circuit with entropy 0.6836, below this threshold."
+    },
+    {
+     "id": "entanglement-injection-pattern",
+     "value": "The authors state that an entanglement injection is a specific gate pattern of a Hadamard (H) followed by a CNOT, dynamically inserted into layers identified as weakly entangled during training.",
+     "anchor": "Section IV.A, p.4",
+     "quotes": [
+      "We identify injections as a specific gate pattern consisting of a Hadamard (H) followed by a CNOT, dynamically inserted into layers identified as weakly entangled during training."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the technique.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "network-components-setup",
+     "value": "The authors state that the network adds an attention mechanism, Attention (Q, K, V) = SoftMax (QKT/sqrt(dk)) V, a critic network layer and an entanglement-focused layer to the DDQN base, and that an adaptive learning rate scheduler with Adam is used.",
+     "anchor": "Section IV.A, Eq. (2), pp.3-4; Section V, p.5",
+     "quotes": [
+      "Attention (Q, K, V) = SoftMax (QKT/sqrt(dk)) V",
+      "by keeping DDQN as the base network layer we have experimented with two additional network layers, one is the Critic network layer to evaluate the agent actions and entanglement focused network layer",
+      "Adaptive learning uses Adam optimization technique to dynamically adjust the learning process"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own architecture.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper reports results only before and after the whole set of entanglement-focused techniques; no per-component ablation isolates the effect of attention, the critic or the entanglement layer. The simplification step is described hedged ('This likely involves techniques such as gate cancellation'), so the implementation is not fully specified."
+    },
+    {
+     "id": "training-environment-setup",
+     "value": "The authors state that a custom Quantum Circuit Environment was created using OpenAI Gym with qubits from 2 to 20 and a maximum number of gates from 15 to 160, and that the agent was trained for 1000 episodes, each episode starting from one of the loaded initial circuits.",
+     "anchor": "Section V, p.5; Table 1, p.5",
+     "quotes": [
+      "A custom Quantum Circuit Environment was created using OpenAI Gym, simulating a quantum circuit with a specified number of qubits from 2 to 20 and a maximum number of gates from 15 to 160 respectively.",
+      "The agent was trained for 1000 episodes, with each episode starting from one of the loaded initial circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Table 1 also lists a discount factor of 0.95, epsilon decay of 0.999, memory size 2000 and batch size 64 in a garbled text layer. Its qubit-row description ('the testing dataset to test the HCQNN model') names a model that appears nowhere else in the paper and looks like a leftover from another paper."
+    },
+    {
+     "id": "simulators-and-initial-circuits",
+     "value": "The authors list AER and state vector as the simulators, and state that the algorithm resets each episode by generating a random initial quantum circuit C or taking an input from the user.",
+     "anchor": "Table 1, p.5; Algorithm 1, p.3",
+     "quotes": [
+      "AER, state vector",
+      "Generate a random initial quantum circuit C or take the",
+      "Input from user"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of what it simulates and trains on; all circuits are simulated, none run on hardware.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The training and test circuits are random or user-supplied circuits, not a specified quantum-sensing protocol, so the QFI is a property of generic circuits at a fixed parameter."
+    },
+    {
+     "id": "noise-model-setup",
+     "value": "The authors state that the noise model includes depolarizing errors for measurement and gates and thermal relaxation errors modeling T1 and T2 processes, built with Qiskit's noise model class and simulated with the Aer simulator.",
+     "anchor": "Section V, p.6",
+     "quotes": [
+      "The noise model includes depolarizing errors for measurement and gates and thermal relaxation errrors modeling T1 and T2 processes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own noise setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper gives no error rates or T1 and T2 values, so the noise level cannot be reproduced from the text."
+    },
+    {
+     "id": "results-before-techniques",
+     "value": "The authors report that before applying the entanglement-focused optimization techniques they obtained maximum QFI and entropy of average 0.80 to 0.90, with average depth reduction of 25 to 78 % and gate counts reduction of 23 to 81% on an average.",
+     "anchor": "Section V, p.5",
+     "quotes": [
+      "Before applying different optimization techniques we were able to optimize the entanglement layout with maximum QFI and entropy of average 0.80 to 0.90 with average depth reduction of 25 to 78 % and gate counts reduction of 23 to 81% on an average."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The sentence mixes 'maximum' and 'average' for the same quantity, and the ranges cannot be matched to the Table 2 or Table 4 rows."
+    },
+    {
+     "id": "table2-summary-5-to-20-qubits",
+     "value": "The authors report in Table 2, for circuits of 5 to 20 qubits compiled with Qiskit and compared to the baseline work [7], average QFI and entanglement entropy of 0.80 to 0.92 with a max of 1.0, and average depth and gate counts reduction of 25% with a maximum of 86%.",
+     "anchor": "Table 2 and caption, p.8",
+     "quotes": [
+      "TABLE 2. The Results table of 5 to 20 Qubits Quantum circuit using Qiskit compiler with multi metrics QFI, Entropy, Depth Reduction and Gate counts Reduction compared to the baseline work [7]",
+      "The Results clearly state that the model can achieve highest QFI and Entanglement Entropy of average 0.80 to 0.92 and max of 1.0 along with the average depth and gate counts reduction by 25% and maximum by 86%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Table 2 text layer loses the column grouping, so row values (such as entropy 0.76 to 0.92 and depth reductions between about -3.89 and 25.15) cannot be assigned safely to the baseline, before, after and noisy columns. The caption's 25% average is not matched by the printed rows."
+    },
+    {
+     "id": "table2-negative-depth-reduction",
+     "value": "The authors' Table 2 rows for the two largest circuit sizes contain the depth reduction values -2.33 and -3.89 in the Depth Reduction % block, alongside positive values for the other columns of those rows.",
+     "anchor": "Table 2, p.8",
+     "quotes": [
+      "0.85 0.80 0.81 0.81 -2.33 9.06 10.05 9.84 2.11 17.93 18.69 18.42",
+      "0.85 0.80 0.82 0.76 -3.89 13.16 7.15 6.85 1.72 13.26 13.37 13.26"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study, read from a garbled table layer.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The negative entries are in the first column of the depth block, which the caption's header order suggests is the baseline [7]; this assignment rests on a garbled header and is uncertain. If correct, the baseline increased depth on the 15 and 20 qubit circuits."
+    },
+    {
+     "id": "baseline-choice-and-modification",
+     "value": "The authors state that they chose the work [7] as their baseline model because it optimizes entangling gates with an RL approach and is readily available [14], and that they modified the base implementation by adding a few measuring metrics to make it compatible for comparison.",
+     "anchor": "Section V, pp.5-6",
+     "quotes": [
+      "we have choosen one of the closest work [7] as the work emphasize in optimizing entangling gates with RL approach and is readily avaiable to consider it for comparision as a baseline model [14].",
+      "we have modified the base implementation by adding few measuring metrics to make it compaitable for comparison with our work."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own comparison setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Only one baseline is compared quantitatively, and it is a modified version of the cited implementation."
+    },
+    {
+     "id": "four-times-baseline-claim",
+     "value": "The authors state that, as a result, they achieve high entanglement by minimizing depth and gate counts by 4 times more than the baseline model.",
+     "anchor": "Section V, p.6",
+     "quotes": [
+      "As a result we are able to achieve high entanglement by minimizing depth and gate counts by 4 times more than the baseline model."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim from one study; the factor is not tied to a table entry.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "No table or figure caption states a factor of 4; the Table 2 rows as printed show baseline and method reductions of similar size at several qubit counts."
+    },
+    {
+     "id": "noisy-environment-result",
+     "value": "The authors state that the results in the noisy environment are 'quite compromising' when compared with the noiseless model.",
+     "anchor": "Section V, p.6",
+     "quotes": [
+      "As per the expectations the results are quite compromising in the noisy environment while comparing with noiseless model."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "'Compromising' is ambiguous: it may mean 'compromised' (worse) or 'comparable'. The Table 2 noisy column (iii) is close to column ii, which fits 'comparable', but the sentence does not say."
+    },
+    {
+     "id": "exponential-complexity-runtime",
+     "value": "The authors state that the algorithm demonstrates exponential time complexity O(2^n), where n represents the number of qubits, and that on a local machine with 8GB RAM and 1TB HDD specifications it requires approximately 2^n hours to converge to optimal solutions.",
+     "anchor": "Section V, p.6",
+     "quotes": [
+      "The quantum circuit entanglement optimization algorithm demonstrates exponential time complexity O(2^n), where n represents the number of qubits",
+      "When implemented on a local machine with 8GB RAM and 1TB HDD specifications, the algorithm requires approximately 2^n hours to converge to optimal solutions"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of its computational limit, Section V and Section VI.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Taken literally, 2^n hours at n = 20 is about one million hours (over a century), which cannot match a reported 20-qubit run; the runtime formula is best read as an informal scaling statement, not a measurement."
+    },
+    {
+     "id": "table4-qiskit-tket-results",
+     "value": "The authors report in Table 4, for 2 to 10 qubit circuits optimized with Qiskit and Tket together, a maximum QFI and entanglement entropy of 0.99, an average depth and gate counts reduction of 42% and a maximum of 85.71%.",
+     "anchor": "Table 4 and caption, p.10",
+     "quotes": [
+      "TABLE 4. The Results table of 2 to 10 Qubits Quantum circuit with multi metrics QFI, Entropy, Depth Reduction and Gate counts Reduction.",
+      "demonstrating the maximum QFI and Entanglement entropy of 0.99 by reducing the complexity of circuits with an average of 42% and maximum of 85.71% in depth and gate counts reduction"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The printed Table 4 rows show final entropy of 0.80 to 0.99 and final QFI of 0.80 to 1.0, so '0.99' is the largest final entropy only. The 42% average is the 2-qubit depth entry (42.13); the other average depth entries are 7.57 to 30.48. Table 4 gives a maximum of 120 gates for 10 qubits where Table 2 gives 90."
+    },
+    {
+     "id": "tket-qiskit-merged-passes",
+     "value": "The authors state that they experimented with the Tket compiler and merged Qiskit passes and Tket passes along with custom templates to choose the best optimized circuit by comparing measurement values.",
+     "anchor": "Section V, p.9",
+     "quotes": [
+      "To optimize the gate and depth counts by preserving the state of sensitivity we merged the qiskit passes and Tket passes along with our custom templates to choose the best"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own compilation setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The depth and gate reductions in Table 4 therefore come partly from conventional compiler passes, not from the RL agent alone."
+    },
+    {
+     "id": "fig12-tket-example",
+     "value": "The authors report in Fig. 12 a randomly generated input circuit with depth 12 and 0 QFI, for which the Qiskit-optimized circuit shows no change in sensitivity and the Tket-optimized circuit has depth 8, maximum QFI and entanglement entropy of 1.0 and gate counts reduction to 8.",
+     "anchor": "Fig. 12 caption, p.9",
+     "quotes": [
+      "12a) Randomly generated input circuit with depth 12, 0 QFI and Entropy 12b) Qiskit optimized circuit with no change in sensitivity 12c) Tket optimized circuit with depth 8 and maximum QFI and entanglement entropy of 1.0 along with gate counts reduction to 8."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single example circuit from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "One hand-picked example; it shows no distribution over circuits."
+    },
+    {
+     "id": "fig13-qiskit-example",
+     "value": "The authors report in Fig. 13 an input circuit with entropy 0.4759, depth of 12 with 50 gates, and a Qiskit-optimized circuit with entropy 0.6836, depth of 11 with 40 gate counts, an entanglement improvement of 0.2077 with a gate change of 10 counts.",
+     "anchor": "Fig. 13 caption, p.9",
+     "quotes": [
+      "13a) Input circuit with entropy 0.4759, depth of 12 with 50 gates. 13b) Qiskit Optimized circuit with entropy 0.6836, depth of 11 with 40 gate counts. Entanglement is improved by 0.2077 with gate change of 10 counts."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single example circuit from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The optimized entropy 0.6836 is below the paper's own boosting threshold of 0.7."
+    },
+    {
+     "id": "fig8-qfi-1000-circuits",
+     "value": "The authors report line graphs from an experiment across 1,000 different quantum circuits, with a QFI of 8 Qubit from 0.98 to 1.0 and a QFI of 10 Qubit circuit with highest value of 1.0.",
+     "anchor": "Section V p.7; Fig. 8a-8b caption, p.7",
+     "quotes": [
+      "entanglement optimization across 1,000 different quantum circuits",
+      "The visualization of Quantum Fischer (QFI) of 8 Qubit from 0.98 to 1.0",
+      "The visualization of Quantum Fischer (QFI) of 10 Qubit circuit with highest value of 1.0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The agent is trained for 1000 episodes and the plots cover 1,000 circuits, and the paper describes no held-out evaluation set, so it is unclear whether these values are training-time or test-time results."
+    },
+    {
+     "id": "ddqn-superiority-claim-no-comparison",
+     "value": "The authors state that DDQN agents demonstrate superior performance in quantum circuit optimization compared to alternative reinforcement learning approaches, and list PPO agents and policy learning among future work.",
+     "anchor": "Section V, p.5; Section VI, p.10",
+     "quotes": [
+      "(DDQN) agents demonstrate superior performance in quantum circuit optimization compared to alternative reinforcement learning approaches",
+      "To experiment with various neural network architectures like PPO Agents and Policy learning."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No alternative RL algorithm is run in the paper (PPO is future work), so the superiority claim is unsupported by the paper's own experiments."
+    },
+    {
+     "id": "conclusion-results-range",
+     "value": "The authors state in the conclusion that the results demonstrate maximum QFI and entanglement entropy in the range of 0.8 to 1.0 with a 20-86% reduction in circuit depth and gate count, particularly impressive for 220 qubit circuits.",
+     "anchor": "Section VI, p.10",
+     "quotes": [
+      "maximum Quantum Fisher Information (QFI) and entanglement entropy in the range of 0.8 to 1.0, along with a 20-86% reduction in circuit depth and gate count",
+      "This efficiency in managing high entanglement with minimum depth and gates is particularly impressive for 220 qubit circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study, restated in the conclusion.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "'220 qubit circuits' is probably a typographical error for 2 to 20 qubits, the range the paper simulates; no 220-qubit experiment exists."
+    },
+    {
+     "id": "scalability-and-robustness-claims",
+     "value": "The authors state in the conclusion that the framework and protocols can be scaled to larger quantum sensor networks, and that the resulting circuits exhibit enhanced sensitivity, reduced complexity, and improved robustness to noise.",
+     "anchor": "Section VI, p.10",
+     "quotes": [
+      "The framework and protocols developed in this work can be scaled to larger quantum sensor networks",
+      "The resulting circuits exhibit enhanced sensitivity, reduced complexity, and improved robustness to noise"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author claims in the conclusion without direct evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The scaling claim conflicts with the same section's statement that the algorithm has exponential complexity and that scaling beyond 20 qubits remains challenging. No sensor-network experiment and no robustness metric beyond one noisy column in Table 2 is reported."
+    },
+    {
+     "id": "future-work-and-mps",
+     "value": "The authors state that future work will improve scalability, add error mitigation mechanisms, try PPO agents and policy learning, explore hardware-aware optimizations, and integrate tensor network techniques, particularly the Matrix Product State (MPS) approach.",
+     "anchor": "Section VI, pp.10-11",
+     "quotes": [
+      "Our future work will focus on improving the scalability of the code to handle larger quantum circuits with more qubits and gates.",
+      "have planned to integrate tensor network techniques, particularly the Matrix Product State (MPS) approach, which significantly reduces simulation complexity for larger circuits.",
+      "future work will explore hardware-aware optimizations to further improve scalability."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of open work in its future-work section.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The abstract says the implementation 'integrates noise models and error mitigation strategies', while future work lists error mitigation mechanisms as still to be done."
+    },
+    {
+     "id": "related-work-gaps-claimed",
+     "value": "The authors state that the cited related works lack entanglement or sensitivity measurement: the deep RL circuit optimization work does not measure the amount of entanglement, the ZX-calculus RL work does not focus on the sensitivity, and the CNOT size optimization work does not measure entropy.",
+     "anchor": "Section III.B, III.C, III.E, pp.2-3",
+     "quotes": [
+      "Although the approach concentrates on 2 qubits gate optimization, the amount of entanglement is not measured during the process.",
+      "It does not focus on the sensitivity while optimizing the circuits .",
+      "Though it focuses on two qubit gates, entropy is not measured."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' characterization of other work, not verified in this paper.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "Table 3 is a qualitative checklist the authors made; it marks their own work with a check in every column."
+    },
+    {
+     "id": "cited-greedy-optimization-result",
+     "value": "The authors report that the cited greedy algorithm based circuit optimization work achieves Gate Count Reduction by 7.8% and Depth Reduction by 16.3 %.",
+     "anchor": "Section III.A, p.2",
+     "quotes": [
+      "Gate Count Reduction by 7.8% and Depth Reduction by 16.3 %."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "cited-drl-circuit-optimization-result",
+     "value": "The authors report that the cited deep reinforcement learning circuit optimization work trains agents on 12 qubits random entangled circuit with an average depth reduction by 27% and CNOT gate counts by 15%.",
+     "anchor": "Section III.B, p.2",
+     "quotes": [
+      "training agents on 12 qubits random entangled circuit where on an average depth reduction by 27% and CNOT gate counts by 15%"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "cited-entanglement-sensitivity-background",
+     "value": "The authors state, citing [3], that entanglement is one of the key factors in achieving high sensitivity and measurement precision.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Entanglement is one of the key factors in achieving high sensitivity and measurement precision [3]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A background result attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "table3-qualitative-comparison",
+     "value": "The authors present Table 3 as a qualitative analysis of their work in comparison with other related works over a few key measuring criteria.",
+     "anchor": "Table 3 and caption, p.9",
+     "quotes": [
+      "TABLE 3. The table represents the qualitative analysis of our work in comparison with other related works by considering few key measuring criteria"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author-made qualitative checklist, not a measurement.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The check marks do not survive the text layer in a readable grid, so only the caption is entered. Criteria such as 'Flexibility' are not defined in the text."
+    }
+   ]
+  }
+ ]
+}
