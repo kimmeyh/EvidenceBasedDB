@@ -1,0 +1,740 @@
+{
+ "papers": [
+  {
+   "record_id": "barkoutsos-2020-improving-variational-quantum-optimization-cvar",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2019-07_Barkoutsos_Improving-Variational-Quantum-Optimization-using-CVaR.pdf",
+   "title_in_file": "Improving Variational Quantum Optimization using CVaR",
+   "version_note": "arXiv:1907.04769v3, accepted in Quantum 2020-04-12 (CC-BY 4.0). The text layer holds the paper once, 16 pages including the references.",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A paper that replaces the sample mean with the Conditional Value-at-Risk as the objective of VQE and QAOA for combinatorial optimization, with a landscape analysis, simulations on six problem classes, a six-qubit hardware run on IBM Q Poughkeepsie, and a flat-amplitude bound for fixed-depth QAOA.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "cvar-aggregation-faster-convergence-tested-problems",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract, p.1; Sec. 6, p.6",
+     "quotes": [
+      "this leads to faster convergence to better solutions for all combinatorial optimization problems tested in our study",
+      "maximum stable set, maximum 3-satisﬁability, number partitioning, maximum cut, market split, and portfolio optimization"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper's measured basis is probability of sampling an optimal state against normalized iterations of COBYLA (Sec. 6.1), not final solution quality in every setting; for few qubits it reports a ceiling effect in which all methods perform similarly."
+    },
+    {
+     "id": "cvar-qaoa-weaker-than-vqe-equal-depth",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Sec. 6.1, p.7",
+     "quotes": [
+      "QAOA’s performance appears signiﬁcantly worse than that of VQE for equivalent depth (where we compare depth p for VQE to depth p+1 for QAOA)",
+      "We conjecture that this is due to the limited number of variational parameters in QAOA"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The comparison is read from the plots in Fig. 4; the paper gives no numeric gap. Sec. 7 offers a related, separate bound (Proposition 7.1) that does not itself prove the VQE versus QAOA gap."
+    },
+    {
+     "id": "cvar-vqe-hardware-ibm-poughkeepsie-six-qubit-portfolio",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Sec. 6.2, p.7",
+     "quotes": [
+      "we consider an instance of the portfolio optimization problem with 6 assets mapped to 6 qubits",
+      "We test CVaR-VQE on the IBM Q Poughkeepsie 20-qubit quantum computer, with COBYLA as the classical optimizer.",
+      "We gather 8,192 samples from each trial wavefunction",
+      "repeating each experiment ﬁve times",
+      "the problems of this class are some of the most diﬃcult of our testbed"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The setup also fixes depth p = 1 for the main figure and nearest-neighbor entanglement on a ring of six device qubits; the stored value omits these but is not wrong."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "cvar-definition-lower-alpha-tail",
+     "value": "The authors define the Conditional Value-at-Risk of a random variable at confidence level alpha as the expected value of the lower alpha-tail of its distribution, estimated from sorted samples by averaging the lowest alpha-fraction of them. They state that alpha near zero corresponds to the minimum and alpha = 1 to the expected value.",
+     "anchor": "Sec. 4, p.4",
+     "quotes": [
+      "CVaR is the expected value of the lower α-tail of the distribution of X",
+      "α = 1 corresponds to the expected value of X",
+      "CVaR is a generalization of both the sample mean (5), and the best observed sample min{H1, ..., HK}"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines CVaR in Sec. 4, Eq. (11) and (12).",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-motivation-best-sample-matters",
+     "value": "The authors argue that for problems with a diagonal Hamiltonian the sample mean may be a poor objective, because a ground state is then a basis state and the best measurement outcome, not the average, determines the result. They give a two-algorithm example: one with expected value 1.1 times the minimum eigenvalue and zero ground-state overlap, one with 2.0 times and overlap 0.1. They argue the second is more useful.",
+     "anchor": "Sec. 4, p.4",
+     "quotes": [
+      "We argue that for problems with a diagonal Hamiltonian, such as CO problems, the sample mean may be a poor choice in practice.",
+      "ψ1| H |ψ1 /λmin = 1.1",
+      "= 2.0 and j|ψ2 = 0.1",
+      "ψ2| H |ψ2 /λmin = 2.0"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument by a constructed example, not a result.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-min-sample-nonsmooth",
+     "value": "The authors state that using the minimum observed outcome over the measurements as the objective typically gives, for finite K, a non-smooth, ill-behaved objective that is difficult for classical optimization algorithms, and that CVaR with small nonzero alpha gives a smoother, easier objective while still emphasizing the best samples.",
+     "anchor": "Sec. 4, p.4",
+     "quotes": [
+      "typically leads to a non-smooth, ill-behaved objective function",
+      "For small, nonzero values of α, CVaR still puts emphasis on the best observed samples, but it leads to a smoother and easier to handle objective function."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A stated rationale without a dedicated experiment.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "prop-5-1-local-minima-not-mapped",
+     "value": "The paper states Proposition 5.1: a local minimum of the expected-value problem (1) does not necessarily correspond to a local minimum of the CVaR problem (13), and vice versa. For the first direction it uses the two-qubit Hamiltonian H = diag(0, 1, 1, 2) with a Hadamard, controlled-Z and Y-rotation form, where the expected value is independent of theta so every theta is a local minimum, while for alpha = 0.5 the only local minima are at theta = 2k pi.",
+     "anchor": "Proposition 5.1, Sec. 5, p.5",
+     "quotes": [
+      "Proposition 5.1 A local minimum of (1) does not necessarily correspond to a local minimum of (13), and vice versa.",
+      "a two-qubit Hamiltonian H = diag(0, 1, 1, 2)",
+      "so every value of θ is a local (in fact, global) minimum",
+      "the only local minima are at θ = 2kπ for k integer",
+      "with α = 0.5 doing the calculations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Sec. 5 by explicit example and by the converse argument with overlap rho.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-converse-global-minimum-overlap",
+     "value": "The authors state that for parameters theta* whose state has overlap rho > 0 with the ground state, theta* is a global minimum of the CVaR objective for every alpha at most rho, even if theta* is not a local minimum of the expected-value problem (1). They conclude the global minima of problems (1) and (13) cannot be mapped to each other.",
+     "anchor": "Sec. 5, p.5",
+     "quotes": [
+      "|ψ(θ∗) has overlap ρ > 0 with the ground state, θ∗ is a global minimum of CVaRα(X(θ∗)) for α ≤ ρ, even if θ∗ is not a local minimum of (1)",
+      "we cannot even map global minima of problems (1) and (13) to each other"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Argued directly in Sec. 5 from the definition of CVaR.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-global-optima-coincide-diagonal-reachable",
+     "value": "The authors state that when the variational form can reach the ground state and the Hamiltonian is diagonal, a global optimum of the expected-value problem (1) is also a global optimum of the CVaR problem (13) for any alpha.",
+     "anchor": "Sec. 5, p.5",
+     "quotes": [
+      "then the above discussion implies that a global optimum of Eq.(1) is also a global optimum of Eq.(13) for any α."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated in Sec. 5 as following from the preceding argument, with its conditions (reachable ground state, diagonal Hamiltonian) in the same sentence.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-flat-example-constant-objective",
+     "value": "The authors state that in the two-qubit example the expected-value objective is constant, so no optimization can be performed on it, whereas CVaR with alpha between 0 and 1 gives a smooth objective optimized by decreasing theta, which raises the probability of sampling the ground state |00>, maximized at theta = 0 in the interval [0, pi].",
+     "anchor": "Sec. 5, p.5, Fig. 3",
+     "quotes": [
+      "using (1) yields a constant objective function on which no optimization can be performed",
+      "CVaR with 0 < α < 1 yields a smooth objective function that is optimized by decreasing θ",
+      "ground state |00 , which is maximized at θ = 0 in the interval [0, π]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A closed-form calculation for the stated Hamiltonian and variational form in Sec. 5.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-estimator-variance-sample-cost",
+     "value": "The authors cite a result that the variance of the empirical CVaR estimator with K samples is of order one over K times alpha squared, so the standard error grows as one over alpha. They conclude that matching the accuracy of the expected value needs K/alpha samples, and note the cited analysis covers continuous distributions only; they expect it to hold approximately as the number of qubits grows.",
+     "anchor": "Sec. 5, p.5",
+     "quotes": [
+      "The variance of the empirical CVaRα estimator using K samples is O(1/(Kα2)) (see e.g., [13])",
+      "to achieve the same accuracy as for the expected value we need to increase the number of samples to K/α",
+      "although [13] only shows this dependency for continuous distributions, we expect it to be a good approximation as the number of qubits increases"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Hong (2011), reference [13].",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-sample-increase-factor-4-to-10",
+     "value": "The authors suggest, from their results, choosing alpha in [0.1, 0.25], which implies increasing the number of samples by a factor of [4, 10] to attain the same accuracy as the expected value. They note their experiments use the same fixed number of samples for all alpha and still show significant benefits.",
+     "anchor": "Sec. 6.2, p.9",
+     "quotes": [
+      "Results in this paper suggest choosing α ∈ [0.1, 0.25] as",
+      "ber of samples should be increased by a factor",
+      "[4, 10] to attain the same accuracy",
+      "empirical evaluation uses the same, ﬁxed"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical recommendation from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-noisy-estimate-better-than-accurate-mean",
+     "value": "The authors state that in their empirical evaluation even a noisy CVaR estimate yields better results than a more accurate expected-value estimate, and offer as a possible explanation that CVaR is more effective at guiding the classical optimizer toward a state that overlaps the optimal solution.",
+     "anchor": "Sec. 6.2, p.9",
+     "quotes": [
+      "even a noisy CVaR estimate yields better results than a more accurate expected value estimate"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result with a conjectured explanation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-variational-form-definition",
+     "value": "The authors define the VQE variational form as single-qubit Y-rotations on every qubit, followed by p repetitions of controlled-Z gates on all qubit pairs and another layer of Y-rotations, giving n(1 + p) parametrized Y-rotations. Controlled-Z gates commute, so they report the circuit depth as order n p although the gate count is quadratic in n. On hardware they use nearest-neighbor controlled-Z gates instead.",
+     "anchor": "Sec. 2, p.2",
+     "quotes": [
+      "Overall, this leads to n(1 + p) parametrized Y-rotations",
+      "tal circuit depth is O(np), although the number"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the form in Sec. 2 and Fig. 1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-form-spans-ground-state-first-layer",
+     "value": "The authors state that the variational form spans any basis state, and so the ground state of a diagonal Hamiltonian, already with the first layer of Y-rotations, and that the later layers are meant to help the classical optimizer. They also state that the form with a single layer of Y-rotations can be efficiently simulated classically.",
+     "anchor": "Sec. 2, p.3",
+     "quotes": [
+      "these variational forms span any basis state (and thus the ground state of a diagonal Hamiltonian) already with the ﬁrst layer of Y-rotations",
+      "The above variational form with just one layer of Y-rotations can be eﬃciently simulated classically"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its ansatz scope in Sec. 2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-parameter-count-vs-vqe",
+     "value": "The authors state that the number of variational parameters for QAOA is 2p, compared with n(1 + p) for VQE, and that the QAOA circuit needs order n squared times p single-qubit rotations and CNOT-gates in the worst case.",
+     "anchor": "Sec. 3, p.3",
+     "quotes": [
+      "The number of variational parameters for QAOA is thus 2p, compared to n(1 + p) for VQE.",
+      "this leads to O(n2p) single-qubit rotations and O(n2p) CNOT-gates"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Follows from the QAOA form defined in Sec. 3, Eq. (6) to (9).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-experiment-setup-six-problems",
+     "value": "The authors generate ten random instances per problem on 6, 8, 10, 12, 14 and 16 qubits (6, 9, 12 and 15 qubits for Max3Sat), run CVaR-VQE and CVaR-QAOA for alpha in {1%, 5%, 10%, 25%, 50%, 75%, 100%} with p = 0, 1, 2 for VQE and p = 1, 2, 3 for QAOA, and report 340 random problem instances and 14, 280 test cases. The classical optimizer is COBYLA.",
+     "anchor": "Sec. 6, p.6",
+     "quotes": [
+      "we generate ten random instances on 6, 8, 10, 12, 14, and 16 qubits",
+      "thus we use 6, 9, 12, and 15 qubits",
+      "α ∈ {1%, 5%, 10%, 25%, 50%, 75%, 100%} and p = 0, 1, 2 for VQE and p = 1, 2, 3 for QAOA",
+      "this leads to 340 random problem instances and 14, 280 test cases",
+      "we use the classical optimizer COBYLA"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup in Sec. 6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-simulation-metric-optimal-probability",
+     "value": "The authors compare algorithms by plotting the fraction of instances that reach at least a given probability of sampling an optimal solution against the number of classical-optimizer iterations normalized by the number of qubits, using the exact simulated quantum state. They choose this metric because the algorithms use different objective metrics, so comparing average objective values or CVaR at different alpha would not be informative.",
+     "anchor": "Sec. 6.1, p.6",
+     "quotes": [
+      "To make the number of iterations comparable for problems of diﬀerent sizes, we normalize it dividing by the number of qubits.",
+      "comparing algorithms with respect to the average objective function value (or CVaR with a diﬀerent α) would not be informative"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its evaluation metric in Sec. 6.1.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-vqe-p2-alpha1-reaches-1pct",
+     "value": "The authors report that for CVaR-VQE with p = 2 and alpha = 1%, within 50 normalized iterations at least 1% probability of sampling an optimal state is reached for almost all instances, whereas with alpha = 100% (the expected value) the same probability is reached for only 60% of the test problems.",
+     "anchor": "Sec. 6.1, p.7, Fig. 4",
+     "quotes": [
+      "using p = 2 and α = 1%, within 50 normalized iterations we achieve at least 1% probability of sampling an optimal state for almost all instances",
+      "we reach the same probability of sampling an optimum only for 60% of the test problems",
+      "with α = 100% (i.e., the expected value)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-alpha-soft-cap-on-overlap",
+     "value": "The authors report that increasing p and decreasing alpha has a positive impact on performance, and that alpha acts as a soft cap on the probability of sampling a ground state: with alpha = 10% most test problems reach 10% probability in under 50 normalized iterations, but with alpha = 1% only a small fraction reach 10%. They explain that the CVaR objective does not reward overlap beyond alpha.",
+     "anchor": "Sec. 6.1, p.7, Fig. 4",
+     "quotes": [
+      "The plots show that increasing p and decreasing α has a positive impact on the performance.",
+      "the value of α introduces a soft cap on the maximum probability of sampling a ground state",
+      "with α = 1% we reach 10% probability only in a small fraction of problems",
+      "in less than 50 normalized iterations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, with the cap following from the definition of CVaR.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The cap is a consequence of the CVaR definition (the objective averages only the lowest alpha-fraction), so the second half is also theoretical."
+    },
+    {
+     "id_suggestion": "cvar-qaoa-improves-with-p-and-lower-alpha",
+     "value": "The authors report that for CVaR-QAOA performance improves as p increases and alpha decreases, up to a certain level. They state that to improve QAOA they would have to increase the depth, and that with current gate errors and decoherence, implementing circuits of large depth may be out of reach.",
+     "anchor": "Sec. 6.1, p.7, Fig. 4",
+     "quotes": [
+      "For CVaR-QAOA, we observe improved performance as p increases and α decreases (up to a certain level).",
+      "To improve QAOA’s performance we would have to increase the depth.",
+      "successfully implementing circuits with large depth may be out of reach for the moment"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-benefit-grows-with-qubits-ceiling-effect",
+     "value": "The authors report that for a small number of qubits there is a ceiling effect, with all methods performing similarly because the problem is easy for all of them, but that as problem size increases the benefits of CVaR optimization with alpha in [0.01, 0.25] are obvious in the plots of Fig. 5.",
+     "anchor": "Sec. 6.1, p.7, Fig. 5",
+     "quotes": [
+      "for a small number of qubits there is a ceiling eﬀect, i.e., all methods perform similarly because the problem is easy for all methods",
+      "the beneﬁts of CVaR optimization (with α ∈ [0.01, 0.25]) are obvious in the plots",
+      "The corresponding plots are given in Fig. 5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result read from plots, one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Instances reach at most 16 qubits, so the trend with size is shown only up to that size."
+    },
+    {
+     "id_suggestion": "cvar-hardware-ring-layout-setup",
+     "value": "The authors state that on IBM Q Poughkeepsie they use nearest-neighbor entanglement on six device qubits connected in a ring (qubits 5, 6, 7, 10, 11 and 12), giving cyclic entanglement without additional swap operations. They run CVaR-VQE with depth p = 1 and alpha = 10%, 25% and 100%, with the initial variational parameters fixed to theta = 0 to reduce variance.",
+     "anchor": "Sec. 6.2, p.7",
+     "quotes": [
+      "We choose 6 qubits on the device that are connected in a ring (qubits 5, 6, 7, 10, 11, and 12)",
+      "We run CVaR-VQE with depth p = 1 and α = 10%, 25%, 100%",
+      "we ﬁx the initial variational parameters to θ = 0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own hardware setup in Sec. 6.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-hardware-qaoa-not-used",
+     "value": "The authors state that they use CVaR-VQE rather than CVaR-QAOA on the hardware because for the same circuit depth it leads to better solutions, as discussed in Sec. 6.1.",
+     "anchor": "Sec. 6.2, p.7",
+     "quotes": [
+      "We use CVaR-VQE rather than CVaR-QAOA because for the same circuit depth it leads to better solutions, as discussed in Sec. 6.1."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of its hardware experiment.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "No CVaR-QAOA run on hardware is reported."
+    },
+    {
+     "id_suggestion": "cvar-hardware-result-smaller-alpha-faster",
+     "value": "The authors report that on hardware the smaller the alpha, the earlier the probability of sampling an optimal solution increases; that for alpha = 100% the probability stays almost flat; and that for alpha = 10% and 25% the probability attains the corresponding alpha-level in all 5 experiments, whereas for alpha = 100% it remains very small.",
+     "anchor": "Sec. 6.2, p.7-8, Fig. 6",
+     "quotes": [
+      "We see that the smaller the α, the earlier the probability of sampling an optimal solution increases.",
+      "For α = 100%, the probability stays almost ﬂat and makes little progress.",
+      "For α = 10%, 25% the probability of ﬁnding the optimal solution attains the corresponding α-level in all 5 experiments, whereas for α = 100% the probability remains very small."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one six-qubit instance on one device.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "One problem instance, one device, five runs: the evidence is narrow."
+    },
+    {
+     "id_suggestion": "cvar-hardware-objective-converges-faster",
+     "value": "The authors report that the objective-function plots show alpha below 100% speeds up the convergence of the objective values to a (local) optimum, and that the same beneficial effect on the speed of convergence as in the noiseless simulation is observed on quantum hardware.",
+     "anchor": "Sec. 6.2, p.8, Fig. 6",
+     "quotes": [
+      "α < 100% speeds up the convergence of the objective function values to a (local) optimum",
+      "on quantum hardware we observe the same beneﬁcial eﬀect on the speed of convergence that was observed in the noiseless simulation results"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-hardware-noise-robustness-conjecture",
+     "value": "The authors offer as a possible explanation that the CVaR objective allows ignoring some low-quality samples, so that even without reaching the ground state at least some samples have a low objective value, and state that this makes CVaR particularly well-suited for experiments on noisy quantum computers.",
+     "anchor": "Sec. 6.2, p.8",
+     "quotes": [
+      "A possible explanation is that the CVaR objective function allows us to ignore some of the lowquality samples from the quantum state.",
+      "This eﬀect makes the CVaR objective particularly well-suited for experiments on noisy quantum computers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conjectured explanation without a test in the paper, which has no noise-free versus noisy hardware comparison.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "portfolio-instance-parameters-appendix-b",
+     "value": "The authors state that the hardware portfolio problem uses n = 6, q = 0.5, B = 3 and lambda = 12, with a penalty term enforcing the budget constraint, and a randomly generated return vector and positive semidefinite covariance matrix.",
+     "anchor": "Appendix B, p.11",
+     "quotes": [
+      "We choose n = 6, q = 0.5, B = 3, and λ = 12.",
+      "were generated randomly and are given by"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own instance in Appendix B.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-hardware-p0-alpha100-probability-drops",
+     "value": "The authors report that for depth p = 0 results for alpha = 10% and 25% are similar to those for p = 1, whereas for alpha = 100% the probability of sampling a ground state first increases to 5% on average and then drops close to zero even though the objective function improves, an example where improving the objective value does not imply a better solution.",
+     "anchor": "Appendix B, p.11, Fig. 9",
+     "quotes": [
+      "For p = 0, Fig. 9 shows that results for α = 10% and α = 25% are similar to those for p = 1.",
+      "However, for α = 100% the probability of sam-",
+      "pling a ground state ﬁrst increases to 5% on",
+      "age, then it drops close to zero, even though the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one instance on one device.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-hardware-p2-alpha25-plateau-below",
+     "value": "The authors report that for depth p = 2 the probability of sampling a ground state at alpha = 10% reaches that level on average, though not always exceeding it, that for alpha = 25% it plateaus slightly below alpha, and that for alpha = 100% it stays close to zero and decreases after an initial small increase.",
+     "anchor": "Appendix B, p.12, Fig. 10",
+     "quotes": [
+      "Although the probability of sampling a ground state is not always exceeding α as before, it reaches that level on average.",
+      "for α = 25% the probability of sampling a ground state does not reach α anymore, but plateaus slightly below",
+      "we again see a probability of the ground state which is close to zero and that decreases after an initial small increase",
+      "For p = 2, Fig. 10 again shows that results for α = 10% are similar",
+      "For the expected value, i.e., α = 100%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one instance on one device.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "At the deepest tested setting the alpha = 25% run no longer reaches its alpha-level, a limit on the hardware claim as depth grows."
+    },
+    {
+     "id_suggestion": "prop-7-1-qaoa-amplitude-bound",
+     "value": "The paper states Proposition 7.1 for QAOA on n qubits with a diagonal Hamiltonian, with delta the maximum fraction of basis states sharing one eigenvalue and Delta p a lower bound on the maximum fraction of equal amplitudes after iteration p: the magnitude of every amplitude is bounded by a power p of a factor built from delta and the preceding Delta, times one over the square root of two to the n. It also states that Delta zero equals 1 but Delta p may decrease exponentially fast in p. The garbled text layer does not allow quoting the bound itself exactly.",
+     "anchor": "Proposition 7.1, Sec. 7, p.9-10",
+     "quotes": [
+      "Furthermore, ∆0 = 1, but the value of ∆p may decrease exponentially fast in p.",
+      "the maximum fraction of basis states having the same eigenvalue",
+      "Proposition 7.1 Assume that we apply QAOA to a problem on n qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theorem whose full statement the text layer garbles, so it could not be quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proved bound is described in the paper as technical and its lower bound on the equal-amplitude fraction as very loose."
+    },
+    {
+     "id_suggestion": "prop-7-1-flat-state-special-case",
+     "value": "The authors state that when p = 1 and most diagonal values of the Hamiltonian are equal, the resulting QAOA state vector is necessarily flat, with all amplitudes exponentially small. They give as instances the Grover needle-in-a-haystack problem and the feasibility version of market split, and say fixed-depth QAOA needs well-distributed objective values to mix and increase amplitudes.",
+     "anchor": "Sec. 7, p.10",
+     "quotes": [
+      "then the resulting state vector is necessarily ﬂat: all the amplitudes are exponentially small",
+      "QAOA with small depth cannot transfer enough probability mass to any basis state",
+      "QAOA requires the diagonal elements of the Hamiltonian (i.e., objective function values) to be well-distributed",
+      "When p = 1 and most of the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A corollary-style special case whose precise condition on delta the text layer garbles.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-fixed-depth-flat-risk-limitation",
+     "value": "The authors state that for fixed p there is a risk that QAOA amplitudes remain flat, which may still give a good average objective value but may not put enough emphasis on the tail of the distribution to sample an optimal or near-optimal solution. They state that flatness can also be avoided by increasing p, say linearly in n.",
+     "anchor": "Sec. 7, p.10",
+     "quotes": [
+      "for ﬁxed p there is the risk that the amplitudes remain ﬂat",
+      "jective function value, it may not put enough",
+      "phasis on the tail of the distribution of objective"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this as a limit of fixed-depth QAOA in Sec. 7.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-maxcut-2-regular-farhi-cited",
+     "value": "The authors state that the seminal QAOA paper shows that for MaxCut on 2-regular graphs QAOA produces a state with approximation ratio 3/4 but exponentially small overlap with the optimal solution.",
+     "anchor": "Sec. 7, p.10",
+     "quotes": [
+      "per shows that for MaxCut on 2-regular graphs,",
+      "tio 3/4 but exponentially small overlap with the"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Farhi, Goldstone and Gutmann, reference [7].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "prop-7-1-proof-induction-loose-bound",
+     "value": "The authors prove Proposition 7.1 in Appendix D by induction on p, starting from the equal amplitudes after the Hadamard layer, and bound the added terms from the cost unitary and the mixer. They also derive a possibly very loose lower bound on the equal-amplitude fraction at depth p that decreases exponentially in p.",
+     "anchor": "Appendix D, p.12-14",
+     "quotes": [
+      "D Proof of Proposition 7.1",
+      "We show this by induction on p.",
+      "loose lower bound on ∆p that is exponentially decreasing in p"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The proof is given in Appendix D; the theorem statement itself could not be quoted exactly (see prop-7-1-qaoa-amplitude-bound), so the coordinator may grade it lower.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-vqe-literature-context-cited",
+     "value": "The authors state that empirical evaluations indicate VQE performance suffers from key weaknesses for combinatorial optimization, and that the literature on QAOA is mixed: some work concludes it has promise while other work indicates it may not perform better than classical algorithms.",
+     "anchor": "Sec. 1, p.1",
+     "quotes": [
+      "Empirical evaluations indicate that VQE’s performance suﬀers from some key weaknesses in the context of CO problems",
+      "other papers indicate that it may not perform better than classical algorithms [12]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to references [17] and [12].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvar-limitation-not-on-par-with-classical",
+     "value": "The authors state that they do not claim CVaR brings VQE and QAOA performance on par with state-of-the-art classical heuristics, and that for small-depth circuits it is important to use variational forms with a sufficient number of parameters, at least linear in the number of qubits, which fixed-depth QAOA does not satisfy.",
+     "anchor": "Sec. 1, p.2",
+     "quotes": [
+      "While we do not claim that this brings their performance on par with stateof-the-art classical heuristics",
+      "at least linear in the number of qubits. QAOA for ﬁxed (small) depth does not satisfy this requirement"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its claims in the Introduction.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper reports no comparison against classical heuristics."
+    },
+    {
+     "id_suggestion": "cvar-conclusion-performance-and-hardware",
+     "value": "The authors conclude that they introduce improved versions of VQE and QAOA for combinatorial optimization based on CVaR aggregation, with theoretical and empirical results showing increased performance compared with approaches in the literature, including an IBM hardware demonstration where the proposed algorithm reaches an optimal solution much faster.",
+     "anchor": "Sec. 8, p.10",
+     "quotes": [
+      "We provide theoretical and empirical results, showing an increase in performance compared to approaches in the literature.",
+      "shows the ability to reach an optimal solution much faster"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion summarizing the study.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
