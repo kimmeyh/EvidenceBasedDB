@@ -1,0 +1,593 @@
+{
+ "papers": [
+  {
+   "record_id": "ahmed-2022-implicit-differentiation-variational-quantum-algorithms",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Ahmed-et-al._2022_Implicit-differentiation-of-variational-quantum-algorithms__2211.13765.pdf",
+   "title_in_file": "Implicit differentiation of variational quantum algorithms",
+   "version_note": "",
+   "pages": 13,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An arXiv preprint (2211.13765v1) showing how implicit differentiation can give gradients through variational quantum algorithms, with three small demonstrations: spin-chain susceptibility, hyperparameter tuning of a single-qubit classifier, and variational Bell-state generation.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "value": "The authors state that their variational entanglement-generation algorithm is sensitive to the choice of loss function, optimization and hyperparameters, and that they demonstrate one choice that allowed creation of Bell states.",
+     "anchor": "Sec. 4.3, p.9",
+     "quotes": [
+      "The algorithm is sensitive to the choice of the loss function, optimization, and hyperparameters and here we demonstrate one choice that allowed the creation of Bell states."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 4.3 states the sensitivity as the authors' own limit, with the next sentence deferring the best choice to future work.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "",
+     "id": "implicit-diff-bell-sensitivity",
+     "verdict": "confirmed",
+     "note": "The value is right as stored. In this 13-page text the passage is on p.9 (end of Sec. 4.3), not p.14."
+    },
+    {
+     "value": "The authors report that in a data-reuploading quantum classifier, the decision boundary with unoptimized hyperparameters seems to give worse validation performance than with hyperparameters optimized by implicit gradients, and state this avoids a costly grid search.",
+     "anchor": "Sec. 4.2, p.8 and Sec. 5, p.10; Fig. 4 caption, p.7",
+     "quotes": [
+      "We can see that the decision boundary of the quantum classiﬁer with an unoptimized set of hyperparameters seems to give a worse performance on a validation set compared to the case where hyperparameters are optimized.",
+      "We have shown that optimizing regularization strength using implicit diﬀerentiation could lead to better performance where implicit diﬀerentiation allowed a meta-optimization on the hyperparameters to avoid a costly grid search."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the comparison is of decision boundaries, not a tabulated score in the text.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer holds no clear validation scores for the two quantum models (the Fig. 4 inset numbers are scrambled), and no grid-search baseline is run.",
+     "id": "implicit-diff-hyperparam-qclassifier",
+     "verdict": "confirmed",
+     "note": "The value is right as stored. Both statements are qualitative (the first says 'seems'); the text reports no number for the gap and no run of a grid search to compare against."
+    },
+    {
+     "value": "The authors state that a function defined implicitly as the solution of a quantum algorithm can be automatically differentiated using implicit differentiation, without regard to how the solution is computed. In their spin-chain demonstration they report that with L = 5 layers the susceptibility closely matches the eigendecomposition result, while with L = 4 layers the gradient computation significantly deviates from the exact values.",
+     "anchor": "Abstract, p.1; Sec. 4.1, p.6",
+     "quotes": [
+      "can be automatically diﬀerentiated using implicit diﬀerentiation while being agnostic to how the solution is computed.",
+      "For a suﬃciently expressive ansatz with L = 5 layers, we can closely match the susceptibility computed by eigendecomposition.",
+      "However for L = 4 layers, the gradient computation signiﬁcantly deviates from the exact values."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The abstract claim is the authors' own; the one test shows a dependence on ansatz depth.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The demonstration is one small spin-chain system; the method is agnostic to how z is found but not to whether z reaches the optimum.",
+     "id": "implicit-diff-vqa-agnostic",
+     "verdict": "narrowed",
+     "note": "The abstract's claim is conditioned later: the spin-chain demonstration shows agreement with the exact susceptibility only for a sufficiently expressive ansatz, and the paper says the method needs an accurate variational solution."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "ift-analytic-statement",
+     "value": "The paper states, as Theorem 1 and citing other works for it, the implicit function theorem for an analytic function f of complex variables z and a: when f vanishes at a point and a derivative condition on z holds there, a unique analytic solution function z-star of a exists in a neighbourhood of that point.",
+     "anchor": "Theorem 1, Sec. 2, p.2-3",
+     "quotes": [
+      "Theorem 1 (IFT for analytic functions) Let f (z, a) be an analytic function of complex",
+      "variables (z, a) in a neighbourhood around the point (z0, a0) ∈ Cm × Cn. If f (z0, a0) = 0 and",
+      "then there exists a unique analytic solution function z∗(a) to f (z, a) = 0"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper attributes the theorem to the books it cites ([18, 19]) and gives no proof.",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": "The text layer prints the derivative condition as an equals sign ('∂zf = 0'); the standard theorem needs this derivative to be invertible (nonzero). The reader has not quoted that part."
+    },
+    {
+     "id_suggestion": "ift-analytic-domain-cited",
+     "value": "The paper states, citing another work, that the region around the point that defines the analytic domain can be lower bounded.",
+     "anchor": "Sec. 2, p.3",
+     "quotes": [
+      "The region N (a0) that deﬁnes the analytic domain can be lower bounded as shown in [20]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "implicit-gradient-formula",
+     "value": "The paper derives the gradient of the implicitly defined solution function by differentiating the optimality condition with respect to a at the solution, and obtains the formula in Eq. (2), minus the inverse of the z-derivative of f times the a-derivative of f.",
+     "anchor": "Eq. (1)-(2), Sec. 2, p.3",
+     "quotes": [
+      "f (z∗(a), a) = 0.",
+      "This allows computing gradients of the solution function by diﬀerentiating Eq. (1) w.r.t a at (z0 = z∗(a0), a0)",
+      "∂az∗(a) = −(∂zf (z0, a0))−1∂af (z0, a0) (2)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A one-step derivation from Theorem 1; the invertibility condition on the z-derivative is garbled in the text layer, so the conditions could not be quoted cleanly.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vjp-avoids-inversion",
+     "value": "The authors state that computing the vector-Jacobian product of the implicit function avoids the cost of full matrix inversion, by approximately solving a linear system with an iterative algorithm such as the generalized minimal residual method or conjugate gradient, a trick they attribute to Ref. [16].",
+     "anchor": "Eq. (3)-(7), Sec. 2, p.3",
+     "quotes": [
+      "VJPs solve the diﬃculty of obtaining the in-",
+      "(matrix inversion has a cubic scaling)",
+      "Using VJPs we can avoid the cost of full inversion with a trick that only requires approximately solving the linear system [16]",
+      "VJP(z∗, a, v) : (a, v) → (−uT B),"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The trick is cited to [16]; no accuracy analysis of the approximate solve is given here.",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "implicit-gradient-fixed-point",
+     "value": "The paper states that implicit differentiation also applies to fixed-point equations, and gives the gradient of the solution map as the inverse of the identity minus A, times B, with a vector-Jacobian product computed by solving a fixed-point problem.",
+     "anchor": "Eq. (8)-(14), Sec. 2, p.3-4",
+     "quotes": [
+      "Implicit diﬀerentiation can also be applied to",
+      "A similar derivation for such ﬁxed-point equations gives the gradients as",
+      "∂az∗(a) = [I − A]−1B."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A sketched derivation; conditions for invertibility are not stated.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-setup-optimality",
+     "value": "The paper sets the variational quantum algorithm as minimizing the expectation value E of an operator H of a over the parameters z of a circuit, with the minimizer z-star of a defining the solution, and the optimality condition that the z-derivative of E vanishes at that minimizer.",
+     "anchor": "Eq. (15)-(17), Sec. 3, p.4",
+     "quotes": [
+      "A variational quantum algorithm minimizes E(z, a) with respect to z, which gives optimal parameters",
+      "z∗(a) = arg min E(z, a).",
+      "f (z∗(a), a) = ∂zE(z∗(a), a) = 0. (17)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. 3 states the setup and the optimality condition the method uses.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "implicit-needs-hessian",
+     "value": "The authors state that, provided the Hessian of E with respect to the parameters z and its inverse can be computed, implicit differentiation gives a strategy to evaluate the derivative of z-star with respect to a.",
+     "anchor": "Sec. 3, p.5",
+     "quotes": [
+      "we can compute the Hessian of E(z, a) w.r.t. pa-",
+      "rameters z, and its inverse, implicit diﬀerentiation gives a strategy to evaluate ∂az∗(a)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Sec. 3 states the condition under which the method applies.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The two quotes are adjacent lines of one sentence that the text layer interleaves with another column."
+    },
+    {
+     "id_suggestion": "expectation-gradient-formula",
+     "value": "The paper gives, for an operator A that is not the Hamiltonian, the derivative of the ground-state expectation value as the implicit gradient of z-star times the z-derivative of the expectation, plus the expectation of the a-derivative of A on the variational solution, going beyond the Hellmann-Feynman theorem.",
+     "anchor": "Eq. (20), Sec. 3, p.4-5",
+     "quotes": [
+      "However, in a more general case, when the operator A is not the Hamiltonian, the computation of ∂a A requires implicit gradients",
+      "∂a A = ∂az∗(a) · ∂z A + ψz∗(a)|∂aA|ψz∗(a) ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A chain-rule formula stated with its terms; no separate proof or accuracy bound.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantities-measurable-parameter-shift",
+     "value": "The authors state that, assuming a parameter shift rule exists for the circuit, the quantities in Eq. (20) can be evaluated on a quantum computer, and that the second-order derivatives of the expectation value are accessible on a quantum computer for large classes of variational circuits, citing Ref. [25].",
+     "anchor": "Sec. 3, p.5",
+     "quotes": [
+      "All the quantities required to compute Eq. (20) can be evaluated on a quantum computer for a large family of quantum circuits.",
+      "which are second-order derivatives of the expectation value E(z, a), accessible on a quantum computer for large classes of variational circuits [25]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim supported by citation; no cost count or hardware run is given.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-unrolling-claim",
+     "value": "The authors state that the computation does not require keeping track of how the solution is computed or unrolling all the steps of the optimization, which might be infeasible in a variational quantum computation.",
+     "anchor": "Sec. 3, p.5; Fig. 2 caption, p.4",
+     "quotes": [
+      "Further, the computation does not require keeping track how the solution is computed or unrolling all the steps in the optimization, which might be infeasible in a variational quantum computation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim; no memory or cost comparison with unrolled AD is reported.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "susceptibility-setup",
+     "value": "The authors set the susceptibility test as a linear spin chain in an external magnetic field, with the variational ground state found by a standard VQE optimization using a simplified two-design ansatz of Pauli-Y rotation gates and controlled-Z gates, optimized by gradient descent, and compared against the exact ground state by eigendecomposition.",
+     "anchor": "Sec. 4.1, p.6; Fig. 3 caption, p.6",
+     "quotes": [
+      "Here, we consider a parameterized Hamiltonian for a linear spin-chain model in an external magnetic ﬁeld given by",
+      "Our variational circuit is a simpliﬁed two-design ansatz consisting of Pauli-Y rotation gates and entangling controlled-Z gates.",
+      "The parameters of the circuit are optimized with respect to the energy E(z, a) using gradient descent.",
+      "Susceptibility computation for a N = 5 spin system."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. 4.1 and the Fig. 3 caption state the setup of the experiment.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The text does not say whether the circuit evaluations were noiseless simulations or ran on hardware; the paper reads as classical simulation."
+    },
+    {
+     "id_suggestion": "susceptibility-result",
+     "value": "The authors report that, for the five-spin system, implicit differentiation through the variational ground state closely matches the susceptibility from eigendecomposition with L = 5 layers, and deviates significantly from the exact values with L = 4 layers.",
+     "anchor": "Sec. 4.1, p.6; Fig. 3, p.6",
+     "quotes": [
+      "For a suﬃciently expressive ansatz with L = 5 layers, we can closely match the susceptibility computed by eigendecomposition.",
+      "However for L = 4 layers, the gradient computation signiﬁcantly deviates from the exact values.",
+      "Susceptibility computation for a N = 5 spin system."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one small system, one run shown.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "No error figure is stated in the text; agreement is judged from Fig. 3."
+    },
+    {
+     "id_suggestion": "variational-scaling-claim",
+     "value": "The authors state that, compared with the eigendecomposition approach, which scales exponentially with system size, the variational approach may scale well in practice for larger system sizes on future quantum devices, and that they anticipate the method will enable susceptibilities and other response functions, provided the variational algorithms find accurate ground states and parameter-shift rules are available.",
+     "anchor": "Sec. 4.1, p.6",
+     "quotes": [
+      "Compared to the eigendecomposition approach, which scales exponentially with system size, the variational approach may scale well in practice for larger system sizes in future quantum devices",
+      "Provided that the variational algorithms ﬁnd accurate representations of the ground state and the availability of parametershift rules, we anticipate"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A forward-looking author claim, untested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "eq20-classical-variational",
+     "value": "The authors state that Eq. (20) can be applied to the simulation of response functions in classical variational techniques such as neural network quantum states and density matrix renormalization group calculations.",
+     "anchor": "Sec. 4.1, p.6",
+     "quotes": [
+      "we emphasize that Eq. (20) can be applied to the simulation of response functions in classical variational techniques such as in neural network quantum states [34] and density matrix renormalization group calculations [35]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim not tested here.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hyperparam-setup-classifier",
+     "value": "The authors set the hyperparameter test as a single-qubit data-reuploading classifier with L = 5 layers and five hyperparameters, one for each layer, each controlling the strength of an L2 regularization penalty, trained with stochastic gradient descent at a learning rate of 0.01 for both parameters and hyperparameters.",
+     "anchor": "Sec. 4.2, p.7-8",
+     "quotes": [
+      "We consider a single-qubit data-reuploading classiﬁer with L = 5 layers and ﬁve hyperparameters, corresponding to each al controlling the strength of the L2 regularization in Eq. (24).",
+      "We use the stochastic gradient-descent algorithm for both parameter and hyperparameter optimization with a learning rate of 0.01."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. 4.2 states the model, hyperparameters and optimizer.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text does not describe the data set (its size, source or noise) beyond two input features per point and binary labels, and gives no number of repeats."
+    },
+    {
+     "id_suggestion": "hyperparam-validation-objective",
+     "value": "The paper defines the hyperparameter objective as a validation loss computed with the trained parameters z-star of a, minimized by gradient descent on the hyperparameters, where the gradient requires differentiating z-star and is evaluated through implicit differentiation.",
+     "anchor": "Eq. (24)-(26), Sec. 4.2, p.7",
+     "quotes": [
+      "where a = {al} are the hyperparameters for the parameters zl in each layer of the variational quantum circuit.",
+      "A validation loss is constructed using a validation set of the data not used for training",
+      "The gradient computation ∂aLV (a) requires diﬀerentiating the function z∗(a), which we evaluate through implicit diﬀerentiation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Sec. 4.2 defines the training and validation losses the result depends on.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hyperparam-converge-different",
+     "value": "The authors report that, as the validation loss improves, the optimal hyperparameters differ significantly and converge to different values.",
+     "anchor": "Sec. 4.2, p.8; Fig. 5, p.8",
+     "quotes": [
+      "As the validation loss improves, we ﬁnd that the optimal hyperparameters diﬀer signiﬁcantly and converge to diﬀerent values."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Fig. 5 shows 200 or more iterations on one run; the text gives no values."
+    },
+    {
+     "id_suggestion": "hyperparam-faster-claim",
+     "value": "The authors state in a figure caption that the hyperparameter optimization is faster since a gradient-based optimization can use implicit gradients of the validation loss, and state in the text that with implicit differentiation it is possible to optimize millions of hyperparameters faster, citing Ref. [21].",
+     "anchor": "Fig. 4 caption, p.7; Sec. 4.2, p.8",
+     "quotes": [
+      "The hyperparameter optimization is faster since we can use a gradient-based optimization by taking implicit gradients of the validation loss.",
+      "However, with implicit diﬀerentiation, it is possible to optimize millions of hyperparameters faster [21]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The speed claim is the authors' own; the millions-of-hyperparameters claim is cited.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No timing or grid-search comparison is reported in the text; the experiment tunes five hyperparameters."
+    },
+    {
+     "id_suggestion": "hyperparam-classical-comparison",
+     "value": "The authors state that they also show, in a figure of decision boundaries, a comparison to classical machine learning models such as Gaussian processes or simple neural networks.",
+     "anchor": "Sec. 4.2, p.8; Fig. 4, p.7",
+     "quotes": [
+      "where we also show a comparison to classical machine learning models such as Gaussian processes or simple neural networks.",
+      "The validation score is shown in the inset for each model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A comparison shown in a figure; no summary statement of the outcome in the text.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text states no verdict on quantum against classical; the inset scores are not legible in the text layer."
+    },
+    {
+     "id_suggestion": "entanglement-measure-definition",
+     "value": "The paper adopts the geometric measure of quantum entanglement from a cited work, one minus the maximum squared overlap of the state with a separable state, which it describes as the distance between a state and the nearest separable state.",
+     "anchor": "Eq. (27), Sec. 4.3, p.8-9",
+     "quotes": [
+      "We use the geometric measure of quantum entanglement de-",
+      "E(ψ) = 1 − max | ψ |ψ |2,",
+      "This geometric measure of entanglement can be intuitively understood as the distance between an arbitrary quantum state and the nearest separable quantum state found by solving Eq. (27)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A definition taken from Ref. [43].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "entanglement-bilevel-setup",
+     "value": "The authors set the entanglement experiment as two variational circuits, one with only local single-qubit unitaries that creates separable states and one with general operations that can create entangled states, with the closest separable state found by maximizing the overlap, and the loss being the negative log of the entanglement measure, both optimized by stochastic gradient descent with a learning rate of 0.001.",
+     "anchor": "Eq. (28)-(29), Sec. 4.3, p.9; Fig. 6 caption, p.8",
+     "quotes": [
+      "One circuit consists of only local (single-qubit) unitaries speciﬁed by parameters z, which creates separable states",
+      "L(a) = − log E(a)",
+      "We optimize both Eq. (28) and Eq. (29) with stochastic gradient-descent with a learning rate of 0.001."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. 4.3 states the circuits, the loss and the optimizer.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The text does not say the number of qubits for the run; the Bell-state result implies two."
+    },
+    {
+     "id_suggestion": "bell-state-result",
+     "value": "The authors report that, with implicit differentiation and gradient descent on the geometric entanglement measure, they variationally obtained one of the Bell states from a random initial state, without ever defining it, and that the entanglement measure increases as the loss decreases.",
+     "anchor": "Sec. 4.3, p.9; Fig. 7-8, p.9-10",
+     "quotes": [
+      "we variationally obtained one of the Bell states starting from a random initial state, without ever deﬁning it",
+      "we arrive at a maximally entangled Bell state",
+      "we can see that the entanglement measure increases as the loss function (negative log of the entanglement) decreases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The paper shows one run; it reports no repeats or success rate."
+    },
+    {
+     "id_suggestion": "entanglement-multiqubit-claim",
+     "value": "The authors state that the approach can similarly be extended to multiple qubits to generate entangled states variationally, and that the idea could possibly allow creating large multipartite entanglement beyond specific classes such as GHZ or W states.",
+     "anchor": "Sec. 4.3, p.9; Sec. 5, p.10",
+     "quotes": [
+      "We can similarly extend this approach to multiple qubits to generate entangled quantum states variationally using gradient-based optimization.",
+      "could possibly allow creating large multipartite entanglement beyond speciﬁc classes such as GHZ or W states."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Untested author claims; only two-qubit Bell states are shown.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "entanglement-future-choice",
+     "value": "The authors state that, in future investigations, the best choice of loss function and hyperparameters for a robust generation of entangled quantum states can be determined, which leaves that choice open.",
+     "anchor": "Sec. 4.3, p.9",
+     "quotes": [
+      "In future investigations, we can determine the best choice of loss function and hyperparameters for a robust generation of entangled quantum states."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 4.3 states this as an open item.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-feasibility-limit",
+     "value": "The authors state that practical implementations on quantum hardware would require access to gradient computations and fast solutions to the optimality condition, that future work could investigate in detail how feasible such computations are when scaled to larger systems, and that it is important to analyze how errors affect the gradient computation and its scaling.",
+     "anchor": "Sec. 5, p.10",
+     "quotes": [
+      "The practical implementations of implicit differentiation on quantum hardware would require access to gradient computations as well as fast solutions to the optimality condition.",
+      "Future works could investigate in detail how feasible such computations are when scaled to larger systems.",
+      "It is also important to analyze how errors aﬀect the gradient computation and its scaling."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 5 states these as open problems.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The experiments are therefore not shown to run on hardware or under noise."
+    },
+    {
+     "id_suggestion": "implementation-setup",
+     "value": "The authors state that their implementation integrates the classical modular implicit differentiation package JAXopt with the quantum automatic differentiation framework PennyLane, and that the data and code for the numerical experiments are available at Ref. [17].",
+     "anchor": "Sec. 1, p.2",
+     "quotes": [
+      "Our implementation integrates a classical modular implicit diﬀerentiation package (JAXopt [16]) with a quantum AD framework (PennyLane [12])",
+      "The data and code for all numerical experiments are available in [17]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. 1 states the software setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "standard-ad-unavailable-claim",
+     "value": "The authors state that gradient computation of expectation values of general operators using standard automatic differentiation techniques remains generally unavailable, and that such generic gradients may become computationally difficult since they in principle require keeping track of all intermediate optimization steps.",
+     "anchor": "Sec. 1, p.2",
+     "quotes": [
+      "gradient computation of expectation values of general operators using standard AD techniques remains generally unavailable.",
+      "in principle they require keeping track of all intermediate optimization steps in a VQA."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author motivation claim, not tested here.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-common-approach",
+     "value": "The authors conclude that they present a common approach to applying implicit differentiation to quantum algorithms, covering use-cases from ground-state property gradients with a variational quantum algorithm to hyperparameter optimization in quantum machine learning, and that modern automatic-differentiation tools used with quantum software can simplify its application to a wide variety of problems.",
+     "anchor": "Sec. 5, p.9",
+     "quotes": [
+      "In this work, we have presented a common approach to applying implicit diﬀerentiation to quantum algorithms that encompasses a range of use-cases",
+      "can simplify the application of implicit diﬀerentiation to wide variety of problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
