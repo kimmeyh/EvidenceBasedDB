@@ -1,0 +1,502 @@
+{
+ "papers": [
+  {
+   "record_id": "alvarez-2023-gene-expression-programming-quantum-computing",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Alvarez-et-al._2023_Gene-Expression-Programming-for-Quantum-Computing__2303.08203.pdf",
+   "title_in_file": "Gene Expression Programming for Quantum Computing",
+   "version_note": "",
+   "pages": 10,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A software paper introducing QuantumGEP, an open-source gene expression programming tool that evolves quantum circuits for ground-state problems (MaxCut, an XX chain, NaH and benzene), tested only in simulation.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "quantumgep-maxcut-perfect",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 3.1 Graph Maximum Cut, p.5",
+     "quotes": [
+      "Figure 3 shows our first example graph; it has 8 vertices.",
+      "We know this circuit is a perfect solution, that is, it is a true ground state because (i) its fitness is 5 within numerical error"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated instance.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The paper reports two MaxCut instances, both with 8 vertices, and no comparison with QAOA or a classical MaxCut solver. The word 'perfect' rests on the fitness matching the known ground-state energy of the instance."
+    },
+    {
+     "id": "quantumgep-quantum-chemistry-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 5 Summary and Outlook, p.9",
+     "quotes": [
+      "In quantum chemistry it successfully yielded the Hartree-Fock ground eigenstate, but more work remains to obtain more precise quantum circuits for the exact ground state."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit in the Conclusion (Section 5); Section 3.3 and Section 4.1 give the supporting results.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "quantumgep-two-task-definition",
+     "value": "The authors state that QuantumGEP uses gene expression programming to find a quantum circuit that either maps a given set of input states to a given set of output states, or transforms a fixed initial state to minimize a given physical quantity of the output state.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "uses gene expression programming (GEP) to find a quantum circuit that either (i) maps a given set of input states to a given set of output states, or (ii) transforms a fixed initial state to minimize a given physical quantity of the output state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The abstract defines the two tasks the program solves; Section 2.3 repeats them.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "quantumgep-simulated-fitness",
+     "value": "The authors state that the fitness of an individual circuit is evaluated via simulation, and that in principle it could be evaluated efficiently by executing the circuit on a quantum computer.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "The fitness of an individual is evaluated via simulation, but in principle could be evaluated efficiently by executing the circuit on a quantum computer."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state their own evaluation setup in the Introduction.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "No result in the paper comes from quantum hardware; running on a quantum computer is stated only as a possibility."
+    },
+    {
+     "id": "quantumgep-problem-types-training",
+     "value": "The authors describe two problem types: finding a circuit that implements a quantum function given by input-output state pairs used as training data, and finding a circuit that, applied to a fixed initial state, minimizes the expectation value of a physical observable, such as the ground state of a many-body Hamiltonian.",
+     "anchor": "Section 2.3 Optimization Procedure, p.4",
+     "quotes": [
+      "These input-output pairs constitute training data for the quantum function to be learned.",
+      "minimizes the expectation value of some physical observable",
+      "An example of this second type of problem is finding the ground state of a many-body Hamiltonian."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2.3 defines both problem types the algorithm variants solve.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "All case studies in Section 3 are of the second type (ground-state problems); no input-output function-fitting case is reported."
+    },
+    {
+     "id": "quantumgep-population-100",
+     "value": "The authors state that the studies in the paper use a population size parameter of 100.",
+     "anchor": "Section 2.3 Optimization Procedure, p.4",
+     "quotes": [
+      "For the studies described in this paper, ������ = 100."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own run setting in Section 2.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The text layer lost the symbol; from the algorithm steps it is the population size N, which is halved by selection each generation."
+    },
+    {
+     "id": "quantumgep-gep-noncoding-convergence",
+     "value": "The authors state, citing Ferreira's gene expression programming work, that introducing non-coding regions makes all mutations valid, so restricting mutations is not needed and convergence vastly improves.",
+     "anchor": "Section 2.1 Gene Expression Programming, p.3",
+     "quotes": [
+      "By introducing non-coding regions, all mutations become valid and are allowed, restricting mutations is no longer necessary, and convergence vastly improves."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to the cited GEP literature, not tested in this paper.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id": "quantumgep-maxcut-ising-equivalence",
+     "value": "The authors state that MaxCut for a graph is equivalent to finding the ground state of the classical Ising model, and that QuantumGEP used with this Hamiltonian excels at finding a quantum circuit that yields the ground state of the graph Ising model from an initial state.",
+     "anchor": "Section 3.1 Graph Maximum Cut, p.5",
+     "quotes": [
+      "is equivalent to finding the ground state of the classical Ising model",
+      "QuantumGEP used with this Hamiltonian excels at solving MaxCut, by which we mean that it excels at finding a quantum circuit that yields the ground state of the graph Ising model from an initial state."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the evidence is two small graphs and no baseline comparison.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "'Excels' is not backed by a comparison with QAOA, classical heuristics or any scaling study in the paper."
+    },
+    {
+     "id": "quantumgep-maxcut-example1-states",
+     "value": "The authors report that for the first example graph the circuit had fitness 4.9999(6), and that QuantumGEP yielded two basis states, 3 and 7.",
+     "anchor": "Section 3.1 Graph Maximum Cut, p.5 to p.6; Fig. 3",
+     "quotes": [
+      "P4 P4 with fitness 4.9999(6).",
+      "With this criterion, QuantumGEP yields the basis states 3 and 7, that is, two basis states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated instance.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "quantumgep-maxcut-initial-state-robust",
+     "value": "The authors state that for MaxCut the initial state used was the graph without a cut, 00000000, and that they have found the solutions to be robust to this initial condition.",
+     "anchor": "Section 3.1 Graph Maximum Cut, p.6",
+     "quotes": [
+      "We have chosen the graph without a cut, that is 00000000, which can also be described as a configuration with all “spins” positive.",
+      "We have found that the solutions are robust to this initial condition."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper shows no data for other initial states.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "quantumgep-maxcut-example2",
+     "value": "The authors report that for a second example graph, labeled 4648 in reference 11, the circuit converged with fitness 8.9999(9) and weight only on basis state 248, which they conclude is a perfect solution.",
+     "anchor": "Section 3.1 Graph Maximum Cut, p.6; Fig. 4",
+     "quotes": [
+      "Figure 4 shows our second example labeled 4648 in [11].",
+      "with fitness 8.9999(9) and weight only on basis state 248.",
+      "we conclude that this is a perfect solution circuit"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated instance.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The main text gives 248 as binary 1111000 (7 digits) while the Fig. 4 caption gives 11111000 (8 digits); 248 is 11111000 in binary, so the main-text string is a typo."
+    },
+    {
+     "id": "quantumgep-xx-chain-periodic",
+     "value": "The authors report that for the XX model on a linear chain of four sites with periodic boundary conditions, QuantumGEP obtained a circuit with fitness 3.9971(6) that yields the exact answer for the ground state, and that another state can be obtained by symmetry.",
+     "anchor": "Section 3.2 Condensed Matter Models, p.6 to p.7",
+     "quotes": [
+      "with fitness 3.9971(6) which yields the exact answer",
+      "for the ground state of four sites, and another state can be obtained by symmetry."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated model size.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Only a four-site chain is reported, so the result says nothing about scaling with chain length."
+    },
+    {
+     "id": "quantumgep-xx-chain-open-boundary",
+     "value": "The authors report that with open boundary conditions for the XX chain they obtain the same vector, with fitness (or minus the energy) equal to 3.",
+     "anchor": "Section 3.2 Condensed Matter Models, p.7",
+     "quotes": [
+      "With open boundary conditions, we obtain the same vector, but fitness (or minus the energy) equals 3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated model size.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "quantumgep-xx-chain-setup",
+     "value": "The authors state that for the XX model they chose the quantum gates Ry and P, and that all these parameters can be chosen from the input file without recompilation.",
+     "anchor": "Section 3.2 Condensed Matter Models, p.6",
+     "quotes": [
+      "and quantum gates Ry and P. All these parameters can be chosen without recompilation from the input file."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own run setup in Section 3.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The coupling value is lost with the symbols in the text layer; the value above does not repeat it."
+    },
+    {
+     "id": "quantumgep-xx-convergence-behavior",
+     "value": "The authors report that the energy difference of the best individual from the ground state falls over generations, that later population variations are much smaller, and that the circuits are all different yet yield the same energy or one very close to the exact one.",
+     "anchor": "Section 3.2 Condensed Matter Models, p.7; Fig. 5",
+     "quotes": [
+      "After a few generations we get various perfect “individuals,” that is, quantum circuits.",
+      "the circuits themselves are all different: they just yield either the same energy or an energy very close to the exact one."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated run; the numbers are in a figure.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "quantumgep-nah-hartree-fock",
+     "value": "The authors report that a four-bit Hilbert space models the NaH molecule, that one basis state, the Hartree Fock solution, accounts for over 99% of the ground state weight, and that QuantumGEP easily yields circuits for the Hartree Fock state.",
+     "anchor": "Section 3.3 Quantum Chemistry Applications, p.7",
+     "quotes": [
+      "One basis state accounts for over 99% of the ground state weight: the Hartree Fock solution",
+      "QuantumGEP easily yields circuits for the Hartree Fock state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated molecule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "quantumgep-nah-energy",
+     "value": "The authors report that for NaH a circuit had fitness 160.29(9), equal to the opposite of the Hartree-Fock energy, whereas the true ground state energy is -160.30137813(6) Hartrees.",
+     "anchor": "Section 3.3 Quantum Chemistry Applications, p.7",
+     "quotes": [
+      "fitness 160.29(9)), which equals the opposite of the Hartree-Fock energy, whereas the true ground state energy is -160.30137813(6) Hartrees."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated molecule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The fitness is stated to the nearest 0.01 hartree of the exact energy only; the paper gives no energy error in chemical-accuracy terms."
+    },
+    {
+     "id": "quantumgep-nah-other-states-failure",
+     "value": "The authors report that in their tests QuantumGEP was unable to produce the other basis states that contribute to the NaH ground state.",
+     "anchor": "Section 3.3 Quantum Chemistry Applications, p.7",
+     "quotes": [
+      "In our tests, QuantumGEP was unable to produce the other basis states that contribute to the ground state"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit in Section 3.3 and discuss it in Section 4.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "quantumgep-benzene-hartree-fock",
+     "value": "The authors report that an eight-bit state models the benzene molecule, that the Hartree-Fock state accounts for over 95% of the weight, and that circuits for it have fitness 8.89(4), the opposite of the Hartree-Fock energy.",
+     "anchor": "Section 3.3 Quantum Chemistry Applications, p.7 to p.8",
+     "quotes": [
+      "Once more, the Hartree-Fock state accounts for most of the weight, this time at over 95%.",
+      "fitness 8.89(4) or the opposite of the Hartree-Fock energy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated molecule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The fitness equals the Hartree-Fock energy only; the paper states no comparison with the exact benzene ground-state energy."
+    },
+    {
+     "id": "quantumgep-benzene-other-contributions",
+     "value": "The authors state that the other contributions to the benzene ground state are more difficult to find, and require enabling conjugate gradient and a rescaling of the energy in the input, and that obtaining all these small contributions will be the focus of future work.",
+     "anchor": "Section 3.3 Quantum Chemistry Applications, p.8",
+     "quotes": [
+      "The other contributions to the ground state are more difficult to find, and require enabling conjugate gradient from the input, as well as a rescaling of the energy in the input",
+      "Obtaining all these small contributions to the ground state will be the focus of future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit and defer it to future work in Section 3.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "No result for these other contributions is reported."
+    },
+    {
+     "id": "quantumgep-nah-convergence-failure",
+     "value": "The authors report a failure of convergence for the four-bit NaH system, and surmise it occurs because of the very high weight of a single basis state and that its solution would require modular gates.",
+     "anchor": "Section 4.1 Convergence Failures, p.8",
+     "quotes": [
+      "We have observed a failure of convergence in the case of the NaH system for four bits[12]",
+      "We surmise that the failure occurs due to the very high weight of a single basis state"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the failure in Section 4.1; the cause is their surmise, not a tested result.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The stated cause (a single dominant basis state) is a conjecture; Section 3.3 shows the Hartree-Fock state itself was found, so the failure is of the remaining minor components."
+    },
+    {
+     "id": "quantumgep-heisenberg-convergence-failure",
+     "value": "The authors report a convergence failure in the two-dimensional quantum Heisenberg model on a 3×3 lattice or 9 bits, and believe the lack of convergence results from the large number of one- and two-bit gates that would be required to express its ground state.",
+     "anchor": "Section 4.1 Convergence Failures, p.8",
+     "quotes": [
+      "We have also found a convergence failure in the two-dimensional quantum Heisenberg model on a 3×3 lattice or 9 bits.",
+      "we believe the lack of convergence results from the large number of one- and two-bit gates that would be required to express the ground state of the Heisenberg model in this case."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the failure in Section 4.1; the cause is their belief, not a tested result.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "A failure at 9 bits is the largest size reported, which bounds the sizes shown in the paper."
+    },
+    {
+     "id": "quantumgep-modular-gates-proposed-fix",
+     "value": "The authors state that they think the convergence failures would be solved by modular gates, and say the Heisenberg solution can be written in shorter form with many bit gates in a multi-scale entanglement answer representation, citing reference 16.",
+     "anchor": "Section 4.1 Convergence Failures, p.8; Section 5, p.9",
+     "quotes": [
+      "We know that the solution can be written in shorter form by using many bit gates in a multi-scale entanglement answer representation [16].",
+      "Here again we think the problem would be solved by modular gates."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author expectation; no modular-gate experiment is reported.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "quantumgep-parallelization",
+     "value": "The authors state that they implemented two shared memory parallelization opportunities: matrix-vector products through the BLAS ZGEMM call, and parallel evaluation of the fitness of each circuit of a generation in C++ using PsimagLite's Parallelizer2, with an openMP or pthreads back-end.",
+     "anchor": "Section 4.2 Shared Memory Parallelization, p.8",
+     "quotes": [
+      "QuantumGEP presents multiple opportunities for shared memory parallelization, and we have implemented two of them.",
+      "the fitness of each quantum circuit of a given generation can be calculated in parallel, and we have implemented this in pure C++",
+      "which supports either an openMP or a pthreads back-end."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors state their own implementation in Section 4.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "No timing or speedup measurement is reported."
+    },
+    {
+     "id": "quantumgep-open-source-documentation-gap",
+     "value": "The authors state that QuantumGEP and evendim are released as free and open source, written fully in C++, and that the documentation and test suite details are in supplemental material whose URL is marked 'FIXME: URL will be given by publisher'.",
+     "anchor": "Section 4.3 Source Code and Documentation, p.8",
+     "quotes": [
+      "with a free and open source license. They are written fully in C++",
+      "FIXME: URL will be given by publisher."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the release scope in Section 4.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The text read is a preprint with an unresolved placeholder where the supplemental material link should be."
+    },
+    {
+     "id": "quantumgep-conclusion-claim",
+     "value": "The authors conclude that QuantumGEP was successfully applied to the generation of circuits for the MaxCut problem, and that it was able to yield intuitive answers in simple condensed matter problems.",
+     "anchor": "Section 5 Summary and Outlook, p.9",
+     "quotes": [
+      "QuantumGEP was successfully applied to the generation of circuits for the MaxCut problem, and it was able to yield intuitive answers in simple condensed matter problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion resting on two MaxCut graphs and one four-site XX chain.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The abstract's 'powerful solver' wording is stronger than the evidence of two 8-vertex graphs with no baseline."
+    },
+    {
+     "id": "quantumgep-future-work-scope",
+     "value": "The authors state that, although automatically defined functions and multiple genes are already implemented in evendim, they did not want to expand its application to difficult quantum chemistry problems in this introductory paper and leave those for future study.",
+     "anchor": "Section 5 Summary and Outlook, p.9",
+     "quotes": [
+      "Although ADFs and multiple genes are already implemented in evendim, we did not want to expand its application to difficult quantum chemistry problems in this introductory paper, and leave those for future study."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of the paper in Section 5.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
