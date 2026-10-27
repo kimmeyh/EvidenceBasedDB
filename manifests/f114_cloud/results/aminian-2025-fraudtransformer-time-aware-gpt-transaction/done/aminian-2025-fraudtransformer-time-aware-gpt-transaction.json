@@ -1,0 +1,790 @@
+{
+ "papers": [
+  {
+   "record_id": "aminian-2025-fraudtransformer-time-aware-gpt-transaction",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2025-09_Aminian_FraudTransformer-Time-Aware-GPT-for-Transaction-Fraud-Detection.pdf",
+   "title_in_file": "FraudTransformer: Time-Aware GPT for Transaction Fraud Detection",
+   "version_note": "arXiv:2509.23712v2 [cs.LG] 28 Oct 2025; workshop paper at ACM ICAIF '25 (Received 1 October 2025). The text layer has no second copy.",
+   "pages": 9,
+   "read_extent": "partial",
+   "not_read": "The glyphs of the equations in Sections 5 and 6 (symbols for the embeddings, frequencies, rotation matrix and LayerNorm) and the bold marks in Tables 6 and 7 are lost or garbled in the text layer; the surrounding text and every other page was read. Figures 1 and 2 are drawings, read by caption.",
+   "what_it_is": "A workshop paper from HSBC-affiliated authors that adds time and positional encoders to a GPT-style model for payment fraud detection and compares it with tree and linear baselines on a proprietary undersampled dataset.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "fraudtransformer-beats-baselines",
+     "verdict": "narrowed",
+     "note": "The abstract says 'four strong classical baselines' but lists three (Logistic Regression, XGBoost, LightGBM); Section 1, Section 7.2, Section 7.6 and Section 8 all say three. The Section 8 quotes the stored anchors cite for 'four' and for 'highest AUROC and PRAUC' are in the Abstract only. Only the SRP variant (sinusoidal, relative, with positional encoder) is the top row in Table 4; RRP also beats LightGBM, but the absolute-time variants with a positional encoder (RAP, SAP) do not beat LightGBM on AUROC. The result is on a test set undersampled to about 43 percent fraud.",
+     "value": "The authors report that, on their proprietary HSBC Payment Fraud Group dataset, the full model with relative event-level sinusoidal time embeddings and a positional encoder (SRP) has the highest AUROC and PRAUC on the held-out test set in the main results table, above Logistic Regression, XGBoost, LightGBM and the transformer ablations; the abstract says four classical baselines but lists three, and the body says three.",
+     "anchor": "Abstract; Section 1, p.2; Section 7.6 and Table 4, p.6; Section 8, p.7",
+     "quotes": [
+      "On the held-out test set it delivers the highest AUROC and PRAUC.",
+      "surpasses four strong classical baselines (Logistic Regression, XGBoost and LightGBM)",
+      "Event-level relative sinusoidal embeddings paired with a learned positional encoder deliver the highest performance on the test set, outperforming three classical baselines.",
+      "consistently outperforms three strong feature-based baselines: Logistic Regression, XGBoost and LightGBM"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table 4 shows no significance test beyond the standard deviation over three runs; the transformers see the journey of about 500 events while the text says baseline features come from a single time snapshot, so the comparison is not like for like. The abstract's 'tens of millions' of transactions is not the 332,000-sample study set."
+    },
+    {
+     "id": "fraudtransformer-deterministic-runs",
+     "verdict": "narrowed",
+     "note": "The determinism statement and the zero standard deviation apply to the three feature-based baselines (footnote 1 gives their no-subsampling settings). Table 4 itself reports non-zero standard deviations over three runs for every transformer variant, and its caption says 'over three runs'. The text says 'identical results across repeated runs' without limiting this to the baselines, which Table 4 does not bear out for the transformers.",
+     "value": "The authors state that all runs used fixed train, validation and test splits and deterministic hyperparameters, that training and evaluation are therefore deterministic with identical results across repeated runs, and that the standard deviation of the results for the three baselines are zero; the main results table reports non-zero standard deviations over three runs for the transformer variants.",
+     "anchor": "Section 7.6, p.6; footnote 1, p.6; Table 4 caption, p.6",
+     "quotes": [
+      "All runs used fixed train/validation/test splits and deterministic hyperparameters",
+      "Consequently, training and evaluation are deterministic, yielding identical results across repeated runs.",
+      "Accordingly, the standard deviation of the results for the three baselines are zero.",
+      "mean ± standard deviation over three runs",
+      "0.94689 ± 0.00109"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its setup in Section 7.6, read with Table 4 and footnote 1.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "Zero standard deviation for tree ensembles with no subsampling is plausible. The claim of identical results across repeated runs does not hold for the transformer rows, so it should be read as a statement about the baselines."
+    },
+    {
+     "id": "fraudtransformer-evaluation-set-undersampled",
+     "verdict": "confirmed",
+     "note": "Value is right. Anchor fix: the dataset text is Section 4 (not Section 7.1, which is the metrics section); the 43 percent random-baseline sentence is Section 7.7. Section 4 also holds the explicit caveat that performance may differ at other fraud rates.",
+     "value": "The authors state that the evaluation data were sampled to conceal the fraud rate, that the test fraud rate is around 43 percent through undersampling non-fraud cases, and that results may differ at other fraud rates.",
+     "anchor": "Section 4, p.3; Section 7.7, p.6",
+     "quotes": [
+      "The evaluation dataset was sampled to conceal the fraud rate of the main data.",
+      "While this implies that the performance of all models presented here may be different on datasets with other fraud rates",
+      "this rate does not represent the fraud rate in the whole dataset but is instead obtained through undersampling non-fraud cases",
+      "with a 43% fraud rate in our evaluation set, the random baseline is 0.43"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of its evaluation, Section 4 and Section 7.7.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "fraudtransformer-model-configuration",
+     "value": "The authors state that the model is a vanilla GPT-style architecture with 6 transformer blocks, 8 attention heads per layer, a context length of 1024, an embedding size of 512, about 20M parameters and a vocabulary of about 4000 tokens.",
+     "anchor": "Section 6 and Table 2, p.4",
+     "quotes": [
+      "Vanilla GPT-style [16] 6 Transformer blocks 8 per layer 1024 512 ∼ 20M ∼ 4000"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Table 2 gives the paper's own model configuration.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-training-objective",
+     "value": "The authors state that the model is trained with the binary cross entropy loss over the fraud and non-fraud classes, that the algorithm supports both absolute and relative timestamps, and that the attention mechanism in the GPT is unchanged.",
+     "anchor": "Section 6, p.4",
+     "quotes": [
+      "We train the model using the binary cross entropy loss function over the fraud and non-fraud classes.",
+      "supports both Absolute and Relative timestamps; the attention mechanism in the GPT is unchanged."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 6 describes the training objective and the unchanged attention.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-dataset-description",
+     "value": "The authors state that the HSBC Payment Fraud Group dataset holds transactions and digital journeys with labelled fraud events, has more than 10 numerical features and more than 10 categorical features, that the full feature list is withheld for commercial sensitivity, and that a customer journey is built from around the last 500 events.",
+     "anchor": "Section 4, p.3",
+     "quotes": [
+      "consists of transactions and digital journeys with labelled fraud events",
+      "contains more than 10 numerical features (e.g., transaction amount) and more than 10 categorical features (e.g., sort code)",
+      "Due to commercial sensitivity of this application domain we are unable to give a full account of all of the features.",
+      "To construct the consumers digital journey we consider around the last 500 events."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 4 states the dataset and its limits on disclosure.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": "The data are proprietary and the features unlisted, so the results cannot be reproduced from the paper."
+    },
+    {
+     "id_suggestion": "fraudtransformer-data-splits",
+     "value": "The authors state that the test set is extracted by a temporal split so that models are evaluated on future data, that the validation set is sampled from the training set, and that the total dataset has 332,000 samples split about 60 percent training, 30 percent validation and 10 percent test.",
+     "anchor": "Section 4, p.3",
+     "quotes": [
+      "The dataset is constructed first using a temporal split to extract an independent test set, and a training set guaranteeing that the models are evaluated on future data.",
+      "An additional validation set for hyperparameter tuning is constructed by sampling from the training set.",
+      "This results in a total dataset with 332,000 samples, consisting of training ≈60 % training, ≈ 30 % validation, and ≈ 10 % test samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 4 gives the split design and sizes.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The test set is therefore about 33,000 samples at a 43 percent fraud rate. The abstract's 'tens of millions' describes the source data, not this study set."
+    },
+    {
+     "id_suggestion": "fraudtransformer-abstract-scale-claim",
+     "value": "The abstract states that the experiments are on a large industrial dataset of tens of millions of transactions and auxiliary events.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Experiments on a large industrial dataset",
+      "tens of millions of transactions and auxiliary events"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": "Section 4 reports 332,000 samples after subsampling, so the abstract's scale does not describe the sets used for Table 4."
+    },
+    {
+     "id_suggestion": "fraudtransformer-encoding-process",
+     "value": "The authors state that they reduced the cardinality of categorical variables by grouping rare and low-risk events, binned numerical variables, used a customized tokenization with a vocabulary of around 4000 tokens, did not use sub-word tokenization, and tokenized each column separately with an added column embedding.",
+     "anchor": "Section 5, p.3",
+     "quotes": [
+      "We reduced the cardinality of categorical variables by grouping rare and low-risk events. Numerical variables were binned.",
+      "We do not use sub-word tokenization; every category or bucket is treated as a single token.",
+      "around 4000 tokens. We do not use sub-word tokenization",
+      "We also tokenize each column separately, so identical strings in different columns become distinct tokens."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 5 describes the encoding process.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-time-id-definitions",
+     "value": "The authors define the absolute time-id as the time of the event to which a token belongs and the relative time-id as that event time minus the time of the previous event; in the event-level relative scheme every token of an event receives the difference between its event and the previous event, whereas the token-level scheme gives zero to later tokens of the same event.",
+     "anchor": "Section 3, p.3; Section 6, p.4",
+     "quotes": [
+      "In the event-level approach, we use instead the time difference between the event to which the token belongs, and the previous event, as input to the time encoder.",
+      "In the example above, the time difference for tokens"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 3 defines both relative options and Section 6 the time-ids.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-event-level-choice",
+     "value": "The authors state that after a brief exploration they decided to use the event-level relative approach instead of the token-level approach.",
+     "anchor": "Section 3, p.3",
+     "quotes": [
+      "After a brief exploration, we decided to use the event-level approach."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The paper reports no results for the token-level option."
+    },
+    {
+     "id_suggestion": "fraudtransformer-time-encoder-design",
+     "value": "The authors state that the time encoders reuse the sinusoidal and rotary positional encoders with the position index replaced by a time-id, that both are used additively, that LayerNorm is applied only to the time embedding, and that a GPT-2-style learned positional embedding without LayerNorm is added.",
+     "anchor": "Section 3, p.2; Section 6, pp.4-5",
+     "quotes": [
+      "we use positional encoders but now as time encoders, replacing the usual position indices in the positional encoders with time identifiers (time-ids)",
+      "Sinusoidal encoding (GPT-style Fourier features)",
+      "Rotary-derived (used additively)",
+      "(2) Preparation (Normalization). Apply LayerNorm [5] only to the time embedding",
+      "(3) Learned Positional Encoders. We use GPT-2–style learn-"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Sections 3 and 6 define the time encoding steps.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-hyperparameter-protocol",
+     "value": "The authors state that the time gain and the base frequency of the sinusoidal and rotary encoders are tuned as hyperparameters, and that for every hyperparameter pair the model is trained for a single epoch and assessed on the validation set at the end of the first epoch.",
+     "anchor": "Section 7.3, p.5",
+     "quotes": [
+      "as tunable hyperparameters. For a fair comparison, for every hyperparameter pair, the model is trained for a single epoch and assessed on the validation set at the end of first epoch."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 7.3 states the tuning protocol.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The paper does not state the optimizer, learning rate, batch size or the number of epochs of the final runs."
+    },
+    {
+     "id_suggestion": "fraudtransformer-appendix-tuning-results",
+     "value": "The authors report in the appendix tables epoch-1 validation PRAUC for each pair of base frequency and time gain; the SRP values in the first block run from 0.91368 to a highest of 0.95820, and the SAP values in the second block run from 0.91776 to a highest of 0.94730.",
+     "anchor": "Appendix, Tables 6 and 7, p.9",
+     "quotes": [
+      "0.95705 0.95820 0.95597 0.95399 0.95144 0.94041 0.93827 0.94114 0.94403 0.94336 0.94050 0.92633 0.92124 0.91368",
+      "0.94525 0.94730 0.94335 0.94371 0.94330 0.93469 0.92797 0.94036 0.94131 0.93154 0.93326 0.93293 0.92111 0.91776"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "By row order, the highest SRP and SAP values sit at base frequency 10000000 and time gain 0.01, as do the highest RRP (0.95615) and RAP (0.94430) values in the rotary table; every value at gain 0.1 is lower than the best at gain 0.01. The bold marks are lost in the text layer."
+    },
+    {
+     "id_suggestion": "fraudtransformer-baselines-description",
+     "value": "The authors state that LightGBM is a tuned gradient-boosted tree ensemble, that XGBoost is trained on the same split, that both use the same feature set as the transformers, that logistic regression is L2-regularized with strength and class weight chosen by grid search on the validation fold, and that the tree baselines use no row or feature subsampling.",
+     "anchor": "Section 7.2, p.5; footnote 1, p.6",
+     "quotes": [
+      "A tuned gradient–boosted decision tree ensemble, [13], trained on the same partition of the training dataset.",
+      "For direct comparability, the feature set fed to XGBoost is identical to that of LightGBM.",
+      "We select no row/feature subsampling: LightGBM bagging_fraction=1.0, feature_fraction=1.0; XGBoost subsample=1.0, colsample_bytree=1.0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 7.2 and footnote 1 describe the baselines.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The paper does not state how LightGBM was tuned or whether XGBoost was tuned."
+    },
+    {
+     "id_suggestion": "fraudtransformer-baseline-features-snapshot",
+     "value": "The authors state that features are from a single time snapshot for these comparisons.",
+     "anchor": "Section 7.6, p.6",
+     "quotes": [
+      "Features are from a single time snapshot for these comparisons."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 7.6 states the scope of the comparison.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "Section 4 says the transformers read a journey of about 500 events. It is unclear whether the baselines had only the snapshot, in which case the comparison also differs in information, not only in model."
+    },
+    {
+     "id_suggestion": "fraudtransformer-ablation-design",
+     "value": "The authors state that the ablation keeps the architecture, optimization settings, data splits and preprocessing fixed across variants, and varies the time encoder family, the time scheme, the presence of a learned positional encoder and the presence of LayerNorm.",
+     "anchor": "Section 7.5, p.5; ablation tables, pp.4-5",
+     "quotes": [
+      "We keep the architecture, optimization settings, data splits, and preprocessing fixed across variants.",
+      "Only one factor is changed per row; all other settings match the full model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 7.5 and Table 1 state the ablation design.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-metrics-definition",
+     "value": "The authors state that they report PRAUC and AUROC, and that PRAUC is particularly informative for fraud detection because the class imbalance ratio can be very high.",
+     "anchor": "Section 7.1, p.5",
+     "quotes": [
+      "We report PRAUC (area under the precision–recall curve) and AUROC (area under the receiver–operating characteristic curve).",
+      "PRAUC is particularly informative for fraud detection because the class imbalance ratio can be very high."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 7.1 states the metrics.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The test set is undersampled to a 43 percent fraud rate, so the imbalance argument does not apply to the reported numbers. No thresholded metric (recall at a false-positive rate, cost) is reported."
+    },
+    {
+     "id_suggestion": "fraudtransformer-prauc-baseline",
+     "value": "The authors state that the PRAUC baseline is the proportion of positive entries, that with a 43 percent fraud rate the random baseline is 0.43, which may make the PRAUC values appear high, and that they therefore emphasise relative differences against the vanilla GPT.",
+     "anchor": "Section 7.7, p.6",
+     "quotes": [
+      "The PRAUC baseline is the proportion of positive (that is here, fraudulent) entries.",
+      "Hence with a 43% fraud rate in our evaluation set, the random baseline is 0.43",
+      "which may make the PRAUC values appear to be high. Therefore, instead of reporting absolute PRAUC, we emphasise relative differences between models on the same test set."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 7.7 states the interpretation of PRAUC.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-table4-feature-baselines",
+     "value": "The authors report in the main results table that Logistic Regression, XGBoost and LightGBM score PRAUC 0.92491, 0.93447 and 0.94536 and AUROC 0.93784, 0.95894 and 0.96212, each with standard deviation 0.00000.",
+     "anchor": "Table 4, p.6",
+     "quotes": [
+      "0.92491 ± 0.00000 0.93784 ± 0.00000 0.93447 ± 0.00000 0.95894 ± 0.00000 0.94536 ± 0.00000 0.96212 ± 0.00000",
+      "Feature-based baselines Logistic Regression XGBoost LightGBM"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Mapping to models follows the row-major order and is confirmed by the delta columns against the vanilla row."
+    },
+    {
+     "id_suggestion": "fraudtransformer-table4-no-pe-transformers",
+     "value": "The authors report in the main results table for transformers without a positional encoder: Vanilla PRAUC 0.92038 and AUROC 0.93602; RA 0.91278 and 0.93003; RR 0.92145 and 0.93989; SA 0.91539 and 0.93034; SR 0.92477 and 0.94212, so the absolute-time variants fall below the vanilla row on both metrics.",
+     "anchor": "Table 4, p.6",
+     "quotes": [
+      "Vanilla (baseline) (no TE, no PE) 0.92038 ± 0.00019",
+      "0.91278 ± 0.00010",
+      "0.92145 ± 0.00049",
+      "0.91539 ± 0.00043",
+      "0.92477 ± 0.00012",
+      "0.93602 ± 0.00067 0.93003 ± 0.00021 0.93989 ± 0.00072 0.93034 ± 0.00079 0.94212 ± 0.00067",
+      "+0.00000 −0.00760 +0.00107 −0.00499 +0.00439",
+      "+0.00000 −0.00599 +0.00387 −0.00568 +0.00610"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The PRAUC column for RA, RR, SA and SR is in the same table (0.91278, 0.92145, 0.91539, 0.92477); the delta columns confirm it."
+    },
+    {
+     "id_suggestion": "fraudtransformer-table4-with-pe-transformers",
+     "value": "The authors report in the main results table for transformers with a positional encoder: NTE PRAUC 0.94689 and AUROC 0.95664; RAP 0.94436 and 0.95539; RRP 0.95610 and 0.96497; SAP 0.94713 and 0.95639; SRP 0.95816 and 0.96723.",
+     "anchor": "Table 4, p.6",
+     "quotes": [
+      "NTE (no TE, with PE)",
+      "0.94689 ± 0.00109",
+      "0.94436 ± 0.00080",
+      "0.95610 ± 0.00118",
+      "0.94713 ± 0.00042",
+      "0.95664 ± 0.00064 0.95539 ± 0.00022 0.96497 ± 0.00041 0.95639 ± 0.00093 0.96723 ± 0.00011",
+      "0.95816 ± 0.00092"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "NTE (positional encoder only) gains +0.02651 PRAUC over vanilla of the +0.03778 that SRP gains, so most of the lift comes from the positional encoder; the time encoder adds about 0.011 PRAUC and 0.011 AUROC over NTE. The absolute-time rows RAP and SAP are not clearly above NTE. SRP and RRP beat LightGBM on both metrics; NTE, RAP and SAP are below LightGBM on AUROC (0.96212)."
+    },
+    {
+     "id_suggestion": "fraudtransformer-layernorm-ablation",
+     "value": "The authors report that removing LayerNorm from the SRP time encoder (SRP/WOL) gives PRAUC 0.95304 and AUROC 0.96301, below SRP, and describe this as a slight but significant deterioration; they also state that adding LayerNorm lowers the standard deviation.",
+     "anchor": "Table 4 and Section 7.6, p.6; Section 7.7, p.7",
+     "quotes": [
+      "0.95304 ± 0.00102 0.96301 ± 0.00091",
+      "The result (SRP/WOL) in Table 4 shows a slight but significant deterioration.",
+      "adding LayerNorm to SRP improves performance and lowers the standard deviation relative to SRP without LayerNorm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "No significance test is reported; 'significant' rests on three runs. The SRP/WOL standard deviation for AUROC (0.00091) is above SRP's (0.00011)."
+    },
+    {
+     "id_suggestion": "fraudtransformer-sinusoidal-vs-rotary",
+     "value": "The authors state that sinusoidal and rotary time embeddings perform relatively similarly, that sinusoidal has a modest advantage, and that this holds for both metrics and for relative and absolute embeddings in this dataset.",
+     "anchor": "Section 7.7, p.6",
+     "quotes": [
+      "We observe relatively similar performance between these two schemes when holding all other variables constant. Sinusoidal encoding has a modest advantage over Rotary encoding.",
+      "This pattern is robust to both choice of performance measure (AUROC vs PRAUC), and relative or absolute time embeddings in this dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table 4 agrees: in all four sinusoidal-rotary pairs the sinusoidal row is higher on both metrics. The gaps are as small as 0.00100 AUROC (SAP against RAP)."
+    },
+    {
+     "id_suggestion": "fraudtransformer-relative-vs-absolute",
+     "value": "The authors state that the relative time encoding options outperform the absolute time encoding options in both AUROC and PRAUC.",
+     "anchor": "Section 7.7, p.6",
+     "quotes": [
+      "the relative time encoding options outperform the absolute time encoding options in both AUROC and PRAUC."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Holds in all four pairs of Table 4. Absolute time encoding without a positional encoder is below the vanilla model."
+    },
+    {
+     "id_suggestion": "fraudtransformer-time-and-position-claim",
+     "value": "The authors state that the model with relative time embedding strongly outperforms the baseline on both PRAUC and AUROC, and that this strongly demonstrates that incorporating time embedding features and positional features improves the performance of the model.",
+     "anchor": "Section 7.7, p.6",
+     "quotes": [
+      "The model with a relative time embedding strongly outperforms the baseline on both PRAUC and AUROC.",
+      "This strongly demonstrates that incorporating time embedding features and positional features into the model improves the performance of the model."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The comparison is against the vanilla model with neither component. Table 4 shows the positional encoder alone (NTE) gives most of the gain, and absolute time adds little or nothing."
+    },
+    {
+     "id_suggestion": "fraudtransformer-positional-encoder-claim",
+     "value": "The authors state that adding only a positional encoder yields a modest but consistent lift over the feature-based baselines, confirming that sequential structure carries information not captured by raw features alone.",
+     "anchor": "Section 7.7, p.7",
+     "quotes": [
+      "Adding only a positional encoder yields a modest but consistent lift over the feature-based baselines, confirming that sequential structure carries information not captured by raw features alone."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "Table 4 does not support 'consistent': NTE (0.95664 AUROC) is below XGBoost (0.95894) and LightGBM (0.96212) on AUROC. It is above LightGBM only on PRAUC (0.94689 against 0.94536)."
+    },
+    {
+     "id_suggestion": "fraudtransformer-fraud-subtype-setup",
+     "value": "The authors state that they build subtype-specific test sets holding only non-fraud transactions and one fraud subtype (scam, account takeover, or a category of other frauds), and evaluate the fixed best model (SRP) and a vanilla GPT on each, reporting AUROC and PR-AUC.",
+     "anchor": "Section 7.4, p.5; Section 7.6, p.6",
+     "quotes": [
+      "we create subtype-specific test sets that include only non-fraud transactions and one fraud subtype, excluding all other fraud labels.",
+      "We then evaluate the fixed model (our best model) on each subset and report AUROC and PR-AUC."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sections 7.4 and 7.6 state the subtype evaluation.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The fraud share differs in each subtype subset, so PRAUC is not comparable across subtypes."
+    },
+    {
+     "id_suggestion": "fraudtransformer-table5-results",
+     "value": "The authors report in the fraud-type table, for Scam, Other Frauds and ATO in that order: vanilla GPT PRAUC 0.8806, 0.8477 and 0.8198 and AUROC 0.9406, 0.9374 and 0.9329; SRP PRAUC 0.9337, 0.8958 and 0.8737 and AUROC 0.9704, 0.9627 and 0.9591; gains in PRAUC of +0.0531, +0.0481 and +0.0538 and in AUROC of +0.0297, +0.0254 and +0.0263.",
+     "anchor": "Table 5, p.7",
+     "quotes": [
+      "Scam Other Frauds ATO",
+      "0.8806 0.8477 0.8198",
+      "0.9406 0.9374 0.9329",
+      "0.9337 0.8958 0.8737",
+      "0.9704 0.9627 0.9591",
+      "+0.0531 +0.0481 +0.0538",
+      "+0.0297 +0.0254 +0.0263"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Single values with no standard deviation. The AUROC gain for scam as printed (+0.0297) differs by 0.0001 from the difference of the printed columns, a rounding effect."
+    },
+    {
+     "id_suggestion": "fraudtransformer-subtype-discussion",
+     "value": "The authors state that SRP improves detection across all fraud subtypes, with the largest gains in PRAUC on account takeover and in AUROC on scam, and that ATO is the type most difficult for the vanilla model.",
+     "anchor": "Section 7.7, p.7",
+     "quotes": [
+      "SRP improves detection across all fraud subtypes, with the largest gains in PRAUC on account takeover (ATO) fraud and in AUROC on scam fraud",
+      "ATO is the type of fraud which is most difficult for the Vanilla model to detect in this data set."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-ato-explanation",
+     "value": "The authors suggest that, because ATO frauds happen over short temporal windows, the relative-time modeling in SRP appears to capture these transient patterns more effectively than the vanilla model.",
+     "anchor": "Section 7.7, p.7",
+     "quotes": [
+      "Because ATO frauds happen over short temporal windows, the relative-time modeling in the SRP model appears captures these transient patterns more effectively than the vanilla model."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "world",
+     "reader_inference": "No experiment tests this mechanism; the ATO PRAUC gain (+0.0538) is within 0.0007 of the scam gain."
+    },
+    {
+     "id_suggestion": "fraudtransformer-conclusion-practical-claims",
+     "value": "The authors state in the conclusion that FraudTransformer remains computationally lightweight, requiring only a single training epoch for hyperparameter sweeps, and that it delivers stable improvements that translate into fewer missed frauds and lower false-alarm rates.",
+     "anchor": "Section 8, p.7",
+     "quotes": [
+      "FraudTransformer remains computationally lightweight, requiring only a single training epoch for hyperparameter sweeps.",
+      "FraudTransformer delivers stable improvements that translate into fewer missed frauds and lower false-alarm rates."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The paper reports no training time, cost, recall or false-alarm rate. The single epoch applies to the tuning sweeps only (Section 7.3)."
+    },
+    {
+     "id_suggestion": "fraudtransformer-temporal-structure-conclusion",
+     "value": "The authors conclude that the gains hold across both AUROC and PRAUC, confirming that fine-grained temporal structure carries signal beyond what raw features capture.",
+     "anchor": "Section 8, p.7",
+     "quotes": [
+      "The gains hold across both AUROC and PRAUC, confirming that fine-grained temporal structure carries signal beyond what raw features capture."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The temporal-structure claim rests on SRP and RRP. Table 4 shows the order signal (positional encoder) accounts for most of the gain over vanilla."
+    },
+    {
+     "id_suggestion": "fraudtransformer-novelty-claim",
+     "value": "The authors state that, to the best of their knowledge, using the relative time at event level in combination with a GPT model for financial fraud detection has not yet been proposed.",
+     "anchor": "Section 2, p.2",
+     "quotes": [
+      "To the best of our knowledge, using the relative time at event level in combination with a GPT model for financial fraud detection tasks has not yet been proposed."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-motivation-relative-time",
+     "value": "The authors state that account patterns such as paying many bills at the start of the month are better detected from the time between transactions than from absolute timestamps, which should contain most of the signal, while absolute time exposes calendar signals and long-term trends.",
+     "anchor": "Section 3, pp.2-3",
+     "quotes": [
+      "For detecting such patterns, rather than the Absolute timestamp, it is the time between transactions that should contains (most of) the signal.",
+      "the Absolute scheme expose calendar signals (hour-of-day, day-of-week, seasonality) and long-term trends"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-cited-transformer-time-limit",
+     "value": "The authors state, citing other work, that transformer architectures cannot easily detect temporal information and that learning time and position dependence in features is a challenge for GPT models.",
+     "anchor": "Section 1, p.1; Section 3, p.2",
+     "quotes": [
+      "However transformer architectures cannot easily detect temporal information [24]",
+      "empirically, learning time and position-dependence in features is a challenge for GPT models [16]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-cited-related-work",
+     "value": "The authors cite other work for: fine-tuning a pre-trained BERT on an online-recruitment corpus leading to substantial gains in detection accuracy; TabFormer achieving state-of-the-art performance; and FATA-trans using a time-aware positional embedding based on absolute timestamps.",
+     "anchor": "Section 2, pp.1-2",
+     "quotes": [
+      "[20] showed that fine-tuning a pre-trained BERT on an online-recruitment corpus led to substantial gains in detection accuracy",
+      "achieving state-of-the-art performance [15]",
+      "a time-aware positional embedding based on absolute timestamps of transactions is added to embedding of transactions"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-cited-tabular-baselines",
+     "value": "The authors state, citing other work, that LightGBM remains a standard reference point for card and e-commerce fraud tasks and that TabNet often narrows the gap to boosted trees.",
+     "anchor": "Section 2, p.2",
+     "quotes": [
+      "LightGBM remains a standard reference point for card and e-commerce fraud tasks [13]",
+      "often narrows the gap to boosted trees [4]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-transformer-cost-claim",
+     "value": "The authors state that transformer models are computationally expensive to train and, once trained, can be deployed in real time.",
+     "anchor": "Section 2, p.2",
+     "quotes": [
+      "While transformer models are computationally expensive to train, once trained they can be deployed in real time."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The paper reports no latency measurement."
+    },
+    {
+     "id_suggestion": "fraudtransformer-future-work",
+     "value": "The authors state as future work that they suggest pre-training the GPT backbone with a next-token prediction objective, extending the model to multi-class prediction over fraud subtypes, and using new GPT architectures that support larger context lengths.",
+     "anchor": "Section 8, p.7",
+     "quotes": [
+      "In future work, wesuggest to pre-train the GPT backbone using a next-token prediction objective [22]",
+      "we could extend the model to multi-class prediction over fraud subtypes in future works",
+      "our approach can be extended to new GPT architectures which support larger context lengths."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 8 lists the authors' open directions.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fraudtransformer-disclaimer",
+     "value": "The authors state that the paper is not a product of HSBC or its affiliates, and that the manuscript was reviewed by HSBC's publication clearance team to ensure no disclosure of sensitive data.",
+     "anchor": "Disclaimer, p.7",
+     "quotes": [
+      "This paper was prepared for information purposes, and is not a product of HSBC or its affiliates.",
+      "The content of this manuscript was reviewed by HSBC’s publication clearance team to ensure no disclosure of sensitive data."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The disclaimer states the paper's status.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
