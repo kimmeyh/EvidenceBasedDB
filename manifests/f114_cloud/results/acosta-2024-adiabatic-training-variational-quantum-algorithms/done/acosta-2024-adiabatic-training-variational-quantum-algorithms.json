@@ -1,0 +1,866 @@
+{
+ "papers": [
+  {
+   "record_id": "acosta-2024-adiabatic-training-variational-quantum-algorithms",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Acosta-et-al._2024_Adiabatic-training-for-Variational-Quantum-Algorithms__2410.18618.pdf",
+   "title_in_file": "Adiabatic training for Variational Quantum Algorithms",
+   "version_note": "arXiv:2410.18618v1 [quant-ph], 24 Oct 2024; text matches the record.",
+   "pages": 12,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short arXiv paper that trains the parameters of a quantum recurrent neural network for stock-trend prediction by recasting the angle search as a QUBO problem solved on a simulated quantum annealer, and compares it with SPSA training and a classical ANN.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "adiabatic-training-accuracy-similar",
+     "verdict": "confirmed",
+     "note": "The value restates what the authors say in Section 6 and Section 7. Two cautions from the paper's own tables are entered as separate assertions: Table 4 shows the adiabatic accuracy BELOW the classical accuracy in two of five rows (59% against 62%, 47% against 57%), and the 250-record rows hold 250 records in total, of which 80% (200) are training records, so 'more than 200 training records' is not what Table 4 holds.",
+     "value": "The authors report that the accuracy of the QRNN with adiabatic training is similar to the QRNN with classical gradient-descent training, with a slight positive difference when more than 200 training records were used.",
+     "anchor": "Section 6 Results analysis, p.9-10 (Table 4, p.10); Section 7 Conclusions, p.10",
+     "quotes": [
+      "Our results show that the accuracy of QRNN with adiabatic training is similar to QRNN with classical gradient-descend training.",
+      "there is a slight positive difference with respect to classical training when the volume of data used for training is greater than 200 records."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the Table 4 cells are single runs on small test sets.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "adiabatic-training-expressiveness-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that the binary nature of QUBO models makes the variational algorithm lose expressiveness because the rotation angles are discretized.",
+     "anchor": "Section 7 Conclusions, p.11",
+     "quotes": [
+      "the binary nature of the QUBO models makes the Variational Algorithms lose expressiveness because of the discretization of the rotation angles."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state it as a limit of their own method in Section 7 Conclusions, p.11, and Section 4.5 (p.8) says the discretization loses precision.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "adiabatic-training-scope-simulated-only",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that the gate-based and annealing models were simulated with software libraries, and that validation on real noisy hardware is left to further research.",
+     "anchor": "Section 5 Results, p.9",
+     "quotes": [
+      "both gate-based and annealing quantum models were simulated using the corresponding software libraries from IBM-Qiskit and D-Wave Ocean",
+      "Validation of the obtained results against executions on real noisy hardware will be subject of further research."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state their own execution scope in Section 5, p.9; Section 7 (p.11) repeats that the metrics come from simulated environments.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "adiabatic-training-time-lower-simulated",
+     "verdict": "narrowed",
+     "note": "The stored value omits the condition the authors attach in Section 7: the metrics were taken from simulated environments. The adiabatic time (0,92 s to 1,62 s in Table 5) is also not constant across series, and the 'adiabatic' step is run on a quantum annealing simulator.",
+     "value": "The authors state that for adiabatic training the execution count is constant and the time required is substantially smaller for a fixed number of binary variables, and that these metrics were taken from simulated environments.",
+     "anchor": "Section 6, p.10 (Tables 5 and 6, p.11); Section 7 Conclusions, p.11",
+     "quotes": [
+      "However, for adiabatic training, the EC is constant and the time required is substantially smaller for a fixed number of binary variables (see Table 6).",
+      "The metrics obtained on this work were taken from simulated environments, therefore include an additional operational overhead."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, measured on simulators.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "novelty-claim-adiabatic-training-vqa",
+     "value": "The authors state that, to their knowledge, adiabatic quantum models have not been used to train variational quantum algorithms.",
+     "anchor": "Abstract, p.1; Section 1, p.2",
+     "quotes": [
+      "However, to the knowledge of the authors, adiabatic quantum models have not been used to train VQAs.",
+      "To date, as far as we know, Adiabatic Quantum Computers have not been used to training VQAs."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A novelty claim by the authors with no literature search shown.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "closest-prior-work-zhao-xiao",
+     "value": "The authors cite Zhao and Xiao (2021) as the closest prior research, which deals only with binarized neural networks.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "The closest research available to date has been proposed by Zhao and Xiao in 2021 [8] although their work deals only with binarized neural networks."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hybrid-model-three-elements",
+     "value": "The authors state that the proposed hybrid QML model has three elements: a classical computer for data preparation and interpretation, a gate-based quantum computer running the VQA that represents the QNN, and an adiabatic quantum computer where the optimization function is executed to find the best parameters for the VQA.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "a classical computer in charge of the data preparation and interpretation",
+      "a Gate-based Quantum Computer running the Variational Quantum Algorithm (VQA) representing the Quantum Neural Network (QNN)",
+      "an adiabatic Quantum Computer where the optimization function is executed to find the best parameters for the VQA"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its model, Abstract, p.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "In the experiments (Section 5, p.9) neither the gate-based nor the annealing part ran on quantum hardware; both were simulated."
+    },
+    {
+     "id_suggestion": "feasibility-of-integration-claim",
+     "value": "The authors state that the paper compares the results of gradient-based classical algorithms against adiabatic optimizers and shows the feasibility of integration for gate-based and adiabatic quantum computing models.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "The paper compares the results of gradient-based classical algorithms against adiabatic optimizers showing the feasibility of integration for gate-based and adiabatic quantum computing models"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim in the abstract; the evidence is simulator runs only.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The only classical optimizer named in Section 4.3 is SPSA, and no integrated run on quantum hardware is reported, so 'feasibility of integration' rests on simulation."
+    },
+    {
+     "id_suggestion": "architecture-pqrnn-cb-ansatz",
+     "value": "The authors state that they use the Plain QRNN (pQRNN) architecture, a strictly sequential arrangement where the D and H registers keep their function throughout the network, with the CB ansatz configuration, following the QRNN of reference [14].",
+     "anchor": "Section 2.1, p.3; Section 2.2, p.4",
+     "quotes": [
+      "We chose the Plain QRNN (pQRNN) architecture [14], consisting of a strictly sequential arrangement where the D and H registers maintain their initial function throughout the network",
+      "We chose the CB configuration for this work, as it offers a good balance between expressiveness and circuit size [14]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own architecture choice, Section 2.1 p.3 and Section 2.2 p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "encoding-rotation-arccos",
+     "value": "The authors state that the input is encoded by a rotation on the x axis whose angle is the arc cosine of the normalized input value.",
+     "anchor": "Section 2.1, p.3",
+     "quotes": [
+      "In this work, we use the original encoding scheme consisting in the application of rotation on the x axis, where the angle of rotation is the arc cosine of the normalized input value"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own encoding choice, Section 2.1, p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section 4.4 (p.7) writes the encoding as Ry(arccos(0.58)) on each qubit of Register D, a rotation about the y axis, for the input 0.585; the two sections do not name the same axis and the example rounds the input differently."
+    },
+    {
+     "id_suggestion": "input-replication-higher-accuracy-cited",
+     "value": "The authors cite reference [15] for the statement that replicating the input value in several input qubits of Register D has shown to provide higher accuracy.",
+     "anchor": "Section 2.1, p.3",
+     "quotes": [
+      "The input value is replicated in several input qubits of Register D as this has shown to provide higher accuracy [15]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "universal-approximation-cited",
+     "value": "The authors cite reference [16] for the statement that, within a certain margin of error, there always exists a quantum circuit that can approximate an objective function.",
+     "anchor": "Section 2.1, p.3",
+     "quotes": [
+      "the universal approximation theorem defines that within a certain margin of error there always exists a quantum circuit that can approximate an objective function [16]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "prediction-definition-first-qubit-probability",
+     "value": "The authors define the prediction as the probability that the first qubit of Register D collapses to state |1⟩ after a Z-axis measurement at the end of each quantum block.",
+     "anchor": "Section 2.1, p.4",
+     "quotes": [
+      "In the end of each quantum block a Z-axis measurement is performed on the first qubit of Register D. The probability of this first qubit collapsing to state |1⟩ is taken as prediction of yt."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the prediction, Section 2.1, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section 4.2 (p.5) says the trend value is calculated by measuring the last qubit of Register D at the end of the circuit; the two sections name different qubits."
+    },
+    {
+     "id_suggestion": "register-h-coherence-claim",
+     "value": "The authors state that Register H must keep coherence during the whole execution, which they call a decisive aspect in current NISQ devices.",
+     "anchor": "Section 2.2, p.4",
+     "quotes": [
+      "Therefore Register H must keep coherence during the whole execution, which is a decisive aspect in current NISQ devices."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qubo-definition-binary-variables",
+     "value": "The authors define the QUBO (Quadratic Unconstrained Binary Optimization) formulation with binary variables that take values of 0 or 1, linear coefficients and quadratic coefficients, as one way to implement the Quantum Adiabatic Algorithm.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "One way to implement the Quantum Adiabatic Algorithm is by the QUBO (Quadratic Unconstrained Binary Optimization) formulation:",
+      "xi are binary variables that can take values of 0 or 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Section 3, p.5.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "task-stock-trend-prediction",
+     "value": "The authors state that the problem is to find the trend (increase or decrease) of the next closing price from the historical closing stock prices of a listed company.",
+     "anchor": "Section 4.1, p.5",
+     "quotes": [
+      "Given the historical closing stock price values of a listed company, the problem is to find the trend (increase / decrease) for the next closing price."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own task statement, Section 4.1, p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "training-record-format",
+     "value": "The authors state that each training record holds the last two values (x(t), x(t − 1)) and a closing indicator (increment or decrement, 1 or 0) for each trading day.",
+     "anchor": "Section 4.1, p.5 (Table 1)",
+     "quotes": [
+      "the training dataset must be prepared containing the last two values (x(t), x(t − 1)) along with the closing indicator (increment/decrement, ie. 1/0 ) for each trading day as shown in Table 1.",
+      "Table 1. Training dataset. History depth: 3 days"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own data setup, Section 4.1, p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text says two values per record but Table 1 lists three input columns (x(t), x(t-1), x(t-2)) for a history depth of 3 days, and in several printed rows the x(t-1) and x(t-2) columns hold the same number, so the record format is not stated consistently."
+    },
+    {
+     "id_suggestion": "classical-training-spsa",
+     "value": "The authors state that the classical training of the QRNN uses the traditional ANN mechanisms by means of gradient descent algorithms, with the Simultaneous Perturbation Stochastic Approximation (SPSA) optimizer.",
+     "anchor": "Section 4.3, p.6",
+     "quotes": [
+      "The clasical training of the QRNN is done using the traditional ANN mechanisms by means of gradient descent algorithms",
+      "using Simultaneous Perturbation Stochastic Approximation (SPSA) optimizer."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own baseline setup, Section 4.3, p.6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "SPSA estimates a descent direction from perturbed function evaluations; it is not backpropagated gradient descent, and it is the only classical optimizer used. No SPSA settings (learning rate, perturbation size, iteration limit) are given in the text."
+    },
+    {
+     "id_suggestion": "objective-functions-classical-and-adiabatic",
+     "value": "The authors state that the classical training objective is a function of the form log(p + e to the power of minus 10), averaged over N records, and that the adiabatic training minimizes the error between predicted and expected output values using the Mean Square Error (MSE) metric.",
+     "anchor": "Section 4.3, p.6 (equation 4); Section 4.4, p.7",
+     "quotes": [
+      "log(p + e−10)",
+      "by using the Mean Square Error (MSE) metric."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own objective definitions, Section 4.3 p.6 and Section 4.4 p.7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The two trainings minimize different objectives (a logarithmic cost in classical training, a squared error over two state-vector coefficients in adiabatic training), so the Table 2 and Table 4 comparisons differ in objective as well as in optimizer."
+    },
+    {
+     "id_suggestion": "accuracy-metric-hit-counts",
+     "value": "The authors state that after training the average regression accuracy (hit counts) is calculated to evaluate the model.",
+     "anchor": "Section 4.3, p.6",
+     "quotes": [
+      "Once the training is complete, the average regression accuracy (hit counts) is calculated to evaluate the model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own metric definition, Section 4.3, p.6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No majority-class (always up or always down) baseline, confidence interval or repeat-run spread is given for this accuracy."
+    },
+    {
+     "id_suggestion": "state-vector-encoding-example",
+     "value": "The authors give an example in which the input value x = 0.585, encoded by Ry(arccos(0.58)) on each qubit of Register D with Register H in state |0⟩, has non-zero amplitudes only at components 0, 4, 8 and 12 (0.79, 0.41, 0.41 and 0.21), and the expected output for measuring |1⟩ in the first qubit of Register D has a single non-zero component, 1, at component 8.",
+     "anchor": "Section 4.4 State Vectors, p.7 (equations 5 and 6)",
+     "quotes": [
+      "For instance, input value x = 0.585 will have the following state vector, after applying Ry(arccos(0.58)) on each qubit in Register D",
+      "|ψx0⟩ = (0.79, 0, 0, 0, 0.41, 0, 0, 0, 0.41, 0, 0, 0, 0.21, 0, 0, 0)",
+      "which are components 0, 4, 8 and 12 in the state vector",
+      "|ψy0⟩ = (0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own worked definition of the state vectors, Section 4.4, p.7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The example reads as a 4-qubit system (a 16-component vector) with two input qubits in Register D."
+    },
+    {
+     "id_suggestion": "ansatz-operator-diagonal-16x16",
+     "value": "The authors state that the quantum operator of the ansatz subcircuit is a 16x16 matrix and that it is a diagonal matrix.",
+     "anchor": "Section 4.4 Ansatz Operator, p.7",
+     "quotes": [
+      "The quantum operator corresponding to the Ansatz subcircuit is a 16x16 matrix of the following form:",
+      "This is a diagonal matrix with the following elements in its diagonal"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the ansatz operator, Section 4.4, p.7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "A diagonal unitary only multiplies each computational-basis amplitude by a phase, so it leaves the computational-basis measurement probabilities unchanged. The coordinator should check how the paper's diagonal ansatz operator can make the predicted probability depend on the angles (see the phase-omission assertion)."
+    },
+    {
+     "id_suggestion": "phase-factor-omitted-real-values-only",
+     "value": "The authors state that they omit the phase factor i from the ansatz operator because the input state vectors have no imaginary component in any of their coefficients and the QUBO formulations require only real values.",
+     "anchor": "Section 4.5 Ansatz Operator, p.8",
+     "quotes": [
+      "Here we omit the phase factor i given that the input state vectors have no imaginary component in any of their coefficients, and the QUBO formulations require only real values.",
+      "The ansatz operator is applied to each input vector via dot product."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own modelling simplification, Section 4.5, p.8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Table 3 (p.9) lists exp(θ/2), a real exponential, as the discretized value. With the factor i removed the operator entries grow with θ instead of having unit modulus, so the operator in the QUBO is not the unitary the gate circuit applies; the paper does not show that the QUBO optimum is the optimum of the circuit."
+    },
+    {
+     "id_suggestion": "discretization-loses-precision",
+     "value": "The authors state that the adiabatic model uses binary variables while the ansatz requires real values of the θ angles in the range [0, π], so the angle values are discretized and precision is lost.",
+     "anchor": "Section 4.5, p.8",
+     "quotes": [
+      "Adiabatic model uses binary variables and the Ansatz requires real values for the θ angles in the range [0, π] for the exponential function, it is needed to discretize those possible angle values, hence loosing precision"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the cost of its own method in Section 4.5, p.8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The four discretized angles in Table 3 (0,125 to 0,875) cover less than one radian of the stated range [0, π], so the loss of precision is larger than the sentence suggests."
+    },
+    {
+     "id_suggestion": "discretization-four-parts-angle-values",
+     "value": "The authors report that the angle discretization was done in 4 parts, with the angle values 0,125 0,375 0,625 0,875 for the exponential function.",
+     "anchor": "Section 5, p.9 (Table 3)",
+     "quotes": [
+      "Discretization is done in 4 parts, for simplicity, obtaining the values for the angles and the corresponding exponential function as seen in Table 3.",
+      "0,125 0,375 0,625 0,875"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own discretization setup, Section 5, p.9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "search-space-counts-feasible-solutions",
+     "value": "The authors report that the total number of potential solutions explored was 1.048.576 and that 1.024 feasible solutions remained after filtering to those that meet all the conditions of the QUBO formulation.",
+     "anchor": "Section 5, p.9",
+     "quotes": [
+      "The total number of potential solutions explored was 1.048.576.",
+      "Once filtered as to keep only the feasible solutions (those that meet all the conditions of the QUBO formulation) 1.024 potential solutions were obtained."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical count from one run of one simulator.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "1.048.576 is 2 to the power of 20, the number of options Table 6 gives for a run with 20 binary variables (5 parts), where Table 6 lists 625 feasible options; Table 6 lists 65.536 explored and 256 feasible options for 4 parts. The Section 5 text (4 parts, 1.048.576 explored, 1.024 feasible) matches neither Table 6 row. The 'annealing' step enumerates the whole space."
+    },
+    {
+     "id_suggestion": "optimal-solution-first-feasible",
+     "value": "The authors report that the optimal solution found, the first in the list of feasible solutions, decodes to θ0 = 0,625, θ1 = 0,375, θ2 = 0,625, θ3 = 0,375.",
+     "anchor": "Section 5, p.9",
+     "quotes": [
+      "The optimal solution found (the first in the list of feasible solutions)",
+      "θ0 = 0,625, θ1 = 0,375, θ2 = 0,625, θ3 = 0,375."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Calling the first listed feasible solution 'optimal' is not tied in the text to an objective value, and the paper does not say how many feasible solutions share the lowest objective."
+    },
+    {
+     "id_suggestion": "results-from-typical-execution",
+     "value": "The authors state that the results are those of a typical execution of the model.",
+     "anchor": "Section 5, p.8-9",
+     "quotes": [
+      "The following are the results obtained in a typical execution of the model"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of what its results are, Section 5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No repeat runs, spread or seeds are reported, so a one-point accuracy difference cannot be separated from run-to-run variation."
+    },
+    {
+     "id_suggestion": "compute-setup-local-pc",
+     "value": "The authors state that all executions were performed on a local personal computer on a python framework with 32,602MB of physical memory.",
+     "anchor": "Section 5, p.9",
+     "quotes": [
+      "All the executions where performed on a local personal computer on a python framework.",
+      "Physical Memory 32,602MB"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own execution setup, Section 5, p.9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dataset-yahoo-finance-split",
+     "value": "The authors state that the datasets came from the Yahoo Finance website for selected listed companies, and that the dataset was split in two parts, 80% for training and 20% for testing, to perform cross validation.",
+     "anchor": "Section 5, p.9",
+     "quotes": [
+      "The datasets used were obtained from Yahoo Finance website for selected listed companies",
+      "In order to perform cross validation, the dataset has been split in two parts: 80% used for training, 20% for testing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own data setup, Section 5, p.9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "A single 80/20 split is a hold-out split, not k-fold cross validation. With 49 test records (Section 5) one record is about 2 percentage points, so the 1-point differences in Table 4 are below the resolution of the test set."
+    },
+    {
+     "id_suggestion": "accuracy-typical-run-49-test-records",
+     "value": "The authors report that in a typical execution the QRNN updated with the adiabatic-trained angles reached an accuracy of 66% on 49 test records.",
+     "anchor": "Section 5, p.9 (Table 2 lists 66% for QRNN with classical training, 66% for QRNN with adiabatic training and 64% for the ANN; the cells are too short to quote)",
+     "quotes": [
+      "The accuracy for the different models is shown in Table 2.",
+      "The QRNN is updated with these optimal values and validation is executed in the same way, obtaining 49 test records. The obtained accuracy is 66%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run of one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The three accuracies differ by at most 2 points on 49 test records, about one test record; no baseline (always predicting the more frequent direction) is given."
+    },
+    {
+     "id_suggestion": "accuracy-table4-five-series",
+     "value": "The authors report in Table 4 the accuracy for five listed-company series: QRNN with classical training 65% 62% 57% 64% 68%, QRNN with adiabatic training 66% 59% 47% 65% 69%, and ANN 64% 66% 52% 64% 71%.",
+     "anchor": "Section 6, p.10 (Table 4); series in row order SAN.MC 250, SAN.MC 125, T 100, SAN.MC 150, RVPH 250",
+     "quotes": [
+      "Table 4. Accuracy for different large listed companies (SAN.MC=Santander Bank, T= AT&T, RVPH=Reviva Pharmaceuticals).",
+      "65% 62% 57% 64% 68%",
+      "66% 59% 47% 65% 69%",
+      "64% 66% 52% 64% 71%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, single runs.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In row order, adiabatic training is 1 point above classical training on SAN.MC 250, SAN.MC 150 and RVPH 250, 3 points below on SAN.MC 125 and 10 points below on T 100. The table does not support a general 'similar' reading without those two lower rows. The ANN is above the adiabatic QRNN on three of five rows."
+    },
+    {
+     "id_suggestion": "qrnn-vs-ann-no-significant-difference",
+     "value": "The authors state that the data show no significant difference in accuracy between QRNN and ANN results, which they attribute with 'probably' to the high maturity of ANN models and a relatively small data set that leads to quick convergence.",
+     "anchor": "Section 6, p.9-10",
+     "quotes": [
+      "These data show no significant",
+      "difference in terms of accuracy between QRNN and ANN results, probably due to the high maturity of ANN models and the fact that it is a relatively small data set which leads to a quick convergence."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation without a test; no significance test is reported.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "execution-count-definition",
+     "value": "The authors define the execution count (EC) as epochs and circuit shots for QRNN with classical training, as adiabatic steps that depend on the discretization of the exp(θ) function rather than the number of records for adiabatic training, and as epochs and records for the ANN.",
+     "anchor": "Section 6, p.10",
+     "quotes": [
+      "Regarding QRNN with classical training, EC refer to epochs and circuit shots.",
+      "In contrast, in adiabatic training, EC are adiabatic steps that depend on the discretization of the exp(θ) function rather than the number of records.",
+      "In ANN, EC refer to epochs and records."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Section 6, p.10.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The three EC columns count different things, so the Table 5 counts are not comparable across columns."
+    },
+    {
+     "id_suggestion": "table5-execution-counts-and-time",
+     "value": "The authors report in Table 5 execution counts (c) and elapsed time in seconds (s), as printed: SAN.MC 250: QRNN classical 900K (c) - 41K (s), QRNN adiabatic 1M (c) - 0,92 (s), ANN 25,0K (c) - 14 (s); SAN.MC 125: 450K (c) - 22K (s), 1M (c) - 0,92 (s), 12,5K (c) - 06 (s); T 100: 370K (c) - 13K (s), 1M (c) - 1,62 (s), 10,0K (c) - 07 (s); SAN.MC 150: 496K (c) - 32K (s), 1M (c) - 0,97 (s), 15,0K (c) - 11 (s); RVPH 250: 900K (c) - 41K (s), 1M (c) - 0,93 (s), 25,0K (c) - 16 (s).",
+     "anchor": "Section 6, p.11 (Table 5)",
+     "quotes": [
+      "Table 5. EC - Execution counts (c) and Elapsed time in seconds (s).",
+      "SAN.MC 250 900K (c) - 41K (s) 1M (c) - 0,92 (s) 25,0K (c) - 14 (s)",
+      "SAN.MC 125 450K (c) - 22K (s) 1M (c) - 0,92 (s) 12,5K (c) - 06 (s)",
+      "100 370K (c) - 13K (s) 1M (c) - 1,62 (s) 10,0K (c) - 07 (s)",
+      "SAN.MC 150 496K (c) - 32K (s) 1M (c) - 0,97 (s) 15,0K (c) - 11 (s)",
+      "RVPH 250 900K (c) - 41K (s) 1M (c) - 0,93 (s) 25,0K (c) - 16 (s)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, measured on simulators.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The classical-training elapsed time is printed with a K suffix (41K (s)); read literally it is 41 thousand seconds, about 11 hours, against 0,92 s for the adiabatic simulation. The adiabatic time comes from a simulator that enumerates the whole option space (Table 6), not from an annealer, so it says nothing about annealer speed. The adiabatic time is also not constant: 1,62 s on T 100."
+    },
+    {
+     "id_suggestion": "table6-adiabatic-scaling-with-parts",
+     "value": "The authors report in Table 6, for SAN.MC with 250 records and discretization from 3 to 6 parts, that explored options, feasible options and elapsed time (s) were 65.536, 256 and 0,92; with 20 binary variables, 1.048.576, 625 and 0,927; and with 24 binary variables, 16.777.216, 1.296 and 1,13.",
+     "anchor": "Section 6, p.11 (Table 6); the 3-part row is too short to quote",
+     "quotes": [
+      "Table 6. Adiabatic optimization for SAN.MC(250) with discretization from 3 to 6.",
+      "65.536 256 0,92",
+      "20 1.048.576 625 0,927",
+      "24 16.777.216 1.296 1,13"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, measured on a simulator.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Explored options grow 16-fold per added part (2 to the power of the binary variable count) while the elapsed time stays near 0,92 s up to 20 binary variables and reaches 1,13 s at 24, so the simulated annealing step is not exhaustive search in cost; the paper does not say what the simulator does."
+    },
+    {
+     "id_suggestion": "adiabatic-time-explanation-state-space",
+     "value": "The authors state that adiabatic training takes a constant execution count and less time because the adiabatic process explores the entire state space in one single run until it reaches the lowest energy state, and that this depends on the number of binary variables rather than the number of records.",
+     "anchor": "Section 6, p.10",
+     "quotes": [
+      "This is due to the adiabatic process exploring the entire state space, in one single run until reaching the lowest energy state.",
+      "This process is dependent on the number of binary variables used rather than the number of records used by the optimization function."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author explanation without evidence beyond the simulator timings.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "On a real annealer the number of binary variables is limited by qubit count and embedding; the simulator timings here do not test that."
+    },
+    {
+     "id_suggestion": "discretization-parts-drive-time-memory",
+     "value": "The authors state that the time and memory required for adiabatic training are directly related to the number of parts in which the exponential function is discretized.",
+     "anchor": "Section 6, p.10",
+     "quotes": [
+      "The time and memory required for adiabatic training is directly related to the number of parts in which the exponential function is discretized."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement; memory is not reported in the tables.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "annealing-simulator-no-step-access",
+     "value": "The authors state that the quantum annealing simulator gives no access to the details of the internal adiabatic evolution through time, so the number of steps required to reach the lowest energy state cannot be seen.",
+     "anchor": "Section 6, p.10",
+     "quotes": [
+      "The quantum annealing simulator gives no access to the details of the internal adiabatic evolution through time as to see the number of steps required to reach the lowest energy state."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states a limit of its own measurement, Section 6, p.10.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "spsa-extra-iterations-stopping-criteria",
+     "value": "The authors state that for QRNN under classical training the execution count is greater than the number of iterations defined, because the SPSA optimizer uses several stopping criteria, including the degree of convergence, which can add iterations before it stops.",
+     "anchor": "Section 6, p.10",
+     "quotes": [
+      "A special behavior is seen in the QRNN under classical training, where EC is greater than the number of iterations defined.",
+      "This is due to the fact that the SPSA optimizer uses several stopping criteria, with the number of iterations being one of them"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author explanation of an observed count.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "opportunity-medium-term-quantum-computers",
+     "value": "The authors state that the similar accuracy of QRNN with adiabatic training poses an opportunity towards medium term quantum computers.",
+     "anchor": "Section 7, p.10-11",
+     "quotes": [
+      "This poses an opportunity",
+      "towards medium term quantum computers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim without evidence.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "energy-consumption-smaller-cited-bennett",
+     "value": "The authors state that it has not yet been demonstrated that quantum computers will be faster, and that it has been proven that their energy consumption will be smaller, following a statement by C H. Bennett [18].",
+     "anchor": "Section 7, p.11",
+     "quotes": [
+      "Although it has not yet been demonstrated that Quantum Computers will be faster, it has been proven that their energy consumption will be smaller following C H. Bennett statement [18]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (Bennett 1973, reference 18).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The paper measures no energy. Reference 18 is Bennett's 1973 paper on logical reversibility, which is about the thermodynamics of computation, not a proof that a quantum computer uses less energy than a classical computer for this task."
+    },
+    {
+     "id_suggestion": "energy-efficiency-on-real-hardware-expected",
+     "value": "The authors state that once the same models run on real quantum hardware, energy efficiency is expected to improve, making the approach a good candidate for High Performance Computing ecosystems.",
+     "anchor": "Section 7, p.11",
+     "quotes": [
+      "Once the same models are run on real Quantum hardware, energy efficiency is expected to improve, making this approach a good candidate for High Performance Computing ecosystems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author expectation without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "barren-plateau-avoidance-path-claim",
+     "value": "The authors state that the work presents a new research path towards trying to avoid the Barren Plateau effect thanks to the non-gradient dependency of the adiabatic optimization.",
+     "anchor": "Section 7, p.11",
+     "quotes": [
+      "At the same time, a new research path is presented towards trying to avoid the Barren Plateau effect thanks to the non-gradient dependency for the adiabatic optimization."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no barren-plateau experiment is reported.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "barren-plateau-comparison-future-work",
+     "value": "The authors state that a detailed comparison on the Barren Plateau aspect is future research.",
+     "anchor": "Section 7, p.11",
+     "quotes": [
+      "A detailed comparison on this particular aspect is an interesting future research."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states what it did not do, Section 7, p.11.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The abstract motivates the work with the barren plateau effect, yet no experiment in the paper tests it."
+    },
+    {
+     "id_suggestion": "future-work-overcome-expressiveness-loss",
+     "value": "The authors state that exploring alternatives to overcome the loss of expressiveness, such as introducing the imaginary phase or iterative approximation methods, is recommended as future research.",
+     "anchor": "Section 7, p.11",
+     "quotes": [
+      "Exploration of alternatives to overcome this situation, like introduction of imaginary phase or iterative approximation methods, is recommended as future research works."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states an open problem of its own method, Section 7, p.11.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "future-work-more-diverse-datasets-scalability",
+     "value": "The authors state that experimenting with more diverse datasets will help verify the scalability and robustness of the proposed method.",
+     "anchor": "Section 7, p.11",
+     "quotes": [
+      "Similarly, experimenting with more diverse datasets will help verify scalability and robustness of the proposed method."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states that scalability and robustness are not yet verified, Section 7, p.11.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
