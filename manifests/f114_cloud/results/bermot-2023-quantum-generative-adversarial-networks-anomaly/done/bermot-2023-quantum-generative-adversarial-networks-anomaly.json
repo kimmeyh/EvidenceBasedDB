@@ -1,0 +1,620 @@
+{
+ "papers": [
+  {
+   "record_id": "bermot-2023-quantum-generative-adversarial-networks-anomaly",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Bermot-et-al._2023_Quantum-Generative-Adversarial-Networks-For-Anomaly-Detection-In-High__2304.14439.pdf",
+   "title_in_file": "Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics",
+   "version_note": "arXiv:2304.14439v2, 7 Dec 2023. Page anchors for new assertions use the printed page numbers in the text layer; the brief's anchors run one page higher.",
+   "pages": 9,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A proof-of-principle study of an unsupervised quantum GAN anomaly detector (A-qGAN) for Graviton and Higgs events in simulated HEP data, run in simulation and on ibmq belem, with an effective-dimension comparison to a classical GAN.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "effective-dimension-higher-quantum",
+     "verdict": "narrowed",
+     "note": "The comparison is for the trained generators of the quantum and classical models, at the same number of trainable parameters, for 3 to 8 features (Fig. 7). The paper reads a higher effective dimension as higher expressibility.",
+     "value": "The authors report that, for generators with the same number of trainable parameters, the effective dimension of the quantum model is always larger than for the classical model, which they say indicates a higher expressibility; the authors also report that for the chosen generator ansatzes with O(n) parameters the effective dimension decreases as the dimension of the system increases.",
+     "anchor": "Section IV C, p.7 (printed), Fig. 7 caption",
+     "quotes": [
+      "The effective dimension of the quantum model is always larger than for the classical model which indicates a higher expressibility.",
+      "For each number of features, the classical and quantum generator have the same number of trainable parameters.",
+      "as we increase the dimension of the system, the effective dimension decreases for the chosen generator ansatzes with O(n) parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "hardware-auc-lower",
+     "verdict": "narrowed",
+     "note": "The hardware run is a reduced experiment: Graviton only, 3 features, 5 training epochs, training subsets of 50 events. The authors attribute the lower AUC to the reduced number of epochs and the smaller data sets.",
+     "value": "The authors report that, on the IBM Quantum processor ibmq belem, for the Graviton with 3 features, the AUC curve of the A-qGAN is lower than for the classical and noiseless methods; the ROC legend gives AUC 0.84 classical, 0.81 simulation and 0.74 hardware. The hardware run used 5 training epochs and subsets of 50 events, and the authors explain the difference by the reduced number of epochs and the smaller data sets.",
+     "anchor": "Section IV B and Fig. 6 legend, p.7-8 (printed)",
+     "quotes": [
+      "Compared to the classical and noiseless methods, the AUC curve of the A-qGAN evaluated on the quantum hardware is lower.",
+      "Classical (AUC: 0.84) Simulation (AUC: 0.81) Hardware (AUC: 0.74)",
+      "In this part, we only consider the anomaly detection of the Graviton particle using 3 features.",
+      "we reduce the number of training epochs to 5.",
+      "we train on subsets of 50 events taken from the 10 training data sets used in Section IV A",
+      "These differences can be explained by the reduced number of epochs, and smaller data sets compared to the noiseless algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The explanation is the authors' own and was not tested by a run in the paper."
+    },
+    {
+     "id": "lack-of-data-not-typical-problem",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that a lack of data is typically not a problem in this type of HEP task, and that the amount of training data will even increase in the next years.",
+     "anchor": "Section V, p.8 (printed)",
+     "quotes": [
+      "It should, however, be mentioned that a lack of data is typically not a problem in this type of HEP task.",
+      "In fact, the amount of training data will even increase in the next years."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V (Conclusions) states it as a caveat on the ten-times-fewer-data result.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qgan-10x-fewer-samples",
+     "verdict": "narrowed",
+     "note": "Quantum used 100 events and classical 1'000 per data set. The advantage in accuracy is not uniform: for 3 features the classical model is better; for 7 features the two are similar (Table I caption). The conclusions word it as 'detect', and carry the caveat that lack of data is typically not a problem in HEP.",
+     "value": "The authors report that the quantum models were trained with 10 times fewer data samples than the classical models but still achieve comparable accuracy, AUC, precision and F1 scores; the Table I caption states that for 3 features the classical model yields better classification scores than the quantum one for both the Graviton and Higgs detections, and that for 7 features the two yield similar classification scores.",
+     "anchor": "Section IV A, p.6 (printed); Table I caption, p.7 (printed)",
+     "quotes": [
+      "It is worth stressing that the quantum models were trained with 10 times fewer data samples than the classical models, but still achieve comparable accuracy, AUC, precision and F1 scores.",
+      "For 3 features, the classical model yields better classification scores than for the quantum one for both the Graviton and Higgs detections.",
+      "For 7 features, the quantum and classical models yield similar classification scores for detection of both the Graviton and Higgs events."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The quantum and classical models also differ in data amount at test time (100 events against a larger classical set), and the classical reference was not given its own tuned architecture beyond matching parameter count."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "a-qgan-anomaly-score-definition",
+     "value": "The authors define the quantum anomaly score as a weighted combination, with weight alpha, of a residual score (the fidelity between the embedded input point and the trained generator state) and a discriminator score based on the classification of the embedded input point and the trained generator state; an event is labelled anomalous if the score exceeds a threshold delta.",
+     "anchor": "Section II B 2, Eqs. (9) and (10), p.4",
+     "quotes": [
+      "The first term is a residual score. It measures the fidelity between the embedded input point |xj⟩ and the trained generator state |G⟩.",
+      "The second term is a discriminator score based on the classification of the embedded input point |xj⟩ and the trained generator state |G⟩.",
+      "Finally, the parameter α weighs the importance of both circuits for the anomaly score."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II B 2 defines the score.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fidelity-exponential-concentration-open",
+     "value": "The authors state that the fidelity measure can suffer from exponential concentration effects, and that finding scalable distance measures remains an open question for future research.",
+     "anchor": "Section II B 2, p.4",
+     "quotes": [
+      "It should be noted that the fidelity measure can suffer from exponential concentration effects [50, 51].",
+      "Finding scalable distance measures remain an open question for future research."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states it as a limit of its own score.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-score-no-prior-optimization",
+     "value": "The authors state that the quantum anomaly score does not require an additional optimization over the random prior z, which they attribute to the intrinsic stochasticity of quantum measurements.",
+     "anchor": "Section II B 2, p.4",
+     "quotes": [
+      "The quantum anomaly score differs from the classical score in the sense that it does not require an additional optimization over the random prior z due to the intrinsic stochasticity of quantum measurements."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "threshold-set-with-bsm-data",
+     "value": "The authors state that the threshold delta is chosen to realize a representative differentiation between non-anomalous and anomalous data, and that training data corresponding to SM and BSM may be used to find a reasonable baseline for it.",
+     "anchor": "Section II B 1, p.3",
+     "quotes": [
+      "In practice, the threshold δ is chosen such that it realizes a representative differentiation between non-anomalous and anomalous data.",
+      "In our case, we may employ training data corresponding to SM and BSM to find a reasonable baseline for this parameter."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own procedure.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "Threshold choice that uses BSM labels means the evaluation is not label-free."
+    },
+    {
+     "id_suggestion": "alpha-grid-search-on-test-auc",
+     "value": "The authors state that they apply a grid search over the parameter alpha to find the one which results in the best AUC on the test data set, and that the mean of the anomaly scores for the data sets define thresholds.",
+     "anchor": "Section III D, p.5",
+     "quotes": [
+      "The mean of the anomaly scores for the data sets define thresholds which in turn help to identify whether a test sample is an anomaly or not.",
+      "We apply a grid search over the α parameter, to find the one which results in the best AUC on the test data set."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own selection procedure.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "Selecting alpha on the test AUC makes the reported best-alpha scores optimistic."
+    },
+    {
+     "id_suggestion": "dataset-sizes-and-features",
+     "value": "The authors state that the SM training data set contains 3’450’279 different events, the testing data set contains 3’450’277 events, the Higgs boson data set 139’991 events and the Graviton data set 6’910 events, and that an event is characterized by a list of 23 high-level features.",
+     "anchor": "Section III A, p.4 (printed)",
+     "quotes": [
+      "The SM training data set contains 3’450’279 different events and the testing data set contains 3’450’277 events.",
+      "we also work with a Higgs boson data set [56] containing 139’991 events and a Graviton data set [57] containing 6’910 events.",
+      "by a list of 23 high-level features [58]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III A states the data sets.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "artificial-simulated-hep-data",
+     "value": "The authors state that they focus on an artificial data set generated according to HEP experiments, and that the anomalous data sets were obtained through simulation of BSM processes with the PYTHIA8 Monte Carlo simulator.",
+     "anchor": "Section III A, p.4 (printed)",
+     "quotes": [
+      "In this work, we are focusing on an artificial data set generated according to HEP experiments.",
+      "The anomalous data sets were obtained through the simulation of BSM processes obtained with the PYTHIA8 Monte Carlo simulator [53–55]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section III A states that the data are artificial.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No measured collider data enter the results."
+    },
+    {
+     "id_suggestion": "quantum-sample-sizes-100-versus-classical-1000",
+     "value": "The authors state that for the quantum approach they randomly select 100 SM events to build a training set and 100 events for each of the testing SM, Graviton and Higgs data sets, and that for the classical benchmark they select 10 times more events from each data set, including the 100 events used for the quantum approach.",
+     "anchor": "Section III A, p.4-5 (printed)",
+     "quotes": [
+      "we randomly select 100 SM events to build a training set and 100 events for each the testing SM data set, the Graviton data set and the Higgs data set.",
+      "For the classical benchmark, we randomly select 10 times more"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III A states the sample sizes.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pca-compression-and-angle-encoding",
+     "value": "The authors state that they extract a compressed representation of the data sets with the Principal Component Analysis (PCA) method, and that each data point is mapped to an n-qubit quantum state with the angle encoding.",
+     "anchor": "Section III A, p.5 (printed)",
+     "quotes": [
+      "the Principal Component Analysis (PCA) method [59]",
+      "to an n-qubit quantum state |x⟩ obtained with the angle encoding [60–62]:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III A states the pre-processing.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ten-random-instances-3-to-8-features",
+     "value": "The authors state that they use 10 randomly selected instances of the training and testing data sets, and perform anomaly detection using between 3 and 8 features, each obtained with PCA-compression.",
+     "anchor": "Section IV A, p.6 (printed)",
+     "quotes": [
+      "we use 10 randomly selected instances of the training and testing data sets introduced in Section III A.",
+      "We perform anomaly detection using between 3 and 8 features, each obtained with PCA-compression."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV A states the experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-benchmark-parameter-matched",
+     "value": "The authors state that the architectures of the classical neural networks are chosen such that they have a number of trainable parameters comparable to the quantum case.",
+     "anchor": "Section IV A, p.6 (printed)",
+     "quotes": [
+      "The architectures of the classical neural networks are chosen, such that they have a number of trainable parameters comparable to the quantum case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV A states how the benchmark is built.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "circuit-sizes-3-and-7-features",
+     "value": "The authors report that for the 3-feature (7-feature) simulation they use 3 (9) repetitions of the generator ansatz and 2 (3) repetitions of the discriminator ansatz, yielding 6 (70) trainable parameters for the generator and 21 (66) trainable parameters for the discriminator.",
+     "anchor": "Section IV A, p.6 (printed)",
+     "quotes": [
+      "For the 3-feature (7-feature) simulation, we use 3 (9) repetitions of the generator ansatz in Fig. 3a, and 2 (3) repetitions of the discriminator ansatz in Fig. 3b,",
+      "yielding 6 (70) trainable parameters for the generator and 21 (66) trainable parameters for the discriminator, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV A states the circuit sizes.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "discriminator-updates-more-than-generator",
+     "value": "The authors state that in each training epoch they apply more optimization updates for the discriminator than for the generator, 5 times more for the training on 3 features and 10 times more for 7 features.",
+     "anchor": "Section IV A, p.6 (printed)",
+     "quotes": [
+      "we apply more optimization updates for the discriminator than for the generator, 5 times more for the training on 3 features, and 10 times more for 7 features, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV A states the training schedule.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "simulation-training-settings",
+     "value": "The authors state that the qGANs were first optimized on a noiseless simulator for 500 epochs with the AMSGRAD optimizer, and that the noisy simulation mimicking ibmq belem used the same optimizer with a larger learning rate and ten times fewer training epochs.",
+     "anchor": "Section IV A, p.6 (printed)",
+     "quotes": [
+      "we first optimize the qGANs on a noiseless simulator for 500 epochs with the AMSGRAD optimizer [42]",
+      "This optimization is performed with the same optimizer but using a learning rate of 10−2 to handle the noise of the hardware and ten times fewer training epochs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV A states the settings.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The learning rate of the noisy run is printed flat as 10−2 (ten to the minus two)."
+    },
+    {
+     "id_suggestion": "classical-better-for-fewer-than-seven-features",
+     "value": "The authors report that the classical algorithm slightly outperforms the quantum one for less than seven features in the Higgs detection, and that for seven and eight features the quantum simulations with less training data are similar in performance to the classical case.",
+     "anchor": "Section IV A, p.6 (printed), Fig. 4b",
+     "quotes": [
+      "The classical algorithm slightly outperforms the quantum one for less than seven features.",
+      "For seven and eight features, the quantum simulations with less training data are similar in performance to the classical case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graviton-auc-grows-with-features",
+     "value": "The authors report that as the number of features increases the classical model gets better at detecting the Graviton, and that the A-qGAN performance with less training data also improves, reaching the performance of the classical algorithm for six PCA-compressed features, after which both reach a plateau of comparable performance.",
+     "anchor": "Section IV A, p.6 (printed), Fig. 4a",
+     "quotes": [
+      "As we increase the number of features, the classical model gets better at detecting the Graviton (see Fig. 4a).",
+      "reaching the performance of the classical algorithm for six PCAcompressed features."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "higgs-harder-than-graviton",
+     "value": "The authors report that detecting the Higgs particle is more challenging than detecting the Graviton for both quantum and classical models, as also noted in Ref. [69].",
+     "anchor": "Section IV A, p.6 (printed)",
+     "quotes": [
+      "we can observe that detecting the Higgs particle is more challenging than detecting the Graviton for both, quantum and classical models, as also noted in Ref. [69]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noisy-simulation-similar-to-noiseless",
+     "value": "The authors report that for both Graviton and Higgs detection they get similar performance between the noiseless and noisy quantum simulations, which they say indicates some level of noise robustness of the A-qGAN.",
+     "anchor": "Section IV A, p.6 (printed)",
+     "quotes": [
+      "we get similar performance between the noiseless and noisy quantum simulations, which indicates some level of noise robustness of the A-qGAN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The noisy simulator is a model of ibmq belem noise, not hardware."
+    },
+    {
+     "id_suggestion": "large-standard-deviations-explained",
+     "value": "The authors state that the large standard deviations in Fig. 4 can be explained by the intrinsic volatility in the GAN training and by the data set reshufflings.",
+     "anchor": "Section IV A, p.6 (printed)",
+     "quotes": [
+      "The large standard deviations shown in Fig. 4 can be explained by the intrinsic volatility in the GAN training and by the data set reshufflings."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": "The Table I standard deviations are of the size of the quantum-classical gaps, so differences between the methods may lie within run-to-run spread."
+    },
+    {
+     "id_suggestion": "hardware-run-setup",
+     "value": "The authors state that the hardware run trained on subsets of 50 events taken from the 10 training data sets, and used a shot count printed in the text layer as 104 for each expectation value estimation during the training and the anomaly score computation.",
+     "anchor": "Section IV B, p.6 (printed)",
+     "quotes": [
+      "We use 104 shots for each expectation value estimation during the training and the anomaly score computation.",
+      "we train on subsets of 50 events taken from the 10 training data sets used in Section IV A"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV B states the hardware setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "effective-dimension-definition",
+     "value": "The authors state that the effective dimension is an expressibility measure applicable to quantum and classical models, that it quantifies what fraction of the model space can be covered with the available system parameters, and that a higher effective dimension indicates a higher capacity of the model.",
+     "anchor": "Section III E, p.5 (printed)",
+     "quotes": [
+      "The effective dimension is an expressibility measure that can be applied to quantum as well as classical models.",
+      "this measure quantifies what fraction of the model space can actually be covered with the available system parameters.",
+      "A higher effective dimension then indicates a higher capacity of the model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III E defines the measure.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "effective-dimension-directly-comparable",
+     "value": "The authors state that they use a similar amount of trainable parameters for the quantum and classical neural networks employed for both the generator and the discriminator, and hence that their effective dimensions can be directly compared.",
+     "anchor": "Section IV C, p.7 (printed)",
+     "quotes": [
+      "we use a similar amount of trainable parameters for the quantum and classical neural networks employed for both the generator and discriminator of the GAN. Hence, their effective dimensions can be directly compared."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV C states the basis of the comparison.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-effective-dimension-tends-to-zero",
+     "value": "The authors report that the effective dimension of the classical model appears to converge towards 0, which they say hints at a lack of capacity when the classical model is restricted to the same amount of trainable parameters as the quantum model.",
+     "anchor": "Section IV C, p.7 (printed), Fig. 7",
+     "quotes": [
+      "the effective dimension of the classical model appears to converge towards 0, hinting at a lack of capacity when the classical model is restricted to the same amount of trainable parameters as the quantum model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The authors say 'appears to'; no extrapolation beyond 8 features is shown."
+    },
+    {
+     "id_suggestion": "potential-advantage-larger-dimensions-speculation",
+     "value": "The authors state that the effective dimension result may be indicative of a potential advantage of their quantum methodology in larger dimensions.",
+     "anchor": "Section IV C, p.7 (printed)",
+     "quotes": [
+      "This may be indicative for a potential advantage of our quantum methodology in larger dimensions"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "larger-scale-experiments-infeasible",
+     "value": "The authors state that experiments at larger scale are currently infeasible due to the noise present in today’s quantum devices, and that the experiments use up to 8 features in simulation and 3 features on actual quantum hardware.",
+     "anchor": "Section IV, p.6 (printed)",
+     "quotes": [
+      "First, we present the results for the training of the (q)GANs on up to 8 features, and then also demonstrate its feasibility on actual quantum hardware using 3 features.",
+      "It should be noted that experiments at larger scale are currently infeasible due to the noise present in today’s quantum devices."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section IV states the limit.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "results-preliminary-future-work",
+     "value": "The authors state that future research aimed at confirming and extending their preliminary results could address a more extensive collection of data sets and scale up model and feature dimensions, approaching the regime where the A-qGAN can no longer be simulated classically.",
+     "anchor": "Section V, p.8 (printed)",
+     "quotes": [
+      "Future research directions aimed at confirming and extending our preliminary results could address a more extensive collection of data sets and scale up the relevant model and feature dimensions",
+      "approaching the regime where our A-qGAN can no longer be simulated classically."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V calls the results preliminary.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-ten-times-fewer-points",
+     "value": "The authors conclude that their results indicate the proposed quantum approach can detect Graviton and Higgs events using ten times fewer data points than a classical benchmark based on classical GANs with the same number of trainable parameters.",
+     "anchor": "Section V, p.8 (printed)",
+     "quotes": [
+      "our results indicate that the proposed quantum approach can detect Graviton and Higgs events using ten times fewer data points compared to a classical benchmark based on classical GANs with the same number of trainable parameters."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-larger-expressive-power",
+     "value": "The authors conclude that the quantum model exhibits a larger expressive power, measured by a higher effective dimension, than the classical counterpart, and suggest their qGAN-based scheme could be better suited to model and detect BSM anomalies in more complex and/or scaled settings.",
+     "anchor": "Section V, p.8 (printed)",
+     "quotes": [
+      "we showed that the quantum model exhibits a larger expressive power, measured by a higher effective dimension, than the classical counterpart.",
+      "This suggests that our qGAN-based anomaly detection scheme could be better suited to model and detect BSM anomalies in more complex and/or scaled settings."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-no-specific-bsm-model",
+     "value": "The authors state that the proposed generative method can detect new-physics events without modelling a specific BSM scenario.",
+     "anchor": "Section V, p.8 (printed)",
+     "quotes": [
+      "the proposed generative method can detect new-physics events without modelling a specific BSM scenario."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The threshold and alpha were set using SM and BSM samples, so the claim holds for detection but not for tuning."
+    }
+   ]
+  }
+ ]
+}
