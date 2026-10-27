@@ -1,0 +1,851 @@
+{
+ "papers": [
+  {
+   "record_id": "anwar-2025-hybrid-quantum-classical-learning-multiclass",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Anwar-et-al._2025_Hybrid-Quantum-Classical-Learning-for-Multiclass-Image-Classification__2508.18161.pdf",
+   "title_in_file": "Hybrid Quantum-Classical Learning for Multiclass Image Classification",
+   "version_note": "arXiv:2508.18161v1 [quant-ph] 25 Aug 2025; the text is the paper its record names.",
+   "pages": 13,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A hybrid QCNN preprint that feeds measurements of the qubits discarded at the first pooling layer into a classical dense head and reports accuracy gains on four-class MNIST, Fashion-MNIST and OrganAMNIST splits.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "anwar-classical-data-scope",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that they evaluate on classical image datasets, and that intrinsically quantum problems such as topological-phase recognition or error syndrome classification remain future work.",
+     "anchor": "Sec. I, Introduction",
+     "quotes": [
+      "Although our benchmarks focus on classical image data, the hybrid QCNN is independent of how the input state is prepared.",
+      "Extending the evaluation to intrinsically quantum problems, such as topological-phase recognition or error syndrome classification, remains a natural direction for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The Introduction states the evaluation scope and the future-work limit.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "anwar-param-count",
+     "verdict": "narrowed",
+     "note": "The sentence is the authors' own, but the comparison behind it is narrower than the stored value reads: two baselines only (Bokhan et al. QCNN and Chalumuri et al. QMCC), four-class splits only, and the 262 parameters are 74 more than Bokhan's architecture, so the model is not the smallest compared.",
+     "value": "The authors state that, against the QCNN of Bokhan et al. and the QMCC of Chalumuri et al., their model achieves the highest reported accuracies with a compact 262-parameter footprint; the comparison is on four-class splits, and the paper says the recycled-qubit branch adds only 74 trainable weights relative to Bokhan's architecture.",
+     "anchor": "Sec. VI, results; Sec. VI B, Table IV and text",
+     "quotes": [
+      "our model achieves the highest reported accuracies while keeping a compact 262-parameter footprint.",
+      "Table IV benchmarks our 262-parameter hybrid QCNN against two of the most parameter-frugal baselines in the literature",
+      "TABLE IV: Comparison of lightweight quantum models on four-class splits.",
+      "while adding only 74 trainable weights relative to Bokhan’s architecture."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical comparison from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text never lists how the 262 parameters are made up: Table I gives 2 x 15 + 2, 2 x 15 + 2 and 2 x 15 quantum parameters per block and the factor k of the discarded head is not given, so the total cannot be recomputed from the text."
+    },
+    {
+     "id": "anwar-recycle-gain",
+     "verdict": "narrowed",
+     "note": "The three before and after pairs are quoted correctly, and the paper does say all other settings were identical. But the MNIST pair does not come from one split: the text gives 70.0% to 93.3% for MNIST 0-1-2-3 and 60.39% to 88.52% for 3-4-5-6, and Table III lists 68.51% as the amplitude baseline of 3-4-5-6 while 93.55% is the recycled 0-1-2-3 amplitude result in Table IV. The Fashion-MNIST and OrganAMNIST pairs are same-split pairs.",
+     "value": "The authors report that incorporating the discarded-qubit measurements raised test accuracy from 68.51% to 93.55% on MNIST, from 81.40% to 96.45% on Fashion-MNIST and from 69.13% to 88.50% on OrganAMNIST, against a baseline that omits those measurements while keeping all other settings identical; for the MNIST 0-1-2-3 split the text gives 93.3% against 70.0% for the baseline.",
+     "anchor": "Sec. VI and Sec. VI A, p.10; Tables II to IV",
+     "quotes": [
+      "test accuracy climbed from 68.51% to 93.55% on MNIST, from 81.40% to 96.45% on Fashion-MNIST, and from 69.13% to 88.50% on OrganAMNIST",
+      "a baseline that omits the latter while keeping all other settings identical.",
+      "On the MNIST 0-1-2-3 split, amplitude encoding with a (7,1) qubit pair (the probabilities from retained wire 7 & 1) attains 93.3% accuracy versus 70.0% for the baseline"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table III puts 68.51 on MNIST 3456 (amplitude) and 70.03 on MNIST 0123 (amplitude); Table IV puts 93.55 on MNIST 0123 and 88.52 on MNIST 3456. So 68.51 to 93.55 pairs two different splits. The text also prints 93.3 where the tables print 93.55."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "backbone-two-pooling-no-final-pool",
+     "value": "The authors state that their backbone contains two pooling layers and that no further pooling is applied after the final pair of convolutional layers.",
+     "anchor": "Sec. V A and Sec. IV C",
+     "quotes": [
+      "Although our backbone contains two pooling layers, we deliberately recycle only the qubits discarded after the first pooling operation.",
+      "No further pooling is applied, leaving the surviving qubits available for measurement and subsequent classical processing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own circuit layout in Sections IV C and V A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section VI A describes the compared circuits as 'six convolutional blocks plus three pooling stages', which does not match two pooling layers in Section V A and Table I."
+    },
+    {
+     "id_suggestion": "baseline-circuit-depth-statement",
+     "value": "The authors state that, in the recycled and baseline comparison, the circuit depth is six convolutional blocks plus three pooling stages.",
+     "anchor": "Sec. VI A, p.10",
+     "quotes": [
+      "circuit depth (six convolutional blocks plus three pooling stages)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VI A states the circuit depth of the compared models.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section V A and Table I show two pooling stages, not three."
+    },
+    {
+     "id_suggestion": "conv-template-15-params",
+     "value": "The authors state that a general member of SU(4) is specified by 15 independent real parameters, and that each convolutional layer applies copies of a 15-parameter template Uconv to nearest-neighbour qubit pairs.",
+     "anchor": "Sec. IV A",
+     "quotes": [
+      "a general member of SU(4) is specified by 42 − 1 = 15 independent real parameters [40].",
+      "Each convolutional layer in our network therefore applies li copies of a 15-parameter template Uconv(θ) to nearest-neighbour qubit pairs (Fig. 2)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV A defines the convolution template and its parameter count.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text layer prints four squared as '42'; the arithmetic is 16 minus 1 = 15."
+    },
+    {
+     "id_suggestion": "conv-ansatz-universality-claim",
+     "value": "The authors state that the one-to-one match between parameters and degrees of freedom guarantees that their ansatz is universal for two-qubit gates.",
+     "anchor": "Sec. IV A",
+     "quotes": [
+      "This one-to-one match between parameters and degrees of freedom guarantees that our ansatz is universal for two-qubit gates"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim argued by parameter counting only.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "A parameter count equal to the dimension of SU(4) is necessary but not sufficient for universality; the paper cites Vatan and Williams (ref. 41) for the decomposition and does not prove it."
+    },
+    {
+     "id_suggestion": "pooling-gate-definition",
+     "value": "The authors define the pooling unit as Upool = CRZ (ϕ1) CRX (ϕ2), in which the control qubit is kept and the target qubit is measured and removed.",
+     "anchor": "Sec. IV D, Eq. (6); also Sec. IV B, Eq. (4)",
+     "quotes": [
+      "Upool = CRZ (ϕ1) CRX (ϕ2)",
+      "in which the control qubit is kept and the target qubit is measured and removed (Fig. 3)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Sections IV B and IV D define the pooling gate.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section IV B says the target is 'traced out' while Section IV D says it is 'measured and removed'; Section V A says the discarded qubits are measured and their measurements are reused."
+    },
+    {
+     "id_suggestion": "encoder-selection-and-qubit-count",
+     "value": "The authors state that amplitude embedding is used when the pre-processing output has more than 8 elements and angle embedding otherwise, and that all reported results use n = 8 qubits, allowing up to 256 features.",
+     "anchor": "Sec. III A, III B and III 'Choice of encoder'",
+     "quotes": [
+      "Amplitude embedding is selected whenever the pre-processing pipeline outputs a vector with N > 8 elements; otherwise, angle embedding is applied.",
+      "In our experiments we set n = 8, allowing up to 28 = 256 features while remaining within NISQ hardware limits [26].",
+      "All reported results use n = 8 qubits for a fair comparison with the amplitude-embedding configuration."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III states the encoder rule and qubit count.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The pre-processing that reduces an image to 8 or 256 features is not described in the text."
+    },
+    {
+     "id_suggestion": "angle-embedding-affine-map",
+     "value": "The authors state that after min–max normalisation each pixel xi in [0, 1] is converted to rotation angles by the affine map θi = π xi, ϕi = π (2xi − 1).",
+     "anchor": "Sec. III B",
+     "quotes": [
+      "After min–max normalisation xi ∈ [0, 1], each pixel is converted to a pair of rotation angles by an affine map",
+      "θi = π xi, ϕi = π (2xi − 1)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III B gives the encoding map.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text says each data dimension consumes one qubit yet each feature gets two rotations; with n = 8 qubits this fixes the number of angle-encoded features at 8."
+    },
+    {
+     "id_suggestion": "measurement-vectors-and-rescale",
+     "value": "The authors state that two four-component probability vectors are recorded, one from the qubits that remain in the data path after the first pooling layer and one from the qubits removed by pooling, and that each is mapped from [0, 1] to [−2, 2] by the affine rule p → 4p − 2.",
+     "anchor": "Sec. IV C; Sec. V A 1, Eq. (7)",
+     "quotes": [
+      "We record two four-component probability vectors: one drawn from the qubits that remain in the data path after the first pooling layer",
+      "Each vector is linearly mapped from [0, 1] to the symmetric interval [−2, 2] using the affine rule p → 4p − 2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV C states the readout and rescaling.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section V A 1 says the retained qubits are measured after all convolution and pooling stages while Section IV C ties the first vector to qubits remaining after the first pooling layer."
+    },
+    {
+     "id_suggestion": "rescaling-benefit-claim",
+     "value": "The authors state that the centring step greatly improves the conditioning of the subsequent classical layers, and that without it the raw probabilities would enter the classical layers highly skewed, hampering gradient flow.",
+     "anchor": "Sec. IV C; Sec. V A 1",
+     "quotes": [
+      "this centring step greatly improves the conditioning of the subsequent classical layers without introducing additional trainable parameters.",
+      "would enter the classical layers highly skewed, hampering gradient flow"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no ablation of the rescaling is reported in the text.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The text reports no run without the rescaling, so its effect is not separated from the recycled branch."
+    },
+    {
+     "id_suggestion": "kappa-fixed-at-four",
+     "value": "The authors state that they fix κ = 4 in all experiments, supported by gradient analysis (keeping z in [−2, 2] in the high-slope region of tanh), variance considerations (Var(z) equal to kappa squared over 12, approximately 1.33 at κ = 4) and practical deployment ranges.",
+     "anchor": "Sec. V A 1, end",
+     "quotes": [
+      "we fix κ = 4 in all experiments.",
+      "gradient analysis (keeping z ∈ [−2, 2] in the high-slope, non-saturating region of tanh)",
+      "variance considerations (Var(z) = κ2/12 ≈ 1.33 at κ = 4, compatible with Glorot/Xavier)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V A 1 states the fixed setting and its stated justification.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The variance argument assumes p is approximately uniform; a probability vector over four outcomes sums to one and has mean 0.25, so 4p − 2 has mean −1, not 0. The 'centred at the origin' wording does not hold for these vectors."
+    },
+    {
+     "id_suggestion": "retained-head-definition",
+     "value": "The authors state that the retained-qubit head is a single fully connected layer of width m, equal to the number of target classes, followed by a tanh nonlinearity, with m squared weights and m biases, which is 20 trainable parameters at m = 4.",
+     "anchor": "Sec. V B 1, Eq. (8)",
+     "quotes": [
+      "We pass this vector through a single fully connected layer of width m matching the number of target classes followed by a tanh nonlinearity.",
+      "the retained-qubit head contains exactly m2 weights and m biases.",
+      "In the four-class experiments reported here (m = 4) this is only 42 +4 = 20 trainable parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V B 1 defines the retained head.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "discarded-head-definition",
+     "value": "The authors describe the discarded-qubit head as a three-stage dense subnetwork (a class-aligned projection, an expansion of the feature dimension by a factor k, and a contraction back to width m) that injects only mk + m classical neurons, and elsewhere as a lightweight two-layer head.",
+     "anchor": "Sec. V B 2; Sec. IV C",
+     "quotes": [
+      "These values are then fed into a three-stage dense subnetwork that mirrors the retained path in width but enhances expressivity:",
+      "To uncover higher-order correlations, we expand the feature dimension by factor k:",
+      "This design injects only mk + m classical neurons that are lightweight compared to typical CNN heads",
+      "those from the removed wires are processed by a lightweight two-layer head that briefly expands and then restores the feature dimension."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V B 2 defines the discarded head.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The value of k is not given anywhere in the text, so the 262-parameter total cannot be recomputed. Three listed stages and a 'two-layer head' are described differently."
+    },
+    {
+     "id_suggestion": "hadamard-fusion-and-logits",
+     "value": "The authors state that the two head outputs are fused by the Hadamard (elementwise) product, merged without adding trainable parameters; one subsection states that the fused vector is treated as the logit output of the network, while another states that it is fed to a final dense unit whose output constitutes the network logits.",
+     "anchor": "Sec. V B 3; Sec. IV C; Sec. II; Table I",
+     "quotes": [
+      "Fusion is performed via the Hadamard (elementwise) product:",
+      "the two quantum-derived feature streams are merged without adding any further trainable parameters.",
+      "The fused vector z is treated as the logit output of the network.",
+      "the fused vector is fed to a final dense unit whose output constitutes the network logits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sections V B 3 and IV C state the fusion.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The two statements conflict: Section V B 3 says no auxiliary dense layer is used, while Section IV C, Section II and Table I (FCfinal) describe a final dense layer. Parameter counts differ with the reading."
+    },
+    {
+     "id_suggestion": "hadamard-over-addition-claim",
+     "value": "The authors state that their preliminary trials showed that addition or concatenation offered no performance gain but required more parameters or hyper-parameter tuning, whereas the parameter-free Hadamard product delivered the sharpest decision boundaries.",
+     "anchor": "Sec. V B 3, 'Why choose the Hadamard product'",
+     "quotes": [
+      "Our preliminary trials showed that addition or concatenation offered no performance gain but required more parameters or hyper-parameter tuning",
+      "whereas the parameter-free Hadamard product delivered the sharpest decision boundaries while keeping the model ultra-lightweight."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim from unreported preliminary trials.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No numbers for the addition or concatenation trials are reported."
+    },
+    {
+     "id_suggestion": "first-discarded-qubits-only-design",
+     "value": "The authors state that they deliberately recycle only the qubits discarded after the first pooling operation and fix this design choice.",
+     "anchor": "Sec. V A, 'Why only reuse the first set of discarded qubits'",
+     "quotes": [
+      "we deliberately recycle only the qubits discarded after the first pooling operation.",
+      "We therefore fix our design choice to reuse the first discarded qubits only"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V A states the design choice.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "recycle-both-sets-negligible-claim",
+     "value": "The authors state that attempts to recycle both sets of discarded qubits yielded negligible or unstable gains, whereas reusing only the first set consistently provided a stable improvement.",
+     "anchor": "Sec. V A",
+     "quotes": [
+      "In our experiments, attempts to recycle both sets of discarded qubits yielded negligible or unstable gains, whereas reusing only the first set consistently provided a stable improvement."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no results for this variant are reported in the text.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "discarded-measurement-timing",
+     "value": "The authors state that the discarded qubits are measured immediately after the first pooling layer, when they leave the quantum data path.",
+     "anchor": "Sec. V A 1",
+     "quotes": [
+      "Discarded qubits are measured immediately after the first pooling layer, precisely when they leave the quantum data path."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V A 1 states the measurement checkpoint.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section IV C says the second vector is obtained from qubits 'still physically present at the circuit’s end'. A measurement at the first pooling layer is a mid-circuit readout, which is an added quantum operation."
+    },
+    {
+     "id_suggestion": "zero-additional-quantum-resources-claim",
+     "value": "The authors state that the quantum register size, gate depth and noise budget stay unchanged, and that the scheme delivers better performance with zero additional quantum resources and a negligible classical footprint.",
+     "anchor": "Sec. I, p.2",
+     "quotes": [
+      "Thus the quantum register size, gate depth, and noise budget stay unchanged",
+      "the scheme delivers better performance with zero additional quantum resources and a negligible classical footprint."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no resource count is given beyond the parameter totals.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The recycled model also adds a classical head, and the baseline uses a single fully connected layer, so classical capacity differs between the compared models."
+    },
+    {
+     "id_suggestion": "training-loss-and-gradients",
+     "value": "The authors state that the joint loss is minimised by gradient back-propagation, using the parameter-shift rule on the quantum side and standard automatic differentiation on the classical side, with a categorical cross-entropy loss over a mini-batch of N samples.",
+     "anchor": "Sec. IV C; Sec. V B 3, Eq. (11)",
+     "quotes": [
+      "is minimised via gradient back-propagation through the parameter-shift rule on the quantum side and standard autodiff on the classical side.",
+      "Training minimises the categorical cross-entropy over a mini-batch of N samples,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sections IV C and V B 3 state the training method.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Optimiser, learning rate, batch size, number of steps, random seeds, shot count and simulator versus hardware are not stated in the text supplied."
+    },
+    {
+     "id_suggestion": "appendix-reproducibility-claim",
+     "value": "The authors state that an appendix provides complete implementation details, code versions, hardware configurations and reproducibility scripts.",
+     "anchor": "Sec. I, end of road map",
+     "quotes": [
+      "An appendix provides complete implementation details code versions, hardware configurations, and reproducibility scripts to facilitate independent verification and extension of our work."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement about material not present in the supplied text.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No appendix appears in the 13-page text supplied, so none of these details could be checked."
+    },
+    {
+     "id_suggestion": "evaluation-setup-datasets-metrics",
+     "value": "The authors state that they evaluated on MNIST, Fashion-MNIST and OrganAMNIST (a MedMNIST subset), comparing a recycled variant with a baseline that omits the discarded-qubit measurements while keeping all other settings identical, and report top-1 accuracy, F1-score, precision and recall.",
+     "anchor": "Sec. VI",
+     "quotes": [
+      "We evaluated our hybrid quantum–classical QCNN on three benchmark image-classification datasets: MNIST, Fashion-MNIST, and OrganAMNIST (a MedMNIST subset) [50]",
+      "Evaluation followed standard practice, reporting top-1 accuracy, F1-score, precision, and recall"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VI states the evaluation setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Dataset sizes, train and test splits, sample counts per class and the rule for choosing the class splits are not given in the text."
+    },
+    {
+     "id_suggestion": "class-splits-four-class",
+     "value": "The authors report results on four-class splits: MNIST (3456), MNIST (0123), Fashion-MNIST (0123) and Fashion-MNIST (1289) in Table IV, and OrganAMNIST 0,3,7,8.",
+     "anchor": "Table II, Table III, Table IV",
+     "quotes": [
+      "MNIST (3456) MNIST (0123) Fashion-MNIST (0123) Fashion-MNIST (1289)",
+      "OrganAMNIST 0,3,7,8",
+      "TABLE IV: Comparison of lightweight quantum models on four-class splits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The tables state the class splits used.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The results cover four-class subsets of ten-class (MNIST, Fashion-MNIST) and larger-class problems, so they do not speak to the full multiclass tasks the title suggests."
+    },
+    {
+     "id_suggestion": "baseline-definition-single-fc",
+     "value": "The authors state that in the baseline both qubits of a pooling pair are measured, one wire is discarded and no information from those measurements is forwarded, so the classical post-processing is a single fully connected layer tied to the retained qubits, with other hyper-parameters kept identical so that the only difference is the presence or absence of the recycled branch.",
+     "anchor": "Sec. VI A, p.10",
+     "quotes": [
+      "both qubits in a two-qubit pooling pair are measured, one wire is discarded, and no information from those measurements is forwarded to later layers.",
+      "The classical post-processing stack is therefore just a single fully connected layer tied to the retained qubits.",
+      "are kept identical so that the only difference is the presence or absence of the recycled branch."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VI A defines the baseline.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The recycled model has an extra dense head with its own weights, so the comparison also changes classical capacity; the text reports no control with an equal-size classical head on the retained qubits only."
+    },
+    {
+     "id_suggestion": "accuracy-gain-range-claim",
+     "value": "The authors state that recycling discarded qubits raises accuracy by 22-28 percentage points, with F1 improvements of about 21 to 37 percentage points.",
+     "anchor": "Sec. VI and Sec. VI A, p.9 and p.10",
+     "quotes": [
+      "Recycling discarded qubits raises accuracy by 22-28 percentage points and yields commensurate improvements in F1, precision, and recall.",
+      "with commensurate improvements in F1 (≈ +21–37 percentage points), precision, and recall."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Reading Table II and Table III in row order, some differences are below 22 points (for example Fashion-MNIST 0123 amplitude 86.55 against 74.3) so the stated range may not cover every row; the row mapping is the reader's reading of the text layer."
+    },
+    {
+     "id_suggestion": "table-ii-recycled-accuracy",
+     "value": "The authors report in Table II these accuracy values (percent) for the recycled configurations, listed in the table's row order of dataset, class split, encoding and qubit pair: 88.55 93.55 89.67 90.15 70.32 88.52 87.71 88.25 68.75 86.55 67.68 85.93 79.9 95.25 80.36 96.45 82.59 88.5.",
+     "anchor": "Table II, p.10 (F1, recall and precision are in the same table)",
+     "quotes": [
+      "88.55 93.55 89.67 90.15 70.32 88.52 87.71 88.25 68.75 86.55 67.68 85.93 79.9 95.25 80.36 96.45 82.59 88.5",
+      "88.39 88.55 93.53 93.55 89.75 89.75 89.45 89.35 69.24 70.43 88.48 88.52 87.64 87.71 88.30 88.35 68.65 68.75 86.53 86.55 67.36 67.68 85.03 85.93 79.1 79.95 95.29 95.25 80.16 80.36 96.46 96.45 82.44 82.59 88.46 88.5",
+      "88.39 93.53 89.71 89.8 70.00 88.52 87.94 88.35 68.86 86.58 68.35 85.39 79.33 95.43 80.35 96.55 83.64 88.5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer prints the columns separately; the second quoted line holds F1 and recall interleaved and the third holds precision. The row mapping is the reader's."
+    },
+    {
+     "id_suggestion": "table-iii-baseline-metrics",
+     "value": "The authors report in Table III these baseline test accuracies (percent) without discarded-qubit reuse, in row order: 71.85 70.03 60.39 68.51 59.2 74.3 60.4 81.4 69.13.",
+     "anchor": "Table III, p.10",
+     "quotes": [
+      "71.85 70.03 60.39 68.51 59.2 74.3 60.4 81.4 69.13",
+      "71.49 67.92 52.94 67.49 52.08 73.99 55.53 81.48 64.36",
+      "71.85 70.03 60.39 68.51 59.2 74.79 60.4 81.23 69.13",
+      "71.73 71.16 57.78 68.58 48.05 74.79 64.62 81.41 61.41"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Columns read as accuracy, F1, recall and precision. Baseline angle encoding beats amplitude on MNIST 0123 (71.85 against 70.03), at odds with the claim that amplitude consistently beats angle."
+    },
+    {
+     "id_suggestion": "table-iv-comparison-numbers",
+     "value": "The authors report in Table IV test accuracies on four-class splits, in the row order MNIST (3456), MNIST (0123), Fashion-MNIST (0123), Fashion-MNIST (1289): 71.44 77.64 71.15 79.33 in the first column, 85.14 90.03 85.93 93.63 in the second, and 88.52 93.55 86.55 96.45 in the third (the proposed model).",
+     "anchor": "Table IV, p.12; columns Chalumuri, Bokhan, Proposed",
+     "quotes": [
+      "Chalumuri Bokhan Proposed",
+      "MNIST (3456) MNIST (0123) Fashion-MNIST (0123) Fashion-MNIST (1289)",
+      "71.44 77.64 71.15 79.33",
+      "85.14 90.03 85.93 93.63",
+      "88.52 93.55 86.55 96.45",
+      "The last column is the test accuracy of the proposed model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical comparison from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The column to method mapping follows the header order. The Fashion-MNIST (0123) margin over Bokhan is 0.62 points (86.55 against 85.93). The text does not say whether the baselines were re-run on the same splits or copied from their papers, and no seeds or intervals are given."
+    },
+    {
+     "id_suggestion": "state-of-the-art-claim",
+     "value": "The authors state that across every MNIST and Fashion-MNIST split their network achieves the highest accuracy, and that the recycled-qubit branch lifts accuracy beyond any modification previously reported for compact QCNNs, delivering a new state-of-the-art.",
+     "anchor": "Sec. VI B, p.11 to p.12",
+     "quotes": [
+      "Across every MNIST and Fashion-MNIST split our network achieves the highest accuracy, edging past Bokhan’s QCNN",
+      "The recycled-qubit branch lifts accuracy beyond any modification previously reported for compact QCNNs",
+      "the proposal delivers a new state-of-the-art"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim from a comparison with two baselines.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Only two baselines are compared, only on four-class splits, with no OrganAMNIST row; the abstract's claim of outperforming comparable lightweight models on OrganAMNIST has no table behind it."
+    },
+    {
+     "id_suggestion": "abstract-outperforms-claim",
+     "value": "The authors state in the abstract that the method outperforms comparable lightweight models on MNIST, Fashion-MNIST and OrganAMNIST.",
+     "anchor": "Abstract",
+     "quotes": [
+      "The method outperforms comparable lightweight models on MNIST, Fashion-MNIST and OrganAMNIST."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Table IV compares against other models on MNIST and Fashion-MNIST only."
+    },
+    {
+     "id_suggestion": "amplitude-beats-angle-claim",
+     "value": "The authors state that amplitude embeddings consistently outperform angle embeddings under otherwise identical settings, suggesting that the global amplitude map exploits the added information from discarded qubits more effectively.",
+     "anchor": "Sec. VI A, p.10",
+     "quotes": [
+      "Amplitude embeddings consistently outperform angle embeddings under otherwise identical settings",
+      "suggesting that the global amplitude map exploits the added information from discarded qubits more effectively."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim with a speculative explanation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "In Table III baseline, MNIST 0123 angle (71.85) is above amplitude (70.03). The text's example '60.39% to 88.52%' for angle MNIST 3456 matches the amplitude 7,1 entry in Table II row order, not an angle entry."
+    },
+    {
+     "id_suggestion": "learning-curve-fashion-1289-accuracy",
+     "value": "The authors report on Fashion-MNIST 1-2-8-9 that reusing discarded qubits brings test accuracy to 95 to 96% after roughly 600 iterations while the baseline saturates at approximately 81%, that the recycled model keeps the generalisation gap under 3 percentage points, and that the baseline's training curve flattens after 450 iterations with the gap widening to more than 10 percentage points.",
+     "anchor": "Sec. VI A, Fig. 5, p.10 to p.11",
+     "quotes": [
+      "Reusing discarded qubits propels the network to 95–96% test accuracy after roughly 600 iterations, while the baseline saturates at approximately 81%.",
+      "The recycled model also narrows the generalisation gap to less than 3 percentage points throughout training",
+      "the baseline’s training curve flattens after 450 iterations",
+      "from that point onward the generalisation gap widens to more than 10 percentage points.",
+      "FIG. 5: Fashion-MNIST 1-2-8-9; training/test accuracy comparison."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; read from a figure's text description.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text calls this the 'most challenging Fashion-MNIST split', yet the 1-2-8-9 split has the highest accuracies in Table II. A single run is shown; no seeds."
+    },
+    {
+     "id_suggestion": "learning-curve-loss-values",
+     "value": "The authors report that, with discarded qubits recycled, the training objective drops by an order of magnitude within the first 100 iterations and plateaus below 0.07, whereas without those measurements the loss stays around 0.15 and is noisier.",
+     "anchor": "Sec. VI A, Fig. 6, p.10 to p.11",
+     "quotes": [
+      "the objective drops by an order of magnitude within the first 100 iterations and then plateaus below 0.07.",
+      "Omitting those measurements leaves the loss stuck around 0.15 and noticeably noisier",
+      "FIG. 6: Fashion-MNIST 1-2-8-9; training-loss comparison."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "optimisation-mechanism-claim",
+     "value": "The authors state that the recycled branch drops steeply because feeding discarded-qubit statistics back into the network gives the optimiser a richer gradient signal, that the baseline's gradients vanish quickly, and that the improvements come from stronger generalisation, not from over-fitting or post-hoc calibration.",
+     "anchor": "Sec. VI A, p.11",
+     "quotes": [
+      "The recycled branch drops steeply because feeding discarded-qubit statistics back into the network gives the optimiser a richer gradient signal.",
+      "its gradients vanish quickly, the objective stalls",
+      "stronger generalisation, not from over-fitting or post-hoc calibration."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author explanation; no gradient measurement is reported.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No gradient norms are reported; the larger classical head is a competing explanation for the faster fit."
+    },
+    {
+     "id_suggestion": "table-i-trainable-parameters",
+     "value": "The authors list in Table I trainable parameters of 2 × 15 + 2 for each of the first two blocks and 2 × 15 for the third, with the classical stage at O(d c).",
+     "anchor": "Table I, p.5",
+     "quotes": [
+      "Block 1 QC 1 → QC 2 → Pooling",
+      "Block 2 QC 3 → QC 4 → Pooling",
+      "Block 3 QC 5 → QC 6",
+      "2 × 15 + 2",
+      "TABLE I: End-to-End architecture showing quantum and classical stages."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Table I states the per-block parameter counts.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "These give 94 quantum parameters; the 262 total then implies 168 classical parameters, which the text does not break down."
+    },
+    {
+     "id_suggestion": "nisq-compatibility-claim",
+     "value": "The authors state that the design keeps circuit depth and parameter count compatible with current NISQ devices.",
+     "anchor": "Sec. II",
+     "quotes": [
+      "while keeping circuit depth and parameter count compatible with current NISQ devices."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no hardware or noisy-simulation result is reported in the text.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Section V A 1 describes a 'clean, decoherence-free register', which suggests ideal simulation, but the text never states what was run."
+    },
+    {
+     "id_suggestion": "discarded-qubits-entangled-motivation",
+     "value": "The authors state that discarded qubits may remain entangled or correlated, encapsulating valuable quantum information.",
+     "anchor": "Sec. V A",
+     "quotes": [
+      "these discarded qubits may remain entangled or correlated, encapsulating valuable quantum information [44]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author motivation citing other work; not tested here.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No experiment separates use of quantum correlations from the effect of extra measured features and an extra classical head."
+    },
+    {
+     "id_suggestion": "novelty-gap-claim",
+     "value": "The authors state that previous research has not sufficiently addressed the limitations arising from discarded quantum information during pooling.",
+     "anchor": "Sec. I, p.1",
+     "quotes": [
+      "previous research has not sufficiently addressed the limitations arising from discarded quantum information during pooling"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim about the literature.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-quantum-deep-cnn-accuracy",
+     "value": "The authors cite results of 98.97% on MNIST and 91.40% on GTSRB for Quantum Deep CNNs.",
+     "anchor": "Sec. I, p.1 (ref. 5)",
+     "quotes": [
+      "98.97% on MNIST and 91.40% on GTSRB for Quantum Deep CNNs [5]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-henderson-88-percent",
+     "value": "The authors cite that Henderson et al. surpassed 88% on a brain-disease diagnostic task despite using only tens of quantum parameters.",
+     "anchor": "Sec. I, p.1",
+     "quotes": [
+      "Henderson et al. surpassed 88% on a braindisease diagnostic task despite using only tens of quantum parameters [18]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The reference list gives Henderson et al. as ref. 1 and ref. 18 as Bokhan et al., so the citation number does not match."
+    },
+    {
+     "id_suggestion": "cited-tensor-network-multiclass-limit",
+     "value": "The authors state that tensor-network methods achieve above-98% accuracy in binary settings but often falter on multiclass tasks due to limited expressive power once the bond dimension is fixed.",
+     "anchor": "Sec. I, p.1 (ref. 22)",
+     "quotes": [
+      "Tensor-network methods achieve above-98% accuracy in binary settings but often falter on multiclass tasks due to limited expressive power once the bond dimension is fixed [22]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-retains-quantum-information",
+     "value": "The authors conclude that re-including previously discarded qubits retains valuable quantum information that yields better prediction performance on MNIST, Fashion MNIST and OrganAMNIST.",
+     "anchor": "Sec. VII",
+     "quotes": [
+      "Our work shows that the re-inclusion of qubits that had previously been discarded in the literature actually retains valuable quantum information",
+      "that is capable of yielding better prediction performance and more accuracy in such datasets as MNIST, Fashion MNIST, and OrganAMNIST."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The experiments show higher accuracy; they do not isolate retained quantum information from added classical capacity."
+    },
+    {
+     "id_suggestion": "conclusion-fewer-misclassifications",
+     "value": "The authors state that misclassifications in the proposed architecture are lower than those with no discarded qubits and than other QCNN models.",
+     "anchor": "Sec. VII",
+     "quotes": [
+      "Results indicate that misclassifications in the proposed architecture are lower compared to those with no discarded qubits and other QCNN models."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Section VI mentions class-normalised confusion matrices, but none appear in the text supplied."
+    }
+   ]
+  }
+ ]
+}
