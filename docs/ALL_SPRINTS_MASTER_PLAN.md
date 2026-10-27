@@ -820,6 +820,56 @@ and in git. Remaining items below.
   reader file and review committed under `manifests/sprint13_g_reads/`
   and `manifests/sprint13_g_reviews/`; a second apply writes nothing.
 - Depends on: F113's groups g001 to g042 applied in Sprint 13
+- **Cloud reads, 2026-10-26 to 2026-10-27** (team lead: "q2 1"): papers
+  read one per Claude Code cloud session by `scripts/f114_cloud.py`,
+  results held outside the repository until the coordinator review.
+- **Unread, 2026-10-27 (team lead: "mark udaru-2025-qml-credit-risk as
+  unread")**: its PDF (`Papers\QML Quantum Machine Learning For Credit
+  Risk -A Next-Generation Approach To Risk Assessment 202511.pdf`, group
+  g076) holds page images only; pdftotext gives 10 empty pages. Three
+  cloud sessions got no text, and none pushed a result. It has no
+  `paper_reads` row and keeps none until F115 gives it a text layer.
+
+**F115. Convert the text in page images to text, mainly in PDFs (~120m [no-history] timebox) Priority 20** (NEW 2026-10-27, team lead: "add a method to convert images in documents (primarly PDF's) that are text to text")
+- Phase: Sourcing / extraction
+- Value: a source whose pages are images gives the quote check no text, so
+  no assertion from it can be verified, and a reader gets nothing to read.
+  The first known case is udaru-2025-qml-credit-risk (F114 above).
+- Platform: `store/quotes.py` (`source_text`, `_pdftotext` and its text
+  cache); an OCR engine to be chosen and verified against its own
+  documentation (for example Tesseract, or pdftotext's own output first
+  checked for empty pages)
+- Find every local source whose text layer is empty or nearly empty, page
+  by page, and list them with a count as of the date run.
+- Convert those pages to text, kept outside git like the text cache, and
+  say in each record's provenance that its text came from OCR, with the
+  engine and its version.
+- Decide, as a team-lead question, whether a quote verified only against
+  OCR text may be graded high.
+- Acceptance: udaru-2025-qml-credit-risk gives its text to the quote
+  check; the list of image-only sources, with its date; a test that fails
+  when an image-only page is read as empty without being flagged.
+- Depends on: none
+
+**F116. Read the figures in a source: what a graph shows, and where the text confirms it (~180m [no-history] timebox) Priority 40** (NEW 2026-10-27, team lead: "read images that are graphs... and interpret the images (if a graph, what does the graph say and how is it confirmed in text)")
+- Phase: Sourcing / extraction
+- Value: readers now skip figures (Task G's prompt counts a plot as read
+  when its caption and the text around it are read), so a result shown
+  only in a graph is never entered, and a figure that disagrees with its
+  text is never caught.
+- Platform: the reader prompts (`manifests/sprint13_g_reads/READER_PROMPT.md`
+  and `manifests/f114_cloud/READER_PROMPT.md`); page images rendered from
+  the PDF for a reader that can see images
+- For each figure: what kind it is (a plot, a diagram, a table as an
+  image), what it shows (axes, trend, the values it marks), and the
+  passage in the text that states or confirms it, quoted.
+- A value read only from a figure is marked as read from the figure, as
+  `read_from_page` already does for coordinator edits, and is never
+  graded high on the figure alone.
+- Acceptance: a pilot on a few papers with key results in plots; each
+  figure entry names its figure number and page and quotes the confirming
+  text, or says that no text confirms it.
+- Depends on: F115 for figures inside image-only sources; none otherwise
 
 ## Design documents governing this repository
 
