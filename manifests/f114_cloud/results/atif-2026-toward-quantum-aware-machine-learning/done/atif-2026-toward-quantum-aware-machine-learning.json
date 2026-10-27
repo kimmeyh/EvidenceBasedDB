@@ -1,0 +1,855 @@
+{
+ "papers": [
+  {
+   "record_id": "atif-2026-toward-quantum-aware-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Atif-Ullah-Yang_2026_Toward-Quantum-Aware-Machine-Learning-Improved-Prediction-of-Quantum__2601.03964.pdf",
+   "title_in_file": "Toward Quantum-Aware Machine Learning: Improved Prediction of Quantum Dissipative Dynamics via Complex Valued Neural Networks",
+   "version_note": "arXiv:2601.03964v2, dated 26 to 27 February 2026, with the Supporting Information appended (20 pages in the text layer).",
+   "pages": 20,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A numerical comparison of complex-valued and real-valued neural networks that forecast reduced density matrices of the spin-boson model and 4-, 7- and 8-site FMO complexes.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "cvnn-fmo-trace-4site",
+     "verdict": "confirmed",
+     "note": "Table I (p.7 of the file) gives 1.06e-04 for the CVNN and 2.09e-04 for the RVNN on the 4-site complex, a ratio of 1.97. The supporting-information seed runs (Table S4) give smaller ratios for two of three seeds, so the twofold figure is one run.",
+     "value": "The authors report that the 4-site FMO complex shows a twofold trace accuracy improvement for the CVNN over the RVNN.",
+     "anchor": "Results, trace conservation, PDF p.8",
+     "quotes": [
+      "The 4-site FMO complex (comprising the four prominent sites of the full 7-site system) already shows a twofold trace accuracy improvement for the CVNN over the RVNN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id": "cvnn-outperforms-rvnn",
+     "verdict": "narrowed",
+     "note": "The abstract claim is made without a qualification, but the results state that on the spin-boson model the two loss trajectories are nearly identical and that the advantages grow with system size; the spin-boson comparison is mixed (CVNN better on diagonal MAE, RVNN better on real coherence MAE).",
+     "value": "The authors report in the abstract that on the spin-boson model and Fenna-Matthews-Olson variants complex-valued neural networks outperform real-valued ones in convergence speed, training stability and physical fidelity; in the results they state that for the spin-boson model the CVNN and RVNN show nearly identical loss trajectories and that the advantages increase with system size and coherence complexity.",
+     "anchor": "Abstract, PDF p.1; Results, PDF p.7",
+     "quotes": [
+      "we demonstrate that CVNNs outperform RVNNs in convergence speed, training stability, and physical ﬁdelity",
+      "the CVNN and RVNN show nearly identical loss trajectories",
+      "These advantages increase with system size and coherence complexity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id": "cvnn-sb-no-decisive-edge",
+     "verdict": "confirmed",
+     "note": "Table III supports it: CVNN diagonal MAE 7.01e-4 against RVNN 7.85e-4, and RVNN real-coherence MAE 1.17e-3 against CVNN 2.28e-3.",
+     "value": "The authors state that for the spin-boson model neither model holds a decisive edge.",
+     "anchor": "Results, RDM prediction accuracy, PDF p.8",
+     "quotes": [
+      "These oﬀsetting advantages indicate that neither model holds a decisive edge for this minimally coherent system."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "arch-fully-connected-five-layer",
+     "value": "The authors state that both the RVNN and the CVNN are fully connected sequence-to-sequence networks of five layers (one input layer, three hidden layers and one output layer); the RVNN uses real weights, biases and ReLU, the CVNN uses complex weights, biases and a complex ReLU (CReLU) that applies ReLU separately to the real and imaginary components, and the CVNN parameter count was capped at a level approximately equal to or below the RVNN's.",
+     "anchor": "Results, PDF p.4",
+     "quotes": [
+      "Both models adopt a fully connected sequence-to-sequence architecture consisting of ﬁve layers: one input layer, three hidden layers, and one output layer.",
+      "combined with a complex ReLU (CReLU) activation function that applies the ReLU operation separately to the real and imaginary components.",
+      "we capped the number of trainable parameters in the CVNN at a level approximately equal to or below that of the RVNN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own architecture in Section IV.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "input-encoding-rvnn-cvnn",
+     "value": "The authors state that the RVNN treats the real and imaginary components of each off-diagonal element as separate real degrees of freedom, while the CVNN encodes the upper-triangular reduced density matrix directly as a complex vector, embedding each real diagonal entry as a + ia at the input and discarding that additive phase at the output.",
+     "anchor": "Section II.A, PDF p.2 to p.3",
+     "quotes": [
+      "the real and imaginary components akl, bkl are treated as separate degrees of freedom",
+      "We encode the upper-triangular RDM directly as a complex vector",
+      "we embed them uniformly into C by mapping a → a + ia at the input; at the output, this additive phase is discarded to maintain Hermiticity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II.A defines both encodings.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The CVNN layer in Eq. 12 is a real block matrix with the structure [[Wr, -Wi], [Wi, Wr]] acting on the stacked real and imaginary parts, which is a weight-tied special case of the general real layer in Eq. 10. With ReLU applied channelwise in both models, the CVNN is a parameter-tied real network; the paper does not test whether the gain comes from the tying or from the complex arithmetic."
+    },
+    {
+     "id_suggestion": "hermiticity-by-construction",
+     "value": "The authors state that the upper-triangular representation enforces Hermiticity by construction, the lower triangle being recovered by conjugation.",
+     "anchor": "Section II.A, PDF p.3",
+     "quotes": [
+      "and enforces Hermiticity by construction (the lower triangle is recovered by conjugation)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Stated in Section II.A as a property of the representation.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The representation is described for the density matrix in general, so Hermiticity of the output holds for both models by construction. A search of the text finds no Hermiticity measurement in the Results."
+    },
+    {
+     "id_suggestion": "abstract-claims-hermiticity-improvement",
+     "value": "The authors state in the abstract that the CVNN gives significantly improved trace conservation and Hermiticity.",
+     "anchor": "Abstract, PDF p.1",
+     "quotes": [
+      "physical ﬁdelity—including signiﬁcantly improved trace conservation and Hermiticity"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The Results report trace MAE (Table I), negative-eigenvalue counts (Table II) and element MAE (Table III). No Hermiticity result and no significance test appears in the text."
+    },
+    {
+     "id_suggestion": "cvnn-layer-definition",
+     "value": "The authors define a CVNN layer as fC(z) = σC(Wz + b) with complex weights W and complex bias b, and write the linear part in real block form so that the real and imaginary parts transform jointly.",
+     "anchor": "Section II.A, Eqs. 11 and 12, PDF p.3",
+     "quotes": [
+      "A CVNN layer computes fC(z) = σC(Wz + b)",
+      "This structured block matrix represents true complex multiplication",
+      "form jointly rather than independently"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The layer is defined in Section II.A.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-no-rvnn-rotation",
+     "value": "The authors state that no RVNN can generate such rotations in a single step, because real weights act independently on the real and imaginary channels.",
+     "anchor": "Section II.A, PDF p.3",
+     "quotes": [
+      "No RVNN can generate such rotations in a single step, because real weights act independently on Re and Im channels"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The RVNN layer in Eq. 10 uses a full real weight matrix on the stacked real and imaginary inputs, and Eq. 12 shows the complex multiplication is itself a real matrix of that kind. So a real layer can represent the rotation and scaling; the statement holds only if real weights act channel by channel, which Eq. 10 does not say."
+    },
+    {
+     "id_suggestion": "claim-rvnn-decoupling-obscures-correlations",
+     "value": "The authors state that the standard practice in RVNNs of decoupling the real and imaginary components risks discarding or obscuring correlations encoded in the complex geometry of quantum states.",
+     "anchor": "Introduction, PDF p.2",
+     "quotes": [
+      "This bifurcation risks discarding or obscuring the critical correlations that are holistically encoded within the complex geometry of quantum states"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "initialisation-schemes",
+     "value": "The authors state that the RVNN weights use He (Kaiming) uniform initialisation with biases set to zero, and that the CVNN assigns the real and imaginary part of each weight a reduced variance so that the complex weight matches the real He variance only after the two channels are combined, with the real and imaginary biases set to zero.",
+     "anchor": "Section II.B, PDF p.3 to p.4",
+     "quotes": [
+      "we initialize each weight using the He (Kaiming) uniform distribution",
+      "matching the real He initialization only after combining the two channels.",
+      "we set both the real and imaginary parts to zero"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II.B states the initialisation.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "composite-loss-and-weights",
+     "value": "The authors state a composite loss L = α1L1 + α2L2 + α3L3 + α4L4 made of a mean squared error term, a trace-preservation penalty, a penalty on negative eigenvalues and a penalty keeping eigenvalues within the interval [0, 1], with weights α1 = α2 = 1.0, α3 = 2.0, and α4 = 3.0.",
+     "anchor": "Section IV, Eqs. 19 to 24, PDF p.5",
+     "quotes": [
+      "we employ a composite loss function of the form L = α1L1 + α2L2 + α3L3 + α4L4,",
+      "physically admissible density matrices require all eigenvalues to lie within the interval [0, 1].",
+      "In all simulations reported here, we use α1 = α2 = 1.0, α3 = 2.0, and α4 = 3.0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV states the loss and its weights.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The trace and positivity results in Tables I and II come from models trained with penalties aimed at those same quantities, so they measure how well each model meets a penalised target, not an unprompted property."
+    },
+    {
+     "id_suggestion": "sb-training-data",
+     "value": "The authors report that the spin-boson training data come from the QD3SET-1 database, 1000 simulations in total (500 trajectories for the symmetric case and 500 for the asymmetric case) computed with the HEOM formalism; only the symmetric case (500 trajectories) is used, 400 of which are chosen for training by farthest point sampling, and the remaining trajectories are reserved for out-of-sample testing.",
+     "anchor": "Section IV, PDF p.5 to p.6",
+     "quotes": [
+      "training data are obtained from the openly accessible QD3SET1 database",
+      "In total, Dsb comprises 1000 independent simulations, with 500 trajectories for the symmetric case and 500 for the asymmetric case.",
+      "For the SB model, we consider only the symmetric case, comprising 500 trajectories from Dsb.",
+      "we then select 400 trajectories for training via farthest point sampling, with the remaining trajectories reserved for out-of-sample testing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV states the data and split.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The text does not say which trajectories the validation loss in Fig. 2 uses; the held-out 100 are called out-of-sample test data."
+    },
+    {
+     "id_suggestion": "fmo-training-data",
+     "value": "The authors report that the 7-site and 8-site FMO data come from QD3SET-1, describing excitation initiated at site 1 and site 6 for the 7-site complex with site 8 added for the 8-site system, with 500 simulations for each initial excitation scenario propagated by a trace-conserving local thermalizing Lindblad master equation; the 4-site FMO data are generated by the authors with the same framework and bath parameters as the 7-site complex, with excitation localized on site 1.",
+     "anchor": "Section IV, PDF p.5 to p.6",
+     "quotes": [
+      "These datasets describe excitation energy transfer dynamics initiated at site 1 and site 6 for the 7-site complex, with site 8 additionally included for the 8-site system.",
+      "yielding a total of 500 simulations for each initial excitation scenario.",
+      "The quantum dynamics are propagated using a trace-conserving local thermalizing Lindblad master equation (LTLME)",
+      "Since a 4-site FMO model is not available in the QD3SET-1 database, we generate the corresponding dataset independently using the same LTLME framework and bath parameters as employed for the 7-site FMO complex, with the dynamics initialized by an excitation localized on site 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV states the FMO data sources.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "trajectory-length-and-windows",
+     "value": "The authors report that each spin-boson trajectory spans a total duration of 20/∆ with a time step of dt = 0.05, that the FMO dynamics is restricted to a total time of 2 ps with a time step of 0.005 ps, and that the models predict the next time steps in one forward pass: 81 input time steps and 40 predicted steps for the SB model, and 81 input time steps and 80 predicted steps for the FMO complexes.",
+     "anchor": "Section IV, PDF p.6 to p.7",
+     "quotes": [
+      "each trajectory spans a total duration of 20/∆ with a time step of dt = 0.05.",
+      "the FMO dynamics is restricted to a total time of 2 ps with a time step of 0.005 ps.",
+      "for the SB model, each training sample consists of 81 input time steps, and the network is trained to predict the subsequent 40 time steps.",
+      "with the models trained to predict the next 80 time steps."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV states the windows.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The Supporting Information states a propagation to t = 50 ps for the FMO data, against 2 ps here; the two statements are not reconciled in the text."
+    },
+    {
+     "id_suggestion": "training-protocol-si",
+     "value": "The authors state that all RVNN and CVNN models are trained for 105 epochs (the exponent is printed flat in the text layer) using the Adam optimizer with a learning rate of 10−3; the Supporting Information tables list the Adam optimizer and a learning rate of 0.001 for the CVNN and RVNN of every system.",
+     "anchor": "Section IV, PDF p.7; Tables S1 and S2, PDF p.12 to p.13 (epochs 100000 in every column)",
+     "quotes": [
+      "All RVNN and CVNN models are trained for 105 epochs using the Adam optimizer with a learning rate of 10−3.",
+      "Learning Rate 0.001 0.001 0.001 0.001 Optimizer Adam Adam Adam Adam"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Tables S1 and S2 state the training settings.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The main text prints this as 105 epochs, which is 10^5 with the exponent lost, and agrees with 100000. Fig. 2 shows only the first 100 epochs, 0.1% of the schedule."
+    },
+    {
+     "id_suggestion": "parameter-counts-and-widths",
+     "value": "The authors report in Tables S1 and S2 the network dimensions and parameter counts of the CVNN and the RVNN for each system, and state that the CVNN parameter count was capped at a level approximately equal to or below the RVNN's.",
+     "anchor": "Tables S1 and S2, PDF p.12 to p.13. Figures in the tables (CVNN, RVNN): parameters SB 41652, 43680; 4-site 232768, 233012; 7-site 1049056, 1063376; 8-site 1367276, 1373696. Hidden layer size SB 42, 64; 4-site 64, 82; 7-site 108, 128; 8-site 111, 128.",
+     "quotes": [
+      "A side-by-side comparison of CVNN and RVNN architectures showing network dimensions, parameter counts",
+      "we capped the number of trainable parameters in the CVNN at a level approximately equal to or below that of the RVNN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Tables S1 and S2 list the configurations.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "With five fully connected layers and each complex weight and bias counted as two real numbers, the SB, 4-site and 7-site CVNN counts and all four RVNN counts reproduce exactly (e.g. RVNN SB = (324*64+64) + 3*(64*64+64) + (64*160+160) = 43680), and the 8-site CVNN count is 10 higher than the printed 1367276. So the cap holds in real parameters, and the CVNN reaches it with narrower hidden layers."
+    },
+    {
+     "id_suggestion": "training-time-cost",
+     "value": "The authors report total training time of 895.45 s (CVNN) and 438.41 s (RVNN) for the SB model, 2517.15 s and 1014.76 s for the 4-site complex, 6482.21 s and 4496.09 s for the 7-site complex, and 7897.77 s and 6712.18 s for the 8-site complex.",
+     "anchor": "Tables S1 and S2, PDF p.12 to p.13",
+     "quotes": [
+      "Model conﬁgurations for the SB model and 4-site FMO complex.",
+      "Model conﬁgurations for the 7-site and 8-site FMO complexes.",
+      "Total Training Time (s) 895.45 438.41 2517.15 1014.76",
+      "Total Training Time (s) 6482.21 4496.09 7897.77 6712.18"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The CVNN needed more wall-clock training time in all four systems for the same number of epochs. The paper's 'faster convergence' is per epoch, not per second. The hardware is not named."
+    },
+    {
+     "id_suggestion": "inference-time-cost",
+     "value": "The authors report total inference time for 100 trajectories of 0.25 s (CVNN) and 0.05 s (RVNN) for the SB model, 0.19 s and 0.18 s for the 4-site complex, 0.28 s and 0.13 s for the 7-site complex, and 0.30 s and 0.18 s for the 8-site complex.",
+     "anchor": "Tables S1 and S2, PDF p.12 to p.13",
+     "quotes": [
+      "Model conﬁgurations for the SB model and 4-site FMO complex.",
+      "Model conﬁgurations for the 7-site and 8-site FMO complexes.",
+      "Total Inference Time (s) (100 Trajectories) 0.25 0.05 0.19 0.18",
+      "Total Inference Time (s) (100 Trajectories) 0.28 0.13 0.30 0.18"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Inference was slower for the CVNN in all four systems; all times are well under a second for 100 trajectories."
+    },
+    {
+     "id_suggestion": "loss-curve-comparison",
+     "value": "The authors report from training and validation loss curves over the first 100 training epochs that the CVNN and RVNN show nearly identical loss trajectories for the SB model, that for the 4- and 7-site FMO prototypes the CVNN reduces both training and validation loss consistently faster, and that this is most pronounced for the 8-site complex.",
+     "anchor": "Results, Fig. 2, PDF p.7",
+     "quotes": [
+      "Analysis of the ﬁrst 100 training epochs",
+      "the CVNN and RVNN show nearly identical loss trajectories",
+      "For the 4- and 7-site FMO prototypes, the CVNN achieves a consistently faster reduction in both training and validation loss compared to the RVNN.",
+      "This advantage is most pronounced for the largest, coherence-rich 8-site FMO complex"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The comparison rests on plotted curves for the first 100 of 100000 epochs; no final loss value for either model is tabulated in the text."
+    },
+    {
+     "id_suggestion": "trace-mae-table-i",
+     "value": "The authors report mean absolute error of the predicted trace from 1, averaged over 100 trajectories, for CVNN against RVNN: 2.92e-05 against 3.15e-05 for the SB model, 1.06e-04 against 2.09e-04 for the 4-site complex, 5.48e-05 against 8.73e-05 for the 7-site complex, and 2.23e-05 against 8.52e-05 for the 8-site complex.",
+     "anchor": "Table I, PDF p.7",
+     "quotes": [
+      "MAE in trace conservation, averaged over 100 trajectories",
+      "SB Model 2.92e-05 3.15e-05 4-site FMO complex 1.06e-04 2.09e-04 7-site FMO complex 5.48e-05 8.73e-05 8-site FMO complex 2.23e-05 8.52e-05"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "All errors are between 2e-05 and 2.1e-04 on a trace of 1; the SB difference is about 7%."
+    },
+    {
+     "id_suggestion": "trace-ratios-text",
+     "value": "The authors state that for the complete 7-site complex the CVNN maintains a 1.6x lower trace error, and that for the 8-site complex the CVNN error reduces to 2.23 × 10−5, nearly 4 times smaller than the RVNN's error (8.52 × 10−5).",
+     "anchor": "Results, trace conservation, PDF p.8",
+     "quotes": [
+      "For the complete 7-site complex, the CVNN maintains a 1.6x lower error.",
+      "Most notably, for the 8-site complex, the CVNN’s error reduces to 2.23 × 10−5, which is nearly 4 times smaller than the RVNN’s error (8.52 × 10−5)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The ratios agree with Table I (8.73/5.48 = 1.59 and 8.52/2.23 = 3.82)."
+    },
+    {
+     "id_suggestion": "negative-eigenvalues-table-ii",
+     "value": "The authors report average negative eigenvalues over 100 independent trajectories per model, CVNN against RVNN: 0.0 and 0.0 for the SB model, 38.05 against 40.63 for the 4-site complex, 60.17 against 67.85 for the 7-site complex, and 53.87 against 73.71 for the 8-site complex.",
+     "anchor": "Table II, PDF p.7 to p.8",
+     "quotes": [
+      "Average negative eigenvalues calculated over 100 independent trajectories per model.",
+      "SB Model 0.0 0.0 4-site FMO complex 38.05 40.63 7-site FMO complex 60.17 67.85 8-site FMO complex 53.87 73.71"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The quantity appears to be a count of negative eigenvalues per trajectory, not a magnitude; the paper reports no size of the negativity. Both models still violate positive semi-definiteness on the FMO complexes despite the penalty L3."
+    },
+    {
+     "id_suggestion": "negative-eigenvalue-reductions-text",
+     "value": "The authors state that the CVNN shows a reduction of approximately 6% for the 4-site FMO complex, 11% fewer negative eigenvalues for the 7-site complex, and approximately 27% for the 8-site complex relative to the RVNN, and that both models preserve positive semi-definiteness for the SB model with zero negative eigenvalues.",
+     "anchor": "Results, positive semi-definiteness, PDF p.8",
+     "quotes": [
+      "For the 4-site FMO complex, both models exhibit a similar scale of violations",
+      "This performance gap widens substantially for the 8-site complex",
+      "with the CVNN showing a reduction of approximately 6% relative to the RVNN baseline (38.05 vs. 40.63).",
+      "For the 7-site FMO complex, the CVNN produces 11% fewer negative eigenvalues than the RVNN (60.17 vs. 67.85).",
+      "the CVNN achieves a reduction of approximately 27% relative to the RVNN (53.87 vs. 73.71).",
+      "both CVNN and RVNN preserve positive semi-deﬁniteness, with zero negative eigenvalues"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-constraints-at-least-as-accurate",
+     "value": "The authors state that the trace and eigenvalue analyses demonstrate that CVNNs preserve fundamental physical constraints at least as accurately as RVNNs, and in several cases significantly better.",
+     "anchor": "Results, PDF p.8",
+     "quotes": [
+      "the trace and eigenvalue analyses demonstrate that CVNNs preserve fundamental physical constraints at least as accurately as RVNNs, and in several cases signiﬁcantly better."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "No significance test or run-to-run spread is given for the main-text tables."
+    },
+    {
+     "id_suggestion": "rdm-mae-sb",
+     "value": "The authors report for the SB model a diagonal MAE of 7.01e-4 (CVNN) and 7.85e-4 (RVNN), and off-diagonal MAE (real, imaginary) of (2.28e-3, 6.51e-4) for the CVNN and (1.17e-3, 6.55e-4) for the RVNN; they describe the CVNN as reducing diagonal MAE by approximately 11% and the RVNN as yielding a 49% lower MAE for the real coherence components.",
+     "anchor": "Table III and Results, PDF p.8",
+     "quotes": [
+      "SB model 7.01e-4 (2.28e-3, 6.51e-4) 7.85e-4 (1.17e-3, 6.55e-4)",
+      "The CVNN reduces diagonal MAE by approximately 11% (relative to the RVNN baseline), while the RVNN yields a 49% lower MAE for the real coherence components (relative to the CVNN)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The SB real-coherence error is about twice as large for the CVNN; the abstract does not mention this adverse result."
+    },
+    {
+     "id_suggestion": "rdm-mae-4site",
+     "value": "The authors report for the 4-site FMO complex a diagonal MAE of 1.94e-3 (CVNN) and 2.87e-3 (RVNN), and off-diagonal (real, imaginary) MAE of (1.17e-3, 7.62e-5) for the CVNN and (1.78e-3, 9.44e-5) for the RVNN, and describe approximately 32% lower diagonal error and 34% lower real-coherence error for the CVNN.",
+     "anchor": "Table III and Results, PDF p.8",
+     "quotes": [
+      "4-site FMO 1.94e-3 (1.17e-3, 7.62e-5) 2.87e-3 (1.78e-3, 9.44e-5)",
+      "approximately 32% lower for diagonal elements and 34% lower for the real parts of coherences compared to the RVNN"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rdm-mae-7site",
+     "value": "The authors report for the 7-site FMO complex a diagonal MAE of 5.23e-4 (CVNN) and 1.23e-3 (RVNN), and off-diagonal (real, imaginary) MAE of (4.64e-4, 6.55e-5) for the CVNN and (1.07e-3, 8.73e-5) for the RVNN, and state the real-coherence error is 57% lower for the CVNN.",
+     "anchor": "Table III and Results, PDF p.8",
+     "quotes": [
+      "7-site FMO 5.23e-4 (4.64e-4, 6.55e-5) 1.23e-3 (1.07e-3, 8.73e-5)",
+      "its error for the real part of coherences is 57% lower (4.64e-4 vs. 1.07e-3)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rdm-mae-8site",
+     "value": "The authors report for the 8-site FMO complex a diagonal MAE of 4.87e-4 (CVNN) and 1.40e-3 (RVNN), and off-diagonal (real, imaginary) MAE of (6.53e-4, 6.05e-5) for the CVNN and (1.68e-3, 9.36e-5) for the RVNN, and state roughly 65% lower diagonal error and 61% lower real-coherence error for the CVNN.",
+     "anchor": "Table III and Results, PDF p.8",
+     "quotes": [
+      "8-site FMO 4.87e-4 (6.53e-4, 6.05e-5) 1.40e-3 (1.68e-3, 9.36e-5)",
+      "roughly 65% lower for diagonals and 61% lower for the real coherence components"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-advantage-grows-with-size",
+     "value": "The authors state that the CVNN's accuracy advantage, especially in capturing populations and key coherences, grows systematically as the open quantum system increases in size and coherence.",
+     "anchor": "Results, PDF p.8",
+     "quotes": [
+      "Together, these results demonstrate that the CVNN’s accuracy advantage—especially in capturing populations and key coherences—grows systematically as the open quantum system increases in size and coherence."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The evidence is four systems, each with one set of bath parameters shown and one reported run in the main tables; system size, coherence structure and bath parameters change together, and no ablation separates them."
+    },
+    {
+     "id_suggestion": "claim-loss-explanation-offdiagonals",
+     "value": "The authors state that the CVNN's learning efficiency scales with system size, directly correlating with the increasing number and dynamical importance of complex-valued off-diagonal RDM elements.",
+     "anchor": "Results, PDF p.7",
+     "quotes": [
+      "the CVNN’s superior learning eﬃciency scales with system size, directly correlating with the increasing number and dynamical importance of complex-valued oﬀdiagonal RDM elements."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "No measurement of the importance of off-diagonal elements is shown against the loss gap; the explanation is asserted from the system-size trend."
+    },
+    {
+     "id_suggestion": "seeds-robustness-claim",
+     "value": "The authors state that they tested three random seeds (42, 100 and 123) and that the CVNN outperformed the RVNN across all metrics for every seed tested.",
+     "anchor": "Results, PDF p.9; Supporting Information S6, PDF p.17",
+     "quotes": [
+      "We further veriﬁed the robustness of the CVNN’s superior performance by testing three diﬀerent random seeds (42, 100, and 123).",
+      "the CVNN outperformed the RVNN across all metrics",
+      "for every seed tested."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "In Table S6 as the text layer prints it, the seed-42 SB row reads CVNN diagonal 1.34e-3 and a later value 1.76e-4 that the column order assigns to the RVNN diagonal, which would favour the RVNN; the layer scrambles that table, so this needs checking against the page image. None of the three seeds reproduces the main-text SB trace values (2.92e-05 and 3.15e-05), so the main-table seed is not one of them or is not stated. No spread across seeds is reported."
+    },
+    {
+     "id_suggestion": "seed-trace-table-s4",
+     "value": "The authors report trace MAE (CVNN, RVNN) by seed: seed 42 SB 1.06e-04 and 1.20e-04, 4-site 7.72e-05 and 8.81e-05, 7-site 4.41e-05 and 6.64e-05, 8-site 6.98e-05 and 8.35e-05; seed 100 SB 5.86e-05 and 8.10e-05, 4-site 1.22e-05 and 7.93e-05, 7-site 6.66e-05 and 7.72e-05, 8-site 3.92e-05 and 4.60e-05; seed 123 SB 7.93e-05 and 1.19e-04, 4-site 1.11e-04 and 1.34e-04, 7-site 6.16e-05 and 7.19e-05, 8-site 5.00e-05 and 5.35e-05.",
+     "anchor": "Table S4, PDF p.18",
+     "quotes": [
+      "Random Seed 42 SB Model 1.06e-04 1.20e-04 4-site FMO complex 7.72e-05 8.81e-05 7-site FMO complex 4.41e-05 6.64e-05 8-site FMO complex 6.98e-05 8.35e-05",
+      "Random Seed 100 SB Model 5.86e-05 8.10e-05 4-site FMO complex 1.22e-05 7.93e-05 7-site FMO complex 6.66e-05 7.72e-05 8-site FMO complex 3.92e-05 4.60e-05",
+      "Random Seed 123 SB Model 7.93e-05 1.19e-04 4-site FMO complex 1.11e-04 1.34e-04 7-site FMO complex 6.16e-05 7.19e-05 8-site FMO complex 5.00e-05 5.35e-05"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The CVNN is lower in all 12 pairs, but the 4-site ratio is 1.14, 6.5 and 1.2 across the seeds against 1.97 in Table I, so the twofold figure varies strongly with the run. The 8-site ratio is 1.20, 1.17 and 1.07 across the seeds against 3.8 in Table I."
+    },
+    {
+     "id_suggestion": "seed-negative-eigenvalues-table-s5",
+     "value": "The authors report average negative eigenvalues (CVNN, RVNN) by seed: seed 42 4-site 28.46 and 41.23, 7-site 35.41 and 76.68, 8-site 57.43 and 62.69; seed 100 4-site 29.09 and 38.71, 7-site 47.29 and 73.81, 8-site 42.18 and 50.75; seed 123 4-site 23.51 and 29.19, 7-site 69.37 and 76.83, 8-site 57.80 and 62.90; the SB model is 0.00 for both models in every seed.",
+     "anchor": "Table S5, PDF p.18 to p.19",
+     "quotes": [
+      "Random Seed 42 SB Model 0.00 0.00 4-site FMO complex 28.46 41.23 7-site FMO complex 35.41 76.68 8-site FMO complex 57.43 62.69",
+      "Random Seed 100 SB Model 0.00 0.00 4-site FMO complex 29.09 38.71 7-site FMO complex 47.29 73.81 8-site FMO complex 42.18 50.75",
+      "Random Seed 123 SB Model 0.00 0.00 4-site FMO complex 23.51 29.19 7-site FMO complex 69.37 76.83 8-site FMO complex 57.80 62.90"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The CVNN count ranges from 35.41 to 69.37 for the 7-site complex across seeds, a wider spread than the main-text 11% gap to the RVNN (60.17 against 67.85), so that gap is seed-dependent."
+    },
+    {
+     "id_suggestion": "time-resolved-mae-statement",
+     "value": "The authors state in the Supporting Information that the CVNN exhibits consistently lower time-resolved MAE for most systems and RDM components, the primary exception being the low-coherence SB model, where the real part of the off-diagonal element shows comparable or slightly higher errors than the RVNN.",
+     "anchor": "Supporting Information S4, PDF p.14",
+     "quotes": [
+      "Overall, the CVNN exhibits consistently lower MAE throughout the trajectories for most systems and RDM components.",
+      "The primary exception occurs in the low-coherence SB model, where the real part of the oﬀ-diagonal element shows comparable or slightly higher errors relative to the RVNN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table III gives 2.28e-3 for the CVNN against 1.17e-3 for the RVNN on that element, which is about twice as high, not slightly higher."
+    },
+    {
+     "id_suggestion": "ohmic-trace-and-eigenvalues",
+     "value": "The authors report for the 8-site FMO complex with an Ohmic spectral density a trace MAE of 3.80 × 10−5 for the CVNN and 9.93 × 10−5 for the RVNN, and average negative eigenvalues of 61.04 (CVNN) and 71.85 (RVNN).",
+     "anchor": "Table S3, Supporting Information S5, PDF p.16",
+     "quotes": [
+      "for the 8-site FMO complex with Ohmic spectral density",
+      "CVNN 3.80 × 10−5 RVNN 9.93 × 10−5 61.04 71.85"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The text layer prints the table row by row; the assignment of the first and second numbers follows the CVNN and RVNN labels in that row."
+    },
+    {
+     "id_suggestion": "ohmic-rdm-mae",
+     "value": "The authors report for the 8-site FMO complex with an Ohmic spectral density the RDM element MAEs in Table S3 as 4.04 × 10−4, 4.98 × 10−4 and 5.18 × 10−5 (diagonal, real, imaginary) followed by 5.49 × 10−4, 7.01 × 10−4 and 6.77 × 10−5, and state that the CVNN systematically outperforms the RVNN across all evaluated metrics.",
+     "anchor": "Table S3 and Supporting Information S5, PDF p.16 to p.17",
+     "quotes": [
+      "for the 8-site FMO complex with Ohmic spectral density",
+      "4.04 × 10−4 4.98 × 10−4 5.18 × 10−5 5.49 × 10−4 7.01 × 10−4 6.77",
+      "the CVNN systematically outperforms the RVNN across all evaluated metrics"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The first three values are read as the CVNN row and the last three as the RVNN row, from the order in the layer; the table layout is scrambled, so this assignment is an inference."
+    },
+    {
+     "id_suggestion": "ohmic-setup",
+     "value": "The authors state that the Ohmic test uses 500 stochastic quantum trajectories for an initial excitation localized on site 1, with 400 trajectories selected for training and the remaining 100 reserved for testing.",
+     "anchor": "Supporting Information S5, PDF p.16",
+     "quotes": [
+      "yielding a total of 500 stochastic quantum trajectories for an initial excitation localized on site 1.",
+      "400 trajectories are selected for training, while the remaining 100 trajectories are reserved exclusively for testing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "S5 states the Ohmic setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scope-bath-and-systems",
+     "value": "The authors state that the Debye spectral density is used for the SB model and, with identical parameters across sites, for the FMO complexes, and that the only other bath tested is an Ohmic spectral density for the 8-site FMO complex.",
+     "anchor": "Section III, PDF p.4; Results, PDF p.8 to p.9",
+     "quotes": [
+      "Environmental inﬂuence is encoded via the Debye spectral density,",
+      "the environmental spectral density is again taken to be Debye with identical parameters across all sites.",
+      "we extend our analysis to the 8-site FMO complex modeled with an Ohmic spectral density."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sb-and-fmo-parameter-grids-si",
+     "value": "The authors state in the Supporting Information that the SB dataset comprises 1000 stochastic trajectories generated for each combination of the listed dimensionless parameters, propagated up to a final time t∆ = 20 with dt∆ = 0.05, and that the FMO dynamics are propagated up to t = 50 ps with a time step of dt = 5 fs.",
+     "anchor": "Supporting Information S2, PDF p.12 to p.13",
+     "quotes": [
+      "This dataset comprises 1000 stochastic trajectories generated for each combination of the dimensionless parameters",
+      "Each trajectory is propagated up to a ﬁnal time t∆ = 20 with a time step of dt∆ = 0.05.",
+      "The quantum dynamics are propagated up to t = 50 ps with a time step of dt = 5 fs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "S2 states the data generation.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The listed SB grid (2 values of bias, 10 of reorganization energy, 10 of relaxation rate, 5 of inverse temperature) has 1000 combinations, which fits the main-text total of 1000 simulations and not 1000 per combination. The 50 ps in the Supporting Information differs from the 2 ps in the main text."
+    },
+    {
+     "id_suggestion": "fmo-grid-and-fps",
+     "value": "The authors state that for the FMO complexes the 500 most distant parameter combinations are selected from the sets λ ∈ {10, 40, 70, . . . , 520} cm−1, γ ∈ {25, 50, 75, . . . , 500} cm−1, T ∈ {30, 50, 70, . . . , 510} K, and that farthest point sampling iteratively constructs a subset by maximizing the minimum distance to the already selected points.",
+     "anchor": "Supporting Information S2, PDF p.13",
+     "quotes": [
+      "the 500 most distant parameter combinations are selected from the sets",
+      "λ ∈ {10, 40, 70, . . . , 520} cm−1, γ ∈ {25, 50, 75, . . . , 500} cm−1, T ∈ {30, 50, 70, . . . , 510} K.",
+      "FPS iteratively constructs a subset S ⊂ P by maximizing the minimum distance to the already selected points."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "S2 defines the sampling and the grid.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The listed grid has 18 x 20 x 25 = 9000 combinations. Because training points are the most widely separated and the 100 test points are the remainder, the test set lies inside the sampled parameter region."
+    },
+    {
+     "id_suggestion": "claim-nisq-motivation-and-conclusion",
+     "value": "The authors state that current NISQ hardware remains too constrained to offer practical advantages for learning quantum dissipative dynamics, and conclude that CVNNs are a compelling intermediate paradigm bridging real-valued models and fully quantum approaches, providing a hardware-independent pathway for modeling open quantum dynamics.",
+     "anchor": "Concluding remarks, PDF p.9",
+     "quotes": [
+      "However, current NISQ hardware remains too constrained to oﬀer practical advantages for this task.",
+      "CVNNs emerge as a compelling intermediate paradigm—bridging the gap between purely real-valued models and fully quantum approaches.",
+      "It provides a hardware-independent pathway for modeling open quantum dynamics"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No quantum hardware or quantum neural network is run or compared in the paper."
+    },
+    {
+     "id_suggestion": "cited-prior-rvnn-ml-work",
+     "value": "The authors state that existing ML work on quantum dynamics relies exclusively on real-valued neural networks and has demonstrated strong predictive capabilities in forecasting quantum dynamics from the history of the system and in learning direct mappings from parameters and time to quantum states.",
+     "anchor": "Introduction, PDF p.1",
+     "quotes": [
+      "Existing work, which rely exclusively on real-valued neural networks (RVNNs), have demonstrated strong predictive capabilities in forecasting quantum dynamics from the past history of the system"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-cvnn-capacity-other-domains",
+     "value": "The authors state that development across signal processing, computational imaging, materials discovery and large language models underscores that complex-valued neural networks have an intrinsic capacity to capture phase-dependent structures and continuous rotational symmetries.",
+     "anchor": "Introduction, PDF p.1 to p.2",
+     "quotes": [
+      "underscores that complex-valued",
+      "neural networks (CVNNs) possess a unique, intrinsic capacity to capture phase-dependent structures and continuous rotational symmetries."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "code-and-data-availability",
+     "value": "The authors state that the code and data supporting the work are available at a public GitHub repository named Arif-PhyChem/cvnn.",
+     "anchor": "Data availability, PDF p.9",
+     "quotes": [
+      "The code and data supporting this work are available at https://github.com/Arif-PhyChem/cvnn."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Stated in the Data Availability section.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
