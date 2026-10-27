@@ -1,0 +1,549 @@
+{"papers": [{
+  "record_id": "amin-2026-quantum-kernels-audio-deepfake-detection",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Al-Amin-et-al._2026_Quantum-Kernels-for-Audio-Deepfake-Detection-Using-Spectrogram-Patch__2605.06035.pdf",
+  "title_in_file": "Quantum Kernels for Audio Deepfake Detection Using Spectrogram Patch Features",
+  "version_note": "",
+  "pages": 8,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A short feasibility study of Q-Patch, an eight-qubit fidelity quantum kernel over two selected 4x4 mel-spectrogram patch summaries, tested in ideal simulation on a 100-sample LJ Speech subset whose spoofs are made by added noise and spectral distortion.",
+  "bears_on_context": "qml",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "qpatch-auroc",
+      "verdict": "confirmed",
+      "note": "The value is right as a report of what the authors state. The caveat that the figures are point estimates from a 20-sample dev split is held by qpatch-limits and by the new assertions.",
+      "value": "The authors report that Q-Patch achieved an AUROC of 0.87 and an EER of 14.8%, outperforming the RBF-SVM on the same patch-level descriptors and a compact CNN.",
+      "anchor": "Section IV-C, p.7, and Table II, p.7",
+      "quotes": [
+        "Q-Patch achieves an AUROC of 0.87 and an EER of 14.8%, outperforming both the radial basis function support vector machine (RBF-SVM) trained on the same patch-level descriptors and the compact convolutional neural network (Tiny CNN) trained directly on spectrograms."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study on a 20-sample dev split; not upgraded.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The text layer lays Table II out in separate fragments, so the pairing of rows to values is read from the layout, and the prose confirms the Q-Patch values only."
+    },
+    {
+      "id": "qpatch-dataset-setup",
+      "verdict": "confirmed",
+      "note": "",
+      "value": "The authors build a balanced 100-sample subset of LJ Speech with 50 bona fide and 50 spoofed utterances, make the spoofs with additive Gaussian noise and spectral distortions, and split it into 80 training and 20 development samples.",
+      "anchor": "Section III-B, p.2",
+      "quotes": [
+        "we construct a balanced 100-sample subset from LJ Speech [8], consisting of 50 bona fide utterances and 50 spoofed utterances.",
+        "The spoofed samples are generated from the original recordings using additive Gaussian noise and spectral distortions as a controlled proxy for authenticity manipulation.",
+        "We then partition this 100-sample set into 80 training and 20 development (dev) samples with preserved class balance and no overlap between splits."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its data setup in Section III-B.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The paper does not say whether the 50 spoofs are made from the same 50 bona fide utterances. If they are, a spoof and its source recording could fall on opposite sides of the split, since the stated no-overlap holds between samples."
+    },
+    {
+      "id": "qpatch-limits",
+      "verdict": "confirmed",
+      "note": "",
+      "value": "The authors state that, because the dev split contains only 20 samples, the AUROC and EER are point estimates from a feasibility study, and that no physical quantum-hardware runs were performed; kernel fidelities were computed under ideal simulation.",
+      "anchor": "Section IV-A, p.6, and Section III-H, p.5",
+      "quotes": [
+        "Because the dev split contains only 20 samples, the reported AUROC and EER should be interpreted as point estimates from a compact feasibility study rather than as statistically definitive performance claims.",
+        "No physical quantum-hardware runs were performed in this study; kernel fidelities were computed under ideal simulation."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper's own stated limits in Section IV-A and Section III-H.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "qpatch-table2-aurocs",
+      "value": "The authors report AUROC of 0.82 for the RBF-SVM, 0.85 for the Tiny CNN and 0.87 for Q-Patch, all on the dev split.",
+      "anchor": "Table II, p.7; Section IV-A, p.6",
+      "quotes": [
+        "RBF-SVM 0.82",
+        "Tiny CNN 0.85",
+        "Q-Patch achieves an AUROC of 0.87",
+        "Unless stated otherwise, all reported metrics are computed on the dev split using standard decision-score evaluation."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study on a 20-sample dev split.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "Table II prints EER 18.2 for the RBF-SVM and 16.3 for the Tiny CNN, but the text layer holds them as fragments, so they are named here and not entered as values. The gaps between methods (0.02 to 0.05 AUROC) are small against a 20-sample dev split; if the split holds 10 per class, 0.05 AUROC is about five of 100 positive-negative pairs. An EER of 14.8% is also not a multiple of 10% for 10 negatives, so the EER is probably interpolated; the paper does not say."
+    },
+    {
+      "id_suggestion": "qpatch-baselines-definition",
+      "value": "The authors state that the RBF-SVM baseline is trained on the same patch-derived 8-dimensional input as Q-Patch, and that the Tiny CNN baseline has at most 100k parameters and is trained on spectrograms.",
+      "anchor": "Section III-G, p.5; Section III-A, p.3",
+      "quotes": [
+        "A classical support vector machine with a radial basis function kernel is trained on the same patch-derived input x ∈ R8, obtained by concatenating the top-k summary vectors.",
+        "A compact convolutional neural network with ≤100k parameters is trained on spectrogram inputs."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's statement of its baseline setup in Section III-G.",
+      "result_type": "setup",
+      "context": "ml",
+      "reader_inference": "The text layer gives no hyperparameters, tuning protocol or seeds for either baseline, and the Table II complexity entry for the RBF-SVM reads 'Support vectors' with no count."
+    },
+    {
+      "id_suggestion": "qpatch-cnn-parameter-count",
+      "value": "The authors report in Table II that the Tiny CNN has 98.4K parameters, within the stated limit of at most 100k parameters.",
+      "anchor": "Table II, p.7; Section III-A, p.3",
+      "quotes": [
+        "98.4K params",
+        "a compact convolutional neural network (CNN) with ≤100k parameters trained directly on spectrograms"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A reported size of one baseline in one study.",
+      "result_type": "measured",
+      "context": "ml",
+      "reader_inference": "The pairing of 98.4K params with the Tiny CNN row is read from the table layout in the text layer."
+    },
+    {
+      "id_suggestion": "qpatch-kernel-similarity-table",
+      "value": "The authors report in Table I mean fidelity-kernel similarities with spreads: 1.000 ± 0.000 for same-patch pairs in both classes, 0.675 ± 0.023 for bona fide to bona fide with different patches, 0.622 ± 0.018 for spoof to spoof with different patches, and 0.614 ± 0.015 and 0.616 ± 0.017 for bona fide to spoof on patch 1 and patch 2.",
+      "anchor": "Table I, p.6",
+      "quotes": [
+        "Bona fide–Bona fide (same patch) Spoof–Spoof (same patch) Bona fide–Bona fide (different) Spoof–Spoof (different) Bona fide–Spoof (patch 1) Bona fide–Spoof (patch 2)",
+        "1.000 ± 0.000 1.000 ± 0.000 0.675 ± 0.023 0.622 ± 0.018 0.614 ± 0.015 0.616 ± 0.017",
+        "“different” refers to patches drawn from different utterances within the same class."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study on a small set; the paper does not define what the ± spread measures.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The same-patch value of 1.000 follows from the fidelity definition and carries no class information, yet the abstract cites it as 'within-class self-similarity of 1.00'. The spoof-to-spoof value (0.622 ± 0.018) lies within one spread of the cross-class values (0.614 ± 0.015 and 0.616 ± 0.017), so Table I alone does not separate the classes. Table I is titled 'validation dataset' while the text says dev split."
+    },
+    {
+      "id_suggestion": "qpatch-kernel-similarity-deltas",
+      "value": "The authors report in Table I a drop from ideal of 32.5% and 37.8% for the two within-class different-patch comparisons and 38.6% and 38.4% for the two bona fide to spoof comparisons, and state that the 38.4–38.6% cross-class reduction matches or exceeds the within-class reduction of 32.5–37.8%.",
+      "anchor": "Table I and Section IV-B, p.6",
+      "quotes": [
+        "Baseline Baseline −32.5% −37.8% −38.6% −38.4%",
+        "The 38.4–38.6% reduction observed for bona fide–spoof comparisons matches or exceeds the reduction observed for within-class comparisons across different patches (32.5–37.8%)."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "Computed from one study's Table I values.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "Each delta is one minus the mean similarity, so it adds no information beyond Table I. The cross-class and spoof-spoof means differ by under 0.01, less than the printed spreads."
+    },
+    {
+      "id_suggestion": "qpatch-kernel-class-structure-claim",
+      "value": "The authors state that the kernel is responsive to authenticity-related cues beyond ordinary within-class variation, and that the similarity matrix in Fig. 4 shows visible clustering consistent with class separation.",
+      "anchor": "Section IV-B, p.6; Fig. 4 caption, p.6",
+      "quotes": [
+        "This indicates that the kernel is responsive to authenticity-related cues beyond ordinary within-class variation.",
+        "The similarity matrix in Fig. 4 reinforces this conclusion by showing visible clustering consistent with class separation in the induced feature space."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author interpretation of one table and one figure; no test is reported.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The paper reports no significance test or class-alignment statistic for this claim."
+    },
+    {
+      "id_suggestion": "qpatch-patch-summary-definition",
+      "value": "The authors define a four-dimensional summary of each non-overlapping 4 × 4 time-frequency patch of the standardized log-mel spectrogram: mean patch activation, spectral centroid, spectral bandwidth and inter-frame coherence.",
+      "anchor": "Section III-D, Eqs. (5)-(11), p.3",
+      "quotes": [
+        "We partition the standardized spectrogram M˜ ∈ RT ×F into non-overlapping 4 × 4 time–frequency patches.",
+        "Each patch P is mapped to a four-dimensional summary vector s(P ) = [s1, s2, s3, s4]⊤ that captures local intensity distribution",
+        "(Mean Patch Activation),",
+        "(Spectral Centroid),",
+        "(Inter-frame Coherence)."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines the descriptor in Eqs. (6) to (11) of Section III-D.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The spectral bandwidth equation (10) is garbled in the text layer, so only its name is entered."
+    },
+    {
+      "id_suggestion": "qpatch-front-end-setup",
+      "value": "The authors state that each waveform is resampled to 16 kHz and converted to a log-mel spectrogram with 64 mel bins, using a 25 ms Hann window, a 10 ms hop and a 1024-point FFT, followed by per-utterance standardization.",
+      "anchor": "Section III-C, Eqs. (1)-(4), p.2",
+      "quotes": [
+        "Each waveform x[n] is resampled to 16 kHz and converted into a log-mel spectrogram M ∈ RT ×F with F = 64 mel bins.",
+        "We compute the short-time Fourier transform (STFT) using a 25 ms Hann window and a 10 ms hop, with a 1024-point fast Fourier transform (FFT):",
+        "To reduce utterance-level scale variation, we apply per-utterance standardization:"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own front-end setup in Section III-C.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "qpatch-top-k-selection",
+      "value": "The authors state that patches are ranked by their mean activation s1 and the top two are kept, so each utterance is represented by two patch summaries joined into one feature vector.",
+      "anchor": "Section III-D, Eqs. (12)-(13), p.4",
+      "quotes": [
+        "we rank patches using a simple energy proxy and retain the top two. In our implementation, the ranking score is the mean activation s1(Pi):",
+        "The resulting feature vector is the concatenation of two patch summaries:"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own selection rule in Section III-D.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The spoofs are made by adding noise, and the selection keeps the highest-mean patches; the paper does not test whether the selection rule itself carries the spoof signal."
+    },
+    {
+      "id_suggestion": "qpatch-top-k-limitation",
+      "value": "The authors state that they do not claim mean activation is universally optimal for patch selection, that it may underweight quieter but discriminative regions, and that sensitivity to other criteria and patch sizes is left to future work.",
+      "anchor": "Section III-D, p.4",
+      "quotes": [
+        "We do not claim that mean activation is universally optimal; it may underweight quieter but discriminative regions",
+        "sensitivity to alternative criteria, patch sizes, or small perturbations in spoof generation remains an important direction for future work."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper's own stated limit in Section III-D.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "qpatch-feature-map-definition",
+      "value": "The authors define the Q-Patch feature map for one patch as an RX, RY, RZ, RY rotation layer on four qubits followed by a chain of controlled-Z gates between neighbouring qubits, and for two patches as two such blocks on eight qubits joined by one controlled-Z between qubits q3 and q4.",
+      "anchor": "Section III-E, Eqs. (14)-(18) and Fig. 3, p.4",
+      "quotes": [
+        "Urot(s) = RX (q0, s1) RY (q1, s2) RZ (q2, s3) RY (q3, s4), (14)",
+        "Uent = CZ(q0, q1) CZ(q1, q2) CZ(q2, q3),",
+        "where CZ(q3, q4) introduces a single inter-patch interaction consistent with spatial adjacency."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines its embedding in Eqs. (14) to (18) of Section III-E.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "qpatch-feature-map-no-trainable-parameters",
+      "value": "The authors state that the patch summaries are used directly as rotation angles in the embedding circuit, with no additional learned rescaling or variational parameters, and that Q-Patch needs no iterative optimization of circuit parameters.",
+      "anchor": "Section III-E, p.4; Section III-F, p.5",
+      "quotes": [
+        "the two four-dimensional patch summaries in the concatenated feature vector are used directly as rotation angles in the embedding circuit; no additional learned rescaling or variational parameters are introduced.",
+        "Unlike variational quantum classifiers, Q-Patch does not require iterative optimization of circuit parameters."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its circuit setup in Sections III-E and III-F.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "Spectral centroid and bandwidth are computed over frequency indices, so they are not on the same scale as the mean activation and coherence, yet all four are used as raw angles; the paper does not discuss this."
+    },
+    {
+      "id_suggestion": "qpatch-fidelity-kernel-definition",
+      "value": "The authors define the quantum kernel between two inputs as the squared magnitude of the overlap of their embedded states, build a Gram matrix over the training set from it, and train a standard kernel support vector machine on that precomputed matrix.",
+      "anchor": "Section III-E, Eq. (19), and Section III-F, Eqs. (20)-(21), p.4-5",
+      "quotes": [
+        "We define the quantum kernel between two inputs x and x′ through state fidelity:",
+        "QSVM training uses the precomputed Gram matrix K ∈",
+        "learning reduces to the standard convex support vector machine optimization with a precomputed kernel"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines its kernel in Eqs. (19) to (21) of Sections III-E and III-F.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "qpatch-circuit-depth-bound",
+      "value": "The authors state that circuit depth is limited to d ≤ 3, with single-qubit rotations applied in parallel and entangling operations restricted to local controlled-Z chains.",
+      "anchor": "Section III-E, p.4; Section III-H, p.5; Fig. 3 caption, p.5",
+      "quotes": [
+        "To remain compatible with Noisy Intermediate-Scale Quantum (NISQ) constraints [17], circuit depth is limited to d ≤ 3.",
+        "entangling operations are restricted to local controlled-Z chains, as illustrated in Fig. 3."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its circuit constraint in Section III-E.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The paper gives no gate-by-gate depth count. The controlled-Z chain shares qubits between neighbouring gates, so d ≤ 3 holds only if the commuting controlled-Z gates are scheduled in two layers after one rotation layer; no transpiled circuit is shown."
+    },
+    {
+      "id_suggestion": "qpatch-metric-definition",
+      "value": "The authors define EER as the false positive rate at the operating point where the false positive rate equals the false negative rate, and report AUROC and EER on the dev split.",
+      "anchor": "Section III-G(c), Eq. (22), p.5",
+      "quotes": [
+        "EER is computed at the operating point τ ⋆ where the false positive rate (FPR) equals the false negative rate (FNR):",
+        "We report the area under the receiver operating characteristic curve (AUROC) and equal error rate (EER)."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines its metrics in Section III-G(c).",
+      "result_type": "setup",
+      "context": "method",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "qpatch-preliminary-evidence-no-uncertainty",
+      "value": "The authors state that they treat the observed gains over the baselines as preliminary evidence and leave repeated-split evaluation, uncertainty estimates and confidence intervals to future work on larger datasets.",
+      "anchor": "Section IV-A, p.6",
+      "quotes": [
+        "we treat the observed gains over the baselines as preliminary evidence and leave repeated-split evaluation, uncertainty estimates, and confidence intervals to future work on larger datasets."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper's own stated limit in Section IV-A.",
+      "result_type": "setup",
+      "context": "method",
+      "reader_inference": "All reported values come from one split with no repeats and no seeds, so no figure in Tables I and II has a stated sampling uncertainty beyond the Table I spreads."
+    },
+    {
+      "id_suggestion": "qpatch-spoof-generation-limit",
+      "value": "The authors state that the spoofed samples are made only by additive noise and spectral distortions, which do not capture replay conditions, modern neural text-to-speech systems or voice conversion artifacts, so the results show discriminative potential in a controlled setting and not comprehensive anti-spoof robustness.",
+      "anchor": "Section IV-F(a), p.7",
+      "quotes": [
+        "they do not capture the full diversity of real-world attacks, including replay conditions, modern neural text-to-speech systems, and voice conversion artifacts.",
+        "evidence of discriminative potential in a controlled setting rather than as a claim of comprehensive anti-spoof robustness."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper's own stated limit in Section IV-F(a).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The task evaluated is detection of added noise and spectral distortion on LJ Speech, not detection of generated speech, although the title and abstract name audio deepfake detection."
+    },
+    {
+      "id_suggestion": "qpatch-hardware-gap-limit",
+      "value": "The authors state that kernel values were evaluated under ideal quantum simulation, that real hardware adds noise, gate errors, decoherence and finite-shot effects, and that studies under realistic noise models or on physical devices are needed to characterize deployment robustness.",
+      "anchor": "Section IV-F(c), p.7",
+      "quotes": [
+        "The current study evaluates kernel values under ideal quantum simulation.",
+        "additional studies under realistic noise models or on physical devices will be necessary to characterize deployment robustness."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper's own stated limit in Section IV-F(c).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "qpatch-no-ablation-limit",
+      "value": "The authors state that a broader ablation study over patch size, k, circuit depth and entanglement pattern was not feasible within the present compute and page budget, so the reported configuration is a design point and not an exhaustive exploration.",
+      "anchor": "Section IV-F(d), p.7",
+      "quotes": [
+        "A broader ablation study over patch size, k, circuit depth, and entanglement pattern was not feasible",
+        "within the present compute and page budget. The reported configuration should therefore be viewed as a principled design point rather than an exhaustive exploration of the design space."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper's own stated limit in Section IV-F(d).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "Without an ablation the paper cannot say whether the entanglement or the quantum embedding drives the gain over the RBF-SVM."
+    },
+    {
+      "id_suggestion": "qpatch-simulation-environment",
+      "value": "The authors state that all experiments ran in simulation on a CPU-only environment, using Python, scikit-learn for the support vector machine and an unnamed quantum simulation framework for kernel fidelities.",
+      "anchor": "Section III-H, p.5",
+      "quotes": [
+        "All experiments were executed in simulation on a CPU-only environment.",
+        "framework for kernel-fidelity computation."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own implementation statement in Section III-H.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The simulation framework, its version and the code are not named in the text; the paper offers no code or data link."
+    },
+    {
+      "id_suggestion": "qpatch-kernel-cost-scaling",
+      "value": "The authors state that QSVM needs a number of kernel evaluations of order N squared for a training set of size N, and that on hardware these would be estimated by repeated measurements with a shot budget, creating a trade-off among dataset size, estimation variance and runtime.",
+      "anchor": "Section IV-E, p.7",
+      "quotes": [
+        "For a training set of size N , QSVM requires O(N 2) kernel evaluations.",
+        "on hardware, they would need to be estimated through repeated measurements with a shot budget M , creating a trade-off among dataset size, estimation variance, and runtime."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A scaling statement made in passing, with no derivation or measurement in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The paper reports no runtime, shot count or cost measurement."
+    },
+    {
+      "id_suggestion": "qpatch-low-data-suitability-claim",
+      "value": "The authors state that Q-Patch is well suited to a low-data regime because of dimensionality reduction by patch summarization and top-k selection together with margin-based learning in kernel space, and that large-margin separation can help reduce overfitting when labeled data are limited.",
+      "anchor": "Section IV-D, p.7",
+      "quotes": [
+        "Q-Patch is well suited to such conditions because it combines two desirable properties",
+        "which can help reduce overfitting when labeled data are limited."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author argument with no experiment in the paper that varies training size or tests overfitting.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The RBF-SVM baseline also learns by margin in kernel space on the same eight-dimensional input, so the stated reasons do not by themselves separate Q-Patch from it."
+    },
+    {
+      "id_suggestion": "qpatch-no-emissions-estimate",
+      "value": "The authors state that no direct emissions estimate was made for the study and that carbon reporting is a recommendation for future larger-scale or hardware-based evaluations.",
+      "anchor": "Section IV-G, p.8",
+      "quotes": [
+        "No direct emissions estimate was made for the present study.",
+        "carbon reporting is best framed here as a recommendation for future larger-scale or hardware-based evaluations rather than as a completed measurement."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper's own statement in Section IV-G.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "qpatch-conclusion",
+      "value": "The authors conclude that Q-Patch induces class-consistent kernel structure and improves performance over matched classical baselines in a controlled, balanced validation setup, and that the work should be viewed as a feasibility study under compute and circuit-depth constraints.",
+      "anchor": "Section V, p.8; Abstract, p.1",
+      "quotes": [
+        "showed that Q-Patch induces class-consistent kernel structure and improves performance over matched classical baselines",
+        "The present work should be viewed as a feasibility study under compute and circuit-depth constraints."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author conclusion resting on one 20-sample dev split.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The conclusion that the quantum feature map gives a useful inductive bias is not isolated by an ablation, and no classical kernel other than the RBF kernel on the same features is tried."
+    },
+    {
+      "id_suggestion": "qpatch-cited-feature-map-design",
+      "value": "The authors state that Schnabel and Roth [13] show that feature-map design plays a central role in kernel expressivity.",
+      "anchor": "Section II-B, p.2",
+      "quotes": [
+        "Schnabel and Roth [13] show that feature-map design plays a central role in kernel expressivity."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "qpatch-cited-sparse-subnetworks",
+      "value": "The authors state that Al Amin et al. [11] show that sparse subnetworks can retain strong detection capability.",
+      "anchor": "Section II-A, p.2",
+      "quotes": [
+        "Al Amin et al. [11] show that sparse subnetworks can retain strong detection capability."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work, a self-citation.",
+      "result_type": "cited",
+      "context": "ml",
+      "reader_inference": ""
+    }
+  ]}]}
