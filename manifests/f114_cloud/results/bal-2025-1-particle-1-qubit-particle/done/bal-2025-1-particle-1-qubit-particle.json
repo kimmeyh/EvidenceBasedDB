@@ -1,0 +1,635 @@
+{"papers": [{
+  "record_id": "bal-2025-1-particle-1-qubit-particle",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Bal-et-al._2025_1-Particle-1-Qubit-Particle-Physics-Data-Encoding-for-Quantum-Machine-Learning__2502.17301.pdf",
+  "title_in_file": "One particle - one qubit: Particle physics data encoding for quantum machine learning",
+  "version_note": "arXiv:2502.17301v2 (9 Oct 2025), marked as published in Physical Review D 112 (2025), 076004. The text layer has 9 pages (the form-feed split gives a 10th, empty chunk). Page numbers in anchors follow the printed page headers in the text layer.",
+  "pages": 9,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A letter that proposes the 1P1Q encoding (one qubit per jet constituent, with pT, eta and phi mapped to Bloch-sphere angles) and tests it in simulation with a quantum autoencoder for anomaly detection and a variational quantum classifier for top-jet tagging, including a QAE trained on 2016 CMS data.",
+  "bears_on_context": "qml",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "1p1q-qae-beats-cae",
+      "verdict": "narrowed",
+      "note": "The paper limits the comparison: one configuration (10 input qubits, latent space of 2), training on simulated QCD jets, and only three signals in the benchmark (hadronic W boson, Higgs boson and top quark decays; Table I shows W to qq, H to bb and t to bqq). 'Across all signal types' means these three. The 31 parameters match the stated 3N + 1 count for N = 10. The margin for top jets is small (0.872 against 0.858). No repeated runs or uncertainties are given.",
+      "value": "The authors report that, for a QAE with 10 input qubits and a latent space of 2, trained on simulated QCD jets, the QAE achieves superior performance compared to the CAE for the signals of hadronic W boson, Higgs boson and top quark decays, with only 31 trainable parameters against about 2,500 for the CAE.",
+      "anchor": "Results and Benchmarking, p.4 (benchmark paragraphs); Table I, p.5",
+      "quotes": [
+        "The QAE achieves superior performance compared to the CAE across all signal types.",
+        "The QAE maintains this advantage despite having only 31 trainable parameters, in contrast to the CAE’s ∼2,500 parameters",
+        "While the QAE has a simple structure of 10 input qubits, followed by the circuit of Fig. 2 (left) and a latent space of 2",
+        "we trained on simulated QCD jets and considered as anomalies to this background the signals of hadronic W boson, Higgs boson and top quark decays"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study, simulation only.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The paper reports one AUC per signal and model, with no repeated training runs, seeds or error bars, so the size of the gap (0.014 AUC for top jets) cannot be judged against run-to-run variation."
+    },
+    {
+      "id": "1p1q-simulation-scope-limit",
+      "verdict": "confirmed",
+      "note": "Both sentences are in the 1P1Q - Particle Encoding section. In this text layer they are on page 2 (the brief says p.3).",
+      "value": "The authors state that they limit the study to jet substructure rather than whole events, and use up to ten of the hardest constituents, because of the limits of current quantum computers and their simulators.",
+      "anchor": "1P1Q - Particle Encoding, p.2",
+      "quotes": [
+        "we limit our studies to the intrinsic structure of jets rather than entire events due to the limitations of currently available quantum computers and their simulators",
+        "we limit our study by using up to ten hardest jet constituents"
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper states its own scope in the encoding section, p.2.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The text gives two reasons: the first sentence names quantum computers and their simulators for the jet-only limit; the second names efficient simulation of the circuits for the ten-constituent limit."
+    },
+    {
+      "id": "1p1q-vqc-near-sota",
+      "verdict": "narrowed",
+      "note": "The paper compares the VQC with one classical model (the Particle Transformer), not with state-of-the-art models in general, and both were trained on the same dataset of 1000 jets with the 10 hardest particles per jet. The AUC is 0.885 for the VQC against 0.898 for ParT; the parameter counts are 32 against over 2 million. The paper adds that the VQC gives better background rejection at high signal efficiency.",
+      "value": "The authors report that the VQC, trained with the 10 hardest particles per jet on a dataset of 1000 jets, reaches an AUC score of 0.885 against 0.898 for the Particle Transformer, with 32 trainable parameters against over 2 million, and state that it approaches the performance of state-of-the-art classical models.",
+      "anchor": "Results and Benchmarking, p.4 to p.5; Fig. 5, p.6; Summary, p.6",
+      "quotes": [
+        "the VQC exhibits strong classification capability, approaching the performance of state-of-theart classical models despite its minimal parameter count.",
+        "both trained using the 10 hardest particles per jet, and the same dataset of 1000 jets",
+        "with an AUC score of 0.885",
+        "the ParT model achieves a slightly higher AUC of 0.898",
+        "the VQC remains competitive despite having significantly fewer trainable parameters (32 vs. over 2 million)"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study, simulation only.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The paper does not say how ParT was trained on 1000 jets, and a model with over 2 million parameters trained on 1000 jets is outside its usual regime, so 'state-of-the-art' describes the model class and not a tuned result. The paper also gives no run-to-run spread for either AUC."
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "1p1q-encoding-definition",
+      "value": "The authors define the 1P1Q encoding as assigning a separate qubit to each particle, with each particle's kinematics encoded directly on its qubit and no prior data compression.",
+      "anchor": "Introduction, p.1; 1P1Q - Particle Encoding, p.2",
+      "quotes": [
+        "This encoding strategy assigns a separate qubit to each particle",
+        "The 1P1Q method directly encodes the kinematics of a particle on a qubit.",
+        "Each particle is encoded on a different qubit."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines its own encoding in the Introduction and the encoding section.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "1p1q-bloch-sphere-mapping",
+      "value": "The authors state that the pseudorapidity and the azimuthal angle of a particle, modulated by the transverse momentum normalized to the jet transverse momentum, are used as spherical coordinates on the Bloch sphere to orient the qubit.",
+      "anchor": "1P1Q - Particle Encoding, p.2 (Eqs. 1 to 3)",
+      "quotes": [
+        "The pseudorapidity η and the azimuthal angle ϕ of the particle, modulated by the transverse momentum pT normalized to the pT of the jet, are used as spherical coordinates on the Bloch sphere to ori-"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines the mapping in the encoding section, p.2.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The text layer prints Eq. 3 with the basis state |0⟩ in both terms (alpha |0⟩ + beta |0⟩); this is most likely a typesetting slip for |1⟩ in the second term, and no value in the paper depends on it. Eq. 4 as printed reads as 2π over (1 + e to the minus w), plus 1, which stays between 1 and 2π + 1 and so matches the stated range."
+    },
+    {
+      "id_suggestion": "1p1q-scaling-factor-range",
+      "value": "The authors state that the encoded angles are additionally scaled by a factor f, a function of a trainable parameter w, constrained to lie between 1 and 2π + 1, so that the particles spread out across the Bloch sphere instead of clustering close to its North Pole.",
+      "anchor": "1P1Q - Particle Encoding, p.3 (Eq. 4)",
+      "quotes": [
+        "are then additionally scaled by a factor f = f (w) constrained to lie between [1, 2π + 1], where w is a trainable parameter.",
+        "This ensures the particles can spread out across the Bloch sphere instead of clustering too closely around its North Pole."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines the scaling and its range in the encoding section.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "1p1q-learned-scaling-factor-vqc",
+      "value": "The authors report in the Bloch sphere figure caption that the value of w converges to a scaling factor f of 7.268 for the VQC.",
+      "anchor": "Fig. 1 caption, p.3",
+      "quotes": [
+        "The value of w converges to a scaling factor f = 7.268 for the VQC."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one training run.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The value lies close to the upper end of the allowed range (2π + 1 is about 7.283), so the learned scaling sits near the largest spread the encoding permits."
+    },
+    {
+      "id_suggestion": "1p1q-coordinates-relative-to-jet-axis",
+      "value": "The authors state that in the encoding equations the coordinates pseudorapidity and azimuthal angle are taken relative to the jet axis.",
+      "anchor": "1P1Q - Particle Encoding, p.2",
+      "quotes": [
+        "In the above equations, we take the coordinates η and ϕ relative to the jet axis."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own setup in the encoding section.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "1p1q-qae-circuit-setup",
+      "value": "The authors state that the QAE entangles all possible pairs of qubits with two-qubit CNOT gates, applies three parameterized rotations to each qubit, and was trained with 6, 8 and 10 particles as input.",
+      "anchor": "Anomaly detection and classification with 1P1Q, p.3 (Eq. 5; Fig. 2)",
+      "quotes": [
+        "we entangle all possible pairs of qubits using two-qubit CNOT gates",
+        "we apply three parameterized rotations, one along each axis of each qubit",
+        "while the QAEs trained are using 6, 8, and 10 particles as input, respectively"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own QAE setup on p.3.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "1p1q-qae-trash-reference-definition",
+      "value": "The authors define the QAE reconstruction quality as the fidelity between the trash and reference states; the number of reference states equals the number of trash states, and the reference states are initialized to the zero state.",
+      "anchor": "Anomaly detection and classification with 1P1Q, p.3",
+      "quotes": [
+        "replace a certain number of qubits (hereafter referred to as Ntrash trash states) with Nref = Ntrash reference states that are initialized to |0⟩",
+        "We expect this reconstruction quality, defined as the fidelity between the trash and reference states, to differ between signal and background"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines its own QAE quantities on p.3.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "1p1q-vqc-circuit-setup",
+      "value": "The authors state that the VQC encodes features with the same procedure, entangles only adjacent qubits with CNOT gates, applies three trainable rotation gates to each qubit, and reads out a measurement on the first qubit that is bound in the interval from minus one to one.",
+      "anchor": "Anomaly detection and classification with 1P1Q, p.3 (Eq. 6; Fig. 2)",
+      "quotes": [
+        "Only adjacent qubits are entangled for the VQC",
+        "Three trainable rotation gates are applied to each qubit, as summarized in Eq. 6.",
+        "the VQC is optimized by performing a measurement on the first qubit which is bound in [−1, 1]"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own VQC setup on p.3.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "1p1q-vqc-adjacent-entanglement-best",
+      "value": "The authors state that entangling only adjacent qubits in the VQC is what they find gives the best performance.",
+      "anchor": "Anomaly detection and classification with 1P1Q, p.3",
+      "quotes": [
+        "which we find gives the best performance"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author claim; the paper shows no comparison of entanglement layouts.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "No result for another entanglement layout (for example all pairs, as used in the QAE) appears in the paper."
+    },
+    {
+      "id_suggestion": "1p1q-parameter-counts",
+      "value": "The authors state that for an input of the N hardest particles per jet, the QAE requires only 3N + 1 trainable parameters and the VQC requires only 3N + 2 parameters, the extra parameter of the VQC being a trainable bias term added to the measurement.",
+      "anchor": "Anomaly detection and classification with 1P1Q, p.3",
+      "quotes": [
+        "the QAE requires only 3N + 1 trainable parameters to learn a suitable reconstruction of the inputs",
+        "the VQC requires only 3N + 2 parameters (the extra parameter of the VQC being a trainable bias term that is added to the measurement)"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own model sizes on p.3.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "For N = 10 these formulas give 31 and 32, which match the 31 and 32 parameters the paper reports in the benchmarks. The count of 3N parameters comes from the rotation layer; the encoding scale parameter w is not listed separately in the text."
+    },
+    {
+      "id_suggestion": "1p1q-training-objectives",
+      "value": "The authors state that the QAE is trained by minimizing the negative of the fidelity, measured with a SWAP test that needs an ancillary qubit, and that the VQC prediction is the expectation value of the Pauli Z observable on the first qubit plus a trainable classical bias term, trained with the mean squared error against the truth label.",
+      "anchor": "Appendix, Training setup, p.7",
+      "quotes": [
+        "we minimize the cost function defined as the negative of the fidelity",
+        "This measurement is performed using a SWAP test",
+        "adding a classical, trainable bias term b to the expectation value",
+        "The circuit optimization is performed using the Mean Squared Error (MSE) between the prediction and the truth label as the loss function."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own training objectives in the appendix.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "1p1q-simulated-circuits-adam",
+      "value": "The authors state that the quantum circuits in the study are simulated and optimized with the pennylane library on the lightning.gpu and lightning.kokkos devices, and that the trainable parameters are optimized with the classical Adam Optimizer and a learning-rate scheduler that decays the rate periodically.",
+      "anchor": "Appendix, Training setup, p.7",
+      "quotes": [
+        "The quantum circuits presented in this study are simulated and optimized using the Quantum Machine Learning library pennylane",
+        "with the lightning.gpu and lightning.kokkos devices",
+        "The trainable circuit parameters are optimized using the classical Adam Optimizer"
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper states that all circuits are simulated, in the appendix.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "No result in the paper comes from quantum hardware or from a noise model; all reported quantum-model numbers are noiseless-simulation results as far as the text states. The text gives no epoch count, learning rate or random seeds."
+    },
+    {
+      "id_suggestion": "1p1q-cae-baseline-architecture",
+      "value": "The authors state that the classical autoencoder baseline has an input feature vector of size 30, dense layers of sizes 20, 16 and 12, a latent space of size 6, and a decoder with an identical but inverse structure.",
+      "anchor": "Results and Benchmarking, p.4",
+      "quotes": [
+        "an input feature vector of size 30, to be able to encode the same number of features encoded on the QAE",
+        "followed by dense layers of size 20 − 16 − 12 and a latent space 6.",
+        "The decoder of the CAE has an identical, yet inverse, structure."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own baseline setup on p.4.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The paper does not say how the CAE was tuned or trained (optimizer, epochs, regularization), so how strong a baseline it is cannot be judged from the text."
+    },
+    {
+      "id_suggestion": "1p1q-table1-qae-vs-cae-auc",
+      "value": "The authors report in Table I, for a 10-particle input space, AUC scores for the QAE of 0.715, 0.774 and 0.872 and for the CAE of 0.671, 0.739 and 0.858, for the signals W to qq, H to bb and t to bqq in that column order.",
+      "anchor": "Table I, p.5",
+      "quotes": [
+        "TABLE I: AUC scores for QAE vs CAE, trained on a 10-particle input space.",
+        "Algorithm Signals W → qq′ H → bb t → bqq′",
+        "0.715 0.774 0.872",
+        "0.671 0.739 0.858"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study, simulation only.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The QAE leads by 0.044, 0.035 and 0.014 AUC in the three columns. No run-to-run spread is given. The inference sample also holds H to cc, H to gg and Z to qq (Appendix, Datasets), but Table I reports only three signals."
+    },
+    {
+      "id_suggestion": "1p1q-vqc-vs-part-rejection",
+      "value": "The authors report that for signal efficiencies above 80%, the VQC yields better background rejection than the Particle Transformer, and the ROC figure legend lists a REJ90 % value of 4.49 for the VQC and 3.89 for ParT.",
+      "anchor": "Results and Benchmarking, p.5; Fig. 5, p.6",
+      "quotes": [
+        "for high signal efficiencies (>80%), the VQC yields better background rejection than the Particle Transformer.",
+        "VQC (1P1Q) | AUC = 0.885 | REJ90 % = 4.49 ParT | AUC = 0.898 | REJ90 % = 3.89"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study, simulation only.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The text does not define REJ90 in words; it is read here as the background rejection at 90% signal efficiency, which agrees with the statement for efficiencies above 80%."
+    },
+    {
+      "id_suggestion": "1p1q-fig4-fidelity-auc-trend",
+      "value": "The authors report that across QAE configurations trained on simulated JetClass QCD jets or on real CMS data, higher AUC scores correlate with larger average fidelity loss for QCD jets, and they state this indicates the fidelity loss is a useful proxy for anomaly detection performance.",
+      "anchor": "Results and Benchmarking, p.4 to p.5; Fig. 4, p.5",
+      "quotes": [
+        "we observe a trend that higher AUC scores correlate with increased ⟨1 − Fidelity⟩QCD",
+        "indicating that the fidelity loss serves as a useful proxy for anomaly detection performance"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical trend from one study, simulation and one real-data training set.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The correlation is read from a plot of configurations; no correlation coefficient is given."
+    },
+    {
+      "id_suggestion": "1p1q-fig4-signal-ordering-and-input-size",
+      "value": "The authors report that the QAE discrimination is particularly strong for top quark jets, which consistently achieve the highest AUC scores, followed by Higgs decays to bottom quarks, and that larger input sizes tend to improve performance, for models with 6, 8 and 10 jet constituents.",
+      "anchor": "Results and Benchmarking, p.4 to p.5; Fig. 4, p.5",
+      "quotes": [
+        "The discrimination is particularly strong for top quark jets",
+        "which consistently achieve the highest AUC scores, followed by Higgs decays to bottom quarks",
+        "larger input sizes tend to improve performance",
+        "namely 6, 8, and 10 jet constituents, respectively"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study, simulation and one real-data training set.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The text says larger inputs 'tend to' help; the phrase 'suggesting that incorporating more jet constituents provides richer representations' is the authors' reading of a plot, with no numeric table for Fig. 4."
+    },
+    {
+      "id_suggestion": "1p1q-real-data-qae-comparable",
+      "value": "The authors report that a QAE trained on real experimental data, the 2016 CMS jet data that is more than 99% pure in QCD jets, is comparable in performance to one trained on simulated events, when applied to differentiating simulated QCD events from simulated signal models, and they state this is the first time to their knowledge.",
+      "anchor": "Results and Benchmarking, p.4; Fig. 3, p.4; Fig. 4, p.5",
+      "quotes": [
+        "real jet data recorded with the CMS Detector in 2016 [33], which is >99% pure in QCD jets",
+        "For the first time, to our knowledge, Fig. 3 shows that a QAE trained on real experimental data is comparable in performance to one trained on simulated events",
+        "when applied to the task of differentiating between simulated QCD events and simulated signal models"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study; the comparison is read from figures.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The test signals and the reference QCD jets are simulated, so the real-data result shows that training on real CMS jets gives a similar anomaly score on simulated test jets; it does not test the detector response on real signal events. Fig. 3 is a histogram and gives no AUC for the real-data model."
+    },
+    {
+      "id_suggestion": "1p1q-real-data-interpretation",
+      "value": "The authors state that the real-data result suggests a QAE using 1P1Q encoding, despite not using high-level information, can extract the underlying physics of the jet and is neither corrupted nor biased by the detector response.",
+      "anchor": "Results and Benchmarking, p.4",
+      "quotes": [
+        "This suggests that a QAE using 1P1Q encoding, despite not using high-level information, can extract the underlying physics of the jet",
+        "is neither corrupted nor biased by the detector response"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author interpretation of one result.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The paper offers no test of detector bias beyond the similarity of the two training sets' results on simulated test jets."
+    },
+    {
+      "id_suggestion": "1p1q-table2-feature-ablation",
+      "value": "The authors report in Table II, for the benchmark signal t to bqq, AUC scores for the VQC of 0.886, 0.856, 0.808 and 0.857 and for the QAE of 0.872, 0.825, 0.823 and 0.827, with inputs (pT, eta, phi), (pT, eta), (eta, phi) and (pT, phi) in that column order, obtained by successively reducing the features encoded on each qubit.",
+      "anchor": "1P1Q encoding section, p.5; Table II, p.5",
+      "quotes": [
+        "we successively reduce the features encoded on each qubit and observe the resulting performance degradation",
+        "Inputs (pT, η, ϕ) (pT, η) (η, ϕ) (pT, ϕ)",
+        "0.886 0.856 0.808 0.857",
+        "0.872 0.825 0.823 0.827"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study, simulation only.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The full-input VQC AUC is 0.886 in Table II and 0.885 in the Fig. 5 text, a small difference the paper does not explain. For the QAE the drop when pT is excluded (0.823) is only 0.002 below the next case (0.825), so the QAE ordering of the reduced inputs is not clear."
+    },
+    {
+      "id_suggestion": "1p1q-ablation-interpretation",
+      "value": "The authors state that the best AUC scores occur with all three features, that the most pronounced reduction occurs when pT is excluded, and that this suggests quantum models are particularly effective at utilizing correlations between momentum and angular variables.",
+      "anchor": "1P1Q encoding section, p.5; Summary, p.6",
+      "quotes": [
+        "The best AUC scores are achieved when all three features (pT, η, ϕ) are included",
+        "with the most pronounced reduction occurring when pT is excluded",
+        "suggests that quantum models are particularly effective at utilizing correlations between momentum and angular variables"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author interpretation of Table II.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "Table II has no classical model run on the same reduced inputs, so it cannot show that the quantum models use momentum-angle correlations better than a classical model would."
+    },
+    {
+      "id_suggestion": "1p1q-qae-training-evaluation-sample-sizes",
+      "value": "The authors state that the QAE is trained on 10,000 events and validated on 2,500 events, with inference on 10,000 events of background and of each signal class, and that the VQC is trained on 1,000 events and validated on 500 events, with an inference dataset of 10,000 events equally distributed between signal and background.",
+      "anchor": "Appendix, Datasets, p.7",
+      "quotes": [
+        "For training the QAE, we use a total of 10,000 events for training and 2,500 events for validation.",
+        "Inference is performed on 10,000 events of background and of each of the following class of events",
+        "The VQC is trained using 1,000 events and validated on 500 events",
+        "with an inference dataset of 10,000 events equally distributed between signal and background classes"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own data sizes in the appendix.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "Training sets of 1,000 to 10,000 events are small for jet tagging, where the JetClass set holds 100M jets, so the results show small-data behavior."
+    },
+    {
+      "id_suggestion": "1p1q-jetclass-dataset-setup",
+      "value": "The authors state that the JetClass dataset contains a total of 100M jets divided into 10 classes, that jets are clustered with the anti-kT algorithm with a distance parameter R of 0.8, and that only jets with pT in the range 500 to 1000 GeV and pseudorapidity below 2 in absolute value are stored.",
+      "anchor": "Appendix, Datasets, p.7 to p.8",
+      "quotes": [
+        "It contains a total of 100M jets divided into 10 classes.",
+        "Jets are clustered utilizing the antikT algorithm [42] with a distance parameter R = 0.8.",
+        "only jets with pT ∈ [500, 1000] GeV and pseudorapidity |η| < 2 are stored"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states the data it uses in the appendix.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "1p1q-aspen-open-jets-dataset-setup",
+      "value": "The authors state that the Aspen Open Jets dataset is derived from the CMS 2016 JetHT datasets, that contamination from W/Z boson or top quark processes is less than 1% of the total sample, and that it contains approximately 180M jets recorded in 2016.",
+      "anchor": "Appendix, Datasets, p.7 to p.8",
+      "quotes": [
+        "The Aspen Open Jets (AOJ) dataset [33] is derived from the CMS 2016 JetHT datasets",
+        "contamination from alternative decay processes such as those involving W/Z bosons or top quarks constituting less than 1% of the total sample size",
+        "the dataset contains approximately 180M jets recorded in 2016 with the CMS detector"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states the data it uses in the appendix.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The purity figure is stated by the authors and cited to the dataset paper; the letter does not measure it."
+    },
+    {
+      "id_suggestion": "1p1q-flat-pt-sampling",
+      "value": "The authors state that for training they first sample jets so that each class has a flat distribution in jet pT in the range 500 to 1000 GeV, so as not to bias the training towards the scale of the jet, and that the inference samples have the same flat distribution.",
+      "anchor": "Appendix, Datasets, p.8; Fig. 6, p.8",
+      "quotes": [
+        "we first sample jets such that each class has a flat distribution in jet pT, in the range [500, 1000] GeV",
+        "The jet samples used in the inference are also sampled to have the same flat distribution."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own sampling setup in the appendix.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "1p1q-qae-prior-success-cited",
+      "value": "The authors state, citing earlier work, that QAEs have shown first successes compared to classical autoencoders regarding training efficiency and performance in specific examples.",
+      "anchor": "Anomaly detection and classification with 1P1Q, p.3",
+      "quotes": [
+        "Using specific examples, QAEs have shown first successes compared to classical AEs regarding training efficiency and performance"
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "1p1q-lossless-raw-access-claim",
+      "value": "The authors state that, unlike existing approaches that first compress the collider events into a latent representation, 1P1Q guarantees more immediate access to the raw information of collider events, and that they show 1P1Q can become a modern, lossless collider data encoding framework as quantum computing hardware advances.",
+      "anchor": "Introduction, p.1 to p.2",
+      "quotes": [
+        "Instead, 1P1Q guarantees more immediate access to the raw information of collider events",
+        "we show that 1P1Q can become a modern, lossless collider data encoding framework as quantum computing hardware advances"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author claim; the paper shows no information-loss measurement.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "In the setup the paper reports, three kinematic quantities per particle are mapped to two angles, only up to ten of the hardest constituents are kept, and particle identity is not encoded, so 'lossless' describes the goal and not the tested setup. No reconstruction of the original particle list from the encoded state is shown."
+    },
+    {
+      "id_suggestion": "1p1q-existing-approaches-lose-information-claim",
+      "value": "The authors state that information on intricate correlations between particles is at risk of being lost in existing approaches that first encode the collider events into an abstract, typically compressed, latent representation using classical machine learning algorithms or domain-inspired high-level features.",
+      "anchor": "Introduction, p.1 to p.2",
+      "quotes": [
+        "Such information is at risk of being lost in existing approaches",
+        "which first encode the information of the collider"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author claim about other work, without a comparison in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "No result in the paper compares 1P1Q with any of those existing approaches."
+    },
+    {
+      "id_suggestion": "1p1q-reduced-resources-conclusion",
+      "value": "The authors state that their quantum machine learning method offers competitive performance to classical state-of-the-art frameworks with drastically reduced computational resources, and that the results establish 1P1Q as a viable and scalable data representation framework for quantum computing applications in particle physics.",
+      "anchor": "Results and Benchmarking, p.5; Summary, p.6",
+      "quotes": [
+        "Such a quantum machine learning method offers competitive performance to classical state-of-the-art frameworks with drastically reduced computational resources.",
+        "These robust results establish the 1P1Q encoding as a viable and scalable data representation framework for quantum computing applications in particle physics."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author conclusion; the paper measures parameter counts, not compute, and tests at most ten qubits.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The paper compares trainable parameter counts (31 and 32 against about 2,500 and over 2 million) and does not report run time or compute cost; its circuits run on classical GPU simulators. It tests no more than ten particles, so scalability beyond that is not tested."
+    },
+    {
+      "id_suggestion": "1p1q-no-hardware-future-outlook",
+      "value": "The authors state that, as quantum hardware continues to advance, the efficiency of the 1P1Q approach is tailored for more intricate and large-scale QML applications in high-energy physics, and that 1P1Q provides a natural way of extending the input space as quantum computers and their simulators accommodate more qubits.",
+      "anchor": "Introduction, p.2; Summary, p.6",
+      "quotes": [
+        "1P1Q therefore also provides a natural way of extending the input space as quantum computers and their simulators can accommodate more and more qubits.",
+        "As quantum hardware continues to advance, the efficiency of the 1P1Q approach is tailored for"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author outlook; no result in the paper tests larger inputs or hardware.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The text layer cuts the Summary sentence at 'is tailored for' and continues on the next page column as 'more intricate and large-scale QML applications'; the value joins the two parts."
+    }
+  ]
+}]}
