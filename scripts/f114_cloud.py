@@ -176,7 +176,8 @@ def run_all(max_inflight: int = 5, poll: int = 300, model: str = "sonnet") -> No
     while not (WORK / "STOP").exists():
         tally = fetch()
         started = launches()
-        refused = {x.split(":")[0] for x in tally["refused"]}
+        # Marked unread by the team lead (an image-only PDF, 2026-10-27): never in flight, never launched again.
+        refused = {x.split(":")[0] for x in tally["refused"]} | {r for r, v in started.items() if v.get("unread")}
         given_up = {r for r in tally["stale"] if started[r].get("attempts", 1) >= MAX_ATTEMPTS}
         retry = [r for r in tally["stale"] if r not in given_up and r not in refused]
         inflight = [r for r in started if r not in done() and r not in tally["stale"] and r not in refused]
