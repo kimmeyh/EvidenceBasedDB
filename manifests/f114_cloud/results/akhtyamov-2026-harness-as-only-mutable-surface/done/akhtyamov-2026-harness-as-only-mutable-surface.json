@@ -1,0 +1,1008 @@
+{
+ "papers": [
+  {
+   "record_id": "akhtyamov-2026-harness-as-only-mutable-surface",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2026-10_Akhtyamov_The-Harness-as-the-Only-Mutable-Surface-Compliance-Bounded_2610.10629.pdf",
+   "title_in_file": "The Harness as the Only Mutable Surface: Compliance-Bounded Self-Evolution of LLM Agents in Credit Pipelines, with a Measured Admission Gate",
+   "version_note": "arXiv:2610.10629v1 [cs.AI], 7 Oct 2026; the text is the record's paper. Preprint, not peer reviewed.",
+   "pages": 14,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A position paper with a simulation study measuring an admission gate that confines LLM-agent self-evolution to the runtime harness in a synthetic credit-screening pipeline, with an EU AI Act mapping.",
+   "bears_on_context": "world",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "akhtyamov-gate-admission-results",
+     "verdict": "narrowed",
+     "note": "The numbers are right. Section 10 limits the claim: the held-out history (Hval) is an interleaved half of the same pre-shift stream, labelled by the same deterministic rule as the gate pool, so zero false admissions is expected for any gated arm. The informative contrast is against the no-gate arm and on the post-shift held-out window. Section 7.1 also limits the no-gate harm: under the threshold family the no-gate arm's missed-flag rate stays near the oracle's; the loosening is a scope and structural effect.",
+     "value": "The authors report that the gated dual loop admitted 144 of 7,449 candidate changes, none of which worsened error on held-out history, and that the no-gate arm admitted 309 harmful changes and left missed flags above 10% in 49 of 90 runs; the authors state that the false-admission audit is weak by construction, because the gate half and the audit half are interleaved halves of the same pre-shift stream labelled by the same deterministic rule.",
+     "anchor": "Abstract, p1; Section 10, p12",
+     "quotes": [
+      "the gated dual loop admitted 144 of 7,449 candidate changes, none of which worsened error on held-out history",
+      "the same loops admitted 309 harmful changes and left missed flags above 10% in 49 of 90 runs",
+      "The false-admission audit is weak by construction.",
+      "Hsel and Hval are interleaved halves of the same pre-shift stream labelled by the same deterministic rule"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one synthetic study. Not upgraded.",
+     "result_type": "measured",
+     "context": "world",
+     "reader_inference": "The held-out history that the 144 admissions are checked against is the same pre-shift stream the gate used, so the zero is close to guaranteed. The 49 of 90 comparison is the informative result."
+    },
+    {
+     "id": "akhtyamov-gate-tolerance-failure",
+     "verdict": "confirmed",
+     "note": "Right as stored. Detail in Section 7.6 and Table 6: at the highest structural severity with the tolerance at 0.005 the dual loop recovered in 5 of 10 seeds; at 0.010 it recovered in 10 of 10.",
+     "value": "The authors report that at the highest structural severity the gate's fixed tolerance blocked the correct replacement in half the seeds.",
+     "anchor": "Abstract, p1; Section 7.6, p10",
+     "quotes": [
+      "at the highest structural severity the gate’s fixed tolerance blocked the correct replacement in half the seeds"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one synthetic study. Not upgraded.",
+     "result_type": "measured",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id": "akhtyamov-no-supervisor-review",
+     "verdict": "confirmed",
+     "note": "Right as stored. Section 8 repeats it: no examiner has reviewed any artefact.",
+     "value": "The authors state that no supervisor has reviewed the regulatory mapping.",
+     "anchor": "Section 1, p2; Section 8, p11",
+     "quotes": [
+      "No supervisor has reviewed the mapping."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope limit in the introduction.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id": "akhtyamov-synthetic-no-llm",
+     "verdict": "widened",
+     "note": "The paper also says the agent is not a language model (a deterministic rule with a 2% outcome flip) and that the typed library contains the correct primitive by construction.",
+     "value": "The authors state that the proposer is a seeded search over a stated edit space and not a language model, that the agent is a deterministic rule that applies the harness with a 2% outcome flip standing in for execution error, and that all data are synthetic.",
+     "anchor": "Section 1, p2; Section 10, p12",
+     "quotes": [
+      "The proposer in our experiments is a seeded search over a stated edit space, not a language model",
+      "All data are synthetic.",
+      "The agent is a deterministic rule that applies the harness, with a 2% outcome flip standing in for execution error"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own setup and scope in Section 1 and Section 10.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "akhtyamov-harness-only-position",
+     "value": "The authors argue that the runtime harness is the only legitimate mutable surface for self-evolution in a regulated credit pipeline, because it is the auditable one: weights cannot be diffed into named changes and a harness can.",
+     "anchor": "Section 1, p1",
+     "quotes": [
+      "the runtime harness is the only legitimate mutable surface, because it is the auditable one",
+      "Weights cannot be diffed into named changes; a harness can."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's position argument; no experiment in the paper tests it against a weight-update alternative.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-design-bound-setup",
+     "value": "The authors state that the engine may rewrite instruction text, tool-call logic and primitive composition, may not fine-tune, and that the served model is pinned by digest; they state this is a design commitment and that no model is pinned in the simulation.",
+     "anchor": "Section 1, p2; Section 4, p3",
+     "quotes": [
+      "The engine may rewrite instruction text, tool-call logic and primitive composition; it may not fine-tune, and the served model is pinned by digest.",
+      "(a design commitment: no model is pinned in our simulation)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own design and what the simulation does not do (Section 1 and Section 4).",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-hash-chain-verified",
+     "value": "The authors report that all 540 of the 540 gate logs written in their experiments, 43,814 records in all, verify under the hash chain.",
+     "anchor": "Section 4, p4",
+     "quotes": [
+      "all 540 of the 540 logs written in our experiments, 43,814 records in all, verify"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table 7 (p11) says 90 logs verified; Section 4 says 540. The two counts differ in the paper itself (90 runs against 540 logs, perhaps one log per arm and run, but the paper does not say)."
+    },
+    {
+     "id_suggestion": "akhtyamov-admission-rule",
+     "value": "The authors define the admission rule: a candidate harness is admitted only if the 95% lower bound of the paired reduction in errors of the relevant kind on the gate half of the retrospective pool is above zero, and the share of cases the deployed harness answers correctly that the candidate turns wrong is at most ε = 0.005.",
+     "anchor": "Section 5.1, Eq. (1), p4; Table 2, p6",
+     "quotes": [
+      "paired 95% lower bound of reduction > 0; ε = 0.005",
+      "The candidate is admitted iff",
+      "The tolerance ε = 0.005 is not zero because execution noise makes strict non-regression unsatisfiable"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its gate in Section 5.1 and Table 2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-admission-is-a-write",
+     "value": "The authors state that admission is a write and not only a decision: before a candidate reaches the runtime the gate appends a record (including the digests of the deployed and candidate harness, the counts behind the decision and the decision itself), and rejections are written with the same schema.",
+     "anchor": "Section 5.1, p4",
+     "quotes": [
+      "Admission is a write, not only a decision. Before a candidate reaches the runtime the gate appends",
+      "Rejections are written with the same schema."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its record schema in Section 5.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-feedback-model",
+     "value": "The authors state that operational feedback arrives in windows of 500 cases, that every flagged case is reviewed by an analyst so its false positive becomes visible, and that cleared cases are audited at 5%, so most misses stay invisible; they call this asymmetry deliberate and realistic.",
+     "anchor": "Section 5.2, p4",
+     "quotes": [
+      "Operational feedback arrives in windows of 500 cases.",
+      "Every flagged case is reviewed by an analyst, so its false positive becomes visible; cleared cases are audited at 5%, so most misses stay invisible.",
+      "This asymmetry is deliberate and realistic"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own feedback model in Section 5.2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-loops-setup",
+     "value": "The authors state that the local loop may change one parameter or one clause of the deployed primitive per candidate, that the global loop may replace the primitive with another from a typed library (here a check on the first-layer stake against a check on the effective stake along the ownership chain), and that the global loop has no privileged path to deployment because the same gate applies.",
+     "anchor": "Section 5.2, p4",
+     "quotes": [
+      "The local loop (Algorithm 1) may change one parameter or one clause of the deployed primitive per candidate.",
+      "The global loop (Algorithm 2) may replace the primitive with another from a typed library",
+      "a check on the stake held through the first-layer vehicle versus a check on the effective stake along the ownership chain",
+      "path to deployment: the same gate applies."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own engine in Section 5.2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-shift-families",
+     "value": "The authors define ground truth as a versioned rule: before T flag when the hit type is in scope and the stake held through the first-layer vehicle is at least 25%; from T one of three re-interpretations applies: a threshold rise to 30, 40 or 50%, a narrowing of the qualifying hit types, or a threshold on the effective stake with multi-layer chains in 30, 50 or 70% of cases.",
+     "anchor": "Section 6.1, p5",
+     "quotes": [
+      "Before T (rule v1): flag when the hit type is in scope and the stake held through the first-layer vehicle is at least 25%.",
+      "the ownership threshold rises to 30, 40 or 50%",
+      "with multi-layer chains in 30, 50 or 70% of cases.",
+      "No threshold or scope edit to the first-layer check can express this rule."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its three shift families in Section 6.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-stream-and-seeds",
+     "value": "The authors state the experimental design: a stream of 23,000 screening alerts with the shift at T = 70%, adaptation on [T, 85%), held-out evaluation on [85%, 100%] (3,450 alerts per run), and 10 seeds per cell over 3 families × 3 severities = 9 cells, 90 runs.",
+     "anchor": "Table 2, p6; Section 6.4, p6",
+     "quotes": [
+      "23,000 screening alerts; shift at T = 70%; adaptation on [T, 85%); held-out evaluation on [85%, 100%]",
+      "The held-out window holds 3,450 alerts per run",
+      "10 per cell; 3 families × 3 severities = 9 cells, 90 runs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Table 2 and Section 6.4.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-relabelling-design",
+     "value": "The authors state that at T the retrospective pool is relabelled by applying rule v2 to the stored case facts, which makes the adaptation supervised at the level of the rule and autonomous at the level of the harness, and that a mis-encoded rule would be faithfully optimised towards.",
+     "anchor": "Section 6.2, p5-p6",
+     "quotes": [
+      "At T the pool is relabelled by applying rule v2 to the stored case facts.",
+      "the adaptation is supervised at the level of the rule and autonomous at the level of the harness",
+      "a mis-encoded rule would be faithfully optimised towards"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own design commitment and its risk in Section 6.2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-arm-definitions",
+     "value": "The authors define the no-gate arm as the dual loop with Eq. (1) replaced by the check an unbounded self-evolution system applies, admitting a candidate if it makes fewer errors visible in the current window, and define the stale-label arm as the dual loop with the gate pool under v1 labels.",
+     "anchor": "Section 6.3, p6",
+     "quotes": [
+      "No gate: the dual loop with Eq. (1) replaced by the check an unbounded self-evolution system applies",
+      "admit if the candidate makes fewer errors visible in the current window",
+      "Gate on stale labels: the dual loop with Hsel under v1 labels."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its arms in Section 6.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-metric-definitions",
+     "value": "The authors define, on the held-out window with FLAG as the positive class, the false-positive rate as FP/(FP + TN) and the missed-flag rate as FN/(FN + TP); false admissions are admitted changes that increased true error on Hval, which the gate never sees; means are over seeds with 95% t-intervals, clipped to [0, 100].",
+     "anchor": "Section 6.4, p6",
+     "quotes": [
+      "false-positive rate = FP/(FP + TN); missed-flag rate = FN/(FN + TP)",
+      "false admissions, admitted changes that increased true error on Hval, which the gate never sees",
+      "Means are over seeds with 95% t-intervals, clipped to [0, 100]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its metrics in Section 6.4.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-dual-loop-oracle-missed-flag",
+     "value": "The authors report that with the gate the dual loop ends at the oracle missed-flag rate in all three families at mid severity, with 0 false admissions over 144 admissions in 90 runs.",
+     "anchor": "Section 7.1, p7; Table 3, p8; Table 5, p9",
+     "quotes": [
+      "the dual loop ends at the oracle",
+      "with 0 false admissions over 144 admissions in 90 runs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The zero false admissions is a weak test by the paper's own account (Section 10); see the narrowed verdict on akhtyamov-gate-admission-results."
+    },
+    {
+     "id_suggestion": "akhtyamov-no-gate-loosens-screen",
+     "value": "The authors report that without the gate the final missed-flag rate exceeded 10% in 49 of 90 runs, reaching a mean of 79.7% in the mid scope cell while the false-positive rate matched the oracle, and that under scope and structural re-interpretations false positives fall because flagging stops.",
+     "anchor": "Section 7.1, p7; Table 4, p9",
+     "quotes": [
+      "the final missed-flag rate exceeded 10% in 49 of 90 runs, reaching a mean of 79.7% in the mid scope cell while its false-positive rate matched the oracle",
+      "under scope and structural re-interpretations, false positives fall because flagging stops"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-no-gate-threshold-exception",
+     "value": "The authors report that under the threshold family the visible-failure check points in the right direction, because raising the threshold is the repair, and the no-gate arm's missed-flag rate stays near the oracle's.",
+     "anchor": "Section 7.1, p7",
+     "quotes": [
+      "Under the threshold family the visible-failure check happens to point in the right direction",
+      "raising the threshold is the repair",
+      "missed-flag rate stays near the oracle"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "This limits the no-gate harm to the scope and structural families. Table 4 (p9) lists a 3.1% missed-flag rate for the no-gate arm in the high threshold cell against 2.0% for the dual loop."
+    },
+    {
+     "id_suggestion": "akhtyamov-no-gate-churn",
+     "value": "The authors report that the no-gate arm made up to 13 admissions in a run against at most 4 for the dual loop, accumulated more excess errors during adaptation than leaving the pipeline degraded (940 against 780 in the mid scope cell), and admitted 550 changes across the runs, 309 of them harmful.",
+     "anchor": "Section 7.1, p7; Section 11, p12",
+     "quotes": [
+      "The no-gate arm also churns: up to 13 admissions in a run against at most 4 for the dual loop",
+      "more excess errors during adaptation than leaving the pipeline degraded (940 against 780 in the mid scope cell)",
+      "the same loops without it admitted 550 changes, 309 of them harmful"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-stale-labels-reject-all",
+     "value": "The authors report that the gate on v1 labels rejected all 8,490 of its candidates, every one for lack of significant improvement, including the exactly correct harness 470 times, and left the pipeline at the degraded false-positive rate in every cell.",
+     "anchor": "Section 7.2, p7; Table 5, p9",
+     "quotes": [
+      "The gate on v1 labels rejected all 8,490 of its candidates, every one for lack of significant improvement",
+      "including the exactly correct harness 470 times",
+      "left the pipeline at the degraded false-positive rate in every cell"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Supports the paper's design commitment that the pool must be relabelled by the new rule (Section 6.2)."
+    },
+    {
+     "id_suggestion": "akhtyamov-local-repairs-thr-scope",
+     "value": "The authors report that parametric (thr) and clause (scope) shifts are repaired by the local loop alone and that the global-only arm, whose library offers only primitive replacements, cannot repair them; in the mid scope cell the local-only arm recovered in 9/10 seeds.",
+     "anchor": "Section 7.3, p7; Table 4, p9",
+     "quotes": [
+      "Parametric (thr) and clause (scope) shifts are repaired by the local loop alone, and the global-only arm, whose library offers only primitive replacements, cannot repair them.",
+      "in the mid cell it recovered in 9/10 seeds"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-local-fails-structural",
+     "value": "The authors report that the local-only arm proposed 1,890 candidates across the three structural cells and admitted 0, all rejected for regression because no threshold on the first-layer stake reproduces a rule on the effective stake, and that the compute-matched local-only arm does no better (27.4% against 27.4% in the mid cell).",
+     "anchor": "Section 7.3, p7",
+     "quotes": [
+      "the local-only arm proposed 1,890 candidates across the three structural cells and admitted 0; 1,890 were rejected for regression",
+      "because no threshold on the first-layer stake reproduces a rule on the effective stake",
+      "does no better (27.4% against 27.4% in the mid cell)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-dual-loop-routing-cost",
+     "value": "The authors report that the dual loop repairs all three families because escalation routes each problem to the loop that can express its fix, and that it recovers more slowly than the right single loop on the structural family (excess errors 228 against 156 for global-only in the mid cell).",
+     "anchor": "Section 7.3, p7",
+     "quotes": [
+      "The dual loop repairs all three families because escalation routes each problem to the loop that can express its fix.",
+      "It recovers more slowly than the right single loop on the structural family",
+      "(excess errors 228 against 156 for global-only in the mid cell)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-division-by-construction",
+     "value": "The authors state that the division of labour between the loops is in part true by construction, because the local edit space cannot express a rule on the effective stake and the library contains one.",
+     "anchor": "Section 7.3, p7",
+     "quotes": [
+      "This division of labour is, in part, true by construction",
+      "the local edit space cannot express a rule on the effective stake, and the library contains one"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit on its own result in Section 7.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-manual-update-comparison",
+     "value": "The authors report that under an assumed 2,000-case lag the manual update accumulates more excess errors during adaptation than the dual loop in every family at mid severity, but in the high-severity structural cell, where the dual loop recovers in only half the seeds, the dual loop accumulates 500 against the manual update's 408; they state the comparison depends entirely on the lag, which is an assumption.",
+     "anchor": "Section 7.4, p9",
+     "quotes": [
+      "Under our assumed 2,000-case lag, the manual update accumulates more excess errors during adaptation than the dual loop in every family at mid severity",
+      "it accumulates 500 against the manual update’s 408",
+      "The comparison depends entirely on that lag, which is an assumption"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-worked-rejection",
+     "value": "The authors report a worked rejection in the mid structural cell, seed 0: the local loop's first candidate (stop treating a designation as a qualifying hit) removed 287 false positives and introduced 4 among 4,561 true CLEAR cases, a reduction of 6.2 points (95% interval [5.5, 6.9]), but 864 of the 6,696 cases the deployed harness answered correctly (12.9%) would turn wrong, so the record was written as rejected for regression on C.",
+     "anchor": "Section 7.5, p9",
+     "quotes": [
+      "In the mid structural cell, seed 0",
+      "it removes 287 false positives and introduces 4 among 4,561 true CLEAR cases, a reduction of 6.2 points (95% interval [5.5, 6.9])",
+      "But 864 of the 6,696 cases the deployed harness answered correctly (12.9%) would turn wrong",
+      "is written as rejected: regression on C."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-worked-admission",
+     "value": "The authors report that in the same seed, after 21 local rejections the cluster escalates and the global loop, at case 17099, proposes the primitive replacement direct_stake_check to effective_stake_check, which reduces false positives by 26.3 points (lower bound 25.0) with 21 regressions on C (0.31%, attributable to execution noise) and is admitted as record 25.",
+     "anchor": "Section 7.5, p9-p10",
+     "quotes": [
+      "After 21 local rejections the cluster escalates",
+      "at case 17099 it proposes",
+      "which reduces false positives by 26.3 points (lower bound 25.0) with 21 regressions on C (0.31%, attributable to execution noise), and is admitted as record 25"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-tolerance-cost",
+     "value": "The authors report that in the high-severity structural cell the dual loop recovered in 5/10 seeds at ε = 0.005, rejecting the exactly correct harness 24 times, with a mean false-positive rate of 18.1%, and that doubling the tolerance to ε = 0.010, tested on the structural family only, recovers 10/10 seeds without any false admission.",
+     "anchor": "Section 7.6, p10; Table 6, p10",
+     "quotes": [
+      "the correct replacement exceeds ε = 0.005",
+      "The dual loop recovered in 5/10 seeds, rejecting the exactly correct harness 24 times, and its mean false-positive rate stayed at 18.1%",
+      "Doubling the tolerance to ε = 0.010, which we tested on the structural family only, recovers 10/10 seeds without any false admission."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-tolerance-protective-side-unmeasured",
+     "value": "The authors state that no harmful change was admitted at either tolerance value, so the protective side of the trade-off between regression guarding and rejecting correct changes is not measured by this track.",
+     "anchor": "Section 7.6, p10",
+     "quotes": [
+      "No harmful change was admitted at either value, so the protective side of the trade-off is not measured by this track."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 7.6.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-noise-scaled-tolerance-proposal",
+     "value": "The authors state that a fixed ε conflates noise with regression and that a tolerance scaled to the expected noise on the cases a candidate changes would separate them and is the next revision of the rule; until then ε is a policy parameter.",
+     "anchor": "Section 7.6, p10",
+     "quotes": [
+      "A fixed ε conflates noise with regression; a tolerance scaled to the expected noise on the cases a candidate changes would separate them",
+      "Until then, ε is a policy parameter"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's proposal; the paper does not implement or test a noise-scaled tolerance.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-harness-growth",
+     "value": "The authors report that the harness's rendered text ranged from 151 to 253 characters across all runs, and that the gated dual loop made at most 4 admissions in a run against up to 13 for the no-gate arm.",
+     "anchor": "Section 7.7, p10",
+     "quotes": [
+      "its rendered text ranged from 151 to 253 characters across all runs",
+      "The gated dual loop made at most 4 admissions in a run, the no-gate arm up to 13."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The bound on length holds because the edit space is parametric; the paper says an LLM proposer that writes free text would make length and rule count the quantities to bound."
+    },
+    {
+     "id_suggestion": "akhtyamov-eu-ai-act-art-43-4",
+     "value": "The authors argue that a harness-only engine with a fixed edit space, a fixed library and a fixed admission rule is a way of making change pre-determinable under the EU AI Act provision on pre-determined changes, because the reachable harnesses and the admitting rule can be written into the technical documentation before deployment.",
+     "anchor": "Section 8, p10",
+     "quotes": [
+      "A harness-only engine with a fixed edit space, a fixed library and a fixed admission rule is a way of making change pre-determinable",
+      "the set of reachable harnesses and the rule that admits them can be written into the technical documentation before deployment"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's regulatory reading; the paper states no examiner has reviewed it.",
+     "result_type": "claim",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-eu-ai-act-dates",
+     "value": "The authors state, citing the Digital Omnibus on AI, that after it the high-risk obligations for creditworthiness-evaluation systems apply from 2 December 2027.",
+     "anchor": "Section 8, p10",
+     "quotes": [
+      "after the Digital Omnibus on AI the corresponding obligations apply from 2 December 2027"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to the EU regulation (reference 2); not checked against the regulation here.",
+     "result_type": "cited",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-us-guidance-scope",
+     "value": "The authors state that the interagency guidance of 17 April 2026 replaced SR 11-7 and OCC Bulletin 2011-12, states that generative and agentic AI models are not within its scope, and that the agencies announced a forthcoming request for information on AI use.",
+     "anchor": "Section 2, p2; Section 8, p10-p11",
+     "quotes": [
+      "The interagency guidance of 17 April 2026 replaced SR 11-7 and OCC Bulletin 2011-12",
+      "not within its scope; the agencies announced a forthcoming request for information on AI use, including generative and agentic AI"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to the agency guidance (references 3 and 4); not checked against the guidance here.",
+     "result_type": "cited",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-us-no-template-claim",
+     "value": "The authors state that there is, as of writing, no US supervisory template for change control in agentic systems, and that they claim no more than that their architecture is a candidate answer: the guidance does not endorse the design and their mapping is to the EU text.",
+     "anchor": "Section 8, p11",
+     "quotes": [
+      "There is, as of writing, no US supervisory template for change control in agentic systems",
+      "the guidance does not endorse the design, and our mapping is to the EU text"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about the state of US guidance.",
+     "result_type": "claim",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-mapping-limits",
+     "value": "The authors state that the regulatory mapping is a design argument and not a compliance opinion, that bias monitoring under Article 10 has no mechanism and no evidence because the benchmark carries no protected attributes, and that no examiner has reviewed any artefact.",
+     "anchor": "Table 7 caption, p11; Section 8, p11",
+     "quotes": [
+      "This is a design argument, not a compliance opinion.",
+      "Bias monitoring under Article 10 has no mechanism in our design and no evidence in our experiments, because the benchmark carries no protected attributes.",
+      "no examiner has reviewed any artefact"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its regulatory mapping in Table 7 and Section 8.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-cace-bench-reference-run",
+     "value": "The authors report from the CACE-Bench reference run (seed 0, 23,000 cases, seven Latin American jurisdictions) that undecidable cases are 15.6% of the stream, an availability-blind pipeline decides 55.1% of them, the judge-and-recovery layer brings that to 6.5%, false positives fall from 22.5% to 5.0% and missed flags from 15.3% to 3.5%.",
+     "anchor": "Section 9, p11-p12; Table 8, p12",
+     "quotes": [
+      "(seed 0, 23,000 cases, seven Latin American jurisdictions, provider registry 2026-08-03)",
+      "Undecidable cases are 15.6% of the stream",
+      "and an availability-blind pipeline decides 55.1% of them. The judge-and-recovery layer brings that to 6.5%.",
+      "False positives fall from 22.5% to 5.0%, and missed flags fall too, from 15.3% to 3.5%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-silent-decision-definition",
+     "value": "The authors define the silent-decision rate as the share of undecidable cases on which the pipeline decided anyway; a case is undecidable when the sources needed for the compliance conclusion did not all answer, and escalation is then the correct outcome.",
+     "anchor": "Section 9, p11",
+     "quotes": [
+      "The silent-decision rate is the share of such undecidable cases on which the pipeline decided anyway.",
+      "when the sources needed for the compliance conclusion did not all answer, escalation is the correct outcome"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its metric in Section 9.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-recovery-layer-parametric",
+     "value": "The authors state that the judge-and-recovery layer in the reference run is a documented parametric model in which each first-pass error is detected with probability 0.85 and corrected with probability 0.92, so the run establishes where the failure concentrates and not how well any particular implementation repairs it.",
+     "anchor": "Section 9, p12",
+     "quotes": [
+      "each first-pass error is detected with probability 0.85 and corrected with probability 0.92",
+      "so this run establishes where the failure concentrates, not how well any particular implementation repairs it"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit on its reference run in Section 9.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-execution-noise-model",
+     "value": "The authors state that execution noise flips the outcome with probability 0.02 per case, with the draw shared across harness versions (common random numbers), and that real LLM noise is not shared across versions, which would raise the noise floor of the regression clause.",
+     "anchor": "Table 2, p6; Section 10, p12",
+     "quotes": [
+      "outcome flipped with probability 0.02 per case, draw shared across harness versions",
+      "Execution noise is modelled as common random numbers.",
+      "Real LLM noise is not shared across versions, which would raise the noise floor of the regression clause"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 10 and its setting in Table 2.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-false-admission-audit-weak",
+     "value": "The authors state that the false-admission audit is weak by construction, because the gate half and the audit half are interleaved halves of the same pre-shift stream labelled by the same deterministic rule, so zero false admissions on Hval is expected for any gated arm and the informative contrasts are against the no-gate arm and on the post-shift held-out window.",
+     "anchor": "Section 10, p12",
+     "quotes": [
+      "The false-admission audit is weak by construction.",
+      "Zero false admissions on Hval is therefore expected for any gated arm; the informative contrasts are against the no-gate arm and on the post-shift held-out window."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit on its own audit in Section 10.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-synthetic-assumptions",
+     "value": "The authors state that distributions, shift families and the feedback model are theirs, and that the no-gate failure depends on misses being less visible than false positives, an asymmetry they believe realistic but whose size is an assumption.",
+     "anchor": "Section 10, p12",
+     "quotes": [
+      "Synthetic throughout. Distributions, shift families and the feedback model",
+      "The no-gate failure depends on misses being less visible than false positives; we believe that asymmetry is realistic, but its size is an assumption."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 10.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-llm-proposer-not-tested",
+     "value": "The authors state that the track measures the bound and the gate and not proposal quality, and that an LLM proposer would produce candidates outside the tested edit space, including free-text edits whose regression surface is larger.",
+     "anchor": "Section 10, p12",
+     "quotes": [
+      "The track measures the bound and the gate, not proposal quality",
+      "an LLM proposer will produce candidates outside this space, including free-text edits whose regression surface is larger"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 10.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-baselines-not-run",
+     "value": "The authors state that they did not run a static prompt-optimisation baseline or direct implementations of the cited self-evolution methods, and that the no-gate arm stands in for the latter's admission logic only.",
+     "anchor": "Section 10, p12",
+     "quotes": [
+      "We did not run a static prompt-optimisation baseline or direct implementations of the cited self-evolution methods"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 10.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-single-primitive-single-shift",
+     "value": "The authors state that interacting primitives and concurrent shifts are not tested, that the relabelled pool is only as correct as the rule that relabels it, and that there is no protected attribute and no fairness claim.",
+     "anchor": "Section 10, p12",
+     "quotes": [
+      "Interacting primitives and concurrent shifts are not tested.",
+      "The relabelled pool is only as correct as the rule that relabels it."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these limits in Section 10.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-threat-model",
+     "value": "The authors state a threat model of five failure modes: F1 silent drift, F2 retro-test overfitting, F3 untraceable change, F4 objective capture and F5 exogenous model change, the last of which their design does not mitigate.",
+     "anchor": "Section 3, p3",
+     "quotes": [
+      "F1 Silent drift: a change improves the target metric while degrading an unmeasured one",
+      "F2 Retro-test overfitting: a candidate is tuned until it passes the pool",
+      "F3 Untraceable change: mitigated by making the log write a precondition of deployment",
+      "F4 Objective capture: evolution objective and audit evidence from the same judge",
+      "F5 Exogenous model change: the provider updates a hosted model beneath a fixed harness; not mitigated by our design"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own threat model in Section 3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-auditability-not-reproducibility",
+     "value": "The authors state that auditability of the change is delivered by the log but reproducibility of behaviour is not delivered by the same mechanism, because identical harnesses on a hosted model can behave differently if the provider changes the model, the decoding settings drift, a tool returns different data or retrieval state moves.",
+     "anchor": "Section 4, p4",
+     "quotes": [
+      "Reproducibility of behaviour is not delivered by the same mechanism",
+      "identical harnesses on a hosted model can behave differently if the provider changes the model, the decoding settings drift, a tool returns different data, or retrieval state moves"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 4.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-cost-of-bound",
+     "value": "The authors state that the cost of the bound is real: the system cannot learn anything that instruction text and primitive composition cannot express, and a task the base model cannot do falls outside the loop.",
+     "anchor": "Section 4, p4",
+     "quotes": [
+      "the system cannot learn anything that instruction text and primitive composition cannot express",
+      "A task the base model cannot do falls outside the loop and remains engineering work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 4.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-novelty-scope",
+     "value": "The authors state that they do not claim either loop as new, that the field closes its loops on a task metric and produces no change record intended for a third party, and that they make no claim that their engine optimises better than any of the cited systems.",
+     "anchor": "Section 2, p2",
+     "quotes": [
+      "We do not claim either loop as new.",
+      "The field closes its loops on a task metric and produces no change record intended for a third party",
+      "we make no claim that our engine optimises better than any of these systems"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Scope statement plus an author's characterisation of the field; the survey is not a measurement.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-deterministic-labels-no-llm-judge",
+     "value": "The authors state that every number reported is computed against deterministic labels and that no LLM judge is involved anywhere in the results.",
+     "anchor": "Section 2, p2",
+     "quotes": [
+      "Every number reported here is computed against deterministic labels; no LLM judge is involved anywhere in the results."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section 2.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-generative-ai-and-data-availability",
+     "value": "The authors state that a generative AI assistant (Anthropic Claude) was used to write and debug simulation and analysis code, run the experiments and draft the text, that no generative AI system is a component of the experiments, and that code, configuration and per-run outputs including every gate log are in the CACE-Bench repository, release v0.6.0.",
+     "anchor": "Declarations, p13",
+     "quotes": [
+      "A generative AI assistant (Anthropic Claude) was used in preparing this work",
+      "No generative AI system is a component of the experiments reported",
+      "available in the CACE-Bench repository at https://github.com/rav11l/cace-bench, release v0.6.0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own method and materials in the Declarations.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-conclusion",
+     "value": "The authors conclude that the gate needs labels under the new rule, which makes adaptation supervised at the level of the rule, that it divides work between a local and a global loop by the kind of re-interpretation, that its fixed tolerance rejects some large correct changes, and that replacing the proposer with a language model is the experiment that will show whether the bound survives contact with free text.",
+     "anchor": "Section 11, p12-p13",
+     "quotes": [
+      "The gate needs labels under the new rule, which makes adaptation supervised at the level of the rule",
+      "its fixed tolerance rejects some large correct changes, which a noise-scaled tolerance should fix",
+      "replacing it with one is the experiment that will show whether the bound survives contact with free text"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper's conclusions; the open test is stated by the authors.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
