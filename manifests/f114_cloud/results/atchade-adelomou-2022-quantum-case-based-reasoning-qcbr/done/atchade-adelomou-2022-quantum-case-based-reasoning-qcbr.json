@@ -1,0 +1,654 @@
+{
+ "papers": [
+  {
+   "record_id": "atchade-adelomou-2022-quantum-case-based-reasoning-qcbr",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2021\\Atchade-Adelomou-et-al._2021_quantum-Case-Based-Reasoning-qCBR__2104.00409.pdf",
+   "title_in_file": "quantum Case-Based Reasoning (qCBR)",
+   "version_note": "arXiv:2104.00409v2 [cs.AI], 11 Jan 2022; the first page reads 'Dated: March 2021'.",
+   "pages": 17,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A proposal and small experimental study of a quantum Case-Based Reasoning scheme (variational quantum classifier plus VQE with initial point) on the Social Workers' Problem, compared with classical CBR using KNN and a neural network.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qcbr-accuracy-240-cases",
+     "verdict": "narrowed",
+     "note": "The stored value omits the settings the captions give: qCBR ran at quantum circuit depth 8 layers with leave-one-out cross-validation; the classical KNN CBR ran at 1 layer with 10-KFold cross-validation. Table III lists 92.1 at 240 cases; the caption text says 92%.",
+     "value": "For 5 patients and 4 social workers at case number 240, the authors report an accuracy of 92% for qCBR at quantum circuit depth 8 layers and 52.6% for the classical CBR with a KNN classifier at 1 layer, the latter applying 10-KFold cross-validation (Tables III and V).",
+     "anchor": "Section VI, Table III and Table V captions, pp.9-10",
+     "quotes": [
+      "And at the case number of 240, we will have an accuracy of 92%.",
+      "All these tests were done for the quantum circuit depth (layers) equal to 8.",
+      "And at the case number of 240, we will have an accuracy of 52.6%.",
+      "applying a 10-KFold cross-validation process",
+      "All these tests were done for the layer equal to 1.",
+      "number of patients and social workers ﬁxed at 5 and 4, respectively"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study on one problem (Social Workers' Problem).",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The two arms use different validation protocols (leave-one-out for qCBR, 10-fold for KNN) and different layer counts, so the 92% against 52.6% gap is not a controlled comparison."
+    },
+    {
+     "id": "qcbr-claimed-improvement",
+     "verdict": "confirmed",
+     "note": "Right as stored. The paper gives no separate experiment for overlap tolerance; the Results section says only that qCBR is 'much better shared with overlapping'.",
+     "value": "",
+     "anchor": "Abstract; Section VIII, p.11",
+     "quotes": [
+      "improves its classical counterpart in terms of average accuracy, scalability and tolerance to overlapping",
+      "We observed the outstanding performance of qCBR compared to its classical counterpart on the average accuracy, scalability and tolerance to an overlapping dataset."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Overlap tolerance is not isolated: no run varies the overlap, and the only overlap handling named is ICA and PCA preprocessing."
+    },
+    {
+     "id": "qcbr-classical-better-some-cases",
+     "verdict": "confirmed",
+     "note": "Right as stored. The paper points to Table VIII. In that table the KNN CBR holds 95.6 at 3 patients and 2 social workers with 580 cases, against 82.5 for qCBR in Table II for the same sizes.",
+     "value": "",
+     "anchor": "Section VIII, p.12",
+     "quotes": [
+      "the classical CBR designed with the KNN behaves better for some determined cases (table (VIII))"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "swp-problem-definition",
+     "value": "The authors define the social workers' problem (SWP) as solving the schedules of social workers visiting patients' homes while fitting both distance and time restrictions, and state that it represents a class of combinatorial optimization problems in the NP complexity class.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "The social workers’ problem (SWP) stands for solving the schedules of social workers visiting patients’ homes while ﬁtting both distance and time restrictions",
+      "represents a class of combinatorial optimization problems, which lie in the NP complexity class"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own test problem in Section I.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcbr-proposal-design",
+     "value": "The authors propose a qCBR that changes the retrieve and retain blocks of a classical CBR for a quantum variational classifier and the re-use and revise blocks for a synthesis system based on VQE with initial point.",
+     "anchor": "Fig. 3 caption, Section V, p.4",
+     "quotes": [
+      "to convert the classic CBR into the quantum one, it is proposed to change the retrieve and retain blocks for a quantum variational classiﬁer and the re-use and revise blocks for a synthesis system based on VQE with initial point"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own design.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcbr-classifier-design",
+     "value": "The authors state that their variational quantum classifier uses the data re-uploading technique to act as a neural network where the non-linearity of the quantum gates acts as the activation function, and is trained with a quantum fidelity cost that maximizes the average fidelity between the test state and the final state of its class.",
+     "anchor": "Fig. 5 caption, Section V.2, p.5; Appendix A.2, p.13",
+     "quotes": [
+      "we use the data re-uploading technique to create an n-dimensional classiﬁer as if it were a neural network where the non-linearity of the quantum gates will act as an activation function",
+      "maximizes said average ﬁdelity",
+      "between the test state and the ﬁnal state corresponding"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper describes its own classifier.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcbr-test-sizes-and-qubits",
+     "value": "The authors state that all their tests are for n = 4 with an 8-dimensional data vector (sT1, eT1, sT2, eT2, sT3, eT3, sT4, eT4), and that the number of qubits is q = log2(NSOLSWP) = 3.",
+     "anchor": "Section V.A, p.7",
+     "quotes": [
+      "In this article all the tests done are for n = 4 with the data structure equal to (sT1, eT1, sT2, eT2, sT3, eT3, sT4, eT4); an 8-dimensional vector",
+      "the number of qubits will be deﬁned by q = log2(NSOLSWP ) = 3"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Tables II to IV report 3 and 5 patients and 6, 12 or 20 qubits, which does not match n = 4 and 3 qubits as stated here; the paper does not reconcile the two."
+    },
+    {
+     "id_suggestion": "qcbr-class-count-rule",
+     "value": "The authors state that the class number of the classifier is given by an equation (6) that takes into account that every worker has a patient and that the workers are indistinguishable.",
+     "anchor": "Section V.A, p.7",
+     "quotes": [
+      "the class number of the classiﬁer is given by equation (6) taking into account the conditions that every worker has a patient and that the workers are indistinguishable"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own class count.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcbr-evaluation-protocol",
+     "value": "The authors state that the test samples were schedules previously solved by the VQE algorithm (ground truth), evaluated by leave-one-out cross-validation, and that accuracy is the ratio of correctly predicted labels to total labels.",
+     "anchor": "Section VI, p.7",
+     "quotes": [
+      "schedules previously solved by the VQE algorithm to obtain its corresponding true solution (ground truth), was used as test samples (applying “Leave-oneout” cross-validation)",
+      "the total accuracy of the classiﬁer predictions was obtained based on the ratio between the number of labels predicted correctly and the total number of labels"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own evaluation setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The ground truth is a VQE result, not a proven optimum, so accuracy measures agreement with VQE."
+    },
+    {
+     "id_suggestion": "qcbr-hardware-and-frameworks",
+     "value": "The authors state that the algorithm's quantum feasibility is modelled with docplex and tested on IBMQ computers, and experimented on the Qibo framework; the Results section names qibo and qiskit for the implementation outcomes.",
+     "anchor": "Abstract; Section VI, p.7",
+     "quotes": [
+      "The algorithm’s quantum feasibility is modelled with docplex and tested on IBMQ computers, and experimented on the Qibo framework.",
+      "show the implementation outcomes performed in qibo[73] and qiskit[60, 74]"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of method, with no hardware result in the text.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No table or figure caption reports a run on IBMQ hardware; the reported results do not say whether they came from simulation or hardware."
+    },
+    {
+     "id_suggestion": "qcbr-table2-scenarios",
+     "value": "The authors report qCBR accuracy for a variational classifier with VQE and the Initial point and decision trees as synthesizer, varying the number of patients, social workers and circuit depth, and state that the accuracy of the classifier is the maximum with the number of layers equal to 10 (Table II).",
+     "anchor": "Table II and caption, Section VI, p.9",
+     "quotes": [
+      "This table shows the diﬀerent studies made as a function of the quantum circuit’s depth (layer).",
+      "The accuracy of the classiﬁer is the maximum with the number of layers equal to 10."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Rows as printed (patients, social workers, qubits, layers, cases, accuracy): 3,2,6,2,580,82.5; 4,3,12,3,580,82; 5,2,20,4,580,82.5; 5,3,20,5,580,87; 5,4,20,8,580,92.8; 5,4,20,10,580,100. Accuracy rises with layers but patients and social workers vary together."
+    },
+    {
+     "id_suggestion": "qcbr-table3-learning-curve",
+     "value": "The authors report, for 5 patients and 4 social workers at 8 layers, qCBR accuracy as a function of the number of cases (Table III), and state the system gives more than satisfactory results after exceeding the threshold of 240 results stored in the case memory.",
+     "anchor": "Table III, Section VI, p.9-10",
+     "quotes": [
+      "number of patients and social workers ﬁxed at 5 and 4, respectively",
+      "All these tests were done for the quantum circuit depth (layers) equal to 8.",
+      "It can be seen how the system begins to give more than satisfactory results after exceeding the threshold of the 240 results stored in the case memory."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Rows as printed (cases, accuracy): 20 no solution; 50, 12.5; 100, 72.5; 240, 92.1; 340, 95.5; 480, 97.2; 500, 98.7; 580, 99.1."
+    },
+    {
+     "id_suggestion": "qcbr-table4-4p3sw",
+     "value": "The authors report, for 4 patients and 3 social workers at 8 layers, qCBR accuracy of 91% at case number 240 (Table IV).",
+     "anchor": "Table IV, Section VI, p.10",
+     "quotes": [
+      "The result of the qCBR for a number of patients and social workers ﬁxed at 4 and 3, respectively.",
+      "And at the case number of 240, we will have an accuracy of 91%.",
+      "All these tests were done for the quantum circuit depth (layers) equal to 8."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Rows as printed (cases, accuracy): 20 no solution; 50, 11.5; 100, 73.1; 240, 91.1; 340, 91.9; 480, 96.6; 500, 98.1; 580, 99.0."
+    },
+    {
+     "id_suggestion": "knn-cbr-5p4sw-curve",
+     "value": "The authors report, for 5 patients and 4 social workers at 1 layer, the accuracy of the classical CBR with a KNN classifier as a function of the number of cases, applying 10-KFold cross-validation (Table V).",
+     "anchor": "Table V, Section VI, p.10",
+     "quotes": [
+      "number of patients and social workers ﬁxed at 5 and 4, respectively",
+      "applying a 10-KFold cross-validation process",
+      "All these tests were done for the layer equal to 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Rows as printed (cases, accuracy): 20 no solution; 50, 42.9; 100, 46.5; 240, 52.6; 340, 55.3; 480, 56.8; 500, 60.7; 580, 63.1."
+    },
+    {
+     "id_suggestion": "knn-cbr-4p3sw-240",
+     "value": "The authors report, for 4 patients and 3 social workers, an accuracy of 70.3% at case number 240 for the classical CBR with a KNN classifier, with 10-KFold cross-validation at 1 layer (Table VI).",
+     "anchor": "Table VI caption, Section VI, p.11",
+     "quotes": [
+      "The classical CBR result on KNN classiﬁer for a number of patients and social workers ﬁxed at 4 and 3, respectively.",
+      "And at the case number of 240, we will have an accuracy of 70.3%.",
+      "applying a 10-KFold cross-validation process",
+      "All these tests were done for the layer equal to 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "At 240 cases, 4 patients and 3 social workers, qCBR in Table IV is 91% against 70.3% here."
+    },
+    {
+     "id_suggestion": "nn-cbr-580-cases",
+     "value": "The authors report accuracy for a classical CBR with a neural network classifier and a backtracking algorithm as synthesizer, for several numbers of patients and social workers (Table VII).",
+     "anchor": "Table VII, Section VI, p.11",
+     "quotes": [
+      "CBR with a neural network classiﬁer and a backtracking algorithm as a synthesizer."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Rows as printed (patients, social workers, layers, cases, accuracy): 3,2,2,580,65.4; 4,3,2,580,43.3; 5,2,2,580,37.3; 5,3,2,580,26.3; 5,4,2,580,45.2. The table title reads 'CBR leveraged by CNN' while the caption says neural network classifier."
+    },
+    {
+     "id_suggestion": "knn-cbr-580-cases",
+     "value": "The authors report accuracy for a classical CBR with a KNN classifier and a backtracking algorithm as synthesizer, for several numbers of patients and social workers (Table VIII).",
+     "anchor": "Table VIII, Section VI, p.11",
+     "quotes": [
+      "CBR with a KNN classiﬁer and a backtracking algorithm as a synthesizer."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Rows as printed (patients, social workers, layers, cases, accuracy): 3,2,1,580,95.6; 4,3,1,580,77.8; 5,2,1,580,47.8; 5,3,1,580,44.7; 5,4,1,580,63.1. At 3 patients and 2 social workers the KNN CBR (95.6) exceeds qCBR in Table II (82.5): the case the authors point to when they say classical CBR is better in some cases."
+    },
+    {
+     "id_suggestion": "qcbr-scalability-claim",
+     "value": "The authors state that Tables VIII, VII and II show the degree of scalability of qCBR as a function of the variation in the number of patients and social workers, and that Tables III and IV show better results than the classical CBR (Tables V and VI).",
+     "anchor": "Section VI, p.7",
+     "quotes": [
+      "Tables (III) and (IV) represent the outcomes of the qCBR and show better results than the ones obtained with the classical CBR (tables (V) and (VI))",
+      "Tables (VIII), (VII) and (II) show the degree of scalability of the qCBR as a function of the variation in the number of patients and social workers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The scaling is shown over at most 5 patients and 4 social workers; no scaling beyond that range, and no run time, is reported."
+    },
+    {
+     "id_suggestion": "qcbr-overlap-claim",
+     "value": "The authors state that it has been seen that qCBR is much better shared with overlapping, as they wanted to demonstrate.",
+     "anchor": "Section VI, p.7",
+     "quotes": [
+      "It has also been seen that qCBR is much better shared with overlapping as we wanted to demonstrate."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No table or figure varies the overlap between schedules."
+    },
+    {
+     "id_suggestion": "qcbr-8dim-vs-2dim",
+     "value": "The authors state that, because of the small number of depths but many more parameters, the 8-dimensional classifiers have an average of about 25% of improvements over the 2-dimensional ones.",
+     "anchor": "Section VII, p.9; Fig. 11",
+     "quotes": [
+      "Due to the small number of depths, but with many more parameters, the 8-dimensional classiﬁers have an average of about 25% of improvements over the 2-dimensional ones."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The figure is not in the text layer; the paper does not say whether 25% is absolute accuracy points or a relative gain."
+    },
+    {
+     "id_suggestion": "qcbr-optimizer-switch",
+     "value": "The authors state that they needed to change the BFGS optimizer to SPSA because of its slow convergence for the number of data and high parameters.",
+     "anchor": "Section VI, p.8",
+     "quotes": [
+      "the need to change the BFGS [65] optimizer to the SPSA [64] has become visible due to its slow convergence for the number of data and high parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-initial-point-fewer-iterations",
+     "value": "The authors report that the VQE without an initial point stabilizes after multiple iterations (approximately 400), and that with an initial point it stabilizes near the absolute minimum with much fewer iterations.",
+     "anchor": "Fig. 12 caption, Section VI, p.10",
+     "quotes": [
+      "It is noticeable how the ﬁrst one tends to stabilize after multiple iterations (approximately 400)",
+      "the second one is capable of stabilizing and reach a solution close to the absolute minimum with much less iterations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "A single energy curve is described; no count for the with-initial-point run, no repeated seeds."
+    },
+    {
+     "id_suggestion": "qcbr-complexity-claim",
+     "value": "The authors state that, in their complexity table (Table IX), Retain is the highest cost operation and has an exponential improvement compared to a Retain of a classic CBR that is usually of the order of O(M squared (M + N)); K, the number of shots of the VQE, is fixed to 50 in the table.",
+     "anchor": "Section VI, p.8; Table IX, p.11",
+     "quotes": [
+      "the Retain is the highest cost operation and has an exponential improvement compared to a Retain of a classic CBR that is usually of the order of O(M 2(M + N ))",
+      "K, the number of shots of the VQE, is ﬁxed to 50"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The text gives Retain as O(logN M) plus PCA in Table IX and no derivation; the stated exponential gap is not shown here."
+    },
+    {
+     "id_suggestion": "qcbr-overlap-preprocessing",
+     "value": "The authors state that ICA is applied to the original data to reduce the effects of overlap, that PCA is then used to reduce the data dimension from 8 to 2, and that they also experimented by skipping PCA and ICA with a classifier of the same dimension as the data (8 dimensions).",
+     "anchor": "Appendix B, p.14; Section VI, p.7",
+     "quotes": [
+      "ICA [71] is applied to the original data to reduce the eﬀects of the degree of overlap",
+      "The PCA is then used to reduce the data dimension from 8 to 2",
+      "we experimented by skipping the Principal Component Analysis (PCA) module [72][75], Independent Component Analysis (ICA) [71] and creating a classiﬁer of the same dimension as the data (8 dimensions)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own pipeline.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcbr-overlap-source",
+     "value": "The authors state that in the SWP the patient visit hours have a margin range of 30 min, so that if one schedule starts at 9:00 the next could begin at 9:30, giving a dataset with overlap between schedules.",
+     "anchor": "Appendix B, p.14",
+     "quotes": [
+      "the patient visits hours have a margin range of 30 min. Therefore, if one schedule starts at 9:00, the next",
+      "could begin at 9:30, leading to a dataset with overlap between schedules"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the source of overlap in its own dataset.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcbr-nonlinear-accuracy-requirement",
+     "value": "The authors state that in the case of non-linearity of the data, an almost perfect classifier with an average accuracy more significant than 80% would be needed, combined with a data processing system and a decision tree.",
+     "anchor": "Appendix B, p.14",
+     "quotes": [
+      "an almost perfect classiﬁer with an average accuracy more signiﬁcant than 80% would be needed to be combined with a data processing system and a decision tree"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcbr-no-barren-plateau-claim",
+     "value": "The authors state that qCBR does not present a barren plateau problem due to the low numbers of qubits, shallow quantum circuit and the use of local cost functions.",
+     "anchor": "Section VII, p.11",
+     "quotes": [
+      "the qCBR does not present a barren plateau problem due to the low numbers of qubits, shallow quantum circuit and because we have used local cost functions"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No gradient-variance measurement is reported; the claim rests on a cited result (reference 36)."
+    },
+    {
+     "id_suggestion": "qcbr-classify-time-claim",
+     "value": "The authors state that another issue qCBR mostly solves is the time required to classify a new topic.",
+     "anchor": "Section VIII, p.12",
+     "quotes": [
+      "Another issue that qCBR mostly solves is the time required to classify a new topic."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No classification time is reported."
+    },
+    {
+     "id_suggestion": "qcbr-learning-incomplete-classical",
+     "value": "The authors state that the system has not finished learning thoroughly in the classical CBR results (Tables V and VI), contrary to qCBR (Tables III and IV), and attribute this to the classifier's accuracy and the synthesis system.",
+     "anchor": "Section VIII, p.12",
+     "quotes": [
+      "It is seen that the system has not ﬁnished learning thoroughly (table (V) and (VI)) contrary to the qCBR (table(III) and (IV)). This is due to its classiﬁer’s accuracy"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The cause is asserted; no ablation separates the classifier from the synthesizer."
+    },
+    {
+     "id_suggestion": "qcbr-limit-initial-point-average",
+     "value": "The authors state that the intelligent system deciding the proposed solution now uses the average of the Initial points of each solution class's samples, and that it could still be seen which Initial point is most suitable for the solution to propose.",
+     "anchor": "Section VII, p.9-10",
+     "quotes": [
+      "now, the average of the Initial point of each solution class samples’ Initial point is used",
+      "It could still be seen based on the predicted solution, which Initial point is the most suitable for the solution to propose."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this as an aspect left to refine.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcbr-limit-noise-generalize",
+     "value": "The authors list as improvements to train the classifier further with noisy data, so that qCBR adapts to real past situations, and to generalize qCBR to other types of problems (betting, financial, software maintenance, human reasoning), by designing the case memory so that different data sizes can be indexed.",
+     "anchor": "Section VII, p.10",
+     "quotes": [
+      "train the classiﬁer",
+      "with noisy data further so that the qCBR can adapt to",
+      "The last improvement is to generalize the qCBR to serve various types of problems (betting problem, ﬁnancial, software maintenance, human reasoning, etc.)."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these as open work.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcbr-future-quantum-ica-qram",
+     "value": "The authors name as future work the implementation of quantum ICA, to reduce the classical ICA complexity cost, and the design of the memory of cases using quantum random-access memory (qRAM).",
+     "anchor": "Section VIII, p.12",
+     "quotes": [
+      "One of the improvements to consider is the implementation of quantum ICA.",
+      "The other exciting line of the future is to design the memory of cases using the quantum technique of randomaccess memory (qRAM) [89]"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these as future work.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcbr-case-memory-classical-ram",
+     "value": "The authors state that the qCBR memory structure is based on classical RAM.",
+     "anchor": "Fig. 7 and Fig. 8 captions, Section V, p.6",
+     "quotes": [
+      "qCBR’s Memory structure, based on classical RAM.",
+      "Memory structure used for the Training System, based on classical RAM."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own memory design.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcbr-conclusion-mitigated",
+     "value": "The authors conclude that some of the problems of standard and classical CBR have been mitigated in their work.",
+     "anchor": "Section VIII, p.11",
+     "quotes": [
+      "Some of the problems of standard and classical CBR have been mitigated in this work."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcbr-discussion-works-well",
+     "value": "The authors state that the proposed qCBR works very well and meets the objectives set using quantum computing to create efficient quantum Case-Based Reasoning.",
+     "anchor": "Section VII, p.9",
+     "quotes": [
+      "the proposed qCBR works very well and meets the objectives set using quantum computing to create efﬁcient quantum Case-Based Reasoning"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
