@@ -1,0 +1,975 @@
+{
+ "papers": [
+  {
+   "record_id": "berberich-2024-robustness-quantum-algorithms-against-coherent",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Berberish-Fink-Holm_2023_Robustness-of-quantum-algorithms-against-coherent-control-errors__2303.00618.pdf",
+   "title_in_file": "Robustness of quantum algorithms against coherent control errors",
+   "version_note": "arXiv:2303.00618v3, dated December 4, 2024; the file name says 2023.",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that bounds the worst-case fidelity loss of quantum circuits under coherent control errors using Lipschitz bounds based on Hamiltonian norms, with a 3-qubit QFT gate-set simulation, an ibm nairobi experiment and a variational-circuit regularization example.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "bound-not-tight",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that the Lipschitz bound (17) is in general not tight, since the coupling between sequentially applied gates is not taken into account.",
+     "anchor": "Section II B, p.5",
+     "quotes": [
+      "It is important to note that the Lipschitz bound (17) itself is, in general, not tight, e.g., since the coupling between sequentially applied gates is not taken into account."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit of their bound in Section II B.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "fidelity-bounds-hamiltonian-norms",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors derive worst-case fidelity bounds which show that resilience against coherent control errors is mainly influenced by the norms of the Hamiltonians generating the individual gates.",
+     "anchor": "Abstract, p.1; Theorem II.2, Section II B, p.4",
+     "quotes": [
+      "We derive worst-case fidelity bounds which show that the resilience against coherent control errors is mainly influenced by the norms of the Hamiltonians generating the individual gates.",
+      "Thus, smaller norms ∥Hi∥2 imply better robustness against such errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem II.2 is proved in Appendix A; the bound is an upper bound on fidelity loss.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The result is about an upper bound on the loss; the paper says the bound is in general not tight, so a smaller bound does not by itself guarantee a smaller true loss."
+    },
+    {
+     "id": "qft-guideline-vs-depth",
+     "verdict": "confirmed",
+     "note": "Supported by the paper only as a comparison of five transpiled circuits in simulation. The text gives the gate-count example (gate set C against gate set E) and says a similar observation holds for depth; the gate-set comparison does not claim any gate set is generally better.",
+     "value": "The authors report that, using the 3-qubit Quantum Fourier Transform as an example, the guideline of reducing Hamiltonian norms targets robustness more effectively than existing guidelines based on circuit depth or gate count.",
+     "anchor": "Abstract, p.1; Section V, p.7",
+     "quotes": [
+      "Using the 3-qubit Quantum Fourier Transform as an example application, we demonstrate that this guideline targets robustness more effectively than existing ones based on circuit depth or gate count.",
+      "A similar observation can be made when comparing the circuit depths."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one simulation study of five transpiled circuits.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Five circuits from one transpiler (BQSKit); the depth comparison is stated without numbers in the text (the figure holds them)."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "coherent-control-error-definition",
+     "value": "The authors define a coherent control error as a perturbation of an ideal gate in which the generating Hamiltonian is multiplied by one plus an unknown real noise term, which may be stochastic or time-varying.",
+     "anchor": "Section I, eq. (1), p.1",
+     "quotes": [
+      "Mathematically, a coherent control error can be described as a perturbation",
+      "of an ideal quantum gate e−iH , where H = H† is the Hamiltonian generating the gate. Further, ε ∈ R is an unknown, possibly stochastic and/or time-varying noise term."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its error model, Section I.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noise-assumptions-minimal",
+     "value": "The authors state that the only assumption on the noise is a bound on its infinity norm; the errors need not be identical and the bound need not be small.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "Throughout the paper, we assume that the size of the noise is bounded by some scalar ε¯ > 0, i.e., |εi| ≤ ε¯ for i = 1, . . . , N or, equivalently, ∥ε∥∞ ≤ ε¯. Beyond the existence of such a bound, we make no further assumptions.",
+      "In particular, we do not assume that the errors are identical",
+      "or that the bound ε¯ is sufficiently small"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own assumptions in Section II.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generality-of-results",
+     "value": "The authors state that the results allow independent noise terms on the gates, arbitrary unitaries defining the gates, and no assumption on the nature of the noise, such as being small or drawn from a specific distribution.",
+     "anchor": "Section I, Contribution, p.2",
+     "quotes": [
+      "The presented results are applicable under rather general conditions: We allow for independent noise terms affecting the gates, for arbitrary unitaries defining the gates,",
+      "we do not require any assumptions on the nature of the noise, e.g., being sufficiently small or drawn from a specific probability distribution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of its own scope, Section I.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lipschitz-bound-definition",
+     "value": "The paper defines a Lipschitz bound of the noisy state as a positive scalar L such that the 2-norm difference between two noisy states is at most L times the infinity-norm difference of the two noise vectors.",
+     "anchor": "Definition II.1, Section II A, p.3; footnote 33",
+     "quotes": [
+      "Definition II.1. A scalar L > 0 is a Lipschitz bound of |ψ⟩ if",
+      "∥|ψ(ε)⟩ − |ψ(ε′)⟩∥2 ≤ L∥ε − ε′∥∞",
+      "We use an ∞-norm for the noise rather than a 2-norm in order to obtain tighter bounds in our main technical results."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition II.1 and footnote 33.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-II-1-fidelity-from-lipschitz",
+     "value": "The paper proves that, if L is a Lipschitz bound of the noisy state, then for any noise vector with infinity norm at most the noise bound and any initial state, the fidelity is at least one minus L squared times the noise bound squared, divided by two.",
+     "anchor": "Theorem II.1, Section II A, p.4",
+     "quotes": [
+      "Theorem II.1. Suppose L is a Lipschitz bound of |ψ⟩. Then, for any ε ∈ RN satisfying ∥ε∥∞ ≤ ε¯ for some ε¯ ≥ 0 and any initial state |ψ0⟩, it holds that",
+      "2 − 2| ⟨ψ(ε)|ψˆ⟩ | ≤ L2∥ε∥2∞ ≤ L2ε¯2,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Section II A; the displayed bound is printed split across lines, so the proof line carries it.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text layer splits the displayed bound; the proof line (15) gives the inequality it rearranges."
+    },
+    {
+     "id_suggestion": "theorem-II-2-norm-lipschitz-bound",
+     "value": "The paper proves that the sum over all gates of the induced 2-norm of the generating Hamiltonian is a Lipschitz bound of the noisy state, and that the worst-case fidelity is then bounded below as in Theorem II.1.",
+     "anchor": "Theorem II.2, Section II B, p.4; proof in Appendix A, p.11",
+     "quotes": [
+      "Theorem II.2. For any ε, ε′ ∈ RN and any initial state |ψ0⟩, we have",
+      "∥|ψ(ε)⟩ − |ψ(ε′)⟩∥2 ≤ ∥Hi∥2|εi − ε′i|. (17)",
+      "In particular, iN=1∥Hi∥2 is a Lipschitz bound of |ψ⟩ and, for any ε ∈ RN with ∥ε∥∞ ≤ ε¯ and any initial state |ψ0⟩, it holds that",
+      "which implies (17) and the Lipschitz bound iN=1∥Hi∥2. Further, Theorem II.1 implies (18), which thus concludes the proof."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem II.2 is stated with its conditions and proved in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The printed bound (18) is split across lines; its form (one minus half the squared sum times the noise bound squared) is read from Theorem II.1 and eq. (19)."
+    },
+    {
+     "id_suggestion": "proof-technique-theorem-II-2",
+     "value": "The authors prove Theorem II.2 by bounding the derivative of each noisy gate by the norm of its Hamiltonian and then using the triangle inequality, unitarity of the gates and submultiplicativity of matrix norms, inductively over the gates.",
+     "anchor": "Appendix A, pp.11-12",
+     "quotes": [
+      "In particular, the derivative of Ui is uniformly bounded, i.e.,",
+      "where we use that |ψ0⟩ has unit norm and the Ui’s are unitary, as well as the triangle inequality and submultiplicativity of matrix norms. Proceeding inductively, this implies"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The proof of Theorem II.2 in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-z-rotation-sensitivity",
+     "value": "The authors state that for a single Z rotation the sensitivity of the fidelity bound to the noise decreases for smaller rotation angles and vanishes at angle zero.",
+     "anchor": "Section II B, eq. (19), p.4",
+     "quotes": [
+      "multiplicative influence of the noise, the sensitivity of the",
+      "fidelity w.r.t. the noise decreases for smaller values of θ,",
+      "and it vanishes for θ = 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Consequence of Theorem II.2 for one gate, eq. (19).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Eq. (19) itself is split across lines in the text layer and is not quoted."
+    },
+    {
+     "id_suggestion": "intro-example-simulation",
+     "value": "The authors report that, for two rotation sequences that give the same ideal state and have the same gate count and circuit depth, the minimum fidelity over 500 noise realizations was 0.985 for the first sequence and 0.965 for the second, with each noise term sampled uniformly from a range of minus 0.2 to 0.2.",
+     "anchor": "Section I, Figure 1, pp.1-2",
+     "quotes": [
+      "same gate sets (y- and z-rotations) and both have the same gate count and circuit depth.",
+      "are randomly sampled from a uniform distribution over [−0.2, 0.2] × [−0.2, 0.2].",
+      "and by determining the minimum fidelity over all 500 noise realizations.",
+      "The resulting value for Unoisy is 0.985, whereas Un′ oisy yields a minimum fidelity of 0.965."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one simulation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The minimum is over sampled noise values, so it is a sampled worst case, not the true worst case."
+    },
+    {
+     "id_suggestion": "intro-example-twice-loss",
+     "value": "The authors state that the loss of fidelity of the second noisy circuit under the worst-case noise realization is more than twice as large as that of the first.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "This shows that the loss of fidelity of Un′ oisy due to the worst-case realization of the coherent control error is more than twice as large as that of Unoisy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one simulation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lipschitz-example-comparison",
+     "value": "The authors state that the Lipschitz bound of the first sequence is smaller than that of the second, which they say explains why the first is more robust, and that the difference comes from the different magnitude of the z-rotations.",
+     "anchor": "Section II B, p.4",
+     "quotes": [
+      "which explains why the latter is more robust w.r.t. co-",
+      "different magnitude of the z-rotations, which is why the",
+      "higher sensitivity of U ′ only manifests itself as an over-"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Explanation applies the bound to one example; the bound values are split across lines in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The values (3π/8 and 5π/8) are printed split across lines and are not quoted."
+    },
+    {
+     "id_suggestion": "design-guideline-smaller-norms",
+     "value": "The authors propose a design and transpilation guideline: when a designer or transpiler can choose between Hamiltonians, choose the circuit with smaller Hamiltonian norms, since smaller norms imply better robustness.",
+     "anchor": "Section IV, p.6",
+     "quotes": [
+      "Thus, smaller norms ∥Hi∥2 imply better robustness against such errors.",
+      "Theorem II.2 can be used to derive a novel, quantita-"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' guideline, derived from an upper bound.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The guideline rests on an upper bound that the paper itself calls not tight, so a smaller bound does not guarantee a smaller true loss."
+    },
+    {
+     "id_suggestion": "pairwise-theorem-II-3",
+     "value": "The paper proves pair-wise Lipschitz bounds that group consecutive gates in pairs and use the norm of the stacked pair of Hamiltonians, with an extra single-gate term when the number of gates is odd.",
+     "anchor": "Theorem II.3, Section II C, p.5; proof in Appendix D, p.12",
+     "quotes": [
+      "Theorem II.3. The following are Lipschitz bounds of |ψ⟩:",
+      "• If the number of unitaries N is even:",
+      "• If the number of unitaries N is odd:",
+      "Using that |ψ0⟩ is a unit vector and the matrices Ui(εi) are unitary, the norm of (D2) is upper bounded by ∥ H1 H2 ∥2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem II.3 is stated with its conditions; Appendix D proves the even case.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The bounds (23a) and (23b) are printed split across lines in the text layer."
+    },
+    {
+     "id_suggestion": "theorem-II-3-odd-case-not-proved",
+     "value": "The authors state that Appendix D proves only the even case of Theorem II.3 and that the odd case can be proven with trivial modifications.",
+     "anchor": "Appendix D, p.12",
+     "quotes": [
+      "Proof. We only prove (23a) and note that (23b) can be proven with trivial modifications."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's statement of what its proof covers.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pairwise-fidelity-bound-even-n",
+     "value": "The authors state that combining Theorem II.3 with Theorem II.1 for an even number of gates gives a worst-case fidelity bound, and that the coupling between two sequentially applied Hamiltonians influences robustness against coherent control errors.",
+     "anchor": "Section II C, eq. (24), p.5",
+     "quotes": [
+      "Further, combining Theorem II.3 with Theorem II.1 (for the case of even N ), we obtain the worst-case fidelity bound",
+      "This shows that the coupling between any two sequentially applied Hamiltonians influences the robustness against coherent control errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Direct combination of two proved results.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pairwise-vs-sum-strictness",
+     "value": "The authors state that the pair-wise norm is bounded above by the sum of the individual norms and that this inequality is strict in almost all cases.",
+     "anchor": "Section II C, eq. (25), p.5",
+     "quotes": [
+      "For any two matrices H1, H2, it holds that",
+      "Inequality (25) is strict in almost all cases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The inequality chain (25) is shown in the text.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pairwise-independence-principle",
+     "value": "The authors state that the fidelity loss is reduced if the singular vectors for the maximum singular values of consecutive Hamiltonians are linearly independent, and that this holds even when the noise terms entering the unitaries are independent.",
+     "anchor": "Section II C, p.5",
+     "quotes": [
+      "In particular, the fidelity loss is reduced if the singular vectors corresponding to the maximum singular values of Hi+1 and Hi are linearly independent.",
+      "It is important to emphasize that this is the case even if the noise terms εi entering the different unitaries are independent."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' reading of their pair-wise bound.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "This is a statement about the pair-wise upper bound, not about the true fidelity loss."
+    },
+    {
+     "id_suggestion": "pairwise-future-work",
+     "value": "The authors state that they mainly use the norm-based bounds of Theorem II.2 and that drawing analogous conclusions from the pair-wise bounds is left to future research.",
+     "anchor": "Section II C, pp.5-6",
+     "quotes": [
+      "remainder of the paper, we mainly focus on the normbased bounds in Theorem II.2, but drawing analogous conclusions using the pair-wise bounds in Theorem II.3 is an interesting issue for future research."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Scope statement, Section II C.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "global-phase-dependence-of-bounds",
+     "value": "The authors state that the effect of coherent control errors does not depend on the global-phase choice of the Hamiltonian, but the bounds do depend on it, and the tightest bound comes from the offset that minimizes the Hamiltonian norm.",
+     "anchor": "Remark II.1, Section II B, pp.4-5",
+     "quotes": [
+      "As expected, the effect of coherent control errors on the circuit is independent of the particular choice of Hφ since",
+      "depend on the specific choice of φ.",
+      "In particular, the tightest Lipschitz bound of |ψ⟩ (and, hence, the tightest worst-case fidelity bound) is achieved when replacing Hi by Hi + φi∗, where φi∗ minimizes"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Remark II.1 argues it with eqs. (20) to (22).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "earlier-sqrt-n-lipschitz-bound",
+     "value": "The authors state that an earlier Lipschitz bound, of the form square root of N times the largest Hamiltonian norm, was obtained in reference 35 for convergence analysis of variational quantum algorithms, and that they use their own bound because it involves all circuit elements.",
+     "anchor": "Remark II.2, Section II B, p.5",
+     "quotes": [
+      "was obtained in [35] for the purpose of",
+      "convergence analysis of VQAs. In the present paper, we work with the bound derived in Theorem II.2 since it explicitly involves all elements of the quantum circuit"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tightness-single-gate",
+     "value": "The authors state that for a single gate, under a stated condition on the product of Hamiltonian norm and noise bound, the exact worst-case fidelity is the absolute cosine of that product, so the Theorem II.2 bound is its second-order Taylor approximation and is not too conservative when that product is small.",
+     "anchor": "Appendix C, p.12",
+     "quotes": [
+      "is equal to | cos(∥H∥2ε¯)|. This means that there exist",
+      "is the second-order Taylor approximation of the exact",
+      "conservative as long as the product ∥H∥2ε¯ is small."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper says 'It is not hard to show' and gives no proof; the condition on the product is split across lines and could not be quoted.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The condition appears in the text layer only as a fragment before a separate line."
+    },
+    {
+     "id_suggestion": "tightness-bound-18-vs-C2",
+     "value": "The authors state they prove that, for small noise levels, the main fidelity bound is tighter than an alternative bound built from sine terms via the triangle inequality.",
+     "anchor": "Appendix C, pp.12-13",
+     "quotes": [
+      "proven that (for small noise levels) the bound (18) is",
+      "tighter than (C2), i.e., it guarantees a larger worst-case"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Shown by comparing the two bounds in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tightness-no-multi-gate-exact",
+     "value": "The authors state that finding an explicit expression for the true worst-case fidelity of a circuit with more than one gate is more involved.",
+     "anchor": "Appendix C, p.12",
+     "quotes": [
+      "On the other hand, for multiple gates, i.e., N > 1,",
+      "finding an explicit expression for the worst-case fidelity",
+      "is more involved."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's statement of what it does not give.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "diamond-distance-from-lipschitz",
+     "value": "The paper states that any Lipschitz bound for the coherent-error map yields an upper bound on the diamond distance of the error from the identity, so the Section II results give computable diamond-distance bounds for coherent control errors.",
+     "anchor": "Section III, eq. (28), p.6",
+     "quotes": [
+      "yields an upper bound on the diamond distance in (27),",
+      "Thus, the results from Section II provide explicitly computable and insightful bounds on the diamond distance for coherent control errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Shown by the chain of inequalities (28), for a single error map.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The last factor in (28) is printed with its square-root sign lost, so the constant is not stated here. The derivation is for one error map, not a whole circuit or a code."
+    },
+    {
+     "id_suggestion": "threshold-requirement-cited",
+     "value": "The paper states, citing Aharonov and Ben-Or, that fault-tolerant quantum computation requires the diamond distance of an error from the identity to be at most some sufficiently small positive number.",
+     "anchor": "Section III, p.6",
+     "quotes": [
+      "In order to guarantee fault-tolerant quantum computation, it is required that ∥E − I∥⋄ ≤ η for some sufficiently small η > 0 [38]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "threshold-theorem-use-claim",
+     "value": "The authors state that their bounds are explicitly computable even for large circuits and can be used to guarantee fault-tolerance via threshold theorems.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "These bounds are explicitly computable even for large circuits, and they can be used to guarantee fault-tolerance via threshold theorems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Section III derives a diamond-distance upper bound for one error map; it does not derive a threshold or analyze a code."
+    },
+    {
+     "id_suggestion": "contrast-with-diamond-distance-literature",
+     "value": "The authors state that their framework provides bounds tailored to coherent control errors that are explicitly computable, depend directly on the circuit elements, and need no assumption on error statistics or size, including for independent errors.",
+     "anchor": "Section III, p.6",
+     "quotes": [
+      "In contrast to these works, our framework provides tailored bounds for coherent control errors, which can be explicitly computed, depend directly on the circuit elements, and hold under rather general assumptions"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim about their own framework.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scalability-proposition-B1",
+     "value": "The paper proves that if a gate acts non-trivially only on a subset of the qubits, the norm of its Hamiltonian equals the norm of the Hamiltonian of its non-trivial component.",
+     "anchor": "Proposition B.1, Appendix B, pp.11-12",
+     "quotes": [
+      "Proposition B.1. Suppose Uˆi only acts on a subset of all qubits, i.e.,",
+      "for some j1, j2. Then, ∥Hi∥2 = ∥H¯i∥2.",
+      "This implies ∥Hi∥2 = ∥I⊗j1 ⊗ H¯i ⊗ I⊗j2 ∥2 = ∥H¯i∥2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition B.1 and its proof, Appendix B.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scalability-linear-in-gate-count",
+     "value": "The authors state that for circuits of single-qubit and two-qubit gates the Hamiltonian norms come from two-by-two or four-by-four matrices, and that the cost of computing the Theorem II.2 bound grows only linearly with the gate count.",
+     "anchor": "Appendix B, p.12",
+     "quotes": [
+      "In the common scenario that the quantum algorithm only consists of single-qubit and 2-qubit gates, Proposition B.1 implies that ∥Hi∥2 can be easily determined by computing the norm of a 2 × 2 or 4 × 4 matrix.",
+      "In particular, the complexity of computing the bounds in Theorem II.2 for the full circuit grows only linearly with the gate count"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Argued in a paragraph, with no run timing.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "No timing or large-circuit computation is reported."
+    },
+    {
+     "id_suggestion": "qft-gate-sets-and-simulation-setup",
+     "value": "The authors transpile the 3-qubit QFT into five gate sets with BQSKit at maximum optimization level, and simulate each with independent noise terms drawn uniformly from the interval minus 0.05 to plus 0.05, Haar-random initial states, and 40, 000 runs per circuit.",
+     "anchor": "Section V, p.7",
+     "quotes": [
+      "The transpilation is carried out using the Berkeley Quantum Synthesis Toolkit (BQSKit) [59], for which we use the maximum optimization level.",
+      "from [−0.05, +0.05]. Furthermore, to estimate the worstcase fidelities, we draw the initial states |ψ0⟩ uniformly at random from the Haar measure.",
+      "Figure 3 displays the worst-case fidelity, average fidelity, and standard deviation based on 40, 000 runs of each algorithm with varying noise realizations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup, Section V.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The worst-case fidelity in Figure 3 is a sampled minimum over runs, not the true worst case."
+    },
+    {
+     "id_suggestion": "qft-lipschitz-bounds-by-gate-set",
+     "value": "The authors report Lipschitz bounds for the transpiled QFT circuits of 117.95 for gate set A, 106.79 for gate set B, 45.26 for gate set C, 36.95 for gate set D and 29.42 for gate set E, so that gate set E gives the smallest bound.",
+     "anchor": "Appendix E, Figures 8 to 12, pp.13-14; Section V, p.7",
+     "quotes": [
+      "of LQAF T = 117.95.",
+      "of LBQF T = 106.79.",
+      "has a Lipschitz bound of LCQF T = 45.26.",
+      "has a Lipschitz bound of LDQF T = 36.95.",
+      "has a Lipschitz bound of LQEF T = 29.42.",
+      "Note that gate set E leads to the smallest Lipschitz bound, followed by gate set D, etc."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Computed values for one transpilation of one circuit.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qft-bound-correlates-with-fidelity",
+     "value": "The authors report a strong correlation between a small Lipschitz bound and a large resulting fidelity, average and worst, in the simulation; gate set E gave the largest worst-case fidelity and gate set A, with the largest bound, the least robust.",
+     "anchor": "Section V, Figure 3, p.7",
+     "quotes": [
+      "Note that there is a strong correlation between a small Lipschitz bound and a resulting large fidelity (average and worst), which confirms the above analysis.",
+      "In particular, gate set E leads to the largest worst-case fidelity, whereas gate set A, which has the largest Lipschitz bound, is the least robust."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Five data points from one transpiler; the fidelity values are in Figure 3, not in the text."
+    },
+    {
+     "id_suggestion": "qft-gate-count-counterexample",
+     "value": "The authors report that the loss of worst-case fidelity for gate set C is more than two times as large as for gate set E, even though the gate-set-E circuit has almost 30% more gates, and state that this contradicts the philosophy that fewer gates imply better robustness.",
+     "anchor": "Section V, p.7",
+     "quotes": [
+      "For example, the loss of the worst-case fidelity for gate set C is more than two times as large as that for gate set E, even though the implementation based on gate set E has almost 30% more gates.",
+      "This contradicts the common philosophy that less gates imply better robustness"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The figure labels give 17 gates for C and 22 for E; one pair of circuits supports the claim, so it shows gate count is not sufficient, not that it is uninformative in general."
+    },
+    {
+     "id_suggestion": "qft-bound-conservative",
+     "value": "The authors state that for the five transpiled circuits the worst-case fidelity bound is conservative and even negative for four out of five circuits, though the Lipschitz bounds still serve to compare robustness.",
+     "anchor": "Section V, p.7",
+     "quotes": [
+      "Finally, for the above circuits, the worst-case fidelity bound (18) is conservative and even negative for four out of five circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's statement of a limit of its bound.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qft-no-general-gate-set-claim",
+     "value": "The authors state that they do not claim gate set E is generally preferable, that a better circuit on gate set D may exist, and that their main contribution is the possibility of a theoretical analysis for a given set of circuits.",
+     "anchor": "Section V, p.7",
+     "quotes": [
+      "In particular, we do not claim that gate set E is generally preferable over the others.",
+      "Our main contribution is the mere possibility to make a theoretical analysis as above for a given set of quantum circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's statement of the scope of its comparison.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-setup-ibm-nairobi",
+     "value": "The authors run two single-qubit circuits on the ibm nairobi quantum computer for 16 equidistant noise levels with 80 noise samples each, apply coherent control errors only to the Rz gates, and estimate fidelity by single-qubit state tomography, in total 153, 600, 000 circuits.",
+     "anchor": "Section VI and Appendix F, pp.8-9, 13",
+     "quotes": [
+      "For the implementation on ibm nairobi, we run the circuits UA(εA) |0⟩ and UB(εB) |0⟩ for 16 equidistant noise levels ε¯ ∈ [0, 1]. For each noise level, we draw 80 random samples of εA and εB, respectively, from [−ε¯, ε¯].",
+      "we consider the case that the Rz-gates are affected by coherent control errors εA and εB, respectively",
+      "since the elementary gate set which can be implemented on ibm nairobi does not contain Rxrotations.",
+      "Thus, we run 2 · 16 · 80 · 3 · 20, 000 = 153, 600, 000 quantum circuits on ibm nairobi in total."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its hardware setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The noise is injected by the authors in software-chosen rotation angles; the hardware's own errors are not separated out. Noise levels reach 1, far above the 0.05 used in simulations."
+    },
+    {
+     "id_suggestion": "hardware-result-ua-vs-ub",
+     "value": "The authors report that, for non-trivial noise levels, circuit UA performs significantly better than circuit UB on ibm nairobi, as predicted by Theorem II.2, with the observed worst-case fidelity very close to the theoretical bound.",
+     "anchor": "Section VI, Figure 5, p.9",
+     "quotes": [
+      "First, we observe that, for non-trivial noise levels, circuit UA indeed performs significantly better than circuit UB, as predicted by Theorem II.2.",
+      "the observed worst-case fidelity is, in fact, very close to the theoretical bound (18)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one hardware experiment on two circuits.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Two circuits on one device; the fidelity values are in Figure 5, not in the text."
+    },
+    {
+     "id_suggestion": "hardware-bound-violated-for-ua",
+     "value": "The authors state that for UA the empirical worst-case fidelity is smaller than the theoretical lower bound, and attribute this to the inexact fidelity estimation and possibly further errors such as decoherence.",
+     "anchor": "Section VI, p.9",
+     "quotes": [
+      "For UA, the empirical value is smaller than the theoretical lower bound, which can be explained by the inexact fidelity estimation procedure and possibly further errors caused, e.g., by decoherence effects."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result and an author explanation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The bound holds only for the noise model; hardware errors outside it can break it. The attribution is not tested in the paper."
+    },
+    {
+     "id_suggestion": "hardware-not-explained-by-gate-count",
+     "value": "The authors state that the improved robustness of UA over UB can only be explained by the different Lipschitz bounds and not by the number of gates, 3 against 4, since both circuits have almost identical fidelity without coherent control errors.",
+     "anchor": "Section VI, p.9",
+     "quotes": [
+      "To conclude, is important to note that the improved robustness of UA over UB can only be explained by the different Lipschitz bounds and not, e.g., by the number of gates (3 vs. 4) since both circuits have almost identical fidelity in the absence of coherent control errors, i.e., for ε¯ = 0."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Equal noiseless fidelity rules out only a baseline difference; it does not rule out other explanations, such as the different Rz angle sizes acting through hardware effects."
+    },
+    {
+     "id_suggestion": "hardware-fidelity-definition-f5",
+     "value": "The authors compute the fidelity between the analytic pure state and the tomographic density matrix as the absolute value of the expectation of the density matrix in that state.",
+     "anchor": "Appendix F, eq. (F5), p.13",
+     "quotes": [
+      "F(|ψ⟩ , ρ) = | ⟨ψ|ρ|ψ⟩ |."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Appendix F.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "As printed, (F5) has no square root. For a pure noisy state this expression is the squared overlap, while the bound (18) is for the unsquared overlap; the text layer may have lost a root sign."
+    },
+    {
+     "id_suggestion": "section-iv-reverses-section-i",
+     "value": "The authors state in Section IV that the Lipschitz bound of the noisy version of the first sequence is larger than that of the second, and that the loss of fidelity of the first is more than twice as large as that of the second.",
+     "anchor": "Section IV, pp.6-7",
+     "quotes": [
+      "the derived Lipschitz bound of the noisy version U (ε) of",
+      "Uˆ against coherent control errors is larger than that of",
+      "Yet, the loss of fidelity of U (ε) is more than twice as large as that of U ′(ε)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement in the paper that conflicts with Sections I and II B.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Section I reports 0.985 for U and 0.965 for the primed circuit, and Section II B gives 3π/8 for U against 5π/8 for the primed circuit, so the primed circuit has the larger bound and the larger loss. Section IV appears to swap the two."
+    },
+    {
+     "id_suggestion": "vqa-lipschitz-bound-parametrized",
+     "value": "The authors state that, for parametrized gates with unknown multiplicative errors, the sum of the absolute parameter values times the Hamiltonian norms is a Lipschitz bound, so smaller absolute parameter values imply a better robustness bound.",
+     "anchor": "Section VII, p.9",
+     "quotes": [
+      "Theorem II.2 now implies that, for a fixed parameter",
+      "U (θ, ε) |ψ0⟩. In particular, smaller values of |θi| imply",
+      "better robustness of the VQA against coherent control"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Direct application of Theorem II.2, Section VII.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound itself is printed split across lines."
+    },
+    {
+     "id_suggestion": "vqa-regularized-objective",
+     "value": "The authors propose minimizing the cost plus a penalty on the squared norm of the parameter vector, with a positive weight lambda that trades off optimality against robustness to coherent control errors.",
+     "anchor": "Section VII, eq. (33), p.9",
+     "quotes": [
+      "Here, λ > 0 is a parameter which can be used to trade off optimality and robustness against coherent control errors."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author proposal.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-regression-experiment-setup",
+     "value": "The authors train a single-qubit model on a regression of the sine function with 20 training points, five regularization weights, eight models per weight, 50 ADAM iterations and noise up to 0.05 on the trainable Ry and Rz gates.",
+     "anchor": "Section VII, p.10",
+     "quotes": [
+      "Our model is based on [70] and consists of a single qubit.",
+      "We create a simple training set X with chosing n = 20 points equidistantly from [0, 2π], and a target set Y = {sin(x) : x ∈ X }.",
+      "noise terms sampled uniformly from [−ε¯, ε¯] with ε¯ = 0.05.",
+      "The final model is chosen after 50 iterations of the ADAM optimizer as the one with the smallest cost C(θ)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup, Section VII.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-regularization-lowers-lipschitz-bound",
+     "value": "The authors report that a larger regularization parameter gave a lower Lipschitz bound of the trained circuits (Figure 6), and state they conclude that parameter regularization can improve the robustness of the circuits.",
+     "anchor": "Section VII, Figure 6, p.10",
+     "quotes": [
+      "shown in Figure 6. We observe that a larger regulariza-",
+      "tion parameter λ indeed leads to a lower Lipschitz bound.",
+      "such a setting can be successfully improved via parameter"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one small study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text reports only the Lipschitz bound of the trained circuits; no fidelity under noise, and no cost or error against the weight, appears in the text. Robustness is inferred from the bound, and the bound's values are in Figure 6."
+    },
+    {
+     "id_suggestion": "vqa-regularization-novelty-and-transfer",
+     "value": "The authors state that, to the best of their knowledge, the link between regularization and coherent control errors is new, and that regularization encourages a solution less dependent on the specific hardware.",
+     "anchor": "Section VII, pp.9-10",
+     "quotes": [
+      "However, the above-described link between regularization and coherent control errors is, to the best of our knowledge, new.",
+      "Adding a regularization in the VQA improves robustness and, therefore, it encourages an optimal solution which is less dependent on the specific hardware on which the VQA is trained."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author claims.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Hardware transfer is not tested in the paper."
+    },
+    {
+     "id_suggestion": "vqa-convergence-lipschitz-gradient",
+     "value": "The authors state that the same Lipschitz bounds hold for the parameter map in the absence of errors and yield Lipschitz bounds for the cost gradient, which can possibly allow more freedom and less conservatism in convergence analysis.",
+     "anchor": "Section VII, p.10",
+     "quotes": [
+      "quantum circuit in the absence of coherent control errors, i.e., for the map θ → Uˆ (θ) |ψ0⟩. These bounds then yield Lipschitz bounds for the gradient ∇C analogous to [35].",
+      "they can possibly allow for more de-"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no convergence analysis is carried out.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-norms-more-precise-than-gate-count",
+     "value": "The authors conclude that the Hamiltonian norms quantify the robustness against coherent control errors more precisely than existing measures such as gate count, based on the 3-qubit QFT gate-set study.",
+     "anchor": "Section VIII, p.11",
+     "quotes": [
+      "We showed that these norms quantify the robustness against coherent control errors more precisely than existing measures such as the gate count by studying robustness of different elementary gate set implementations of the 3-qubit QFT."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The evidence is five transpiled circuits of one algorithm."
+    },
+    {
+     "id_suggestion": "conclusion-future-work",
+     "value": "The authors state as next steps the study of further classes of algorithms and gate sets, transpilation procedures that reduce Hamiltonian norms, and extension of the analysis to stochastic information about the errors.",
+     "anchor": "Section VIII, p.11",
+     "quotes": [
+      "It will be an interesting next step to study robustness of further classes of quantum algorithms and gate sets against coherent control errors",
+      "Finally, extending our theoretical analysis to include stochastic information about the errors may provide additional insights over the worst-case bounds considered in this paper."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's stated open problems, Section VIII.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
