@@ -1,0 +1,984 @@
+{
+ "papers": [
+  {
+   "record_id": "acedo-2026-quantum-hamiltonian-evolution-coherent-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Acedo-et-al._2026_Quantum-Hamiltonian-Evolution-for-Coherent-Quantum-Learning__2609.03640.pdf",
+   "title_in_file": "Quantum Hamiltonian Evolution for Coherent Quantum Learning",
+   "version_note": "arXiv:2609.03640v1, dated September 4, 2026 on the title page; a Supplemental Material appendix (pages 9 to 18) follows the Letter in the same text.",
+   "pages": 18,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper with small simulations that proposes training a quantum model by evolving a register of discretized parameters under a loss-encoding Hamiltonian, with block-encoding constructions, a batched variant, and two simulated demonstrations (a classifier and a Mach-Zehnder phase estimate).",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "cql-complexity-open",
+     "verdict": "confirmed",
+     "note": "Right as stored. The text layer prints this passage on page 4 (the page labeled 4), not page 5.",
+     "value": "The authors state that a complete complexity analysis is beyond the scope of the work and that whether coherent learning can give asymptotic advantages over hybrid optimization is an open question.",
+     "anchor": "Numerical demonstrations (a), p.4",
+     "quotes": [
+      "While a complete complexity analysis is beyond the scope of this work",
+      "Determining whether coherent learning can provide asymptotic advantages over hybrid optimization remains an important open question."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit themselves in the numerical demonstrations section.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "cql-demo-setup",
+     "verdict": "confirmed",
+     "note": "Right as stored. Appendix III adds the sample count and the single-sample (batch size one) schedule; see the new assertions.",
+     "value": "The authors state that the classification demonstration uses a single qubit data re-uploading circuit with two layers of trainable rotations and two parameters, each discretized with five qubits, for one training epoch.",
+     "anchor": "Numerical demonstrations (a), p.4",
+     "quotes": [
+      "we employ a single-qubit data reuploading circuit with two layers of trainable rotations, yielding a variational ansatz with two parameters",
+      "Each parameter is then discretized using five qubits.",
+      "we perform one training epoch using the coherent training protocol in the single-sample regime"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in the numerical demonstrations section.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "cql-numerics-peak",
+     "verdict": "narrowed",
+     "note": "The classification result is a bimodal concentration around the dominant minima and the authors say the protocol does not produce a single optimized parameter value; the phase estimation result is a strong localization around the optimal value. The text gives no number for the match with gradient-based performance.",
+     "value": "The authors report numerical experiments on binary classification and interferometric phase estimation. In the classification demonstration the final distribution shows a bimodal concentration around the dominant minima, not a single optimized parameter value; in the phase estimation the probability amplitude is strongly localized around the optimal parameter value.",
+     "anchor": "Abstract p.1; Numerical demonstrations (a) p.4 and (b) p.5",
+     "quotes": [
+      "Numerical experiments on binary classification and interferometric phase estimation confirm that the evolved distribution peaks at the optimal parameters, matching gradient-based performance.",
+      "ultimately exhibiting a bimodal concentration around the dominant minima",
+      "Rather than producing a single optimized parameter value, the protocol generates a quantum representation of the landscape itself",
+      "around the optimal parameter value, corresponding to the unknown phase shift ϕ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; simulations only.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The abstract says the distribution peaks at the optimal parameters; the body describes two modes for the classifier. A gradient baseline (stochastic gradient descent) appears only in the classification study (Appendix III, Fig. 6b); the text names no baseline for the phase estimation."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "cql-definition",
+     "value": "The authors introduce Coherent Quantum Learning (CQL), a training framework for quantum learning models in which the model parameters are quantum degrees of freedom evolved under a Hamiltonian that encodes the loss function.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "We introduce Coherent Quantum Learning (CQL), a training framework for quantum learning models in which the model parameters are quantum degrees of freedom evolved under a Hamiltonian that encodes the loss function."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own framework in the abstract.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-mechanism-claim",
+     "value": "The authors state that in the quantum case a parameter register initialized in superposition evolves unitarily, and probability amplitude concentrates near low-loss configurations through interference, without gradient computation or classical feedback.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "a parameter register initialized in superposition evolves unitarily, and probability amplitude concentrates near low-loss configurations through interference, without gradient computation or classical feedback."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper's evidence for it is small numerical simulations.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper gives no proof that the amplitude concentrates near low-loss configurations. The support is two simulated examples."
+    },
+    {
+     "id_suggestion": "cql-scope-learning",
+     "value": "The authors state that, unlike general optimization frameworks, CQL is designed specifically for learning problems, where the objective function is generated by evaluating a parameterized quantum model on data.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "Unlike general optimization frameworks, CQL is designed specifically for learning problems, where the objective function is generated by evaluating a parameterized quantum model on data."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its own framework.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-discretization",
+     "value": "The authors discretize each trainable parameter with m bits, which gives a grid of two to the power m values in [0, 2π) (printed flat as 2m in the text layer), each represented by a computational basis state on m ancillary qubits.",
+     "anchor": "CQL protocol, p.2",
+     "quotes": [
+      "we discretize the parameter θ using m bits,",
+      "of 2m possible values in [0, 2π), each represented by a",
+      "computational basis state |θ⟩ = |θ1θ2 . . . θm⟩ on m ancillary qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own parameter encoding.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-hamiltonian-form",
+     "value": "The authors build on the time evolution of quantum Hamiltonian descent [28]: a Hamiltonian that is the sum of a kinetic term (a Laplacian in the parameter basis) weighted by one damping function of time and a diagonal loss Hamiltonian weighted by a second damping function of time.",
+     "anchor": "CQL protocol, Eq. (1), p.2",
+     "quotes": [
+      "We build upon the time evolution introduced in [28],",
+      "where eφ(t), eχ(t) are the damping parameters, Pˆθ2 is the Laplacian operator in the θ basis and HˆL(x, θˆ) is the diagonal Hamiltonian proportional to L(x, θ) that encodes the objective function to minimize."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the Hamiltonian it evolves under.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text layer prints the exponent forms of the two damping factors flat; the value keeps to the words."
+    },
+    {
+     "id_suggestion": "cql-initial-state",
+     "value": "The authors state that, with no prior information, the initial state is an equal superposition over the parameter space, and that with prior information, such as an informed initial guess, the state can be a localized wavepacket such as a Gaussian centered on that guess.",
+     "anchor": "CQL protocol, p.2",
+     "quotes": [
+      "In the absence of prior information, the initial condition is chosen as an equal superposition over the parameter space, ensuring an unbiased exploration of all configurations.",
+      "it can be incorporated by initializing the state as a localized wavepacket (e.g., a Gaussian) centered around θ0, thereby biasing the evolution toward promising regions of"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own initial-state choice.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-clock-register",
+     "value": "The authors remove the explicit time dependence of the Hamiltonian by the clock-dimension technique of Refs. [42, 43]: they enlarge the Hilbert space with a clock register, which turns the time dependence into a position operator, at the cost of a larger Hilbert space, and so obtain a time-independent Hamiltonian.",
+     "anchor": "CQL protocol, Eq. (2), p.2; Supplement I, p.10",
+     "quotes": [
+      "To address this issue, we employ the technique outlined in Refs. [42, 43], which involves enlarging the Hilbert space, introducing a “clock dimension” [44].",
+      "This expansion transforms the time dependence of a given Hamiltonian into a position operator Xˆt in an additional Hilbert space.",
+      "Consequently, albeit at the expense of enlarging the Hilbert space to Ht ⊗ Hθ, this approach enables us to work with a time-independent Hamiltonian"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the method it adopts for the time dependence.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-time-dependent-overhead",
+     "value": "The authors state, citing [41], that simulating time-dependent Hamiltonians is not a native operation in the circuit model and typically introduces considerable overhead.",
+     "anchor": "CQL protocol, p.2",
+     "quotes": [
+      "Simulating time-dependent Hamiltonians is not a native operation in the circuit model, and typically introduces considerable overhead [41]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-block-encoding-assumed",
+     "value": "The authors state that the complexity of training is transferred to the simulation of the dynamics generated by the time-independent Hamiltonian, and that throughout the Letter they assume access to a block encoding of the Hamiltonian and describe how to construct the novel components.",
+     "anchor": "CQL protocol, p.2",
+     "quotes": [
+      "In this way, the complexity of training our learning model is transferred to the simulation of the dynamics generated by Eq. (2).",
+      "Throughout this Letter, we assume access to a block encoding of the Hamiltonian, and explicitly describe how to construct the novel components."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the assumption its results rest on.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-classifier-model",
+     "value": "The authors define the demonstration classifier as a reduced data re-uploading model [45] that prepares a one-qubit state from a data-encoding unitary followed by a trainable rotation, with a cost equal to one minus the squared magnitude of the amplitude of the correct label.",
+     "anchor": "CQL protocol, Eqs. (3)-(4), p.3",
+     "quotes": [
+      "reduced version of the data re-uploading model [45] for binary classification.",
+      "where U (x) is a data-encoding unitary (e.g., Rx(x)) and Ry(θ) = e−iθY/2 is a trainable rotation.",
+      "Ly(x, θ) = 1 − |αy(x, θ)|2,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the model and loss it uses.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-coherent-evaluation",
+     "value": "The authors state that, with m ancillary qubits for the parameter register, one unitary evaluates the model coherently over all parameter values of the grid, entangling model outputs with parameter configurations.",
+     "anchor": "CQL protocol, Eq. (5), p.3",
+     "quotes": [
+      "can be evaluated coherently over all parameter values of",
+      "the grid by a unitary Ux,θ acting on the main qubit and the ancillas,",
+      "This operation entangles model outputs with parameter"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own construction.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-batch-per-ancilla",
+     "value": "The authors state that more than one data point can be evaluated simultaneously by adding one ancilla per data point, which increases the batch size.",
+     "anchor": "CQL protocol, p.3",
+     "quotes": [
+      "evaluate simultaneously more than one data point by",
+      "adding one ancilla per data, thus increasing the size of",
+      "the batch."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own construction.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-loss-block-encoding",
+     "value": "The authors state that, using Theorem 2 from Ref. [46] and a product of two block encodings that needs one additional ancilla, they obtain a block encoding of the loss Hamiltonian with parameters (1, m + 5, 0), circuit depth O(m) and O(1) queries to a controlled version of the model-evaluation unitary.",
+     "anchor": "CQL protocol, p.3; Supplement I C, p.12",
+     "quotes": [
+      "we can use Theorem 2 from Ref. [46] in order to prepare a",
+      "We thereby obtain a (1, m + 5, 0) block encoding of HˆL with O(m) circuit depth and O(1) queries to a controlled",
+      "Therefore, the resulting block-encoding of the loss Hamiltonian has parameters (1, m + 5, 0) with overall circuit depth O(m) and O(1) queries to a controlled version of Ux,θ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A construction that rests on a cited theorem; the paper does not re-prove the parameters.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The count covers the loss Hamiltonian only. The paper gives no total gate count or total query count for the whole evolution, which also needs the kinetic and clock block encodings and the simulation."
+    },
+    {
+     "id_suggestion": "cql-operator-discretization-scope",
+     "value": "The authors state that the discrete representation of the clock and momentum operators is not unique, and that a systematic analysis of optimal discretizations and of the control of operator norms to avoid unfavorable scaling is beyond the scope of the Letter.",
+     "anchor": "CQL protocol, p.3",
+     "quotes": [
+      "The discrete representation of these operators, broadly studied, is not unique, as it depends on",
+      "A systematic analysis of optimal discretizations and the control of operator norms to avoid unfavorable scaling is beyond the scope of this Letter."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit themselves.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-function-blocks",
+     "value": "The authors propose to obtain the block encodings of the two damping factors by applying the Quantum Singular Value Transformation [49] to approximate them as polynomials, or by standard block-encoding techniques for diagonal operators, and to build the target Hamiltonian as a linear combination of the individual block encodings.",
+     "anchor": "CQL protocol, p.3",
+     "quotes": [
+      "Next, one may apply the Quantum Singular Value Transformation (QSVT) [49] to realize a polynomial transformation to xˆt approximating the functions eφ(Xˆt), eχ(Xˆt)",
+      "the target Hamiltonian can be constructed as a linear combination of the individual block encodings."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A construction the paper outlines without a cost count.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-output-state-claim",
+     "value": "The authors state that, using qubitization [34] to implement the time evolution of the initial state, they obtain a quantum state that encodes a probability distribution on the values of the parameter whose maximum corresponds to the optimal value for training the model.",
+     "anchor": "CQL protocol, p.3",
+     "quotes": [
+      "we use qubitization [34] to implement the time evolution of the initial state.",
+      "we obtain a quantum state that encodes a probability distribution on the values of θ whose maximum corresponds to the optimal value for training our learning model."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no proof or bound in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper does not say how the optimal parameter is read out from the state or what the readout costs, and it gives no guarantee on the probability mass near the optimum."
+    },
+    {
+     "id_suggestion": "cql-batched-protocol",
+     "value": "The authors propose iterative batched training, analogous to mini-batch methods in classical machine learning, in which the dataset is partitioned into smaller subsets processed sequentially, and the parameter state evolved for one batch is the initial condition for the evolution under the Hamiltonian of the next batch.",
+     "anchor": "Batched CQL, p.3 and p.4",
+     "quotes": [
+      "We propose an iterative batched training strategy, analogous to mini-batch methods in classical machine learning, whereby the dataset is partitioned into smaller subsets that are processed sequentially.",
+      "The resulting parameter state is then used as the initial condition for a subsequent evolution under an updated Hamiltonian that encodes the next batch into the data registers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training scheme.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-global-batch-impractical",
+     "value": "The authors state that a batch the size of the entire dataset (coherent global training) would require as many ancillas as data points, and that this is not a realistic scenario because it becomes impractical for large datasets.",
+     "anchor": "Batched CQL, p.3",
+     "quotes": [
+      "this would require as many ancillas as data points. This is not a realistic scenario, as it becomes impractical for large datasets."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit themselves.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-batch-tradeoff",
+     "value": "The authors state that the choice of batch size introduces a fundamental trade-off between spatial resources (the qubit count) and temporal resources (the circuit depth).",
+     "anchor": "Batched CQL, p.4",
+     "quotes": [
+      "Here, the choice of batch size introduces a fundamental trade-off between spatial resources, namely the qubit count, and temporal resources, namely the circuit depth."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no resource count is given.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-batch-damping",
+     "value": "The authors state that in the batched setting aggressive concentration of the state is undesirable, that the effective evolution time and the damping schedules play the role of a learning rate, and that the asymptotic divergence condition on the ratio of the two damping schedules, used in the global setting, is no longer appropriate and need not be imposed.",
+     "anchor": "Batched CQL, p.4",
+     "quotes": [
+      "In the batched setting, however, such aggressive concentration is generally undesirable",
+      "In the present framework, the analogous control parameter is the effective evolution time under the CQL Hamiltonian, together with the associated damping schedules.",
+      "Consequently, in the batched regime, the asymptotic divergence condition on the ratio φ(t)/χ(t) is no longer appropriate and need not be imposed."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A design rationale stated without analysis.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-batch-forgetting-claim",
+     "value": "The authors state that, because the evolution time per batch is finite and the damping ratio does not collapse to zero within a single batch, the wavefunction keeps a non-zero kinetic dispersion, which introduces an implicit regularization analogous to a classical learning rate and avoids catastrophic forgetting across the training sequence.",
+     "anchor": "Supplement II, p.17",
+     "quotes": [
+      "This physical mechanism introduces an implicit regularization, analogous to a classical learning rate, preventing the state from freezing into a single batch’s local minimum, thereby avoiding catastrophic forgetting across the global training sequence."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no experiment in the paper measures forgetting.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The numerical studies train on single-sample batches of one task and report loss curves; none tests retention of earlier batches against a baseline."
+    },
+    {
+     "id_suggestion": "cql-algorithm-batched",
+     "value": "The authors give a batched CQL algorithm that, for each epoch and each batch, builds the batch loss Hamiltonian, evolves the state for a duration τ, and passes the resulting state directly to the next batch with no classical measurement between batches.",
+     "anchor": "Supplement II, Algorithm 1, p.16",
+     "quotes": [
+      "Evolve the quantum state continuously for duration τ",
+      "Note: The resulting state |Ψ⟩ is passed directly as the starting point for the next batch (No classical measurement intermediary!);"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own algorithm.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-hamiltonian-assembly",
+     "value": "The authors state that the full Hamiltonian needs block encodings of the clock momentum, the squared parameter momentum, the two diagonal damping functions and the loss Hamiltonian, assembled by tensor products, multiplication and linear-combination-of-unitaries techniques, at the price of an enlarged Hilbert space.",
+     "anchor": "Supplement I, p.10",
+     "quotes": [
+      "The price paid is the enlargement of the Hilbert space and the need to block-",
+      "the full Hamiltonian can be assembled using standard block-encoding arithmetic: tensor products for terms acting on different registers, multiplication for operator products, and linear-combination-of-unitaries techniques for the final sum."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A construction the paper outlines without a cost count.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-position-function-cost",
+     "value": "The authors state that QSVT gives an asymptotically efficient block encoding of the damping functions when they are sufficiently regular, but that the cost can increase significantly for rapidly varying or nonsmooth coefficients, and that for a general function the Walsh expansion may contain many nonzero coefficients.",
+     "anchor": "Supplement I A, p.10 and p.11",
+     "quotes": [
+      "Thus, QSVT gives an asymptotically efficient block-encoding when the functions eφ(x) and eχ(x) are sufficiently regular, but the cost can increase significantly for rapidly varying or nonsmooth coefficients.",
+      "For a general function f (x), however, the Walsh expansion may contain many nonzero coefficients, potentially up to 2n, unless f has additional structure"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cost statement given without a proof in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-momentum-norm-scaling",
+     "value": "The authors state that in typical discretizations the norm of the discretized momentum operator scales linearly with the number of grid points, which is exponential in the number of qubits, and that this directly affects the cost of Hamiltonian simulation.",
+     "anchor": "Supplement I B, p.11",
+     "quotes": [
+      "In typical discretizations, the norm of the discretized momentum operator scales linearly with the number of grid points, that is, as O(N ).",
+      "Since N = 2n for an n-qubit spatial register, this corresponds to an exponential scaling in the number of qubits.",
+      "This directly affects the cost of Hamiltonian simulation."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A scaling statement given without a proof in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-momentum-mitigation",
+     "value": "The authors state that restricting the dynamics to a momentum subspace of bandwidth K replaces the worst-case norm bound, which is of order N, by an effective bound of order K, and that for sufficiently smooth or analytic solutions K can be much smaller than the number of grid points N.",
+     "anchor": "Supplement I B, p.11",
+     "quotes": [
+      "restricting the dynamics to a subspace |p| ≤ K replaces the worst-case bound ∥P ∥ = O(N ) by an effective bound ∥P ∥eff = O(K).",
+      "For sufficiently smooth or analytic solutions, K can be much smaller than the total number of grid points N"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proposed mitigation without a proof or a test in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-periodic-grid-momentum",
+     "value": "The authors state that the central-difference momentum operator on a periodic grid has a block encoding by linear combination of unitaries, shown without mitigating the scaling, and that its rescaling factor leads to a simulation time scaling like the grid spacing, which they describe as exponential with the number of qubits.",
+     "anchor": "Supplement I B, p.11 and p.12",
+     "quotes": [
+      "In order to illustrate how to achieve a block encoding of this operator (without mitigating the scaling), we can consider a periodic grid.",
+      "time scaling like t ∼ ∆x (exponential with number of qubits)."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A construction stated without a proof of the scaling.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-homogenize",
+     "value": "The authors state that block encodings with different ancilla counts and normalizations can be homogenized by padding the smaller one with dummy ancillas and adding one extra ancilla with a single-qubit unitary, after which the three terms of the Hamiltonian are summed with a standard linear combination of unitaries.",
+     "anchor": "Supplement I D, p.16",
+     "quotes": [
+      "and pad the smaller block-encoding with dummy ancillas so that both use m ancilla qubits.",
+      "Thus, both block-encodings can be homogenized to have the same number of ancillas and the same normalization α. Once homogenized we can sum the three terms using standard LCU."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A standard construction stated without a cost count.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-joint-batch-loss",
+     "value": "The authors state that evaluating two samples coherently gives a joint batch loss equal to the identity minus the product of the two samples' correct-classification probabilities, and that this is a product-type batch objective, not the usual empirical mean loss.",
+     "anchor": "Supplement I C 1, p.13",
+     "quotes": [
+      "Therefore, a natural joint batch loss is",
+      "However, it should be noted that it corresponds to a product-type batch objective, not to the usual empirical mean loss."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit themselves.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-polynomial-loss-cost",
+     "value": "The authors state that a loss that is a polynomial in the label probability can be block-encoded using QSVT or powers of the probability block encoding, with query complexity linear in the polynomial degree, which covers a degree one loss and a degree two mean-square-type loss.",
+     "anchor": "Supplement I C 2, p.14 and p.15",
+     "quotes": [
+      "can be block-encoded using QSVT or by combining powers of the block-encoding of Pˆy. In this case, the query complexity scales linearly with the polynomial degree:",
+      "which has degree one, and mean-square-type losses such as"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cost statement given without a proof in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-smooth-loss-cost",
+     "value": "The authors state that for a loss that is analytic on and around the interval of interest the polynomial degree can often scale logarithmically in the inverse error, that for a nonsmooth loss the degree may scale polynomially in the inverse error, and that a cross-entropy-type loss needs a restricted domain or a regularization because the logarithm is singular.",
+     "anchor": "Supplement I C 2, p.15",
+     "quotes": [
+      "If Fy is analytic on and around the interval of interest, the degree can often scale as",
+      "If Fy is non smooth or has singularities, the polynomial degree may scale polynomially in 1/ε.",
+      "The approximation degree then depends not only on ε, but also on the cutoff parameter δ."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cost statement given without a proof in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-classif-setup-appendix",
+     "value": "The authors report that the classification demonstration uses five qubits per parameter, giving a grid over the interval (−π, π) with a resolution of about 0.20 radians, a one-dimensional inside-or-outside-an-interval task with additive noise, and 100 training and 500 test samples.",
+     "anchor": "Supplement III, p.17",
+     "quotes": [
+      "using five qubits per parameter, yielding a grid of 25 points over the interval (−π, π), corresponding to a resolution of 2π 25 ≃ 0.20 radians.",
+      "To avoid trivial separability, additive noise is introduced by perturbing the input data, thereby broadening the class boundary.",
+      "The training and test sets contain 100 and 500 samples, respectively;"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experiment setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-classif-schedule-baseline",
+     "value": "The authors report that the total evolution time in the classification demonstration is set to 10−2 (printed as '10−2, s'), chosen heuristically, that the initial state is a uniform superposition, and that the baseline is stochastic gradient descent with learning rate 0.1 and random parameter initialization.",
+     "anchor": "Supplement III, p.17",
+     "quotes": [
+      "The total evolution time is set to 10−2, s, chosen heuristically to balance learning effectiveness and robustness to outliers.",
+      "The initial state of θˆ is taken as a uniform superposition over all discretized parameter values, reflecting the absence of prior information.",
+      "namely stochastic gradient descent with learning rate 0.1 and random parameter initialization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experiment setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The evolution time is chosen by hand ('heuristically'); the paper reports no sweep over it, and no tuning of the baseline."
+    },
+    {
+     "id_suggestion": "cql-classif-loss-convergence",
+     "value": "The authors report that, with single-sample updates, the loss converges within approximately 15 updates to a regime where the dominant minima are correctly identified and the most probable sampled parameters correspond to near-optimal values, and that further improvements in the loss are marginal afterwards.",
+     "anchor": "Supplement III, Fig. 6(b), p.17 and p.18",
+     "quotes": [
+      "The loss rapidly converges—within approximately 15 updates—to a regime where the dominant minima are correctly identified",
+      "and the most probable sampled parameters correspond to near-optimal values. Beyond this point, further improvements in the loss are marginal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text gives no final loss or accuracy for either method, so the abstract's 'matching gradient-based performance' is read only from the curves of Fig. 6(b), which the text layer does not carry. One run, one dataset, a model of two parameters."
+    },
+    {
+     "id_suggestion": "cql-classif-distribution",
+     "value": "The authors report that in the classification demonstration the parameter probability distribution, starting from a uniform superposition, develops pronounced peaks at parameter values associated with minima of the loss landscape and ends in a bimodal concentration around the dominant minima, and that it keeps evolving after the loss has converged.",
+     "anchor": "Numerical demonstrations (a), p.4; Supplement III, p.18",
+     "quotes": [
+      "developing pronounced peaks at parameter values associated with minima of the loss landscape",
+      "ultimately exhibiting a bimodal concentration around the dominant minima",
+      "the probability distribution over parameters exhibits a richer dynamical behavior, continuing to evolve after loss convergence."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text does not say whether the two modes give equivalent classifiers or how one is chosen for use."
+    },
+    {
+     "id_suggestion": "cql-fig3-epoch",
+     "value": "The authors report in a figure caption that, after one epoch of batches of size one (100 batches), the final distribution anti-correlates with the global loss landscape computed over the full training set.",
+     "anchor": "Fig. 3 caption, p.4",
+     "quotes": [
+      "where the loss potential is constructed from individual training samples (batch size 1).",
+      "and the final state Ψ100 after processing all 100 batches.",
+      "the final distribution anti-correlates with the global loss landscape shown in (a), confirming that the coherent evolution has effectively learned an inverse representation of the objective function."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "'Anti-correlates' is the authors' word for high probability where the loss is low; the text gives no correlation value."
+    },
+    {
+     "id_suggestion": "cql-mzi-setup",
+     "value": "The authors set up a balanced Mach-Zehnder interferometer with an unknown phase shift ϕ ∈ [−π, π) in the upper arm and a controllable phase shift θ in the lower arm that the CQL protocol updates; estimating ϕ reduces to finding the θ that maximizes constructive interference, and the loss attains its global minimum when θ = ϕ.",
+     "anchor": "Numerical demonstrations (b), p.5",
+     "quotes": [
+      "The upper arm contains an unknown phase shift ϕ ∈ [−π, π), while the lower arm contains a controllable phase shift θ, which is dynamically updated by the CQL protocol.",
+      "the control parameter θ that maximizes constructive interference.",
+      "which attains its global minimum when θ = ϕ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experiment setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-mzi-result",
+     "value": "The authors report that in the interferometric phase demonstration the probability amplitude of the parameter register is strongly localized around the optimal parameter value, corresponding to the unknown phase shift ϕ, by the end of the evolution, which they say shows phase estimation without repeated classical optimization steps.",
+     "anchor": "Numerical demonstrations (b), p.5; Fig. 4",
+     "quotes": [
+      "around the optimal parameter value, corresponding to the unknown phase shift ϕ.",
+      "This demonstrates that the coherent dynamics successfully perform phase estimation without requiring repeated classical optimization steps."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; a simulation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text gives no width, probability mass or error for the localization. The register has 32 grid points over the interval, so by this reader's own arithmetic the grid spacing is about 0.2 radians. Only one value of ϕ is described."
+    },
+    {
+     "id_suggestion": "cql-mzi-simulated",
+     "value": "The authors state that the interferometric evolution is simulated coherently and that the target state for the unknown phase is initialized within the simulator.",
+     "anchor": "Numerical demonstrations (b), p.5; Supplement IV B, p.18",
+     "quotes": [
+      "following the CQL dynamics introduced in this work.",
+      "is initialized within the simulator using the equivalent two-level projection"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how its own numerical result was produced.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper reports no run on quantum hardware."
+    },
+    {
+     "id_suggestion": "cql-mzi-numerics-params",
+     "value": "The authors report that the phase-learning simulation uses five qubits (a grid of 32 points) over the interval [−π, π], a total duration of 5.0 sampled by 1000 time slices (resolution 5 × 10−3), and damping schedules 1/t for the kinetic term and t for the potential term.",
+     "anchor": "Supplement IV B, p.18",
+     "quotes": [
+      "mapping the continuous parameter space θ ∈ [−π, π] onto a discrete computational grid.",
+      "the coordinate space is uniformly partitioned into 2n = 32 discrete points, while the temporal domain over a total duration T = 5.0 is sampled via N = 1000 discrete time slices, defining a temporal resolution of δt = 5 × 10−3.",
+      "we employ ϕ(t) = 1/t for the kinetic term and χ(t) = t for the potential contribution"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own simulation parameters.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The appendix uses the symbol ϕ for both the unknown phase and the kinetic damping schedule."
+    },
+    {
+     "id_suggestion": "cql-mzi-loss-appendix",
+     "value": "The authors state that the simulator defines the loss landscape as one minus the squared overlap between the target state for the unknown phase and the interferometer output state.",
+     "anchor": "Supplement IV B, p.18",
+     "quotes": [
+      "which governs the physical loss landscape L(θ) = 1 − |⟨ψtarget|ψ(θ)⟩|2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the loss its simulation uses.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The main text gives the loss as a sine squared of half the phase difference; this reader did not check that the two forms are the same function."
+    },
+    {
+     "id_suggestion": "cql-conclusion-compat",
+     "value": "The authors state that the protocol applies to arbitrary parameterized quantum circuits, accommodates batched training, and is compatible with fault-tolerant quantum computing architectures where long coherent evolutions can be sustained; the abstract says compatible in principle.",
+     "anchor": "Conclusion and outlook, p.5; Abstract, p.1",
+     "quotes": [
+      "The protocol applies to arbitrary parameterized quantum circuits, naturally accommodates batched training strategies, and is compatible with fault-tolerant quantum computing architectures where long coherent evolutions can be sustained.",
+      "The construction is compatible in principle with fault-tolerant implementations"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no resource estimate.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper gives no error analysis, circuit-depth estimate or fault-tolerant resource count for the long coherent evolution."
+    },
+    {
+     "id_suggestion": "cql-open-directions",
+     "value": "The authors state that several directions remain open, including complexity analyses, improved Hamiltonian constructions and discretization strategies, and integration with error mitigation techniques [54].",
+     "anchor": "Conclusion and outlook, p.6",
+     "quotes": [
+      "Several directions remain open for future investigation, including complexity analyses, improved Hamiltonian constructions and discretization strategies, and integration with error mitigation techniques [54]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit themselves.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-learning-physical-claim",
+     "value": "The authors state that the two examples suggest a broader viewpoint in which learning from data and learning physical parameters are both instances of the same underlying physical process.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "These two examples suggest a broader viewpoint in which learning from data and"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author viewpoint, not a result.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-cited-barren-plateaus",
+     "value": "The authors state, citing [20, 21], that expressive parameterized circuits may exhibit barren plateaus in which gradients vanish exponentially with system size.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "expressive parameterized circuits may exhibit barren plateaus in which gradients vanish exponentially with system size [20, 21]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-cited-backprop",
+     "value": "The authors state, citing [22–24], that classical backpropagation cannot be directly transferred to quantum systems without access to multiple copies of the quantum state, because measurement collapse prevents the reuse of intermediate information.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "cannot be directly transferred to quantum systems without access to multiple copies of the quantum state, because measurement collapse prevents the reuse of intermediate information [22–24]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-cited-qhd",
+     "value": "The authors state, citing [28, 32], that quantum Hamiltonian descent replaces a single classical optimization trajectory with Schrödinger evolution in parameter space, where superposition, interference, and tunneling collectively drive the wavefunction toward low-loss regions.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "where superposition, interference, and tunneling collectively drive the wavefunction toward low-loss regions.",
+      "quantum Hamiltonian descent [28, 32] replaces a single classical optimization trajectory by"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-cited-hamiltonian-advantage",
+     "value": "The authors state, citing [38], that recent theoretical results suggest Hamiltonian-based optimization can provide provable computational advantages over classical optimization in certain settings.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "recent theoretical results suggest that Hamiltonian-based optimization can provide provable computational advantages over classical optimization in certain settings [38]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The paper does not claim this advantage for CQL; it names the question as open."
+    },
+    {
+     "id_suggestion": "cql-hybrid-characterization",
+     "value": "The authors state that in existing hybrid approaches, although the model is quantum, the learning dynamics remain entirely classical: each parameter configuration is explored independently, and quantum superposition and interference play no role in the training process.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "Although the model itself is quantum, the learning dynamics remain entirely classical: each parameter configuration is explored independently, and quantum superposition and interference play no role in the training process."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author characterization of prior work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cql-code-availability",
+     "value": "The authors state that the code and data for the numerical results are available in a public repository, nacedob/Coherent-Quantum-Learning.",
+     "anchor": "Code and data availability, p.6",
+     "quotes": [
+      "The code and data for the numerical results are available at",
+      "nacedob/Coherent-Quantum-Learning"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states where its code and data are.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "This reader did not open the repository."
+    }
+   ]
+  }
+ ]
+}
