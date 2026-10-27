@@ -1,0 +1,897 @@
+{
+ "papers": [
+  {
+   "record_id": "brunet-2024-quantum-radio-astronomy-data-encodings",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Brunet-et-al._2023_Quantum-Radio-Astronomy-Data-Encodings-and-Quantum-Image-Processing__2310.12084.pdf",
+   "title_in_file": "Quantum Radio Astronomy: Data Encodings and Quantum Image Processing",
+   "version_note": "The text is arXiv:2310.12084v3 (9 Feb 2024); the record id says 2024 and the file name says 2023 (v1 date).",
+   "pages": 11,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory and simulation study of quantum image encodings (binary, Quantum Lattice, FRQI, QPIE), the QFT and a variational gain-calibration algorithm for radio interferometry, run on a noiseless simulator with a gate-error estimate.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "radio-bright-source-speedup",
+     "verdict": "narrowed",
+     "note": "The abstract sentence is quoted correctly, but Section 5 limits it: the exponential speedup is stated for identifying one bright source (a number of shots of order N), relative to the FFT, and under the optimal QPIE circuit depth. For a number of sources proportional to N squared the paper finds advantage over the DFT but not over the FFT. Section 7 then shows the optimal-depth circuit is impractical on current hardware, and Section 4 states that no gate or measurement errors were modeled.",
+     "value": "The authors state that the exponential speedup is for identifying one bright source in an image, which needs Nshots = O(N) shots, and is stated relative to the FFT, under the optimal QPIE circuit depth; for identifying a number of sources proportional to N squared, the shots needed give quantum advantage over the DFT but not the FFT.",
+     "anchor": "Abstract, p.1; Section 5, p.6",
+     "quotes": [
+      "For identifying and locating bright radio sources, quantum computing can offer an exponential speedup over classical algorithms, even when accounting for data encoding cost and repeated circuit evaluations.",
+      "In the case of identifying one bright source in an image, Nshots = O(N) shots are needed, offering exponential speedup over the FFT.",
+      "In the case of identifying ∝ N2 sources in an image, Nshots = O(N2) shots are needed, which has quantum advantage over the DFT but not the FFT.",
+      "If we consider the optimal QPIE circuit depth of O( f (N2)) = O(log2N × log2N), and the optimal number of shots needed to reconstruct sources Nshots the true complexity of the QFT is:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The speedup is an asymptotic scaling argument (Equation 8 and Table 1), not a measured wall-clock result; the abstract's wording does not carry the single-source and optimal-depth conditions."
+    },
+    {
+     "id": "radio-measurement-reencode-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that measurement of the quantum state is a probabilistic result which destroys the superposition, so multiple measurements require re-encoding and re-measuring the state, which can undermine quantum advantage.",
+     "anchor": "Conclusion, p.9; Section 5, p.6",
+     "quotes": [
+      "measurement of the quantum state is a probabilistic result which destroys the superposition. To perform multiple measurements, one must re-encode and re-measure the state, which can undermine quantum advantage.",
+      "To generate multiple measurements of a quantum image, the entire image representation must be re-encoded and re-measured."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper adds that quantum random access memory or future quantum memory might remove the re-encoding requirement; it does not test this."
+    },
+    {
+     "id": "radio-qpie-encoding",
+     "verdict": "narrowed",
+     "note": "The first quote is in the Conclusion only (the Abstract holds the toy-pipeline sentence, not the QPIE sentence). The paper limits the claim: the fidelity statement is for source identification where lower image accuracy is tolerable; a high-fidelity image needs an intractably large number of shots, and the authors say QPIE may not suit high-fidelity analysis. Experiments ran on a noiseless simulator.",
+     "value": "The authors report that, in a toy image reconstruction pipeline, of the different quantum image encodings the QPIE encoding offers excellent algorithmic speedup without sacrificing image fidelity, in cases where lower image accuracy is tolerable; they state that QPIE encodings may not be suitable for high-fidelity image analysis demanded by extended source structure or cosmological studies, and that if a high-fidelity image is needed the number of shots becomes intractably large.",
+     "anchor": "Abstract p.1; Section 5 p.6; Conclusion p.9",
+     "quotes": [
+      "We evaluate the suitability of different quantum image representations using a toy quantum computing image reconstruction pipeline",
+      "Of the different quantum image encodings, we find that the QPIE encoding offers excellent algorithmic speedup without sacrificing image fidelity.",
+      "If a highfidelity image needs to be extracted from the quantum computer, then Nshots becomes intractably large.",
+      "The QPIE encodings may not be suitable for high-fidelity image analysis demanded by extended source structure or cosmological studies",
+      "we have demonstrated that in cases where lower image accuracy is tolerable quantum computing can be a powerful tool for real-time imaging."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Fig. 3 reports that both FRQI and QPIE need a very large number of shots for under 10 percent error on random images, which sits uneasily with the unqualified Conclusion sentence."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "radio-novelty-claim",
+     "value": "The authors state that quantum computing for radio interferometry remains completely unexplored.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "QC for radio interferometry remains completely unexplored."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "A novelty claim as of the paper's date; not checked here against the literature."
+    },
+    {
+     "id_suggestion": "radio-goal-advantage-utility",
+     "value": "The authors state that their goal is to evaluate the quantum advantage for radio astronomy, and that they also consider quantum utility, the effectiveness and practicality of QC algorithms on current or near-term hardware.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Our goal is to evaluate the quantum advantage for radio astronomy, determining if QC algorithms and data encodings can ever achieve better performance than their classical counterparts.",
+      "We also consider quantum utility, the effectiveness and practicality of QC algorithms on current or near-term hardware."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own goal and scope in Section 1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-quantum-advantage-definition",
+     "value": "The authors define quantum advantage as the case where algorithms designed to take advantage of QC offer exponential speedup compared to their classical counterparts.",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "In certain cases, algorithms designed to take advantage of QC can offer exponential speedup compared to their classical counterparts, known as quantum advantage."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the term in Section 1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-classical-ft-cost",
+     "value": "The authors state that classically, reconstructing the dirty image needs order N to the fourth power operations with the DFT, or order N squared times the base-2 logarithm of N operations with the FFT.",
+     "anchor": "Section 5, p.6",
+     "quotes": [
+      "In the classical domain, this operation requires O(N4) operations using the DFT, or O(N2log2N) operations using the FFT."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "Standard costs; the paper cites Brigham and Morrow (1967) for the FFT in Section 2."
+    },
+    {
+     "id_suggestion": "radio-qft-on-qpie-cost",
+     "value": "The authors state that a QPIE encoding of an image with N squared pixels needs only log base 2 of N squared qubits, so the QFT can be evaluated on this encoding with O(log2 N × log2 N) operations.",
+     "anchor": "Section 3.2, p.3",
+     "quotes": [
+      "As a QPIE encoding of an image with N2 pixels only needs log2 N2 qubits, the QFT can be evaluated on this encoding with only O(log2 N × log2 N) operations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-qft-outperforms-dft-fft-before-shots",
+     "value": "The authors state that the QFT offers impressive speedup on the QPIE encoding, needing only O(g(N2)) = O(log2N × log2N) operations, outperforming both the DFT and the FFT, before the cost of state preparation and shots is counted.",
+     "anchor": "Section 5, p.6",
+     "quotes": [
+      "The QFT offers impressive speedup, only needing O(g(N2)) = O(log2N × log2N) operations on the QPIE encoding, outperforming both the DFT and the FFT.",
+      "However, the cost of the state preparation and the number of shots needed to reconstruct the image must be taken account into the algorithmic complexity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-true-complexity-equation",
+     "value": "The authors give the true complexity of the QFT, with the optimal QPIE circuit depth and the optimal number of shots, as O(M × ( f (N2) + g(N2))) = O(Nshots × log2N × log2N), and state that depending on the number of shots the QFT may not offer quantum advantage.",
+     "anchor": "Section 5, Equation 8, p.6",
+     "quotes": [
+      "O(M × ( f (N2) + g(N2))) = O(Nshots × log2N × log2N) (8)",
+      "Depending on the number of shots needed to perform the measurement, the QFT may not offer quantum advantage.",
+      "If a highfidelity image needs to be extracted from the quantum computer, then Nshots becomes intractably large."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "A derivation by the authors of an asymptotic bound, not a numbered theorem with stated assumptions."
+    },
+    {
+     "id_suggestion": "radio-multi-source-shots",
+     "value": "The authors state that identifying a number of sources proportional to N squared needs Nshots = O(N2) shots, which has quantum advantage over the DFT but not the FFT.",
+     "anchor": "Section 5, p.6",
+     "quotes": [
+      "In the case of identifying ∝ N2 sources in an image, Nshots = O(N2) shots are needed, which has quantum advantage over the DFT but not the FFT."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-advantage-not-just-complexity",
+     "value": "The authors state that evaluating quantum advantage is not as simple as comparing the algorithmic complexity of a classical and a quantum algorithm, because information must be extracted from the quantum state and measurement destroys the superposition.",
+     "anchor": "Section 5, p.6",
+     "quotes": [
+      "Evaluating quantum advantage is not as simple as comparing the algorithmic complexity between a classical and quantum algorithm.",
+      "Information must also be extracted from the quantum state, and measurement destroys the superposition."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-qram-caveat",
+     "value": "The authors state that the encoding cost may be bypassed with quantum random access memory, which would store input data in ancillary qubits and copy it instead of re-encoding, but that they consider their model realistic for near-term quantum computers.",
+     "anchor": "Section 5, p.6",
+     "quotes": [
+      "We note that it is possible that this encoding cost may be bypassed with quantum random access memory",
+      "However, we consider our model in Fig. 6 realistic for near-term quantum computers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper gives no construction for the copy step and does not discuss the no-cloning theorem; the QRAM remark is speculative."
+    },
+    {
+     "id_suggestion": "radio-shots-algorithmic-not-hardware",
+     "value": "The authors state that the number of shots required will not change as quantum hardware improves, but can be improved with algorithmic development, and that it is advantageous to stay in the quantum domain as long as possible before measuring.",
+     "anchor": "Section 5, p.6-7",
+     "quotes": [
+      "The number of shots required will not change as quantum hardware improves, but can be improved with algorithmic development.",
+      "for as long as possible before measuring the state, ideally performing additional data reduction so that fewer shots are required for analysis."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-qpie-compression",
+     "value": "The authors state that for an interferometer with M antennas producing B = M(M − 1)/2 correlated visibilities, the QPIE encoding leverages superposition to achieve logarithmic compression, needing only log2(B) qubits.",
+     "anchor": "Section 4.1, p.4; Figure 2",
+     "quotes": [
+      "an interferometer with M antennas will produce B = M(M − 1)/2 correlated visibilities",
+      "the QPIE encoding leverages superposition to achieve logarithmic compression, only needing log2(B) qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-binary-encoding-cost",
+     "value": "The authors state that classical data can be directly represented with binary encoding, so that for 64-bit floats representing complex-valued visibility data the entire image matrix can be encoded with 64 times N squared single-state qubits.",
+     "anchor": "Section 3.1, p.2",
+     "quotes": [
+      "In the case where Vk are 64-bit floats representing complex-valued visibility data, the entire image matrix can be encoded with 64N2 single-state qubits."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "Cites Cortese and Braje (2018) for binary encoding."
+    },
+    {
+     "id_suggestion": "radio-frqi-prep-cost",
+     "value": "The authors state that preparing the FRQI state can be expensive, with a proposed circuit depth of O(N4) operations, which can be reduced to O(N2log2N) operations by introducing additional ancillary qubits.",
+     "anchor": "Section 3.1, p.3",
+     "quotes": [
+      "Preparation of this state can be expensive, with a proposed circuit depth of O(N4) operations in Le et al. (2011), but can be reduced to O(N2log2N) operations by introducing additional ancillary qubits (Khan, 2019)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-qpie-prep-depths",
+     "value": "The authors state that several QPIE state preparation algorithms exist with circuit depths varying from O(log2 N × log2 N) to O(N4), as proposed by Zhang et al. (2021).",
+     "anchor": "Section 3.1, p.3",
+     "quotes": [
+      "Several state preparation algorithms with circuit depths varying from O(log2 N × log2 N) to O(N4) are proposed in Zhang et al. (2021)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-qft-gate-count",
+     "value": "The authors state that the QFT circuit requires O(n2) gates, where n is the number of qubits in the input and output states.",
+     "anchor": "Section 3.2, p.3",
+     "quotes": [
+      "The QFT circuit requires O(n2) gates, where n is the number of qubits in the input and output states."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "Cites Nielsen and Chuang (2010) for the QFT."
+    },
+    {
+     "id_suggestion": "radio-quantum-fft-needs-basis-encoding",
+     "value": "The authors state that an implementation of the quantum FFT exists with lower computational complexity than the QFT, but it relies on the image being embedded in a basis encoding rather than the amplitude encoding used by QPIE.",
+     "anchor": "Section 3.2, p.3",
+     "quotes": [
+      "An implementation of the quantum FFT algorithm exists which has lower computational complexity with respect to the QFT (Asaka et al., 2020), but it relies on the image being embedded in a basis encoding rather than the amplitude encoding used by QPIE."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-entanglement-necessary",
+     "value": "The authors state that entanglement between states is necessary to achieve any significant computational speedup of QC over classical computing.",
+     "anchor": "Section 3.1, p.3",
+     "quotes": [
+      "Entanglement between states is necessary to achieve any significant computational speedup of QC over classical computing"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "Cites Cortese and Braje (2018) and Jozsa and Linden (2003); the QPIE encoding is entangled across its row and column qubits only in general, which the paper does not discuss."
+    },
+    {
+     "id_suggestion": "radio-experiment-setup-simulator",
+     "value": "The authors state that the public can access only seven qubits on the IBM platform, limiting them to 4 × 4 pixels for the QPIE encoding, so they ran experiments on the QASM simulator, with no modeling of gate or measurement errors.",
+     "anchor": "Section 4, p.3",
+     "quotes": [
+      "On the IBM platform, the public can only access up to seven qubits, limiting us to representations with only 4 × 4 pixels for the QPIE encoding.",
+      "We do not include any modeling of gate or measurement errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 4 states the paper's own experimental setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-complex-phase-limit",
+     "value": "The authors state that complex phases cannot be directly measured from an encoded quantum state, so QC can reconstruct real-valued images from complex visibilities (the invert step), but predicting complex visibilities from images (the predict step) is not straightforward.",
+     "anchor": "Section 4.1, p.4; Conclusion, p.9",
+     "quotes": [
+      "the measurement of a quantum state can only return the real magnitude of the phases",
+      "For radio interferometry, while we can use QC to reconstruct real-valued images from complex visibilities",
+      "The phases of complex probability amplitudes can not be easily read from a quantum state, limiting the applications of the inverse QFT for predicting visibilities from images."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 4.1 and the Conclusion state this limit of the approach.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-measurement-randomness",
+     "value": "The authors state that quantum image representations must be re-encoded and remeasured multiple times to measure the state with high accuracy, and that this additional measurement error is a fundamental consequence of using QC compared to classical computing.",
+     "anchor": "Section 4.1, p.4",
+     "quotes": [
+      "Quantum image representations must be re-encoded and remeasured multiple times to measure the state with high accuracy.",
+      "This additional measurement error is a fundamental consequence of using QC compared to classical computing."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-fig3-shots-random-images",
+     "value": "The authors report, for images of different sizes with pixel values drawn from the uniform distribution U(0, 1), that both the FRQI and QPIE encodings offer comparable accuracy and require large numbers of shots, Nshots = Np2ix = N4 as printed, to reconstruct a random input image with < 10% error.",
+     "anchor": "Section 4.1, p.4; Figure 3 caption",
+     "quotes": [
+      "We generate images of different sizes, with pixel values drawn from the uniform distribution U(0, 1)",
+      "Both encodings offer comparable accuracy, and require large numbers of shots Nshots = Np2ix = N4 to reconstruct a random",
+      "input image with < 10% error."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Sizes in the figure axis run from 8x8 to 32x32 pixels; the noiseless simulator was used."
+    },
+    {
+     "id_suggestion": "radio-source-pipeline-setup",
+     "value": "The authors state that their mock source-finding test places random point sources convolved with a Gaussian kernel with σ = 1.5 pixels, adds random Gaussian noise, embeds the image in a QPIE, FRQI or Quantum Lattice representation, reconstructs it with varying numbers of shots, and fits 2D Gaussians to identify sources; a source counts as correctly identified within a 1.5 pixel distance of the true source.",
+     "anchor": "Section 4.2, p.4",
+     "quotes": [
+      "Randomly placed point sources are convolved with a Gaussian kernel with σ = 1.5 pixels. Then, random Gaussian noise is added to create a mock observed image.",
+      "We recursively fit 2D Gaussians to the reconstructed images to identify all of the sources.",
+      "We consider that a source is correctly identified if it is reconstructed with a 1.5 pixel distance from the true source."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 4.2 states the paper's own test setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-source-scenarios-setup",
+     "value": "The authors state two source-finding scenarios: one where the number of sources scales with image size and each source has a lower SNR=10, approximating a typical radio source catalog creation pipeline; and one with a single source at a high SNR=100, approximating searches for bright transient phenomena in the image domain.",
+     "anchor": "Section 4.2, p.4",
+     "quotes": [
+      "In the first scenario, we scale the number of sources with image size Nsource ∝ Npix = N2 and have a lower SNR=10 for each source",
+      "In the second scenario, we have a single source with a high SNR=100",
+      "This model approximates a typical radio source catalog creation pipeline.",
+      "This model approximates searches for bright transient phenomena in the image domain."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 4.2 states the paper's own scenarios.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-qpie-shots-quality",
+     "value": "The authors report that for QPIE, when Nshot = Npixel = N2 the reconstructed quantum image is of good quality with respect to the classical image, that even fewer shots can be taken in images with high signal-to-noise, and that source identification efficiency is comparable for Nshot = N2 and Nshot = N2/2 for low-noise images.",
+     "anchor": "Section 4.2, p.4-5; Figure 5",
+     "quotes": [
+      "For QPIE, we see that when Nshot = Npixel = N2, the reconstructed quantum image is of good quality with respect to the classical image.",
+      "In images with high signal-to-noise, even fewer shots can be taken.",
+      "We see comparable source identification efficiency for Nshot = N2 and Nshot = N2/2 for low-noise"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Image sizes tested run from 8x8 to 64x64 pixels on a noiseless simulator; the scaling to realistic survey image sizes is extrapolated."
+    },
+    {
+     "id_suggestion": "radio-frqi-low-flux-pixels",
+     "value": "The authors report that the FRQI representation has a high probability to return pixels associated with low flux values, and therefore many shots are required to reconstruct the sources.",
+     "anchor": "Section 4.2, p.5",
+     "quotes": [
+      "The FRQI representation has a high probability to return",
+      "els associated with low flux values, and therefore many shots",
+      "are required to reconstruct the sources."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-lattice-vs-qpie-sampling",
+     "value": "The authors report that the Quantum Lattice representation shows comparable sampling scaling to the QPIE representation, despite the drastically different number of qubits used by each encoding.",
+     "anchor": "Section 4.2, p.5",
+     "quotes": [
+      "pling scaling to the QPIE representation, despite the drastically",
+      "different number of qubits used by each encoding."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text layer interleaves this sentence with the Nshots figure for the Quantum Lattice case, so the shot count is not recoverable from the layer; the subject 'Quantum Lattice representation' is read from the interleaved fragments."
+    },
+    {
+     "id_suggestion": "radio-sparse-image-conclusion",
+     "value": "The authors state that for sparse images the Quantum Lattice and QPIE quantum data representations can offer comparable source reconstruction performance with respect to classical computing without requiring an intractable number of shots.",
+     "anchor": "Section 4.2, p.5",
+     "quotes": [
+      "comparable source reconstruction performance with respect to classical computing without requiring an intractable number of shots."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The pipeline is described by the authors as a simple approximation of a real use case."
+    },
+    {
+     "id_suggestion": "radio-quantum-sometimes-better",
+     "value": "The authors report that for the noisy SNR=10 images the quantum implementation occasionally performs better than the classical image, because overlapping sources not recovered by the classical algorithm are occasionally recovered by a low-shot quantum algorithm.",
+     "anchor": "Figure 5 caption, p.5",
+     "quotes": [
+      "For the noisy SNR=10 images occasionally we observe that the quantum implementation has better performance than the classical image.",
+      "Occasionally overlapping sources will not be recovered by the classical algorithm but will be recovered by a low-shot quantum algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "No counts or statistics are given for how often this occurs."
+    },
+    {
+     "id_suggestion": "radio-scope-limit-extended-structure",
+     "value": "The authors state that measurements of extended structure or cosmological signals will require high-dynamic range, high-fidelity images, which may require Nshots > Np2ix as printed, and are not considered in this work; QPIE encodings may not be suitable for such analysis.",
+     "anchor": "Section 4.2, p.5; Conclusion, p.9",
+     "quotes": [
+      "thus are not in this work.",
+      "The QPIE encodings may not be suitable for high-fidelity image analysis demanded by extended source structure or cosmological studies"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Sections 4.2 and 8 state what the paper does not cover.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-gain-calibration-proposal",
+     "value": "The authors propose a novel variational quantum computing algorithm for self-calibration of interferometer visibilities, defined and implemented as a proof-of-concept using quantum variational circuits with QPIE encodings of the observed and model visibilities and a SWAP test, minimized by quantum gradient descent.",
+     "anchor": "Abstract, p.1; Section 6, p.6-7",
+     "quotes": [
+      "We also propose a novel variational quantum computing algorithm for self-calibration of interferometer visibilities",
+      "As a proof-of-concept, we define and implement a quantum algorithm for calibration using quantum variational circuits",
+      "We minimize this cost function with quantum gradient descent"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-gain-toy-model-assumption",
+     "value": "The authors state that in the toy model they assume the interferometer geometry samples every point in Fourier space, allowing the visibilities to be represented with the 2D image QPIE encoding, and that for simplicity the gain terms are assumed to be real numbers.",
+     "anchor": "Sections 6.1 and 6.4, p.7",
+     "quotes": [
+      "In this toy model, we will assume that the interferometer geometry samples every point in Fourier space, allowing us to represent V using the 2D image QPIE encoding.",
+      "To simplify the analysis we assume that the gain terms gi are real numbers"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Sections 6.1 and 6.4 state the toy model's assumptions.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-qgd-parameter-shift",
+     "value": "The authors state that in the quantum implementation the gradients are computed with the parameter shift rule, where the multiplier and shift are typically chosen to be m = 1/2 and s = π/2, and that the shifts are not infinitesimal as in finite differences.",
+     "anchor": "Section 6.2, p.7",
+     "quotes": [
+      "where the multiplier m and the shift s are typically chosen to be m = 1/2 and s = π/2.",
+      "It is important to emphasize that in this approach, the shifts employed are not infinitesimal as typically used in finite differences."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-qgd-gradient-complexity",
+     "value": "The authors state that the QGD algorithm has a theoretical computational complexity of O(1) for evaluating the gradient, which provides significant advantages over a classical algorithm with a computational complexity of O(d), where d is the number of input parameters.",
+     "anchor": "Section 6.2, p.7",
+     "quotes": [
+      "The QGD algorithm has a theoretical computational complexity of O(1) (Jordan, 2005) for evaluating the gradient, which provides significant advantages over classical algorithm with a computational complexity of O(d)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The cost function itself must be measured through repeated shots, as the paper notes next, so the O(1) gradient count does not remove the shot cost."
+    },
+    {
+     "id_suggestion": "radio-hybrid-cobyla",
+     "value": "The authors define a hybrid quantum-classical calibration that evaluates the same SWAP-test cost function but, instead of QGD, uses the COBYLA minimizer on Scipy.",
+     "anchor": "Section 6.3, p.7-8",
+     "quotes": [
+      "However, unlike the pure quantum algorithm, instead of using QGD to find the {gi} which minimize C({gi}), we use the COBYLA minimizer on Scipy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-calibration-no-advantage",
+     "value": "The authors state that, due to the quantum uncertainty inherent in the state measurements, neither calibration method is expected to offer quantum advantage over a classical minimization algorithm, and that for this toy example a purely classical approach is more efficient and accurate.",
+     "anchor": "Sections 6.3 and 6.4, p.8",
+     "quotes": [
+      "Due to the quantum uncertainty inherent in the state measurements, neither calibration method is expected to offer quantum advantage over a classical minimization algorithm.",
+      "We note, however, that for this toy example using a purely classical approach is more efficient and accurate."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sections 6.3 and 6.4 state this limit of their own method.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-calibration-results",
+     "value": "The authors report, on randomly generated 2 × 2 radio sky images with QGD run for 1000 steps with η = 0.01, that the algorithm can successfully recover the gain factors with high accuracy, that 1000 steps take approximately two minutes on the quantum simulator, and that the hybrid approach converges in approximately five seconds and shows more stability.",
+     "anchor": "Section 6.4, p.8; Figure 8",
+     "quotes": [
+      "We evaluate the performance using randomly generated 2 × 2 radio sky images.",
+      "QGD is run for 1000 steps and with η = 0.01.",
+      "The algorithm performs well and can successfully recover the gain factors with high accuracy.",
+      "Evaluating 1000 steps takes approximately two minutes on the quantum simulator. In comparison, the hybrid approach converges in approximately five seconds.",
+      "approach shows more stability."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The test uses a 2 × 2 image on a noiseless simulator; no error statistics are given in the text, only a histogram in the figure."
+    },
+    {
+     "id_suggestion": "radio-gate-error-model",
+     "value": "The authors give an approximate global error rate for a circuit with per-gate failure probability ϵ and circuit depth Dcirc as P(at least 1 gate fails) = 1 − P(all gates succeed) = 1 − (1 − ϵ)Dcirc, with the last term raised to the power Dcirc, and state that it ignores measurement and decoherence errors and should only be considered an approximate model.",
+     "anchor": "Section 7, Equation 12, p.8",
+     "quotes": [
+      "P(at least 1 gate fails) = 1 − P(all gates succeed) = 1 − (1 − ϵ)Dcirc",
+      "The above approach also ignores the effect of measurement and decoherence errors, and thus should only be considered an approximate model of the true expected error rate."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-qpie-4x4-failure",
+     "value": "The authors calculate that encoding a 4 × 4 image with the recursive initialization algorithm requires 30 Rz(θ), 30 S X and 14 CNOT gates, and that with the published error rates of the 5 qubit IBM Falcon r4T system the probability that the circuit fails is ≈ 15%.",
+     "anchor": "Section 7, p.8",
+     "quotes": [
+      "We calculate that encoding a 4 × 4 image with the recursive initialization algorithm requires 30 Rz(θ), 30 S X and 14 CNOT gates.",
+      "Using the error rates above, the probability that the circuit fails is ≈ 15%.",
+      "The gate errors of the 5 qubit IBM Falcon r4T system have been measured through randomized benchmarking"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "A calculation from published gate error rates, not a run on hardware."
+    },
+    {
+     "id_suggestion": "radio-qpie-256-failure",
+     "value": "The authors calculate that encoding a QPIE image of 256×256 pixels requires a circuit with 131070 Rz(θ), 131070 S X and 65534 CNOT gates, that the probability this circuit fails is ≈ 100%, and state that the large circuit depth and high gate error rate make it impossible to encode the larger QPIE image.",
+     "anchor": "Section 7, p.8",
+     "quotes": [
+      "We calculate that encoding a QPIE image 256×256 requires a circuit with 131070 Rz(θ), 131070 S X, and 65534 CNOT gates.",
+      "With such a deep circuit, the probability that this circuit fails is ≈ 100%.",
+      "The large circuit depth and high gate error rate make it impossible to encode the larger QPIE image."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "This holds for the recursive initialization algorithm and the stated error rates."
+    },
+    {
+     "id_suggestion": "radio-short-circuit-1024",
+     "value": "The authors state that with the shorter circuits they describe, a 1024×1024 image can be encoded with a circuit depth of ∼ 100 gates, and with a gate error of ϵ = 10−4 the global failure rate will be ∼ 1%, but the large number of ancillary qubits required makes it impractical to run on current hardware.",
+     "anchor": "Section 7, p.8-9",
+     "quotes": [
+      "a 1024×1024 image can be encoded with a circuit depth of ∼ 100 gates, and thus even with a gate error of ϵ = 10−4 the global failure rate will be ∼ 1%.",
+      "However, the large number of ancillary qubits required by this algorithm make it impractical to run on current hardware, and may be subject to additional decoherence errors."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The figure of about 100 gates is an estimate and is given without a derivation in the text."
+    },
+    {
+     "id_suggestion": "radio-utility-limit-small-images",
+     "value": "The authors state that the quantum utility of quantum image processing is limited to smaller image sizes by the noise and size of available hardware, and that QC hardware will still need to encode and process large input images to beat classical solutions.",
+     "anchor": "Section 7, p.9",
+     "quotes": [
+      "Thus the quantum utility of quantum image processing is limited to smaller image sizes by the noise and size of available hardware.",
+      "However, QC hardware will still need to be able to encode and process large input images in order to offer better performance compared to classical computing solutions."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 7 states this limit.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-input-splitting",
+     "value": "The authors state that because the Fourier transform is a linear operation, a single Fourier transform on a large image can be split into multiple operations on smaller image sizes, and that it may be possible to perform equivalent input splitting with the QC.",
+     "anchor": "Section 7, p.9",
+     "quotes": [
+      "a single Fourier transform on a large image can be split into multiple operations on smaller image sizes",
+      "It may be possible to perform equivalent input splitting with the QC, allowing hybrid QC algorithms to accommodate larger images."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-conclusion-promise-limits",
+     "value": "The authors conclude that quantum computing has promising applications for image processing in radio astronomy, but is limited by the error rates and small qubit sizes of contemporary noisy intermediate-scale quantum computers.",
+     "anchor": "Section 8, p.9",
+     "quotes": [
+      "Quantum Computing has promising applications for image processing in radio astronomy, but is limited by the error rates and small qubit sizes of contemporary noisy intermediate-scale quantum computers"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radio-future-work-list",
+     "value": "The authors list as developments of particular interest for radio astronomy imaging: a quantum algorithm for gridding and/or degridding of input visibilities, an implementation of the QFFT for amplitude-based encodings such as QPIE, a quantum non-uniform discrete Fourier transform, an efficient algorithm for QPIE encoding of sparse images, and a quantum algorithm for deconvolution of the dirty image with the dirty beam.",
+     "anchor": "Section 8, p.9-10",
+     "quotes": [
+      "A quantum algorithm for gridding and/or degridding of the input visibilities",
+      "An implementation of the QFFT that can be applied to amplitude-based image encodings such as the QPIE.",
+      "A quantum implementation of the non-uniform discrete Fourier transform",
+      "An efficient algorithm for QPIE encoding of sparse images",
+      "A quantum algorithm for deconvolution of S D with the dirty beam"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 8 states these as open problems.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
