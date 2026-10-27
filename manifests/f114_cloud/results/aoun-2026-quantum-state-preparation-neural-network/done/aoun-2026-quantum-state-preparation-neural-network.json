@@ -1,0 +1,1011 @@
+{
+ "papers": [
+  {
+   "record_id": "aoun-2026-quantum-state-preparation-neural-network",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Aoun-et-al._2026_Quantum-State-Preparation-via-Neural-Network-Encoding-in-Quantum-Machine__2605.31006.pdf",
+   "title_in_file": "Quantum State Preparation via Neural Network Encoding in Quantum Machine Learning",
+   "version_note": "arXiv:2605.31006v1 [quant-ph], 29 May 2026; the text layer holds one copy of the paper.",
+   "pages": 8,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation study that trains a CNN to map an image to the parameters of a fixed quantum circuit that prepares its FRQI state, tested on MNIST and Fashion-MNIST at 32 × 32 pixels with 11 qubits, and compared in runtime with per-image MPS sweeping optimization.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "nn-state-prep-baseline-runtime",
+     "verdict": "widened",
+     "note": "Value is right. The paper also names the baseline: an MPS circuit (D=6, chi_max=256) optimized per image with the sweeping procedure of Ref. [20]; the 3.27 s is a mean over 10 samples, with substantial variance across samples.",
+     "value": "The authors report that the baseline, an MPS circuit (D=6, χmax=256) optimized for each test image individually with the iterative sweeping procedure of Ref. [20], requires 3.27 s per image averaged over 10 samples, terminating early once a fidelity of F ≥ 0.950 is reached.",
+     "anchor": "Section IV, runtime analysis, p.5",
+     "quotes": [
+      "As a baseline, we optimize an MPS circuit (D=6, χmax=256) for each test image individually using the iterative sweeping procedure of Ref. [20], terminating early once a fidelity of F ≥ 0.950 is reached.",
+      "Averaged over 10 samples, the baseline requires 3.27 s per image"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 3.27 s is a mean over only 10 samples, while the encoder latency (0.497 ms) is reported as a median; the two statistics differ."
+    },
+    {
+     "id": "nn-state-prep-fidelity-speed",
+     "verdict": "narrowed",
+     "note": "The two headline figures come from different configurations. 0.992 is the FRQI ansatz at D=8 on Fashion-MNIST (0.981 on MNIST); the speedup is measured for the center-sequential ansatz at D=6 targeting F ≥ 0.950 against per-image MPS sweeping, as a median latency of 0.497 ms and a ∼ 6580-fold speedup. The abstract's 'more than 5000-fold' is below the body's 6580-fold figure.",
+     "value": "The authors report fidelities up to 0.992 on unseen images (the FRQI-native ansatz at D=8 on Fashion-MNIST; 0.981 on MNIST) and a per-data-instance runtime reduction of more than 5000-fold in the abstract; in the runtime analysis the speedup is a median prediction latency of 0.497 ms per image, a ∼ 6580-fold speedup over per-image optimization, for the center-sequential ansatz at depth D=6 targeting F ≥ 0.950.",
+     "anchor": "Abstract p.1; Section IV, Table I and runtime analysis, pp.5-6; Section V, p.6",
+     "quotes": [
+      "We validate our method on the MNIST and Fashion-MNIST datasets, achieving fidelities up to 0.992 on unseen images and reducing the per-data-instance runtime by more than 5000-fold.",
+      "Using the FRQI-native ansatz, the model achieves average fidelities of 0.981 on MNIST and 0.992 on Fashion-MNIST on the test images.",
+      "Figure 6 displays image reconstructions from the bestperforming configuration (FRQI, D=8) on both datasets.",
+      "Our method uses the MPSinspired center-sequential ansatz targeting the same fidelity threshold",
+      "terminating early once a fidelity of F ≥ 0.950 is reached.",
+      "sequential ansatz with depth D=6, the median prediction latency is 0.497 ms per image, a ∼ 6580-fold speedup over per-image optimization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The fidelity record (FRQI, D=8) and the speedup (center-sequential, D=6) are different circuits, so no single configuration shows both. Table I gives 0.946 ± 0.018 mean fidelity for center-sequential at D=6 on MNIST, under the 0.950 threshold the speedup is stated for."
+    },
+    {
+     "id": "nn-state-prep-limits",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that all experiments used low-resolution (32 × 32) grayscale benchmarks, that scaling to higher resolutions would require deeper circuits or hierarchical encodings whose trainability remains open, and that hardware noise and finite shot effects have not been evaluated.",
+     "anchor": "Section IV, Limitations, p.6",
+     "quotes": [
+      "All experiments used low-resolution (32 × 32) grayscale benchmarks; scaling to higher resolutions would require deeper circuits or hierarchical encodings whose trainability remains open.",
+      "All simulations used ideal state-vector backends; hardware noise and finite",
+      "shot effects have not been evaluated."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these limits itself in Section IV, Limitations.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "frqi-representation-definition",
+     "value": "The paper states that in the FRQI representation the address qubits encode the pixel position and a single color qubit encodes the grayscale intensity in the interval from 0 to 1, so that an image with two to the power A pixels is represented using n = A + 1 qubits.",
+     "anchor": "Section II, Eq. (1), p.2",
+     "quotes": [
+      "encodes the corresponding grayscale intensity xj ∈ [0, 1]. Thus, an image with 2A pixels can be represented using",
+      "n = A + 1 qubits."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "FRQI is attributed to Refs. [22, 23]; the paper restates it as the representation it uses.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "amplitude-encoding-normalization-limit",
+     "value": "The authors state that amplitude encoding needs only A qubits for two to the power A pixel values, an exponential compression, but that the data vector must be normalized to form a valid quantum state, which removes information about its global scale.",
+     "anchor": "Section II, p.2",
+     "quotes": [
+      "Because only A",
+      "qubits are needed",
+      "A limitation, however, is that",
+      "the classical data vector must be normalized to form a",
+      "valid quantum state, which removes information about",
+      "its global scale."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Background attributed to amplitude encoding, Refs. [8, 9].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pixel-decoding-arccos",
+     "value": "The authors state that classical pixel values are recovered from the color-qubit amplitudes conditioned on each address state, by an arccosine (equivalently arcsine) inversion of the conditional amplitude of the color qubit.",
+     "anchor": "Section II, Eq. (2), p.3",
+     "quotes": [
+      "Classical pixel values can be recovered from the color-qubit amplitudes conditioned on each address state.",
+      "The grayscale intensity encoded at pixel position j can then be reconstructed as",
+      "are sensitive to the nonlinear arccosine inversion, as shown in Eq. (2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II gives the decoding rule the PSNR and SSIM metrics use.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The formula itself is garbled in the text layer; the quote holds only the sentences around it."
+    },
+    {
+     "id_suggestion": "zorder-indexing-adopted",
+     "value": "The authors state that they adopt hierarchical (Morton, Z-order) pixel indexing, in which the two most significant bits of the pixel index identify the image quadrant, the next two identify the sub-quadrant, and so on recursively.",
+     "anchor": "Section II.a, Fig. 1, p.3",
+     "quotes": [
+      "the two mostsignificant bits of j identify the image quadrant, the next two identify the sub-quadrant, and so on recursively"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II.a states the indexing used in the experiments.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zorder-lower-entanglement",
+     "value": "The authors state that the hierarchical (Z-order) ordering has been shown to achieve lower entanglement entropies, citing earlier work.",
+     "anchor": "Section II.a, p.3",
+     "quotes": [
+      "This ordering has been shown to achieve lower entanglement entropies [12, 20]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Refs. [12, 20]; this paper does not test row-based against Z-order.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cnn-encoder-architecture",
+     "value": "The authors state that the encoder consists of three successive Conv–Swish–MaxPool blocks with 32, 64, and 128 filters (3 × 3 kernels), mapping a 32 × 32 grayscale image to a 4 × 4 × 128 feature map that is flattened to a 2048-dimensional vector, followed by a three-layer MLP with 256 hidden units and Swish activations, giving a backbone of approximately 749,000 trainable weights independent of the ansatz.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "The encoder consists of three successive Conv–Swish–MaxPool blocks with 32, 64, and 128 filters (3 × 3 kernels), transforming a 32 × 32 grayscale image to a 4 × 4 × 128 feature map before flattening to a 2048-dimensional vector.",
+      "A three-layer MLP with 256 hidden units and Swish activations follows, giving a backbone of approximately 749,000 trainable weights independent of the ansatz."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III states the encoder it uses.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bounded-variant-sigmoid",
+     "value": "The authors state that in the bounded variant a sigmoid nonlinearity constrains each encoder output to the interval from 0 up to, but not including, 2π, and that the final linear projection is initialized with small variance scaling to prevent large initial rotation angles.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "A final linear projection maps to θ, initialized with small variance scaling to prevent large initial rotation angles.",
+      "In the bounded variant, a sigmoid nonlinearity constrains each output to [0, 2π)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III states the variant it defines.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No result for the bounded variant appears in the text."
+    },
+    {
+     "id_suggestion": "parameter-types-distinguished",
+     "value": "The authors state that the encoder weights are fixed after training, while the circuit parameters θ are the encoder output and vary with each input image.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "the weights of the encoder E(x), which are fixed after training, and the circuit parameters θ, which are the output of the neural network and vary with each input image."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III defines the two parameter types.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "infidelity-loss-definition",
+     "value": "The authors define state fidelity as the overlap between the prepared state and the FRQI ground-truth state, and state that training minimizes the infidelity loss L = 1 − F.",
+     "anchor": "Section III.C, Eq. (3), p.4",
+     "quotes": [
+      "The overlap between the prepared state and the FRQI ground truth measures how faithfully the circuit reproduces the target quantum state:",
+      "Training minimizes the infidelity loss L = 1 − F."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III.C defines the metric and the loss.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The fidelity formula (Eq. 3) is garbled in the text layer; the squared modulus is not visible."
+    },
+    {
+     "id_suggestion": "center-sequential-ansatz-size",
+     "value": "The authors state that the center-sequential circuit has Nparams = 4(n − 1)D + n parameters, which for n = 11 qubits at depth D = 6 is Nparams = 251.",
+     "anchor": "Section III.A.a, p.3",
+     "quotes": [
+      "This yields a parameter count of Nparams = 4(n − 1)D + n. For n = 11 qubits at depth D = 6, this translates to Nparams = 251."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III.A states the ansatz's parameter count.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The Table I counts for the other depths (91, 171, 331) agree with this formula."
+    },
+    {
+     "id_suggestion": "frqi-native-ansatz-description",
+     "value": "The authors state that the FRQI-native ansatz starts from Hadamard gates giving a uniform superposition and applies layers of two parts, first entangling the address qubits through nearest-neighbor (N2) and next-nearest-neighbor (N3) gates, then applying Ry rotations controlled by the address qubits, and that it has Nparams = (9n − 21)D parameters, which for n = 11 qubits at depth D = 6 is Nparams = 468.",
+     "anchor": "Section III.A.b, Fig. 3, p.3",
+     "quotes": [
+      "After initializing the qubits in a uniform superposition via Hadamard gates, it applies layers that consist of two parts.",
+      "First, the address qubits are entangled via nearest-neighbor (N2) and next-nearest-neighbor (N3) gates. Second, the Ry rotations controlled by the address qubits are applied.",
+      "For D layers, this yields a parameter count of Nparams = (9n − 21)D. For n = 11 qubits at depth D = 6, this gives Nparams = 468."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III.A states the ansatz and its parameter count.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The Table I counts for the other depths (156, 312, 624) agree with this formula."
+    },
+    {
+     "id_suggestion": "datasets-preprocessing",
+     "value": "The authors state that they evaluate on MNIST and Fashion-MNIST, resize all images from 28 × 28 to 32 × 32 pixels (N = 1024, A = 10) by bilinear interpolation, giving n = A + 1 = 11 qubits, and that MNIST has 70 000 images in 10 classes split into 60 000 training and 10 000 test samples.",
+     "anchor": "Section III.B, p.3",
+     "quotes": [
+      "we resize all images from 28 × 28 to 32 × 32 pixels (N = 1024, A = 10) using bilinear interpolation, yielding",
+      "n = A + 1 = 11 qubits in total.",
+      "The MNIST dataset [28] contains 70 000 handwritten digit images (28 × 28 pixels) across 10 classes, split into 60 000 training and 10 000 test samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.B states the data setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fashion-mnist-same-format",
+     "value": "The authors state that Fashion-MNIST shares the same format and split as MNIST and that both datasets undergo identical preprocessing: bilinear resizing to 32 × 32, intensity normalization to [0, 1], and FRQI encoding with hierarchical (Z-order) indexing.",
+     "anchor": "Section III.B, p.3",
+     "quotes": [
+      "Fashion-MNIST [29] shares the same format and split but depicts clothing items",
+      "Both datasets undergo identical preprocessing: bilinear resizing to 32 × 32, intensity normalization to [0, 1], and FRQI encoding with hierarchical (Z-order) indexing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.B states the preprocessing.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "metrics-psnr-ssim-definition",
+     "value": "The authors define PSNR on pixel intensities decoded from the prepared state, with the peak signal value MAX = 1 because intensities are normalized to [0, 1], and SSIM with stabilization constants k1 = 0.01 and k2 = 0.03.",
+     "anchor": "Section III.C, Eqs. (4) and (5), p.4",
+     "quotes": [
+      "ized to [0, 1], the peak signal value is MAX = 1.",
+      "are stabilization constants with k1 = 0.01, k2 = 0.03, and L the dynamic range of the pixel values [30]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III.C defines the metrics.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "metrics-fidelity-not-psnr",
+     "value": "The authors state that fidelity captures global agreement of the state amplitudes while PSNR and SSIM operate on the decoded image, that high fidelity does not guarantee high PSNR or SSIM and vice versa, and that they report all three metrics for that reason.",
+     "anchor": "Section III.C.d, p.4",
+     "quotes": [
+      "High fidelity does not guarantee high PSNR or SSIM, and vice versa; we therefore report all three to provide a complete picture of preparation quality."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section III.C states how the metrics are to be read.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "experimental-protocol",
+     "value": "The authors state that they vary one factor at a time (ansatz type, circuit depth D, dataset), randomly sample 2048 images from each test set for evaluation to reduce the cost of statevector simulation while training on the full training split, use PennyLane (JAX backend) with JAX/Flax, train with the Adam optimizer at a learning rate of 10−3 on an NVIDIA A100 GPU, and repeat each run with three random seeds, reporting mean and standard deviation.",
+     "anchor": "Section III.D, p.4",
+     "quotes": [
+      "We vary one factor at a time (ansatz type, circuit depth D, and dataset) while holding the remaining hyperparameters fixed.",
+      "For evaluation, we randomly sample 2048 images from each test set to reduce the computational cost of statevector simulation during metric computation; all training uses the full training split.",
+      "the Adam optimizer with a learning rate of 10−3 on an NVIDIA A100 GPU.",
+      "Each run is repeated with three random seeds and we report mean and standard deviation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.D states the protocol.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The evaluation uses a 2048-image sample of each 10 000-image test set, so the reported fidelities are over that sample, not the full test set."
+    },
+    {
+     "id_suggestion": "evaluation-grid",
+     "value": "The authors state that they evaluate MNIST and Fashion-MNIST with both circuit architectures at circuit depths D ∈ {2, 4, 6, 8}, and that Table I reports all configurations after 100 training epochs on 2048 held-out samples.",
+     "anchor": "Section IV, p.4",
+     "quotes": [
+      "using both circuit architectures and circuit depths D ∈ {2, 4, 6, 8} in terms of quality and speed.",
+      "Table I presents the fidelity, PSNR, and SSIM of all configurations after 100 training epochs, evaluated on 2048 held-out samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section IV states the evaluation grid.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "convergence-and-plateau",
+     "value": "The authors report that all configurations converge within the first ∼20 epochs, with the strongest gain between D=2 and D=4, and that beyond D=6 improvements plateau: the FRQI ansatz improves from a fidelity of 0.972 to 0.981 on MNIST, and the center-sequential ansatz from 0.946 to 0.952.",
+     "anchor": "Section IV.a, Fig. 4, p.4",
+     "quotes": [
+      "All configurations converge within the first ∼20 epochs, with the strongest performance gain occurring between D=2 and D=4.",
+      "Beyond D=6, improvements plateau: the FRQI ansatz improves from a fidelity of 0.972 to 0.981 on MNIST, while the center-sequential ansatz only increases marginally from 0.946 to 0.952."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 0.972 to 0.981 step (D=6 to D=8) is 0.009, comparable to the ± 0.011 to 0.012 reported in Table I."
+    },
+    {
+     "id_suggestion": "training-instability-higher-depth",
+     "value": "The authors report that both circuit architectures exhibit training instability at higher depths, more pronounced for the FRQI ansatz at D ∈ {6, 8}, which they relate to its larger parameter count (468–624 versus 251–331 for center-sequential).",
+     "anchor": "Section IV.a, Fig. 4 caption, p.4-5",
+     "quotes": [
+      "Both circuit architectures exhibit training instability at higher depths, though this effect is more pronounced for the FRQI ansatz at D ∈ {6, 8}, consistent with the larger parameter count of this architecture (468–624 versus 251–331 for centersequential)."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Fig. 4 curves are not in the text layer, so the size of the instability cannot be checked."
+    },
+    {
+     "id_suggestion": "frqi-beats-center-sequential",
+     "value": "The authors report that the FRQI ansatz outperforms the center-sequential ansatz at every depth on both datasets.",
+     "anchor": "Section IV.a, Table I, p.4 and p.6",
+     "quotes": [
+      "The FRQI ansatz outperforms the center-sequential ansatz at every depth on both datasets."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table I fidelities agree: at each depth the FRQI value exceeds the center-sequential value on both datasets."
+    },
+    {
+     "id_suggestion": "frqi-higher-fidelity-per-parameter",
+     "value": "The authors report that at comparable parameter budgets the FRQI ansatz achieves higher fidelity: FRQI at D=4 with 312 parameters reaches a fidelity of 0.960 on MNIST, surpassing center-sequential at D=8 with 331 parameters and fidelity of 0.952.",
+     "anchor": "Section IV.a, Fig. 5, p.4",
+     "quotes": [
+      "At comparable parameter budgets, FRQI consistently achieves higher fidelity: for example, FRQI at D=4 with 312 parameters reaches a fidelity of 0.960 on MNIST, surpassing center-sequential at D=8 with 331 parameters and fidelity of 0.952."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The worked example compares 312 with 331 parameters, so the budgets are close but not equal; the shaded percentile bands of Fig. 5 are not in the text layer."
+    },
+    {
+     "id_suggestion": "frqi-gain-architectural-claim",
+     "value": "The authors state that, at matched parameter counts, FRQI consistently achieves higher fidelity, confirming that the gain is architectural rather than a consequence of increased model capacity, and in the conclusion that the FRQI-native circuit achieves higher fidelity per parameter than the center-sequential architecture.",
+     "anchor": "Fig. 5 caption, p.5; Section V, p.6",
+     "quotes": [
+      "At matched parameter counts, FRQI consistently achieves higher fidelity, confirming that the gain is architectural rather than a consequence of increased model capacity.",
+      "The comparison between ansatz families further shows that the FRQI-native circuit achieves higher fidelity per parameter than the center-sequential architecture"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The evidence is the comparison of depth sweeps for two ansatz families on two datasets; the paper runs no control that varies parameter count with the ansatz structure held fixed."
+    },
+    {
+     "id_suggestion": "fashion-mnist-higher-fidelity",
+     "value": "The authors report that Fashion-MNIST achieves higher fidelity than MNIST at every configuration (for example 0.986 versus 0.972 for FRQI at D=6).",
+     "anchor": "Section IV.a, Table I, p.4 and p.6",
+     "quotes": [
+      "Additionally, Fashion-MNIST achieves higher fidelity than MNIST at every configuration (e.g., 0.986 vs. 0.972 for FRQI at D=6)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table I agrees for all eight configurations."
+    },
+    {
+     "id_suggestion": "fashion-mnist-smoother-explanation",
+     "value": "The authors suggest that Fashion-MNIST reaches higher fidelity than MNIST likely because fashion items contain smoother intensity distributions.",
+     "anchor": "Section IV.a, p.4",
+     "quotes": [
+      "likely because fashion items contain smoother intensity distributions."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper gives no test of this explanation."
+    },
+    {
+     "id_suggestion": "fashion-mnist-lower-psnr-ssim-text",
+     "value": "The authors state that higher fidelity does not necessarily imply better visual reconstruction, and that Fashion-MNIST yields lower PSNR and SSIM because its images contain high-frequency textures such as textile patterns and structured details, which the model smooths while preserving overall shape and class identity.",
+     "anchor": "Section IV.a, p.4",
+     "quotes": [
+      "However, higher fidelity does not necessarily imply better visual reconstruction: Fashion-MNIST yields lower PSNR and SSIM because",
+      "its images contain high-frequency textures such as textile patterns and structured details, which the model smooths while preserving overall shape and class identity."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "This text contradicts the paper's own Table I, where Fashion-MNIST has higher PSNR and SSIM than MNIST in every one of the eight rows (for example FRQI at D=8: PSNR 19.74 versus 16.89, SSIM 0.606 versus 0.543). The explanation about textures is not tested."
+    },
+    {
+     "id_suggestion": "reconstructions-qualitative",
+     "value": "The authors report that the best-performing configuration (FRQI, D=8) captures dominant shape and intensity patterns, but finer details degrade for visually complex categories such as digit loops and textured garments.",
+     "anchor": "Section IV.a, Fig. 6, p.4 and p.6",
+     "quotes": [
+      "Figure 6 displays image reconstructions from the bestperforming configuration (FRQI, D=8) on both datasets.",
+      "The encoder captures dominant shape and intensity patterns, but finer details degrade for visually complex categories such as digit loops and textured garments."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Fig. 6 images are not in the text layer."
+    },
+    {
+     "id_suggestion": "runtime-comparison-setup",
+     "value": "The authors state that the runtime comparison is the wall-clock cost of state preparation against per-image classical optimization on the same hardware (CPU inference).",
+     "anchor": "Section IV.b, p.5",
+     "quotes": [
+      "we compare the wall-clock cost of state preparation against per-image classical optimization on the same hardware (CPU inference)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV.b states the comparison setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text gives no training time for the encoder, so the one-off cost of the offline phase is not in the speedup figures."
+    },
+    {
+     "id_suggestion": "runtime-fair-comparison-claim",
+     "value": "The authors state that their method uses the MPS-inspired center-sequential ansatz targeting the same fidelity threshold as the baseline, and that matching F ensures a fair comparison at equivalent preparation quality even though the two circuit architectures differ in structure.",
+     "anchor": "Section IV.b, p.5",
+     "quotes": [
+      "Our method uses the MPSinspired center-sequential ansatz targeting the same fidelity threshold; although the two circuit architectures differ in structure, matching F ensures a fair comparison at equivalent preparation quality."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Table I lists a mean fidelity of 0.946 ± 0.018 on MNIST for center-sequential at D=6, below the 0.950 threshold, and the text does not report the encoder's fidelity on the 10 timed samples."
+    },
+    {
+     "id_suggestion": "baseline-variance-image-dependent",
+     "value": "The authors report that the baseline shows substantial variance across samples driven by image-dependent convergence: simpler images with low-rank structure converge in a handful of sweeps, while images with richer high-frequency content require many more before reaching the fidelity threshold.",
+     "anchor": "Section IV.b, p.5",
+     "quotes": [
+      "with substantial variance across samples driven by imagedependent convergence behavior: simpler images with low-rank structure converge in a handful of sweeps, while images with richer high-frequency content require many more before reaching the fidelity threshold."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "encoder-latency-speedup",
+     "value": "The authors report that for the center-sequential ansatz with depth D=6, inference is a single forward pass through the CNN encoder with no optimization at inference time, with a median prediction latency of 0.497 ms per image, a ∼ 6580-fold speedup over per-image optimization.",
+     "anchor": "Section IV.b, p.5",
+     "quotes": [
+      "In our method, the parameter prediction reduces to a single forward pass through the CNN encoder and no optimization is required at inference time.",
+      "sequential ansatz with depth D=6, the median prediction latency is 0.497 ms per image, a ∼ 6580-fold speedup over per-image optimization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "3.27 s divided by 0.497 ms is about 6580. The baseline is a mean over 10 samples and the encoder figure is a median, and the latency covers predicting the parameters, not running a circuit on quantum hardware."
+    },
+    {
+     "id_suggestion": "dataset-scale-runtime",
+     "value": "The authors report that preparing all 70 000 MNIST images by sweeping would require ∼2.65 days while their encoder completes it in ∼35 seconds, and that at industrial scale (106 images in the text layer; 1M in the figure caption) the gap widens from ∼38 days to ∼8.3 minutes.",
+     "anchor": "Section IV.b, Fig. 7, p.5-6",
+     "quotes": [
+      "Preparing all 70 000 MNIST images via sweeping would require ∼2.65 days; our encoder completes the same task in ∼35 seconds.",
+      "At industrial scale (106 images), the gap widens from ∼38 days to ∼8.3 minutes",
+      "Dashed lines mark the MNIST (70K) and industrial (1M) scales."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "These are extrapolations from 3.27 s and about 0.5 ms per image; the text does not say they were run at that scale. They agree with those per-image figures."
+    },
+    {
+     "id_suggestion": "limit-high-frequency-smoothing",
+     "value": "The authors state that the PQCs consistently struggle to reproduce high-frequency spatial components, producing smoothed reconstructions that limit applicability to fine-grained tasks.",
+     "anchor": "Section IV.c, Limitations, p.6",
+     "quotes": [
+      "The PQCs consistently struggle to reproduce high-frequency spatial components, producing smoothed reconstructions that limit applicability to fine-grained tasks."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit itself in Section IV, Limitations.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-grayscale-future-color",
+     "value": "The authors state that the current framework is limited to grayscale and that future iterations will extend the encoding to color images using encodings such as the multi-channel representation of quantum images.",
+     "anchor": "Section V, p.6-7",
+     "quotes": [
+      "While the current framework is limited to grayscale",
+      "future iterations will extend the encoding to color images by using encodings such as the multi-channel representation of quantum images [32, 33]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit itself in Section V.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ablation-parameter-bounding-stated",
+     "value": "The authors state in the introduction that Section IV includes ablation studies on parameter bounding and circuit architecture.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "including ablation studies on parameter bounding and circuit architecture."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The Results section in the text layer holds the circuit architecture comparison but no bounded versus unbounded comparison, though Section III defines a bounded variant."
+    },
+    {
+     "id_suggestion": "conclusion-high-fidelity-shallow",
+     "value": "The authors conclude that the approach can generate high-fidelity FRQI states with shallow circuits, and that it shifts the computational cost from online state preparation to an offline training phase, enabling new, unseen inputs to be encoded in a single forward pass.",
+     "anchor": "Section V, p.6",
+     "quotes": [
+      "Our results show that this approach can generate high-fidelity FRQI states with shallow circuits.",
+      "This shifts the computational cost from online state preparation to an offline training phase and enables new, unseen inputs to be encoded in a single forward pass."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "All results are from ideal state-vector simulation on 32 × 32 grayscale images."
+    },
+    {
+     "id_suggestion": "conclusion-three-orders-speedup",
+     "value": "The authors state in the conclusion that, compared with per-image sweeping optimization, which requires seconds per image, the trained encoder predicts circuit parameters in approximately 0.5 ms per image, a speedup of more than three orders of magnitude.",
+     "anchor": "Section V, p.6-7",
+     "quotes": [
+      "Compared with per-image sweeping optimization, which requires seconds per image, the trained encoder predicts circuit parameters in approximately 0.5 ms per image, corresponding",
+      "to a speedup of more than three orders of magnitude."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The body gives about 6580-fold, which is more than three orders of magnitude; the abstract says more than 5000-fold."
+    },
+    {
+     "id_suggestion": "conclusion-state-prep-necessary",
+     "value": "The authors state that reducing the cost of state preparation is a necessary step toward making quantum computing practical for data-driven applications, since quantum algorithms can only deliver useful advantages when the cost of loading and representing classical data is itself scalable.",
+     "anchor": "Section V, p.7",
+     "quotes": [
+      "More broadly, reducing the cost of state preparation is a necessary step toward making quantum computing practical for data-driven applications,",
+      "since quantum algorithms can only deliver useful advantages when the cost of loading and representing classical data is itself scalable."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-loading-cost-negates-speedup",
+     "value": "The authors state, citing earlier work, that when the cost of loading classical data into quantum states is included in the overall algorithmic complexity, any speedup of the subsequent quantum algorithm may already be negated at the data loading stage.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "When the cost of loading classical data into quantum states is included in the overall algorithmic complexity, any speedup offered by the subsequent quantum algorithm may already be negated at the data loading stage [7]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Attributed to Aaronson, Ref. [7].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-arbitrary-amplitude-encoding-costly",
+     "value": "The authors state, citing earlier work, that preparing arbitrary data vectors with amplitude encoding becomes exponentially costly.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "The caveat is that preparing arbitrary data vectors using this encoding becomes exponentially costly [8]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Attributed to Schuld and Petruccione, Ref. [8].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-images-approximable-by-states",
+     "value": "The authors state, citing several recent numerical and theoretical results, that typical images can be well approximated by quantum states.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "In fact, several recent results (both numerical and theoretical) show that typical images can be well approximated by quantum states [10– 14]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Attributed to Refs. [10] to [14].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-prior-per-instance-optimization",
+     "value": "The authors state that an earlier work developed a practical optimization pipeline to generate low-depth circuits for standard machine learning datasets, but that it still requires solving a classical optimization problem separately for each individual input.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "Ref. [20] developed a practical optimization pipeline to generate low-depth circuits for standard machine learning datasets.",
+      "it still requires solving a classical optimization problem separately for each individual input."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Describes Ref. [20], Kiwit et al.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-transformer-circuit-generation",
+     "value": "The authors state that an earlier work trained a transformer decoder that maps a tokenized target amplitude vector to a tokenized quantum gate sequence, and that it reports strong generalization to unseen inputs, high test-state fidelity, and in some cases circuits shallower than those used during training.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "They trained a transformer decoder that takes a tokenized target amplitude vector as input and autoregressively generates a tokenized quantum gate sequence.",
+      "They report strong generalization to unseen inputs, high test-state fidelity, and in some cases circuits that are even shallower than those used during training"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Describes Ref. [21], Daimon and Matsushita. The paper does not compare against it experimentally.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "approach-differs-fixed-circuit",
+     "value": "The authors state that their approach fixes the circuit structure upfront and trains a neural network to predict its rotation angles directly from raw image data, requiring no gate-sequence generation and no precomputed amplitude vectors.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "our approach fixes the circuit structure upfront and trains a neural network to predict its rotation angles directly from raw image data, requiring no gate-sequence generation and no precomputed amplitude vectors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section I states how the method is built.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "other-data-types-expected-similar",
+     "value": "The authors state that, while they focus on image data, they expect the methods of the paper to work similarly well for other types of data which result in lowly entangled states after amplitude encoding.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "there are other types of data which result in lowly entangled states after amplitude encoding, for which we expect the methods of this paper to work similarly well"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper tests only MNIST and Fashion-MNIST."
+    },
+    {
+     "id_suggestion": "table1-centersequential-d2",
+     "value": "The authors report in Table I, for the center-sequential ansatz with Nparams 91 (n = 11 qubits, 2048 held-out samples), on MNIST a fidelity of 0.900 ± 0.034, PSNR 13.23 ± 1.35 and SSIM 0.345 ± 0.059, and on Fashion-MNIST a fidelity of 0.941 ± 0.032, PSNR 15.95 ± 2.24 and SSIM 0.437 ± 0.101.",
+     "anchor": "Table I, center-sequential ansatz, depth 2, p.6",
+     "quotes": [
+      "91 0.900 ± 0.034 13.23 ± 1.35 0.345 ± 0.059 0.941 ± 0.032 15.95 ± 2.24 0.437 ± 0.101",
+      "TABLE I. Reconstruction metrics for varying ansatz and circuit depth on MNIST and Fashion-MNIST (n = 11 qubits, 2048 held-out samples)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text does not say whether the ± is a spread over the three seeds or over the 2048 samples."
+    },
+    {
+     "id_suggestion": "table1-centersequential-d4",
+     "value": "The authors report in Table I, for the center-sequential ansatz with Nparams 171 (n = 11 qubits, 2048 held-out samples), on MNIST a fidelity of 0.934 ± 0.023, PSNR 14.33 ± 1.12 and SSIM 0.414 ± 0.078, and on Fashion-MNIST a fidelity of 0.960 ± 0.019, PSNR 17.00 ± 1.73 and SSIM 0.477 ± 0.090.",
+     "anchor": "Table I, center-sequential ansatz, depth 4, p.6",
+     "quotes": [
+      "171 0.934 ± 0.023 14.33 ± 1.12 0.414 ± 0.078 0.960 ± 0.019 17.00 ± 1.73 0.477 ± 0.090",
+      "TABLE I. Reconstruction metrics for varying ansatz and circuit depth on MNIST and Fashion-MNIST (n = 11 qubits, 2048 held-out samples)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text does not say whether the ± is a spread over the three seeds or over the 2048 samples."
+    },
+    {
+     "id_suggestion": "table1-centersequential-d6",
+     "value": "The authors report in Table I, for the center-sequential ansatz with Nparams 251 (n = 11 qubits, 2048 held-out samples), on MNIST a fidelity of 0.946 ± 0.018, PSNR 14.85 ± 0.99 and SSIM 0.447 ± 0.088, and on Fashion-MNIST a fidelity of 0.966 ± 0.018, PSNR 16.99 ± 1.43 and SSIM 0.476 ± 0.101.",
+     "anchor": "Table I, center-sequential ansatz, depth 6, p.6",
+     "quotes": [
+      "251 0.946 ± 0.018 14.85 ± 0.99 0.447 ± 0.088 0.966 ± 0.018 16.99 ± 1.43 0.476 ± 0.101",
+      "TABLE I. Reconstruction metrics for varying ansatz and circuit depth on MNIST and Fashion-MNIST (n = 11 qubits, 2048 held-out samples)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text does not say whether the ± is a spread over the three seeds or over the 2048 samples. This is the circuit used for the runtime comparison; its MNIST mean fidelity is below the F ≥ 0.950 threshold."
+    },
+    {
+     "id_suggestion": "table1-centersequential-d8",
+     "value": "The authors report in Table I, for the center-sequential ansatz with Nparams 331 (n = 11 qubits, 2048 held-out samples), on MNIST a fidelity of 0.952 ± 0.016, PSNR 15.04 ± 0.80 and SSIM 0.465 ± 0.098, and on Fashion-MNIST a fidelity of 0.971 ± 0.016, PSNR 17.70 ± 1.58 and SSIM 0.513 ± 0.097.",
+     "anchor": "Table I, center-sequential ansatz, depth 8, p.6",
+     "quotes": [
+      "331 0.952 ± 0.016 15.04 ± 0.80 0.465 ± 0.098 0.971 ± 0.016 17.70 ± 1.58 0.513 ± 0.097",
+      "TABLE I. Reconstruction metrics for varying ansatz and circuit depth on MNIST and Fashion-MNIST (n = 11 qubits, 2048 held-out samples)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text does not say whether the ± is a spread over the three seeds or over the 2048 samples."
+    },
+    {
+     "id_suggestion": "table1-frqi-d2",
+     "value": "The authors report in Table I, for the FRQI ansatz with Nparams 156 (n = 11 qubits, 2048 held-out samples), on MNIST a fidelity of 0.931 ± 0.027, PSNR 14.09 ± 1.22 and SSIM 0.396 ± 0.080, and on Fashion-MNIST a fidelity of 0.968 ± 0.017, PSNR 17.55 ± 1.70 and SSIM 0.500 ± 0.096.",
+     "anchor": "Table I, FRQI ansatz, depth 2, p.6",
+     "quotes": [
+      "156 0.931 ± 0.027 14.09 ± 1.22 0.396 ± 0.080 0.968 ± 0.017 17.55 ± 1.70 0.500 ± 0.096",
+      "TABLE I. Reconstruction metrics for varying ansatz and circuit depth on MNIST and Fashion-MNIST (n = 11 qubits, 2048 held-out samples)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text does not say whether the ± is a spread over the three seeds or over the 2048 samples."
+    },
+    {
+     "id_suggestion": "table1-frqi-d4",
+     "value": "The authors report in Table I, for the FRQI ansatz with Nparams 312 (n = 11 qubits, 2048 held-out samples), on MNIST a fidelity of 0.960 ± 0.015, PSNR 15.43 ± 0.87 and SSIM 0.482 ± 0.097, and on Fashion-MNIST a fidelity of 0.980 ± 0.014, PSNR 18.65 ± 1.60 and SSIM 0.561 ± 0.107.",
+     "anchor": "Table I, FRQI ansatz, depth 4, p.6",
+     "quotes": [
+      "312 0.960 ± 0.015 15.43 ± 0.87 0.482 ± 0.097 0.980 ± 0.014 18.65 ± 1.60 0.561 ± 0.107",
+      "TABLE I. Reconstruction metrics for varying ansatz and circuit depth on MNIST and Fashion-MNIST (n = 11 qubits, 2048 held-out samples)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text does not say whether the ± is a spread over the three seeds or over the 2048 samples."
+    },
+    {
+     "id_suggestion": "table1-frqi-d6",
+     "value": "The authors report in Table I, for the FRQI ansatz with Nparams 468 (n = 11 qubits, 2048 held-out samples), on MNIST a fidelity of 0.972 ± 0.012, PSNR 16.20 ± 0.89 and SSIM 0.517 ± 0.103, and on Fashion-MNIST a fidelity of 0.986 ± 0.013, PSNR 19.31 ± 1.63 and SSIM 0.590 ± 0.111.",
+     "anchor": "Table I, FRQI ansatz, depth 6, p.6",
+     "quotes": [
+      "468 0.972 ± 0.012 16.20 ± 0.89 0.517 ± 0.103 0.986 ± 0.013 19.31 ± 1.63 0.590 ± 0.111",
+      "TABLE I. Reconstruction metrics for varying ansatz and circuit depth on MNIST and Fashion-MNIST (n = 11 qubits, 2048 held-out samples)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text does not say whether the ± is a spread over the three seeds or over the 2048 samples."
+    },
+    {
+     "id_suggestion": "table1-frqi-d8",
+     "value": "The authors report in Table I, for the FRQI ansatz with Nparams 624 (n = 11 qubits, 2048 held-out samples), on MNIST a fidelity of 0.981 ± 0.011, PSNR 16.89 ± 0.86 and SSIM 0.543 ± 0.105, and on Fashion-MNIST a fidelity of 0.992 ± 0.012, PSNR 19.74 ± 1.68 and SSIM 0.606 ± 0.109.",
+     "anchor": "Table I, FRQI ansatz, depth 8, p.6",
+     "quotes": [
+      "624 0.981 ± 0.011 16.89 ± 0.86 0.543 ± 0.105 0.992 ± 0.012 19.74 ± 1.68 0.606 ± 0.109",
+      "TABLE I. Reconstruction metrics for varying ansatz and circuit depth on MNIST and Fashion-MNIST (n = 11 qubits, 2048 held-out samples)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text does not say whether the ± is a spread over the three seeds or over the 2048 samples."
+    }
+   ]
+  }
+ ]
+}
