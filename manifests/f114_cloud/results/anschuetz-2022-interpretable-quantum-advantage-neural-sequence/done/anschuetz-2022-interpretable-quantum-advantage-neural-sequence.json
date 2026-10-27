@@ -1,0 +1,566 @@
+{"papers": [{
+ "record_id": "anschuetz-2022-interpretable-quantum-advantage-neural-sequence",
+ "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Anschuetz-et-al._2022-Interpretable-Quantum-Advantage-in-Neural-Sequence-Learning__2209.14353.pdf",
+ "title_in_file": "Interpretable Quantum Advantage in Neural Sequence Learning",
+ "version_note": "",
+ "pages": 30,
+ "read_extent": "full",
+ "not_read": "",
+ "what_it_is": "A theory-plus-simulation paper that defines contextual recurrent neural networks (CRNNs, Gaussian operations on a GKP state with non-Gaussian Pauli phase measurements), proves a memory lower bound for locally Lipschitz classical sequence models on a stabilizer measurement translation task, and compares classically simulated CRNNs with classical models on a Spanish-to-English translation data set.",
+ "bears_on_context": "qml",
+ "why_not": "",
+ "existing": [
+  {
+   "id": "crnn-memory-separation",
+   "verdict": "narrowed",
+   "note": "The stored value is the abstract's claim. The body limits it: the proofs cover only locally Lipschitz classical models (and, for encoder-decoder models, an added technical assumption on the encoder), the comparison is with infinite precision classical models, and the quantum side needs GKP ancilla states with infinite homodyne precision. The size of the separation is quadratic in memory.",
+   "value": "The authors state that they show unconditionally that there exists a class of CRNNs with O (n) qumodes that can express certain distributions that no \u201creasonable\u201d classical model is able to represent without an \u03a9 n2 (omega of n squared) dimensional latent space, where the formal proof covers online models with a locally Lipschitz latent manifold and a locally Lipschitz map, and the authors state a formal requirement for GKP ancilla states with infinite homodyne precision measurements to show the separation.",
+   "anchor": "Section I, p.2; Theorem 2, Appendix B 1, p.15; Appendix C, p.21",
+   "quotes": [
+    "Concretely, we show unconditionally that there exists a class of CRNNs with",
+    "O (n) qumodes that can express certain distributions that no \u201creasonable\u201d (which we later describe) classical model is able to represent without an \u03a9 n2 -dimensional latent space.",
+    "Consider an online model with locally Lipschitz latent manifold L and locally Lipschitz map F",
+    "we have a formal requirement for GKP ancilla states with inﬁnite homodyne precision measurements to show a separation."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "high",
+   "high_basis": "proved result",
+   "certainty_reason": "Theorem 2 (online models) is proved in Appendix B 1 with its conditions (locally Lipschitz latent manifold and map) quoted; Appendix C states the infinite precision and GKP requirement.",
+   "result_type": "theoretical",
+   "context": "qml",
+   "reader_inference": "The word 'unconditional' means no complexity-theoretic assumption, not no modeling assumption: the result depends on the locally Lipschitz restriction on classical models and on infinite precision on both sides. It does not cover finite precision implementations, which the authors only argue about informally."
+  },
+  {
+   "id": "crnn-quadratic-only",
+   "verdict": "narrowed",
+   "note": "The first half is confirmed. The second half is narrowed: the classical simulation used in the numerics is a Theta of n squared memory simulation that holds only on a restricted space of Gaussian operations.",
+   "value": "The authors state that the separation is only a quadratic separation in memory, and that their numerical simulations use a \u0398 n2 (theta of n squared) memory classical simulation of CRNNs with n latent modes on a restricted space of Gaussian operations.",
+   "anchor": "Section I, p.2; Section IV, p.5",
+   "quotes": [
+    "Though this is only a quadratic separation in memory,",
+    "a \u0398 n2 memory classical simulation of CRNNs with n latent modes on a restricted space of Gaussian operations, which is what we use in our numerical simulations."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "high",
+   "high_basis": "stated limit",
+   "certainty_reason": "The paper states both the size of the separation and the restriction on the simulation used in its numerics.",
+   "result_type": "setup",
+   "context": "qml",
+   "reader_inference": "The quantum models in the translation experiment were never run on quantum hardware; the experiment tests a classically simulated restricted model, so it cannot be read as evidence about hardware runs."
+  },
+  {
+   "id": "crnn-translation-numerics",
+   "verdict": "narrowed",
+   "note": "The comparison set is narrower than 'state of the art': one GRU RNN, a Gaussian RNN, an orthogonal RNN and a single-layer Transformer, all with shallow cells. The CRNN was ahead of the GRU and Gaussian models in Fig. 3; against the Transformer it was matched by a Transformer with quadratically more memory. The sentence in the abstract is also stronger than Section IV, which says 'a wide range of model dimensions', while the introduction says 'each model size we consider'.",
+   "value": "The authors state that their introduced contextual model achieves better translation performance than all other models at each model size they consider, and that the performance of the largest CRNNs considered was roughly matched by Transformers with quadratically more memory; the Transformer in the experiments uses a single encoder layer and a single decoder layer.",
+   "anchor": "Section I, p.2; Section IV, p.6; Appendix E 1, p.27",
+   "quotes": [
+    "We show that our introduced contextual model achieves better translation performance compared to all other models at each model size we consider.",
+    "we found that roughly the performance of the largest CRNNs we considered was matched by Transformers with quadratically more memory.",
+    "we used a single Transformer encoder and decoder layer for each model."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An empirical result from one study on one data set, run on classical simulations of the quantum models.",
+   "result_type": "measured",
+   "context": "qml",
+   "reader_inference": "'State of the art' in the abstract is a stretch: the Transformer was one layer and one head, and the Transformer comparison is stated as roughly matched, not outperformed."
+  }
+ ],
+ "assertions": [
+  {
+   "id_suggestion": "crnn-definition",
+   "value": "The authors define a contextual recurrent neural network (CRNN) as a recurrent online model that begins in a GKP state, with a cell that takes as input xi a description of a CV Pauli operator and returns its measurement result yi.",
+   "anchor": "Section II B, p.3",
+   "quotes": [
+    "We call a recurrent online model beginning in a GKP state, with cell that takes as input xi a description of a CV Pauli operator and returns its measurement result yi, a contextual recurrent neural network (CRNN)."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "definition",
+   "certainty_reason": "The paper defines the term in Section II B.",
+   "result_type": "setup", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "gaussian-lrnn-simulable-dbn",
+   "value": "The authors state that a quantization of a linear recurrent neural network with only Gaussian operations, initial states and measurements has efficient Wigner function based classical simulations of sampling, and that such models on n modes are equivalent to deep belief networks with 2n latent variables.",
+   "anchor": "Section I, p.1",
+   "quotes": [
+    "there are eﬃcient Wigner function based simulations of sampling from such a system [32].",
+    "such models on n modes are equivalent to deep belief networks [33]\u2014a class of commonly used classical models\u2014with 2n latent variables."
+   ],
+   "kind": "cited", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "A statement the paper attributes to other work (its references 32 and 33), not proved here.",
+   "result_type": "cited", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "cv-pauli-contextuality-definition",
+   "value": "The authors state that quantum contextuality is the statement that no definite classical values can be assigned to quantum operators, even when the measured operators in any given measurement scenario commute.",
+   "anchor": "Section II B, p.4",
+   "quotes": [
+    "Quantum contextuality is the statement that no deﬁnite classical values can be assigned to quantum operators, even when the measured operators in any given measurement scenario commute."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "definition",
+   "certainty_reason": "The paper's own definition of the term as it uses it.",
+   "result_type": "setup", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "mermin-peres-cv-magic-square",
+   "value": "The authors present a Mermin-Peres magic square of CV Pauli operators as an example of CV quantum contextuality: the product of each row and column is the identity operator except for the final column, which gives minus one, so definite classical values cannot be assigned to each operator without a contradiction.",
+   "anchor": "Table I, p.3",
+   "quotes": [
+    "Additionally, the product of each row and column is the identity operator, except for the ﬁnal column, which gives −1.",
+    "Thus, deﬁnite classical values cannot be assigned to each operator without yielding a contradiction."
+   ],
+   "kind": "cited", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "A construction the paper takes from the Mermin-Peres magic square (its reference 43), stated in a table caption.",
+   "result_type": "cited", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "stabilizer-translation-task-definition",
+   "value": "The authors define the (k, n) stabilizer measurement translation task, informally, as: given a k long sequence of classical descriptions xi of CV Pauli operators on n modes, output a sequence of measurement outcomes yi that is consistent with measuring these operators sequentially on a fixed GKP state.",
+   "anchor": "Definition 1, Section II C, p.4",
+   "quotes": [
+    "Given a k long sequence of classical descriptions xi of CV Pauli operators on n modes, output a sequence of measurement outcomes yi that is consistent with measuring these operators sequentially on a ﬁxed GKP state"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "definition",
+   "certainty_reason": "The paper defines the task in Section II C (informal) and Appendix B (formal).",
+   "result_type": "setup", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "formal-task-definition-appendix-b",
+   "value": "The authors state that, in the formal definition of the task, the first n measurements are set to be infinite precision Gaussian measurements, that is measurements of linear combinations of position and momentum operators, as a limit of the periodic measurements of the main text with infinitely large periods, and that a translation is correct when the measurement outcomes are consistent with those of quantum mechanics.",
+   "anchor": "Appendix B, pp.10-11",
+   "quotes": [
+    "we now set the ﬁrst n measurements to be inﬁnite precision Gaussian measurements, i.e. measurements of linear combinations of position and momentum operators.",
+    "These measurements are a limit of the periodic measurements we consider in the main text, with inﬁnitely large periods.",
+    "where the measurement outcomes mi are consistent with those of quantum mechanics."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "definition",
+   "certainty_reason": "The paper's formal definition of the task in Appendix B.",
+   "result_type": "setup", "context": "qml", "reader_inference": "The formal (2, n) task used in the proofs is not literally the (n + 2, n) task of the main text; the main-text periodic measurements are reached only as a limit."
+  },
+  {
+   "id_suggestion": "locally-lipschitz-definition",
+   "value": "The authors define a function F from metric space K to metric space L as locally Lipschitz if the distance between F(x) and F(x') is at most a constant Cx times the distance between x and x', where Cx is constant in some neighborhood of x.",
+   "anchor": "Appendix A 2, Eq. (A3), p.10",
+   "quotes": [
+    "A function F : K → L for metric spaces K and L is locally Lipschitz if",
+    "where Cx is constant in some neighborhood of x."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "definition",
+   "certainty_reason": "The paper defines the condition on which every separation theorem depends.",
+   "result_type": "setup", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "locally-lipschitz-covers-practical-models",
+   "value": "The authors state that locally Lipschitz models include all models with standard nonlinearities, with ReLU, hyperbolic tangent and sigmoid activation functions, that this condition is much weaker than a globally Lipschitz constraint, and that all practical neural sequence models are locally Lipschitz.",
+   "anchor": "Section II A, p.3; Appendix A 2, p.10",
+   "quotes": [
+    "This includes all models with standard nonlinearities, including those with ReLU, hyperbolic tangent, and sigmoid activation functions.",
+    "Note that this condition is much weaker than a globally Lipschitz constraint.",
+    "All practical neural sequence models are locally Lipschitz."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An author's claim about the reach of the theorems, not proved in the paper.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "The reach of the lower bound over real classical models depends on this claim. A model with a discontinuous step in its cell (for example hard thresholding) is not obviously covered."
+  },
+  {
+   "id_suggestion": "infinite-precision-scope",
+   "value": "The authors state that where they analytically consider classical neural networks they consider the formal description, which assumes infinite precision, and that they compare their quantum model with infinite precision classical models.",
+   "anchor": "Section II A, p.3; Appendix C, p.21",
+   "quotes": [
+    "works, which assumes inﬁnite precision.",
+    "As we formally compare our quantum model with inﬁnite precision classical models"
+   ],
+   "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "scope",
+   "certainty_reason": "The paper states the precision assumption of its analytic results.",
+   "result_type": "setup", "context": "qml",
+   "reader_inference": "Real classical networks run at finite precision (the paper notes 8-bit arithmetic on TPUs), so the theorems do not directly bound them."
+  },
+  {
+   "id_suggestion": "finite-precision-evidence-claim",
+   "value": "The authors state that their numerical experiments give evidence that their analytic results also hold in the finite precision regime.",
+   "anchor": "Section II A, p.3",
+   "quotes": [
+    "Our numerical experiments in Sec. IV, however, give evidence that our analytic results also hold in the ﬁnite precision regime."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An author's claim resting on one translation experiment.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "The experiment uses a natural-language translation task, not the stabilizer measurement translation task of the theorems, and the quantum models are classically simulated, so it does not test the n versus n squared memory bound itself."
+  },
+  {
+   "id_suggestion": "crnn-not-universal-cited",
+   "value": "The authors state that, with the initial GKP state and infinite precision, the model is not universal for CV quantum computation, even when additional Gaussian operations within the latent space are added.",
+   "anchor": "Section II B, p.4",
+   "quotes": [
+    "In this scenario, the model is not universal for CV quantum computation, even when additional Gaussian operations within the latent space are added"
+   ],
+   "kind": "cited", "claim_type": "absence", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "A result the paper attributes to other work (its reference 52).",
+   "result_type": "cited", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "finite-precision-universality-speculation",
+   "value": "The authors state that, when the initial state is the vacuum state or a finitely squeezed GKP state, the model is universal, and that this suggests a potential superpolynomial advantage in the expressive power and the time complexity of inference when implemented at finite precision.",
+   "anchor": "Section II B, p.4; Appendix C, p.21",
+   "quotes": [
+    "Counterintuitively, when the initial state is the vacuum state or a ﬁnitely squeezed GKP state, the model is universal",
+    "this suggests a potential superpolynomial advantage in the expressive power and the time complexity of inference when implemented at ﬁnite precision."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "Universality is attributed to other work and the advantage is a suggestion, not proved.",
+   "result_type": "claim", "context": "qml", "reader_inference": "Universality for CV quantum computation would also remove the classical simulability the paper relies on in its numerics, so this is not a claim the experiments test."
+  },
+  {
+   "id_suggestion": "theorem1-informal-online-lower-bound",
+   "value": "The paper states, informally, that a locally Lipschitz online model with latent space L and dim (L) less than n(n−3) 2 cannot achieve a finite backward cross entropy on the (n + 2, n) stabilizer measurement translation task.",
+   "anchor": "Theorem 1, Section III, p.5",
+   "quotes": [
+    "If dim (L) < n(n−3) 2",
+    "this model cannot achieve a ﬁnite backward cross entropy on the (n + 2, n) stabilizer measurement transla- tion task."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "proved result",
+   "certainty_reason": "The statement and its condition are quoted; the full statement and proof are Theorem 2 in Appendix B 1.",
+   "result_type": "theoretical", "context": "qml",
+   "reader_inference": "The printed bound n(n−3) 2 is the text layer's form of n(n−3)/2."
+  },
+  {
+   "id_suggestion": "theorem2-online-lower-bound",
+   "value": "The paper proves that, for an online model with a locally Lipschitz latent manifold L and a locally Lipschitz map F, if dim (L) is less than n(n−3) 2 the model cannot achieve a finite backward empirical cross entropy on the (2, n) stabilizer measurement translation task.",
+   "anchor": "Theorem 2, Appendix B 1, p.15",
+   "quotes": [
+    "Consider an online model with locally Lipschitz latent manifold L and locally Lipschitz map F",
+    "If dim (L) < n(n−3) 2",
+    "this model cannot achieve a ﬁnite backward empirical cross entropy on the (2, n) stabilizer measurement translation task."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "proved result",
+   "certainty_reason": "A theorem proved in Appendix B 1 with its conditions quoted.",
+   "result_type": "theoretical", "context": "qml",
+   "reader_inference": "The (2, n) task of the appendix is the (n + 2, n) task of the main text with the sequence length convention shifted by n. The bound is a lower bound on latent dimension against any locally Lipschitz model, so it is a memory separation of order n squared against the n qumodes of a CRNN."
+  },
+  {
+   "id_suggestion": "theorem2-proof-mechanism",
+   "value": "The paper's proof of the online-model theorem restricts the model to a space K of CV graph states without loops, uses the constant rank theorem and the local Lipschitzness of the restriction of F to K to show it is not injective when the latent dimension is small, and then uses a lemma on Mermin-Peres contextuality to show that three states mapped to the same latent point have a distinguishing measurement sequence.",
+   "anchor": "Appendix B 1, p.12 and p.16",
+   "quotes": [
+    "By the constant rank theorem and the local Lipschitzness of F|K, F|K is not injective for",
+    "Therefore, by Lemma 1, we have that there exists a distinguishing measurement sequence for these three states."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "proved result",
+   "certainty_reason": "The proof steps are stated in the appendix proof.",
+   "result_type": "theoretical", "context": "qml",
+   "reader_inference": "The proof assumes, without loss of generality by a change of input basis, that the Jacobian of the map reaches its maximum rank at the squeezed state B equals zero."
+  },
+  {
+   "id_suggestion": "lemma1-cv-graph-state-contextuality",
+   "value": "The paper proves that, for two CV graph states with no loops and with adjacency matrices that are distinct modulo pi, there exist operators stabilizing these three states (with the position squeezed state) that exhibit quantum contextuality, and a distinguishing measurement sequence of length two.",
+   "anchor": "Lemma 1, Appendix B 1, p.12",
+   "quotes": [
+    "Consider two states |ψ1 and |ψ2 that are CV graph states (up to arbitrary phases on their stabilizers) with no loops",
+    "There exist operators that stabilize these three states that exhibit quantum contextuality.",
+    "there exists a distinguishing measurement sequence of length two that distinguishes these three states."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "proved result",
+   "certainty_reason": "A lemma proved in Appendix B 1 with its conditions quoted.",
+   "result_type": "theoretical", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "random-models-extension",
+   "value": "The authors state that their results still hold for randomized online models whose cell maps are deterministic for each value of a shared random vector, because for each such value there is an input sequence on which any classical model with a small enough latent dimension outputs a measurement sequence inconsistent with quantum mechanics.",
+   "anchor": "Appendix B 1, p.15",
+   "quotes": [
+    "our results still hold for these classes of random models.",
+    "This also includes implementations of stochastic simulation algorithms such as Wigner function simulation [32]."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "scope",
+   "certainty_reason": "The paper states the scope of the theorem over stochastic models in Appendix B 1.",
+   "result_type": "theoretical", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "theorem3-encoder-decoder-lower-bound",
+   "value": "The paper proves that, for an encoder-decoder model with a locally Lipschitz latent manifold L, whose encoder Jacobian restricted to the subspace R attains its maximal rank at some point of the form (Q, 0) in R, if dim (L) is less than n(n−3) 2 the model cannot achieve a finite backward empirical cross entropy on the modified n2 (n squared) − n, n stabilizer measurement translation task.",
+   "anchor": "Theorem 3, Appendix B 3, p.18",
+   "quotes": [
+    "Consider an encoder-decoder model with locally Lipschitz latent manifold L.",
+    "assume that the Jacobian of the map E|R (where the subspace R is deﬁned below) attains its maximal rank at some point of the form (Q, 0) ∈ R.",
+    "If dim (L) < n(n−3) 2",
+    "this model cannot achieve a ﬁnite backward empirical cross entropy on the modiﬁed n2 − n, n stabilizer measurement translation task."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "proved result",
+   "certainty_reason": "A theorem proved in Appendix B 3 with its conditions quoted.",
+   "result_type": "theoretical", "context": "qml",
+   "reader_inference": "The bound for encoder-decoder models needs an extra rank assumption and a modified task whose input length is quadratic in n; it is weaker in scope than the online-model theorem."
+  },
+  {
+   "id_suggestion": "theorem3-technical-assumption-limit",
+   "value": "The authors state that the rank assumption in the encoder-decoder theorem is satisfied by generic encoders when dim (L) is below the threshold and by encoders constrained to be submersions, that any one of these conditions is sufficient, and that it is needed for their proof technique to analyze a neighborhood of the non-Gaussian measurements.",
+   "anchor": "Appendix B 3, p.18",
+   "quotes": [
+    "Any one of these conditions is suﬃcient, and needed for our proof technique to be able to analyze any neighborhood of the non-Gaussian measurements we consider."
+   ],
+   "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "stated limit",
+   "certainty_reason": "The paper states the limit of its proof technique for encoder-decoder models.",
+   "result_type": "setup", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "corollary1-cv-gottesman-knill",
+   "value": "The paper proves that, for a classical ontological model with a latent space of dimension less than n(n−3) 2 that is defined at a finite number of x and simulates (k, n) stabilizer measurement translation with k ≥ 2, there exists a locally Lipschitz interpolation of the model to all x, and no locally Lipschitz interpolation can faithfully perform stabilizer measurement translation at all x.",
+   "anchor": "Corollary 1, Appendix B 2, p.17",
+   "quotes": [
+    "Consider a classical ontological model p (y | x) with a latent space of dimension less than n(n−3) 2",
+    "simulating (k, n) stabilizer measurement translation with k ≥ 2.",
+    "no locally Lipschitz interpolation of this model can faithfully perform stabilizer measurement translation at all x."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "proved result",
+   "certainty_reason": "A corollary proved in Appendix B 2 with its conditions quoted.",
+   "result_type": "theoretical", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "contextuality-source-claim",
+   "value": "The authors state that they give a proof of the intuition that reasonable classical models cannot get around the need to memorize the measurement context of given observables, which is what yields the quadratic memory separation between the quantum and classical models.",
+   "anchor": "Section I, p.2",
+   "quotes": [
+    "Here, we give a proof of the intuition that reasonable classical models cannot get around the need to \u201cmemorize\u201d the measurement context of given observables, which is what yields the quadratic memory separation between the quantum and classical models."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An interpretive statement of what the proof means; the proof itself is entered with the theorems.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "The proof shows that a Mermin-Peres structure is present among states that a low-dimensional locally Lipschitz model must conflate. That the same structure is what a classical model 'memorizes' is the authors' reading, not a separate theorem."
+  },
+  {
+   "id_suggestion": "first-unconditional-separation-priority",
+   "value": "The authors state that, to their knowledge, this is the first unconditional proof of an expressivity separation between a quantum neural network and classical neural networks on classical data.",
+   "anchor": "Section V, p.6",
+   "quotes": [
+    "To our knowledge, this is the ﬁrst unconditional proof of an expressivity separation between a quantum neural network and classical neural networks on classical data."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An author's priority claim, hedged with 'to our knowledge'.",
+   "result_type": "claim", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "time-separation-and-generalization-claims",
+   "value": "The authors state that the time complexity of inference for classical models is typically superlinear in the model size, yielding a superquadratic time separation, and that, as they show a memory rather than a time separation, their results also potentially point to a practical generalization advantage for CRNNs because smaller models tend to generalize better.",
+   "anchor": "Section I, p.2",
+   "quotes": [
+    "the time complexity of inference for classical models is typically superlinear in the model size",
+    "yielding a superquadratic time separation.",
+    "our results also potentially point to a practical generalization advantage for CRNNs, as smaller models tend to generalize better than larger models"
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An argument from cited background; no time separation is proved or measured in the paper.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "The superquadratic time claim compares a quantum implementation to classical inference time and is not tested; the paper's own classical simulation of a CRNN has its own time cost (see the time complexity entry)."
+  },
+  {
+   "id_suggestion": "crnn-circuit-depth-and-classical-sim-time",
+   "value": "The authors state that each cell of the CRNN of their proofs can be implemented on a quantum computer in depth O (n), assuming access to the fixed ancilla state, and that inspection of their algorithm (Algorithm listing in the appendix) shows classical simulation of inference on a CRNN with model dimension n has time complexity O (nω), where ω is the matrix multiplication exponent.",
+   "anchor": "Appendix E 3, p.27-28",
+   "quotes": [
+    "can be implemented in depth O (n), assuming access to the",
+    "mension n with time complexity O (nω)."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "Stated as 'easy to see' from the algorithm and a circuit description, without a proof in the paper.",
+   "result_type": "claim", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "quantum-inspired-time-advantage-claim",
+   "value": "The authors state that their results show that on certain tasks a CRNN of model dimension n performs on par with GRU RNNs with model dimension Ω n2 (omega of n squared), which performs inference in time Ω n4 (omega of n to the fourth power), and that their classical simulation of CRNNs is thus a quantum-inspired classical model asymptotically more time efficient than typical RNNs with an n squared dimensional latent space.",
+   "anchor": "Appendix E 3, p.28",
+   "quotes": [
+    "Our results show that on certain tasks, such a CRNN of model dimension n performs on par with e.g. GRU RNNs with model dimension \u03a9 n2 , which performs inference in time \u03a9 n4",
+    "is asymptotically more time eﬃcient in inference and training than typical RNNs with an n2-dimensional latent space."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An author's claim extending the memory separation to a time claim.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "The memory lower bound is proved for a specific stabilizer task. The translation experiment does not show a GRU needs n squared dimensions to match a CRNN, so the 'on par' statement for the real task is not demonstrated in the paper."
+  },
+  {
+   "id_suggestion": "numerics-setup-data-training",
+   "value": "The authors report that every model was trained on a standard Spanish-to-English data set, with a random sample of 80% of the data set as the training set and 20% as the test set, for 80 epochs with a batch size of 64, using a vocabulary of at most 5000 words, and trained on the forward empirical cross entropy because the backward empirical cross entropy is difficult to train on.",
+   "anchor": "Appendix E, p.25-26",
+   "quotes": [
+    "the training set was taken to be a random sample of 80% of the data set, and the test set 20%.",
+    "Each model was trained for 80 epochs, with a batch size of 64.",
+    "with a maximum vocabulary size of 5000.",
+    "trained on the forward empirical cross entropy (as the backward empirical cross entropy is diﬃcult to train on)."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper states its own experimental setup in Appendix E.",
+   "result_type": "setup", "context": "qml",
+   "reader_inference": "Models are trained and judged on the forward cross entropy, while the theorems concern the backward cross entropy; the experiment does not measure the quantity the lower bounds are about."
+  },
+  {
+   "id_suggestion": "numerics-parameter-matching",
+   "value": "The authors report that the Gaussian and contextual models were constrained to have exactly the same number of trainable parameters, and that each recurrent cell of the GRU had a parameter count within 2.5% of those of the quantum models at the largest model size considered.",
+   "anchor": "Section IV, p.5",
+   "quotes": [
+    "The Gaussian and contextual models were constrained to have exactly the same number of trainable parameters, and each recurrent cell of the GRU had a parameter count within 2.5% of those of the quantum models at the largest model size considered."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper states its own experimental setup.",
+   "result_type": "setup", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "numerics-quantum-models-simulated",
+   "value": "The authors state that the Gaussian RNN and the contextual RNN were simulated classically, using the simulation strategies of the appendices, and that the Gaussian model is a limit of the contextual model, with the contextual model's lattice and K left untrained to keep identical parameter counts.",
+   "anchor": "Appendix E 2, p.27",
+   "quotes": [
+    "Based on the discussion in Appendix D, we simulated both the Gaussian RNN and the contextual RNN described in Sec. IV.",
+    "By considering the Gaussian RNN cell as a limit of the contextual RNN cell, and by not training K or J0 in the contextual RNN, we were able to maintain identical parameter counts for the two models."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper states how its quantum models were implemented in the experiments.",
+   "result_type": "setup", "context": "qml",
+   "reader_inference": "No quantum hardware or quantum circuit simulator is used; the CRNN results in this paper are from a classical algorithm."
+  },
+  {
+   "id_suggestion": "numerics-restricted-gaussian-operations",
+   "value": "The authors state that the classical simulation of the contextual RNN in the numerical experiments restricts symplectic transformations to a block diagonal form so as to allow efficient classical simulation, and that an implicit large scaling is assumed so that the homodyne variance is small.",
+   "anchor": "Appendix D 1, p.23-24",
+   "quotes": [
+    "We restrict to operations of this form to more eﬃciently allow for the classical simulation of the contextual RNN using Gaussian operations of an identical form",
+    "we assume in our numerical simulations that there is an implicit large scaling for U , cq such that this variance is small."
+   ],
+   "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "scope",
+   "certainty_reason": "The paper states the restriction on the operations used in the simulation.",
+   "result_type": "setup", "context": "qml", "reader_inference": "The numerics exercise only a restricted class of Gaussian operations, not the general CRNN."
+  },
+  {
+   "id_suggestion": "fig3-forward-cross-entropy-result",
+   "value": "The authors report that, in forward empirical cross entropy on a test set (the figure compares GRU RNNs, Gaussian RNNs and CRNNs), the contextual model outperforms all models under consideration at a wide range of model dimensions n.",
+   "anchor": "Section IV, Fig. 3, p.5-6",
+   "quotes": [
+    "It is easy to see that the contextual model outperforms all models under consideration in forward empirical cross entropy at a wide range of model dimensions n."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An empirical result from one study on one data set.",
+   "result_type": "measured", "context": "qml",
+   "reader_inference": "The figure values are not in the text layer. The introduction says 'at each model size we consider' while Section IV says 'a wide range of model dimensions'; the second is the weaker statement. No error bars or repeated runs are reported."
+  },
+  {
+   "id_suggestion": "table2-translation-samples",
+   "value": "The authors present random samples of translation results for models with n = 26 (Table II), comparing the CRNN output with the truth and with the GRU RNN output.",
+   "anchor": "Table II, Section IV, p.5",
+   "quotes": [
+    "TABLE II. Random samples of translation results for n = 26 models.",
+    "Random samples of translation results after training are shown in Table II."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "Qualitative examples from one study.",
+   "result_type": "measured", "context": "qml",
+   "reader_inference": "The samples are described as random but the selection procedure is not given; four sentences cannot support a quantitative claim."
+  },
+  {
+   "id_suggestion": "lrnn-ornn-comparison",
+   "value": "The authors report that CRNNs substantially outperformed LRNNs, and in the supplementary results that CRNNs, and indeed all of the online models considered, greatly outperformed ORNNs (the real-constrained efficient unitary neural network) at a variety of model dimensions.",
+   "anchor": "Section IV, p.6; Appendix F, Fig. 9, p.29-30",
+   "quotes": [
+    "We found that CRNNs substantially outperformed LRNNs.",
+    "greatly outperformed ORNNs at a variety of model dimensions."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An empirical result from one study.",
+   "result_type": "measured", "context": "qml",
+   "reader_inference": "The 'linear RNN' comparator is an orthogonal RNN built from the EUNN implementation and constrained to be real, so it is a weak stand-in for the LRNN class the CRNN quantizes."
+  },
+  {
+   "id_suggestion": "transformer-comparison-memory",
+   "value": "The authors report that the Transformer comparison fixed a trained n = 26 CRNN and varied the Transformer model dimension, with the Transformer's effective memory taken as the model dimension multiplied by the length of the padded input sentences (sentence length set to 20 words), and that roughly the performance of the largest CRNNs was matched by Transformers with quadratically more memory.",
+   "anchor": "Section IV, p.6; Appendix F, Fig. 8, p.29; Appendix E, p.26",
+   "quotes": [
+    "we ﬁxed a trained n = 26 CRNN, and compare the performance of a Transformer at a variety of model dimensions against this model.",
+    "The dimension of the latent space (labeled \u201cEﬀective memory\u201d) of a Transformer is the model dimension multiplied by the length of the (padded) input sentences.",
+    "For the Transformer model, we set the sentence length to be 20 words.",
+    "was matched by Transformers with quadratically more memory."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An empirical result from one study; the numeric curves are in Fig. 8 only.",
+   "result_type": "measured", "context": "qml",
+   "reader_inference": "This is the only comparison against an encoder-decoder model. The result is a rough match at about quadratic memory, which is the size of the proved separation, but the paper does not test it at other n."
+  },
+  {
+   "id_suggestion": "outlook-not-all-tasks-limit",
+   "value": "The authors state that such models are most likely unable to outperform state of the art classical machine learning models on all tasks, and leave for future work both the quantization of more powerful classical architectures and further investigation of whether the restricted model circumvents poor training landscapes.",
+   "anchor": "Section I, p.2; Section V, p.6-7",
+   "quotes": [
+    "Though such models are most likely unable to outperform state of the art classical machine learning models on all tasks,",
+    "though we leave further investigation of this to future work.",
+    "We leave for future work the quantization of more powerful classical architectures"
+   ],
+   "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "stated limit",
+   "certainty_reason": "The paper states the limits of its own claims and what it leaves open.",
+   "result_type": "setup", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "trainability-and-hardware-claims",
+   "value": "The authors state that the simplicity of the quantum models may circumvent the recent deluge of untrainability results of general quantum models, and that, because such models are restricted in their allowed operations, they are more amenable to implementation on near-term quantum devices than completely generic quantum models.",
+   "anchor": "Section I, p.2",
+   "quotes": [
+    "the simplicity of the quantum models may circumvent the recent deluge of untrainability results of general quantum models",
+    "they are more amenable to implementation on near-term quantum devices than completely generic quantum models."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "A speculative statement by the authors, not shown in the paper.",
+   "result_type": "claim", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id_suggestion": "finite-precision-and-non-gaussian-conjectures",
+   "value": "The authors state that they expect qubit ancilla states can replace GKP states for phase estimation of the CV stabilizer operators at a precision matching classical networks, and conjecture that any non-Gaussian ancilla state is enough to yield a separation.",
+   "anchor": "Appendix C, p.21; Section V, p.6-7",
+   "quotes": [
+    "We therefore expect that one can circumvent the formal need for GKP states to use qubit ancilla states",
+    "we make the bolder conjecture that any non-Gaussian ancilla state is enough to yield a separation."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "A conjecture stated by the authors without proof or experiment.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "These statements are expectations. The only proved separation is against infinite precision classical models with GKP ancillas and infinite homodyne precision."
+  }
+ ]}]}
