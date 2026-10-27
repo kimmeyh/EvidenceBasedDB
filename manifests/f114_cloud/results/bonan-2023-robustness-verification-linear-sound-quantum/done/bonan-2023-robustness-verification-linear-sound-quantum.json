@@ -1,0 +1,451 @@
+{
+ "papers": [
+  {
+   "record_id": "bonan-2023-robustness-verification-linear-sound-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Subonan_2023_The-Robustness-Verification-of-Linear-Sound-Quantum-Classifiers__2303.04982.pdf",
+   "title_in_file": "The Robustness Verification of Linear Sound Quantum Classifiers",
+   "version_note": "",
+   "pages": 13,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A single-author arXiv preprint that defines a Linear Sound Property for quantum classifiers, derives a Bloch-vector based robustness bound under a fidelity distance, and tests it on a simulated 8-qubit QCNN on binary MNIST.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "bonan-experiment-setup",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The author states that, due to the limited capability of classical computers to simulate quantum circuits, the dataset was filtered to binary classification only, simulating 8 qubits.",
+     "anchor": "Section 4.1 QCNN and MNIST dataset, p.11",
+     "quotes": [
+      "Due to the limitation on the capability of classical computers to simulate quantum circuit, I ﬁltered",
+      "chosen the amplitude encoder and to simulate 8 qubits, the maximum dimention of input data is"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own setup and the limit it worked under in Section 4.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "bonan-lsp-definition",
+     "verdict": "widened",
+     "note": "Definition 6 holds two conditions joined by 'if and only if'. The stored value gives only the first (convex combinations). The second condition, about states along the same Bloch-vector direction, is missing from the stored value. The text layer lost the Greek symbols, so the second condition is read from the surrounding words.",
+     "value": "The paper defines the Linear Sound Property by two conditions that must both hold. First, if two states are classified into the same class, then every convex combination of them is classified into that class too. Second, if a state is classified into a class, then a state whose Bloch vector points the same way and has a length at least as great as the norm of the original vector is also classified into that class, when it can be classified.",
+     "anchor": "Section 3.3, Definition 6, pp.7-8",
+     "quotes": [
+      "We say a classiﬁer have the Linear Sound Property, LSP, if and only if it satisﬁes:",
+      "if states 1, 2 are classiﬁed into the same class,",
+      "then for any ∈ [0, 1], 1 + (1 − ) 2 is classiﬁed into the same class too.",
+      "is classiﬁed (if ′ can be classifed)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 6 of Section 3.3 states the property; the second condition is read from a text layer that lost the symbols.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The reading of the second condition (scaling the Bloch vector outward along its own direction) rests on the words around the lost symbols and on the later proof, which treats the sign of one Bloch component."
+    },
+    {
+     "id": "bonan-lsp-verification-method",
+     "verdict": "narrowed",
+     "note": "The paper tests the method on one simulated QCNN, on MNIST reduced to the labels 0 and 1 only, with 8 qubits. The paper shows only five training states per table (Tables 1 and 2, 'a portion of the experiment's results'). It reports no run time, so the word 'quick' is a claim without a measurement in the paper.",
+     "value": "The author presents a method for the robustness verification of quantum classifiers that are Linear Sound, and reports that it verified the robustness of a QCNN simulated with 8 qubits on MNIST filtered to the labels 0 and 1; the paper shows a portion of the results for five states.",
+     "anchor": "Abstract p.1; Section 4.1 p.11; Section 4.2 Tables 1 and 2, pp.12-13",
+     "quotes": [
+      "using MindQuantum, Huawei and successfully veri",
+      "the dataset to do the binary classiﬁcation only (left labels are mere 0s and 1s).",
+      "chosen the amplitude encoder and to simulate 8 qubits, the maximum dimention of input data is",
+      "Table 1 and Table 2 below show a portion of the experiment’s results"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on a simulator.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The number of tested states beyond the five shown is not stated in the paper, so the extent of the verification cannot be read from it."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "bonan-quantum-classifier-definition",
+     "value": "The paper defines a Quantum Classifier as a mapping from the set of all (mixed) quantum states on a given Hilbert space to a set of classes.",
+     "anchor": "Section 2, Definition 1, p.3",
+     "quotes": [
+      "A Quantum Classiﬁer is a mapping (H ) → C where H is a given Hilbert space",
+      "and (H ) refers to the set of all (mixed) quantum states on H . C stands for the set of classes we are"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 1 of Section 2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bonan-classification-policy-definition",
+     "value": "The paper defines a Classification Policy as a partial function from a probability distribution over measurement outcomes to a class, and takes the distribution, not the raw measurement result, as its input.",
+     "anchor": "Section 2.2, Definition 3, p.3",
+     "quotes": [
+      "A Classiﬁcation Policy P is a partial function",
+      "is a probability distribution over",
+      "I chose the probability distribution as the input of classiﬁcation policy instead of the original measurement result as a matter of convenience."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 3 and the sentence after it in Section 2.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bonan-qcnn-policy-unknown-region",
+     "value": "The paper gives a two-class policy for the QCNN based on the measurement of the last qubit; it states that this policy has an area where the class is 'Unknown', and that discarding opaque cases near the boundary can improve the accuracy of the model.",
+     "anchor": "Section 2.3, Equation 4, p.4",
+     "quotes": [
+      "Intuitively we are just employing binary classiﬁcation according to the measurement on the last",
+      "One may realize that there is an area where the class is \"Unknown\", in fact, we can",
+      "improve the accuracy of the model by deserting some opaque cases who lies near the boundary"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about accuracy; no measurement of the effect is shown.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper does not report how accuracy changes when cases are rejected."
+    },
+    {
+     "id_suggestion": "bonan-distance-definition-one-minus-fidelity",
+     "value": "The paper defines the distance between two quantum states as one minus their fidelity, with fidelity given as the square of the trace of the square root of the product of the two density operators, each taken in its square-root form.",
+     "anchor": "Section 2.4, Equations 5 and 6, Definition 4, pp.4-5",
+     "quotes": [
+      "( , ) = ( √ √ )2",
+      "So here in this paper, I chose the ﬁdelity:",
+      "The Distance between two quantum states , is deﬁned as:",
+      "( , ) = 1 − ( √ √ )2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 4 and Equation 6 of Section 2.4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer lost the symbols inside the equations; the wording of the value follows the standard fidelity form the equation shows in outline."
+    },
+    {
+     "id_suggestion": "bonan-other-distance-measures-claim",
+     "value": "The paper states that other measures of uncertainty such as super fidelity exist, and states that the author would prove that they work similarly to fidelity; no such proof appears in the paper.",
+     "anchor": "Section 2.4, pp.4-5",
+     "quotes": [
+      "uncertainty like Super ﬁdelity[7], we would proof that it works just similar to ﬁdelity."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the paper gives no proof for it.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The sentence is future-tense; the paper's results use only fidelity."
+    },
+    {
+     "id_suggestion": "bonan-epsilon-robust-definition",
+     "value": "The paper defines a quantum classifier as epsilon-robust if and only if, for every quantum state in the training dataset, all states within distance epsilon of it are classified the same. The author states that the definition uses the training dataset, and that other practical settings could use a validation dataset or any correctly classified dataset.",
+     "anchor": "Section 2.4, Definition 5, p.5",
+     "quotes": [
+      "A quantum classiﬁer is -Robust if and only if for every quantum states in train-",
+      "ing dataset, we have ∀ ∈ H, ( , ) ≤ ⇒ , are classiﬁed the same.",
+      "I deﬁned the robustness by training dataset here, while in some pratical situations, we can discuss the robustness with respect to validation dataset or any correctly classiﬁed dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 5 of Section 2.4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Under this definition the verified bound applies to states in the training set only; the paper does not test any state outside it."
+    },
+    {
+     "id_suggestion": "bonan-bloch-vector-purity-proof1",
+     "value": "The paper shows (Proof 1) that, for the rescaled generalized Bloch vector of a density operator, the squared trace of the operator is below 1 exactly when the squared norm of the vector is below 1, and equals 1 exactly when the squared norm of the vector is 1; so a state is pure if and only if its rescaled vector has norm 1.",
+     "anchor": "Section 3.1, Proof 1, Equations 7 to 10, pp.5-6",
+     "quotes": [
+      "According to the principle of quantum mechanics, we know that for all density operator , ( 2) ≤ 1, and the equality holds if and only if is a pure state.",
+      "now it’s obvious that ( 2) < 1 ⇔ ||→− ||2 < 1 and ( 2) = 1 ⇔ ||→− ||2 = 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proof 1 of Section 3.1 derives the relation in Equation 10 and states it in the quoted sentence.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The result is the standard purity criterion in Bloch-vector form; the paper rescales the Pauli basis to make the bound a norm of at most 1."
+    },
+    {
+     "id_suggestion": "bonan-neighbourhood-cylinder-proof2",
+     "value": "The paper shows that, for a pure central state, the set of states within the allowed distance is equal to the set of states whose rescaled Bloch vectors have an inner product with the central vector above a threshold that depends on the distance bound; the author describes this set as a cylinder-like region in the single-qubit picture.",
+     "anchor": "Section 3.2, Proof 2, Equations 11 and 12, pp.6-7",
+     "quotes": [
+      "Considering the robustness veriﬁcation problem, what we need to ensure is that the whole neighbourhood of one central quantum states are classiﬁed the same.",
+      "∴ ∀ , ∈ ( ) ⇔ ∈ #( )"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement is quoted only in part because the text layer lost the symbols; the set equality is quoted in its final line.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The statement could not be quoted with its threshold formula because the text layer lost the Greek symbols, so the grade is low."
+    },
+    {
+     "id_suggestion": "bonan-circuit-policy-is-linear-sound",
+     "value": "The author states that the combination of any quantum circuit and the first-qubit classification policy is a Linear Sound classifier, and that unitary gates act as rotations on the Bloch vectors so they do not change the relative position of vectors on a line or along a ray; the author reports having proved that both quantum gates and the measurement maintain the property.",
+     "anchor": "Section 3.3, Proof 3, Equations 14 to 16, pp.7-9",
+     "quotes": [
+      "We can prove that an obvious example of Linear Sound Classiﬁer is the combination of any quantum circuit and the classiﬁcation policy mentioned above.",
+      "Intuitively, unitary gates function as rotation operators on the bloch vectors so that they won’t change",
+      "In fact I have proved that both quantum gate and the measurement maintain LSP"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proof 3 of Section 3.3 states the result and derives it for the circuit part in Equation 14 and for the measurement part in Equation 16.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof calls its first step 'self-evident' and is short; it covers the first-qubit measurement policy only. The paper does not extend it to other policies."
+    },
+    {
+     "id_suggestion": "bonan-first-qubit-policy-bloch-component",
+     "value": "The paper derives that, for the first-qubit policy, classification reduces to judging whether one component of the Bloch vector is greater than a value that depends on the accuracy tolerance, and that classification into class 0 corresponds to a positive value of that component.",
+     "anchor": "Section 3.3, Equation 16, p.9",
+     "quotes": [
+      "0− 1≥ ⇔ 2> √ 2 −1",
+      "whether one component of the bloch vector is greater than a -related value. So the proof is obvious:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement is quoted only in fragments because the text layer lost the symbols.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The symbol for the tolerance is not readable in the text layer; it is read as the accuracy tolerance from Algorithm 1."
+    },
+    {
+     "id_suggestion": "bonan-hybrid-networks-not-linear-sound",
+     "value": "The author states that a typical classification policy that is not Linear Sound is one that feeds the measurement result into a classical neural network, forming a quantum-classical hybrid neural network. The author also states that the Linear Sound Property guarantees that the class sets are convex in essence.",
+     "anchor": "Section 3.3, p.9",
+     "quotes": [
+      "An typical classiﬁcation policy that is not linear sound is to put the result of the measurement into a classical neural network, forming an quantum-classical hybrid neural network.",
+      "LSP actually guarantees that the class sets are convex in essence."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim with no proof in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "This statement limits the method: the verification applies only to Linear Sound classifiers, and the paper's own example of a non-Linear-Sound policy is the hybrid design it cites as popular in Section 2.2."
+    },
+    {
+     "id_suggestion": "bonan-universal-applicability-claim",
+     "value": "The author states that the Linear Sound Property is a pervasive property and that the method could therefore be universally applied.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Linear Sound Property, LSP is a pervasive property, the method could be universally applied."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the paper tests one QCNN with one policy.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The claim is wider than the evidence: the paper proves the property only for the first-qubit policy and says hybrid quantum-classical networks are not Linear Sound."
+    },
+    {
+     "id_suggestion": "bonan-robust-bound-monotone-proof4",
+     "value": "The paper states that, for a unit vector on the decision hyperplane, the maximum inner product with the central vector is monotone increasing with the hyperplane level; so a state whose angle to the central vector is smaller than the angle from the central vector to the hyperplane boundary stays on the same side of the plane, and the whole neighbourhood is then classified the same as the central state.",
+     "anchor": "Section 3.4, Proof 4, Equations 17 and 18, pp.9-11",
+     "quotes": [
+      "→− · →− is monotone increasing with",
+      "if the angle between →− and →− is smaller than any angle between →− and the vectors on the bound of the plane",
+      "the neighbourhood \"cylinder\" will all be above the plane, so that the whole neighbourhood will be",
+      "classiﬁed the same as the central state , which means that the −robustness is veriﬁed."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement of Proof 4 is garbled in the text layer and could not be quoted with its conditions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Equation 18 appears to use the Cauchy-Schwarz inequality, but the text layer lost the symbols, so the derivation could not be checked line by line."
+    },
+    {
+     "id_suggestion": "bonan-robust-bound-from-measured-probabilities",
+     "value": "The paper states that the core operation is to compute the Bloch component from the measured probabilities, and then to give a robust bound on the distance. Algorithm 1 repeats the measurement of the circuit output in the computational basis several times to estimate the class probability, rejects a state as 'Can't be classified' when the two probabilities differ by no more than the tolerance, and otherwise returns the class and the bound.",
+     "anchor": "Section 3.4 p.11; Section 4.2, Algorithm 1, p.12",
+     "quotes": [
+      "(see Proof 4.), and then we can give a robust bound = 1 −",
+      "Repeat the measurement of | ′ in computational basis for several times to get",
+      "panic \"Can’t be classiﬁed!\"."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of the paper's own algorithm; the formulas are lost in the text layer and the statement of the bound could not be fully quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound uses an estimate from repeated measurement. The paper does not state the number of repeats or a statistical error bound on the estimate, so the 'sound' claim holds for the exact probability, not for the sampled one."
+    },
+    {
+     "id_suggestion": "bonan-experiment-qcnn-training",
+     "value": "The author reports an experiment with amplitude encoding that reshaped the images to 16 × 16 pixels so that 256 data values map to 8 qubits, using a QCNN with a simple convolutional circuit and a pooling layer of controlled gates, a Softmax Cross Entropy cost function, the Adam optimizer, and MindQuantum; the author reports over 90% accuracy of classification on the test dataset.",
+     "anchor": "Section 4.1, pp.11",
+     "quotes": [
+      "chosen the amplitude encoder and to simulate 8 qubits, the maximum dimention of input data is",
+      "28 = 256, I have reshaped the images into 16 × 16 pixels with a simple algorithm.",
+      "The cost function is Softmax Cross Entropy Loss and the network is trained by Adam optimizer.",
+      "over 90% accuracy of classﬁcation on the test dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on a simulator.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper gives no number of training or test images, no number of epochs and no noise model, so the accuracy figure cannot be compared with other work."
+    },
+    {
+     "id_suggestion": "bonan-table1-results",
+     "value": "The authors report in Table 1, with the tolerance set to zero, five rows of results for five training states; the classes assigned are 0, 1, 1, 1 and 0.",
+     "anchor": "Section 4.2, Table 1, p.12",
+     "quotes": [
+      "1 0.625719 0.374281 0.0157457 0.999876 0.000123487 0 2 0.133918 0.86608 −0.0458499 0.998948 0.00104755 1 3 0.115384 0.884616 −0.0481711 0.998839 0.00115637 1 4 0.11719 0.88281 −0.0479449 0.99885 0.00114553 1 5 0.688041 0.311959 0.0235512 0.999723 0.000276284 0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on a simulator.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The column headers were lost in the text layer. The first two columns sum to 1 in each row and look like the two measured probabilities; the last column before the class falls in the order of 1e-4 to 1e-3, so the verified distance bounds are small."
+    },
+    {
+     "id_suggestion": "bonan-table2-results",
+     "value": "The authors report in Table 2, with a tolerance of 0.01, five rows of results for the same five training states; the classes assigned are 0, 1, 1, 1 and 0.",
+     "anchor": "Section 4.2, Table 2, p.13",
+     "quotes": [
+      "1 0.625719 0.374281 0.0157457 0.999886 0.00011386 0 2 0.133918 0.86608 −0.0458499 0.998977 0.00101915 1 3 0.115384 0.884616 −0.0481711 0.998869 0.00112652 1 4 0.11719 0.88281 −0.0479449 0.99888 0.00111582 1 5 0.688041 0.311959 0.0235512 0.999737 0.000261789 0",
+      "Table 2. The result of veriﬁcation when = 0.01"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on a simulator.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Compared with Table 1, the fifth column is slightly larger and the sixth column slightly smaller in every row; this matches the paper's statement that a bigger tolerance gives a smaller value in one column and a larger value in another."
+    },
+    {
+     "id_suggestion": "bonan-table-sign-pattern",
+     "value": "The author states that the tables suggest the Bloch component is above 0 for class 0 and below 0 for class 1, and that for the same probabilities, when the tolerance is bigger, one quantity is smaller, another is bigger and a third is smaller.",
+     "anchor": "Section 4.2, p.12",
+     "quotes": [
+      "Table 1 and Table 2 below show a portion of the experiment’s results, which suggests that for class",
+      "0, 2 > 0 and 2 < 0 for class 1. Besides, for the same 0 and 1, when is bigger, we have smaller"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation on five rows from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The symbols naming the three quantities were lost in the text layer, so which quantities move is not readable from the text."
+    },
+    {
+     "id_suggestion": "bonan-multiclass-extension-claim",
+     "value": "The author states that the algorithm is for two classes, and that extending it to classifiers with more target classes is just to add some If-else cases and modify the way the bound is calculated slightly.",
+     "anchor": "Section 4.2, p.12",
+     "quotes": [
+      "only two. Extending the algorithm to the veriﬁcation of classiﬁers who have more target classes",
+      "is just to add some \"If-else\" cases and modify the way to calculate"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the paper gives no derivation or experiment for more than two classes.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper tests only the binary case (labels 0 and 1 of MNIST); the multi-class extension is untested."
+    },
+    {
+     "id_suggestion": "bonan-qubit-infinite-information-claim",
+     "value": "The paper states that the reason why quantum computing functions much faster than classical computing is that a single qubit is able to carry infinite information since it is continuous rather than discrete.",
+     "anchor": "Section 1.4, p.2",
+     "quotes": [
+      "The reason why quantum computing functs much faster than classical computing is that a single qubit is able to carry inﬁnte information since it’s continuous rather than discrete."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A background statement with no support in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "This sentence is a background remark, not a result, and the paper's results do not depend on it. It is not the accepted account of quantum speedup or of the information a qubit can carry (the Holevo bound limits the classical information read out); I did not check a source for this here, so treat it as an unverified remark by the reader."
+    }
+   ]
+  }
+ ]
+}
