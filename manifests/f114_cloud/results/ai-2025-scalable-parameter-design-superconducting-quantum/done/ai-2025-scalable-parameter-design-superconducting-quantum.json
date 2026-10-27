@@ -1,0 +1,742 @@
+{"papers": [{
+  "record_id": "ai-2025-scalable-parameter-design-superconducting-quantum",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Ai-Liu_2024_Graph-Neural-Networks-based-Parameter-Design-towards-Large-ScaleSuperconducting__2411.16354.pdf",
+  "title_in_file": "Scalable Parameter Design for Superconducting Quantum Circuits with Graph Neural Networks",
+  "version_note": "The text is arXiv:2411.16354v3 (24 Jul 2025): a 7-page letter plus a 13-page Supplementary Materials, 20 pages in all. The file name says 2024, the text is dated July 25, 2025. The record id says 2025.",
+  "pages": 20,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A letter proposing a graph-neural-network designer, trained through a supervised MLP evaluator of simulated crosstalk errors, that assigns qubit and coupler frequencies on superconducting-circuit graphs of up to about 870 qubits, compared in simulation against the Snake optimizer and two direct optimizers.",
+  "bears_on_context": "qc",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "ai-future-error-sources",
+      "verdict": "confirmed",
+      "note": "Value is right. The sentence is in the Discussion on page 4 of the text layer, not page 5 as the stored anchor says (page 5 holds the reference list).",
+      "value": "The authors state that in future research additional error sources and variations between qubits may be taken into account, and that the evaluator may be trained using experimental data.",
+      "anchor": "Discussion, p.4",
+      "quotes": ["In the future research, additional error sources and variations between qubits may be taken into account, and the evaluator may be trained using experimental data"],
+      "kind": "claimed", "claim_type": "absence", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "stated limit",
+      "certainty_reason": "The paper's own stated limit in the Discussion: further error sources, qubit-to-qubit variation and experimental training data are left to future work.",
+      "result_type": "claim", "context": "qc",
+      "reader_inference": "Taken with the simulation-only setup, this means every number in the paper comes from simulated crosstalk and from an evaluator fitted to simulated data."
+    },
+    {
+      "id": "ai-gnn-870-qubit-result",
+      "verdict": "narrowed",
+      "note": "Value is right as an abstract claim, but the paper limits it: the errors compared are those estimated by one trained MLP evaluator (not measured on hardware and not simulated at 870 qubits), all methods used that same evaluator on the same CPU, and the figures are averages over 30 random graphs per scale. The designer training time (about 2 days on an RTX 4090 GPU) is not in the 27 sec.",
+      "value": "The authors report that for superconducting quantum circuits of around 870 qubits, their GNNs-based algorithm achieves 51% of the errors produced by the state-of-the-art algorithm, with a time reduction from 90 min to 27 sec; the errors are those estimated by the trained evaluator, and all methods employ the same trained evaluator on the same CPU.",
+      "anchor": "Abstract, p.1; Results of the designer, p.4",
+      "quotes": [
+        "for large-scale superconducting quantum circuits consisting of around 870 qubits, our GNNs-based algorithm achieves 51% of the errors produced by the state-of-the-art algorithm, with a time reduction from 90 min to 27 sec.",
+        "All four methods employ the same trained evaluator on the same i914900KF CPU."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical result from one study, simulated and scored by the authors' own evaluator.",
+      "result_type": "measured", "context": "qc",
+      "reader_inference": "The main text gives 0.0090 against 0.0178, a ratio of about 0.51, which agrees with the abstract. The comparison at 870 qubits is against Snake only; the other two optimizers were not run at that scale."
+    },
+    {
+      "id": "ai-three-stair-setup",
+      "verdict": "confirmed",
+      "note": "",
+      "value": "The authors state that the algorithm uses a three-stair scaling mechanism: an evaluator trained in a supervised way on small-scale circuits and applied to medium-scale circuits, and a designer trained in an unsupervised way on medium-scale circuits and applied to large-scale ones, demonstrated on quantum crosstalk errors.",
+      "anchor": "Abstract, p.1",
+      "quotes": [
+        "an evaluator supervisedly trained on small-scale circuits for applying to medium-scale circuits",
+        "a designer unsupervisedly trained on medium-scale circuits for applying to large-scale ones",
+        "We demonstrate our algorithm in mitigating quantum crosstalk errors."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its setup, in the abstract and repeated in the Algorithm section.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": ""
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "ai-nodes-edges-frequencies-scope",
+      "value": "The authors state that frequencies for both single- and two-qubit gates, corresponding to the parameters of nodes and edges, are considered simultaneously.",
+      "anchor": "Abstract, p.1",
+      "quotes": ["Frequencies for both singleand two-qubit gates (corresponding to the parameters of nodes and edges) are considered simultaneously."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "scope",
+      "certainty_reason": "The paper's own statement of what it designs.",
+      "result_type": "setup", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-graph-mapping-definition",
+      "value": "The authors define the mapping from superconducting quantum electronic circuits to graphs as: each node represents one qubit and each edge corresponds to a pair of directly-coupled qubits.",
+      "anchor": "Algorithm, p.2",
+      "quotes": ["In the mapping from SQECs to graphs, each node represents one qubit and each edge corresponds to a pair of directly-coupled qubits."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "definition",
+      "certainty_reason": "A definition the paper's algorithm depends on, stated in the Algorithm section.",
+      "result_type": "setup", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-design-task-graph-coloring-extension",
+      "value": "The authors state that the parameter designing task of superconducting quantum circuits can be interpreted as an extension of the graph coloring problem, which involves node and edge colors, continuous coloring, and the impact of higher-order neighbors.",
+      "anchor": "Algorithm, p.2",
+      "quotes": ["Mathematically, the parameter designing task of SQECs can be interpreted as an extension of graph coloring problem [38, 39], which involves node and edge colors, continuous coloring, and the impact of higher-order neighbors."],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An author's framing of the task, stated without a proof.",
+      "result_type": "claim", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-localization-assumption",
+      "value": "The authors state that the influence of the considered parameters is assumed to be localized, and that for this reason the evaluator, comprising some multilayer perceptrons, is supervisedly trained on several small-scale circuits, to avoid direct simulations on larger quantum processors.",
+      "anchor": "Introduction, p.1",
+      "quotes": ["is assumed to be localized. Therefore, the evaluator, comprising some multilayer perceptrons [33, 34] (MLPs), is supervisedly trained on several small-scale SQECs, to avoid direct simulations on larger quantum processors."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own stated assumption on which the small-to-large transfer of the evaluator rests.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "The transfer from small to large circuits is licensed by this assumption plus the simulated decay of crosstalk with distance, not by a proof."
+    },
+    {
+      "id_suggestion": "ai-crosstalk-decays-exponentially-with-distance",
+      "value": "The authors state that the undesired impact from one node to another decays exponentially with the distance between the two nodes, as illustrated in a supplementary figure whose dataset is obtained by simulating single-qubit RX operations on a small-scale graph.",
+      "anchor": "Supplement Sec. I.A and Fig. S1(b)",
+      "quotes": [
+        "the undesired impact from Ni to Nk decays exponentially with the distance between the two nodes",
+        "Dataset for plotting Fig. S1(b) is obtained by simulating single-qubit RX operations on a small-scale graph."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "A simulated result for one operation type on one small graph, shown in a figure.",
+      "result_type": "measured", "context": "qc",
+      "reader_inference": "The decay is stated, and shown only as a plot for RX; no decay constant or fit is given in the text."
+    },
+    {
+      "id_suggestion": "ai-evaluator-table1-mse-r2",
+      "value": "The authors report evaluator MSE(r squared) in Table I. For RX: 0.026(0.94) training, 0.027(0.94) validation, 0.028(0.94) testing, 0.034(0.92) testing on new structures and 0.007(0.97) testing on a linear chain of 30 coupled qubits. For RY: 0.026(0.94), 0.029(0.94), 0.029(0.93), 0.024(0.94) and 0.012(0.95). For RXY: 0.033(0.94), 0.030(0.95), 0.026(0.95), 0.041(0.94) and 0.036(0.91).",
+      "anchor": "Table I, Results of the evaluator, p.3",
+      "quotes": [
+        "TABLE I. Results of the evaluator in the form of MSE(r2).",
+        "Dataseta training validation testing testing (NS)b testing (30Q)c",
+        "0.026(0.94) 0.027(0.94) 0.028(0.94) 0.034(0.92) 0.007(0.97)",
+        "0.026(0.94) 0.029(0.94) 0.029(0.93) 0.024(0.94) 0.012(0.95)",
+        "0.033(0.94) 0.030(0.95) 0.026(0.95) 0.041(0.94) 0.036(0.91)",
+        "c Testing on a linear chain of 30 coupled Qubits."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical fit quality from one study, against the authors' own simulated data.",
+      "result_type": "measured", "context": "qc",
+      "reader_inference": "The errors are fitted to base10 logarithms of simulated crosstalk, so the MSE is in log space. The test sets are simulated data, not hardware."
+    },
+    {
+      "id_suggestion": "ai-evaluator-r2-above-0-9",
+      "value": "The authors state that the coefficient of determination (r squared) exceeds 0.9 for each case, indicating a strong ability of the evaluator to fit the datasets.",
+      "anchor": "Results of the evaluator, p.3-4",
+      "quotes": ["r2 exceeds 0.9 for each case, indicating a strong ability of the evaluator to"],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical fit result from one study.",
+      "result_type": "measured", "context": "qc",
+      "reader_inference": "Consistent with Table I, where the lowest listed r squared is 0.91 (RXY, 30-qubit chain)."
+    },
+    {
+      "id_suggestion": "ai-evaluator-dataset-sizes",
+      "value": "The authors report that each training set has 61, 440 data points, each testing and validation set on small graphs has 12, 800 data points, and each testing set on larger graphs has approximately 1, 000 data points.",
+      "anchor": "Results of the evaluator, p.3",
+      "quotes": ["Each training set has 61, 440 data points, each testing and validation set on small graphs has 12, 800 data points, while each testing set on larger graphs has approximately 1, 000 data points."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its evaluator dataset sizes.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "Supplement Sec. II.D gives 25, 600 samples per 6-qubit graph and an 80/10/10 split on three training graphs, which is consistent: 3 x 25, 600 x 0.8 = 61, 440."
+    },
+    {
+      "id_suggestion": "ai-evaluator-log-targets-and-error-clip",
+      "value": "The authors state that the evaluator's crosstalk errors are transformed using base10 logarithms; that crosstalk errors smaller than, e.g., 1 × 10−4 are not concerned; and that errors larger than, e.g., 1 × 10−1 are capped at 1 × 10−1 to avoid fitting out-of-distribution data.",
+      "anchor": "Results of the evaluator, p.3",
+      "quotes": [
+        "To maintain consistency in the outputs of the MLPs, the crosstalk errors are transformed using base10 logarithms.",
+        "The crosstalk errors smaller than, e.g., 1 × 10−4 are not concerned",
+        "errors larger than, e.g., 1 × 10−1 are capped at 1 × 10−1 to avoid"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of how the evaluator targets are defined and bounded.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "Errors outside the range 1e-4 to 1e-1 are not represented, so the evaluator cannot rank assignments whose crosstalk is below the floor or above the cap."
+    },
+    {
+      "id_suggestion": "ai-error-cap-rationale-and-share",
+      "value": "The authors state, in the supplement, that errors smaller than 1 × 10−4 are ignored and errors larger than 1 × 10−1 are capped at 1 × 10−1, and that data exceeding this threshold comprise less than 1%.",
+      "anchor": "Supplement Sec. II.D",
+      "quotes": [
+        "we ignore errors smaller than 1 × 10−4, and cap errors larger than 1 × 10−1 at 1 × 10−1. This upper limit is intro-",
+        "ing this threshold comprise less than 1%, as supported"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "A statistic from the authors' own simulated dataset, supported by figures.",
+      "result_type": "measured", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-evaluator-mlp-architecture",
+      "value": "The authors state that each evaluator MLP serves one type of quantum operation and comprises 4 hidden layers, each with 32 neurons.",
+      "anchor": "Results of the evaluator, p.3; Supplement Sec. I.A",
+      "quotes": [
+        "Each MLP serves for one type of quantum operations",
+        "Each MLP comprises 4 hidden layers, each with 32 neurons."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own stated architecture.",
+      "result_type": "setup", "context": "ml", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-designer-default-error-weights",
+      "value": "The authors state that the default setting of the error weights wO is wX = wY = wXY = 1.",
+      "anchor": "Results of the designer, p.4",
+      "quotes": ["The default setting of the error weights wO is wX = wY = wXY = 1."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own stated default for its loss weights.",
+      "result_type": "setup", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-designer-training-setup",
+      "value": "The authors report that the randomly-generated training graphs contain around 54, 103 and 218 nodes, the training batch size is 288, and approximately 700, 000 training steps were executed for about 2 days with an RTX 4090 GPU.",
+      "anchor": "Results of the designer, p.4",
+      "quotes": [
+        "generated training graphs contain around 54, 103 and 218 nodes, and the training batch size is 288.",
+        "Approximately 700, 000 training steps were executed for about 2 days with an RTX 4090 GPU."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its training setup.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "The 27 sec / 90 min comparison counts inference time only; the two days of training are a one-time cost that Snake does not pay."
+    },
+    {
+      "id_suggestion": "ai-designer-medium-training-size-statement",
+      "value": "The authors state in the Introduction that the GNNs-based designer is unsupervisedly trained on randomly generated mediumscale circuits with around 100 qubits, and that the trained designer is directly applied to different graphs in structure or scale, for example large-scale circuits containing nearly 1000 qubits.",
+      "anchor": "Introduction, p.1-2",
+      "quotes": [
+        "unsupervisedly trained on randomly generated mediumscale SQECs with around 100 qubits.",
+        "the large-scale SQECs containing nearly 1000 qubits."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own summary of its setup.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "The Results section gives training graphs of 54, 103 and 218 nodes, so 'around 100 qubits' is a rough summary."
+    },
+    {
+      "id_suggestion": "ai-test-set-and-compared-methods",
+      "value": "The authors report that they tested totally 30 × 6 random graphs with average qubit numbers of 32, 54, 103, 218, 450, and 870, and that other methods were also tested: the direct application of a gradient-free optimizer, the direct utilization of gradient descent, and the Snake algorithm.",
+      "anchor": "Results of the designer, p.4",
+      "quotes": [
+        "We tested totally 30 × 6 random graphs with average qubit numbers of 32, 54, 103, 218, 450, and 870.",
+        "Other methods were also tested for comparison, including the direct application of a gradient-free optimizer, the direct utilization of gradient descent, and the Snake algorithm."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its test design.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "The abstract and Fig. 2 label the scales 31, 54, 103, 218, 450 and 870 qubits; the text says 32 for the smallest. A one-qubit labelling difference, not a result."
+    },
+    {
+      "id_suggestion": "ai-fig2-designer-lower-errors-all-scales",
+      "value": "The authors report that Fig. 2(a) demonstrates that the well-trained GNNs-based designer achieves lower crosstalk errors than all other methods for all the graph scales.",
+      "anchor": "Results of the designer, p.4; Fig. 2(a)",
+      "quotes": ["Fig. 2(a) demonstrates that the welltrained GNNs-based designer achieves lower crosstalk errors than all other methods for all the graph scales."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical result from one study, scored by the authors' own evaluator.",
+      "result_type": "measured", "context": "qc",
+      "reader_inference": "The per-scale error values are in a plot, not in the text layer. 'All other methods' means only Snake at the larger scales."
+    },
+    {
+      "id_suggestion": "ai-fig2-designer-exponentially-faster",
+      "value": "The authors report that the GNNs-based designer is exponentially faster than all other methods for all given tasks, as shown in Fig. 2(b).",
+      "anchor": "Results of the designer, p.4; Fig. 2(b)",
+      "quotes": ["Additionally, the GNNs-based designer is exponentially faster than all other methods for all given tasks, as shown in Fig. 2(b)."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical timing result from one study.",
+      "result_type": "measured", "context": "qc",
+      "reader_inference": "'Exponentially' is a descriptive word; the text gives no fitted growth rate. The timing figures that are stated (27 sec against 90 min at 870 qubits) are a ratio of about 200."
+    },
+    {
+      "id_suggestion": "ai-large-scale-half-errors-text-claim",
+      "value": "The authors state that, for large-scale graphs where direct optimizations are not feasible, the GNNs-based designer achieves slightly more than half the errors of the Snake algorithm in several seconds, while the Snake algorithm would take dozens of minutes.",
+      "anchor": "Results of the designer, p.4",
+      "quotes": ["the GNNs-based designer achieves slightly more than half the errors of the Snake algorithm in several seconds, while the Snake algorithm would take dozens of minutes."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical result from one study, described in loose terms.",
+      "result_type": "measured", "context": "qc",
+      "reader_inference": "The Introduction and abstract give 27 sec and 90 min for the same case; 'several seconds' and 'dozens of minutes' are looser. Use the numeric form."
+    },
+    {
+      "id_suggestion": "ai-870-qubit-errors-and-times-intro",
+      "value": "The authors report that in large-scale circuits comprising 870 qubits, the designer achieves an average crosstalk error of 0.0090 within 27 seconds, whereas the Snake algorithm takes 90 minutes to reach an average error of 0.0178.",
+      "anchor": "Introduction, p.2",
+      "quotes": ["SQECs comprising 870 qubits, the designer achieves an average crosstalk error of 0.0090 within 27 seconds, whereas the Snake algorithm takes 90 minutes to reach an average error of 0.0178."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical result from one study, scored by the authors' own evaluator.",
+      "result_type": "measured", "context": "qc",
+      "reader_inference": "The ratio is 0.0090 / 0.0178 = 0.506, matching the abstract's 51%."
+    },
+    {
+      "id_suggestion": "ai-large-scale-only-gnn-and-snake",
+      "value": "The authors state that among the four algorithms, the GNNs-based designer and Snake are available for large-scale graphs, whereas the other two are limited to mediumscale graphs due to their inefficiency.",
+      "anchor": "Supplement Sec. I.C",
+      "quotes": ["the GNNsbased designer and Snake are available for large-scale graphs, whereas the other two are limited to mediumscale graphs due to their"],
+      "kind": "shown", "claim_type": "absence", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "scope",
+      "certainty_reason": "The paper's own statement of the scope of its large-scale comparison.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "The only large-scale baseline is Snake. The 51% result says nothing about the direct optimizers at that scale."
+    },
+    {
+      "id_suggestion": "ai-baseline-settings-powell-scope-4",
+      "value": "The authors state that for Snake and DirectOptim the Powell optimizer is employed, that all other settings adhere to the default settings provided by Scipy, and that the scope of Snake is 4, which is the best choice in the cited Snake paper.",
+      "anchor": "Supplement Sec. I.C",
+      "quotes": [
+        "For Snake and DirectOptim, Powell optimizer is employed [7], and all other settings adhere to the default settings provided by Scipy [5].",
+        "The scope of Snake is 4, which is the best choice in Ref. [4]."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of how its baselines were configured.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "Snake here is the authors' reimplementation with the Powell optimizer on their evaluator, not Google's pipeline run on hardware."
+    },
+    {
+      "id_suggestion": "ai-snake-description-cited",
+      "value": "The authors state that the Snake algorithm was proposed as an improvement of direct optimization by dividing the entire graph into multiple small-scale subgraphs and sequentially applying the optimizer to optimize these subgraphs.",
+      "anchor": "Supplement Sec. I.C, item 3",
+      "quotes": ["Snake algorithm was proposed as an improvement of direct optimization by dividing the entire graph into multiple small-scale subgraphs and sequentially applying the optimizer to optimize these subgraphs"],
+      "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "A description of other work that the paper attributes to its references.",
+      "result_type": "cited", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-traditional-methods-ignore-graph-structure",
+      "value": "The authors state that all these traditional algorithms overlook the graph structures established by the qubits and their couplings, and that the Snake algorithm ignores the detailed graph structures of the circuits and relies on multiple calls to optimizers.",
+      "anchor": "Introduction, p.1; Supplement Sec. I.C",
+      "quotes": [
+        "the Snake algorithm ignores the detailed graph structures of the SQECs and relies on multiple calls to optimizers [29].",
+        "All these traditional algorithms overlook the graph structures established by the qubits and their couplings."
+      ],
+      "kind": "claimed", "claim_type": "absence", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An author's characterization of other methods.",
+      "result_type": "claim", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-other-methods-not-shown-large-scale",
+      "value": "The authors state that some other algorithms have also been proposed for the parameter designing task, and that they do not demonstrate their application to large-scale circuits.",
+      "anchor": "Introduction, p.1",
+      "quotes": ["However, they do not demonstrate their application to large-scale SQECs."],
+      "kind": "claimed", "claim_type": "absence", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An author's statement about other work.",
+      "result_type": "claim", "context": "qc",
+      "reader_inference": "The paper compares against Snake and two generic optimizers, not against the three works it cites here."
+    },
+    {
+      "id_suggestion": "ai-first-gnn-hardware-design-claim",
+      "value": "The authors claim that, to the best of their knowledge, GNNs are applied to the hardware-level design of quantum chips for the first time.",
+      "anchor": "Introduction, contribution (1), p.2",
+      "quotes": ["(1) To the best of our knowledge, GNNs are applied to the hardware-level design of quantum chips for the"],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "A priority claim by the authors without a systematic survey in the paper.",
+      "result_type": "claim", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-evaluator-large-scale-claim-vs-test",
+      "value": "The authors state that the evaluator can estimate crosstalk for large-scale circuits containing thousands of qubits, and that a graph-based scalable evaluator is trained which can estimate quantum crosstalk errors for large-scale circuits.",
+      "anchor": "Discussion, p.4; Introduction contribution (2), p.2",
+      "quotes": [
+        "The evaluator can estimate crosstalk for large-scale SQECs containing thousands of qubits.",
+        "(2) A graph-based scalable evaluator is trained, which can estimate quantum crosstalk errors for"
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An author's claim; the only direct test of the evaluator on a larger graph that the paper reports is a 30-qubit chain.",
+      "result_type": "claim", "context": "qc",
+      "reader_inference": "The evaluator's direct tests are on 6-qubit graphs, new 6-qubit structures and one 30-qubit linear chain. The 870-qubit errors are the evaluator's own estimates; the paper reports no simulation at that scale to check them, and no test at 'thousands' of qubits."
+    },
+    {
+      "id_suggestion": "ai-numerical-simulation-instead-of-experiment",
+      "value": "The authors state that, as quantum crosstalk still exists in ideal systems, it is possible to model the errors using numerical simulations instead of real experiments, and that the trained evaluator is also necessary for the traditional methods.",
+      "anchor": "Introduction, p.2; Results of the designer, p.4",
+      "quotes": [
+        "it is possible to model the errors using numerical simulations [35] instead of real experiments.",
+        "We note that the trained evaluator is also necessary for the traditional methods"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "scope",
+      "certainty_reason": "The paper's own statement that its error model is simulated, not measured.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "No hardware data enter the paper. The design quality is judged by simulated crosstalk only."
+    },
+    {
+      "id_suggestion": "ai-highorder-gcn-beats-standard-gcn",
+      "value": "The authors report that high-order GCNs perform much better than the standard GCN with similar model sizes, comparing training losses at the 20, 000-th step, and state that this shows the necessity of high-order GCNs.",
+      "anchor": "Fig. S3 and text, Supplement Sec. I.B",
+      "quotes": [
+        "a. The training losses at the 20, 000-th step.",
+        "High-order GCNs perform much better than standard GCN with similar model sizes.",
+        "demonstrating the necessity of introducing high-order GCNs."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical ablation from one study; values are in a plot.",
+      "result_type": "measured", "context": "ml",
+      "reader_inference": "The loss values are in a figure, not in the text layer."
+    },
+    {
+      "id_suggestion": "ai-three-order-gcn-rationale",
+      "value": "The authors state that the three-order GCN is used in the designer because the relevant errors mainly relate to the nearest neighboring, 2-hop neighboring and 3-hop neighboring qubits.",
+      "anchor": "Supplement Sec. I.B",
+      "quotes": ["Three-order GCN is used in the designer because the relevant errors mainly relate to the nearest neighboring, 2-hop neighboring and 3-hop neighboring qubits"],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of a design choice and its stated reason.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": "The simulation includes crosstalk only up to 4-hop neighbors, so the 3-order choice sits inside that truncation."
+    },
+    {
+      "id_suggestion": "ai-designer-network-sizes",
+      "value": "The authors state that the three-order GCN for node frequencies comprises 12 hidden layers and contains 256 neurons for most of the layers, while the three-order GCN for edge frequencies consists of 3 hidden layers, each with 64 neurons.",
+      "anchor": "Supplement Sec. I.B",
+      "quotes": [
+        "the three-order GCN for node frequencies comprises 12 hidden layers, and contains 256 neurons for",
+        "most of the layers. While the three-order GCN for edge frequencies consists of 3 hidden layers, each with 64 neurons."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own stated architecture.",
+      "result_type": "setup", "context": "ml", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-edge-frequency-as-node-mixture",
+      "value": "The authors define each edge parameter as a mixture of its two node parameters: an MLP outputs selection preferences pi and pj, and the edge parameter is ωij = piωi + pjωj.",
+      "anchor": "Fig. S1 caption and Sec. I.B, Supplement",
+      "quotes": [
+        "The MLP outputs each edge parameter’s selection preferences pi, pj from its two nodes’ parameters ωi, ωj.",
+        "Then vector multiplication (vec. mul.) is performed to obtain the corresponding edge parameter, ωij = piωi + pjωj."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "definition",
+      "certainty_reason": "A definition of the designer's output that the results depend on.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": "By this construction each edge frequency lies between its two node frequencies (a convex mixture, softmax-weighted)."
+    },
+    {
+      "id_suggestion": "ai-designer-batched-use-batch-sizes",
+      "value": "The authors list graphs with average qubit numbers of 32, 54, 103, 218, 450 as tested with batch sizes of 512, 512, 512, 64, 8, and 2, respectively, for the batched utilization strategy.",
+      "anchor": "Supplement Sec. I.B",
+      "quotes": ["The graphs with average qubit numbers of 32, 54, 103, 218, 450 are tested with batch sizes of 512, 512, 512, 64, 8, and 2, respectively."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own stated test configuration.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "Five scales are listed against six batch sizes; the sixth (2) presumably belongs to the 870-qubit graphs but the text does not say so. Flag for the coordinator."
+    },
+    {
+      "id_suggestion": "ai-training-scale-ablation",
+      "value": "The authors report that training on larger-scale graphs performs worse due to the smaller batch size and total node number in each step; that the designer trained on smaller graphs performs better in tests with 103 and 218 nodes, while the default setting performs better in the 870-qubit test; and that memory usage was controlled approximately constant in all three training scenarios.",
+      "anchor": "Supplement Sec. I.B, Fig. S4(a), Table S1",
+      "quotes": [
+        "In all the three training scenarios, the memory usage is controlled approximately constant",
+        "Training on larger-scale graphs performs worse due to the smaller batch size and total node number in each step.",
+        "the designer trained on smaller graphs performs better in tests with 103 and 218 nodes, while the default setting performs better in the 870-qubit test."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical ablation from one study; the curves are in a figure.",
+      "result_type": "measured", "context": "ml",
+      "reader_inference": "The default training scale is therefore not the best at every test scale; the paper reports it as best only at 870 qubits among the three."
+    },
+    {
+      "id_suggestion": "ai-two-qubit-weight-robustness",
+      "value": "The authors report that, without retraining the designer, tests on graphs with an average of 54 and 218 qubits under different two-qubit operation error weights show that the GNNs-based designer achieves lower errors than the Snake algorithm across all weights and qubit numbers.",
+      "anchor": "Supplement Sec. I.B, Fig. S4(b)",
+      "quotes": [
+        "Note that these tests do not involve retraining the designer; instead, we use the designer trained with",
+        "We conduct tests on graphs with an average of 54 and 218 qubits.",
+        "achieves lower errors than the Snake algorithm across all weights and qubit numbers."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical robustness test from one study.",
+      "result_type": "measured", "context": "qc",
+      "reader_inference": "The weights plotted run from 0.25 to 4.0 in a figure axis. Tested at medium scale (54 and 218 qubits), not at 870."
+    },
+    {
+      "id_suggestion": "ai-crosstalk-and-operations-definition",
+      "value": "The authors define quantum crosstalk as the undesired interference experienced by the target qubits when quantum operations are applied to the source qubits, and state that three types of operations are involved: single-qubit RX and RY for nodes and two-qubit RXY via the XY interaction for edges.",
+      "anchor": "Demonstration, p.3",
+      "quotes": [
+        "Quantum crosstalk refers to the undesired interference experienced by the target qubits when quantum operations are applied to the source qubits.",
+        "Three types of quantum operations are involved in this study, including single-qubit RX (for nodes), single-qubit RY (for nodes) [51], and two-qubit RXY via the XY interaction (for edges) [52]."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "definition",
+      "certainty_reason": "A definition and scope the paper's results depend on.",
+      "result_type": "setup", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-simulation-parameters",
+      "value": "The authors state that in their simulations the adjustable qubit frequencies are assumed to be in the range of 4.9 to 5.1 GHz, the coupler frequencies are aligned along the ZZ-free line at around 6.0 GHz, the anharmonicity of each qubit and coupler is 300 MHz, the direct qubit-qubit coupling is 10 MHz, the qubit-coupler coupling is 100 MHz, the single-qubit driving strength is 25 MHz, and residual coupling is 0.1 MHz between 2-hop and 0.01 MHz between 3-hop neighboring qubits.",
+      "anchor": "Supplement Sec. II.D",
+      "quotes": [
+        "assumed to be in the range of 4.9 to 5.1 GHz, which are",
+        "frequencies are aligned along the ZZ-free line, which are",
+        "around 6.0 GHz. Other parameters are assumed as fol-",
+        "300 MHz. The direct qubit-qubit coupling is 10 MHz,",
+        "the qubit-coupler coupling is 100 MHz, the single-qubit",
+        "driving strength is 25 MHz, and the driving frequency",
+        "which is 0.1 MHz between 2-hop neighboring qubits and",
+        "0.01 MHz between 3-hop neighboring qubits."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own stated simulation parameters.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "A 0.2 GHz window for qubit frequencies is the whole design space; every reported assignment lives inside it."
+    },
+    {
+      "id_suggestion": "ai-zz-free-line-operating-assumption",
+      "value": "The authors state that the non-simultaneous-zero values of the effective ZZ and XY couplings present a theoretical challenge in completely eliminating crosstalk errors between two qubits, and that they adjust the coupler frequency ωC to keep the system on the so-called ZZ-free line.",
+      "anchor": "Supplement Sec. II.A",
+      "quotes": [
+        "the non-simultaneous-zero values of the two couplings present a theoretical challenge in completely eliminating crosstalk errors between the two qubits.",
+        "we adjust ωC to keep the system on the so-called ZZ-free line"
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "scope",
+      "certainty_reason": "The paper's own statement of the operating regime and a limit on what can be eliminated.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "Only the XY-coupling crosstalk is left for the frequency assignment to mitigate; the ZZ part is removed by construction."
+    },
+    {
+      "id_suggestion": "ai-time-duration-averaging",
+      "value": "The authors state that, for a single-qubit RX operation, 20 operation time durations are uniformly sampled from 0 to 2π/Ωx, and that crosstalk errors are averaged over multiple time durations in the numerical simulations.",
+      "anchor": "Supplement Sec. II.C and II.D",
+      "quotes": [
+        "20 operation time durations are uniformly sampled in",
+        "a range from 0 to 2π/Ωx, corresponding to rotating an-",
+        "Therefore, crosstalk errors are averaged over multiple time durations in our numerical simulations."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own stated simulation procedure.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "The text then speaks of 40 scenarios (two initial states times 20 durations)."
+    },
+    {
+      "id_suggestion": "ai-fixed-coupling-and-driving-strengths",
+      "value": "The authors state that decreasing the coupling and driving strengths generally helps to mitigate crosstalk errors, and that the trade-off and adjustment of coupling and driving strengths are independent on the graph structure, so their values are fixed in this study.",
+      "anchor": "Supplement Sec. II.C, item 3",
+      "quotes": [
+        "The decrease of the coupling and driving strengths generally helps to mitigate crosstalk errors",
+        "are independent on the graph structure, thus their values are"
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "scope",
+      "certainty_reason": "The paper's own stated scope: coupling and driving strengths are not designed.",
+      "result_type": "setup", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-classical-error-sources-excluded",
+      "value": "The authors state that classical resources of errors are not considered, and that they are not taken into account in this study because they are usually graph-independent.",
+      "anchor": "Supplement Sec. II.C",
+      "quotes": [
+        "In this work, classical resources of errors are not considered.",
+        "The classical resources of errors are not taken into account in this study, because they are usually graph-independent."
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "stated limit",
+      "certainty_reason": "The paper's own stated exclusion, in the supplement.",
+      "result_type": "setup", "context": "qc",
+      "reader_inference": "Fabrication defects, pulse distortion and classical control-line crosstalk are named in the text and excluded; the designer is scored on quantum crosstalk alone."
+    },
+    {
+      "id_suggestion": "ai-evaluator-dataset-generation",
+      "value": "The authors state that for each type of quantum operations, 25, 600 sets of node and edge frequencies are uniformly sampled on each 6-qubit graph, and that in total the datasets comprise 25, 600 × 5(graphs) = 128, 000 data points.",
+      "anchor": "Supplement Sec. II.D",
+      "quotes": [
+        "for each type of quantum operations, 25, 600 sets of node and edge frequencies are uniformly sampled on each 6-qubit graph.",
+        "In total, the datasets comprise 25, 600 × 5(graphs) = 128, 000 data points."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own stated dataset construction.",
+      "result_type": "setup", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-evaluator-split-and-generalization-tests",
+      "value": "The authors state that three small graphs are used to train the evaluator, with 80% of the data allocated for training, 10% for validation and 10% for testing; that the two small graphs on the right side of the figure are not used in training but only for testing, with 10% of their data forming a test set for new structures; and that approximately 1, 000 data points for each operation type are generated on a linear chain of 30 qubits as another test set.",
+      "anchor": "Supplement Sec. II.D",
+      "quotes": [
+        "In the left of Fig. S1(a), three small graphs are used to train the evaluator. Of these datasets, 80% is allocated for training, 10% for validation, and 10% for testing.",
+        "the two small graphs on the right side of Fig. S1(a) are not used in training but only for testing purposes, with 10% of their data forming a test set for new structures (NS).",
+        "approximately 1, 000 data points for each type of quantum operations are generated on a graph with 30 qubits coupled in a linear (onedimensional) chain"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper's own stated data split and generalization tests.",
+      "result_type": "setup", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-real-experiment-data-time-estimate",
+      "value": "The authors estimate that, assuming 100 repeated measurements are required to obtain a single error value, and given that a complete measurement cycle does not exceed 1µs, it would take approximately 10 minutes to generate the datasets for one quantum operation type in real experiments.",
+      "anchor": "Supplement Sec. II.D",
+      "quotes": [
+        "Assuming that 100 repeated measurements are required to obtain a single error value",
+        "a complete measurement cycle does not exceed 1µs [27], it would take approximately 10 minutes to generate the datasets for one quantum operation type in real experiments."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An author's estimate resting on stated assumptions, not on a run.",
+      "result_type": "claim", "context": "qc",
+      "reader_inference": "By the text's own count of 512, 000, 000 measurements at 1µs each, the raw time is about 8.5 minutes, so 'approximately 10 minutes' is consistent. The estimate ignores overheads other than the stated measurement cycle."
+    },
+    {
+      "id_suggestion": "ai-simultaneous-operations-additivity",
+      "value": "The authors state that, although the evaluator dataset comprises only individual gates, the trained evaluator is also applicable for simultaneous operations, because the undesired excitations caused by simultaneous operations are approximately the sum of those induced by the corresponding individual operations; and that according to their simulations the recommended minimum number of intermediate qubits for two simultaneous gates should be larger than two.",
+      "anchor": "Supplement Sec. II.E, Fig. S7",
+      "quotes": [
+        "Although the dataset for evaluator comprises only individual gates, the trained evaluator is also applicable for simultaneous operations.",
+        "the undesired excitations caused by simultaneous operations are approximately the sum of these excitations induced by corresponding individual operations",
+        "the recommended minimum number of intermediate qubits for two simultaneous gates should be larger than two."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "A simulated additivity check on small graphs (3 and 5 qubits) from one study.",
+      "result_type": "measured", "context": "qc",
+      "reader_inference": "The designer's loss sums single-source contributions, so it assumes this additivity. The check shown is for a 3-qubit chain (RX and RY) and a 5-qubit chain (RXY), and the RXY example has errors 'too large' because the two gates are close."
+    },
+    {
+      "id_suggestion": "ai-evaluator-fit-example-six-qubit-chain",
+      "value": "The authors state that, on a linear graph with 6 qubits, the numerical simulation results and the fitting results from the evaluator agree well with each other for frequency scans of single-qubit and two-qubit operations.",
+      "anchor": "Supplement Sec. I.A, Fig. S2(a)-(i)",
+      "quotes": ["we select various frequency assignments on a linear graph with 6 qubits numbered sequentially", "and the two results agree well with each other","The ﬁtted and simulated results agree well with each other, showcasing the eﬀectiveness of the evaluator."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "A qualitative agreement shown in plots from one study.",
+      "result_type": "measured", "context": "qc",
+      "reader_inference": "No numbers beyond the Table I statistics are given for these example scans."
+    },
+    {
+      "id_suggestion": "ai-theory-inspired-evaluator-lorentzian",
+      "value": "The authors state that, from a theoretical perspective, quantum crosstalk errors and optical mode interactions share a similar foundation in quantum optics, suggesting that the error model is expected to exhibit a Lorentzian line shape, and that in the theory-inspired evaluator errors are considered only within the 4-hop neighborhood.",
+      "anchor": "Supplement Sec. III",
+      "quotes": [
+        "suggesting that the error model is expected to exhibit a Lorentzian line shape.",
+        "within the 4-hop neighborhood."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An author's theoretical expectation used as a model form; fitted, not derived.",
+      "result_type": "theoretical", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-theory-evaluator-table-s2",
+      "value": "The authors report Table S2 results (MSE and r squared in brackets) for the theory-inspired evaluator trained with smaller datasets. For RX: 0.037(0.91), 0.038(0.91), 0.040(0.90), 0.041(0.90) and 0.014(0.95). For RY: 0.037(0.92), 0.035(0.92), 0.044(0.89), 0.042(0.90) and 0.023(0.91). For RXY: 0.042(0.92), 0.043(0.92), 0.041(0.92), 0.059(0.91) and 0.062(0.85). They state that the r squared values exceed 0.8 across all datasets.",
+      "anchor": "Table S2 and Supplement Sec. III",
+      "quotes": [
+        "TABLE S2. Results of theory-inspired evaluator, which is trained with smaller datasets",
+        "RX 0.037(0.91) 0.038(0.91) 0.040(0.90) 0.041(0.90) 0.014(0.95)",
+        "RY 0.037(0.92) 0.035(0.92) 0.044(0.89) 0.042(0.90) 0.023(0.91)",
+        "RXY 0.042(0.92) 0.043(0.92) 0.041(0.92) 0.059(0.91) 0.062(0.85)",
+        "The r2 values exceed 0.8 across all datasets"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical fit quality from one study.",
+      "result_type": "measured", "context": "qc",
+      "reader_inference": "One entry (RY testing, 0.89) is below 0.9 although the text says only that all exceed 0.8, which is consistent. Column order follows Table I (training, validation, testing, new structures, 30-qubit chain)."
+    },
+    {
+      "id_suggestion": "ai-theory-evaluator-data-reduction-claim",
+      "value": "The authors state that the theory-inspired evaluator is trained using smaller datasets, with each training set containing only 30, 720 data points, corresponding to 61, 440, 000 quantum measurements, which is 1/40 of the training data required for the MLPs-based evaluator in the main text.",
+      "anchor": "Supplement Sec. III",
+      "quotes": ["The theory-inspired evaluator is trained using smaller datasets, with each training set containing only 30, 720 data points, corresponding to 61, 440, 000 quantum measurements, which is 1/40 of the training data required for the MLPs-based evaluator in the main text."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An author's stated figure; its arithmetic does not close against the paper's own numbers (see reader inference).",
+      "result_type": "claim", "context": "qc",
+      "reader_inference": "Checks against the paper's own numbers do not reproduce 1/40. The main-text evaluator trains on 61, 440 points and this one on 30, 720, a ratio of 1/2. With the supplement's own cost per point (2 initial states x 20 durations x 100 repeats = 4000 measurements), 30, 720 points is 122, 880, 000 measurements, not 61, 440, 000. Flag for the coordinator."
+    },
+    {
+      "id_suggestion": "ai-theory-evaluator-designer-870-result",
+      "value": "The authors report that, with the theory-inspired evaluator, on circuits with approximately 870 qubits the GNNs-based designer achieves an error of 0.0085 within several seconds, whereas the Snake algorithm requires several minutes to reach an error of 0.0181, and that the designer achieves lower errors than Snake across all scales.",
+      "anchor": "Supplement Sec. III, Fig. S8",
+      "quotes": [
+        "the GNNsbased designer achieves lower errors than the Snake algorithm across all SQEC scales.",
+        "on SQECs with approximately 870 qubits, the GNNs-based designer achieves an error of 0.0085 within several seconds, whereas the Snake algorithm requires several minutes to reach an error of 0.0181."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical result from one study, scored by a second authors' evaluator.",
+      "result_type": "measured", "context": "qc",
+      "reader_inference": "The ratio 0.0085 / 0.0181 is about 0.47. Snake takes several minutes here but 90 minutes with the MLP evaluator, so the 90-minute figure depends on the evaluator's cost per call."
+    },
+    {
+      "id_suggestion": "ai-sources-of-ibm-thousands-qubits-cited",
+      "value": "The authors state that the numbers of qubits are now more than hundreds and even reach thousands, e.g. in chips of IBM company.",
+      "anchor": "Introduction, p.1",
+      "quotes": ["The numbers of qubits are now more than hundreds and even reach thousands, e.g. in chips of IBM company [13]."],
+      "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "A statement attributed to other work.",
+      "result_type": "cited", "context": "qc",
+      "reader_inference": "The cited reference [13] is titled 'IBM releases first-ever 1,000-qubit quantum chip', which supports about a thousand qubits, not 'thousands'."
+    },
+    {
+      "id_suggestion": "ai-hilbert-space-simulation-difficulty",
+      "value": "The authors state that, because the dimension of the Hilbert space exponentially scales with the number of qubits, the evaluation of designed circuits through numerical simulations is becoming a challenging task, which further complicates automated design towards large-scale quantum processors.",
+      "anchor": "Introduction, p.1",
+      "quotes": ["Because the dimension of the Hilbert space exponentially scales with the number of qubits, the evaluation of the designed SQECs through numerical simulations is becoming a challenging task"],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "A motivating statement without evidence in this paper.",
+      "result_type": "claim", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id_suggestion": "ai-conclusion-designer-outperforms",
+      "value": "The authors conclude that the designer outperforms traditional optimization algorithms in efficiency, effectiveness, and scalability, and that this study demonstrates the advantages of applying GNNs to the hardware-level optimization of quantum chips for the first time.",
+      "anchor": "Discussion, p.4",
+      "quotes": [
+        "the designer outperforms traditional optimization algorithms in",
+        "This study demonstrates the advantages of applying GNNs to the hardware-level optimization of quantum chips for the"
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "The authors' conclusion, resting on simulated comparisons.",
+      "result_type": "claim", "context": "qc",
+      "reader_inference": "'Traditional optimization algorithms' here means Snake and two generic optimizers run on the authors' evaluator; the work cited as other proposals is not compared."
+    },
+    {
+      "id_suggestion": "ai-code-data-models-available",
+      "value": "The authors state that the supporting code, data, and trained models for this study are openly available from GitHub.",
+      "anchor": "Code Availability, p.4",
+      "quotes": ["The supporting code, data, and trained models for this study are openly available from GitHub [56]."],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "A statement not checked here; no repository was opened.",
+      "result_type": "claim", "context": "qc",
+      "reader_inference": "Reference [56] is github.com/AiHao8006/GNN_largeSQC."
+    }
+  ]
+}]}
