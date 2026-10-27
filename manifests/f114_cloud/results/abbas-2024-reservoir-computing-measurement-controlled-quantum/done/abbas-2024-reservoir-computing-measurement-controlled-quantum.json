@@ -1,0 +1,545 @@
+{"papers": [{
+ "record_id": "abbas-2024-reservoir-computing-measurement-controlled-quantum",
+ "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Abbas-Maksymo_2024_Reservoir-Computing-Using-Measurement-Controlled-Quantum-Dynamics__2403.01024.pdf",
+ "title_in_file": "Reservoir Computing Using Measurement-Controlled Quantum Dynamics",
+ "version_note": "arXiv:2403.01024v1 [cs.NE] 1 Mar 2024 (Preprints 2024 layout, 17 pages). The text layer holds the paper once.",
+ "pages": 17,
+ "read_extent": "full",
+ "not_read": "",
+ "what_it_is": "A numerical-simulation proposal of a quantum reservoir computer built on a two-level atom in a driven, decaying cavity, benchmarked on a sinusoidal/square classification task, a Mackey-Glass free-running forecast and a damped harmonic oscillator.",
+ "bears_on_context": "qml",
+ "why_not": "",
+ "existing": [
+  {
+   "id": "qrc-16-neurons-99-7-accuracy",
+   "verdict": "confirmed",
+   "note": "Value is right. Page detail: the 8-neuron sentence is on p.8, the 16-neuron sentence on p.9 (stored anchor says p.9 for both). The paper defines accuracy as the share of points within epsilon = 10 to the minus 2 of the target, and also gives RMSE of about 0.1 (8 neurons) and 4 x 10 to the minus 3 (16 neurons).",
+   "value": "The authors report that their reservoir with 16 neurons reached 99.7% accuracy on the sinusoidal-square waveform classification task, and that the reservoir with 8 neurons reached approximately 90%.",
+   "anchor": "Section 4.1, Fig. 5, p.8-9",
+   "quotes": [
+    "Notably, the reservoir with just 8 neurons demonstrates an accuracy of approximately 90% and RMSE of approximately 0.1.",
+    "increasing the number of neurons to 16 results in a significant improvement, yielding a remarkable 99.7% accuracy and a reduced error of 4 × 10−3."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "",
+   "result_type": "measured", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id": "qrc-fewer-neurons-than-classical-reservoir",
+   "verdict": "narrowed",
+   "note": "Value is right but the paper limits it: the comparison is on the Mackey-Glass free-running forecast with the classical reservoir at leaking rate 0.3 and ridge parameter 10 to the minus 6, and 'comparable accuracy' is not quantified. Stored anchor is wrong: the passage is in Section 4.2 (Chaotic times-series forecasting), pp.11, not Section 4.3 (which is the damped oscillator).",
+   "value": "The authors report that, using the computer code from a cited reference with leaking rate α = 0.3 and ridge parameter λ = 10−6, a traditional RC system produced a free-running MGTS forecast of comparable accuracy only when the reservoir contained more than 500 neurons, while their quantum reservoir used 16 neurons.",
+   "anchor": "Section 4.2 (Chaotic times-series forecasting), Fig. 7, p.11",
+   "quotes": [
+    "Using the computer code from Ref. [21] we established that a traditional RC system can produce a free-running forecast of comparable accuracy only when the reservoir contains more than 500 neurons",
+    "the other hyperparameters of the traditional RC system used in this comparison were the leaking rate α = 0.3 and the ridge parameter λ = 10−6",
+    "The reservoir has 16 neurons and it was trained on several cycles of MGTS variations."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "",
+   "result_type": "measured", "context": "qml",
+   "reader_inference": "The comparison metric is not given: 'comparable accuracy' is judged by eye from plots, and no RMSE is reported for the Mackey-Glass forecast."
+  },
+  {
+   "id": "qrc-validation-is-theoretical",
+   "verdict": "confirmed",
+   "note": "The Conclusions (p.14) repeat the scope. The only evidence in the paper is numerical solution of the master equation; no experiment is reported.",
+   "value": "The authors state that the proposed atom-in-cavity quantum reservoir is validated theoretically.",
+   "anchor": "Abstract p.1; Section 1 p.2; Section 6 p.14",
+   "quotes": [
+    "We theoretically validate the operation of the reservoir, demonstrating its potential to be used in error-tolerant applications",
+    "we propose and theoretically validate a novel quantum RC architecture that exploits the dynamics of an atom trapped in a cavity.",
+    "We have proposed and theoretically validated a computational reservoir system that"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "scope",
+   "certainty_reason": "The paper's own scope, in the Abstract, Section 1 and Section 6.",
+   "result_type": "setup", "context": "qml", "reader_inference": ""
+  }
+ ],
+ "assertions": [
+  {
+   "id_suggestion": "qrc-atom-cavity-model-isolated",
+   "value": "The authors state that the model is a two-level atom (qubit) trapped inside a cavity, treated as entirely isolated from external influences, allowing only measurement-controlled interactions of the qubit with a coherent field input and an inherent decay of the cavity.",
+   "anchor": "Section 2, p.2-3",
+   "quotes": [
+    "We consider a physical system that consists of a two-level atom (qubit) that is trapped inside a cavity.",
+    "the model is entirely isolated from any",
+    "allowing only for measurement-controlled interactions of the qubit",
+    "with a coherent field input and accounting for an inherent decay of the cavity."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper states its own model setup in Section 2.",
+   "result_type": "setup", "context": "qml",
+   "reader_inference": "The only loss channel in the master equation is cavity decay; there is no atomic decoherence or readout noise, so the simulated reservoir is noiseless on the atom side."
+  },
+  {
+   "id": "qrc-hamiltonians",
+   "value": "The authors give the atom-cavity interaction Hamiltonian as Hˆ i = ga†aσ−σ+ with coupling strength g, the cavity drive Hamiltonian as Hˆ c = −iβ(a† − a) with cavity driving amplitude β, the atomic drive Hamiltonian as Hˆ z = gz(σ+ + σ−) with amplitude gz, and the full Hamiltonian as Hˆ = Hˆ i + Hˆ c + Hˆ z.",
+   "anchor": "Section 2 and 2.1, Eqs. (1) to (4), p.3-4",
+   "quotes": [
+    "Hˆ i = ga†aσ−σ+ ,",
+    "Hˆ c = −iβ(a† − a) ,",
+    "Hˆ z = gz(σ+ + σ−) ,",
+    "Hˆ = Hˆ i + Hˆ c + Hˆ z ,"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "definition",
+   "certainty_reason": "Definition of the model Hamiltonian, Eqs. (1) to (4).",
+   "result_type": "setup", "context": "qml",
+   "reader_inference": "Eq. (1) as printed has the product a†a σ−σ+ (photon number times upper-state projector), a dispersive-type coupling, although the text speaks of Rabi oscillations between atom and cavity; the text layer may also have lost operator ordering."
+  },
+  {
+   "id": "qrc-measurement-rate-is-atomic-drive-amplitude",
+   "value": "The authors state that the parameter gz, the amplitude of the coherent atomic drive, defines the measurement rate of the atomic states, and report in Figure 1 that depending on gz the system shows freezing akin to the Zeno effect with frequent measurements or undergoes oscillations.",
+   "anchor": "Section 2, Fig. 1, p.3-4",
+   "quotes": [
+    "In our model, the parameter gz defines the measurement rate of the atomic states.",
+    "Figure 1 illustrates the time evolution of the operator ⟨σ+σ−⟩.",
+    "the system either exhibits a freezing behavior akin to the Zeno effect with frequent measurements"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "definition",
+   "certainty_reason": "Definition of 'measurement rate' as gz in Section 2.",
+   "result_type": "setup", "context": "qml",
+   "reader_inference": "The Figure 1 caption is internally inconsistent: it labels high gz as infrequent measurement and low gz as frequent measurement, then says oscillations occur when the measurement rate is low. 'Measurement rate' is here a drive amplitude in a Hamiltonian term, not a stated projective-measurement frequency."
+  },
+  {
+   "id": "qrc-stochastic-master-equation-simulation",
+   "value": "The authors state that the dynamics are analysed with a stochastic master equation approach for a qubit and a cavity mode, with a collapse operator for cavity decay at rate κ, and that they simulate the dynamics by numerically solving the equation.",
+   "anchor": "Section 2.1, Eq. (5), p.4",
+   "quotes": [
+    "We analyse the dynamics of the proposed RC system using a stochastic master equation approach where the system is represented as a qubit and a cavity mode [54].",
+    "decay and κ is the decay rate. By numerically solving Eq. (5) we simulate measurement-",
+    "The time evolution of the density matrix ρ is governed by the linear stochastic master equation, which accounts for the effects of decoherence and dissipation."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper's statement of its own simulation method, Section 2.1.",
+   "result_type": "setup", "context": "qml",
+   "reader_inference": "Eq. (5) as printed is a deterministic Lindblad equation with one collapse operator (cavity decay) and no measurement-noise term, so no stochastic quantum-trajectory measurement back-action is written down; all results are classical numerical simulations. The simulation parameters (g, κ, time step, Fock cutoff) are not given in the text."
+  },
+  {
+   "id": "qrc-fock-states-as-neurons-and-occupation-readout",
+   "value": "The authors state that the neurons of the reservoir are the Fock states |n, σ⟩, that the outputs are the occupation probabilities P(n, σ) = ⟨nσ|ρ|nσ⟩, and that for β in the range [10, 15] there is a nonzero occupation probability for all Fock bases from |00⟩ to |21⟩.",
+   "anchor": "Section 2.1, Eq. (6), Fig. 2, p.4; Section 3, p.5",
+   "quotes": [
+    "The neurons of the reservoir are defined by Fock states |n, σ⟩",
+    "P(n, σ) = ⟨nσ|ρ|nσ⟩ ,",
+    "for values of β within the range [10, 15], there is a nonzero occupation probability for all Fock bases |nσ⟩ ∈ |00⟩ . . . |21⟩."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "definition",
+   "certainty_reason": "Definition of reservoir neurons and readout, Sections 2.1 and 3.",
+   "result_type": "setup", "context": "qml",
+   "reader_inference": "The paper does not say how 8 or 16 neurons map to the six Fock bases |00> to |21> (or to a larger cutoff) used in Fig. 2."
+  },
+  {
+   "id": "qrc-input-encoding-and-optical-readout",
+   "value": "The authors state that input data points are converted into signals that modulate the driving amplitude β(t), that the input information is carried by electromagnetic radiation delivered through one mirror of the cavity, and that output detection is performed at the opposite cavity side.",
+   "anchor": "Section 3, Fig. 3, p.5-6",
+   "quotes": [
+    "The input data points are converted into signals that modulate the driving amplitude β(t) used to change the distribution of the Fock states population",
+    "The input information are carried by electromagnetic radiation delivered through one mirror of the cavity and output detection is performed at the opposite cavity side."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper's statement of its own input and readout scheme, Section 3.",
+   "result_type": "setup", "context": "qml",
+   "reader_inference": "The optical delivery and detection are a proposed design; no physical implementation or measurement-statistics (shot-noise) analysis is reported, since the outputs are computed as exact density-matrix occupations."
+  },
+  {
+   "id": "qrc-linear-readout-pseudoinverse",
+   "value": "The authors state that the readout weight matrix is computed as W = Y˜ trainF†(Utrain), where F† is the Moore–Penrose pseudo inverse of the function F, and applied to test data as Ytest = WF(Utest).",
+   "anchor": "Section 3, Eqs. (7) to (9), p.6",
+   "quotes": [
+    "W = Y˜ trainF†(Utrain) ,",
+    "where F† is the Moore–Penrose pseudo inverse of the function F.",
+    "Ytest = WF(Utest) ."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper's own training procedure, Section 3.",
+   "result_type": "setup", "context": "qml",
+   "reader_inference": "The training is an unregularized pseudoinverse fit of a linear readout; no regularization parameter is given for the quantum reservoir."
+  },
+  {
+   "id": "qrc-measurement-rate-as-leaking-rate",
+   "value": "The authors state that in their system the measurement rate effectively corresponds to the leaking rate parameter of the traditional RC algorithm, and that the reservoir dynamics can be slowed down (frozen) with a suitable value of gz for a problem with an extended plateau regime or accelerated for rapidly evolving input.",
+   "anchor": "Section 3, p.5",
+   "quotes": [
+    "the measurement rate effectively corresponds to the leaking rate parameter that controls the dynamics of the traditional RC algorithm",
+    "its dynamics can be slowed down (“frozen”) using a suitable value of gz",
+    "Conversely, the dynamics of the reservoir can be accelerated when the input of the RC system is defined by a rapidly evolving time-series dataset."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An author's analogy stated without a dedicated test.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "Only one sweep over gz is shown (Fig. 6); the paper does not test the frozen-versus-accelerated claim on plateau-type or fast inputs."
+  },
+  {
+   "id": "qrc-rmse-definition",
+   "value": "The authors define the forecast-target deviation by the root-mean-square error (RMSE) over N data points, with the range of the target values accounted for by ymax and ymin.",
+   "anchor": "Section 3, Eq. (10), p.6-7",
+   "quotes": [
+    "the forecast-target deviation is often quantified using the root-mean-square error (RMSE)",
+    "The range of the target values is accounted for by the values of ymax and ymin."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "definition",
+   "certainty_reason": "Definition of the paper's error metric, Eq. (10).",
+   "result_type": "setup", "context": "method",
+   "reader_inference": "The printed Eq. (10) is garbled in the text layer; from the quotes the RMSE is normalized by the target range (ymax minus ymin), so the reported RMSE values are range-normalized, not raw."
+  },
+  {
+   "id": "qrc-accuracy-definition-epsilon",
+   "value": "The authors define accuracy as the ratio of the correct predictions to the total number of predictions made by the RC system, and count a prediction as agreeing when its difference from the target is less than ϵ = 10−2.",
+   "anchor": "Section 3, Eq. (11), p.7",
+   "quotes": [
+    "the figure-of-merit called the accuracy, which is calculated as the ratio of the correct predictions to the total number of predictions made by the RC system",
+    "The agreement percentage is calculated such that the difference between the correct predictions and the target is less than ϵ = 10−2."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "definition",
+   "certainty_reason": "Definition of the paper's accuracy metric, Eq. (11).",
+   "result_type": "setup", "context": "method",
+   "reader_inference": "The reported 99.7% accuracy is a tolerance-based fraction of a continuous reservoir output within 0.01 of a 0/1 target, not a thresholded class-label accuracy."
+  },
+  {
+   "id": "qrc-classification-task-setup",
+   "value": "The authors describe the first benchmark as a binary categorisation of a synthetic waveform composed of randomly generated sinusoidal and square pulses, with the output expected to be 0 for the square portion and 1 for the sinusoidal portion, a data set split into training and testing parts, and the target not presented to the reservoir at the exploitation stage.",
+   "anchor": "Section 4.1, Fig. 4, p.7-8",
+   "quotes": [
+    "involves a binary categorisation a synthetic waveform composed of randomly generated sinusoidal and square pulses.",
+    "the output of the reservoir is expected to be 0 (1) when an input point corresponds to the square (sinusoidal) portion of the test waveform.",
+    "one part is used for training and another one for testing",
+    "the reservoir is not presented with the target data at the exploitation stage"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper's own benchmark setup, Section 4.1.",
+   "result_type": "setup", "context": "qml",
+   "reader_inference": "Sequence length, train/test split sizes, number of random waveforms and repeats are not stated, so the 99.7% figure comes from a single unspecified run."
+  },
+  {
+   "id": "qrc-neurons-beyond-16-marginal",
+   "value": "The authors report that any further increase in the number of neurons beyond 16 results in just a marginal increase in the accuracy, and conclude that 16 neurons is an optimal configuration.",
+   "anchor": "Section 4.1, Fig. 5, p.9",
+   "quotes": [
+    "any further increase in the number of neurons beyond 16 results in just a marginal increase in the accuracy, indicating that 16 neurons is an optimal configuration"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "Empirical result from one study, read from a plot.",
+   "result_type": "measured", "context": "qml",
+   "reader_inference": "At 99.7% accuracy with tolerance 0.01 the task is close to saturation, so a plateau in neuron count is expected for this easy task; it does not show the same plateau for harder tasks."
+  },
+  {
+   "id": "qrc-classical-needs-over-1000-neurons-cited",
+   "value": "The authors state that a traditional RC algorithm typically requires more than 1000 neurons to produce a plausible forecast, citing two references and the computational code that accompanies them.",
+   "anchor": "Section 4.1, p.9",
+   "quotes": [
+    "a traditional RC algorithm typically requires more than 1000 neurons to produce a plausible forecast (see, e.g., Refs. [20,21] and the computational code that accompanies them)"
+   ],
+   "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A general figure attributed to cited work and its code, not a run on this task.",
+   "result_type": "cited", "context": "ml",
+   "reader_inference": "Section 4.2 reports more than 500 neurons for the Mackey-Glass comparison in the authors' own run, and the Conclusions say approximately 1000; the three figures are used for different tasks and are not reconciled."
+  },
+  {
+   "id": "qrc-physical-reservoirs-need-40-neurons-cited",
+   "value": "The authors state that physical counterparts of the traditional RC algorithms require at least 40 neurons to complete test tasks of comparable complexity, citing two references.",
+   "anchor": "Section 4.1, p.9",
+   "quotes": [
+    "physical counterparts of the traditional RC algorithms require at least 40 neurons to complete test tasks of comparable complexity [29,56]"
+   ],
+   "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A result attributed to other work.",
+   "result_type": "cited", "context": "ml", "reader_inference": ""
+  },
+  {
+   "id": "qrc-runtime-9s-vs-50s-against-dudas",
+   "value": "The authors report that, for the same length of the training dataset, their reservoir accomplished the classification task in 9 seconds compared with 50 seconds required by the model of a cited quantum reservoir reference, run on the same workstation computer with the same version of Python.",
+   "anchor": "Section 4.1, p.9",
+   "quotes": [
+    "We also used the quantum RC software that accompanies the discussion in Ref. [43] to undertake the same task as in Figure 4.",
+    "that computational code was run on the same workstation computer equipped with the same version of Python language used to implement our reservoir model",
+    "our reservoir accomplished the task in 9 seconds compared with 50 seconds required by the model reported in Ref. [43]."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "Empirical timing from one study.",
+   "result_type": "measured", "context": "qml",
+   "reader_inference": "Both timings are classical simulations of quantum reservoirs; the workstation, library versions, neuron counts of the compared model and number of repeats are not given, so this measures the authors' code against another group's code, not quantum hardware cost."
+  },
+  {
+   "id": "qrc-rmse-optimal-at-gz-5",
+   "value": "The authors report that the RMSE is a function of the measurement rate with an optimal performance at gz = 5 arb. units, and that computing RMSE for larger values of the measurement rate showed that a high rate does not result in better performance.",
+   "anchor": "Section 4.1, Fig. 6, p.9-10",
+   "quotes": [
+    "the value of RMSE is a function of the measurement rate, with an optimal performance at gz = 5 arb. units.",
+    "demonstrating that a high rate does not result in better performance",
+    "The optimal RMSE is achieved at the measurement rate of 5 arb. units."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "Empirical result from one study.",
+   "result_type": "measured", "context": "qml",
+   "reader_inference": "The text does not say which task and neuron count Fig. 6 uses (presumably the Section 4.1 classification); the optimum is for that setting only."
+  },
+  {
+   "id": "qrc-superiority-attributed-to-measurement-control",
+   "value": "The authors state that the superior performance of their reservoir compared with the previously proposed quantum reservoirs stems from the use of the feature of measurement-controlled dynamics.",
+   "anchor": "Section 4.1, Fig. 6, p.9",
+   "quotes": [
+    "a superior performance of our reservoir compared with the previously proposed quantum reservoirs stems from the use of the feature of measurementcontrolled dynamics"
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An author's causal attribution.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "The evidence is a gz sweep of the authors' own reservoir plus one timing comparison; no like-for-like accuracy comparison with another quantum reservoir on the same task, nor a fixed-gz ablation, is shown, so the attribution is not isolated."
+  },
+  {
+   "id": "qrc-mgts-task-setup",
+   "value": "The authors state that the second benchmark is predicting a Mackey-Glass time series (MGTS) generated by a delay differential equation with τMGTS = 17, q = 10, βMGTS = 0.2 and γMGTS = 0.1, split into a training part and a testing part.",
+   "anchor": "Section 4.2, Eq. (12), p.9-10",
+   "quotes": [
+    "consists in predicting a Mackay-Glass time series (MGTS) that is generated solving the delay differential equation [57]",
+    "τMGTS = 17, q = 10, βMGTS = 0.2 and γMGTS = 0.1 [21]",
+    "The generated time series is then split into two parts used for at training and testing stages, respectively."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper's own benchmark setup, Section 4.2.",
+   "result_type": "setup", "context": "ml", "reader_inference": ""
+  },
+  {
+   "id": "qrc-generative-mode-setup",
+   "value": "The authors state that the reservoir operates in the generative mode (free-running forecast), in which the output of the trained reservoir at the previous time step serves as the input at the next time step, un+1 = yn, and that they deliberately chose this mode because it is a more challenging task than the predictive mode.",
+   "anchor": "Section 4.2, p.10",
+   "quotes": [
+    "the reservoir operates in the generative mode, also known as the freerunning forecast, where the output produced by a trained reservoir in the previous time step serves as an input at the next time step, i.e. un+1 = yn [21].",
+    "While the operation in the generative mode is a more challenging task"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper's own test protocol, Section 4.2.",
+   "result_type": "setup", "context": "ml", "reader_inference": ""
+  },
+  {
+   "id": "qrc-mgts-forecast-16-neurons-qualitative",
+   "value": "The authors report that the free-running forecast of the Mackey-Glass series by the reservoir with 16 neurons, starting at 1000 arb. units, correctly reproduces the general pattern of the series but misses some minor features of the ground truth.",
+   "anchor": "Section 4.2, Fig. 7, p.11",
+   "quotes": [
+    "Figure 7 demonstrates the result of the free-running forecast made by the reservoir with 16 neurons.",
+    "it starts at the instant of time of 1000 arb. units.",
+    "We can see that the RC system correctly reproduces the general pattern of MGTS, though it misses some minor features of the ground truth time series."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "Empirical result from one study, judged visually.",
+   "result_type": "measured", "context": "qml",
+   "reader_inference": "No RMSE or forecast-horizon number is reported for the Mackey-Glass forecast; the result is a visual comparison of one trajectory."
+  },
+  {
+   "id": "qrc-training-length-300-points",
+   "value": "The authors report from a plot of RMSE against the length of the training MGTS data set that a reasonable accuracy can be reached with a minimum of 300 training data points, and that any further increase in the length of the training data set does not result in significant increase in the accuracy.",
+   "anchor": "Section 4.2, Fig. 8, p.12",
+   "quotes": [
+    "We can see that a reasonable accuracy can be reached with a minimum of 300 training data points.",
+    "Any further increase in the length of the training data set does not result in significant increase in the accuracy."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "Empirical result from one study, read from a plot.",
+   "result_type": "measured", "context": "qml",
+   "reader_inference": "'Reasonable accuracy' is not given a numeric threshold; the Conclusions restate it as 'accurate results' with short training sets."
+  },
+  {
+   "id": "qrc-classical-needs-1000-training-points-cited",
+   "value": "The authors state that a traditional RC system implemented following cited procedures requires approximately 1000 training MGTS data points, and cite their own previous work as showing that correct operation of a traditional RC algorithm is possible mostly with relatively long training data sets.",
+   "anchor": "Section 4.2, p.12",
+   "quotes": [
+    "In a previous work [59], we also demonstrated that the correct operation of a traditional RC algorithm is possible mostly using relatively long training data sets.",
+    "requires approximately 1000 training MGTS data points"
+   ],
+   "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A result attributed to the authors' earlier work and cited procedures.",
+   "result_type": "cited", "context": "ml", "reader_inference": ""
+  },
+  {
+   "id": "qrc-damped-oscillator-task-setup",
+   "value": "The authors state that the third benchmark presents the reservoir with several periods of a damped harmonic oscillator, and that the task is a two-parameter problem in which the reservoir must be trained to simulate the dynamics of both frequency and amplitude.",
+   "anchor": "Section 4.3, p.12",
+   "quotes": [
+    "the RC system is presented with several periods of oscillation of a harmonic oscillator",
+    "the RC system should be trained to accurately simulate the dynamics of both frequency and amplitude."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper's own benchmark setup, Section 4.3.",
+   "result_type": "setup", "context": "ml",
+   "reader_inference": "The number of neurons, training length and gz used for the oscillator task are not stated in the text."
+  },
+  {
+   "id": "qrc-damped-oscillator-forecast-deviates",
+   "value": "The authors report that the reservoir trained on a damped oscillator dataset agrees well with the ground truth over the first few periods, after which the free-running forecast deviates from the natural dynamics of the oscillator, and they state the forecast in Figure 9 is not ideal.",
+   "anchor": "Section 4.3, Fig. 9, p.12; Section 5, p.13",
+   "quotes": [
+    "We observe a good agreement with the ground truth over the first few periods.",
+    "Then we can see certain deviations of the free-running forecast from the natural dynamics of the oscillator.",
+    "the forecast made by the RC system in Figure 9 is not ideal when compared with the ground truth"
+   ],
+   "kind": "shown", "claim_type": "absence", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "Empirical result from one study, visual.",
+   "result_type": "measured", "context": "qml",
+   "reader_inference": "No error metric is reported for the oscillator forecast; the stated limitation is that long-horizon free-running accuracy degrades."
+  },
+  {
+   "id": "qrc-classical-more-accurate-with-thousands-limit",
+   "value": "The authors state that software implementing the traditional RC algorithm can make a more accurate forecast using several thousands of neurons, at the cost of a high-performance workstation computer run for several hours or even days to find the optimal hyperparameters.",
+   "anchor": "Section 5, p.13",
+   "quotes": [
+    "Of course, software that implements the traditional RC algorithm can make a more accurate forecast using several thousands of neurons.",
+    "such a computation will require a high-performance workstation computer that will need to be run for several hours or even days to find the optimal set of hyperparameters."
+   ],
+   "kind": "claimed", "claim_type": "absence", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "stated limit",
+   "certainty_reason": "The authors' own stated limit on the scope of their advantage, Section 5.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "The advantage claimed is therefore resource cost at modest accuracy, not best achievable accuracy."
+  },
+  {
+   "id": "qrc-outperforms-other-quantum-reservoirs-claim",
+   "value": "The authors state that they established that their quantum RC system outperforms the other quantum-physical reservoirs in terms of computational resources needed to solve the standard test problems.",
+   "anchor": "Section 5, p.13",
+   "quotes": [
+    "We also established that our quantum RC system outperforms the other quantum-physical reservoirs in terms of computational resources needed to solve the standard test problems."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An author's claim; the only comparison in the text is one timing against one cited quantum reservoir.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "The text supports a comparison against one other quantum reservoir (9 s versus 50 s on one task), not 'the other quantum-physical reservoirs' or 'standard test problems' in general."
+  },
+  {
+   "id": "qrc-fdtd-cpu-hours-saving-projection",
+   "value": "The authors state that an RC system trained on data from a relatively short FDTD simulation (typically approximately 30 minutes) could make a hybrid calculation of about one hour, saving from two to eight hours of CPU time per simulation and potentially up to 800 CPU hours over a research project.",
+   "anchor": "Section 5, p.13",
+   "quotes": [
+    "it can be trained on data obtained after a relatively short FDTD simulation (typically it requires approximately 30 minutes to generate such data)",
+    "Since such a hybrid calculation will take about one hour in total, the user can save from two to eight hours of CPU time per simulation.",
+    "the application of the RC system can potentially save up to 800 CPU hours."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A projected application, with no experiment in the paper.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "No FDTD data are used in the paper; the hours saved are an estimate. The authors also say imperfections of the forecast must be taken into account."
+  },
+  {
+   "id": "qrc-runs-on-desktop-laptop-claim",
+   "value": "The authors state that software implementing their reservoir can be run on ordinary desktop and laptop computers equipped with modest computational resources, which makes it possible to use the reservoir in embedded and portable systems.",
+   "anchor": "Section 6, p.14",
+   "quotes": [
+    "software that implements our reservoir can be run on ordinary desktop and laptop computers equipped with modest computational resources.",
+    "This quality makes its possible to utilise our reservoir in embedded and portable systems"
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An author's claim; no hardware or embedded run is reported.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "The software here is a classical simulation of a quantum system (numerical solution of the master equation), so the claim concerns simulating the reservoir, not running a physical atom-cavity device on a laptop."
+  },
+  {
+   "id": "qrc-microcontroller-small-matrices-cited",
+   "value": "The authors state, citing their recent work, that software implementing an RC system that requires small matrices can be run on inexpensive microcontrollers.",
+   "anchor": "Section 5, p.14",
+   "quotes": [
+    "In our recent work [59], we demonstrated that software that implements an RC system that requires small matrices can be run on inexpensive microcontrollers."
+   ],
+   "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A result attributed to the authors' earlier, classical reservoir work.",
+   "result_type": "cited", "context": "ml", "reader_inference": ""
+  },
+  {
+   "id": "qrc-conclusion-16-vs-1000-neurons",
+   "value": "The authors state in the Conclusions that, benchmarking the reservoir on several test problems, they demonstrated feasible forecasts using just 16 artificial neurons compared with approximately 1000 classical artificial neurons required for a traditional reservoir computing system.",
+   "anchor": "Section 6, p.14",
+   "quotes": [
+    "we demonstrated that feasible forecasts can be made using just 16 artificial neurons compared with approximately 1000 classical artificial neurons require for the operation of a traditional reservoir computing system."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "The authors' conclusion, resting on a cited classical figure and a visual comparison.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "The classical figure of about 1000 is from cited work, while the authors' own Mackey-Glass run found more than 500; the 16-neuron results are not accompanied by a matched quantitative classical baseline."
+  },
+  {
+   "id": "qrc-conclusion-short-training-sets",
+   "value": "The authors state in the Conclusions that their quantum reservoir produces accurate results even when it is trained on relatively short training datasets, and that, given that it produces usable results with a small number of neurons, it is plausible it may be used for practical problems in approximate computing.",
+   "anchor": "Section 6, p.14",
+   "quotes": [
+    "We also showed that our quantum reservoir produces accurate results even when it is trained on relatively short training datasets.",
+    "it is plausible that it may be used to solve many practical problems in the framework of the paradigm of approximate computing."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "The authors' conclusion; the evidence is the single plot of Fig. 8.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "Section 4.2 said 'reasonable accuracy' at 300 points; the Conclusions upgrade this to 'accurate results'."
+  },
+  {
+   "id": "qrc-cited-quantum-rc-advantages",
+   "value": "The authors state that quantum physical RC systems have demonstrated a superior capability of predicting complex dynamical systems with many degrees of freedom, and the ability to create a large number of densely connected artificial neurons using coupled quantum oscillators instead of coupled qubits, citing earlier work.",
+   "anchor": "Section 1, p.2",
+   "quotes": [
+    "quantum physical RC systems have demonstrated a superior capability of predicting complex dynamical systems with many degrees of freedom [44,46]",
+    "the ability to create a large number of densely connected artificial neurons using technically simple coupled quantum oscillators instead of sophisticated physically coupled qubits [43]"
+   ],
+   "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "Results attributed to other work.",
+   "result_type": "cited", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id": "qrc-cited-quantum-noise-as-reservoir",
+   "value": "The authors state, citing earlier work, that it has been demonstrated that while quantum noise is undesirable in conventional quantum computations it can be exploited as a computational reservoir.",
+   "anchor": "Section 1, p.2",
+   "quotes": [
+    "it has been demonstrated that while the quantum noise is undesirable in conventional quantum computations [38] it can be exploited as a computational reservoir [41]"
+   ],
+   "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A result attributed to other work.",
+   "result_type": "cited", "context": "qml", "reader_inference": ""
+  },
+  {
+   "id": "qrc-cited-zeno-and-rabi-background",
+   "value": "The authors state, citing earlier work, that frequent observation of the atom eigenstate prevents the system from undergoing significant changes (the Zeno effect), whereas less frequent probing enables Rabi oscillations.",
+   "anchor": "Section 1, p.2",
+   "quotes": [
+    "Frequent observation of the atom eigenstate leads to the prevention of the system from undergoing significant changes, a phenomenon known as the Zeno effect [47].",
+    "Conversely, less frequent probing of the system states enables the system to undergo Rabi oscillations [48,49]."
+   ],
+   "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "Background attributed to other work.",
+   "result_type": "cited", "context": "qc", "reader_inference": ""
+  },
+  {
+   "id": "qrc-further-analysis-deferred",
+   "value": "The authors state that further analysis of the physical properties of the reservoir and their impact on its computational performance will be reported elsewhere.",
+   "anchor": "Section 4.1, p.9",
+   "quotes": [
+    "Further analysis of the physical properties of the reservoir and their impact on its computational performance will be reported elsewhere."
+   ],
+   "kind": "claimed", "claim_type": "absence", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "stated limit",
+   "certainty_reason": "A limit on the paper's own scope, stated in Section 4.1.",
+   "result_type": "claim", "context": "qml",
+   "reader_inference": "The paper therefore gives no physical analysis (for example, which quantum property, entanglement or coherence, supplies the computational advantage) and no ablation against a classical simulation of the same model."
+  },
+  {
+   "id": "qrc-code-available-on-request",
+   "value": "The authors state that the code used in the study is available from the corresponding author upon reasonable request.",
+   "anchor": "Data Availability Statement, p.14",
+   "quotes": [
+    "The code used in this study is available from the corresponding author upon reasonable request."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "scope",
+   "certainty_reason": "The paper's own data-availability statement.",
+   "result_type": "setup", "context": "method",
+   "reader_inference": "The code is not public, so the reported numbers cannot be independently reproduced from the paper alone."
+  }
+ ]
+}]}
