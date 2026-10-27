@@ -1,0 +1,780 @@
+{
+ "papers": [
+  {
+   "record_id": "aminpour-2024-strategic-data-re-uploads-pathway",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Aminpour-Sharif_2024_Strategic-Data-Re-Uploads-A-Pathway-to-Improved-Quantum-Classification__2405.09377.pdf",
+   "title_in_file": "Boosting Quantum Classifier Efficiency through Data Re-Uploading and Dual Cost Functions",
+   "version_note": "The record title says 'Strategic Data Re-Uploads: A Pathway to Improved Quantum Classification' (arXiv 2405.09377); the text is a later version titled 'Boosting Quantum Classifier Efficiency through Data Re-Uploading and Dual Cost Functions', with a supplementary document and code comparison appended.",
+   "pages": 39,
+   "read_extent": "partial",
+   "not_read": "Equations 1 to 3 and the data-set coordinate and radius definitions (page 3), and the parameter-count formula in Supplementary Note 7, were lost by the text layer. Figures 1 to 14 and S1.1 to S4.2 are images; their captions and the surrounding text were read.",
+   "what_it_is": "A simulation study of single-qubit, two-qubit and entangled two-qubit data re-uploading classifiers on synthetic circle and line tasks, comparing fidelity and trace-distance cost functions and four scipy optimizers.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "reupload-compute-cost-growth",
+     "verdict": "narrowed",
+     "note": "The stored value says 'both classifiers compared' without naming them or the setting. The quote is from Supplementary Note 5 on Figure 11: the two-qubit and the two-qubit entangled classifiers, non-linear task, fixed dataset, Nelder-Mead method, 175 training samples, layers 1 to 20. The growth is read by the authors from plots; no fitted rate is given.",
+     "value": "The authors report that, for the two-qubit and the two-qubit entangled classifiers on the non-linear classification task with a fixed dataset and the Nelder-Mead minimization method, using 175 training samples and layers from 1 to 20, computational time shows a clear exponential growth as the number of layers increases.",
+     "anchor": "Supplementary Note 5 (Figure 11 discussion), p.23; Section Results, p.6",
+     "quotes": [
+      "Both show a clear exponential growth in computational time as the number of layers increases.",
+      "We then incrementally increased the number of layers from 1 to 20, using the optimal training sample size of 175",
+      "2-qubit entangled classifiers for non-linear classification with Nelder-Mead minimization method for fixed dataset"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Timings are wall-clock times of a classical numpy simulation of the circuit (datetime added to the reference code), so the exponential growth is a property of the simulator, not of quantum hardware. No fit or error bar is given."
+    },
+    {
+     "id": "reupload-future-work-real-data",
+     "verdict": "confirmed",
+     "note": "Confirmed. Every data set in the paper is synthetic (circle and line patterns drawn at random); the 'random dataset' is not real-world data, although the abstract calls it 'real word random dataset'.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Discussion, p.11: the paper states it leaves real-world data sets for its next work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "reupload-lbfgsb-accuracy",
+     "verdict": "narrowed",
+     "note": "The stored value omits that this is the linear classification (LCP) task with 5 layers, and that the figures are from two-qubit classifiers. The paper states elsewhere that results are averaged over 20 iterations for random data. The paper is internally inconsistent about the lowest method for the entangled classifier (main text: COBYLA at 95.3%; Supplementary Note 5: Nelder-Mead at 95.3%).",
+     "value": "The authors report that for the linear classification task on a random dataset with 250 training samples and 5 layers, using a fidelity cost function and two-qubit classifiers, L-BFGS-B reached the highest test accuracy among the four minimization methods, 96.3% for the non-entangled and 97% for the entangled classifier.",
+     "anchor": "Supplementary Note 5 (Figure 12 discussion), p.24; Results, p.6",
+     "quotes": [
+      "The experiment uses a random dataset with 250 training samples and employs a fidelity cost function to measure the performance.",
+      "consistently achieves the highest test accuracy, reaching 96.3% for non-entangled and 97% for entangled classifiers",
+      "Figure 12 shows the results when we applied the fidelity cost function to the LCP task and random dataset using 2-qubit and 2-qubit entangled classifiers.",
+      "we kept the number of training samples and the number of layer constant of 250 and 5, respectively"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The main text says L-BFGS-B has the highest accuracy 'in comparison with 1-qubit (figure 5)', but Supplementary Note 2 reports SLSQP at 96.4% on that one-qubit figure, above 96.3%. The 'approximately 2% higher' entangled advantage is on average over methods; for L-BFGS-B the gap is 0.7 points. No spread over the 20 runs is reported."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "study-configuration-52-cases",
+     "value": "The authors state that the results section analyses their quantum classifier across 52 configurations, from single-qubit, two-qubit and two-qubit entangled classifiers, four optimization methods, two cost functions, two classification patterns and two datasets (fixed and random).",
+     "anchor": "Introduction, p.3",
+     "quotes": [
+      "The structure of the paper unfolds as follows: The results section presents a comprehensive analysis of our quantum classifier's performance across 52 various configurations.",
+      "We evaluate single-qubit, two-qubit, and two-qubit entangled classifiers using four optimization methods (L-BFGS-B, COBYLA, Nelder-Mead, and SLSQP, two cost functions (fidelity and trace distance), two classification patterns (LCP and non-LCP) as well as two datasets (fix and random)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Introduction, p.3: the paper lists its own study grid.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The 52 cases are not a full cross of these factors; the paper reports trace distance only for the one-qubit classifier and two-qubit results only for fidelity."
+    },
+    {
+     "id_suggestion": "data-generation-circle-balanced",
+     "value": "The authors state that the non-linear task classifies points on a plane by whether they fall inside or outside a circle whose radius makes the inside and outside areas equal, so random labelling would give 50 percent accuracy by chance. Fixed datasets use a consistent seed; random datasets are generated anew for each of the 20 iterations, and the outcomes are averaged.",
+     "anchor": "Results, p.3",
+     "quotes": [
+      "aiming to classify these data based on whether they fall inside or outside a circle of radius",
+      "radius is chosen in a way that ensures equal areas for the regions inside and outside the circle.",
+      "This setup results in a balanced dataset, where randomly assigning labels to data points would yield a 50 percent accuracy rate by chance.",
+      "a consistent seed was utilized for generating all data points when dataset is fixed.",
+      "data points were generated entirely at random for each of the 20 iterations to ascertain the average accuracy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Results, p.3: the paper's own description of its data and averaging.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The circle radius, the coordinates and the sampling range were lost by the text layer (equations)."
+    },
+    {
+     "id_suggestion": "training-test-sizes-and-overfit-filter",
+     "value": "The authors state that all models were studied with a training sample size of up to 250, that results judged to be overfitting were eliminated so that the results presented vary from 50 to 250, and that single-qubit classifiers were tested on a test dataset of 4000 data points.",
+     "anchor": "Results, p.3 and p.4",
+     "quotes": [
+      "We studied all models with a training sample size of up to 250, and we eliminated the results of overfitting, so the results presented vary from 50 to 250.",
+      "The classifier's efficacy was then evaluated using a comprehensive test dataset consisting of 4000 data points."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Results, p.3-4: the paper's own statement of the range and the filtering.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Removing overfitted points before presenting results is a selection step; the paper gives no rule for it. Several figures discussed later start at 1 sample, so the stated 50 to 250 range does not hold for every figure."
+    },
+    {
+     "id_suggestion": "five-layer-choice-and-desktop-simulation",
+     "value": "The authors state that they selected 5 layers after runs with 1 to 5 layers and up to 250 training samples, aiming for a test accuracy around 90%, that the choice was also driven by keeping the simulations feasible on their desktop computer, and that these values were used for all simulated cases.",
+     "anchor": "Results, p.3-4",
+     "quotes": [
+      "ensuring that our simulations remained feasible on our desktop computer with limited configurations.",
+      "varying the number of layers from 1 to 5 and using up to 250 training samples, to determine the conditions under which our algorithm would reach a test accuracy around 90%.",
+      "This exploration led us to conclude selecting 5 layers of training for our study.",
+      "we subsequently used these values for all simulated cases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Results, p.3-4: the paper's own statement of how the configuration was chosen.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "All results are classical simulation on a desktop; no quantum hardware run is reported. The 5-layer choice was tuned on the circle task with L-BFGS-B (Supplementary Note 1), then applied to every case."
+    },
+    {
+     "id_suggestion": "trace-distance-only-one-qubit-fidelity-only-two-qubit",
+     "value": "The authors state that, after finding Nelder-Mead gave the highest accuracy on the line task, they extended to two-qubit and two-qubit entangled systems focusing specifically on the fidelity cost function with the Nelder-Mead method; the later random-dataset study of two-qubit classifiers also uses the fidelity cost function.",
+     "anchor": "Results, p.5-6",
+     "quotes": [
+      "focusing specifically on the fidelity cost function in combination with the Nelder-Mead",
+      "we examined the fidelity cost function alongside four minimization methods: COBYLA, L-BFGS-B, Nelder-Mead, and SLSQP."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Results, p.5-6: the paper's own statement of which settings the two-qubit work covers.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No trace-distance result is reported for a two-qubit or an entangled classifier."
+    },
+    {
+     "id_suggestion": "entangled-classifier-cz-after-each-layer",
+     "value": "The authors state that the two-qubit entangled classifier is the same as the two-qubit classifier but adds a CZ gate after each processing unit or layer to induce entanglement between the two qubits.",
+     "anchor": "Method, p.12 (Figure 14(e))",
+     "quotes": [
+      "incorporates a CZ gate after each processing unit or layer to induce entanglement between the two qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Method, p.12: the paper defines its entangled classifier.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classification-decision-and-cost-definitions",
+     "value": "The authors define fidelity as the overlap between quantum states and trace distance as how distinguishable two states are, ranging from 0 (indistinguishable) to 1 (perfectly distinguishable). For single-qubit states the trace distance equals one-half of the Euclidean distance between the Bloch vectors.",
+     "anchor": "Introduction, p.2; Supplementary Note 6, p.26",
+     "quotes": [
+      "Unlike fidelity, which measures the overlap between quantum states, trace distance directly quantifies how distinguishable two states are, ranging from 0 (indistinguishable) to 1 (perfectly distinguishable).",
+      "is equal to one-half of the Euclidean distance between these vectors on the Bloch sphere."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Introduction p.2 and Supplementary Note 6: the paper's definitions (cited to Nielsen and Chuang).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Equations (1) to (3) were lost by the text layer."
+    },
+    {
+     "id_suggestion": "s1-fixed-circle-lbfgsb-60-samples",
+     "value": "The authors report, for the five-layer fidelity-cost classifier on circle classification with the fixed dataset and L-BFGS-B, that test accuracy begins at approximately 70%, rises to 96% with 210 samples, and reaches 91.8% with as few as 60 training samples. They state a red-dot benchmark from the reference at 89% accuracy with 200 training samples.",
+     "anchor": "Supplementary Note 1 (Figure S1.1), p.15",
+     "quotes": [
+      "A red dot highlights a notable benchmark from the reference, showing an 89% accuracy with 200 training samples, demonstrating parity with this published result.",
+      "Notably, test accuracy begins at approximately 70%, rising impressively to 96% for a slightly expanded dataset of 210 samples.",
+      "Remarkably, with as few as 60 training samples, the model achieves a test accuracy of 91.8%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The only comparison with the original data re-uploading classifier is this one benchmark point on one task."
+    },
+    {
+     "id_suggestion": "s1-layers-1-to-5-random-circle",
+     "value": "The authors report, for circle classification on a random dataset, that a single-layer setup achieves a peak accuracy of 61.9% whereas a five-layer configuration reaches 88.8% with only 35 training samples, and conclude that model accuracy rises with the number of layers.",
+     "anchor": "Supplementary Note 1 (Figure S1.2), p.16",
+     "quotes": [
+      "a single-layer setup achieves a peak accuracy of 61.9%, whereas a more complex five-layer configuration significantly elevates this metric to 88.8%, even when limited to only 35 training samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fid-1q-circle-fixed-method-contrast",
+     "value": "The authors report, for the one-qubit fidelity classifier on circle classification with a fixed dataset, that L-BFGS-B requires a minimum of 100 samples to achieve an accuracy of 92% and keeps training accuracy close to 90%, whereas COBYLA, Nelder-Mead and SLSQP attain over 95% accuracy with only 50 samples and then overfit. The figure caption for the Nelder-Mead panel gives a highest accuracy of 97.3%.",
+     "anchor": "Supplementary Note 2, p.16; Figure 2 caption, p.7",
+     "quotes": [
+      "which requires a minimum of 100 samples to achieve an accuracy of 92%, the other three methods can attain over 95% accuracy with only 50 samples",
+      "The L- BFGS-B method maintains a training accuracy close to 90%, showcasing its robustness against overfitting.",
+      "with the highest accuracy of 97.3% in the Nelder-Mead minimization method."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Supplementary Note 2 text says Figure 2 was classified 'circle' and 'fixed dataset of 4000 test samples and 5 layers'. A single run per sample size is plotted; no spread is shown."
+    },
+    {
+     "id_suggestion": "fid-1q-circle-random-peaks",
+     "value": "The authors report, for the one-qubit fidelity classifier on circle classification with a random dataset, that no method surpasses a peak accuracy of 90%: L-BFGS-B peaks at 88.8% with 35 training samples, COBYLA at 84.8% with 70, Nelder-Mead at 86.9% with 60 and SLSQP at 86.7% with 50.",
+     "anchor": "Supplementary Note 2 (Figure 3), p.17",
+     "quotes": [
+      "yet fails to surpass a peak accuracy of 90%.",
+      "achieving its highest test accuracy of 88.8% with 35 training samples.",
+      "COBYLA achieves its best test accuracy at 84.8% with a higher training sample equal to 70.",
+      "culminating in a maximum accuracy of 86.9% with 60 training samples.",
+      "The SLSQP method reaches a maximum accuracy of 86.7% when applied to a dataset of 50 samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fid-1q-line-fixed-peaks",
+     "value": "The authors report, for the one-qubit fidelity classifier on line classification with a fixed dataset, that Nelder-Mead achieves a test accuracy of 97.7% with 125 training samples, SLSQP rises from 62.7% to 96.6%, and all four methods reach a test accuracy of at least 95% with 125 training samples.",
+     "anchor": "Supplementary Note 2 (Figure 4), p.17; Results, p.5",
+     "quotes": [
+      "achieves a notable test accuracy of 97.7% with 125 training samples.",
+      "rising from 62.7% to 96.6%.",
+      "ultimately achieving a test accuracy of at least 95% when training with 125 samples for this line classification task."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The main text says the Nelder-Mead 'highest accuracy of 97.3%' came from Figure 4; that number is in the Figure 2 caption, and Figure 4 gives 97.7%."
+    },
+    {
+     "id_suggestion": "fid-1q-line-random-peaks",
+     "value": "The authors report, for the one-qubit fidelity classifier on line classification with a random dataset, that all methods surpass 90% accuracy with 50 training samples: L-BFGS-B peaks at 92.8% with 50, COBYLA reaches 93.5%, Nelder-Mead 93% with 40 and SLSQP 96.4% with 45.",
+     "anchor": "Supplementary Note 2 (Figure 5), p.18; Results, p.5",
+     "quotes": [
+      "Notably, with just 50 training samples, all methods surpass the 90% accuracy threshold.",
+      "the L-BFGS-B method reaches the peak accuracy of 92.8% with 50 training samples.",
+      "attains a superior accuracy of 93.5%.",
+      "showing its peak accuracy of 93% with 40 training samples",
+      "achieves an impressive peak test accuracy of 96.4% for line classification using a random dataset, attained with 45 training samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fid-1q-line-more-stable-than-circle",
+     "value": "The authors state that the accuracy curves for the line (linear) classification are more stable and consistent across all optimization techniques than those for the circle (non-linear) classification, which fluctuate more. They offer three possible causes, including that circle classification may trap algorithms in local minima.",
+     "anchor": "Results, p.5; Supplementary Note 2, p.18",
+     "quotes": [
+      "A comparison of Figures 2 and 4 highlights that LCP exhibits more stable and consistent accuracy curves across all optimization techniques, while non-LCP shows greater variability and fluctuations.",
+      "This difference may arise from several factors: (1) LCP likely aligns better with linear decision boundaries"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The causes are hypotheses ('may', 'could stem from'); the paper does not test them."
+    },
+    {
+     "id_suggestion": "trace-1q-circle-fixed-peaks",
+     "value": "The authors report, for the one-qubit trace-distance classifier on circle classification with a fixed dataset, that test accuracy peaks at 79.2% for L-BFGS-B and 84.6% for COBYLA, both with 100 training samples, 72.6% for Nelder-Mead with 60, and 83.6% for SLSQP with 100.",
+     "anchor": "Results, p.5; Supplementary Note 3 (Figure 6), p.18",
+     "quotes": [
+      "the L-BFGS-B minimization method achieves its highest test accuracy at 79.2% with a dataset comprising 100 training samples.",
+      "ultimately achieves a higher peak test accuracy of 84.6%, also with 100 training samples.",
+      "which records its optimal test accuracy at 72.6% utilizing 60 training samples.",
+      "which attains its peak test accuracy at 83.6% with a dataset of 100 training samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "trace-1q-circle-random-peaks",
+     "value": "The authors report, for the one-qubit trace-distance classifier on circle classification with a random dataset, that L-BFGS-B reaches its highest test accuracy of 77.8% with 45 training samples, Nelder-Mead 75.1% with 50, SLSQP 74.6% with 50, and that test accuracy ranges from 65% to 78%.",
+     "anchor": "Supplementary Note 3 (Figure 7), p.19; Results, p.5",
+     "quotes": [
+      "achieving its highest test accuracy of 77.8% with 45 training samples.",
+      "which reaches its peak test accuracy of 75.1% with 50 training samples.",
+      "reaching 74.6% with 50 samples.",
+      "yields test accuracy ranging from 65% to 78% on the random dataset"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The COBYLA value differs between the main text (72.9%) and Supplementary Note 3 (72.8% at 45 samples)."
+    },
+    {
+     "id_suggestion": "trace-1q-line-fixed-peaks",
+     "value": "The authors report, for the one-qubit trace-distance classifier on line classification with a fixed dataset, that SLSQP reaches the highest test accuracy of 93.3% using just 40 training examples, ahead of L-BFGS-B at 91.8% with 100, COBYLA at 87.4% and Nelder-Mead at 87% with 60.",
+     "anchor": "Results, p.5; Supplementary Note 3 (Figure 8), p.19-20",
+     "quotes": [
+      "this technique achieves the highest accuracy on the test set, reaching 93.3% using just 40 training examples.",
+      "reaching 91.8% with 100 training samples.",
+      "increasing to 87.4%.",
+      "significantly improves to 87% with the addition of 60 training samples"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "trace-1q-line-random-peaks",
+     "value": "The authors report, for the one-qubit trace-distance classifier on line classification with a random dataset, peak test accuracies of 86.3% for L-BFGS-B with 55 training samples, 86.8% for COBYLA with 35, 88.1% for Nelder-Mead with 40, and 88.3% for SLSQP with 55.",
+     "anchor": "Supplementary Note 3 (Figure 9), p.20",
+     "quotes": [
+      "which attains its peak test accuracy of 86.3% with 55 training samples.",
+      "which achieves its highest test accuracy of 86.8% with a relatively smaller dataset of 35 training samples.",
+      "It successfully achieves a test accuracy of 88.1% with 40 training samples.",
+      "the highest test accuracy being recorded at 88.3% with 55 training samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Peaks differ by under 2.5 points across the four methods on one dataset draw; the ranking is not tested for significance."
+    },
+    {
+     "id_suggestion": "trace-lower-than-fidelity",
+     "value": "The authors state that, comparing circle classification on the fixed dataset, the accuracies achieved with the trace distance cost function are notably lower across all minimization methods than those with the fidelity cost function.",
+     "anchor": "Supplementary Note 4 (Figure S4.2), p.21",
+     "quotes": [
+      "accuracies achieved using the trace distance cost function are",
+      "notably lower across all minimization methods compared to those obtained with the fidelity cost function."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This stands against the Introduction's claim that trace distance gives a more stable and scalable training process; the paper's own fixed-dataset circle results favour fidelity. Figure S4.1 and S4.2 plot the accuracy at 50 samples."
+    },
+    {
+     "id_suggestion": "fixed-vs-random-dataset-pattern",
+     "value": "The authors state, for the fidelity cost function, that in circle classification tasks the fixed dataset consistently yields higher accuracies than the random dataset for all four minimization methods; for the trace distance cost function they state that the random dataset improves accuracy over the fixed dataset for all methods on circle classification.",
+     "anchor": "Supplementary Note 4 (Figures S4.1, S4.2), p.20-21",
+     "quotes": [
+      "in circle classification tasks, the fixed dataset consistently yields higher accuracies than their random counterparts for all tested minimization methods.",
+      "In circle classification tasks, the random dataset not only demonstrates improved accuracy over the fixed dataset for all minimization methods"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Supplementary Note 4 comparison is at 50 training samples (figure captions); the trace-distance explanation offered (sensitivity to variance) is a conjecture."
+    },
+    {
+     "id_suggestion": "fig10-lcp-single-vs-two-vs-entangled",
+     "value": "The authors report, for the linear classification task with the fidelity cost function and the Nelder-Mead method, that single-qubit test accuracy rises from 51.6% to 92% after 75 training samples and stays between 92% and 97.7%, with a computational time of 62.15 seconds at 250 samples. The two-qubit classifier starts at 73.2%, peaks at 95.7% with 175 samples and takes 260 seconds at 250 samples. The two-qubit entangled classifier reaches the highest peak accuracy, 97.5%, with pronounced fluctuations and the same 260 seconds.",
+     "anchor": "Results (Figure 10), p.6; Supplementary Note 5, p.22",
+     "quotes": [
+      "the single-qubit system shows a steep learning curve, with accuracy rising from 51.6% to 92% after just 75 training samples",
+      "its computational time reaches 62.15 seconds for 250 samples",
+      "which starts with higher accuracy (73.2%) and gradually peaks at 95.7% with 175 samples but with a significantly higher computational time of 260 seconds for 250 samples",
+      "while achieving the highest peak accuracy (97.5%), also exhibits pronounced fluctuations in accuracy and matches the non-entangled system’s computational cost of 260 seconds",
+      "stabilizing between 92% and 97.7% as the sample size increases to 250"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Figure 10 caption does not say whether the data are fixed or random. The text range for single-qubit accuracy is 92% to 97.7% up to 250 samples in Results but up to 125 in Supplementary Note 5. The entangled peak is 0.2 points under the single-qubit peak of 97.7%, so 'highest peak accuracy' is among the two-qubit systems only."
+    },
+    {
+     "id_suggestion": "fig11-two-qubit-layers-nonlinear-fixed",
+     "value": "The authors report, for non-linear classification with the Nelder-Mead method on a fixed dataset, that 175 training samples was the threshold for the highest accuracy without overfitting, that the two-qubit classifier starts at a test accuracy of 73.5% and the entangled one at 47.6%, and that both classifiers plateau in performance after 12-15 layers while the entangled classifier benefits more dramatically early on.",
+     "anchor": "Results (Figure 11), p.6; Supplementary Note 5, p.23",
+     "quotes": [
+      "identifying 175 samples as the threshold for fixed dataset.",
+      "the 2-qubit classifier showing higher initial test accuracy (73.5%) and more stable performance, while the 2-qubit entangled classifier starts lower (47.6%)",
+      "Both classifiers plateau in performance after 12-15 layers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Accuracy at the plateau is not given as a number in the text. Layers 1 to 20 were swept with 175 samples chosen from the same figure."
+    },
+    {
+     "id_suggestion": "fig12-lcp-random-times-and-lowest-accuracy",
+     "value": "The authors report, for the linear classification task on a random dataset with the fidelity cost function and 250 training samples, that COBYLA completed in 9 minutes for both two-qubit classifiers, with L-BFGS-B at 90 and 71 minutes and Nelder-Mead at 89 and 87 minutes for the non-entangled and entangled classifiers, and SLSQP at 45 and 44 minutes. They report the lowest test accuracy as 94% for non-entangled and 95.3% for entangled.",
+     "anchor": "Results, p.9; Supplementary Note 5 (Figure 12), p.24",
+     "quotes": [
+      "the COBYLA minimization method completed the tasks for 2-qubit and 2-qubit entangled in just 9 minutes for both classifiers.",
+      "L-BFGS-B and NELDER MEAD take the most time, with 90 and 89 minutes for the non-entangled classifier, respectively, and reduced times of 71 and 87 minutes for the entangled version, respectively.",
+      "SLSQP occupies a middle ground, requiring 45 minutes.",
+      "the COBYLA minimization method achieved the lowest test accuracy (94% for non-entangled and 95.3% for entangled)",
+      "The experiment uses a random dataset with 250 training samples",
+      "NELDER_MEAD and SLSQP methods remain at 87 and 44 minutes respectively"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Supplementary Note 5 gives a different method for the lowest entangled accuracy: 'NELDER MEAD achieves the lowest test accuracy of 95.3%'. The paper gives no single value for the spread across the 20 runs."
+    },
+    {
+     "id_suggestion": "fig13-nonlinear-random-accuracy",
+     "value": "The authors report, for non-linear classification on a random dataset with 250 training samples, that for the two-qubit classifier L-BFGS-B exceeds 90% in both train and test accuracy, COBYLA has the lowest test accuracy at 76.7% (train 81.4%), and Nelder-Mead and SLSQP have test accuracies between 82-87%; for the entangled classifier COBYLA improves to 85.4%.",
+     "anchor": "Results, p.9; Supplementary Note 5 (Figure 13), p.24-25",
+     "quotes": [
+      "the 2-qubit classifier shows L-BFGS-B as the best performer, exceeding 90% in both train and test accuracies, while COBYLA has the lowest test accuracy at 76.7%.",
+      "COBYLA shows the lowest performance, with a test accuracy of 76.7% and train accuracy 81.4%.",
+      "NELDER_MEAD and SLSQP offer intermediate results, with test accuracies between 82-87%.",
+      "COBYLA notably improving to 85.4%",
+      "evaluating the accuracy and computational time with 250 training samples"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fig13-nonlinear-random-times",
+     "value": "The authors report, for non-linear classification on a random dataset, that COBYLA is the fastest at 9 minutes for both classifiers, that L-BFGS-B takes 130 minutes for the two-qubit classifier and 81 minutes for the entangled one, and that SLSQP stays around 42-45 minutes in both.",
+     "anchor": "Results, p.9; Supplementary Note 5, p.24-25",
+     "quotes": [
+      "COBYLA is the fastest for both classifiers, taking just 9 minutes, while L-BFGS-B is the slowest for the 2-qubit classifier at 130 minutes but reduces to 81 minutes in the entangled system.",
+      "SLSQP remaining stable across both classifiers at around 42-45 minutes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Supplementary Note 5 adds Nelder-Mead at 89 minutes for the two-qubit and 88 minutes for the entangled classifier, slightly above L-BFGS-B at 81."
+    },
+    {
+     "id_suggestion": "entangled-better-accuracy-with-more-cost-abstract",
+     "value": "The authors state in the abstract that the two-qubit entangled classifier shows improved accuracy over its non-entangled counterpart, albeit with increased computational cost, and that it is the best option for a 'real word random dataset' in terms of accuracy and computational cost.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "The two-qubit entangled classifier shows improved accuracy over its non-entangled counterpart, albeit with increased computational cost.",
+      "Also the two-qubit entangled classifier are the best option for real word random dataset in order to accuracy and computational cost."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The abstract claims both higher cost and best cost; the body gives equal cost on the line task (260 s each, Figure 10) and lower cost for entangled on the random-dataset runs (for example L-BFGS-B 90 to 71 minutes). The 'real word' dataset is synthetic."
+    },
+    {
+     "id_suggestion": "entangled-outperforms-accuracy-and-efficiency-supp",
+     "value": "The authors state in the supplementary document that the two-qubit entangled classifier generally outperforms the two-qubit non-entangled classifier in both accuracy and computational efficiency, and that its closer alignment of train and test accuracies suggests enhanced generalization.",
+     "anchor": "Supplementary Note 5 (Figure 12 conclusion), p.24",
+     "quotes": [
+      "the 2-qubit entangled classifier generally outperforms the 2-qubit non-entangled classifier in both accuracy and computational efficiency.",
+      "the 2qubit entangled classifier's closer alignment of train and test accuracies suggests enhanced generalization capabilities"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Figure 10 reports equal time (260 seconds) and Nelder-Mead timings are 89 versus 87 minutes; the efficiency gain is concentrated in L-BFGS-B (90 to 71 minutes). No significance test is given."
+    },
+    {
+     "id_suggestion": "claim-outperforms-existing-models",
+     "value": "The authors state that their findings highlight the potential of data re-uploading in quantum machine learning outperforming existing quantum classifier models in terms of accuracy and robustness, and that their approach demonstrates substantial improvements over traditional models, particularly in handling complex patterns within minimal datasets.",
+     "anchor": "Abstract, p.1; Discussion, p.11",
+     "quotes": [
+      "Our findings highlight the potential of data re-uploading in Quantum machine learning outperforming existing quantum classifier models in terms of accuracy and robustness.",
+      "demonstrates substantial improvements over traditional models, particularly in handling complex patterns within minimal datasets."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper reports no classical baseline and one reference benchmark (89% at 200 samples on the circle task, Supplementary Note 1); no experiment compares against another quantum classifier model."
+    },
+    {
+     "id_suggestion": "claim-trace-distance-barren-plateau",
+     "value": "The authors state that the trace distance cost function helps address the barren plateau problem, that this issue is especially pronounced with global cost functions like fidelity, and that with trace distance the classifier becomes less prone to the vanishing gradient effect, providing a more stable and scalable training process.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "Moreover, the trace distance cost function helps address the barren plateau problem",
+      "This issue is especially pronounced with global cost functions like fidelity.",
+      "By employing trace distance, the classifier becomes less prone to this vanishing gradient effect, providing a more stable and scalable training process."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No gradient measurement is reported, and the trace-distance classifiers are one-qubit with 5 layers, where barren plateaus are not expected to matter. Reported trace-distance accuracies are lower than fidelity ones."
+    },
+    {
+     "id_suggestion": "claim-novelty-gaps-in-literature",
+     "value": "The authors state that there is still a lack of research comparing different cost functions, minimization methods and classification patterns with data re-uploading, that the impact of data re-uploading on various minimization methods remains largely unexplored, and that the exploration of a random dataset in data re-uploading has not been previously reported.",
+     "anchor": "Introduction, p.2; Results, p.6",
+     "quotes": [
+      "there is still a lack of research comparing different cost functions, minimization methods, and classification patterns in combination with data reuploading techniques.",
+      "The exploration of random dataset within the context of data reuploading has not been previously reported"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-introduces-trace-distance-first",
+     "value": "The authors state that they introduce the trace distance cost function as an alternative to the fidelity cost function, highlighting its distinct advantages in quantum classification tasks for the first time, and that the work extends earlier research that examined primarily the L-BFGS-B method with the fidelity cost function on a fixed dataset.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "we introduce the trace distance cost function as an alternative to the fidelity cost function, highlighting its distinct advantages in quantum classification tasks for the first time",
+      "Building on previous research that primarily examined the 'L-BFGS-B' method for fidelity cost function and fix data set"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-synthetic-data-and-planned-comparisons",
+     "value": "The authors state that they are still considering applying the model to random datasets that simulate real-world data, plan comparative analyses between fixed and random datasets, and that their initial results suggest further investigation is warranted to validate the methodology across a broader range of random datasets and to compare it against existing quantum machine learning techniques.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "To comprehensively evaluate our proposed model, we are considering applying it to random datasets that simulate real-world data for potential applications.",
+      "This encouraging outcome suggests that further investigation is warranted to validate the effectiveness of the methodology across a broader range of random datasets"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Introduction, p.2: the paper states what remains to be done.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "This limit sits beside the Abstract's claim of outperforming existing models; the paper itself says the comparison is future work."
+    },
+    {
+     "id_suggestion": "future-work-complex-systems",
+     "value": "The authors state that future work will focus on extending these methodologies to more complex quantum systems and exploring their application in broader quantum computing tasks.",
+     "anchor": "Discussion, p.11",
+     "quotes": [
+      "Future work will focus on extending these methodologies to more complex quantum systems and exploring their application in broader quantum computing tasks."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Discussion, p.11: the paper's own stated limit.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-local-minima-and-method-choice",
+     "value": "The authors state that the choice of optimization method significantly impacts the classifier's performance, especially with smaller training sets and the inherent challenges of local minima in quantum circuits, and that Nelder-Mead is noted for its robustness, particularly its lower susceptibility to local minima.",
+     "anchor": "Method, p.13; Supplementary Note 7, p.29",
+     "quotes": [
+      "The choice of optimization method significantly impacts the classifier's performance, especially when dealing with smaller training sets and the inherent challenges of local minima in quantum circuits.",
+      "For instance, the Nelder-Mead method is noted for its robustness, particularly its lower susceptibility to local minima."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The Nelder-Mead robustness statement is uncited and is not tested here; Nelder-Mead overfits in several of the paper's own trace-distance results."
+    },
+    {
+     "id_suggestion": "claim-single-qubit-universal-classifier-cited",
+     "value": "The authors state, citing the original data re-uploading work, that a single-qubit classifier with data re-uploading is a universal approximator, with universality hinging on the frequency of data re-uploading, and that entanglement may provide a quantum advantage in classification though the analogy with neural networks is not fully understood.",
+     "anchor": "Supplementary Note 6, p.27",
+     "quotes": [
+      "a single-qubit quantum classifier, enhanced by the technique of data re-uploading, emerges as a universal approximator for any conceivable classification function.",
+      "Entanglement may provide a quantum advantage in classification, though the analogy between multi-qubit classifiers and neural networks with entanglement is not fully understood and requires further exploration."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The universality result is attributed to Perez-Salinas et al.; this paper proves nothing about universality."
+    },
+    {
+     "id_suggestion": "code-suppnote8-training-loop-details",
+     "value": "The code listing the authors give in the supplement builds the data once with the data generator, takes the first 250 samples for training and the rest for testing, and trains in a loop 'while i<21' with a new random parameter start each pass, averaging train and test accuracy over the passes. The listing's minimizer function has no seed argument, although the driver script sets a seed value of 30.",
+     "anchor": "Supplementary Note 8, p.31 and p.37",
+     "quotes": [
+      "data, drawing = data_generator(problem)",
+      "train_data = data[:250]",
+      "while i<21:",
+      "seed = 30 #random seed"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Supplementary Note 8: the authors' released code as printed.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "In the printed code the data are generated once per call, outside the loop, so the 20 passes differ in parameter initialisation only; the Results text says random data were generated for each of the 20 iterations. The seed set in the driver is not passed to the minimizer. The training-size sweep is not in the listing. These are readings of a code diff, not tested runs."
+    },
+    {
+     "id_suggestion": "code-trace-cost-maximises-distance-to-label",
+     "value": "The code listing shows the trace-distance cost for the scipy methods as the negative of the average trace distance to the label state, and the classification step picks the class with the largest trace distance (argmax), with a two-class label state given as Bloch vectors with opposite signs.",
+     "anchor": "Supplementary Note 8 (trace_minimization.py, test_data.py, problem_gen.py), p.35-39",
+     "quotes": [
+      "return -Av_Tr(theta, alpha, train_data, reprs, entanglement)",
+      "return np.argmax(Trace)",
+      "reprs[0] = np.array([0.2938926261462367, -0.5090369604551273, 0.8090169943749473])"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Supplementary Note 8: the authors' code as printed.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Training pushes the output as far as possible from the label vector and classification takes the farthest label, which is self-consistent for two antipodal labels but is not the minimum-distance rule the Method text implies. The code stores a Bloch vector `C.r` set inside the single-qubit rotation routine, so trace-distance results are for the one-qubit case only."
+    }
+   ]
+  }
+ ]
+}
