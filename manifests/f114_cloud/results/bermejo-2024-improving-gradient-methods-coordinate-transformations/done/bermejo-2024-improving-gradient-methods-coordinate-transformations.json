@@ -1,0 +1,409 @@
+{
+ "papers": [
+  {
+   "record_id": "bermejo-2024-improving-gradient-methods-coordinate-transformations",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Bermejo-Aizpurua-Orus_2023_Improving-Gradient-Methods-via-Coordinate-Transformations__2304.06768.pdf",
+   "title_in_file": "Improving Gradient Methods via Coordinate Transformations: Applications to Quantum Machine Learning",
+   "version_note": "arXiv:2304.06768v2, 25 Apr 2024. The text matches the record.",
+   "pages": 9,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A method that adds the cost function as an extra coordinate and changes coordinates (hyperspherical or plane rotation) in gradient-based optimization, benchmarked by the authors on 18 quantum machine learning algorithms implemented in PennyLane.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "bermejo-18-algorithms",
+     "verdict": "confirmed",
+     "note": "The sentence is in Sec. III as stored. The same section also says the method boosts all tested methods, which the paper's own 15 of 18 does not match (see new assertion).",
+     "value": "",
+     "anchor": "Sec. III, p.4",
+     "quotes": [
+      "we have revisited 18 different algorithms, claiming significant advantages (i.e., faster convergence or lower cost function values) for 15 of them."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "bermejo-extra-coordinate-essential",
+     "verdict": "narrowed",
+     "note": "The paper gives no data, setup or figure for these implementations. It names them only as similar to kernel methods. The value must say the result is reported without evidence.",
+     "value": "The authors state, without showing data, that implementations which extended the coordinate space without adding the cost function as an extra coordinate, in a way similar to kernel methods, gave no significant advantage in convergence.",
+     "anchor": "Sec. II, p.4",
+     "quotes": [
+      "where we just extended the coordinate space, but without adding the cost function as an extra coordinate, in a way similar to kernel methods.",
+      "we have seen no significant advantage in convergence, in stark contrast with the two methods presented above."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The text gives no number of implementations, no problems and no figure, so the result cannot be checked from the paper."
+    },
+    {
+     "id": "bermejo-fewer-iterations",
+     "verdict": "narrowed",
+     "note": "The 90 to 54 figure holds for reaching a limiting cost value of 10^-5 in the function-fitting example from Ref. [5] (quantum signal processing polynomial). The stored value omits that condition.",
+     "value": "The authors report that, for function fitting with a quantum signal processing polynomial, to reach a limiting cost value of 10−5 their hyperspherical coordinates reduced the number of iterations for convergence from 90 in the original implementation to 54, a reduction of 40% of iterations.",
+     "anchor": "Sec. III, p.5, Fig. 3 and Table I",
+     "quotes": [
+      "to reach a limiting cost value of 10−5, we were able to reduce the number of iterations for convergence from 90 in the original implementation to 54 in ours, this is, a reduction of 40% of iterations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper reports one run count per method with no repeat runs or spread for this example."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "bermejo-core-idea-cost-as-coordinate",
+     "value": "The authors state that, if the problem coordinates do not work, they change them by including the cost as an extra coordinate.",
+     "anchor": "Sec. II, p.2",
+     "quotes": [
+      "if the problem coordinates do not work, then we change them by including the cost as an extra coordinate."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper states its own method here.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "bermejo-aim-escape-plateaus-not-lower-cost",
+     "id_suggestion": "bermejo-aim-escape-plateaus-not-lower-cost",
+     "value": "The authors state that their approach aims not to lower the cost function values, but specifically to move out from barren plateaus.",
+     "anchor": "Sec. I, p.1",
+     "quotes": [
+      "Importantly, we stress that our approach aims not to lower the cost function values, but rather and specifically to move out from barren plateaus."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own aim in Sec. I.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Table III reports lower final cost values for the rotation method, so the paper also presents cost value gains."
+    },
+    {
+     "id_suggestion": "bermejo-option1-hyperspherical",
+     "value": "The authors define Option 1 as a change to (n + 1)-dimensional hyperspherical coordinates, using changes of the cost function in the original cartesian description to update the hyperspherical variables, then projecting the new point back onto the original cost function.",
+     "anchor": "Sec. II.A, p.2",
+     "quotes": [
+      "Without loss of generality, we will use (n + 1)-dimensional hyperspherical coordinates.",
+      "we will simply update the variables in the hyperspherical coordinates using changes of the cost function in the original cartesian description"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own procedure in Sec. II.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bermejo-option2-plane-rotation",
+     "value": "The authors define the second option as an alternative to the hyperspherical change: rotating the frame of the space formed by the parameters and the cost. They state that the rotation angle may work as an extra hyperparameter, as in most of their results.",
+     "anchor": "Sec. II.B, p.2",
+     "quotes": [
+      "An alternative to the change to hyperspherical coordinates is to rotate the frame.",
+      "the rotation angle may not be necessarily fixed, so that it can work as an extra hyperparameter in the optimization, which has been the case for most of our results."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own procedure in Sec. II.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The rotation angle is a tuned hyperparameter, so the reported gains include the cost of tuning it. The paper gives no tuning budget."
+    },
+    {
+     "id_suggestion": "bermejo-apply-only-at-plateaus-option",
+     "value": "The authors state that the change of coordinates can be implemented only when the optimization falls in local minima or barren plateaus, or can alternate with the original coordinates during the optimization.",
+     "anchor": "Sec. II.A, p.2",
+     "quotes": [
+      "this change of coordinates can be implemented only when we fall in local minima or barren plateaus"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup here.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper does not say which schedule was used in each benchmark."
+    },
+    {
+     "id_suggestion": "bermejo-rotation-point-placement-claim",
+     "value": "The authors state that placing the rotating point elsewhere does not affect the performance of the method.",
+     "anchor": "Sec. II.B, p.3",
+     "quotes": [
+      "It is also worth noticing that placing the rotating point elsewhere does not affect the performance of the method."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim with no proof or data in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bermejo-learning-rate-retuning",
+     "value": "The authors state that gradient scales can be substantially different in the new coordinates, so the previously optimal learning rate may no longer be effective, and that a modified optimization process will require further tuning of hyperparameters such as the learning rate.",
+     "anchor": "Sec. II, p.4",
+     "quotes": [
+      "The gradients’ scale can be substantially different in the new coordinates, which implies that the previously optimal learning rate may no longer be effective.",
+      "any modification in the optimization process will require further tuning of important hyperparameters as the learning rate."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this as a condition on its own method in Sec. II.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Fig. 2 plots the iteration count against the learning rate for one algorithm only."
+    },
+    {
+     "id_suggestion": "bermejo-benchmark-setup-pennylane",
+     "value": "The authors state that the comparisons use original implementations in PennyLane, that their improvement is obtained against optimal and fine-tuned implementations and not merely naive ones, and that this accounts for using the most efficient optimizer for each case, which happens to be mostly Adam.",
+     "anchor": "Sec. III, p.4",
+     "quotes": [
+      "this improvement is obtained against optimal and fine-tuned implementations of the original algorithms using PennyLane, and not merely naive ones."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the setup of its own benchmarks.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper gives no tuning protocol for the baselines, so the claim of optimal baselines cannot be checked from the text. All results are from simulation in PennyLane."
+    },
+    {
+     "id_suggestion": "bermejo-boosts-all-vs-15-of-18",
+     "value": "The authors state that their algorithm boosts the performance of all the tested methods, and also state that they claim significant advantages for 15 of the 18 algorithms revisited.",
+     "anchor": "Sec. III, p.4",
+     "quotes": [
+      "Here we show how our algorithm actually boosts the performance of all the tested methods.",
+      "we have revisited 18 different algorithms, claiming significant advantages (i.e., faster convergence or lower cost function values) for 15 of them."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the two statements differ.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "All tested methods and 15 of 18 cannot both be the full set. The paper does not say which 3 algorithms showed no significant advantage, nor show their results."
+    },
+    {
+     "id_suggestion": "bermejo-hyperspherical-five-algorithms",
+     "value": "The authors report that the change to hyperspherical coordinates allows substantially-faster convergence in five quantum machine learning algorithms, with respect to their original optimal implementation.",
+     "anchor": "Sec. III, p.4, Table I",
+     "quotes": [
+      "the change to hyperspherical allows for substantially-faster convergence in five quantum machine learning algorithms, with respect to their original optimal implementation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table I rows are numbers of iterations averaged as the table caption says, but the paper gives no run counts or spread for most rows."
+    },
+    {
+     "id_suggestion": "bermejo-local-cost-barren-plateau-result",
+     "value": "The authors report, for the local-cost-function algorithm of the local-cost-function reference over 50 different initial configurations, that the original global approach had 30% success in overcoming barren plateaus with more than 100 iterations on average, local cost functions had 98% success with 29.14 iterations on average, and their hyperspherical coordinates reached 100% success with 4.7 iterations on average.",
+     "anchor": "Sec. III, p.4-5, Table I and Fig. 2",
+     "quotes": [
+      "we implemented simulations for a set of 50 different initial configurations to solve a certain optimization problem.",
+      "The original global approach showed 30% success in overcoming barren plateaus with more than 100 iterations in average for convergence.",
+      "Local cost functions showed a ratio of success of 98% with an average number of iterations equal to 29.14.",
+      "we reach a success of 100% with 4.7 iterations in average, implying a very significant improvement, see Fig. 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper does not state the problem, circuit size or cost threshold that defines convergence."
+    },
+    {
+     "id_suggestion": "bermejo-iris-classifier-steps",
+     "value": "The authors report, for the variational quantum classifier of the Farhi and Neven reference on the Iris dataset, that to reach a similar cost of ≈ 0.23 their hyperspherical implementation reduces the number of steps from roughly 100 to roughly 30, a speedup of 70%, with smoother convergence.",
+     "anchor": "Sec. III, p.5-6, Fig. 4",
+     "quotes": [
+      "to achieve a similar value of the cost of ≈ 0.23, we reduce the number of steps from roughly 100 to roughly 30, implying a speedup of 70% with the new implementation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The step counts are read from a plot by the authors and are given as rough values. Table I lists 100 and 30 for this row."
+    },
+    {
+     "id_suggestion": "bermejo-vqt-steps",
+     "value": "The authors report, for the variational quantum thermalizer of the cited reference, that their hyperspherical implementation reaches convergence in almost half the number of optimization steps, from 103 in the original implementation to 51.",
+     "anchor": "Sec. III, p.6, Fig. 5 and Table I",
+     "quotes": [
+      "we reach convergence in almost half the number of optimization steps, reducing from 103 in the original implementation to just 51 in ours."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bermejo-rotation-ten-iter-three-cost",
+     "value": "The authors report that the method of frame rotations gives faster convergence in ten quantum machine learning algorithms and lower cost functions in three, with respect to the original implementation.",
+     "anchor": "Sec. III, p.6, Tables II and III",
+     "quotes": [
+      "ten quantum machine learning algorithms and lower cost functions in three, with respect to their original optimal implementation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table III lists four algorithms with lower cost, while the text says three; the text and the table differ. Counting both tables, hyperspherical (5) and rotation (10 and 3) results overlap, so the 15 of 18 total cannot be rebuilt from the text alone."
+    },
+    {
+     "id_suggestion": "bermejo-hydrogen-spin-s1-rotation",
+     "value": "The authors report, for the variational quantum eigensolver for the hydrogen molecule at fixed total spin, a significant advantage of their rotation method in smoothness and in the number of iterations to converge to a certain cost value.",
+     "anchor": "Sec. III, p.7-8, Fig. 8 and Table II",
+     "quotes": [
+      "showing a significant advantage of our method both in smoothness and number of iterations to converge to a certain cost value."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 34 and 54 iteration counts are in the next sentence on p.8 (needs 34 iterations, in sharp contrast to the 54 needed by the original method) and are not repeated in the quote."
+    },
+    {
+     "id_suggestion": "bermejo-perturbative-gadgets-steps",
+     "value": "The authors report, for the perturbative gadgets algorithm of the cited reference, that their frame rotations reduce the number of optimization steps from 140 in the original method to 110.",
+     "anchor": "Sec. III, p.8, Fig. 9 and Table II",
+     "quotes": [
+      "our implementation is able to reduce the number of optimization steps from 140 in the original method to 110 by using frame rotations, as shown in Fig. 9."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bermejo-conclusion-general-classical-and-quantum",
+     "value": "The authors state that the procedure is completely general and can be applied both to classical and quantum machine learning algorithms.",
+     "anchor": "Sec. IV, p.8",
+     "quotes": [
+      "The procedure discussed in this paper is completely general, and can be applied both to classical and quantum machine learning algorithms."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the benchmarks are all quantum machine learning algorithms.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No classical machine learning benchmark appears in the paper."
+    },
+    {
+     "id_suggestion": "bermejo-limit-untested-deep-learning",
+     "value": "The authors state that the performance of the boosting should be further tested in the context of complex deep learning algorithms such as convolutional neural networks, transformers, and generative models.",
+     "anchor": "Sec. IV, p.8",
+     "quotes": [
+      "the performance of the boosting should be further tested in the context of complex deep learning algorithms such as convolutional neural networks, transformers, and generative models"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this open problem in Sec. IV.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The paper itself marks the method as untested on deep learning."
+    },
+    {
+     "id_suggestion": "bermejo-patent-applications-disclosure",
+     "value": "The authors acknowledge Norman Toporcer from Elion for supporting them with several patent applications in connection with parts of the work discussed in the paper.",
+     "anchor": "Acknowledgements, p.8",
+     "quotes": [
+      "We also acknowledge Norman Toporcer from Elion for supporting us with several patent applications in connection with parts of the work discussed here."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "The authors, employed by a company, describe their own work.",
+     "result_type": "vendor",
+     "context": "qml",
+     "reader_inference": "The authors are affiliated with Multiverse Computing, and the work is the subject of patent applications; this is a possible interest in the results."
+    }
+   ]
+  }
+ ]
+}
