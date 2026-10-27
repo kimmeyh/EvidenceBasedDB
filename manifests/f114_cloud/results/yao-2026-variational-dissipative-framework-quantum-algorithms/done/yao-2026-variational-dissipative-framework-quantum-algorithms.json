@@ -1,0 +1,895 @@
+{
+ "papers": [
+  {
+   "record_id": "yao-2026-variational-dissipative-framework-quantum-algorithms",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Yao-et-al._2026_A-Variational-Dissipative-Framework-for-Quantum-Algorithms__2605.25841.pdf",
+   "title_in_file": "A Variational Dissipative Framework for Quantum Algorithms",
+   "version_note": "",
+   "pages": 18,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A May 2026 arXiv preprint (2605.25841v1) that adds trainable ancilla-assisted dissipative channels to variational circuits, simulates them on a ground-state search (dissipative VQE) and a state-recovery task, and adds an appendix with conditional convergence theorems comparing a unitary and a dissipative variational algorithm.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "framework-definition",
+     "value": "The authors introduce a variational dissipative framework in which ancilla-assisted engineered dissipation is incorporated into parameterized quantum algorithms, with system-only variational layers combined with trainable dissipative modules.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "we introduce a variational dissipative framework in which ancilla-assisted engineered dissipation is incorporated into parameterized quantum algorithms.",
+      "system-only variational layers are combined with trainable dissipative modules"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The abstract defines the framework the paper studies.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dissipative-block-stinespring-channel",
+     "value": "The authors model each dissipative block as a parameterized Stinespring dilation of a trainable quantum channel: ancilla qubits start in the zero state, interact with the system through a parameterized unitary, and are then traced out, so that every block is a completely positive trace-preserving map acting on the system alone.",
+     "anchor": "Section 3.2, Eq. (8), p.4",
+     "quotes": [
+      "Each dissipative block is modeled as a parameterized Stinespring dilation of a trainable quantum channel,",
+      "interact jointly with the system through a parameterized unitary VSA(θ), and are then traced",
+      "every dissipative block defines a completely positive trace-preserving map acting effectively on the system alone"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 3.2 defines the block used in all simulations.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dissipative-block-implementation-iswap",
+     "value": "In the authors' numerical implementation the dissipative module consists of arbitrary single-qubit rotations together with system-ancilla iSWAP couplings in a fully connected pattern, giving nm iSWAP gates per dissipative round for an n-qubit system and an m-qubit ancilla register.",
+     "anchor": "Section 3.2, p.4; Appendix A.1, p.13-14",
+     "quotes": [
+      "arbitrary singlequbit rotations on the involved qubits together with system-ancilla iSWAP couplings",
+      "We use a fully connected system-ancilla pattern, where each system qubit is coupled to each ancilla qubit, leading to nm system-ancilla iSWAP gates in one dissipative round for a system of n qubits and an ancilla register of m qubits.",
+      "each round applies trainable local rotations to the involved qubits and then couples every system qubit to every ancilla qubit through an iSWAP gate."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the circuit used in its own simulations.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The text gives no gate count for the single-qubit rotations, and the number of trainable parameters per round is not stated."
+    },
+    {
+     "id_suggestion": "dissipative-vqe-protocol",
+     "value": "The authors define the dissipative VQE as alternating system-only variational layers with ancilla-assisted dissipative rounds starting from the all-zero state; after each round the ancillas are traced out and reset, and the loss is the final energy expectation value Tr of the Hamiltonian times the final system state.",
+     "anchor": "Section 3.3, Eqs. (9)-(11), p.4-5",
+     "quotes": [
+      "In the present implementation, we take ρin = |0⟩ ⟨0|⊗n, so that",
+      "each dissipative round is defined by",
+      "traced out, reset to |0⟩⊗m, and reintroduced in the next step. The loss function is the final energy expectation value"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 3.3 defines the protocol and loss used in the VQE experiments.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dissipative-recovery-protocol",
+     "value": "The authors define state recovery as the same dissipative block with the system-only variational layers removed, applied repeatedly to an imperfect input state with fresh ancillas each round, against a pure target state; the metric is the fidelity with the target, which reduces to Tr of the product of the final and target states because the target is pure, and the loss is one minus that fidelity.",
+     "anchor": "Section 3.4, Eqs. (12)-(17), p.5",
+     "quotes": [
+      "we use the same ancilla-assisted dissipative block as in the VQE setting, but remove the system-only variational layers.",
+      "the target state is taken to be a pure state",
+      "FT = Tr (ρT ρtar)",
+      "because ρtar is pure. Equivalently, one may minimize the loss"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 3.4 defines the recovery protocol and its metric.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-variational-principle-cited",
+     "value": "The paper states, for the standard VQE, that the variational energy Tr[Hρθ] is at least E0, the ground-state energy of H, so it provides an upper bound on the true ground-state energy.",
+     "anchor": "Section 2.1, Eq. (3), p.3",
+     "quotes": [
+      "E(θ) = Tr[Hρθ] ≥ E0,",
+      "so the variational energy provides an upper bound on the true ground-state energy."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A standard background fact the paper cites to prior VQE work rather than proves.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The bound holds for any physical state, including the mixed states the dissipative ansatz produces; the paper does not say so explicitly."
+    },
+    {
+     "id_suggestion": "dissipation-enlarges-variational-family",
+     "value": "The authors state that standard unitary VQE prepares a family of pure states, and that allowing dissipative operations enlarges this family because the resulting trial states may be mixed and can be described by parameterized completely positive trace-preserving maps.",
+     "anchor": "Section 2.1, Eq. (4), p.3",
+     "quotes": [
+      "In the standard unitary formulation of VQE, the variational ansatz prepares a family of pure states.",
+      "Allowing dissipative operations provides a natural way to enlarge this variational family, since the resulting trial states may be mixed"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A motivating statement; the paper shows no result about the expressive power of the enlarged family itself.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper does not show that the lower energies it reports need mixed trial states; the ground state of the benchmark Hamiltonians is pure and a pure-state ansatz could in principle reach it."
+    },
+    {
+     "id_suggestion": "stinespring-form-cited",
+     "value": "The paper states that any completely positive trace-preserving map acting on the system can be written in Stinespring form, as a joint system-ancilla unitary followed by tracing out the ancilla, and that the Kraus representation is another expression of the same transformation.",
+     "anchor": "Section 2.2, Eqs. (6)-(7), p.3",
+     "quotes": [
+      "Any completely positive trace-preserving (CPTP) map E acting on the system can be written in the Stinespring form",
+      "simply different ways of expressing the same"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook result the paper cites to Stinespring, Kraus and Nielsen and Chuang and does not prove.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The second quote is split across the text layer's line breaks; the sentence reads: the ancilla-assisted picture, the Stinespring dilation, and the Kraus-operator description are simply different ways of expressing the same open-system transformation."
+    },
+    {
+     "id_suggestion": "literature-gap-unified-framework",
+     "value": "The authors state that a unified ancilla-assisted framework supporting different variational objectives within the same trainable channel architecture is still lacking, and present their framework as filling it.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "a unified ancilla-assisted framework that supports different variational objectives within the same trainable channel architecture is still lacking."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's positioning claim about the literature with no systematic survey in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-hamiltonian-and-reference",
+     "value": "The authors benchmark the dissipative VQE on an open-boundary nearest-neighbor spin Hamiltonian with XX, YY and ZZ couplings and local X, Y and Z fields, and obtain the reference ground-state energies by exact diagonalization of the Hamiltonian matrices.",
+     "anchor": "Section 4.1, Eq. (18), p.6",
+     "quotes": [
+      "we benchmark the dissipative VQE on the open-boundary nearest-neighbor spin Hamiltonian",
+      "where the first summation describes nearestneighbor interaction terms and the second summation represents local fields.",
+      "the exact ground-state energies used as references are obtained by exact diagonalization of the corresponding Hamiltonian matrices."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own benchmark model and reference.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Exact diagonalization limits the benchmarks to small systems; the text does not give system sizes for Figs. 4, 6 and 10."
+    },
+    {
+     "id_suggestion": "recovery-target-states",
+     "value": "The authors use three recovery target states: the W state, the uniform superposition state, and a dressed cluster state built from controlled-Z layers and Ry rotations on the plus state, with D = 3 and every rotation angle equal to π/4.",
+     "anchor": "Section 4.1, Eqs. (19)-(21), p.6",
+     "quotes": [
+      "we consider three representative target states with different preparation structures.",
+      "the second is the uniform superposition state",
+      "and the third is a dressed cluster state",
+      "with D = 3 and αi(d) = π/4 for all i and d [39–41]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own recovery targets.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-fig2-ancilla-number-gain",
+     "value": "The authors report, for the XX-type model with Jx = 1.0 and hz = 0.3 (all other coefficients zero), trained with lr = 0.2, T = 1 dissipative round and depolarizing noise of strength p = 0.1, that increasing the ancilla number m gives faster early-stage energy descent and a lower final converged energy than the ancilla-free baseline; for n = 3 the curves separate gradually and for n = 5 the trend is much more pronounced.",
+     "anchor": "Section 4.1, Fig. 2, p.6 (curves are in the figure; the text gives no energy values)",
+     "quotes": [
+      "we begin with the representative choice Jx = 1.0 and hz = 0.3 in Eq. (18), with all other coefficients set to zero",
+      "the learning rate is set to lr = 0.2, the number of dissipative rounds is fixed at T = 1, and the training is performed under depolarizing noise with strength p = 0.1.",
+      "increasing m leads to a faster early-stage energy descent and a lower final converged energy compared with the ancilla-free baseline.",
+      "For n = 3 in panel (a), the curves separate gradually as m increases, while for n = 5 in panel (b), the same trend becomes much more pronounced"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated empirical result for one model and two system sizes, described only qualitatively in the text.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "No final energies, number of seeds, optimizer or iteration count appear in the text, and the ancilla-free baseline has fewer trainable parameters; the text does not report a parameter-matched unitary control."
+    },
+    {
+     "id_suggestion": "recovery-fig3-ancilla-number-gain",
+     "value": "The authors report that in the state-recovery task, once dissipative ancillas are introduced the fidelity rises well above the input-state baseline, and larger numbers of ancillas generally give faster recovery and higher final fidelity.",
+     "anchor": "Section 4.1, Fig. 3, p.6-7 (curves are in the figure; the text gives no fidelity values)",
+     "quotes": [
+      "Once dissipative ancillas are introduced, the fidelity rises well above the input-state baseline, and larger values of m generally produce both faster recovery and higher final fidelity.",
+      "this advantage becomes more pronounced as the ancilla register is enlarged."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated empirical result described only qualitatively; the text does not state the target state or noise for Fig. 3.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text does not say which target state, noise channel or noise strength Fig. 3 uses."
+    },
+    {
+     "id_suggestion": "vqe-noise-channels-fully-noisy",
+     "value": "The authors report that under amplitude-damping, bit-flip and depolarizing noise, in a fully noisy setting where noise also acts on the dissipative blocks themselves, the dissipative VQE converges faster, fluctuates less and reaches lower final energies than the ancilla-free baseline.",
+     "anchor": "Section 4.2, Fig. 4(a), p.7",
+     "quotes": [
+      "In the fully noisy setting considered here, noise acts not only on the main-system variational cir",
+      "cuit but also on the dissipative blocks themselves. Under Amplitude Damping (AD), BitFlip (BF), and Depolarizing (DP) noise, the dissipative VQE still converges faster, fluctuates less, and reaches lower final energies than the ancilla-free baseline."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated empirical result for one model; noise strengths and system size for Fig. 4(a) are not stated in the text.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-noise-strength-scan-appendix",
+     "value": "The authors report in an appendix noise-strength scan that for the ancilla-free VQE the gap between the converged energy and the exact ground-state value grows with noise strength, while the dissipative VQE with five ancillas keeps a smaller gap as the noise strength increases.",
+     "anchor": "Section 4.2, p.7; Appendix A.2, Fig. 10, p.14",
+     "quotes": [
+      "the dissipative VQE maintains a smaller gap to the exact ground-state value as the noise strength increases.",
+      "for which the gap between the converged energy and the exact ground-state value grows with noise strength",
+      "while panel (b) shows the dissipative VQE with five ancillas."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated empirical result described only qualitatively.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-three-hamiltonians-p001",
+     "value": "The authors report, with depolarizing noise of strength p = 0.01 in the fully noisy setting, that for three Hamiltonians (an XX-type model in a transverse Z field, the transverse-field Ising model and an XXZ-type model) the dissipative VQE converges faster, behaves more smoothly and reaches final energies closer to the exact ground-state values than the ancilla-free baseline.",
+     "anchor": "Section 4.2, Eqs. (22)-(24), Fig. 4(b), p.7",
+     "quotes": [
+      "where H1 is an XX-type model in a transverse Z field, H2 is the transverse-field Ising model, and H3 is an XXZ-type model",
+      "The data are obtained under the same fully noisy setting, with depolarizing noise of strength p = 0.01.",
+      "the dissipative VQE consistently converges faster, behaves more smoothly, and reaches final energies closer to the exact ground-state values than the ancilla-free baseline for all three Hamiltonians."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated empirical result on three small models; no energy values appear in the text.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The three models are translation-invariant spin chains solvable exactly or near-exactly; the text gives no system size for Fig. 4(b) and does not test molecular or otherwise harder Hamiltonians."
+    },
+    {
+     "id_suggestion": "smoother-curves-parameter-confound",
+     "value": "The authors state that the dissipative model contains more trainable parameters than the ancilla-free circuit, that the dissipative block acts as a trainable channel rather than merely a deeper unitary circuit, and that the smoother training curves should be viewed as a combined effect of the enlarged ansatz and the dissipative channel structure.",
+     "anchor": "Section 4.2, p.7-8",
+     "quotes": [
+      "the dissipative model contains more trainable parameters",
+      "the dissipative block acts as a trainable channel on the main system, rather than merely as a deeper unitary circuit.",
+      "the smoother curves should be viewed as a combined effect of the enlarged ansatz and the dissipative channel structure"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation; no ablation against a parameter-matched or depth-matched unitary circuit is reported in the text.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The text reports no control that separates the effect of the channel structure from the effect of extra parameters; the authors acknowledge the two are combined."
+    },
+    {
+     "id_suggestion": "recovery-preparation-noise-channels",
+     "value": "The authors report for a fixed dressed-cluster target that the dissipative recovery protocol improves the final fidelity over the input-state baseline under depolarizing, bit-flip and amplitude-damping preparation noise.",
+     "anchor": "Section 4.2, Fig. 5(a), p.8",
+     "quotes": [
+      "Fig. 5(a) focuses on a fixed dressed-cluster target state and compares different preparation-noise channels.",
+      "The dissipative recovery protocol improves the final fidelity over the input-state baseline under DP, BP, and AD noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated empirical result for one target state; fidelity values appear only in the figure.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text writes BP for the bit-flip channel here and BF in Section 4.2 for the VQE; both read as bit-flip."
+    },
+    {
+     "id_suggestion": "recovery-default-simulation-settings",
+     "value": "The authors state that, unless otherwise specified, the recovery simulations use three system qubits, three ancillas, learning rate 0.8, three dissipative rounds and noise strength 0.1.",
+     "anchor": "Section 4.2, Fig. 5 caption, p.8",
+     "quotes": [
+      "Unless otherwise specified, the simulations use n = 3 system qubits, m = 3 ancillas, learning rate lr = 0.8, dissipative rounds T = 3, and noise strength p = 0.1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The Fig. 5 caption states the scope of the recovery simulations.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "All recovery simulations stated in the text use three system qubits; no larger system is reported."
+    },
+    {
+     "id_suggestion": "recovery-fig5b-above-99-percent",
+     "value": "The authors report that with m = 3, T = 3, lr = 0.8 and depolarizing input noise of strength p = 0.1, the dissipative recovery model restores the final fidelity to above 99% within 100 optimization iterations for all three target states (W, uniform superposition, dressed cluster).",
+     "anchor": "Section 4.2, Fig. 5(b), p.8",
+     "quotes": [
+      "we fix m = 3, T = 3, and lr = 0.8, and prepare the input states under DP noise with strength p = 0.1.",
+      "target states, the dissipative recovery model restores the final fidelity to above 99% within 100 optimization iterations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated empirical result for three-qubit targets under one noise channel and strength.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Fidelity is computed from the simulated density matrix, so the figure is not subject to sampling noise; the text does not say whether the recovery channel is trained and evaluated on the same noisy input state."
+    },
+    {
+     "id_suggestion": "vqe-rounds-nonmonotonic-t3",
+     "value": "The authors report a nonmonotonic dependence of VQE performance on the number of dissipative rounds T: too few rounds give limited state reshaping and too many increase circuit depth and the number of trainable parameters; in their example T = 3 gives the best overall energy convergence.",
+     "anchor": "Section 4.3, Fig. 6(a), p.8-9",
+     "quotes": [
+      "Fig. 6(a) shows a nonmonotonic dependence on T",
+      "too few dissipative rounds provide limited state reshaping, whereas too many rounds increase the circuit depth and the number of trainable parameters",
+      "In this example, T = 3 gives the best overall energy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated empirical result from one example, with the physical settings given only in the figure.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "recovery-rounds-tradeoff",
+     "value": "The authors report for the recovery task that T = 4 or T = 5 can slightly exceed the T = 3 curve after about 55 iterations but require substantially longer training time and show weaker early-stage convergence, and they use T = 3 in most remaining experiments.",
+     "anchor": "Section 4.3, Fig. 6(b), p.9",
+     "quotes": [
+      "Larger values such as T = 4 or T = 5 can slightly exceed the T = 3 curve after about 55 iterations, but they require a substantially longer training time and show weaker early-stage convergence.",
+      "For this reason, we use T = 3 in most of the remaining experiments."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated empirical result from one example.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The choice of T = 3 is made on these curves, so later results with T = 3 are not independent of that selection."
+    },
+    {
+     "id_suggestion": "recovery-ancilla-plateau-noise-insensitivity",
+     "value": "The authors report that in the recovery task the final fidelity Fm approaches a plateau as the number of ancillas increases, and that the separation between curves for different noise strengths becomes much smaller once the plateau is reached.",
+     "anchor": "Section 4.3, Fig. 7, p.9",
+     "quotes": [
+      "Fig. 7 shows that the final fidelity Fm approaches a plateau as the number of ancillas increases.",
+      "the separation between curves with different noise strengths becomes much smaller after the plateau is reached."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated empirical result; the noise strengths and fidelity values appear only in the figure.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ancilla-saturation-values-by-state",
+     "value": "The authors report approximate ancilla-saturation values read from the final-fidelity plot of m = 2 for the W state, m = 5 for the uniform superposition state and m = 3 for the dressed cluster state, and state that the required ancilla resources are not determined solely by the amount of entanglement in the target state.",
+     "anchor": "Section 4.3, Fig. 7, p.9",
+     "quotes": [
+      "The effective saturation value is state dependent.",
+      "the approximate saturation values are m = 2 for |ψW ⟩, m = 5 for |ψ+⟩, and m = 3 for |ψDC⟩.",
+      "This suggests that the required ancilla resources are not determined solely by the amount of entanglement in the target state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An approximate value read from simulated curves for three three-qubit-scale targets; the entanglement remark is an author suggestion.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Fig. 5(b) uses m = 3 for all targets and reports above 99% fidelity, including for the plus state whose saturation value is m = 5 here, so the plateau and the 99% level are different thresholds."
+    },
+    {
+     "id_suggestion": "w-state-fidelity-gain-saturates-m2",
+     "value": "The authors report for W-state recovery that once m ≥ 2 the fidelity-gain curves for different ancilla numbers almost overlap, that the improvement is maximized at about m = 2, and that further ancillas give no noticeable additional gain.",
+     "anchor": "Section 4.3, p.9; Appendix A.2, Fig. 11, p.14",
+     "quotes": [
+      "Once m ≥ 2, the gain curves for different ancilla numbers almost overlap",
+      "The results show that the improvement is already maximized at about m = 2,",
+      "illustrating the effective ancilla saturation threshold m = 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated empirical result for one target state.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ancilla-saturation-kraus-explanation",
+     "value": "The authors explain ancilla saturation from the channel perspective: with too few ancillas the dissipative module has only a limited number of effective Kraus degrees of freedom and can correct only a restricted subset of noise-induced error components, and once the dominant recoverable modes are covered further ancillas give only marginal additional improvement.",
+     "anchor": "Section 4.3, p.9",
+     "quotes": [
+      "With too few ancillas, the dissipative module has only a limited number of effective Kraus degrees of freedom",
+      "so further ancillas provide only marginal additional improvement. We refer to this empirical crossover as ancilla saturation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation; the text proves no bound relating ancilla number to Kraus rank or to recoverable error modes.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper does not compute the Kraus rank of the learned channel or test the explanation directly."
+    },
+    {
+     "id_suggestion": "figure-text-best-5-seeds",
+     "value": "The text layer of the appendix figure panels carries the legend label The Best 5 Seeds in every panel, with ancilla = 0 through ancilla = 5 as curve labels.",
+     "anchor": "Appendix A.2, figure panels before the Fig. 11 caption, p.14",
+     "quotes": [
+      "T h e B est 5 S eed s 0 .0 0 6 0 .0 0 8 0 .0 1 0",
+      "a n c illa = 0 a n c illa = 1 a n c illa = 2 a n c illa = 3 a n c illa = 4 a n c illa = 5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Figure labels recovered from a garbled text layer; the body text never mentions seeds.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "If the panels plot the best 5 seeds, the reported curves may be selected seeds rather than means over all runs, and the body text never states the number of seeds or the selection rule; the figure labels are garbled so the attribution of these panels to Fig. 10 or Fig. 11 is uncertain."
+    },
+    {
+     "id_suggestion": "appendix-original-vqa-definition",
+     "value": "Appendix B defines the original variational quantum algorithm as a parameterized unitary ansatz, a product of parameterized gates, applied to an input state, with cost function the expectation value of an observable O in the resulting state.",
+     "anchor": "Appendix B.1, Definition 1, Eqs. (25)-(26), p.15",
+     "quotes": [
+      "Given a Hamitlonian H, let ρ0 be the input state and let U (θuni) be a parameterized unitary ansatz",
+      "Cuni(θuni) := Tr[Oρuni(θuni)] = Tr O U (θuni)ρ0U (θuni)† ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Appendix B.1 defines the object of the convergence analysis.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "appendix-dissipative-vqa-definition",
+     "value": "Appendix B defines the dissipative variational algorithm as a reset-assisted non-unital channel built from L layers of noisy parameterized evolution (a parameterized two-qubit layer, fixed single-qubit gates and contractive unital single-qubit noise) interleaved with a reset channel that resets qubits to the zero state with probability q and otherwise acts as the identity; the authors mainly consider q = 1.",
+     "anchor": "Appendix B.1, Definition 2, Eqs. (27)-(30), p.15",
+     "quotes": [
+      "the dissipative VQA utilizes reset-assisted non-unital quantum channel",
+      "Concretely, let Uθkdis denote the parameterized two-qubit layer at layer k, Vk a layer of fixed single-qubit gates, and N a tensor product of contractive unital single-qubit noise channels.",
+      "The reset channel Anr resets the qubits to |0⟩ with probability q ∈ (0, 1], and acts as the identity",
+      "Here, we mainly consider the case of q = 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Appendix B.1 defines the object of the convergence analysis.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "This model is the reset-assisted architecture of the cited prior work, with noisy parameterized two-qubit layers and a reset on a subset of qubits. It differs from the system-ancilla iSWAP circuit simulated in Section 4, and the paper gives no argument that Theorems 1 and 2 apply to the simulated circuits."
+    },
+    {
+     "id_suggestion": "appendix-gd-and-gap-definitions",
+     "value": "Appendix B.2 analyses plain gradient descent on the cost of each algorithm, with step size eta for algorithm A, and defines the one-step decrease as the cost drop over one step and the optimality gap as the cost minus its infimum.",
+     "anchor": "Appendix B.2, Eqs. (31)-(32), p.15-16",
+     "quotes": [
+      "Consider the optimization dynamics at step t for both the original VQA and dissipative VQA under gradient descent",
+      "θA,t+1 = θA,t − ηA∇CA(θA,t).",
+      "Define the one-step decrease and the optimality gap by",
+      "∆A,t := CA(θA,t) − CA∗ ,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Appendix B.2 defines the quantities used in the convergence analysis.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The analysis concerns exact-gradient descent on the noiseless expectation value; finite sampling noise in gradients, which the Introduction names as a NISQ difficulty, is not modeled."
+    },
+    {
+     "id_suggestion": "assumption1-smoothness",
+     "value": "Assumption 1 states that the cost CA of each algorithm is βA-smooth with gradient descent step size 0 < ηA ≤ 1/βA, and additionally assumes βA = O(poly(n)), which the authors say holds for local Hamiltonians with operator norm ∥O∥∞ = O(poly(n)).",
+     "anchor": "Appendix B.2, Assumption 1, p.16",
+     "quotes": [
+      "the cost CA is βA-smooth, that is",
+      "Gradient descent uses step size 0 < ηA ≤ 1/βA.",
+      "We additionally assume βA = O(poly(n)), which holds for local Hamiltonians with O-norm ∥O∥∞ = O(poly(n))."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states this as an assumption of its analysis.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The statement that polynomial smoothness holds for local Hamiltonians is asserted without proof or citation."
+    },
+    {
+     "id_suggestion": "assumption2-two-design",
+     "value": "Assumption 2 states that at initialisation the parameterised unitaries are drawn from a distribution forming a unitary 2-design on each gate, so that the expected partial derivative of the cost is zero at initialisation.",
+     "anchor": "Appendix B.2, Assumption 2, p.16",
+     "quotes": [
+      "distribution forming a unitary 2-design on each gate.",
+      "In particular, E[∂µCA(θA,0)] = 0 for all µ"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states this as an assumption of its analysis.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Assumption 2 is not invoked in any lemma or theorem as printed in the text."
+    },
+    {
+     "id_suggestion": "assumption3-pl-dissipative",
+     "value": "Assumption 3 posits a Polyak-Lojasiewicz condition for the dissipative VQA cost: there exists µdis > 0 such that, for all θ, half the squared gradient norm of the cost is at least µdis times the gap of the cost to its infimum.",
+     "anchor": "Appendix B.2, Assumption 3, Eq. (34), p.16",
+     "quotes": [
+      "Assumption 3 (PL condition for the dissipative VQA ). There exists µdis > 0 such that, for all θ,"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states this as an assumption of its analysis.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "A global Polyak-Lojasiewicz condition over all parameters for a noisy variational cost is assumed, not shown, and the paper gives no circuit or Hamiltonian for which it holds."
+    },
+    {
+     "id_suggestion": "assumption4-trajectory-flatness",
+     "value": "The trajectory-flatness assumption posits that there exist constants Buni > 0 and b > 1 such that, for all t ≥ 0 until the expected gap reaches a target ε, the expected squared gradient norm of the original VQA cost along the training trajectory is at most Guni(n) = m Buni times b to the power minus n, where m is the number of variational parameters.",
+     "anchor": "Appendix B.2, Assumption 4, Eq. (35), p.16",
+     "quotes": [
+      "There exist constants Buni > 0 and b > 1 such that, for all t ≥ 0 until the expected gap reaches a target ε,",
+      "E ∥∇Cuni(θuni,t)∥22 ≤ Guni(n) := m Buni b−n,",
+      "where m is the number of variational parameters."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states this as an assumption of its analysis.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The assumption builds exponentially small gradients along the whole trajectory into the hypothesis, so the exponential lower bound of Lemma 4 follows by summation from it; the paper gives no ansatz for which the assumption is verified."
+    },
+    {
+     "id_suggestion": "lemma1-descent-lower-bound",
+     "value": "Lemma 1: for a β-smooth function f and a gradient step x+ = x − η∇f(x) with 0 < η ≤ 1/β, the decrease f(x) − f(x+) is at least η/2 times the squared gradient norm; the proof uses β-smoothness and the inequality η(1 − βη/2) ≥ η/2.",
+     "anchor": "Appendix B.3, Lemma 1, Eqs. (36)-(37), p.16",
+     "quotes": [
+      "Let f : Rp → R be β-smooth and let x+ = x − η∇f (x)",
+      "with 0 < η ≤ 1/β. Then",
+      "Since η ≤ 1/β, we have η(1 − βη/2) ≥ η/2. Rearranging gives the claim."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The conditions are quoted but the conclusion inequality is split across lines in the text layer and could not be quoted.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "This is the standard descent lemma for smooth functions; the printed proof is correct."
+    },
+    {
+     "id_suggestion": "lemma2-descent-upper-bound",
+     "value": "Lemma 2: if f is twice differentiable with the Hessian norm at most β on the segment between x and x+ = x − η∇f(x), and 0 < η ≤ 1/β, then the decrease f(x) − f(x+) is at most three halves of η times the squared gradient norm; the proof uses a lower Taylor estimate.",
+     "anchor": "Appendix B.3, Lemma 2, Eqs. (38)-(40), p.16-17",
+     "quotes": [
+      "Assume f is twice differentiable and ∇2f (z) 2 ≤ β on the segment between x and x+ = x − η∇f (x). If 0 < η ≤ 1/β, then",
+      "The lower Taylor estimate implied by ∇2f (z) 2 ≤ β gives"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The conditions are quoted but the conclusion inequality is split across lines in the text layer and could not be quoted.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The printed proof is correct: the Taylor lower bound gives a decrease of at most eta times one plus beta eta over two, times the squared gradient norm, and eta at most one over beta bounds this by three halves of eta."
+    },
+    {
+     "id_suggestion": "lemma3-pl-contraction",
+     "value": "PL-contraction lemma: if f is β-smooth and satisfies the PL inequality, gradient descent with 0 < η ≤ 1/β contracts the gap f(xt) − f∗ to at most e raised to minus η µ t times the initial gap; the proof combines Lemma 1 with the PL inequality to get a per-step factor (1 − ηµ).",
+     "anchor": "Appendix B.3, Lemma 3, Eqs. (41)-(44), p.17",
+     "quotes": [
+      "Suppose f is β-smooth and satisfies the PL inequality",
+      "Then gradient descent with 0 < η ≤ 1/β satisfies",
+      "f (xt) − f ∗ ≤ e−ηµt f (x0) − f ∗ .",
+      "f (xt+1) − f ∗ ≤ (1 − ηµ) f (xt) − f ∗ ≤ e−ηµ f (xt) − f ∗ ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement, its conditions and the proof step are quoted from Lemma 3 and its proof.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "This is the standard linear-rate result for gradient descent under the PL condition; the printed proof is correct."
+    },
+    {
+     "id_suggestion": "lemma4-flat-vqa-step-lower-bound",
+     "value": "Lemma 4: under Assumptions 1 and 4, if E[∆uni,0] ≥ δ0 > 0 and E[∆uni,T ] ≤ ε < δ0, then the number of gradient steps T is at least 2(δ0 − ε) divided by 3 ηuni Guni(n), which is Ω of b to the power n divided by ηuni m; the proof sums the Lemma 2 per-step bound over T steps using Assumption 4.",
+     "anchor": "Appendix B.3, Lemma 4, Eqs. (45)-(47), p.17",
+     "quotes": [
+      "Assume Assumptions 1 and 4. Suppose E[∆uni,0] ≥ δ0 > 0. If E[∆uni,T ] ≤ ε < δ0, then",
+      "T ≥ 2(δ0 − ε) = Ω bn ,",
+      "3ηuniGuni(n)",
+      "The left-hand side equals E[∆uni,0] − E[∆uni,T ] ≥ δ0 − ε. By rearranging it, then we have (45)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement, its conditions and the proof step are quoted from Lemma 4 and its proof.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The proof is a one-line summation; the exponential bound is only as strong as the flatness hypothesis of Assumption 4, which is not shown for any ansatz."
+    },
+    {
+     "id_suggestion": "theorem1-dissipative-polynomial-convergence",
+     "value": "Theorem 1: under Assumptions 1 and 3, gradient descent on the dissipative cost with step size ηdis = 1/βdis satisfies ∆dis,t ≤ e−µdist/βdis ∆dis,0, so the number of iterations to reach ∆dis,T ≤ ε is bounded by βdis/µdis times the logarithm of ∆dis,0/ε, and if βdis/µdis ≤ poly(n) and log(∆dis,0/ε) ≤ poly(n) then Tdis(ε) ≤ poly(n); the proof applies Lemma 3.",
+     "anchor": "Appendix B.3, Theorem 1, Eqs. (48)-(52), p.17-18",
+     "quotes": [
+      "Under Assumptions 1 and 3,",
+      "with step size ηdis = 1/βdis satisfies",
+      "∆dis,t ≤ e−µdist/βdis ∆dis,0.",
+      "the number of iterations required to reach ∆dis,T ≤ ε obeys",
+      "If βdis/µdis ≤ poly(n) and log(∆dis,0/ε) ≤ poly(n), then",
+      "Tdis(ε) ≤ poly(n).",
+      "Apply PL contraction, i.e. the following Lemma 3, with f = Cdis, η = 1/βdis, and µ = µdis,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement, its conditions and the proof step are quoted from Theorem 1 and its proof.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Theorem 1 is Lemma 3 restated for the dissipative cost; all of its content rests on the assumed global PL condition with a polynomially bounded ratio, which is not established."
+    },
+    {
+     "id_suggestion": "theorem2-conditional-exponential-separation",
+     "value": "Separation theorem: suppose the dissipative VQA satisfies the assumptions of Theorem 1 with βdis ≤ poly(n) after dividing by µdis, and the original VQA satisfies the trajectory-flatness assumption with ηuni m ≤ poly(n) and E[∆uni,0] ≥ δ0 > 0; then Tdis(ε) ≤ poly(n) log(∆dis,0/ε), whereas reducing the expected gap of the original VQA from δ0 to any fixed ε < δ0 requires Tuni(ε) ≥ Ω of b to the power n over poly(n). The authors conclude a conditional exponential advantage in gradient-descent iteration complexity.",
+     "anchor": "Appendix B.3, Theorem 2, Eqs. (53)-(56), p.18",
+     "quotes": [
+      "Suppose the dissipative VQA satisfies the assumptions of Theorem 1 with",
+      "βdis ≤ poly(n).",
+      "ηunim ≤ poly(n), E[∆uni,0] ≥ δ0 > 0.",
+      "Tdis(ε) ≤ poly(n) log",
+      "reducing the expected gap of the original VQA from δ0 to any fixed ε < δ0 requires",
+      "Tuni(ε) ≥ Ω poly(n)",
+      "Thus, under the additional PL and trajectory-uniform flatness hypotheses, the dissipative VQA has a conditional exponential advantage in gradient-descent iteration complexity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from Theorem 2; the proof combines Theorem 1 and Lemma 4.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The separation is conditional on a global PL condition for one algorithm and an assumed exponentially small gradient along the trajectory for the other, each built into the hypotheses, and it compares iteration-count bounds rather than any run. It is not tied to the Section 4 simulations, which use three and five qubits."
+    },
+    {
+     "id_suggestion": "theory-limit-no-unconditional-convergence",
+     "value": "The authors state that the dissipative VQA does not automatically have proven global convergence from the barren-plateau-avoidance paper alone, and that a polynomial iteration complexity for the dissipative VQA against exponentially many steps for the original VQA follows only if the dissipative objective satisfies a global PL condition with polynomial constants and the original VQA remains trajectory-uniformly flat.",
+     "anchor": "Appendix B.3, closing remark, p.18",
+     "quotes": [
+      "The dissipative VQA does not automatically have proven global convergence from the barrenplateau-avoidance paper alone.",
+      "if the dissipative objective additionally satisfies a global PL condition with polynomial constants, and if the original VQA remains trajectory-uniformly flat"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit on their own theoretical result in Appendix B.3.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "unital-noise-barren-plateau-cited",
+     "value": "The paper states that including unital noise in the unitary circuit can lead to noise-induced barren plateaus, citing earlier work.",
+     "anchor": "Appendix B.1, p.15",
+     "quotes": [
+      "this modification can lead to noise-induced barren plateaus"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to prior work and does not reproduce.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "non-unital-reset-removes-entropy-cited",
+     "value": "The paper states, attributing it to prior work, that the non-unital reset-assisted map can remove entropy during the computation and is the mechanism behind the dissipative barren-plateau avoidance result of that work.",
+     "anchor": "Appendix B.1, p.15",
+     "quotes": [
+      "can remove entropy during the computation and is the mechanism behind the dissipative barren-plateau avoidance result"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to prior work and does not reproduce.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The paper does not show that the Section 4 iSWAP-based dissipative blocks avoid barren plateaus, nor measure gradient variances."
+    },
+    {
+     "id_suggestion": "conclusion-vqe-and-recovery-results",
+     "value": "The authors conclude that in the ground-state-search setting the dissipative construction improves the optimization trajectory, lowers the final converged energy and remains effective across noise conditions and benchmark Hamiltonians, and that in the recovery setting the same mechanism improves the fidelity of imperfect input states to the target state.",
+     "anchor": "Section 5, p.10",
+     "quotes": [
+      "In the ground-state-search setting, the dissipative construction improves the optimization trajectory, lowers the final converged energy, and remains effective across different noise conditions and benchmark Hamiltonians.",
+      "the same dissipative mechanism improves the fidelity of imperfect input states with respect to the target state"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author conclusions from small-scale simulations.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-reusable-component-and-resources",
+     "value": "The authors conclude that the ancilla-assisted dissipative block is not tied to a single objective but can serve as a reusable trainable component across variational tasks, that the framework performs well with a moderate number of dissipative rounds, and that the ancilla requirement in the recovery task shows task-dependent saturation.",
+     "anchor": "Section 5, p.10-11",
+     "quotes": [
+      "the ancilla-assisted dissipative block is not tied to a single objective, but can serve as a reusable trainable component across different variational tasks.",
+      "Instead, the framework already performs well with a moderate number of dissipative rounds, while the ancilla requirement in the recovery task exhibits a clear task-dependent saturation behavior."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author conclusions from small-scale simulations.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "modest-ancillas-claim",
+     "value": "The authors state that numerical simulations on representative spin Hamiltonians and target states indicate that the framework can accelerate convergence, enhance noise robustness and improve final-state fidelity with only a modest number of ancillas.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "indicate that this framework can accelerate convergence, enhance noise robustness, and improve final-state fidelity with only a modest number of ancillas."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author summary of simulations with at most five ancillas on systems of a few qubits.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Whether a modest number of ancillas suffices at larger system sizes is not tested, as the authors state in their outlook."
+    },
+    {
+     "id_suggestion": "open-problem-scaling-and-resources",
+     "value": "The authors state that it remains to understand more systematically how the framework scales with system size, how its resource requirements depend on the target task and error model, and how similar dissipative modules can be incorporated into other variational quantum algorithms.",
+     "anchor": "Section 5, p.10",
+     "quotes": [
+      "Looking ahead, it will be interesting to understand more systematically how this framework scales with system size, how its resource requirements depend on the target task and error model"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this open problem and limit of their scope in the conclusion.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
