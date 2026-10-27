@@ -1,0 +1,683 @@
+{
+ "papers": [
+  {
+   "record_id": "ahmed-2025-quantum-neural-networks-comparative-analysis",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Ahmed-et-al._2025_Quantum-Neural-Networks-A-Comparative-Analysis-and-Noise-Robustness__2501.14412.pdf",
+   "title_in_file": "Quantum Neural Networks: A Comparative Analysis and Noise Robustness Evaluation",
+   "version_note": "arXiv:2501.14412v1, 24 Jan 2025; the text is the paper its record names.",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An empirical comparison of three hybrid quantum neural networks (QuanNN, QCNN, QTL) on a four-class MNIST subset, followed by a simulated noise-robustness study of QuanNN and QCNN under five noise channels.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "hqnn-noise-resilience-varies",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "hqnn-qcnn-scalability-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit itself in Section 2.2 (QCNN description), p.4.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "hqnn-quannn-most-robust",
+     "verdict": "narrowed",
+     "note": "The comparison in the noise analysis is between QuanNN and QCNN only: Quantum Transfer Learning was dropped after the noise-free stage. The paper's own results show cases where QuanNN is not the more robust one (see the QCNN amplitude damping, phase damping and phase flip results versus the QuanNN amplitude damping and bit flip results). The Conclusion drops the abstract's 'in most scenarios'.",
+     "value": "The authors report that, in most scenarios, the Quanvolutional Neural Network shows greater robustness across the quantum noise channels tested than the other model compared in the noise analysis, the QCNN (Quantum Transfer Learning was excluded from that analysis after the noise-free comparison), and that it consistently outperforms the other models; the Conclusion states the outperformance without the words 'in most scenarios'.",
+     "anchor": "Abstract p.1; Section 4.1 p.8; Conclusion p.14",
+     "quotes": [
+      "However, in most scenarios, the QuanNN demonstrates greater robustness across various quantum noise channels, consistently outperforming other models.",
+      "Consequently, our subsequent analysis on noise robustness will focus exclusively on QCNN and QuanNN models.",
+      "Our findings reveal that QuanNN consistently outperforms other models across different types of quantum noise"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Conclusion's wording is stronger than the Abstract's. The per-noise sections show QuanNN weaker than QCNN in places (for example amplitude damping above 0.7 for QuanNN against QCNN's behavior), and the comparison is on one dataset subset with each model in its single best noise-free configuration."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "mnist-first-four-classes-setup",
+     "value": "The authors state that they use a subset of the MNIST dataset restricted to the first four classes, 0, 1, 2 and 3, so that the number of classes corresponds to the number of qubits in the quantum circuits.",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "we have restricted our dataset to the first four classes—[0, 1, 2, 3], to ensure that the number of classes directly corresponds to the number of qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own dataset setup in Section 3.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "four-qubit-vqc-depth-one-to-six-setup",
+     "value": "The authors state that the 4-qubit VQC is consistent across all experiments and that the depth of the VQCs is increased systematically from 1 to 6 layers.",
+     "anchor": "Section 4.1, p.7",
+     "quotes": [
+      "the 4-qubit VQC is consistent across all the experiments. However, we systematically increase the depth of the VQCs from 1 to 6 layers"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own circuit setup in Section 4.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "model-selection-threshold-eighty-percent-setup",
+     "value": "The authors state that, within each algorithm, they select the models that achieve an accuracy of above 80% in noise-free conditions for the noise robustness analysis.",
+     "anchor": "Section 3.4, p.7",
+     "quotes": [
+      "we select the models within each algorithm that achieve an accuracy outcome of above 80%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own selection criterion in Section 3.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noise-injection-placement-and-probabilities-setup",
+     "value": "The authors state that the noise-inducing gates are introduced at the end of the VQC, just before the measurement, and that probabilities from 0.1 to 1.0 in increments of 0.1 are tested for each of five noise gate types, implemented with the PennyLane library.",
+     "anchor": "Sections 3.5 and 3.5.1, p.7",
+     "quotes": [
+      "We introduce the noise-inducing gates at the end of the VQC, just before the measurement",
+      "We experimented with probabilities ranging from 0.1 to 1.0, in increments of 0.1",
+      "their ease of implementation using the PennyLane library"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own noise setup in Sections 3.5 and 3.5.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shots-fixed-no-statistical-noise-scope",
+     "value": "The authors state that the number of shots is fixed to 1024 for all experiments and that they do not consider statistical noise caused by varying the number of shots.",
+     "anchor": "Section 3.5.1, p.7",
+     "quotes": [
+      "the number of shots for all the experiments is fixed to 1024, and we do not consider statistical noise caused by varying the number of shots"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its noise model in Section 3.5.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qtl-resnet18-vqc-final-layer-setup",
+     "value": "The authors state that, in their Quantum Transfer Learning model, they employ the pre-trained ResNet-18 model augmented with a VQC serving as the final layer.",
+     "anchor": "Section 2.3, p.4",
+     "quotes": [
+      "we employ the pre-trained ResNet-18 model, which is augmented with a VQC serving as the final layer"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own model setup in Section 2.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quannn-has-no-pooling-definition",
+     "value": "The authors state that a key difference between QuanNN and QCNN is that the QuanNN does not have a pooling operation.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "A key difference between QuanNN and QCNN is that the QuanNN does not have a pooling operation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper states the architectural definition in the Introduction.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-log-n-parameters-cited",
+     "value": "The authors state that the QCNN as presented in the cited original work uses only O(log(N)) variational parameters for input sizes of N qubits.",
+     "anchor": "Section 2.2, p.4",
+     "quotes": [
+      "utilizes only O(log(N)) variational parameters for input sizes of N qubits"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (reference 20).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qtl-excluded-from-noise-analysis-scope",
+     "value": "The authors state that, because the QTL models underperform significantly compared to QCNN and QuanNN, the noise robustness analysis focuses exclusively on QCNN and QuanNN.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "the QTL models underperform significantly compared to QCNN and QuanNN. Consequently, our subsequent analysis on noise robustness will focus exclusively on QCNN and QuanNN models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its noise analysis in Section 4.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "best-configs-table-one-setup",
+     "value": "The authors report in Table 1 that the optimal noise-free configurations used for the noise analysis are the Strongly Entangling VQC design for QCNN and the Basic Entangling VQC design for QuanNN, each with the layer count given in the table.",
+     "anchor": "Table 1, Section 4.2, p.9 (layer count is in the table, not in the quotes)",
+     "quotes": [
+      "Table 1. Optimal Configurations for Best Performing Models",
+      "QCNN Strongly Entangling",
+      "QuanNN Basic Entangling"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Table 1 states the configurations the paper itself carries into the noise analysis.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "motivational-quannn-beats-qcnn-same-vqc",
+     "value": "The authors report that, with the same underlying quantum layer design (Basic Entangling), QuanNN outperforms QCNN by approximately 30% in validation accuracy.",
+     "anchor": "Section 1.2 and Figure 1(a), pp.2-3 (the design name and layer count are in the figure panel title)",
+     "quotes": [
+      "For instance, the QuanNN model outperforms the QCNN",
+      "by approximately 30% in terms of validation accuracy, as depicted in Fig. 1(a)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 30% figure comes from a motivational case in the Introduction, one configuration, not from the full sweep."
+    },
+    {
+     "id_suggestion": "noise-free-sweep-quannn-best-qtl-worst",
+     "value": "The authors report from their noise-free sweep that QuanNN is the best HQNN variant in performance and in robustness to quantum layer variations, that QCNN is second best and sensitive to the degree of entanglement, and that QTL performs poorly regardless of the quantum layer configuration.",
+     "anchor": "Figure 4 caption, p.8",
+     "quotes": [
+      "QuanNN turns out to be the best HQNN variant in terms of both better performance than other variants",
+      "QCNN, which is sensitive to the degree of entanglement in the underlying quantum layers, i.e., the more the better",
+      "QTL consistently performs poorly among the three HQNN variants regardless of the quantum layer configurtation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qtl-about-twenty-percent-accuracy",
+     "value": "The authors report that QTL models achieve approximately 20% accuracy regardless of quantum layer depth or degree of entanglement, against best-case accuracies of over 80% for QCNN and QuanNN.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "QTL models achieve approximately 20% accuracy, which is significantly lower than the best-case accuracies of over 80% observed for QCNN and QuanNN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qtl-pretrained-weights-poor-fit-explanation",
+     "value": "The authors state that their investigation reveals that the pretrained classical weights from the ResNet18 model do not adapt well to integration with quantum layers.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "Our investigation reveals that the pretrained classical weights from the ResNet18 model do not adapt well to integration with quantum layers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author explanation; no ablation is shown in the text.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "No control run (for example a different classical backbone) is described in the text, so the cause is asserted, not isolated."
+    },
+    {
+     "id_suggestion": "qcnn-noise-free-inconsistent-performance",
+     "value": "The authors report that QCNNs exhibited inconsistent performance across different configurations, with no clear trend as the number of layers increased or as the underlying VQC design was modified.",
+     "anchor": "Section 4.1, QCNN paragraph, p.8",
+     "quotes": [
+      "QCNNs exhibited inconsistent performance across different configurations, with no clear trend emerging as the number of layers increased"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-midcircuit-measurement-noise-explanation",
+     "value": "The authors state that the inconsistency of QCNN performance can largely be attributed to the original QCNN architecture's mid-network measurements, which they say can significantly amplify statistical measurement noise and lead to erratic performance.",
+     "anchor": "Section 4.1, QCNN paragraph, p.8",
+     "quotes": [
+      "these mid-network measurements can significantly amplify statistical measurement noise, leading to erratic performance outcomes"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author explanation; no test of mid-network measurement is described.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-weak-entanglement-suboptimal",
+     "value": "The authors report that, when the quantum layers use weak entanglement, QCNNs perform suboptimally compared to basic or strong entanglement, regardless of layer depth.",
+     "anchor": "Section 4.1, QCNN paragraph, p.8",
+     "quotes": [
+      "when the quantum layers utilize weak entanglement, QCNNs exhibit suboptimal performance compared to configurations with basic or strong entanglement, regardless of the layer depth"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quannn-consistent-across-depth-and-entanglement",
+     "value": "The authors report that QuanNN performs consistently across layer depths and entanglement degrees, that the degree of entanglement has minimal impact, and that there is a general trend of slight improvement as the depth of the quantum layers increases.",
+     "anchor": "Section 4.1, QuanNN paragraph, p.8",
+     "quotes": [
+      "the degree of entanglement appears to have a minimal impact on the performance of QuanNN",
+      "there is a general trend of slight improvement in performance as the depth of the underlying quantum layers increases"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-amplitude-damping-results",
+     "value": "The authors report that, under amplitude damping, QCNNs keep performance comparable to noise-free at noise probabilities 0.1 and 0.2, still learn but at a significantly slower rate at 0.3, show performance that surpasses the ideal scenario at 0.5, and do not learn beyond 0.5.",
+     "anchor": "Section 4.2, Figure 5, p.9",
+     "quotes": [
+      "at lower noise probabilities, specifically 0.1 and 0.2, QCNNs demonstrate significant resilience to noise",
+      "as the noise probability increases to 0.3, QCNNs still exhibit some learning potential, but at a significantly slower rate",
+      "At a noise probability of 0.5, QCNNs show an unexpected improvement, achieving performance that surpasses the ideal scenario.",
+      "with further increases in noise probability beyond 0.5, the QCNNs succumb completely to the adverse effects of the noise, resulting in no learning"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-noise-enhanced-learning-speculation",
+     "value": "The authors suggest that the QCNN result under amplitude damping that surpasses the ideal scenario is an anomaly in which the noise might play a constructive role, potentially acting as a form of noise-enhanced learning.",
+     "anchor": "Section 4.2, p.9",
+     "quotes": [
+      "This anomaly suggests that under certain conditions, the noise might play a constructive role, potentially acting as a form of noise-enhanced learning."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author speculation; no mechanism is tested.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "One training run per setting is shown in the figures, so a run-to-run fluctuation is not excluded by anything in the text."
+    },
+    {
+     "id_suggestion": "qcnn-bit-flip-results",
+     "value": "The authors report that, under bit flip noise, QCNNs adapt well and perform comparably to noise-free at probabilities up to 0.4 and fail to learn at probabilities from 0.5 upward.",
+     "anchor": "Section 4.2, Figure 6, p.9",
+     "quotes": [
+      "at relatively lower noise probabilities (i.e., ≤ 0.4), QCNNs adapt well to noise patterns",
+      "At higher noise probabilities (i.e., ≥ 0.5), the QCNN succumbs to the detrimental effects of the noise and fails to learn."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-bit-flip-train-gain-no-generalization-gain",
+     "value": "The authors report that, at very low bit flip probabilities, QCNN training accuracy exceeds the ideal case while validation accuracy stays consistent with the ideal setting, and they state that learning from noise can potentially mislead practitioners about the actual performance improvement.",
+     "anchor": "Section 4.2, p.9",
+     "quotes": [
+      "while training accuracy increases, the generalization (validation accuracy) remains consistent with the ideal setting",
+      "learning from noise can potentially mislead practitioners about the actual performance improvement"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-depolarizing-results",
+     "value": "The authors report that, under the depolarizing channel, QCNNs reach performance equivalent to noise-free at lower probabilities, and show a significant decline in learning ability as the probability increases beyond 0.2.",
+     "anchor": "Section 4.2, Figure 7, pp.9-10",
+     "quotes": [
+      "channel noise, QCNNs effectively adapt to the noise patterns, demonstrating a robustness that results in performance levels equivalent to those observed in the noise-free setting",
+      "as the noise probability increases beyond 0.2, the QCNNs succumb to the adverse effects of the noise, showing a significant decline in learning ability."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-phase-damping-results",
+     "value": "The authors report that, under phase damping, QCNNs at probabilities up to 0.3 perform significantly better than in the ideal case, at 0.4 and 0.7 initially adapt but are harmed by continued training, and at 0.5 and 0.6 exceed the ideal scenario.",
+     "anchor": "Section 4.2, Figure 8, pp.10-11",
+     "quotes": [
+      "at probabilities ≤ 0.3, QCNNs not only successfully adapt to noise patterns but also perform significantly better than in the ideal, noise-free case",
+      "at noise probabilities of 0.4 and 0.7, while QCNNs initially adapt to the noise patterns, continued training leads to detrimental effects from the noise",
+      "at probabilities of 0.5 and 0.6, QCNNs not only cope with the noise but actually exceed the performance of the ideal scenario"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paragraph introducing this result says 'phase flip noise' while the section is on phase damping; this reads as a slip in the text."
+    },
+    {
+     "id_suggestion": "qcnn-phase-damping-beneficial-speculation",
+     "value": "The authors suggest that phase damping noise at these levels might be leveraged as a beneficial factor, possibly aiding in the reduction of other types of quantum errors or enhancing certain quantum state properties.",
+     "anchor": "Section 4.2, p.11",
+     "quotes": [
+      "This suggests that phase damping noise, at these levels, might be leveraged as a beneficial"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author speculation; no mechanism is tested.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-phase-flip-results",
+     "value": "The authors report that, under phase flip noise, QCNNs keep performance comparable to noise-free at probabilities up to 0.4, fail to learn at 0.5 and 0.6, show initial resilience and later degradation at 0.7, fail to learn at 0.8 and 0.9, and learn with remarkable resilience at 1.0.",
+     "anchor": "Section 4.2, Figure 9, pp.11-12",
+     "quotes": [
+      "(i.e., ≤ 0.4), maintaining performance levels comparable to those in a noise-free setting",
+      "specifically at 0.5 and 0.6, the QCNN succumbs to the detrimental effects of the noise and fails to learn",
+      "at a noise probability of 0.7, the model initially shows resilience, but continued training eventually leads to performance degradation due to the noise",
+      "At probabilities of 0.8 and 0.9, the model fails to learn altogether.",
+      "at a noise probability of 1.0, the model demonstrates remarkable resilience, effectively learning and becoming tolerant to a high intensity of noise"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quannn-amplitude-damping-results",
+     "value": "The authors report that, under amplitude damping, QuanNN maintains the same learning capacity as noise-free up to a probability of 0.5, declines slightly at 0.6 and 0.7, drops drastically beyond 0.7, and shows negligible learning at 1.0.",
+     "anchor": "Section 4.3, Figure 10, p.12",
+     "quotes": [
+      "QuanNN maintains the same learning capacity as in noise-free conditions up to a noise probability of 0.5",
+      "At probabilities of 0.6 and 0.7, the performance of QuanNN declines slightly as compared to the performance in a noise-free setting.",
+      "particularly beyond a probability of 0.7, the performance drops drastically, eventually leading to negligible learning at a noise probability of 1.0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quannn-bit-flip-results",
+     "value": "The authors report that, under bit flip noise, QuanNN validation accuracy remains consistent with its noise-free performance across most probabilities, with the exception of a significant drop at a probability of 0.5, where the model succumbs completely to the noise.",
+     "anchor": "Section 4.3, Figure 11, p.12",
+     "quotes": [
+      "the validation accuracy remains consistent with its noise-free performance across most probabilities",
+      "with the exception of a significant drop at a noise probability of 0.5",
+      "At a probability of 0.5, the model succumbs completely to the adverse effects of bit flip noise, hindering the learning process."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quannn-depolarizing-results",
+     "value": "The authors report that, under the depolarizing channel, QuanNN shows consistent resilience at all probabilities with performance equivalent to noise-free, with a slight decrease at probabilities 0.7 and 0.8 and performance matching noise-free conditions from 0.9 onwards.",
+     "anchor": "Section 4.3, Figure 12, p.12",
+     "quotes": [
+      "QuanNN demonstrates a consistent resilience to all probabilities of depolarization noise",
+      "Although there is a slight decrease in performance at probabilities of 0.7 and 0.8,",
+      "increases from 0.9 onwards, matching that of the noise-free conditions"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quannn-phase-damping-results",
+     "value": "The authors report that QuanNN exhibits considerable robustness to phase damping noise across all probabilities, and less variability across noise intensities than the QCNN under the same conditions.",
+     "anchor": "Section 4.3, Figure 13, pp.12-13",
+     "quotes": [
+      "exhibits considerable robustness to phase damping noise across all probabilities",
+      "QuanNN exhibits less variability in performance across different noise intensities"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quannn-phase-flip-results",
+     "value": "The authors report that QuanNN exhibits strong performance across all intensities of phase flip noise, with validation results from the noise-induced conditions overlapping those of the noise-free model at each probability.",
+     "anchor": "Section 4.3, Figure 14, p.13",
+     "quotes": [
+      "QuanNN also exhibits strong performance across all intensities of phase flip noise",
+      "At each probability of noise occurrence, the validation results from the noise-induced conditions overlap with those of the noise-free model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "literature-gap-comparison-and-noise-claim",
+     "value": "The authors state that a comprehensive study comparing the performance of these algorithms for a specific application is still lacking, and that most state-of-the-art studies focus on ideal conditions and do not take the effect of different quantum noise into consideration.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "a comprehensive study that compares the performance of these algorithms for a specific application is still lacking",
+      "most of the state-of-the-art studies primarily focus on their performance in ideal conditions"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim about the literature, with no survey method given.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dataset-simplicity-scope",
+     "value": "The authors state that the focus is the effect of noise on model performance and that the straightforward nature of the MNIST dataset is adequate to meet the objectives of the study.",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "the straightforward nature of the MNIST dataset is adequate to meet the objectives of our study"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its dataset choice in Section 3.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Results are on a four-class MNIST subset only; the text does not test other datasets."
+    },
+    {
+     "id_suggestion": "conclusion-hqnn-performance-varies-with-noise",
+     "value": "The authors state in the Conclusion that they have demonstrated that the performance of HQNNs can significantly vary with the introduction of quantum noise, and that this underlines the critical role of model and architecture selection based on the noise characteristics of the operational environment.",
+     "anchor": "Conclusion, p.14",
+     "quotes": [
+      "we have demonstrated that the performance of HQNNs can significantly vary with the introduction of quantum noise",
+      "This superior performance underlines the critical role of model and architecture selection based on the specific quantum noise characteristics"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
