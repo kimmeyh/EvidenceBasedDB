@@ -1,0 +1,986 @@
+{
+ "papers": [
+  {
+   "record_id": "abreu-2024-qml-ids-quantum-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Abreu-Rothenberg-Abelem_2024_QML-IDS-Quantum-Machine-Learning-Intrusion-Detection-System__2410.16308.pdf",
+   "title_in_file": "QML-IDS: Quantum Machine Learning Intrusion Detection System",
+   "version_note": "arXiv:2410.16308v1 [cs.CR], 7 Oct 2024. The text layer is the six-page preprint with no appended second copy. The paper labels the QCNN column 'QNCC' in Tables II and III and 'QCCN' in Table VII.",
+   "pages": 6,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A six-page preprint that proposes QML-IDS, a hybrid quantum-classical intrusion detection system, and compares VQC, QSVM and QCNN on three public network security datasets across a noise-free simulator and five IBM backends against SVM, CNN and RF baselines.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qmlids-binary-vqc-vs-svm",
+     "verdict": "confirmed",
+     "note": "The stored value restates the authors' sentence and the numbers match Table IV. Table IV lists CNN at 86.72% on UNSW-NB15, above SVM at 82.34%, so the sentence's label 'best performing traditional ML method' does not match the table.",
+     "value": "",
+     "anchor": "Section VI.B, Table IV",
+     "quotes": [
+      "VQC achieves an F1 score of 88.10% on the UNSW-NB15 dataset, surpassing the best performing traditional ML method, SVM, which scores 82.34%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table IV gives RF 82.67%, SVM 82.34% and CNN 86.72% on UNSW-NB15, so the best classical value is CNN, not SVM. VQC at 88.10% is still above all three."
+    },
+    {
+     "id": "qmlids-gap-not-overwhelming",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section VI.C",
+     "quotes": [
+      "the performance gap between QML and traditional ML methods is not overwhelmingly large, suggesting that while QML offers potential advantages in certain scenarios",
+      "traditional ML methods like SVM and RF still hold the upper hand in others."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of the paper's own result.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The 'upper hand' sentence sits in the UNSW-NB15 paragraph about Worms and Shellcode; Table V does not show SVM and RF ahead on Worms."
+    },
+    {
+     "id": "qmlids-setup-backends",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section VI.A and Section V",
+     "quotes": [
+      "six different backends were used, including the noisefree quantum computing simulator QASM and five real quantum computing environments",
+      "UNSW-NB15 [15], CICIDS17 [16], and CICIoT2023 [17]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its setup in Sections V and VI.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text layer prints 'noisefree' without a hyphen."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qmlids-system-hybrid-design",
+     "value": "The authors state that QML-IDS is a hybrid network attack detection system that uses both quantum and classical computing, with the quantum and classical parts depending on the QML technique used.",
+     "anchor": "Section I and Section IV, p.1-3",
+     "quotes": [
+      "Development of QML-IDS, a QML-based network attack detection system that utilizes both quantum and classical computing.",
+      "The Hybrid QML process is then initiated, with the quantum and classical parts according to the QML technique."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors describe their own system design in Sections I and IV.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-pipeline-stages",
+     "value": "The authors describe the QML-IDS pipeline as: network monitoring and data collection, feature extraction, data preprocessing, mapping of classical data to quantum states through a feature map, a hybrid quantum-classical learning step, and a classical output used to generate attack alerts.",
+     "anchor": "Section IV, p.3-4",
+     "quotes": [
+      "QML-IDS begins with network monitoring and data collection, from which features are extracted.",
+      "Next, the mapping of classical data to quantum states occurs through the feature map.",
+      "The final result of the process is a classical output, an interpretation of the quantum results that is used for the",
+      "generation of attack alerts. Based on the analyses performed, the system generates attack alerts whenever suspicious patterns are identified"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV states the pipeline; Figure 2 is the flowchart.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The evaluation reports offline F1 scores on public datasets; the paper does not report running the monitoring, collection or alert-generation stages."
+    },
+    {
+     "id_suggestion": "qmlids-per-technique-hybrid-split",
+     "value": "The authors state that for the VQC the ansatz parameters are adjusted by a classical optimizer, for the QSVM a quantum kernel is generated and used to train the classical prediction model, and for the QCNN the quantum network is generated and optimized classically.",
+     "anchor": "Section IV, p.3",
+     "quotes": [
+      "In the case of VQC, a variational quantum circuit ansatz is generated, whose parameters are adjusted by a classical optimizer.",
+      "For QSVM, a quantum kernel is generated, which is used to train the classical prediction model.",
+      "In the QCNN, the quantum network is generated and optimized classically."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV states how each technique splits quantum and classical work.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-other-methods-allowed",
+     "value": "The authors state that other hybrid QML methods can also be used in the approach, and that QML-IDS can be implemented partly on a classical system and partly on a quantum system.",
+     "anchor": "Section IV, p.4",
+     "quotes": [
+      "It is important to note that in this approach, other hybrid QML methods can also be used",
+      "QML-IDS can then be implemented partly on a classical system and partly on a quantum system."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of the proposal in Section IV.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-datasets-baselines",
+     "value": "The authors state that the case study uses three network security datasets (UNSW-NB15, CICIDS17 and CICIoT2023) and three classical ML baselines (SVM, CNN and RF), the baselines implemented with the scikit-learn and TensorFlow frameworks, with RF named as the representative classifier to compare with VQC.",
+     "anchor": "Section V, p.4",
+     "quotes": [
+      "UNSW-NB15 [15], CICIDS17 [16], and CICIoT2023 [17]",
+      "Three classical ML methods were selected and will serve as a comparison to the quantum counterparts results",
+      "Support Vector Machine (SVM), Convolution Neural Network (CNN), and Random Forest (RF) as a representative classifier to compare with VQC",
+      "all implemented using the scikit-learn and TensorFlow frameworks"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V states the datasets and baselines.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper does not state dataset sizes, train/test splits, sampling, the number of features, the number of qubits, the number of shots, the number of repeated runs, or any variance or confidence interval. It does not state how the classical baselines were tuned. Every reported F1 is a single value."
+    },
+    {
+     "id_suggestion": "qmlids-qiskit-implementation",
+     "value": "The authors state that the three QML models (VQC, QSVM and QCNN) were implemented using the Qiskit framework.",
+     "anchor": "Section V, p.4",
+     "quotes": [
+      "three Quantum Machine Learning models were employed: VQC, QSVM, and QCNN, which were implemented using the Qiskit framework"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V states the implementation framework.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-hyperparameter-space-feature-maps",
+     "value": "The authors state that four Qiskit feature maps are used to encode classical data into quantum states: RawFeatureVector, PauliFeatureMap, ZFeatureMap and ZZFeatureMap, alongside four ansatz and four classical optimizers.",
+     "anchor": "Section V and Table I, p.4",
+     "quotes": [
+      "We employ four feature maps from Qiskit (RawFeatureVector, PauliFeatureMap, ZFeatureMap, ZZFeatureMap)",
+      "alongside four Ansatz and classical optimizers within the Qiskit framework",
+      "EfficientSU2 ExcitationPreserving",
+      "RealAmplitudes TwoLocal Resilience",
+      "COBYLA ADAM SPSA",
+      "GradientDescent Decoupling"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V and Table I list the hyperparameter space.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Table I names the ansatz as EfficientSU2, ExcitationPreserving, RealAmplitudes and TwoLocal, and the optimizers as COBYLA, ADAM, SPSA and GradientDescent. The paper does not say which feature map, ansatz or optimizer produced each reported score."
+    },
+    {
+     "id_suggestion": "qmlids-transpilation-resilience-decoupling",
+     "value": "The authors state that the experiments use transpiler optimization levels from 0 to 3, resilience levels 0 (no mitigation) and 1 (readout-error mitigation through Matrixfree Measurement Mitigation), and dynamic decoupling to reduce environmental interactions.",
+     "anchor": "Section V and Table I, p.4",
+     "quotes": [
+      "our experiments leverage optimization levels from 0 to 3 for circuit adaptation, with each level introducing increasingly sophisticated optimization strategies, from basic gate collapsing to advanced techniques like peephole optimization and noise-adaptive qubit mapping.",
+      "with resilience level 0 offering no mitigation and level 1 targeting readout errors through Matrixfree Measurement Mitigation, alongside dynamic decoupling to reduce environmental interactions"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V states the circuit-level settings; Table I lists their values.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-feature-map-roles",
+     "value": "The authors state that the RawFeatureVector offers a direct mapping of classical data to quantum states and establishes a baseline, and that the ZZFeatureMap adds second-order qubit interactions for more complex correlation encoding.",
+     "anchor": "Section V, p.4",
+     "quotes": [
+      "The RawFeatureVector offers a direct mapping of classical data to quantum states, establishing a baseline.",
+      "The ZZFeatureMap extends these capabilities by incorporating second-order qubit interactions for more complex correlation encoding"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section V defines the roles of the feature maps.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-backends-named",
+     "value": "The authors state that the five real quantum computing environments are IBM CAIRO, IBM KYOTO, IBM BRISBANE, IBM OSAKA and IBM SHERBROOKE, and that these environments incorporate the specific noise models, quantum logic gates and topologies of actual quantum computers.",
+     "anchor": "Section VI.A, p.4",
+     "quotes": [
+      "IBM CAIRO, IBM KYOTO, IBM BRISBANE, IBM OSAKA, and IBM SHERBROOKE",
+      "These environments incorporate the specific noise models, quantum logic gates, and topologies of actual quantum computers"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VI.A names the backends.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper states 'real quantum computing environments' and does not state whether every reported number came from device execution or from a noise-model simulation of the device."
+    },
+    {
+     "id_suggestion": "qmlids-f1-metric-choice",
+     "value": "The authors state that the F1 score is chosen for its balanced measure of precision and recall, which they describe as crucial in security contexts for effectively detecting attacks while minimizing false positives.",
+     "anchor": "Section VI.A, p.4-5",
+     "quotes": [
+      "The F1 Score is chosen for its balanced measure of precision and recall, crucial in",
+      "security contexts for effectively detecting attacks while minimizing false positives."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section VI.A gives the metric and the reason.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Only F1 is reported. Accuracy, precision, recall, false-positive rate and runtime are not reported."
+    },
+    {
+     "id_suggestion": "qmlids-vqc-definition",
+     "value": "The authors define the Variational Quantum Classifier as a hybrid QML algorithm that combines parameterized quantum circuits with classical optimization for classification tasks, with three main steps: encoding input data into quantum states, processing them through a variational circuit (ansatz), and optimizing the circuit parameters with classical optimization.",
+     "anchor": "Section II.A, p.1-2",
+     "quotes": [
+      "The Variational Quantum Classifier (VQC) [5] is a hybrid Quantum Machine Learning algorithm that leverages parameterized quantum circuits combined with classical optimization techniques for classification tasks.",
+      "The core of the VQC involves three main steps: encoding the input data into quantum states, processing these states through a variational quantum circuit (or Ansatz, Fig 1.b), and optimizing the circuit parameters using classical optimization techniques."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II.A defines the technique as the paper uses it.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-qsvm-definition",
+     "value": "The authors define the Quantum Kernel Support Vector Machine as a quantum-enhanced version of the classical SVM that builds a quantum kernel, a measure of similarity between pairs of data points in a high-dimensional quantum feature space.",
+     "anchor": "Section II.B, p.2",
+     "quotes": [
+      "The Quantum Kernel Support Vector Machine (QSVM) [6] represents a quantum-enhanced version of the classical Support Vector Machine (SVM) algorithm",
+      "The process involves the construction of a quantum kernel, which is a measure of similarity between pairs of data points in this quantum space."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II.B defines the technique as the paper uses it.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-qsvm-feature-map-dependence",
+     "value": "The authors state that the effectiveness of QSVM heavily relies on the choice of the feature map and the design of the quantum kernel.",
+     "anchor": "Section II.B, p.2",
+     "quotes": [
+      "The effectiveness of QSVM heavily relies on the choice of the feature map and the design of the quantum kernel"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement without evidence in the paper; the paper does not isolate the effect of the feature map on any reported score.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-qcnn-definition",
+     "value": "The authors define the Quantum Convolutional Neural Network as an adaptation of classical convolutional neural networks, with convolutional layers realized by parameterized unitary operations on neighboring pairs of qubits and pooling achieved by measuring a subset of qubits.",
+     "anchor": "Section II.C, p.2",
+     "quotes": [
+      "The Quantum Convolutional Neural Network (QCNN) [7] is an adaptation of classical convolutional neural networks (CNNs).",
+      "The convolutional layers in a QCNN are realized through the application of parameterized unitary operations on neighboring pairs of qubits.",
+      "is achieved in QCNNs through the measurement of a subset of qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II.C defines the technique as the paper uses it.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-vqc-feature-map-influence",
+     "value": "The authors state that the specific choice of feature map influences the VQC's ability to represent the important features of the input data, directly impacting the performance of the generated model.",
+     "anchor": "Section II.A, p.2",
+     "quotes": [
+      "the specific choice of the feature map influences",
+      "ability to represent the important features of the input data, directly impacting the performance of the generated model."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement without evidence in the paper; no reported score isolates the feature map.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-nisq-limitations",
+     "value": "The authors state that NISQ devices are limited in the number of qubits, in circuit complexity (depth and available gates) and in maintaining coherence over time, that NISQ systems lack robust error correction, and that any proposal for a quantum IDS must take these factors into account.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "These limitations include restrictions on the number of qubits (quantum bits) available, the complexity of the quantum circuits that can be implemented (depth and available quantum logic gates)",
+      "the lack of robust error correction mechanisms in NISQ systems also represents a",
+      "significant obstacle [4]. Therefore, any proposal for a quantum IDS must take these factors into account"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper attributes these limitations to prior surveys (its references 2 to 4).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-intro-utility-claim",
+     "value": "The authors state that recent advances signify a shift towards the era of quantum utility, in which quantum computers now outperform classical methods in solving complex problems efficiently and accurately, while quantum supremacy has not yet been achieved.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "quantum computers now outperform classical methods in solving complex problems efficiently and accurately [1]",
+      "Despite not yet achieving quantum supremacy"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors cite one prior work for this statement.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The cited work is a utility demonstration on one specific problem; the sentence states it for complex problems in general, and the paper does not show that any task in its own evaluation is beyond classical methods."
+    },
+    {
+     "id_suggestion": "qmlids-feasibility-claim",
+     "value": "The authors state that the experimental results provide empirical evidence of the effectiveness of QML techniques in enhancing network attack detection capabilities and point to the feasibility of implementation in NISQ systems.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "The experimental results provide empirical evidence of the effectiveness of QML techniques in enhancing network attack detection capabilities and point to the feasibility of implementation in NISQ systems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author summary of their own results.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper's own Section VI.C says the gap to traditional methods is not overwhelmingly large and that QML does not yet decisively outperform them."
+    },
+    {
+     "id_suggestion": "qmlids-related-said-ddos",
+     "value": "The authors report that Said et al. applied a QSVM model to DDoS attack detection in smart micro-grids on a reduced (sampled) version of the CIC-DDoS2019 dataset, and that the results demonstrate the superiority of the QML model compared to the classical SVM.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "Said et al. (2023) [8] explore the application of a QSVM model to detect Distributed Denial of Service (DDoS) attacks in smart micro-grids.",
+      "The study evaluates the QML model using a reduced version (by sampling) of the CIC-DDoS2019 dataset [9]",
+      "The results demonstrate the superiority of the QML model compared to the classical approach, SVM."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-related-gong-kalinin",
+     "value": "The authors report that Gong et al. propose a neural network combined with a VQC for network attack detection, applied to a reduced subset of features from the KDD CUP99 dataset with a class balance approach, and that Kalinin and Krundyshev propose a QSVM model with a neural network, applied to a database created by those authors.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "the application of a Neural Network (NN) in conjunction with the VQC for network attack detection is proposed",
+      "a reduced subset of features from the KDD CUP99 dataset [11], incorporating a class balance approach to increase classification accuracy",
+      "Kalinin and Krundyshev [12] propose a QSVM model with NN for network attack detection."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-related-noiseless-simulators",
+     "value": "The authors state that the related works by Said et al., Gong et al. and Kalinin and Krundyshev implemented their solutions using noiseless quantum computing simulators, which cannot accurately represent current NISQ systems, whereas their own proposal is implemented using noisy backends.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "These works implemented their solutions using noiseless quantum computing simulators, which cannot accurately represent current NISQ systems.",
+      "In our work, our proposal is implemented using noisy backends, which more closely represent current NISQ equipment."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author characterization of other work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper also reports results on the noise-free QASM simulator (Tables II and III), and its Table IV values appear to equal the best real-backend entries; the paper does not state this."
+    },
+    {
+     "id_suggestion": "qmlids-related-suryotrisongko",
+     "value": "The authors report that Suryotrisongko and Musashi propose a VQC and a hybrid quantum deep learning model to detect botnet domain generation algorithm attacks, and that the deep learning model was tested using NISQ devices while the VQC was not.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "Suryotrisongko and Musahi [13] propose a VQC and a Hybrid Quantum Deep Learning (DL) to detect botnet",
+      "While the DL model was tested using NISQ devices, the VQC was not."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-novelty-over-prior-work",
+     "value": "The authors state that this study expands their earlier work, which tested QML models in a network security context through direct implementation of baseline circuits, by employing quantum circuit optimization techniques alongside more thorough experimentation, and that it covers VQC, QSVM and QCNN for both binary and multiclass scenarios on three datasets.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "In our previous research [14], QML models were initially tested within a network security context, through direct implementation of baseline circuits.",
+      "we expand on that research by employing quantum circuit optimization techniques alongside more thorough experimentation",
+      "Additionally, our work conducts tests on three reference datasets in network security"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of this study against their earlier work in Section III.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-resilience-decoupling-improvement-claim",
+     "value": "The authors state that testing circuits with diverse optimization levels, incorporating resilience and dynamic decoupling, contributed to the improvement of their results.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "we conducted tests in circuits with diverse optimization levels, incorporating resilience and dynamic decoupling, which contributed to the improvement of our results."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement; no table in the paper compares results with and without these settings.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No reported table isolates the effect of optimization level, resilience level or dynamic decoupling, so the paper gives no evidence for this statement."
+    },
+    {
+     "id_suggestion": "qmlids-binary-per-backend-unsw",
+     "value": "The authors report binary-case F1 scores on the UNSW-NB15 dataset, in the order VQC, QSVM, QNCC (the paper's own label for the QCNN column), by backend: QASM: 88.56%, 89.34%, 87.45%; IBM CAIRO: 87.91%, 87.90%, 86.12%; IBM KYOTO: 88.10%, 86.41%, 87.12%; IBM BRISBANE: 85.78%, 86.39%, 87.32%; IBM OSAKA: 87.75%, 87.90%, 87.19%; SHERBROOKE: 87.31%, 86.55%, 85.42%.",
+     "anchor": "Section VI.A, Tables II and III, p.4",
+     "quotes": [
+      "UNSW-NB15 [15], CICIDS17 [16], and CICIoT2023 [17]",
+      "88.56% 89.34% 87.45%",
+      "87.91% 87.90% 86.12%",
+      "88.10% 86.41% 87.12%",
+      "85.78% 86.39% 87.32%",
+      "87.75% 87.90% 87.19%",
+      "87.31% 86.55% 85.42%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Across the five real backends the paper's rows span 85.42% to 88.10% for this dataset; the QASM row is the highest for VQC and QSVM only. Single values with no repeats, no variance and no stated test set size."
+    },
+    {
+     "id_suggestion": "qmlids-binary-per-backend-cicids",
+     "value": "The authors report binary-case F1 scores on the CIC-IDS-17 dataset, in the order VQC, QSVM, QNCC (the paper's own label for the QCNN column), by backend: QASM: 95.12%, 94.67%, 95.88%; IBM CAIRO: 93.60%, 92.92%, 93.80%; IBM KYOTO: 94.78%, 94.40%, 95.60%; IBM BRISBANE: 92.40%, 92.80%, 93.40%; IBM OSAKA: 94.12%, 92.15%, 94.15%; SHERBROOKE: 94.00%, 94.38%, 94.12%.",
+     "anchor": "Section VI.A, Tables II and III, p.4",
+     "quotes": [
+      "UNSW-NB15 [15], CICIDS17 [16], and CICIoT2023 [17]",
+      "95.12% 94.67% 95.88%",
+      "93.60% 92.92% 93.80%",
+      "94.78% 94.40% 95.60%",
+      "92.40% 92.80% 93.40%",
+      "94.12% 92.15% 94.15%",
+      "94.00% 94.38% 94.12%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Across the five real backends the paper's rows span 92.15% to 95.60% for this dataset. Single values with no repeats, no variance and no stated test set size."
+    },
+    {
+     "id_suggestion": "qmlids-binary-per-backend-ciciot",
+     "value": "The authors report binary-case F1 scores on the CICIoT2023 dataset, in the order VQC, QSVM, QNCC (the paper's own label for the QCNN column), by backend: QASM: 82.55%, 84.22%, 87.81%; IBM CAIRO: 78.55%, 79.19%, 82.55%; IBM KYOTO: 76.15%, 80.00%, 82.56%; IBM BRISBANE: 77.12%, 82.40%, 82.00%; IBM OSAKA: 77.02%, 80.55%, 82.11%; SHERBROOKE: 78.92%, 80.12%, 81.93%.",
+     "anchor": "Section VI.A, Tables II and III, p.4",
+     "quotes": [
+      "UNSW-NB15 [15], CICIDS17 [16], and CICIoT2023 [17]",
+      "82.55% 84.22% 87.81%",
+      "78.55% 79.19% 82.55%",
+      "76.15% 80.00% 82.56%",
+      "77.12% 82.40% 82.00%",
+      "77.02% 80.55% 82.11%",
+      "78.92% 80.12% 81.93%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Across the five real backends the paper's rows span 76.15% to 82.56% for this dataset; the QASM row is the highest for all three models. Single values with no repeats, no variance and no stated test set size."
+    },
+    {
+     "id_suggestion": "qmlids-backend-variation-claim",
+     "value": "The authors state that among the real quantum systems there is a significant variation in performance, which reflects the impact of each system's unique noise model, quantum logic gates and topology, and that the QASM simulator consistently shows high F1 scores across all databases.",
+     "anchor": "Section VI.A, p.5",
+     "quotes": [
+      "Among the real quantum systems, there is a significant variation in performance, which reflects the impact of each system",
+      "The QASM simulator, representing an ideal quantum computing scenario, consistently shows high F1 Scores across all databases"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation of Tables II and III.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The attribution to each device's noise model is not tested in the paper. The spread across real backends for one model and dataset is a few F1 points (for example VQC on CICIoT2023 from 76.15% on IBM KYOTO to 78.92% on SHERBROOKE), measured once, without variance."
+    },
+    {
+     "id_suggestion": "qmlids-backend-best-claims",
+     "value": "The authors state that VQC performs robustly on IBM KYOTO for CICIDS17, that QSVM shows strong results on IBM OSAKA for UNSW-NB15 and on IBM BRISBANE for CICIoT2023, and that QNCC has the highest F1 scores in several configurations, such as on IBM KYOTO for CICIDS17 and on IBM BRISBANE for CICIoT2023.",
+     "anchor": "Section VI.A, p.5",
+     "quotes": [
+      "VQC demonstrates robust performance on the IBM KYOTO backend for the CICIDS17 dataset",
+      "QSVM shows adaptability with strong results on IBM OSAKA for the UNSW-NB15 database and on IBM BRISBANE for the CICIoT2023 database",
+      "QNCC, in particular, stands out with the highest F1 Scores in several configurations, such as on the IBM KYOTO and IBM BRISBANE backends for the CICIDS17 and CICIoT2023 databases, respectively"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author reading of Tables II and III.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Table III gives IBM BRISBANE on CICIoT2023 as QNCC 82.00% against QSVM 82.40%, so QNCC is not the highest model there, and QNCC's own highest real-backend value on that dataset is 82.56% on IBM KYOTO."
+    },
+    {
+     "id_suggestion": "qmlids-best-results-selection",
+     "value": "The authors state that the best results obtained in each model and backend combination are discussed in the following subsections.",
+     "anchor": "Section VI.A, p.5",
+     "quotes": [
+      "The best results obtained in each model and backend combination will be discussed in detail in the following subsections."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state which results the later tables show.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Each Table IV value for the three QML models equals an entry in Tables II and III for a real backend on the same dataset (for example VQC 88.10% equals IBM KYOTO, QCNN 95.60% equals IBM KYOTO). The paper does not say whether these maxima were chosen on the same data that produced the scores, nor how many configurations were tried per model."
+    },
+    {
+     "id_suggestion": "qmlids-table4-binary-unsw",
+     "value": "The authors report binary-classification F1 scores on the UNSW-NB15 dataset: VQC 88.10%, QSVM 87.90%, QCNN 87.32%; RF 82.67%, SVM 82.34%, CNN 86.72%.",
+     "anchor": "Section VI.B, Table IV, p.4-5",
+     "quotes": [
+      "UNSW-NB15 [15], CICIDS17 [16], and CICIoT2023 [17]",
+      "88.10% 87.90% 87.32%",
+      "82.67% 82.34% 86.72%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Every QML value is above every classical value in this column, but CNN (86.72%) is above SVM (82.34%), so the sentence calling SVM the best traditional method (Section VI.B) does not match Table IV."
+    },
+    {
+     "id_suggestion": "qmlids-table4-binary-cicids",
+     "value": "The authors report binary-classification F1 scores on the CIC-IDS-17 dataset: VQC 94.78%, QSVM 94.40%, QCNN 95.60%; RF 92.45%, SVM 93.78%, CNN 93.15%.",
+     "anchor": "Section VI.B, Table IV, p.4-5",
+     "quotes": [
+      "UNSW-NB15 [15], CICIDS17 [16], and CICIoT2023 [17]",
+      "94.78% 94.40% 95.60%",
+      "92.45% 93.78% 93.15%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Every QML value is above every classical value in this column, by 0.62 to 3.15 F1 points. The classical values are single runs of unstated tuning."
+    },
+    {
+     "id_suggestion": "qmlids-table4-binary-ciciot",
+     "value": "The authors report binary-classification F1 scores on the CICIoT2023 dataset: VQC 78.92%, QSVM 82.40%, QCNN 82.56%; RF 71.95%, SVM 82.7%, CNN 78.52%.",
+     "anchor": "Section VI.B, Table IV, p.4-5",
+     "quotes": [
+      "UNSW-NB15 [15], CICIDS17 [16], and CICIoT2023 [17]",
+      "78.92% 82.40% 82.56%",
+      "71.95% 82.7% 78.52%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Classical SVM (82.7%) is above all three QML values in this column (QCNN 82.56%, QSVM 82.40%, VQC 78.92%), which the Section VI.B sentence 'QML models generally outperform traditional ML methods' does not state. The value 82.7% carries one decimal place where all others carry two."
+    },
+    {
+     "id_suggestion": "qmlids-binary-qml-competitive-claim",
+     "value": "The authors state that the QML models demonstrate competitive or superior performance compared to their classical ML counterparts across all datasets in binary classification, and that on the CIC-IDS-17 and CICIoT2023 datasets QML models generally outperform traditional ML methods, albeit with varying margins.",
+     "anchor": "Section VI.B, p.5",
+     "quotes": [
+      "demonstrate competitive or superior performance compared to their ML counterparts across all datasets",
+      "where QML models generally outperform traditional ML methods, albeit with varying margins."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author reading of Table IV.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Table IV shows classical SVM above all QML models on CICIoT2023 (82.7% against 82.56% for the best QML model)."
+    },
+    {
+     "id_suggestion": "qmlids-vqc-highest-claim",
+     "value": "The authors state that VQC marks the highest F1 scores among QML models across the datasets, and that QCNN achieves the highest F1 score of 95.60% on the CIC-IDS-17 dataset.",
+     "anchor": "Section VI.B, p.5",
+     "quotes": [
+      "marking the highest F1 scores among QML models across the",
+      "datasets, which underscores its effectiveness in detecting attacks.",
+      "QCNN achieving the highest F1 score of 95.60% on the CIC-IDS-17 dataset"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author reading of Table IV.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Table IV shows VQC highest among QML models only on UNSW-NB15. On CIC-IDS-17 QCNN is highest (95.60% against 94.78%) and on CICIoT2023 VQC is lowest (78.92% against 82.40% and 82.56%). The two sentences also disagree with each other on CIC-IDS-17."
+    },
+    {
+     "id_suggestion": "qmlids-table5-multiclass-unsw",
+     "value": "The authors report multiclass F1 scores on the UNSW-NB15 dataset by attack class and method: VQC: Analysis 95.55, Backdoor 84.16, DoS 89.29, Exploits 95.23, Fuzzers 76.12, Generic 97.01, Recon 98.88, Shellcode 68.23, Worms 22.86; QSVM: Analysis 87.85, Backdoor 82.08, DoS 88.68, Exploits 93.78, Fuzzers 96.55, Generic 94.45, Recon 99.72, Shellcode 76.67, Worms 55.89; QCNN: Analysis 98.88, Backdoor 91.05, DoS 93.23, Exploits 94.44, Fuzzers 93.14, Generic 95.00, Recon 97.48, Shellcode 79.94, Worms 65.11; RF: Analysis 90.23, Backdoor 92.11, DoS 82.56, Exploits 85.89, Fuzzers 79.78, Generic 99.01, Recon 82.89, Shellcode 80.12, Worms 35.78; SVM: Analysis 96.45, Backdoor 90.78, DoS 92.45, Exploits 79.01, Fuzzers 77.56, Generic 99.34, Recon 86.12, Shellcode 76.23, Worms 20.56; CNN: Analysis 95.15, Backdoor 90.13, DoS 80.26, Exploits 78.16, Fuzzers 76.89, Generic 94.83, Recon 90.46, Shellcode 72.00, Worms 48.15.",
+     "anchor": "Section VI.C, Table V, p.4-5",
+     "quotes": [
+      "UNSW-NB15 [15], CICIDS17 [16], and CICIoT2023 [17]",
+      "95.55 84.16 89.29 95.23 76.12 97.01 98.88 68.23 22.86",
+      "87.85 82.08 88.68 93.78 96.55 94.45 99.72 76.67 55.89",
+      "98.88 91.05 93.23 94.44 93.14 95.00 97.48 79.94 65.11",
+      "90.23 92.11 82.56 85.89 79.78 99.01 82.89 80.12 35.78",
+      "96.45 90.78 92.45 79.01 77.56 99.34 86.12 76.23 20.56",
+      "95.15 90.13 80.26 78.16 76.89 94.83 90.46 72.00 48.15"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Reading the text layer's columns as methods in the order VQC, QSVM, QCNN, RF, SVM, CNN (it matches the text's 98.88% for QCNN on Analysis). On Worms, QCNN (65.11) and QSVM (55.89) are above RF (35.78), SVM (20.56) and CNN (48.15), and VQC (22.86) is above SVM; on Shellcode, RF (80.12) is above QCNN (79.94) by 0.18 points and QCNN, QSVM and SVM are within 4 points. The paper does not state which backend or configuration produced these numbers."
+    },
+    {
+     "id_suggestion": "qmlids-table6-multiclass-cicids",
+     "value": "The authors report multiclass F1 scores on the CIC-IDS-17 dataset by attack class and method: VQC: BoT 88.23, BruteForce 95.87, DoS 90.32, DDoS 90.54, Infiltration 90.99, PortScan 95.45, WebAttack 92.78; QSVM: BoT 97.11, BruteForce 99.99, DoS 90.79, DDoS 99.99, Infiltration 99.66, PortScan 96.32, WebAttack 96.67; QCNN: BoT 98.45, BruteForce 99.99, DoS 92.45, DDoS 96.55, Infiltration 97.42, PortScan 97.48, WebAttack 97.83; RF: BoT 92.12, BruteForce 96.24, DoS 98.02, DDoS 99.34, Infiltration 97.53, PortScan 97.45, WebAttack 96.89; SVM: BoT 94.67, BruteForce 93.45, DoS 99.67, DDoS 94.32, Infiltration 99.87, PortScan 97.89, WebAttack 98.21; CNN: BoT 91.45, BruteForce 94.42, DoS 96.15, DDoS 96.32, Infiltration 97.15, PortScan 96.88, WebAttack 96.55.",
+     "anchor": "Section VI.C, Table VI, p.4-5",
+     "quotes": [
+      "UNSW-NB15 [15], CICIDS17 [16], and CICIoT2023 [17]",
+      "88.23 95.87 90.32 90.54 90.99 95.45 92.78",
+      "97.11 99.99 90.79 99.99 99.66 96.32 96.67",
+      "98.45 99.99 92.45 96.55 97.42 97.48 97.83",
+      "92.12 96.24 98.02 99.34 97.53 97.45 96.89",
+      "94.67 93.45 99.67 94.32 99.87 97.89 98.21",
+      "91.45 94.42 96.15 96.32 97.15 96.88 96.55"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Same column reading as for Table V. QSVM and QCNN both score 99.99 on BruteForce and QSVM scores 99.99 on DDoS. SVM is highest on DoS (99.67) and on Infiltration (99.87). The paper does not state which backend or configuration produced these numbers."
+    },
+    {
+     "id_suggestion": "qmlids-table7-multiclass-ciciot",
+     "value": "The authors report multiclass F1 scores on the CICIoT2023 dataset by attack class and method (the paper labels the QCNN column QCCN here): VQC: BruteForce 64.19, DoS 92.03, DDoS 92.81, Mirai 90.32, Recon 83.40, Spoofing 74.95, Web 60.00; QSVM: BruteForce 70.25, DoS 95.59, DDoS 95.48, Mirai 96.92, Recon 80.60, Spoofing 70.20, Web 72.85; QCNN: BruteForce 74.76, DoS 96.43, DDoS 96.37, Mirai 97.48, Recon 92.53, Spoofing 76.08, Web 74.56; RF: BruteForce 62.55, DoS 95.13, DDoS 95.78, Mirai 96.44, Recon 85.88, Spoofing 65.73, Web 60.48; SVM: BruteForce 60.41, DoS 92.86, DDoS 92.52, Mirai 93.00, Recon 81.95, Spoofing 60.69, Web 58.10; CNN: BruteForce 66.31, DoS 94.41, DDoS 95.27, Mirai 97.92, Recon 88.44, Spoofing 68.27, Web 68.63.",
+     "anchor": "Section VI.C, Table VII, p.4-5",
+     "quotes": [
+      "UNSW-NB15 [15], CICIDS17 [16], and CICIoT2023 [17]",
+      "64.19 92.03 92.81 90.32 83.40 74.95 60.00",
+      "70.25 95.59 95.48 96.92 80.60 70.20 72.85",
+      "74.76 96.43 96.37 97.48 92.53 76.08 74.56",
+      "62.55 95.13 95.78 96.44 85.88 65.73 60.48",
+      "60.41 92.86 92.52 93.00 81.95 60.69 58.10",
+      "66.31 94.41 95.27 97.92 88.44 68.27 68.63"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Same column reading as for Table V. QCNN is above all three classical methods in every class except Mirai, where CNN (97.92) is above QCNN (97.48); this includes Spoofing and Web, the two classes the text says are less dominant for QML. The paper does not state which backend or configuration produced these numbers."
+    },
+    {
+     "id_suggestion": "qmlids-multiclass-unsw-text",
+     "value": "The authors state that on UNSW-NB15 the QML models show exceptional proficiency on attacks such as Analysis and Reconnaissance, with QCNN reaching up to 98.88% on Analysis, and that for categories like Worms and Shellcode the quantum models lag behind, so that traditional methods like SVM and RF still hold the upper hand in others.",
+     "anchor": "Section VI.C, p.5-6",
+     "quotes": [
+      "They show exceptional proficiency in identifying attacks like Analysis and Reconnaissance, where QCNN notably excels with scores reaching up to 98.88% for Analysis attacks.",
+      "However, for categories like Worms and Shellcode, these quantum models lag behind, suggesting",
+      "that while QMLs are promising for certain attack vectors, traditional ML methods like SVM and RF still hold the upper hand in others."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author reading of Table V.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Table V does not support the Worms statement: QCNN (65.11) and QSVM (55.89) score above RF (35.78), SVM (20.56) and CNN (48.15). On Shellcode RF is above QCNN by 0.18 points."
+    },
+    {
+     "id_suggestion": "qmlids-multiclass-cicids-text",
+     "value": "The authors state that on CIC-IDS-17 QSVM and QCNN reach near-perfect scores in BruteForce detection, while in scenarios involving DoS and WebAttack traditional methods like SVM and RF present competitive or superior performance.",
+     "anchor": "Section VI.C, p.6",
+     "quotes": [
+      "with QSVM and QCNN reaching near-perfect scores in BruteForce detection.",
+      "Yet, in scenarios involving DoS and WebAttack, traditional methods like SVM and RF present competitive or superior performance"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author reading of Table VI.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Consistent with Table VI: BruteForce 99.99 for both QML models; DoS is 98.02 for RF and 99.67 for SVM against at most 92.45 for QML; WebAttack is 98.21 for SVM against 97.83 for QCNN."
+    },
+    {
+     "id_suggestion": "qmlids-multiclass-ciciot-text",
+     "value": "The authors state that on CICIoT2023 the QML models perform robustly on DoS attacks, with QCNN at an F1 score of 96.43%, and that for Spoofing and Web attacks the QML performance is less dominant, with traditional methods occasionally outperforming or matching the quantum approaches.",
+     "anchor": "Section VI.C, p.6",
+     "quotes": [
+      "Here, QML models demonstrate robust performance in identifying DoS attacks, with QCNN showing a remarkable F1 Score of 96.43%.",
+      "the performance of QML models is less dominant, with traditional ML methods occasionally outperforming or matching the quantum approaches"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author reading of Table VII.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Table VII gives QCNN 76.08 on Spoofing and 74.56 on Web, above all three classical methods in both classes, so the 'less dominant' reading is not shown by the table."
+    },
+    {
+     "id_suggestion": "qmlids-multiclass-overall-claim",
+     "value": "The authors state that QML models offer significant advantages for certain attack types but still require advancements to consistently outperform traditional ML methods across the board.",
+     "anchor": "Section VI.C, p.6",
+     "quotes": [
+      "QML models offer significant advantages for certain attack types but still require advancements to consistently outperform traditional ML methods across the board."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author summary of Tables V to VII.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-qml-not-decisive-limit",
+     "value": "The authors state that the performance gap between QML and traditional ML methods is not overwhelmingly large and that QML does not yet decisively outperform traditional approaches in all aspects.",
+     "anchor": "Section VI.C, p.6",
+     "quotes": [
+      "the performance gap between QML and traditional ML methods is not overwhelmingly large, suggesting that while QML offers potential advantages in certain scenarios, it does not yet decisively outperform traditional approaches in all aspects."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section VI.C states this as a limit of the results.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "This sentence conflicts in tone with the abstract's 'outperforms classical Machine Learning methods'."
+    },
+    {
+     "id_suggestion": "qmlids-abstract-outperforms-claim",
+     "value": "The authors state in the abstract that their findings reveal that QML-IDS outperforms classical Machine Learning methods and is effective at attack detection in binary and multiclass classification tasks.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "we show that QML-IDS is effective at attack detection and performs well in binary and multiclass classification tasks.",
+      "Our findings reveal that QML-IDS outperforms classical Machine Learning methods"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author summary of their own results.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Section VI.C and the conclusion soften this to 'not overwhelmingly large' and 'competitive'. Table IV has classical SVM above all QML models on CICIoT2023."
+    },
+    {
+     "id_suggestion": "qmlids-conclusion",
+     "value": "The authors state that QML-IDS proved to be effective in detecting attacks in both binary and multiclass classification, showing competitive results compared to traditional ML methods, and that in the current NISQ and quantum utility scenarios it already demonstrates competitive results in detection and identification of attacks.",
+     "anchor": "Section VII, p.6",
+     "quotes": [
+      "QML-IDS proved to be effective in detecting attacks, both in binary and multiclass classifications, showing competitive results compared to traditional Machine Learning methods.",
+      "already demonstrates competitive results compared to other ML techniques in the detection and identification of attacks"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-practical-limits",
+     "value": "The authors state that challenges and limitations remain for the practical implementation of the proposal in real network environments.",
+     "anchor": "Section VII, p.6",
+     "quotes": [
+      "there are still challenges and limitations to be overcome for the practical implementation of the proposal in real network environments"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section VII states this as a limit of the work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmlids-future-work",
+     "value": "The authors state that points to explore are integration with existing classical IDS frameworks and with traditional ML-based IDS systems, and that addressing the constraints of quantum hardware availability and the privacy concerns of processing data on platforms like IBM's will be crucial.",
+     "anchor": "Section VII, p.6",
+     "quotes": [
+      "Among the points to be explored are integration with existing classical IDS frameworks and with traditional MLbased IDS systems",
+      "Moreover, addressing the constraints of quantum hardware",
+      "availability and navigating the privacy concerns associated"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section VII lists open problems and constraints.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
