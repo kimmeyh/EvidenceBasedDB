@@ -1,0 +1,778 @@
+{
+ "papers": [
+  {
+   "record_id": "barligea-2025-scalability-challenges-variational-quantum-optimization",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Barligea-Poggel-Lorenz_2025_Scalability-Challenges-in-Variational-Quantum-Optimization-under__2503.14696.pdf",
+   "title_in_file": "Scalability Challenges in Variational Quantum Optimization under Stochastic Noise",
+   "version_note": "arXiv:2503.14696v2, 21 Jul 2025; text matches the record.",
+   "pages": 25,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A numerical study of how classical optimizers cope with additive Gaussian noise on variational quantum loss functions for random QUBO instances, with extrapolation to required measurement shots.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "vqa-noise-limited-data",
+     "verdict": "confirmed",
+     "note": "Same statement in Sec. V B (p.10), not Sec. VI as the stored anchor says; the value is right.",
+     "value": "The authors state that their experimental data are limited by the computational cost of simulating larger system sizes, so conclusions about the exact scaling need cautious analysis.",
+     "anchor": "Sec. V B, p.10",
+     "quotes": [
+      "Given the limited experimental data – constrained by the computational cost of simulating larger system sizes – any conclusions about the exact scaling behaviors or asymptotic trends require cautious analysis."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit in Sec. V B, p.10.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "vqa-noise-study-setup",
+     "verdict": "confirmed",
+     "note": "Also the paper runs the study mainly on the BENQO loss function, with a two-local VQE check, for system sizes 3 to 10.",
+     "value": "The authors state that they study how classical optimizers minimize variational quantum loss functions for random QUBO instances, with uncertainty modeled as effective Gaussian noise.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "We systematically investigate this scaling behavior by analyzing how classical optimizers minimize variational quantum loss functions for random QUBO instances in the presence of uncertainty, modeled as effective Gaussian noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The abstract states the scope of the study.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "vqa-noise-threshold-declines-with-size",
+     "verdict": "confirmed",
+     "note": "The paper also says the exact form of the decline (exponential, power-law, logarithmic) is inconclusive (Sec. V B, App. F), and the shot result rests on extrapolated fits.",
+     "value": "The authors report that the critical noise threshold for successful optimization decreases rapidly as system size grows, and that the required measurement shots quickly become impractical.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "We find that the critical noise threshold for successful optimization decreases rapidly as system size grows.",
+      "Translating these thresholds into required measurement shots reveals that achieving sufficient precision in the evaluated loss values quickly becomes impractical, even for moderately-sized problems."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The shot claim rests on fitted extrapolation from small sizes (3 to 10), as the paper itself cautions."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "study-claims-first-scaling-analysis",
+     "value": "The authors state that they present the first in-depth scaling analysis of classical optimizer performance on noisy quantum loss functions for random QUBO instances, and identify a clear threshold beyond which reliable optimization becomes exponentially challenging.",
+     "anchor": "Sec. I, contribution 2, p.2",
+     "quotes": [
+      "the first in-depth scaling analysis of classical optimizer performance on noisy quantum loss functions for random QUBO problem instances.",
+      "we identify a clear threshold σ∗(n), beyond which reliable optimization becomes exponentially challenging."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Sec. V B later says the exact decay form is inconclusive, so 'exponentially' is not established by the paper's own fits."
+    },
+    {
+     "id_suggestion": "design-fixes-encoding-and-quantum-subroutine",
+     "value": "The authors state that, to isolate the impact of classical optimization, they fix the problem encoding and the quantum subroutine under representative conditions.",
+     "anchor": "Sec. IV, p.4",
+     "quotes": [
+      "To isolate the impact of classical optimization, the central component of VQAs, we fix the other two components under representative conditions"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. IV states the experimental design.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "random-qubo-instances-negative-diagonal",
+     "value": "The authors state that the random QUBO instances have all matrix entries sampled from a discrete uniform distribution over the interval [1, 10], with the diagonal containing only negative values.",
+     "anchor": "Sec. IV A, p.4",
+     "quotes": [
+      "sampled from a discrete uniform distribution over the interval [1, 10]",
+      "the diagonal of the QUBO matrices contains only negative values."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. IV and IV A state the problem instances.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noise-model-gaussian-post-processing-fault-tolerant",
+     "value": "The authors state that their analysis assumes a fault-tolerant scenario and simulates uncertainty only through Gaussian noise applied as a post-processing step to exact quantum loss function evaluations.",
+     "anchor": "Sec. II, p.2",
+     "quotes": [
+      "our analysis assumes a fault-tolerant scenario, simulating uncertainty exclusively via Gaussian noise applied as a post-processing step to exact quantum loss function evaluations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. II states the noise setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ansatz-chosen-barren-plateau-free",
+     "value": "The authors state that they consider only ansatz circuits with polynomially growing dynamical Lie algebra dimension and strictly local observables, so that the loss functions are provably barren-plateau-free.",
+     "anchor": "Sec. II, p.2",
+     "quotes": [
+      "considering only ansatz circuits characterized by only polynomially growing DLA dimensions along with strictly local observables,",
+      "ensuring that the underlying quantum loss functions are provably barren-plateau-free"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Sec. II states the scope of ansatz choice.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benqo-highest-loss-variance",
+     "value": "The authors report that, among the two barren-plateau-free ansatzes tested, BENQO consistently maintains the highest absolute variance in its loss values with increasing system size, and was therefore selected for the experiments.",
+     "anchor": "Sec. IV B, Fig. 4, p.6",
+     "quotes": [
+      "Among the two remaining ones tested, BENQO consistently maintains the highest absolute variance in its loss values with increasing system size, suggesting the best parameter sensitivity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "experiment-size-and-noise-range",
+     "value": "The authors state that the experiments cover system sizes n ∈ [3, 10] and Gaussian noise levels σ ∈ (10−3, 101).",
+     "anchor": "Sec. V, p.8",
+     "quotes": [
+      "The experiments described above are conducted for system sizes n ∈ [3, 10] and Gaussian noise levels σ ∈ (10−3, 101)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Sec. V states the tested ranges.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "repeats-and-ngd-steps",
+     "value": "The authors state that each experiment is repeated N = 100 times with different problem instances, and that the normalized gradient descent optimizer uses a total of kmax = 20 optimization steps.",
+     "anchor": "Sec. IV D, p.7",
+     "quotes": [
+      "we repeat each experiment N = 100 times",
+      "set to kmax = 20, as recommended in previous studies [64]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. IV D states the experiment settings.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "poor-gradient-optimizers-excluded",
+     "value": "The authors report that the optimizers BFGS, CG and SLSQP are excluded because of their poor performance across all tested noise settings.",
+     "anchor": "Sec. V, p.8",
+     "quotes": [
+      "the optimizers BFGS, CG, and SLSQP are excluded due to their poor performance across all tested noise settings"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fixed-size-sigmoidal-solvability",
+     "value": "The authors report that, for fixed system sizes, the probability of finding high-quality solutions, including those within 1% and 5% of the optimal energy, decreases in a sigmoidal pattern with respect to the logarithmic noise level.",
+     "anchor": "Sec. VIII, p.16",
+     "quotes": [
+      "the probability of finding high-quality solutions – including those within 1% and 5% of the optimal energy – decreases in a sigmoidal pattern with respect to the logarithmic noise level."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nft-spsa-peak-at-nonzero-noise",
+     "value": "The authors report that the NFT and SPSA optimizers show a clear peak in performance at a non-zero noise level, and suggest that a small level of noise can help them escape saddle points and local minima.",
+     "anchor": "Sec. V A, Fig. 6, p.8",
+     "quotes": [
+      "both optimizers exhibit a clear peak in performance at a non-zero noise level before their success probabilities decline.",
+      "This suggests that a small level of noise can enhance their ability to find optimal solutions by helping to escape saddle points and local minima"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "optimizer-noise-resilience-ranking",
+     "value": "The authors report a ranking of the optimizers by noise resilience: NGD and NFT perform best, followed by SPSA, Powell and finally COBYLA.",
+     "anchor": "Sec. V B, Fig. 7, p.9",
+     "quotes": [
+      "NGD and NFT perform best, followed by SPSA, Powell, and finally COBYLA."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noise-resilience-decline-across-all-optimizers",
+     "value": "The authors state that noise resilience declines rapidly across all tested methods, while the exact form of the decline remains uncertain.",
+     "anchor": "Sec. V B, p.10",
+     "quotes": [
+      "Despite uncertainties regarding the exact form of decay, one clear conclusion emerges: noise resilience declines rapidly across all tested methods."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "decay-model-fits-inconclusive",
+     "value": "The authors report that the power-law fit looks best against most optimizer curves, but that the goodness-of-fit values are inconclusive because no single decay model gives the best fit across all optimizers.",
+     "anchor": "Sec. V B and Appendix F, p.10 and p.20",
+     "quotes": [
+      "Visually, the power-law fit appears to align best with the majority of optimizer curves.",
+      "Unfortunately, these values remain inconclusive, as no single decay model consistently provides the best fit across all optimizers, with the lowest MSE dependent on the optimizer."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "variance-decay-not-sufficient",
+     "value": "The authors state that the observed drop in noise resilience cannot be fully explained by the decay of loss function variance, since the decline persists after the noise level is normalized for it.",
+     "anchor": "Sec. V B, p.11",
+     "quotes": [
+      "This suggests that loss variance decay cannot fully explain the observed drop in noise resilience among classical optimizers.",
+      "This decline exceeds what can be explained solely by shrinking loss variance"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The paper offers other contributing factors (noise-induced barren plateaus, local minima) as possible causes but does not test them."
+    },
+    {
+     "id_suggestion": "sigma-star-definition",
+     "value": "The authors define the noise threshold as the standard deviation of the total error on the loss function beyond which the optimizer performance dropped to less than 50% of its noise-free level.",
+     "anchor": "Sec. VI, p.11",
+     "quotes": [
+      "This behavior was quantified in terms of the standard deviation of the total error on the loss function σ∗, beyond which the optimizer performance dropped to less than 50% of its noise-free level."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Sec. VI defines how the threshold is measured.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rae-definition",
+     "value": "The authors define the Relative Absolute Error, which normalizes the mean absolute error by the mean absolute deviation of the loss values, as an error measure independent of the shrinking loss variance and of the chosen normalization.",
+     "anchor": "Sec. VI, Eq. (34), p.11",
+     "quotes": [
+      "we use an error measure that is independent of the shrinking variance of the tested loss function: the Relative Absolute Error (RAE), defined as",
+      "The RAE normalizes the mean absolute error by the mean absolute deviation of the loss values, making it a relative measure independent of the chosen normalization"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Sec. VI defines the RAE.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-noise-intersection-six-nodes",
+     "value": "The authors state that the intersection of the ibm_sherbrooke noise model error with the NGD resilience threshold indicates that problems with more than six nodes may already be unsolvable on current hardware under their solvability metric, and that drastic reductions in hardware error rates are required.",
+     "anchor": "Sec. VI A, Fig. 9, p.11",
+     "quotes": [
+      "The intersection of the two curves indicates that problems with more than six nodes may already be unsolvable on current hardware, according to our metric of solvability (cf. Eq. (23)).",
+      "the implications of the near-exponential scaling of precision requirements are clear: drastic reductions in hardware error rates are required to achieve practical applicability."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Single hardware noise model (Eagle family); the paper notes other qubit technologies or newer hardware may differ."
+    },
+    {
+     "id_suggestion": "finite-sampling-error-scaling",
+     "value": "The authors report that, for a fixed system size, the finite-sampling error decreases proportionally to one over the square root of the number of shots, and that for a fixed number of shots the error grows exponentially with system size.",
+     "anchor": "Sec. VI B, Fig. 10, p.11-12",
+     "quotes": [
+      "the error decreases proportionally to 1/√nshots when n is fixed.",
+      "when nshots is kept constant, the error grows exponentially, reflecting the increasing range of loss values alongside a simultaneously shrinking variance as the system size increases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "required-shots-grow-exponentially",
+     "value": "The authors derive that the required number of measurement shots grows exponentially with system size, for the finite-sampling scaling they assume, regardless of which of the three decay laws describes the noise threshold.",
+     "anchor": "Sec. VI B, Eqs. (36) to (39), p.12",
+     "quotes": [
+      "we derive that the required number of measurement shots grows exponentially with system size, for the scaling assumed in Eq. (37).",
+      "is always of order O(kn) for some k > 1, regardless of the specific scaling law in Eq. (36)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The derivation rests on fitted extrapolations from system sizes 3 to 10; the paper itself calls the fits inconclusive."
+    },
+    {
+     "id_suggestion": "brute-force-shot-limit-below-nine",
+     "value": "The authors state that for the NGD optimizer, which requires only 20 iterations regardless of n, achieving a quantum speed-up is impossible for problem sizes below 9, since brute-force solutions are always more efficient.",
+     "anchor": "Sec. VI B, Eq. (40), p.13",
+     "quotes": [
+      "requires only 20 iterations regardless of n",
+      "This implies that for problem sizes below 9, achieving a quantum speed-up is impossible, as brute-force solutions are always more efficient."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scriva-quantum-disadvantage-criterion",
+     "value": "The paper attributes to Scriva et al. the statement that the quantum computational cost, the number of shots times the number of calls, must stay below two to the power n to avoid quantum disadvantage.",
+     "anchor": "Sec. VI B, p.13",
+     "quotes": [
+      "Scriva et al. [18] emphasized that the quantum computational cost, quantified as nshots · ncalls, must strictly remain below 2n to avoid quantum disadvantage"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "exponential-boundary-quantum-advantage-unattainable",
+     "value": "The authors state that if the noise threshold decays exponentially, the required shots would already grow faster than the number of brute-force trials, which they conclude makes quantum advantage for optimization under these conditions fundamentally unattainable.",
+     "anchor": "Sec. VI B, Fig. 11, p.13",
+     "quotes": [
+      "This strongly suggests that quantum advantage for optimization tasks under these conditions is fundamentally unattainable."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "power-law-log-boundary-small-window",
+     "value": "The authors state that under power-law and logarithmic decay of the noise threshold a small window of potential quantum advantage remains, for problem sizes n ≥ 20 in the logarithmic case and n ≥ 25 in the power-law case, but that these advantages are only theoretical.",
+     "anchor": "Sec. VI B, Fig. 11, p.13-14",
+     "quotes": [
+      "remains for problem sizes n ≥ 20 (logarithmic boundary) and n ≥ 25 (power-law boundary), where the shot requirement still falls below the critical threshold of quantum disadvantage.",
+      "However, these potential advantages are only theoretical"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "runtime-lower-bound-exceeds-one-hour",
+     "value": "The authors state that for problem sizes of practical relevance, n ≥ O(100), even with constant circuit depth and gate times of approximately 100 ns, the lower bound on time to solution would already exceed one hour.",
+     "anchor": "Sec. VI B, Eq. (41), p.14",
+     "quotes": [
+      "For problem sizes of practical relevance, n ≥ O(100)",
+      "gate execution times of approximately 100 ns – the lower bound on the time to solution would already exceed one hour."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-validation-of-ngd-scaling",
+     "value": "The authors report that repeating the NGD experiments with a two-local VQE loss function gives results closely matching those from BENQO.",
+     "anchor": "Sec. VII B, Fig. 12, p.14",
+     "quotes": [
+      "The results for the NGD optimizer are summarized in Fig. 12, closely matching those obtained using BENQOs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-finite-sampling-validation",
+     "value": "The authors report a validation using the VQE ansatz with noise introduced only through finite sampling, for system sizes n ∈ [3, 13] and the COBYLA solver, observing a sigmoidal drop in success probability as the number of shots decreases.",
+     "anchor": "Sec. VII B, Fig. 13, p.14",
+     "quotes": [
+      "extending the range to n ∈ [3, 13].",
+      "The following results focus on the COBYLA solver",
+      "we observe a sigmoidal drop in success probability for fixed system sizes n as the number of measurement shots nshots decreases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-shot-extrapolation-lower-resources",
+     "value": "The authors report that, in the VQE finite-sampling validation, a power-law fit is used to extrapolate the required shots, which suggests slightly lower resource demands than initially estimated, and that the lower bound on time to solution would still exceed one hour for problems of size n ≥ 243.",
+     "anchor": "Sec. VII B, Fig. 13, p.14",
+     "quotes": [
+      "agreement and is therefore used to extrapolate the required shot numbers to practically relevant system sizes.",
+      "Interestingly, our direct shot requirement analysis suggests slightly lower resource demands than initially estimated.",
+      "would still exceed one hour for problems of size n ≥ 243."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "approximation-index-definition",
+     "value": "The authors define the approximation index as indicating whether the loss value of the most probable basis state is within a specified threshold of the global minimum, and estimate solvability as the fraction of runs that succeed.",
+     "anchor": "Sec. IV E, Eqs. (22), (23), p.7",
+     "quotes": [
+      "which assesses whether the loss value of |ψmax⟩ is within a specified threshold t ∈ [0, 1] of the global minimum"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Sec. IV E defines the success metric.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "near-optimal-success-rises-with-size",
+     "value": "The authors report that, especially without noise, the near-optimal success probability at the 95% threshold even increases with system size, and attribute this to an asymmetric loss value distribution that pushes local minima closer to the global optimum.",
+     "anchor": "Sec. VII C, p.15",
+     "quotes": [
+      "the near-optimal success probability pˆ95% even increases with system size",
+      "This explains why approximate solutions remain relatively accessible, even when finding the exact optimum becomes increasingly difficult."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "many-solutions-near-optimal",
+     "value": "The authors report that nearly 20% of all possible solution states yield a loss value within 90% of the optimum, which they say indicates the solution space is highly structured rather than uniformly random.",
+     "anchor": "Appendix E, Fig. 16, p.20",
+     "quotes": [
+      "nearly 20% of all possible solution states still yield loss value within 90% of the optimum, indicating that the solution space is highly structured rather than uniformly random."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ngd-vs-efficiency-tradeoff",
+     "value": "The authors report that optimizers with greater noise resilience tend to require more function evaluations to converge, which they describe as a trade-off between noise resilience and efficiency.",
+     "anchor": "Appendix D, Fig. 15, p.19",
+     "quotes": [
+      "A clear trend emerges: optimizers with greater noise resilience tend to require more function evaluations to converge"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gradient-based-struggle-in-noise",
+     "value": "The authors state that, supporting earlier findings, gradient-based optimizers while efficient in ideal conditions struggle in noisy settings, whereas gradient-free strategies prove significantly more robust.",
+     "anchor": "Appendix D, p.19",
+     "quotes": [
+      "gradient-based optimizers, while efficient in ideal conditions, struggle in noisy settings, whereas gradient-free strategies prove significantly more robust."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The best optimizer in the paper's own ranking, NGD, is gradient-based, so the statement holds only as a general trend."
+    },
+    {
+     "id_suggestion": "limit-noise-model-no-hardware-propagation",
+     "value": "The authors state that the Gaussian noise model does not explicitly capture hardware-level error propagation.",
+     "anchor": "Sec. IV C, p.6",
+     "quotes": [
+      "Although this method does not explicitly capture hardware-level error propagation"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. IV C states this limit of the noise model.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sampling-noise-additive-for-benqo",
+     "value": "The authors report that for BENQO the finite-sampling error is almost entirely additive, while for VQE and QAOA it has both additive and multiplicative components.",
+     "anchor": "Appendix C, Fig. 14, p.18",
+     "quotes": [
+      "For the BENQO algorithm, the y-intercept t is significantly larger than the slope m, meaning that the error is almost entirely additive."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "additive-gaussian-as-worst-case",
+     "value": "The paper states, citing the first author's thesis, that additive errors distort the loss landscape more severely than multiplicative ones, so adding Gaussian noise represents a worst case for finite sampling errors.",
+     "anchor": "Appendix C, p.18",
+     "quotes": [
+      "a worst-case scenario can always be represented by simply adding Gaussian noise to the loss function."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-ansatz-classically-simulable",
+     "value": "The authors state that the absence of barren plateaus in the ansatzes they used implies efficient classical simulability, so these ansatzes may not offer a viable path to quantum advantage.",
+     "anchor": "Sec. VII D, p.15-16",
+     "quotes": [
+      "which in turn implies efficient classical simulability [11, 12]. As such, these ansatzes may not offer a viable path toward achieving quantum advantage within VQAs."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-barren-plateau-ansatzes-untested",
+     "value": "The authors state that they deliberately focused on two ansatzes that avoid barren plateaus, and leave how Gaussian uncertainty interacts with initialization strategies for barren-plateau-prone ansatzes to future work.",
+     "anchor": "Sec. VII D, p.15-16",
+     "quotes": [
+      "we deliberately focused on two variational ansatzes that avoid barren plateaus",
+      "An important direction for future work is to investigate how the presence of Gaussian uncertainty interacts with such initialization strategies"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. VII D states the scope and its limit.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-stochastic-noise-limits-scalability",
+     "value": "The authors conclude that stochastic noise alone may impose fundamental limitations on the scalability of variational quantum optimization to practically relevant problem sizes.",
+     "anchor": "Sec. VIII, p.16",
+     "quotes": [
+      "stochastic noise alone may impose fundamental limitations on the scalability of variational quantum optimization to practically relevant problem sizes"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-challenges-more-fundamental-than-hardware",
+     "value": "The authors state that their results indicate the challenges of variational quantum algorithms, in both the NISQ and fault-tolerant era, may be more fundamental than what hardware improvements, better classical optimizers or ansatz tuning alone can resolve.",
+     "anchor": "Sec. VIII, p.17",
+     "quotes": [
+      "our results indicate that the challenges facing VQAs – both in the NISQ and fault-tolerant era – may be more fundamental than what can be resolved through hardware improvements, better classical optimizers, or ansatz tuning alone."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
