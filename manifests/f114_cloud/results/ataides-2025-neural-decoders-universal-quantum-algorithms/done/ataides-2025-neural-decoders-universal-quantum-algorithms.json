@@ -1,0 +1,633 @@
+{
+ "papers": [
+  {
+   "record_id": "ataides-2025-neural-decoders-universal-quantum-algorithms",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Pablo-Bonilla-Ataides-et-al._2025_Neural-Decoders-for-Universal-Quantum-Algorithms__2509.11370.pdf",
+   "title_in_file": "Neural Decoders for Universal Quantum Algorithms",
+   "version_note": "arXiv:2509.11370v1, 14 Sep 2025; text layer holds the paper once.",
+   "pages": 12,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An attention-based modular neural decoder for fault-tolerant quantum algorithms, evaluated in simulation on surface, color and Reed-Muller codes, with loss-resolving readout and observable-specific convolutional decoders.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "neural-decoder-near-mle",
+     "verdict": "narrowed",
+     "note": "The stored value says 'comparable' across varied circuit depths and qubit counts. The paper's MLE comparison (Fig. 1(b)) is for four surface-code logical qubits, d = 3, 5, 7, one physical error rate p = 0.3%, and the text says 'approaching', not equal. Generalization from random circuits to larger or different workloads is shown separately (cluster states, Fig. 3).",
+     "value": "The authors report that, in the comparison with an exact most-likely-error (MLE) decoder, the trained neural decoder attains logical error rates approaching those of the MLE decoder; this comparison is for random transversal Clifford circuits on four surface-code logical qubits at code distances d = 3, 5, 7 and a fixed physical error rate of p = 0.3%. The abstract also states that the decoder generalizes from training on random circuits to unseen multi-qubit algorithmic workloads.",
+     "anchor": "Inference, Section 'Inference' p.4; Methods 'Numerical simulation details' p.11; Abstract p.1",
+     "quotes": [
+      "Remarkably, the trained neural decoder attains logical error rates approaching those of the MLE decoder.",
+      "we show the logical error rate as a function of circuit depth for the surface code with d = 3, 5, 7",
+      "Fig. 1(b) shows results for the general algorithm decoder applied to random transversal Clifford circuits on four surface-code logical qubits.",
+      "The results in Fig. 1(b) correspond to a fixed physical error rate of p = 0.3%.",
+      "generalizes from training on random circuits to unseen multi-qubit algorithmic workloads"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "neural-decoder-scalability-limit",
+     "verdict": "confirmed",
+     "note": "The paper cites its reference [22] (Bausch et al.) for the exponential growth in training samples; it is not tested here.",
+     "value": "The authors state that scalability remains an open problem because, as code distance increases, the number of training samples required for reliable performance has been found to grow exponentially, which makes training at large distances prohibitively expensive.",
+     "anchor": "Discussion and Outlook, p.7",
+     "quotes": [
+      "Despite these advances, scalability remains an open problem.",
+      "the number of training samples required for reliable performance has been found to grow exponentially [22], making training at large distances prohibitively expensive."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A claim the source cites from other work, not tested in it.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "neural-decoder-scope",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that the vast majority of prior machine learning decoder work has focused on quantum memory rather than algorithmic decoding.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "the vast majority of prior work has focused on the conceptually simpler problem of quantum memory"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "neural-decoder-timing",
+     "verdict": "widened",
+     "note": "The paper also gives the batched time per gate and the setting of the batched timing.",
+     "value": "The authors report that decoding shot-by-shot yields a time per gate of approximately 27 ms, which can be reduced to around 100 µs by batching syndromes and utilizing GPU parallelism. The timings are for random Clifford circuits; the batched figure uses an NVIDIA H100 GPU and a batch size of 256.",
+     "anchor": "Inference, p.4; Fig. 5 caption, p.7",
+     "quotes": [
+      "decoding shot-by-shot yields a time per gate of approximately 27 ms, which can be reduced to around 100 µs by batching syndromes and utilizing GPU parallelism.",
+      "FIG. 5. Neural decoder inference time for random Clifford circuits.",
+      "using batched evaluation on a NVIDIA H100 GPU",
+      "the batch size is 256."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "arch-modular-attention",
+     "value": "The authors state that their decoder is an attention-based, modular neural architecture in which each logical gate is a distinct trainable module, and that it jointly tracks error correlations across all logical qubits.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "an attentionbased, modular neural architecture—where each logical gate is a distinct trainable module—that jointly tracks error correlations across all logical qubits"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own architecture in the Introduction and Methods.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "output-per-qubit-marginal",
+     "value": "The authors state that the decoder takes the complete syndrome history of a logical circuit execution and outputs, for each logical qubit, the marginal probability that the qubit has experienced a logical error.",
+     "anchor": "Neural Decoder Architecture, p.2",
+     "quotes": [
+      "The decoder takes as input the complete syndrome history from a logical circuit execution and outputs, for each logical qubit, the marginal probability that the qubit has experienced a logical error."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the decoder's input and output in 'Neural Decoder Architecture'.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-retraining-for-new-circuits",
+     "value": "The authors state that because the architecture learns to model error propagation through individual gates, a single trained model can be applied to new algorithmic circuits without retraining whenever the logical circuit changes.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "a single trained model can be automatically applied to new algorithmic circuits, without the need for retraining whenever the logical circuit changes"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper's evidence is the simulations in Figs. 1 and 3.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Fig. 1 uses one model across d = 3, 5, 7 and depths; the paper does not test a circuit family outside Clifford circuits."
+    },
+    {
+     "id_suggestion": "mle-cost-exponential",
+     "value": "The authors state that the exact most-likely-error decoder achieves state-of-the-art logical error rates but that its computational cost increases exponentially with system size.",
+     "anchor": "Inference, p.4",
+     "quotes": [
+      "The MLE decoder achieves state-of-the-art logical error rates, but its computational cost increases exponentially with system size [30]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result (their reference 30).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "training-intermediate-supervision",
+     "value": "The authors state that for a circuit with n layers they simulate transversal measurements after each layer, creating n distinct training examples from one circuit.",
+     "anchor": "Training Methodology, p.3-4; Methods p.11",
+     "quotes": [
+      "we simulate",
+      "creating n distinct training examples from a single circuit.",
+      "This provides n times more training signal per circuit compared to end-to-end supervision"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training method.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "training-on-the-fly-and-fingerprint",
+     "value": "The authors state that training circuits are generated randomly during training, sampling the code distance, number of logical qubits, circuit depth and gate sequence, and that each logical qubit gets a randomly generated per-shot 'fingerprint' embedding to prevent position-dependent behavior.",
+     "anchor": "Training Methodology, p.4",
+     "quotes": [
+      "randomly sampling the code distance, number of logical qubits, circuit depth, and gate sequence.",
+      "we assign each logical qubit a “fingerprint” embedding, which is randomly generated for each training shot",
+      "This prevents the model from learning position-dependent behaviors that would not generalize to different numbers of qubits"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "model-size-and-embedding",
+     "value": "The authors report that the aggregate parameter count of the components is 13.6 million, and that the stabilizer embedding dimension for the decoders in this work is 384.",
+     "anchor": "Methods, Architecture, p.9",
+     "quotes": [
+      "The aggregate parameter count for each of these components together is 13.6 million parameters.",
+      "(for the decoders in this work, the dimension is 384)"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own model size.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "five-models-trained",
+     "value": "The authors report that they trained five distinct models for the figures in the main text, including the general attention-based surface-code decoder with a batch size of 128 for 450000 steps, the loss-aware Reed-Muller decoder with a batch size of 192 for 200000 steps, the cluster-state decoders with a batch size of 256 for 100000 steps, and a graph neural network color-code decoder with a batch size of 256 for 250000 steps.",
+     "anchor": "Methods, Training strategies, p.10",
+     "quotes": [
+      "we trained five distinct models corresponding to the figures presented in the main text.",
+      "was trained with a batch size of 128 for 450000 steps.",
+      "was trained with a batch size of 192 for 200000 steps.",
+      "both the correlated an uncorrelated decoders with a batch size of 256 for 100000 steps.",
+      "using a batch size of 256 for 250000 steps."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training runs.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fig1-simulation-setup",
+     "value": "The authors report that for inference they sample 20 different random Clifford circuits for each circuit depth, generate multiple noise realizations (shots), and apply both the trained ML decoder and an optimal most-likely-error decoder implemented with gurobi.",
+     "anchor": "Methods, Numerical simulation details, p.11",
+     "quotes": [
+      "For each circuit depth, we sample 20 different random Clifford circuits with the protocol described above.",
+      "an optimal most-likely-error (MLE) decoder, which is implemented with gurobi [30]"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own evaluation setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fig1-noise-model",
+     "value": "The authors state that the circuit-level depolarizing noise model assigns each of the fifteen two-qubit errors the probability p/15, makes single-qubit gates fail with probability p/10 and makes resets and measurements fail with probability p/10.",
+     "anchor": "Methods, Numerical simulation details, p.11",
+     "quotes": [
+      "each of the fifteen errors {IX, IY, . . . , ZZ} occur with the same probability p/15",
+      "then single qubit gates fail with probability p/10",
+      "both resets and measurements fail with probability p/10."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own noise model.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fig1-scope-limits",
+     "value": "The authors state that the surface-code Clifford simulations use only CNOT two-qubit gates (the architecture includes SWAP modules but results are restricted to CNOT), that single-qubit gates are drawn from I, X, Y, Z, H, and that the analysis focuses on observables composed solely of I, X or Z logical operators because Y-basis measurement simulation is more complex.",
+     "anchor": "Methods, Numerical simulation details, p.11",
+     "quotes": [
+      "Although our model architecture includes support for SWAP gate modules, the reported results are restricted to circuits with conventional CNOT gates.",
+      "randomly drawn from the set I, X, Y, Z, H on each qubit",
+      "our analysis focuses on observables composed solely of I, X, or Z logical operators."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its own simulations.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fig1-error-rate-normalization",
+     "value": "The authors state that the logical error rates plotted against circuit depth are the fraction of shots on which the decoded parity differed from the true value of the target observable, normalized on a per-round basis.",
+     "anchor": "Methods, Numerical simulation details, p.11",
+     "quotes": [
+      "reflect the fraction of shots on which the decoded parity differed from the true value for the target observable.",
+      "Reported logical error rates are normalized on a per-round basis."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its reported quantity.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "logical-flip-label-and-loss",
+     "value": "The authors state that the logical flip label is derived by tracking Pauli errors, not from the measurement outcome, which is needed for circuits with nondeterministic transversal measurement values such as most circuits with magic-state inputs, and that the training loss is binary cross entropy using this label.",
+     "anchor": "Methods, Training Methodology (Loss definition), p.10-11",
+     "quotes": [
+      "Crucially, this method of calculating the logical flip can be used without reference to the actual value of the measurement outcome.",
+      "the training loss is defined simply as a binary",
+      "cross entropy loss, using the derived logical flip as the true label."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its training label and loss.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "loss-decoding-setup",
+     "value": "The authors report that for loss decoding a logical qubit encoded in the [[15, 1, 3]] Reed-Muller code undergoes alternating rounds of random transversal Clifford gates and logical teleportation, with lost qubits detected by loss-resolving readout at each teleportation step.",
+     "anchor": "Loss Decoding, p.4; Fig. 2 caption, p.5",
+     "quotes": [
+      "a logical qubit, encoded with a [[15, 1, 3]] Reed-Muller (RM) code, undergoes alternating rounds of random transversal Clifford gates and logical teleportation",
+      "At each teleportation step, lost qubits are detected using Loss-Resolving Readout (LRR), ensuring that loss does not accrue over time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own simulated setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "loss-training-erasure-approximation",
+     "value": "The authors state that during training each loss event is approximated by a fully depolarizing channel (an 'erasure' approximation), that this is justified because logical information is frequently teleported, and that at inference physical loss is simulated exactly: lost qubits are removed from the circuit and later gates acting on them are omitted.",
+     "anchor": "Loss Decoding, p.4",
+     "quotes": [
+      "each loss event is approximated by the application of a fully depolarizing channel",
+      "this approximation is well-justified in our setting: logical information in our circuits is frequently teleported",
+      "lost qubits are removed from the circuit and any subsequent gates acting on them are omitted"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training and evaluation setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "loss-resolving-readout-benefit",
+     "value": "The authors report that as the loss rate increases, the advantage of explicit loss-resolving readout becomes more apparent: the decoder achieves lower logical error rates and maintains error suppression well below the 'no error suppression' regime, even at higher noise levels. The figure's values are not given in the text.",
+     "anchor": "Loss Decoding, p.4; Fig. 2(b) caption, p.5",
+     "quotes": [
+      "As the loss rate increases, the advantage of explicit loss-resolving readout becomes more apparent",
+      "the decoder achieves lower logical error rates and is able to maintain error suppression well below the “no error suppression” regime, even at higher noise levels."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the values are in Fig. 2(b) only.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "No comparison decoder other than the paper's own variant without loss information is described in the text."
+    },
+    {
+     "id_suggestion": "loss-detected-raises-threshold-cited",
+     "value": "The authors state that theoretical and experimental observations indicate that undetected loss errors can severely limit the performance of fault-tolerant quantum computing, while detected and properly decoded loss can give increased error thresholds.",
+     "anchor": "Loss Decoding, p.4",
+     "quotes": [
+      "while undetected loss errors can severally limit the performance of FTQC, if detected and properly decoded they can result in increased error thresholds [29, 53–57]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result (references 29 and 53 to 57).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cluster-state-simplification",
+     "value": "The authors state that for one- and two-dimensional cluster-state circuits built from logical Steane codes, tailoring the decoder to the relevant observables (the cluster-state logical stabilizers, products of logical X on each qubit and logical Z on its neighbors) allows them to replace the full attention-based architecture with a compact convolutional neural network with a kernel size of three.",
+     "anchor": "Constraining Attention, p.5",
+     "quotes": [
+      "we focus on one- and two-dimensional cluster state circuits constructed from logical Steane codes",
+      "the cluster state logical stabilizers, which are products of logical X on each qubit and logical Z on its neighbors.",
+      "we replace the full attentionbased architecture with a compact convolutional neural network (CNN) decoder with a kernel size of three"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own decoder design and target observables.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cluster-state-error-locality",
+     "value": "The authors state that error correlations in the logical cluster-state circuits remain strictly short-range in space and time because Z-type errors commute through CZ gates while X-type errors transform into XZ, with the additional Z passing to the neighboring qubit; only the middle X qubit and its neighboring Z qubits are relevant for decoding each stabilizer observable.",
+     "anchor": "Constraining Attention, p.5",
+     "quotes": [
+      "Z-type errors commute through the CZ gates, while X-type errors transform into XZ, with the additional Z passing to the neighboring qubit.",
+      "This mechanism ensures that error correlations remain strictly short-range in both space and time.",
+      "only the middle X qubit and its neighboring Z qubits are relevant for decoding each stabilizer observable."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument stated in prose; no theorem or proof is given.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "This is a standard stabilizer-propagation argument; the paper does not prove it formally."
+    },
+    {
+     "id_suggestion": "cluster-state-generalization-result",
+     "value": "The authors report that a decoder for 20 x 20 cluster states at noise strength p = 0.01, trained only on clusters up to size 10 x 10, shows generalization to larger systems and greater circuit depths, and that a convolutional decoder exploiting local observable-specific correlations outperforms an architecture that does not. Numerical values are in the figure only.",
+     "anchor": "Constraining Attention, Fig. 3(b) caption, p.6",
+     "quotes": [
+      "Decoder performance for cluster states of size 20 × 20 at noise strength p = 0.01, after training only on clusters up to size 10 × 10.",
+      "The results demonstrate generalization to larger systems and greater circuit depths.",
+      "highlighting the substantial performance gain from decoding only those observables and qubits with nontrivial short-range error correlations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the figure values are not in the text.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "constrained-attention-speedup",
+     "value": "The authors state that by appropriately constraining attention, inference speed can increase by up to 3 orders of magnitude, and that replacing attention with fixed-kernel convolutions yields sub-microsecond inference per qubit for the cluster-state decoder, with total decoding time nearly independent of logical qubit count.",
+     "anchor": "Constraining Attention, p.5; Methods Runtime Analysis, p.11; Fig. 5 caption, p.7",
+     "quotes": [
+      "by appropriately constraining attention, inference speed can increase by up to 3 orders of magnitude.",
+      "replacing attention with fixedkernel convolutions yields sub-microsecond inference per qubit",
+      "with total decoding time nearly independent of logical qubit count."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical timing result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The comparison is between the paper's own general attention decoder and its own convolutional decoder, which target different circuits."
+    },
+    {
+     "id_suggestion": "inference-scaling-with-distance",
+     "value": "The authors report that batch-mode inference on NVIDIA H100 GPUs has a theoretical complexity of the fourth power of the code distance because of all-to-all attention, but an empirical scaling of approximately the second power of the distance because of GPU optimization, and that single-sample inference shows minimal distance dependence due to parallelism.",
+     "anchor": "Methods, Runtime Analysis, p.11; Fig. 5 caption, p.7",
+     "quotes": [
+      "theoretical complexity is O(d4) due to all-to-all attention, empirical scaling is approximately O(d2) due to GPU optimization.",
+      "Singlesample inference shows minimal distance dependence due to parallelism."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical timing result from one study; the text layer printed the exponents flat.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Fig. 5(a) carries a fit label '2.23 · d2.17 + 30.03' in the text layer."
+    },
+    {
+     "id_suggestion": "attention-interpretability",
+     "value": "The authors report that attention weights extracted after each layer of entangling gates show each qubit initially attending mainly to itself and then showing increased off-diagonal weights between qubits involved in each gate, which they interpret as the decoder tracking error-propagation channels.",
+     "anchor": "Interpretability, p.6; Fig. 4 caption, p.6",
+     "quotes": [
+      "Initially, each qubit attends primarily to itself.",
+      "the attention mechanism dynamically tracks the development of correlations between qubits involved in each gate, as indicated by increased off-diagonal elements.",
+      "This analysis shows that the decoder dynamically tracks error propagation channels, offering interpretability of the decision process."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A qualitative result from one study, read from visualizations.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "interpretability-limit",
+     "value": "The authors state that their current interpretability analyses capture only coarse correlation structures, leaving open how to systematically extract deeper understanding of the model's reasoning.",
+     "anchor": "Interpretability, p.6",
+     "quotes": [
+      "current analyses capture only coarse correlation structures, leaving open the question of how to systematically extract deeper understanding of the model’s reasoning."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states a limit of its own analysis.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "color-code-gnn-threshold",
+     "value": "The authors report that a graph neural network decoder for two-dimensional color codes with flag-based syndrome extraction achieves a memory circuit threshold near 0.5%, which they state is on par with state-of-the-art circuit-noise decoding for color codes.",
+     "anchor": "Methods, Other codes, p.11; Fig. 6 caption, p.12",
+     "quotes": [
+      "the decoder achieves a memory circuit threshold near 0.5%, on par with stateof-the-art circuit-noise decoding for color codes [71, 72].",
+      "The observed threshold of approximately 0.5% matches state-of-the-art results for circuit-level noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "non-clifford-training-data-claim",
+     "value": "The authors state that for Clifford circuits training data can be sampled efficiently by classical simulation, that non-Clifford gates make full quantum state simulation potentially intractable, and that their framework avoids this by tracking error propagation and detector outcomes rather than full quantum states. The paper reports no non-Clifford experiment in the text.",
+     "anchor": "Discussion and Outlook, p.7",
+     "quotes": [
+      "For Clifford circuits, such data can be efficiently sampled via classical simulation.",
+      "our framework circumvents this bottleneck by focusing solely on error propagation and resultant detector outcomes, rather than simulating full quantum states."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim without a demonstration in the text.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The abstract and Outlook speak of universal gate sets; the quoted numerical results use Clifford gates only (I, X, Y, Z, H, S, CNOT, CZ)."
+    },
+    {
+     "id_suggestion": "code-family-scope-and-future-work",
+     "value": "The authors state that their current work focused on surface, color and Reed-Muller codes, that extension to qLDPC codes is future work, and that a comprehensive investigation of the GNN strategy for broader code families is left for future work.",
+     "anchor": "Discussion and Outlook, p.7-8; Methods Other codes, p.11",
+     "quotes": [
+      "Although our current work focused on surface, color, and Reed-Muller codes",
+      "A comprehensive investigation of this generalized strategy for broader code families is left for future work."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit of its own scope.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "prior-deployment-in-experiment",
+     "value": "The authors state that the neural decoder methods introduced here have already been deployed in recent experimental tests of deep-circuit fault-tolerant algorithms and architectures (their cited experiment), with superior performance on quantum memory with surface codes and deep-circuit algorithms involving complex encodings.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "the neural decoder methods introduced and analyzed here have already been deployed in recent experimental tests of deep-circuit fault-tolerant algorithms and architectures"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A claim resting on the cited experiment (reference 29), not shown here.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "real-time-hardware-claim",
+     "value": "The authors state that general attention-based decoders can achieve about 100 µs inference per gate when batched, that more specialized architectures can reach sub-microsecond speeds, and that deployment on dedicated hardware such as FPGAs could improve these times, making real-time decoding within reach for various platforms.",
+     "anchor": "Discussion and Outlook, p.7",
+     "quotes": [
+      "general attention-based decoders can achieve ∼ 100µs inference per gate when batched, while more specialized architectures can reach sub-microsecond speeds.",
+      "making real-time decoding within reach for various quantum computing platforms."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The batched timings are measured; the FPGA and real-time statement is an author projection.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
