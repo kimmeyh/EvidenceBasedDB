@@ -1,0 +1,832 @@
+{
+ "papers": [
+  {
+   "record_id": "augustino-2024-strategies-running-qaoa-hundreds-qubits",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Augustino-et-al._2024_Strategies-for-running-the-QAOA-at-hundreds-of-qubits__2410.03015.pdf",
+   "title_in_file": "Strategies for running the QAOA at hundreds of qubits",
+   "version_note": "",
+   "pages": 15,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A numerical study of QAOA for MaxCut on random 3-regular graphs up to 512 vertices, using instance-independent tree parameters and a Goemans-Williamson warm start.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qaoa-no-general-guarantee",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract, p.1; Section 1, p.2",
+     "quotes": [
+      "Our numerics on random instances do not provide general performance guarantees but do provide substantial evidence",
+      "Our results are numerical and we do not offer proofs of performance."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own limit in the abstract and in Section 1.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "qaoa-scope-maxcut-512",
+     "verdict": "confirmed",
+     "note": "The 512-vertex bound is stated in Section 6 and Section 1/5, not in the abstract, which says up to a few hundred vertices. The classical computation of the expected cut is stated in the abstract; the Section 6 sentence about 3-regular graphs and 512 vertices is verbatim.",
+     "value": "",
+     "anchor": "Section 6, p.11; Abstract, p.1",
+     "quotes": [
+      "We restrict our attention to MaxCut on 3-regular graphs and on problem sizes of up to 512 vertices.",
+      "For each instance studied, we classically compute the expected size of the QAOA distribution of cuts; producing the actual cuts requires running on a quantum computer."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 6 and the abstract state the paper's own scope.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "qaoa-tree-params-numerics",
+     "verdict": "narrowed",
+     "note": "The paper's full-Hilbert-space data (sizes 20, 24, 28) all lie above the conjectured bound, but for bipartite graphs the paper states that at large size the approximation ratios will lie on the bound, not beyond it. 'Well beyond' holds for the random 3-regular graphs; the bipartite case is the limiting exception, and the large-n statements are expectations, not measurements.",
+     "value": "The authors report that in their numerical study of random 3-regular graphs at sizes 20, 24 and 28 all of the data lie above the fixed angle conjecture bound, and they state that for bipartite 3-regular graphs the approximation ratios will, for large n, lie on the bound.",
+     "anchor": "Section 3, p.5-6; Figure 1 caption, p.5",
+     "quotes": [
+      "We study graphs at sizes of 20, 24, and 28 by simulating the full Hilbert space.",
+      "At each size we toss 10 random 3-regular graphs, which we post-select to have a single best cut. This tightens the distribution",
+      "We also toss 10 random bipartite 3-regular graphs.",
+      "All of the data lies above the fixed angle conjecture bound",
+      "For bipartite graphs, the maximum cut is the number of edges, so for large n, the colored symbols in the bottom pane of Figure 1 will lie on the dashes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The abstract's 'well beyond the conjectured lower bounds' therefore applies to the random 3-regular family, not to the bipartite family."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qaoa-tree-parameter-definition",
+     "value": "The authors define tree parameters as the parameters chosen at depth p to optimize the MaxCut expectation for graphs of large girth; the abstract says girth at least 2p+1 and the body says girth greater than 2p + 1.",
+     "anchor": "Abstract, p.1; Section 3, p.4",
+     "quotes": [
+      "At depth p these tree parameters are chosen to optimize the MaxCut expectation for graphs with girth at least 2p+1.",
+      "This is equivalently a p-local edge neighborhood of a D-regular graph with girth greater than 2p + 1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines tree parameters in the abstract and Section 3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The abstract's 'at least 2p+1' and Section 3's 'greater than 2p + 1' differ by the boundary case."
+    },
+    {
+     "id_suggestion": "qaoa-fixed-angle-conjecture",
+     "value": "The paper states the Fixed Angle Conjecture of Wurtz and Love: the depth-p QAOA at the optimal tree parameters has, for any graph in the family of D-regular graphs of all sizes, an approximation ratio at least as great as the optimal value of the tree central-edge expectation.",
+     "anchor": "Section 3, Fixed Angle Conjecture, p.4",
+     "quotes": [
+      "Then the depth-p QAOA evaluated at the optimal tree parameters (γ∗, β∗) will have an approximation ratio for any graph G ∈ GD at least as great as the optimal value of",
+      "We emphasize that this conjecture is posited for any graph G ∈ GD, regardless of whether or not it is locally tree-like."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conjecture attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-wurtz-love-proof-p1-p2",
+     "value": "The authors state that Wurtz and Love prove the Fixed Angle Conjecture for D = 3 at p = 1 and p = 2.",
+     "anchor": "Section 3, p.4",
+     "quotes": [
+      "Wurtz and Love [WuLo21] prove this conjecture for D = 3 at p = 1 and p = 2."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-wurtz-lykov-p11",
+     "value": "The authors state that Wurtz and Lykov find the optimal tree parameters up to p = 11 and numerically verify the conjecture up to p = 11 over all 3-regular graphs up to size 16, and that at p = 11 the expected value of the tree graph edge is 0.8828.",
+     "anchor": "Section 3, p.4",
+     "quotes": [
+      "Wurtz and Lykov [WuLy21] find the optimal parameters for each tree graph up to p = 11, and they also numerically verify this conjecture up to p = 11 by considering all 3-regular graphs up to size 16.",
+      "At p = 11 the expected value of the tree graph edge is 0.8828."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-gw-guarantee-ugc",
+     "value": "The authors state that Goemans and Williamson guarantee an approximation ratio of at least 0.878 for MaxCut, and that this ratio was later proven worst-case optimal under the unique games conjecture.",
+     "anchor": "Section 2.2, p.3-4",
+     "quotes": [
+      "In 1995, Goemans and Williamson gave a method that guarantees an approximation ratio of at least 0.878.",
+      "It was later proven that the approximation ratio of 0.878 is worst-case optimal under"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-maxcut-hardness-16-17",
+     "value": "The authors state that MaxCut is NP-complete and that approximating it within a factor of 16/17 is NP-hard.",
+     "anchor": "Section 2.2, p.3",
+     "quotes": [
+      "The MaxCut problem is NP-complete [Kar72], and even approximating it within a factor of 16/17 is NP-hard"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-gw-cubic-0-9326",
+     "value": "The authors state that a version of the Goemans-Williamson algorithm specialized for 3-regular graphs attains a worst-case approximation ratio of 0.9326.",
+     "anchor": "Section 3, p.4-5",
+     "quotes": [
+      "exists a version of GW that is specialized for 3-regular graphs and attains a worst-case approximation ratio of 0.9326 [HLZ04]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The 3-regular-specific GW ratio exceeds the p = 11 tree-edge value of 0.8828 the paper quotes."
+    },
+    {
+     "id_suggestion": "qaoa-classical-bitstring-stuck",
+     "value": "The authors state that it has been shown that the usual QAOA will not make any progress starting in a warm computational basis state, and that initial states consisting of a single classical bitstring will generally stall the algorithm.",
+     "anchor": "Section 1, p.2; Section 4, p.6",
+     "quotes": [
+      "it has been shown that the usual QAOA will not make any progress starting in a warm computational basis state [CFG+22]",
+      "initial states consisting of a single classical bitstring will generally stall the algorithm, providing no further improvements."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-concentration-bbf18",
+     "value": "The authors state that Brandao et al. demonstrated that for fixed parameters the quantum expectation of the cost function concentrates on typical instances drawn from a distribution, and that the landscape independence has been proven for the Sherrington-Kirkpatrick model.",
+     "anchor": "Section 1, p.2; Section 3, p.4",
+     "quotes": [
+      "demonstrated that for fixed parameters, the quantum expectation of the cost function concentrates on typical instances drawn from a distribution.",
+      "this landscape independence has been proven as well [FGGZ22]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-full-hilbert-setup-20-24-28",
+     "value": "The authors state that they simulate the full Hilbert space at sizes 20, 24 and 28, using at each size 10 random 3-regular graphs post-selected to have a single best cut and 10 random bipartite 3-regular graphs, with the tree parameters of Wurtz and Lykov up to p of 11.",
+     "anchor": "Section 3, p.5; Figure 1 caption, p.5",
+     "quotes": [
+      "We study graphs at sizes of 20, 24, and 28 by simulating the full Hilbert space. At each size we toss 10 random 3-regular graphs, which we post-select to have a single best cut.",
+      "We also toss 10 random bipartite 3-regular graphs.",
+      "which extend out to p of 11."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup in Section 3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-tree-params-high-ratio-p11",
+     "value": "The authors report that at p = 11 the approximation ratios obtained with tree parameters on the small graphs studied are not far from 1, although the associated tree graph has 8190 vertices.",
+     "anchor": "Section 3, p.5; Figure 1",
+     "quotes": [
+      "Consider the data at p = 11 where the approximation ratios are not far from 1.",
+      "The associated tree graph has 8190 vertices and in no sense is it a subgraph of a 28 vertex graph."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the plotted values are in Figure 1.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-tree-params-monotone-in-p",
+     "value": "The authors report that as a function of p the approximation ratios increase using tree parameters, although tree parameters were not necessarily chosen to be optimal for the specific graph.",
+     "anchor": "Section 3, p.5-6",
+     "quotes": [
+      "It is also remarkable that as a function of p the approximation ratios increase using tree parameters.",
+      "But the tree parameters were not necessarily"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-tree-params-large-n-claim",
+     "value": "The authors state that for large n random 3-regular graphs have O(1) triangles and squares so the fraction of edges with tree neighborhoods goes to 1, and that the maximum cut of such a graph is a proper fraction of the number of edges.",
+     "anchor": "Section 3, p.5-6",
+     "quotes": [
+      "For large n, random 3-regular graphs have O(1) triangles, squares, etc.",
+      "of edges whose p-neighborhoods are trees goes to 1 as n goes to infinity.",
+      "The maximum cut of a random 3-regular graph for large n is a proper fraction of the number of edges"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated without proof in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-best-cut-probability",
+     "value": "The authors report that for p ≳ 5 the probabilities of finding the best cut with tree parameters are so high that a few runs of the quantum computer would find it, and that the probability decreases with system size.",
+     "anchor": "Section 3, p.6; Figure 1 caption and right panels",
+     "quotes": [
+      "For p ≳ 5 these probabilities are so high that, with a few runs of the quantum computer, the best cut will be found.",
+      "The probability to find the best cut decreases with system size"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from graphs of size 20 to 28.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The sizes behind this statement are 20, 24 and 28; it does not cover the 64 to 512 vertex graphs."
+    },
+    {
+     "id_suggestion": "qaoa-best-cut-prob-exponential-belief",
+     "value": "The authors state that they believe the probability of finding the best cut is decreasing exponentially as the system size grows.",
+     "anchor": "Section 3, p.6",
+     "quotes": [
+      "we believe this probability is decreasing exponentially as the size grows."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A belief stated without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-ascent-from-tree-params-n20",
+     "value": "The authors report that, for one n = 20 random 3-regular graph and one random bipartite graph, optimizing from tree parameters gives some improvement in both cases, more for the bipartite instance, and that other random instances show similar behavior.",
+     "anchor": "Section 3, Figure 2 and text, p.6",
+     "quotes": [
+      "We display one n = 20 random 3-regular graph (left) and one random bipartite graph (right).",
+      "In both cases we see some improvement, with the bipartite instance showing more.",
+      "The behavior shown in the two graphs is typical in that other random instances demonstrate similar behavior."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-ascent-sometimes-good",
+     "value": "The authors state that the bipartite case has more improvement when optimizing from tree parameters, which suggests that sometimes ascending from tree parameters is a good strategy, and that often the improvements are too small to be worth the trouble.",
+     "anchor": "Section 1, p.2; Section 3, p.6",
+     "quotes": [
+      "the bipartite case has more improvement and suggests that sometimes ascending from tree parameters is a good strategy.",
+      "although often the improvements from this are too small to be worth the trouble."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-gw-warm-start-definition",
+     "value": "The authors define the GW warm-start, following Tate et al., by projecting the GW SDP solution vectors onto a random 2-dimensional plane, placing each normalized projected vector on the Bloch circle as a single-qubit state, taking the tensor product as the initial state, and modifying the mixer so that each term points in the direction of its vector on the Bloch circle.",
+     "anchor": "Section 4, p.6-7",
+     "quotes": [
+      "Hereafter, we will directly follow the warm start approach of [TMG+23], which",
+      "Project these solution vectors onto a random 2-dimensional plane, and pick a random basis for the plane which then defines the x-direction and the z-direction.",
+      "Normalize each projected vector and place each normalized vector on the Bloch circle.",
+      "such that each Bi points in the direction of its corresponding vector on the Bloch circle,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 4 defines the GW warm-start the results depend on.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-warm-start-adiabatic-guarantee",
+     "value": "The authors state that the choice of mixer keeps the adiabatic guarantee for the warm-start input state, so that for any fixed instance there are parameters as p goes to infinity that take the algorithm to the maximum of the cost function, and that the relevance of this guarantee is not clear at finite p.",
+     "anchor": "Section 4, p.7",
+     "quotes": [
+      "This choice of Bi ensures that the adiabatic",
+      "guarantee is retained with the input state |θ⟩, as is the case with the standard QAOA.",
+      "its relevance is not clear in the finite p regime."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated in passing without a proof in this paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-warm-start-p0-three-quarters-bound",
+     "value": "The paper proves in Appendix A that the expected p = 0 cut value of the GW warm-start QAOA, averaged over the random 2-dimensional plane and the orientation of the x and z axes, is at least 3/4 of the expected GW cut value.",
+     "anchor": "Section 4, p.7; Appendix A, Eq. (22), p.12-13",
+     "quotes": [
+      "Here we evaluate the p = 0 performance of the warm-start QAOA.",
+      "expectation needs to be averaged over the choice of 2-dimensional plane and the orientation of the x and z",
+      "where the functions f and g are both assumed to be non-negative.",
+      "The minimum over t is achieved at t = π and equals 3/4."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The bound's final statement is split across lines in the text layer, so the statement could not be quoted whole; the proof steps and conditions are quoted.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The paper credits the bound to Tate et al. (TMG+23) and gives its proof as self-contained."
+    },
+    {
+     "id_suggestion": "qaoa-p0-orientation-optimization",
+     "value": "The authors state that the p = 0 guarantee assumes randomly oriented axes, that optimizing the orientation angle alpha can be done classically before going to the quantum computer and improves p = 0 performance over a random orientation, and that they find it also benefits p > 0 performance.",
+     "anchor": "Section 4.1, p.7-8",
+     "quotes": [
+      "We can improve the p = 0 performance by optimizing this orientation.",
+      "This function of α can be classically optimized before going to the quantum computer, improving the p = 0 performance over that of a random orientation.",
+      "classical optimization at p = 0 also benefits the p > 0 performance."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim supported by the single-graph data of Figure 3.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-bipartite-locality-upper-bound",
+     "value": "The authors conclude that the approximation ratio of the standard QAOA at low depth on random bipartite graphs is upper bounded by the MaxCut fraction of the fully random case, because the edge neighborhoods of both graph types are trees with high probability.",
+     "anchor": "Section 4.2, p.8",
+     "quotes": [
+      "For both graphs here, these neighborhoods are trees with high probability, so",
+      "We conclude that the approximation ratio of the QAOA at low depth on random bipartite",
+      "graphs is upper bounded by the MaxCut fraction of the fully random case."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument given in prose, not stated as a theorem with explicit conditions.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-gw-perfect-on-bipartite",
+     "value": "The authors state that the GW algorithm exhibits perfect performance on bipartite graphs, with expected GW cut equal to the number of edges, since the best relaxed solution puts one independent set along a direction and the other along the opposite direction so that every hyperplane finds the maximum cut.",
+     "anchor": "Section 4.2, p.8",
+     "quotes": [
+      "fact, the GW algorithm exhibits perfect performance on bipartite graphs, that is, CGW = |E|.",
+      "Under any choice of hyperplane, the rounding procedure finds the maximum cut"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument in prose; the optimal relaxed solution is asserted rather than derived.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-bipartite-warmstart-p0-optimal",
+     "value": "The authors state that for bipartite graphs, optimizing the axis orientation makes the initial state a computational basis state that gives the perfect cut, so there is no need to go to higher p.",
+     "anchor": "Section 4.2, p.8",
+     "quotes": [
+      "the initial state is a computational basis state that gives",
+      "the perfect cut–there is no need to go to higher p.",
+      "Here that point is moot, as there is no room for improvement from the best cut."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument in prose, not stated as a theorem.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The 3/4 worst-case remark is in the section text but its sentence is split across lines in the text layer, so it is not quoted."
+    },
+    {
+     "id_suggestion": "qaoa-bloch-angle-clusters-512",
+     "value": "The authors report that for one random 3-regular graph with 512 vertices the distribution of warm-start angles forms two loose clusters separated by approximately 180 degrees.",
+     "anchor": "Section 4.3, Figure 3(a), p.8-9",
+     "quotes": [
+      "In Figure 3(a) we illustrate the distribution of angles {θi} for the case of a random 3-regular graph with 512 vertices.",
+      "Evidently they form two loose clusters separated by approximately 180 degrees."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from a single graph.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-axis-angle-sensitivity-256",
+     "value": "The authors report that for a single random 3-regular graph with 256 vertices the cut fraction varies largely with the Bloch circle axis angle at p = 0, and that at p = 1, 2 the variation is diminished but still significant.",
+     "anchor": "Section 4.3, Figure 3(b), p.9",
+     "quotes": [
+      "with data for a single random 3-regular graph with 256 vertices.",
+      "We define 0 to be the value that maximizes the p = 0 cut fraction.",
+      "We see there is large variation in cut fraction with respect to the choice of angle of the axes.",
+      "We also plot performance of the QAOA at p = 1, 2.",
+      "We then see the variation with respect to the choice of axes is diminished but still significant."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from a single graph.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The proposal to optimize the axes rests on one 256-vertex instance in this figure."
+    },
+    {
+     "id_suggestion": "qaoa-gw-cut-optimization-slight",
+     "value": "The authors state that a similar optimization for choosing the GW cut is also possible and seems to improve the GW performance slightly.",
+     "anchor": "Section 4.3, p.9",
+     "quotes": [
+      "Note that a similar optimization for choosing the GW cut is also possible and seems to improve the GW performance slightly."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A claim without data in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-large-graph-method-p5",
+     "value": "The authors state that for graphs larger than full Hilbert space simulation allows they use tensor network methods and the locality of the QAOA, reaching p = 5 before the numerical techniques become too costly, and that the size of each edge neighborhood grows with p, which limits the depth that can be analyzed.",
+     "anchor": "Section 5, p.9; Appendix B, p.13",
+     "quotes": [
+      "For the data in this section we are able to go to p = 5 before the numerical techniques become too costly.",
+      "We leverage the locality of the QAOA to compute the cost function on each edge independently",
+      "The size of each edge neighborhood grows with p, which limits the depth to which we can analyze performance in practice."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own depth limit in Section 5 and Appendix B.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-locality-sum-over-edges",
+     "value": "The paper states that for both the standard and warm-start QAOA the expected cost function is a sum over contributions from subgraphs, each the light cone of an edge, containing all vertices within graph distance p of the edge.",
+     "anchor": "Appendix B, p.13",
+     "quotes": [
+      "the expected cost function is a sum over contributions from subgraphs, each of which is the light cone of an edge.",
+      "This edge neighborhood contains all vertices within graph distance p of ⟨i, j⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement is a locality argument in prose; the equation (24) could not be quoted from the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-large-graph-setup-64-512",
+     "value": "The authors state that Figure 4 shows ten random 3-regular graphs at each of the sizes n = 64, 128, 256 and 512, with no post-selection on a single best cut, using tree parameters for the standard QAOA and, for the warm-start, the optimized orientation at p = 0 and then the tree parameters.",
+     "anchor": "Section 5, Figure 4 and caption, p.9-10",
+     "quotes": [
+      "In Figure 4 we show data obtained by sampling ten random 3-regular graphs at sizes n = 64, 128, 256 and 512.",
+      "We do not post-select on there being a single best cut as we did in the earlier data.",
+      "For the GW warm-start (pink), we optimize the orientation α at p = 0, and then use the tree parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup in Section 5 and the Figure 4 caption.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-matches-wurtz-lykov",
+     "value": "The authors report that for p ≤ 4 and graph sizes up to n = 256 their numerical results for the standard QAOA with tree parameters match those obtained by Wurtz and Lykov.",
+     "anchor": "Section 5, p.10",
+     "quotes": [
+      "For p ≤ 4 and graph sizes up to n = 256, our numerical results match those obtained by Wurtz and Lykov."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-tree-params-size-independent-ratios",
+     "value": "The authors report that the approximation ratios of the standard QAOA at tree parameters on the large graphs are very similar to those at sizes 20, 24 and 28 for the values of p shown, and that optimizing from the tree parameters produces tiny improvements.",
+     "anchor": "Section 3, p.6; Section 5, p.10",
+     "quotes": [
+      "find that these are about the same as their values at much lower system sizes.",
+      "Optimizing from the tree parameters produces tiny improvements, so we show only the tree parameter data.",
+      "Note that the values of the approximation ratios are very similar to those at sizes 20, 24 and 28 for the values of p that are shown."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the plotted values are in Figure 4.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-warm-start-further-opt-0-01",
+     "value": "The authors report that further optimization starting from the tree parameters for the warm-start QAOA gives an approximation ratio improvement of roughly 0.01 at p = 4 for all sizes considered, and that this is not displayed.",
+     "anchor": "Section 5, p.11",
+     "quotes": [
+      "we find that this gives an approximation ratio improvement of roughly 0.01 at p = 4 for all sizes considered, which we do not display."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, with the data not shown.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-warm-start-tree-params-work",
+     "value": "The authors state that it is notable that the tree parameters, chosen for the ordinary QAOA, continue to perform so well for the warm-start QAOA, and the abstract states that for random 3-regular graphs with hundreds of vertices the warm-start expected cut at depth p ≳ 3 is at least comparable to that of the standard GW algorithm.",
+     "anchor": "Section 5, p.11; Abstract, p.1",
+     "quotes": [
+      "It is notable that the tree parameters, which were chosen for the ordinary QAOA, continue to perform so well for the warm-start QAOA.",
+      "the expected cut obtained by the warm-start QAOA at depth p ≳ 3 is at least comparable to that of the standard GW algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on random 3-regular graphs.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-no-quantum-advantage-claim",
+     "value": "The authors state that, while the warm-start QAOA does pass the line of the expected GW cut values, they do not claim that this demonstrates quantum advantage.",
+     "anchor": "Section 5, p.11",
+     "quotes": [
+      "While the warm-start QAOA does pass this line, we do not claim that this demonstrates quantum advantage."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit on its own result in Section 5.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-advantage-unknown",
+     "value": "The authors state that it is unknown if quantum computers can offer any advantage over heuristic classical algorithms for combinatorial search, and that proving bounds on the performance of quantum optimization algorithms is notoriously difficult.",
+     "anchor": "Section 6, p.11",
+     "quotes": [
+      "It is unknown if quantum computers can offer any advantage over these classical algorithms.",
+      "Proving bounds on the performance of quantum optimization algorithms is notoriously difficult."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the open question in Section 6.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-results-only-for-3-regular-ensemble",
+     "value": "The authors state that all of the results concern the QAOA acting on the ensemble studied and that they can only speculate about how the results apply in other situations.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "We focus on MaxCut on random 3-regular graphs.",
+      "All of the results in this paper concern the QAOA acting on this ensemble, and we can only speculate about how these results apply in other situations."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 1.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-hardware-still-needed-for-strings",
+     "value": "The authors state that classical simulation at hundreds of qubits can give the expected performance of the QAOA but that one still needs to run it on hardware to obtain an associated string, and that there is no known example where the QAOA beats all existing classical algorithms at these system sizes.",
+     "anchor": "Section 1, p.1-2",
+     "quotes": [
+      "Although classical simulation at hundreds of qubits can be used to give the expected performance of the QAOA, one still needs to run it on hardware to obtain an associated string.",
+      "While there is no known example where the QAOA beats all existing classical algorithms"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of what its classical simulation delivers in Section 1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-recipe-tree-params-one-shot",
+     "value": "The authors propose a procedure of classically determining the optimal parameters for the cost function on the central edge of a 3-regular tree of radius p, as a one-shot calculation whose parameters will be used for all instances of any size at this value of p, with two strategies: standard QAOA at the tree parameters, or the modified GW warm-start QAOA at the tree parameters, each optionally followed by a parameter search.",
+     "anchor": "Section 6, p.11-12",
+     "quotes": [
+      "Consider a 3-regular tree with radius p.",
+      "Classically determine the optimal parameters (γ∗, β∗) for the cost function on the central edge.",
+      "This is a one-shot calculation, and the parameters (γ∗, β∗) will be used for all instances of any size at this value of p.",
+      "Hardware resources permitting, use the parameters (γ∗, β∗) as the starting point of a parameter"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proposed procedure; the claim that the parameters serve all sizes is supported only by the numerics up to 512 vertices and p = 5.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The one-shot claim for 'any size' goes beyond the sizes tested (up to 512 vertices) and depths (up to p = 5 on large graphs)."
+    },
+    {
+     "id_suggestion": "qaoa-inference-near-optimal-without-optimization",
+     "value": "The authors state that using tree parameters as the initial point of a variational optimization typically gives only slight improvements and results comparable to a full optimization, which suggests that in practice the QAOA can achieve near-optimal performance without parameter optimization.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Further, by using tree parameters as the initial point of a variational optimization, we typically see only slight improvements and get results comparable to performing a full optimization.",
+      "This suggests that in practice, the QAOA can achieve near-optimal performance without the need for parameter optimization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion from numerics on one ensemble.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The conclusion is limited by the paper's own scope: random 3-regular graphs, up to 512 vertices, and p up to 5 on the large graphs."
+    },
+    {
+     "id_suggestion": "qaoa-open-standard-vs-warmstart-high-p",
+     "value": "The authors state that it is not clear from the figure whether the standard QAOA with tree parameters will eventually surpass the GW warm-start QAOA at larger values of p, and that a key area of future investigation is other combinatorial optimization problems, where the analogue of tree parameters is not immediately clear.",
+     "anchor": "Section 6, p.12",
+     "quotes": [
+      "it is not clear whether the standard QAOA with tree parameters will eventually surpass the GW warmstart QAOA at larger values of p.",
+      "A key area of future investigation is to apply these strategies to other combinatorial optimization problems, where the analogue of tree parameters is not immediately clear."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these open problems in Section 6.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
