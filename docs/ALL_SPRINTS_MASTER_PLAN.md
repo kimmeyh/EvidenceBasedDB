@@ -823,6 +823,25 @@ and in git. Remaining items below.
 - **Cloud reads, 2026-10-26 to 2026-10-27** (team lead: "q2 1"): papers
   read one per Claude Code cloud session by `scripts/f114_cloud.py`,
   results held outside the repository until the coordinator review.
+  Stopped 2026-10-27 at 11:30am when the $246 of cloud credit reached $0
+  (team lead: "Can stop sending more papers and backlog the remainder for
+  next sprint"). **Snapshot as of 2026-10-27**, of the 1,430 records:
+  - 302 results fetched, each on its branch `cloud/f114/<record>` and
+    saved outside the repository, every one passing
+    `scripts/sprint13_g_check.py` against its PDF; groups g043 to g102
+    hold 58 groups read whole. None is reviewed or applied yet.
+  - 3 kept unread: udaru-2025-qml-credit-risk (below);
+    abbas-2020-power-quantum-neural-networks (three sessions pushed
+    nothing); boyd-2004-convex-optimization (team lead: "keep it as unread
+    until next sprint"; its session labeled the read full but read 714 of
+    715 page segments, took nothing from Appendices A and C, and only
+    sampled the examples, exercises and figures).
+  - 1,126 never sent: they stay in this card for the next sprint.
+  - **Finding for the coordinator review:** a cloud reader can label a
+    read "full" while saying elsewhere that it sampled, and the check
+    passes it, because the check sees only an empty `not_read`. Each
+    result's own summary is read against its `read_extent` before it is
+    applied.
 - **Unread, 2026-10-27 (team lead: "mark udaru-2025-qml-credit-risk as
   unread")**: its PDF (`Papers\QML Quantum Machine Learning For Credit
   Risk -A Next-Generation Approach To Risk Assessment 202511.pdf`, group
