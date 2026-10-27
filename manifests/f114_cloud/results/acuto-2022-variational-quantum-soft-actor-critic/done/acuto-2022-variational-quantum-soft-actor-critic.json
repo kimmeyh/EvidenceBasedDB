@@ -1,0 +1,438 @@
+{
+ "papers": [
+  {
+   "record_id": "acuto-2022-variational-quantum-soft-actor-critic",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Acuto-et-al._2022_Variational-Quantum-Soft-Actor-Critic-for-Robotic-Arm-Control__2212.11681.pdf",
+   "title_in_file": "Variational Quantum Soft Actor-Critic for Robotic Arm Control",
+   "version_note": "arXiv:2212.11681v1 [quant-ph] 20 Dec 2022",
+   "pages": 13,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation study of Variational Quantum Soft Actor-Critic variants (hybrid Actor, hybrid Critic, full) on a two-link virtual robotic arm, compared by learnable parameter count against classical SAC.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "acuto-hybrid-critic-fewer-params",
+     "verdict": "confirmed",
+     "note": "The body (Section VI C) gives the same result: a hybrid Critic with 2600 learnable parameters against a classical SAC, same learning curve, and Table III totals of 2749 against 18581 (ratio about 6.8).",
+     "value": "",
+     "anchor": "VII. Conclusions and Future Works, p.12; VI.C, p.11",
+     "quotes": [
+      "a boost in performance has been observed when the SAC algorithm leverages hybrid networks for the Critic components",
+      "the quantum algorithm achieves the same performance as the classical SAC with approximately six times fewer learnable parameters",
+      "but with an amount of parameters more than 6 times lower"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The comparison is in learnable-parameter count only. The text reports no wall-clock time, simulation cost or hardware run."
+    },
+    {
+     "id": "acuto-no-advantage-hybrid-actor",
+     "verdict": "confirmed",
+     "note": "Section VI B states the same: the hybrid Actor and classical Actor share the same learning curve.",
+     "value": "",
+     "anchor": "VII. Conclusions and Future Works, p.12; VI.B, p.10",
+     "quotes": [
+      "While no quantum advantage has been found with a hybrid Actor component of the algorithm",
+      "The two architectures, QSAC represented in green and SAC represented in blue, share the same learning curve.",
+      "No signiﬁcant quantum advantage is observed in the ability to learn."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "acuto-setup-digital-simulation",
+     "verdict": "widened",
+     "note": "Adds that the circuits ran on a simulator (TensorFlow Quantum with Cirq) and that noise was not studied.",
+     "value": "The authors state that the performance of the Variational Quantum Soft Actor-Critic on a virtual robotic arm was investigated by means of digital simulations of quantum circuits, using TensorFlow Quantum, which simulates the circuits with Cirq, and that it was chosen not to explore how the introduction of noise may affect the algorithm.",
+     "anchor": "Abstract, p.1; VI.A, p.9",
+     "quotes": [
+      "the performance of a Variational Quantum Soft Actor-Critic on the movement of a virtual robotic arm has been investigated by means of digital simulations of quantum circuits",
+      "This library works by simulating the quantum circuit using Cirq",
+      "it was chosen not to explore how the introduction of noise may aﬀect this kind of algorithm"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its setup and scope (abstract and Section VI A).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "abstract-quantum-advantage-fewer-parameters",
+     "value": "The authors state in the abstract that a quantum advantage over the classical algorithm has been found, as a significant decrease in the amount of required parameters for satisfactory model training.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "A quantum advantage over the classical algorithm has been found in terms of a signiﬁcant decrease in the amount of required parameters for satisfactory model training"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The advantage is in parameter count. It is not a speedup, an accuracy gain or a hardware result."
+    },
+    {
+     "id_suggestion": "full-qsac-100-times-fewer-parameters",
+     "value": "The authors report that a Full Quantum SAC, with both Actor and Critic using Variational Quantum Circuits, requires 100 times fewer learnable parameters to reach the same performance as the classical SAC model.",
+     "anchor": "VI.D, p.11; VII, p.12",
+     "quotes": [
+      "it requires 100 times fewer learnable parameters to reach the same performance as the classical SAC model",
+      "The SAC requires 100 times the amount of parameters compared",
+      "to solve the environment with the same learning curve."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table IV (page 12) list totals of 2712 for Full QSAC, 3025 for the small SAC and 271509 for the large SAC. The text says 2700, 3000 and 274k."
+    },
+    {
+     "id_suggestion": "full-qsac-same-size-sac-no-converge",
+     "value": "The authors report that the classical SAC with the same number of parameters as the Full QSAC does not converge, in a comparison of Full QSAC with 2700 total learnable parameters, SAC with 3000 parameters, and a larger SAC.",
+     "anchor": "VI.D, p.11; Figure 7d",
+     "quotes": [
+      "green Full QSAC with 2700 total learnable parameters, blue SAC with 3000 parameters",
+      "In particular, the classical SAC with the same number of parameters as the Full QSAC does not converge."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "full-qsac-no-stability-advantage",
+     "value": "The authors report that a comparison of the reward frequency distribution of the SAC and the Full QSAC shows no advantage in model stability.",
+     "anchor": "VI.D, p.11; Figure 8",
+     "quotes": [
+      "where advantages in terms of model stability cannot be noticed"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hybrid-actor-config-100-params",
+     "value": "The authors report that the hybrid Actor architecture of four quantum layers and two classical layers, with a total of 100 learnable parameters, satisfied the convergence criteria, with classical Critics of two hidden layers of 64 neurons and a total of 18000 learnable parameters.",
+     "anchor": "VI.B, p.10",
+     "quotes": [
+      "using four quantum layers and two classical layers, resulting in a total of 100 learnable parameters",
+      "consisting of two hidden layers with 64 neurons, for a total of 18000 learnable parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "doubling-actor-params-no-effect",
+     "value": "The authors report that doubling the number of Actor parameters in SAC and QSAC, with the Critic components unchanged, did not influence the ability to converge.",
+     "anchor": "VI.B, p.10-11",
+     "quotes": [
+      "number of parameters of the Actor component in SAC and QSAC has been doubled, while leaving the Critic components unchanged",
+      "the ability to converge was not inﬂuenced by that"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "reduced-critic-no-converge",
+     "value": "The authors report that reducing each Critic component by ten times, with the hybrid quantum Actor unchanged, made the algorithm unable to converge.",
+     "anchor": "VI.B, p.11; Figure 7b; Table III",
+     "quotes": [
+      "has made the algorithm unable to converge"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table III labels the case as a Critic reduced by a factor 10, with (8,16)(16,16)(16,1) neurons and 1636 total parameters."
+    },
+    {
+     "id_suggestion": "authors-argue-critic-most-impactful",
+     "value": "The authors argue that the most impacting component on the ability of this algorithm to reach convergence is the Critic, not the Actor, and suggest this may be due to the higher capacity of big neural networks to approximate Q-functions.",
+     "anchor": "VI.B, p.11",
+     "quotes": [
+      "It is thus possible to argue that the most impacting component on the ability to reach convergence of this algorithm is not the Actor, but the Critic.",
+      "This may be due to the higher capacity of big neural networks to better approximate Q-functions compared to the small ones."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' interpretation, not tested separately.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hybrid-critic-config",
+     "value": "The authors report that in the hybrid Critic configuration the Actor is a classical network of 7 and 8 neurons with 149 learnable parameters, and the Critic and target Critic VQCs have 20 parametric layers and two hidden classical layers of 6 neurons each, with 2600 learnable parameters.",
+     "anchor": "VI.C, p.11; Table III",
+     "quotes": [
+      "Actor neural network consists of two classical hidden layers of 7 and 8 neurons respectively for a total of 149 learnable parameters",
+      "the Critic and target Critic VQCs have 20 parametric layers and two hidden classical layers of 6 neurons each, for a total of 2600 learnable parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "convergence-criteria-definition",
+     "value": "The authors define the environment as solved when the mean of returns for the last 1000 episodes falls within the range [µ − σ, µ] of the deterministic benchmark return distribution, a maximum of 1% of the last 1000 episodes fail, and both criteria are met before 5000 episodes are reached.",
+     "anchor": "VI.A, p.9",
+     "quotes": [
+      "it has been required that the mean of returns for the last 1000 episodes of training falls within the range [µ − σ, µ]",
+      "it has been required for a maximum of 1% of episodes to fail in the last 1000 episodes of the training",
+      "Both criteria have to be satisﬁed before 5000 episodes are reached."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own solved criterion in Section VI A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "statistics-10-runs",
+     "value": "The authors state that all presented plots refer to an average of 20 episodes over 10 runs, with the shaded area representing one standard deviation.",
+     "anchor": "VI.A, p.9",
+     "quotes": [
+      "All presented plots in the next sub-sections refer to an average of 20 episodes over 10 runs, with the shaded area representing one standard deviation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of how results were averaged.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text reports no statistical test and no confidence interval for the parameter-count comparisons."
+    },
+    {
+     "id_suggestion": "fair-comparison-parameter-matched",
+     "value": "The authors state that each configuration was compared to a classical SAC of equivalent complexity in learnable parameters, using the same hyperparameter values, optimizer and activation functions whenever possible.",
+     "anchor": "VI.A, p.9",
+     "quotes": [
+      "Each conﬁguration has been compared to a classical SAC implementation of equivalent complexity in terms of the learnable parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its comparison design.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hyperparameters-from-lan",
+     "value": "The authors state that the chosen hyperparameters were taken from [19] and that several hyperparameter configurations tested during training gave no significant variations in model performance.",
+     "anchor": "VI.A, p.9",
+     "quotes": [
+      "the chosen hyperparameters have been taken from [19]",
+      "several hyperparameter conﬁgurations have been tested without signiﬁcant variations in the model performance"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author statement, no results shown.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "environment-two-link-250-steps",
+     "value": "The authors state that a two-link robotic arm environment was used, built with Box2D by adapting the Gym Acrobot environment, with a maximum of 250 steps per episode, and a per-step reward of minus d if d is above the threshold T and otherwise plus 5.",
+     "anchor": "IV.A, p.5-6",
+     "quotes": [
+      "a two-link structure has been considered",
+      "maximum number of steps per episode (250 in this case)",
+      "reward r for each step is set to −d if d > T , otherwise it is set to +5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own environment.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqc-architecture-hybrid-actor",
+     "value": "The authors describe the hybrid Actor VQC as using angle encoding, with data re-uploading, and measurement with the Pauli-Z gate, replacing the entire input layer of the network.",
+     "anchor": "V.B, p.9",
+     "quotes": [
+      "The encoding layer of the VQC implements the angle encoding technique",
+      "The VQC replaces the entire input layer in the hybrid structure",
+      "Finally, measurement is applied using the Pauli-Z gate."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own architecture.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noise-not-studied-limit",
+     "value": "The authors state that, due to the simulation nature and the long training time, they chose not to explore how noise may affect the algorithm.",
+     "anchor": "VI.A, p.9",
+     "quotes": [
+      "Due to the simulation nature and the long time required to train this model"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated by the authors in Section VI A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "future-work-hardware-needed",
+     "value": "The authors state that further experiments are required to understand whether data re-uploading could be exploited on real quantum devices, with decoherence and noise, and that evaluation on a physical quantum computer will be carried out as future work.",
+     "anchor": "VII, p.12",
+     "quotes": [
+      "evaluation of the quantum algorithm with a physical quantum computer will be carried out",
+      "further experiments are required in order to understand if such an approach could be exploited on real quantum devices"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Limitation stated in the conclusions.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "authors-reasons-for-reduction",
+     "value": "The authors state that possible reasons for the reduction in learnable parameters have been argued: the expressiveness of the hybrid Actor better reproduces the policy, and the Actor, Critic and target Critic influence each other during training.",
+     "anchor": "VII, p.12",
+     "quotes": [
+      "the expressiveness of the quantum-classical hybrid Actor component better reproduces the RL agent policy"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author hypothesis with no ablation shown.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This conflicts in part with Section VI B and the conclusions, which report no advantage for a hybrid Actor alone."
+    },
+    {
+     "id_suggestion": "prior-work-pendulum-parameter-reduction",
+     "value": "The paper states that a variational quantum version of the SAC, with only the Actor replaced by a VQC, showed on the Pendulum Gym environment a quantum advantage in reducing model parameters while achieving similar performance to the classical algorithm.",
+     "anchor": "II. Related Works, p.2",
+     "quotes": [
+      "Results using the Pendulum OpenAI Gym Environment [17] have shown a quantum advantage in reducing model parameters while achieving similar performance of the classical algorithm."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The text attributes it to Lillicrap et al. [19], but reference [19] is Q. Lan, Variational quantum soft actor-critic (2021)."
+    },
+    {
+     "id_suggestion": "vqc-nonlinearity-no-theorem",
+     "value": "The authors state that VQCs do not express non-linearity except through measurement unless a particular encoding strategy is applied, and that there is no theorem able to quantify how many depolarizing gates are needed to add more.",
+     "anchor": "III.D, p.5",
+     "quotes": [
+      "there is no theorem able to quantify how many of them are needed"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author statement without proof or citation in this place.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
