@@ -1,0 +1,990 @@
+{
+ "papers": [
+  {
+   "record_id": "aimeur-2013-quantum-speed-up-unsupervised-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2013_Aimeur_Quantum-speed-up-for-unsupervised-learning.pdf",
+   "title_in_file": "Quantum speed-up for unsupervised learning",
+   "version_note": "",
+   "pages": 27,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that quantizes subroutines of clustering and preprocessing algorithms with Grover-type search in a distance-oracle model and states query-count bounds, with no experiments.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "aimeur-grover-based-at-best-quadratic",
+     "verdict": "confirmed",
+     "note": "Value is right. The text's page headers put Section 8.3 on p. 284, not p. 285 as the stored anchor says.",
+     "value": "",
+     "anchor": "Sec. 8.3, p. 284",
+     "quotes": [
+      "offer at best a quadratic speed-up compared to the best classical algorithm.",
+      "Better than quadratic improvement over classical algorithms are likely to emerge only when intrinsically quantum algorithms, without any classical counterpart, will be developed."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "aimeur-mst-quantum-optimal-n32",
+     "verdict": "confirmed",
+     "note": "Value is right. The paper attributes the algorithm and its optimality to Durr et al. (2004). The text's page headers put Theorem 3 on p. 270, not p. 272 as the stored anchor says.",
+     "value": "",
+     "anchor": "Sec. 4, Theorem 3, p. 270",
+     "quotes": [
+      "due to Dürr et al. (2004) can build the minimum spanning tree of a graph in Θ(n3/2) time, where n is the number of vertices of the graph",
+      "in the case of a complete graph, no quantum algorithm can find the minimum spanning tree in less than"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "aimeur-no-quantum-eigenvector-algorithm-known",
+     "verdict": "confirmed",
+     "note": "Value is right. The sentence just before it says that some quantum algorithms estimate eigenvalues faster than classically achievable; the stored value covers only eigenvectors, as the quote does.",
+     "value": "",
+     "anchor": "Sec. 8.2, p. 284",
+     "quotes": [
+      "However, with respect to the determination of the eigenvectors of a matrix, to the best of our knowledge there exist no quantum algorithms that are more efficient than their classical counterparts."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "aimeur-quantized-clustering-speedup-not-quality",
+     "verdict": "confirmed",
+     "note": "Value is right and complete.",
+     "value": "",
+     "anchor": "Sec. 1, p. 262",
+     "quotes": [
+      "Our quantum versions of clustering algorithms offer a speed-up compared to their classical counterparts, but do not improve the quality of the resulting clustering process.",
+      "Almost all the quantum algorithms described in this paper are based on variants of Grover's algorithm"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "black-box-model-queries-as-time",
+     "value": "The authors state that in their model the knowledge of the dataset comes only from a black box, or oracle, that can be queried for the distance between two points, that the complexity of an algorithm is measured in the number of queries to the oracle, and that they call this number of queries time.",
+     "anchor": "Sec. 3.1, p. 265",
+     "quotes": [
+      "In this model, our knowledge of the dataset comes uniquely from a black box (sometimes called oracle) that can be queried to learn the distance between two points.",
+      "Note that in this model, the complexity of an algorithm is measured in terms of the numbers of queries to the oracle",
+      "For simplicity, we shall henceforth refer to this number of queries as"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. 3.1 states the paper's model.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Every time bound in the paper is a query count to the distance oracle, not a gate count or wall-clock time."
+    },
+    {
+     "id_suggestion": "distance-assumptions-minimal",
+     "value": "The authors state that no assumptions are made about the distance except that it is non-negative and that a point has distance zero to itself, so the triangle inequality need not hold, and that they assume symmetry for simplicity.",
+     "anchor": "Sec. 3.1, p. 265",
+     "quotes": [
+      "No assumptions are made a priori concerning the properties of this distance except that it is non-negative and that Dist(xi, xi) = 0 for all i.",
+      "In particular, the triangle inequality need not hold and the distance may not be symmetric.",
+      "Throughout this paper, we shall nevertheless assume for simplicity that the distance function is symmetric"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. 3.1 states the setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "black-box-not-realistic-qram-pointer",
+     "value": "The authors state that the assumption that a clustering problem is given as a black box is not realistic in practice, and they point to the quantum random access memory architectures of Giovannetti et al. (2008) as a way to build a circuit that plays the role of the oracle.",
+     "anchor": "Sec. 3.1, p. 266",
+     "quotes": [
+      "The assumption that a particular clustering problem is given as a black box is not realistic in practice",
+      "Giovannetti et al. (2008) have designed general quantum random access memory (QRAM) architectures"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 3.1 states the limit on its own model.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "oracle-reversible-at-reasonable-cost",
+     "value": "The authors state that the oracle must be unitary and therefore reversible, and that this is not really a restriction because any classical irreversible circuit can be transformed into a reversible one for a reasonable cost, citing Bennett.",
+     "anchor": "Sec. 3.1, p. 266",
+     "quotes": [
+      "In order to obey the principles of quantum mechanics, O must be unitary (and therefore reversible).",
+      "it is always possible to transform any classical irreversible circuit into a reversible one for a"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qram-adjacency-matrix-needs-quadratic-time",
+     "value": "The authors state that building a quantum circuit or QRAM that stores every entry of the adjacency matrix would take at least order n squared time, because each entry of the n by n matrix must be read at least once, which is no better than using Prim's algorithm directly.",
+     "anchor": "Sec. 4, p. 270",
+     "quotes": [
+      "the construction of this circuit would require at least Ω(n2) time because one would need to read each entry of the n × n matrix at least once.",
+      "This is clearly not better than using directly Prim's algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 4 states the practical limit on the speed-up.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The n to the three halves bound holds only when the distance oracle itself costs no more than that to build."
+    },
+    {
+     "id_suggestion": "quant-find-max-farthest-pair-linear",
+     "value": "The authors state that quantum divisive clustering can use quant_find_max as a subroutine to find the two points that are the farthest apart in order n time, and that the proof of convergence of quant_find_max is similar to the analysis of Durr and Hoyer (1996) for finding the minimum of a function.",
+     "anchor": "Sec. 3.2, Theorem 1, p. 267; Sec. 5, p. 271",
+     "quotes": [
+      "Quantum mechanically, it is possible to use quant_find_max as a subroutine in this algorithm to find the two points that are the farthest apart in O(n) time.",
+      "The convergence proof of quant_find_max is similar to the analysis of Dürr and Høyer (1996) for their algorithm for finding the minimum of a function."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement of Theorem 1 is garbled in the text layer, so it could not be quoted; the order n bound is quoted from Sec. 5. The proof is only a pointer to Durr and Hoyer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Theorem 1 states an order square root of p expected time, p the number of pairs, which is order n; the radical sign is lost in the text layer."
+    },
+    {
+     "id_suggestion": "quant-find-smallest-values-cited",
+     "value": "The authors state that algorithm quant_find_smallest_values is a direct application of the algorithm of Durr et al. (2004) for the c smallest values of a function, adapted to find the c closest neighbours of a point, and that it is more efficient, albeit more complicated, than applying the minimum-finding algorithm c times.",
+     "anchor": "Sec. 3.2, Theorem 2, p. 268",
+     "quotes": [
+      "Note that this algorithm for finding the c smallest values is more efficient, albeit more complicated,",
+      "for finding the minimum c times, which would have taken",
+      "or the c smallest (or highest) values of its image (Dürr et al. 2004) after"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result; the time bound in Theorem 2 is garbled in the text layer.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "median-definition-medoid",
+     "value": "The paper defines the median of a set of points as a point whose sum of distances to all the other points is minimal, ties broken arbitrarily, and notes that in the multidimensional case the term medoid is sometimes used.",
+     "anchor": "Sec. 3.2, Definition 1, p. 268",
+     "quotes": [
+      "The median of a set of points D is one whose sum of distances with all the other points is minimal (ties are broken arbitrarily)",
+      "In the case of multidimensional points, the term medoid is sometimes used instead of the term median."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-median-quadratic-lower-bound",
+     "value": "The authors state that in the generic case, with no property of the distance to exploit, the naive classical computation of the median is the most efficient possible, and that a classical lower bound of order n squared follows from a scenario where all points are at equal distance except two closer points.",
+     "anchor": "Sec. 3.2, p. 268",
+     "quotes": [
+      "In the generic case, where there are no properties of the distance to be used or no structure within the ensemble of points that can be exploited, this naïve solution is the most efficient possible.",
+      "This results in a lower bound of Ω(n2) time."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper gives a short adversarial example, not a formal proof.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quant-find-median-lemma-1",
+     "value": "The paper states as Lemma 1 that, with high probability, algorithm quant_find_median finds the median among a set of n points in order n to the three halves time, from order square root of n applications of a circuit that sums distances in order n time.",
+     "anchor": "Sec. 3.2, Lemma 1, p. 269",
+     "quotes": [
+      "Lemma 1 (Convergence of quant_find_median) With high probability, algorithm quant_find_median finds the median among a set of n points in O(n3/2) time.",
+      "This can be achieved in O(n) time by simply applying the black box described in Fig. 4 successively for each value of j"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proof text is partly garbled in the text layer; the statement and the cost of the sum circuit are quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound is the product of the order n cost of the sum circuit and the order square root of n cost of Durr and Hoyer minimum finding."
+    },
+    {
+     "id_suggestion": "nayak-wu-median-not-applicable",
+     "value": "The authors state that the quantum algorithm of Nayak and Wu for approximating the median applies to numbers or colinear points, and does not apply when the only information is the distance between each pair of points.",
+     "anchor": "Sec. 3.2, p. 268",
+     "quotes": [
+      "When all the xi correspond simply to numbers, or more generally when all the points are colinear,",
+      "which corresponds to a situation for which the algorithm of Nayak and Wu does not apply."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A scoping remark about cited work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "approximate-median-brassard-2011-not-assessed",
+     "value": "The authors state that a more efficient but approximate solution for the sum of distances was proposed by Brassard et al. (2011), and that they leave for further research the impact of approximate medians on the quality of the clustering.",
+     "anchor": "Sec. 3.2, p. 268",
+     "quotes": [
+      "A more efficient but approximate solution to this problem has recently been proposed by Brassard et al. (2011).",
+      "it is not obvious to determine how detrimental to the quality of the resulting clustering would this use of approximate medians be."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 3.2 states the open point.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "prim-classical-quadratic-optimal",
+     "value": "The authors state that classically, with the graph given as an adjacency matrix, the clustering problem is solved by Prim's algorithm in order n squared time, and that this is optimal since all classical algorithms need order n squared time for a complete graph and an arbitrary metric.",
+     "anchor": "Sec. 4, p. 270",
+     "quotes": [
+      "Classically, when the graph is given as an adjacency matrix, this clustering problem can be solved directly by using Prim's algorithm (1957), which takes O(n2) time",
+      "This algorithm is optimal since all classical algorithms require Ω(n2) time in the case of a complete graph and an arbitrary metric."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A classical result the paper cites and does not prove.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mst-clustering-maximizes-spacing",
+     "value": "The authors state that the clustering obtained from a minimum spanning tree, by removing its k minus one heaviest edges, is precisely the one that maximizes the maximum-spacing criterion, citing Gower and Ross (1969).",
+     "anchor": "Sec. 4, p. 270",
+     "quotes": [
+      "it is easy to group the points into k clusters simply by removing the k − 1 heaviest edges of this tree.",
+      "The clustering based on the minimum spanning tree is precisely the one that maximizes this clustering criterion of maximum spacing (Gower and Ross 1969)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited classical result.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "k-clustering-max-spacing-quantum-n32",
+     "value": "The authors state that Theorem 3 implies a k-clustering with maximum spacing in order n to the three halves time, on condition that an efficient quantum circuit giving the distance between an arbitrary pair of points can be obtained in order n to the three halves time.",
+     "anchor": "Sec. 4, p. 270",
+     "quotes": [
+      "This theorem directly implies that it is possible to obtain a k-clustering with maximum spacing in Θ(n3/2) time, again on condition that an efficient quantum circuit to provide the distance between an arbitrary pair of points can be obtained in O(n3/2) time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Follows from a cited theorem; no separate proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "divisive-clustering-quantum-gain",
+     "value": "The paper states as the fourth theorem that, with high probability, quantum divisive clustering of n points gains over the classical version, as measured by the ratio of classical to quantum times. The proof uses the recurrence T(n) = 2T(n/2) + O(n) for the balanced case, which is order n log n.",
+     "anchor": "Sec. 5, Theorem 4 and proof, pp. 271-272",
+     "quotes": [
+      "performs divisive clustering of a set of n points with a gain of",
+      "as measured by the ratio between the classical and quantum times.",
+      "the recurrence T (n) = 2T (n/2) + O(n), which is O(n log n)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The gain expression in the statement is garbled in the text layer (it reads as a fraction of n over log n), so the statement could not be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "From the proof, the gain is at least order n over log n; the unbalanced case gives a larger gain."
+    },
+    {
+     "id_suggestion": "farthest-pair-classical-quadratic-high-dimension",
+     "value": "The authors state that for datapoints that are vectors in R^d of arbitrarily high dimension, finding the two farthest apart points requires order n squared comparisons in the general case, even for approximations, citing Finocchiaro and Pellegrini.",
+     "anchor": "Sec. 5, p. 271",
+     "quotes": [
+      "If the datapoints are vectors in Rd for an arbitrarily high dimension d, this process requires Ω(n2) comparisons in the general case",
+      "and this even in the case of approximations (Finocchiaro and Pellegrini 2002)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "k-medians-np-hard-no-exact-quantum",
+     "value": "The authors state that optimizing the k-medians criterion is NP-hard for all k of at least two, even in the Euclidean case, so no polynomial-time algorithm is known even with a quantum computer, and that their quantum k-medians is a quantized heuristic and not an exact algorithm.",
+     "anchor": "Sec. 6.1, p. 273",
+     "quotes": [
+      "optimizing the k-medians criterion is NP-hard for all k 2 even in the Euclidean case (Papadimitriou 1981)",
+      "The quantum version of the k-medians algorithm (Algorithm 3) is therefore a quantized version of a heuristic for solving an NP-hard problem, but not an algorithm for solving exactly this problem."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 6.1 states the scope of the algorithm.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "k-medians-oscillation-vs-k-means",
+     "value": "The authors state that the k-means algorithm is guaranteed to converge to a stable assignment after a finite number of iterations, whereas the k-medians algorithm can oscillate between two or more configurations.",
+     "anchor": "Sec. 6.1, p. 273",
+     "quotes": [
+      "The k-means algorithm is guaranteed to converge to a stable assignment of the cluster centres after a finite number of iterations",
+      "the k-medians algorithm can reach a situation in which it oscillates between two (or more) configurations."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Classical background stated without proof.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-k-medians-theorem-5",
+     "value": "The paper states as the fifth theorem that, with high probability, algorithm quantum_k_medians clusters n points with a gain over the classical version, as measured by the ratio of classical to quantum times, k the number of clusters. The proof compares one iteration with clusters of equal size and the case with one cluster holding almost all points.",
+     "anchor": "Sec. 6.1, Theorem 5 and proof, pp. 273-274",
+     "quotes": [
+      "over the classical version, as measured by the ratio between the classical and the quantum times, where k is the number of clusters returned by the algorithm.",
+      "Consider now the unbalanced scenario, in which all the clusters but one are of small constant size"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The gain expression is garbled in the text layer, so the statement could not be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The gain is square root of n over k, the same in the text as Table 1's upper bound for one iteration; the radical sign is lost in the text layer."
+    },
+    {
+     "id_suggestion": "k-medians-iteration-count-unchanged",
+     "value": "The authors state that using the quantum or the classical version has no impact on the convergence rate of the algorithm, as measured by the number of iterations t, and leave a quantum speed-up of the number of iterations as future research.",
+     "anchor": "Sec. 6.1, p. 274",
+     "quotes": [
+      "Note that the use of the quantum or classical version has no impact on the convergence rate of the algorithm, as measured by t , the number of iterations.",
+      "It is also plausible that the convergence of the algorithm, as measured by the number of iterations t , might be sped up with the help of quantum techniques."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 6.1 states the scope of the speed-up.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "distributed-trivial-protocol-cost",
+     "value": "The authors state that the trivial distributed protocol, which gathers all the data at one site, has communication cost of order d times m bits, d the dimension and m the size of the smaller dataset, and that the trivial protocol on n points costs order d times n bits.",
+     "anchor": "Sec. 6.2, pp. 274-275",
+     "quotes": [
+      "the communication cost of the protocol would be of Θ(dm) bits, for d the dimension of the space in which the datapoints live and m the number of points of the smaller dataset.",
+      "which would require sending all the data to one site, at a cost of Θ(dn) bits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A short argument by the authors, not a formal proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "distributed-setup-two-parties",
+     "value": "The paper states that the distributed setting concentrates on two participants, Alice and Bob, who share an even number n of datapoints equally, with each attribute represented with finite precision using a constant number of bits.",
+     "anchor": "Sec. 6.2, pp. 274-275",
+     "quotes": [
+      "For simplicity, we shall concentrate on the case of two participants and we assume that each of the attributes of any given datapoint can be represented with finite precision using a constant number of bits.",
+      "we assume that they share equally an even number n of datapoints."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. 6.2 states the setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "holevo-superdense-background",
+     "value": "The authors recall that Holevo's theorem rules out transmitting more than n classical bits by communicating n qubits unless the participants share prior entanglement, in which case 2n classical bits can be sent by superdense coding, and that this is the best possible.",
+     "anchor": "Sec. 6.2, p. 275",
+     "quotes": [
+      "Holevo's (1973) theorem rules out the possibility of transmitting more than n classical bits of",
+      "in which case it is possible to transmit 2n classical bits by superdense coding"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited background.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "distributed-grover-iteration-lemma-2",
+     "value": "The paper states as the second lemma that the protocol distributed_Grover_iteration implements Grover's iteration in a distributed way for use in quant_find_median, with communication cost of order d plus log of sum_distmax qubits; the proof says only the third and sixth steps of the distributed Grover iteration exchange information between Alice and Bob.",
+     "anchor": "Sec. 6.2, Lemma 2 and proof, p. 276",
+     "quotes": [
+      "Its communication cost is of O(d + log sum_distmax) qubits, where d is the number of attributes used to describe the datapoints",
+      "Concerning communication, only steps 3 and 6 require an exchange of information between Alice and Bob."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proof sketch based on a description of the protocol steps.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "distributed-k-medians-theorem-6",
+     "value": "The paper states as the sixth theorem that, with high probability, k_medians_distributed clusters n points shared between two participants, and the proof gives a total communication cost of order t times square root of k n times (d + log sum_distmax) qubits for all t iterations.",
+     "anchor": "Sec. 6.2, Theorem 6 and proof, pp. 276-278",
+     "quotes": [
+      "The total communication cost is therefore of O(t kn(d + log sum_distmax)) qubits for all t iterations.",
+      "We see that the balanced case is the worst in terms of communication"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The theorem statement is garbled in the text layer; the proof's conclusion is quoted. Radical sign lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Compared with the trivial protocol of order d times n bits, the bound is smaller when t times square root of k times d is below d times square root of n; the paper does not compute this."
+    },
+    {
+     "id_suggestion": "distributed-multiparty-claim",
+     "value": "The authors state that the distributed algorithm can easily be generalized to the multiparty case, with at least two participants, by adapting the distributed Grover iteration to more than two participants.",
+     "anchor": "Sec. 6.2, p. 278",
+     "quotes": [
+      "This algorithm can be easily generalized to the multiparty case, for a number of participants m 2."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated without a proof or a bound.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "neighbourhood-graph-definition",
+     "value": "The paper defines a neighbourhood graph as the complete distance-weighted graph on the points, keeping for each vertex only the edges to its k closest neighbours.",
+     "anchor": "Sec. 7.1, Definition 8, p. 278",
+     "quotes": [
+      "Consider a complete undirected graph in which vertices correspond to points of a dataset and each edge between two vertices is weighted according to the distance between these two points.",
+      "this original graph by keeping for each vertex only the edges connecting it to its k closest neighbours."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 8.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-neighbourhood-graph-theorem-7",
+     "value": "The paper states as the seventh theorem that, with high probability, quant_neighbourhood_graph constructs the neighbourhood graph of n points in order square root of k times n to the three halves time, k the number of neighbours, by finding the k closest neighbours of each point.",
+     "anchor": "Sec. 7.1, Theorem 7, p. 279",
+     "quotes": [
+      "constructs the neighbourhood graph of a set of n points in O( k n3/2) time, for k the number of neighbours considered."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proof is a one-line product of n and the cost of quant_find_smallest_values.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The radical sign before k is lost in the text layer; it is recovered from the proof text and Table 1."
+    },
+    {
+     "id_suggestion": "neighbourhood-graph-classical-bounds",
+     "value": "The authors state that classically, with an arbitrary metric and only pairwise distances, order n squared time is required to build the neighbourhood graph, whereas with explicit attributes and small dimension d a kd-tree does it in order (k + d) n log n time.",
+     "anchor": "Sec. 7.1, p. 279",
+     "quotes": [
+      "Classically, if we use an arbitrary metric and if the only information available is the distance between pairs of points, Ω(n2) time is required to generate the neighbourhood graph.",
+      "it takes Θ((k + d)n log n) time to construct the kd-tree representing a dataset and use it for finding the k closest neighbours of each of the n points, provided d small."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A classical comparison stated by the authors.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kdtree-curse-of-dimensionality",
+     "value": "The authors report, citing a study reviewed by Kibriya and Frank, that for dimension d of at least 16 all exact nearest-neighbour search methods become sensitive to the curse of dimensionality and need time worse than linear in the number of points.",
+     "anchor": "Sec. 7.1, footnote 6, p. 279",
+     "quotes": [
+      "for any d 16, all these methods become sensitive to the curse of dimensionality and require a time worse than linear in the number of points"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result of one cited study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantized-kdtree-case-no-advantage",
+     "value": "The authors state that when building a neighbourhood graph the classical kd-tree algorithm is so efficient that quantizing the algorithm that uses only distances offers no significant advantage if the dimension d is small.",
+     "anchor": "Sec. 8.1, p. 282",
+     "quotes": [
+      "the classical algorithm for kd-trees computes this graph so efficiently that quantizing the classical algorithm working only on the distances offers no significant advantage if the dimension d is small"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 8.1 states the limit of the speed-up.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "outlier-definition",
+     "value": "The paper defines an outlier as an observation that differs significantly from the rest of the data.",
+     "anchor": "Sec. 7.2, Definition 9, p. 280",
+     "quotes": [
+      "An outlier is an observation that differs significantly from the rest of the data."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 9.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "outlier-score-definition",
+     "value": "The paper uses the technique of Angiulli and Pizzuti in which each point gets a neighbourhood score equal to the sum of its distances to its k closest neighbours, and outliers are points whose score is above a threshold or the c points with the highest scores.",
+     "anchor": "Sec. 7.2, Eq. 7, p. 280",
+     "quotes": [
+      "a possible technique (Angiulli and Pizzuti 2002) consists in identifying, for each point xi , its k closest neighbours and to give a neighbourhood score",
+      "outliers can be identified as points whose score ω is above a threshold ωmax (determined empirically), or as the c points that have the highest score"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited technique used as the basis of the algorithm.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-outlier-detection-theorem-8",
+     "value": "The paper states as the eighth theorem that, with high probability, quant_detection_outlier identifies all the outliers in a dataset of size n in order square root of k times n to the three halves time, k the number of neighbours, and that classically order n squared time is needed to compute the neighbourhood scores of all n points in the general case.",
+     "anchor": "Sec. 7.2, Theorem 8, p. 280",
+     "quotes": [
+      "identifies all the outliers, within a dataset of size n, in O( k n3/2) time, where k is the number of neighbours considered for each point.",
+      "Classically, Ω(n2) time is needed to determine the neighbourhood scores of all n points in the general case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proof reuses Theorem 7; the radical sign is lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "max-min-initialization-definition",
+     "value": "The authors describe the max-min initialization of cluster centres, in which the first centre is random and each following centre is the datapoint whose sum of distances to all the previous centres is maximum.",
+     "anchor": "Sec. 7.3, p. 281",
+     "quotes": [
+      "The following centres μ3, . . . , μk are chosen one by one, always taking as next centre the datapoint whose sum of distances with all the previous centres is maximum."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Sec. 7.3 defines the method that Algorithm 8 quantizes.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-initialization-theorem-9",
+     "value": "The paper states as Theorem 9 that, with high probability, algorithm quantum_initialization_centres initializes the k cluster centres in a smart way, and gives its time as a function of k and n.",
+     "anchor": "Sec. 7.3, Theorem 9, p. 281",
+     "quotes": [
+      "Theorem 9 (Quantum algorithm for the initialization of the cluster centres)",
+      "Algorithm 8 is a quantum version of this method for initializing the cluster centres."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The bound in the statement is garbled in the text layer and could not be quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Table 1 and Sec. 8.1 give an upper bound of order k squared times square root of n, against order k squared times n classically; both are lost in the text layer."
+    },
+    {
+     "id_suggestion": "gonzalez-approximation-cited",
+     "value": "The authors state that minimizing the maximum cluster diameter is NP-hard in its exact version, and that an approximation by Gonzalez (1985) returns k clusters whose maximum diameter is at most twice the optimal, provided the distance is defined in a Euclidean space.",
+     "anchor": "Sec. 7.3, p. 282",
+     "quotes": [
+      "This criterion is NP-hard to optimize in its exact version, but an approximation due to González (1985) returns a set of k clusters whose maximum",
+      "diameter is at most twice that of the optimal k-clustering of minimal maximum diameter,",
+      "provided the distance function is defined in a Euclidean space."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bounds-relatively-tight-three-cases",
+     "value": "The authors state that the bounds in the paper's summary table are relatively tight for clustering via minimum spanning tree, divisive clustering and smart initialization of the cluster centres.",
+     "anchor": "Sec. 8.1, p. 283",
+     "quotes": [
+      "These bounds are relatively tight for the clustering via minimum spanning tree, for the divisive clustering and for the"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own assessment, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "neighbourhood-outlier-lower-bound-open",
+     "value": "The authors state that for neighbourhood graph construction and outlier detection it seems likely that the true lower bound is closer to order n to the three halves than to order n, and that if proven the algorithms would be essentially optimal.",
+     "anchor": "Sec. 8.1, p. 283",
+     "quotes": [
+      "it seems likely that the true lower bound is closer from Ω(n3/2) than from Ω(n).",
+      "this would have for consequence that the algorithms presented in this paper are"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 8.1 states an open lower-bound gap.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "k-medians-bound-gap-open",
+     "value": "The authors state that for quantum k-medians there is still an important gap between the lower bound and the upper bound, which leaves open a more efficient quantum algorithm.",
+     "anchor": "Sec. 8.1, p. 283",
+     "quotes": [
+      "there is still a important gap between the lower bound and the upper bound, which leaves open the possibility of finding a more efficient quantum algorithm."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 8.1 states an open problem.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "open-question-lower-bounds-clustering",
+     "value": "The authors state as a fundamental open question the study of lower bounds for classical and quantum clustering scenarios, in particular whether a quantized clustering algorithm speeds up not only its classical counterpart but all possible classical algorithms.",
+     "anchor": "Sec. 8.1, p. 282",
+     "quotes": [
+      "A fundamental open question is the study of the lower bounds for different clustering scenarios, be they classical or quantum mechanical.",
+      "offers a speed-up not only on its classical counterpart but on all possible classical algorithms?"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 8.1 states an open problem.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper's speed-ups are against the classical version of the same algorithm, not against the best possible classical algorithm."
+    },
+    {
+     "id_suggestion": "mst-reduction-would-give-n32-lower-bound",
+     "value": "The authors state that a reduction between k-clustering with maximum spacing and the minimum spanning tree would imply that no classical or quantum clustering algorithm for that criterion can take less than order n to the three halves time.",
+     "anchor": "Sec. 8.1, p. 283",
+     "quotes": [
+      "if one could give a reduction between the problem of k-clustering with maximum spacing and the construction of the",
+      "can take less than Ω(n3/2) time."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conditional on a reduction the paper does not give.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mst-output-not-compressible-distributed-unsuitable",
+     "value": "The authors state that clustering via minimum spanning tree outputs order n bits, which seems not easily compressible, so such algorithms are unlikely candidates for the distributed setting.",
+     "anchor": "Sec. 8.1, p. 283",
+     "quotes": [
+      "algorithms such as clustering via minimum spanning tree output Ω(n) bits of information",
+      "It follows that these algorithms are unlikely candidates for the distributed setting"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own argument, not tested.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "isomap-eigen-bottleneck",
+     "value": "The authors state that the computational bottleneck of Isomap, as of most dimensionality reduction algorithms, is the computation of eigenvalues and eigenvectors of n by n matrices, which takes order n cubed time in general.",
+     "anchor": "Sec. 8.2, p. 284",
+     "quotes": [
+      "The computational bottleneck of Isomap, as well as of most of the dimensionality reduction algorithms, stems from the computation of the eigenvalues and eigenvectors of n × n matrices, which requires in general O(n3) time."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Classical background stated without a source for the bound.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-eigenvalue-estimation-faster-claim",
+     "value": "The authors state that some quantum algorithms, such as amplitude estimation, use the quantum Fourier transform to estimate eigenvalues more quickly than classically achievable.",
+     "anchor": "Sec. 8.2, p. 284",
+     "quotes": [
+      "use the quantum Fourier transform to estimate the eigenvalues more quickly than classically achievable."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited claim, not tested in the paper.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-walks-promising-claim",
+     "value": "The authors state that approaches based on quantum walks or quantum Markov chains seem promising and capable of overcoming the intrinsic limits of Grover's algorithm.",
+     "anchor": "Sec. 8.3, p. 284",
+     "quotes": [
+      "These techniques seem promising and capable of overcoming the intrinsic limits of Grover's algorithm."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An outlook statement.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "measurement-based-adiabatic-equivalent-power",
+     "value": "The authors state that the measurement-based model and adiabatic computation offer the same computational power as the traditional quantum circuit model, and that they may suggest new algorithms.",
+     "anchor": "Sec. 8.3, p. 284",
+     "quotes": [
+      "These two models offer the same computational power as the"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited equivalence (Aharonov et al. 2004; Broadbent and Kashefi 2009).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "grover-quadratic-speedup-background",
+     "value": "The authors recall that Grover's algorithm offers a quadratic speed-up in unstructured search, and that amplitude amplification can accelerate many classical probabilistic algorithms by a quadratic factor in the number of queries to the black box.",
+     "anchor": "Sec. 2.1 and 2.2, pp. 264-265",
+     "quotes": [
+      "Another famous algorithm, due to Grover (1997), offers a quadratic speed-up in unstructured search problems.",
+      "can accelerate many classical probabilistic algorithms by a quadratic factor in terms of the number of queries asked to the black box."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited background.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "np-hard-no-exact-quantum-belief",
+     "value": "The authors state that if finding the optimal solution to a clustering problem is NP-hard, it is generally believed that quantum computers would also be unable to solve it exactly in polynomial time, citing Bennett et al. (1997).",
+     "anchor": "Sec. 1, p. 262",
+     "quotes": [
+      "it is generally believed that quantum computers would also be unable to solve the problem exactly in polynomial time (Bennett et al. 1997)."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A belief the paper cites.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
