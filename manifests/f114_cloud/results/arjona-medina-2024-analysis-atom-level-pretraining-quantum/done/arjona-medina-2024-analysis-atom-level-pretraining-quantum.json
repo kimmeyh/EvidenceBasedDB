@@ -1,0 +1,307 @@
+{"papers": [{
+  "record_id": "arjona-medina-2024-analysis-atom-level-pretraining-quantum",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Arjona-Medina-Nugmanov_2024_Analysis-of-Atom-level-pretraining-with-QM-data-for-Graph-Neural__2405.14837.pdf",
+  "title_in_file": "Analysis of Atom-level pretraining with QM data for Graph Neural Networks Molecular property models",
+  "version_note": "arXiv:2405.14837v2 [cs.LG] 27 May 2024, preprint under review.",
+  "pages": 24,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A preprint that pretrains a Graphormer on atom-level quantum-mechanics properties and compares it with scratch and molecule-level pretraining on 22 TDC ADMET tasks, plus an analysis of first-layer feature distributions.",
+  "bears_on_context": "ml",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "atom-pretrain-21-of-22",
+      "verdict": "confirmed",
+      "note": "The authors do state this in Section 4. The reader's own count of the Table 1 means finds 20 of 22 lower-error or higher-score for atom-level; see reader_inference.",
+      "value": "",
+      "anchor": "Section 4 Results, p.4",
+      "quotes": ["These results show that atom-level pretraining notably enhances model performance compared to training from scratch for 21 of the 22 datasets."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "",
+      "result_type": "measured", "context": "ml",
+      "reader_inference": "Comparing the mean columns of Table 1, the atom-level (all 4) mean is worse than scratch for hia_hou (0.94 against 0.96, ROC-AUC) and herg (0.77 against 0.78, ROC-AUC), so the means show improvement on 20 of 22 tasks, not 21. Many differences are inside one standard deviation (for example cyp3a4_substrate_carbonmangels 0.64 +/- 0.02 against 0.63 +/- 0.07). No significance test is reported, so 'notably' is the authors' wording only."
+    },
+    {
+      "id": "atom-pretrain-gaussian",
+      "verdict": "narrowed",
+      "note": "The paper makes this visual observation for one dataset and one split: the lipophilicity test split in Figure 2. The supplement repeats the plots for other datasets' test splits. The stored value does not say this.",
+      "value": "The authors report visually observing, in Figure 2 for the test split of one dataset (lipophilicity), that the atom-level pretrained method results in a more Gaussian-like distribution of the features.",
+      "anchor": "Section 4 Results, Figure 2, p.4-5",
+      "quotes": [
+        "Figure 2 illustrates the feature distribution for the test split of one of the datasets (lipophilicity)",
+        "Visually, we can observe that the atom-level pretrained method results in a more Gaussian-like distribution of the features."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "",
+      "result_type": "measured", "context": "ml",
+      "reader_inference": "The observation is by eye on the first 20 of 250 feature dimensions. The only quantitative test reported (Shapiro-Wilk) gives average p-values far below 0.05 for both networks."
+    },
+    {
+      "id": "atom-pretrain-setup",
+      "verdict": "confirmed",
+      "note": "",
+      "value": "",
+      "anchor": "Section 3 Experiments, p.4; Section 4 Results, p.4",
+      "quotes": [
+        "For pretraining, we used a publicly available dataset [13] consisting of 136k organic molecules.",
+        "atom-level QM pretrained with all properties for 5 different seeds"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper states its own setup in Sections 3 and 4.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": ""
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "atom-pretrain-shapiro-wilk-pvalues",
+      "value": "The authors report a Shapiro-Wilk test per feature dimension, with an average p-value of 3.2E-06 (standard deviation 5E-05) for the scratch network and 4E-04 (standard deviation 0.003) for the pretrained network, and state that the scratch value suggests significant deviation from normality and the pretrained value a closer approximation to a Gaussian distribution.",
+      "anchor": "Section 4 Results, p.4",
+      "quotes": [
+        "The average p-value for the scratch network was 3.2E-06 with a standard deviation of 5E-05, suggesting a significant deviation from normality.",
+        "the pretrained network had an average p-value of 4E-04 with a standard deviation of 0.003, indicating a closer approximation to a Gaussian distribution."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical result from one study; the text does not say which dataset, split or pretrained model it covers.",
+      "result_type": "measured", "context": "ml",
+      "reader_inference": "Both averages are far below 0.05, so by this test both networks reject normality on average. The pretrained average is only about two orders of magnitude larger. The text does not name the dataset or split, and the Kolmogorov-Smirnov results named in Section 2 are not reported in the main text."
+    },
+    {
+      "id": "atom-pretrain-distribution-shift",
+      "value": "The authors report that pretrained networks show in general less distribution shift than the scratch network, and that in most cases, especially in the Train-Test comparison, atom-level pretrained networks have less distribution shift than scratch networks.",
+      "anchor": "Section 4 Results, Figure 3, p.4-6",
+      "quotes": [
+        "Pretrained networks show in general less distribution shift compared to scratch network, as we can see in Figure 3.",
+        "in most of the cases, specially in the Train-Test comparison, atom-level pretrained networks have less distribution shift than scratch networks."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical result from one study, read from a heatmap; the text gives no counts.",
+      "result_type": "measured", "context": "ml",
+      "reader_inference": "The result is qualitative (a heatmap of differences) and gives no count of cases or significance test. The text layer does not carry the heatmap values."
+    },
+    {
+      "id": "atom-pretrain-shift-metrics",
+      "value": "The authors state that the heatmap figure shows distribution shift differences between scratch and atom-level pretrained networks, calculated across feature dimensions with Kullback-Leibler Divergence, Jensen-Shannon Divergence, Earth Mover's Distance, Total Variation Distance and Hellinger Distance, for Train-Val and Train-Test comparisons.",
+      "anchor": "Figure 3 and caption, p.6",
+      "quotes": [
+        "calculated across various feature dimensions using metrics such as KullbackLeibler Divergence, Jensen-Shannon Divergence, Earth Mover’s Distance, Total Variation Distance, and Hellinger Distance."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "definition",
+      "certainty_reason": "The Figure 3 caption defines how the distribution shift was measured.",
+      "result_type": "setup", "context": "method",
+      "reader_inference": ""
+    },
+    {
+      "id": "atom-pretrain-tdc-benchmark",
+      "value": "The authors state that they benchmarked the pretrained models on the ADMET group of the Therapeutics Data Commons (TDC), which consists of 9 regression and 13 binary classification tasks.",
+      "anchor": "Section 3 Experiments, Datasets, p.4",
+      "quotes": [
+        "consisting of 9 regression and 13 binary classification tasks for modeling biochemical molecular properties."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "scope",
+      "certainty_reason": "The paper states its benchmark scope in Section 3.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": ""
+    },
+    {
+      "id": "atom-pretrain-qm-dataset-protocol",
+      "value": "The authors state that the pretraining molecules each have a single MMFF94s conformer generated with RDKit, with the lowest-lying conformer optimized at the GFN2-xtb level and refined with DFT (B3LYP/def2svp), and that the dataset reports atomic properties: charge, electrophilicity and nucleophilicity Fukui indexes, and an NMR shielding constant.",
+      "anchor": "Section 3 Experiments, Datasets, p.4",
+      "quotes": [
+        "Each molecule is represented by a single conformer generated using the Merck Molecular Force Field (MMFF94s) in the RDKit library.",
+        "optimized at the GFN2-xtb level of theory followed by refinement of the electronic structure with DFT (B3LYP/def2svp)",
+        "charge, electrophilicity, nucleophilicity Fukui indexes, and an NMR shielding constant."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper describes its own pretraining data in Section 3.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": "The quantum-mechanics labels come from semi-empirical (GFN2-xtb) geometry optimization and DFT calculation, not from experiment or quantum hardware."
+    },
+    {
+      "id": "atom-pretrain-molecule-level-dataset",
+      "value": "The authors state that the molecule-level pretraining dataset, PCQM4Mv2, has a single molecular property per molecule, the HOMO-LUMO gap, curated under the PubChemQC project.",
+      "anchor": "Section 3 Experiments, Datasets, p.4",
+      "quotes": [
+        "Another pretraining dataset, PCQM4Mv2, consists of a single molecular property per molecule, a HOMO-LUMO gap",
+        "It was curated under the PubChemQC project [20]."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper states its own setup in Section 3.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": "The text does not say outright that PCQM4Mv2 was the dataset used for the HOMO-LUMO (HLgap) pretraining column of Table 1, but the HOMO-LUMO gap main task is named in the Experiments setup paragraph."
+    },
+    {
+      "id": "atom-pretrain-training-variants",
+      "value": "The authors state that they trained the same network from scratch, pretrained it on the HOMO-LUMO gap (molecule-level), and pretrained 4 atom-level models, one per single property, plus a fifth model pretrained on 4 properties via multi-task by task-specific virtual nodes; the main atom-level results use this fifth model.",
+      "anchor": "Section 3 Experiments, Experiments setup, p.4",
+      "quotes": [
+        "For atom-level pretrain, we pretrained 4 models, one per every single property.",
+        "We also pretrained a fifth model which is pretrained on 4 properties via multi-task by task-specific virtual nodes.",
+        "Main results reported in this paper for atom-level uses this last model."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup",
+      "certainty_reason": "The paper states its own experimental setup in Section 3.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": "Table 1 therefore compares the multi-task atom-level model, pretrained on 4 properties, against a single-task molecule-level model pretrained on one property; the comparison also differs in the amount of supervision."
+    },
+    {
+      "id": "atom-pretrain-feature-analysis-method",
+      "value": "The authors state that they ran the models on the training, validation and test splits, extracted the distribution of features after the first Graphormer layer, aggregated node representations over compounds, and evaluated normality with Shapiro-Wilk and Kolmogorov-Smirnov tests.",
+      "anchor": "Section 2 Methods, Quantitative Assessment of learned features, p.3",
+      "quotes": [
+        "We run the models on the three different data splits (training, validation, and test), and extract the distribution of features after the first layer of the Graphormer architecture.",
+        "we undertook an evaluation of the normality of these distributions using Shapiro-Wilk and Kolmogorov-Smirnov tests."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "definition",
+      "certainty_reason": "The paper defines its own analysis procedure in Section 2.",
+      "result_type": "setup", "context": "method",
+      "reader_inference": "Only the first layer is analyzed. The Kolmogorov-Smirnov results are not shown in the main text."
+    },
+    {
+      "id": "atom-pretrain-task-specific-virtual-nodes",
+      "value": "The authors state that, for multitask learning, they use the same encoder and output head to estimate multiple properties and differentiate the tasks by using a distinct virtual node for each, and they call this a novel extension.",
+      "anchor": "Section 2 Methods, Enabling multitask learning by task-specific virtual nodes, p.3",
+      "quotes": [
+        "we propose a novel extension tailored for multitask learning applications.",
+        "we employ the same encoder and output head to estimate multiple properties, but differentiate the tasks by using distinct virtual nodes for each."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "definition",
+      "certainty_reason": "The paper defines its own multitask architecture in Section 2; the novelty and efficiency wording is the authors' claim only.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": "The paper reports no ablation of virtual nodes against another multitask design, so the claims of enhanced efficiency, adaptability and scalability are not tested."
+    },
+    {
+      "id": "atom-pretrain-graphormer-modifications",
+      "value": "The authors state that they modified the original Graphormer by integrating both explicit atom neighbors and implicit hydrogens in the centrality encoder, removing the need for an edge encoder, omitting formal-charge and radical-state encoding, and limiting the spatial encoder by a configurable maximum distance threshold.",
+      "anchor": "Section 2 Methods, Custom implementation, p.3",
+      "quotes": [
+        "integrating both explicit atom neighbors and implicit hydrogens.",
+        "This approach eliminates the need for an \"edge encoder\"",
+        "omitting the encoding of atoms’ formal charges and radical states",
+        "a \"spatial encoder\" constrained by a configurable maximum distance threshold"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "definition",
+      "certainty_reason": "The paper defines its own model variant in Section 2.",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": ""
+    },
+    {
+      "id": "atom-pretrain-contribution-vs-molecule-level",
+      "value": "The authors state, as a contribution, that they empirically show atom-level pretraining in Graph neural networks with QM properties improves performance over scratch networks and molecular-level pretraining in the TDC public dataset.",
+      "anchor": "Section 1 Introduction, contributions, p.2",
+      "quotes": [
+        "We empirically show that atom-level pretraining in Graph neural networks with QM properties improves performance over scratch networks and molecular-level pretraining, in the TDC public dataset."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical claim from one study.",
+      "result_type": "claim", "context": "ml",
+      "reader_inference": "In Table 1 the molecule-level HLgap column is close to scratch on most tasks (for example caco2_wang 0.53 against 0.48 MAE, where lower is better, so it is worse than scratch there). The paper's text states the scratch comparison as 21 of 22 but gives no count for molecule-level pretraining."
+    },
+    {
+      "id": "atom-pretrain-gaussian-conducive-claim",
+      "value": "The authors state that Gaussian-like distributions of activations are known to be conducive to better learning dynamics and thus improved performance, and that the atom-level pretrained distributions become more Gaussian-like.",
+      "anchor": "Section 5 Conclusions, p.6",
+      "quotes": [
+        "these distributions become more Gaussian-like, which is known to be conducive to better learning dynamics and thus improved performance (see Figure 2)."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An author claim given without a citation or an experiment in this paper.",
+      "result_type": "claim", "context": "ml",
+      "reader_inference": "No reference is given for the claim that Gaussian-like activations improve learning. The paper shows a correlation across three trained networks, not a causal test."
+    },
+    {
+      "id": "atom-pretrain-robustness-explains-gain-claim",
+      "value": "The authors state that atom-level pretraining produces a more robust molecular representation against distribution shift from train to eval and train to test datasplits, which could explain the performance gain of the atom-level pretraining approach.",
+      "anchor": "Section 1 Introduction, contributions, p.2",
+      "quotes": [
+        "We empirically show that atom-level pretraining produces a more robust molecular representation against distribution shift from train to eval and train to test datasplits, which could explain the performance gain of atom-level pretraining approach."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An author claim; the link from lower shift to the performance gain is not tested.",
+      "result_type": "claim", "context": "ml",
+      "reader_inference": "The text says 'could explain', so the causal link is a hypothesis. The paper reports no experiment that changes the shift and measures the effect on performance."
+    },
+    {
+      "id": "atom-pretrain-conclusion-significant-enhancement",
+      "value": "The authors conclude that pretraining graph-based neural networks with atom-level QM data significantly enhances performance on downstream ADMET property tasks within the TDC dataset, as illustrated in Table 1.",
+      "anchor": "Section 5 Conclusions, p.6",
+      "quotes": [
+        "we have demonstrated that pretraining of graph-based neural networks with atom-level quantum mechanics (QM) data significantly enhances performance on downstream tasks related to ADMET properties within the TDC dataset, as illustrated in Table 1."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "An empirical conclusion from one study.",
+      "result_type": "measured", "context": "ml",
+      "reader_inference": "The paper reports no statistical significance test for the Table 1 differences, so 'significantly' reads as a descriptive word. The Conclusions cite Figure 2 for the train-to-test shift result, but the shift result is in Figure 3."
+    },
+    {
+      "id": "atom-pretrain-first-study-claim",
+      "value": "The authors state that, to their knowledge, this is the first study that elucidates how atom-level pretraining can optimize molecular representations by analyzing the model's internal representation and robustness to distribution shifts.",
+      "anchor": "Section 5 Conclusions, p.6",
+      "quotes": [
+        "To our knowledge, this is the first study that elucidates how atom-level pretraining can optimize molecular representations by analyzing the model’s internal representation and robustness to distribution shifts."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "A priority claim by the authors, without evidence in the paper.",
+      "result_type": "claim", "context": "ml",
+      "reader_inference": "The Abstract words the novelty differently: the first time hidden-state representations are analyzed to compare molecule-level and atom-level QM pretraining."
+    },
+    {
+      "id": "atom-pretrain-negative-transfer-cited",
+      "value": "The authors state, citing reference 27, that without appropriate domain expertise, pretraining can sometimes lead to negative transfer or only marginal performance gains.",
+      "anchor": "Section 1 Introduction, Pretraining and Transfer Learning in QSAR Models, p.2",
+      "quotes": [
+        "without appropriate domain expertise, pretraining can sometimes lead to negative transfer or only marginal performance gains [27]."
+      ],
+      "kind": "cited", "claim_type": "absence", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited", "context": "ml",
+      "reader_inference": "Reference 27 is Rosenstein et al. 2005, 'To transfer or not to transfer', a workshop paper."
+    },
+    {
+      "id": "atom-pretrain-fingerprints-match-dl-cited",
+      "value": "The authors state, citing earlier work, that with statistical analyses fixed representations like fingerprints generally match end-to-end deep learning models in most datasets, especially in the presence of activity cliffs.",
+      "anchor": "Section 1 Introduction, p.1-2",
+      "quotes": [
+        "With statistical analyses, fixed representations like fingerprints generally match end-to-end deep",
+        "especially in the presence of activity cliffs [35]."
+      ],
+      "kind": "cited", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited", "context": "ml",
+      "reader_inference": "The paper compares only Graphormer variants; it does not compare against a fingerprint baseline."
+    },
+    {
+      "id": "atom-pretrain-no-limitations-section",
+      "value": "The paper states no limitations section; it reports the main benchmark table only for the Graphormer with three training conditions, and the per-property atom-level results and full feature plots are placed in the supplementary materials.",
+      "anchor": "Section 4 Results and Appendix A, p.4 and p.9",
+      "quotes": [
+        "For an exhaustive elaboration of the results, please refer to the supplementary materials.",
+        "We have excluded the results for atom-level pretraining on individual QM properties from this table; these can be found in the Supplementary Materials."
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "stated limit",
+      "certainty_reason": "The paper itself states where results are reported and what the main table leaves out (Section 4).",
+      "result_type": "setup", "context": "ml",
+      "reader_inference": "The value of 'no limitations section' is the reader's reading of the whole paper: the Conclusions state no limits, caveats or future work. Only the Graphormer architecture is tested, so the results do not show whether the gain holds for other architectures."
+    }
+  ]
+}]}
