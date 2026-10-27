@@ -1,0 +1,678 @@
+{
+ "papers": [
+  {
+   "record_id": "bangar-2024-continuous-variable-quantum-boltzmann-machine",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Bangar-et-al._2024_Continuous-variable-Quantum-Boltzmann-Machine__2405.06580.pdf",
+   "title_in_file": "Continuous-variable Quantum Boltzmann Machine",
+   "version_note": "arXiv:2405.06580v1, 10 May 2024. The text layer holds the paper once. Parts of Section 2 are printed one word per line, and the figure bodies (circuit diagrams, plots) carry no text beyond captions and axis labels.",
+   "pages": 23,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A proposal and simulation study of a continuous-variable quantum Boltzmann machine that prepares a thermal state with a CV quantum imaginary time evolution circuit and is trained to generate continuous probability distributions from SAR image histograms, standard distributions and CV quantum states.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "cvqbm-hardware-limit",
+     "verdict": "narrowed",
+     "note": "The paper names one device, the Xanadu X-series cloud chip, and the reason (no online squeezers). The stored value says 'the available hardware' without naming the device. The same passage also says the currently available photonic devices have limitations that prevent a realization on cloud-accessed on-chip hardware.",
+     "value": "The authors state that the Xanadu X-series, a cloud-accessed photonic quantum chip, cannot accommodate their CVQBM, mainly because of the lack of online squeezers, since the parameters of the available offline squeezers are fixed.",
+     "anchor": "Section 5, Experimental Feasibility, p.16",
+     "quotes": [
+      "the Xanadu X-series [33], which is a cloud-accessed quantum chip that includes squeezers, beam splitters, and interferometers cannot accommodate our CVQBM mainly due to the lack of online squeezers (the parameters of the available offline squeezers are fixed)"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit of the available hardware in Section 5, p.16.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "cvqbm-low-kl-fidelity",
+     "verdict": "confirmed",
+     "note": "The paper spells the divergence 'Kuller-Leibler' throughout; the quoted text keeps that spelling.",
+     "value": "",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "We obtained high fidelity and low Kuller-Leibler (KL) divergence showing that our CVQBM learns distributions from given data well"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "cvqbm-simulator-only",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 1, p.3; Section 5, p.16",
+     "quotes": [
+      "Even though experiments were conducted on a simulator, we discuss experimental feasibility of our simulations",
+      "We leave the experimental realization of our CVQBM model on photonic quantum hardware to future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state in the Introduction (p.3) and in Section 5 (p.16) that all experiments ran on a simulator.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "cvqbm-single-visible-mode-scope",
+     "value": "The authors state that they concentrate on a Hamiltonian that depends on a single visible qumode, and claim that extending the method to several qumodes is straightforward.",
+     "anchor": "Section 2, p.4",
+     "quotes": [
+      "Here, we concentrate on a Hamiltonian that depends on a single (visible) qumode of quadratures (qv, pv). Extension of our method to include multiple qumodes is straightforward."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of the model in Section 2, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Every experiment in the paper uses one visible mode and one hidden mode. The multi-mode extension is asserted and not tested."
+    },
+    {
+     "id_suggestion": "cvqbm-circuit-structure",
+     "value": "The authors state that the CVQBM uses a visible qumode and a hidden ancilla qumode, both initially in the vacuum state, entangled by a two-mode unitary, and that no further action is taken on the hidden mode.",
+     "anchor": "Section 2, p.4",
+     "quotes": [
+      "it uses an ancilla qumode of quadratures (qh, ph) representing a hidden mode. Both modes are initially in the vacuum state.",
+      "No further action is taken on the hidden mode."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own circuit in Section 2, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvqbm-nonunitary-step-ancilla-projection",
+     "value": "The authors state that each QITE step is a non-unitary gate made of Gaussian gates acting on the visible qumode and an ancilla qumode, and that the non-unitarity comes from a measurement that projects the ancilla onto the one-photon state.",
+     "anchor": "Section 2, p.6",
+     "quotes": [
+      "It consists of Gaussian gates only that act on the visible qumode and an",
+      "Non-unitarity is introduced by a measurement of the ancilla qumode, projecting it onto the state |nA = 1⟩A."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the step in Section 2, p.6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section 5, p.16 describes the post-selection as measuring 0 photons at each QITE step, while Section 2 projects onto one photon. The text does not reconcile the two."
+    },
+    {
+     "id_suggestion": "cvqbm-output-as-thermal-state",
+     "value": "The authors state that the visible-mode state after tracing out the hidden mode is a Hermitian operator, from which they define an effective Hamiltonian, so that the visible-mode output can be viewed as a thermal state.",
+     "anchor": "Section 2, Eqs. (10) and (11), p.7",
+     "quotes": [
+      "we can define an effective Hamiltonian Heff(ζ⃗) (a Hermitian operator) by",
+      "showing that the output state of the visible qumode in the CVQBM can be viewed as a thermal state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper gives a short argument and no formal theorem or conditions, so the statement is not graded as a proved result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The identification rests on the output operator being positive and of unit trace after normalization. The paper does not state a condition on the trained gate parameters under which this holds."
+    },
+    {
+     "id_suggestion": "cvqbm-simulation-platform",
+     "value": "The authors report that they simulated the CVQBM with the Strawberry Fields software platform, with TensorFlow features in the machine learning toolbox built on it.",
+     "anchor": "Section 2, p.7",
+     "quotes": [
+      "We simulated the CVQBM using the Strawberry Fields software platform [23].",
+      "with TensorFlow [24] features."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its simulation setup in Section 2, p.7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvqbm-training-objective-fidelity-cost",
+     "value": "The authors state that training maximizes the fidelity between a density matrix built from the target data and the density matrix of the circuit output, which is the same as minimizing the cost, which is one minus the fidelity, and that they used the Adam optimizer.",
+     "anchor": "Section 2, Eqs. (12) to (15), p.8",
+     "quotes": [
+      "Our goal was to maximize this fidelity, and hence minimize the cost:",
+      "To this end, we used the Adam Optimizer."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its training objective in Section 2, p.8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvqbm-fock-cutoff",
+     "value": "The authors state that the output distribution is an infinite sum over photon-number basis states, and that in practice they introduce a cutoff nmax in the dimension of the Hilbert space.",
+     "anchor": "Section 2, Eq. (17), p.8",
+     "quotes": [
+      "Although this is an infinite set of basis states, in practice we need to introduce a cutoff nmax in the dimension of the Hilbert space."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the truncation of its simulation in Section 2, p.8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvqbm-kl-definition",
+     "value": "The authors define the generated-versus-target comparison metric as the Kuller-Leibler divergence of the generated distribution from the target, and state that it takes values from 0 to infinity, with 0 when the two distributions are equal.",
+     "anchor": "Section 2, Eq. (18), p.8",
+     "quotes": [
+      "A metric to compare the target with a generated distribution is provided by the Kuller-Leibler (KL) divergence,",
+      "with the value of 0 when Pgen(q) = Ptarget(q)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the metric in Section 2, p.8.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvqbm-sar-preprocessing-targets-are-fits",
+     "value": "The authors report that for the SAR images they built a 256-bin intensity histogram, rescaled both axes for a CV computer, and made the distribution continuous with a Gaussian kernel density estimate from SciPy, because discrete data would need a higher cutoff in the simulation.",
+     "anchor": "Section 3, p.9 to p.10",
+     "quotes": [
+      "The histogram was divided into 256 bins (for each possible intensity value in an 8-bit grayscale image)",
+      "Because of the limitations of the simulation, it was hard to use the discrete data as this would require a higher cutoff value.",
+      "we used the gaussian kde from the SciPy library [26] of Python."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its data preparation in Section 3, p.9 to p.10.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The training target is a smoothed or fitted curve (Gaussian for the forest image, Weibull for the sea image) and not the raw pixel histogram. The reported fidelities and KL values measure closeness to that fitted target."
+    },
+    {
+     "id_suggestion": "cvqbm-forest-sar-result",
+     "value": "The authors report that for the forest SAR image from Acre, Brazil they set delta to 1.5, used 2 QITE steps, trained for 100 epochs with batch size 32 and cutoff 12, and obtained a best fidelity of 99.8%, a cost of 0.002 and a KL divergence of 0.006.",
+     "anchor": "Section 3, p.10; Fig. 3, p.9",
+     "quotes": [
+      "we set δ = 1.5.",
+      "The number of steps in this process was S = 2.",
+      "After training for 100 epochs with a batch size of 32 and a cutoff of nmax = 12, the best fidelity we obtained was 99.8%, corresponding to the cost value of 0.002.",
+      "has the KL divergence between the target and generated distribution is 0.006."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Section 5 and Table 3 give the forest fidelity as 99.7% at a success rate of 16.3%, against 99.8% here. The paper does not explain the difference. The result is a simulation without hardware noise."
+    },
+    {
+     "id_suggestion": "cvqbm-sea-ice-sar-result",
+     "value": "The authors report that for the Gulf of Bothnia sea ice SAR image, whose distribution was best fitted by a Weibull distribution with lambda 161.2 and k 5.4, they used 2 QITE steps, cutoff 15 and 150 epochs with batch size 32, and obtained a best fidelity of 98.9% and a KL divergence of 0.013.",
+     "anchor": "Section 3, p.11; Fig. 4, p.10",
+     "quotes": [
+      "the fitted Weibull distribution had λ = 161.2 and k = 5.4.",
+      "The number of steps used in this process was S = 2, with a cutoff dimension of nmax = 15.",
+      "After training for 150 epochs with a batch size of 32, the best fidelity we obtained was 98.9%.",
+      "We obtained KL divergence of 0.013."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Section 5 and Table 3 give the sea fidelity as 98.7% at a success rate of 27.2%, against 98.9% here."
+    },
+    {
+     "id_suggestion": "cvqbm-standard-distributions-shared-setup",
+     "value": "The authors state that for the Rayleigh, Gamma and ET-IB distributions they used the same Adam optimizer and learning schedule as before, with 2 QITE steps, cutoff dimension 15 and 100 epochs.",
+     "anchor": "Section 3, p.12",
+     "quotes": [
+      "The number of steps was S = 2, the cutoff dimension was nmax = 15, and the number of epochs was 100."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the training setup in Section 3, p.12.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvqbm-rayleigh-result",
+     "value": "The authors report that for a Rayleigh distribution with sigma 1 and delta 2.5 they obtained a fidelity of 96.1% after training and a KL divergence of 0.03.",
+     "anchor": "Section 3, p.12; Fig. 5a, p.11",
+     "quotes": [
+      "In Fig. 5a, we chose σ = 1 and obtained a fidelity of 96.1% after training and KL divergence of 0.03.",
+      "We set δ = 2.5 for an optimal entangled initial state (Eq. (1))."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Section 5 gives 96.2% for the same case, against 96.1% here."
+    },
+    {
+     "id_suggestion": "cvqbm-gamma-result",
+     "value": "The authors report that for a Gamma distribution with k 2.5 and theta 0.5 and delta 2.5 they obtained a fidelity of 98.1% after training and a KL divergence of 0.083.",
+     "anchor": "Section 3, p.12; Fig. 5b, p.11",
+     "quotes": [
+      "In Fig. 5b, we chose k = 2.5 and θ = 0.5 and obtained a fidelity of 98.1% after training and KL divergence of 0.083."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 1 labels the Gamma scale parameter as the Greek letter phi in its header, while the text uses theta."
+    },
+    {
+     "id_suggestion": "cvqbm-etib-result",
+     "value": "The authors report that for an ET-IB distribution with parameters 4.0, 5.0, 0.1 and 2.0 and delta 4.0 they obtained a fidelity of 91.4% after training and a KL divergence of 0.229.",
+     "anchor": "Section 3, p.12; Fig. 5c, p.11",
+     "quotes": [
+      "we chose the four parameters (α, β, λ, ϕ) = (4.0, 5.0, 0.1, 2.0), and obtained a fidelity of 91.4% after training, and KL divergence of 0.229.",
+      "We set δ = 4.0 for an optimal entangled initial state (Eq. (1))."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This is the lowest fidelity and the highest KL divergence of the four classical-data cases listed in the paper."
+    },
+    {
+     "id_suggestion": "cvqbm-realistic-parameters-not-reached",
+     "value": "The authors state that the parameters they used are similar to real-world values only for the Gamma distribution; the Rayleigh and ET-IB distributions at real-world parameters are steeper and need a higher cutoff dimension, and studying those applications would need high-performance computers, more efficient simulations, or an actual CV quantum computer, which is not currently available.",
+     "anchor": "Section 3, p.13",
+     "quotes": [
+      "However, this was not the case for Rayleigh and ET-IB distributions because they are steeper and require a higher cutoff dimension in simulations.",
+      "or an actual CV quantum computer which is not currently available."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit in Section 3, p.13.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The real-world applications named for the Rayleigh and ET-IB distributions (wind speed, SAR terrain types) were not reproduced at their real parameter values."
+    },
+    {
+     "id_suggestion": "cvqbm-computational-cost-grows",
+     "value": "The authors state that their model works with various probability distributions and requires an increasing amount of computational resources as the complexity of the distribution increases.",
+     "anchor": "Section 3, p.11",
+     "quotes": [
+      "Our model works with various probability distributions requiring an increasing amount of computational resources as their complexity increases."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement by the authors, with no scaling measurement in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper gives no resource counts (cutoff, steps, runtime) as a function of distribution complexity beyond the individual settings listed."
+    },
+    {
+     "id_suggestion": "cvqbm-quantum-gadget-fidelity-estimator",
+     "value": "The authors state that for quantum data a gadget with two control qumodes, beam splitters and a three-mode CSWAP gate gives measurement probabilities whose difference equals the squared overlap of the target and output states, which they use as the fidelity in the cost function, and that the CSWAP can be implemented with a non-Gaussian Kerr gate.",
+     "anchor": "Section 4, Eqs. (24) to (27), p.13 to p.14; Fig. 6, p.13",
+     "quotes": [
+      "which can be implemented with the aid of a non-Gaussian Kerr gate [30, 31].",
+      "which is the fidelity to be used in the definition of the cost function (15)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The relation is stated in the paper without a derivation or conditions in the quoted lines, and the equation lines could not be quoted exactly.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The Conclusion says the entire design uses Gaussian gates and photon-number-resolving measurements. The training gadget needs a non-Gaussian Kerr gate, so that statement holds for the trained circuit and not for the training of quantum-data cases."
+    },
+    {
+     "id_suggestion": "cvqbm-quantum-gaussian-result",
+     "value": "The authors report that for a Gaussian target state (vacuum squeezed by 1.73 dB and displaced by alpha 0.2, mean 0.083, standard deviation 0.145) a CVQBM with 1 QITE step and delta 1.5 reached a fidelity of 99.55%, giving a state with mean 0.083 and standard deviation 0.147, and a KL divergence of 0.002.",
+     "anchor": "Section 4, p.15 and p.14",
+     "quotes": [
+      "a squeezing of 1.73 dB and a displacement gate with a displacement of parameter α = 0.2.",
+      "The resulting Gaussian state had a mean of 0.083 and a standard deviation of 0.145.",
+      "Our trained CVQBM circuit attained a fidelity of 99.55% resulting in a Gaussian state with mean 0.083 and standard deviation 0.147.",
+      "KL divergence of 0.002 and 0.025 for the Gaussian and non-Gaussian (cat state) cases, respectively.",
+      "We trained the CVQBM circuit with 1 step of our QITE algorithm and an initial entanglement of δ = 1.5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Section 5 and Table 3 give a Gaussian-state fidelity of 95.0% at a success rate of 99.9%, against 99.55% here. The two are different operating points on the fidelity versus success-rate trade-off, but the paper does not say so for this case."
+    },
+    {
+     "id_suggestion": "cvqbm-quantum-cat-state-result",
+     "value": "The authors report that a target cat state made with an 8-layer CV QNN (displacement magnitude 1.2, squeezing 2.60 dB) reached a fidelity of 96.89%, and that their CVQBM, with Gaussian gates and an ancilla projective measurement, 3 QITE steps and delta 2.3, learned it with a fidelity of 98.22% and a KL divergence of 0.025.",
+     "anchor": "Section 4, p.15",
+     "quotes": [
+      "displacement magnitude of 1.2 and squeezing of 2.60 dB. It achieved this with a fidelity of 96.89%.",
+      "learned this non-Gaussian state with a fidelity of 98.22%, utilizing an architecture that contained Gaussian gates only",
+      "utilizing 3 steps of QITE and entangling parameter δ = 2.3.",
+      "KL divergence of 0.002 and 0.025 for the Gaussian and non-Gaussian (cat state) cases, respectively.",
+      "created using an 8layer CV QNN [16]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The CVQBM output is compared with a target that is itself only an approximation (96.89% fidelity to an ideal cat state), so 98.22% is fidelity to the approximate target and not to the ideal cat state."
+    },
+    {
+     "id_suggestion": "cvqbm-quantum-training-settings",
+     "value": "The authors report that the CV QNN target states used a cutoff dimension of 10 and the Nelder-Mead optimizer, and that both CVQBM quantum-data cases were trained with Adam, an initial learning rate of 0.04, 400 epochs and a cutoff of 10.",
+     "anchor": "Section 4, p.15",
+     "quotes": [
+      "The initial learning rate was 0.04 for both Gaussian and non-Gaussian data and both the Gaussian and the non-Gaussian states were trained for 400 epochs with a cutoff of 10."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the training setup in Section 4, p.15.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvqbm-gate-parameter-ranges-feasibility",
+     "value": "The authors state that they restricted the gate parameters during training to an experimentally attainable range, and conclude from a reported record squeezing of 15 dB that the squeezing parameters their use cases need are within experimental range.",
+     "anchor": "Section 5, p.15 to p.16; Table 2, p.16",
+     "quotes": [
+      "For experimental feasibility, we restricted the parameters of the gates during training within an experimentally attainable range with current technology.",
+      "One of the highest squeezing value (15 dB) was reported in Ref. [32].",
+      "the squeezing parameters required to realize the use cases studied in this paper are within experimental range."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim of feasibility, with no hardware demonstration.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Table 2 lists a trained squeeze range for the cat-state case of 6.05 to 15.41 dB, which exceeds the 15 dB the paper cites as one of the highest reported. The forest case range is 2.60 to 5.21 dB. The statement that all squeezing parameters are within range does not hold at the upper end of the cat-state range as the paper's own numbers read."
+    },
+    {
+     "id_suggestion": "cvqbm-success-probability-product",
+     "value": "The authors state that the circuit relies on non-deterministic post-selected ancilla measurements, so the overall success probability is the product of the per-step success probabilities, p1 p2 and so on up to pS, over the S steps of the QITE algorithm.",
+     "anchor": "Section 5, p.16",
+     "quotes": [
+      "Since we are post-selecting runs with a specific number of photons measured, the overall success probability is a product of success probabilities at each step of the QITE algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the success probability in Section 5, p.16.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvqbm-success-rate-fidelity-tradeoff-sar",
+     "value": "The authors report success probabilities of 16.3% (forest) and 27.2% (sea) at fidelities of 99.7% and 98.7%, and that success probability can be raised at the cost of fidelity, to 99.2% (forest) and 99.7% (sea) at fidelities of 95.1% and 94.6%.",
+     "anchor": "Section 5, p.16; Table 3, p.17",
+     "quotes": [
+      "we obtained a success probability of 16.3% (27.2%) with fidelity 99.7% (98.7%) for the forest (sea) SAR images.",
+      "It is possible to increase success probability at the expense of fidelity.",
+      "we obtained a success probability of 99.2% (99.7) with a fidelity of 95.1% (94.6%)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "At the settings that give the highest fidelity, only about one run in six (forest) or about one in four (sea) passes the post-selection, so sampling cost per accepted run rises accordingly."
+    },
+    {
+     "id_suggestion": "cvqbm-success-rates-other-distributions",
+     "value": "The authors report fidelities of 96.2%, 98.1% and 91.4% at success rates of 50.5%, 1.6% and 49% for the Rayleigh, Gamma and ET-IB distributions, and fidelities of 95.0% and 98.2% at success rates of 99.9% and 21.3% for the Gaussian and non-Gaussian quantum states.",
+     "anchor": "Section 5, p.16; Table 3, p.17",
+     "quotes": [
+      "we achieved fidelity of 96.2%, 98.1%, and 91.4% at a success rate of 50.5%, 1.6%, and 49%, respectively.",
+      "we were able to train models with fidelity of 95.0% (98.2%) at a success rate of 99.9% (21.3%) for Gaussian (non-Gaussian) states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Gamma case reaches 98.1% fidelity at a success rate of only 1.6%, so most runs would be discarded."
+    },
+    {
+     "id_suggestion": "cvqbm-loss-channel-noise-result",
+     "value": "The authors report that with the simple loss channel from Strawberry Fields on the circuit qumodes, with 5 runs per loss parameter T, the best fidelity was at T = 1 (99.7% forest, 98.2% cat state), fidelity fell as T decreased, no training occurred at T = 0, and the change was about 5% per 10% decrease in the loss parameter and around 30% at 90% loss.",
+     "anchor": "Section 5, p.16 to p.18; Fig. 8, p.17",
+     "quotes": [
+      "We chose the simple noise model, loss channel, available in Strawberry Fields.",
+      "Each loss parameter run was done 5 times.",
+      "we obtained the best fidelity for forest (cat) 99.7% (98.2%) when T = 1, corresponding to no loss.",
+      "Eventually, at T = 0, no training occurs.",
+      "With every 10% decrease in the loss, the fidelity changes by around 5%. At 90% loss in the channel, the fidelity change is around 30%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study, with 5 runs per setting.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Only photon loss was modeled, on one classical case and one quantum case. The paper does not model squeezer imperfection, detector inefficiency or dark counts."
+    },
+    {
+     "id_suggestion": "cvqbm-loss-kl-trend",
+     "value": "The authors report that the KL divergence decreases as the loss parameter T approaches 1, that the difference between the classical and quantum cases is small, and that up to 40% loss the quantum case performs better while with more loss the classical case is slightly better.",
+     "anchor": "Section 5, p.18; Fig. 9, p.18",
+     "quotes": [
+      "Hence, the KL divergence decreases as T → 1.",
+      "The difference between the classical and quantum cases is small.",
+      "up to 40% loss, our CVQBM performs better the quantum case, but with more loss, the performance in the classical case is slightly better."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study, with 5 runs per point.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvqbm-photon-loss-mitigation-future",
+     "value": "The authors state that they leave the study of photon loss mitigation strategies to future work, after citing a classical post-processing technique reported to outperform post-selection and zero-noise extrapolation.",
+     "anchor": "Section 5, p.18",
+     "quotes": [
+      "We leave study of photon loss mitigation strategies as a future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit in Section 5, p.18.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvqbm-first-demonstration-claim",
+     "value": "The authors claim that, to the best of their knowledge, this is the first demonstration of generating continuous probability distributions of various real-world applications with a CV quantum generative model.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "To the best of our knowledge, this is the first demonstration of generation of various real-world applications’ continuous probability distributions using a CV quantum generative model."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author priority claim, not checked by the paper against a literature survey.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The demonstration is a simulation, and the real-world data is a fitted SAR intensity curve."
+    },
+    {
+     "id_suggestion": "cvqbm-efficiency-and-power-claims",
+     "value": "The authors claim in the Abstract that their CVQBM generates data sampling from the learned distribution efficiently and that it is a powerful energy-based neural network.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "generates data sampling from that distribution efficiently"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper reports no timing, sample-complexity or baseline comparison.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper compares no classical Boltzmann machine or other generative model, so 'powerful' and 'efficiently' have no baseline in the reported results. The post-selection success rates in Table 3 (as low as 1.6%) bear on efficiency."
+    },
+    {
+     "id_suggestion": "cvqbm-cited-expressive-power-qbm",
+     "value": "The authors state, citing prior work, that quantum Boltzmann machines have higher expressive power than their classical counterparts because the Hamiltonian can include more non-commuting terms, and that quantum Boltzmann machines do not possess barren plateaus.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "One of the advantages of QBMs over their classical counterparts is that QBMs have higher expressive power",
+      "It was shown that QBMs do not possess barren plateaus"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (its references 2 and 9 context).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The barren-plateau result is attributed to a sample-complexity study of discrete-variable QBMs. This paper does not show it for its own CV model."
+    },
+    {
+     "id_suggestion": "cvqbm-gaussian-gates-only-conclusion-claim",
+     "value": "The authors state in the Conclusion that they implemented the entire CVQBM design using Gaussian gates and photon number resolving measurements, making it experimentally realizable.",
+     "anchor": "Section 6, p.18 to p.19",
+     "quotes": [
+      "We implemented the entire CVQBM design using Gaussian gates and photon number resolving measurements, making it experimentally realizable."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim of feasibility, with no hardware demonstration.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Section 5 states that available photonic hardware (the Xanadu X-series) cannot run the model, and Section 4's training gadget uses a Kerr gate."
+    },
+    {
+     "id_suggestion": "cvqbm-future-directions-anomaly-detection",
+     "value": "The authors state that the CVQBM can also be used for anomaly detection, classification and variational inference, and that work in this direction is in progress. No such task is run in this paper.",
+     "anchor": "Section 6, p.19",
+     "quotes": [
+      "However, our proposed CVQBM can also be further utilized for anomaly detection [40] and classification tasks",
+      "Work in this direction is in progress."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim with no evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
