@@ -1,0 +1,1220 @@
+{
+ "papers": [
+  {
+   "record_id": "bettaque-2024-nora-tensor-network-ansatz-volume",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Bettaque-Swingle_2023_NoRA-A-Tensor-Network-Ansatz-for-Volume-Law-Entangled-Equilibrium__2303.16946.pdf",
+   "title_in_file": "NoRA: A Tensor Network Ansatz for Volume-Law Entangled Equilibrium States of Highly Connected Hamiltonians",
+   "version_note": "arXiv:2303.16946v5, 20 May 2024; the Quantum published version (accepted 2024-04-08). The text layer matches the record.",
+   "pages": 34,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory and numerics paper that proposes a non-local layered tensor network (NoRA) for volume-law ground spaces of all-to-all models such as SYK, and studies it as a random-Clifford stabilizer code.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "nora-code-family-rate-distance",
+     "verdict": "narrowed",
+     "note": "The abstract claim is stated without a proof. The numerical support is approximate: the Section 4.2.1 and Figure 11 text says the trend 'might coincide' with the quantum singleton bound limit and that more data is needed to prove it, and the distances come from Monte Carlo sampling that gives only an upper bound. The Section 4.3 summary is stronger ('we verified'). Linear distance is also tied to the layer depth being large enough in Section 5.1 and 5.3.",
+     "value": "The authors state that the SYK-inspired code family can be chosen to have constant rate and linear distance at the cost of some high weight stabilizers. They describe the numerical trend toward a constant relative distance as only approximate and state that more data is needed to prove it.",
+     "anchor": "Abstract, p.1; Figure 11 caption, p.13; Section 4.2.1, p.13",
+     "quotes": [
+      "We introduce a family of codes inspired by the SYK model which can be chosen to have constant rate and linear distance at the cost of some high weight stabilizers.",
+      "we can see that both trends might coincide in that very limit, or at least come close.",
+      "However more data is needed to be able to prove this."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim, supported by approximate numerics; the paper says more data is needed to prove it.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The distance is estimated by random sampling of regions, which the paper says gives only an upper bound, so the numerical support does not by itself establish a linear lower bound."
+    },
+    {
+     "id": "nora-not-efficiently-contractible",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that, without additional structure, the networks cannot be efficiently contracted on a classical computer.",
+     "anchor": "Section 1, Introduction, p.2; Section 6.3, p.18",
+     "quotes": [
+      "However, without the imposition of additional structure it is not possible to efficiently contract these networks on a classical computer.",
+      "Then, because the network is not efficiently contractible in general on a classical computer, it is interesting to pursue a quantum simulation strategy where we treat our"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this as a limit of the architecture in Section 1 and again in Section 6.3.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "nora-syk-study-deferred",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors argue the architecture is potentially expressive enough to capture the entanglement and complexity of the SYK ground space, and state that a detailed study of SYK is left to future work.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "We argue that the architecture is potentially expressive enough to capture the entanglement and complexity of the ground space of the SYK model, thus making it a suitable variational ansatz, but we leave a detailed study of SYK to future work."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "nora-architecture-definition",
+     "value": "The authors define the NoRA network as layers of quantum circuits in which each layer acts on the qudits output by the previous layer together with additional new ancillary thermal qudits initialized in the |0⟩ state, and state that the layer circuits do not have to respect locality.",
+     "anchor": "Figure 1 caption, Section 2.1, p.3",
+     "quotes": [
+      "For each layer 1 ≤ ℓ ≤ L the circuit Dℓ acts on the nℓ−1 qudit output from the previous layer and an additional ∆nℓ new ancillary “thermal” qudits initialized in state |0⟩.",
+      "We stress that the layer circuits Dℓ do not have to respect locality structure depicted by the 1d arrangement of qudit lines."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own architecture in the Figure 1 caption.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-nonlocal-generalization-of-mera",
+     "value": "The authors state that the networks they consider can be viewed as generalizations of MERA, DMERA and branching MERA networks in which the requirement of spatial locality is removed.",
+     "anchor": "Section 1, Introduction, p.1",
+     "quotes": [
+      "The networks we consider can be viewed as generalizations of MERA, DMERA, and branching MERA networks where the requirement of spatial locality is removed"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The authors state how they define the architecture relative to MERA variants.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-scaling-specialization-scope",
+     "value": "The authors state that they primarily consider a scaling case in which the number of thermal qudits increases exponentially with each layer up from the bottom, and that they primarily consider the growth rate r = 2.",
+     "anchor": "Section 2.2, p.3",
+     "quotes": [
+      "we will primarily consider the special case where nℓ ∼ k + rℓ, so that the number of thermal qudits is increasing exponentially with each layer up from the bottom.",
+      "For the case of r = 2, which we primarily consider"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of their main case in Section 2.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-volume-law-potential",
+     "value": "The authors state that the circuit has a number of non-trivial bonds that grows linearly with the system size, with as many bonds as there are qudits connecting to the same constant-depth circuit in the last layer, and that it is therefore straightforward to establish that the network has the potential to encode volume law entanglement for sub-regions of a typical UV state.",
+     "anchor": "Section 2.3, p.4",
+     "quotes": [
+      "There are O(N ) nontrivial bonds in the circuit, of which N bonds connect to the same constant-depth circuit in the last layer.",
+      "It is therefore straightforward to establish that the network has the potential to encode volume law entanglement for sub-regions of a “typical” UV state."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors assert this from a bond-counting argument; the explicit demonstration is the Clifford numerics.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-complexity-gate-count-estimate",
+     "value": "The authors state that they take the number of gates in the network as an estimate of the circuit complexity of the UV state, although in general this is only an upper bound.",
+     "anchor": "Section 2.3, p.4",
+     "quotes": [
+      "we take the number of gates in the network as an estimate of the circuit complexity of the UV state, although in general this is only an upper bound."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The authors define their complexity measure and state its limit in Section 2.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-toy-hamiltonian-definition",
+     "value": "The authors introduce a toy Hamiltonian for which the network is an exact ground state for any choice of state on the k ground state qudits, so that the toy Hamiltonian has an exactly degenerate ground space.",
+     "anchor": "Section 2.4, p.4",
+     "quotes": [
+      "The idea is to introduce a toy Hamiltonian for which the above network is an exact ground state for any choice of state on the k ground state qudits.",
+      "In other words, the toy Hamiltonian has an exactly degenerate ground space."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The toy Hamiltonian is defined by the construction in Section 2.4 and Appendix A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-toy-hamiltonian-nonlocal",
+     "value": "The authors state that the toy Hamiltonian, like the circuit it encodes, is highly non-local and not necessarily few-body, which limits the potential for physical interpretation.",
+     "anchor": "Section 2.4, p.4",
+     "quotes": [
+      "Note that – just like the circuit it encodes – this Hamiltonian is highly non-local and not necessarily few-body, thus limiting the potential for physical interpretation."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of the toy Hamiltonian in Section 2.4.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-power-law-entropy-numerical",
+     "value": "The authors report, for L = 20, r = 2, k = 1, d = 2, Λ = 1 and γ = 0.4, that the exact Gibbs entropy of the toy Hamiltonian and its low-temperature approximation match almost exactly at small T/Λ, with a fitted log-log slope of 1.7304 ± 0.0004 for the exact entropy, and they take this as confirming a scaling law.",
+     "anchor": "Figure 2 and caption, Section 2.4, p.5",
+     "quotes": [
+      "Logarithmic scaling of the exact Gibbs entropy Sstab associated to H, and the low-temperature approximation Sapprox for L = 20, r = 2, k = 1, d = 2, Λ = 1 and γ = 0.4.",
+      "log(Sstab) ∝ (1.7304 ± 0.0004) log(T /Λ)",
+      "Both match almost exactly for our choice of parameters and small T /Λ, confirming the existence of a scaling law."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical (numerical) result for one parameter set; it is not proved here.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The predicted exponent is log(2) divided by 0.4, about 1.733; the fitted slope 1.7304 agrees with that to within about 0.2 percent."
+    },
+    {
+     "id_suggestion": "nora-power-law-entropy-derivation",
+     "value": "The authors state that, for an appropriate choice of parameters, the toy model can exhibit a power-law temperature dependence of the thermodynamic entropy and therefore the heat capacity, and in the low-temperature limit they derive an upper bound on the continuum entropy that scales with (βΛ)−α/γ = (T /Λ)α/γ (the exponent printed flat in the text layer).",
+     "anchor": "Section 1, p.2; Appendix A.3.2 equation 69, p.27",
+     "quotes": [
+      "For an appropriate choice of parameters this model can exhibit a power-law temperature dependence of the thermodynamic entropy (and therefore the heat capacity).",
+      "which only scales with (βΛ)−α/γ = (T /Λ)α/γ, indicating that the entropy could indeed follow a power law, at least for certain low-temperature regimes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation that rests on an approximation (a continuum limit and an incomplete-gamma upper bound); the authors write 'could indeed'.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The exponent printed flat in the text layer is the ratio α/γ, where α = log(r) in the specialised case; a heat capacity linear in T needs that ratio to be 1."
+    },
+    {
+     "id_suggestion": "nora-entropy-fit-other-gamma",
+     "value": "The authors report that the exact stabilizer entropy and its continuous approximation agree closely for small γ at low temperature, and less well for larger γ, but that each plotted case has at least a regime in which its growth follows a polynomial trend that aligns with their theoretical predictions up to a total constant factor.",
+     "anchor": "Figure 14 caption, Appendix A.3.2, p.28",
+     "quotes": [
+      "In the first two figures it can be seen that our continuous approximation from (68) matches almost exactly with the discrete stabilizer entropy for γ ≪ 1 and small T /Λ.",
+      "Still, each figure has at least a regime where its growth is either exactly polynomial or follows a polynomial trend that aligns with our theoretical predictions up to a total constant factor."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical comparison for four values of γ in one setup.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The caption lists γ values 0.1, 0.4, 1 and 3 but the text refers to 'γ = 2' and 'γ ≥ 0', which is inconsistent."
+    },
+    {
+     "id_suggestion": "nora-stabilizer-entropy-decouples",
+     "value": "The authors state that, ignoring the leading term, the total entropy of the Gibbs ensemble of the stabilizer Hamiltonian decouples into a sum of entropies associated with each energy level and so with each element of the stabilizer basis.",
+     "anchor": "Appendix A.2, p.25",
+     "quotes": [
+      "Ignoring that leading term, the total entropy of the Gibbs ensemble therefore decouples into a sum of entropies associated with each energy level Ji and therefore each element of the stabilizer basis (40)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation by the authors in Appendix A; the full expressions are garbled in the text layer, so the statement is quoted without its equation.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-clifford-code-interpretation",
+     "value": "The authors state that if the circuits are composed of Clifford gates, the network can be interpreted as an encoding circuit for a stabilizer quantum error correcting code, with the ground state qudits as the logical qudits.",
+     "anchor": "Section 3, p.6",
+     "quotes": [
+      "If the circuits in Figure 1 are composed of Clifford gates, then the network can be interpreted as an encoding circuit for a stabilizer quantum error correcting code [41]. The ground state qudits then correspond to the logical qudits of the code."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors state their setup for the Clifford model in Section 3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-clifford-focus-reason",
+     "value": "The authors state that they focus on the Clifford model in this paper as an example in which the network properties can be classically simulated, and that they would like to use the network as a variational ansatz for physical mean-field models.",
+     "anchor": "Section 3, p.6",
+     "quotes": [
+      "We would also like to use the network as a variational ansatz to study physical mean-field models, but for the reasons outlined in the introduction, in this paper we focus on the Clifford model as an example where we can also classically simulate the network properties."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of the paper in Section 3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-clifford-design-cited",
+     "value": "The authors state, citing other work, that the Clifford group forms a k-design of the Haar measure, with k = 1 for all qudit dimensions d, k = 2 for all d that are powers of primes, and k = 3 when said base prime is 2.",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "group is useful because it forms a k-design of the Haar measure of random unitaries.",
+      "k = 1 for all possible qudit dimensions d, k = 2 for all d that are powers of primes, and k = 3 when said base prime is 2."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (references 53 and 54).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-random-layer-definition",
+     "value": "The authors define each layer circuit by applying randomly sampled Clifford gates to randomly chosen non-intersecting sets of q qudits in each sublayer of the layer circuit, and state that this can be heuristically interpreted as a Trotterization of the SYK Hamiltonian with qudits instead of Majorana fermions.",
+     "anchor": "Section 3.2, p.6",
+     "quotes": [
+      "Inspired by SYK, our approach is to apply nℓ/q randomly sampled Clifford gates",
+      "to randomly chosen non-intersecting sets of q qudits for each sublayer 1 ≤ m ≤ D of the total layer circuit.",
+      "Heuristically, this ansatz can be interpreted as a Trotterization of the SYK Hamiltonian, although with qudits instead of Majorana fermions"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The authors define their random layer model in Section 3.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-code-distance-definition",
+     "value": "The authors define the code distance δ as the biggest integer such that all regions A of size |A| < δ have I(A, R) = 0, where I is the mutual information with a reference R that is maximally entangled with the code space.",
+     "anchor": "Figure 4 caption, Section 3.3.1, p.7",
+     "quotes": [
+      "The code distance δ is the biggest integer such that all regions A of size |A| < δ have I(A, R) = 0."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The authors define the distance measure they use in Section 3.3.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-distance-upper-bound-method",
+     "value": "The authors state that the Monte Carlo method they use to find the code distance, by randomly sampling regions A, gives only an upper bound approximation for the code distance.",
+     "anchor": "Section 3.3.1, p.8",
+     "quotes": [
+      "A way to simplify the procedure at the cost of only getting an upper bound approximation for the code distance is by randomly sampling choices for A and determining the largest one which has vanishing mutual information.",
+      "This Monte Carlo approach is the method we use."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of their distance estimates in Section 3.3.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-stabilizer-weight-definition",
+     "value": "The authors define the weight of a Pauli string as the number of elements in the tensor product that are not proportional to the identity operator, and call a code constant weight if the stabilizer group has a generating set containing only Pauli strings of bounded weight.",
+     "anchor": "Section 3.3.2, p.8",
+     "quotes": [
+      "The weight of a Pauli string is defined as the number of elements of Pd(1) in the tensor product representation of the operator that are not proportional to the identity operator I.",
+      "If the stabilizer group has a generating set containing only Pauli strings of bounded weight, then we say the code has constant weight."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The authors define stabilizer weight and constant weight in Section 3.3.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-numerical-scope-nonexhaustive",
+     "value": "The authors present a numerical analysis of the NoRA network using the Clifford stabilizer formalism, and describe it as non-exhaustive.",
+     "anchor": "Section 4, p.8",
+     "quotes": [
+      "We now present a (non-exhaustive) numerical analysis of the NoRA tensor network using the Clifford stabilizer formalism discussed previously."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of their numerics in Section 4.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-numerical-setup",
+     "value": "The authors state that the numerical simulation was written in Python with Numpy and Galois, that the random-symplectic sampling algorithm was generalized to any qudit dimension that is a power of an odd prime, that random sampling results are averages of 1000 samples with the error on the mean, and that they generally chose qudit dimension d = 3, growth rate r = 2 and q = 2.",
+     "anchor": "Section 4, p.8",
+     "quotes": [
+      "The stabilizer simulation used to generate the following data was written in Python 3.10.4 using Numpy 1.21.6 (linear algebra) [56] and Galois 0.1.1 (finite field arithmetic) [57]",
+      "but was generalized to work for any choice of qudit dimension d that is a power of an odd prime.",
+      "an average of 1000 samples is displayed together with the error on the mean",
+      "In general we also chose a qudit dimension of d = 3, a growth rate of r = 2 per layer, and a (naive) layer circuit growth rate of q = 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors state their own simulation setup in Section 4.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-code-availability",
+     "value": "The authors state that the complete code can be found at https://github.com/vbettaque/qstab and that the datasets can be shared upon request.",
+     "anchor": "Section 4, p.8",
+     "quotes": [
+      "The complete code can be found at https://github.com/vbettaque/qstab.",
+      "can be shared upon request."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors state where the code is held and the terms for the data.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-fixed-ground-space-rate",
+     "value": "The authors state that when the ground space size is fixed, the rate k/N of the code approaches zero exponentially fast with the total layer number.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "In such cases, the rate k/N of the code approaches zero exponentially fast with the total layer number."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state this property of the fixed-k case as part of the setup of Section 4.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-entropy-volume-law-numerical",
+     "value": "The authors report, for k = 2 and L = 6, that the average entanglement entropy of a NoRA-prepared stabilizer state scales with the subregion size |A| for D > 1, up to N/2 = 33 for larger D, forms a symmetric Page curve, and fails to scale linearly with |A| at all for D = 1.",
+     "anchor": "Section 4.1.1 and Figure 5, p.9",
+     "quotes": [
+      "Figure 5 depicts (approximately) that behavior for k = 2, L = 6 and D > 1.",
+      "The case of D = 1 is also shown, but the corresponding average entropy fails to scale linearly with |A| at all.",
+      "bigger subregions (up to a size of N/2 = 33) also exhibit a volume scaling when D is larger."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result for one parameter set, averaged over random circuits.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-distance-saturation-depth",
+     "value": "The authors report, for a fixed ground space with k = 2 and L = 7, that the average code distance saturates near δmax = 64.43 ± 0.09 for circuit depth D = 3, with larger depths giving little to no improvement, and that this maximum average distance is still several standard deviations below the quantum singleton bound.",
+     "anchor": "Section 4.1.2 and Figure 6 (the axis shows δqsb = 65), p.9",
+     "quotes": [
+      "of the NoRA network with a fixed ground space (k = 2, L = 7).",
+      "the average distance is already close to its saturated maximum of δmax = 64.43 ± 0.09 if the layer circuits have a depth of D = 3.",
+      "However, the maximum average distance is still several standard deviations less than the theoretical maximum provided by the quantum singleton bound"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study and one parameter set.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The distance is a Monte Carlo upper bound according to Section 3.3.1, so the value 64.43 is an upper-bound estimate of the average distance."
+    },
+    {
+     "id_suggestion": "nora-weight-growth-factor-heuristic",
+     "value": "The authors state that, as shown in Appendix B, the weight of an operator string increases on average by a factor of g raised to the power Dsat when subjected to a single q-local Clifford of depth Dsat, with g approximately q · (d squared − 1)/(d squared), and that they expect the distance of a typical stabilizer code to scale like its operator weight.",
+     "anchor": "Section 4.1.2, p.9; Appendix B, p.28",
+     "quotes": [
+      "the weight of an operator string increases on average by a factor of gDsat (where g ≈ q · (d2 − 1)/d2 only depends strongly on d and q) when subjected to a single q-local Clifford with depth Dsat.",
+      "And since the distance of a typical stabilizer code is expected to scale like its operator"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A heuristic estimate by the authors, derived in Appendix B for the case in which the initial weight is far below the string length.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-dsat-estimate",
+     "value": "The authors estimate the saturation depth as Dsat ≈ 1.2 for d = 3 and q = r = 2, which they round up to 2, the observed lower bound for the occurrence of volume-law scaling, and they argue that Dsat does not depend strongly on the number of layers.",
+     "anchor": "Section 4.1.2, p.10",
+     "quotes": [
+      "For d = 3 and q = r = 2 this gives Dsat ≈ 1.2 which rounds up to 2, the observed lower bound for the occurrence of volume-law scaling.",
+      "which does not depend strongly on L (or ℓ)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A heuristic estimate that the authors compare with their own simulations.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The base-g logarithm of 2 with g = 16/9 is about 1.2, which agrees with the quoted figure."
+    },
+    {
+     "id_suggestion": "nora-quantum-singleton-bound",
+     "value": "The authors state that the maximum code distance is assumed if the quantum singleton bound N −k ≥ 2(δ−1) becomes an equality.",
+     "anchor": "Section 4.1.2, p.10",
+     "quotes": [
+      "This maximum is assumed if the quantum singleton bound N −k ≥ 2(δ−1) becomes an equality."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A background statement that the paper does not prove or cite at this point.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-distance-approach-singleton",
+     "value": "The authors report, with D = 4, that the average relative code distance trends are only approximate but suggest approximate convergence of the relative distance toward the relative quantum singleton bound of 0.5 for larger N.",
+     "anchor": "Figure 7 caption, Section 4.1.2, p.10",
+     "quotes": [
+      "and its inverse 1/N , with D = 4.",
+      "Even though the depicted data trends are only approximate, they do suggest approximate convergence of the relative distance towards the (relative) quantum singleton bound δqsb/N = 0.5 for larger N"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical, approximate trend from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-steady-state-distance",
+     "value": "The authors state that the system is expected to reach a steady state after a certain number of layers, that this equilibrium does not necessarily have to coincide with the quantum singleton bound, and that they expect it to do so for unreasonably large scrambling rates.",
+     "anchor": "Section 4.1.2, p.10",
+     "quotes": [
+      "Depending on the choice of parameters, this equilibrium does not necessarily have to coincide with δqsb.",
+      "However, we expect this to be the case for unreasonably large scrambling rates"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own expectation, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-distance-computing-cost",
+     "value": "The authors state that the computing time scales exponentially with N and therefore double-exponentially with L, which makes it more difficult to gather data for larger system sizes.",
+     "anchor": "Section 4.1.2, p.10",
+     "quotes": [
+      "However the computing time scales exponentially with N and therefore double-exponentially with L, making it more difficult to gather data for larger system sizes."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of their numerics in Section 4.1.2.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-distance-vs-logical-qudits",
+     "value": "The authors report, with L = 6 and D = 3, that the code distance decreases approximately linearly with the number of logical qudits k, with a fitted line δ ≈ -0.12 k + 30.83, and take this as indicative of volume-law entanglement.",
+     "anchor": "Figure 8 and caption, Section 4.1.2, p.11",
+     "quotes": [
+      "keeping the number of layers fixed to be L = 6 with circuit depth D = 3.",
+      "δ ≈ -0.12 k + 30.83",
+      "The approximately linear decrease of the distance is indicative of the tensor network being able to create volume-law entanglement."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study and one parameter set.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-weight-equilibrium",
+     "value": "The authors report, for k = 2, that for all circuit depths D > 1 the relative difference between the weight of a single Pauli string and its expected maximum reaches an equilibrium, converging faster and to smaller differences for larger depths, and that the relative weight depends strongly only on d, q and r, not on L.",
+     "anchor": "Section 4.1.3 and Figure 9, p.11 and p.12",
+     "quotes": [
+      "What can be seen is that for all choices of D > 1 the weight differences reach an equilibrium",
+      "Already for a circuit depth of D = 2 does the relative difference seemingly converge towards a constant value, with larger depths resulting in even faster convergence and smaller differences.",
+      "This shows that the relative weight (and therefore the ideal circuit depth to maximize the code distance) does only depend strongly on d, q and r, not L."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with k = 2.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-stabilizer-weight-multimodal",
+     "value": "The authors predict that the stabilizer weights of a NoRA circuit obey a multimodal distribution with dominant peaks around both 1 and the saturation weight of the last layer, and report that this is approximately the case in the example of Figure 10, with more basis weights approaching saturation as the circuit depth D increases.",
+     "anchor": "Section 4.1.3 and Figure 10, p.11 and p.12",
+     "quotes": [
+      "we predict the stabilizer weights of a NoRA circuit to obey a multimodal distribution with dominant peaks around both 1 and wLsat.",
+      "This is indeed approximately the case as seen from the specific example depicted in figure 10.",
+      "It also shows that with increased circuit depth D more and more basis weights approach saturation, as expected."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result for one example (six layers, depths one to three).",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-weight-depth-one-fails",
+     "value": "The authors report that for D = 1 all stabilizers fail to come anywhere close to maximum weight.",
+     "anchor": "Section 4.1.3, p.11 and Figure 10, p.12",
+     "quotes": [
+      "Note though that for D = 1 all stabilizers fail to come anywhere close to maximum weight."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-weight-phase-transition-suggested",
+     "value": "The authors suggest that a phase transition should occur in the relative stabilizer weight distribution, and hence the distance, when going from the regime of gD < r to gD > r at large L, and state that the relative weights for D = 1 being comparatively small indicates that this transition does take place.",
+     "anchor": "Section 4.1.3, p.11 and p.12",
+     "quotes": [
+      "we suggest that some sort of phase transition should occur in the relative stabilizer weight distribution (and hence distance) when",
+      "going from the regime of gD < r to gD > r, and considering large L.",
+      "And since the relative weights for D = 1 are comparatively small, this indicates that this transition does indeed take place."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own suggestion; they state they intend to explore it in more detail in the future.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-d3-best-tradeoff",
+     "value": "The authors conclude that the stabilizer bases with the lowest weights and highest distances are achieved with layer circuit depth D = 3, and state that the relative number of high-weight stabilizers is significant.",
+     "anchor": "Section 4.1.3, p.12",
+     "quotes": [
+      "we can therefore conclude that the stabilizer bases with the lowest weights",
+      "and highest distances are achieved when choosing D = 3 as the layer circuit depth.",
+      "Either way, the relative number of high-weight stabilizers is significant"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical conclusion from one study with a small number of depths.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-ground-space-scaling-setup",
+     "value": "The authors define the ground-space scaling model with k equal to r to the power a and L = a + b for two integers a and b, state that the ratio of ground state qudits to total qudits is then independent of a, and so treat the limit a → ∞ as a thermodynamic limit with N and k diverging at a fixed finite ratio.",
+     "anchor": "Section 4.2, p.12 and p.13",
+     "quotes": [
+      "So consider as a simple model the case where k = ra and L = a + b for two integers a and b.",
+      "which is independent of a.",
+      "The limit a → ∞ can thus be viewed as a thermodynamic limit in which N and k diverge but with a fixed finite ratio."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors define their scaling model in Section 4.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-scaling-examples-parameters",
+     "value": "The authors state that for the ground-space scaling examples they also assume D = 3 and b = 1.",
+     "anchor": "Section 4.2, p.13",
+     "quotes": [
+      "we also assume D = 3 and b = 1 for the following examples."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors state the parameters of their examples in Section 4.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-singleton-relative-bound-third",
+     "value": "The authors state that the quantum singleton bound gives a relative distance that approaches the fixed value 1/3 for large system sizes when b = 1 and r = 2.",
+     "anchor": "Section 4.2.1, p.13",
+     "quotes": [
+      "For large system sizes the relative distance therefore approaches the fixed value of 1/3 for b = 1 (and r = 2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A consequence of the quantum singleton bound, which the paper states without proof.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-scaling-distance-numerics",
+     "value": "The authors report that the numerical average relative code distance with ground space scaling shows a trend that might coincide with the quantum singleton bound limit of 1/3 as N → ∞, state that more data is needed to prove this, and state that better relative distances can only be achieved by increasing b at the cost of reducing the rate.",
+     "anchor": "Section 4.2.1 and Figure 11 caption, p.13",
+     "quotes": [
+      "we can see that both trends might coincide in that very limit, or at least come close.",
+      "could coincide in the limit of N → ∞ (a → ∞), where we have δ/N = 1/3.",
+      "However more data is needed to be able to prove this.",
+      "Overall, better relative distances can only be achieved by increasing b at the cost of reducing the rate."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical and approximate result; the authors say more data is needed to prove it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-scaling-weights-similar",
+     "value": "The authors report that the stabilizer weight distributions for the ground-space scaling model do not differ significantly from the fixed ground space case, and attribute the similarity to self-similarity of the ansatz.",
+     "anchor": "Section 4.2.2 and Figure 12, p.13 and p.14",
+     "quotes": [
+      "As seen in figure 12 the weight distributions for the SYK-like NoRA model don’t differ significantly from the case of a fixed ground space.",
+      "That both cases nevertheless produce similar figures is due to the fact that our tensor network ansatz exhibits self-similarity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation with the authors' own explanation, which is not tested separately.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-scaling-open-items",
+     "value": "The authors state that it remains to be shown that the weight trend occurs for different choices of g and r and continues for larger a and b, and that they intend to explore the phase transition for large L in future work.",
+     "anchor": "Section 4.2.2, p.13 and p.14",
+     "quotes": [
+      "It remains to be shown that this trend occurs for different choices of g and r and continues as expected for larger a and b."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this open item in Section 4.2.2.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-numerics-summary",
+     "value": "The authors state that through numerical simulations they verified that the stabilizer codes from random Clifford layers can have volumelaw entanglement and a relative distance approaching a non-zero constant as N → ∞, and that the architecture can produce a family of codes with non-vanishing relative distance and rate at the cost of having some high weight stabilizers.",
+     "anchor": "Section 4.3, p.13 and p.14",
+     "quotes": [
+      "we verified that the stabilizer codes obtained from the random Clifford layers indeed can have volumelaw entanglement",
+      "and relative distance approaching a non-zero constant in the thermodynamic limit N → ∞.",
+      "Our architecture with random layers is therefor capable of producing a family of codes indexed by N with non-vanishing relative distance and rate at the cost of having some high weight stabilizers"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' summary of their numerical results.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The summary says 'verified', while Section 4.2.1 and the Figure 11 caption say more data is needed to prove the convergence; the paper also gives no direct comparison with a fully random code, although the summary says the high weight stabilizers are significantly fewer than in such a code."
+    },
+    {
+     "id_suggestion": "nora-good-code-claim-not-ldpc",
+     "value": "The authors state that they find the network can produce good quantum codes, meaning code families where the distance and the number of logical qudits are both proportional to the number of physical qudits, but that these codes are not LDPC codes since some of the stabilizers are high weight.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "We find that the network can produce good quantum codes [42], meaning code families where the distance and number of logical qudits are both proportional to the number of physical qudits.",
+      "However, these codes are not low-density parity check (LDPC) codes [43, 44] since some of the stabilizers are high weight."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim, based on the approximate numerics of Section 4.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-ldpc-hypothesis",
+     "value": "The authors hypothesize that by further fine-tuning the gates, the architecture could also yield encoding circuits for the recently discovered classes of good quantum LDPC codes, and state that producing a good quantum LDPC code is the challenge of keeping the weights of checks low while keeping the distance high, which clearly requires tuning of the layer circuits.",
+     "anchor": "Section 1, p.2; Section 6.1, p.18",
+     "quotes": [
+      "We hypothesize that by further fine-tuning the gates, our network architecture could also yield encoding circuits for the recently discovered classes of good quantum LDPC codes [45–50].",
+      "This clearly requires tuning of the layer circuits, likely made possible by the addition of some structure to the problem."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A hypothesis of the authors, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-syk-complexity-n-log-n",
+     "value": "The authors state that for the SYK-inspired code the number of gates has a leading N log N scaling with the total number of degrees of freedom, which they compare with holographic complexity conjectures for JT gravity, and state that they have an explicit estimate and upper bound of order N ln N for the circuit complexity of the ground space of the code Hamiltonian.",
+     "anchor": "Section 5, p.14; Section 5.2, p.16",
+     "quotes": [
+      "This leading N log N scaling with the total number of degrees of freedom can be compared to holographic complexity conjectures applied to JT gravity [59]",
+      "We have an explicit estimate (and upper bound) of O(N ln N ) for circuit complexity of the ground space of Hcode."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A gate-count estimate that the authors say is in general only an upper bound on circuit complexity.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-clifford-caution-not-syk",
+     "value": "The authors caution that the random Clifford layer model is certainly not correct for the actual SYK model, because the gates must act on fermionic degrees of freedom and will generically not be Clifford.",
+     "anchor": "Section 5, p.14",
+     "quotes": [
+      "We caution that this is certainly not correct for the actual SYK model: the gates must act on fermionic degrees of freedom and will not be Clifford (or the fermionic analogue of Clifford) generically."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of the Clifford model in Section 5.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-operator-growth-model",
+     "value": "The authors assume that a typical logical operator grows in size by a factor of gD after passing through one layer, up to a maximum size set by the total number of qudits, and compare this growth with the ratio of qudit numbers in successive layers to estimate the distance of the SYK-inspired code.",
+     "anchor": "Section 5.1, p.14 and p.15",
+     "quotes": [
+      "Let us assume that a typical operator grows in size by a factor of gD after passing through one layer (i.e. being conjugated by that layer unitary), up to a maximum size set by the total number of qudits.",
+      "We must compare this operator growth to the rate of qudit increase."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors state the assumption of their distance estimate in Section 5.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-distance-regimes",
+     "value": "The authors state, as an analytic estimate under the operator growth model, that when gD exceeds r the distance is expected to be linear in N, and that when gD is below r the logical operators are supported on a dilute fraction of sites and the distance is expected to scale as a sublinear function of N.",
+     "anchor": "Section 5.1.1 and Section 5.1.2, p.15; Section 5.3, p.17",
+     "quotes": [
+      "In this case, we expect the distance to be",
+      "linear in N .",
+      "Alternatively, if gD < r, then the distance could be some power of N , N c.",
+      "Suppose gD < RL. Then there will be some layer ℓ∗ such that operator growth and qudit growth"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An analytic estimate that rests on the operator growth assumption; the authors write 'expect' and 'could be'.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text layer breaks the 5.1.1 sentences across lines, so the quotes are the clean fragments; the exponent c is ln gD over ln r according to the same section."
+    },
+    {
+     "id_suggestion": "nora-stabilizer-weights-expected-syk-scaling",
+     "value": "The authors state that they expect the stabilizer weights to show a pattern similar to Figure 10, with a non-zero fraction of constant weight stabilizers from the UV-most layer and at least a few stabilizers of very high weight, similar to the weight of logical operators.",
+     "anchor": "Section 5.1.3, p.16",
+     "quotes": [
+      "We expect that the stabilizer weights will display a similar pattern as in Figure 10.",
+      "In particular, there are at least a few stabilizers of very high weight, similar to the weight of logical operators."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' expectation for the thermodynamic-limit family, not tested separately.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-syk-comparison-differences",
+     "value": "The authors state that the SYK Hamiltonian has a number of weight-4 terms that do not all commute, with random coefficients, whereas the code Hamiltonian has commuting terms with fixed coefficients and many low-weight terms but a significant fraction of high-weight terms; they also state that the code Hamiltonian has an exactly degenerate ground space and a spectrum that is not random-matrix-like, while the SYK Hamiltonian has approximately degenerate ground states and a random-matrix-like spectrum.",
+     "anchor": "Section 5.2, p.16",
+     "quotes": [
+      "These terms do not all commute and they enter HSYK with random coefficients. Hcode is composed of O(N ) commuting terms with fixed coefficients.",
+      "The fine-grained energy spectrum of HSYK is random-matrixlike [61, 62]. The fine-grained energy spectrum of Hcode is not random-matrix-like because Hcode is a commuting projector Hamiltonian.",
+      "However, there are also crucial differences between the two."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state these differences between the code Hamiltonian and the SYK model in Section 5.2.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-syk-comparison-similarities",
+     "value": "The authors state that both the SYK Hamiltonian and the code Hamiltonian have eigenstates with volume-law entanglement, that eigenstates of the code Hamiltonian have a flat entanglement spectrum, that the parameters of the code Hamiltonian can be chosen so that its low temperature heat capacity is proportional to T, and that the many similarities are the basis for their conjecture that the architecture has the potential to describe SYK physics once the tensors are adapted to a particular SYK instance.",
+     "anchor": "Section 5.2, p.16",
+     "quotes": [
+      "Entanglement: Both models feature Hamiltonian eigenstates with volume-law entanglement.",
+      "In particular, eigenstates of Hcode, being stabilizer states, have a flat entanglement spectrum.",
+      "Similarly, the parameters of Hcode can be chosen so that its low temperature heat capacity is proportional to T .",
+      "The many similarities between HSYK and Hcode are the basis for our conjecture that the architecture in Figure 1 has the potential to describe the physics of the SYK model"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' comparison and conjecture; the SYK side is not computed in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-syk-approximate-code",
+     "value": "The authors state that the approximate ground space of the SYK model could have interesting properties as an approximate quantum error correction code, that the distance of this code is not immediately clear, and that they defer a full discussion to future work.",
+     "anchor": "Section 5.3, p.17",
+     "quotes": [
+      "This naturally raises the possibility that the approximate ground space of the SYK model could have interesting properties as an approximate quantum error correction code.",
+      "What is not immediately clear is the distance of this code.",
+      "We will defer a full discussion to a future work"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own speculation, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-syk-distance-exponent",
+     "value": "The authors state that the analysis of the SYK-inspired model suggests that the SYK ground space code, which has constant rate as N → ∞, could have a distance N to a power c for some constant 0 < c ≤ 1, and that, given the relatively low scaling dimension of the fermion operators, it may be that one is effectively in the gD < r regime.",
+     "anchor": "Section 5.3, p.17; Section 5.4, p.17",
+     "quotes": [
+      "the analysis of the SYK-inspired model suggests that the actual SYK ground space code, which has constant rate as N → ∞, could have a distance N c for some constant 0 < c ≤ 1.",
+      "Given the relatively low scaling dimension of the fermion operators, it may be that one is effectively in the gD < r regime."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' speculation drawn from a model analysis, not tested on SYK.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-two-code-mixing-construction",
+     "value": "The authors describe a construction that takes the encoding circuits for two [[n, k, δ]] codes and mixes their physical qubits with an additional depth D circuit, giving a code on n′ = 2n qubits with k′ = 2k and the same rate, and state that the distance will also increase by a factor with some probability.",
+     "anchor": "Section 6.1, p.17",
+     "quotes": [
+      "The result is a code on n′ = 2n qubits with k′ = 2k. Hence, the rate is the same, k′/n′ = k/n. The distance will also increase by a factor with some probability, as will the weights of the stabilizers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors describe a construction and an expectation; no numerical test of it is reported.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-rref-weight-reduction-claim",
+     "value": "The authors state that they intend to find alternative bases of the stabilizer code that minimize the overall weights, that the reduced-row echelon form is unique, and that it is intuitively clear that it maximizes the number of zero-valued elements and thus minimizes the weights of the stabilizer basis elements.",
+     "anchor": "Section 6.2, p.18",
+     "quotes": [
+      "In the exact case, such a basis is unique and given by the reduced-row echelon form (RREF) of the stabilizer matrix",
+      "From this it should be intuitively clear that the RREF maximizes the number of zero-valued elements in the matrix, thus minimizing the weights of the stabilizer basis elements."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An intuitive argument by the authors, with a plan to test it in future work.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper gives only an example matrix; whether the reduced-row echelon form gives the minimum weight over all bases of the stabilizer group is not shown here and is not obvious."
+    },
+    {
+     "id_suggestion": "nora-perturbative-gadget-claim",
+     "value": "The authors state, citing perturbative gadgets, that using order-w perturbation theory it can be shown that there exists a 2-local Hamiltonian that approximately has the same ground space, constructed with w · (n − k) ancillary qudits, and that they expect the ground state degeneracy and code properties to be unaffected although the terms might not commute any more.",
+     "anchor": "Section 6.2, p.18",
+     "quotes": [
+      "Using wth-order perturbation theory it can then be shown that there must exist a 2-local Hamiltonian that approximately has the same ground space i.e. the desired quantum error-correcting code.",
+      "its construction involves introducing w · (n − k) ancillary qudits",
+      "but we expect the ground state degeneracy and code properties to be unaffected."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (reference 64), plus an expectation of the authors.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-fermionic-and-q2-directions",
+     "value": "The authors state that the first step toward closer contact with SYK is to develop a fermionic analogue of the architecture, that for the q = 2 SYK model, a non-interacting fermion model, they can efficiently simulate the network with non-interacting fermion machinery, and that they are currently exploring this direction.",
+     "anchor": "Section 6.3, p.18 and p.19",
+     "quotes": [
+      "The first step is to develop a fermionic analogue of our architecture.",
+      "A related setting where we should be able to carry out classical simulations is the SYK model for q = 2, i.e. a non-interacting fermion model with random all-to-all hoppings.",
+      "In this case, we can efficiently simulate the network using non-interacting fermion machinery.",
+      "We are currently exploring this direction."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' statements of plan and expectation, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-tfsk-plausibility",
+     "value": "The authors state that a single-layer NoRA plausibly captures the ground state of the transverse field Sherrington-Kirkpatrick model at large and at small transverse field, that it is less clear at the critical point, and that these are plausibility arguments for which a more systematic study is future work.",
+     "anchor": "Section 6.4, p.19",
+     "quotes": [
+      "Hence, it is plausibly the case that a NoRA with one layer could capture the ground state of the TFSK",
+      "Finally, at the critical point separating the two phases, it is less clear whether NoRA is suitable or not",
+      "We emphasize that these are plausibility arguments."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own plausibility arguments, which they state are not a systematic study.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-jt-gravity-analogy",
+     "value": "The authors state that their architecture mimics the structure of two-dimensional Jackiw-Teitelboim gravity in AdS2, interpreting the logarithm of the radial coordinate as analogous to L − ℓ, and that the NoRA network can be viewed as a refinement of a matrix product state model in which the tensors have additional layer structure.",
+     "anchor": "Section 6.5, p.20",
+     "quotes": [
+      "The basic point is that our architecture mimics the structure of two-dimensional Jackiw-Teitelboim (JT) gravity in AdS2.",
+      "we can view the NoRA network model as a refinement of the matrix product state model"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An analogy asserted by the authors; no computation in the paper tests it.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-renyi-flat-spectrum",
+     "value": "The authors state that for a state with a flat entanglement spectrum, meaning a reduced state proportional to a projection operator, the Rényi entropy of every order n > 0 equals the base-d logarithm of the rank, and they use it to express the entanglement entropy of a stabilizer state through the number of reduced stabilizer basis vectors.",
+     "anchor": "Appendix C.4, p.33",
+     "quotes": [
+      "What makes the Rényi entropies interesting here is that they satisfy S(n)(A) = logd(rank ρA) for all n > 0 if the state being considered has a flat entanglement spectrum i.e. it is proportional to a projection operator"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The authors state the result with its condition and give a short proof in footnote 15.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nora-renyi-limit-statement",
+     "value": "The authors write that S(A) = S(1)(A) equals the limit of the order-n Rényi entropy as n → 0 and that this reproduces the ordinary Von-Neumann entropy.",
+     "anchor": "Appendix C.4, p.33",
+     "quotes": [
+      "where S(A) = S(1)(A) = limn→0 S(n)(A) reproduces the ordinary Von-Neumann entropy."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement in the appendix that the paper does not prove.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The von Neumann entropy is the limit of the Rényi entropy as n approaches 1, not 0; the limit at 0 gives the log-rank (Hartley) entropy, so this looks like a typographical error. It does not affect the flat-spectrum result."
+    },
+    {
+     "id_suggestion": "nora-weight-growth-appendix-bounds",
+     "value": "The authors report, for a single Pauli string with d = 3, n = 128 and w0 = 1 under a random 2-local Clifford with increasing depth over 1000 repetitions, that the estimate g = 16/9 approximately coincides with the averaged relative weight growth up to the saturation depth, and that a tighter bound is obtained with q = 2 as the base of the logarithm.",
+     "anchor": "Appendix B and Figure 15, p.29 and p.30",
+     "quotes": [
+      "Averaged relative weight growth wD/wD−1 of a single Pauli string (d = 3, n = 128, w0 = 1) subjected to a random 2-local Clifford with increasing circuit depth D (1000 repetitions).",
+      "While (76) indeed provides a good maximum circuit depth for which the data and our estimate for g = 16/9 approximately coincide, a tighter bound can be achieved by instead using q = 2 as the base of the logarithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical comparison for one setting.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
