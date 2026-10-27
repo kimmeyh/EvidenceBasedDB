@@ -1,0 +1,885 @@
+{
+ "papers": [
+  {
+   "record_id": "alavi-2025-quantum-semi-random-forests-qubit",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Alavi-et-al._Quantum-Semi-Random-Forests-for-Qubit-Efficient-Recommender-Systems__2508.00027.pdf",
+   "title_in_file": "Quantum Semi-Random Forests for Qubit-Efficient Recommender Systems",
+   "version_note": "arXiv:2508.00027v1 [quant-ph], 30 Jul 2025. The text layer is damaged in places: equations 1 to 3 lost their summation signs, Algorithm 1 is flattened, the sentence about sparsity on the ICM matrix is garbled (the percent sign and a clause are lost), Key Takeaway 3 ends at 'using 90', and a flat exponent such as 10-3 stands for ten to the minus three. The paper uses the names QsRF and QsRL for the same model, and says 'three-stage' in the abstract while describing four stages (Stage 1 to Stage 4).",
+   "pages": 7,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short arXiv preprint that compresses item tags with a 1000-atom learned dictionary, selects 5 atoms with a depth-3 QAOA run on the PennyLane simulator, and scores recommendations with a bagged-tree ensemble on the QuantumCLEF ICM-150 and ICM-500 benchmarks.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qsrf-beats-sota-claim",
+     "verdict": "narrowed",
+     "note": "The Conclusion makes the claim as stored, but the abstract says only 'performing similarly to the state-of-the-art methods', and the tables do not support 'consistently outperforms' on every metric: QsRF's AUC and Log-Loss entries on ICM-150 and ICM-500 are the weakest in Tables III and IV, and only nDCG@10 is higher. The claim rests on nDCG@10.",
+     "value": "The authors state in the Conclusion that on both the ICM-150 and ICM-500 splits QsRL consistently outperforms the state-of-the-art Quantum-based method; the abstract says the method performs similarly to the state-of-the-art methods.",
+     "anchor": "Conclusion, p.7; Abstract, p.1",
+     "quotes": [
+      "On both the ICM-150 and ICM-500 splits of our content–metadata benchmark, QsRL consistently outperforms state of the art Quantum-based method.",
+      "while performing similarly to the stateof-the-art methods"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim; the abstract and the conclusion word it differently.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The two statements differ ('similarly' against 'consistently outperforms'). Tables III and IV list QsRF with lower AUC and higher Log-Loss than the baseline entries in the same columns, so only the nDCG@10 column favors QsRF."
+    },
+    {
+     "id": "qsrf-end-to-end-metrics",
+     "verdict": "narrowed",
+     "note": "The numbers are right. The paper states they are for the ICM–500 dataset (the stored value names no dataset), and Table IV gives them as the mean of 5 seeds, with the nDCG@10 a per-user (macro) value.",
+     "value": "The authors report that on the ICM–500 dataset QsRF yielded AUC = 0.8260, LogLoss = 0.2372, and nDCG@10 = 0.5942.",
+     "anchor": "Section III-E, p.5 (End-to-End Metrics); Table IV, p.5",
+     "quotes": [
+      "We applied the same pipeline to the ICM–500 dataset.",
+      "QsRF yielded AUC = 0.8260, LogLoss = 0.2372, and nDCG@10 = 0.5942"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The ICM-500 nDCG@10 of 0.5942 is about four times the 0.13 to 0.14 of the baselines in Table IV, while ICM-150 stays at 0.1483; the paper does not explain the jump."
+    },
+    {
+     "id": "qsrf-matches-baselines",
+     "verdict": "narrowed",
+     "note": "The abstract says it as stored, but the paper gives the ensemble size two ways: 100 trees in the abstract and contribution list, and T = 200 trees in Stage 4. Table III and IV list QsRF AUC and Log-Loss below the baseline entries, so 'matches' holds for nDCG@10 and is a looser fit for AUC and Log-Loss.",
+     "value": "The authors state in the abstract that a 100-tree QsRF trained on these codes matches full-feature baselines on ICM-150/500; the methodology section gives T = 200 decision trees.",
+     "anchor": "Abstract, p.1; Section II-D, p.3",
+     "quotes": [
+      "A 100-tree QsRF trained on these codes matches full-feature baselines on ICM-150/500.",
+      "we train an ensemble of T = 200 decision trees under bagging [16]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim, and the tree count is stated two ways.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The ensemble size is not settled by the text: 100 (10 runs x 10 trees) and 200 are both stated."
+    },
+    {
+     "id": "qsrf-simulator-only",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section II-F, p.4; Section V, p.7",
+     "quotes": [
+      "All QAOA circuits were executed on the PennyLane simulator [17] using default noise-free backends; we plan to validate our approach on real quantum hardware as it becomes available.",
+      "All quantum routines in this study were run on the PennyLane simulator; deploying QsRL on physical QPUs is deferred to future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit twice, in Section II-F and in the Section V implementation note.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "pipeline-scope-abstract",
+     "value": "The authors state that they present a three-stage hybrid machine learning algorithm that compresses tag profiles, optimizes feature selection under a fixed qubit budget via QAOA, and scores recommendations with a Quantum semi-Random Forest built on just five qubits.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "We close this gap with a three-stage hybrid machine learning algorithm that compresses tag profiles, optimizes feature selection under a fixed qubit budget via QAOA",
+      "scores recommendations with a Quantum semi-Random Forest (QsRF) built on just five qubits"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of what the method is and its scope (Abstract).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The body describes four stages (Stage 1 to Stage 4), not three."
+    },
+    {
+     "id": "five-qubit-claim-vs-20-variable-qubo",
+     "value": "The authors state that the QAOA step requires exactly five qubits and that their dense 20×20 QUBO matrix fits comfortably on five logical qubits.",
+     "anchor": "Section I-B, p.2; Section II-C(a), p.3",
+     "quotes": [
+      "then conduct feature selection with a depth-3 QAOA that requires exactly five qubits",
+      "yields a dense 20×20 QUBO matrix Q = − diag(w) + µ 11⊤ that fits comfortably on five logical qubits"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' claim; the paper gives no circuit encoding that maps 20 binary variables onto five qubits.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The mask z has one binary variable per candidate atom (20 of them) and the cost Hamiltonian is a sum of Z_i Z_j terms over the same indices as Q, which is the standard one-qubit-per-variable encoding and needs 20 qubits. The paper shows no encoding that reduces this to five. The headline 'five qubits' figure is therefore unsupported as written; this bears directly on the title claim."
+    },
+    {
+     "id": "qubo-formulation-definition",
+     "value": "The authors define a binary mask over the candidate set of Ktop = 20 atoms with a budget of k = 5, an energy with a penalty weight of about ten cubed that enforces selecting exactly k atoms, and a dense 20×20 matrix Q equal to − diag(w) + µ 11⊤.",
+     "anchor": "Section II-B and II-C(a), Eq. (3), p.3",
+     "quotes": [
+      "The Ktop = 20 highest-scoring atoms constitute the candidate set T that will be fed to the quantum search.",
+      "Let z ∈ {0, 1}Ktop be a binary mask over T and k = 5 the desired budget.",
+      "yields a dense 20×20 QUBO matrix Q = − diag(w) + µ 11⊤"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the QUBO in Section II-C(a).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "As written, Eq. (3) is a linear term plus a penalty that depends only on the number of selected atoms, so its minimum is the top-k atoms by weight w_j, which a sort finds classically; the QAOA step then has nothing to add. This is also the paper's own fallback rule. Algorithm 1 states a different Q (see algorithm1-qubo-differs)."
+    },
+    {
+     "id": "algorithm1-qubo-differs",
+     "value": "The paper gives two different forms of the QUBO matrix: Section II-C gives Q = − diag(w) + µ 11⊤, and the algorithm box gives Q = w w⊤ + µI.",
+     "anchor": "Section II-C(a), p.3; Algorithm 1, line 13, p.4",
+     "quotes": [
+      "yields a dense 20×20 QUBO matrix Q = − diag(w) + µ 11⊤",
+      "form QUBO Q = w w⊤ + µI"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Both forms are the paper's own definitions, quoted from the text.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper does not say which form was run. The two give different optimisation problems."
+    },
+    {
+     "id": "importance-score-definition",
+     "value": "The authors define the performance-driven weight of atom j as the drop in per-user nDCG@10 when that atom is removed, averaged over a bootstrap of 20% of the training rows, and take the highest-scoring atoms as the candidate set for the quantum search.",
+     "anchor": "Section II-B, Eq. (2), p.3",
+     "quotes": [
+      "For each atom j, let δu(j) = nDCG@10(u) − nDCG@10(−j)(u) denote the drop in ranking quality for user",
+      "of 20% of the training rows yields the performance-driven"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition the paper's results depend on (Section II-B).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qaoa-configuration",
+     "value": "The authors state they use depth-p = 3 QAOA with parameters optimised on the validation split by SPSA using 128 shots per objective evaluation; the algorithm box states 200 shots.",
+     "anchor": "Section II-C(b), p.3; Algorithm 1, line 14, p.4",
+     "quotes": [
+      "We employ the depth-p = 3 Quantum Approximate Optimisation Algorithm [14].",
+      "using 128 shots per objective evaluation",
+      "run depth-3 QAOA (200 shots) → 5-bit mask"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own QAOA setup, with a shot count that differs between the text and Algorithm 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "128 shots in the text and 200 in Algorithm 1; the paper does not reconcile them."
+    },
+    {
+     "id": "qaoa-fallback-top-k",
+     "value": "The authors state that the measured bit-string is accepted if the number of selected atoms equals k, and otherwise they fall back to the top-k atoms by weight.",
+     "anchor": "Section II-C(b), p.3",
+     "quotes": [
+      "Measurement returns a bit-string zˆ; if j zˆj = k the corresponding atoms are accepted, otherwise we fall back to the top-k by wj."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the selection rule in Section II-C(b).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper does not report how often the fallback fired, so the results do not show how much of the selection came from the quantum circuit rather than the classical ranking. The top-k atoms by weight are what Eq. (3) as written minimises."
+    },
+    {
+     "id": "qsrf-definition",
+     "value": "The authors define the QsRF as a bagged ensemble of decision trees on the five-dimensional codes, where each tree receives a bootstrap of the training rows and a random perturbation of the feature indices, and the predicted click-through probability is the arithmetic mean over all tree outputs.",
+     "anchor": "Section II-D, p.3",
+     "quotes": [
+      "Each tree receives a bootstrap of the training rows and a random perturbation of the feature indices, mimicking the stochasticity of classical Random Forests",
+      "At inference time the predicted click-through probability for a user–item pair is the arithmetic mean over all tree outputs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the model in Section II-D.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The trees are classical; the quantum part is only the feature-selection step."
+    },
+    {
+     "id": "tree-count-inconsistent",
+     "value": "The authors give the ensemble as 100 shallow decision trees (10 runs × 10 trees) in the contribution list and T = 200 decision trees in the methodology section.",
+     "anchor": "Section I-B item 3, p.2; Section II-D, p.3",
+     "quotes": [
+      "ensemble of 100 shallow decision trees (10 runs × 10 trees)",
+      "we train an ensemble of T = 200 decision trees under bagging [16]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statements of its setup, which disagree.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The runtime list also says 100 shallow trees (depth=8). The tree count behind the reported tables is not settled."
+    },
+    {
+     "id": "dictionary-learning-setup",
+     "value": "The authors state that the rows of the sketch are clustered into K = 50 sets and that for each cluster a sub-dictionary of A = 20 atoms is learned, giving a 1000-atom master atom pool.",
+     "anchor": "Section II-A(b),(c), p.3; Section I-B item 1, p.2",
+     "quotes": [
+      "The rows of Z are clustered into K = 50 disjoint sets",
+      "we learn a sub-dictionary Dc ∈ RM×A with A = 20 atoms by solving",
+      "that builds a 1000-atom dictionary capturing > 97% of tag-profile variance"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup (Section II-A).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The stated shapes do not fit: Z is the rank-32 sketch of X, yet Eq. (1) subtracts Theta times D transposed, which has 150 columns, from the rows of Z. The text layer also lost the equation's sums, so the shapes cannot be checked further."
+    },
+    {
+     "id": "low-rank-97-percent-claim",
+     "value": "The authors state that the top 32 singular vectors capture more than 97 % of the training variance of the item–tag matrix, citing the randomized SVD of Halko et al.",
+     "anchor": "Section I-B, p.2; Section II-A(a), p.3",
+     "quotes": [
+      "the top 32 singular vectors already capture more than 97 % of the training variance [13]",
+      "while preserving > 97 % of the Frobenius energy"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' statement; no variance table or plot is shown in the text.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The text says 'variance' in one place and 'Frobenius energy' in another; the two are not the same quantity unless the data are centered."
+    },
+    {
+     "id": "svd-complexity-claim",
+     "value": "The authors state that the randomised SVD step reduces both memory and time complexity from O(N M) to O(N d2), where the text layer prints the square of d flat, with d = 32.",
+     "anchor": "Section II-A(a), p.3",
+     "quotes": [
+      "This step reduces both memory and time complexity from O(N M ) to O(N d2)",
+      "we first compute a rank-d sketch Z = XVd with d = 32"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim without a derivation in the paper.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "With d = 32, d squared is 1024 and M is 150, so O(N d^2) is larger than O(N M), not smaller. The stated reduction does not hold for these sizes."
+    },
+    {
+     "id": "qubit-reduction-90-percent-claim",
+     "value": "The authors state that the 1000-atom dictionary enables an approximately 90% reduction in qubit usage.",
+     "anchor": "Section I-B item 1, p.2; Section III-G item 3, p.6",
+     "quotes": [
+      "that builds a 1000-atom dictionary capturing > 97% of tag-profile variance, enabling a ≈ 90% reduction in qubit usage",
+      "3) QsRF achieves comparable or better recommendation quality using 90"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the text gives no calculation for the 90%.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Going from 130 or 150 qubits to 5 is about a 96% cut, not 90%. The text layer cuts Key Takeaway 3 off after '90'."
+    },
+    {
+     "id": "dataset-statistics",
+     "value": "The authors report that ICM–150 has 1 881 users, 5 000 items, 64 890 interactions, 150 tags and 88.6 % sparsity, and that ICM–500 has 1 889 users, 7 000 items, 68 062 interactions, 500 tags and 93.4 % sparsity.",
+     "anchor": "Table I, Section II-G, p.4",
+     "quotes": [
+      "1 881 1 889",
+      "5 000 7 000",
+      "64 890 68 062",
+      "88.6 % 93.4 %",
+      "Each item is annotated with either 150 or 500 binary tags"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of the dataset setup (Table I). The row order of the text layer is Users, Items, Interactions, Tags, Sparsity for ICM–150 then ICM–500.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The cluster sizes in Table II (up to 94 633 rows) and Section III-E (up to 123 399) exceed the interactions in Table I (64 890 and 68 062), so the rows of X are not the interactions of Table I; the paper does not say how its rows are defined."
+    },
+    {
+     "id": "split-and-protocol",
+     "value": "The authors state they use an 80 / 20 user-stratified split into train and test, a further 80 / 20 split of the training portion into a learning set and a validation set, giving a 64 : 16 : 20 ratio, and that numbers are averaged over five random seeds.",
+     "anchor": "Section II-G, p.4",
+     "quotes": [
+      "we apply an 80 / 20 user-stratified split into train and test",
+      "The training portion is further split 80 / 20 into a learning set and a validation set",
+      "yielding the same 64 : 16 : 20 ratio used in CAQUBO [1].",
+      "Unless stated otherwise, all numbers are averaged over five random seeds"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its evaluation setup (Section II-G).",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id": "standard-error-statements",
+     "value": "The authors state that standard errors never exceed ±0.003 nDCG (Section II-G) and, in Section III, that they are below ±0.002 nDCG; they omit them from all tables.",
+     "anchor": "Section II-G, p.4; Section III, p.4",
+     "quotes": [
+      "Standard errors never exceed ±0.003 nDCG and are therefore omitted for brevity.",
+      "with standard errors below ±0.002 nDCG and thus omitted for clarity."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim, with no data shown, and the two bounds differ.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": "No variance is shown for any result, and the two statements give different bounds. The ICM-500 per-user standard deviation is 0.260 (Table VI), which is a different quantity from a standard error over seeds."
+    },
+    {
+     "id": "dictionary-quality-icm150",
+     "value": "The authors report that for ICM–150, MiniBatch k-means clustering took 6.0 seconds and produced cluster sizes from 1,586 to 94,633 rows (median 7,656), with reconstruction MSEs between 0.0000 and 0.0030.",
+     "anchor": "Section III-A, Table II, p.4",
+     "quotes": [
+      "For ICM–150, MiniBatch k-means clustering took 6.0 seconds and produced cluster sizes ranging from 1,586 to 94,633 rows (median 7,656)",
+      "with reconstruction MSEs between 0.0000 and 0.0030 (Table II)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The largest cluster (94,633) is more than the 64,890 interactions of ICM–150 in Table I. The paper does not explain what a row is."
+    },
+    {
+     "id": "dictionary-quality-icm500",
+     "value": "The authors report that for ICM–500, MiniBatch k-means (k = 50) on the SVD32 sketch completed in 10.2 seconds, cluster sizes ranged from 2,376 to 123,399 (median 8,082), and the reconstruction MSE remained under 1.3 times ten to the minus three.",
+     "anchor": "Section III-E, p.4 to p.5",
+     "quotes": [
+      "We applied the same pipeline to the ICM–500 dataset.",
+      "MiniBatch k-means (k = 50) on the SVD32 sketch completed in 10.2 seconds.",
+      "from 2,376 to 123,399 (median 8,082). Reconstruction MSE remained under 1.3 × 10−3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The largest cluster (123,399) exceeds the 68,062 interactions of ICM–500 in Table I."
+    },
+    {
+     "id": "dictionary-preserves-information-claim",
+     "value": "The authors state that each 20-atom cluster dictionary gave reconstruction errors consistently below 3 × 10−3 (two orders of magnitude smaller than the variance of the raw TF–IDF vectors), and that this confirms the 1000-atom global dictionary effectively preserves critical information.",
+     "anchor": "Section III-A, p.4; Section III-G item 1, p.6",
+     "quotes": [
+      "Each cluster was encoded with a 20-atom dictionary, yielding reconstruction errors consistently below 3 × 10−3—two orders of magnitude smaller than the variance of the raw TF–IDF vectors.",
+      "This confirms that the 1000-atom global dictionary effectively preserves critical information."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the raw TF–IDF variance it is compared with is not reported.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The final model uses 5 selected atoms, not the 1000-atom dictionary, so the reconstruction error of the 1000-atom pool does not describe the codes the trees see."
+    },
+    {
+     "id": "qaoa-energy-icm150",
+     "value": "The authors report that on ICM–150 the QAOA energies remain between 5.01 × 10−3 and 5.03 × 10−3, that all runs yielded the same nDCG@10 score (0.1483), which they say indicates a flat local optimum, and that this eliminates the need for multi-seed ensembling.",
+     "anchor": "Section III-B, Fig. 3, p.4 to p.5",
+     "quotes": [
+      "On ICM–150, energies remain between 5.01 × 10−3 and 5.03 × 10−3, demonstrating strong stability and convergence.",
+      "All runs yielded the same nDCG@10 score (0.1483), indicating a flat local optimum in the QUBO solution space."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Ten runs that all give the same nDCG@10 are consistent with the same atoms being chosen each time, for example by the top-k fallback or because the objective has one obvious optimum; the paper does not show which."
+    },
+    {
+     "id": "qaoa-energy-icm500",
+     "value": "The authors report that on ICM–500 ten depth-3 QAOA runs produced energies from 9.4 × 10−3 to 0.43, while the Figure 3 caption says the spread goes up to 0.20.",
+     "anchor": "Section III-E, p.5; Fig. 3 caption, p.4",
+     "quotes": [
+      "Ten depth-3 QAOA runs produced energies from 9.4 × 10−3 to 0.43",
+      "while ICM–500 shows a wider spread up to 0.20."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, with a text and caption that differ.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The maximum energy is 0.43 in the text and 0.20 in the caption; the paper does not reconcile them."
+    },
+    {
+     "id": "qaoa-optimal-solution-claim",
+     "value": "The authors state that five-qubit depth-3 QAOA consistently reaches the optimal solution for their performance-based QUBO.",
+     "anchor": "Section III-G item 2, p.6",
+     "quotes": [
+      "Five-qubit depth-3 QAOA consistently reaches the optimal solution for our performance-based QUBO."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; no comparison against an exact or classical solver is reported.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The text reports no brute-force or classical comparison of the selected subsets, so optimality is not shown. See the notes on the qubit count and on Eq. (3)."
+    },
+    {
+     "id": "icm150-results-table-ndcg",
+     "value": "The authors report in Table III (QuantumCLEF 150, mean of 5 seeds) nDCG values of 0.104, 0.1363, 0.1336, 0.1359 and 0.1483, in the row order MIQUBO, CAQUBO, MIQUBO, CAQUBO and Ours (QsRF), with qubit entries 130, 130, full-feature, full-feature and 5.",
+     "anchor": "Table III, p.5",
+     "quotes": [
+      "TABLE III: QuantumCLEF 150 test metrics (mean of 5 seeds).",
+      "MIQUBO [18] CAQUBO [1] MIQUBO [18] CAQUBO [1] Ours (QsRF)",
+      "130 130 full-feature full-feature",
+      "0.104 0.1363 0.1336 0.1359 0.1483"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the baseline values are taken from other papers.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The row-to-value pairing follows the order of the text layer. The paper does not state that the baseline nDCG@10 values were measured under the same protocol as QsRF's; Table V gives a 5-feature RF baseline at 0.5929 on the same dataset, four times QsRF's 0.1483."
+    },
+    {
+     "id": "icm150-results-table-auc-logloss",
+     "value": "The authors report in Table III AUC entries 0.8482, 0.8556 and 0.8413 and Log-Loss entries 0.2241, 0.2218 and 0.2300, with QsRF's own entries being 0.8413 and 0.2300 (as in Table V).",
+     "anchor": "Table III and Table V, p.5",
+     "quotes": [
+      "0.8482 0.8556",
+      "0.2241 0.2218",
+      "0.8212 0.8413",
+      "0.2452 0.2300"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer holds only three AUC and three Log-Loss entries for five method rows, so which baseline rows carry them is not shown (presumably the full-feature rows). Either way, QsRF's AUC (0.8413) is below both baseline entries and its Log-Loss (0.2300) is above both, so Table III does not support the contribution-list claim of 'superior nDCG@10, AUC, and Log-Loss'."
+    },
+    {
+     "id": "icm500-results-table-ndcg",
+     "value": "The authors report in Table IV (QuantumCLEF 500, mean of 5 seeds) nDCG values of 0.1324, 0.1441, 0.1401, 0.1366 and 0.5942, in the row order MIQUBO, CAQUBO, MIQUBO, CAQUBO and Ours (QsRF), with qubit entries 450, 400, full-feature, full-feature and 5.",
+     "anchor": "Table IV, p.5",
+     "quotes": [
+      "TABLE IV: QuantumCLEF 500 test metrics (mean of 5 seeds).",
+      "450 400 full-feature full-feature",
+      "0.1324 0.1441 0.1401 0.1366 0.5942"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the baseline values are taken from other papers.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "QsRF's 0.5942 is about four times every baseline entry, while Table V's 5-feature RF gets 0.5917. This looks like a different evaluation protocol for QsRF and the RF baseline than for the cited MIQUBO and CAQUBO numbers; the paper does not say so, which makes the nDCG@10 comparison with the quantum baselines unreliable."
+    },
+    {
+     "id": "icm500-results-table-auc-logloss",
+     "value": "The authors report in Table IV AUC entries 0.8531 and 0.8486 for the baselines and 0.8260 for QsRF, and Log-Loss entries 0.2206 and 0.2226 for the baselines and 0.2372 for QsRF.",
+     "anchor": "Table IV and Table V, p.5",
+     "quotes": [
+      "0.8531 0.8486",
+      "0.2206 0.2226",
+      "0.8198 0.8260",
+      "0.2499 0.2372"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "QsRF's AUC (0.8260) is below both baseline entries and its Log-Loss (0.2372) is above both, so the tables do not support 'superior ... AUC, and Log-Loss' against the quantum baselines."
+    },
+    {
+     "id": "rf-baseline-table-v",
+     "value": "The authors report in Table V, for a Random Forest baseline with k = 5 against QsRL: on the first listed dataset ROC-AUC 0.8212 against 0.8413, LogLoss 0.2452 against 0.2300 and nDCG 0.5929 against 0.1483; on the second listed dataset ROC-AUC 0.8198 against 0.8260, LogLoss 0.2499 against 0.2372 and nDCG 0.5917 against 0.5942.",
+     "anchor": "Table V, p.5",
+     "quotes": [
+      "TABLE V: Random-Forest baseline (k = 5) vs. proposed QsRL.",
+      "0.8212 0.8413",
+      "0.2452 0.2300",
+      "0.5929 0.1483",
+      "0.8198 0.8260",
+      "0.2499 0.2372",
+      "0.5917 0.5942"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "On ICM–150 the RF baseline has far higher nDCG@10 than QsRL (0.5929 against 0.1483). The AUC gaps are 0.0201 (ICM–150) and 0.0062 (ICM–500); the nDCG@10 gap on ICM–500 is 0.0025. The paper does not say which five features the RF baseline uses."
+    },
+    {
+     "id": "rf-baseline-comparison-claim",
+     "value": "The authors state that QsRF consistently outperforms the five-feature Random Forest baseline on both datasets in AUC and Log-Loss while achieving comparable or superior nDCG@10, and in the Conclusion give ROC-AUC (∆ ≃ +0.02), LogLoss (∆ ≃ −0.02) and ICM-500 macro-nDCG@10 (∆ ≃ +0.02–0.15) gains.",
+     "anchor": "Section III-C, p.4; Conclusion, p.7",
+     "quotes": [
+      "Table V shows that QsRF consistently outperforms the five-feature Random Forest baseline on both datasets in terms of AUC and Log-Loss, while achieving comparable or superior nDCG@10.",
+      "in ROC-AUC (∆ ≃ +0.02), LogLoss (∆ ≃ −0.02)",
+      "on ICM-500 with macro-nDCG@10 (∆ ≃ +0.02–0.15)"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's reading of Table V that Table V does not fully support.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Table V contradicts parts of this: on ICM–150 the RF nDCG@10 (0.5929) is much higher than QsRL's (0.1483), so 'comparable or superior' fails there; on ICM–500 the nDCG@10 gain is 0.0025 (0.5942 against 0.5917), not 0.02 to 0.15; the AUC and Log-Loss gains on ICM–500 are about 0.006 and 0.013, not 0.02."
+    },
+    {
+     "id": "macro-micro-ndcg-icm500",
+     "value": "The authors report on ICM–500 a macro (per-user) nDCG@10 with mean 0.594, median 0.637 and standard deviation 0.260, and a micro (global) nDCG@10 of 0.916, and state that all tables report macro nDCG@10.",
+     "anchor": "Section III-D and III-H, Table VI, p.5 to p.7",
+     "quotes": [
+      "We report both macro- and micro- averaged nDCG @10 on the ICM–500 split:",
+      "The macro metric (mean = 0.594, median = 0.637) emphasizes fairness across users. The micro metric (0.916) reflects strong global ranking quality.",
+      "Std. dev. 0.260",
+      "All tables in this work report macro nDCG@10."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "The paper does not define micro nDCG@10 precisely, so 0.916 cannot be compared with any other number in the paper. The 0.594 macro value equals the ICM-500 value in Table IV."
+    },
+    {
+     "id": "user-distribution-claim",
+     "value": "The authors state that roughly 75 (the unit is lost in the text layer) of the 100 sampled per-user scores are above 0.5, and that the lower quartile pinpoints a subset that could benefit from personalised regularisation, which is left for future work.",
+     "anchor": "Section III-H, Fig. 4, p.6 to p.7",
+     "quotes": [
+      "Per-user nDCG@10 for 100 sampled users.",
+      "Roughly 75 score above 0.5, but the lower quartile pinpoints a subset that could benefit from",
+      "personalised regularisation—left for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the weak-user subset and defers it (Section III-H).",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "Fig. 4 and its caption say 100 sampled users, so '75' may be a percentage whose sign the text layer lost; the paper's unit is not recoverable here."
+    },
+    {
+     "id": "runtime-section-e-timings",
+     "value": "The authors report on an 8-core laptop (Apple M2, 32 GB RAM) that dictionary learning completes in about 6 min, sparse encoding in <90 s, ten SPSA runs add <60 s, tree training takes about 20 s, and the full pipeline takes 8–12 min wall-clock.",
+     "anchor": "Section II-E, p.3 to p.4",
+     "quotes": [
+      "On an 8-core laptop (Apple M2, 32 GB RAM) dictionary learning dominates",
+      "the entire phase completes in ∼6 min",
+      "finishing in <90 s when parallelised across all cores",
+      "ten SPSA runs add <60 s",
+      "is trivial (∼20 s). Overall, the full train–validate–test pipeline takes 8–12 min wall-clock"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, run on a simulator.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "These times are for a classical simulation of the circuit, so they say nothing about the cost of running on quantum hardware."
+    },
+    {
+     "id": "runtime-statements-inconsistent",
+     "value": "The authors give the end-to-end runtime three ways: 8–12 min on an 8-core laptop (Section II-E), approximately 20 minutes on a 6-core laptop with QAOA training and inference taking 15 minutes (Section III-F), and under 15 minutes on a standard 8-core laptop (Conclusion).",
+     "anchor": "Section II-E, III-F, Conclusion, p.3 to p.7",
+     "quotes": [
+      "Overall, the full train–validate–test pipeline takes 8–12 min wall-clock",
+      "The entire ICM–QsRL pipeline completes in approximately 20 minutes on a 6-core laptop",
+      "QAOA training and inference: 15 minutes",
+      "the entire pipeline runs in under 15 minutes on a standard 8-core laptop"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study whose runtime statements disagree.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Section II-E calls QAOA negligible (<60 s) while Section III-F gives 15 minutes for QAOA training and inference; the paper does not reconcile these."
+    },
+    {
+     "id": "runtime-vs-caqubo-claim",
+     "value": "The authors state an order-of-magnitude (≈ 10×) reduction in end-to-end runtime versus CAQUBO and MIQUBO, comparing with the 2-hour wall time of CAQUBO reported in prior work, and in the Conclusion call the pipeline orders of magnitude faster than previously reported quantum annealer timings.",
+     "anchor": "Section I-B item 4, p.2; Section III-F, p.5; Conclusion, p.7",
+     "quotes": [
+      "demonstrate an order-of-magnitude (≈ 10×) reduction in end-to-end runtime versus CAQUBO and MIQUBO.",
+      "Compared to the 2-hour wall time of CAQUBO [1]",
+      "orders of magnitude faster than previously reported quantum annealer timings"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the competing runtime is taken from another paper and the paper gives no MIQUBO runtime.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "2 hours against 20 minutes is 6 times, against 8–12 minutes about 10 to 15 times; 'orders of magnitude' is not supported. The comparison mixes the paper's laptop simulation with a number from another paper on different hardware."
+    },
+    {
+     "id": "ablation-claimed-not-reported",
+     "value": "The authors state that they perform an ablation study over dictionary rank, bootstrap size, and QAOA depth.",
+     "anchor": "Section I-B item 4, p.2",
+     "quotes": [
+      "We perform an ablation study over dictionary rank, bootstrap size, and QAOA depth"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; no ablation result appears in the text.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No section, table or figure in the text reports an ablation over dictionary rank, bootstrap size or QAOA depth. There is also no run with the QAOA step replaced by classical top-k selection, which is the comparison that would show whether the quantum step matters."
+    },
+    {
+     "id": "embedding-overhead-claim",
+     "value": "The authors state that for their 20×20 performance-driven QUBO, minor embedding on an annealer would raise the effective budget from 5 logical qubits to >60 physical qubits, and that gate-based devices avoid minor embedding.",
+     "anchor": "Section I-A, p.1 to p.2",
+     "quotes": [
+      "For our 20×20 performance-driven QUBO this would raise the effective budget from 5 logical qubits to >60 physical qubits",
+      "Gate-based devices avoid minor embedding: the five logical qubits are mapped one-to-one onto hardware"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim, with no calculation shown.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The text gives 5 logical qubits for a QUBO with 20 binary variables; see five-qubit-claim-vs-20-variable-qubo."
+    },
+    {
+     "id": "annealer-vs-qaoa-cited",
+     "value": "The authors state, citing Pelofske et al., that annealers outperform one-round QAOA on ∼ 100-qubit Ising benchmarks, and that deeper (p ≥ 3) QAOA with noise-aware angle optimisation starts to close that gap.",
+     "anchor": "Section I-A, p.2",
+     "quotes": [
+      "Although recent studies show that annealers outperform one-round QAOA on ∼ 100-qubit Ising benchmarks [11]",
+      "deeper (p ≥ 3) QAOA with noise-aware angle optimisation starts to close that gap"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work; the second clause has no citation.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qaoa-landscape-cited",
+     "value": "The authors state, citing Harrigan et al., that depth-2 QAOA was executed on 23 superconducting qubits, validating theoretical predictions but exposing depth-related locality issues, and that a definitive advantage over classical solvers is still elusive.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "Harrigan et al. executed depth-2 QAOA on 23 superconducting qubits, validating theoretical predictions but exposing depth-related locality issues [9].",
+      "yet a definitive advantage over classical solvers is still elusive"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "dacrema-comparison-cited",
+     "value": "The authors state, citing Ferrari Dacrema et al., that QPU, hybrid, simulated-annealing and tabu-search solvers were compared on up to 5 000 features and quantum approaches were found merely competitive once problem sizes required decomposition.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "Ferrari Dacrema et al. systematically compared QPU, hybrid, simulated-annealing and tabu-search solvers on up to 5 000 features",
+      "found quantum approaches merely competitive once problem sizes required decomposition [10]"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "conclusion-quantum-inspired-description",
+     "value": "The authors describe QsRL in the Conclusion as a novel quantum-inspired sparse ranking pipeline that combines classical clustering with a five-qubit QAOA backend to learn compact, user-specific dictionaries.",
+     "anchor": "Conclusion, p.7",
+     "quotes": [
+      "we have introduced QsRL, a novel quantuminspired sparse ranking pipeline that combines classical clustering with a five-qubit QAOA backend",
+      "to learn compact, user–specific dictionaries"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own description of their method.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The method section describes one global dictionary, not user-specific dictionaries. The paper calls the method both 'Quantum' and 'quantum-inspired'."
+    },
+    {
+     "id": "generalisation-100-users-claim",
+     "value": "The authors state that lower-energy QAOA solutions cluster tightly and yield stable ranking quality, and that sampling 100 users at random demonstrates that the method generalizes across diverse profile sparsities.",
+     "anchor": "Conclusion, p.7; Fig. 4, p.5",
+     "quotes": [
+      "lower-energy QAOA solutions cluster tightly and yield stable ranking quality",
+      "while sampling 100 users at random demonstrates that the method generalizes across diverse profile sparsities"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the per-user plot does not relate scores to profile sparsity.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The text relates no per-user score to any sparsity measure, so generalisation 'across diverse profile sparsities' is not shown by the reported material."
+    },
+    {
+     "id": "future-work-and-limits",
+     "value": "The authors list as future work deeper QAOA circuits or additional qubits, adaptive clustering or alternative dictionary-learning methods, and end-to-end tuning of clustering hyperparameters, RF feature limits and QAOA angles via Bayesian optimization.",
+     "anchor": "Section V, p.7",
+     "quotes": [
+      "Exploring deeper QAOA circuits or additional qubits could capture more complex item–user interactions",
+      "Dynamic, user-driven cluster sizes or alternative dictionary-learning methods",
+      "Jointly optimizing clustering hyperparameters, RF feature limits, and QAOA angles via Bayesian optimization"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of open problems (Section V).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "baseline-qubit-demand-claim",
+     "value": "The authors state that most quantum pipelines still map one qubit per tag, demanding well beyond one hundred qubits, and that published studies still operate on only 10–20 features.",
+     "anchor": "Abstract, p.1; Section I, p.1",
+     "quotes": [
+      "most quantum pipelines still map one qubit per tag, demanding well beyond one hundred qubits",
+      "published studies still operate on only 10–20 features"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about prior work, without a survey in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Tables III and IV list the quantum baselines at 130 qubits (150 tags) and 450 or 400 qubits (500 tags)."
+    }
+   ]
+  }
+ ]
+}
