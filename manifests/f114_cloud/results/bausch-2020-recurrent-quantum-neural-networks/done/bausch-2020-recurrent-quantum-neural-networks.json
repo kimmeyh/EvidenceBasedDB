@@ -1,0 +1,686 @@
+{
+ "papers": [
+  {
+   "record_id": "bausch-2020-recurrent-quantum-neural-networks",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2020\\Bausch_2020_Recurrent-Quantum-Neural-Network__2006.14619.pdf",
+   "title_in_file": "Recurrent Quantum Neural Networks",
+   "version_note": "arXiv:2006.14619v1, 25 Jun 2020.",
+   "pages": 29,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A 2020 preprint by Johannes Bausch that builds a quantum recurrent neural network from higher-degree parametrized quantum neurons and tests it in classical simulation on sequence tasks, MNIST and a DNA long-sequence task.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qrnn-construction-claim",
+     "verdict": "confirmed",
+     "note": "Right as stored. The paper itself later concedes the QRNN is outclassed by classical recurrent models on real-world tasks (Sec. 5, p. 17).",
+     "value": "The author states he constructs a quantum recurrent neural network built from parametrized quantum neurons with amplitude amplification, with demonstrable performance on sequence learning and integer digit classification.",
+     "anchor": "Abstract, p. 1",
+     "quotes": [
+      "In this work we construct a quantum recurrent neural network (QRNN) with demonstrable performance on non-trivial tasks such as sequence learning and integer digit classiﬁcation.",
+      "The QRNN cell is built from parametrized quantum neurons, which, in conjunction with amplitude ampliﬁcation,"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qrnn-dna-task-training-steps-vs-lstm",
+     "verdict": "confirmed",
+     "note": "Right as stored. Added context: the RNN baseline (888 parameters) was hardest to train, and footnote 3 says several RNN runs at length 100 or longer timed out at 100k steps and were restarted. The QRNN needed about 100 steps (about 1.28 x 10^4 samples); batch size 128; stop threshold validation loss 10^-3.",
+     "value": "On a DNA sequence recognition task, a QRNN with 837 parameters trained in an almost constant number of steps up to string lengths of 1000 bases, while an LSTM with 888 parameters began faster but ended with more than order-of-magnitude worse performance in this test; RNN and LSTM baselines used stock pytorch settings besides learning rate.",
+     "anchor": "Sec. 4.5, p. 16-17, Fig. 9",
+     "quotes": [
+      "We found that a QRNN with a workspace size of 5, one work stage, and activation degree 3 (resulting in 837 parameters) can be trained within an almost constant number of steps, even for string lengths of 1000 bases.",
+      "the LSTM shows a steady increase—starting out faster than the QRNN, but ending up with a more than order-of-magnitude worse performance in this test.",
+      "have 888 trainable",
+      "For each classical network we optimized the learning rate as hyperparameter, but left the other stock choices provided by pytorch."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qrnn-mnist-reduced-input",
+     "verdict": "confirmed",
+     "note": "Right as stored. This reduction applies to the pixel-by-pixel experiments; the t-SNE and UMAP experiments use a different input (discretized coordinates).",
+     "value": "The authors state that for MNIST they crop the images to 20 × 20 pixels, downscale them to size 10 × 10 and binarize them, giving an input sequence length of 100; they state this significantly reduces the information content of the training data and that they are not competing with top-of-the-line classifiers.",
+     "anchor": "Sec. 4.3, p. 12",
+     "quotes": [
+      "As a post-processing step we ﬁrst crop the images to 20 × 20 pixels, downscale them to size 10 × 10, and then binarize each image such that it has a bit depth of 1.",
+      "Naturally, this signiﬁcantly reduces the information content of the training data; yet as we are not competing with top-of-the-line classiﬁers with our QRNN model we found the resulting input sequence length of 100"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. 4.3 states the preprocessing and the authors' own scope for it.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qrnn-outclassed-by-classical-rnns",
+     "verdict": "confirmed",
+     "note": "Right as stored.",
+     "value": "The author states that existing recurrent models, even simple RNNs, outclass the proposed QRNN on real-world learning tasks, in part because simulating many qubits classically needs memory that grows exponentially in the workspace size, which limits the number of parameters.",
+     "anchor": "Sec. 5, p. 17",
+     "quotes": [
+      "Without doubt, existing recurrent models—even simple RNNs—outclass the proposed QRNN architecture in this paper in real-world learning tasks.",
+      "the memory requirements necessarily grow exponentially in the size of the workspace, for instance, which limits the number of parameters we can introduce in our model"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 5 states the limit in the authors' own words.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qrnn-training-uses-postselection-not-amplification",
+     "value": "The authors state that in their pytorch simulation they do not perform fixed-point amplitude amplification during training for the quantum neurons and output lanes but postselect instead, and that they keep track of the postselection probabilities to compute the overhead that amplitude amplification would need.",
+     "anchor": "Sec. 3, p. 9; Sec. 2.2, p. 7",
+     "quotes": [
+      "instead of truly performing ﬁxed-point amplitude ampliﬁcation for the quantum neurons and output lanes during training, we postselect",
+      "we kept track of the postselection probabilities which allows us to compute the overhead that would be necessary for amplitude ampliﬁcation",
+      "In the following we will thus simply assume that the approximate postselection is possible"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. 3 states how the experiments were run.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "All reported results come from classical simulation with exact postselection, not from amplitude amplification or quantum hardware."
+    },
+    {
+     "id_suggestion": "qrnn-classical-simulation-resources",
+     "value": "The authors report that all experiments were run on 2-8 CPUs and required between 500MB and 35GB of memory per core, and that they implemented the QRNN in pytorch as a simulation of a quantum computation.",
+     "anchor": "Sec. 3, p. 9-10",
+     "quotes": [
+      "As this is in essence a simulation of a quantum computation",
+      "All experiments were executed on 2-8 CPUs, and required between 500MB and 35GB of memory per core."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. 3 states the experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-qubit-count-formula",
+     "value": "The authors state that, because all input and ancilla qubits can be reused, the QRNN needs H + I + ord qubits, where H is the cell state workspace size, I the input token width in bits, and ord the order of the quantum neuron activation.",
+     "anchor": "Fig. 5 caption, p. 10",
+     "quotes": [
+      "All input and ancilla qubits used throughout can be reused; we thus need H + I + ord qubits, where H is the cell state workspace size, I the input token width (in bits), and ord"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The Fig. 5 caption states the qubit count as a definition of the model's width.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-neuron-order-and-activation",
+     "value": "The paper states that the quantum neuron has an order parameter ord, at least 1, that controls the steepness of the activation, and that on pure states the neuron rotates by an angle f(theta) given by an arctangent of the tangent of theta raised to a power set by ord.",
+     "anchor": "Sec. 2.2, p. 6-7, eq. (2), Fig. 1-2",
+     "quotes": [
+      "The activation features an order parameter ord ≥ 1—the “order” of the neuron—that controlls the steepness of the functional dependence",
+      "On pure states this quantum neuron gives rise to a rotation by an angle"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Sec. 2.2 defines the neuron and its activation.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-higher-degree-neuron-generalization",
+     "value": "The authors state that they generalize the quantum neuron of Cao et al. by increasing the number of control terms, so that the rotation angle becomes a polynomial of degree d in the input bits, and that an AND of two bits x1 and x2 is then simply the product x1 x2.",
+     "anchor": "Sec. 2.2, p. 7-8, eq. (3), Fig. 3",
+     "quotes": [
+      "In this work, we generalize this quantum neuron ﬁrst proposed in [CGA17] by increasing the number of control terms.",
+      "where d labels the degree of the neuron",
+      "an AND operation between two bits x1 and x2 is simply x1 x2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Sec. 2.2 defines the higher-degree neuron.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-linearity-of-unitary-circuits",
+     "value": "The authors state that any quantum circuit composed of unitary gates and measurements is necessarily a linear operation, and that nonlinearity enters here through the dependence of amplitudes such as cosine and sine of an angle on the rotation angle.",
+     "anchor": "Sec. 2.2, p. 5",
+     "quotes": [
+      "any quantum circuit composed of unitary gates and",
+      "measurements will necessarily be a linear operation.",
+      "the amplitudes of the state—cos θ and sin θ—depend non-linearly on"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement is general background that the authors do not prove.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-amplification-near-unitary-claim",
+     "value": "The authors claim that the combination of the quantum neuron with fixed-point amplitude amplification allows measurements, which are projectors, to be introduced such that the overall evolution on correctly initialized runs remains arbitrarily close to unitary.",
+     "anchor": "Sec. 1, p. 3; Sec. 2.1, p. 5",
+     "quotes": [
+      "allows the introduction of measurements (which are projectors, and not unitary operations) such that the overall evolution on correctly-initialized runs nonetheless remains arbitrarily close to unitary.",
+      "the amplitude ampliﬁcation step ensures that the measurements during training are as close to unitary as we wish."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The claim rests on cited amplitude amplification results and is not tested here.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-amplitude-amplification-cited-complexity",
+     "value": "The paper states, in an appendix, that fixed-point oblivious amplitude amplification, attributed to Tacchino et al. and Grover, can raise the probability of observing the wanted measurement outcome to at least 1 minus a small epsilon, with a number of applications of U that grows logarithmically in epsilon over the amplitude alpha.",
+     "anchor": "Appendix A, p. 23",
+     "quotes": [
+      "can be ampliﬁed to a probability ≥ 1 − , with O(log /|α|) many applications of U.",
+      "ﬁxed-point oblivious amplitude ampliﬁcation"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The result is attributed to prior work and not proved here.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The text layer dropped the epsilon symbols; the printed bound reads O(log /|alpha|)."
+    },
+    {
+     "id_suggestion": "qrnn-neuron-amplification-overhead-bound",
+     "value": "The authors derive a loose bound on the amplitude amplification overhead of the quantum neuron and state it is about 2, 8, 128, or 32768 for ord = 1, 2, 3, 4, respectively; they chose ord = 2 for all experiments.",
+     "anchor": "Appendix A.1, p. 24",
+     "quotes": [
+      "amplitude ampliﬁcation overhead of about 2, 8, 128, or 32768 for ord = 1, 2, 3, 4, respectively",
+      "For all our experiments we chose ord = 2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A loose bound stated in an appendix; its derivation is only partly legible in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The inequality that gives the bound printed with flattened exponents, so it could not be quoted."
+    },
+    {
+     "id_suggestion": "qrnn-postselection-overhead-trends",
+     "value": "The authors report three trends from monitoring postselection overhead: it was relatively small but larger for wider in/out lanes; for memorization and simple sequences (such as Elman's XOR test) it started larger then converged to one; for pixel-by-pixel MNIST it converged to roughly a constant greater than 1. They state they analyse the overhead only empirically.",
+     "anchor": "Appendix A.2, p. 25-26, Fig. 11",
+     "quotes": [
+      "We chose to analyse the resulting amplitude ampliﬁcation overhead only empirically",
+      "The overall postselection overhead was relatively small, but tends to be larger the wider the in/out lanes.",
+      "the overhead started larger, but then converged to one.",
+      "the postselection probability converged to roughly a constant > 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical monitoring result from the authors' own simulations.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "No analytic bound on the overhead for the full cell is given."
+    },
+    {
+     "id_suggestion": "qrnn-postselection-overhead-mnist-40",
+     "value": "The appendix figure caption reports that for pixel-by-pixel MNIST classification the amplitude amplification overhead stabilises around a constant of about 40 as the validation loss decreases, while for memorization of simple sequences the overhead approaches one.",
+     "anchor": "Fig. 11 caption, Appendix p. 29",
+     "quotes": [
+      "the overhead stabilises around a constant of ≈ 40 as the validation loss decreases.",
+      "the overhead approaches one as the validation loss converges to zero."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Sec. 2.2 (p. 7) says the overhead tended to converge to zero as learning progressed, which does not match the appendix (one, or about 40)."
+    },
+    {
+     "id_suggestion": "qrnn-sequence-memorization-optimizer-benchmark",
+     "value": "The authors report that for memorizing two simple sequences with a QRNN of 2 stages, neuron degree 3 and workspace size 5 (1162 parameters), the L-BFGS optimizer often gave the lowest validation loss but behaved unpredictably except on simple sequence tasks, and was about an order of magnitude slower and more memory hungry; Adam was their default choice with learning rates at or around 0.05.",
+     "anchor": "Sec. 4.1, p. 10-11, Fig. 6",
+     "quotes": [
+      "For a QRNN with 2 stages, neuron degree 3 and a workspace size of 5 (1162 parameters) this poses no problem",
+      "we found the L-BFGS optimizer commonly used with VQE circuits to behave unpredictably for all but the simple sequence learning tasks",
+      "taking about an order of magnitude longer for convergence",
+      "learning rates were generally kept at or around 0.05."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-elman-init-bias-mean",
+     "value": "The authors state that for Elman's XOR task, with a QRNN of workspace size 4 and a single work stage, the most influential initialization parameter is the bias mean pi/4, placing the initial polynomial at the steepest slope of the activation. The appendix figure caption states that a cell bias mean pi/8 yields the fastest convergence.",
+     "anchor": "Sec. 4.2, p. 12; Fig. 10 caption, p. 28",
+     "quotes": [
+      "The most inﬂuential meta parameter is the bias µ = π/4",
+      "A cell bias µ = π/8 yields the fastest convergence"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The main text names pi/4 and the Figure 10 caption names pi/8 as the best bias mean; the paper does not reconcile them."
+    },
+    {
+     "id_suggestion": "qrnn-elman-sentence-topology",
+     "value": "The authors report on Elman's three-word sentence task (\"ba\", \"dii\", \"guuu\") that neuron order ord = 2 performed best, and in Appendix B that a neuron degree of two was optimal (three not better, four slower), a single work stage took considerably longer than two stages, and the appendix figure caption states that degree 2, workspace 6 and 2 stages performed best.",
+     "anchor": "Sec. 4.2, p. 12; Appendix B, p. 26-27, Fig. 12",
+     "quotes": [
+      "We found that the neuron order ord = 2 performs best",
+      "we found that a degree of two is already optimal; a degree of three is not better, and a degree of four has a longer expected convergence time again.",
+      "a single stage takes considerably longer than two stages; for more stages, the learning time increases again.",
+      "degree 2, workspace 6, and 2 stages performed best."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on a toy task.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-mnist-split",
+     "value": "The authors state they use MNIST with a 55010 : 5000 : 10000 train : validate : test split, where the validate and test sets are chosen manually at random from the provided test set.",
+     "anchor": "Sec. 4.3, p. 12",
+     "quotes": [
+      "We use the MNIST dataset, with a 55010 : 5000 : 10000 train : validate : test split",
+      "the validate : test split is chosen manually at random from the provided test set"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. 4.3 states the data split.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "55010 + 5000 + 10000 is 70010, while MNIST holds 70000 images; the printed 55010 may be a typo."
+    },
+    {
+     "id_suggestion": "qrnn-mnist-pair-results",
+     "value": "The authors report that a single QRNN discriminated the digits 0 and 1 with about 99.2% success probability (about 99.6% for an ensemble of four), and that the pair 3 and 6 could be distinguished with about 99% likelihood.",
+     "anchor": "Sec. 4.3, p. 14; Sec. 1, p. 3; Table 1, p. 13",
+     "quotes": [
+      "pairs of digits such as ‘0’ and ‘1’ (arguably the easiest ones)",
+      "could be discriminated with ≈ 99.2% success probability when using a single network (≈ 99.6% for an ensemble of four)",
+      "but even more complicated pairs like ‘3’ and ‘6’ could be distinguished with ≈ 99% likelihood."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 1 lists the 3 and 6 results as 89.7 +- 0.8 (QRNN, 12 qubits, Adam), 97.1 +- 0.7 (QRNN, 10 qubits, L-BFGS) and 99.0 +- 0.3 (ensemble of 6), by column order in the text layer; so the 99% figure appears to be an ensemble result."
+    },
+    {
+     "id_suggestion": "qrnn-mnist-full-augmented-results",
+     "value": "The authors report that with data augmentation by dimensionality reduction (PCA with t-SNE, or UMAP) and discretized coordinates, QRNNs reached test accuracy on all ten digits of about 99.2%; the accuracy column of the table also lists 94.6 ± 0.4 and 96.7 ± 0.2.",
+     "anchor": "Sec. 1, p. 3; Table 1, p. 13",
+     "quotes": [
+      "Using modern data augmentation techniques the QRNN further achieves a test set performance on all digits of ≈ 99.2%.",
+      "82 95.1 98.2 98.5 94.6 ± 0.4 96.7 ± 0.2 99.23 ± 0.05"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the table row mapping is by column order.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer separates the table's columns, so row-to-accuracy pairing comes from order, not layout. The 13 qubit ensemble of 3 and 99.23 pairing is an inference."
+    },
+    {
+     "id_suggestion": "qrnn-umap-vs-tsne",
+     "value": "The authors state they found UMAP to outperform t-SNE by a large margin, which they say is expected because UMAP is designed for dimensionality reduction whereas t-SNE's primary goal is visualization.",
+     "anchor": "Sec. 4.3, p. 15",
+     "quotes": [
+      "Perhaps unsurprisingly we found UMAP to outperform t-SNE by a large margin"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-feature-maps-train-only",
+     "value": "The authors state that, as with PCA, all feature maps (t-SNE, UMAP) are learned only on the training set and then applied as-is to the validation and test sets, so only training-sample information enters the preprocessing pipeline; PCA to 30 dimensions precedes t-SNE.",
+     "anchor": "Sec. 4.3, p. 15",
+     "quotes": [
+      "all of the feature maps are learned only on the training set, and then applied as-is to the validation and test sets",
+      "by ﬁrst performing PCA to reduce each image to 30 dimensions"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sec. 4.3 states the preprocessing protocol.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-mnist-train-test-duplicates",
+     "value": "The Table 1 footnote states that the authors' 10 × 10 pixel-by-pixel data contains 80 duplicates for the digit 1 between training and test set (about 7% of the test class) and a single duplicate for the digit 7 (about 0.1% of the test class).",
+     "anchor": "Table 1 footnote, p. 13",
+     "quotes": [
+      "Our 10 × 10 pixel-by-pixel data contains 80 duplicates for the digit ‘1‘ between training and test set (so ≈ 7% of the test class)",
+      "and a single duplicate for the digit ‘7‘ (so ≈ 0.1% of the test class)."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured count the authors report themselves.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-table-comparison-caveat-fn18",
+     "value": "The table footnote states that the cited VQE result of Farhi and Neven used images down-scaled to 4 × 4 pixels and binarized, and that the set used for its accuracy measurement contains about 70% samples already present during training.",
+     "anchor": "Table 1 footnote, p. 13",
+     "quotes": [
+      "Images down-scaled to 4 × 4 pixels and binarized.",
+      "The set used for the accuracy measurement thus contains ≈ 70% samples already present during training."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about another paper's setup, not checked here.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The comparison rows in Table 1 use different data embeddings and dimensionality reductions, so they are not like for like."
+    },
+    {
+     "id_suggestion": "qrnn-generative-digits",
+     "value": "The authors report that, with a 0 or 1 presented at the first step, the QRNN was trained to regenerate handwritten digits, and that it learns the global structure of the two digits, with digits varying in slant or line thickness from quantum measurement randomness; the evidence is a figure of generated digits and no quantitative score.",
+     "anchor": "Sec. 4.4, p. 15, Fig. 8",
+     "quotes": [
+      "With a ‘0’ or ‘1’ presented to the QRNN at the ﬁrst step, we train it to re-generate handwritten digits.",
+      "the network indeed learns the global structure of the two digits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A qualitative result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-dna-task-definition-and-metric",
+     "value": "The authors define the long-sequence test as gene sequences of the bases G, A, T, C with a single U inserted at a random position in the first half of the string, the network having to identify the base after the U; the metric is the number of training steps, with batches of 128 random samples, needed to bring the validation loss below 10^-3.",
+     "anchor": "Sec. 4.5, p. 16",
+     "quotes": [
+      "a single ‘U’ is then inserted at a random position within the ﬁrst half of the string",
+      "and stop after the validation loss is below a threshold of 10−3",
+      "at every training step the network is presented with a batch of 128 random training samples"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Sec. 4.5 defines the task and the metric.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Training steps to a loss threshold is a proxy for gradient quality; the paper does not measure gradient norms directly."
+    },
+    {
+     "id_suggestion": "qrnn-dna-qrnn-steps-and-samples",
+     "value": "The authors report that the QRNN needed a relatively stable number of training steps until convergence, about 100, which means it saw about 1.28 × 104 samples (exponent printed flat, ten to the fourth); the figure caption gives the RNN a hidden layer size of 22 and a final linear layer, with 888 parameters.",
+     "anchor": "Sec. 4.5, p. 17; Fig. 9 caption, p. 16",
+     "quotes": [
+      "While the QRNN features a relatively stable number of necessary training steps till convergence (≈ 100, which means it has seen ≈ 1.28 × 104 samples)",
+      "RNN (blue; 1 layers, hidden layer size 22, and a ﬁnal linear layer; 888 parameters)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-dna-baseline-caveats",
+     "value": "The authors state that the RNN was hardest to train on the DNA task, that for sequences of length 100 or longer several RNN runs timed out at 100k training steps and were interrupted and restarted so that RNN data above that point is to be taken with a grain of salt, and that better hyperparameter and optimizer choices could improve convergence of both the classical models and the QRNN.",
+     "anchor": "Sec. 4.5, p. 17, footnotes 2 and 3",
+     "quotes": [
+      "The RNN was hardest to train for this task.",
+      "several of the RNN runs timed out at 100k training steps, which is when we interrupted and re-started the training.",
+      "We expect this to hold true for both traditional recurrent models, as well as the QRNN."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state these limits of the comparison in Sec. 4.5 footnotes.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-intro-long-sequence-claim",
+     "value": "The authors state in the introduction that on the DNA-string task, even for sequences of 1000 bases, where the target base pairs are over 500 steps in the past, training performance remains unaffected.",
+     "anchor": "Sec. 1, p. 3",
+     "quotes": [
+      "even for sequences of 1000 bases—where the target base pairs to be identiﬁed are over 500 steps in the past—training performance remains unaﬀected."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, summarized in the introduction.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Fig. 9 reports steps to threshold as almost constant, not exactly constant; 'unaffected' is the author's summary."
+    },
+    {
+     "id_suggestion": "qrnn-first-quantum-model-claim",
+     "value": "The authors claim that QRNNs are the first quantum machine learning model capable of working with non-superposed training data as high-dimensional as images of integer digits or DNA sequences, meaning long binary vectors.",
+     "anchor": "Sec. 1, p. 4",
+     "quotes": [
+      "are the ﬁrst quantum machine learning model capable of working with non-superposed",
+      "training data as high-dimensional as images of integer digits or DNA sequences"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A priority claim by the authors, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "A priority claim, not verified here against other work."
+    },
+    {
+     "id_suggestion": "qrnn-no-state-of-the-art-claim",
+     "value": "The authors state that the performance of their proposed model is yet to compete with state-of-the-art scores on popular, much larger datasets than MNIST.",
+     "anchor": "Sec. 1, p. 4",
+     "quotes": [
+      "Without question the performance of our proposed model is yet to compete with state-of-",
+      "the-art scores on popular, much larger datasets than e.g. MNIST."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The introduction states the limit of the results.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-conclusion-quantum-hardware-linear-time",
+     "value": "The authors state that on a quantum computer the classical simulation memory overhead would vanish, resulting in a linear execution time in the circuit depth.",
+     "anchor": "Sec. 5, p. 17",
+     "quotes": [
+      "on a quantum computer this overhead would vanish, resulting in a linear execution time in the circuit depth."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An unproved expectation in the conclusion; no hardware run is reported.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The statement does not include the amplitude amplification repetitions that Appendix A says a quantum device needs."
+    },
+    {
+     "id_suggestion": "qrnn-conclusion-small-qubit-counts",
+     "value": "The authors state that the model performs relatively well on non-trivial tasks given the small number of qubits used, usually between 8 and 14, and that a more specialized circuit structure will in all likelihood outperform the simple quantum recurrent network presented.",
+     "anchor": "Sec. 5, p. 17",
+     "quotes": [
+      "given the small number of qubits (usually between 8 and 14) that we utilised",
+      "In all likelihood, a more specialized circuit structure will outperform the “simple” quantum recurrent network presented herein."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own assessment and expectation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-unitary-gradient-candidate-claim",
+     "value": "The authors state that their architecture is a candidate parametrization for unitary recurrent models that hold promise in circumventing gradient degradation for long sequence lengths, and that the abstract's analysis of the vanishing gradient problem is the DNA long-sequence test.",
+     "anchor": "Sec. 5, p. 17-18; Abstract, p. 1",
+     "quotes": [
+      "which is a candidate parametrization",
+      "for unitary recurrent models that hold promise in circumventing gradient degradation for long sequence lengths."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A hedged claim of promise, not shown directly.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No gradient norms are reported; the evidence is steps to a loss threshold on one DNA task."
+    },
+    {
+     "id_suggestion": "qrnn-hardware-training-not-done",
+     "value": "The authors state that training on quantum hardware would need either gradient-free optimizers (naming L-BFGS and NatGrad) or numerically extracted gradients, rather than pytorch autograd, which they used in simulation.",
+     "anchor": "Sec. 3, p. 9-10",
+     "quotes": [
+      "With pytorch’s autograd framework we are able to perform gradient-based learning directly",
+      "on quantum hardware either gradient-free optimizers such as L-BFGS, NatGrad would have to be utilized, or numerical gradients"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 3 states what training on hardware would require.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "L-BFGS and NatGrad are gradient-based; the paper's wording 'gradient-free' is its own."
+    }
+   ]
+  }
+ ]
+}
