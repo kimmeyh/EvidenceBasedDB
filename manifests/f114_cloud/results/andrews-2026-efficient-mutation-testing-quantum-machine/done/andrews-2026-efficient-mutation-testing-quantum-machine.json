@@ -1,0 +1,590 @@
+{"papers": [{
+  "record_id": "andrews-2026-efficient-mutation-testing-quantum-machine",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Andrews-Mishra_2026_Efficient-Mutation-Testing-of-Quantum-Machine-Learning-Models__2605.00107.pdf",
+  "title_in_file": "Efficient Mutation Testing of Quantum Machine Learning Models",
+  "version_note": "",
+  "pages": 11,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A preprint (arXiv 2605.00107v1, 30 Apr 2026) that defines seven mutation operations for quantum neural networks and a directed generation approach, and compares them with prior gate-level mutation operations on simulated QNN and QCNN models.",
+  "bears_on_context": "qml",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "mutation-apgc-score",
+      "verdict": "confirmed",
+      "note": "The authors do state this. Table I shows exceptions to 'most effective' in some QNN configurations (see reader_inference); the stored value is a faithful report of the authors' sentence.",
+      "value": "",
+      "anchor": "Section V-D, 3) APGC",
+      "quotes": [],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "Table I (as extracted) lists APC at 360/380 for the Iris ZFM SU2 model against APGC at 1769/3040, and APC at 312/320 for the Iris ZZFM SU2 model against APGC at 2420/2560. In those two configurations APC kills a larger share than APGC, so 'most effective for all datasets and model configurations' does not hold cell by cell. The 90.68% QNN average matches the mean of the twelve QNN APGC ratios in Table I (about 90.675%). For QCNN, LS, ILS, ALA and ALD also reach 100.00%, so APGC ties there rather than leads."
+    },
+    {
+      "id": "mutation-fewer-mutants",
+      "verdict": "confirmed",
+      "note": "The figures agree with Tables I and II for the BC model with ZFM and SU2 (6,784 against 64,576). The 'up to' holds for the QNN models only; see reader_inference.",
+      "value": "",
+      "anchor": "Section V-E, Reduction of Redundant Mutants",
+      "quotes": [],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The new-operation totals in Table I for the QCNN models are larger than 6,784 (for example, the FMNIST QCNN row sums to 19,502 mutants from its seven columns), so 6,784 is the QNN maximum, not the maximum over all configurations. The 9.5 times figure counts mutants generated; the paper does not measure how many of the 64,576 prior-operation mutants are equivalent or redundant, nor whether the 6,784 are free of redundancy."
+    },
+    {
+      "id": "mutation-simulator-setup",
+      "verdict": "confirmed",
+      "note": "",
+      "value": "",
+      "anchor": "Section V-A, Experimental Setup",
+      "quotes": [],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its experimental setup (Section V-A).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The paper names no noise model for the Aer runs, so the results are for classical simulation as the authors configured it."
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "mutation-contributions-claimed",
+      "value": "The authors state that the paper contributes new mutation operations for the feature mapping and the ansatz of quantum neural networks, and a directed mutation generation approach meant to reduce redundant mutant circuits.",
+      "anchor": "Section I, contributions list, p.2",
+      "quotes": [
+        "We define new mutation operations for feature mapping and the ansatz of QNNs.",
+        "We present a directed mutation generation approach for specifically crafting mutants to reduce the number of redundant mutant circuits."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper's own statement of its scope and contributions (Section I).",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "mutation-seven-operations-defined",
+      "value": "The authors define seven mutation operations for quantum neural networks: ansatz parameter change (APC), data sample feature change (DFC), ansatz parameterized gate change (APGC), layer shuffling (LS), in-layer shuffling (ILS), ansatz layer addition (ALA) and ansatz layer deletion (ALD).",
+      "anchor": "Section IV-C, QML Mutation Operations, p.5-6",
+      "quotes": [
+        "We have devised seven new mutation operations to target the structure of QNN models more effectively compared to the mutation operations considered in prior work",
+        "resulting in the ansatz parameter change (APC) mutation operation.",
+        "In the ansatz parameterized gate change (APGC) mutation operation, we change a parameterized gate to another parameterized gate, maintaining the original parameter value.",
+        "We mutate the structure of the layers in the layer shuffling (LS) mutation operation by shuffling the layers in the model.",
+        "resulting in the in-layer shuffling (ILS) mutation operation.",
+        "We add an additional layer to the model with the ansatz layer addition (ALA) mutation operation.",
+        "resulting in the ansatz layer deletion (ALD) mutation operation."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines its own operations in Section IV-C.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The DFC name appears in the text as 'data sample feature change (DFC)' in the heading of IV-C.2; its quote is in the next assertion."
+    },
+    {
+      "id_suggestion": "mutation-apc-definition",
+      "value": "The authors define the ansatz parameter change (APC) operation as mutating the parameters of a collection of gates acting as a layer at once, with four categories: zeroing, sign flipping, addition of a perturbation and scaling of a perturbation. Zeroing and sign flipping are fixed operations; addition and scaling need an additional value, for which the authors use known radians such as π/2 and π.",
+      "anchor": "Section IV-C.1, p.5-6",
+      "quotes": [
+        "mutating a collection of gates’ parameters acting as a layer at once, resulting in the ansatz parameter change (APC) mutation operation.",
+        "Both zeroing and sign flipping are fixed operations, meaning that there is strictly one operation associated with the category.",
+        "Thus, we use known radians such as π/2 and π to ensure that the phase is shifted."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines the operation in Section IV-C.1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "mutation-dfc-definition",
+      "value": "The authors define the data sample feature change (DFC) operation as altering input features that serve as parameters of the feature map, for a pair of features, using addition of a fixed value, multiplication of a fixed value, sign flipping and one minus the parameter value. For images, it also uses cropping, rotating, horizontal flipping and vertical flipping.",
+      "anchor": "Section IV-C.2, p.6",
+      "quotes": [
+        "Therefore, we can directly alter features of the input data sample to cause a mutation in the data sample feature change (DFC) mutation operation.",
+        "These operations include cropping the image, rotating the image, horizontally flipping the image, and vertically flipping the image."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines the operation in Section IV-C.2.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "DFC mutates the data input, not the circuit, so a DFC 'kill' measures robustness of the decision boundary to perturbed inputs, which the authors acknowledge in Section V-D.2."
+    },
+    {
+      "id_suggestion": "mutation-apgc-gate-rationale",
+      "value": "The authors state that, among popular one-qubit parameterized gates, RX and RY change the amplitude whereas RZ adjusts the phase shift, and that APGC targets a change to a parameterized gate with a different impact on the qubit value.",
+      "anchor": "Section IV-C.3, p.6",
+      "quotes": [
+        "RX (θ) and RY (θ) causes the amplitude to change, whereas RZ(θ) adjusts the phase shift.",
+        "We target parameterized gate changes so that the original parameterized gate in the original quantum circuit is changed to a parameterized gate with a different impact on the qubit value."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's description without derivation in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "Section V-D.3 calls the replacement gate 'semantically equivalent', yet an RX to RZ change alters the unitary; the term is not defined for parameterized gates in this paper."
+    },
+    {
+      "id_suggestion": "mutation-layer-ops-definition",
+      "value": "The authors define layer shuffling (LS) as switching two layers, plus in-layer shuffles such as placing the entangling gates before the rotation gates; in-layer shuffling (ILS) swaps blocks inside a layer. Layer addition (ALA) adds a layer after existing layers, with parameters set by random initialization or by copying another layer's weights. Layer deletion (ALD) removes the entire layer, the rotation gates only, or the entangling gates only.",
+      "anchor": "Section IV-C.4 to IV-C.7, p.6-7",
+      "quotes": [
+        "We switch two layers around in the model for this mutation operation.",
+        "One is switching the ordering of the rotation gates and the entangling gates, such that the entangling gates are placed first in the layer followed by the rotation gates.",
+        "This layer is added to any possible spot after existing layers in the models.",
+        "We utilize both random initialization of the weights and copying of another layer’s weights to populate the parameters to create competent mutants.",
+        "Specifically, we target the entire layer, the rotation gates only, and the entangling gates only."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines these operations in Section IV-C.4 to IV-C.7.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "mutation-incompetent-mutants-excluded",
+      "value": "The authors state that some shuffling mutants can be incompetent (syntax or similar unrecoverable errors), and that such mutants are reported separately from killed and surviving mutants and are not counted in the mutation score.",
+      "anchor": "Section IV-C.4, p.6",
+      "quotes": [
+        "it is possible to produce incompetent mutants, or mutants that have syntax or similar unrecoverable errors.",
+        "These mutants are noted separately from the killed and surviving mutants and are not counted in the mutation score."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper states how it scores mutants (Section IV-C.4).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The paper does not report how many incompetent mutants were set aside."
+    },
+    {
+      "id_suggestion": "mutation-score-and-test-suite-definition",
+      "value": "The authors define the test suite as the test samples that the original model predicts correctly, and a mutated model is killed when it no longer predicts the correct label. The mutation score is the ratio of killed mutants over all total mutants generated, as a percentage.",
+      "anchor": "Section IV-B, Equation 1, p.4",
+      "quotes": [
+        "The correctly predicted samples are taken as the test suite.",
+        "predicted samples, killing any mutated model that no longer",
+        "Mutation score is the ratio of killed",
+        "where O is the set of all mutation operations generated and K is the set of all killed mutants."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper defines its test suite and score in Section IV-B.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The paper defines O as the set of all mutation operations generated, which reads as a slip for the set of mutants. The text does not say whether one flipped sample or a threshold of samples kills a mutant; Table I counts killed over total per operation, and Section V-D also speaks of 'killing data samples'."
+    },
+    {
+      "id_suggestion": "mutation-datasets-and-models",
+      "value": "The authors state they use six datasets (Iris with 4 features and 3 class labels, Wine Quality with 11 features and 11 class labels, Wisconsin Breast Cancer with 30 features and 2 class labels, and the image datasets MNIST, FashionMNIST and Kuzushiji-MNIST with 10 class labels each), three feature maps (ZFeatureMap, ZZFeatureMap, Amplitude Embedding) and three ansatzes (RealAmplitudes, EfficientSU2, QCNN).",
+      "anchor": "Section V-A.1 and V-A.2, p.7-8",
+      "quotes": [
+        "Iris [15], a tabular classification dataset with 4 features and 3 class labels;",
+        "Wine Quality [16], a tabular classification dataset with 11 features and 11 class labels;",
+        "Wisconsin Breast Cancer (BC) [17], a tabular classification dataset with 30 features and 2 class labels;",
+        "MNIST [18], an image classification dataset of handwritten digits with 10 class labels;",
+        "RealAmplitudes (RA), a strongly entangling ansatz featuring parameterized RY gates;",
+        "QCNN [8], quantum convolutional neural network with convolutional and pooling layers for image classification."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its experimental setup (Section V-A).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "mutation-qcnn-binary-and-image-setup",
+      "value": "The authors state that the QCNN is not used on the tabular datasets, that it performs binary classification (class label 0 against the rest for each image dataset), and that images are resized from 28 × 28 to 16 × 16 to map into 8 qubits with amplitude embedding.",
+      "anchor": "Section V-A.2, p.7-8",
+      "quotes": [
+        "Note that as QCNN is primarily focused on image classification tasks, we will not use this ansatz for the tabular classification datasets.",
+        "We resize the images from the image datasets from the original size of 28 × 28 to 16 × 16 to map into 8 qubits.",
+        "Additionally, the QCNN performs binary classification, so each image dataset is split into classifying class label 0 versus the other class labels in a one versus rest classification objective."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper's own statement of its setup and scope (Section V-A).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "Image results are for a one-versus-rest binary task on reduced 16 × 16 images, not for 10-class classification."
+    },
+    {
+      "id_suggestion": "mutation-test-suite-20-samples",
+      "value": "The authors state that each dataset model is run on 20 samples from its test set, that the samples predicted correctly by the original model form the test suite, and that the same test suite is used for the new and the prior mutation operations.",
+      "anchor": "Section V-A.2, p.8",
+      "quotes": [
+        "Each dataset model is run on a 20 samples from their respective test sets.",
+        "For consistency, the same test suite is used by both our mutation operations and prior mutation operations."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its experimental setup (Section V-A).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "A test suite of at most 20 samples per model is small; mutation scores depend on it, and the paper gives no variance, repeated seeds or confidence interval."
+    },
+    {
+      "id_suggestion": "mutation-setup-software-hardware",
+      "value": "The authors state they use Python v3.13.5, Qiskit v2.2.3 and Qiskit Machine Learning v0.9.0, export mutants to QASM v3, and run all experiments on an Intel i9 13900K CPU. They implement the prior mutation operations in their own framework for a fair comparison.",
+      "anchor": "Section V-A, p.7",
+      "quotes": [
+        "We use Python v3.13.5, Qiskit v2.2.3 [12], and Qiskit Machine Learning v0.9.0 [13].",
+        "Mutants are exported to QASM v3 [14] for best compatibility with parameter definitions.",
+        "All experiments are run on an Intel i9 13900K CPU.",
+        "we implement the mutation operations in our framework to enable a fair comparison."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its experimental setup (Section V-A).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The prior operations (Muskit, QMutPy) are re-implemented by the authors, not run through those tools, so Table II reflects the authors' re-implementation."
+    },
+    {
+      "id_suggestion": "mutation-shots-1000",
+      "value": "The authors state that each model, including the original, is run with 1,000 shots, and the label returned is the most occurring result.",
+      "anchor": "Section V-C, p.8-9",
+      "quotes": [
+        "each model, including the original, is run under 1,000 shots, with the resulting label the most occurring result."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of its experimental setup (Section V-C).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "With a shot-based majority label, a borderline sample could flip between runs; the paper does not report repeated runs of the original model."
+    },
+    {
+      "id_suggestion": "mutation-generation-time-results",
+      "value": "The authors report mean generation time per mutant of 0.00025 seconds for Iris with their operations against 0.00032 seconds with the prior operations, 0.00044 against 0.00058 seconds for Wine, and 0.00055 against 0.00108 seconds for the QCNN models across the three image datasets.",
+      "anchor": "Section V-B, Tables I and II, p.8",
+      "quotes": [
+        "For the Iris dataset, the generation time averages to 0.00025 seconds per mutant generated",
+        "In comparison, the prior mutation operations displayed in Table II average to 0.00032 seconds per mutant.",
+        "the generation time averages to 0.00044 seconds per mutant and the prior mutation operation averages 0.00058 seconds per mutant.",
+        "This results in an average generation time per mutant across all three datasets of 0.00055 seconds per mutant, with the prior mutation operations averaging 0.00108 seconds per mutant."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The text says 132 mutants for the Iris RA models and 244 for the SU2 models, which does not match the Table I killed/total counts (for example 960 APGC mutants alone for Iris ZFM RA). The per-mutant times are tiny either way."
+    },
+    {
+      "id_suggestion": "mutation-evaluation-time-results",
+      "value": "The authors report that evaluation per mutant was slower with the new operations than with the prior ones on Wine (0.1551 seconds against 0.1234 seconds), and that the QCNN models averaged 0.2255 seconds per mutant with the new operations against 0.2466 seconds with the prior operations.",
+      "anchor": "Section V-C, Tables I and II, p.8-9",
+      "quotes": [
+        "For example, Wine averaged 0.1551 seconds per mutant on the new mutation operations compared to 0.1234 seconds per mutant with the prior mutation operations.",
+        "averaging at 0.2255 seconds per mutant",
+        "The prior mutation operations in Table II averaged an evaluation time of 0.2466 seconds per mutant generated."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "These are per-mutant times. Total evaluation time in the tables is lower for the new operations because far fewer mutants are run (Table I Eval. column against Table II Eval. column)."
+    },
+    {
+      "id_suggestion": "mutation-apc-scores",
+      "value": "The authors report APC average mutation scores of 78.27% for the Iris QNNs, 45.56% for Wine, 28.15% for BC, and 13.99% across the QCNN models on the three image datasets.",
+      "anchor": "Section V-D.1, Table I, p.9",
+      "quotes": [
+        "The Iris QNNs had the best mutation score average of 78.27%",
+        "with average mutation scores for APC of 45.56%",
+        "and 28.15%, respectively.",
+        "with an average mutation score of 13.99% across all three datasets for the APC mutation operation."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The Wine and BC figures are paired with 'respectively' in the text; the order matches Table I."
+    },
+    {
+      "id_suggestion": "mutation-dfc-scores",
+      "value": "The authors report DFC average mutation scores of 57.67% for the QNN models and 39.01% for the QCNN models.",
+      "anchor": "Section V-D.2, p.9-10",
+      "quotes": [
+        "The QNN models averaged 57.67% mutation score, while QCNN averaged 39.01%."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "mutation-ls-ils-scores",
+      "value": "The authors report that the QCNN models reached a 100.00% mutation score for both LS and ILS, while the QNN models averaged 47.01% for LS and 44.13% for ILS.",
+      "anchor": "Section V-D.4, Table I, p.10",
+      "quotes": [
+        "QCNN had 100.00% mutation score for both LS and ILS, while QNN averaged 47.01% and 44.13% for LS and ILS, respectively."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "mutation-ala-ald-scores",
+      "value": "The authors report that every QCNN model had a mutation score of 100.00% for both ALA and ALD, while the QNN models averaged 53.71% for ALA and 48.47% for ALD; on the BC QNNs ALA and ALD did not kill a majority of mutants, and with ZFM and RA ALA killed none.",
+      "anchor": "Section V-D.5, Table I, p.10-11",
+      "quotes": [
+        "Across the QCNNs, each had a mutation score of 100.00% for both ALA and ALD.",
+        "with an average mutation score of 53.71% for ALA and 48.47% for ALD.",
+        "ALA and ALD did not successfully kill a majority of the mutants, and with ZFM and RA, failed to kill any with ALA."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "Where ALA or ALD survive on QNNs, the authors take it to mean the repeated or deleted layer has a minor effect on the decision boundary; they do not test this with a separate analysis."
+    },
+    {
+      "id_suggestion": "mutation-prior-ops-scores",
+      "value": "The authors report that the tabular models had an average mutation score of 30.02% under the prior mutation operations (add, delete, change gate), while the QCNN models killed all mutations.",
+      "anchor": "Section V-D.6, Table II, p.11",
+      "quotes": [
+        "The tabular dataset models were more robust to the mutations, with an average mutation score of 30.02%.",
+        "On the other hand, the QCNN models successfully killed all mutations."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The prior operations were re-implemented by the authors and run on the same 20-sample-or-fewer test suites; the 100.0% QCNN score under prior operations means the new operations do not expose additional surviving mutants there, though they use far fewer mutants."
+    },
+    {
+      "id_suggestion": "mutation-prior-ops-mutant-counts",
+      "value": "The authors report that the prior add-gate operation can generate as many as 61,200 mutants for the QNN models and up to 97,020 for the QCNN models.",
+      "anchor": "Section V-E, Table II, p.11",
+      "quotes": [
+        "For QNNs, this can generate as many as 61,200 mutants, whereas for QCNN it can generate up to 97,020."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "mutation-commutativity-redundancy-design",
+      "value": "The authors state that their operations are designed to limit redundant mutants caused by commutativity within the circuit, and that the prior add-gate operation produces the majority of the prior mutants and can produce equivalent mutants through commutativity.",
+      "anchor": "Section V-E, p.11",
+      "quotes": [
+        "these mutation operations are designed to limit the number of redundant mutants being generated due to commutativity within the circuit.",
+        "In prior mutation operations, the add gate operation produces the majority of the mutants, as every possible gate is added into places within the quantum circuit."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's claim; the paper does not measure equivalent or redundant mutants.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "No experiment in the paper counts equivalent mutants or checks that the new operations avoid them; the reduction is shown only as a count of mutants generated."
+    },
+    {
+      "id_suggestion": "mutation-qcnn-structure-explanation",
+      "value": "The authors state that QCNN models killed all LS and ALA/ALD mutants because shuffling, adding or deleting layers breaks the structure of the QCNN, in which convolutional layers work on a set number of qubits and pooling layers reduce the qubit count.",
+      "anchor": "Section V-D.4 and V-D.5, p.10-11",
+      "quotes": [
+        "The QCNN models successfully killed all mutants for LS as the layer shuffling breaks the structure of the QCNN that is reliant on",
+        "This is due to the layers being highly structured and reducing the information to smaller qubits."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's explanation, not tested in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "mutation-qnn-repeated-layer-explanation",
+      "value": "The authors state that, because each layer in a QNN is the same, adding or deleting a layer may not change the prediction, and that QNN layers with similar weights can leave LS mutants unkilled.",
+      "anchor": "Section V-D.4 and V-D.5, p.10-11",
+      "quotes": [
+        "Because each layer in the QNN model is the same unlike in QCNN, the addition or deletion of a layer may not cause the model to produce a different, incorrect prediction.",
+        "it is possible that layers can have similar weights, meaning that LS does not affect the decision boundaries and results in the mutant not being killed."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's explanation, not tested in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "Surviving LS, ALA or ALD mutants on QNNs could be equivalent mutants (no behavioral change at all); the paper does not separate equivalent from merely undetected mutants."
+    },
+    {
+      "id_suggestion": "mutation-prior-ops-small-additions-robust",
+      "value": "The authors state that small gate additions may not move the model enough to flip a decision boundary from a correct to an incorrect prediction, and take this to show that the trained decision boundaries keep some robustness to small noise or perturbations.",
+      "anchor": "Section V-E, p.11",
+      "quotes": [
+        "Additionally, small gate additions may not cause the model to deviate enough to flip decision boundaries from correct prediction to incorrect prediction.",
+        "This indicates that the decision boundaries originally trained by the model maintain some robustness to them to account for small noise or perturbations within the model."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's interpretation, not tested in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The paper tests no noise or perturbation model; the robustness reading rests on the surviving-mutant counts only."
+    },
+    {
+      "id_suggestion": "mutation-first-in-qml-claim",
+      "value": "The authors state that, to the best of their knowledge, there are no prior efforts in mutation testing of QML models, and that classical mutation operations and mutation testing methods cannot be directly applied to QML models.",
+      "anchor": "Section III-B, p.4",
+      "quotes": [
+        "The classical mutation operations and mutation testing methods cannot be directly applied on QML models.",
+        "To the best of our knowledge, there are no prior efforts in mutation testing of QML models."
+      ],
+      "kind": "claimed",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's claim about the literature, without a systematic search in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "mutation-prior-ops-cited-definitions",
+      "value": "The authors attribute to prior work [3], [4] five basic quantum-circuit mutation operations (gate addition, gate removal, gate replacement, measurement addition, measurement removal), and attribute to Muskit [3] the wrong output oracle and the output probability oracle, the latter compared within a tolerance such as 5%.",
+      "anchor": "Section II-A and Section III-A, p.2-3",
+      "quotes": [
+        "Prior work [3], [4] has defined five basic mutation operations for quantum circuits.",
+        "Thus, the output probability distributions are compared within a small tolerance, such as 5%."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": "The paper's own experiments do not use the oracles WOO or OPO; they use predicted-label agreement on the test suite."
+    },
+    {
+      "id_suggestion": "mutation-conclusion-claim",
+      "value": "The authors conclude that their seven new mutation operations are able to find faults that would not be exposed with prior mutation operations, and that the directed approach reduces the number of overall and redundant mutants required to observe faulty behavior.",
+      "anchor": "Section VI, Conclusion, p.11",
+      "quotes": [
+        "We present seven new mutation operations which are able to find faults that would not be exposed with prior mutation operations.",
+        "Our directed approach also reduces the number of overall and redundant mutants required to observe faulty behavior, enabling efficient testing of quantum neural networks."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's conclusion; the paper shows mutant counts and scores, not a direct test that new-operation mutants expose faults the prior ones miss.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "Under the prior operations the QCNN models already reach 100.0%, and on tabular models the prior operations are lower mainly because most add-gate mutants survive; the paper does not show a fault found only by the new operations."
+    }
+  ]}]}
