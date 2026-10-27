@@ -1,0 +1,1150 @@
+{
+ "papers": [
+  {
+   "record_id": "bermejo-2026-quantum-convolutional-neural-networks-effectively",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Bermejo-et-al._2024_Quantum-Convolutional-Neural-Networks-are-Effectively-Classically__2408.12739.pdf",
+   "title_in_file": "Quantum Convolutional Neural Networks are Effectively Classically Simulable",
+   "version_note": "arXiv:2408.12739v2 [quant-ph], dated 20 Feb 2026; the text layer holds the paper once. The record id carries 2026 and the file name carries 2024, which matches the v1 date of the preprint and this v2 text.",
+   "pages": 33,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A preprint arguing, with a classical surrogate built from Pauli propagation, tensor networks and classical shadows, that tracing out and measurement-based QCNNs are effectively classically simulable on the locally-easy benchmark datasets used in the literature.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qcnn-classical-surrogate-matches",
+     "verdict": "narrowed",
+     "note": "The 1024 qubit size applies only to the XXX bond-alternating task; the Haldane chain is 512 qubits, the ANNNI and cluster tasks are 32 qubits and the classical image tasks are simulated on 8 qubits. The comparison baseline is accuracy reported in the literature for full QCNNs, not a QCNN the authors ran. Classical-dataset accuracies are the best of 5 runs. The surrogate is trained to solve the task, not to emulate the training of an exact QCNN.",
+     "value": "The authors report that the classical surrogate matches or outperforms standard QCNNs on the benchmark datasets, with 1024 qubits for the XXX chain, 512 qubits for the Haldane chain, 32 qubits for the ANNNI and cluster models and 8 qubits for the classical image datasets, compared against accuracies reported in the literature for full QCNNs, and with the classical-dataset results given as the best of 5 runs.",
+     "anchor": "Abstract, p1; Section IV, pp7-11; Table I, p11",
+     "quotes": [
+      "that matches or outperforms standard QCNNs on all benchmark datasets and on up-to 1024 qubits",
+      "Here we consider a chain of n = 1024 qubits.",
+      "Here we consider a chain of n = 512 qubits.",
+      "In this case we consider a system size of n = 32 qubits.",
+      "it is reshaped as an unnormalized quantum state |ψ(x)⟩ on n = 8 qubits.",
+      "In all cases, we find that the simulated QCNN reaches similar, or better performances than those reported in the literature",
+      "(showing best out 5 independent runs)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from the authors' own simulations; baselines are literature numbers.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The abstract says all benchmark datasets and up to 1024 qubits; the 1024 figure is one task. No QCNN baseline was run in this paper, so matches or outperforms is against literature numbers whose settings (shots, training size) may differ."
+    },
+    {
+     "id": "qcnn-no-evidence-nontrivial",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that there is currently no evidence that QCNNs will work on classically non-trivial tasks, and that their exhaustive literature search did not produce a single example of a task that cannot be classified by simulating the QCNN in the low-bodyness subspace.",
+     "anchor": "Section V (Discussion), pp11-12",
+     "quotes": [
+      "There is currently no evidence that QCNNs will work on classically non-trivial tasks",
+      "our exhaustive literature search did not produce a single example of a task that cannot be classified by simulating the action of the QCNN in the small subspace of low-bodyness observables"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim; the search protocol is not described.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper gives no search protocol, so the exhaustive literature search cannot be checked from the text."
+    },
+    {
+     "id": "qcnn-no-full-dequantization",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that their work does not intend to prove that no scenario needs a QCNN trained on a quantum computer, that the burden of proof now rests on proponents of QCNNs, and that their claims do not amount to a full dequantization of QCNNs.",
+     "anchor": "Section V (Discussion), pp11-12",
+     "quotes": [
+      "Clearly, our work cannot, and does not intend to, prove that there is no scenario whatsoever where it may be necessary to train a QCNN on a quantum computer.",
+      "the burden of proof now rests firmly in the hands of any proponent of QCNNs",
+      "our claims do not amount to a full dequantization of QCNNs"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope and limits of its own claims in Section V.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Section V adds the reason: at least for quantum input data, a quantum computer is needed to obtain classical shadows."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "result1-tracing-out-exponential-decay",
+     "value": "The paper states, as an informal Result 1, that for tracing out QCNNs whose convolutional layers are general parametrized two-qubit gates acting on nearest neighboring qubits, with each local gate forming an independent local 2-design over U(4), the average contribution of a Pauli of bodyness k to the Heisenberg-evolved measurement operator decays exponentially with k.",
+     "anchor": "Result 1 (Informal), Section III.A, p5",
+     "quotes": [
+      "Result 1 (Informal). Consider tracing out QCNNs",
+      "general parametrized twoqubit gates acting on nearest neighboring qubits",
+      "we sample the parameters θ such that each local gate forms an independent local 2-design over U(4)",
+      "In average, the contribution in Φ†θ(O) of a given Pauli with bodyness k, decays exponentially with k."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Informal statement with no explicit rate; the exact formula behind it is Theorem 1, and the decay is read from a plot of that formula (Figure 8).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The main text gives no rate for Result 1; the rate is in the cited companion work and in the plotted Figure 8."
+    },
+    {
+     "id_suggestion": "theorem1-exact-kpurity-formula",
+     "value": "The paper states Theorem 1, an exact expression for the average k-purity of the Heisenberg-evolved single qubit Pauli measurement operator of a tracing out QCNN whose qubit number is a power of two, whose gates in each layer do not cross and whose gates are independent 2-designs over U(4); the sum formula itself is not recoverable from the text layer.",
+     "anchor": "Theorem 1, Appendix A.3, pp20-22",
+     "quotes": [
+      "Theorem 1. Consider a QCNN acting on n = 2η qubits, with η ∈ N, as in Fig. 2 (b,left), or alternatively as in Fig. 7(b,left).",
+      "Then, assuming that Ult forms an independent 2-design over the unitary group U(4) and denoting the average Eθ =",
+      "where O is a single qubit Pauli operator, and pΦ(k†θ)(O) is the k-purity as defined in Eq. (A1).",
+      "We choose to study this particular configuration because it reduces the mixing of operators, keeping the exact calculation of the operator bodyness tractable."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The formula of Eq. (A17) is garbled in the text layer, so the statement could not be quoted in full.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The configuration is chosen to make the calculation tractable, so Theorem 1 covers one non-crossing architecture; the paper says it gives a reliable lower bound for operator mixing in other architectures but does not prove that."
+    },
+    {
+     "id_suggestion": "lemma1-p-gate-second-moment",
+     "value": "The paper proves Lemma 1: for a circuit of two qubit gates in which each gate is sampled independently from a 2-design over U(4), the second moment operator of each gate is a 4 × 4 matrix, the P gate, acting on the span of tensor squares of the identity and swap vectors; it maps the all-identity and all-swap basis vectors to themselves and mixes the two mixed identity-swap vectors, and the caption of the proof-technique figure gives the mixing coefficient as 2/5.",
+     "anchor": "Lemma 1 and proof, Appendix A.2, pp19-20; Figure 7 caption, p22",
+     "quotes": [
+      "Lemma 1. Let U (θ) = l Ul be a circuit composed of two qubit gates as in Fig. 2(b,left)",
+      "assume that each Ul is sampled independently from a 2-design over U(4).",
+      "can be represented by the 4 × 4 dimensional matrix P",
+      "τl(2) |ii⟩ = |ii⟩ ,",
+      "τl(2) |ss⟩ = |ss⟩ ,",
+      "obtained after applying the P -gate on each gate and equals 2/5, according to Eq. (A14)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix A.2 from the two-fold commutant of U(4); the statement and its conditions are quoted from Lemma 1 and its proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "definition-bodyness",
+     "value": "The authors define the bodyness of a Pauli operator as the number of qubits on which it acts non-trivially.",
+     "anchor": "Section III.A, p5",
+     "quotes": [
+      "define the bodyness of any given Pauli as the number of qubits it acts non-trivially on."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition stated in Section III.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "definition-k-purity",
+     "value": "The authors define the k-purity of an operator as the projection of that operator onto all Paulis of bodyness k.",
+     "anchor": "Appendix A.1, p18",
+     "quotes": [
+      "we define its k-purity as the projection of O into all the Paulis with bodyness k."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition stated in Appendix A.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "definition-locally-easy-dataset",
+     "value": "The authors define a dataset for a supervised QML classification task as locally-easy if it can be classified using the expectation values of low-bodyness observables of the input quantum states.",
+     "anchor": "Definition 1, Section III.B, p6",
+     "quotes": [
+      "Definition 1 (Locally-easy dataset). Given a dataset for a supervised QML classification task, we will say that it is locally-easy if it can be classified using the expectation values of low-bodyness observables of the input quantum states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 1 in Section III.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The definition does not fix how low the bodyness must be or what accuracy counts as classified."
+    },
+    {
+     "id_suggestion": "locally-easy-necessary-not-sufficient",
+     "value": "The authors state that a locally-easy dataset is a necessary condition for the optimization curve to lie within the low-bodyness subspace but not a sufficient one, because initial points may exist that connect to the global minima only through paths that leave the subspace.",
+     "anchor": "Section III.B, p6",
+     "quotes": [
+      "Evidently, having a locally-easy dataset is a necessary condition for the optimization curve to lie within the lowbodyness subspace, but it is nonetheless not a sufficient one.",
+      "It is entirely possible that there exist initial points that are only connected to the global minima through paths",
+      "that need to leave the subspace."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state a limit of their own framework in Section III.B.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "result1-average-case-only",
+     "value": "The authors state that Result 1 is only an average statement that holds for randomly initialized QCNNs, that it gives no practical means to simulate the QCNN during training, and that their numerical simulations are a heuristic extension that should not be considered a bridge between average-case and worst-case scenarios.",
+     "anchor": "Section III.A, p6",
+     "quotes": [
+      "To finish, we note that the results in Result 1 are only an average statement, meaning that they only hold for randomly initialized QCNNs.",
+      "our numerical simulations are a heuristic extension of the classical average case simulability entailed by Result 1, and should not be considered a bridge between average-case and worstcase scenarios."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limits of Result 1 and of their simulations in Section III.A.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "entanglement-caveat-guarantees-void",
+     "value": "The authors state that the dominant contributions from local observables can be exponentially suppressed if the input data is too entangled, for example data following a volume law of entanglement, in which case the dominant information may not be in the small subspace and the theoretical guarantees for the model are no longer valid.",
+     "anchor": "Section III.A, pp5-6",
+     "quotes": [
+      "these can be exponentially suppressed if the input",
+      "data is too entangled (e.g., follows a volume law of",
+      "the theoretical guarantees for the",
+      "model are no longer valid."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the condition under which their guarantees fail in Section III.A.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-qcnn-barren-plateaus-too-entangled",
+     "value": "The authors state that it follows from Ref. [26] that QCNNs can exhibit barren plateaus when the data states are too entangled, and that QCNNs were shown to be barren plateau-free in Ref. [26] for low entangled datasets.",
+     "anchor": "Section I, p1; Section III.A, p6",
+     "quotes": [
+      "Indeed, these model have been shown to be barren plateaus-free in Ref. [26] for low entangled datasets.",
+      "sults of Ref. [26] that QCNNs can exhibit barren plateaus when the data states are too entangled."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [26].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-companion-error-decay-low-body-truncation",
+     "value": "The authors state, citing their companion Ref. [88], that on average the error in approximating the predicted labels by a low-k body approximation of the Heisenberg-evolved operator decays exponentially with k, specifically as O of the fraction two thirds raised to the power k (the text layer prints the fraction and the exponent on separate lines).",
+     "anchor": "Section III.A, p5",
+     "quotes": [
+      "The results in our companion work of Ref. [88] can be used to provide bounds on the average error",
+      "decays exponentially",
+      "Specifically, it decays as O"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to companion work Ref. [88]; the rate is garbled in the text layer.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The base of the exponent is read from the layout of the text layer as two thirds; the layer prints the digits 2 and 3 on separate lines."
+    },
+    {
+     "id_suggestion": "companion-result-not-efficient-or-faithful-in-training",
+     "value": "The authors state that the results of the companion Ref. [88] imply that randomly initialized QCNNs are classically simulable, but do not imply that the simulation is efficient or faithful throughout the whole training process, and that they do not imply that the regions of the landscape relevant during training can be simulated.",
+     "anchor": "Footnote 1, p2; Section II.B, p4",
+     "quotes": [
+      "the results of Ref. [88] imply that randomly initialized QCNNs are classically simulable, but this does not imply that the simulation will either be efficient or faithful throughout the whole training process.",
+      "they do not imply that we can simulate the regions of the landscape that are relevant during training."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of the prior result in footnote 1 and Section II.B.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "definition-classical-simulability-with-shadows",
+     "value": "The authors define a model as classically simulable if a classical algorithm takes an efficient description of the problem plus the data obtained from quantum devices in an initial data acquisition phase and returns a loss estimate whose minimization leads to a simulated trained model capable of classification accuracies comparable to those of the original model.",
+     "anchor": "Section II.B, pp4-5",
+     "quotes": [
+      "we say that a model is classically simulable if there exists a classical algorithm A that takes as input an efficient description of the problem, as well as the data obtained from quantum devices in an initial data acquisition phase",
+      "leads to a simulated trained model hθc∗ capable of achieving classification accuracies that are comparable to those of hθ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of classical simulability adopted in Section II.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The definition asks only for comparable accuracy, not for the simulation to track the exact QCNN's trained parameters."
+    },
+    {
+     "id_suggestion": "definition-dequantized-no-circuit-on-device",
+     "value": "The authors say that if there is no need to run the parametrized quantum circuit on a quantum device, the QML model's information processing abilities can be considered dequantized, and that their approach is a substantial but not full dequantization because a state preparation and local Pauli measurement experiment may still be required.",
+     "anchor": "Section II.B, p5",
+     "quotes": [
+      "if there is no need to run the parametrized quantum circuit on a quantum device, one can consider that the QML model’s information processing abilities are dequantized.",
+      "While this is not a full dequantization in the sense that some form of quantum experiment may still be required"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of dequantized stated in Section II.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "result2-measurement-based-exponential-decay",
+     "value": "The paper states, as an informal Result 2, that for measurement-based QCNNs whose convolutional layers are general parametrized two-qubit gates acting on nearest neighboring qubits, the average contribution of a Pauli of bodyness k to the Heisenberg-evolved measurement operator decays exponentially with k; the appendix argues this because the coefficients decay exponentially with the number of swap operators in the evolved operator.",
+     "anchor": "Result 2 (Informal), Section III.C, p6; Appendix E.1, p32",
+     "quotes": [
+      "Result 2 (Informal). Consider measurement-based QC-",
+      "In average, the contribution in Φθ† ,λ(O) of a given Pauli with bodyness k, decays exponentially with k.",
+      "the coefficients decay exponentially with the number of s in the Heisenberg-evolved"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Informal statement; the appendix gives an argument based on the average of q_j rather than a stated theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Result 2 is said to be proved in the appendix, but Appendix E gives an argument with averages of the measurement probabilities, not a formal theorem with a rate."
+    },
+    {
+     "id_suggestion": "measurement-qcnn-q-equals-one-pathological",
+     "value": "The authors state that for measurement-based QCNNs a global operator could pass through the P gates without exponential suppression only if every measured qubit were in an unentangled computational basis state, that this case does not appear on average because a Haar random two-qubit gate precedes the measurement, and that in the pathological case the QCNN disentangles the input state so that the QCNN and the data are classically simulable by tensor networks.",
+     "anchor": "Appendix E.1, p32",
+     "quotes": [
+      "In this pathological case, a",
+      "global operator is able to move through the P -gates without becoming exponentially suppressed, and the QCNN could",
+      "one only obtains qj = 1 for all j if the input state to all measurements in an unentangled",
+      "computational basis state, indicating that the QCNN is able to disentangle the input state via its simple convolutional"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Informal argument in the appendix, not a stated theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "variance-tracing-out-leq-measurement-based",
+     "value": "The paper states that, if all gates in the convolutional layer form independent two designs, the variance over the parameters of the expectation value of the tracing out QCNN is at most that of the measurement-based QCNN, and it derives this from the positivity of overlaps of the state with identity and swap operator strings.",
+     "anchor": "Equation (7), Section III.C, p7; Equations (E11)-(E12), Appendix E.1, p32",
+     "quotes": [
+      "Equation. (7) indicates that the variance of measurement-based QCNNs is larger than that of tracing out ones",
+      "and hence, if all gates in the convolutional layer form independent two designs",
+      "Varθ Tr Φtθr(ρi)O ⩽ Varθ [Tr[Φθmeas(ρi)O]] ,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix E.1 with the condition on the convolutional gates quoted from the derivation.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The main text says the inequality holds independently of the convolutional layer architecture, while the appendix derivation is conditioned on independent two designs."
+    },
+    {
+     "id_suggestion": "measurement-reduces-expressive-power-claim",
+     "value": "The authors state that the variance inequality shows that adding measurements to the architecture decreases the model's expressive power.",
+     "anchor": "Section III.C, p7; Appendix E.1, p32",
+     "quotes": [
+      "showing that adding measurements to the architecture decreases the model’s expressive power",
+      "Equation (E12) shows that the QCNN with measurements concentrates less than the QCNN without them, implying"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Interpretation by the authors of a variance inequality, citing Refs. [18, 115].",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The step from a variance ordering to expressive power rests on the cited link between variance and expressibility, not on a result proved here."
+    },
+    {
+     "id_suggestion": "setup-qcnn-definition-tracing-out-and-measurement",
+     "value": "The authors define a QCNN as a composition of convolutional and pooling channels with a number of layers growing logarithmically with the qubit number, consider tracing out QCNNs and measurement-based QCNNs, and read out an observable acting on a constant number of qubits.",
+     "anchor": "Section II.A, pp3-4",
+     "quotes": [
+      "Typically, in a pooling layer half of the qubits are discarded or measured, meaning that the total number of layers satisfies L ∈ Θ(log(n)), i.e., for",
+      "(1) tracing out based QCNNs, where one uses unitary convolution maps and simply traces-out of qubits (according to some pattern) in the pooling layers,",
+      "measurementbased QCNNs, where qubits are measured in the pooling layers, and their results are used to control unitaries in neighboring sites.",
+      "sure an observable O acting on O(1) qubits to compute the predicted label"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of the architectures studied, in Section II.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "setup-quantum-datasets-and-training",
+     "value": "The authors state that the quantum datasets are DMRG ground states of the bond-alternating XXX, Haldane chain, ANNNI and cluster Hamiltonians with an even number of states per phase, with Pauli classical shadows as tomographic data, a simulated QCNN whose blocks are general two qubit unitaries with 15 parameters, half of the remaining qubits traced out in each pooling layer, a cross-entropy loss and the LBFGS optimizer.",
+     "anchor": "Section IV.A, p7",
+     "quotes": [
+      "The datasets are composed of an evenly distributed number of ground-states per phase",
+      "Then, the tomographic data is computed by performing standard Pauli classical shadows [92–94].",
+      "where each block is a general two qubit unitary with 15 parameters",
+      "The training of the simulated QCNN is performed by using a cross-entropy based loss function and leveraging the LBFGS [122] optimizer for the parameter update."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own experimental setup in Section IV.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "surrogate-trained-to-solve-not-emulate",
+     "value": "The authors state that the classical, weight-truncated QCNN is self-consistently trained to solve the classification tasks, not to faithfully emulate the training of an exact QCNN.",
+     "anchor": "Section IV.A, p7",
+     "quotes": [
+      "Notably, the classical, weight-truncated QCNN is self-consistently trained to solve the classification tasks, not to faithfully emulate the training of an exact QCNN."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of their surrogate in Section IV.A.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "This limits the abstract's claim that the surrogate matches standard QCNNs: the surrogate reaches comparable accuracy, which is not the same as reproducing the exact QCNN's trained function."
+    },
+    {
+     "id_suggestion": "xxx-1024-qubit-classification-with-shadows",
+     "value": "The authors report that, for the bond-alternating XXX model on a chain of 1024 qubits with the maximum bodyness of the evolved measurement operator capped at two, a dataset of 100 states, 200 training iterations averaged over 5 runs and only the first 400 operators of largest variance, taking 100 classical shadows per data point consistently gives test accuracies above 90%, with the total number of measurement shots never above 20000.",
+     "anchor": "Section IV.A.1, p8; Figure 3b, p8",
+     "quotes": [
+      "Here we consider a chain of n = 1024 qubits.",
+      "Throughout the simulation we cap the maximum bodyness of the Heisenberg-evolved measurement operator at two.",
+      "We use a dataset of 100 states and perform the training over 200 iterations, averaged over 5 different runs.",
+      "only the first 400 operators with the largest variance across the shadows dataset were used to train this model",
+      "by taking only 100 classical shadows per data point one can consistently achieve test accuracies above 90%",
+      "the total number of measurements shots used to train our classical QCNN never goes above 20000 for the whole experiment"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text refers to Fig. 10(b) for these results but they are in the Figure 3 panel b; Figure 10 in the appendix is the scaling study. The dataset has 100 states, so a small test set limits the precision of an accuracy above 90%."
+    },
+    {
+     "id_suggestion": "xxx-largest-qcnn-with-classical-shadows-claim",
+     "value": "The authors state that, to their knowledge, the 1024 qubit simulation is the largest QCNN implementation with classical shadows, and that it was performed with resources available on a modern laptop.",
+     "anchor": "Section IV.A.1, p8",
+     "quotes": [
+      "Here we consider a chain of n = 1024 qubits.",
+      "To our knowledge, this constitutes the largest QCNN implementation with classical shadows",
+      "the simulation was performed with resources available on a modern laptop"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own priority claim, with no hardware details given.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shot-budget-comparison-to-quantum-hardware-claim",
+     "value": "The authors state that training a QCNN on a quantum computer uses at least 5000-10000 shots to estimate the loss in each iteration step per data point, and conclude that the quantum resources used in their scheme are an order of magnitude smaller than standard QCNN training.",
+     "anchor": "Section IV.A.1, p8",
+     "quotes": [
+      "where at least 5000–10000 shots are used to estimate the loss in each iteration step per data point",
+      "the amounts of quantum resources used in our scheme is order of magnitude smaller than standard QCNN training"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Comparison made by the authors against a hardware shot count that they do not cite or measure.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The shot figure for hardware training carries no citation, and the authors compare a total shadow budget with a per-iteration, per-sample shot count."
+    },
+    {
+     "id_suggestion": "haldane-512-qubit-classification-with-shadows",
+     "value": "The authors report that, for the Haldane chain on 512 qubits classifying the paramagnetic phase against the symmetry-protected phase, with the transition set at 0.423 in the thermodynamic limit, the bodyness capped at three and 3000 operators of largest variance, a dataset of 100 states and 200 iterations averaged over 5 runs, 10 training points and 500 shadows per state need only a total of 5000 measurements, that more shadows give better accuracy, and that the number of training points matters less, likely because states in one phase overlap strongly.",
+     "anchor": "Section IV.A.2, pp8-9; Figure 4b, p9",
+     "quotes": [
+      "Here we consider a chain of n = 512 qubits.",
+      "we fix J = 1 and h1 = 0.5, and set the transition between phases to occur at h2 = 0.423",
+      "we cap the maximum bodyness of the Heisenberg-evolved measurement operator at three, and we classify the phases only on the expectation values of the 3000 operators with the largest variance across the shadows",
+      "We use again a dataset of 100 states and perform training over 200 iterations, averaged over 5 different runs.",
+      "Here, at 10 training points and 500 shadows per state, our scheme requires only a total of 5000 measurements",
+      "the number of training points has a smaller effect on the model’s performance, likely due to the fact that all the states in the same phase have large overlap."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study; the accuracies are in Figure 4b and are not in the text.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text gives no accuracy value for the 10 training point, 500 shadow setting; only the measurement count."
+    },
+    {
+     "id_suggestion": "annni-32-qubit-classification-accuracies",
+     "value": "The authors report that, for the ANNNI model on 32 qubits with the bodyness capped at four, a sliding window of size 8 qubits, 300 states, and training on 200 states with 4000 shadows per state or on 20 states with 2500 shadows per state, averaged over 5 runs, the train and test accuracies were 82.8% and 85.8% for 200 training points and 87% and 80.2% for 20 training points.",
+     "anchor": "Section IV.A.3, p9; Figure 5b, p10",
+     "quotes": [
+      "In this case we consider a system size of n = 32 qubits.",
+      "we cap the maximum bodyness of the Heisenberg-evolved measurement operator at four, where we estimate the expectation of the initial states with non-identity Pauli operators inside a sliding window of size 8 qubits.",
+      "Our dataset is now composed of 300 states and we consider two scenarios where we train over 200 and 20 of them (taking 4000 and 2500 shadows per state, respectively).",
+      "The training is averaged over 5 different runs.",
+      "For 200 training points, we can achieve a train accuracy of 82.8%, and a test accuracy of 85.8%.",
+      "Then, for 20 training points the train accuracy was of 87%, while the test of 80.2%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Test accuracy exceeds train accuracy at 200 points and train exceeds test at 20 points; the text does not give a spread across the 5 runs."
+    },
+    {
+     "id_suggestion": "cluster-32-qubit-classification-accuracies",
+     "value": "The authors report that, for the cluster Hamiltonian on 32 qubits with the bodyness capped at four, a sliding window of 8 qubits, 300 states and training on 200 or 20 states with 4000 shadows per state, averaged over 5 runs, train and test accuracies were 80.9% and 84% for 200 training points and 85% and 77.6% for 20 training points, which they describe as comparable to and even higher than previous attempts.",
+     "anchor": "Section IV.A.4, p10; Figure 6b, p10",
+     "quotes": [
+      "Similarly to the previous ANNNI model, we consider a system size of n = 32 qubits.",
+      "we cap the maximum bodyness of the Heisenberg-evolved measurement operator at four, where the non-trivial operators are taken from a sliding window of 8-qubits size.",
+      "The training is averaged over 5 different runs.",
+      "The dataset now consists of 300 states and we consider training on subsets of 200 and 20 of them (taking 4000 shadows per state).",
+      "For 200 training points, we find a train and test accuracies of 80.9% and 84% respectively.",
+      "Then, for 20 training points we obtain a train accuracy of 85%, and a test one of 77.6%.",
+      "In all cases, these accuracies are comparable and even higher than the ones achieved in previous attempts for the classification of the Cluster Hamiltonian [77, 78]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "anni-cluster-errors-near-transitions-and-label-mismatch",
+     "value": "The authors state that for the ANNNI and cluster models most misclassification errors lie near the phase transitions, and that some errors may be spurious because the dataset labels come from the thermodynamic limit phase diagram rather than the finite size one.",
+     "anchor": "Section IV.A.4, pp10-11",
+     "quotes": [
+      "most of the misclassification errors are located near the phase transitions",
+      "from the fact that the “true” labels in our dataset are assigned by using the thermodynamic limit phase diagram, rather than the finite size one."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Observation and conjecture by the authors; no test of the label explanation is given.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "setup-classical-datasets-and-encodings",
+     "value": "The authors state that the classical datasets are MNIST, Fashion-MNIST, EuroSAT and GTSRB, encoded by amplitude encoding of 8 qubit matrix product states or by angle encodings (tensor product, hardware efficient and classically hard embeddings), simulated with a constrained-bodyness MPS algorithm and a mean-squared error loss.",
+     "anchor": "Section IV.B, pp10-11",
+     "quotes": [
+      "we will simulate the action of the QCNN for the following datasets: MNIST [51–62], Fashion-MNIST [51–59], EuroSAT [63– 67] and GTSRB [60, 61, 68, 69].",
+      "it is reshaped as an unnormalized quantum state |ψ(x)⟩ on n = 8 qubits.",
+      "Then, for angle encoding we will use a tensor product embedding, hardware efficient embedding and the so-called classically hard embedding.",
+      "the simulation of the QCNN is conducted by means of the constrained-bodyness MPS algorithm described in the appendix, and we use a mean-squared error loss function."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own classical-data setup in Section IV.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table1-classical-dataset-test-accuracies",
+     "value": "The authors report in Table I test accuracies of the simulated QCNN on pairs of classes from MNIST, Fashion-MNIST, EuroSAT and GTSRB under amplitude and angle encodings, obtained with operators of bodyness constrained to 2 (3 for starred entries), as the best of 5 independent runs, and describe them as high and comparable to or larger than those in the literature.",
+     "anchor": "Table I and Section IV.B, p11",
+     "quotes": [
+      "Initial size Train Points Test Points Amplitude(%) TPE(%) HEA 1/3 L(%) CHE 1/3 L (%)",
+      "All the results are obtained with a constrained-bodyness of 2 operators, except for ∗ which make use of 3 operators.",
+      "Here we can see that the simulated QCNN result in high test accuracies (showing best out 5 independent runs), comparable to, and even larger than, those found in the literature."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study; the table cells could not be quoted at the minimum quote length.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer holds the table cell by cell. Read from the table, entries run from 82% to 100%, the lowest being the three-layer classically hard encoding on GTSRB bumpy road against road work. Reporting the best of 5 runs overstates a typical run, and the literature accuracies compared against are not tabulated."
+    },
+    {
+     "id_suggestion": "shallow-encodings-admit-efficient-mps",
+     "value": "The authors state that they use only shallow embedding schemes, one and three layers for the hardware efficient and classically hard encodings, because deep versions are not useful and can give states too entangled for the QCNN's trainability guarantees, and that as a direct consequence all data encoded states admit an efficient MPS decomposition.",
+     "anchor": "Section IV.B, p11",
+     "quotes": [
+      "we always take shallow embedding schemes (one and three layers for the hardware efficient and classically hard)",
+      "as it is well known that deep versions of these encoding are not useful [123]",
+      "A direct consequence of this fact is that all data encoded states will all admit an efficient MPS decomposition."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' statement, resting on Ref. [123] for the claim about deep embeddings.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "This restricts the classical-data result to shallow encodings; the paper does not test deep encodings."
+    },
+    {
+     "id_suggestion": "classical-data-qcnn-no-quantum-resources-claim",
+     "value": "The authors state that all of the QML models used for the classical datasets are fully classically simulable because the embedding scheme itself is classically simulable, so no quantum resources appear to be needed, and that using QCNN-based QML schemes for classical data appears to be an ill-motivated task.",
+     "anchor": "Section IV.B, pp11-12",
+     "quotes": [
+      "all of the QML models used here are fully classically simulable",
+      "As such, it appears that no quantum resources are needed to simulate the QCNN.",
+      "using QCNN-based QML schemes for classical data appears to be an ill-motivated task."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion, resting on Ref. [123] and on the shallow embeddings used.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The conclusion holds for the shallow encodings and the four image datasets tested here."
+    },
+    {
+     "id_suggestion": "random-forest-xxx-100-qubit-perfect-classification",
+     "value": "The authors report that a random forest classified the two phases of 500 ground states of the n = 100 qubit XXX bond-alternating model, using overlaps with all single-nontrivial-Pauli strings plus 500 two-nontrivial-operator strings as features, 350 training states and 150 test states averaged over 200 trainings, with 100% accuracy, and they conclude the dataset is locally easy.",
+     "anchor": "Appendix D, pp28-29; Figure 12, p29",
+     "quotes": [
+      "We generate 500 ground states from an n = 100 qubit XXX Bond Alternating model via DMRG",
+      "plus 500 operators containing two non-trivial operators",
+      "We use 350 states for training (evenly split between phases and randomly distributed within each phase) and 150 states for testing.",
+      "Finally, we average the predicted labels over 200 independent trainings.",
+      "As clearly observed in Fig. 12, the classification achieves 100% accuracy.",
+      "This result, entirely independent of the QCNN, demonstrates the intrinsic features of the datasets, making them easily classifiable."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study on one dataset.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The features are overlaps of the DMRG ground states, which read as exact expectation values rather than shadow estimates. The phases are far apart in J2 (0 to 1 against 1 to 2), and the text does not say whether states close to the transition were included."
+    },
+    {
+     "id_suggestion": "appendix-c-shadow-scaling-with-system-size",
+     "value": "The authors report, on an enlarged dataset of 500 samples with 400 used for training, that the number of shadows needed for successful classification increases sublinearly with system size for the XXX model and appears independent of system size for the Haldane model, and they note that further tuning could change the XXX dependence.",
+     "anchor": "Appendix C, pp27-28; Figures 10-11, p28",
+     "quotes": [
+      "Here, we enlarge the dataset to 500 samples, out of which 400 are employed in the training stage.",
+      "The number of shadows to perform successful classification in the XXX model increases sublinearly with system size, while there it seems to be independent of the system size in the case of the Haldane model.",
+      "However, it is also possible that further hyper-tuning of the model (preselection of relevant Pauli strings, increase in number of iterations, etc.) lead to a classification process which barely depends on system size."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study, read from heat maps in Figures 10 and 11.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The main text calls the dataset 100 samples with up to 75 for training; Appendix C changes both numbers, so the scaling study is not the same experiment as the main text."
+    },
+    {
+     "id_suggestion": "appendix-c-no-overfitting-claim",
+     "value": "The authors state that no overfitting seems to be taking place in the optimization, because raising the number of training points leaves the number of shadows needed for classification almost unchanged.",
+     "anchor": "Appendix C, p28",
+     "quotes": [
+      "Lastly, we want to remark that no overfitting seems to be taking place in the optimization process"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' inference from a change in training set size.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No held-out gap or learning curve is shown in the text to support the inference."
+    },
+    {
+     "id_suggestion": "pauli-propagation-surrogate-method",
+     "value": "The authors describe their method as a variant of the LOWESA algorithm, a Pauli propagation surrogate that stores a graph of Pauli path splitting and merging in a first surrogation pass and re-evaluates only paths leading to important operators, with truncation by bodyness, by path frequency, by a sliding window of neighboring qubits, and by the variance of shadow coefficients across the dataset.",
+     "anchor": "Appendix B.1, pp23-26",
+     "quotes": [
+      "Pauli Propagation Surrogates (PPS) are a family of PP algorithms that trade pre-compute time and memory for",
+      "instead of numerically evaluating all coefficients cα during the Pauli Propagation, we only store a graphical representation of the splitting and merging of Pauli paths during an",
+      "we choose a truncation threshold k, and if a Pauli operator crosses this threshold at any part of the",
+      "we employ a so-called frequency truncation which affects the coefficients cα(θ).",
+      "We can estimate the variance of the coefficients cβ,s across the dataset (potentially inside the sliding window) and only evaluate along the paths with high variance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own algorithm in Appendix B.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "variance-selection-is-a-heuristic",
+     "value": "The authors state that selecting operator paths by high variance across the dataset leverages the heuristic that such paths are likely the most useful for classifying the states, and that a sliding window is expected to capture the discriminating information if the data is one-dimensionally structured.",
+     "anchor": "Appendix B.1.b, p26",
+     "quotes": [
+      "This leverages the",
+      "heuristic that high-variance paths are likely the ones that are most useful for classifying the states",
+      "If the data is 1D structured, non-"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A heuristic stated by the authors without a test of its alternatives.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The sliding window and the variance selection both use knowledge of the dataset's geometry and labels, which narrows how far the result transfers to unstructured data."
+    },
+    {
+     "id_suggestion": "pauli-propagation-exponential-path-growth",
+     "value": "The authors state that applying a Pauli gate to a Pauli operator either leaves it unchanged or creates two different Pauli operators, so that simulating a circuit without truncation can create a number of Pauli operators exponential in the number of gates.",
+     "anchor": "Appendix B.1.a, p24",
+     "quotes": [
+      "This implies that simulating such a quantum circuit can create a number of Pauli operators that is exponential in the number of gates m."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A standard property of Pauli propagation; the derivation of Eq. (B6) precedes the statement.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tensor-network-method-three-steps",
+     "value": "The authors describe their tensor network method as three steps: keep only low-bodyness information of the input data, find the optimal classifying operator as an MPS in the low-bodyness operator subspace, and lastly compile the circuit ansatz so its Heisenberg-evolved measurement operator is close to that operator, the last step being optional for the classification task and needed to find the ansatz parameters.",
+     "anchor": "Appendix B.2, pp26-27",
+     "quotes": [
+      "Then, we solve the binary classification task by finding the optimal classifying operator as represented by an MPS in the low-bodyness operator subspace.",
+      "Lastly, we compile the quantum circuit ansatz at hand such that the Heisenberg evolved measurement operator is as close as possible to the one found at the previous step.",
+      "which is optional with respect to the classification task, but which is needed",
+      "to find the optimal parameters of the circuital ansatz we started with."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own method in Appendix B.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Because step three is optional, the classical-dataset accuracies in Table I can come from the optimal low-bodyness operator found in step two; the text does not say whether a compiled QCNN with actual circuit parameters reached those accuracies, so the match to a QCNN with realizable parameters is not shown there."
+    },
+    {
+     "id_suggestion": "tensor-network-method-limits-binary-1d",
+     "value": "The authors state that the constrained bodyness tensor network method currently applies only to binary classification tasks, fares best with one-dimensional quantum systems, and leaves multi-class problems and higher dimensional topologies to future work.",
+     "anchor": "Appendix B.2, p26",
+     "quotes": [
+      "This method is currently applicable to binary classification tasks and fares best with one-dimensional quantum systems, we leave for future work the extension to multi-class problems and higher dimensional topologies."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state a limit of their method in Appendix B.2.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tensor-network-mpo-overlap-training-claims",
+     "value": "The authors state that the constraint on the evolved measurement operator to the low-bodyness subspace reproduces the behavior of an average QCNN under random initialization and proves sufficient to solve the task at hand, and that for a one-dimensional QCNN with logarithmically many layers the tensor network representation cannot raise the bond dimension by an exponential amount, so the full simulation and compilation is always efficient.",
+     "anchor": "Appendix B.2, p27",
+     "quotes": [
+      "This constraint reproduces the behavior of an average QCNN under",
+      "random initialization, and proves to be sufficient to solve the task at hand.",
+      "increase the bond dimension of the MPS it acts on by an exponential (in the number of qubits n) amount. Hence the",
+      "full simulation and compilation of the QCNN is always efficient."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Argument stated by the authors without a bound on the polynomial degree.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The efficiency claim gives no explicit bond dimension bound for the compilation step for Table I; Appendix E gives a measured bond dimension only for a different (measurement-based) example."
+    },
+    {
+     "id_suggestion": "measurement-qcnn-mps-bond-dimension-scaling",
+     "value": "The authors report that, for a measurement-based QCNN evolving a random product state with Haar random convolution gates and random control unitaries, for system sizes n equal to 2 to the power m with m from 3 to 10, the maximum MPS bond dimension grows at most proportionally to n (the text layer prints it as chi, tilde, n and a trailing digit on separate lines), so the MPS simulation cost scales polynomially in n, as n cubed.",
+     "anchor": "Appendix E.2, pp32-33; Figure 14, p33",
+     "quotes": [
+      "In this example, the initial state is a random product state, and the unitaries forming",
+      "by the SVD performed after applying each gate, the total cost scales as O(n3), i.e., polynomially in n.",
+      "Results are shown for n = 2m for m = 3, 4, . . . , 10.",
+      "All unitaries in the convolutional layer, as well as the control unitaries, were randomly sampled from U(4) and U(2), respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study on random circuits; the scaling formula is garbled in the text layer.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The bond dimension is read as n over 8, which is consistent with the later extrapolation of 4096 to 32,768 qubits (4096 times 8). This example has no classification task or training: it is a bond-dimension study on random inputs and random gates, so no classification accuracy for measurement-based QCNNs appears in the text I read, although Section III says the simpler tracing out QCNNs achieve similar or better success than measurement-based ones."
+    },
+    {
+     "id_suggestion": "measurement-qcnn-laptop-extrapolation-and-caveats",
+     "value": "The authors state that state-of-the-art MPS methods on a laptop allow bond dimension up to about 4096, so that a laptop could simulate a measurement-based QCNN of up to 32,768 qubits, while noting that even modest polynomial scaling can quickly become intractable in practice and that they expect smaller bond dimensions in a typical training process than for random gates.",
+     "anchor": "Appendix E.2, p33",
+     "quotes": [
+      "it is worth mentioning that in practice even modest polynomial scaling can quickly become intractable.",
+      "However, state-of-the-art methods allow MPS simulations on a laptop with bond dimension up to χ ∼ 4096, meaning that a laptop could simulate a QCNN with up to 32,768 qubits, far beyond the capabilities of current quantum computers.",
+      "whereas in practice one would expect smaller values of χ during a typical training process."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Extrapolation by the authors from a bond dimension limit, not run.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper calls random gates the worst-case scenario, while Section III.A says random initialization is the average case; the two descriptions do not agree."
+    },
+    {
+     "id_suggestion": "measurement-qcnn-heisenberg-methods-inapplicable",
+     "value": "The authors state that using measurement outcomes for feed-forward operations precludes Heisenberg-evolution techniques such as LOWESA and other Pauli propagation, so measurement-based QCNNs are simulated with classical shadows and tensor networks instead, which work because measurements destroy entanglement and Pauli shadows give separable product states.",
+     "anchor": "Appendix E.2, p32",
+     "quotes": [
+      "that the fact that we use measurement information for feed-forward operations precludes the use of Heisenberg-evolution",
+      "type techniques such as LOWESA or other Pauli propagation techniques.",
+      "this combination actually enables efficient simulation vis standard MPS techniques."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state which of their methods do not apply to measurement-based QCNNs in Appendix E.2.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "discussion-scope-1d-architectures-only",
+     "value": "The authors state that the two instantiations they simulate, one-dimensional tracing out and measurement-based QCNNs, are the easiest to simulate classically, that QCNNs in two or more dimensions or with more exotic topologies would raise the simulation cost and were not pursued because such architectures have not been explored, and that they leave the burden of proof to practitioners.",
+     "anchor": "Section V, p12",
+     "quotes": [
+      "it is clear that these are the easiest to classically simulate.",
+      "Clearly, this would increase the simulation cost, potentially making it prohibitively expensive even at modest sizes.",
+      "In this work, we decided not to pursue this route as these QCNNs architectures have not been explored, and are not known to be useful in cases where simple one-dimensional ones fail."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of their architectures in Section V.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "simulable-only-by-low-bodyness-not-hard-instances",
+     "value": "The authors state that non-classically simulable datasets and QCNNs can readily be constructed by embedding Shor's algorithm or a cryptographic assumption into the problem, but that these are usually mathematical artifacts far from realistic practical problems, and that their results do not exclude examples where the QCNN needs to leave the classically simulable regime.",
+     "anchor": "Section I, p2",
+     "quotes": [
+      "one can readily construct nonclassically simulable datasets and QCNNs by embedding Shor’s algorithm or some cryptographic assumption into the problem",
+      "but these are usually mathematical artifacts that are nowhere near related to realistic practical problems.",
+      "this does not mean that examples could exist where the QCNN needs to leave the classically simulable regime to solve a given task."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of their claim in the Introduction.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "resource-requirements-shadows-easier-claim",
+     "value": "The authors state that obtaining classical shadows needs only state preparation and single qubit measurements, which are substantially easier than running the QCNN on quantum hardware, so that a universal digital quantum computer may no longer be required, and that for quantum input data a quantum computer is still needed to obtain the shadows.",
+     "anchor": "Section V, p12",
+     "quotes": [
+      "Fundamentally, at least for the case of quantum input data, a quantum computer is needed to obtain classical shadows.",
+      "the resource requirements (state preparation and then single qubit measurements) are substantially easier than running the QCNN on quantum hardware - so much easier that a universal digital quantum computer may no longer be required."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' judgment; no resource count for the shadows experiment on hardware is given.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-training-quantum-deployment-proposal",
+     "value": "The authors propose a setting of classical training and quantum deployment, in which a QCNN is trained on a classical device via classical shadows and the optimal parameters are then used on a quantum computer for new data, and they state that whether classical simulation is efficient compared with training on a quantum computer is left as an open question.",
+     "anchor": "Section V, p12",
+     "quotes": [
+      "Another positive spin of our results is a possible setting of “classical training and quantum deployment”",
+      "We also leave this open as a future research question."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proposal by the authors, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "other-architectures-blueprint-open-question",
+     "value": "The authors state that they strongly believe the techniques can serve as blueprints to classically simulate other quantum neural network architectures composed of local parametrized gates, and that whether good enough solutions exist within the low-bodyness subspace for those architectures is an open question needing case-by-case direct simulation.",
+     "anchor": "Section V, pp12-13",
+     "quotes": [
+      "We strongly believe that the techniques introduced here can serve as blueprints to classi-",
+      "Whether there exists good enough solutions within such subspace as they do for QCNNs is an open question which will likely require a case-by-case analysis via direct simulation."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A belief stated by the authors, with the open question named as untested.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "open-question-positive-bias-or-physical-phenomenon",
+     "value": "The authors state that whether the use of trivial datasets in QML benchmarking is a positive bias effect, where only successful QCNN trainings are published, or an underlying phenomenon of physical problems, is left as an open question.",
+     "anchor": "Section V, p13",
+     "quotes": [
+      "Whether the fact that we use trivial datasets in our QML model benchmarking is a positive bias effect (i.e., only successful QCNN trainings make it into the published literature) or a more underlying phenomenon of physical problems is left as an open question."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors name an open question in Section V.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "abstract-explanation-heuristic-success",
+     "value": "The authors state that the heuristic success of QCNNs relates to two facts, that randomly initialized QCNNs operate only on low-bodyness information of their input states and that QCNNs are commonly benchmarked on locally-easy datasets, and that models could be showing heuristic success only because they are benchmarked on simple problems whose action can be classically simulated.",
+     "anchor": "Abstract, p1",
+     "quotes": [
+      "we relate their heuristic success to two facts.",
+      "Models could only be showing heuristic success because they are benchmarked on simple problems, for which their action can be classically simulated.",
+      "This insight points to the fact that non-trivial datasets are a truly necessary ingredient for moving forward with QML."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' causal interpretation of their results.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper shows the surrogate works on the datasets tested; it does not test the causal claim that QCNN success comes from the dataset simplicity, for example by finding a dataset where the QCNN fails and a deeper one succeeds."
+    },
+    {
+     "id_suggestion": "no-reason-to-believe-qcnns-useful-until-nontrivial",
+     "value": "The authors argue that until the viability of tracing out and measurement-based QCNNs on interesting non-trivial datasets can be demonstrated there is no reason to believe QCNNs will be useful, and present non-trivial datasets as a challenge to the community.",
+     "anchor": "Section I, p2",
+     "quotes": [
+      "until the viability of tracing out- and measurement-based QCNNs for such datasets can be demonstrated there is no reason to believe QCNNs will be useful.",
+      "the field of QML is in dire need of interesting, non-trivial datasets"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' position.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "locally-easy-all-benchmarks-heuristic-claim",
+     "value": "The authors state that they compiled classical and quantum datasets used in the literature to benchmark QCNNs and heuristically show that they are all locally-easy and that the classification task can be solved while remaining in the low-bodyness subspace, and that their simulations show classical emulation for essentially all datasets used in the literature.",
+     "anchor": "Section III.B, p6; Section IV, p7",
+     "quotes": [
+      "we compiled classical and quantum datasets used in the literature to benchmark QCNNs, and we heuristically show not only that they are all locally-easy",
+      "its information processing capabilities can be emulated by classical computers for essentially all datasets used in the literature"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' summary claim over the datasets they tested.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The tested set is four quantum model families and four image datasets; the compilation of the literature's datasets is not listed beyond those, so all datasets in the literature is an extrapolation."
+    },
+    {
+     "id_suggestion": "shadow-simulations-can-outperform-full-qcnn-claim",
+     "value": "The authors state that their finite sample shadow-based simulations can outperform full QCNNs trained with no finite sampling.",
+     "anchor": "Section III.C, p7",
+     "quotes": [
+      "we show that our finite sample shadow-based simulations can outperform full QCNNs trained with no finite sampling."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' claim; the comparison is against literature numbers.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No full QCNN was trained in this paper, so the comparison is with accuracies the authors cite from other work."
+    },
+    {
+     "id_suggestion": "fig8-k-purity-numerical-evaluation-n128",
+     "value": "The authors report that evaluating the exact k-purity expression for a system of 128 qubits shows that the Heisenberg-evolved measurement operator of a randomly initialized QCNN has support essentially only on Paulis of bodyness of order one, and that a QCNN with the single-qubit-layer topology follows the same behavior by the results of Ref. [114].",
+     "anchor": "Appendix A.3, pp22-23; Figure 8, p23",
+     "quotes": [
+      "measurement operator through a randomly initialized QCNN has support essentially only on Paulis with bodyness in",
+      "system of n = 128 qubits.",
+      "Indeed, we can also verify via the results in Ref. [114] that a QCNN with a topology such as that in Fig. 2(b,right)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical evaluation of an exact formula for one system size, read from a plot.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The decay is shown on a plot for 128 qubits; no analytic bound on the decay rate is stated for Result 1."
+    },
+    {
+     "id_suggestion": "measurement-qcnn-example-uses-brick-architecture",
+     "value": "The authors state that the measurement-based QCNN they simulate with MPS has two-qubit gates on neighboring pairs in a brick-like fashion, measures the qubits no longer in convolutions in each pooling layer, and applies the measurement outcome as a control of a single-qubit unitary on a nearest neighbor.",
+     "anchor": "Appendix E.2, p32",
+     "quotes": [
+      "Namely, the architecture consists of convolutional layers where",
+      "two-qubit gates act on pairs of neighboring qubits in a brick-like fashion.",
+      "the measurement outcome controls a single qubit"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of the architecture it simulated in Appendix E.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
