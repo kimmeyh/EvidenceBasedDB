@@ -1,0 +1,680 @@
+{
+ "papers": [
+  {
+   "record_id": "alonso-2025-qml-fourier-distribution-option-pricing",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\QML Quantum Machine Learning methods for Fourier-based distribution estimation 2510.19494v1.pdf",
+   "title_in_file": "Quantum Machine Learning methods for Fourier-based distribution estimation with application in option pricing",
+   "version_note": "arXiv 2510.19494v1, 22 Oct 2025 (text layer dated October 23, 2025). The text is the paper its record names.",
+   "pages": 27,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A hybrid classical-quantum option-pricing paper that trains parametrized quantum circuits to learn the PDF (Method I, supervised) or the CDF (Method II, self-supervised) of the underlying, extracts Fourier coefficients by DFT, and benchmarks against QAMC with mRQAE (Method III) on a European put under Black-Scholes dynamics.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "alonso-fourier-pqc-method",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that their two methods reconstruct Fourier series representations of statistical distributions from the outputs of QML models based on parametrized quantum circuits.",
+     "anchor": "Abstract, p1",
+     "quotes": [
+      "These approaches rely on reconstructing Fourier series representations of statistical distributions from the outputs of Quantum Machine Learning (QML) models based on Parametrized Quantum Circuits (PQCs)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The abstract states the paper's own setup; Sections 3.1 and 3.2 develop it.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "alonso-method2-samples-vs-qamc",
+     "verdict": "narrowed",
+     "note": "The paper says 'similar results' and adds that the 10000 samples come 'after a training procedure'; Method III cost is stated as around 5000 shots per coefficient in Section 4.2.1, which the paper converts to hundreds of thousands of shots in total. The comparison sets classical data samples plus training against quantum circuit shots; the paper gives no equal-cost accounting.",
+     "value": "The authors report that Method II obtains similar results with 10000 data samples, after a training procedure, whereas Method III needs around 5000 shots per coefficient in average, which the authors say implies an order of hundreds of thousand shots to obtain the final price.",
+     "anchor": "Section 4.2.1, p23; Section 5 Conclusions, p24",
+     "quotes": [
+      "In comparison, with Method II we obtain similar results with 10000 data samples (and, of course, after a training procedure)",
+      "we need around 5000 shots per coefficient in average, thus implying an order of hundreds of thousand shots to obtain the final price",
+      "Method II obtains comparable precision using only"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, one option type and one model; no table of errors is given.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Samples drawn from a distribution on a classical machine and circuit shots on quantum hardware are not the same cost unit, and the training cost of Method II is not counted in the 10000 figure. The paper does not give error values for this comparison in text; it rests on Figures 5 and 8."
+    },
+    {
+     "id": "alonso-training-randomness-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that some outliers appear in the convergence results, attributed to the inherent error of the training process, particularly the random initialization of the quantum model weights, and that more experimental repetitions with statistical analysis are needed.",
+     "anchor": "Section 4.2.1, p22",
+     "quotes": [
+      "some outliers appear, which can be attributed to the inherent error of the training process, particularly to the randomness in the initialization of the quantum model weights",
+      "the importance of carrying out a larger number of experimental repetitions"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit themselves in Section 4.2.1 and repeat it in Section 5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "alonso-pqc-fourier-spectrum-cited",
+     "value": "The authors state that several references in the literature prove that the frequency spectrum of a PQC quantum model is determined by the eigenvalues of the Hamiltonians forming the encoding block, while the complete circuit design controls the coefficients the model can adjust.",
+     "anchor": "Section 2.2, p5 (citing [18], [19])",
+     "quotes": [
+      "Several references in the literature prove that the frequency spectrum",
+      "determined by the eigenvalues of the Hamiltonians forming the encoding block"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-pqc-single-layer-any-coefficients",
+     "value": "The authors state that, if trainable circuit blocks are flexible enough to implement arbitrary global unitary gates, there exists a quantum model with L = 1 capable of realizing any possible set of Fourier coefficients.",
+     "anchor": "Section 2.2, p6 (citing [18], [19])",
+     "quotes": [
+      "if trainable circuit blocks are allowed with sufficient flexibility to implement arbitrary global unitary gates, then there exists a quantum model with L = 1 capable of realizing any possible set of Fourier coefficients"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to earlier work; no proof is given in this paper.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-universal-hamiltonian-family-definition",
+     "value": "The paper defines a Hamiltonian family as a universal Hamiltonian family if for any natural number Z there exists m such that the integers from minus Z to Z lie in the frequency spectrum of Hm, where the spectrum is the set of differences of eigenvalues of Hm.",
+     "anchor": "Definition 2.1, Section 2.2, p6 (proposed in [18])",
+     "quotes": [
+      "A Hamiltonian family is a universal Hamiltonian family if for any Z ∈ N there exists m ∈ N such that",
+      "{−Z, . . . , 0, . . . , Z} ⊂ Hm(Ω)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper states the definition it uses in Definition 2.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-theorem-2-1-c0-convergence",
+     "value": "The paper recalls, from the thesis it cites, a theorem that for a universal Hamiltonian family and every continuous function on a set compactly contained in the cube, and every positive epsilon, there exists some m', some state and some observable such that the quantum model converges uniformly to the function within epsilon in the C0 norm.",
+     "anchor": "Theorem 2.1 (Convergence in C0), Section 2.2, p6",
+     "quotes": [
+      "Let {Hm} be a universal Hamiltonian family, and {fm} the associated quantum model family (3).",
+      "For all functions f ∗ ∈ C0(U ) where U is compactly contained in [0, 2π]N , and for all ϵ > 0, there exists some m′ ∈ N,",
+      "some state |Γ⟩ ∈ Cdm′ , and some observable M such that fm′ converges uniformly to f ∗:"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theorem the paper attributes to [20] and does not prove; statement quoted.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The result is existence only: it gives no bound on the circuit size m' needed for a given epsilon."
+    },
+    {
+     "id_suggestion": "alonso-theorem-2-2-lp-convergence",
+     "value": "The paper recalls, from the thesis it cites, a theorem that for a universal Hamiltonian family and every function in Lp on the cube with 1 <= p < infinity, and every positive epsilon, there exists some m', some state and some observable such that the model is within epsilon in the Lp norm.",
+     "anchor": "Theorem 2.2 (Convergence in Lp), Section 2.2, p6-7",
+     "quotes": [
+      "For all functions f ∗ ∈ Lp [0, 2π]N where 1 ≤ p < ∞, and for all ϵ > 0, there exists some",
+      "m′ ∈ N, some state |Γ⟩ ∈ Cdm′ , and some observable M such that:",
+      "∥fm′ − f ∗∥Lp < ϵ,"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theorem the paper attributes to [20] and does not prove; statement quoted.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-theorem-2-3-hk-convergence",
+     "value": "The paper recalls, from the thesis it cites, a theorem that for a universal Hamiltonian family and every function in Hk+1 on a set compactly contained in the closed cube, and every positive epsilon, there exists some m', some state and some observable such that the model converges to the function in the Hk norm within epsilon.",
+     "anchor": "Theorem 2.3 (Convergence in Hk), Section 2.2, p7",
+     "quotes": [
+      "For all functions f ∗ ∈ Hk+1(U ) where U is compactly contained in the closed cube [0, 2π]N , and for all ϵ > 0,",
+      "there exists some m′ ∈ N, some state |Γ⟩ ∈ Cdm′ , and some observable M such that fm′ converges to f ∗ with respect to the Hk–norm:",
+      "∥fm′ − f ∗∥Hk < ϵ,"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theorem the paper attributes to [20] and does not prove; statement quoted.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-h1-risk-implies-c0",
+     "value": "The authors state, citing the same thesis, that the generalization bounds of the empirical risk defined in H1 imply the minimization of the empirical risk in C0, and that convergence in the sense of C0 is equivalent to convergence of every point to the true solution.",
+     "anchor": "Section 2.2, p7",
+     "quotes": [
+      "the generalization bounds of the empirical risk defined in H1 imply the minimization of the empirical risk in C0",
+      "the convergence in the sense of C0 is equivalent to a convergence"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to [20].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-qamc-quadratic-improvement-cited",
+     "value": "The authors state that the QAMC method achieves a quadratic improvement, in terms of the mean squared error, in the number of queries required compared to its classical counterpart.",
+     "anchor": "Section 2.3, p8 (citing [26])",
+     "quotes": [
+      "which achieves a quadratic improvement, in terms of the mean squared error, in the number of queries required compared to its classical counterpart."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-pricing-as-coefficient-sum",
+     "value": "The authors state that, because the Fourier coefficients of the payoff are known, the integral of the product of the payoff and the density has been transformed into the sum of the products of the respective coefficients of their trigonometric Fourier series, so the price is computed from the learned density coefficients and the payoff coefficients.",
+     "anchor": "Section 3.1.1, p10; Section 3.2.1, p15",
+     "quotes": [
+      "has been transformed into the sum of the product of the respective coefficients of their trigonometric Fourier series.",
+      "Then, the Fourier series coefficients associated with the payoff function, Ck and Dk, are typically available in closed-form."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its pricing formulation in Section 3.1.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-cdf-motivation",
+     "value": "The authors state that working directly with the PDF can be numerically unstable or ill-posed because the payoff may be only piecewise smooth with discontinuities, and that the CDF provides a smoother and continuous representation which allows efficient handling of discontinuities and more stable numerical approximations.",
+     "anchor": "Section 3.1.2, p10",
+     "quotes": [
+      "Therefore, working directly with the PDF can be numerically unstable or ill-posed.",
+      "Unlike the PDF, the CDF provides a smoother and continuous representation of the underlying variable",
+      "which allows to efficiently handle discontinuities and to come up with more stable numerical approximations."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; no evidence for the stability comparison is given in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper does not test a PDF-based variant against a CDF-based variant on the same data, so this motivation is not itself measured."
+    },
+    {
+     "id_suggestion": "alonso-cdf-quantities-not-payoff-coefficients",
+     "value": "The authors state that, in contrast with the PDF method, the payoff quantities defined for the CDF method do not correspond to the Fourier coefficients of the series that approximates the payoff, because the integration domain does not match with the one of the basis functions.",
+     "anchor": "Section 3.1.2, p11",
+     "quotes": [
+      "the quantities defined in (10) do not correspond to the Fourier coefficients of the series that approximates h(T, y), because the integration domain does not match with the one of the basis functions."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own statement of how its quantities (10) are defined.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-three-approaches-design",
+     "value": "The authors describe three approaches: Method I trains a PQC by supervised learning on labeled data to approximate the PDF; Method II uses self-supervised learning on a representative set of asset samples; Method III uses QAMC and is described as a benchmark for the designed circuits.",
+     "anchor": "Section 3.2, p11-14",
+     "quotes": [
+      "In the first one, supervised learning is employed, using datasets that contain both inputs and labeled outputs.",
+      "Therefore, in this second case, self-supervised learning is employed, after providing the model with a sufficiently representative set of asset samples.",
+      "its primary purpose in this context is to serve as a benchmark for assessing the performance of the designed circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its setup in Section 3.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-differential-ml-loss",
+     "value": "The authors state that the PQC is trained with an empirical risk in H1 that includes the derivatives of the outputs with respect to the inputs, that this use of derivative information was first introduced in [35] under the name Differential Machine Learning, and that several results show it can significantly improve training performance by forcing point-wise convergence rather than convergence on average.",
+     "anchor": "Section 3.2, p12 (equation (11)); cites [35]",
+     "quotes": [
+      "The use of information about the derivatives of the outputs with respect to the inputs was first introduced in [35]",
+      "several results show that incorporating this information can significantly improve a model",
+      "as it forces the function estimates to converge point-wise rather than on average."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The benefit is attributed to other work; this paper reports no ablation without derivative terms.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": "The paper reports no run without the derivative term, so the benefit is not measured here."
+    },
+    {
+     "id_suggestion": "alonso-train-wider-interval-gibbs",
+     "value": "The authors state that the model is trained in [−2π, 2π] with data rescaled to [−π, π], rather than directly in [−π, π], so that the resulting Fourier series is smoother and does not exhibit Gibbs phenomena; they say the effect is most visible for the CDF because of its sharp jumps at its edges under periodic extension (in the paired plots of training intervals).",
+     "anchor": "Section 3.2, p12-13, Figures 2 and 3",
+     "quotes": [
+      "the model to obtain the statistical functions is going to be trained in [−2π, 2π] with data rescaled to [−π, π]",
+      "This ensures that the resulting Fourier series is smoother and does not exhibit Gibbs phenomena",
+      "because of the sharp jumps that the the CDF exhibits at its edges due to the periodic extension"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from figures of one setting; no quantitative error is given.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The evidence is two paired plots (Figures 2 and 3); no error measure is reported."
+    },
+    {
+     "id_suggestion": "alonso-same-ansatz-both-methods",
+     "value": "The authors state that all experiments for Methods I and II use the same quantum ansatz, with a fixed number of qubits and layers, and that the experiments vary regular n by n configurations (n qubits and n layers) to assess whether another number of parameters improves the results.",
+     "anchor": "Section 3.2, p13 (Figure 4); Section 4.1, p20",
+     "quotes": [
+      "all experiments related to these first two methods are conducted using the same quantum ansatz",
+      "experiments have been conducted with different regular (n × n) configurations (referring to the n qubits and n layers employed in the PQC)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-method3-mrqae-sign",
+     "value": "The authors state that Method III uses a modified version of the RQAE algorithm, termed mRQAE, which allows estimating not only the magnitude but also the sign of the quantity of interest, which they say is crucial because the Fourier coefficients can be either positive or negative.",
+     "anchor": "Section 3.2, p14",
+     "quotes": [
+      "which allows to estimate not only the magnitude but also the sign of the quantity of interest.",
+      "This is crucial in this case, since the Fourier coefficients can be either positive or negative."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of how its benchmark is set up.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-cost-proxy-circuit-runs",
+     "value": "The authors state that QAMC is evaluated under various error tolerances achievable by Methods I and II, and that the number of circuit runs per coefficient, interpreted as quantum samples, serves as the proxy for computational cost.",
+     "anchor": "Section 3.2, p14",
+     "quotes": [
+      "the QAMC method will be evaluated under various error tolerances achievable by Methods I and II.",
+      "we will measure the number of circuits runs for each coefficient (interpreted as quantum samples in the context of QAMC)",
+      "This number of executions will serve as a proxy for computational cost"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of how cost is measured.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The proxy counts Method III circuit runs only; Methods I and II are compared by data samples and training, which the paper does not convert to circuit runs."
+    },
+    {
+     "id_suggestion": "alonso-method1-dft-extraction",
+     "value": "The authors state that for Method I the Fourier coefficients are extracted using a strategy based on the Discrete Fourier Transform applied to direct evaluations of the trained circuit, and that the payoff coefficients are typically available in closed form so the price follows from the learned PDF coefficients.",
+     "anchor": "Section 3.2.1, p14-15",
+     "quotes": [
+      "Subsequently, the Fourier series coefficients are extracted using a precise and efficient strategy",
+      "based on the Discrete Fourier Transform (DFT), applied to direct evaluations of the trained",
+      "Then, the Fourier series coefficients associated with the payoff function, Ck and Dk, are typically available in closed-form."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of Method I.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-method2-self-supervised-risk",
+     "value": "The authors state that Method II trains on samples only, with the empirical CDF replacing the unavailable true labels, and builds an empirical risk that combines a CDF term, a density term approximated by a Monte Carlo estimate and a numerical integration, and constraint terms at the extremes of the domain; the paper says this is related to the use of DML features for CDF estimation.",
+     "anchor": "Section 3.2.2, p15-17",
+     "quotes": [
+      "Since in our case the true labels F ∗(xi) are not available, we approximate them by the empirical",
+      "can be easily approximated by a Monte Carlo method:",
+      "which is related to the use of DML features for the CDF estimation.",
+      "in order to guarantee that the CDF approximation is sufficiently accurate at the extremes of the function domain"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of the Method II training loss.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-method2-constraints-not-forced",
+     "value": "The authors state that, since the sample sizes will be sufficiently representative, the constraint terms at the extremes of the domain do not involve a forced approximation but help to improve the fit at points that may exhibit instabilities.",
+     "anchor": "Section 3.2.2, p17",
+     "quotes": [
+      "Since the sample sizes will be sufficiently representative, the constraints introduced here do not involve a forced approximation"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; no run with and without the constraint is reported.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-cdf-gibbs-eliminated-period",
+     "value": "The authors state that the Fourier series of the CDF uses a period of twice the interval length in an extended interval so that the Gibbs phenomenon is completely eliminated, because only the part of the series corresponding to the CDF is considered when defining the payoff quantities.",
+     "anchor": "Section 3.2.2, p17",
+     "quotes": [
+      "the Gibbs phenomenon is completely eliminated, because we are only considering the part of the series corresponding to the CDF"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement without a stated proof or measurement in this paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-method3-exact-simulation-restriction",
+     "value": "The authors state that for Method III they restrict themselves to models where an exact simulation of the asset evolution can be performed, which avoids errors from numerical methods such as Euler-Maruyama, and that mRQAE is an asymptotically more efficient version of RQAE.",
+     "anchor": "Section 3.2.3, p17-18",
+     "quotes": [
+      "restricting ourselves to models where an exact simulation of the asset",
+      "thereby avoiding errors arising from the use of numerical methods such as Euler-Maruyama",
+      "the mRQAE, which is an asymptotically more efficient version of the RQAE"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of Method III.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The benchmark covers only a model with exact simulation (Black-Scholes here); the paper does not test Method III for models needing SDE discretization."
+    },
+    {
+     "id_suggestion": "alonso-experiment-put-option-setup",
+     "value": "The authors state that the numerical experiments price a European vanilla put option at t0 = 0 under Black-Scholes-type dynamics with S0 = 100, r = 0.1, T = 1 and sigma = 0.25, for strike prices K = 90, K = 100 and K = 110.",
+     "anchor": "Section 4.1, p18-19",
+     "quotes": [
+      "we consider the pricing of a European vanilla put option at t0 = 0",
+      "S0 = 100, r = 0.1, T = 1, σ = 0.25.",
+      "K = 90, K = 100 and K = 110,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup in Section 4.1.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": "Only a vanilla European put under constant-volatility Black-Scholes is tested; no path-dependent, multi-asset or stochastic-volatility case is run."
+    },
+    {
+     "id_suggestion": "alonso-no-optimal-configuration",
+     "value": "The authors state that, as is common in QML problems, there is neither a universal optimal configuration nor a clear relationship between scalability and accuracy, so a balance between model complexity and the characteristics of the problem is needed.",
+     "anchor": "Section 4.1, p20",
+     "quotes": [
+      "there is neither universal optimal configuration, nor a clear relationship between scalability and accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit themselves in Section 4.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-minimum-schemes",
+     "value": "The authors state that the minimum PQC scheme used is 6 × 6 for Method I and 4 × 4 for Method II, and that the structures are chosen to return accurate approximations of the distributions and the payoff.",
+     "anchor": "Section 4.1, p20",
+     "quotes": [
+      "For Method I, the minimum scheme is 6 × 6, while for Method II it is 4 × 4."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-convergence-with-sample-size",
+     "value": "The authors report that Figure 5 shows a clear convergence towards the exact value in both Method I and Method II as the sample size increases.",
+     "anchor": "Section 4.2.1, p22, Figure 5",
+     "quotes": [
+      "From Figure 5, a clear convergence towards the exact value in both Method I and Method II can be observed as the sample size increases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, shown in a figure.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The convergence is read from plots of price against dataset size for three strikes; no numeric error table or confidence interval is given."
+    },
+    {
+     "id_suggestion": "alonso-method3-low-variability-qae-controlled",
+     "value": "The authors report that Method III achieves remarkably accurate estimations with reduced variability, especially with more shots, and state that its precision is controlled by the QAE routine (mRQAE), whereas the precision and variability of Methods I and II are mainly affected by the quality of the optimization process and the data.",
+     "anchor": "Section 4.2.1, p22-23, Figure 8",
+     "quotes": [
+      "achieves remarkably accurate estimations, with reduced variability",
+      "the precision by QAMC is controlled by the QAE routine (mRQAE)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, shown in a figure.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-method2-no-pdf-needed",
+     "value": "The authors state that Method II does not require the availability of the underlying PDF, only the generation of random samples following the proper distribution, and conclude it stands out for relying on sampling, as is common practice in industry.",
+     "anchor": "Section 4.2.1, p24; Section 5, p25",
+     "quotes": [
+      "it does not require the availability of the underlying PDF, but only the generation of random samples following the proper distribution.",
+      "Method II stands out for not requiring explicit knowledge of the underlying probability density function"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the experiments sample from a known lognormal model, not market data.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The experiments draw samples from the Black-Scholes model, so the claim about market samples is not itself tested in the paper."
+    },
+    {
+     "id_suggestion": "alonso-coefficients-tradeoff-oscillations",
+     "value": "The authors state that adding an excessive number of terms in the approximation can introduce additional contributions to oscillations and instabilities, more pronounced for the CDF with its sharp jumps at the boundaries due to periodic extension, so outcomes may present larger errors and variability as the number of Fourier terms increases.",
+     "anchor": "Section 4.2.2, p24",
+     "quotes": [
+      "adding an excessive number of terms in the approximation of a function can introduce additional contributions to oscillations and instabilities in the model",
+      "the outcomes may present larger errors and significant variability as the number of terms in the Fourier expansion increases."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical and explanatory statement from one study; no ablation is quoted in text.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The explanation (jumps from periodic extension) is the authors' interpretation and is not isolated by an experiment."
+    },
+    {
+     "id_suggestion": "alonso-best-intermediate-scheme",
+     "value": "The authors report that both methods display stable behavior with a clear trend of convergence towards the true derivative value as the expressive capacity of the circuit increases, for 6 × 6, 7 × 7 and 8 × 8 in Method I and 4 × 4, 5 × 5 and 6 × 6 in Method II, and that the best performance is obtained with an intermediate scheme (7 × 7 for Method I and 5 × 5 for Method II).",
+     "anchor": "Section 4.2.2, p24, Figure 5",
+     "quotes": [
+      "both methods display stable behavior",
+      "the best performance is obtained with an intermediate scheme (7 × 7 for Method I and 5 × 5 for Method II)",
+      "6 × 6, 7 × 7, and 8 × 8 for Method I, and 4 × 4, 5 × 5, and 6 × 6 for Method II"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, read from figures.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text says convergence improves as capacity increases and also that the intermediate scheme performs best; the two statements are not reconciled with numbers."
+    },
+    {
+     "id_suggestion": "alonso-method3-more-coefficients-help",
+     "value": "The authors report that for Method III increasing the number of coefficients leads to a substantial improvement in the results, particularly when the number of shots is low, and that beyond a certain threshold the coefficients take significantly small values.",
+     "anchor": "Section 4.2.2, p24",
+     "quotes": [
+      "in the case of Method III, increasing the number of coefficients leads to a substantial improvement in the results, particularly when the number of shots is low.",
+      "Beyond a certain threshold, the coefficients tend to take significantly small values"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "alonso-conclusion-competitive-alternative",
+     "value": "The authors conclude that the proposed methods achieve remarkable accuracy, becoming a competitive quantum alternative for derivatives valuation, and that the results underscore the potential of QML-based strategies as efficient and complementary alternatives to traditional QAMC schemes.",
+     "anchor": "Abstract, p1; Section 5, p25",
+     "quotes": [
+      "the proposed methods achieve remarkable accuracy, becoming a competitive quantum alternative for derivatives valuation.",
+      "This fact underscores the potential of QML-based strategies as efficient and complementary alternatives to traditional QAMC schemes."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own conclusion, resting on one option type and one model.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The abstract's own term is competitive; the paper reports no run on quantum hardware and no comparison with classical Monte Carlo or classical Fourier-cosine pricing, so competitiveness is shown only against QAMC with mRQAE."
+    },
+    {
+     "id_suggestion": "alonso-conclusion-circuit-dimensions",
+     "value": "The authors conclude that circuit dimensions on the order of 6 × 6 to 8 × 8 for Method I and 4 × 4 to 6 × 6 for Method II yielded consistent and reliable estimates, and that as the sample size is increased a systematic convergence towards the exact solution was observed across methods, with minor outliers due to stochastic effects in training.",
+     "anchor": "Section 5, p25",
+     "quotes": [
+      "Circuit dimensions on the order of 6 × 6 to 8 × 8 for Method I and 4 × 4 to 6 × 6 for Method II yielded consistent and reliable estimates",
+      "a systematic convergence towards the exact solution has been observed across methods"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical conclusion from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
