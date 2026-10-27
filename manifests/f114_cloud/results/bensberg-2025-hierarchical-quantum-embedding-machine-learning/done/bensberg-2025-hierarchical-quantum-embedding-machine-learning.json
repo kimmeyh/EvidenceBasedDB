@@ -1,0 +1,708 @@
+{
+ "papers": [
+  {
+   "record_id": "bensberg-2025-hierarchical-quantum-embedding-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Bensberg-et-al._2025_Hierarchical-quantum-embedding-by-machine-learning-for-large-molecular__2503.03928.pdf",
+   "title_in_file": "Hierarchical quantum embedding by machine learning for large molecular assemblies",
+   "version_note": "arXiv:2503.03928v1, 5 March 2025. The text layer holds the paper once; 28 pages including references. Figures 3 to 7 and Tables 1 and 2 reach the text layer only partly (table numbers are named in anchors).",
+   "pages": 28,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A QM/QM/MM scheme that embeds DLPNO-CCSD(T0) quantum cores in a DFT QM region, uses the resulting energies to transfer-learn a machine-learning potential, and applies it to the binding free energy of ligand 19G to MCL1.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "bensberg-derivatives-unavailable",
+     "verdict": "confirmed",
+     "note": "Also stated in Section 4.3 for the authors' own QM/QM/MM implementation.",
+     "value": "The authors state that analytical energy derivatives for highly accurate electronic structure methods within embedding frameworks are currently unavailable.",
+     "anchor": "Section 5, Conclusions, p.21; Section 4.3, p.16",
+     "quotes": [
+      "within embedding frameworks, which are, however, currently unavailable",
+      "analytical expressions for energy derivatives of highly accurate electronic structure methods",
+      "Atomic forces, i.e., negative energy gradients, are not available in our current implementation of the QM/QM/MM energies."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit itself in Section 5, p.21, and for its own implementation in Section 4.3, p.16.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id": "bensberg-energy-derivatives-key",
+     "verdict": "narrowed",
+     "note": "The paper reaches this conclusion from a test in which a machine-learning potential trained on MM data was transfer learned to QM/MM data, not to QM/QM/MM data, because forces are unavailable for QM/QM/MM. The forces test used one setup.",
+     "value": "The authors report that, in a test where a potential trained on MM data was transfer learned to QM/MM data, training with only energies increased the errors for the forces, and they conclude that energy derivatives are key for the efficient training of machine-learning potentials.",
+     "anchor": "Section 4.3, p.16; Section 5, Conclusions, p.21",
+     "quotes": [
+      "we constructed an embedding approach where the QM region is described by an MM force field",
+      "Training with only energies increased the errors for the forces",
+      "This demonstrates that energy derivatives are key for the efficient training of MLPs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one test setup.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The test used an MM force field in place of the QM region, so it shows the effect of forces on transfer learning only in that surrogate setting."
+    },
+    {
+     "id": "bensberg-transfer-learning-binding-energy",
+     "verdict": "narrowed",
+     "note": "The paper adds a caveat in Section 4.4: the ligand protonation state is unclear and the agreement may have benefited from error cancellation. The mean of 36 estimates and the earlier estimate are also given.",
+     "value": "The authors report a mean binding free energy of -37.2 kJ/mol with an uncertainty of 1.0 kJ/mol from 36 estimates with the transfer-learned potential, which closely matches the experimental estimate of -37.3 kJ/mol; they note the agreement may have benefited from error cancellation because the protonation state of the ligand is unclear.",
+     "anchor": "Section 4.4, p.18; Section 5, Conclusions, p.20",
+     "quotes": [
+      "We calculated the mean of the resulting 36 binding free energies",
+      "compared to the experimental estimate (−37.3 kJ mol−1 ± 0.1 kJ mol−1 17)",
+      "= −37.2 kJ mol−1 ± 1.0 kJ mol−1, which closely matches the experimental estimate.",
+      "this close agreement with the experimental estimate may have benefited from error cancellation",
+      "improving on our previous QM/MM-based approach.15"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result for one protein-ligand complex, with an author caveat.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "bensberg-quantum-core-concept",
+     "value": "The authors introduce quantum cores within the quantum region, small enough for accurate electronic structure models, so that accuracy is restored where the quantum region is too large for anything but approximate methods.",
+     "anchor": "Abstract, pp.1-2",
+     "quotes": [
+      "we here introduce the concept of quantum cores within the quantum region",
+      "that are amenable to accurate electronic structure models due to their limited size."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The abstract defines the concept the paper builds on.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-energy-decomposition-eq1",
+     "value": "The authors write the total QM/QM/MM energy as the sum of the MM energy, the energy of the capped QM region, and the electrostatic and non-electrostatic interaction energies of the QM and MM regions.",
+     "anchor": "Section 2.3, Eq. (1), p.6",
+     "quotes": [
+      "We write the total energy of our system EQM/QM/MM as the sum of the energy of"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition in Section 2.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-qm-energy-partition-eq2",
+     "value": "The authors write the QM region energy as a sum of the energies of the quantum cores, the Kohn-Sham energy of the environment orbitals, and the interaction between the orbital sets.",
+     "anchor": "Section 2.3, Eq. (2), p.6",
+     "quotes": [
+      "We write the total energy for our embedding approach as a sum of all energies for",
+      "these quantum cores EIQC, the Kohn–Sham energy of the environment orbitals Eenv, and the interaction Eint between orbital sets"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition in Section 2.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-no-embedded-scf",
+     "value": "The authors avoid the embedded self-consistent field procedure common in projection-based embedding and use the initial Kohn-Sham orbitals directly for the quantum cores, which they say simplifies the approach technically and allows DFT orbitals in the correlated wave function region.",
+     "anchor": "Section 2.3, p.8",
+     "quotes": [
+      "we avoid the embedded self-consistent field procedure common in projectionbased embedding to obtain the Hartree–Fock orbitals for the quantum cores but rely directly on the initial Kohn–Sham orbitals",
+      "also allows us to use DFT orbitals for the correlated wave function region"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "A statement of the method's own setup in Section 2.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-interaction-term-ks-densities",
+     "value": "The authors state that, in practice, only the densities of the Kohn-Sham DFT orbitals selected for the fragments are used to evaluate the interaction term, since densities or density matrices of the correlated wave function may not always be available.",
+     "anchor": "Section 2.3, p.8",
+     "quotes": [
+      "only the densities of the Kohn–Sham DFT orbitals selected for the fragments are used to evaluate the interaction term Eint since densities or density matrices for the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "A statement of the method's own setup in Section 2.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-mulliken-assignment-shift",
+     "value": "The authors assign occupied orbitals to the environment if their Mulliken population exceeds 0.4 on the environment atoms, otherwise to the quantum core with the largest population, and set the projection shift to 1.0 au.",
+     "anchor": "Section 3.1, pp.10-11",
+     "quotes": [
+      "population exceeded 0.4 on the environment atoms.",
+      "they were assigned to the quantum core on which they had the largest population",
+      "The shift ϵshift was chosen to be 1.0 au."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Computational details in Section 3.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-electronic-structure-methods",
+     "value": "The authors use PBE with the D3 dispersion correction with Becke-Johnson damping and the def2-TZVP basis set for the DFT calculation, and DLPNO-CCSD(T0) with NormalPNO thresholds for the quantum cores, with all QM calculations carried out in the Serenity program.",
+     "anchor": "Section 3.1, pp.10-11",
+     "quotes": [
+      "applied the Perdew, Burke, and Ernzerhof exchange–correlation functional PBE,45 the D3 dispersion correction46 with Becke–Johnson damping (BJ),47 and the def2-TZVP basis set",
+      "using “NormalPNO” thresholds.",
+      "All QM calculations were carried out with the Serenity program."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Computational details in Section 3.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-quantum-cores-chosen",
+     "value": "The authors manually selected two quantum cores, both in the ligand: a benzothiophene moiety and a mesityl chloride moiety excluding the methyl groups; QM/QM/MM energies were calculated for all structures within 150 kJ/mol of the median QM/MM energy.",
+     "anchor": "Sections 2.2 and 3.1, pp.4-5 and 11",
+     "quotes": [
+      "we manually selected two quantum cores from the QM region",
+      "consisted of the benzothiophene moiety of the ligand",
+      "consisted of the ligand’s mesityl chloride moiety (excluding the methyl groups)",
+      "within 150 kJ mol−1 of the median of the respective QM/MM energy distribution"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope in Sections 2.2 and 3.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-single-system-scope",
+     "value": "The authors validate the approach on one protein-ligand complex, the inhibitor 19G binding to myeloid cell leukemia 1.",
+     "anchor": "Section 5, Conclusions, p.20",
+     "quotes": [
+      "We validated our approach using the well-studied protein-ligand complex of the inhibitor 19G binding to myeloid cell leukemia 1."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the system it tested in Section 5.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "Results are for one system; no other complex is tested."
+    },
+    {
+     "id_suggestion": "bensberg-core-selection-automation",
+     "value": "The authors state that quantum core selection could be automated, for example by energy decomposition analysis with efficient DFT models or by automatic orbital analysis, but they selected the cores manually in this work.",
+     "anchor": "Section 2.2, pp.5-6",
+     "quotes": [
+      "the quantum core selection can be automated by identifying parts of the electronic structure in the QM region",
+      "we manually selected two quantum cores from the QM region"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim about possible methods; not tested in the paper.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-transfer-learning-rationale",
+     "value": "The authors state that calculating energies and gradients with multi-level embedding approaches takes high computational effort, that in some cases a gradient implementation may be unavailable, and that training QM/QM/MM energies from scratch can therefore be challenging, so they start from a pre-trained potential.",
+     "anchor": "Section 2.4, p.8",
+     "quotes": [
+      "calculating energies and gradients with multi-level embedding approaches requires high computational effort",
+      "In some cases, an implementation for the gradients may be unavailable.",
+      "training the QM/QM/MM energies EQM/QM/MM from scratch can be challenging"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author rationale for the method design, not tested by itself.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-delta-correction-smoother",
+     "value": "The authors state that the correction between QM/QM/MM and QM/MM energies is typically smoother than the full QM/QM/MM potential energy surface, so fewer data points are required for sufficient sampling.",
+     "anchor": "Section 2.4, p.9",
+     "quotes": [
+      "This correction is typically smoother than the full QM/QM/MM potential energy surface. Hence, fewer data points are required for sufficient sampling."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim without a direct test in the paper.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-delta-learning-two-mlps",
+     "value": "The authors state that learning the correction with a separate potential (delta-learning) requires evaluating two potentials at inference, and that training such a second potential from scratch would again be difficult, so they apply transfer learning instead.",
+     "anchor": "Section 2.4, p.9",
+     "quotes": [
+      "However, the inference requires then the evaluation of two MLPs.",
+      "Therefore, we apply transfer learning,38–42 where an MLP is first trained on QM/MM energies and gradients."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author rationale for the method design.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-transfer-learning-training-setup",
+     "value": "The authors keep a fraction of the weight parameters fixed during transfer learning to limit loss of the QM/MM potential shape, do not vary the input standardization weights or the first hidden layer, reload the CoRe optimizer state from the last QM/MM training step, and train for 300 steps using all training energies.",
+     "anchor": "Sections 2.5 and 3.2, pp.10-12",
+     "quotes": [
+      "a fraction of the MLP weight parameters are not modified",
+      "state of the CoRe optimizer43,44 at the last training step of the QM/MM MLP is reloaded and continued",
+      "In each of the 300 training steps, all training energies were exploited.",
+      "those of the first hidden layer of the neural networks were not varied in transfer learning"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Method setup stated in Sections 2.5 and 3.2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-mlp-architecture-ensemble",
+     "value": "The authors use an ensemble of ten high-dimensional neural network potentials with element-embracing atom-centered symmetry functions as input and an uncertainty scaling factor of 2, with the QM/QM/MM data split randomly into 90% training and 10% test data for each ensemble member.",
+     "anchor": "Section 3.2, p.11",
+     "quotes": [
+      "an ensemble size of 10 and an uncertainty scaling factor of c = 2.43",
+      "split randomly into 90% training and 10% test data for each ensemble member individually"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Method setup stated in Section 3.2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-energy-difference-definition",
+     "value": "The authors state that the QM/MM and QM/QM/MM approaches differ in two aspects: the def2-TZVP basis set instead of def2-SVP, and two quantum cores described with DLPNO-CCSD(T0).",
+     "anchor": "Section 4.1, p.13",
+     "quotes": [
+      "(i) We employed the def2-TZVP basis set in the QM/QM/MM calculations, but only the smaller def2-SVP basis set in the initial QM/MM calculation.",
+      "(ii) The QM/QM/MM approach described two quantum cores with DLPNO-CCSD(T0)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition of the compared settings in Section 4.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-energy-difference-distributions",
+     "value": "The authors report standard deviations of the total QM/QM/MM minus QM/MM energy difference of 10.4 kJ/mol for the protein-ligand complex and 13.3 kJ/mol for the solvated ligand; of the embedding contribution, 9.9 and 11.8 kJ/mol; and of the basis set contribution, 5.0 and 5.8 kJ/mol.",
+     "anchor": "Section 4.1, Figure 3, p.14",
+     "quotes": [
+      "standard deviations of 10.4 kJ mol−1 and 13.3 kJ mol−1 for the protein-ligand complex and the solvated ligand, respectively",
+      "The standard deviations for ∆EEmb are 9.9 kJ mol−1 and 11.8 kJ mol−1 for the respective end states",
+      "results only in a variance of 5.0 kJ mol−1 and 5.8 kJ mol−1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The paper writes 'variance' for the basis set values but gives them in kJ/mol, so they read as standard deviations."
+    },
+    {
+     "id_suggestion": "bensberg-mean-shift-embedding-basis",
+     "value": "The authors report that the means of the total energy difference for the protein-ligand complex and the solvated ligand differ by -4.6 kJ/mol, of which -4.0 kJ/mol is caused by the improved basis set and the remaining -0.6 kJ/mol by the QM/QM embedding.",
+     "anchor": "Section 4.1, p.14",
+     "quotes": [
+      "differ by −4.6 kJ mol−1, suggesting that the QM/QM embedding stabilizes the bound state slightly",
+      "The majority of this mean shift (−4.0 kJ mol−1) is caused by the improved basis set",
+      "the remaining −0.6 kJ mol−1 can be traced back to the QM/QM embedding"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-training-set-size",
+     "value": "The authors train separate potentials on 8417 reference conformers for the protein-ligand complex and 5285 for the solvated ligand, each with 44 QM atoms.",
+     "anchor": "Section 4.2, p.14",
+     "quotes": [
+      "Transfer learning is based on 8417 reference conformers for the protein-ligand complex and 5285 for the solvated ligand",
+      "each reference conformer contains NQ = 44 QM atoms"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Setup stated in Section 4.2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-mlp-accuracy-no-overfitting",
+     "value": "The authors report that the energy RMSEs of the transfer-learned potentials are one order of magnitude smaller than the energy ranges and significantly smaller than the standard deviations, that training and test errors are similar, and that ensembling reduces RMSE especially for the solvated ligand.",
+     "anchor": "Section 4.2, Table 1, p.14-15 (Table 1 ensemble RMSEs per QM atom: 0.150 for MCL1-19G, 0.205 for 19G, in kJ/mol)",
+     "quotes": [
+      "are one order of magnitude smaller than the corresponding energy ranges and significantly smaller than the standard deviations",
+      "Training and test data show similar errors indicating the absence of overfitting.",
+      "Ensembling of ten HDNNPs in an MLP reduces the RMSE values compared to the individual predictions, especially for the solvated ligand."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study. The table values come from Table 1 and are not in the quotes.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-rmse-lower-than-base",
+     "value": "The authors report that the QM/QM/MM potential RMSEs are 5% and 14% lower than those of the base QM/MM potentials for the protein-ligand complex and the solvated ligand, and they attribute the gain to the narrower energy distribution of the training data from restricting to structures within 150 kJ/mol of the median energy.",
+     "anchor": "Section 4.2, pp.14-15",
+     "quotes": [
+      "The QM/QM/MM MLP RMSEs are 5% and 14% lower than those of the base QM/MM MLPs",
+      "the increased accuracy can be attributed to the narrower energy distribution of the training data",
+      "within 150 kJ mol−1 of the median energy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result with the authors' attribution, from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The comparison is between potentials trained on differently distributed data, so it does not show a gain from the method itself."
+    },
+    {
+     "id_suggestion": "bensberg-forces-test-setup",
+     "value": "To test the effect of forces, the authors trained a base model on MM/MM energies from snapshots of the MM trajectory (read as ten to the power four in the text layer, printed as 104) and transfer learned it to the QM/MM surface, with a direct-training reference, because gradients are available in both cases.",
+     "anchor": "Section 4.3, p.16",
+     "quotes": [
+      "we can train a base model using 104 snapshots from the MM trajectory on MM/MM energies and apply transfer learning to the QM/MM potential energy surface",
+      "direct learning of the QM/MM data also allows us to obtain a reference for the resulting accuracy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Setup stated in Section 4.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-energy-only-force-rmse-double",
+     "value": "The authors report that transfer learning only on energies yields similar energy RMSEs to learning on energies and forces, but the force RMSE for QM atoms is about twice as high; for MM atoms the difference is not as large and the absolute force errors are one order of magnitude smaller.",
+     "anchor": "Section 4.3, Table 2, p.16-17",
+     "quotes": [
+      "Transfer learning only on energies yields similar RMSEs for the energies EQM/MM",
+      "is about twice as high for training only on energies compared to training on energies and forces",
+      "the absolute values of these force errors are, in general, one order of magnitude smaller than those of"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one test. Table 2 gives the force RMSEs (for MCL1-19G, 22.1 against 11.3 kJ/mol per angstrom for QM atoms).",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-transfer-vs-direct-learning",
+     "value": "The authors report that, compared with direct learning on the same conformers, transfer learning raises the energy RMSE by around 26%, the QM-atom force RMSE by about 26% when forces are used, and the MM-atom force RMSE by about 16%, and they judge the RMSEs decent for the alchemical free energy simulations.",
+     "anchor": "Section 4.3, Table 2, p.17",
+     "quotes": [
+      "the energy RMSE increases by around 26% (Table 2)",
+      "yields an increase of the RMSE of about 26% compared to direct learning",
+      "The increase is about 16% for",
+      "Still, the RMSEs are decent for the following Alchemical Free Energy (AFE) simulations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-training-fraction-data-need",
+     "value": "The authors report that reducing the training fraction of the reference conformers from 0.9 to 0.3 increases the test RMSEs only little, that decreasing the number of training conformers to about a thousand (printed as 103) raises the energy and QM-atom force RMSEs by about 12%, and that a further decrease to 0.5 thousand (printed as 0.5 · 103) raises them by about 25%.",
+     "anchor": "Section 4.3, Figure 6, pp.17-18",
+     "quotes": [
+      "reducing the training fraction of the 104 reference conformers from 0.9 to 0.3 increases the resulting test RMSEs of energies and forces only little",
+      "Decreasing the number of training conformers to 103 leads to increases in the EQM/MM and",
+      "RMSEs of about 12% compared to utilizing 9 · 103 conformers",
+      "If the number is further decreased to 0.5 · 103, the RMSEs will increase by about 25%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one test setup (MM to QM/MM surrogate).",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-energy-only-forces-reasonable-dynamics",
+     "value": "The authors state that the alchemical free energy simulations confirm that forces of QM atoms predicted by a potential obtained by transfer learning only on energies lead to reasonable dynamics.",
+     "anchor": "Section 4.3, p.18",
+     "quotes": [
+      "These simulations can finally confirm that the forces of the QM atoms, which are predicted by an MLP obtained in transfer learning only on energies, lead to reasonable dynamics."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no direct force-quality measure for the simulations.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "This sits beside the conclusion that energy derivatives are key: energy-only training was judged usable for the dynamics run."
+    },
+    {
+     "id_suggestion": "bensberg-neq-switching-protocol",
+     "value": "The authors run non-equilibrium switching from MM to the ML(II)/MM surface with 150 structures randomly selected from the MM end states, a 10 ps forward switch and a 10 ps backward switch after resampling, repeated six times for each end state, which gives 36 binding free energy estimates.",
+     "anchor": "Section 3.3, p.12",
+     "quotes": [
+      "150 structures were randomly selected from the MM end states",
+      "the force field was switched slowly from MM to ML(II)/MM over 10 ps",
+      "propagated the structures for another 10 ps",
+      "the standard deviation of the 36 binding free energy estimations (6 × 6 for each end state)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Protocol stated in Section 3.3. The last quote is split across a line break in the text layer; the quoted part is contiguous in line 359.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-work-distribution-two-peaks",
+     "value": "The authors report two distinct peaks in the work distribution for both end states, related in earlier work to the carboxylic acid forming hydrogen bonds to sulfur or to the solvent; hydrogen bonds to sulfur on the MM surface are fully replaced by hydrogen bonds to solvent after switching to the potential.",
+     "anchor": "Section 4.4, Figure 7, p.18",
+     "quotes": [
+      "For both end states, we observe two distinct peaks in the work distribution.",
+      "These hydrogen bonds are fully replaced by hydrogen bonds to solvent molecules after switching to the MLP."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-previous-qmmm-binding-energy",
+     "value": "The authors cite their earlier QM/MM-based estimate of the binding free energy of -35.3 kJ/mol with an uncertainty of 1.8 kJ/mol, which underestimates the binding by 1.9 kJ/mol compared to the experimental estimate of -37.3 kJ/mol with an uncertainty of 0.1 kJ/mol.",
+     "anchor": "Section 4.4, p.18",
+     "quotes": [
+      "= −35.3 kJ mol−1 ± 1.8 kJ mol−1,15 underestimating the binding by 1.9 kJ mol−1 compared to the experimental estimate",
+      "(−37.3 kJ mol−1 ± 0.1 kJ mol−1"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to earlier work (Ref. 15) and to an experimental source (Ref. 17).",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-protonation-error-cancellation-caveat",
+     "value": "The authors state that the protonation state of the ligand is unclear, since its carboxylic acid group is likely deprotonated in solution, that they used the neutral ligand to avoid charge compensation in the initial MM calculation, and that the close agreement with experiment may have benefited from error cancellation.",
+     "anchor": "Section 4.4, p.18",
+     "quotes": [
+      "the protonation state of the ligand is unclear since its carboxylic acid group is likely deprotonated in solution",
+      "this close agreement with the experimental estimate may have benefited from error cancellation",
+      "We chose the neutral ligand to avoid charge compensation during the initial MM AFE calculation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit itself in Section 4.4, p.18.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The binding free energy match is not clean evidence of improved accuracy from the embedding."
+    },
+    {
+     "id_suggestion": "bensberg-small-but-significant-effect",
+     "value": "The authors state that the QM/QM/MM embedding provided a locally corrected description of the electronic structure, which had a small but significant effect on the relative energy distributions.",
+     "anchor": "Section 5, Conclusions, p.20",
+     "quotes": [
+      "The QM/QM/MM embedding provided a locally corrected description of the electronic structure, which had a small but significant effect on the relative energy distributions."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion; no significance test is reported.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "Section 4.1 attributes most of the mean shift to the basis set, not to the embedding."
+    },
+    {
+     "id_suggestion": "bensberg-small-core-accuracy-limit",
+     "value": "The authors state that very small embedded regions in Huzinaga-based embedding can decrease the accuracy of relative energies compared to a full DFT description because error cancellation intrinsic to DFT is lost, and that this can be addressed by more accurate functionals or larger quantum cores.",
+     "anchor": "Section 5, Conclusions, p.21",
+     "quotes": [
+      "Very small embedded regions in Huzinaga-based embedding can decrease the accuracy of relative energies compared to a full DFT description since error cancellation intrinsic to DFT is lost.",
+      "by increasing the size of the quantum cores"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper supports with a citation (Ref. 26), not with its own test.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-quantum-computing-energy-source",
+     "value": "The authors state that, depending on the electronic structure, multi-configurational approaches are applicable and quantum computation can step in as a source of high-accuracy quantum energies, as they will demonstrate in a forthcoming paper.",
+     "anchor": "Section 5, Conclusions, p.20",
+     "quotes": [
+      "also multi-configurational approaches are applicable and even quantum computation can step in as a source of high-accuracy quantum energies, as we will demonstrate in a forthcoming paper.68"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim about future work; not shown in this paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "No quantum computation is run in this paper."
+    },
+    {
+     "id_suggestion": "bensberg-future-active-learning",
+     "value": "The authors state that in future work they will investigate active learning strategies for transfer learning to lower the computational cost, identifying structures where the QM/QM/MM and QM/MM surfaces differ significantly.",
+     "anchor": "Section 5, Conclusions, p.21",
+     "quotes": [
+      "we will investigate active learning strategies for transfer learning to lower the computational cost of our approach"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own open problem in Section 5, p.21.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
