@@ -1,0 +1,918 @@
+{"papers": [{
+  "record_id": "arthur-2020-balanced-k-means-clustering-adiabatic",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2020\\Arthur-Date_2020_Balanced-k-Means-Clustering-on-an-Adiabatic-Quantum-Computer__2008.04419.pdf",
+  "title_in_file": "Balanced k-Means Clustering on an Adiabatic Quantum Computer",
+  "version_note": "arXiv:2008.04419v1 [cs.LG] 10 Aug 2020. The text layer is the paper once; the reference list sits between the Conclusion and the last lines of the Conclusion because of the page layout.",
+  "pages": 10,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A QUBO formulation of balanced k-means clustering, run on a D-Wave 2000Q for problems of up to 64 binary variables and compared with scikit-learn k-means and a classical balanced k-means algorithm on synthetic data and Iris subsets.",
+  "bears_on_context": "qml",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "arthur-qubit-limit",
+      "verdict": "confirmed",
+      "note": "",
+      "value": "The authors state that, owing to qubit limits of the hardware, problems that need more than 64 binary variables are impossible on the D-Wave 2000Q, and the entire Iris data set could not be clustered.",
+      "anchor": "Section IV-B6 and Section IV-C",
+      "quotes": [
+        "problems that require more than 64 binary variables (N k > 64) are impossible on the D-Wave 2000Q",
+        "Unfortunately, due to qubit limitations on modern hardware, it is impossible to perform quantum balanced k-means clustering on the entire data set."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "Section IV-B6 and Section IV-C state the limit of the hardware used.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arthur-runtime",
+      "verdict": "narrowed",
+      "note": "The sentence is from the data-point scalability study (k = 4, d = 2). The quantum run times in that study are not measured on the hardware: embedding time and annealing time are estimated (embedding by an extrapolated formula, annealing as the mean of the small experiments); only formulation and postprocessing are measured. The same direction is reported for the cluster-count and feature-count studies.",
+      "value": "The authors report that, in the data-point scalability study (k = 4 classes, d = 2 features), the quantum approach performed slower than both classical algorithms in each case, that the quantum run time was dominated by the embedding time, and that embedding and annealing times for these problem sizes were estimated rather than measured on the hardware.",
+      "anchor": "Section IV-B6, Table II, p.6-7",
+      "quotes": [
+        "In each case, the quantum approach performed slower than both classical algorithms. However, the quantum run time was dominated by the embedding time.",
+        "Each data set contained k = 4 classes, and each data point had d = 2 features.",
+        "We estimate the time required to embed the problem (te) as well as annealing time (ta)."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study, partly based on estimated times.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The slower-in-every-case result is partly an artifact of an extrapolated embedding time added to a measured formulation time; it is not a wall-clock run on hardware at those sizes (N k above 64 cannot run)."
+    },
+    {
+      "id": "arthur-similar-accuracy",
+      "verdict": "narrowed",
+      "note": "The Conclusion states similar accuracy, but the results sections limit it: the classical balanced k-means algorithm had the best performance for most synthetic experiments, the classical algorithms did better at k = 2, and quantum performance degrades as problem size grows. Only small problems (up to 64 binary variables) were run.",
+      "value": "The authors state that they demonstrated that their quantum approach partitions data with similar accuracy to the classical approaches, even when running on imperfect hardware; their results sections also report that the classical balanced k-means algorithm had the best performance for most synthetic experiments, that the classical algorithms performed better for k = 2 on Iris subsets, and that the performance of the quantum algorithm degrades as problem size increases.",
+      "anchor": "Section V; Section IV-B5; Section IV-C",
+      "quotes": [
+        "We demonstrated that our quantum approach partitions data with similar accuracy to the classical approaches, even when running on imperfect hardware.",
+        "For most experiments, the classical balanced k-means algorithm had the best performance.",
+        "These experiments also show that the performance of our quantum algorithm degrades as problem size increases.",
+        "For k = 2, the classical algorithms performed better than the quantum approach."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "'Similar' is the authors' wording; the ARI bars are in Figures 2 and 7 only (not in the text layer), so the size of the gap cannot be quoted."
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "arthur-qubo-equivalence-condition",
+      "value": "The authors state that, provided N is divisible by k and the penalty constants alpha and beta are large enough to ensure all constraints are upheld, Problem 16 and Problem 4 share the same global solution.",
+      "anchor": "Section III, after Equation 16, p.2-3",
+      "quotes": [
+        "Provided N is divisible by k, and α and β are large enough to ensure all constraints are upheld, Problem 16 and Problem 4 share the same global solution."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "proved result",
+      "certainty_reason": "Section III derives the penalty form step by step and states the condition under which the QUBO and the balanced k-means problem share the global solution.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "An informal derivation, not a numbered theorem; the paper gives no value of alpha and beta that is proved sufficient (the chosen values in Section III-A are described as the best performing in practice)."
+    },
+    {
+      "id": "arthur-balanced-reduction",
+      "value": "The authors state that, utilizing the law of total variance, the k-means training problem can be rewritten as a sum of pairwise squared distances within each cluster divided by twice the cluster size, and that when each cluster is of equal size the cluster size is constant and the problem reduces to the balanced form.",
+      "anchor": "Section III, Equations 2 to 4, p.2",
+      "quotes": [
+        "Utilizing the law of total variance, the training problem can be rewritten as:",
+        "In the case that each cluster is of equal size (i.e. balanced), |φi| is constant, and Problem 3 reduces to:"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "Section III defines the objective that the QUBO encodes.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arthur-qubit-count-footprint",
+      "value": "The authors state that the total number of variables in Equation 16 is O(N k), which translates to a quadratic qubit footprint of O(N 2k2) (printed flat; order N squared times k squared) using an efficient embedding algorithm such as the one in reference 30.",
+      "anchor": "Section IV-A, p.4",
+      "quotes": [
+        "Thus, the total number of variables in Equation 16 is O(N k).",
+        "This translates to a quadratic qubit footprint of O(N 2k2) using an efﬁcient embedding algorithm such as [30]."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A scaling statement tied to a cited embedding algorithm; the paper gives no derivation of the qubit footprint.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "Table I (nine settings, up to 64 variables) shows qubit counts several times the variable count in every setting, which is consistent with a superlinear footprint."
+    },
+    {
+      "id": "arthur-table1-qubits-used",
+      "value": "The authors report in Table I, for nine (N, k) settings, the number of binary variables and the average number of qubits used by the quantum approach; the largest settings use 64 binary variables.",
+      "anchor": "Table I, p.5 (cell values are in the table, not in a quotable line)",
+      "quotes": [
+        "NUMBER OF BINARY VARIABLES AND AVERAGE NUMBER OF QUBITS USED IN THE QUANTUM APPROACH.",
+        "problems that require more than 64 binary variables (N k > 64) are impossible on the D-Wave 2000Q"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study; the cell values could not be quoted as lines.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "In the text layer the table reads 794 qubits for (32, 2) and 806 qubits for (16, 4), both 64 variables, and 185 qubits for (16, 2) with 32 variables; the 2,048-qubit chip is thus mostly used at 64 variables."
+    },
+    {
+      "id": "arthur-quantum-complexity",
+      "value": "The authors state that, from Equation 19, the worst case time complexity of forming the QUBO is O(N 2kd) (printed flat; order N squared times k times d) and that the total time complexity of the quantum algorithm is O(N 2kd); provided kd < N this is better than the O(N 3) of the best classical balanced k-means algorithm but worse than the O(N kd) of the Scikit-learn generic k-means.",
+      "anchor": "Section IV-A, Equation 19, p.4-5",
+      "quotes": [
+        "From Equation 19, the worst case time complexity is O(N 2kd)",
+        "Therefore, the total time complexity of the quantum algorithm is O(N 2kd).",
+        "Provided kd < N , this time complexity is better than the time complexity of the best classical balanced k-means clustering algorithm (O(N 3)).",
+        "However, it is worse than the Scikit-learn implementation of generic k-means clustering (O(N kd))."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An informal complexity count resting on the constant-time annealing assumption; the paper does not state it as a theorem.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The total excludes embedding time, which the paper's own experiments show dominates and which grows quadratically with the number of binary variables N k (so order N squared k squared, above N squared k d whenever k exceeds d)."
+    },
+    {
+      "id": "arthur-constant-anneal-assumption",
+      "value": "The authors state that, for practical purposes, solving the QUBO problem through quantum annealing can be done in constant time, and that annealing is performed in constant time; for larger problems they therefore assume the annealing time equals the average annealing time of the small clustering experiments.",
+      "anchor": "Section IV-A, p.5; Section IV-B6, p.6",
+      "quotes": [
+        "annealing can be done in constant time.",
+        "As mentioned before, annealing is performed in constant time.",
+        "Therefore, we assume that the annealing time for larger problems (ta) is equal to the average annealing time for the small clustering experiments discussed in Section IV-B5."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "Sections IV-A and IV-B6 state the assumption that the scaling analysis and the time estimates are built on.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The constant-time assumption is an input to every quantum-versus-classical scaling comparison in the paper; the paper gives no evidence for it at sizes above those run."
+    },
+    {
+      "id": "arthur-anneal-time-value",
+      "value": "The authors report an average annealing time for the small clustering experiments of 0.03481 ± 0.00008, used as the annealing time for all larger problems.",
+      "anchor": "Section IV-B6, Equation 22, p.6",
+      "quotes": [
+        "ta = 0.03481 ± 0.00008"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The unit is not printed beside Equation 22; the surrounding text gives embedding time in seconds."
+    },
+    {
+      "id": "arthur-embedding-time-formula",
+      "value": "The authors approximate embedding time, extrapolating from the performance of the embedding algorithm on small problems, as te = 1.887 × 10−6 times (N k) squared, plus 4.632 × 10−6 times (N k), plus 4.022 × 10−4, in seconds.",
+      "anchor": "Section IV-B6, Equation 21, p.5",
+      "quotes": [
+        "Extrapolating upon the performance of this embedding algorithm on small problems, we approximate embedding time (in seconds) using the following equation:",
+        "te = 1.887 × 10−6(N k)2 + 4.632 × 10−6(N k)",
+        "+ 4.022 × 10−4"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A fit to measurements of small problems, extrapolated well beyond the sizes that fit on the hardware.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "Every 'embedding (estimated)' entry in Tables II to IV comes from this formula, so the quantum totals in those tables are extrapolations from problems of at most 64 variables."
+    },
+    {
+      "id": "arthur-embedding-quadratic",
+      "value": "The authors report that embedding time of small problems on the D-Wave, using the embedding algorithm proposed by Date et al., scales quadratically with the number of binary variables.",
+      "anchor": "Fig. 3 caption, p.5",
+      "quotes": [
+        "Embedding time scales quadratically with the number of binary variables."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study on small problems (Figure 3 not available as text).",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arthur-penalty-constants",
+      "value": "The authors state that, in practice, they achieved the best performance with alpha scaled from max(D) and beta equal to max(D), where max(D) is the maximum element in D, and that this scaling rests on the assumption that the training data set has well defined clusters.",
+      "anchor": "Section III-A, Equations 17 and 18, p.3",
+      "quotes": [
+        "practice we achieved the best performance when deﬁning",
+        "β = max(D)",
+        "where max(D) is the maximum element in D.",
+        "Assuming the training data set has well deﬁned clusters, the maximum element of D is much larger than the average squared distance between two points in a given cluster."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "Section III-A states the penalty constants used in the experiments and the assumption behind them.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The constants were tuned for performance in practice, not derived; the equivalence condition (large enough penalties) is separate from these values."
+    },
+    {
+      "id": "arthur-row-column-penalty-weighting",
+      "value": "The authors state that by multiplying F by a smaller factor than G they guarantee that row constraints are more strictly enforced than column constraints, which permits small violations of the equal-size cluster constraint when N is not divisible by k.",
+      "anchor": "Section III-A, p.3",
+      "quotes": [
+        "By multiplying F by a smaller factor than G, we also guarantee that row constraints are more strictly enforced than column constraints.",
+        "This is desirable since we would like to permit small violations of the equal-size cluster constraint when N is not divisible by k."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "Section III-A states a design choice of the formulation.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "'Guarantee' refers to the relative size of the penalty weights, not to the annealer's output, which the next paragraph says can violate constraints."
+    },
+    {
+      "id": "arthur-annealer-imperfect-postprocess",
+      "value": "The authors state that, in practice, the quantum annealing process is not perfect and instances occur in which a point is assigned to multiple clusters or to no cluster; a point assigned to multiple clusters is taken to belong to the cluster with the smaller index, and a point assigned to no cluster is taken to belong to the first cluster.",
+      "anchor": "Section III-A, p.3",
+      "quotes": [
+        "In practice the quantum annealing process is not perfect, and instances occur in which a point is assigned to multiple clusters or not assigned to any cluster at all.",
+        "If quantum annealing assigns a point to multiple clusters, we consider the point to belong to the cluster with the smaller index.",
+        "If quantum annealing does not assign a point to any cluster, we consider the point to belong to the ﬁrst cluster."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "Section III-A states the repair rules used on annealer output and the limit of the annealer.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The paper does not report how often constraint violations occurred; ARI is computed after these arbitrary repairs."
+    },
+    {
+      "id": "arthur-global-minimum-premise",
+      "value": "The authors state that adiabatic quantum computers are able to find the global minimum of the quadratic unconstrained binary optimization (QUBO) problem.",
+      "anchor": "Section III, p.2",
+      "quotes": [
+        "Adiabatic quantum computers are able to ﬁnd the global minimum of the quadratic unconstrained binary optimization (QUBO) problem"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's claim without evidence in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The Introduction says the D-Wave 2000Q 'approximately solves' QUBO, and Section III-A says annealing 'is not perfect'; the global-minimum wording is a premise of the paper's global-solution argument, not a result."
+    },
+    {
+      "id": "arthur-intro-approx-solve",
+      "value": "The authors state that the D-Wave 2000Q adiabatic quantum computer approximately solves the NP-complete quadratic unconstrained binary optimization (QUBO) problem efficiently, and that modern quantum computers are too small and error-prone to effectively solve large problems.",
+      "anchor": "Section I, p.1",
+      "quotes": [
+        "the D-Wave 2000Q adiabatic quantum computer approximately solves the NP-complete quadratic unconstrained binary optimization (QUBO) problem efﬁciently.",
+        "While modern quantum computers are too small and error-prone to effectively solve large problems"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's claim without evidence in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "'Efficiently' is not tested in the paper: the largest problem run is 64 variables."
+    },
+    {
+      "id": "arthur-np-hard-training-cited",
+      "value": "The authors state, citing references 1, 2 and 3, that models with NP-hard or NP-complete training problems include k-means clustering, neural networks and decision tree learning.",
+      "anchor": "Section I, p.1",
+      "quotes": [
+        "This is particularly true for models with NP-hard or NP-complete training problems such as k-means clustering [1], neural networks [2], decision tree learning [3], etc."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited",
+      "context": "ml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arthur-lloyd-complexities-cited",
+      "value": "The authors state, citing Hartigan and Wong (reference 13), that Lloyd's algorithm has time complexity O(N kdi), and, citing the Scikit-learn paper (reference 18), that bounding the iterations by a constant reduces the time complexity to O(N kd).",
+      "anchor": "Section II, p.1-2",
+      "quotes": [
+        "Hartigan and Wong show that the time complexity of this approach is O(N kdi) where N is the number of data points, k is the number of clusters, d is the dimension of the data set, and i is the number of iterations before the algorithm converges [13].",
+        "The Scikit-learn implementation of Lloyd’s algorithm bounds the number of iterations by a constant, effectively reducing the time complexity to O(N kd) [18]."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited",
+      "context": "ml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arthur-lloyd-superpolynomial-cited",
+      "value": "The authors state, citing Arthur and Vassilvitskii, that Lloyd's algorithm has superpolynomial time complexity.",
+      "anchor": "Section II, p.1",
+      "quotes": [
+        "Therefore, Lloyd’s algorithm has superpolynomial time complexity."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited",
+      "context": "ml",
+      "reader_inference": "The preceding sentence (a bound on the number of iterations for random initialization with high probability) is printed with a garbled exponent in the text layer and is not quoted."
+    },
+    {
+      "id": "arthur-exact-kmeans-time-cited",
+      "value": "The authors state, citing Inaba et al. (reference 31), that it has been shown to require O(N kd+1) time (printed flat; N times k to the power of d plus one) to exactly solve the generic k-means clustering problem (Problem 2), and that the time required to exactly solve the balanced k-means clustering problem has not been thoroughly analyzed.",
+      "anchor": "Section IV-A, p.4",
+      "quotes": [
+        "It has been shown to require O(N kd+1) time to exactly solve the generic k-means clustering problem (Problem 2) [31].",
+        "The time complexity required to exactly solve the balanced k-means clustering problem has not been thoroughly analyzed."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited",
+      "context": "ml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arthur-malinen-balanced-cubic-cited",
+      "value": "The authors state, citing Malinen and Franti (reference 21), that an efficient balanced k-means clustering algorithm runs in O(N 3) time (printed flat; order N cubed) and that a locally optimal solution to Problem 4 can be found in that time; they use it as the classical balanced baseline.",
+      "anchor": "Section II, p.2; Section IV-A, p.4",
+      "quotes": [
+        "balanced k-means clustering algorithm that runs in O(N 3) time [21].",
+        "a locally optimal solution to Problem 4 can be found in O(N 3) time using the classical approach proposed by Malinen et al. [21]."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited",
+      "context": "ml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arthur-novelty-exact-target",
+      "value": "The authors state that, while many quantum clustering algorithms have been proposed, none target the exact solution to the k-means or balanced k-means clustering model, and that their QUBO formulation is identical to the balanced k-means training problem.",
+      "anchor": "Section II, p.2",
+      "quotes": [
+        "While many quantum clustering algorithms have been proposed, none target the exact solution to the k-means or balanced k-means clustering model.",
+        "We propose a QUBO formulation that is identical to the balanced k-means training problem."
+      ],
+      "kind": "claimed",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's novelty claim without evidence in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "'Identical' holds only under the conditions in the equivalence assertion (N divisible by k, large enough penalties); the paper's own Section III-A says N not divisible by k is permitted with small violations."
+    },
+    {
+      "id": "arthur-methodology-baselines-metrics",
+      "value": "The authors report that the quantum approach was tested on the D-Wave 2000Q and compared with the Scikit-learn implementation of classical k-means and with their own implementation of the classical balanced k-means algorithm, using two metrics, adjusted rand index and total computing time; Scikit-learn k-means searches for a solution to Problem 2, while the balanced algorithm and the quantum approach search for Problem 4.",
+      "anchor": "Section IV-B1, p.5",
+      "quotes": [
+        "Our quantum approach was tested on the D-Wave 2000Q adiabatic quantum computer.",
+        "Note that the Scikit-learn implementation of k-means searches for a solution to Problem 2, while the classical balanced k-means algorithm and our quantum approach search for a solution to Problem 4.",
+        "We use two performance metrics to compare the three algorithms: (i) adjusted rand index and (ii) total computing time."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "Section IV-B1 states the comparison set-up.",
+      "result_type": "setup",
+      "context": "method",
+      "reader_inference": "The generic-k-means baseline solves a different problem from the other two; the authors argue the solutions should be very similar for their data sets, which they do not show."
+    },
+    {
+      "id": "arthur-quantum-total-time-components",
+      "value": "The authors state that total computing time in the quantum approach is composed of the time to convert the problem into a QUBO problem, the time to embed the QUBO problem on the hardware, the annealing time, and the postprocessing time.",
+      "anchor": "Section IV-B1, p.5",
+      "quotes": [
+        "In the quantum approach, total computing time is composed of the time required to convert the problem into a QUBO problem, the time required to embed the QUBO problem on the hardware, the time for the quantum computer to solve"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "Section IV-B1 defines what the quantum total computing time includes.",
+      "result_type": "setup",
+      "context": "method",
+      "reader_inference": ""
+    },
+    {
+      "id": "arthur-synthetic-data-generation",
+      "value": "The authors report that synthetic data sets were created with the make_classification function of the Scikit-learn datasets package, with N points, k classes, one cluster per class and d features, each cluster centered at a vertex of a d-dimensional hypercube with side length 2.0 and points drawn from a normal distribution with standard deviation of 1.0, and each class made up of exactly N/k points.",
+      "anchor": "Section IV-B2, p.5",
+      "quotes": [
+        "is centered at one of the vertices of a d-dimensional hypercube with side length 2.0. The points are then generated from a normal distribution (standard deviation of 1.0) about their",
+        "cluster center. For all experiments, each class was made up of exactly N/k points."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "Section IV-B2 states how the test data were generated.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "Clusters are well separated in expectation only for large d; with unit-variance noise and side length 2.0 they overlap for small d, which affects what ARI can be reached."
+    },
+    {
+      "id": "arthur-hardware-config",
+      "value": "The authors report that the D-Wave quantum computer used had 2,048 qubits and about 5,600 inter-qubit connections, that each quantum annealing operation was performed 100 times with only the ground state used, and that preprocessing, postprocessing and the entire classical approach ran on a machine with a 2.7 GHz dual-core Intel i5 processor and 8 GB of 1,867 MHz DDR3 memory.",
+      "anchor": "Section IV-B3, p.5",
+      "quotes": [
+        "computer, which had 2,048 qubits and about 5,600 inter-qubit",
+        "connections. For all experiments, each quantum annealing",
+        "operation is performed 100 times, and only the ground state",
+        "proach were run on a machine with 2.7 GHz Dual-Core",
+        "Intel i5 processor and 8 GB 1,867 MHz DDR3 memory."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "Section IV-B3 states the hardware configuration.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "Classical timings come from a laptop-class dual-core machine; the paper does not state that the classical code was optimized."
+    },
+    {
+      "id": "arthur-ari-definition",
+      "value": "The authors define the adjusted rand index (ARI) as a metric used to compare the similarity of two partitions of a data set, ranging from -1 to 1 with larger values indicating more similar partitions; a value of 1 indicates that the algorithm perfectly partitioned the data and values close to 0 reflect random clustering.",
+      "anchor": "Section IV-B4, Equation 20, p.5",
+      "quotes": [
+        "of a data set. This metric ranges from -1 to 1, with larger",
+        "clustering algorithm. A value of 1 indicates that the algorithm",
+        "perfectly partitioned the data, and values close to 0 are"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "Section IV-B4 defines the main quality metric.",
+      "result_type": "setup",
+      "context": "method",
+      "reader_inference": ""
+    },
+    {
+      "id": "arthur-fig1-example",
+      "value": "The authors show in Figure 1 an example synthetic data set of N = 15 points partitioned into 3 classes, in which the quantum algorithm correctly partitioned all but one point.",
+      "anchor": "Fig. 1 caption, p.4",
+      "quotes": [
+        "Fig. 1. Example of a synthetic data set containing N = 15 points partitioned into 3 classes (left).",
+        "The quantum algorithm correctly partitioned all but one point (right)."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A single illustrative example from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arthur-synthetic-classical-balanced-best",
+      "value": "The authors report that, for each problem type, all three algorithms were run on 50 synthetic classification data sets with the average adjusted rand index reported in Figure 2, and that for most experiments the classical balanced k-means algorithm had the best performance.",
+      "anchor": "Section IV-B5, Figure 2, p.5-6",
+      "quotes": [
+        "all three algorithms were run on 50 synthetic",
+        "The average adjusted rand index of each clustering algorithm is reported in Figure 2.",
+        "For most experiments, the classical balanced k-means algorithm had the best performance."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The ARI values themselves are in Figure 2 only and are not in the text layer."
+    },
+    {
+      "id": "arthur-synthetic-k2-gap",
+      "value": "The authors report that the relative drop in performance between the classical and quantum approach is particularly apparent when k = 2, and state that they suspect classical algorithms perform better for small values of k because the number of ways to partition a data set increases dramatically as k increases.",
+      "anchor": "Section IV-B5, p.6",
+      "quotes": [
+        "The relative drop in performance between the classical and quantum approach is particularly apparent when k = 2.",
+        "We suspect that the classical algorithms perform better for small values of k because the number of ways to partition a data set increases dramatically as k increases."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study with an untested explanation.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The explanation is the authors' suspicion; it was not tested."
+    },
+    {
+      "id": "arthur-classical-kmeans-unequal-clusters",
+      "value": "The authors state that the Scikit-learn implementation of classical k-means does not always produce clusters of equal size, and that the quantum approach is running on imperfect hardware, as reasons the classical balanced algorithm did best.",
+      "anchor": "Section IV-B5, p.6",
+      "quotes": [
+        "This is not surprising since the Scikit-learn implementation of classical k-means does not always produce clusters of equal size, and the quantum approach is running on imperfect hardware."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's explanation without a test in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arthur-synthetic-degradation-hardware",
+      "value": "The authors state that the performance of their quantum algorithm degrades as problem size increases, that they believe this reflects the hardware that solved the QUBO problem rather than a flaw in their approach, and that the strong performance on problems of size (8, 4), (12, 3), and (12, 4) gives hope that the quantum approach may outperform its classical alternatives as fidelity and scale improve.",
+      "anchor": "Section IV-B5, p.6",
+      "quotes": [
+        "These experiments also show that the performance of our quantum algorithm degrades as problem size increases.",
+        "We believe this is a reﬂection of the hardware that solved the QUBO problem rather than a ﬂaw in our approach.",
+        "The strong performance of the quantum algorithm on problems of size (8, 4), (12, 3), and (12, 4) give hope that as the ﬁdelity and scale of quantum computers improves, our quantum approach may outperform its classical alternatives."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study with an untested attribution to hardware.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The attribution to hardware is a belief, not a result; no run on a second device or noise model separates hardware error from the formulation's penalty structure."
+    },
+    {
+      "id": "arthur-table2-n-scaling",
+      "value": "The authors report in Table II, for k = 4 classes and d = 2 features at the largest point count in the table, mean times of 0.1006 ± 0.0231 for classical k-means, 95.4876 ± 58.0103 for classical balanced k-means, 7.6902 ± 0.0581 for the QUBO formulation, and an estimated embedding time of 506.4798.",
+      "anchor": "Table II, Section IV-B6, p.6",
+      "quotes": [
+        "Each data set contained k = 4 classes, and each data point had d = 2 features.",
+        "0.0218 ± 0.0017 0.0256 ± 0.0022 0.0334 ± 0.0035 0.0414 ± 0.0060 0.0521 ± 0.0085 0.0684 ± 0.0134 0.1006 ± 0.0231",
+        "0.0028 ± 0.0008 0.0073 ± 0.0025 0.0315 ± 0.0143 0.1637 ± 0.0607 1.5577 ± 1.0501 10.8928 ± 5.5405 95.4876 ± 58.0103",
+        "0.0008 ± 0.0003 0.0070 ± 0.0008 0.0192 ± 0.0018 0.1154 ± 0.0024 0.4624 ± 0.0095 1.8409 ± 0.0201 7.6902 ± 0.0581",
+        "0.1252 0.4973 1.9833 7.9224 31.6696 126.6392 506.4798"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study; the column assignment comes from the table layout in the text layer (the largest of seven point counts, 64 to 4096).",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The 'QUBO formulation' column excludes embedding and annealing; adding the estimated embedding and the annealing time makes the quantum total about 506 plus 7.7 at 4096 points, far above both classical times. Classical balanced time grows steeply with N (0.0028 to 95.4876)."
+    },
+    {
+      "id": "arthur-n-scaling-slower-future",
+      "value": "The authors state that embedding is extremely difficult on modern quantum computers due to limited qubit connectivity, that they expect embedding to be a considerably faster process as hardware improves, and that on a future quantum computer the quantum algorithm may outperform the classical balanced k-means algorithm for N ≥ 1024, depending on how well the embedding process is optimized.",
+      "anchor": "Section IV-B6, p.6-7",
+      "quotes": [
+        "Embedding is extremely difﬁcult on modern quantum computers due to limited qubit connectivity.",
+        "As hardware improves, we expect embedding to be a considerably faster process.",
+        "Therefore, on a future quantum computer, the quantum algorithm may outperform",
+        "the classical balanced k-means algorithm for N ≥ 1024, depending on how well the embedding process is optimized."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's projection to hardware that does not exist, without evidence in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "Table II gives a quantum formulation time of 0.4624 against 1.5577 for classical balanced at 1024 points before any embedding; the crossover rests on the embedding time falling to a small value."
+    },
+    {
+      "id": "arthur-sklearn-scales-best",
+      "value": "The authors report that their results indicate the Scikit-learn implementation of classical k-means scales the best of the three approaches, which they call expected since its time complexity is better than the other two.",
+      "anchor": "Section IV-B6, p.7",
+      "quotes": [
+        "Of the three approaches, our results indicate that the Scikit",
+        "This is expected since the time complexity of the Scikit-learn implementation of classical k-means (O(N kd)) is better than classical balanced k-means (O(N 3)) or quantum balanced kmeans (O(N 2kd))."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The second quote is the authors' complexity comparison; the text layer prints exponents flat."
+    },
+    {
+      "id": "arthur-k-scaling-results",
+      "value": "The authors report that, in the cluster-count study (N = 256 points, d = 8 features, 50 synthetic data sets per problem type), the quantum approach had a longer run time than both classical algorithms in all cases and its run time scaled worse as the number of clusters increased, which they call expected because the third term of the QUBO formulation (Equation 19) has time complexity of order N times k squared.",
+      "anchor": "Section IV-B7, Table III, Figure 5, p.7",
+      "quotes": [
+        "Each data set consisted of N = 256 points, and all points had d = 8 features.",
+        "For each problem type, all three clustering algorithms were run on 50 synthetic data sets.",
+        "In all cases, the quantum approach had a longer run time than both classical algorithms. Additionally, the quantum run time scaled worse as the number of clusters increased.",
+        "This is expected since the third term in the QUBO formulation (Equation 19) has time complexity O(N k2)."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study; quantum times include estimated embedding and annealing.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arthur-table3-k64",
+      "value": "The authors report in Table III, for N = 256 points and d = 8 features at the largest cluster count in the table (64 clusters), mean times of 0.2341 ± 0.0090 for classical k-means, 0.0201 ± 0.0023 for classical balanced k-means, 7.6511 ± 0.0695 for the QUBO formulation, and an estimated embedding time of 506.4798.",
+      "anchor": "Table III, Section IV-B7, p.7 (cluster counts 2, 4, 8, 16, 32, 64)",
+      "quotes": [
+        "Each data set consisted of N = 256 points, and all points had d = 8 features.",
+        "2 4 8 16 32 64",
+        "0.02707 ± 0.0042 0.0427 ± 0.0058 0.0584 ± 0.0052 0.0873 ± 0.0089 0.1349 ± 0.0120 0.2341 ± 0.0090",
+        "0.0276 ± 0.0101 0.0417 ± 0.0164 0.0399 ± 0.0113 0.0390 ± 0.0094 0.0271 ± 0.0052 0.0201 ± 0.0023",
+        "0.0080 ± 0.0011 0.0198 ± 0.0021 0.1273 ± 0.0053 0.5129 ± 0.0271 1.9598 ± 0.0308 7.6511 ± 0.0695",
+        "0.4973 1.9833 7.9224 31.6696 126.6392 506.4798"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study; the column assignment comes from the table layout in the text layer.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The first classical k-means entry prints as 0.02707 (five decimals) while the rest print four; likely a typo in the paper. N k = 16384 at 64 clusters, so the embedding estimate equals that of 4096 points with 4 clusters in Table II."
+    },
+    {
+      "id": "arthur-balanced-time-decreases-k",
+      "value": "The authors report that it is somewhat surprising that the average run time of the balanced k-means clustering approach decreases for k > 16, which they suspect is due to the smaller cluster sizes when k is large.",
+      "anchor": "Section IV-B7, p.7",
+      "quotes": [
+        "It is somewhat surprising that the average run time of the balanced k-means clustering approach decreases for k > 16.",
+        "However, we suspect this is due to the smaller cluster sizes when k is large."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study with an untested explanation.",
+      "result_type": "measured",
+      "context": "ml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arthur-d-scaling-results",
+      "value": "The authors report that, in the feature-count study (N = 1024 points in k = 4 clusters, 50 synthetic data sets per problem type), the quantum algorithm had the longest run time in all cases, and state that on future hardware the quantum approach could perform better than classical k-means for d ≥ 128 and better than classical balanced k-means for d ≤ 256, depending on how well the embedding process is optimized.",
+      "anchor": "Section IV-B8, Table IV, Figure 6, p.7",
+      "quotes": [
+        "Each data set consisted of N = 1024 points separated into k = 4 clusters.",
+        "As before, the quantum algorithm had the longest run time in all cases.",
+        "However, on future hardware the quantum approach could perform better than classical k-means for d ≥ 128 and better than classical balanced k-means for d ≤ 256, depending on how well the embedding process is optimized.",
+        "For each problem type, all three clustering approaches were run on 50 synthetic classiﬁcation data sets."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study plus a projection to future hardware.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "Table IV holds the estimated embedding time constant at 31.6696 for all d, so the quantum total is above both classical times at every d unless embedding becomes much faster than the formula says; the future-hardware statement is a projection."
+    },
+    {
+      "id": "arthur-table4-d256",
+      "value": "The authors report in Table IV, for N = 1024 points and k = 4 clusters at 256 features, mean times of 1.2474 ± 0.1726 for classical k-means, 1.4060 ± 0.2184 for classical balanced k-means, 0.5759 ± 0.0207 for the QUBO formulation, and an estimated embedding time of 31.6696.",
+      "anchor": "Table IV, Section IV-B8, p.8 (feature counts 2 to 256)",
+      "quotes": [
+        "Each data set consisted of N = 1024 points separated into k = 4 clusters.",
+        "2 4 8 16 32 64 128 256",
+        "0.0508 ± 0.0089 0.0681 ± 0.0137 0.0803 ± 0.0105 0.4190 ± 0.1065 0.5411 ± 0.1171 0.6598 ± 0.1048 1.0369 ± 0.1577 1.2474 ± 0.1726",
+        "1.5068 ± 0.6899 1.7589 ± 0.6546 2.2591 ± 1.0435 2.0672 ± 0.6473 2.1599 ± 0.6157 1.8983 ± 0.4888 1.6768 ± 0.4551 1.4060 ± 0.2184",
+        "0.4742 ± 0.0185 0.4771 ± 0.0189 0.4737 ± 0.0101 0.4760 ± 0.0102 0.4895 ± 0.0179 0.5033 ± 0.0178 0.5283 ± 0.0221 0.5759 ± 0.0207",
+        "31.6696 31.6696 31.6696 31.6696 31.6696 31.6696 31.6696 31.6696"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study; the column assignment comes from the table layout in the text layer.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The QUBO formulation time stays near 0.47 to 0.58 across d while classical k-means grows from 0.0508 to 1.2474; the embedding estimate is independent of d because the variable count N k is fixed."
+    },
+    {
+      "id": "arthur-d-scaling-relative",
+      "value": "The authors state that, in Figure 6, it appears that the quantum approach scales better than classical k-means as d increases, because the QUBO formulation only requires one computation related to the dimension of the data set (calculation of the distance matrix), and that the quantum approach scales worse than classical balanced k-means, whose time complexity is independent of d; they find it somewhat surprising that the run time of classical balanced k-means begins to decrease for d > 32 and suspect cluster centers being farther apart on average.",
+      "anchor": "Section IV-B8, p.7-8",
+      "quotes": [
+        "In Figure 6, it appears that the quantum approach scales better than classical k-means as d increases.",
+        "This is not surprising since the QUBO formulation only requires one computation related to the dimension of the data set",
+        "On the other hand, the quantum approach scales worse than classical balanced k-means. This is expected since the time complexity of classical balanced k-means is independent of d.",
+        "It is somewhat surprising that the average run time of classical balanced kmeans begins to decrease for d > 32, but we suspect this is due to cluster centers being farther apart on average."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study with untested explanations.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The 'scales better than classical k-means' reading is of Figure 6, which is not in the text layer."
+    },
+    {
+      "id": "arthur-iris-setup",
+      "value": "The authors report that, as a final proof of concept, they clustered portions of the Iris benchmark data set (150 points, each with 4 features, divided into 3 equal-size classes), generating smaller data sets by picking N/k points at random from 2 ≤ k ≤ 3 of the data set's classes, with all three clustering algorithms run on 50 subsets per problem type and, when k = 2, all points chosen from the first and second classes, which are linearly separable.",
+      "anchor": "Section IV-C, p.8-9",
+      "quotes": [
+        "As a ﬁnal proof of concept, we clustered portions of the Iris benchmark data set using our quantum clustering approach.",
+        "This data set contains 150 points (each with 4 features) divided into 3 equal-size classes.",
+        "Therefore, we generate smaller data sets by picking N/k points at random from 2 ≤ k ≤ 3 of the data set’s classes.",
+        "on 50 subsets of the Iris data set. Note that when k = 2, all points were chosen from the ﬁrst and second classes, which are linearly separable."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "Section IV-C states the set-up of the benchmark experiment.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "Only Iris subsets of up to 64 binary variables were run, so the full 150-point Iris data set was never clustered on the hardware."
+    },
+    {
+      "id": "arthur-iris-k2-classical-better",
+      "value": "The authors report that on Iris subsets with k = 2 the classical algorithms performed better than the quantum approach, particularly apparent as the number of binary variables (N k) increases.",
+      "anchor": "Section IV-C, Figure 7, p.9",
+      "quotes": [
+        "For k = 2, the classical algorithms performed better than the quantum approach.",
+        "This becomes particularly apparent as the number of binary variables (N k) increases."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The k = 2 subsets are linearly separable, an easy case for classical k-means, and the quantum approach did worse there."
+    },
+    {
+      "id": "arthur-iris-k3-similar",
+      "value": "The authors report that on Iris subsets with k = 3 the quantum algorithm has similar performance to classical balanced k-means and outperforms the Scikit-learn implementation of classical k-means for small data sets, and that the performance of the quantum algorithm again degrades as problem size increases, mirroring the synthetic results.",
+      "anchor": "Section IV-C, Figure 7, p.9",
+      "quotes": [
+        "For k = 3, the quantum algorithm has similar performance to classical balanced k-means and outperforms the Scikit-learn implementation of classical k-means for small data sets.",
+        "Again, the performance of the quantum algorithm degrades as problem size increases."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The scikit-learn comparison is of a method that does not enforce equal sizes against one that does, on classes of equal size by construction."
+    },
+    {
+      "id": "arthur-abstract-global-solution-claim",
+      "value": "The authors state that they show their quantum approach better targets the global solution of the training problem, while achieving better theoretic scalability on large datasets, and that they test it on a number of small problems and observe clustering performance similar to the best classical algorithms.",
+      "anchor": "Abstract, p.1",
+      "quotes": [
+        "We show that our quantum approach better targets the global solution of the training problem, while achieving better theoretic scalability on large datasets.",
+        "We test our quantum approach on a number of small problems, and observe clustering performance similar to the best classical algorithms."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's summary claim; the support is the penalty-equivalence argument and the complexity count, each with stated caveats.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "'Better targets the global solution' depends on the annealer finding the global minimum (see the global-minimum premise), which the paper's own Section III-A says does not always happen. The 'better theoretic scalability' compares O(N 2kd) with O(N 3) and omits embedding."
+    },
+    {
+      "id": "arthur-conclusion-viable-alternative",
+      "value": "The authors state in the Conclusion that they show their approach targets the global solution of the training problem better than its classical alternatives and scales favorably on large data sets compared with current classical balanced k-means algorithms, and that they expect their approach to become a viable alternative to existing classical balanced clustering algorithms as quantum hardware continues to improve in both fidelity and scale.",
+      "anchor": "Section V, p.9",
+      "quotes": [
+        "We analyze our approach theoretically, showing that it targets the global solution of the training problem better than its classical alternatives.",
+        "We also show that our approach scales favorably on large data sets when compared to current classical balanced k-means algorithms.",
+        "As quantum hardware continues to improve in both ﬁdelity and scale, we expect our approach to become a viable alternative to existing classical balanced clustering algorithms."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's conclusion and projection without evidence at the sizes claimed.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "In every measured scaling study the quantum approach was slower than both classical algorithms; the 'favorable scaling' rests on the O(N 2kd) count and on extrapolated embedding and annealing times."
+    },
+    {
+      "id": "arthur-future-work-limits",
+      "value": "The authors state as future work that they hope to generalize their QUBO formulation to satisfy the generic k-means clustering training problem (Problem 2), to formulate quantum algorithms for similar models such as k-medoids or fuzzy C-means clustering, and to investigate quantum approaches to clustering larger datasets within the qubit constraints of modern hardware.",
+      "anchor": "Section V, p.9",
+      "quotes": [
+        "In the future, we hope to generalize our QUBO formulation to satisfy the generic k-means clustering training problem",
+        "(Problem 2). We also look to use elements of our approach to formulate quantum algorithms to similar clustering models, such as k-medoids clustering or fuzzy C-means clustering.",
+        "Finally, we plan to investigate quantum approaches to clustering larger datasets within the qubit constraints of modern hardware."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "Section V states what the formulation does not yet cover and what is open.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The formulation covers balanced clusters only (equal cluster sizes) and sizes that fit within 64 binary variables on the hardware used."
+    }
+  ]
+}]}
