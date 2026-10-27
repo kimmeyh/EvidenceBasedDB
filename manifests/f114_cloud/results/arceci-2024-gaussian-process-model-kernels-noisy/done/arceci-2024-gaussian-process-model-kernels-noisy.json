@@ -1,0 +1,816 @@
+{"papers": [{
+  "record_id": "arceci-2024-gaussian-process-model-kernels-noisy",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Arceci-Kuzmin-Bijnen_2024_Gaussian-process-model-kernels-for-noisy-optimization-in__2412.13271.pdf",
+  "title_in_file": "Gaussian Process Model Kernels for Noisy Optimization in Variational Quantum Algorithms",
+  "version_note": "arXiv:2412.13271v1 [quant-ph], 17 Dec 2024. The text is the paper its record names.",
+  "pages": 19,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A simulation study that introduces trigonometric kernels for Gaussian process models of variational quantum algorithm cost functions and benchmarks them against standard kernels on LiH (UCCSD) and unweighted MaxCut (QAOA), including inside a GPM-enhanced line-search optimizer called RotoGP.",
+  "bears_on_context": "qml",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "arceci-limits",
+      "verdict": "widened",
+      "note": "The stored value is right. The paper adds that in Fig. 2(f) all kernels give particularly bad scores, and attributes this to strongly non-Gaussian shot noise for the unweighted MaxCut cost function close to the global minimum.",
+      "value": "The authors state that the relative gains of trigonometric kernels appear problem-dependent. They report one exception, Fig. 2(f), where the non-stationary trigonometric kernel performs worse than all the other kernels. They note that in this case all kernels give particularly bad scores, especially for a larger number of samples, and attribute it to strongly non-Gaussian shot noise for the unweighted MaxCut cost function close to the global minimum.",
+      "anchor": "Section 2.2, p.8; Section 4 Conclusions, p.12",
+      "quotes": [
+        "Additionally, the relative gains of trigonometric kernels appear problem-dependent.",
+        "An exception to this conclusion is Fig. 2(f), where the non-stationary trigonometric kernel is performing worse than all the other ones",
+        "although we note that in this case, all kernels give particularly bad scores, especially for a larger number of samples.",
+        "We will see in the next section that the training set is, in this case, particularly hard to handle within the GPM framework because of the strongly non-Gaussian shot noise for the unweighted MaxCut cost function close to the global minimum."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study; the problem-dependence statement is the authors' own reading.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "Fig. 2(f) is in the bottom row, third column of Fig. 2 (unweighted MaxCut, the 8D hyperball sampling), which is the case the later Fig. 4 analysis explains."
+    },
+    {
+      "id": "arceci-rotogp",
+      "verdict": "confirmed",
+      "note": "",
+      "value": "The authors report that in the RotoGP optimization the trigonometric kernels gave both higher accuracy and faster convergence than bare RotoSolve.",
+      "anchor": "Section 3, p.11",
+      "quotes": [
+        "In both cases, the trigonometric kernels improve upon the performance of the bare RotoSolve without GPM: we find both higher accuracy and faster convergence."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The runs are simulations (the paper calls the evaluation a simulated optimization setting)."
+    },
+    {
+      "id": "arceci-trig-kernel-fits",
+      "verdict": "narrowed",
+      "note": "The metric is the distance between the GPM-predicted and the exact minimum location. The paper also names an exception: in Fig. 2(f) the non-stationary trigonometric kernel is worse than all the others.",
+      "value": "The authors report that, as measured by the distance between the GPM-predicted and exact minimum location, trigonometric kernels generally require fewer data points to reach a given precision compared to other kernels, on the LiH ground state and unweighted MaxCut problems. They name an exception, Fig. 2(f), where the non-stationary trigonometric kernel performs worse than all the other ones.",
+      "anchor": "Section 2.2, p.8",
+      "quotes": [
+        "trigonometric kernels generally require fewer data points to reach a given precision compared to other kernels.",
+        "An exception to this conclusion is Fig. 2(f), where the non-stationary trigonometric kernel is performing worse than all the other ones"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": ""
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "arceci-benchmark-problems",
+      "value": "The authors state that the benchmark uses the ground state search of the LiH molecule with one layer of UCCSD Ansatz, and the unweighted MaxCut problem on 3-regular graphs with 8 vertices solved with QAOA with 4 layers. Both problems require N = 8 circuit parameters, and s = 20 shots estimate the expectation value of each observable. The simulations use the Qiskit and Qiskit-Nature packages.",
+      "anchor": "Section 2.1, p.6",
+      "quotes": [
+        "The first concerns the ground state search of the LiH molecule using one layer of UCCSD Ansatz [1, 3, 6]",
+        "the second is the unweighted MaxCut combinatorial optimization problem [26] on 3-regular graphs with 8 vertices, whose solution is sought using the Quantum Approximate Optimization Algorithm (QAOA) with 4 layers [27].",
+        "Both problems require N = 8 circuit parameters, and we use s = 20 shots to estimate the expectation value of each observable",
+        "We performed the simulations using the Qiskit and Qiskit-Nature packages [32, 33]."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's statement of its own benchmark setup, Section 2.1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The results are for small simulated problems (8 parameters); no hardware run is reported."
+    },
+    {
+      "id": "arceci-sampling-strategies",
+      "value": "The authors state that three sampling distributions feed the GPM: samples around the line parallel to the 5th coordinate through the global minimum, samples around the plane spanned by the 4th and 5th coordinates through the global minimum (both with distances uniformly distributed in the range [0, 0.05π]), and samples uniformly distributed in an 8D hyperball centered at the global minimum with radius r = 0.15π. They describe the hyperball case as mimicking the later stages of a local optimization.",
+      "anchor": "Section 2.1, p.6-7",
+      "quotes": [
+        "samples randomly distributed around the line parallel to the 5th coordinate (corresponding to a parameter in the middle of the circuit) and passing through the global minimum θmin",
+        "with distances from the line uniformly distributed in the range [0, 0.05π];",
+        "samples randomly distributed around the plane spanned by the 4th and 5th coordinates and passing through θmin",
+        "with distances from the plane uniformly distributed in the range [0, 0.05π];",
+        "samples uniformly distributed in a 8D hyperball centered at θmin with radius r = 0.15π.",
+        "The latter scenario mimics the later stages of a local optimization, where the optimization algorithm is probing points in the vicinity of the true minimum."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's statement of its own sampling setup, Section 2.1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "All three training distributions are centered on the true global minimum, so the minimum-location and minimum-value scores are measured in a favorable neighborhood."
+    },
+    {
+      "id": "arceci-evaluation-protocol",
+      "value": "The authors state that for each sampling strategy and training set size they build one hundred random training sets, with each MaxCut training set taken from a different graph. Each GPM is trained by maximizing the likelihood on the training data, and the reported score is the median over the training sets.",
+      "anchor": "Section 2.1, p.7",
+      "quotes": [
+        "we build one hundred training sets with points selected at random (according to the selected sampling strategy)",
+        "In the unweighted MaxCut case, each training set at fixed NT is taken from a different graph, i.e. a different problem instance.",
+        "we first train a GPM by optimizing its hyperparameters following the standard strategy of maximizing the likelihood on the training data from Eq. (7) [23]",
+        "we then take the median values of those"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's statement of its own evaluation protocol, Section 2.1.",
+      "result_type": "setup",
+      "context": "method",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-frequency-thresholds",
+      "value": "The authors state that the LiH problem is very well described by only the first two frequencies with a period of p = 2π along every coordinate line, and that the unweighted MaxCut problem is well approximated by the lowest four (the lowest) frequencies along odd (even) coordinates with a period p = π. They set the trigonometric kernel thresholds to nf = 2 for the chemistry problem, and nf = 4 (nf = 1) for odd (even) coordinate lines for combinatorial optimization.",
+      "anchor": "Section 2.1, p.6",
+      "quotes": [
+        "The LiH problem is very well described by only the first two frequencies and a period of p = 2π, along every coordinate line",
+        "the unweighted MaxCut problem is instead well approximated by the lowest four (the lowest) frequencies along odd (even) coordinates, with a period p = π.",
+        "We therefore set frequency thresholds nf = 2 for trigonometric kernels along all directions for the chemistry problem, and nf = 4 (nf = 1) for odd (even) coordinate lines for combinatorial optimization."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's statement of its own kernel settings, Section 2.1.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The thresholds come from the Fourier analysis of the same cost functions (Appendix D), so the trigonometric kernels are given structure that was measured on the test problems; a new problem would need that spectrum first."
+    },
+    {
+      "id": "arceci-trig-kernel-nstrig-definition",
+      "value": "The authors define the non-stationary trigonometric kernel (nsTRIG) from a trigonometric basis with a Gaussian prior on the coefficients. They assume no correlations between weights (off-diagonal elements of the prior covariance set to zero) and set the prior variance to zero for all frequencies above the threshold nf. The kernel is described overall by 2nf + 1 hyperparameters.",
+      "anchor": "Section 1.3, p.5",
+      "quotes": [
+        "First, we assume no correlations between weights, i.e., we set the off-diagonal elements of Σp to zero.",
+        "We therefore set [Σp]ii = 0 for all the frequencies ni > nf , with nf the threshold frequency",
+        "we arrive at the following, nonstationary trigonometric kernel (nsTRIG):",
+        "scribed overall by 2nf + 1 hyperparameters."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper's definition of its kernel, Section 1.3, Eq. (17).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-trig-kernel-strig-definition",
+      "value": "The authors define a stationary trigonometric kernel (sTRIG) by further assuming that the cosine and sine hyperparameters are equal for all n. It employs nf + 1 hyperparameters.",
+      "anchor": "Section 1.3, p.5-6",
+      "quotes": [
+        "kernel. If we further assume that γn = δn for all",
+        "n ≥ 1, we arrive at the stationary trigonometric kernel (sTRIG),",
+        "where ξ = |θ − θ′| and we employ nf + 1 hyperparameters."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper's definition of its kernel, Section 1.3, Eq. (18).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-trig-polynomial-assumption",
+      "value": "The authors assume that the cost function along a coordinate line can be written as a trigonometric polynomial with a maximum number of frequencies M, and state that the expansion in basis functions is, in principle, exact, while the coefficient vector is unknown and is modeled with a GPM.",
+      "anchor": "Section 1.3, p.5",
+      "quotes": [
+        "In the following, we assume that the cost function can be written as a trigonometric polynomial",
+        "The expansion in basis functions is, in principle, exact.",
+        "However, the coefficient vector is unknown."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's statement of the assumption its kernel derivation rests on, Section 1.3.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-sum-of-trig-functions",
+      "value": "The authors state, with a two-qubit example, that the cost function remains a sum of trigonometric functions for each parameter for which the applied gate operators have regularly spaced eigenvalues, as is the case for all (products of) Pauli operators. They also state that operators without regularly spaced eigenvalues might still be well-approximated with a trigonometric series expansion.",
+      "anchor": "Section 1.3, p.4, Eq. (13)",
+      "quotes": [
+        "tions for each parameter for which the applied",
+        "gate operators have regularly spaced eigenvalues,",
+        "as is the case for all (products of) Pauli opera-",
+        "not have regularly spaced eigenvalues might still",
+        "be well-approximated with a trigonometric series"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author statement supported by one worked example, not a general proof in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The quotes are line fragments because the text layer breaks the sentence across lines."
+    },
+    {
+      "id": "arceci-product-kernel",
+      "value": "The authors construct a kernel for an N dimensional space as an amplitude times a product of one-dimensional line kernels, one per parameter, each with its own hyperparameters. They justify this because a product of valid kernels is also a valid kernel, and the amplitude A controls the variance of the prior probability distribution at each point.",
+      "anchor": "Section 1.4, p.6, Eq. (19)",
+      "quotes": [
+        "since a product of valid kernels is also a valid kernel [23]",
+        "A is an additional hyperparameter that controls the variance of the prior probability distribution at each point"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper's definition of its multi-dimensional kernel, Section 1.4.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-noise-model-assumption",
+      "value": "The authors state that they add the observed variances to the diagonal of the training covariance matrix, assuming that the measurement noise is additive and follows an independent Gaussian distribution with zero mean, and that they set the prior mean to zero, which they say is common in GPM literature and fits the VQA case because a Pauli string has expectation value zero for an a-priori unknown state.",
+      "anchor": "Section 1.1, p.3",
+      "quotes": [
+        "we add the observed variances in the diagonal of the training covariance matrix",
+        "we assume that the measurement noise is additive and follows an independent, Gaussian distribution with zero mean.",
+        "Moreover, in the case of VQA, the typical cost function is a weighted sum of Pauli strings, each of which has expectation value zero for an a-priori unknown state."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's statement of the noise model its GPM assumes, Section 1.1.",
+      "result_type": "setup",
+      "context": "method",
+      "reader_inference": "The paper later shows this Gaussian assumption failing for MaxCut near the minimum (Section 2.3)."
+    },
+    {
+      "id": "arceci-min-location-metric",
+      "value": "The authors define the minimum-location score as the distance between the location of the exact minimum and the GPM-predicted minimum location within a subspace S. The minimum search over the GPM is done by starting from a neighborhood of the global minimum point to avoid possible local minima far away from it.",
+      "anchor": "Section 2.2, p.7, Eq. (20)",
+      "quotes": [
+        "We, therefore, define a first figure of merit as the distance between the location of the exact minimum and the GPMpredicted minimum location, within S,",
+        "The minimum search over the GPM-predicted manifold is done by starting from a neighborhood of the global minimum point to avoid possible local minima far away from it."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper's definition of its score and its search procedure, Section 2.2.",
+      "result_type": "setup",
+      "context": "method",
+      "reader_inference": "Starting the GPM minimum search near the true minimum means the metric does not test whether the GPM finds the global minimum from an arbitrary start."
+    },
+    {
+      "id": "arceci-min-value-metrics",
+      "value": "The authors define the likelihood at the minimum, Lmin, as the likelihood that the GPM predicts the exact global minimum value at the global minimum point. They state that a prediction close to the true value but with a very small standard deviation that does not reach the true function value yields a very small likelihood. They also define a second score, δmin, from the difference between the GPM-predicted and true cost function values at the global minimum, with the cost function maximum within subspace S entering the definition.",
+      "anchor": "Section 2.3, p.8-9, Eqs. (21)-(22)",
+      "quotes": [
+        "Then, the likelihood that the GPM predicts the exact global minimum value ymin = C(θmin) at θmin is",
+        "Similarly, a prediction close to the true value but with a very small standard deviation that does not reach the true function value yields a very small likelihood.",
+        "we complement the analysis by also evaluating the difference between GPM-predicted and true cost function values at",
+        "while ymax,S is the cost function maximum within subspace S."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper's definition of its scores, Section 2.3.",
+      "result_type": "setup",
+      "context": "method",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-test-likelihood-metric",
+      "value": "The authors define the test likelihood as the mean likelihood of each individual test point, with the test set drawn at random from the same subspace as the training samples.",
+      "anchor": "Section 2.4, p.11",
+      "quotes": [
+        "we randomly select a test set of points from the same subspace S that the training samples belong to",
+        "define the test likelihood Ltest,S as the mean likelihood of each individual test point"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper's definition of its score, Section 2.4.",
+      "result_type": "setup",
+      "context": "method",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-min-location-monotone",
+      "value": "The authors report that the distance between the GPM-predicted and exact minimum decreases monotonically with more samples in all cases, and attribute the faster convergence of trigonometric kernels to putting more information about the cost function structure directly in the kernel.",
+      "anchor": "Section 2.2, p.8, Fig. 2",
+      "quotes": [
+        "As expected, the distance between the GPM-predicted and exact minimum decreases monotonically with more samples in all cases",
+        "This is the consequence of putting more information about the cost function structure directly in the kernel."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study; the explanation is the authors' reading and was not tested separately.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-lih-min-value",
+      "value": "The authors report that for the LiH ground state problem, in all scenarios, the trigonometric kernels provide a better estimate of the cost function value at the global minimum point, in agreement with the minimum-location results in Fig. 2(a)-(c).",
+      "anchor": "Section 2.3, p.9, Fig. 3",
+      "quotes": [
+        "In all scenarios, the trigonometric kernels provide a better estimate of the cost function value at the global minimum point, in agreement with the previous results in Fig. 2(a)-(c)."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-maxcut-lmin-drops",
+      "value": "The authors report that for the unweighted MaxCut problem the likelihood at the minimum first increases and then drops again for larger training set size, for all kernels, as seen in Fig. 4(b) for training data in a hyperball centered at the global minimum. They state that the results for δmin,8D exhibit similar issues, as curves stay constant or increase for large NT, and that this result is not shown.",
+      "anchor": "Section 2.3, p.9, Fig. 4(b)",
+      "quotes": [
+        "The results for the unweighted MaxCut are instead more surprising.",
+        "it starts to drop again for larger NT",
+        "happens for all kernels, as can be seen in Fig. 4(b) for training data lying in a hyperball centered at the global minimum point",
+        "The results for δmin,8D exhibit similar issues, as curves stay constant or increase for large NT (not shown)."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The paper calls the behavior counter-intuitive because model quality is expected to increase monotonically with the number of samples."
+    },
+    {
+      "id": "arceci-maxcut-fit-underestimates",
+      "value": "The authors report that along a random line through the global minimum, with the closest 80 samples out of a total of 2748 points shown, the surrogate fit significantly underestimates the true cost function values, especially at the global minimum. They state that this appears to be caused by data points close to the minimum with very low values and very small error bars that do not include the exact cost function value.",
+      "anchor": "Section 2.3, p.9, Fig. 4(c)",
+      "quotes": [
+        "The orange dots are the closest 80 samples to this line out of a total of 2748 points.",
+        "We immediately see that the fit significantly underestimates the true cost function values, especially at the global minimum (α = 0).",
+        "This behavior appears to be caused by data points occurring close to the minimum, which have very low values and very small error bars that do not include the exact cost function value."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study, shown with one individual fit.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The failure rests on an individual fit and an explanation; the paper does not report how often it occurs."
+    },
+    {
+      "id": "arceci-maxcut-nongaussian-cause",
+      "value": "The authors state that the anomalous points result from a breakdown of the Gaussianity assumption: with s = 20 shots, projective measurements can return almost always the lowest value in the distribution, giving a mean lower than the true one and a very small variance, so the GPM forces the fit through or near this point. They state the problem worsens with increasing training set size, since the probability of getting at least one problematic sample increases.",
+      "anchor": "Section 2.3, p.10, Fig. 4(a)",
+      "quotes": [
+        "Such anomalous points result from a breakdown of the Gaussianity assumption on the data.",
+        "It can happen that, taking s = 20 shots, projective measurements return almost always the lowest value in the distribution, leading to a mean lower than the true one and, crucially, to a very small variance.",
+        "This problem worsens with increasing training set size (but keeping s = 20 shots) since the probability of getting at least one of these problematic samples increases."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical explanation from one simulation study, supported by the artificial-Gaussian test.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The failure depends on the small shot count (s = 20); the paper does not test larger shot counts for MaxCut."
+    },
+    {
+      "id": "arceci-artificial-gaussian-test",
+      "value": "The authors report that when they replaced the projective measurement noise by Gaussian noise of the same mean and standard deviation, using the same number of shots, and repeated the inference on the same data, the likelihood of the minimum increased monotonically with the number of training samples (Fig. 4(e)). They also report no more isolated points with tiny error bars, and a much more reliable fit.",
+      "anchor": "Section 2.3, p.10, Fig. 4(d)-(f)",
+      "quotes": [
+        "we repeated the same inference in a setting where we made projective measurement noise to be Gaussian by hand",
+        "obtaining that the likelihood of the minimum increases monotonically with increasing number of samples in the training set, as shown in Fig. 4(e).",
+        "As expected, there are no more isolated points with tiny error bars, and the fit is much more reliable."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "This is the paper's test that non-Gaussian, discrete shot noise causes the MaxCut failure."
+    },
+    {
+      "id": "arceci-single-pauli-scope",
+      "value": "The authors state that the non-Gaussian shot noise issue specifically concerns cost functions made of single Pauli strings. They state that when the cost function contains multiple non-commuting observables, as in quantum chemistry and quantum many-body ground state search, the projective measurement distribution is much more similar to a Gaussian and much less skewed.",
+      "anchor": "Section 2.3, p.10",
+      "quotes": [
+        "We remark that the previous issue specifically concerns cost functions made of single Pauli strings",
+        "when the cost function contains multiple non-commuting observables, like in quantum chemistry and quantum many-body ground state search",
+        "the projective measurement distribution for the cost function is much more similar to that of Gaussian and much less skewed."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author statement; the paper reports no separate test of it.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The LiH results in the paper are consistent with this, but the paper does not test the claim directly."
+    },
+    {
+      "id": "arceci-overall-fit-quality",
+      "value": "The authors report that the test likelihood monotonically increases with training set size, and that in both problems the trigonometric kernels provide a better overall cost function fit than the other kernels. They state this is especially true for the LiH ground state search, where they observe much larger test likelihoods than for the unweighted MaxCut problem.",
+      "anchor": "Section 2.4, p.11, Fig. 5",
+      "quotes": [
+        "Fig. 5 shows how the test likelihood monotonically increases for increasing training set size NT",
+        "In both problems, the trigonometric kernels provide a better overall cost function fit than the other kernels.",
+        "This is especially true for the LiH ground state search (top row), where we observe much larger test likelihoods than for the unweighted MaxCut problem (bottom row)."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-rotogp-definition",
+      "value": "The authors define RotoGP as the combination of the RotoSolve optimizer with a GPM. Its strategy is to update one parameter per iteration while keeping all the others fixed. A good surrogate model can use information from all samples in the training set, including samples not located on the current coordinate line.",
+      "anchor": "Section 3, p.11",
+      "quotes": [
+        "In particular, we combine the RotoSolve optimizer introduced in Ref. [31] with a GPM and call this new optimizer RotoGP.",
+        "Its strategy is to update one parameter per iteration while keeping all the others fixed.",
+        "in principle using information from all samples in the training set, also samples that are not locatd on the current coordinate line"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper's definition of its optimizer, Section 3.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-rotosolve-multifrequency",
+      "value": "The authors state that the original RotoSolve was designed for cost functions having a single frequency along each coordinate line, and that it can be generalized to multiple frequencies at the expense of increasing the number of samples to take along the line, as shown in a cited work.",
+      "anchor": "Section 3, p.11",
+      "quotes": [
+        "The original RotoSolve was designed for cost functions having a single frequency along each coordinate line [31]",
+        "at the expense of increasing the number of samples to take along the line to"
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work (Refs. 31 and 35).",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-rotogp-setup",
+      "value": "The authors state that the kernel hyperparameters are optimized at each iteration step by maximizing the logarithm of the likelihood, using a subset of at most 300 samples closest to the current optimization line. The shot count per Pauli string operator is fixed at s = 100, and each plotted trajectory is an average over 100 runs from different initial points (and different graphs for the combinatorial problem). For the quantum chemistry problem the optimization starts from a random point in parameter space rather than from all parameters at zero.",
+      "anchor": "Section 3, p.11; Fig. 6 caption, p.12",
+      "quotes": [
+        "The kernel hyperparameters are optimized at each iteration step, that is, after sampling along a coordinate line and before estimating the new minimum point candidate, by maximizing the logarithm of the likelihood",
+        "we only consider a subset of at most 300 samples for the hyperparameter optimization",
+        "We fix the number of shots to measure the expectation value of a Pauli string operator to s = 100.",
+        "Each line is the average over 100 runs from different initial points and, for the combinatorial problem, different graphs.",
+        "we start the optimization from a random point in parameter space rather than initializing all parameters to zero"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's statement of its own optimization setup, Section 3 and the Fig. 6 caption.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The random start was chosen by the authors to make the optimization problem more complex and show kernel differences better; results for the usual zero start are not reported."
+    },
+    {
+      "id": "arceci-rotogp-simulated",
+      "value": "The authors describe their RotoGP evaluation as an actual (simulated) optimization setting.",
+      "anchor": "Section 4 Conclusions, p.12",
+      "quotes": [
+        "We have also evaluated kernel performance in an actual (simulated) optimization setting"
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper's own statement of the scope of its optimization evaluation, Section 4.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "No run on quantum hardware is reported, although the conclusions recommend the kernels for present-day hardware."
+    },
+    {
+      "id": "arceci-rotogp-other-kernels",
+      "value": "The authors report that in the RotoGP optimization the periodic squared-exponential (pSE) kernel also improves on the case without GPM, but by less than the trigonometric kernels, and that all the other kernels give results similar to the case without GPM. In the conclusions they state that other standard kernels performed significantly worse or, in some cases, even failed to improve over the base RotoSolve algorithm.",
+      "anchor": "Section 3, p.11; Section 4, p.12",
+      "quotes": [
+        "This is also true for the pSE kernel, but the improvement is smaller than the one corresponding to the trigonometric kernels.",
+        "On the other hand, all the other kernels provide similar results to the case without GPM, proving that a good choice of the kernel is crucial.",
+        "whereas other standard kernels performed significantly worse or, in some cases, even failed to improve over the base RotoSolve algorithm."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "Section 3 says the other kernels are similar to no GPM, while Section 4 says significantly worse in some cases; the two statements differ in strength."
+    },
+    {
+      "id": "arceci-lih-two-frequencies",
+      "value": "The authors report that the LiH cost function is exactly described by the lowest two frequencies along coordinate lines, that the first frequency is more relevant for the 4th coordinate while the second is more important for the 5th coordinate, and that on lines through the global minimum point the second frequency becomes almost the only one that matters.",
+      "anchor": "Appendix D, p.18-19, Fig. 7(a)-(b)",
+      "quotes": [
+        "The LiH cost function (panels (a)-(b)) is exactly described by the lowest two frequencies.",
+        "the first frequency is more relevant for the 4th coordinate, while the second frequency is more important for the 5th coordinate",
+        "the second frequency becomes almost the only one that matters."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The LiH analysis is for one molecule at one interatomic distance with one UCCSD layer."
+    },
+    {
+      "id": "arceci-maxcut-few-frequencies",
+      "value": "The authors report, averaged over 50 different graph instances, that for the coordinate lines corresponding to the mixing Hamiltonian (even coordinates) only the first frequency really matters while the others decay exponentially fast, and that for parameters of the problem Hamiltonian up to four frequencies are relevant with the subsequent ones decaying exponentially. They report that along coordinate lines only a few of the lowest frequency components play a role, while the others either are zero or decay exponentially in magnitude.",
+      "anchor": "Appendix D, p.19, Fig. 7(c)-(d); Section 1.3, p.5",
+      "quotes": [
+        "For the coordinate lines corresponding to the mixing Hamiltonian (even coordinates), only the first frequency really matters, while the others decay exponentially fast.",
+        "we observe instead up to four frequencies relevant to characterize the cost function along the coordinate line",
+        "we have averaged the results over 50 different graph instances.",
+        "only a few of the lowest frequency components play a role, while the others either are zero or decay exponentially in magnitude."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-maxcut-size-scaling-spectrum",
+      "value": "The authors report that the exponential suppression of the relevant frequencies persists with increasing number of vertices N, checked for N = 8, 10, 12 vertices with the average Fourier spectrum of the 5th coordinate lines through random points over 50 instances.",
+      "anchor": "Appendix D, p.19, Fig. 8",
+      "quotes": [
+        "The results in Fig. 8 show evidence that the exponential suppression of the relevant frequencies persists with increasing number of vertices N in the graphs.",
+        "containing N = 8, 10, 12 vertices",
+        "The plot shows the average Fourier spectrum for the 5th coordinate lines only, passing through random points",
+        "(average over 50 instances)"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one simulation study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The check covers only the 5th coordinate line and at most 12 vertices, so it does not show the behavior at larger sizes."
+    },
+    {
+      "id": "arceci-extended-kernel-derivation",
+      "value": "The authors derive extended trigonometric kernels (non-stationary and stationary) in an appendix, assuming that the weights decay exponentially with the frequency number after the threshold nf, with a new hyperparameter β controlling the decay rate. They neglect one factor in the derivation, stating that its terms can be absorbed by the existing hyperparameters.",
+      "anchor": "Appendix A, p.16, Eqs. (23)-(26)",
+      "quotes": [
+        "assuming that the weights w decay exponentially with the frequency number after a given threshold nf",
+        "The newly introduced hyperparameter β controls the decay rate.",
+        "The second factor can be neglected because each"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A derivation that includes a stated approximation, with no test in the paper.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The text read does not report any benchmark of the extended kernels; the reported benchmarks use the kernels of Eqs. (17) and (18)."
+    },
+    {
+      "id": "arceci-lih-problem-setup",
+      "value": "The authors state that the LiH calculation is at an interatomic distance d = 1.3Å, with a basis of Slater-Type Orbitals each represented as a linear combination of six Gaussian functions (STO-6G), and the problem is simplified to two electrons placed in an active space of 3 molecular orbitals. The circuit involves 6 qubits and 8 parameters, and the number of pair-wise non-commuting Pauli strings in the spin Hamiltonian is 38.",
+      "anchor": "Appendix B, p.16-17",
+      "quotes": [
+        "the ground state calculation of the LiH molecule at an interatomic distance d = 1.3Å",
+        "each represented as a linear combination of six Gaussian functions (STO-6G)",
+        "Therefore, the problem can be simplified to two electrons placed in an active space of 3 molecular orbitals [6].",
+        "Eventually, the circuit involves 6 qubits and 8 parameters to optimize.",
+        "The number of pair-wise non-commuting Pauli strings in Eq. (28) is 38."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's statement of its own problem setup, Appendix B.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-modified-approximation-ratio",
+      "value": "The authors define a modified approximation ratio that compares the variational solution to the best achievable one using the given quantum circuit, as the ratio of the expected cut value at the parameters to that at the circuit minimum point, with r ≤ 1.",
+      "anchor": "Appendix C, p.18, Eq. (33)",
+      "quotes": [
+        "it is convenient to define a modified approximation ratio, where one compares the variational solution to the best achievable one, using the given quantum circuit,",
+        "where θbest is the circuit minimum point and r ≤ 1."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper's definition of its figure of merit, Appendix C.",
+      "result_type": "setup",
+      "context": "method",
+      "reader_inference": "Because the ratio is relative to the best the circuit can reach, a value of one does not mean the exact MaxCut solution was found."
+    },
+    {
+      "id": "arceci-abstract-best-performance",
+      "value": "The authors state that overall they observe that the trigonometric kernels show the best performance in most of the cases under study, and that trigonometric kernels demonstrate superior GPM fitting performance on static benchmarks such as the distance-to-minimum.",
+      "anchor": "Abstract, p.1; Section 4, p.12",
+      "quotes": [
+        "Overall, we observe that the trigonometric kernels show the best performance in most of the cases under study.",
+        "Trigonometric kernels demonstrate superior GPM fitting performance on static benchmarks such as the distance-to-minimum"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author summary of empirical results from one simulation study.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-novelty-claim",
+      "value": "The authors state that very little attention has been given to which kernel choices are best suited for tackling VQA problems, and that they introduce trigonometric kernels as a novel class of kernels tailored for periodic VQA cost functions.",
+      "anchor": "Introduction, p.1; Section 4, p.12",
+      "quotes": [
+        "Despite its importance, very little attention has been given to which kernel choices are best suited for tackling VQA problems.",
+        "We have introduced trigonometric kernels, a novel class of kernels tailored for periodic VQA cost functions."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author claim about the state of the literature, with no survey in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-few-sample-hardware-claim",
+      "value": "The authors state that the advantages of trigonometric kernels are most apparent when only very few and noisy samples are available, and that this makes them particularly suitable for quantum hardware where measurements are costly, such as Rydberg atom and ion-trap platforms, as opposed to faster superconducting hardware.",
+      "anchor": "Section 4 Conclusions, p.12",
+      "quotes": [
+        "The advantages of trigonometric kernels are most apparent when only very few and noisy samples are available.",
+        "This makes them particularly suitable for quantum hardware where measurements are costly, such as Rydberg atom and ion-trap platforms, as opposed to faster superconducting hardware."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author claim; the paper reports only simulations and no hardware run.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-entire-space-speculation",
+      "value": "The authors state that trigonometric kernels are able to utilize data from the entire parameter space rather than relying on nearby points, which could explain their strong performance, and that this property suggests they may especially excel in global optimization algorithms.",
+      "anchor": "Section 4 Conclusions, p.12",
+      "quotes": [
+        "from the entire parameter space rather than relying on nearby points, which could explain their strong performance.",
+        "This property suggests they may especially excel in global optimization algorithms."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author conjecture; the paper does not test global optimizers.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The paper tests only local line-search optimization (RotoGP) and subspace fits, not global optimizers."
+    },
+    {
+      "id": "arceci-shot-noise-limit-open",
+      "value": "The authors state that in few-shot limits care must be taken regarding the distribution of the shot noise, which might not be Gaussian but rather follow a generalized Bernoulli distribution, as encountered for the MaxCut QAOA problem. They state that adapting the GPM framework to correctly incorporate such distributions could be an interesting future research direction.",
+      "anchor": "Section 4 Conclusions, p.12",
+      "quotes": [
+        "However, in such few-shots limits, care must be taken regarding the distribution of the shot noise, which might not be Gaussian but rather follow a generalized Bernoulli distribution [2], as we have encountered for the case of the MaxCut QAOA problem.",
+        "Adapting the GPM framework to correctly incorporate such distributions could be an interesting future research direction."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper states this limit and open problem itself, Section 4, backed by its Section 2.3 MaxCut analysis.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The limit applies in the few-shot regime that the authors also name as where the kernels help most."
+    },
+    {
+      "id": "arceci-open-problem-broader-classes",
+      "value": "The authors state that this work invites future research to identify broader classes of optimization algorithms and VQA problems suited to particular kernels.",
+      "anchor": "Section 4 Conclusions, p.12",
+      "quotes": [
+        "Overall, this invites future research to identify broader classes of optimization algorithms and VQA problems suited to particular kernels."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper states this open problem itself, Section 4.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "arceci-gaussian-noise-cited",
+      "value": "The authors state that, under relatively general assumptions, the projective measurement noise is Gaussian distributed around the true cost function value, citing a prior work, and that they discuss an exception for the MaxCut problem.",
+      "anchor": "Section 1.1, p.2",
+      "quotes": [
+        "Under relatively general assumptions, this noise is Gaussian distributed around the true cost function value [2]",
+        "(although we will discuss an exception for the MaxCut problem in Sec. 2.3)"
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A result the paper attributes to other work (Ref. 2).",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": ""
+    }
+  ]
+}]}
