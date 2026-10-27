@@ -1,0 +1,581 @@
+{"papers": [{
+ "record_id": "bauer-2024-solving-power-grid-optimization-problems",
+ "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Baueur-et-al._2024_Solving-Power-Grid-Optimization-Problems-with-Rydberg-Atoms__2404.11440.pdf",
+ "title_in_file": "Solving Power Grid Optimization Problems with Rydberg Atoms",
+ "version_note": "arXiv:2404.11440v1, 17 Apr 2024 (dated April 18, 2024). The text layer holds the paper once. Equations 1, 5, 8, 10 and 12 are garbled by the text layer, so values avoid restating them.",
+ "pages": 9,
+ "read_extent": "full",
+ "not_read": "",
+ "what_it_is": "A preprint that solves weighted MaxCut problems from power-grid graphs on neutral-atom hardware, by machine-learned adiabatic pulse shaping run on QuEra's Aquila and by a local-detuning QAOA studied numerically, plus a fidelity benchmark.",
+ "bears_on_context": "qc",
+ "why_not": "",
+ "existing": [
+  {
+   "id": "rydberg-adiabatic-overlap",
+   "verdict": "narrowed",
+   "note": "The stored value is faithful to the Conclusion but omits the conditions found in Section III: the over 95% figure is for noiseless simulations, and both figures are averages over random Erdos-Renyi graphs with 8 to 12 vertices. The pulse shapes were optimized on a simulator and then run on the hardware.",
+   "value": "The authors report that, with under 100 embedding steps, the adiabatic algorithm found the ground state with over 95% overlap, and that the average probability of measuring the solution was 60% on the Aquila processor. In Section III the over 95% figure is for noiseless simulations and both figures are for Erdos-Renyi graphs with 8 ≤ N ≤ 12 vertices.",
+   "anchor": "Section V, Conclusion, p.8 (conditions: Section III.A, p.4-5)",
+   "quotes": [
+    "We found that with under 100 embedding steps, the adiabatic algorithm was able to find the ground state with over 95% overlap.",
+    "we found an average 60% overlap with the ground state experimentally",
+    "We find the probability of measuring the solution > 95% for the noiseless simulations, and the average probability of measuring the solution is 60% on Aquila quantum",
+    "computed the average probability of measuring the maximum cut state P (GS) for graphs with 8 ≤ N ≤ 12 vertices."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An empirical result from one study, partly from simulation.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "The body fixes NR = 50 for the layout search while the Conclusion says under 100 embedding steps; the body does not say how the two relate. The abstract says problems of size up to 12 and the Introduction says up to 13 nodes; the probability figures in the body cover 8 to 12 vertices."
+  },
+  {
+   "id": "rydberg-qaoa-maxcut-probability",
+   "verdict": "narrowed",
+   "note": "The paper obtained these QAOA numbers numerically (Fig. 5 caption: simulating the hardware), not on Aquila, with two random graphs per lattice geometry and 20 initial seeds per graph. Results are noted to depend strongly on the seed on larger graphs, with outliers that fail to converge. The best seeds reached 0.956 down to 0.838.",
+   "value": "The authors report that, in numerical simulation of the QAOA with the Adam optimizer and up to 10 layers, on random graphs with 10 to 13 vertices generated from square and honeycomb lattices, the average probability of measuring the ground state decreased from 0.67 to 0.5 as the number of vertices increased.",
+   "anchor": "Section III.B, p.6, and Section V, Conclusion, p.7-8; Fig. 5 caption, p.6",
+   "quotes": [
+    "Using the Adam Optimizer for the classical optimization and up to 10 QAOA layers we were able to find",
+    "the MaxCut on average with probability ranging from 67% (for 10 vertices) to 50% (for 13 vertices).",
+    "random graphs with a number of vertices ∈ [10, 13] generated from square and honeycomb lattices",
+    "found on average probability of measuring the ground state that decrease from P (GS) = 0.67 to P (GS) = 0.5 as we increase the number of vertices."
+   ],
+   "kind": "shown",
+   "claim_type": "positive",
+   "fidelity": "scoped",
+   "certainty_suggestion": "low",
+   "high_basis": "",
+   "certainty_reason": "An empirical result from one study, from numerical simulation.",
+   "result_type": "measured",
+   "context": "qc",
+   "reader_inference": "The Conclusion sentence reads as if the MaxCut was found by the hardware; the body and the Fig. 5 caption show a simulation. The 10-layer curve is the one the Conclusion cites; Fig. 4 reports 5, 10 and 15 layers only for the IEEE 9-bus graph."
+  },
+  {
+   "id": "rydberg-sim-not-hardware",
+   "verdict": "confirmed",
+   "note": "Consistent with Section III.A: the optimization steps were simulated and the optimized pulse shapes were then run on Aquila.",
+   "value": "The authors state that their optimization was performed on a simulator instead of the Aquila hardware, so it is important to study the performance on actual hardware.",
+   "anchor": "Section V, Conclusion, p.8",
+   "quotes": [
+    "Since our optimization was performed on a simulator instead of the Aquila hardware, it is important to study the performance when the optimization is performed on actual hardware."
+   ],
+   "kind": "shown",
+   "claim_type": "absence",
+   "fidelity": "exact",
+   "certainty_suggestion": "high",
+   "high_basis": "stated limit",
+   "certainty_reason": "The paper states this limit of its own work in the Conclusion.",
+   "result_type": "claim",
+   "context": "qc",
+   "reader_inference": ""
+  }
+ ],
+ "assertions": [
+  {
+   "id_suggestion": "ieee9-adiabatic-sim-vs-hardware",
+   "value": "The authors report that, for the IEEE 9-bus problem with NR = 50, the probability of measuring the maximum cut was P(GS) = 0.939 for the noiseless simulation and P(GS) = 0.639 using the Aquila quantum hardware.",
+   "anchor": "Section III.A, p.4 (histograms in Fig. 2(b))",
+   "quotes": [
+    "The weighted graph corresponding to the IEEE 9-bus problem is shown in Fig. 2(a).",
+    "The experiment is performed using the simulator as well as the Aquila hardware with NR = 50",
+    "We obtained the probability of measuring the maximum cut (overlap with the ground state), P (GS) = 0.939 for the noiseless simulation, and P (GS) = 0.639 using quantum hardware."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An empirical result from one study on one graph.",
+   "result_type": "measured", "context": "qc",
+   "reader_inference": "Section IV and the Conclusion cite 60% as the hardware success probability; the 9-bus figure is 0.639 and the 60% is the Erdos-Renyi average. The text does not state how many distinct hardware runs 0.639 averages over."
+  },
+  {
+   "id": "erdos-renyi-adiabatic-sim-vs-hardware",
+   "value": "The authors report that, for Erdos-Renyi graphs with p = 0.25 and weights selected from the uniform distribution [0, 0.25], with NR = 50 and 8 ≤ N ≤ 12 vertices, the probability of measuring the solution was > 95% for the noiseless simulations and 60% on average on the Aquila quantum hardware.",
+   "anchor": "Section III.A, p.4-5 (Fig. 3(a))",
+   "quotes": [
+    "we also tested our method on Erdos-Rényi graphs with p = 0.25 and weights selected from the uniform distribution [0, 0.25]",
+    "We chose NR = 50 optimizer steps and computed the average probability of measuring the maximum cut state P (GS) for graphs with 8 ≤ N ≤ 12 vertices.",
+    "We find the probability of measuring the solution > 95% for the noiseless simulations, and the average probability of measuring the solution is 60% on Aquila quantum"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An empirical result from one study; per-size values are in Fig. 3(a), not in the text.",
+   "result_type": "measured", "context": "qc",
+   "reader_inference": "The paper calls NR both a number of random layouts and a number of optimizer steps. The Introduction states over 95% for problem sizes up to 13 nodes; the probability results in the body stop at 12 vertices. Fig. 3(a) caption says the blue dots are the ideal evolution fitted within the hardware parameters; no number for them is in the text."
+  },
+  {
+   "id": "step-to-solution-definition",
+   "value": "The authors define the average step to solution S as the average number of register layout optimization steps required to obtain the solution with 99% certainty, computed from the average probability of measuring the ground state.",
+   "anchor": "Section III.A, Eq. (9), p.5",
+   "quotes": [
+    "We also computed the average step to solution S",
+    "which gives the average number of register layout optimization steps required to obtain the solution with 99% certainty"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "definition",
+   "certainty_reason": "The paper defines S in Section III.A (Eq. 9, whose formula the text layer garbles).",
+   "result_type": "setup", "context": "qc",
+   "reader_inference": "Eq. (9) as printed is log(0.01) divided by log(1 - mean P(GS)), the number of independent tries needed for 99% success; this is the reader's reading of the garbled equation."
+  },
+  {
+   "id": "adiabatic-step-to-solution-linear-scaling",
+   "value": "The authors report an approximately linear scaling in the amount of register layout steps required to find the solution, for the graphs tested in the range 10 ≤ N ≤ 13.",
+   "anchor": "Section III.A, p.5 (Fig. 3(b))",
+   "quotes": [
+    "For the graphs tested in the range 10 ≤ N ≤ 13, we see an approximately linear scaling in the amount of register layout steps required to find the solution."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An empirical observation over four graph sizes from one study; the data are in Fig. 3(b).",
+   "result_type": "measured", "context": "qc",
+   "reader_inference": "The text does not say whether S was computed from the simulation or the hardware probabilities, and four sizes is a short range to support a scaling claim."
+  },
+  {
+   "id": "qaoa-ieee9-vanilla-vs-quera",
+   "value": "The authors report that, for the IEEE 9-bus graph, the average probability of measuring the ground state (the MaxCut) was P(GS) = 0.984 for the lattice-based local-detuning QAOA, and P(GS) = 0.99 for vanilla QAOA with no distance dependence, using the Adam optimizer, 20 initial seeds and up to 2000 optimization steps.",
+   "anchor": "Section III.B, p.6 (Fig. 4)",
+   "quotes": [
+    "For each graph, we considered 20 different initial seeds on these parameters and up to 2000 optimization steps.",
+    "For the IEEE 9-bus graph, we find an average probability of measuring the ground state (which corresponds to the MaxCut) equal to P (GS) = 0.984.",
+    "We also evaluated the average probability to find the MaxCut for the vanilla QAOA [29], in which there is no distance dependence and found P (GS) = 0.99."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An empirical result from one study, from numerical simulation of one graph.",
+   "result_type": "measured", "context": "qc",
+   "reader_inference": "The text does not say which layer count gives 0.984 and 0.99; Fig. 4 shows 5, 10 and 15 layers. The abstract's claim of similar performance to standard QAOA rests on this one graph."
+  },
+  {
+   "id": "qaoa-lattice-best-seed",
+   "value": "The authors report that, in the best case, there are initial seeds that give a probability which decreases from P(GS) = 0.956 to P(GS) = 0.838 for the random lattice graphs as the number of vertices increases.",
+   "anchor": "Section III.B, p.6 (Fig. 5, optimal seed)",
+   "quotes": [
+    "It is worth mentioning that in the best case scenario, there are initial seeds that give probability which decreases from P (GS) = 0.956 to P (GS) = 0.838."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An empirical best-seed result from one study; the seed is chosen after seeing results.",
+   "result_type": "measured", "context": "qc",
+   "reader_inference": "This is a best-of-20-seeds figure, so it overstates what a user without the seed choice gets. The Introduction rounds the same result to 83% (0.838 truncated) in the best case."
+  },
+  {
+   "id": "qaoa-seed-dependence-limitation",
+   "value": "The authors state that, on larger graphs, the QAOA results depend more strongly on the initial random seed, so there are outliers where the optimization fails to converge for specific seeds.",
+   "anchor": "Section III.B, p.6",
+   "quotes": [
+    "However, on larger graphs these results depend stronger on the initial random seed.",
+    "Because of this we have outliers where the optimization fails to converge for specific seeds."
+   ],
+   "kind": "shown", "claim_type": "absence", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "stated limit",
+   "certainty_reason": "The paper states this limit of its own results in Section III.B.",
+   "result_type": "claim", "context": "qc",
+   "reader_inference": "The paper gives no count of failed seeds in the text."
+  },
+  {
+   "id": "qaoa-lattice-setup",
+   "value": "The authors state that, instead of optimizing atom positions with the FR algorithm, they placed the atoms at fixed lattice points, solved the MaxCut problem for random graphs with a number of vertices in [10, 13] generated from square and honeycomb lattices and for the IEEE 9-bus dataset, and considered two graphs for each lattice geometry.",
+   "anchor": "Section III.B, p.6",
+   "quotes": [
+    "we considered the placement of the atoms at fixed lattice points.",
+    "we solved the MaxCut problem for random graphs with a number of vertices ∈ [10, 13] generated from square and honeycomb lattices, and for the IEEE 9-bus dataset.",
+    "Specifically, for the random graphs, we considered two graphs for each lattice geometry."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper states its own QAOA experimental setup in Section III.B.",
+   "result_type": "setup", "context": "qc",
+   "reader_inference": "Two graphs per geometry gives four random graphs per size at most; the sample behind the reported averages is small."
+  },
+  {
+   "id": "qaoa-numerical-simulation-setup",
+   "value": "The authors state that the lattice-graph QAOA results were obtained by simulating the hardware: with 5 layers the cost function was optimized up to 1000 steps using the Adam Optimizer, and for 10 layers up to 2000 steps.",
+   "anchor": "Fig. 5 caption, p.6; Section III.B, p.6",
+   "quotes": [
+    "Probability of measuring the ground state for 10 < N < 13 vertex graph",
+    "For 5 layers optimized the cost function up to 1000 steps using the Adam Optimizer",
+    "whereas for 10",
+    "layers we considered up to 2000 steps."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The Fig. 5 caption states how the QAOA results were produced.",
+   "result_type": "setup", "context": "qc",
+   "reader_inference": "No hardware run of the QAOA method is reported anywhere in the paper. The caption's 10 < N < 13 differs from the text's range of 10 to 13 vertices."
+  },
+  {
+   "id": "local-detuning-eliminates-linear-z",
+   "value": "The authors state that, with the local detuning parameters set to a value fixed by the distance-dependent weights, the linear Z terms of the Hamiltonian can be completely eliminated, so the detuning is no longer a free parameter but depends on the geometry of the graph.",
+   "anchor": "Section III.B, p.5, and Section I, p.2",
+   "quotes": [
+    "Notice that by setting the local detuning parameters to",
+    "we can completely eliminate the linear Z terms from Eq. (10).",
+    "Using this method, the detuning is not a free parameter anymore but depends on the geometry of the graph."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper states this construction of its own method in Section III.B.",
+   "result_type": "setup", "context": "qc",
+   "reader_inference": "The sets value is twice the sum of the weights on edges at each atom (Eq. 10 context); the text layer garbles the equation."
+  },
+  {
+   "id": "qaoa-initial-state-prep-setup",
+   "value": "The authors state that the state of the neutral atoms evolved from the ground product state to the uniform superposition to a good approximation, because the amplitude was chosen to be Ω0 = 5π MHz, whereas the maximum weight was w = 0.45 MHz, at a nearest-neighbor distance of 12 µm.",
+   "anchor": "Section III.B, p.5",
+   "quotes": [
+    "This is because the amplitude was chosen to be Ω0 = 5π MHz, whereas the maximum weight was w = 0.45 MHz, corresponding to minimum distance between two vertices (nearest neighbors) α = 12 µm"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper states this parameter choice of its own method in Section III.B.",
+   "result_type": "setup", "context": "qc",
+   "reader_inference": "The quoted text layer prints the amplitude as 5π MHz; whether it is 5π or another value cannot be checked here. No simulation of the state-preparation error is reported."
+  },
+  {
+   "id": "qaoa-mixer-amplitude-setup",
+   "value": "The authors state that the mixer Hamiltonian was chosen with Ω(t) = 2 MHz, which was the best performing value for smaller graphs.",
+   "anchor": "Section III.B, p.5",
+   "quotes": [
+    "by choosing Ω(t) = 2 MHz (which was the best performing value for smaller graphs)"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper states this parameter choice of its own method in Section III.B.",
+   "result_type": "setup", "context": "qc",
+   "reader_inference": "The value was tuned on smaller graphs and used for the larger ones; the tuning data are not shown."
+  },
+  {
+   "id": "qaoa-performance-depends-on-atom-positions",
+   "value": "The authors state that the cost function contains only terms that correspond to an edge of the graph, while the Hamiltonian contains all interactions of the many-body system, which fall off rapidly according to the van der Waals law, so the performance of QAOA depends significantly on the position of each atom and how well they represent the graph.",
+   "anchor": "Section III.B, p.6",
+   "quotes": [
+    "The sum in the cost function has only terms that correspond to an edge on the graph we are interested in.",
+    "the performance of QAOA depends significantly on the position of each atom and how well they represent the graph"
+   ],
+   "kind": "claimed", "claim_type": "absence", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An author statement; the paper does not test the dependence on position directly.",
+   "result_type": "claim", "context": "qc",
+   "reader_inference": "A limitation of the lattice approach: edges absent from the graph still interact. No experiment varies the atom placement for the QAOA method."
+  },
+  {
+   "id": "edge-weights-from-line-impedance",
+   "value": "The authors state that the edge weights of the graph are given by the line impedances, with Rij the line resistance and Xij the line reactance, taken from the IEEE test case datasets, and that the weight is zero when the nodes are not connected.",
+   "anchor": "Section II, Eq. (1), p.2-3",
+   "quotes": [
+    "The edge weights of the corresponding graph are given by the line",
+    "where Rij is the line resistance and Xij is the line reactance.",
+    "These are parameters that are provided in the IEEE test case datasets"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "definition",
+   "certainty_reason": "The paper defines its edge-weight mapping in Section II.",
+   "result_type": "setup", "context": "qc",
+   "reader_inference": "Eq. (1) as printed is the reciprocal of the impedance magnitude, while the Fig. 2 caption says the weights correspond to the impedance Z. The two readings differ; the text does not settle which one the experiments used."
+  },
+  {
+   "id": "maxcut-cost-function-definition",
+   "value": "The authors define the weighted MaxCut problem as a QUBO problem with a cost function that is a weighted sum of ZiZj terms over the edges, which they minimize by the evolution of a two-dimensional array of Rydberg atoms under a time-dependent Hamiltonian.",
+   "anchor": "Section III, Eqs. (3) and (4), p.3",
+   "quotes": [
+    "represented as a QUBO problem with the cost function defined as",
+    "We will minimize this cost function by utilizing the evolution of a two-dimensional array of Rydberg atoms"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "definition",
+   "certainty_reason": "The paper defines the cost function in Section III.",
+   "result_type": "setup", "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id": "adiabatic-ansatz-and-hardware-bounds",
+   "value": "The authors state that they use an adiabatic-type Ansatz for the amplitude and detuning with tmax = 4 µs, that the amplitude must start and end at 0 MHz on the Aquila hardware, and that the optimization enforces the bounds 0 ≤ Ω ≤ 2.51 MHz and |∆| ≤ 19.89 MHz.",
+   "anchor": "Section III.A, Eq. (5), p.3 (Fig. 1)",
+   "quotes": [
+    "An adiabatic-type Ansatz [26] is chosen for the amplitude and detuning parameters as functions of time",
+    "We set tmax = 4 µs.",
+    "must start and end at 0 MHz on the Aquila hardware.",
+    "where 0 ≤ Ω ≤ 2.51 MHz, and |∆| ≤ 19.89 MHz, and these bounds are enforced in the optimization."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper states its own pulse setup in Section III.A.",
+   "result_type": "setup", "context": "qc",
+   "reader_inference": "These hardware limits are those of Aquila at the time of the study (Fig. 1 caption: the maximal values currently allowed)."
+  },
+  {
+   "id": "layout-selection-procedure",
+   "value": "The authors state that NR random layouts of graph vertex positions are chosen, the initial cost function is measured after adiabatic evolution with the default parameters, and the layout that produces the lowest cost function is chosen for the pulse shape optimization step.",
+   "anchor": "Section III.A, p.3-4",
+   "quotes": [
+    "NR random layouts of graph vertex positions are chosen and the initial cost function is measured after evolving with the adiabatic evolution using the default parameters.",
+    "Then, the layout that produces the lowest cost function is chosen for the pulse shape optimization step."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper states its own procedure in Section III.A.",
+   "result_type": "setup", "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id": "modified-fruchterman-reingold-embedding",
+   "value": "The authors state that they introduce a variant of the Fruchterman-Reingold algorithm in which the optimal distance is local and set by whether a pair of vertices is part of a 3-node clique (triangle), and that they obtained the best results with it.",
+   "anchor": "Section III.A, Eqs. (7) and (8), p.4",
+   "quotes": [
+    "Here, kij is now local and dependent on the vertices i and j, and can be determined by graph structure parameters such as connectivity, diameter, and cliques.",
+    "We obtained the best results by determining kij at each pair (i, j) based on whether the pair (i, j) is part of a 3-node clique, or triangle."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An author claim of best results; no comparison against other embeddings is shown.",
+   "result_type": "claim", "context": "qc",
+   "reader_inference": "The text shows no data comparing the variant to the standard FR layout or to other choices of kij."
+  },
+  {
+   "id": "pulse-optimizer-and-shots-setup",
+   "value": "The authors state that the pulse hyperparameters were optimized in simulation and that the optimized pulse shapes were then run on Aquila with 1000 shots.",
+   "anchor": "Section III.A, p.4",
+   "quotes": [
+    "The pulse optimization was performed by optimizing the hyperparameters p using Pennylane",
+    "and the optimized pulse shapes were then run on QuEra",
+    "Aquila device with 1000 shots"
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper states its own run setup in Section III.A.",
+   "result_type": "setup", "context": "qc",
+   "reader_inference": "The pulses are optimized on a noiseless simulator, so the hardware figures measure transfer of simulator-optimized pulses, not hardware-in-the-loop optimization."
+  },
+  {
+   "id": "first-maxcut-on-aquila-priority-claim",
+   "value": "The authors state that, to the best of their knowledge, this work presents the first MaxCut results on Quera's Aquila quantum hardware.",
+   "anchor": "Abstract, p.1",
+   "quotes": [
+    "To the best of our knowledge, this work presents the first MaxCut results on Quera"
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "A priority claim by the authors with no supporting survey in the paper.",
+   "result_type": "claim", "context": "qc",
+   "reader_inference": "The paper cites Ref. [10] (da Silva Coelho et al.) for MaxCut and Q-score on neutral atoms but does not say whether that work ran on Aquila."
+  },
+  {
+   "id": "aquila-solves-maxcut-despite-reduced-probability",
+   "value": "The authors state that their experiments run on Aquila demonstrate that, even though the probability of obtaining the solution is reduced, one can still solve the MaxCut problem on cloud-accessed neutral atom quantum hardware.",
+   "anchor": "Abstract, p.1",
+   "quotes": [
+    "Our experiments run on Aquila demonstrate that even though the probability of obtaining the solution is reduced, one can still solve the MaxCut problem on cloud-accessed neutral atom quantum hardware."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An empirical result from one study on small graphs.",
+   "result_type": "measured", "context": "qc",
+   "reader_inference": "The graphs have at most 12 vertices; the claim says nothing about scaling beyond that, and no classical baseline or running time is reported."
+  },
+  {
+   "id": "qaoa-near-exact-realization-claim",
+   "value": "The authors state that the second method uses local detuning to obtain a near exact realization of the standard QAOA Ansatz with similar performance.",
+   "anchor": "Abstract, p.1",
+   "quotes": [
+    "The second method uses local detuning, which is an emergent update on the Aquila hardware, to obtain a near exact realization of the standard QAOA Ansatz with similar performance."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An author claim; the supporting comparison is one graph in simulation.",
+   "result_type": "claim", "context": "qc",
+   "reader_inference": "The only side-by-side comparison with vanilla QAOA is on the IEEE 9-bus graph (0.984 against 0.99); the lattice graphs have no vanilla comparison in the text. Local detuning is described as a near-term update, so the method was not run on hardware."
+  },
+  {
+   "id": "fidelity-estimation-setup",
+   "value": "The authors state that, to estimate fidelity, they prepared the IEEE 9-bus dataset graph in an initial product state and time evolved it in 16 time cycles of 0.25 µs each, measuring at each cycle, with nshots = 1000 on Aquila and nshots = 100, 000 on a noiseless simulator for the theoretical probabilities, and that the experiments were conducted three times to obtain the error bars.",
+   "anchor": "Section IV, p.6-7 (Fig. 6 caption)",
+   "quotes": [
+    "we prepared the IEEE 9-bus dataset graph in the initial state",
+    "time evolved it in 16 time cycles where each time cycle was tcycle = 0.25 µs",
+    "We used nshots = 1000 for our experiments run on QuEra",
+    "we ran a noiseless quantum simulator with nshots = 100, 000.",
+    "conducted three times to obtain the error bars."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "setup",
+   "certainty_reason": "The paper states its own fidelity-benchmark setup in Section IV.",
+   "result_type": "setup", "context": "qc",
+   "reader_inference": "Only three repetitions underlie the fidelity error bars."
+  },
+  {
+   "id": "fidelity-fit-values-ieee9",
+   "value": "The authors report that a fit of the experimental fidelity data shows the fidelity stays fairly constant at 89.5% for t < 2 µs, then decreases down to 47.1% and remains fairly constant for t > 2 µs.",
+   "anchor": "Section IV, p.7 (Fig. 6(a))",
+   "quotes": [
+    "A fit of the experimental data on the fidelity (Fig. 6(a)) reveals that for t < 2 µs, the fidelity stays fairly constant at 89.5%.",
+    "the fidelity decreases down to 47.1% and remains fairly constant for t > 2 µs."
+   ],
+   "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An empirical result from one study on one graph and three repetitions.",
+   "result_type": "measured", "context": "qc",
+   "reader_inference": "The fidelity here is the Ref. [32] estimator of the hardware distribution against the noiseless simulation, a benchmark of the pulse run, not of MaxCut accuracy. The Fig. 6(a) legend prints the fit values as 0.895 and 0.471."
+  },
+  {
+   "id": "fidelity-degradation-entanglement-interpretation",
+   "value": "The authors state that they observe a degradation in fidelity during the evolution of the system that involves an increase in entanglement, and that the system remains approximately in the initial state, which is not entangled, while the fidelity is near its early value.",
+   "anchor": "Section IV, p.7",
+   "quotes": [
+    "During this time the system remains approximately in the initial state which is not entangled.",
+    "Thus, we observe a degradation in fidelity during the evolution of the system that involves an increase in entanglement."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An author interpretation; no entanglement measure is computed in the paper.",
+   "result_type": "claim", "context": "qc",
+   "reader_inference": "The link between fidelity drop and entanglement is inferred from the described state at each time; the paper reports no entanglement entropy or other entanglement measurement."
+  },
+  {
+   "id": "fidelity-result-is-benchmark-claim",
+   "value": "The authors state that the fidelity result is an important benchmark of the neutral atom hardware, and that despite the degradation they still attain their goal, obtaining the solution to the MaxCut problem with 60% probability.",
+   "anchor": "Section IV, p.7",
+   "quotes": [
+    "This result is an important benchmark of the neutral atom hardware.",
+    "It should be pointed out that despite degradation, we still attain our goal, as we obtain the solution to the MaxCut problem with 60% probability."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An author claim of significance.",
+   "result_type": "claim", "context": "qc",
+   "reader_inference": "The 60% matches the Erdos-Renyi average; the IEEE 9-bus hardware value in Section III.A is 0.639."
+  },
+  {
+   "id": "hardware-performance-adequate-claim",
+   "value": "The authors state that, although far from ideal, the performance of the QuEra processor was adequate to yield the solution to the problem at hand.",
+   "anchor": "Section V, Conclusion, p.7",
+   "quotes": [
+    "Although far from ideal, the performance of the QuEra processor was adequate to yield the solution to the problem at hand."
+   ],
+   "kind": "claimed", "claim_type": "absence", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An author judgment on its own measured results.",
+   "result_type": "claim", "context": "qc",
+   "reader_inference": "Adequacy is judged by whether the correct cut appears among the shots, at the reported 60% to 64% probability, on graphs of at most 12 vertices."
+  },
+  {
+   "id": "open-problem-bayesian-vs-nadam",
+   "value": "The authors state that Bayesian optimization has been studied for optimizing pulse shapes in neutral atom hardware for the MIS problem, so it would be interesting to compare it with the gradient descent NAdam algorithm on MaxCut problems.",
+   "anchor": "Section V, Conclusion, p.8",
+   "quotes": [
+    "so it would be interesting to compare the performance of Bayesian optimization with the gradient descent NAdam algorithm on MaxCut problems."
+   ],
+   "kind": "claimed", "claim_type": "absence", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "stated limit",
+   "certainty_reason": "The paper states this open problem in its Conclusion.",
+   "result_type": "claim", "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id": "open-problem-analog-error-mitigation",
+   "value": "The authors state that it is important to study error mitigation techniques specialized for analog processors, such as dual-state purification.",
+   "anchor": "Section V, Conclusion, p.8",
+   "quotes": [
+    "it is important to study error mitigation techniques specialized for analog processors"
+   ],
+   "kind": "claimed", "claim_type": "absence", "fidelity": "scoped",
+   "certainty_suggestion": "high", "high_basis": "stated limit",
+   "certainty_reason": "The paper states this open problem in its Conclusion.",
+   "result_type": "claim", "context": "qc",
+   "reader_inference": "No error mitigation is applied to the hardware results reported."
+  },
+  {
+   "id": "scope-weighted-maxcut-only",
+   "value": "The authors state that they identified their optimization problem of interest as solving weighted MaxCut problems and left other optimization problems in power systems as future work.",
+   "anchor": "Section II, p.2",
+   "quotes": [
+    "we identified our optimization problem of interest as solving weighted MaxCut problems and left other optimization problems in power systems as future work."
+   ],
+   "kind": "shown", "claim_type": "absence", "fidelity": "exact",
+   "certainty_suggestion": "high", "high_basis": "scope",
+   "certainty_reason": "The paper states its own scope in Section II.",
+   "result_type": "claim", "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id": "ieee-9-and-14-bus-studied-claim",
+   "value": "The authors state that they studied maximum power section identification in IEEE 9- and 14-bus systems.",
+   "anchor": "Section II, p.2",
+   "quotes": [
+    "we studied maximum power section identification in IEEE 9- and 14-bus systems."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An author statement of scope without a reported result for one of the two systems.",
+   "result_type": "claim", "context": "qc",
+   "reader_inference": "No result for the IEEE 14-bus system appears anywhere in the text; all power-grid results are for the IEEE 9-bus graph (the Introduction also names EV charging problems, for which no result is reported either)."
+  },
+  {
+   "id": "expected-superpolynomial-advantage-claim",
+   "value": "The authors state that quantum optimization tools are expected to achieve super-polynomial advantage for solving combinatorial optimization problems.",
+   "anchor": "Section II, p.2",
+   "quotes": [
+    "Quantum optimization tools are expected to achieve super-polynomial advantage for solving combinatorial optimization problems."
+   ],
+   "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "An author expectation stated without evidence or citation in the paper.",
+   "result_type": "claim", "context": "qc",
+   "reader_inference": "No result in the paper bears on any advantage; the experiments report no classical comparison."
+  },
+  {
+   "id": "cited-colucci-hybrid-power-network",
+   "value": "The authors state that a cited study studied a power grid optimization problem on D-Wave quantum annealer solvers and demonstrated that hybrid quantum-classical methods outperformed classical methods in terms of solution quality for the problem studied.",
+   "anchor": "Section II, p.2",
+   "quotes": [
+    "demonstrated that hybrid quantum-classical methods outperformed classical methods in terms of solution quality for the problem studied."
+   ],
+   "kind": "cited", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "A result the paper attributes to other work.",
+   "result_type": "cited", "context": "qc",
+   "reader_inference": "The sentence names no baseline, size or margin."
+  },
+  {
+   "id": "cited-jing-data-driven-qaoa-24-bus",
+   "value": "The authors state that Ref. [12] studied the IEEE 24-bus system and proposed a data-driven QAOA that yielded results comparable to those by the Goemans-Williamson algorithm.",
+   "anchor": "Section II, p.2",
+   "quotes": [
+    "The authors of Ref. [12] studied the IEEE 24-bus system and proposed a data-driven QAOA that yielded results comparable to those by the Goemans-Williamson algorithm."
+   ],
+   "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "A result the paper attributes to other work.",
+   "result_type": "cited", "context": "qc",
+   "reader_inference": ""
+  },
+  {
+   "id": "cited-bluvstein-logical-processor-not-public",
+   "value": "The authors state that, in a cited study, a neutral atom quantum system with 280 physical qubits was used to encode up to 48 logical qubits and 40 color code qubits, and that this procedure involved universal digital single-qubit gates, arbitrary connectivity, and mid-circuit readout, which are not publicly available to users on current hardware.",
+   "anchor": "Section I, p.1",
+   "quotes": [
+    "a neutral atom quantum system with 280 physical qubits was used to encode up to 48 logical qubits and 40 color code qubits.",
+    "which are not publicly available to users on current hardware."
+   ],
+   "kind": "cited", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "A result the paper attributes to other work, plus the authors' remark on public availability.",
+   "result_type": "cited", "context": "qc",
+   "reader_inference": "The availability remark explains why Aquila is limited to analog control in this study."
+  },
+  {
+   "id": "aquila-analog-control-description",
+   "value": "The authors state that the Aquila processor offers 256 Rb-87 atoms as physical qubits that can be configured in a 2-dimensional array, with evolution governed by Rabi frequency and detuning pulses programmed as time-dependent functions, and with analog control instead of discrete gates.",
+   "anchor": "Section I, p.1",
+   "quotes": [
+    "The Aquila processor offers 256 Rb-87 atoms as physical qubits that can be configured in a 2-dimensional array",
+    "their evolution is governed by Rabi frequency and detuning pulses, which can be programmed as timedependent functions"
+   ],
+   "kind": "cited", "claim_type": "positive", "fidelity": "scoped",
+   "certainty_suggestion": "low", "high_basis": "",
+   "certainty_reason": "A description of a third-party device, attributed in the paper to Ref. [1].",
+   "result_type": "cited", "context": "qc",
+   "reader_inference": "The second quote keeps the text layer's joined word 'timedependent'."
+  }
+ ]}]}
