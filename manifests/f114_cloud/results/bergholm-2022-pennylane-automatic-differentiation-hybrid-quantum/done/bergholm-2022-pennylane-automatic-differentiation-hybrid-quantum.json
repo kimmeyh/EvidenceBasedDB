@@ -1,0 +1,430 @@
+{"papers": [{
+  "record_id": "bergholm-2022-pennylane-automatic-differentiation-hybrid-quantum",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2018\\Bergholm-et-al._2018_PennyLane-Automatic-differentiation-of-hybrid-quantum-classical__1811.04968.pdf",
+  "title_in_file": "PennyLane: Automatic differentiation of hybrid quantum-classical computations",
+  "version_note": "arXiv 1811.04968 version 4 (29 Jul 2022), which describes PennyLane as of version 0.24; the file name carries the 2018 year but the text is the 2022 revision.",
+  "pages": 18,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A software whitepaper by Xanadu and contributors describing the PennyLane framework for differentiable programming of hybrid quantum-classical computations.",
+  "bears_on_context": "qml",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "pennylane-core-feature-autodiff-hybrid",
+      "verdict": "confirmed",
+      "note": "",
+      "value": "",
+      "anchor": "Abstract, p. 1",
+      "quotes": [
+        "PennyLane’s core feature is the ability to compute gradients of variational quantum circuits in a way that is compatible with",
+        "classical techniques such as backpropagation. PennyLane thus extends the automatic differentiation algorithms common in"
+      ],
+      "kind": "claimed",
+      "claim_type": "vendor-self-claim",
+      "fidelity": "exact",
+      "certainty_suggestion": "moderate",
+      "high_basis": "",
+      "certainty_reason": "A vendor describing its own product; no experiment backs it in the paper.",
+      "result_type": "vendor",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id": "pennylane-gradient-method-fallback-order",
+      "verdict": "widened",
+      "note": "The stored value gives only the third and fourth steps. The paper lists four steps in order of preference: a device-provided gradient (for example adjoint), then backpropagation when the device gives exact expectation values, then parameter-shift rules on hardware or on simulators with shots not None, then finite differences. It calls this a heuristic default for the best method, not a guarantee.",
+      "value": "The paper states that by default PennyLane uses heuristics to pick the most accurate and efficient gradient method that the circuit and device support, in this order: a gradient method the device provides itself; backpropagation when the device computes expectation values exactly (shots=None) and supports backpropagation; a parameter-shift gradient transform on hardware devices or on simulators where shots!=None; and finally numerical methods such as finite differences when the circuit does not permit analytic hardware gradients.",
+      "anchor": "Derivatives of quantum nodes, list of gradient method selection, p. 5",
+      "quotes": [
+        "By default, PennyLane uses various heuristics to determine the ‘best’ gradient method — that is, the most accurate and efﬁcient gradient method of those supported by the circuit and the device",
+        "1. If the device provides its own gradient method, this is the default choice.",
+        "(shots=None) and supports backpropagation, this is",
+        "3. Most quantum nodes permit analytic derivatives on hardware via parameter-shift rules [47, 48]. If executing on hardware devices, or with simulators where",
+        "4. Finally, if the circuit does not permit analytic hardware gradients, numerical methods such as the method of ﬁnite differences is applied."
+      ],
+      "kind": "claimed",
+      "claim_type": "vendor-self-claim",
+      "fidelity": "exact",
+      "certainty_suggestion": "moderate",
+      "high_basis": "",
+      "certainty_reason": "A vendor describing the default behaviour of its own product.",
+      "result_type": "vendor",
+      "context": "qc",
+      "reader_inference": "The stored id says fallback order; the order also has two earlier steps (device gradient, backpropagation) that come before parameter-shift."
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "pennylane-expectation-estimator-unbiased-variance",
+      "value": "The authors state that the expectation value of an observable is estimated by averaging the measurement results over R runs of the circuit, that this estimator is unbiased, and that its variance depends on the variance of the operator and on the number of measurements (shots) R.",
+      "anchor": "Estimating the expectation values, Eq. (2), p. 3",
+      "quotes": [
+        "This estimator, denoted fi∗, is unbiased,",
+        "which depends on the variance of the operator Bˆi, as well as the number of measurements (‘shots’) R."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states the estimator and its properties as part of its own setup of quantum nodes (Eq. 2).",
+      "result_type": "setup",
+      "context": "qc",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-shots-none-exact-simulator-default",
+      "value": "The authors state that simulator devices can compute the exact expectation value numerically, and that in PennyLane this is the default behavior, represented by setting shots=None.",
+      "anchor": "Estimating the expectation values, p. 3",
+      "quotes": [
+        "Simulator devices can also choose to compute the exact expectation value numerically (in PennyLane this is the default behavior, represented by set-",
+        "ting shots=None)."
+      ],
+      "kind": "claimed",
+      "claim_type": "vendor-self-claim",
+      "fidelity": "exact",
+      "certainty_suggestion": "moderate",
+      "high_basis": "",
+      "certainty_reason": "A vendor describing the default of its own product.",
+      "result_type": "vendor",
+      "context": "qc",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-backprop-simulator-drawbacks",
+      "value": "The authors state that backpropagation through a quantum node on a simulator does not scale to increasing numbers of qubits because the quantum state must be cached at every step of the simulation, and that it does not support quantum hardware.",
+      "anchor": "Backpropagating through the graph, p. 4",
+      "quotes": [
+        "Firstly, it does not scale with simulations requiring increasing number of qubits, due to the signiﬁcant memory requirements of backpropagation (namely, that the quantum state must be cached at every step in the simulation).",
+        "Secondly, it does not support quantum hardware."
+      ],
+      "kind": "claimed",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper states the limits of backpropagation in the text where it motivates its method.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-key-insight-vjp-via-device",
+      "value": "The authors state that backpropagation does not need to resolve the quantum information inside a quantum node, because it is sufficient to compute the vector Jacobian product of the quantum node with respect to its classical inputs and variables, and that the key insight is to use the same quantum device that implements a node to also compute its gradients or Jacobians.",
+      "anchor": "Backpropagating through the graph, p. 4",
+      "quotes": [
+        "it is sufﬁcient for us to (separately) compute the vector Jacobian product of quantum nodes with respect to their (classical) inputs and variables.",
+        "The key insight is to use the same quantum device (hardware or simulator) that implements a quantum node to also compute (simulator efﬁcient or hardware compatible) gradients or Jacobians of that quantum node."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "moderate",
+      "high_basis": "",
+      "certainty_reason": "A vendor describing the design of its own product.",
+      "result_type": "vendor",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-parameter-shift-gate-scope",
+      "value": "The authors state that the parameter-shift recipe works for single-parameter qubit gates whose Hermitian generator has an equidistant frequency spectrum (which they say includes all common qubit parametrized gates), and for continuous-variable circuits with Gaussian operations.",
+      "anchor": "Analytic derivatives, p. 5",
+      "quotes": [
+        "This recipe works for single-parameter qubit gates of the form eiGx , where the Hermitian generator G has an equidistant frequency spectrum (which includes e.g., all common qubit parametrized gates)",
+        "as well as continuous-variable circuits with Gaussian operations8."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "moderate",
+      "high_basis": "",
+      "certainty_reason": "A vendor stating the scope of its own implementation; the proofs are in the cited companion papers.",
+      "result_type": "vendor",
+      "context": "qc",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-parameter-shift-exact-derivative",
+      "value": "The authors state that the parameter-shift formula gives the exact derivatives with finite, not infinitesimal, shifts, so that analytic derivative evaluations are constrained by device noise and statistical imprecision in the averaging of measurements but are not subject to numerical issues.",
+      "anchor": "Analytic derivatives, Eq. (3), p. 6",
+      "quotes": [
+        "First, the values ci and si are not inﬁnitesimal, but ﬁnite; second, Eq. (3) gives the exact derivatives.",
+        "Thus, while analytic derivative evaluations are constrained by device noise and statistical imprecision in the averaging of measurements, they are not subject to numerical issues."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The paper gives no proof here; the result is attributed to the companion papers.",
+      "result_type": "cited",
+      "context": "qc",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-default-shift-values-equidistant",
+      "value": "The authors state that the shift values and coefficients in the parameter-shift rule are not fixed, and that PennyLane by default chooses shift values that are equidistant with respect to the period of the gate, in order to minimize variance.",
+      "anchor": "Analytic derivatives, p. 6",
+      "quotes": [
+        "Note that ci and si are typically not ﬁxed; there is a degree of freedom that allows the shift values to be chosen as needed",
+        "PennyLane by default chooses shift values that are equidistant with respect to the gates period, in order to minimize variance."
+      ],
+      "kind": "claimed",
+      "claim_type": "vendor-self-claim",
+      "fidelity": "exact",
+      "certainty_suggestion": "moderate",
+      "high_basis": "",
+      "certainty_reason": "A vendor describing a default of its own product; no variance comparison is shown.",
+      "result_type": "vendor",
+      "context": "qc",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-shift-extensions-not-implemented",
+      "value": "The authors state that shift rules for gates with non-equidistant generator frequencies, stochastic parameter-shift rules for multi-parameter gates, and a Hadamard test-based approach that requires an auxiliary qubit are not currently implemented in PennyLane.",
+      "anchor": "Footnote 8, p. 5",
+      "quotes": [
+        "equidistant generator frequencies [48], stochastic parameter-shift rules for multi-parameter gates [50], and a Hadamard test-based approach that requires an auxiliary qubit [47].",
+        "These extensions are not currently implemented in PennyLane."
+      ],
+      "kind": "claimed",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper states the limit of its own implementation, as of the version it describes.",
+      "result_type": "claim",
+      "context": "qc",
+      "reader_inference": "The text layer cuts the start of the sentence (non-equidistant) across a page break; the limit is stated for extensions listed in footnote 8."
+    },
+    {
+      "id_suggestion": "pennylane-derivatives-are-estimates",
+      "value": "The authors state that the derivatives they discuss are estimates that result from estimates of expectation values, and that numerically computed derivatives are approximations of the true derivatives even if the quantum nodes gave exact expectations.",
+      "anchor": "Footnote 7, p. 5",
+      "quotes": [
+        "When we speak of derivatives here, we actually refer to estimates of derivatives that result from estimates of expectation values.",
+        "Numerically computed derivatives in turn are approximations of the true derivatives, even if the quantum nodes were giving exact expectations"
+      ],
+      "kind": "claimed",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper states what its use of the word derivative covers.",
+      "result_type": "setup",
+      "context": "qc",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-finite-difference-noise-tradeoff",
+      "value": "The authors state that the finite-differences methods need only black-box evaluations of the model, and that there is a tradeoff in the choice of the difference for noisy hardware.",
+      "anchor": "Numerical derivatives, p. 6",
+      "quotes": [
+        "Numerical derivative methods require only ‘black-box’ evaluations of the model.",
+        "Of course, there is a tradeoff in choice of the difference ∆µ for noisy hardware."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper states the limit of the numerical method; it gives no analysis of the tradeoff.",
+      "result_type": "claim",
+      "context": "qc",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-device-backprop-time-saving",
+      "value": "The authors state that a simulator written with a classical automatic differentiation library can use backpropagation, which compared to the analytic method on simulators may lead to significant time savings because the information is stored and reused from the forward evaluation, adding constant overhead.",
+      "anchor": "Backpropagation and device derivatives, p. 6",
+      "quotes": [
+        "Compared to the analytic method on simulators, this may lead to signiﬁcant time savings, as the information required to compute the derivative is stored and reused from the forward circuit evaluation — simply adding constant overhead."
+      ],
+      "kind": "claimed",
+      "claim_type": "vendor-self-claim",
+      "fidelity": "exact",
+      "certainty_suggestion": "moderate",
+      "high_basis": "",
+      "certainty_reason": "A vendor describing its own product; no timing is reported.",
+      "result_type": "vendor",
+      "context": "qc",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-higher-order-derivatives",
+      "value": "The authors state that PennyLane natively supports arbitrary-order derivatives of quantum nodes, and that for gradient transforms that produce multiple circuits, such as parameter-shift rules and finite differences, the linear combinations are iterated by successively applying the chain and product rules.",
+      "anchor": "Higher-order derivatives, p. 6",
+      "quotes": [
+        "PennyLane also natively supports arbitrary-order derivatives of quantum nodes."
+      ],
+      "kind": "claimed",
+      "claim_type": "vendor-self-claim",
+      "fidelity": "scoped",
+      "certainty_suggestion": "moderate",
+      "high_basis": "",
+      "certainty_reason": "A vendor describing a feature of its own product.",
+      "result_type": "vendor",
+      "context": "qc",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-sampling-not-differentiable",
+      "value": "The authors state that PennyLane supports returning variances, probabilities and samples from a quantum node, and that returning samples is not differentiable.",
+      "anchor": "Optimization, p. 7",
+      "quotes": [
+        "though the latter is not differentiable."
+      ],
+      "kind": "claimed",
+      "claim_type": "absence",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper states the limit of its own feature.",
+      "result_type": "claim",
+      "context": "qc",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-differentiable-quantum-transform-definition",
+      "value": "The paper defines a differentiable quantum transform: for a quantum function with input parameters, a transform with its own inputs is differentiable if it maps the function to a set of functions that are each also differentiable quantum functions with respect to the same inputs, and the derivative of the transform is defined for all of its inputs.",
+      "anchor": "Definition 1, Transforms, p. 10",
+      "quotes": [
+        "Deﬁnition 1 Let f (θi) be a quantum function with input parameters {θi}.",
+        "where each gk is also a differentiable quantum function with"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper states the definition itself.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-default-qubit-memory-range",
+      "value": "The authors state that default.qubit supports end-to-end backpropagation and, because of the memory overhead of backpropagation, works best for 0-20 qubits, while lightning.qubit with the adjoint method is aimed at quantum nodes with 20 or more qubits.",
+      "anchor": "Built-in simulator devices, p. 12",
+      "quotes": [
+        "Due to the memory overhead of backpropagation, this device works best for 0-20 qubits.",
+        "enabling extremely efﬁcient optimization for quantum nodes with 20 or more qubits."
+      ],
+      "kind": "claimed",
+      "claim_type": "vendor-self-claim",
+      "fidelity": "exact",
+      "certainty_suggestion": "moderate",
+      "high_basis": "",
+      "certainty_reason": "A vendor describing its own simulators; no benchmark is shown.",
+      "result_type": "vendor",
+      "context": "qc",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-lightning-adjoint-speedup-claim",
+      "value": "The authors state that lightning.qubit using adjoint differentiation significantly reduces the time-to-solution over other simulators and gradient methods; no benchmark is reported in the paper.",
+      "anchor": "lightning.qubit and lightning.gpu, p. 12",
+      "quotes": [
+        "ing adjoint differentiation signiﬁcantly reduces the time-tosolution over other simulators and gradient methods."
+      ],
+      "kind": "claimed",
+      "claim_type": "vendor-self-claim",
+      "fidelity": "scoped",
+      "certainty_suggestion": "moderate",
+      "high_basis": "",
+      "certainty_reason": "A vendor describing its own product with no measurement in the paper.",
+      "result_type": "vendor",
+      "context": "qc",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-plugin-list-version-024",
+      "value": "The authors state that, as of version 0.24, PennyLane has plugins available for the Xanadu Cloud and Strawberry Fields, Amazon Braket, Rigetti, IBM Quantum and Qiskit, Google Cirq, ProjectQ, Microsoft QDK, Qulacs, AQT, Honeywell, and IonQ.",
+      "anchor": "Writing a plugin device, p. 12",
+      "quotes": [
+        "As of version 0.24, PennyLane has plugins available for the Xanadu Cloud and Strawberry Fields [25, 27, 63], Amazon Braket [28], Rigetti [64, 65], IBM Quantum and Qiskit [51, 52]"
+      ],
+      "kind": "claimed",
+      "claim_type": "vendor-self-claim",
+      "fidelity": "scoped",
+      "certainty_suggestion": "moderate",
+      "high_basis": "",
+      "certainty_reason": "A vendor listing the plugins of its own product at a stated version.",
+      "result_type": "vendor",
+      "context": "qc",
+      "reader_inference": "The quote holds the first four plugins; the rest of the list (Cirq, ProjectQ, QDK, Qulacs, AQT, Honeywell, IonQ) follows on the same line of the paper."
+    },
+    {
+      "id_suggestion": "pennylane-no-unified-tool-before-launch",
+      "value": "The authors state that prior to the launch of PennyLane in 2018 some frameworks were designed with variational circuits in mind but this was not the norm, and that there was no unified tool for the hybrid optimization of quantum circuits across quantum platforms.",
+      "anchor": "Introduction, p. 2",
+      "quotes": [
+        "Prior to PennyLane’s launch in 2018, while some frameworks were designed with variational circuits in mind [25, 30, 31], this was not the norm",
+        "there was at this stage no uniﬁed tool for the hybrid optimization of quantum circuits across quantum platforms"
+      ],
+      "kind": "claimed",
+      "claim_type": "vendor-self-claim",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A vendor's claim about its own priority; no survey is given.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-ansatz-quality-open",
+      "value": "The authors state that it is not always clear what makes a good ansatz, that the strength of an architecture varies with the use case, and that investigations of the expressive power of different approaches are ongoing.",
+      "anchor": "Circuit architectures, p. 4",
+      "quotes": [
+        "it is not always clear what makes a good ansatz.",
+        "Investigations of the expressive power of different approaches are also ongoing [43]."
+      ],
+      "kind": "claimed",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "stated limit",
+      "certainty_reason": "The paper states an open problem in its own scope.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-hybrid-research-numerical-not-rigorous",
+      "value": "The authors state that much research on hybrid variational algorithms necessarily focuses on numerical experiments rather than rigorous mathematical analysis, because the algorithms are mostly heuristic.",
+      "anchor": "Introduction, p. 2",
+      "quotes": [
+        "a lot of research for these mostly heuristic algorithms necessarily focuses on numerical experiments rather than rigorous mathematical analysis."
+      ],
+      "kind": "claimed",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An author's characterisation of a field, not supported by evidence in the paper.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "pennylane-conclusion-no-experiments",
+      "value": "The authors conclude that PennyLane extends automatic differentiation to quantum and hybrid classical-quantum information processing through a new quantum node abstraction that interfaces with existing DAG-based automatic differentiation methods; the paper reports no benchmark or accuracy experiment for this.",
+      "anchor": "Conclusion, p. 16",
+      "quotes": [
+        "We have introduced PennyLane, a Python package that extends automatic differentiation to quantum and hybrid classical-quantum information processing."
+      ],
+      "kind": "claimed",
+      "claim_type": "vendor-self-claim",
+      "fidelity": "scoped",
+      "certainty_suggestion": "moderate",
+      "high_basis": "",
+      "certainty_reason": "A vendor's conclusion about its own product.",
+      "result_type": "vendor",
+      "context": "qml",
+      "reader_inference": "The worked examples are code listings with a few printed outputs; they are demonstrations, not measured benchmarks."
+    }
+  ]
+}]}
