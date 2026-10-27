@@ -1,0 +1,783 @@
+{
+ "papers": [
+  {
+   "record_id": "bauer-2023-combinatorial-optimization-quantum-imaginary-time",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Bauer-et-al._2023_Combinatorial-optimization-with-quantum-imaginary-time-evolution__2312.16664.pdf",
+   "title_in_file": "Combinatorial optimization with quantum imaginary time evolution",
+   "version_note": "arXiv:2312.16664v1, dated December 29, 2023. The text layer lost the summation limits and layout of Eqs. (7) to (17); the prose around each equation was read. The paper's own text and the Fig. 5 caption differ on the number of initial states and the largest LABS size (see labs-test-setup).",
+   "pages": 8,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A numerical study of quantum imaginary time evolution with a separable linear Ansatz (and a small test of a quadratic entangling Ansatz) on weighted MaxCut against the Goemans-Williamson algorithm and on LABS against QAOA values from another study.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qite-classically-simulable",
+     "verdict": "confirmed",
+     "note": "The paper states this three times (Introduction, Section III and the Conclusion) about the separable (linear) Ansatz. It states it without a proof or a cost bound.",
+     "value": "",
+     "anchor": "Section V, Conclusion, p.7",
+     "quotes": [
+      "Our separable Ansatz can be simulated efficiently classically.",
+      "QITE with a linear Ansatz can be simulated efficiently classically, so the computation can be done for larger graph sizes than considered here without issue."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit on their own method in the Conclusion (Section V, p.7) and in Section III (p.5).",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper gives no proof or complexity bound for the statement. It rests on the product-state start and the commuting single-qubit updates of Section II."
+    },
+    {
+     "id": "qite-labs-vs-qaoa",
+     "verdict": "narrowed",
+     "note": "The paper limits the comparison. It compares the AVERAGE probability of measuring the ground state, P(GS), of linear Ansatz QITE with 40 steps to p = 10 QAOA values taken from Ref. [23] (not re-run), for problem sizes 6 to 18 (Fig. 6). The best case P(GS) is higher than the QAOA values. The entangling quadratic Ansatz was tested only up to N = 9, where it gave a P(GS) no more than 10% higher, so the no-advantage statement covers that range only.",
+     "value": "The authors report that the average probability of measuring the ground state, P(GS), of linear Ansatz QITE with 40 steps was comparable to p = 10 QAOA, taking the QAOA values from Ref. [23], for problem size 6 ≤ N ≤ 18, and that the best case P(GS) was consistently higher than the QAOA results. They report that the entangling Ansatz gave a P(GS) no more than 10% higher than the linear Ansatz for problem sizes up to N = 9, and that they do not see a significant advantage with an entangling Ansatz.",
+     "anchor": "Abstract, p.1; Fig. 6 caption, p.5; Section V, p.7",
+     "quotes": [
+      "We find the performance of QITE on the LABS problem with a separable Ansatz comparable with p = 10 QAOA, and do not see a significant advantage with an entangling Ansatz.",
+      "we found that the average P(GS) of the linear Ansatz QITE with 40 steps was comparable to p = 10 QAOA [23].",
+      "the best case P(GS) for each problem size was consistently higher than the QAOA results",
+      "The results from [23] for p = 10 QAOA are also shown (grey diamonds).",
+      "for problem size 6 ≤ N ≤ 18 for 40 QITE steps using the linear Ansatz.",
+      "the entangling Ansatz gave a P(GS) which was no more than 10% higher than the result from the linear Ansatz for problem sizes up to N = 9"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the QAOA values are cited from Ref. [23].",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The abstract says QITE performance is comparable with p = 10 QAOA. The body supports this for the average P(GS) only; the figure values are not in the text layer. The QAOA reference values are from another study's noiseless simulation, so the two sets of runs differ in setup."
+    },
+    {
+     "id": "qite-weighted-maxcut-vs-gw",
+     "verdict": "narrowed",
+     "note": "The paper limits it. 'Often outperforms' holds for the BEST approximation ratio over trials (above 1 for 25 and 50 steps and N > 10), after a sufficient number of steps; the average ratio is below 1 (about 0.90 to 0.96; about 0.95 for N > 100). The result is for weighted Newman-Watts-Strogatz graphs with k = 4 and p = 0.5, one imaginary-time-dependent (ITD) edge, and the comparison is against the lowest energy GW produced. 10 steps were not enough.",
+     "value": "The authors report that QITE with a linear (separable) Ansatz and 1 ITD edge on weighted Newman-Watts-Strogatz graphs with k = 4 and p = 0.5, up to 150 vertices, often outperforms the GW algorithm after a sufficient number of steps. They report that the best approximation ratio for 25 and 50 steps remains above 1 for N > 10, while the average approximation ratio is about 0.95 for N > 100 vertices.",
+     "anchor": "Abstract, p.1; Section III, p.3-5; Section V, p.7",
+     "quotes": [
+      "On weighted MaxCut, QITE with a separable Ansatz often outperforms the GW algorithm on graphs up to 150 vertices.",
+      "We restrict our focus to N -vertex weighted NewmanWatts-Strogatz (NWS) graphs with k = 4 and p = 0.5",
+      "We apply the QITE algorithm with a linear Ansatz with 1 ITD edge",
+      "For N > 10, 25 and 50 vertex QITE remains above 1, indicating that QITE produces solutions that are better than those found by the GW classical algorithm.",
+      "often outperforms the classical GW algorithm on weighted MaxCut instances after a sufficient number of steps, yielding an average AR ∼ 0.95 for N > 100 vertices."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study. Not upgraded.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The approximation ratio (AR) is QITE energy divided by the lowest GW energy, and GW is not guaranteed to reach the ground state at large N (Section III). An AR below 1 on average means QITE is on average not better than GW. The 'outperforms' result is a best-of-trials result."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "pubo-scope-two-problems",
+     "value": "The authors state that they concentrate on two problems: the MaxCut problem on weighted graphs and the Low Autocorrelation Binary Sequences (LABS) problem, each mapped onto an Ising-type Hamiltonian.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "We concentrate on two problems: (a) the MaxCut problem on weighted graphs, and (b) the Low Autocorrelation Binary Sequences (LABS) problem.",
+      "In both cases we map the problem onto an Ising-type Hamiltonian."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the problems it studies in Section I (p.2).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The abstract says a linear Ansatz yields good results for a wide range of PUBO problems. The paper tests two problems. The weighted MaxCut Hamiltonian (Eq. 9) is quadratic, so only LABS has terms above second order."
+    },
+    {
+     "id_suggestion": "pubo-definition",
+     "value": "The authors define polynomial unconstrained binary optimization (PUBO) problems as a more general class of problems containing the more popular quadratic unconstrained binary optimization (QUBO) problems.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "polynomial unconstrained binary optimization (PUBO) problems, which is a more general class of problems containing the more popular quadratic unconstrained binary optimization (QUBO) problems."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the term in Section I (p.2).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "method-ground-state-limit",
+     "value": "The authors state that, in the zero temperature limit, the ground state of the Hamiltonian is the limit of the normalized state e to the power of minus beta H applied to any state, as long as the state has non-zero overlap with the ground state.",
+     "anchor": "Section II, Eq. (1), p.2",
+     "quotes": [
+      "In the zero temperature limit, the ground state of the Hamiltonian H for any state |Ψ⟩ is given by",
+      "as long as ⟨Ω|Ψ⟩ ̸= 0."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the basis of its method in Section II (p.2).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "method-linear-ansatz-product-start",
+     "value": "The authors state that the update uses a linear Ansatz in the single-qubit Pauli Y operators, that the initial state is a tensor product of eigenstates of X and Z which introduces no entanglement, that the matrix S is then the identity so the coefficients a equal b, and that all unitary updates commute with each other.",
+     "anchor": "Section II, Eqs. (3)-(6), p.2-3",
+     "quotes": [
+      "For the unitary updates, we adopt the linear Ansatz",
+      "We choose the initial state to be the tensor product of eigenstates of X and Z,",
+      "introducing no entanglement.",
+      "Consequently, we have S = I, and therefore a = b.",
+      "all unitary updates commute with each other, we may write the state after s steps as"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its algorithm setup in Section II (p.2-3).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "method-hardware-requirements",
+     "value": "The authors state that at each QITE step only the vector b needs to be measured, which requires N measurements due to basis rotations, that the circuit depth does not scale with the number of steps because the applications commute, and that the number of measurements scales linearly with the number of steps.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "we need only measure b, which requires N measurements due to basis rotations.",
+      "circuit depth does not scale with the number of steps.",
+      "The number of measurements scales linearly with the number of steps."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement without a derivation or measurement in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The statements are for the linear Ansatz with the product-state start. The quadratic Ansatz needs the matrix S and a longer vector (Eq. 18 to 20)."
+    },
+    {
+     "id_suggestion": "method-tau-selection",
+     "value": "The authors state that the small imaginary time parameter is chosen by increasing it in small steps from zero, measuring the cost function at each increase, continuing until the cost function (energy) starts increasing, and then selecting the previous value.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "cost function ⟨H⟩ is measured and the process is contin",
+      "ued until the cost function (energy) starts increasing.",
+      "that point, the previous τ value is selected."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how it sets the imaginary time parameter in Section II (p.3).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "maxcut-ar-definition",
+     "value": "The authors define the approximation ratio (AR) as the energy obtained by QITE divided by the lowest energy produced by GW, because for large graph sizes they cannot guarantee that GW produces the ground state energy.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "Since for large graph sizes we cannot guarantee that GW produces the ground state energy, we define the approximation ratio (AR) as the energy obtained by QITE divided by the lowest energy produced by GW."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines AR in Section III (p.3).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The reference for the ratio is the best GW result, not a proven optimum, so an AR above 1 shows a lower energy than GW found, not an exact solution."
+    },
+    {
+     "id_suggestion": "maxcut-itd-edges",
+     "value": "The authors state that, as in Ref. [17], they use imaginary-time-dependent (ITD) edges to improve convergence: a subgraph is selected whose weights vanish initially, and the weights are increased with each step until the Hamiltonian reaches the full weighted Hamiltonian.",
+     "anchor": "Section III, Eq. (11), p.3",
+     "quotes": [
+      "As in [17], we use the method of ITD edges to improve convergence.",
+      "A subgraph is selected for which the corresponding weights vanish initially, and then are increased with each step s until wij[s] → wij for sufficiently many steps and Hw[s] → Hw."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the ITD method in Section III (p.3).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "maxcut-test-setup",
+     "value": "The authors state that they test weighted Newman-Watts-Strogatz graphs with k = 4 and p = 0.5 and weights drawn from the uniform random distribution (0, 1], applying QITE with a linear Ansatz and 1 ITD edge, and that they measure the probability of obtaining the lowest GW energy as P(GS).",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "We restrict our focus to N -vertex weighted NewmanWatts-Strogatz (NWS) graphs with k = 4 and p = 0.5, where the weights are selected from the uniform random distribution (0, 1].",
+      "We apply the QITE algorithm with a linear Ansatz with 1 ITD edge",
+      "We also measure the probability of obtaining this lowest energy value as the probability of obtaining the ground state, P(GS)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its test setup in Section III (p.3).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Only one graph family was tested, so the weighted MaxCut results do not cover other graph types or weight distributions."
+    },
+    {
+     "id_suggestion": "maxcut-fig1-convergence-resources",
+     "value": "The authors report that the average number of random subgraph choices needed to reach P(GS) > 0.995 on graphs with 6 ≤ N ≤ 30 vertices was similar for 25 and 50 steps on weighted graphs for N < 18, that unweighted graphs required fewer resources, and that for N > 18 the 25-step and 50-step results diverged, with almost twice the resources required at N = 30.",
+     "anchor": "Section III, Fig. 1, p.3-4",
+     "quotes": [
+      "First, we perform QITE on graphs with 6 ≤ N ≤ 30 vertices and measure the average number of random subgraphs to obtain convergence (P(GS)> 0.995 overlap) to the ground state.",
+      "We observe similar results for 25 and 50 steps on weighted graphs for N < 18, while the unweighted graphs require less resources.",
+      "For N > 18, the results for 25 and 50 QITE steps begin to diverge, with almost twice the resources required at N = 30.",
+      "The bars denote 1 standard error over 250 trials."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study. Values read from Fig. 1 are not in the text layer.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text says 'almost twice the resources' at N = 30 for 50 steps against 25 steps; the direction of the difference is not stated in the text."
+    },
+    {
+     "id_suggestion": "maxcut-energy-gap-n30",
+     "value": "The authors report that at N = 30 the energy gap between the ground state and first excited state is on the order of 0.01.",
+     "anchor": "Section III, p.4",
+     "quotes": [
+      "For N > 18, the results for 25 and 50 QITE steps begin to diverge, with almost twice the resources required at N = 30.",
+      "At this point, the energy gap between the ground state and first excited state is on the order of 0.01."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The paper does not say how many graphs the gap was computed for."
+    },
+    {
+     "id_suggestion": "maxcut-small-gap-still-matches-gw",
+     "value": "The authors state that even as the energy gaps between the ground and first excited state became small, QITE was able to find a state with an equal or lower energy than GW.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "Even as the energy gaps between the ground and first excited state became small, QITE was able to find a state with an equal or lower energy than GW."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "maxcut-lower-energy-than-gw",
+     "value": "The authors report that for larger graphs with N ≥ 20 the state produced from QITE sometimes converges to a state with lower energy than the lowest energy obtained from GW.",
+     "anchor": "Section III, p.4",
+     "quotes": [
+      "For larger graphs with N ≥ 20, the state produced from QITE sometimes converges to a state with lower energy than the lowest energy obtained from GW."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "maxcut-ar-10-steps-insufficient",
+     "value": "The authors report that for 10 QITE steps the average AR is less than 0.90 for N > 10, which they say shows that 10 steps are not sufficient to solve larger MaxCut problems, and that 10-step QITE has a best AR below 1 for N > 100.",
+     "anchor": "Section III, Figs. 2-3, p.4-5",
+     "quotes": [
+      "For 10 QITE steps, the average AR is less than 0.90 for N > 10, indicating that 10 steps are not sufficient to solve larger MaxCut problems.",
+      "10-step QITE has a best AR < 1 for N > 100, indicating it produces solutions with higher energies than GW."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "maxcut-average-ar-25-50-steps",
+     "value": "The authors report that, over graphs with 6 < N < 150 vertices and single selections of random subgraphs and initial states, the average AR for 25 and 50 steps decreases with graph size to a minimum of about 0.90 at N = 50 vertices, then increases to a maximum of about 0.96 (0.94) at N = 125 vertices for 50 (25) steps.",
+     "anchor": "Section III, Fig. 2, p.4-5",
+     "quotes": [
+      "graphs with 6 < N < 150 vertices for single selections of random subgraphs and initial states, shown in Fig. 2.",
+      "For 25 and 50 steps, we observe the AR initially decrease with graph size to",
+      "a minimum ∼0.90 for N = 50 vertices, then increase for larger values of N to a maximum value of ∼0.96 (0.94) for N = 125 vertices at 50 (25) steps."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The average AR stays below 1 in this range, so the average QITE energy is on average above (worse than) the lowest GW energy. The text says 6 < N < 150 for this figure while the abstract says graphs up to 150 vertices."
+    },
+    {
+     "id_suggestion": "maxcut-ar-attribution",
+     "value": "The authors state that they attribute the decrease in average AR to QITE performing better on smaller N when GW produces the exact solution, and the increase to GW finding sub-optimal solutions when QITE produces a state with a finite overlap with a lower energy solution.",
+     "anchor": "Section III, p.5",
+     "quotes": [
+      "We attribute the decrease to QITE performing better on smaller N when GW produces the exact solution, and the increase to GW finding sub-optimal solutions when QITE produces a state with a finite overlap with a lower energy solution."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation without a test in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "maxcut-unweighted-ar",
+     "value": "The authors report that for unweighted graphs with 25 QITE steps the average AR remains in the range of 0.92–0.95 for all N, and the best AR is above 1.05 for N > 30.",
+     "anchor": "Section III, p.5",
+     "quotes": [
+      "For unweighted graphs, the average AR remains in the range of 0.92–0.95 for all N , and has a best AR > 1.05 for N > 30.",
+      "in addition to 25 steps for the unweighted (UW) case (solid black)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "maxcut-example-20-vertex",
+     "value": "The authors report an example 20-vertex weighted graph where 50-step QITE outperforms GW: QITE chooses a solution with 3 different cuts than GW does, and the difference in energy between QITE and GW is ΔE = −0.0404.",
+     "anchor": "Section III, Fig. 4, p.5",
+     "quotes": [
+      "An example of a 20-vertex weighted graph where 50step QITE outperforms the GW classical algorithm is shown in Fig. 4.",
+      "QITE chooses a solution with 3 different cuts than GW does. The difference in energy between QITE and GW is ∆E = −0.0404."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One example from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "This is a single instance."
+    },
+    {
+     "id_suggestion": "maxcut-more-itd-edges-open",
+     "value": "The authors state that they chose 1 ITD edge and that it would be interesting to see whether more ITD edges or a different scheme would give better results on larger graphs, and that they are investigating the scaling of QITE on graphs with 500+ vertices.",
+     "anchor": "Section III, p.5",
+     "quotes": [
+      "Since here we chose 1 ITD edge, it would be interesting to see if choosing more ITD edges or choosing a different scheme would produce better results on larger graphs.",
+      "We are currently investigating this in addition to the scaling of QITE on graphs with 500+ vertices."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its study in Section III (p.5).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "labs-definition",
+     "value": "The authors define the goal of the LABS problem as minimizing the sidelobe energy for a system of N spins, each +1 or −1, with autocorrelation A_k(sigma).",
+     "anchor": "Section IV, Eq. (12), p.5",
+     "quotes": [
+      "The goal of the LABS problem is to minimize the “sidelobe energy” for a system of N spins σi ∈ {+1, −1} with autocorrelation Ak(σ) :"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the problem in Section IV (p.5).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The text layer lost the summation limits of Eqs. (12) to (17), so only the prose around them is quoted."
+    },
+    {
+     "id_suggestion": "labs-is-pubo",
+     "value": "The authors state that LABS is a PUBO problem because the quantum Hamiltonian encoding it includes quartic terms in the Pauli Z matrix.",
+     "anchor": "Section V, p.7",
+     "quotes": [
+      "This is a PUBO probem, as the quantum Hamiltonian encoding the LABS problem includes quartic terms in the Pauli Z matrix."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper states the classification in Section V (p.7).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "labs-itd-coefficients",
+     "value": "The authors state that, because QITE with a linear Ansatz performs well with a Hamiltonian with quadratic terms, they introduce an imaginary-time-dependent coefficient alpha[s] on the quartic terms of the LABS Hamiltonian, and a further time-dependent parameter beta[s] that depends on the range of the quartic interaction terms.",
+     "anchor": "Section IV, Eqs. (15)-(17), p.5-6",
+     "quotes": [
+      "Since QITE with a linear Ansatz performs well with a Hamiltonian with quadratic terms, we introduce an ITD coefficient α[s] to the quartic terms of the Hamiltonian",
+      "To improve the results further, we can add another time-dependent parameter, β[s], that depends on the range of the quartic interaction terms,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its LABS method in Section IV (p.5-6).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "labs-test-setup",
+     "value": "The authors state that, using the time-dependent Hamiltonian with both parameters, they ran QITE with 40 steps on 50 random initial states made of |0> and |+> for 6 ≤ N ≤ 21, using a LABS solution bank for the approximation ratio and the overlap P(GS). A figure caption states 100 different random initial states for 6 ≤ N ≤ 28, and the caption of the P(GS) figure states 6 ≤ N ≤ 18.",
+     "anchor": "Section IV, Figs. 5-7, p.5-6",
+     "quotes": [
+      "We reference a LABS solution bank [24] when comput",
+      "the approximation ratio and the overlap with the ground state, P(GS), which is a quantum metric.",
+      "we perform the QITE algorithm with 40 steps on 50 random initial states comprised of |0⟩ and |+⟩ for 6 ≤ N ≤ 21.",
+      "for 40 QITE steps using the linear Ansatz for problem size 6 ≤ N ≤ 28 for 100 different random initial states.",
+      "for problem size 6 ≤ N ≤ 18 for 40 QITE steps using the linear Ansatz."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its LABS test setup in Section IV (p.5-6).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The text and the Fig. 5 caption differ on the number of initial states (50 against 100) and the largest size (21 against 28); the P(GS) figures cover N up to 18. The paper does not explain the difference."
+    },
+    {
+     "id_suggestion": "labs-linear-vs-qaoa-pgs",
+     "value": "The authors report that the average P(GS) of the linear Ansatz QITE is comparable to the p = 10 QAOA values obtained by Ref. [23], while the best case P(GS) consistently exceeds both values.",
+     "anchor": "Section IV, Fig. 6, p.6",
+     "quotes": [
+      "We plot the QITE results alongside the P(GS) values for p = 10 QAOA obtained by [23].",
+      "We find the average P(GS) of the linear Ansatz QITE com",
+      "parable to the p = 10 QAOA, while the best case P(GS) consistently exceeds both values."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the QAOA values come from Ref. [23].",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The QAOA values are not re-run here. The best case is taken over initial states, which the QAOA reference values do not select."
+    },
+    {
+     "id_suggestion": "labs-no-convergence",
+     "value": "The authors state that the linear Ansatz QITE does not give P(GS) = 1 on LABS, unlike weighted MaxCut, and that in general they did not obtain convergence to the ground state.",
+     "anchor": "Section IV, p.6; Section V, p.8",
+     "quotes": [
+      "Since the linear Ansatz QITE does not give P(GS)= 1 as in weighted MaxCut, we considered a higher-order quadratic Ansatz.",
+      "Although in general we did not obtain convergence to the ground state,"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "labs-best-case-initial-state",
+     "value": "The authors state that the best case P(GS) for each problem size being consistently higher than the QAOA results indicates that an appropriate choice of initial state gives a high probability of solving the LABS problem.",
+     "anchor": "Section V, p.8",
+     "quotes": [
+      "the best case P(GS) for each problem size was consistently higher than the QAOA results, indicating that an appropriate choice of initial state gives a high probability of solving the LABS problem."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation of one study's results.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The text does not say how the best initial state would be found without knowing the solution, and does not give the P(GS) values."
+    },
+    {
+     "id_suggestion": "labs-shallow-circuits-claim",
+     "value": "The authors state that, for comparison, linear Ansatz QITE requires shallow quantum circuits and readily available classical computing resources.",
+     "anchor": "Section IV, p.6",
+     "quotes": [
+      "For comparison, linear Ansatz QITE requires shallow quan",
+      "tum circuits and readily available classical computing re"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement without a measurement of circuit depth or run time in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "labs-qaoa-ref23-depth",
+     "value": "The authors state that in Ref. [23] LABS was solved exactly with simulated noiseless QAOA for problem size up to N = 40 using QAOA level up to p = 40, which results in a gate depth the text layer prints as 103 (ten to the power three) for problem size N = 18.",
+     "anchor": "Section IV, p.6",
+     "quotes": [
+      "In Ref. [23], LABS was solved exactly with simulated noiseless QAOA for prob",
+      "lem size up to N = 40.",
+      "level up to p = 40, which results in a gate depth on the order of 103 for problem size N = 18."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [23].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "labs-ref23-scaling-advantage",
+     "value": "The authors state that in Ref. [23] a scaling advantage over classical algorithms was obtained for problem size up to 40 qubits using QAOA up to level p = 40, and that the scaling advantage of QAOA over classical solvers was found in the range 28 ≤ N ≤ 40.",
+     "anchor": "Section I, p.2; Section IV, p.6",
+     "quotes": [
+      "In Ref. [23], they obtained a scaling advantage over classical algorithms for problem size up to 40 qubits using QAOA up to level p = 40, obtaining exact solutions.",
+      "In [23], the scaling advantage of QAOA over classical solvers was found in the range of 28 ≤ N ≤ 40"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [23].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "labs-classical-hardness-facts",
+     "value": "The authors state that optimal LABS solutions are only known for N ≤ 66, which they give as the reason LABS is a promising candidate for quantum advantage, and that the regime where classical heuristics produce poor solutions is N ≈ 200.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "Optimal solutions are only known for N ≤ 66, so LABS is a promising candidate for quantum advantage as no classical solutions currently exist [23].",
+      "The relevant regime where classical heuristics produce poor solutions is N ≈ 200"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper attributes to Ref. [23].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "labs-tested-below-qaoa-advantage-range",
+     "value": "The authors state that the range 28 ≤ N ≤ 40 in which the QAOA scaling advantage was found is larger than the problem sizes they tested, and that they therefore need to investigate linear and quadratic Ansatz QITE against QAOA and classical algorithms in this range.",
+     "anchor": "Section IV, p.7",
+     "quotes": [
+      "In [23], the scaling advantage of QAOA over classical solvers was found in the range of 28 ≤ N ≤ 40",
+      "which is larger than the problem sizes we tested. Therefore, we need to investigate the performance of linear and quadratic Ansatz QITE compared to QAOA and classical algorithms in this range."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its study in Section IV (p.7).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "No classical LABS solver was run in this paper, so the LABS results compare QITE only with QAOA values from Ref. [23] and a solution bank."
+    },
+    {
+     "id_suggestion": "quadratic-ansatz-definition",
+     "value": "The authors define the quadratic Ansatz as the linear terms plus terms quadratic in the Y operators over all unique pairs of vertices, a vector of length N(N + 1)/2, with coefficients obeying S a = b, and state that with a product initial state of X and Z eigenstates S is the identity.",
+     "anchor": "Section IV, Eqs. (18)-(21), p.6-7",
+     "quotes": [
+      "For the quadratic Ansatz, we used one contain",
+      "ing the linear terms in addition to terms quadratic in",
+      "Evidently, this vector is of length N (N + 1)/2.",
+      "If the initial state is chosen to be the tensor product of eigenstates of X and Z, then we have S = I, and therefore a = b."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the Ansatz in Section IV (p.6-7).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quadratic-ansatz-result",
+     "value": "The authors report that the quadratic (entangling) Ansatz gives a minor improvement in P(GS) over the linear Ansatz, shown in Fig. 7 for 5 ≤ N ≤ 9, so they do not see a benefit to including higher-order terms in the range 5 < N < 10; in the Conclusion they state the P(GS) was no more than 10% higher for problem sizes up to N = 9.",
+     "anchor": "Section IV, Fig. 7, p.7; Section V, p.8",
+     "quotes": [
+      "The quadratic Ansatz gives a minor improvement in the P(GS) over the linear Ansatz, as shown in Fig. 7.",
+      "and 5 ≤ N ≤ 9 for the quadratic Ansatz.",
+      "the entangling Ansatz gave a P(GS) which was no more than 10% higher than the result from the linear Ansatz for problem sizes up to N = 9",
+      "Therefore, we do not see a benefit to including higher-order terms in the Ansatz in the range of 5 < N < 10.",
+      "Thus, the entangling quadratic Ansatz did not perform significantly better than the separable linear Ansatz in the problem size range we tested"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The test covers N of 9 or less, far below the 28 to 40 range where the QAOA scaling advantage was reported, so it does not bear on larger sizes. The text says 5 < N < 10 while the Fig. 7 caption says 5 ≤ N ≤ 9."
+    },
+    {
+     "id_suggestion": "quadratic-ansatz-cost-and-scope-limit",
+     "value": "The authors state that the quadratic Ansatz simulation requires significantly more computational resources and precision than the linear Ansatz, and that benefits may exist at larger problem sizes beyond their current resources to test.",
+     "anchor": "Section IV, p.7",
+     "quotes": [
+      "It is conceivable that there may be benefits at larger problems sizes beyond our current resources to test.",
+      "The quadratic Ansatz simulation requires significantly more computational resources and precision than the linear Ansatz"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its study in Section IV (p.7).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-quantum-advantage-needs-larger",
+     "value": "The authors state that their results indicate much larger graphs are needed to observe quantum advantage, that obtaining quantum advantage in combinatorial optimization appears to require larger problem sizes than NISQ devices can handle or more complicated PUBO problems than the ones studied, and that a quantum computation may not be suitable on NISQ devices given the attendant increase in circuit depth.",
+     "anchor": "Section V, p.8; Section I, p.2",
+     "quotes": [
+      "Our results indicate that much larger graphs are needed to be considered in order to observe quantum advantage.",
+      "Obtaining quantum advantage in combinatorial optimization problems appears to require larger problem sizes than those that can be handled by NISQ devices, or, perhaps, more complicated PUBO problems than the ones studied here.",
+      "Our results indicate that quantum advantage in combinatorial optimization problems will be hard to witness on NISQ devices."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion drawn from small-size classical simulations.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The separable Ansatz is classically simulable, so the results show that such a classical simulation matches or beats GW on these instances. They do not by themselves test whether larger entangling circuits would do better."
+    },
+    {
+     "id_suggestion": "cited-ref17-prior-unweighted",
+     "value": "The authors state that Ref. [17] used a linear Ansatz requiring no entanglement on the MaxCut problem on thousands of unweighted graphs, and that its results indicate quantum advantage due to entanglement is likely to be found only at larger graphs (N ≳ 100) requiring deep quantum circuits which cannot currently be handled by NISQ hardware.",
+     "anchor": "Section I, p.1-2",
+     "quotes": [
+      "This approach was employed in Ref. [17] to solve combinatorial optimization problems.",
+      "an Ansatz was used that was linear in the Pauli operators and therefore its implementation required no entanglement of qubits.",
+      "quantum advantage due to entanglement is likely to be found only at larger graphs (N ≳ 100) requiring deep quantum circuits which cannot currently be handled by NISQ hardware."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [17].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-ref25-ref26-maxcut-qaoa",
+     "value": "The authors state that Ref. [25] assessed noiseless QAOA on MaxCut problems up to 17 vertices and observed that level p = 5 was required for results comparable with GW, and that Ref. [26] estimated graph sizes of several hundreds to thousands of vertices are required for quantum advantage over classical solvers on the MaxCut problem.",
+     "anchor": "Section V, p.8",
+     "quotes": [
+      "In Ref. [25], the performance of noiseless QAOA was assessed on MaxCut problems up to 17 vertices, and was observed that level p = 5 was required for results to be comparable with GW.",
+      "In Ref. [26], it was estimated that graph sizes of several hundreds to thousands of vertices are required for quantum advantage over classical solvers on the MaxCut problem."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to Refs. [25] and [26].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-gw-best-guarantee",
+     "value": "The authors state that GW is the commonly used classical algorithm which is widely believed to offer the best performance guarantee.",
+     "anchor": "Section V, p.8",
+     "quotes": [
+      "the commonly used classical algorithm GW, which is widely believed to offer the best performance guarantee."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general belief the paper states without a source.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
