@@ -1,0 +1,709 @@
+{
+ "papers": [
+  {
+   "record_id": "berberich-2025-training-robust-generalizable-quantum-models",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Berberich-et-al._2023_Training-robust-and-generalizable-quantum-models__2311.11871.pdf",
+   "title_in_file": "Training robust and generalizable quantum models",
+   "version_note": "arXiv:2311.11871v4, dated 22 Dec 2025; the stored record id says 2025 and the file name says 2023.",
+   "pages": 12,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper deriving parameter-dependent Lipschitz bounds and a generalization bound for data re-uploading quantum models with trainable encoding, with a regularization strategy and circle-classification simulations.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "circle-classification-sweet-spot",
+     "verdict": "confirmed",
+     "note": "Confirmed. The paper also says regularization does not always improve performance; the trend is read from Figure 3 on one problem.",
+     "value": "",
+     "anchor": "",
+     "quotes": "",
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "fixed-encoding-lipschitz-not-tunable",
+     "verdict": "confirmed",
+     "note": "Confirmed; the paper argues it in Section V and shows it with Figure 6 (Appendix C 2).",
+     "value": "",
+     "anchor": "",
+     "quotes": "",
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Argued in Section V from the Lipschitz bound (5), which does not depend on the circuit parameters of the fixed-encoding model.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "generalization-bound-involves-encoding",
+     "verdict": "confirmed",
+     "note": "Confirmed. The bound is Theorem B.1, valid with a stated probability under conditions on the loss and on Z; see the separate assertion.",
+     "value": "",
+     "anchor": "",
+     "quotes": "",
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem IV.1 informal, Theorem B.1 in Appendix B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "lipschitz-bound-trainable-encoding",
+     "verdict": "confirmed",
+     "note": "Confirmed; the bound is proved in Appendix A 2.",
+     "value": "",
+     "anchor": "",
+     "quotes": "",
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proof in Appendix A 2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "lipschitz-bound-definition",
+     "value": "The authors define a Lipschitz bound of a model f as any L > 0 satisfying the stated inequality for all x1, x2 in the domain D, a subset of d-dimensional real space.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "A Lipschitz bound of a model f is any L > 0 satisfying",
+      "for all x1, x2 ∈ D ⊆ Rd, where d is the data dimension."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition stated in the introduction.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "model-class-trainable-encoding",
+     "value": "The authors consider quantum models that apply parametrized unitaries with trainable encoding parameters wj and theta j and fixed Hermitian generators Hj, followed by a measurement of an observable M, with the data re-loaded in every unitary (data re-uploading).",
+     "anchor": "Section II, pp.2-3",
+     "quotes": [
+      "with input data x ∈ Rd, trainable parameters Θj = {wj, θj}, wj ∈ Rd, θj ∈ R and fixed Hermitian generators Hj.",
+      "i.e., the data are loaded repeatedly into the circuit, a strategy that is commonly referred to as data re-uploading [26]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II defines the model class that all results concern.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lipschitz-bound-eq5-independent-of-theta",
+     "value": "The authors state a Lipschitz bound of the quantum model that equals twice the norm of the observable M times the sum over the unitaries of the norm of wj times the norm of Hj, and state that it depends only on wj and not on theta j.",
+     "anchor": "Section II, Eq. (5), p.3; proof Appendix A 2",
+     "quotes": [
+      "For the quantum model fΘ, we can state the following Lipschitz bound",
+      "Note that LΘ depends only on wj but it is independent of θj."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated in Section II; proved in Appendix A 2 from the Jacobian of the map UΘ(x)|0> and the Lipschitz bound of the expectation map.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The formula itself is garbled in the text layer, so the value says it in words."
+    },
+    {
+     "id_suggestion": "lipschitz-bound-pnorm-generality",
+     "value": "The authors state that all results hold for arbitrary p-norms as long as the same p is used for both vector and induced matrix norms.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "We note that all results in this paper hold for arbitrary",
+      "p-norms as long as the same p is used for both vector and"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "worst-case-robustness-from-lipschitz",
+     "value": "The authors state that a Lipschitz bound L of the model bounds the deviation of the output at a perturbed input by L times the norm of the perturbation, so smaller Lipschitz bounds imply better worst-case robustness against data perturbations.",
+     "anchor": "Section III, Eq. (7), p.3",
+     "quotes": [
+      "According to (1), a Lipschitz bound L of fΘ quantifies exactly this difference, implying that the maximum possible deviation of",
+      "This shows that smaller Lipschitz bounds imply better"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows directly from the definition of a Lipschitz bound, Eq. (1) and (7).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "regularized-training-objective",
+     "value": "The authors propose a regularized training problem that adds to the empirical loss a penalty equal to a hyperparameter lambda times the sum of squared norms of wj weighted by the squared norm of Hj, with no penalty on theta j.",
+     "anchor": "Section III, Eq. (9), p.3",
+     "quotes": [
+      "Regularizing the parameters wj encourages small norms of the data encoding and, thereby, small values of the Lipschitz bound LΘ.",
+      "Note that the regularization does not involve the θj’s since they do not influence the Lipschitz bound (5)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its proposed method.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "regularization-as-penalty-relaxation",
+     "value": "The authors state that the regularization can be interpreted as a penalty-based relaxation of the constrained problem of training a quantum model with Lipschitz bound below a specific value.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "Indeed, the above regularization can be interpreted as a penalty-based relaxation of the corresponding constrained training problem, i.e., of training a quantum model with Lipschitz bound below a specific value."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An interpretation stated without a formal proof.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "circle-experiment-setup",
+     "value": "The authors report that the circle classification problem uses the domain [-1, +1] times [-1, +1] with a circle of radius 2/pi, labels +1 inside and -1 outside; the trainable-encoding circuit uses general SU(2) operators, 3 qubits, nearest neighbour CNOT entangling gates, 3 layers and the observable Z tensor Z tensor Z.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "within a domain",
+      "of X = [−1, +1] × [−1, +1], a circle with radius 2/π is drawn, and all data points inside the circle are labeled with y = +1, whereas points outside are labeled with y = −1",
+      "3 qubits, followed by nearest neighbour entangling gates based on CNOTs. Such a layer is then repeated 3 times. As observable, we use M = Z ⊗ Z ⊗ Z."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own experiment.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robustness-simulation-protocol",
+     "value": "The authors report that the robustness simulations draw n = 200 training and 1000 test points uniformly at random, perturb each test point by uniform noise in [-eps, +eps] in each dimension, and take the worst case over 200 noise samples per point; they state this approximates adversarial robustness against norm-bounded attacks.",
+     "anchor": "Figure 2 caption and Section III, pp.4",
+     "quotes": [
+      "As training and test set, we draw n = 200 and 1000 points xi ∈ X ,",
+      "The test accuracy in the plot is the worst case over 200",
+      "This procedure amounts to finding adversarial noise samples and, therefore, the resulting worst-case test accuracy (approximately) quantifies the adversarial robustness against attacks which are normbounded by ε¯."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own protocol.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Sampling noise is not a true adversarial search, so the worst case is a lower bound on attack strength."
+    },
+    {
+     "id_suggestion": "robustness-results-lambda",
+     "value": "The authors report that at zero noise the model with lambda = 0.5 (Lipschitz bound 3.67) has lower test accuracy than the unregularized model, that for increasing noise it outperforms the model with lambda = 0, and that the fixed-encoding model performs worst at high noise.",
+     "anchor": "Figure 2 and Section III, p.4",
+     "quotes": [
+      "For zero noise level ε¯ = 0, the model with the largest regularization parameter λ = 0.5 (and, hence, the smallest Lipschitz bound LΘ = 3.67) has a smaller test accuracy than the nonregularized model with λ = 0.",
+      "the enhanced robustness outweighs the loss of training performance and, therefore, the model with λ = 0.5 outperforms the model with λ = 0.",
+      "The fixed-encoding model achieves comparable performance to the trainable-encoding model with λ = 0.5 for small noise and the worst performance among all models for high noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One simulation study on one synthetic problem.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lambda-0.2-higher-accuracy",
+     "value": "The authors report that the model with lambda = 0.2 almost always outperforms the model with lambda = 0 and yields a higher test accuracy for small noise levels, which they attribute to improved generalization.",
+     "anchor": "Section III, p.4",
+     "quotes": [
+      "Finally, the model with λ = 0.2 almost always outperforms the model with λ = 0 and, in particular, it yields a higher test accuracy for small noise levels."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One simulation study; the explanation is the authors' reading.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-iv1-informal",
+     "value": "The paper states, in informal Theorem IV.1, that the generalization error of the quantum model is bounded by a constant C1 times the norm of M times the sum of the norms of wj and Hj, plus a term C2 over the square root of n, for some constants C1, C2 > 0.",
+     "anchor": "Theorem IV.1 (informal), Section IV, p.4",
+     "quotes": [
+      "Theorem IV.1. (informal version) Consider a super-",
+      "for some C1, C2 > 0.",
+      "The detailed version and proof of Theorem IV.1 are provided in Appendix B."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The formula is garbled in the text layer and its conditions are in Theorem B.1, so the informal statement is graded by its detailed version.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-b1-statement",
+     "value": "The paper proves in Theorem B.1 that, if the loss is nonnegative with a Lipschitz bound and Z is compact so that the supremum of the loss is finite, then for any gamma, delta > 0, with probability at least 1 - delta, the generalization error is bounded by a gamma term involving the Lipschitz bound of the model plus a term involving the covering number of Z and n.",
+     "anchor": "Theorem B.1, Appendix B, p.8",
+     "quotes": [
+      "the loss ℓ is nonnegative and admits a Lipschitz bound Lℓ > 0 and",
+      "Z is compact such that the value M := supy,y′∈Y ℓ(y, y′) is finite.",
+      "with probability at least 1 − δ the generalization error of fΘ is bounded as"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement with its conditions quoted; proof by combining the Lipschitz bound (5) with Lemma B.1, itself built on Xu and Mannor's robustness result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound uses data drawn independently and identically distributed, which Appendix B states as its setup."
+    },
+    {
+     "id_suggestion": "lemma-b1-statement",
+     "value": "The paper proves in Lemma B.1 a generalization bound for any model f with a Lipschitz bound Lf, using Xu and Mannor's (K, epsilon)-robustness and covering numbers, under the stated conditions on the loss and on Z.",
+     "anchor": "Lemma B.1, Appendix B, p.8",
+     "quotes": [
+      "Lf > 0 is a Lipschitz bound of f ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proof relies on cited results [7, Theorem 1 and Theorem 6], and the key quotes are fragments across lines.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generalization-bound-converges",
+     "value": "The authors state that, using the covering number bound and choosing gamma depending on n, the bound converges to zero for n tending to infinity.",
+     "anchor": "Appendix B, Eq. (B9), p.9",
+     "quotes": [
+      "which indeed converges to zero for n → ∞.",
+      "it can be shown",
+      "that the generalization bound (B7) converges to zero"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix B from the covering number bound (B8).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generalization-tradeoff-expressivity",
+     "value": "The authors state a trade-off: a too small Lipschitz bound may limit expressivity and lead to a high empirical risk, in which case the generalization bound is meaningless.",
+     "anchor": "Section IV, p.4",
+     "quotes": [
+      "A too small Lipschitz bound LΘ may limit the expressivity of fΘ and, therefore, lead to a high empirical risk Rn(fΘ), in which case the generalization bound (10) is meaningless."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this as a limit of their bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generalization-nonuniform-vs-gilfuster",
+     "value": "The authors state that their bound is not uniform and explicitly involves the Lipschitz bound, and therefore does not share the limitations of uniform QML generalization bounds.",
+     "anchor": "Section IV, p.5",
+     "quotes": [
+      "bound (10) is not uniform and explicitly involves the Lipschitz bound (5), i.e., the parameters of the data encoding."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim relative to cited work [49].",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "direct-lambda-effect-open",
+     "value": "The authors state that studying the direct impact of lambda on generalization performance is an open next step that they expect to be nontrivial due to the non-convexity of the loss function.",
+     "anchor": "Section IV, p.5",
+     "quotes": [
+      "Extending our results by studying the direct impact of λ on the generalization performance is an interesting next step, which we expect to be nontrivial due to the non-convexity of the loss function in (9), compare [53]."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors name this as an open problem.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lambda-hyperparameter-crossval",
+     "value": "The authors state that the hyperparameter lambda can in practice be tuned, for example by cross-validation.",
+     "anchor": "Section IV, p.5",
+     "quotes": [
+      "In practice, the hyperparameter λ can be tuned, e.g., via cross-validation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A practical suggestion, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generalization-sweet-spot-both",
+     "value": "The authors state that regularization does not always improve performance, but that there is a sweet spot for lambda at which both superior generalization and robustness over the unregularized setup are obtained.",
+     "anchor": "Section IV, p.5",
+     "quotes": [
+      "Regularization does not always improve performance, but there is a sweet spot for λ at which both superior generalization and robustness over the unregularized setup"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One simulation study on one synthetic problem.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "trainable-includes-fixed-encoding",
+     "value": "The authors state that the trainable-encoding circuit generalizes the fixed-encoding alternating circuit, since each unitary reduces to a data-encoding or a parameter gate for suitable choices of wj, theta j and Hj.",
+     "anchor": "Section V, p.5",
+     "quotes": [
+      "It is not hard to show that the parametrized quantum",
+      "circuit UΘ(x) in (3) generalizes the one in (11). Indeed, Uj,Θj (x) in (2) reduces to either"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated as easy to show; no proof is given.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fixed-encoding-reg-phi-no-effect",
+     "value": "The authors state that regularizing the circuit parameters phi in a fixed-encoding model does not affect the Lipschitz bound and therefore cannot be used to improve robustness.",
+     "anchor": "Section V, p.6",
+     "quotes": [
+      "does not affect the Lipschitz bound and, therefore, cannot be used to improve the robustness."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from the Lipschitz bound (5) not depending on phi, and shown by Figure 6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fixed-encoding-reg-phi-limited-effect",
+     "value": "The authors report that regularizing the phi parameters of a fixed-encoding model has a limited effect on test accuracy, likely dependent on the ground-truth distribution and the circuit ansatz, and that the Lipschitz bound is constant across lambda.",
+     "anchor": "Section V, p.6; Appendix C 2, p.10, Figure 6",
+     "quotes": [
+      "We find that the influence of regularizing the ϕj’s on the test accuracy is limited and likely dependent on the specific ground-truth distribution generating the data and the chosen circuit ansatz.",
+      "First, note that the Lipschitz bound is indeed constant for all choices of λ due to the fixed encoding."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One simulation study on one problem.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "trainable-vs-fixed-test-accuracy",
+     "value": "The authors report that, comparing the two figures, the trainable encoding yields a significantly higher test accuracy than the fixed encoding, and that the influence of the regularization parameter is much less pronounced for the fixed encoding.",
+     "anchor": "Appendix C 2, p.10",
+     "quotes": [
+      "we see that the trainable encoding yields a significantly higher test accuracy in comparison to the fixed encoding.",
+      "the influence of the regularization parameter on the test accuracy is much less pronounced for the fixed encoding than for the trainable encoding"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One simulation study on one problem.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-frequency-view",
+     "value": "The authors state that fixed-encoding models choose the Fourier frequencies before training and optimize only the coefficients, whereas trainable-encoding models optimize frequencies and coefficients together, which they say is key for influencing robustness and generalization.",
+     "anchor": "Section V, p.6",
+     "quotes": [
+      "fixedencoding quantum models choose the frequencies of the Fourier basis functions before the training and only optimize over their coefficients.",
+      "is key for influencing robustness and generalization properties."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Argued from the Lipschitz bound and cited work [27, 56], without a separate experiment.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fixed-encoding-insensitive-cited",
+     "value": "The authors state that their insights confirm an observation by cited work [57, 58] that fixed-encoding quantum models are neither sensitive to data perturbations nor to overfitting.",
+     "anchor": "Section V, p.6",
+     "quotes": [
+      "These insights confirm the observation by [57, 58] that fixed-encoding quantum models are neither sensitive to data perturbations nor to overfitting."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited observation, which the paper says its results confirm.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "numerics-setup-optimizer",
+     "value": "The authors report that the simulations used PennyLane with the noiseless simulator lightning.qubit, the ADAM optimizer with learning rate 0.1, 200 epochs, and 12 models trained from different initial parameters for each lambda, taking the parameters with minimal cost over all runs and epochs.",
+     "anchor": "Appendix C 1, p.9",
+     "quotes": [
+      "we run 200 epochs throughout and train 12 models based on different initial parameters",
+      "using a learning rate of η = 0.1",
+      "we take the set of parameters for the model with minimal cost over all runs and epochs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own simulations.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "numerics-gamma-zero-and-layers",
+     "value": "The authors report setting the third Euler angle to zero in the numerics and using three layers, which they observed to be a good trade-off between expressivity and generalization, with fewer layers insufficient and more layers overfitting.",
+     "anchor": "Appendix C 1, pp.9-10",
+     "quotes": [
+      "In our numerical case study we set γj = 0 for all j since this 1) still allows to reach arbitrary points on the Bloch sphere",
+      "fewer layers were not sufficient to accurately solve the classification task, whereas more layers led to higher degrees of overfitting."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An observation from the authors' own runs.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "decision-boundary-smoother",
+     "value": "The authors report that the decision boundary from regularized training is significantly smoother than the unregularized one and that the fixed-encoding model does not accurately capture the ground truth.",
+     "anchor": "Appendix C 1, p.10, Figure 5",
+     "quotes": [
+      "boundary resulting from the regularized training is significantly smoother than the unregularized one",
+      "the fixed-encoding model does not accurately capture the ground truth due to its limited expressivity and high Lipschitz bound."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Read from plotted decision boundaries of the best-cost runs.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-computational-overhead",
+     "value": "The authors state that adding the regularization does not introduce significant computational overhead because the cost only involves a weighted sum of squared norms of wj.",
+     "anchor": "Appendix C 1, p.9",
+     "quotes": [
+      "Adding the regularization does not introduce significant computational overhead as the evaluation of the cost only involves a weighted sum of the terms ∥wj∥2."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement, not measured.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scope-illustration-only",
+     "value": "The authors state that the numerical results with specific rotation and entangling gates are mainly for illustration, and that the theory applies to all quantum models written as the paper's model class.",
+     "anchor": "Section VI, p.6",
+     "quotes": [
+      "It is important to emphasize that these numerical results with specific choices of rotation and entangling gates are mainly used for illustration"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors' own statement of scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "future-work-nonlinear-encodings",
+     "value": "The authors state that they only consider affine encodings and that extending the results to nonlinear encodings, for example classical neural networks, is a future direction; they also expect transfer to quantum kernel methods and linear quantum models.",
+     "anchor": "Section VI, p.6",
+     "quotes": [
+      "while we only consider quantum models with affine encodings wj⊤x+θj, it would be interesting to extend our results to more general, nonlinear encodings."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors name the limit and the open direction.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "norm-choice-future",
+     "value": "The authors state that they use 2-norms in the regularized problem and that exploring other choices, such as a non-squared norm that may enforce sparsity, is a future direction.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "As norms in the regularized training problem (9), we employ 2-norms, but we note that exploring different choices is an interesting future direction."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors name the limit.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "observable-not-optimized",
+     "value": "The authors state that they do not optimize over the observable M in this paper and so give no dependence of the regularization on M.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "Moreover, we do not introduce an explicit dependence of the regularization on M since we do not optimize over the observable in this paper."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors' own statement of scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-vs-data-robustness",
+     "value": "The authors state that robustness against hardware errors is entirely different from and independent of robustness against data perturbations, which is the subject of the paper.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "However, robustness against hardware errors is entirely different from and independent of the robustness of a quantum model against data perturbations, which is the subject of this paper."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors' own scope statement.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
