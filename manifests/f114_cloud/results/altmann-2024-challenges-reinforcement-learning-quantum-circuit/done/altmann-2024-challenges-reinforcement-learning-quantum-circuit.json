@@ -1,0 +1,975 @@
+{
+ "papers": [
+  {
+   "record_id": "altmann-2024-challenges-reinforcement-learning-quantum-circuit",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Altmann-et-al._2023_Challenges-for-Reinforcement-Learning-in-Quantum-Computing__2312.11337.pdf",
+   "title_in_file": "Challenges for Reinforcement Learning in Quantum Circuit Design",
+   "version_note": "arXiv:2312.11337v3, 8 Aug 2024; an extended version of a QCE 2024 paper. The text layer holds the paper once, with the appendix (Fig. 4) at the end.",
+   "pages": 12,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A conference-style paper that formalizes quantum circuit design as RL objectives, introduces the qcd-gym environment, and benchmarks A2C, PPO, TD3, SAC, a genetic algorithm and a random baseline on small state-preparation and unitary-composition targets.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qcd-gym-insufficient-performance",
+     "verdict": "confirmed",
+     "note": "The sentence is in Section VII. The paper's wording is 'current state-of-the-art approaches', tested on six small targets (up to 3 qubits).",
+     "value": "The authors state that the approaches do not provide sufficient performance for robust and scalable applicability.",
+     "anchor": "Section VII, last paragraph, p.7",
+     "quotes": [
+      "approaches do not provide sufficient performance for robust and scaleable applicability"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion drawn from empirical results of one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The experiments cover only the model-free algorithms and the six small targets listed in Section VI; the claim about scalable applicability is a judgment, not a measured scaling result."
+    },
+    {
+     "id": "qcd-gym-sac-state-prep",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors report that for random state preparation SAC outperforms all compared baselines with a final mean fidelity of 0.85.",
+     "anchor": "Section VII, p.6-7, Fig. 3a",
+     "quotes": [
+      "For random state preparation, SAC again outperforms all compared baselines with a final mean fidelity of 0.85."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 0.85 is stated in the text; the curves are in Fig. 3a. The setup is 2 qubits, depth 12, eight seeds."
+    },
+    {
+     "id": "qcd-gym-toffoli-local-optimum",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors report that on Toffoli composition all RL approaches converge to a locally optimal solution with a mean similarity of 0.3, while both baselines show lower performance around 0.2.",
+     "anchor": "Section VII, p.7, Fig. 3d",
+     "quotes": [
+      "All RL approaches converge to a locally optimal solution with a mean similarity of 0.3, while both baselines show lower performance around 0.2."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper ties the 0.3 to empty circuits (Fig. 3 caption), so it is a failure to learn, not a partial success."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qcd-gym-framework-definition",
+     "value": "The authors propose qcd-gym, a framework formalized as a Markov decision process, to enable learning policies capable of controlling a universal set of continuously parameterized quantum gates.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "we propose qcd-gym, a concrete framework formalized as a Markov decision process, to enable learning policies capable of controlling a universal set of continuously parameterized quantum gates"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The abstract states the paper's own framework.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-sp-fidelity-reward",
+     "value": "The authors measure success in state preparation by the fidelity, the overlap between the generated and the target state, and set the state-preparation reward equal to that fidelity.",
+     "anchor": "Section III.A, p.2",
+     "quotes": [
+      "We measure success in this objective based on the distance between |Φ⟩ and the target state |Ψ⟩ using the fidelity F , measuring the overlap between the two states:",
+      "RSP (st, at) = F (st, Ψ)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III.A defines the objective and the reward.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-sp-sparse-reward",
+     "value": "The authors state that the fidelity definition intrinsically suggests a setting of sparse rewards for the state-preparation objective.",
+     "anchor": "Section III.A, p.2",
+     "quotes": [
+      "This definition intrinsically suggests a setting of sparse rewards"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement without a separate test.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-uc-similarity-reward",
+     "value": "The authors define the distance between the target unitary and the circuit's unitary with the Frobenius norm and propose a bounded similarity score, 1 minus the arctangent of that distance, as the unitary-composition reward.",
+     "anchor": "Section III.B, Eq. 16-17, p.3",
+     "quotes": [
+      "with ∥·∥ denoting the Frobenius norm.",
+      "we propose the following bounded similarity score as a reward to be maximized for unitary composition:",
+      "RUC (at, st) = 1 − arctan(D(U , V (Σt)))"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III.B defines the distance and the reward.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-uc-general-case-of-sp",
+     "value": "The authors state that unitary composition can be seen as a more general case of state preparation, in which the mapping must apply not only to a specific input state but to all possible inputs.",
+     "anchor": "Section III.B, p.2",
+     "quotes": [
+      "UC can also be seen as a more general case of SP, in which the mapping of Eq. (10) must not only apply to a specific input state but to all possible inputs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Stated in Section III.B as the relation between the two objectives.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-hs-uc-equivalence-claim",
+     "value": "The authors argue that RL should perform approximately equally in the unitary-composition and Hamiltonian-simulation objectives because of their mathematical equivalence; no Hamiltonian-simulation experiment is reported.",
+     "anchor": "Section III.B, end, p.3",
+     "quotes": [
+      "we argue that RL should perform approximately equally in the UC and HS objectives due to their mathematical equivalence."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's argument; Section VI.A lists no Hamiltonian-simulation target.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The experiments cover state preparation and unitary composition only, so the equivalence claim is untested here."
+    },
+    {
+     "id_suggestion": "qcd-gym-state-observation",
+     "value": "The authors define the observed state as the full complex state vector or the unitary operator of the current circuit together with the intended target.",
+     "anchor": "Section IV.A, Eq. 20, p.3",
+     "quotes": [
+      "represented by the full complex state vector |Ψ⟩ or the unitary operator V (Σt) resulting from the current sequence of operations Σt, and the intended target:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section IV.A defines the observation.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-state-readout-limit",
+     "value": "The authors state that the full state information is only available in quantum simulators, and that on real hardware many measurements would be needed (printed O(2η), read as 2 to the power of the number of qubits).",
+     "anchor": "Section IV.A, p.3",
+     "quotes": [
+      "this information is only available in quantum simulators (on real hardware, O(2η) many measurements would be needed)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section IV.A states the limit of the observation.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-mdp-compliance-claim",
+     "value": "The authors state that the state representation is sufficient for defining an MDP-compliant environment, as operations in this state must be reversible.",
+     "anchor": "Section IV.A, p.3",
+     "quotes": [
+      "this state representation is sufficient for defining an MDP-compliant environment, as operations in this state must be reversible."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's argument without a separate test.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-action-space",
+     "value": "The authors define the action as an operation choice that includes a terminate option, a target qubit and a control qubit, and a continuous parameter, giving a 4-dimensional action space; if the operation qubit equals the control qubit an uncontrolled operation is performed.",
+     "anchor": "Section IV.B, p.3-4",
+     "quotes": [
+      "Additionally, the agent can choose to terminate the current episode",
+      "the operation qubit equals the control qubit, an uncontrolled operation is performed",
+      "Overall, this results in the 4-dimensional action space"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section IV.B defines the action space.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-continuous-parameter-rationale",
+     "value": "The authors state that they refrain from a discrete action space with a gate set like Clifford + T and instead aim to exploit RL for continuous control over the gate parameterization.",
+     "anchor": "Section IV.B, p.4",
+     "quotes": [
+      "we refrain from using a discrete action space with a gate set like Clifford + T.",
+      "Instead, we aim to exploit the capabilities of RL to perform continuous control over the gate parameterization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section IV.B states the design choice.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-reward-and-step-cost",
+     "value": "The authors define the reward as 0 until the end of an episode, applying a step cost when the circuit exceeds two-thirds of the available operations σ, with σ = η · δ · 2, and subtracting it from the task reward at the terminal step.",
+     "anchor": "Section IV.C, Eq. 22-23, p.4",
+     "quotes": [
+      "The reward is kept at 0 until the end of an episode is reached",
+      "a step-cost Ct is applied when exceeding two-thirds of the available operations σ:",
+      "with σ = η · δ · 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section IV.C defines the reward.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-step-cost-rationale",
+     "value": "The authors state that the two-thirds bound is chosen to prevent solutions that solely optimize for minimal qubit and operation usage, which would cause immediate termination of the episode.",
+     "anchor": "Section IV.C, p.4",
+     "quotes": [
+      "We choose this bound to prevent prevalent solutions solely optimizing for minimal qubit and operation usage, which would cause immediate termination of the episode."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's design rationale.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-implementation",
+     "value": "The authors implement the environment based on gymnasium and qiskit, with the transition function provided by a quantum simulator that allows efficient state vector readout.",
+     "anchor": "Section IV and VI, p.3 and p.5",
+     "quotes": [
+      "The QCD environment is implemented based on gymnasium [57] and qiskit [58].",
+      "is implemented by a quantum simulator, which allows for efficient state vector readout."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sections IV and VI state the implementation.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-experimental-targets",
+     "value": "The authors used Bell, random and GHZ states with 2, 2 and 3 qubits and maximum depths of 12, 12 and 15 for state preparation, and Hadamard, random and Toffoli (CCX) unitaries with 1, 2 and 3 qubits and maximum depths of 9, 12 and 63 for unitary composition, and conducted experiments only for this initial set of targets.",
+     "anchor": "Section VI.A, p.5",
+     "quotes": [
+      "we used states Ψ ∈ {|Φ+⟩ , |U˜ ⟩ , |GHZ⟩}, with η ∈ {2, 2, 3} and δ ∈ {12, 12, 15} respectively, for SP, and unitaries U ∈ {H, U˜ , CCX}, with η ∈ {1, 2, 3} and δ ∈ {9, 12, 63} respectively, for UC.",
+      "we only conducted experiments for this initial set of targets."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section VI.A states the experimental scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "All targets have at most 3 qubits, so no result speaks to larger circuits."
+    },
+    {
+     "id_suggestion": "qcd-gym-baselines-training",
+     "value": "The authors compare A2C, PPO, TD3 and SAC with the default hyperparameters suggested in their corresponding publication, each trained for 1M time steps.",
+     "anchor": "Section VI.C, p.5",
+     "quotes": [
+      "we decided for A2C [12], PPO [13], TD3 [15], and SAC [16].",
+      "use the default hyperparameters suggested in their corresponding publication.",
+      "All policies are trained for 1M time steps."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VI.C states the training setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Default hyperparameters mean no tuning per algorithm; the ranking may reflect defaults, not algorithm quality."
+    },
+    {
+     "id_suggestion": "qcd-gym-action-discretization-dqn",
+     "value": "The authors state that discretizing the action space would result in more than 100 dimensions of actions for a 3-qubit circuit, so they omitted DQN baselines, which only support discrete action spaces.",
+     "anchor": "Section VI.B-C, p.5",
+     "quotes": [
+      "resulting in more than 100 dimensions of actions only for a 3-qubit circuit.",
+      "We, therefore, omitted DQN baselines, which only support discrete action spaces."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section VI.C states the omission and its reason.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-random-ga-baselines",
+     "value": "The authors provide a Random baseline averaged over 100 episodes of randomly chosen actions and a genetic algorithm baseline with 20 individuals optimized for 50 epochs, using the cost-adjusted objectives as fitness.",
+     "anchor": "Section VI.C, p.5",
+     "quotes": [
+      "Additionally, we provide a Random baseline averaged over 100 episodes of randomly chosen actions.",
+      "with 20 individuals optimized for 50 epochs, using the cost-adjusted objectives previously defined to evaluate their fitness."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VI.C states the baselines.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-depth-human-baseline",
+     "value": "The authors state that for all non-random tasks they chose the maximum depth such that an optimal handcrafted solution would require only a third of the available depth using all available qubits.",
+     "anchor": "Section VI.C, p.5",
+     "quotes": [
+      "we chose the maximum depth δ for all non-random tasks such that an optimal handcrafted solution would require only a third of the available depth using all available qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VI.C states how depth limits were set.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-seeds-and-ci",
+     "value": "The authors average all results over eight random seeds and report the mean and the 95% confidence interval.",
+     "anchor": "Section VI.C, p.5",
+     "quotes": [
+      "all results are averaged over eight random seeds, reporting both the mean and the 95% confidence interval."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VI.C states the statistical setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-metrics",
+     "value": "The authors report the pure objective rewards for the final circuits without the operation cost, plus the final number of qubits and the final depth, with all metrics averaged over a sliding window of 100 episodes (or individuals for the GA).",
+     "anchor": "Section VI.D, p.5",
+     "quotes": [
+      "As a performance metric, we report the pure objective rewards for the final circuits (without applying the operation cost)",
+      "all metrics are averaged over a sliding window of 100 episodes (or individuals for the GA)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VI.D states the metrics.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-hadamard-a2c-td3",
+     "value": "The authors report that for Hadamard composition all compared algorithms exceed the random baseline, while A2C and TD3 stagnate at a performance below the GA at 0.5.",
+     "anchor": "Section VII, p.5-6, Fig. 2a",
+     "quotes": [
+      "all compared algorithms exceed the random baseline",
+      "A2C and TD3 stagnate at a performance below the GA at 0.5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-hadamard-ppo-sac",
+     "value": "The authors report that on Hadamard composition PPO and SAC exceed the local optimum for nearly empty circuits and reach an above-90% resemblance to the target Hadamard unitary within 400k time steps.",
+     "anchor": "Section VII, p.5-6, Fig. 2a",
+     "quotes": [
+      "PPO and SAC, on the other hand, exceed this local optimum for nearly empty circuits and reach an above-90% resemblance to the target Hadamard unitary within 400k time steps."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-hadamard-depth-use",
+     "value": "The authors report that on Hadamard composition PPO converges to a mean depth slightly above six while SAC utilizes the full available depth, and they read this as further potential for the secondary compactness objective.",
+     "anchor": "Section VII, p.5-6, Fig. 2c",
+     "quotes": [
+      "While PPO converges to a mean depth slightly above six, SAC utilizes the full available depth",
+      "which indicates further potential for optimizing toward the secondary compactness objective."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-local-minima-claim",
+     "value": "The authors state that QCD is prone to getting stuck in local minima, introduced by its nature in multi-objective optimization.",
+     "anchor": "Section VII, p.6",
+     "quotes": [
+      "QCD is prone to getting stuck in local minima, which is introduced by its nature in multi-objective optimization."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's interpretation of the results.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-hierarchy-expectation",
+     "value": "The authors state that complex circuit architectures are often built upon hierarchical building blocks, and that only SAC and PPO can be expected to succeed at entanglement because it builds on putting qubits into superposition.",
+     "anchor": "Section VII, p.6",
+     "quotes": [
+      "Complex circuit architectures are often built upon hierarchical building blocks.",
+      "only SAC and PPO can be expected to succeed in this task"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's expectation, not a separate test.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-ghz-sac",
+     "value": "The authors report that on GHZ state preparation SAC reaches a mean fidelity of around 0.7, significantly outperforming the compared approaches and baselines at a constant performance of 0.5.",
+     "anchor": "Section VII, p.6, Fig. 2d",
+     "quotes": [
+      "SAC reaches a mean fidelity of around 0.7, again significantly outperforming the compared approaches and baselines at a constant performance of 0.5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text gives no significance test; 'significantly' rests on the shaded 95% confidence intervals."
+    },
+    {
+     "id_suggestion": "qcd-gym-ghz-empty-circuit-fidelity",
+     "value": "The authors report that for GHZ state preparation SAC explores lower operation utilization while exceeding the local optimum for nearly empty circuits, which yields a fidelity of 0.5.",
+     "anchor": "Section VII, p.6, Fig. 2d-2f",
+     "quotes": [
+      "exceeding the local optimum for nearly empty circuits (which yields a fidelity of 0.5)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-bell-results",
+     "value": "The authors report that for the 2-qubit Bell state PPO also manages to evade the local optimum while SAC shows near-optimal performance, and note that this state-preparation objective might be easier because no exact resemblance of the operations is required.",
+     "anchor": "Section VII, p.6, and Fig. 4 caption, p.9",
+     "quotes": [
+      "For the 2-qubit Bell state (cf., Fig. 4), PPO also manages to evade this local optimum, while SAC shows near-optimal performance.",
+      "which might be easier, as no exact resemblance of the operations is required."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-rl-capable-hierarchy-claim",
+     "value": "The authors state that, while posing a significant challenge, current RL algorithms are capable of exploring hierarchical structures required for building more complex circuit architectures while optimizing for a secondary compactness objective.",
+     "anchor": "Section VII, p.6-7",
+     "quotes": [
+      "current RL algorithms are capable of",
+      "exploring hierarchical structures required for building more complex circuit architectures while optimizing for a secondary compactness objective."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's interpretation drawn from the GHZ and Bell results.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The evidence is two small state-preparation targets (2 and 3 qubits)."
+    },
+    {
+     "id_suggestion": "qcd-gym-random-sp-others",
+     "value": "The authors report that on random state preparation PPO performs comparably to the GA and that all approaches except TD3 show the capability of learning the objective.",
+     "anchor": "Section VII, p.7, Fig. 3a",
+     "quotes": [
+      "PPO performs comparably to the GA.",
+      "all approaches except for TD3 show the capability of learning the objective at hand"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-random-sp-compactness",
+     "value": "The authors state that on random state preparation the compactness objective is effective because the mean depths predominantly cover only half of the available operations, and that the better-performing approaches primarily utilize both available qubits.",
+     "anchor": "Section VII, p.7, Fig. 3b-3c",
+     "quotes": [
+      "the additional compactness objective is shown to be effective, considering that the mean depths predominantly cover only half of the available operations.",
+      "The better-performing approaches primarily utilize both available qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-toffoli-empty-circuits",
+     "value": "The authors report that on Toffoli composition (depths up to 63 across three qubits) the mean qubit and depth curves show primal convergence to empty circuits, and the figure caption states a local similarity optimum of 0.3 for empty circuits.",
+     "anchor": "Section VII, p.7, Fig. 3d-3f and caption",
+     "quotes": [
+      "offering depths up to 63 across three qubits.",
+      "primal convergence to empty circuits, indicated by a low depth and low qubit utilization.",
+      "the Toffoli Composition exhibits a local similarity optimum of 0.3 for empty circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-toffoli-reward-exploit",
+     "value": "The authors state that RL exploits a deficiency in the reward landscape, revealing a local optimum for empty circuits, and that because of the additional step cost, overcoming it would first require a performance decrease caused by the use of additional operations.",
+     "anchor": "Section VII, p.7",
+     "quotes": [
+      "Thus, RL exploits a deficiency in the reward landscape, revealing a local optimum for empty circuits.",
+      "Due to the additional step cost, overcoming this local optimum would first require a performance decrease caused by the use of additional operations."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's explanation of the measured behavior.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-toffoli-handcrafted-24",
+     "value": "The authors state that an optimal handcrafted Toffoli composition requires a total of 24 concise operations across all three qubits, and that the genetic and random baselines produce small yet non-empty circuits that perform even worse in mean similarity.",
+     "anchor": "Section VII, p.7",
+     "quotes": [
+      "an optimal (handcrafted) composition requires a total of 24 concise operations across all three qubits",
+      "the genetic and random baselines produce small yet non-empty circuits that perform even worse regarding their mean similarity to the target unitary."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The 24 is an author's statement without a derivation; the baseline result is empirical.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-random-unitary-composition",
+     "value": "The authors state that random unitary composition poses a similarly difficult objective, where the best-performing approaches also merely exceed the random baseline.",
+     "anchor": "Section VII, p.7, and Fig. 4 caption, p.9 (panels 4d-4f)",
+     "quotes": [
+      "As expected, random unitary compositing poses a similarly difficult objective, where the best-performing approaches also merely exceed the random baseline.",
+      "composing random unitary operations yields serious challenges that hinder optimal convergence."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-need-directive-rewards",
+     "value": "The authors state that the results emphasize the need for more directive reward signals to guide policy optimization in complex, potentially hierarchical tasks with sparse solution landscapes.",
+     "anchor": "Section VII, p.7",
+     "quotes": [
+      "These results emphasize the need for more directive reward signals to guide policy optimization in such complex, potentially hierarchical tasks with sparse solution landscapes."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-sac-best-overall",
+     "value": "The authors state that across all challenges SAC has yielded superior results due to its advanced continuous control capabilities, and the figure caption states that SAC shows the highest objective performance with the highest qubit and depth utilization.",
+     "anchor": "Section VII, end, p.7, and Fig. 2 caption, p.5",
+     "quotes": [
+      "Across all challenges, SAC has yielded superior results due to its advanced continuous control capabilities.",
+      "Overall, SAC shows the highest objective performance with the highest qubit and depth utilization"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the cause is the authors' attribution.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "No ablation isolates continuous control as the cause. Also, SAC did not solve Toffoli or random composition, so 'across all challenges' means relative ranking only."
+    },
+    {
+     "id_suggestion": "qcd-gym-environment-viability-claim",
+     "value": "The authors state that the presented experimental results provide certainty that the proposed qcd-gym environment can be used to learn skills in the domain of QC using RL.",
+     "anchor": "Section VII, p.7",
+     "quotes": [
+      "the presented experimental results provide certainty that the proposed qcd-gym environment can be used to learn skills in the domain of QC using RL."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion from small-scale experiments.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "'Certainty' is strong for six targets of at most 3 qubits and two of the six (Toffoli, random composition) showing no real learning."
+    },
+    {
+     "id_suggestion": "qcd-gym-conclusion-competitiveness",
+     "value": "The authors conclude that benchmark results against a random and an evolutionary optimization baseline showed RL’s competitiveness for QCD while ensuring the soundness of the proposed framework, and that the results also highlighted challenges to overcome for RL to be widely applicable for quantum control.",
+     "anchor": "Section VIII, p.8",
+     "quotes": [
+      "comparisons to a random and an evolutionary optimization baseline showed RL’s competitiveness for QCD while ensuring the soundness of the proposed framework.",
+      "Those empirical results also highlighted current challenges to be overcome for RL to be widely applicable for quantum control."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-stated-challenges",
+     "value": "The authors state that the main challenges include exploring multi-modal reward landscapes in combination with complex, non-uniform, high-dimensional action spaces and sparse, extinct target requirements.",
+     "anchor": "Section VIII, p.8",
+     "quotes": [
+      "Those challenges mainly include exploring multi-modal reward landscapes in combination with complex, non-uniform, high-dimensional action spaces and sparse, extinct target requirements."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-limit-state-scaling",
+     "value": "The authors state that the proposed state space is currently limited by its scaling exponentially with the number of qubits, and that simulations are currently only possible for qubit numbers of η < 50.",
+     "anchor": "Section VIII, p.8",
+     "quotes": [
+      "the proposed state space is currently limited by its scaling exponentially with the number of qubits.",
+      "simulations are currently only possible for qubit numbers of η < 50."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section VIII states the limits.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-limit-hardware-properties",
+     "value": "The authors state that their approach does not yet consider qubit routing and error mitigation (hardware-specific properties) but can be easily extended to do so.",
+     "anchor": "Section V.C, p.4",
+     "quotes": [
+      "our approach does not yet consider these hardware-specific properties, but it can be easily extended to do so."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V.C states the limit; the extensibility part is a claim.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-limit-no-control-baselines",
+     "value": "The authors state that GRAPE and CRAB are two related quantum-control approaches that might constitute suitable baseline candidates but fall outside the scope of their RL structure, so they are not compared.",
+     "anchor": "Section V.B, p.4",
+     "quotes": [
+      "we also briefly highlight two related approaches that might constitute suitable baseline candidates but fall outside the scope of our proposed RL structure."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section V.B states the scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-future-reward-shaping",
+     "value": "The authors state that smoother reward metrics, including intermediate rewards, are needed to ease exploring the intricate action space for quantum control.",
+     "anchor": "Section VIII, p.8",
+     "quotes": [
+      "smoother reward metrics, including intermediate rewards, are needed to ease exploring the intricate action space for quantum control."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's recommendation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-novelty-discrete-gate-sets",
+     "value": "The authors state that, to their knowledge, existing approaches essentially utilize discrete gate sets, such as the Clifford group.",
+     "anchor": "Section V.A, p.3-4",
+     "quotes": [
+      "To the best of our knowledge, existing approaches essentially utilize discrete gate sets, such as the Clifford group defined above"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's literature claim, hedged by 'to the best of our knowledge'.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-cited-solovay-kitaev",
+     "value": "The paper states, citing prior work, that the Solovay-Kitaev theorem says there exists a finite sequence of gates that approximates any target unitary transformation to arbitrary accuracy without providing such a sequence.",
+     "anchor": "Section III.B, p.2",
+     "quotes": [
+      "The Solovay-Kitaev theorem, however, states that there exists a finite sequence of gates that approximate any target unitary transformation U to arbitrary accuracy without providing such a sequence."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-cited-universality",
+     "value": "The paper states, citing prior work, that any multi-qubit logic gate can be composed of CNOT and single-qubit gates, a concept called universality of gate sets.",
+     "anchor": "Section II.A, p.1",
+     "quotes": [
+      "it can be shown that any multi-qubit logic gate (i.e., unitary matrix of arbitrary size) can be composed of CNOT and single-qubit gates, which is a concept called universality of gate sets [6]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-cited-qubit-routing-rl",
+     "value": "The paper states, citing prior work, that the qubit routing problem is NP-hard once circuit depth is taken into account, and that RL operating on the entire circuit has been shown to outperform state-of-the-art methods.",
+     "anchor": "Section V.C, p.4",
+     "quotes": [
+      "this constitutes an NP-hard combinatorial optimization problem [52].",
+      "the application of RL operating on the entire circuit has been shown to outperform state-of-the-art methods [54], [55]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-cited-trotter",
+     "value": "The paper states, citing prior work, that according to the Suzuki-Trotter formula Hamiltonian dynamics can be approximately factorized with a rigorously upper-bounded error.",
+     "anchor": "Section III.B, p.3",
+     "quotes": [
+      "According to the Suzuki-Trotter formula, these dynamics can be approximately factorized with a rigorously upper-bounded error [22]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcd-gym-hadamard-decomposition",
+     "value": "The authors state that the Hadamard operator can be reconstructed from the available gates via H = P (π/2)RX(π/2)P (π/2), without giving a derivation in the paper.",
+     "anchor": "Section VII, p.5",
+     "quotes": [
+      "Reconstruction is possible via H = P (π/2)RX(π/2)P (π/2)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement without a derivation in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
