@@ -1,0 +1,872 @@
+{"papers": [{
+  "record_id": "bondarenko-2023-learning-quantum-processes-memory-quantum",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Bondarenko-Salzmann-Schmiesing_2023_Learning-Quantum-Processes-with-Memory-Quantum-Recurrent__2301.08167.pdf",
+  "title_in_file": "Learning Quantum Processes with Memory - Quantum Recurrent Neural Networks",
+  "version_note": "arXiv:2301.08167v1 [quant-ph] 19 Jan 2023; the text is the paper named by the record. The text layer prints some exponents and radicals flat or drops them (for example 2m for two to the m, and a lost square or cube root in Lemma 4 and in the sentence before Figure 10).",
+  "pages": 46,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "Proposes fully quantum recurrent neural networks built by iterating a dissipative feed-forward quantum neural network over a memory register, gives classical-simulation training algorithms, and benchmarks them in small simulations on a delay channel, time evolution and noise filtering.",
+  "bears_on_context": "qml",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "bondarenko-scope-product", "verdict": "confirmed", "note": "",
+      "value": "", "anchor": "", "quotes": [],
+      "kind": "shown", "claim_type": "absence", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "scope", "certainty_reason": "The paper's own statement of scope in the Discussion, p.5, repeated in the Training process section, p.3.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "bondarenko-swap-result", "verdict": "narrowed",
+      "note": "The stored value drops the conditions the paper attaches: the input states are drawn at random with respect to the Haar measure, the network is a QRNN with one memory qubit, and the evidence is a classical simulation. The paper's sentence also says the QRNN learns the SWAP channel perfectly; that word falls across a line-break hyphen in the text layer, so it is left out of the value and no quote carries it. The appendix adds that the QRNN with one memory qubit learned the delay by one channel but, for the delay by two channel, a QRNN with one memory qubit did not learn as well as one with two memory qubits.",
+      "value": "The authors report, in classical simulation of the delay (SWAP) channel with input states chosen at random with respect to the Haar measure, that a QRNN with one memory qubit learns the SWAP channel and generalises well, even for only eight training pairs, while a feed-forward QNN learns worse for every training pair added and does not generalise at all.",
+      "anchor": "Results, Simulation of learning tasks, p.4; Figure 2(a) caption, p.4; Appendix F.1.a, p.27",
+      "quotes": [
+        "We chose the input states at random with respect to the Haar measure.",
+        "The QRNN learns the SWAP channel",
+        "generalises well, even for only eight training pairs.",
+        "A feed-forward QNN, by contrast, learns worse for every training pair added and does not generalise at all."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation.",
+      "result_type": "measured", "context": "qml",
+      "reader_inference": "The result is a simulation of a small network on a simple task whose answer (hold the previous input in memory) is built into the memory structure, so it shows the memory is usable, not that the method is hard-task capable."
+    },
+    {
+      "id": "bondarenko-universal-claim", "verdict": "narrowed",
+      "note": "The stored value drops the condition. The paper argues (Results, p.3) that its QRNNs can represent any causal quantum automaton only if the underlying QNN is large enough, by chaining three cited results and the circuit structure. The paper contains no numerical test of universality, and no formal theorem.",
+      "value": "The authors state that their QRNNs are universal, i.e. they can be used to simulate general causal quantum automata, and argue in the Results section that the QRNNs can represent any causal quantum automaton if the underlying QNN is large enough, by combining the circuit structure of the QRNN with cited results on channels with memory and on dissipative QNNs.",
+      "anchor": "Discussion, p.5; Results, The network architecture, p.3",
+      "quotes": [
+        "These are universal, i.e. they can be used to simulate general causal quantum automata.",
+        "if the underlying QNN is large enough.",
+        "structure of our QRNNs that they can be used to describe all causal quantum automata with finite in- and output systems."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "The authors' own argument, resting on cited results, with the size of the QNN left open; not tested in the paper.",
+      "result_type": "claim", "context": "qml",
+      "reader_inference": "The size the underlying QNN must reach for a given automaton is not bounded anywhere in the paper, so the universality statement does not say how large a network the simulations' small widths stand for."
+    },
+    {
+      "id": "bondarenko-universal-def", "verdict": "confirmed", "note": "",
+      "value": "", "anchor": "", "quotes": [],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "definition", "certainty_reason": "The paper's own definition, Introduction, p.2.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "abstract-scope-simulation",
+      "value": "The authors state that a quantum training algorithm is proposed and that classical simulations are carried out for the case of product outputs with the fidelity as cost function.",
+      "anchor": "Abstract, p.1",
+      "quotes": ["A quantum training algorithm is proposed and classical simulations for the case of product outputs with the fidelity as cost function are carried out."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "scope", "certainty_reason": "The paper's statement of its own scope in the abstract; the Discussion repeats it.",
+      "result_type": "setup", "context": "qml",
+      "reader_inference": "The quantum training algorithm (Appendix G) is described only; no run on quantum hardware or on a quantum-circuit simulator of the algorithm is reported."
+    },
+    {
+      "id": "abstract-capable-claim",
+      "value": "The authors state that the proposed fully quantum recurrent neural networks, based on dissipative quantum neural networks, are capable of learning general causal quantum automata.",
+      "anchor": "Abstract, p.1",
+      "quotes": ["We propose fully quantum recurrent neural networks, based on dissipative quantum neural networks, capable of learning general causal quantum automata."],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An author's claim. The paper argues representability (Results, p.3) and simulates only small tasks; learnability of general automata is not shown.",
+      "result_type": "claim", "context": "qml",
+      "reader_inference": "Representing every causal automaton (the argument at p.3) is a different statement from learning one by the stated training algorithm; the paper tests the second only on three small tasks."
+    },
+    {
+      "id": "abstract-generalise-small-sets",
+      "value": "The authors state that numerical simulations indicate their QRNNs exhibit a striking ability to generalise from small training sets.",
+      "anchor": "Abstract, p.1; Introduction, p.2",
+      "quotes": [
+        "Numerical simulations indicate that our quantum recurrent neural networks exhibit a striking ability to generalise from small training sets.",
+        "Our classical simulations demonstrate a striking capability of the QRNN architecture to generalise from small training sets."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A summary of simulation results from one study.",
+      "result_type": "measured", "context": "qml",
+      "reader_inference": "The generalisation evidence in the paper is the delay-channel test (eight training pairs) and the time-evolution tests; the other tasks are not shown to generalise from small sets."
+    },
+    {
+      "id": "definition-system-has-memory",
+      "value": "The authors define a system as having memory if the output at time t depends on the inputs at times τ ≤ t.",
+      "anchor": "Introduction, p.1",
+      "quotes": ["We say the system has memory if the output at time t depends on the inputs at times τ ≤ t."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "definition", "certainty_reason": "The paper's own definition, Introduction, p.1.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "definition-quantum-memory",
+      "value": "The authors define the memory as quantum if the time dependence is facilitated by a subsystem that is able to store entangled states.",
+      "anchor": "Introduction, p.2",
+      "quotes": ["We call the memory quantum if the time dependence is facilitated by a subsystem that is able to store entangled states."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "definition", "certainty_reason": "The paper's own definition, Introduction, p.2.",
+      "result_type": "setup", "context": "qml",
+      "reader_inference": "The simulations use product states only, so the entanglement-storing property named in this definition is not exercised by any reported task."
+    },
+    {
+      "id": "cited-contextual-cq-rnn-advantage",
+      "value": "The authors report, citing reference 44 (Anschuetz et al.), that non-universal classical-data quantum RNNs that exhibit contextuality were proven capable of better scaling of memory resources than their entirely classical counterparts, and were also able to outperform widely-used classical architectures of similar size in a natural language translation task.",
+      "anchor": "Introduction, pp.1-2",
+      "quotes": [
+        "Non-universal CQ RNNs that exhibit contextuality were proven capable of better scaling of memory resources than their entirely classical counterparts [44].",
+        "were also able to outperform widely-used classical architectures of similar size in a natural language translation task [44]."
+      ],
+      "kind": "cited", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "cq-rnn-nisq-competitiveness-unclear",
+      "value": "The authors state that, with state-of-the-art classical natural language processing models training hundreds of billions of parameters, it is unclear if classical-data quantum RNNs can be competitive in the current noisy intermediate-scale quantum (NISQ) era.",
+      "anchor": "Introduction, p.2",
+      "quotes": ["it is unclear if CQ RNNs can be competitive in the current noisy intermediate-scale quantum (NISQ) era."],
+      "kind": "claimed", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "The authors' own judgment about other work, without evidence in the paper.",
+      "result_type": "claim", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qq-ml-no-classical-alternative-claim",
+      "value": "The authors state that, unlike for classical-data quantum learning, there is no classical alternative to quantum-data quantum machine learning, and that if a task calls for direct handling of quantum data, it can immediately improve the state-of-the-art even if applied to modestly-sized systems.",
+      "anchor": "Introduction, p.2",
+      "quotes": [
+        "Unlike for CQ learning, there is no classical alternative to QQ ML.",
+        "QQ ML can immediately improve the state-of-the-art even if applied to modestly-sized systems."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An author's claim without evidence in the paper.",
+      "result_type": "claim", "context": "qml",
+      "reader_inference": "The paper's own simulations compare a QRNN with a feed-forward QNN only, not with any classical method on classical-simulable data, so the improvement over the state-of-the-art is not tested."
+    },
+    {
+      "id": "design-target-inputs-outputs-every-step",
+      "value": "The authors state that, unlike a graph quantum RNN in which the memory is treated as the entire input and output for all but the first and last steps, they want to focus on qudits and on having in- and outputs in every time step.",
+      "anchor": "Introduction, p.2",
+      "quotes": [
+        "For all but the first and last steps, the memory in [71] is treated as the entire input and output.",
+        "Instead, we want to focus on qudits and having in- and outputs in every time step."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "scope", "certainty_reason": "The paper's statement of what its own architecture targets, Introduction, p.2.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "cited-dissipation-forgetting",
+      "value": "The authors state, citing references 77 and 78, that implementing a dissipative quantum channel might be desirable even if the data is pure, as the ability to forget is quintessential for learning long-term dependencies and for robustness to data corruption.",
+      "anchor": "Introduction, p.2",
+      "quotes": ["Implementing a dissipative quantum channel might be desirable even if the data is pure, as the ability to forget is quintessential for learning long-term dependencies [77] and robustness to data corruption [78]."],
+      "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A statement the paper attributes to other work.",
+      "result_type": "cited", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "cited-dissipative-qnn-any-channel",
+      "value": "The authors state, citing reference 79 (Beer et al.), that dissipative QNNs can represent any quantum channel, and that a QNN as described can, if it is large enough, represent any quantum channel on a finite input or output system.",
+      "anchor": "Introduction, p.2; Results, The network architecture, p.3",
+      "quotes": [
+        "These requirements are conveniently satisfied by dissipative QNNs from [79], which can represent any quantum channel.",
+        "a QNN, as described above, can, if it is large enough, represent any quantum channel on a finite input or output system [79]."
+      ],
+      "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qnn-architecture-definition",
+      "value": "The paper defines a feed-forward dissipative QNN for qudits, following reference 79, as connected quantum perceptrons arranged in L + 2 layers, that is L hidden layers, one input and one output layer, with ml perceptrons in layer l.",
+      "anchor": "Results, The network architecture, p.2",
+      "quotes": ["A feed-forward (dissipative) quantum neural network (QNN) for qudits as proposed in [79] is built from connected quantum perceptrons arranged in L + 2 layers, i.e. L hidden layers, one input and one output layer, with ml perceptrons in layer l."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "definition", "certainty_reason": "The paper's own definition of the building block, Results, p.2.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "qrnn-memory-feedback-definition",
+      "value": "The paper defines the QRNN by using a subsystem of the total output of the QNN as part of the next input (the memory): the memory part of the total output is input into the memory part of the total input in the next iteration step.",
+      "anchor": "Results, The network architecture, p.2; Figure 1 caption, p.1",
+      "quotes": [
+        "Without loss of generality, we exploit a subsystem of the total output as part of the input, which is often called the memory.",
+        "The memory part of the total output of a QNN is then input into the memory part of the total input of the QNN in the next iteration step."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "definition", "certainty_reason": "The paper's own definition of the QRNN, Results, p.2.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "cited-causal-automata-as-channels-with-memory",
+      "value": "The authors state, citing references 76 and 84, that quantum channels with memory can be used to describe general causal quantum automata, where the memory system is finite in the case of finite in- and output systems.",
+      "anchor": "Results, The network architecture, p.3",
+      "quotes": ["Secondly, quantum channels with memory can be used to describe general causal quantum automata [76]", "system is finite in the case of finite in- and output systems [84]."],
+      "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "universality-argument-conclusion",
+      "value": "The authors conclude, from three steps (the circuit structure gives concatenated channels with memory, channels with memory describe causal automata, and a large enough QNN represents any channel on finite systems), that their QRNNs can represent any causal quantum automaton if the underlying QNN is large enough.",
+      "anchor": "Results, The network architecture, p.3",
+      "quotes": [
+        "Together, this means that our QRNNs can represent any causal quantum",
+        "if the underlying QNN is large enough.",
+        "Finally, a QNN, as described above, can, if it is large enough, represent any quantum channel on a finite input or output system [79]."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A short argument built on cited results, not a stated theorem with proof; the required QNN size is not given.",
+      "result_type": "theoretical", "context": "qml",
+      "reader_inference": "The argument holds for finite in- and output systems and a finite memory; the paper does not say how large the memory must be for a given automaton."
+    },
+    {
+      "id": "training-needs-multiple-copies",
+      "value": "The authors state that, for the quantum algorithm to work, they need to be able to request multiple copies of every in- and output state.",
+      "anchor": "Results, The training process, p.3",
+      "quotes": ["for the quantum algorithm to work, we need to be able to request multiple copies of every in- and output state."],
+      "kind": "shown", "claim_type": "absence", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "setup", "certainty_reason": "The paper's statement of a requirement of its own training setup, p.3.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "focus-product-states-entangled-future",
+      "value": "The authors state that they focus on the case of product input and output states, and that the case of entangled inputs is left to a future publication.",
+      "anchor": "Results, The training process, p.3",
+      "quotes": [
+        "We focus on the case of product in- and output states here.",
+        "The case of entangled inputs is left to a future publication."
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "stated limit", "certainty_reason": "The paper's statement of its own scope and limit, p.3.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "local-cost-pure-definition",
+      "value": "The paper defines its local cost for pure outputs as the average, over runs and over iterations, of the fidelity between each target output state and the corresponding reduced network output, ignoring the last memory state; it states that the fidelity is used because it is the essentially unique measure of closeness for pure quantum states.",
+      "anchor": "Results, The training process, p.3-4 (Eq. 4)",
+      "quotes": [
+        "the fidelity is the essentially unique measure of closeness for pure quantum states.",
+        "Therefore, we use it to define our cost function for pure output states.",
+        "We ignore the last memory state as it is unimportant to us in which state the memory is at the end."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "definition", "certainty_reason": "The paper's own definition of its cost, Results, p.3-4.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "global-cost-pure-definition",
+      "value": "The paper defines its global cost for pure outputs as the fidelity between the global output state of the QRNN and the correct one, with the memory state at the end not considered.",
+      "anchor": "Results, The training process, p.4 (Eq. 5)",
+      "quotes": [
+        "For pure outputs, we use the fidelity between the global output state of the QRNN and the correct one.",
+        "Again, the memory state at the end is not important to us."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "definition", "certainty_reason": "The paper's own definition, Results, p.4.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "mixed-output-cost-hilbert-schmidt",
+      "value": "The authors state that, for outputs that are not pure, they use the square of the Hilbert-Schmidt distance instead of the mixed-state fidelity, because it is much easier to estimate and minimise in classical simulation or quantum implementation.",
+      "anchor": "Results, The training process, p.4",
+      "quotes": [
+        "Nevertheless, the Hilbert-Schmidt distance is much easier to estimate and minimise in classical simulation or quantum implementation than the mixed state fidelity [85, 86].",
+        "Hence, we use the square of the Hilbert-Schmidt distance"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "definition", "certainty_reason": "The paper's own choice of cost for mixed outputs, Results, p.4 (the ease claim is the authors' and cites references 85 and 86).",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "cost-ranges-stated",
+      "value": "The authors state that the cost function for pure outputs varies between 0 (worst) and 1 (best), and the one for mixed outputs between 4 (worst) and 0 (best).",
+      "anchor": "Results, The training process, p.4",
+      "quotes": ["The cost function for pure outputs varies between 0 (worst) and 1 (best), and the one for mixed outputs between 4 (worst) and 0 (best)."],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An author's statement about a bound that the paper does not derive, and that looks mistaken for mixed outputs.",
+      "result_type": "claim", "context": "qml",
+      "reader_inference": "For two density operators the squared Hilbert-Schmidt distance tr(rho - sigma)^2 equals tr rho^2 + tr sigma^2 - 2 tr(rho sigma) and is at most 2, so a worst value of 4 looks like an error in the paper (the cost in Appendix C carries an extra factor not shown in this sentence). The Figure 13 plot of the averaged Hilbert-Schmidt norm uses an axis up to 0.5."
+    },
+    {
+      "id": "local-cost-easier-global-more-accurate-claim",
+      "value": "The authors state that the global cost is more accurate when it comes to high costs, because the global cost is at most the local cost for pure outputs (shown in Appendix A), that the local cost is easier to train with, and that fewer qubits and gates are needed to calculate it on a quantum computer.",
+      "anchor": "Results, The training process, p.4",
+      "quotes": [
+        "While the global cost is more accurate when it comes to high costs (this is because Cglobal, pure ≤ Clocal, pure, as shown in Appendix A)",
+        "the local cost function is easier to train with, and fewer qubits and gates are needed to calculate it on a quantum computer."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "The ordering of the costs is proved (Lemma 1); the ease of training and the qubit and gate counts are the authors' statements, with no comparison reported.",
+      "result_type": "claim", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "lemma1-global-cost-at-most-local-cost",
+      "value": "The paper proves (Lemma 1) that for all global input states, with a pure product output, and all network unitaries, the global cost for pure outputs is at most the local cost for pure outputs; the proof applies the data-processing inequality for the fidelity to the partial trace channel.",
+      "anchor": "Lemma 1, Appendix A, p.6",
+      "quotes": [
+        "Lemma 1. For all global input states ρIN with corresponding output ρOUT being a pure product state, i.e. ρOUT =",
+        "Equation (A1) then simply follows by using (A2) for the quantum channel being the partial trace:"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "proved result", "certainty_reason": "A stated lemma with its conditions quoted from Appendix A, p.6, proved there from the data-processing inequality.",
+      "result_type": "theoretical", "context": "qml",
+      "reader_inference": "In the lemma's statement the symbol for the network output is used for the pure product target; the proof treats it as the network output compared with the target. I read the lemma as: the target is a pure product state. The proof then holds, because partial traces cannot decrease fidelity."
+    },
+    {
+      "id": "update-rule-from-reference-79",
+      "value": "The authors state that they use the same ansatz as reference 79, updating each perceptron unitary by multiplying it by the exponential of an imaginary multiple of a Hermitian matrix, and that, in reference 79, the matrices that maximise the derivative of the cost were shown to be a trace of the cost derivative matrices, if the sum over the matrix elements of the update matrix is demanded to be smaller than some constant.",
+      "anchor": "Appendix B, pp.7 and 17",
+      "quotes": [
+        "To do so, we use the same ansatz as in [79] and the unitaries are updated in each step according to",
+        "In [79] it was shown that the matrices Kjl that maximise a derivative of the cost function in the form",
+        "if one demands, that the sum over the matrix elements of Kjl should be smaller than some constant."
+      ],
+      "kind": "cited", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "The optimality of the update matrices is a result the paper attributes to reference 79; the paper derives the cost derivative for the recurrent case.",
+      "result_type": "cited", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "layerwise-update-width-scaling",
+      "value": "The authors state that the updated unitaries can be calculated in a layer-by-layer manner, so that the size of the matrices used to simulate the learning process only scales with the width and not the depth of the network.",
+      "anchor": "Results, The training process, p.4",
+      "quotes": ["the size of the matrices used to simulate the learning process only scales with the width and not the depth of the network."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A property of the derived algorithm stated without a separate proof or measurement of resources.",
+      "result_type": "theoretical", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "numerical-results-use-local-pure-algorithm",
+      "value": "The authors state that mainly the algorithm for the local cost with pure output states (Appendix B) is used to obtain the numerical results, and that algorithms for the other costs are given in Appendices B, C, D and E.",
+      "anchor": "Results, The training process, p.4; Appendix F.1, p.27",
+      "quotes": [
+        "Mainly the one for the local cost with pure output states (Appendix B) is used to obtain numerical results.",
+        "Firstly, we present the numerical results for the local cost for pure output as this is the one for which we made most simulations."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "scope", "certainty_reason": "The paper's statement of which algorithm its results come from.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "simulation-size-limit",
+      "value": "The authors state that the exponential growth of Hilbert space dimension with the width of the network restricts them to QRNNs with small widths in their classical simulations, and that they used total input and output spaces up to 4 qubits.",
+      "anchor": "Results, Simulation of learning tasks, p.4",
+      "quotes": [
+        "The exponential growth of Hilbert space dimension with the width of the network restricts us to QRNNs with small widths in our classical simulations.",
+        "We classically simulated the learning process for different tasks while we used total input and output spaces up to 4 qubits."
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "stated limit", "certainty_reason": "The paper's statement of the limit of its own simulations, p.4.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "evaluation-protocol-training-vs-testing-cost",
+      "value": "The authors state that for pure outputs they use the same cost function, the fidelity, for training and testing, that both the fidelity and the Hilbert-Schmidt norm are used when testing for mixed states, and that performance during training is a good indicator of performance only with big enough training data, not necessarily for small training sets or when the training cost differs from the test cost.",
+      "anchor": "Appendix F, p.27",
+      "quotes": [
+        "Note that for pure outputs, we use the same cost function, the fidelity, for training and testing.",
+        "We use both the fidelity and the Hilbert-Schmidt norm when testing for mixed states.",
+        "It is not necessarily so for small training sets or if the cost function used during training differs from the function used to evaluate the test performance."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "setup", "certainty_reason": "The paper's statement of its own evaluation setup, Appendix F, p.27.",
+      "result_type": "setup", "context": "method", "reader_inference": ""
+    },
+    {
+      "id": "delay-channel-definition",
+      "value": "The authors define the delay (SWAP or shift) channel by the rule that the x-th output equals the (x − 1)-th input, and they train on the first input paired with the previous input, testing on bigger sets of the same form with different input states.",
+      "anchor": "Results, Simulation of learning tasks, p.4",
+      "quotes": [
+        "This channel is defined as follows: The xth output equals the (x − 1)th input",
+        "to generalise to (bigger) test sets of the same form with different input states."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "definition", "certainty_reason": "The paper's own definition of the task, p.4.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "swap-feedforward-expected-failure",
+      "value": "The authors state that the failure of the feed-forward QNN on the SWAP channel is what they expected, because a feed-forward QNN can only guess the x-th output since it only has access to the x-th input and not the (x − 1)-th.",
+      "anchor": "Results, Simulation of learning tasks, p.4",
+      "quotes": ["This is what we expected as a feed-forward QNN can only guess the xth output since it only has access to the xth input and not the (x − 1)th."],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "The authors' explanation, accompanied by the cost plateau near 0.5 for the feed-forward QNN in Figure 5 but without a derivation here.",
+      "result_type": "claim", "context": "qml",
+      "reader_inference": "A random guess of a pure qubit state has expected fidelity one half with a Haar-random target, which matches the plateau the authors report near 0.5."
+    },
+    {
+      "id": "delay-one-qrnn-vs-qnn-curves",
+      "value": "The authors report, for the delay by one channel, that a QRNN with one memory qubit learns the channel well and also generalises well to the test set, while the feed-forward QNN does not learn as well and does not generalise at all; the networks used a QNN without hidden layers.",
+      "anchor": "Appendix F.1.a, Figure 3(a), pp.27-28",
+      "quotes": [
+        "in the case p = 1, a QRNN with one memory qubit learns the delay by one channel well and also generalises well to the test set, while the feed-forward QNN does not learn as well and does not generalise at all.",
+        "In both cases, a QNN without hidden layers and a"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation.",
+      "result_type": "measured", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "delay-two-memory-qubits-needed",
+      "value": "The authors report, for the delay-by-two channel, that the QRNN with two memory qubits learns the channel well and generalises well to the test set, that the QRNN with one memory qubit learns the channel not as well and does not generalise as well, and that the feed-forward QNN learns it even less well and does not generalise.",
+      "anchor": "Appendix F.1.a, Figure 3(b), p.27",
+      "quotes": [
+        "the QRNN with two memory qubits learns the delay-by-two channel well and generalises well to the test set.",
+        "The QRNN with one memory qubit learns the channel not as well and does not generalise as well, and the feed-forward QNN learns it even less well and does not generalise."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation.",
+      "result_type": "measured", "context": "qml",
+      "reader_inference": "Together with the SWAP result this suggests the memory register must be large enough to hold the delayed inputs, which is consistent with the later two-qubit threshold for the bandwidth filter."
+    },
+    {
+      "id": "delay-feedforward-architecture-control",
+      "value": "The authors report that, in a comparison of feed-forward QNNs of different architectures on the delay by one channel, none of the displayed feed-forward QNNs does better than the simplest feed-forward QNN, so the failure is not due to the simple structure of the feed-forward QNN.",
+      "anchor": "Appendix F.1.a, Figure 4, p.27-29",
+      "quotes": [
+        "As shown in Figure 4, this behaviour has nothing to do with the simple structure of the feed-forward QNN since none of the displayed feed-forward QNNs is doing better than the simplest feed-forward QNN.",
+        "for the delay by one channel on N = 20 training pairs with learningrate"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation.",
+      "result_type": "measured", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "delay-one-eight-training-pairs-sufficient",
+      "value": "The authors report that even N = 8 training pairs are sufficient for the simplest QRNN to learn the delay by one channel: the training cost of the QRNN stays at approximately one and the test cost rises to approximately one with a rising number of training pairs (until N = 8), while the feed-forward QNN training cost starts at one and then declines, and its test cost stays at about 0.5.",
+      "anchor": "Appendix F.1.a, Figure 5, p.27 and p.30",
+      "quotes": [
+        "Also, as shown in Figure 5, even N = 8 training pairs are sufficient for the simplest QRNN to learn the delay by one channel.",
+        "The training cost of the QRNN stays at approximately one, and the test cost rises to approximately one with a rising number of training pairs (until N = 8), as expected.",
+        "then declines with a rising number of training pairs while the test cost stays at about 0.5, so the feed-forward QNN does not generalise at all."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation.",
+      "result_type": "measured", "context": "qml",
+      "reader_inference": "The Figure 5 caption states the cost was averaged over 50 rounds on a set of 30 test pairs; the number of eight pairs for the sufficiency claim is read from the average curve."
+    },
+    {
+      "id": "generalisation-protocol-fig5",
+      "value": "The authors report that the generalisation curves were produced by training the QNNs for 1000 rounds on N = 1, 2, . . . , 10 training pairs, evaluating the cost on the training set and on a set of 30 test pairs afterwards, and averaging over 50 rounds.",
+      "anchor": "Figure 5 caption, p.30; Figure 2(a) caption, p.4",
+      "quotes": [
+        "We trained the QNNs for 1000 rounds with a learningrate of ǫη = 0.06 and N = 1, 2, . . . , 10 training pairs",
+        "for a set of 30 test pairs (squares) afterwards. This is then averaged over 50 rounds."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "setup", "certainty_reason": "The paper's statement of its own experimental setup in the Figure 5 caption.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "time-evolution-task-definition",
+      "value": "The authors define the time-evolution task as learning the evolution of a state over the interval (T2, T3] from its evolution over the interval [T1, T2], where T1 < T2 < T3, by feeding each predicted state back as the next input, and comparing the predictions with the correct evolution via the fidelity.",
+      "anchor": "Results, Simulation of learning tasks, p.4; Appendix F.1.b, p.28",
+      "quotes": [
+        "in a time interval t ∈ [T1, T2], where T1 < T2 < T3.",
+        "This state is then used as input again and so forth. Then the time predictions are compared to the correct time evolution via the fidelity."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "definition", "certainty_reason": "The paper's own definition of the task, p.4-5.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "time-evolution-sigma-x-flip-result",
+      "value": "The authors report, for a state that goes from the zero state over an equal superposition with a phase to the one state and back, trained on N = 10 training pairs and predicted for M = 20 points, that the QRNN learns and predicts the time evolution a lot better than the feed-forward QNN: the QRNN predictions are nearly on top of the target states, and the feed-forward QNN predictions are completely different.",
+      "anchor": "Figure 2(b), Results p.4-5; Appendix F.1.b, Figure 6, p.28 and p.30",
+      "quotes": [
+        "To train the networks, we used N = 10 training pairs and predicted the time evolution for M = 20 points.",
+        "It can be seen that the QRNN learns and predicts the time evolution a lot better than the feed-forward QNN:",
+        "The blue circles in Panel (a) are nearly on top of the black ones, and the red ones are completely different."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation, read from a plot.",
+      "result_type": "measured", "context": "qml",
+      "reader_inference": "The text layer has the Bloch-sphere points for this task only as a figure caption; the cost values for it are in a plot the text layer does not hold."
+    },
+    {
+      "id": "time-evolution-step-hamiltonian-result",
+      "value": "The authors report, for the time evolution of the zero state under a step-function Hamiltonian with N = 100 training states and 200 predicted states, that the QRNN with one memory qubit reaches a cost value of approximately 0.976 and the feed-forward QNN one of approximately 0.931, so the QRNN does not learn the time evolution as perfectly as the delay by one channel but still learns and predicts well.",
+      "anchor": "Appendix F.1.b, Figure 7, p.28 and p.31",
+      "quotes": [
+        "As can be seen, the QRNN with one memory qubit reaches a cost value of approximately 0.976 and the feed-forward QNN one of approximately 0.931,",
+        "so the QRNN does not learn the time evolution as perfectly as the delay by one channel but still learns and predicts well.",
+        "N = 100 training states and a learningrate of ǫη = 0.06 are used.",
+        "The prediction was tested on the next M = 200 states in the time evolution."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation.",
+      "result_type": "measured", "context": "qml",
+      "reader_inference": "The gap between 0.976 and 0.931 is a single run on one Hamiltonian; no spread over random initialisations is reported."
+    },
+    {
+      "id": "time-evolution-rnn-motivation-cited",
+      "value": "The authors state, citing references 4, 88 and 89, that learning the time evolution of a state is classically a prototypical example where RNNs are often more efficient than feed-forward NNs.",
+      "anchor": "Results, Simulation of learning tasks, p.4",
+      "quotes": ["Classically this is a prototypical example where RNNs are often more efficient than feed-forward NNs [4, 88, 89]."],
+      "kind": "cited", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A statement the paper attributes to other work.",
+      "result_type": "cited", "context": "ml", "reader_inference": ""
+    },
+    {
+      "id": "filter-task-definition",
+      "value": "The authors define the noise filtering task with noise made of two components: the low-frequency noise can be cancelled by subtracting a drift with speed v, and the high-frequency noise is cancelled by exponential smoothing, that is taking a convex combination with previous correct outcomes.",
+      "anchor": "Results, Simulation of learning tasks, p.5 (Eq. 6); Appendix F.1.c, p.29",
+      "quotes": [
+        "The low-frequency noise can be cancelled by subtracting a drift with speed v.",
+        "The high-frequency noise is cancelled by exponential smooth-",
+        "taking a convex combination with previous"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "definition", "certainty_reason": "The paper's own definition of the task, p.5.",
+      "result_type": "setup", "context": "qml",
+      "reader_inference": "The task is built from two arithmetic operations (a linear drift and an exponential average) on phase parameters, which the paper itself says are not realisable perfectly on quantum states."
+    },
+    {
+      "id": "filter-no-cloning-limit-and-qrnn-improvement",
+      "value": "The authors state that the bandwidth filtering task cannot be solved with fidelity one due to the no-cloning theorem, but that QRNNs with sufficient memory can significantly improve the quality of the outputs; the QRNNs in the figure were trained on M = 25 sequences of 25 pairs each, tested on sequences of length 10 to 100 in increments of 2, with 150 training rounds of the Nadam optimiser.",
+      "anchor": "Results, Simulation of learning tasks, p.5; Figure 2(c) caption, p.4",
+      "quotes": [
+        "This task can not be solved with fidelity one due to the no-cloning theorem.",
+        "Nevertheless, QRNNs with sufficient memory can significantly improve the quality of the outputs, see Figure 2(c).",
+        "The QRNNs are trained using M = 25 sequences of Nα = 25 pairs each and are tested on sequences with length from 10 to 100 in the increments of 2.",
+        "We used 150 training rounds with the Nadam [87] optimiser;"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation, read from a plot.",
+      "result_type": "measured", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "proposition-f1-no-perfect-quantum-multiplication",
+      "value": "The paper proves (Proposition F.1) that, for an open set I of phases containing 0, π/2, π, 3π/2, there is no quantum channel that maps the state with phase θ to the state with phase a times θ for all θ in I, for a given number a not in the set {0, 1, −1}; the proof uses the linearity of quantum channels, and the paper notes that channels exist for the three excluded values of a.",
+      "anchor": "Proposition F.1, Appendix F.1.c, p.31-32",
+      "quotes": [
+        "Proposition F.1 (No perfect quantum multiplication). Consider an open set I ⊆ R containing 0, π/2, π, 3π/2.",
+        "There is no quantum channel εa such that for a given number a ∈/ {0, 1, −1}",
+        "Due to the linearity of quantum channels,",
+        "ε0(·) = tr(·)|0 0|, ε1(·) = I(·)I, ε−1(·) = σx(·)σx."
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "proved result", "certainty_reason": "A stated proposition with its conditions (the open set I of phases and the excluded values of a) quoted from p.31, with a proof on pp.31-32.",
+      "result_type": "theoretical", "context": "qml",
+      "reader_inference": "Two printed slips do not change the argument: at the phase 3π/2 the equation should read 1 − e^{iaπ/2} + e^{iaπ} − e^{i3aπ/2} = 0 (the paper prints a plus sign before the last term; with the minus sign, multiplying by 1 + e^{iaπ/2} gives the printed 1 − e^{i2aπ}), and the last proof line says the channels exist for a not in {0, 1, −1}, where it means a in that set. The proof then fixes the odd integers a = 1 and a = −1 only."
+    },
+    {
+      "id": "cited-no-broadcasting-no-cloning",
+      "value": "The paper cites, as Theorem F.1 (no broadcasting, reference 112), that for two quantum states a quantum channel that maps each to a bipartite state with both marginals equal to it exists if and only if the two states commute, and cites no cloning (references 113 and 114) as Corollary F.1.",
+      "anchor": "Theorem F.1 and Corollary F.1, Appendix F.1.c, p.32",
+      "quotes": [
+        "Theorem F.1 (No broadcasting, [112]).",
+        "A quantum channel ρs → ρ˜s exists if and only if ρ0 and ρ1 commute.",
+        "Corollary F.1 (No cloning, [113, 114])."
+      ],
+      "kind": "cited", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id": "corollary-f2-no-perfect-quantum-adders",
+      "value": "The paper states (Corollary F.2) that there is no completely positive trace-preserving map that, for any states with continuous parameters x and y, outputs a bipartite state whose marginals are the state with parameter x + y and the state with parameter x, and argues that otherwise x could have been broadcast by choosing y = 0, contradicting the no-broadcasting theorem.",
+      "anchor": "Corollary F.2, Appendix F.1.c, p.32",
+      "quotes": [
+        "Corollary F.2 (No perfect quantum adders). There is no CPTP ε such that for any |x , |y ∈ H, with different",
+        "If such ε had existed, x could have been broadcasted by choosing y = 0."
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A short reduction to a cited theorem; the family of states is left loosely specified (different parameter values corresponding to different quantum states), and the proof is two sentences.",
+      "result_type": "theoretical", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "cited-approximate-cloning-bound",
+      "value": "The paper cites (Theorem F.2, reference 115, Keyl and Werner) a lower bound on the error of approximate cloning maps in one-particle expectation values, stated to be tight, and states that the error vanishes in the classical limit.",
+      "anchor": "Theorem F.2, Appendix F.1.c, p.32",
+      "quotes": [
+        "Theorem F.2 (Approximate N to M cloning, [115]).",
+        "The bound is tight.",
+        "Second, there is a bound on how well approximate cloning can be performed; notably, the error vanishes in the classical limit."
+      ],
+      "kind": "cited", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A result the paper attributes to other work.",
+      "result_type": "cited", "context": "qc", "reader_inference": ""
+    },
+    {
+      "id": "affine-filter-not-perfectly-learnable",
+      "value": "The authors state that, for the quantum data set, the filter function cannot be learned perfectly even if it is affine, because it is impossible to realise perfect quantum multiplication (Proposition F.1) or quantum addition (Corollary F.2), and that this dramatically complicates the design of quantum filters and shows in QRNNs typically not reaching fidelity 1.",
+      "anchor": "Appendix F.1.c, pp.30-32",
+      "quotes": [
+        "even if f is affine. Indeed, it is impossible to realise neither (perfect) quantum multiplication (Proposition F.1), nor quantum addition Corollary F.2.",
+        "This dramatically complicates the design of quantum filters and manifests itself in QRNNs typically not reaching fidelity 1 for Data F4."
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "The impossibility results are proved or cited; the consequence for filter learning is the authors' statement, with reference to simulations.",
+      "result_type": "claim", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "claim1-feedforward-cannot-correct-drift",
+      "value": "The authors state, as an informal Claim 1, that feed-forward QNNs do not have access to the time step t and so cannot correct drifts beyond a random guess of the value of f, and that for a linear drift this yields a guess equivalent to outputting a totally mixed state; the rigorous versions are Lemma 3 and Lemma 4.",
+      "anchor": "Claim 1, Appendix F.1.c.a, p.33",
+      "quotes": [
+        "As feed-forward QNNs do not have access to the time step t, they cannot correct drifts beyond a random guess of the value of f .",
+        "For f (t) = v · t, this yields a guess equivalent to outputting a totally mixed state.",
+        "The rigorous versions of the Claim 1 are contained in both Lemma 3 and Lemma 4;"
+      ],
+      "kind": "claimed", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An informal claim; the rigorous statements are Lemmas 3 and 4.",
+      "result_type": "claim", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "lemma2-cost-of-epsilon-close-states",
+      "value": "The paper proves (Lemma 2) that for two pairs of states whose trace distances are each at most ǫ and a quantum channel ε, tr[ρ′ε(ρ)] ≤ tr[σ′ε(σ)] + 2ǫ, using the contractivity of quantum channels in trace distance.",
+      "anchor": "Lemma 2, Appendix F.1.c.a, p.33",
+      "quotes": [
+        "Consider two pairs of states ρ, ρ′ and σ, σ′ such that tr |ρ − σ| , tr |ρ′ − σ′| ≤ ǫ and a quantum channel ε. Then tr[ρ′ε(ρ)] ≤ tr[σ′ε(σ)] + 2ǫ.",
+        "Quantum channels are contractive [117, Theorem 9.2], i.e. tr |ε(ρ) − ε(σ)| ≤ tr |ρ − σ|."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "high", "high_basis": "proved result", "certainty_reason": "A stated lemma with its conditions quoted from p.33 and a three-line proof from contractivity.",
+      "result_type": "theoretical", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "lemma3-feedforward-cannot-correct-drifts",
+      "value": "The paper states and proves (Lemma 3) that, for a feed-forward QNN trained to output pure states on drift sequences, if the phases can be split into classes whose members are within trace distance ǫ and whose frequency at each time step is at most the inverse of the number of time steps plus ǫ, then the achievable average fidelity during training is bounded from above by an expression given in the lemma and from below by one half.",
+      "anchor": "Lemma 3, Appendix F.1.c.a, p.33-34",
+      "quotes": [
+        "Lemma 3 (Feed-forward networks can not correct drifts). Consider a feed-forward QNN trained on sequences",
+        "then the achievable average fidelity of the QNN during training is bounded from above by",
+        "The bound from below on the average fidelity is achieved by a network that outputs the totally mixed state"
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "The upper-bound expression is garbled by the text layer, so the statement could not be quoted in full.",
+      "result_type": "theoretical", "context": "qml",
+      "reader_inference": "In the proof the step from the upper limit on each class frequency to a bound through the geometric sum treats the frequencies as if they were equal at every time step; with only an upper limit of 1/T + ǫ per step I could not reconstruct why the ǫ term is not multiplied by T. The qualitative content (small ǫ gives a bound near one half plus a term of order 1/T) is plausible, and Lemma 4 gives a separate probabilistic version."
+    },
+    {
+      "id": "lemma4-feedforward-drift-probabilistic-bound",
+      "value": "The paper states and proves (Lemma 4) that, for a feed-forward QNN trained on a sequence with each phase drawn independently from the uniform measure on the circle, the network's optimal cost function is, with probability greater or equal to 1 − η and for a constant c > 0 independent of T and η, upper bounded by a quantity of the form one half plus a term decreasing in the sequence length T, and that CQNN ≥ 1/2 with certainty.",
+      "anchor": "Lemma 4, Appendix F.1.c.a, p.35",
+      "quotes": [
+        "Lemma 4. Consider a feed-forward QNN trained on a sequence",
+        "with probability greater or equal to 1 − η and for c > 0 independent of T and η. Moreover, CQNN ≥ 1/2 with certainty."
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "The bound itself is garbled by the text layer (its radical and exponent are lost), so the statement could not be quoted in full.",
+      "result_type": "theoretical", "context": "qml",
+      "reader_inference": "The intermediate steps of the proof suggest a decay as a negative one-third power of T, not an inverse square root; the text layer prints a bare radical so I do not state the exponent. The proof treats 0 < η ≤ 1, though the statement says any η > 0."
+    },
+    {
+      "id": "drift-cancel-circuit-memory-qubits",
+      "value": "The authors state that with a memory of m qubits, QRNNs can be trained to cancel drifts on sequences of length two to the power m exactly (up to the numerical precision), with a circuit in which the memory stores a binary representation of the position in the sequence, and at each time step the QRNN applies a rotation by the stored position times v and adds one to the stored value.",
+      "anchor": "Appendix F.1.c.a, Figure 8, p.37-38",
+      "quotes": [
+        "With memory consisting of m qubits, QRNNs can be trained to cancel drifts on sequences of length 2m exactly (more precisely–up to the numerical precision).",
+        "The memory stores a binary representation in the computational basis of the position in a sequence t."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A construction described by a circuit figure and a sentence, with no proof or numerical record of the exactness; the exponent is printed flat by the text layer.",
+      "result_type": "theoretical", "context": "qml",
+      "reader_inference": "The text layer prints the length as 2m for two to the m; with a memory of m qubits the position counter can only run through two to the m values, which is consistent with that reading."
+    },
+    {
+      "id": "drift-misestimation-long-sequences",
+      "value": "The authors state that they expect the network's performance to deteriorate as test sequences become longer, because even a slight misestimation of v results in fidelity approaching 0.5 for long enough sequences.",
+      "anchor": "Appendix F.1.c.a, p.37",
+      "quotes": [
+        "We expect the network's performance will deteriorate as test sequences become longer.",
+        "Indeed, even a slight misestimation of v results in fidelity approaching 0.5 for long enough sequences."
+      ],
+      "kind": "claimed", "claim_type": "absence", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "The authors' expectation, without a derivation in the paper.",
+      "result_type": "claim", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "linear-drift-feedforward-vs-memory-result",
+      "value": "The authors report, for linear drift mitigation with drift velocity v = 0.6, that feed-forward networks cannot be trained to fidelities above 0.5, that memory access improves performance, and that the performance increases with the memory size.",
+      "anchor": "Appendix F.1.c.a, Figure 9, p.38",
+      "quotes": [
+        "As expected, feed-forward networks can not be trained to fidelities above 0.5, yet memory access improves performance.",
+        "The performance increases with the memory size.",
+        "Here the drift velocity v = 0.6."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation, read from a plot.",
+      "result_type": "measured", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "nonlinear-drift-qualitatively-similar",
+      "value": "The authors report that results for the non-linear drift g(t) are qualitatively similar to the case of linear drifts.",
+      "anchor": "Appendix F.1.c.a, Figure 10, p.38-39",
+      "quotes": ["are qualitatively similar to the"],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation, stated in one clause.",
+      "result_type": "measured", "context": "qml",
+      "reader_inference": "The text layer dropped the radical in the sentence; the Figure 10 caption gives the drift as 0.6 times the square root of t."
+    },
+    {
+      "id": "exponential-smoothing-gap-result",
+      "value": "The authors report, for high-frequency noise mitigation by exponential smoothing with smoothing parameter α = 0.4, that their numerical results suggest a gap in the performance of recurrent and feed-forward QNNs, and that they expect no QRNN, even with large memory, to solve exponential smoothing with fidelity one because there are no quantum adders and multipliers.",
+      "anchor": "Appendix F.1.c.b, Figure 11, p.38-39",
+      "quotes": [
+        "Our numerical results suggest a gap in the performance of recurrent and feed-forward QNNs; see Figure 11.",
+        "we do not expect even QRNNs with large memory to solve exponential smoothing with fidelity one.",
+        "smoothing parameter α = 0.4."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation, read from a plot.",
+      "result_type": "measured", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "feedforward-smoothing-heuristic-bound",
+      "value": "The authors give a heuristic estimate for the feed-forward QNN on exponential smoothing: an expected fidelity Fφ of about 0.93 for their data and test sequence length 100, a trained fidelity of about 0.925, and a lower bound of about 0.86 on the attainable fidelity, which they report agrees well with the observed average performance, and they hope the argument can be the basis of a rigorous proof.",
+      "anchor": "Appendix F.1.c.b, p.39-40",
+      "quotes": [
+        "For the parameters of our data set and test sequence length 100, Fφ is close to its minimum and is∼ 0.93.",
+        "observe that each network trains to the fidelity F·α ∼ 0.925.",
+        "∼ 0.86. Intriguingly, this bound, up to fluctuations, corresponds very well with the average performance of feed-forward QNNs observed in Figure 11.",
+        "We hope this argument can be used as a basis for a rigorous proof."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A heuristic argument that the authors themselves say is not yet a rigorous proof.",
+      "result_type": "claim", "context": "qml",
+      "reader_inference": "The step from the two fidelities to a lower bound given by their product is not justified in the text, and the argument uses the expected fidelity of a map the paper says is not a channel; it is a plausibility estimate, not a bound."
+    },
+    {
+      "id": "recurrent-gain-smoothing-modest-explanation",
+      "value": "The authors state that recurrent networks have access to information about previously encountered phases, but that this knowledge is very limited because some unclonable information was encoded into the previous outputs, and that together with the decent performance of feed-forward QNNs for exponential smoothing these reasons lead to a detectable but, in comparison to drift mitigation, modest performance gap.",
+      "anchor": "Appendix F.1.c.b, p.40",
+      "quotes": [
+        "However, this knowledge is very limited, as some unclonable information was encoded into the previous outputs.",
+        "these reasons lead to detectable, but in comparison to drift mitigation, modest performance gap."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "The authors' explanation, without a derivation or an ablation.",
+      "result_type": "claim", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "bandwidth-filter-two-memory-qubits-threshold",
+      "value": "The authors report, for the combined bandwidth filter with drift velocity v = 0.6 and smoothing parameter α = 0.4, that the task has a threshold behaviour regarding the memory, namely at least two qubits of memory are needed to outperform feed-forward QNNs significantly.",
+      "anchor": "Appendix F.1.c.c, Figure 12, p.40",
+      "quotes": [
+        "We see that this task has a threshold behaviour regarding the memory; namely, at least two qubits of memory are needed to outperform feed-forward QNNs significantly.",
+        "drift velocity v = 0.6 and smoothing parameter α = 0.4."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation, read from a plot.",
+      "result_type": "measured", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "mixed-output-swap-result",
+      "value": "The authors report, as a proof of concept for the algorithm for mixed output states, a learning run for the SWAP channel with N = 20 training and test pairs and a learning rate of 0.05, in which the plot of fidelity looks similar to the one with pure output, except that the starting fidelities and the fidelity the feed-forward QNN reaches are higher.",
+      "anchor": "Appendix F.2, Figure 13, p.41",
+      "quotes": [
+        "Figure 13 shows the learning procedure for mixed states for the SWAP channel with each N = 20 training and test pairs and a learning rate of ǫη = 0.05.",
+        "The plot in panel (b) looks similar to the one with pure output, only that the starting fidelities and the fidelity the feed-forward QNN reaches are higher"
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation.",
+      "result_type": "measured", "context": "qml",
+      "reader_inference": "The reason offered (the fidelity of two random mixed states is higher than that of two random pure states) explains why the feed-forward baseline looks better here, so the QRNN advantage is smaller in this panel than for pure states."
+    },
+    {
+      "id": "global-cost-swap-result",
+      "value": "The authors report, as a proof of principle for the global cost algorithm, a learning run for the SWAP channel with N = 20 training and test pairs and a learning rate of 0.005, in which the global cost starts at about 10−7 so that its logarithm is shown in a second plot, and the plots look similar to the one for the local cost apart from the scaling and the steepness.",
+      "anchor": "Appendix F.3, Figure 14, p.41-42",
+      "quotes": [
+        "shows the learning procedure for the SWAP channel with each N = 20 training and test pairs and a learningrate of ǫη = 0.005",
+        "As the global cost is smaller and before the training at about 10−7,",
+        "Except for the different scaling of the cost from zero to one and the steepness, the plots look similar to the one for the local cost."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An empirical result from one study, a classical simulation.",
+      "result_type": "measured", "context": "qml",
+      "reader_inference": "The text refers to Figure 13 for this run, but the caption of Figure 14 is the one that describes it."
+    },
+    {
+      "id": "global-cost-learning-rate-scaling",
+      "value": "The authors state that, because the global update matrix is very small when the output is far from the target, they scale the learning rate as η = η̃/C, which corresponds to minimizing ln(C) and, they state, leads to the same result as minimizing C directly, as the logarithm is strictly monotonically increasing.",
+      "anchor": "Appendix D, p.24",
+      "quotes": ["This corrensponds to minimizing ln(C) which leads to the same result as minimizing C directly as the logarithm is strictly monotonically increasing."],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "The authors' justification of a training heuristic, without a measured comparison.",
+      "result_type": "theoretical", "context": "qml",
+      "reader_inference": "The global cost for pure outputs is maximised in the paper (0 worst, 1 best), so the statements about minimising C and ln(C) read as written for minimisation; the factor 1/C scales the step by the current cost in the pure-output case. Equality of the minimiser of ln(C) and of C does not by itself make the gradient-step dynamics equal, which the paper does not claim."
+    },
+    {
+      "id": "quantum-training-algorithm-description",
+      "value": "The authors state that the quantum algorithm is mainly the same as for feed-forward QNNs as presented in reference 118, with parameterised unitaries trained by classical gradient descent, the gradient estimated by a finite difference of costs, and the cost estimated on a quantum computer with the SWAP trick, and that for the local cost the first input and memory state are run through the QRNN once, the SWAP trick is applied to the output and its training output, and the memory register is then used again with the next input.",
+      "anchor": "Appendix G, p.41-42",
+      "quotes": [
+        "The quantum algorithm is mainly the same as for feed-forward QNNs as presented in [118].",
+        "where the cost is estimated on a quantum computer using the SWAP trick as described in [79] in supplementary note 4 for pure outputs.",
+        "We would then be left with a state in the memory register on which we then - together with the following input use the QRNN a second time and so on until the last run is reached."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "setup", "certainty_reason": "The paper's description of its own proposed quantum training algorithm, Appendix G.",
+      "result_type": "setup", "context": "qml",
+      "reader_inference": "No run of this algorithm, on hardware or in a circuit-level simulation, is reported in the paper; only the classical simulations of Appendices B to E are."
+    },
+    {
+      "id": "quantum-training-resource-advantages-claim",
+      "value": "The authors state that, for the quantum training algorithm, using the global cost has the advantage of learning entanglement between different outputs, and that the major advantage of the local cost is that fewer qubits are needed because the in- and output qubit registers can be used again.",
+      "anchor": "Appendix G, p.42",
+      "quotes": [
+        "Using the global cost has the advantage of learning entanglement between different outputs.",
+        "The major advantage of this is that fewer qubits are needed because the in- and output qubit registers can be used again."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An author's statement without a test in the paper.",
+      "result_type": "claim", "context": "qml",
+      "reader_inference": "The paper restricts itself to product outputs, for which the global cost has no entanglement between outputs to learn, so this advantage is not exercised by any reported task."
+    },
+    {
+      "id": "discussion-scalability-claim",
+      "value": "The authors state that their approach is scalable, as only a few qubits must be stored to train the network and the number of qubits needed only scales with the width and not the network's depth.",
+      "anchor": "Discussion, p.5",
+      "quotes": [
+        "Our approach is scalable – only a few qubits must be stored to train the network.",
+        "The number of qubits needed only scales with the width and not the network’s depth."
+      ],
+      "kind": "claimed", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "An author's claim; the paper's simulations are limited to total input and output spaces of up to four qubits.",
+      "result_type": "claim", "context": "qml",
+      "reader_inference": "The simulations show no scaling measurement; the statement is a property of the layer-by-layer algorithm, and the simulation cost still grows exponentially in the width (Results, p.4)."
+    },
+    {
+      "id": "discussion-hardware-suitability-cited",
+      "value": "The authors state that the experimental requirements for implementing QRNNs are comparable with those demonstrated in producing matrix-product states and density matrices, that reference 92 experimentally implemented a quantum channel with memory for 6 time steps on an ion-trap quantum computer, and that measurement-based photonic devices demonstrated up to 100 sequential operations on a single logical qubit (reference 97) and generated more than 1 million mode 1d cluster states (reference 98).",
+      "anchor": "Discussion, p.5",
+      "quotes": [
+        "The experimental requirements for implementing QRNNs are comparable with those demonstrated in producing matrix-product states and density matrices [92–96].",
+        "the authors have experimentally implemented a quantum channel with memory for 6 time steps on an ion-trap quantum computer.",
+        "up to 100 sequential operations on a single logical qubit [97] and generate more than 1 million mode 1d cluster states [98]."
+      ],
+      "kind": "cited", "claim_type": "positive", "fidelity": "scoped",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A comparison and results the paper attributes to other work.",
+      "result_type": "cited", "context": "qml", "reader_inference": ""
+    },
+    {
+      "id": "discussion-conclusion-qrnn-outperform-feedforward",
+      "value": "The authors state that they demonstrated that QRNNs can outperform feed-forward QNNs with respect to several exemplary learning tasks, by designing benchmarking tasks and classically simulating the training of QRNNs, and that they view their QRNNs as trainable matrix-product quantum channels.",
+      "anchor": "Discussion, p.5",
+      "quotes": [
+        "We demonstrated that QRNNs can outperform feedforward QNNs with respect to several exemplary learning tasks.",
+        "One can view our QRNNs as trainable matrix-product quantum channels."
+      ],
+      "kind": "shown", "claim_type": "positive", "fidelity": "exact",
+      "certainty_suggestion": "low", "high_basis": "", "certainty_reason": "A conclusion drawn from classical simulations of small networks on three task families, from one study.",
+      "result_type": "measured", "context": "qml",
+      "reader_inference": "The only baseline is a feed-forward QNN, which by construction cannot see earlier inputs; the paper reports no comparison with a classical recurrent network, with a noisy-hardware model, or with other quantum recurrent designs."
+    },
+    {
+      "id": "discussion-open-questions",
+      "value": "The authors list open questions: whether there are interesting tasks involving data entangled at different points in time or space and how well QRNNs cope with such data, how large the set of tasks is for which quantum memory helps, when quantum memory is necessary and when a classical memory can replace it, whether QRNNs are suited to matrix-product states and density matrices, whether they can be used for catalyst discovery, and whether recurrency influences robustness to noise of QNNs.",
+      "anchor": "Discussion, p.5",
+      "quotes": [
+        "Many intriguing questions remain in the study of QRNNs: We have concentrated on the case of product in- and outputs;",
+        "When is quantum memory necessary, and when can it be substituted by a classical memory [44]?",
+        "Can one use QRNNs for the discovery of catalysts? Does recurrency influence robustness to noise of QNNs?"
+      ],
+      "kind": "shown", "claim_type": "absence", "fidelity": "scoped",
+      "certainty_suggestion": "high", "high_basis": "stated limit", "certainty_reason": "The paper's own list of what it leaves open, Discussion, p.5.",
+      "result_type": "setup", "context": "qml", "reader_inference": ""
+    }
+  ]
+}]}
