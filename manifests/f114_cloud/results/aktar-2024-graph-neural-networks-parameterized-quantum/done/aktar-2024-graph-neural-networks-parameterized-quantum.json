@@ -1,0 +1,530 @@
+{
+ "papers": [
+  {
+   "record_id": "aktar-2024-graph-neural-networks-parameterized-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Aktar-et-al._2024_Graph-Neural-Networks-for-Parameterized-Quantum-Circuits-Expressibility__2405.08100.pdf",
+   "title_in_file": "Graph Neural Networks for Parameterized Quantum Circuits Expressibility Estimation",
+   "version_note": "",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A graph transformer model that predicts the expressibility of parameterized quantum circuits on noiseless and noisy IBM backends.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "gnn-expressibility-dataset",
+     "verdict": "confirmed",
+     "note": "Section 3.1.2 and 4.1 give the breakdown: 25,000 noiseless PQCs and 4,000 PQCs on each of three noisy fake backends (12,000 in total).",
+     "value": "",
+     "anchor": "Abstract p.1; Section 3.1.2 p.5",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "gnn-expressibility-extrapolation-limit",
+     "verdict": "narrowed",
+     "note": "The 0.22 and 0.3 figures belong to the model trained on up to 3 qubits only; the quoted sentences are on p.11 (Section 4.5), with Figure 11 on p.12. The paper also reports the up-to-8-qubit model reaches 0.05 on 10-qubit circuits.",
+     "value": "The authors report that the RMSE of the model trained on circuits of up to 3 qubits spikes to 0.22 and 0.3 when extrapolating to 6 and 10-qubit circuit sizes, which they describe as significant deviation from expected values.",
+     "anchor": "Section 4.5, p.11; Figure 11, p.12",
+     "quotes": [
+      "For instance, the RMSE for the ‘up to 3-qubit’ model spikes to 0.22 and 0.3 for extrapolating to 6 and 10-qubit circuit sizes, respectively, indicating significant deviation from expected values."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "gnn-expressibility-rmse",
+     "verdict": "narrowed",
+     "note": "The RMSE figures are on the held-out test split of random PQCs of 1 to 8 qubits; the noisy figure is per backend (0.06, 0.05 and 0.06), and the noisy backends are IBM fake (simulated) backends.",
+     "value": "The authors report that on the test split of random PQCs the model reaches an RMSE of 0.05 on the noiseless simulator and RMSE values of 0.06, 0.05, and 0.06 on the FakeGuadalupe, FakeMumbai, and FakeHanoi backends, respectively.",
+     "anchor": "Section 4.2, p.8; Abstract p.1",
+     "quotes": [
+      "achieving RMSE values of 0.06, 0.05, and 0.06, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "expressibility-definition-kl",
+     "value": "The paper defines expressibility as the Kullback-Leibler divergence of the PQC fidelity distribution from the fidelity distribution of Haar random states, and states that lower values mean a more expressible circuit.",
+     "anchor": "Section 2.3, p.4",
+     "quotes": [
+      "Thus, Expressibility is the Kullback-Leibler (KL) divergence [18] of PP QC (F ; θ⃗) from PHaar(F ) [43].",
+      "lower KL divergence values indicate a closer approximation to the maximally expressive ensemble of Haar random"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2.3 gives the definition (Equation 1) the results depend on; the definition is credited to Sim et al. [43].",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fidelity-estimation-cost-sim",
+     "value": "The authors state that Sim et al. used 5,000 fidelity samples for four-qubit circuits to compute expressibility, and that directly measuring expressibility needs many fidelity samples.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "However, directly measuring expressibility poses challenges due to the requirement for many fidelity samples. For instance, experiments in Sim et al. [43] utilized 5,000 fidelity samples for four-qubit circuits."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result about another paper's experiments.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "random-pqc-generation-setup",
+     "value": "The authors state that the random PQCs range from 1 to 10 qubits, repeated up to three times, built from random single-qubit gates (RX, RY, RZ, H, I) and random multi-qubit gates (CX, CRX, CRY, CRZ, SWAP).",
+     "anchor": "Section 3.1.1, p.5",
+     "quotes": [
+      "The circuit construction begins with an initial layer where random single-qubit gates (RX, RY, RZ, H, I) are applied to each qubit.",
+      "randomly placing multi-qubit gates (CX, CRX, CRY, CRZ, SWAP) between randomly chosen pairs of qubits",
+      "The random PQCs range from ‘1’ to ‘10’ qubits, repeated up to three times."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own dataset construction in Section 3.1.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ground-truth-expressibility-procedure",
+     "value": "The authors state that the ground truth expressibility of each PQC is computed from 5,000 runs on a backend, with a histogram bin size of 75, after transpiling to native gates.",
+     "anchor": "Section 3.1.2, p.5",
+     "quotes": [
+      "run the experiments on a quantum backend 5,000 times to attain a distribution of quantum state fidelities for each PQC",
+      "using a histogram with a bin size of 75 and calculate the expressibility value of the PQC using Equation (1)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own ground truth procedure in Section 3.1.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dataset-composition-and-backends",
+     "value": "The authors state that the dataset holds 3,000 PQCs for each qubit count from 1 to 8 and 500 PQCs for 9 and 10 qubits, for 25,000 random PQCs on the noiseless IBM QASM simulator, plus 4,000 PQCs on each of three noisy backends (IBM FakeGuadalupe, FakeMumbai, and FakeHanoi).",
+     "anchor": "Section 3.1.2, p.5; Section 4.1, p.7",
+     "quotes": [
+      "We generate 3,000 PQCs each on 1 ≤ n ≤ 8 qubits, and 500 PQCs for n = 9, 10; for a total of 25,000 random PQCs.",
+      "we collect the expressibility of 4,000 PQCs on three noisy backends (IBM FakeGuadalupe, FakeMumbai, and FakeHanoi)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own dataset scope in Section 3.1.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The noisy backends are fake (simulated) IBM backends; real hardware appears only in the five-circuit IBM Hanoi check."
+    },
+    {
+     "id_suggestion": "evaluation-circuit-sets",
+     "value": "The authors state that the validation sets are 64 RealAmplitudes hardware-efficient circuits (up to four qubits, up to four repetitions) and 19 reference circuits from Sim et al. replicated with up to three repetitions.",
+     "anchor": "Section 3.1.3, p.6",
+     "quotes": [
+      "tailored explicitly for systems of up to four qubits, with a maximum of four circuit repetitions",
+      "generate a comprehensive set of 64 hardwareefficient circuits",
+      "our datasets encompass 19 reference circuits, originally employed in prior experiments [43], and these are replicated with up to three circuit repetitions"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own validation scope in Section 3.1.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gnn-architecture",
+     "value": "The authors state that the model has three TransformerConv layers with ReLU, global mean pooling, three fully connected layers for the global features, concatenation, and a regressor of three fully connected layers that outputs one expressibility value, trained with the Huber loss.",
+     "anchor": "Section 3.2.2, p.7",
+     "quotes": [
+      "The model starts with three TransformerConv [42] layers",
+      "The learned features are aggregated using Global Mean Pooling",
+      "the global features of the circuits are propagated through three fully connected (FC) layers",
+      "fed to the regressor consisting of three fully connected layers",
+      "optimized to minimize the Huber loss between the predicted and the ideal expressibility values"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own model design in Section 3.2.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "node-feature-encoding",
+     "value": "The authors state that each node feature vector has length 23: six digits for node type (one-hot), ten digits for the targeted qubits, and seven digits for backend noise information, with global features of circuit depth, number of parameterized gates, number of qubits and gate counts.",
+     "anchor": "Section 3.2.1, p.6-7; Figure 2, p.4",
+     "quotes": [
+      "The feature vector employed has a length of 23, with the first six digits corresponding to node types (one-hot encoded), the following ten digits representing the targeted qubit(s), and",
+      "the last seven digits encoding backend noise information",
+      "global feature sets, i.e., circuit depth, number of parameterized gates, number of qubits, and counts of different gates"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own feature encoding in Section 3.2.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "training-setup",
+     "value": "The authors state that the random PQCs on n ≤ 8 qubits are split 70% training, 10% validation and 20% testing, and that training uses the Adam optimizer for 300 epochs, learning rate 10−4, weight decay 10−6, batch size 1, 500 and Huber loss.",
+     "anchor": "Section 4.1, p.7-8",
+     "quotes": [
+      "random PQCs on n ≤ 8 qubits into three distinct subsets: 70% for training, 10% for validation, and 20% for testing",
+      "Our training procedure utilizes the Adam optimizer for 300 epochs, with a learning rate of 10−4 and a weight decay of 10−6.",
+      "We utilize a batch size of 1, 500 and employ the Huber loss"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup in Section 4.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noiseless-vs-noisy-test-rmse",
+     "value": "The authors report test RMSE of 0.05 on the noiseless simulator and 0.06, 0.05, and 0.06 on FakeGuadalupe, FakeMumbai, and FakeHanoi, and state that the noiseless simulator gives better predictions while the model keeps decent performance on noisy backends.",
+     "anchor": "Section 4.2, p.8; Figure 5",
+     "quotes": [
+      "The leftmost plot illustrates predictions for the noiseless simulator where the predicted expressibility values closely match the actual values, resulting in an RMSE of 0.05.",
+      "achieving RMSE values of 0.06, 0.05, and 0.06, respectively.",
+      "the noiseless simulator offers better predictions while the model maintains decent performance even on noisy backends"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Each RMSE is one training run on one split; the paper reports no repeat runs or confidence interval."
+    },
+    {
+     "id_suggestion": "global-feature-correlation",
+     "value": "The authors report that circuit depth, number of parameters and number of single-qubit gates show a negative correlation with expressibility, others near zero correlation, and that adding global features lowers test RMSE on all backends, notably the noisy ones.",
+     "anchor": "Section 4.3, p.9; Figure 6, p.7",
+     "quotes": [
+      "We find that circuit depth, number of parameters, and number of single-qubit gates show an excellent negative correlation with the expressibility of PQC.",
+      "incorporating global circuit features alongside node features reduces the RMSE loss on the testing dataset for both noiseless and noisy backends",
+      "The model accuracy notably improves for the noisy backends."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text says excellent negative correlation; the Figure 6 caption says good negative correlation. The paper gives no coefficient in the text."
+    },
+    {
+     "id_suggestion": "sample-size-analysis",
+     "value": "The authors report that, on samples from a noisy simulator, a model trained with only 8 × 500 samples reaches an RMSE of 0.073, with slight further improvement as the sample size grows.",
+     "anchor": "Section 4.3, p.9; Figure 8",
+     "quotes": [
+      "We find that with only 8 × 500 samples, the model achieves an RMSE of 0.073.",
+      "we observe a slight improvement in model accuracy as more samples are included"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper does not name which noisy backend this analysis used."
+    },
+    {
+     "id_suggestion": "scalability-claim-samples",
+     "value": "The authors state that the analysis suggests the model can be extended to more qubits in a scalable manner in the number of samples.",
+     "anchor": "Section 4.3, p.9",
+     "quotes": [
+      "The analysis suggests that the model can be seamlessly extended to more qubits in a scalable manner in the number of samples."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the sample-size test covers 1 to 8 qubits only.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The sample-size experiment stops at 8 qubits, so scaling to more qubits is not shown by that experiment."
+    },
+    {
+     "id_suggestion": "reference-circuits-noiseless-rmse",
+     "value": "The authors report that on the noiseless simulator the model reaches RMSE of 0.05 on the reference circuits of Sim et al. and an overall RMSE of 0.06 on the RealAmplitudes circuits, with more disparity for the 4-qubit circuits.",
+     "anchor": "Section 4.4, p.9-10; Figure 7, p.8",
+     "quotes": [
+      "achieving an RMSE of 0.05",
+      "achieves an overall RMSE of 0.06",
+      "the 4-qubit circuits exhibit more disparity between predicted and actual values"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "layers-improve-expressibility",
+     "value": "The authors state that adding multiple layers improves the expressibility of the reference PQCs, giving more capability to explore the Hilbert space.",
+     "anchor": "Section 4.4, p.10; Figure 7",
+     "quotes": [
+      "adding multiple layers improves the expressibility of the PQCs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This describes the computed values of the 19 reference circuits at one to three layers, not the model."
+    },
+    {
+     "id_suggestion": "noise-changes-expressibility",
+     "value": "The authors state that the actual expressibility values of the 19 reference circuits differ between the noiseless simulator and the noisy backends, and that hardware noise has a significant impact on the expressibility of the RealAmplitudes sets.",
+     "anchor": "Section 4.4, p.10-11",
+     "quotes": [
+      "The actual expressibility values of the 19 reference circuits in a noiseless simulator and noisy backends are different.",
+      "We observe a significant impact of hardware noise on the expressibility of these hardware-efficient ansatz sets."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "reference-circuits-noisy-rmse",
+     "value": "The authors report that on the reference circuits of Sim et al. in the noisy backends the overall RMSE is 0.07, 0.08, and 0.07 for FakeGuadalupe, FakeHanoi, and FakeMumbai.",
+     "anchor": "Section 4.4, p.10; Figure 9",
+     "quotes": [
+      "The prediction achieved an overall RMSE of 0.07, 0.08, and 0.07 in FakeGuadalupe, FakeHanoi, and FakeMumbai backend, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "realamplitude-noisy-rmse-inconsistent",
+     "value": "The authors report an RMSE of 0.08 for the FakeGuadalupe, FakeHanoi, and FakeMumbai backends on the RealAmplitudes sets in the text, while the figure caption reports 0.09, 0.05, and 0.09 for FakeGuadalupe, FakeHanoi, and FakeMumbai.",
+     "anchor": "Section 4.4, p.11; Figure 10, p.10",
+     "quotes": [
+      "Overall, we achieve an RMSE of 0.08 for the FakeGuadalupe, FakeHanoi, and FakeMumbai backends.",
+      "achieving overall RMSE of 0.09, 0.05, and 0.09 in FakeGuadalupe, FakeHanoi, and FakeMumbai backends, respectively"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text and the Figure 10 caption disagree; the paper does not say which holds. The contribution list (p.3) gives 0.08 as the average."
+    },
+    {
+     "id_suggestion": "ibm-hanoi-hardware-check",
+     "value": "The authors report that, for five reference circuits of Sim et al. run on IBM Hanoi hardware, a model trained on all three noisy backends gives overall RMSE 0.1 and a model trained on FakeHanoi only gives overall RMSE 0.19.",
+     "anchor": "Section 4.4, p.10; Table 1, p.11",
+     "quotes": [
+      "We find that the model trained with samples with different noise levels gives better prediction (overall RMSE 0.1) than the model trained with only FakeHanoi samples (overall RMSE 0.19)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Only five circuits were run on real hardware; the rest of the noisy results use fake backends."
+    },
+    {
+     "id_suggestion": "ibm-hanoi-table1-values",
+     "value": "The authors report in the IBM-Hanoi comparison table expressibility on IBM-Hanoi, the FakeHanoi-trained prediction and the combined-model prediction for five reference circuits, in the printed order:0.280, 0.497, 0.402; 0.237, 0.262, 0.080; 0.451, 0.524, 0.330; 0.266, 0.395, 0.237; 0.302, 0.639, 0.401.",
+     "anchor": "Table 1, p.11",
+     "quotes": [
+      "0.280 0.497 0.402",
+      "0.237 0.262 0.080",
+      "0.451 0.524 0.330",
+      "0.266 0.395 0.237",
+      "0.302 0.639 0.401"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer holds the table as three-number lines; the mapping of each line to an ID follows the column order printed in the table."
+    },
+    {
+     "id_suggestion": "extrapolation-interpolation-rmse",
+     "value": "The authors report that the average interpolation RMSE across the different trained-range models is 0.05, and that the model trained on circuits of up to 8 qubits reaches an RMSE of 0.05 on unseen 10-qubit circuits.",
+     "anchor": "Section 4.5, p.11; Figure 11, p.12",
+     "quotes": [
+      "The average RMSE for interpolation across different qubit models is 0.05",
+      "when the model is trained on up to higher qubit PQC sizes, such as the ‘up to 8-qubit’ model, it achieves an RMSE of 0.05 for predicting expressibility values for unseen ‘10’ qubit circuits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "extrapolation-threshold-5-qubits",
+     "value": "The authors report that extrapolation is good from the model trained on up to 5 qubits onwards, and that for models trained on up to 4 qubits extrapolation has a very high RMSE.",
+     "anchor": "Section 4.5, p.11; Figure 11 caption, p.12",
+     "quotes": [
+      "Notably, the plot indicates good extrapolation accuracy already from the ‘up to 5-qubit’ model onwards.",
+      "For models trained only on PQCs on up to 4 qubits, extrapolation has a very high RMSE."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The abstract says low extrapolation RMSE for models trained on up to 5 qubits; the conclusion's claim of strong extrapolation holds only above this training range."
+    },
+    {
+     "id_suggestion": "conclusion-cost-reduction-claim",
+     "value": "The authors state that the trained model can significantly reduce the exponential computational cost of fidelity distribution estimation in expressibility computation.",
+     "anchor": "Section 6, p.13",
+     "quotes": [
+      "our prediction model can significantly reduce the exponential computational cost associated with fidelity distribution estimation in expressibility computation"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no runtime comparison is given in the text.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The text reports no timing of the model against the sampling method."
+    },
+    {
+     "id_suggestion": "conclusion-strong-extrapolation-claim",
+     "value": "The authors state in the conclusion that the model demonstrates strong extrapolation abilities by accurately predicting expressibility for out-of-range qubit circuits.",
+     "anchor": "Section 6, p.13",
+     "quotes": [
+      "Additionally, our model demonstrates strong"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; Section 4.5 shows it holds only for models trained on 5 or more qubits.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Section 4.5 reports RMSE 0.22 and 0.3 for the up-to-3-qubit model, so the claim is conditional on the training range."
+    },
+    {
+     "id_suggestion": "no-prior-ml-expressibility-work",
+     "value": "The authors state that, to the best of their knowledge, no prior work predicts the expressibility of PQCs with machine learning.",
+     "anchor": "Section 5.2, p.13",
+     "quotes": [
+      "To the best of our knowledge, no prior work has been done to predict the expressibility of PQCs using ML techniques."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim of novelty.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
