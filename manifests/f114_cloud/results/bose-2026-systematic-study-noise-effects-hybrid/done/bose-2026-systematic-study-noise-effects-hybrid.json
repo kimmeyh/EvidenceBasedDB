@@ -1,0 +1,520 @@
+{
+ "papers": [
+  {
+   "record_id": "bose-2026-systematic-study-noise-effects-hybrid",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Bose-Faryad_2026_A-Systematic-Study-of-Noise-Effects-in-Hybrid-Quantum-Classical-Machine__2604.11541.pdf",
+   "title_in_file": "A Systematic Study of Noise Effects in Hybrid Quantum-Classical Machine Learning",
+   "version_note": "arXiv:2604.11541v1 [quant-ph] 13 Apr 2026, preprint in IEEE TQE template; matches the record.",
+   "pages": 18,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation study of a Qiskit variational quantum classifier on the Titanic dataset under dataset-level, angle-space and circuit-level noise.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "bose-baseline-accuracy",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors report that under ideal execution, with no dataset-level perturbations and no quantum circuit noise, the variational quantum classifier achieved a mean training accuracy of 76.40% and a mean testing accuracy of 76.12%.",
+     "anchor": "Section V.A, p.7",
+     "quotes": [
+      "the variational quantum classifier achieved a mean training accuracy of 76.40% and a closely matching mean testing accuracy of 76.12%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Single Titanic split with fixed seeds and statevector execution; the paper reports no classical-model baseline for comparison."
+    },
+    {
+     "id": "bose-circuit-noise-degradation",
+     "verdict": "narrowed",
+     "note": "Stored value is right on the numbers and on amplitude damping. The paper limits it: the figures are means over circuit-noise configurations built from depolarizing, amplitude damping, phase damping and their combinations, with a noise-free dataset; the appendix bar labels show single configurations at 38 to 41 percent.",
+     "value": "The authors report that with the classical dataset noise-free, introducing circuit-level quantum noise (across depolarizing, amplitude damping, phase damping, and their combinations) reduced mean training accuracy from approximately 76% to 38.67% and mean testing accuracy to 39.15%, and that amplitude damping consistently had the most severe impact on both loss convergence and final accuracy.",
+     "anchor": "Section V.B, p.7",
+     "quotes": [
+      "Across depolarizing, amplitude damping, phase damping, and their combinations, meant training accuracy collapsed from approximately 76% to 38.67%, while mean testing accuracy droped to 39.15%.",
+      "Among the four quantum noise channels, amplitude damping consistently exhibited the most severe impact on both loss convergence and final accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Appendix accuracy bar labels (Figure 6) read 38 to 41 percent for the noisy configurations; the amplitude-damping-only bar is not distinguishable from the others at that resolution."
+    },
+    {
+     "id": "bose-combined-noise-claim",
+     "verdict": "narrowed",
+     "note": "The abstract states that classical input noise intensifies decoherence effects. Section V.E reports the opposite for the combined runs: accuracy stays at the circuit-noise floor and extra dataset corruption adds negligible degradation. The abstract claim holds only in the paper's 'low-to-moderate circuit noise regimes' wording, for which no separate data is shown.",
+     "value": "The authors state in the abstract that noise in classical input data can significantly intensify the effects of quantum decoherence, resulting in less stable training and noticeably lower classification accuracy. In Section V.E they report that with dataset-level and circuit noise applied together, mean training and testing accuracies remained near 39%, with additional dataset corruption contributing negligible further degradation once strong quantum noise was present.",
+     "anchor": "Abstract; Section V.E, p.8",
+     "quotes": [
+      "noise in classical input data can significantly intensify the effects of quantum decoherence, resulting in less stable training and noticeably lower classification accuracy.",
+      "Mean training and testing accuracies remained near 39%, with additional dataset corruption contributing negligible further degradation once strong quantum noise wass present."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The abstract claim is not supported by the combined results as reported: Table 2 gives the same 39.15 ± 0.83 for circuit noise only and for dataset plus circuit noise. Each noise strength is fixed, so no low-to-moderate circuit noise regime was varied."
+    },
+    {
+     "id": "bose-limits-simulation-only",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that the experimental evaluation is limited to small-scale quantum circuits, relies on high-fidelity noise simulation, and that validating the findings on real quantum hardware remains future work.",
+     "anchor": "Section VI, p.9",
+     "quotes": [
+      "While the experimental evaluation is limited to smallscale quantum circuits",
+      "Although this study relies on high-fidelity noise simulation, validating these findings on real quantum hardware remains an important direction for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section VI.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "bose-setup-dataset-task",
+     "value": "The authors report that the benchmark is the Titanic dataset for binary classification, with numerical features normalized to the range [0, 1], and that the classifier predicts Survived (1) or Not Survived (0).",
+     "anchor": "Section III.A, p.4; Section IV, p.5",
+     "quotes": [
+      "The Titanic dataset was used as a benchmark for binary classification.",
+      "normalized to the range [0, 1]",
+      "Survived (1) or Not Survived (0)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Setup stated in Sections III.A and IV.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper gives no number of selected features, qubits, samples or train/test ratio."
+    },
+    {
+     "id_suggestion": "bose-setup-model-optimizer",
+     "value": "The authors report that the classifier composes a ZZFeatureMap with a hardware-efficient variational ansatz, evaluates expectation values with the Qiskit Estimator primitive, and trains by minimizing mean squared error with the COBYLA optimizer.",
+     "anchor": "Section III.B and III.F, pp.4-5",
+     "quotes": [
+      "Preprocessed classical features were encoded into quantum states using a ZZFeatureMap",
+      "The Quantum expectation values were evaluated using the Estimator primitive provided by Qiskit [23].",
+      "Model training minimizes the mean squared error (MSE) loss between the predicted labels and ground truth values using the COBYLA optimizer"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Model setup in Sections III.B and III.F.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bose-setup-execution-mode",
+     "value": "The authors report in the hardware and noise configuration table that execution uses a statevector for the ideal case and shot-based sampling for the noisy case, with the number of shots fixed per experiment and the random seed fixed for reproducibility.",
+     "anchor": "Table 1, p.6",
+     "quotes": [
+      "Statevector (ideal) and shot-based sampling (noisy)",
+      "Fixed per experiment (finite sampling) Fixed for reproducibility"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Setup stated in Table 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No shot count or iteration cap is given in the text; the appendix loss plots run to 100 iterations on the x axis. Ideal runs on a statevector explain the zero baseline standard deviation."
+    },
+    {
+     "id_suggestion": "bose-setup-dataset-noise-levels",
+     "value": "The authors report fixed dataset-level noise strengths: Gaussian and multiplicative noise with standard deviation 0.05, uniform and random-sign noise with bound 0.05, salt-and-pepper noise with impulse ratio 3%, feature dropout with probability 0.05, and quantization noise with step size pi over 255.",
+     "anchor": "Section IV.A, p.6-7",
+     "quotes": [
+      "Additive Gaussian and multiplicative noise are therefore applied with standard deviation σ = 0.05",
+      "Uniform and random-sign noise employ bounded perturbations with ε = 0.05",
+      "Salt-and-pepper noise was introduced with an impulse ratio of 3%",
+      "Feature dropout was applied with probability pd = 0.05",
+      "Quantization noise is implemented using a step size ∆ = π/255"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Noise settings stated in Section IV.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Each dataset-noise type is run at one strength only, so no dose-response curve over dataset noise exists in the paper."
+    },
+    {
+     "id_suggestion": "bose-setup-angle-noise",
+     "value": "The authors define encoding-level noise by mapping normalized features to rotation angles theta = 2 pi (x minus 0.5), adding zero-mean Gaussian noise, and wrapping to the interval minus pi to pi; they evaluate standard deviations of 0, 0.01, 0.03 and 0.05.",
+     "anchor": "Section III.D, p.4; Section IV.A, p.7",
+     "quotes": [
+      "The normalized classical features are mapped to rotation angles θ = 2π(x − 0.5), perturbed by zero-mean Gaussian noise, and wrapped in the periodic domain [−π, π] prior to circuit execution.",
+      "We evaluate σ ∈ {0, 0.01, 0.03, 0.05}"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition and setting stated in Sections III.D and IV.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bose-setup-circuit-noise-levels",
+     "value": "The authors report fixed circuit-level noise strengths in Qiskit Aer: depolarizing probability 0.05, amplitude and phase damping parameter 0.05, and Pauli error probability 0.02.",
+     "anchor": "Section IV.A, p.7",
+     "quotes": [
+      "Depolarizing noise was applied with probability p = 0.05",
+      "The amplitude and phase damping channels use relaxation parameters γ = 0.05",
+      "The Pauli error probability is set to p = 0.02"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Noise settings stated in Section IV.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "One strength per channel; channel severity is compared at different parameter meanings (0.05 depolarizing against 0.05 damping against 0.02 Pauli), so the amplitude-damping ranking is not a like-for-like comparison."
+    },
+    {
+     "id_suggestion": "bose-setup-circuit-configs",
+     "value": "The authors report that each of the four circuit noise sources (depolarizing, amplitude damping, phase damping, Pauli) is an independent binary factor, giving two to the power four, that is 16, circuit-level noise configurations including the noise-free baseline.",
+     "anchor": "Section III.E, p.4",
+     "quotes": [
+      "Each noise source is treated as an independent binary factor, yielding 24 = 16 distinct circuit-level noise configurations, including the noise-free baseline."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Setup stated in Section III.E.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Readout error appears in the abstract, Table 1 and Section IV.A but is not among the four factors that make the 16 configurations."
+    },
+    {
+     "id_suggestion": "bose-total-configurations",
+     "value": "The authors report that all quantitative results are computed from experimental logs covering a total of 192 configurations arising from dataset-level perturbations, encoding-level noise and circuit-level noise channels.",
+     "anchor": "Section V.F, Data Availability, p.9",
+     "quotes": [
+      "covering a total of 192 configurations arising from combinations of dataset-level perturbations, encodinglevel (angle-space) noise, and circuit-level quantum noise channels."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Count conflicts with the paper's own factor counts.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Nine dataset conditions times 4 angle levels times 16 circuit configurations is 576; the appendix shows 8 dataset conditions, which gives 512. The figure 192 matches neither, and the paper does not explain it."
+    },
+    {
+     "id_suggestion": "bose-dataset-noise-only-result",
+     "value": "The authors report that with ideal circuit execution, dataset-level perturbations reduced convergence stability and slowed optimization without catastrophic failure, and across most dataset noise models mean classification accuracy remained within 1-4% of the clean baseline.",
+     "anchor": "Section V.C, pp.7-8",
+     "quotes": [
+      "dataset-level perturbations reduced convergence stabil-",
+      "ity and slow optimization but did not cause catastrophic failure. Across most dataset noise models, mean classification accuracy remained within 1–4% of the clean baseline"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer breaks the first quote across a page; the two quoted pieces are as printed. No per-noise-type accuracy is given in the text."
+    },
+    {
+     "id_suggestion": "bose-table2-summary",
+     "value": "The authors report in Table 2 test accuracy as: clean baseline 76.12 ± 0.00; dataset noise only 72-76 (± < 1); angle-space noise only 68-74 (± < 2); circuit noise only 39.15 ± 0.83; dataset plus circuit noise 39.15 ± 0.83; angle-space plus circuit noise 38-40 (± < 1); all three together 38-40 (± < 1).",
+     "anchor": "Table 2, p.8 (row mapping by order in the text layer)",
+     "quotes": [
+      "76.12 ± 0.00",
+      "72–76 (± < 1)",
+      "68–74 (± < 2)",
+      "39.15 ± 0.83",
+      "38–40 (± < 1)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer prints the Table 2 cells in column order, so the row mapping is inferred from row order. The dataset-plus-circuit row repeats the circuit-only mean and spread exactly (39.15 ± 0.83); the paper gives no per-noise-type breakdown and does not say what the ranges span."
+    },
+    {
+     "id_suggestion": "bose-angle-noise-result",
+     "value": "The authors report that angle-space noise produced a smooth and progressive decline in classification accuracy as noise variance increases, with no abrupt optimization collapse, slower convergence at higher perturbation strength, and a cumulative effect more pronounced at higher noise levels.",
+     "anchor": "Section V.D, p.8",
+     "quotes": [
+      "Encoding-level angle-space noise produced a smooth and progressive decline in classification accuracy as the noise variance increases.",
+      "angle-space perturbations did not trigger abrupt optimization collapse.",
+      "its cumulative effect becomes increasingly pronounced at higher noise levels"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 2 gives 68-74 for angle-space noise alone; the largest angle-noise setting is sigma 0.05. The same label sequence appears in every dataset-noise appendix figure, so the angle-noise trend is not separable by dataset noise type there."
+    },
+    {
+     "id_suggestion": "bose-combined-saturation",
+     "value": "The authors state that applying dataset-level and circuit noise together left performance near the circuit-noise floor, that hardware noise masks the observable impact of classical data corruption, and that dataset noise exacerbated degradation in low-to-moderate circuit noise regimes but its marginal effect became negligible once circuit noise dominated.",
+     "anchor": "Section V.E, p.8",
+     "quotes": [
+      "This masking effect indicates that, in the NISQ regime, hardware noise dominates model behavior and suppresses the observable impact of classical data corruption.",
+      "Although dataset-level noise exacerbated performance degradation in low-to-moderate circuit noise regimes, its marginal effect became negligible once circuit-level noise dominated"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "No low-to-moderate circuit-noise condition is reported: each channel has one strength. The statement about those regimes has no data shown in the text."
+    },
+    {
+     "id_suggestion": "bose-circuit-noise-dominant",
+     "value": "The authors state that circuit-level quantum noise is the dominant factor limiting variational quantum classifier performance in the NISQ era, collapsing accuracy to a common noise floor irrespective of additional classical corruption, while dataset-level and encoding-level perturbations contribute secondary but measurable effects.",
+     "anchor": "Section V.F, p.8",
+     "quotes": [
+      "circuit-level quantum noise overwhelmingly dominates performance, collapsing accuracy to a common noise floor irrespective of additional classical corruption.",
+      "circuit-level quantum noise is the dominant factor limiting variational quantum classifier performance in the NISQ era"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The result comes from one 2-class dataset, one small circuit and simulated noise at one strength per channel; whether the floor near 39% is a chance-level artifact of the label balance is not discussed in the paper."
+    },
+    {
+     "id_suggestion": "bose-no-overfitting-gap",
+     "value": "The authors report that under noisy execution the gap between training and testing accuracy was negligible, and state that circuit-level noise primarily disrupts optimization and learning dynamics rather than inducing overfitting.",
+     "anchor": "Section V.B, p.7; Section V.E, p.8",
+     "quotes": [
+      "The negligible generalization gap under noisy execution indicated that circuit-level quantum noise primarily disrupts the optimization and learning dynamics of the variational circuit rather than inducing overfitting.",
+      "Across all combined noise configurations, training and testing accuracies remained closely aligned"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bose-baseline-determinism",
+     "value": "The authors report a zero standard deviation across runs in the noise-free baseline, which they state indicated fully deterministic convergence and stable optimization, and they state the baseline confirmed that the ZZFeatureMap gave an effective embedding for the Titanic dataset.",
+     "anchor": "Section V.A, p.7",
+     "quotes": [
+      "The zero standard deviation across runs indicated fully deterministic convergence and stable optimization behavior in the absence of noise.",
+      "This strong baseline performance confirmed that the selected ZZFeatureMap provided an effective quantum feature embedding for the Titanic dataset"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Fixed seeds, deterministic initialization and a statevector backend make a zero spread expected; it does not show stability. The paper gives no classical baseline, so 'effective embedding' is not compared to anything."
+    },
+    {
+     "id_suggestion": "bose-amplitude-damping-mechanism",
+     "value": "The authors state that the severe effect of amplitude damping is consistent with its irreversible energy relaxation mechanism, which they say suppressed gradient magnitudes and effectively induced barren-plateau-like optimization behavior in variational circuits.",
+     "anchor": "Section V.B, p.7",
+     "quotes": [
+      "This observation is consistent with its irreversible energy relaxation mechanism, which suppressed gradient magnitudes and effectively induced barren-plateau-like optimization behavior in variational circuits."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Mechanism asserted without a gradient measurement in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The optimizer is COBYLA, which is gradient-free, and no gradient magnitude is reported, so the mechanism is not tested here."
+    },
+    {
+     "id_suggestion": "bose-novelty-claim",
+     "value": "The authors claim that this study provides the first systematic, hierarchical evaluation of the combined effects of classical data noise and quantum hardware noise within a single variational QML pipeline, and that most QML robustness studies focused on circuit noise alone.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "this study provides the first systematic, hierarchical evaluation of their combined effects within a single variational QML pipeline",
+      "However most QML robustness studies have focused on circuit noise alone, leaving the combined effect of classical input corruption and quantum noise underexplored."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Priority claim with no literature survey shown.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bose-scalability-claims",
+     "value": "The authors state that even modest levels of classical input noise can substantially amplify the negative impact of quantum decoherence, that this suggests the combined influence is likely to become increasingly severe in larger-scale systems, and that the noise interaction patterns are expected to persist as hardware improves.",
+     "anchor": "Section V.G, pp.9-10",
+     "quotes": [
+      "The results presented in this study show that even modest levels of classical input noise can substantially amplify the negative impact of quantum decoherence.",
+      "the combined influence of classical and quantum noise sources is likely to become increasingly severe",
+      "the noise interaction patterns identified in this work are expected to persist"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Extrapolation beyond the tested scale.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The first quote conflicts with Section V.E, where added dataset noise contributed negligible further degradation under circuit noise. No experiment with more qubits or deeper circuits is reported."
+    },
+    {
+     "id_suggestion": "bose-limit-dataset-scope",
+     "value": "The authors state, as future work, that it remains to examine whether the observed noise-dominance effects persist in more challenging settings, including higher-dimensional, class-imbalanced and real-world datasets, and describe the Titanic dataset as a convenient and well-controlled testbed.",
+     "anchor": "Section VI, p.9",
+     "quotes": [
+      "While the Titanic dataset provides a convenient and well-controlled testbed",
+      "an important direction for future work is to examine whether the observed noisedominance effects persist in more challenging settings, including higher-dimensional, class-imbalanced, and real-world datasets."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section VI.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bose-limit-unmitigated-no-scale",
+     "value": "The authors state that the work deliberately focuses on unmitigated noise, with error mitigation left to future work, and that the experiments do not directly probe large-qubit systems.",
+     "anchor": "Section VI, p.9; Section V.G, p.9",
+     "quotes": [
+      "this work deliberately focuses on unmitigated noise to assess intrinsic robustness under realistic NISQ conditions [28].",
+      "While these experiments do not directly probe large-qubit systems"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits, Sections V.G and VI.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bose-appendix-accuracy-labels",
+     "value": "The authors report in the appendix accuracy plot for no dataset noise and angle-space noise sigma 0 (the first appendix accuracy plot) bar labels of 38, 39 and 41 for the noisy circuit configurations.",
+     "anchor": "Appendix, Figure 6(a), p.11 (and Figures 8, 10, 12, 14, 16, 18, 20)",
+     "quotes": [
+      "Training vs Testing Accuracy | No Dataset Noise | Angle Noise =0",
+      "38 38 38 39 38 39 38 39 38 39 39 39 38 38 38 39 38 39 39 41 38 38 38 38 38 38 39 38 39 38"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The bar-label lines in the text layer are character-for-character identical on every appendix accuracy page (Figures 6, 8, 10, 12, 14, 16, 18, 20) for all eight dataset-noise conditions, at each of the four angle-noise levels, including the 76 76 for the clean-circuit model at sigma 0. Either the plots are copies of one another or dataset noise had no effect on these runs; this contradicts Table 2's 72-76 for dataset noise alone and the abstract's claim of an interaction. The per-noise-type results cannot be checked from the figures."
+    },
+    {
+     "id_suggestion": "bose-conclusion",
+     "value": "The authors conclude that their systematic robustness analysis reveals critical vulnerabilities in hybrid quantum-classical learning pipelines and emphasizes the necessity of noise-aware evaluation strategies in the NISQ era, and say that future work will cover error mitigation, noise-resilient feature maps and larger-scale real-world problems.",
+     "anchor": "Section VI, p.9",
+     "quotes": [
+      "The results reveal critical vulnerabilities in hybrid quantum–classical learning pipelines and emphasize the necessity of noise-aware evaluation strategies in the Noisy Intermediate-Scale Quantum (NISQ) era [3]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bose-reproducibility-seeds",
+     "value": "The authors report that all simulations used fixed random seeds for dataset splitting, noise generation and parameter initialization, identical COBYLA stopping criteria, and that CSV logs of every run are given as supplementary material.",
+     "anchor": "Section IV.A, p.7; Section V.F, p.9",
+     "quotes": [
+      "All simulations were executed with fixed random seeds controlling for dataset splitting, noise generation, and parameter initialization.",
+      "The complete set of CSV files is provided as supplementary material to enable reproducibility and independent analysis."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Setup stated in Sections IV.A and V.F.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Results come from one fixed seed, yet 'mean and standard deviation computed across repeated runs where applicable' is also stated; the source of the spread in 39.15 ± 0.83 is not explained. The supplementary CSV files are not part of this text."
+    }
+   ]
+  }
+ ]
+}
