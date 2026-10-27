@@ -1,0 +1,888 @@
+{
+ "papers": [
+  {
+   "record_id": "anthony-2026-experimental-evidence-generalization-quantum-machine",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2026-09_Anthony_Experimental-evidence-of-generalization-in-quantum-machine-learning-in_2609.24666.pdf",
+   "title_in_file": "Experimental evidence of generalization in quantum machine learning in small-data regime",
+   "version_note": "",
+   "pages": 18,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulated study of a hardware-compatible QCNN on 8 x 8 digit and 28 x 28 BreastMNIST images, covering few-sample generalization, classical baselines and the transpiled cost of amplitude and angle encoding up to 512 x 512 pixels.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qcnn-encoding-bottleneck",
+     "verdict": "confirmed",
+     "note": "Confirmed. The 18 and 262,144 qubit figures are for the full QCNN at 512 x 512 pixels (Figure 12 caption).",
+     "value": "",
+     "anchor": "Abstract; Figure 12 caption, p.14",
+     "quotes": [
+      "amplitude encoding stays qubit-efficient but grows extremely deep, whereas angle encoding stays shallow but becomes qubit-prohibitive.",
+      "Amplitude encoding requires far fewer qubits (18 vs. 262,144), gates (3.9×106 vs. 2.2×108), and layers (4 vs. 17)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qcnn-few-shot",
+     "verdict": "narrowed",
+     "note": "Narrowed. The result is for the easily separable digit classes 0 and 1, simulated on a noise-calibrated model; the paper puts test accuracy at about 0.94 by N = 10, and states that varying only N does not test the bound's dependence on circuit complexity and parameter reuse.",
+     "value": "The authors report that on the binary digit task (classes 0 and 1) the QCNN reaches test accuracy of about 0.94 by N = 10 training samples, after which it changes little, with generalization error decreasing as the training set grows. The authors state that, because only the training-set size is varied, this does not by itself test the bound's dependence on circuit complexity and parameter reuse.",
+     "anchor": "Results, Generalization from few training samples, p.8; Discussion and Conclusion, p.13",
+     "quotes": [
+      "reaching about 0.94 by N = 10, after which it changes little.",
+      "we retained the two classes 0 and 1 (178 and 182 samples, respectively).",
+      "Because we vary only the training-set size, this consistency does not by itself test the bound’s dependence on circuit complexity and parameter reuse"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qcnn-matched-budget",
+     "verdict": "narrowed",
+     "note": "Narrowed. The matched budget is 45 parameters on the digit task and 57 on BreastMNIST. The larger CNN is strongest throughout on the digits but overtakes the QCNN only at larger N on BreastMNIST; a panel of standard classical classifiers lies above the QCNN on both tasks.",
+     "value": "The authors report that at an equal parameter budget (45 parameters on the digit task, 57 on BreastMNIST) the QCNN learns above chance while the parameter-matched classical CNN stays at chance, and that an unconstrained classical CNN with roughly 25,000 parameters remains strongest when data are plentiful. On the digit task the QCNN reaches about 0.95 for N ≥ 20.",
+     "anchor": "Abstract; Results, Comparison with classical baselines, p.11",
+     "quotes": [
+      "does not exceed chance accuracy at any training size, whereas the 45-parameter QCNN reaches about 0.95 for N ≥ 20",
+      "where the parameter-matched CNN stays at chance while the 57-parameter QCNN learns consistently above it",
+      "an unconstrained classical baseline with roughly 25,000 parameters remains strongest when data are plentiful."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qcnn-simulated-not-advantage",
+     "verdict": "confirmed",
+     "note": "Confirmed. The paper also says the digit task used a noise-calibrated dynamic-circuit model and BreastMNIST an idealized statevector backend.",
+     "value": "",
+     "anchor": "Discussion and Conclusion, pp.13-16",
+     "quotes": [
+      "The experiments are simulated rather than executed on hardware",
+      "so we read our results as a controlled study of data efficiency rather than as evidence of quantum advantage."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own limit in the Discussion and Conclusion.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "caro-bound-statement",
+     "value": "The paper states, citing Caro et al., that for a model built from T independently parameterized local gates the generalization error is bounded with high probability over the draw of the training set, and that N of order T log T over epsilon squared samples guarantee generalization error at most epsilon.",
+     "anchor": "Background, Generalization in quantum machine learning, pp.3-4",
+     "quotes": [
+      "For a model built from T independently parameterized local gates, they proved that, with high probability over the draw of the training set,",
+      "(more precisely, N ∼ T log T /ε2 samples guarantee gen(α) ≤ ε)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result; the paper restates it and does not prove it.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "value": "The paper states, citing Caro et al., that when each gate is reused at most M times the bound depends only logarithmically on M, and that a QCNN has a number of independent parameters that grows only logarithmically in the qubit count n, which gives polylogarithmic sample complexity.",
+     "anchor": "Background, Generalization in quantum machine learning, p.3",
+     "quotes": [
+      "the bound depends only logarithmically on M ,",
+      "so its number of independent parameters grows only as T ∈ O(log n) in the qubit count n.",
+      "yields a polylogarithmic sample complexity"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result restated in the paper.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "caro-bound-reuse-and-qcnn"
+    },
+    {
+     "value": "The authors state two caveats on transferring the Caro et al. guarantee: it concerns classification of quantum states across a phase transition, so whether the same small-sample behaviour survives once classical images are loaded into the circuit is an empirical question; and a small generalization error is informative only if the model can be trained at all.",
+     "anchor": "Background, p.3",
+     "quotes": [
+      "the guarantee and its numerical demonstration concern the classification of quantum states across a phase transition",
+      "a small generalization error is informative only if the model can be trained at all"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of the cited guarantee in the Background.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "caro-caveats-transfer"
+    },
+    {
+     "value": "The paper states, citing Pesah et al., that QCNNs are known to avoid barren plateaus, with their gradient variance vanishing no faster than polynomially in the qubit count n.",
+     "anchor": "Background, p.3",
+     "quotes": [
+      "QCNNs are known to avoid the barren plateaus that obstruct gradient-based optimization in many quantum neural networks: their gradient variance vanishes no faster than polynomially in n [16]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "qcnn-no-barren-plateau-cited"
+    },
+    {
+     "value": "The authors define, for image encoding in this work, quantum probability image encoding (QPIE) and amplitude encoding as synonyms: both store the normalized pixel intensities in the amplitudes of ⌈log2 P ⌉ qubits for a P -pixel image.",
+     "anchor": "Background, Encoding classical data into quantum states, p.4",
+     "quotes": [
+      "in the context of image encoding we treat “QPIE” and “amplitude encoding” as synonyms throughout this work.",
+      "directly in the amplitudes of ⌈log2 P ⌉ qubits for a P -pixel image"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the equivalence for its own use in the Background.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "qpie-amplitude-synonym"
+    },
+    {
+     "value": "The paper states, citing Shende et al., that a generic vector requires a state-preparation circuit of up to O(2n) gates (the exponent printed flat in the text layer, read as 2 to the power n), and that a 64-pixel image occupies only 6 qubits.",
+     "anchor": "Background p.4; Methods, Data encoding, p.6",
+     "quotes": [
+      "a 64-pixel image occupies only 6 qubits",
+      "a generic vector requires a state-preparation circuit of up to O(2n) gates [22]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "amplitude-state-prep-cost"
+    },
+    {
+     "value": "The authors state that the digit benchmark used the scikit-learn digits dataset with classes 0 and 1 (178 and 182 samples), each 8 × 8 image flattened to a 64-dimensional vector and amplitude-encoded into a 6-qubit register, with training sets of sizes N ∈ {2, 5, 10, 20, 40, 80}, a test set of 100 samples re-drawn each repetition, and 10 independent repetitions per training size.",
+     "anchor": "Methods, Dataset and preprocessing, p.5",
+     "quotes": [
+      "which contains 8 × 8 grayscale images of handwritten digits; we retained the two classes 0 and 1 (178 and 182 samples, respectively).",
+      "then amplitude-encoded into a 6-qubit register (26 = 64)",
+      "Training sets of sizes N ∈ {2, 5, 10, 20, 40, 80} were drawn by stratified sampling",
+      "a separate test set of 100 samples was drawn at random from the remaining images",
+      "Metrics are reported as means over 10 independent repetitions per training size"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup in Methods.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "digits-setup"
+    },
+    {
+     "value": "The authors state that BreastMNIST was processed at its native 28 × 28 resolution, flattened to 784 values, zero-padded to 1024 and amplitude-encoded into a 10-qubit register, with training sets of sizes N ∈ {20, 40, 80, 160, 294}, a fixed class-balanced test set of 84 samples, and 20 independent repetitions per training size.",
+     "anchor": "Methods, Dataset and preprocessing, p.5",
+     "quotes": [
+      "each image was flattened to a 784-dimensional vector, zero-padded to 1024 (210) and ℓ2-normalized, then amplitude-encoded into a 10-qubit register.",
+      "Training sets of sizes N ∈ {20, 40, 80, 160, 294} were drawn by stratified sampling",
+      "evaluated on a fixed, class-balanced test set of 84 samples",
+      "averaged over 20 independent repetitions per training size",
+      "which comprises 28 × 28 grayscale breast-ultrasound images"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup in Methods.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "breastmnist-setup"
+    },
+    {
+     "value": "The authors report that BreastMNIST is class-imbalanced in its training split (147 malignant, 399 normal/benign) and test split (42 malignant, 114 normal/benign), and that its classes overlap substantially in pixel space, whereas the two digit classes form clearly separated clusters.",
+     "anchor": "Figure 2 caption, p.4",
+     "quotes": [
+      "BreastMNIST is class-imbalanced in both its training (147 malignant, 399",
+      "test (42 malignant, 114 normal/benign) splits",
+      "whereas the BreastMNIST classes overlap substantially in pixel space."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper describes its own datasets in the Figure 2 caption.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "breastmnist-class-balance"
+    },
+    {
+     "value": "The authors state that for 8 × 8 input images the QCNN operates on n = 6 qubits with 51 gates, 45 parameters and a logical circuit depth of 23 before transpilation, the count being 15 + 3 + 9 + 3 + 15 = 45 trainable parameters, and that the 10-qubit circuit used for BreastMNIST has T = 57 because every additional stage contributes 12 parameters.",
+     "anchor": "Methods, QCNN Architecture, p.6; Figure 4 caption, p.7; Dense layer, p.7",
+     "quotes": [
+      "For 8 × 8 input images the circuit operates on n = 6 qubits, with 51 gates, 45 parameters and a logical circuit depth of 23 (before transpilation).",
+      "The model has 15 + 3 + 9 + 3 + 15 = 45 trainable parameters.",
+      "every additional stage contributes 12 parameters (9 convolutional and 3 pooling), so the 10-qubit (28×28) circuit used for BreastMNIST has T = 57"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own model construction in Methods.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "qcnn-architecture-parameters"
+    },
+    {
+     "value": "The authors state that the pooling layer measures qubit qi mid-circuit and applies a classically conditioned U3 rotation to qubit qi-1 when the outcome is |1⟩, with three angles shared across all pairs, and that two pooling stages reduce the 6-qubit register to 2 active qubits.",
+     "anchor": "Methods, Pooling layer, p.6",
+     "quotes": [
+      "the qubit qi is measured and discarded; a classically conditioned U3 rotation is applied to qi−1 if the measurement outcome is |1⟩.",
+      "Two pooling stages reduce the 6-qubit register to 2 active qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own architecture in Methods.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "qcnn-pooling-mid-circuit"
+    },
+    {
+     "value": "The authors state that the translational invariance of the convolution kernel is an invariance over the qubit register, not over the image plane, and that the inductive bias supplied, and the property rewarded by the Caro et al. bound, is parameter sharing together with a hierarchical multiscale structure rather than two-dimensional spatial translation-invariance.",
+     "anchor": "Methods, QCNN Architecture, pp.6-7",
+     "quotes": [
+      "the translational invariance of the kernel above is an invariance over the qubit register, not over the image plane.",
+      "is parameter sharing together with this hierarchical multiscale structure rather than two-dimensional spatial translation-invariance."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation of the architecture, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "qcnn-invariance-over-register"
+    },
+    {
+     "value": "The authors state that the classical convolutional baseline matched to an 8 × 8 input has 25,666 trainable parameters, against 45 for the QCNN, from per-stage counts of 192, 4,704, 18,624, 2,080 and 66.",
+     "anchor": "Methods, QCNN Architecture, p.6; Figure 5 caption, p.7",
+     "quotes": [
+      "this baseline uses 25,666 trainable parameters, against 45 for the QCNN.",
+      "totalling 192 + 4,704 + 18,624 + 2,080 + 66 = 25,666",
+      "matched to an 8 × 8 input"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own baseline in Methods and the Figure 5 caption.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "",
+     "id_suggestion": "classical-cnn-baseline-params"
+    },
+    {
+     "value": "The authors state that the digit QCNN was executed as a dynamic circuit on IBM's FakeKyiv noise-aware simulator, with the output qubit measured over 4,000 shots, gradients computed by centered finite differences with step size 0.05 because mid-circuit measurements break the parameter-shift rule, and training with an initial learning rate of 0.1 over 50 epochs.",
+     "anchor": "Methods, Training procedure, p.7",
+     "quotes": [
+      "The QCNN was executed as a genuine dynamic circuit on IBM’s FakeKyiv noise-aware simulator",
+      "The output qubit q0 was measured over 4,000 shots to estimate p = P (|1⟩).",
+      "gradients were therefore computed by centered finite differences with step size ε = 0.05.",
+      "Training used an initial learning rate of 0.1 over 50 epochs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup in Methods.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "digits-backend-training"
+    },
+    {
+     "value": "The authors state that the 10-qubit BreastMNIST QCNN was simulated by exact statevector evaluation in PennyLane without sampling or device noise, with gradients from automatic differentiation, and trained with an initial learning rate of 0.01 over 100 epochs.",
+     "anchor": "Methods, Training procedure, p.7",
+     "quotes": [
+      "The 10-qubit QCNN was instead simulated by exact statevector evaluation, which returns analytic class probabilities without sampling or device noise.",
+      "Training used an initial learning rate of 0.01 over 100 epochs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup in Methods.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "breastmnist-backend-training"
+    },
+    {
+     "value": "The authors state that the two tasks use different backends, that conclusions are drawn within each dataset and never by comparing values across the two, and that because the idealized backend omits device noise the BreastMNIST accuracies should be read as an upper estimate for that task.",
+     "anchor": "Methods, Training procedure, pp.7-8",
+     "quotes": [
+      "never by comparing loss or accuracy values across the two.",
+      "the BreastMNIST accuracies should be read as an upper estimate for that task"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit on its own comparison in Methods.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "",
+     "id_suggestion": "backends-not-comparable-upper-estimate"
+    },
+    {
+     "value": "The authors state that results are summarized by the mean and a 95% Student-t confidence interval over repetitions, that the QCNN and classical baselines are trained and evaluated on the same per-repetition splits so all model comparisons are paired, and that the digit test set is re-drawn each repetition while the BreastMNIST test set is fixed.",
+     "anchor": "Methods, Training procedure, pp.7-8",
+     "quotes": [
+      "a 95% confidence interval",
+      "all model compar-",
+      "isons are paired.",
+      "for BreastMNIST the class-balanced 84-image test set is held fixed across repetitions"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own evaluation protocol in Methods.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "",
+     "id_suggestion": "statistical-evaluation-protocol"
+    },
+    {
+     "value": "The authors report that on the digit task training accuracy rises to near unity within a few epochs for every N, that test accuracy is well above the 0.5 chance level at N = 5, and that the estimated generalization error falls by more than an order of magnitude over the range of training sizes.",
+     "anchor": "Results, Generalization from few training samples, p.8; Figure 6, p.9",
+     "quotes": [
+      "training accuracy rises to near unity within a few epochs",
+      "test accuracy well above the 0.5 chance level at N = 5",
+      "falls by more than an order of magnitude over the range of training sizes"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "digits-generalization-error-decreases"
+    },
+    {
+     "value": "The authors report that the digit generalization-error curve is not strictly monotonic, with the value at N = 40 slightly larger than at N = 20 and N = 80, and attribute this to finite-sampling effects (shot noise, random weight initialization, the limited number of repetitions) rather than to a breakdown of the small-data picture.",
+     "anchor": "Results, p.9",
+     "quotes": [
+      "the value at N = 40 is slightly larger than at",
+      "We attribute this to finite-sampling effects, specifically shot noise, random weight initialization, and the limited number of repetitions",
+      "N = 20 and N = 80. We attribute this to finite-sampling effects"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation with an author attribution that was not tested.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "digits-gen-error-nonmonotonic"
+    },
+    {
+     "value": "The authors state that the digit experiment varies only the training-set size N while the circuit complexity T, the degree of parameter reuse M and the architecture are held fixed, so the data are qualitatively consistent with, but do not by themselves constitute a test of, the specific dependence on T and M in the Caro et al. bounds.",
+     "anchor": "Results, p.9",
+     "quotes": [
+      "this experiment varies only the training-set size N , while the circuit complexity T , the degree of parameter reuse M , and the architecture are held fixed.",
+      "so these data are qualitatively consistent with, but do not by"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its own experiment in Results.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "digits-bound-not-tested"
+    },
+    {
+     "value": "The authors report that from N = 20 onward the residual digit errors are dominated by true class-1 samples predicted as class 0, with class-1 recall settling around 91 to 92% and class-0 recall exceeding 97%, and that accuracy had plateaued near 95%.",
+     "anchor": "Figure 7 caption, p.9",
+     "quotes": [
+      "but from N = 20 onward, once accuracy has plateaued near 95%",
+      "class-1 recall settles around 91 to 92% while class-0 recall exceeds 97%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "digits-class-asymmetry"
+    },
+    {
+     "value": "The authors state that the digit experiment shows the same qualitative few-sample behaviour arising in a hardware-compatible QCNN applied to classical image data, whereas the numerical demonstration of Caro et al. concerned quantum-phase recognition on quantum states.",
+     "anchor": "Results, p.10; Discussion and Conclusion, p.17",
+     "quotes": [
+      "it shows that the same qualitative few-sample behaviour arises in a hardware-compatible QCNN applied to classical image data.",
+      "extending the small-data picture of Caro et al. from quantum-phase recognition to classical images"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion drawn from one simulated experiment.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "extends-caro-to-classical-images"
+    },
+    {
+     "value": "The authors report that on the fixed class-balanced 84-sample BreastMNIST test set the QCNN's balanced accuracy rises from 58.6% at N = 20 to about 62% at the largest training sizes (62.0% at N = 160 and 61.9% at N = 294), passing through 60.4% and 60.3% at N = 40 and N = 80.",
+     "anchor": "Results, BreastMNIST: learning under a strict parameter budget, p.10; Figure 8",
+     "quotes": [
+      "the aggregate balanced accuracy rises from 58.6% at N = 20 to about 62% at the largest training sizes (62.0% at N = 160 and 61.9% at N = 294), passing through 60.4% and 60.3% at N = 40 and N = 80.",
+      "class-balanced 84-sample test set, for which raw accuracy equals balanced accuracy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, on an idealized noise-free backend.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "breastmnist-balanced-accuracy"
+    },
+    {
+     "value": "The authors report that across all training sizes the BreastMNIST QCNN does not collapse onto a single-class predictor, with recall of the malignant class between 54% and 60% and of the normal/benign class between 61% and 65%, against 50% for a constant classifier on the balanced test set.",
+     "anchor": "Results, p.10",
+     "quotes": [
+      "with recall of the malignant class between 54% and 60% and of the normal/benign class between 61% and 65%.",
+      "a constant classifier would score only 50%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "breastmnist-per-class-recall"
+    },
+    {
+     "value": "The authors report that the loss-based generalization gap on BreastMNIST falls monotonically by roughly a factor of three from the smallest to the largest training size.",
+     "anchor": "Results, p.10",
+     "quotes": [
+      "the loss-based generalization gap falls monotonically by roughly a factor of three"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "breastmnist-gen-gap"
+    },
+    {
+     "value": "The authors report that on the digits the unconstrained CNN is strongest throughout, rising from about 0.92 at N = 2 to near-perfect accuracy by N = 80, whereas on BreastMNIST the QCNN exceeds the large CNN at N = 20 (58.6% versus about 55%), matches it near N = 40 (about 60%), and the large CNN pulls ahead to about 74% at N = 294 while the QCNN plateaus near 62%.",
+     "anchor": "Results, Comparison with classical baselines, p.11; Figure 9b caption",
+     "quotes": [
+      "the larger CNN is strongest throughout, rising from about 0.92 at N = 2 to near-perfect accuracy by N = 80",
+      "exceeding it at N = 20 (58.6% versus about 55%) and matching it near N = 40 (∼ 60%)",
+      "it pulls ahead to about 74% at N = 294 while the QCNN plateaus near 62%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "",
+     "id_suggestion": "large-cnn-vs-qcnn-by-task"
+    },
+    {
+     "value": "The authors report that on the digit task an RBF SVM exceeds 0.98 accuracy by N = 5 and logistic regression exceeds 0.99 by N = 10, both well above the QCNN, and that on BreastMNIST every classical baseline in the panel lies above the QCNN across all training sizes.",
+     "anchor": "Results, p.11; Figure 10, p.12",
+     "quotes": [
+      "with an RBF SVM exceeding 0.98 accuracy by N = 5 and logistic regression exceeding 0.99 by N = 10, both well above the QCNN.",
+      "Every classical baseline lies above the QCNN across all training sizes"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "",
+     "id_suggestion": "standard-classifiers-beat-qcnn"
+    },
+    {
+     "value": "The authors state that the QCNN's advantage is one of parameter efficiency relative to a same-architecture classical network, not of accuracy relative to classical machine learning, and that neither task requires a quantum model for accuracy.",
+     "anchor": "Figure 10 caption and text, pp.11-12",
+     "quotes": [
+      "confirming that neither task requires a quantum model for accuracy.",
+      "not of accuracy relative to classical machine learning."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation of their measured results.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "qcnn-advantage-parameter-efficiency-only"
+    },
+    {
+     "value": "The authors report that with amplitude encoding at 512 × 512 pixels the full QCNN occupies 18 qubits, and the transpiled circuit reaches approximately 3.9×106 gates and a depth of about 1.9×106 (exponents printed flat in the text layer).",
+     "anchor": "Scaling behavior, p.12; Figure 12, p.14",
+     "quotes": [
+      "at 512 × 512 the full QCNN occupies 18 qubits, well within current device widths",
+      "reaching approximately 3.9×106 gates and a depth of about 1.9×106"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A transpilation result from one study; at the largest sizes it is a theoretical estimate beyond the simulable qubit range.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "amplitude-encoding-scaling-512"
+    },
+    {
+     "value": "The authors report that angle encoding keeps the circuit shallow but the qubit count grows linearly with the pixel count, reaching 262,144 qubits at 512 × 512, with a transpiled depth of about 6,143 against about 1.9×106 for amplitude encoding.",
+     "anchor": "Scaling behavior, p.12; Figure 12 caption, p.14",
+     "quotes": [
+      "reaching 262,144 qubits at 512 × 512, which is far beyond any near-term platform",
+      "but a substantially larger circuit depth (1.9×106 vs. 6,143)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A transpilation result from one study; beyond the simulable range it is an estimate.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "angle-encoding-scaling-512"
+    },
+    {
+     "value": "The authors report that the gate-count ordering reverses between the encoding step and the full pipeline: amplitude preparation is the more gate-heavy for the encoding circuit alone, but in the full QCNN angle encoding dominates (2.2 × 108 versus 3.9 × 106 gates at 512 × 512) because its layers act on one qubit per pixel.",
+     "anchor": "Scaling behavior, pp.12-13; Figure 12 caption",
+     "quotes": [
+      "gle encoding instead dominates the gate count (2.2 × 108 versus 3.9 × 106 at 512 × 512), because its layers act on one qubit per pixel.",
+      "The crossover therefore originates in the QCNN layers, not in the encoding step alone."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A transpilation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "gate-count-ordering-reverses"
+    },
+    {
+     "value": "The authors state that amplitude encoding is the only option that remains plausible in width across all tested resolutions but is not yet near-term practical because of the depth explosion in state preparation, and that angle-encoded circuits leave the accessible width range already at moderate resolution.",
+     "anchor": "Scaling behavior, p.13",
+     "quotes": [
+      "amplitude encoding is the only option that remains plausible in width across all tested resolutions, but it is not yet near-term practical because of the depth explosion in state preparation."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author assessment against hardware envelopes, not measured on hardware.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "encoding-infeasible-near-term"
+    },
+    {
+     "value": "The paper states, citing a concurrent study by Feng, that under depolarizing noise on downsampled MNIST and Fashion-MNIST the best QCNN encoding is regime-dependent, with angle encoding favored at the smallest resolutions and amplitude encoding strongest at full resolution.",
+     "anchor": "Scaling behavior, p.12",
+     "quotes": [
+      "it finds the best encoding to be regimedependent, with angle encoding favored at the smallest resolutions and amplitude encoding strongest at full resolution [31]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "feng-encoding-regime-dependent"
+    },
+    {
+     "value": "The authors state that patch-based and hybrid encodings of intermediate granularity are the most practical route to scalability, and that a systematic determination of where along this spectrum a QCNN pipeline first becomes hardware-feasible is left to future work.",
+     "anchor": "Scaling behavior, p.13",
+     "quotes": [
+      "These results point to encodings of intermediate granularity as the most practical route to scalability.",
+      "is left to future work; the present analysis identifies the relevant axis"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the open problem and its scope in the Scaling behavior section.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "intermediate-encodings-and-open-scaling"
+    },
+    {
+     "value": "The authors conclude that the dominant obstacle to scaling the QCNN is not optimization or generalization but the cost of encoding classical data, with amplitude encoding qubit-frugal yet prohibitively deep and angle encoding shallow yet qubit-prohibitive.",
+     "anchor": "Abstract; Discussion and Conclusion, pp.13-14",
+     "quotes": [
+      "scaling to realistic image data is constrained less by optimization than by data encoding and hardware execution.",
+      "In summary, we provide empirical evidence that a hardware-compatible QCNN generalizes from very few training samples"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion from simulated experiments.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "dominant-obstacle-is-encoding"
+    },
+    {
+     "value": "The paper states, citing Singh et al., that pure quantum models evaluated on eight MedMNIST datasets including BreastMNIST on a 127-qubit IBM processor reached accuracies of about 67% and AUCs of about 72% with on the order of 102 parameters (exponent printed flat), comparable to classical networks with 104 parameters, while not outperforming the best classical methods.",
+     "anchor": "Discussion and Conclusion, p.14",
+     "quotes": [
+      "who evaluated pure quantum models on eight MedMNIST datasets, including BreastMNIST, on a 127-qubit IBM processor",
+      "classifying with on the order of 102 parameters at accuracies (∼ 67%) and AUCs (∼ 72%) comparable to classical networks with 104 parameters"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "singh-medmnist-hardware-cited"
+    },
+    {
+     "value": "The paper states, citing other work, that uniform generalization bounds do not by themselves explain QML generalization (Gil-Fuster et al.), that QCNNs are effectively classically simulable on the locally easy benchmarks where they perform well (Bermejo et al.), and that the same property that makes QCNNs trainable often renders their loss landscapes classically simulable (Cerezo et al.).",
+     "anchor": "Discussion and Conclusion, pp.15-16",
+     "quotes": [
+      "Gil-Fuster et al. [12] showed that uniform generalization bounds do not by themselves explain QML generalization",
+      "Bermejo et al. [13] showed that QCNNs are effectively classically simulable on the locally easy benchmarks where they perform well.",
+      "often also renders their loss landscapes classically simulable"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "simulability-and-no-advantage-cited"
+    },
+    {
+     "value": "The authors state that their datasets are low-dimensional and highly structured and lie in the regime described by the simulability results, so strong few-shot performance there should not be read as a uniquely quantum effect, and that interpreting it as quantum advantage would be unwarranted on theoretical grounds.",
+     "anchor": "Discussion and Conclusion, pp.15-16",
+     "quotes": [
+      "Interpreting strong few-shot performance as quantum",
+      "strong few-shot performance here should not be read as a uniquely quantum effect."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit on interpreting its own results in the Discussion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "few-shot-not-uniquely-quantum"
+    },
+    {
+     "value": "The paper states, citing Zhao et al., that a polylogarithmically sized fault-tolerant quantum computer can classify and compress massive classical datasets while circumventing the data-loading bottleneck.",
+     "anchor": "Discussion and Conclusion, p.16",
+     "quotes": [
+      "Zhao et al. [35] show that a polylogarithmically sized faulttolerant quantum computer can classify and compress massive classical datasets"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "zhao-fault-tolerant-classification-cited"
+    },
+    {
+     "value": "The authors state that classical simulability of QCNNs is established only for specific regimes and is not a universal property, and that classical simulability precludes a computational quantum advantage but not a practical one, since inductive bias and parameter economy may give benefits in data efficiency, model compactness and trainability that remain to be systematically characterized.",
+     "anchor": "Discussion and Conclusion, p.16",
+     "quotes": [
+      "It is not a universal property.",
+      "classical simulability precludes a computational quantum advantage but not a practical one"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author argument, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "simulability-regime-caveat-practical-benefit"
+    },
+    {
+     "value": "The authors state that a fully equivalent QCNN-CNN comparison remains an open problem and that matched parameter count is only one notion of fairness, since capacity, expressivity and optimization difficulty are not equalized by it.",
+     "anchor": "Discussion and Conclusion, p.16",
+     "quotes": [
+      "A fully equivalent QCNN-CNN comparison remains an open problem.",
+      "matched parameter count is only one notion of fairness, and capacity, expressivity, and optimization difficulty are not equalized by it."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit of its own comparison in the Discussion.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": "",
+     "id_suggestion": "matched-parameters-one-notion-of-fairness"
+    },
+    {
+     "value": "The authors state that absolute performance on BreastMNIST is modest, that the encoding bottleneck is quantified rather than resolved, that device effects beyond the FakeKyiv noise model are not captured, and that a real-hardware demonstration remains future work.",
+     "anchor": "Discussion and Conclusion, p.16",
+     "quotes": [
+      "Absolute performance on BreastMNIST is modest, and the encoding bottleneck we identify is quantified rather than resolved.",
+      "so device effects beyond the FakeKyiv noise model are not captured"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own limitations in the Discussion and Conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "limitations-and-future-work"
+    },
+    {
+     "value": "The authors state that a demonstration of practical advantage will require better encodings, real-hardware execution, stronger application-driven benchmarks, and more rigorous classical baselines.",
+     "anchor": "Discussion and Conclusion, p.16",
+     "quotes": [
+      "a demonstration of practical advantage will require better encodings, real-hardware execution"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of future requirements.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "practical-advantage-requirements"
+    }
+   ]
+  }
+ ]
+}
