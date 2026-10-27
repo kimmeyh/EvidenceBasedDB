@@ -1,0 +1,538 @@
+{
+ "papers": [
+  {
+   "record_id": "abbaszade-2023-toward-quantum-machine-translation-syntactically",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Abbaszade-et-al._2023_Toward-Quantum-Machine-Translation-of-Syntactically-Distinct-Languages__2307.16576.pdf",
+   "title_in_file": "Toward Quantum Machine Translation of Syntactically Distinct Languages",
+   "version_note": "arXiv:2307.16576v1 (31 Jul 2023), Springer Nature LaTeX template preprint; printed pages 1 to 27; the text layer ends with an empty page 28.",
+   "pages": 27,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A preprint that encodes 160 English and Persian sentences as DisCoCat-derived quantum circuits, compares Shannon entropies of their simulated outputs, and trains a classical LSTM encoder-decoder on the encoded circuits.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qnlp-advantage-future-claim",
+     "verdict": "confirmed",
+     "note": "Right as stored. The conclusion is on printed page 24, not p.8 as the stored anchor says; the abstract makes the same statement on p.1.",
+     "value": "The authors state that quantum neural machine translation could offer advantages over classical methods in the future, and that more complex models may be needed for intricate sentence structures.",
+     "anchor": "Conclusion (Section 5), p.24; Abstract, p.1",
+     "quotes": [
+      "However, we recognize that more complex machine translation models may be necessary to handle more intricate sentence structures.",
+      "Our research lays the foundation for future work in quantum neural machine translation, which could offer advantages over classical methods in the future."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own forward-looking claim; the paper does not test it against a classical baseline.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper reports no classical-only baseline run, so nothing in it bears on whether the advantage exists."
+    },
+    {
+     "id": "qnlp-dataset-limit",
+     "verdict": "confirmed",
+     "note": "Right as stored. A second statement of the same limit is in Section 4.3, p.22.",
+     "value": "The authors state that their dataset is small and consists of simple synonymous sentences with word-to-word mappings.",
+     "anchor": "Abstract, p.2; Section 4.3, p.22",
+     "quotes": [
+      "Our small dataset, though consisting of simple synonymous sentences with word-to-word mappings",
+      "Although our dataset is relatively small for a real-world machine translation task"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own dataset limit in the abstract and again in Section 4.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qnlp-translation-small-dataset-result",
+     "verdict": "narrowed",
+     "note": "The stored value says 160 samples of English sentences and Persian translations. Section 4 says the 160 are sentences, 80 for each language (so 80 sentence pairs), augmented from 20 sentences. The figures 0.03, 0.002 and 0.016 are rounded: Table 4 gives 0.0324 and 0.0019 for the third model, and Table 5 gives 0.01574 for Adam. Table 5 is described in the text as validation loss.",
+     "value": "The authors report training an encoder-decoder LSTM on a dataset of 160 sentences (80 for each language, augmented from 20 sentences) and obtaining, with their best model, a mean absolute error of 0.03, a mean squared error of 0.002 and 0.016 loss.",
+     "anchor": "Abstract, p.1-2; Section 4, p.17; Section 4.3, Tables 4 and 5, p.22",
+     "quotes": [
+      "Our test dataset in this section includes 160 sentences (augmented from the 20 sentences in the previous section), 80 sentences for each language in the translation task.",
+      "Notably, we achieved optimal results—with mean absolute error of 0.03, mean squared error of 0.002, and 0.016 loss—by training the best model"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on a small dataset; the paper describes no held-out test split.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The abstract says the best model has two LSTM layers, while Section 4.3 describes the best (third) model as an LSTM layer, RepeatVector, a second LSTM layer and a dense layer. The errors are on the encoded circuit vectors, not a translation-quality score such as BLEU."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qnlp-entropy-diff-same-angles",
+     "value": "The authors report that, when synonymous words share the same rotation angles, the absolute Shannon entropy difference between each English circuit and its Persian counterpart is close to one for all twenty sentence pairs, from 0.928564254225894 for pair q to 1.052242246717042 for pair g.",
+     "anchor": "Table 3, left column, p.15; Section 3.3, p.15",
+     "quotes": [
+      "|H(q) − H(q′)| = 0.928564254225894",
+      "|H(g) − H(g′)| = 1.052242246717042",
+      "the distance between each English sentence and its translation in Persian is close to unity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated result on twenty sentence pairs from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The minimum and maximum are read by the reader from the 20 values listed in Table 3. The paper gives no derivation of why the difference sits near one."
+    },
+    {
+     "id": "qnlp-entropy-diff-swapped-angles",
+     "value": "The authors report that, after randomly swapping the rotation angles of the English circuits, the entropy differences range from 0.329826494780934 for pair j to 1.568811406177742 for pair p, and they state that the first (same-angle) series shows a more regular pattern than the second.",
+     "anchor": "Table 3, right column, p.15; Section 3.3, p.13-15; Figure 6, p.16",
+     "quotes": [
+      "|H(j′′) − H(j′)| = 0.329826494780934",
+      "|H(p′′) − H(p′)| = 1.568811406177742",
+      "The blue line exhibits a more regular pattern than the orange line."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated result on twenty sentence pairs, judged by eye from a plot; no statistic is reported.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In the right column, pairs a to f and k and l stay near one (for example 1.001539657541812 for pair a), so the swap does not visibly change the difference for those pairs. The paper reports no test of the difference between the two series."
+    },
+    {
+     "id": "qnlp-entropy-alignment-method-claim",
+     "value": "The authors state that they propose a novel method for aligning source and target sentences, based on the difference of Shannon entropies of the output distributions of the two circuits, and that it yielded an almost regular pattern of differences expected to help quantum neural machine translation avoid training on obviously incorrect sentences.",
+     "anchor": "Section 2, p.6",
+     "quotes": [
+      "We propose a novel method for the purpose of aligning source and target sentences.",
+      "Our method has yielded an almost regular pattern of differences, which is expected to guide quantum neural machine translation in avoiding the training of obviously incorrect sentences in explicit direct mapping models."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim; the paper does not use the entropy method inside the translation model it trains.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The LSTM in Section 4 is trained without any entropy-matching layer; the authors list adding one as future work."
+    },
+    {
+     "id": "qnlp-entropy-best-match-heatmap",
+     "value": "The authors state that, with shared angles for synonymous words, the best matches in the heat map of pairwise entropy differences lie mainly along the diagonal, and that best matches off the diagonal arise from very similar syntactic structures between sentences.",
+     "anchor": "Section 3.3, p.15; Figure 7, p.17",
+     "quotes": [
+      "Entries on the main diagonal of the matrix are the values closest to unity.",
+      "Where the best matches are not on the diagonal, one can see by inspection that these cases arise from very similar syntactic structures between sentences"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A visual result on twenty sentences from one study; no match rate is reported.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper gives no count or rate of correct matches. The text refers to Table 6, which does not exist in the paper (the Figure 7 caption names Table 2). Matching by an entropy difference near one is a criterion the authors chose after seeing the values."
+    },
+    {
+     "id": "qnlp-simulator-setup",
+     "value": "The authors state that the sentence circuits were simulated for 20,000 shots on the IBMQ-qasm-simulator and that the output frequencies were divided by 20000 to give state probabilities.",
+     "anchor": "Section 2, p.5; Section 3.2, p.11",
+     "quotes": [
+      "Subsequently, the quantum circuits were simulated for 20,000 shots on the IBMQ-qasm-simulator",
+      "By dividing the frequency of each state xi by 20000, we get the probability of that state as p(xi)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup in Sections 2 and 3.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper reports no run on quantum hardware, although its title and abstract frame the work around NISQ devices."
+    },
+    {
+     "id": "qnlp-noise-limit",
+     "value": "The authors state that noise and errors, including decoherence and control errors, affect the precision of their quantum approach, and that this will be improved by future generations of NISQ devices with significantly lower error rates.",
+     "anchor": "Section 3.3, p.16",
+     "quotes": [
+      "Decoherence, the quantum state disturbance or loss of a qubit due to interaction with the environment, is one of the major sources of noise in quantum computers.",
+      "Therefore, the precision in our quantum approach is affected by this restriction and will be improved by future generations of NISQ devices with significantly lower error rates."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its approach in Section 3.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The reported results come from a simulator, so no measured noise effect appears in them."
+    },
+    {
+     "id": "qnlp-circuit-qubit-counts",
+     "value": "The authors state that the example English sentence circuit has 13 qubits and the Persian one 11 qubits, assigning 1 qubit to each noun wire and 1 qubit to each sentence wire.",
+     "anchor": "Section 3.1, p.9; Figure 2, p.8",
+     "quotes": [
+      "Figure 2 shows that the quantum circuit for the English sentence consists of 13 qubits, 1 for “Sara”, 4 for “buys”, 2 for “the”, 1 for “book”, 2 for “from”, and 1 for “bookshop”.",
+      "The quantum circuit for the Persian sentence consists of 11 qubits, 1 for “Sara”, 1 for “ketab”, 2 for “ra”, 2 for “az”, 1 for “ketabforoushi”, and 4 for “mikharad”.",
+      "This comes directly from the fact we have assigned 1 qubit to noun wires and 1 qubit to sentence wires."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the construction of its own example circuits in Section 3.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The listed English per-word counts (1, 4, 2, 1, 2, 1) add to 11, not 13. The Persian counts add to 11."
+    },
+    {
+     "id": "qnlp-circuit-construction",
+     "value": "The authors state that each noun qubit is given two Rx rotations and one Rz rotation, that the four verb qubits are linked by a single IQP layer, and that the cups correspond to Bell effects and need post-selection keeping the shots where 12 of the 13 qubits (not the sentence qubit) are zero.",
+     "anchor": "Section 3.1, p.9",
+     "quotes": [
+      "Each noun qubit corresponds to two Rx rotations and one Rz rotation, which together implement an Euler decomposition to determine the qubit’s state.",
+      "In this specific circuit, a single IQP layer is used, where all qubits receive Hadamard gates",
+      "keep the shots where 12 out of the 13 qubits (excluding the sentence qubit) are zero"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how its own circuits are built in Section 3.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qnlp-shared-angle-design",
+     "value": "The authors state that they gave synonymous words of an English and Persian sentence pair the same rotation angles, while other words can take random angles, and that circuit structures may differ between the languages.",
+     "anchor": "Section 3.1, p.9; Section 4.2, p.20",
+     "quotes": [
+      "We select the synonymous keywords that are the same between sentences of English and Persian, and put the same angles for their rotation gates. Other words can take random angles for their rotation gates.",
+      "We ensure that synonymous words in different languages have the same angles for their rotation gates, although the circuit structures for different languages may differ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own design rule in Sections 3.1 and 4.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The word correspondence between the languages is supplied by hand through the shared angles, so a close entropy match for those pairs follows from the construction rather than from learning."
+    },
+    {
+     "id": "qnlp-angle-swap-procedure",
+     "value": "The authors state that, for the control series, they randomly swapped the rotation angles of each English circuit, choosing each new angle at random from the original angles, so that angles of synonymous words no longer match.",
+     "anchor": "Section 3.2, p.11; Figure 5, p.13",
+     "quotes": [
+      "Next, we proceed to swap the angles of rotation gates of each quantum circuit for the English sentence randomly, and repeat the experiment",
+      "The new angle of each rotation gate is selected from the original angles, randomly."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own control procedure in Section 3.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qnlp-grammaticality-definition",
+     "value": "The paper states that a sentence is considered grammatical if the types of its words reduce to the basic type s through juxtaposition, with the basic types n for noun and s for declarative statement.",
+     "anchor": "Section 3.1, p.7",
+     "quotes": [
+      "n : noun, s : declarative statement",
+      "If the types of words in a sentence are reduced to the basic type “s” through juxtaposition, the sentence is considered grammatical."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper states the pregroup grammaticality criterion it uses in Section 3.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qnlp-one-to-one-mapping-limit",
+     "value": "The authors state that two syntactically distinct languages will not have a one-to-one mapping between corresponding words, and that how multiple-word constructions in one language map to multiple-word alternatives in another is left to future work.",
+     "anchor": "Section 3.1, p.9",
+     "quotes": [
+      "Because two syntactically distinct languages will not have a one-to-one mapping between corresponding words, future work will entail how multiple-word syntactic constructions in one language map to various multiple-word alternatives in another."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its word-to-word construction in Section 3.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qnlp-entropy-metric-caveat",
+     "value": "The authors state that Shannon entropy can fail as a distance: two distributions with a single state each both have zero entropy yet the states can be far apart, and that this must be handled with care for each use case and listed as a possible source of error.",
+     "anchor": "Section 3.2, p.10-11",
+     "quotes": [
+      "Consider the case where there is only one state in each distribution. The probability of that state is one, and so the Shannon entropy is zero for each distribution.",
+      "This should be addressed with care for each use case and identified as a possible source of error in analysis."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its chosen metric in Section 3.2.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": "The entropy of a distribution does not identify which distribution it is, so equal or near-equal entropy differences cannot prove that two circuits encode the same sentence."
+    },
+    {
+     "id": "qnlp-dataset-augmentation-setup",
+     "value": "The authors state that the test dataset has 160 sentences, 80 for each language, augmented from the 20 sentences of the entropy study.",
+     "anchor": "Section 4, p.17",
+     "quotes": [
+      "Our test dataset in this section includes 160 sentences (augmented from the 20 sentences in the previous section), 80 sentences for each language in the translation task."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own dataset size in Section 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper does not say how the augmentation was done or whether training and evaluation sentences are disjoint."
+    },
+    {
+     "id": "qnlp-hybrid-architecture-setup",
+     "value": "The authors state that the system is a quantum-classical hybrid in which the translation network is a conventional LSTM encoder-decoder trained on encoded representations of the parameterized quantum circuits, and the network output is decoded back to a quantum circuit.",
+     "anchor": "Section 4, p.17; Section 4.2, p.20",
+     "quotes": [
+      "We have a classical computer interface and the system works as a quantumclassical hybrid.",
+      "We encode the features of the quantum circuit for each sentence and feed it as an input vector to a conventional Long short-term memory (LSTM) encoder-decoder model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own architecture in Sections 4 and 4.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The learning step is classical; the quantum circuits enter only as an encoding of the sentences (run on a simulator), so the reported errors do not measure a quantum learning model."
+    },
+    {
+     "id": "qnlp-circuit-encoding-scheme",
+     "value": "The authors state that each circuit is partitioned into words, scheduled into time steps, and gate-encoded, that CNOT gates connecting words are not part of the word encoding, and that zero-padding gives fixed-size inputs.",
+     "anchor": "Section 4.1, p.19-20",
+     "quotes": [
+      "Step 1: Partitioning the quantum circuit into words.",
+      "Since CNOTs connect different words in the quantum circuit, their encoding is not involved in the word encoding.",
+      "We applied zero-padding for unitary operations of the words with fewer qubits to have fixed-size inputs to the network."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own encoding scheme in Section 4.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qnlp-lstm-configurations-setup",
+     "value": "The authors state two LSTM configurations: first, encoder and decoder LSTM layers with 32 units joined by a RepeatVector layer; second, two LSTM layers of 100 units with a dense layer of 24 neurons. They state they compiled with SGD, RMSprop and Adam and sparse categorical crossentropy loss.",
+     "anchor": "Section 4.2, p.20-21",
+     "quotes": [
+      "In the first configuration, both the encoder and decoder consist of LSTM layers with 32 units.",
+      "the second configuration, we used two LSTM layers each with 100 units, and a dense layer with 24 neurons, which corresponds to the dimension of each word in the quantum circuit.",
+      "we compiled the model using the basic stochastic gradient descent (SGD), RMSprop, and Adam optimizers and sparse categorical crossentropy loss"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own model configurations in Section 4.2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The paper does not say which configuration is Model 1, 2 or 3 of Table 4."
+    },
+    {
+     "id": "qnlp-lstm-model-comparison",
+     "value": "The authors report, for three LSTM models, mean absolute errors of 0.8156, 0.6428 and 0.0324 and mean squared errors of 2.8414, 0.0021 and 0.0019, and state that the third model, an LSTM layer, RepeatVector, a second LSTM layer and a dense decoder layer, performs best.",
+     "anchor": "Table 4, p.22; Section 4.3, p.22",
+     "quotes": [
+      "Model Model 1 Model 2 Model 3",
+      "MAE 0.8156 0.6428 0.0324",
+      "MSE 2.8414 0.0021 0.0019",
+      "In our experiment the last model performs the best with the lowest mean absolute and squared errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the paper does not say what data the errors are computed on.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "For the second model a mean squared error of 0.0021 with a mean absolute error of 0.6428 cannot come from the same errors, because the mean squared error is at least the square of the mean absolute error (about 0.41). One of the two printed numbers is likely wrong."
+    },
+    {
+     "id": "qnlp-optimizer-loss-table",
+     "value": "The authors report validation losses for the third LSTM model after 1000 epochs as 0.6423 with SGD, 0.01574 with Adam and 0.03078 with RMSprop.",
+     "anchor": "Table 5, p.22; Section 4.3, p.22",
+     "quotes": [
+      "Table 5 reports the validation loss for different epoch numbers using SGD, Adam, and RMSprop optimizers for 1000 epochs.",
+      "Optimizer SGD Adam RMSprop",
+      "Loss 0.6423 0.01574 0.03078"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The text says Table 5 holds validation loss for different epoch numbers, but the table shows one loss per optimizer. The abstract's 0.016 loss is the Adam entry rounded."
+    },
+    {
+     "id": "qnlp-adam-convergence",
+     "value": "The authors state that, with the Adam optimizer, the validation loss over 1000 epochs converges after approximately 200 epochs.",
+     "anchor": "Section 4.3, p.22; Figure 10, p.23",
+     "quotes": [
+      "The convergence of the validation loss over 1000 epochs for the Adam optimizer is shown in Figure 10. The plot indicates that the loss function converges after approximately 200 epochs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run, read from a plot.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qnlp-complexity-claims-uncited",
+     "value": "The authors state, in a discussion of complexity, that eight qubits can store a 256-dimensional classical vector and 12 qubits a 4096-dimensional one, and that QNLP algorithms have shown quadratic speedup over classical methods for certain tasks.",
+     "anchor": "Section 4.4, p.23",
+     "quotes": [
+      "eight qubits can store a 256-dimensional classical vector in a quantum system, while 12 qubits can store a 4096-dimensional classical vector.",
+      "QNLP algorithms have shown quadratic speedup over classical methods for certain tasks."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general statement given without a citation or a test in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper's own circuits use one qubit per wire, not this compact amplitude storage, and the paper does not address the cost of loading a vector into such a state."
+    },
+    {
+     "id": "qnlp-qlm-speedup-citation",
+     "value": "The authors state that a quantum language model achieved a speedup of 10 to 50 times over a comparable classical algorithm while keeping accuracy in one study, and that quantum LSTM protocols outperform classical LSTM in certain testing cases; the citation for the first is unresolved in the text.",
+     "anchor": "Section 4.4, p.23",
+     "quotes": [
+      "a QLM achieved a speedup of 10 to 50 times over a comparable classical algorithm while maintaining accuracy in one study [? ]",
+      "Quantum LSTM protocols have also been shown to outperform classical LSTM in certain testing cases"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work, with a broken reference marker and no tests of its own.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The reference marker prints as a question mark, so the source cannot be identified from the paper."
+    },
+    {
+     "id": "qnlp-complexity-needs-research",
+     "value": "The authors state that much more research and development is needed to explore the capabilities of QNLP, and that quantum algorithms for language translation are still in early stages of development.",
+     "anchor": "Section 4.4, p.23-24",
+     "quotes": [
+      "However, much more research and development is needed to fully",
+      "explore the capabilities of QNLP and its potential impact on the field of NLP.",
+      "While quantum algorithms for language translation are still in their early stages of development"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of the field and of its own work in Section 4.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qnlp-abstract-promise-claims",
+     "value": "The authors state that classical NLP methods struggle with the large-scale computations needed for complex language tasks, that quantum NLP on NISQ devices holds promise in using quantum parallelism and entanglement, and that their small dataset points to the utility of Shannon entropy as a figure of merit in more complex translation models.",
+     "anchor": "Abstract, p.1-2",
+     "quotes": [
+      "Classical methods in natural language processing (NLP) struggle with handling large-scale computations required for complex language tasks",
+      "quantum NLP on NISQ devices holds promise in harnessing quantum parallelism and entanglement",
+      "points to the utility of Shannon entropy as a figure of merit in more complex machine translation models for intricate sentence structures"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claims, given without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper runs no experiment on complex sentences and no comparison with a classical method."
+    },
+    {
+     "id": "qnlp-conclusion-angles-claim",
+     "value": "The authors state that, using Shannon entropy, they demonstrated the importance of angles in the performance of parametrized quantum circuits and showed that rotation angles can serve as a means of communication between quantum circuits of different languages, and that they achieved promising results on a small dataset.",
+     "anchor": "Conclusion (Section 5), p.24",
+     "quotes": [
+      "By utilizing Shannon entropy, we demonstrated the importance of angles in the performance of parametrized quantum circuits and showed how angles of rotation gates can be used as a means of communication between quantum circuits of different languages.",
+      "achieved promising results on a small dataset of English and Persian sentences"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own conclusion; the paper measures entropy differences, not circuit performance.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No measure of parametrized circuit performance is reported; the evidence is the entropy-difference pattern of Table 3 and the classical LSTM errors."
+    }
+   ]
+  }
+ ]
+}
