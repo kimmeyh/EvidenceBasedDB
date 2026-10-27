@@ -835,7 +835,13 @@ and in git. Remaining items below.
     nothing); boyd-2004-convex-optimization (team lead: "keep it as unread
     until next sprint"; its session labeled the read full but read 714 of
     715 page segments, took nothing from Appendices A and C, and only
-    sampled the examples, exercises and figures).
+    sampled the examples, exercises and figures). To finish it (team
+    lead, 2026-10-27: "is it possible to send the current results and
+    ask it to complete the read?"): yes. Its 184 assertions and 3
+    verdicts move from `done/` to `partial/` on its branch, with a
+    `progress.json` note naming each part not yet read; a new session
+    resumes from them, under the prompt's "Progress and restart", and
+    adds to them instead of starting over.
   - 1,126 never sent: they stay in this card for the next sprint.
   - **Finding for the coordinator review:** a cloud reader can label a
     read "full" while saying elsewhere that it sampled, and the check
@@ -848,6 +854,79 @@ and in git. Remaining items below.
   g076) holds page images only; pdftotext gives 10 empty pages. Three
   cloud sessions got no text, and none pushed a result. It has no
   `paper_reads` row and keeps none until F115 gives it a text layer.
+
+**F117. Review the 302 cloud results of F114, with each step on the cheapest model its protocol allows, then apply them (~480m [no-history] timebox) Priority 10** (NEW 2026-10-27, team lead: "do the follow-up review of the 302 results (determine which model is needed for this - or can it be split into multiple sections where one or more can be completed by haiku 5.5... sonnet 5.5... opus 5.5")
+- Phase: Sourcing / extraction
+- Value: 302 full reads (snapshot as of 2026-10-27) wait outside the
+  store; until reviewed and applied, none of their verdicts or assertions
+  counts.
+- Platform: the results saved by `scripts/f114_cloud.py fetch` and their
+  branches `cloud/f114/<record>`; the review tooling of Task G (one
+  decision file per group); `scripts/sprint13_g_reading.py` for the apply
+  with its verified backup; `.claude/model_assignment_heuristics.json`
+- Split by protocol, not by tier alone. The heuristics' own evidence
+  (Sprint 3, `learning_log[0]`): a per-record review with no source access
+  confirmed 18 of 18 records at every tier, while the review with
+  primary-source access found the defects. So a cheap tier gets only the
+  steps whose answer is in the file itself:
+  - **No model (script):** the quote check against the PDF (all 302 pass,
+    2026-10-27), the schema, ids, a verdict on every stored assertion,
+    and assertions per page against Task G's local reads.
+  - **Haiku 5.5 (classification and extraction, the models page's stated
+    use):** flag a result whose own words contradict its label: "full"
+    beside "sampled", "selective" or an unread appendix, as Boyd's did;
+    flag a HIGH suggestion whose `certainty_reason` names no settling
+    passage; list each result's figures and tables named but not entered.
+  - **Sonnet 5.5 (per record, with the paper's text):** each corrected,
+    narrowed, widened or contradicted verdict, and each HIGH suggestion,
+    checked against the passage it quotes; THEORY_LOW and NOT_HIGH
+    decisions drafted per group, as Task G's reviews did.
+  - **Opus 5.5 (set level, cross-record):** the same judgment made
+    differently across groups, and every verdict that contradicts a
+    stored assertion; it signs off each group's decision file.
+  - **Team lead:** any certainty level a review changes, as the
+    escalation triggers require.
+- A review at any tier that confirms every record with no rejection is
+  re-run with source access before it is trusted (escalation trigger).
+- Acceptance: each of the 302 has a decision; the flagged results are
+  sent back for a complete read, or kept unread with the reason; the
+  apply's counts before and after; a second apply writes nothing; each
+  tier's outcome logged in the heuristics' `learning_log`.
+- Depends on: F113's groups g001 to g042 applied (Sprint 13)
+
+**F118. Learn what the store says about QC, ML, QML, tensor networks and related physics, for the QML and ML credit card fraud challenge (~240m [no-history] timebox) Priority 12** (NEW 2026-10-27, team lead: "suggest an approach to look at the EvidenceBasedDB and determine what we have been able to learn about QC, ML, QML, Tensors and other quantum physics-related items that apply to QC and that could be related to QML/ML Credit Card Fraud challenge")
+- Phase: Use of the evidence
+- Value: the store exists to serve the fraud submission
+  (`hsbc-qfraud-phase2`); this turns its assertions into answers to the
+  questions that submission must settle, with each answer's certainty.
+- Platform: the store (read only); Phase 2's repository, read for its
+  open questions (reads are free, writes never cross: F79); a generated
+  report, so no value is copied by hand
+- Approach:
+  1. **Questions first.** List the decisions the fraud work faces, read
+     from Phase 2's plans and open items, for example: does any quantum
+     kernel or variational classifier beat a tuned classical model on
+     tabular, imbalanced data; what data encoding scales to the feature
+     count; what noise, barren plateaus, dequantization and sample
+     complexity rule out; what tensor-network and quantum-inspired
+     methods offer classically; what QUBO and Dirac-3 style solvers do
+     for feature selection; which anomaly-detection results transfer.
+  2. **Inventory, computed.** Counts by context (`qc`, `ml`, `qml`,
+     `method`, `world`), certainty and result type, each stated as a
+     snapshot of its date.
+  3. **Map assertions to questions.** Keywords first, then a Haiku 5.5
+     classification pass, each mapping checked on a sample.
+  4. **Synthesis per question** (Opus 5.5): what is settled (HIGH, with
+     the proof or stated limit), what is only claimed or measured and
+     under what conditions (simulated or hardware, qubits, dataset size),
+     where assertions conflict, and what is missing. Every line cites
+     assertion ids; the report is rendered from the store, never typed.
+  5. **Gaps to backlog.** A question the store cannot answer becomes a
+     reading target or a Phase 2 experiment, sent as a pasted prompt.
+- Acceptance: the question list with its source in Phase 2; one section
+  per question generated from the store; the gaps carded.
+- Depends on: F117 (the review first, so the synthesis reads reviewed
+  assertions)
 
 **F115. Convert the text in page images to text, mainly in PDFs (~120m [no-history] timebox) Priority 20** (NEW 2026-10-27, team lead: "add a method to convert images in documents (primarly PDF's) that are text to text")
 - Phase: Sourcing / extraction
