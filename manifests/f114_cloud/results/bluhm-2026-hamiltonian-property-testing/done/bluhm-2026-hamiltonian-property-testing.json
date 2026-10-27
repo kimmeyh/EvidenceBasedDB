@@ -1,0 +1,814 @@
+{
+ "papers": [
+  {
+   "record_id": "bluhm-2026-hamiltonian-property-testing",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Bluhm-Caro-Oufkir_2024_Hamiltonian-Property-Testing__2403.02968.pdf",
+   "title_in_file": "Hamiltonian Property Testing",
+   "version_note": "The text is arXiv 2403.02968v4 of 14 Jan 2026 (accepted in Quantum 2026-01-13); the file name carries 2024, the year of the first version. The 'Note added' on p.11 says this version tightened the upper-bound analysis (no n-dependence in total evolution time and number of experiments) and added a tolerant tester, so page anchors here are v4 pages.",
+   "pages": 70,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that defines Hamiltonian property (locality) testing, proves exponential query and evolution-time lower bounds for testing in the operator norm, gives a polynomial-cost stabilizer-state tester in the normalized Frobenius norm, and proves an exponential lower bound for learning a general Hamiltonian in that same norm.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "hamiltonian-learning-exponentially-hard-average-case",
+     "verdict": "confirmed",
+     "note": "The abstract and Theorem 5.1 (p.37-38) state it. Theorem 5.1 adds conditions: n at least 11, trace zero, operator norm at most 1; the coherent bound is a query bound and the incoherent bound is for non-adaptive ancilla-free algorithms.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "hamiltonian-locality-testing-operator-norm-hard",
+     "verdict": "confirmed",
+     "note": "Confirmed. The formal results are Theorem 3.1 (incoherent, adaptive, ancilla-free) and Theorem 3.6 (coherent, ancilla-assisted), with conditions on k, n and the promise; see the new assertions.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "hamiltonian-testing-no-inverse-evolution",
+     "verdict": "confirmed",
+     "note": "Confirmed; footnote 1 on p.2 also says why: reversing time can be hard in physically motivated scenarios.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "def-k-local-hamiltonian",
+     "value": "The authors define an n-qubit Hamiltonian as k-local if its Pauli coefficient is zero for every Pauli string of weight greater than k, and they assume without loss of generality that the coefficient of the identity string is zero to avoid global phases.",
+     "anchor": "Section 1.1, p.2",
+     "quotes": [
+      "We call the Hamiltonian H k-local if αP = 0 holds for all P ∈ Pn with |P | > k.",
+      "We w.l.o.g. assume that αI⊗n = 0 to avoid physically irrelevant global phases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of k-locality, Section 1.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "def-hamiltonian-locality-testing-problem",
+     "value": "The authors define Hamiltonian k-locality testing as the task, given access to the time evolution along an unknown Hamiltonian H, of deciding with success probability at least 2/3 whether H is k-local or epsilon-far from being k-local; any output is valid if H is neither.",
+     "anchor": "Definition 1.1, Section 1.1, p.3",
+     "quotes": [
+      "Given access to the time evolution according to an unknown Hamiltonian H, decide, with success probability ≥ 2/3, whether",
+      "H is ε-far from being k-local, that is,",
+      "If H satisfies neither (i) nor (ii), then any output of the tester is considered valid."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own problem definition, Definition 1.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "norms-worst-case-average-case",
+     "value": "The authors state that they measure the distance between Hamiltonians with the Schatten infinity-norm (the operator norm), motivated as a worst-case distance, and with the normalized Schatten two-norm (the normalized Frobenius norm), motivated as an average-case distance.",
+     "anchor": "Section 1.1, p.3",
+     "quotes": [
+      "Motivated by operational interpretations as worst-case and average-case notions of distance, respectively, we focus on the Schatten ∞-norm ∥·∥∞ (aka operator norm) and",
+      "(aka normalized Frobenius norm)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's choice of distance measures, Section 1.1; Appendix A (p.56-58) gives the short-time justification.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "access-models-incoherent-coherent",
+     "value": "The authors consider incoherent quantum algorithms, which perform measurements only on single copies of time-evolved states and do not interleave Hamiltonian time evolution with control operations (adaptive choices of input states and measurements are allowed), and coherent quantum algorithms, which describe the most general quantum experiments possible with access to the unknown time evolution.",
+     "anchor": "Section 1.1, p.3 and Section 2.4, p.15-16",
+     "quotes": [
+      "On the one hand, we consider incoherent quantum algorithms, which can only perform measurements on single copies of time-evolved states, and which cannot interleave Hamiltonian time evolution with control operations.",
+      "Here, we do, however, allow for adaptively chosen input states and measurements in the different experiments performed for testing.",
+      "On the other hand, we also consider more general coherent quantum algorithms, describing the most general quantum experiments that can be performed when given access to an unknown Hamiltonian time evolution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of the access models, Section 1.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scope-negative-both-positive-incoherent",
+     "value": "The authors state that their negative results cover both the incoherent and the coherent case, and that their positive results are phrased in the framework of simple incoherent quantum testing algorithms.",
+     "anchor": "Section 1.1, p.3",
+     "quotes": [
+      "Our negative results cover both the incoherent and the coherent case.",
+      "Our positive results are phrased in the framework of simple incoherent quantum testing algorithms."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope in Section 1.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "testing-via-learning-exponential-except-pauli-infinity",
+     "value": "The authors state that the naive strategy of testing by learning with the Hamiltonian learning protocols of two cited works, applied with any norm except the infinity-norm on the Pauli coefficient vector, uses a number of queries and a total evolution time that both scale exponentially in n.",
+     "anchor": "Section 1.2, p.3; discussed in Section 4.1, p.30-32",
+     "quotes": [
+      "When working with any norm except for the ℓ∞-norm on the coefficient vector (αP )P , ∥·∥Pauli,∞, it uses a number of queries to the unknown Hamiltonian and a total evolution time that both scale exponentially in n."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about cited learning protocols, argued in prose in Section 4.1 through Holder's inequality, not a numbered theorem.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "learning-implies-testing-only-pauli-infinity",
+     "value": "The authors state that, because learning is a more demanding task than testing, the cited learning results of Car24 and CW25 immediately imply even tolerant Hamiltonian locality testers with the same query complexities and total evolution times, but that this works only for the Pauli infinity-norm.",
+     "anchor": "Section 4.1, p.31",
+     "quotes": [
+      "As learning is a more demanding task than testing, the results of [Car24; CW25]",
+      "immediately imply (even tolerant) Hamiltonian locality testers with the same query",
+      "important caveat: This works only for the norm ∥·∥Pauli,∞."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Consequence of cited results, stated in prose.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "car24-cw25-limits-for-testing",
+     "value": "The authors state that the learning methods of Car24 and CW25 require potentially challenging-to-implement quantum capabilities such as maximally entangled input states, access to both forward and backward time evolution, and entangled multi-copy measurements for shadows, and that neither approach achieves computational efficiency even for the Pauli infinity-norm.",
+     "anchor": "Section 4.1, p.32",
+     "quotes": [
+      "potentially challenging-to-implement quantum capabilities (such as maximally entangled input states, access to both forward and backward time evolution,",
+      "Finally, neither of the two approaches achieves computational efficiency, even for ∥·∥Pauli,∞."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A characterization of cited work in prose.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ade25-k-local-learning-needs-ancilla",
+     "value": "The authors state that a later cited work, ADE25 Result 1.6, gave the first efficient algorithm for learning k-local Hamiltonians in normalized Schatten two-norm when auxiliary systems are available, so testing via proper learning now applies to k-locality testing, but it needs auxiliary systems and Hamiltonian simulation and inherits an exponential dependence on k squared.",
+     "anchor": "Section 4.1, Note added, p.32",
+     "quotes": [
+      "More recently, [ADE25, Result 1.6] gave the first efficient algorithm for learning k-local Hamiltonians in normalized Schatten 2-norm when auxiliary systems are available."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lower-bound-operator-norm-incoherent-abstract",
+     "value": "The authors state that with respect to the operator norm incoherent quantum locality testers require Ω˜ (2n) many time evolution queries (two to the power n) and an expected total evolution time of Ω˜ (2n/ε), and that even coherent testers need Ω(2n/2) many queries (two to the power n over two) and Ω(2n/2/ε) total evolution time.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "With respect to the operator norm, a worst-case distance measure, incoherent quantum locality testers require Ω˜ (2n) many time evolution queries and an expected total evolution time of Ω˜ (2n/ε), and even coherent testers need Ω(2n/2) many queries and Ω(2n/2/ε) total evolution time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Abstract summary; the conditions are in Theorems 3.1 and 3.6, entered separately.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thm-3-1-incoherent-locality-testing-lower-bound",
+     "value": "The paper proves (Theorem 3.1) that, for n at least Ω(1), k at most O(n / log(n)), p at least 1 and N at most exp(O(n))/εO(1), the locality testing problem in the unnormalized Schatten p-norm, even under the promise that Tr[H] = 0 and the operator norm of H is at most 1, requires an expected total evolution time of Ω(2n / (ε(n − log ε))) and a total number of independent experiments N = Ω(2n / n) in the adaptive ancilla-free incoherent setting.",
+     "anchor": "Theorem 3.1, Section 3.1, p.17",
+     "quotes": [
+      "Theorem 3.1. Let n ≥ Ω(1), k ≤ O n log(n) and p ≥ 1. Suppose that N ≤ exp(O(n))/εO(1).",
+      "even under the additional promise that the unknown Hamiltonian H satisfies Tr[H] = 0 and ∥H∥∞ ≤ 1, requires an expected total evolution time of",
+      "tk =Ω 2n ε(n−log ε) and a total number of independent experiments N = Ω 2n n in the adaptive ancilla-free incoherent setting."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from Theorem 3.1; the proof is in Section 3.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The Theorem 3.1 statement prints 2n for two to the power n and k at most n over log n; the text layer lost the fraction bars."
+    },
+    {
+     "id_suggestion": "thm-3-6-coherent-locality-testing-lower-bound",
+     "value": "The paper proves (Theorem 3.6) that, for n at least 2, k at most O(n / log(n)) and p at least 1, the locality testing problem in the unnormalized Schatten p-norm, even under the promise that Tr[H] = 0 and the operator norm of H is at most 1, requires a total evolution time of Ω(2n/2 / ε) and a total number of independent experiments N = Ω(2n/2) in the ancilla-assisted coherent setting.",
+     "anchor": "Theorem 3.6, Section 3.2, p.26",
+     "quotes": [
+      "Theorem 3.6. Let n ≥ 2, k ≤ O n log(n) , and p ≥ 1.",
+      "even under the additional promise that the unknown Hamiltonian H satisfies Tr[H] = 0 and ∥H∥∞ ≤ 1, requires a total evolution time of",
+      "tk = Ω 2n/2 ε and a total number of independent experiments N = Ω 2n/2 in the ancilla-assisted coherent setting."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from Theorem 3.6; the proof follows it on p.26-30.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma-3-2-concentration-far-from-fixed-k",
+     "value": "The paper proves (Lemma 3.2) that for d at least 4, H = η(|v⟩⟨v| − I/d) with η > 0 and |v⟩ = V|0⟩ for Haar-random V, and a fixed traceless Hamiltonian K with operator norm at most 1, the probability that the operator-norm distance of H and K is at most η/2 is at most exp(−d/1728) (the text layer prints the exponent as 'd − 1728').",
+     "anchor": "Lemma 3.2, Section 3.1, p.16",
+     "quotes": [
+      "Lemma 3.2. Let d ≥ 4, H = η(|v⟩⟨v| − I/d) for η > 0 and |v⟩ = V |0⟩ , V ∼ Haar(d) and let K be a fixed traceless Hamiltonian such that ∥K∥∞ ≤ 1.",
+      "We have that η P ∥H − K∥∞ ≤ 2 ≤ exp d − 1728 ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from Lemma 3.2; proof by Lipschitz concentration on p.17-18.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma-3-3-random-hamiltonian-far-from-all-k-local",
+     "value": "The paper proves that for n at least two and k at most O(n / log(n)), the Hamiltonian H = η(|v⟩⟨v| − I/d) with Haar-random |v⟩ is (η/4)-far in the operator norm from all k-local traceless Hamiltonians of operator norm at most 1 with high probability, and that the same holds in every Schatten p-norm with p at least one.",
+     "anchor": "Lemma 3.3 and Remark 3.4, Section 3.1, p.17-18",
+     "quotes": [
+      "Then, H is (η/4)-far (in the operator norm) from all k-local traceless Hamiltonians of operator norm at most 1 with high probability.",
+      "Therefore, we can focus on the case p = ∞."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement quoted from Lemma 3.3, with the conditions on n, k and eta in the same lemma (p.17); proved by a net argument and a union bound with Lemma 3.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma-3-5-generalized-le-cam",
+     "value": "The paper proves a generalized Le Cam bound (Lemma 3.5, restated as Lemma C.1): for n at least Ω(1), k at most O(n / log(n)), and any mixing parameter α at most one over ten times the number of queries N, if an incoherent algorithm correctly distinguishes the identity channel from the random time evolution with success probability at least 2/3, then the expected total variation distance between the null leaf distribution and the mixed alternative is at least one eighteenth.",
+     "anchor": "Lemma 3.5, p.20; Lemma C.1, p.67-68",
+     "quotes": [
+      "Lemma 3.5 (Generalized Le Cam). Let n ≥ Ω(1). Let k ≤ O n log(n) .",
+      "if there is an incoherent algorithm that correctly distinguishes between P and QV with success probability at least 2/3, then"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The conclusion of the lemma (the bound 1/18 on the expected TV distance) is printed in a garbled fraction in the text layer, so the full statement could not be quoted; the value's 1/18 comes from the proof of Lemma C.1 and is not in the quotes.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thm-3-1-proof-method-pinsker-weingarten",
+     "value": "The authors state that the incoherent lower bound proof reduces locality testing to distinguishing the identity channel from a random rank-one phase unitary, applies Le Cam's two-point method, moves from total variation to Kullback Leibler divergence with Pinsker's inequality, splits paths by overlap between input state and measurement element, and controls the second-order term with Weingarten calculus, giving a total variation upper bound summed over queries of the form O(log(N)/d) times the expectation of the minimum of one and ε times the evolution time tk.",
+     "anchor": "Section 1.4, p.6-7; Section 3.1, p.19-25",
+     "quotes": [
+      "Next, we use Pinsker’s inequality to upper bound (the square of) this TV distance by the Kullback Leibler (KL) divergence",
+      "we can Taylor expand the logarithm to second order and control the resulting term using Weingarten calculus."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proof outline from Section 1.4.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coherent-testing-bound-quadratically-weaker",
+     "value": "The authors state that for coherent testers they obtain lower bounds that are quadratically weaker than the incoherent ones, using the same distinguishing problem, and that lower bounds with the same scaling based on a simpler distinguishing problem have appeared in the quantum phase estimation literature.",
+     "anchor": "Section 1.4, p.7",
+     "quotes": [
+      "For coherent testers, we obtain lower bounds that are quadratically weaker, using the same distinguishing problem.",
+      "Lower bounds with the same scaling but based on a simpler distinguishing problem have appeared in the literature on quantum phase estimation"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the weaker scaling of its own coherent bound in Section 1.4 and in Theorem 3.6.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "remark-3-7-noise-model-artificial",
+     "value": "The authors state that the hard distinguishing problem compares the trivial time evolution with what can be seen as a noisy version of it, that this noise model is somewhat artificial, and that finding physically relevant Hamiltonians for which such hardness statements can be proved is left to future work.",
+     "anchor": "Remark 3.7, Section 3.2, p.31",
+     "quotes": [
+      "However, the noise model we use is somewhat artificial.",
+      "It would be interesting to find examples of physically relevant Hamiltonians for which such hardness statements can be proved."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of their hardness construction in Remark 3.7.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thm-1-3-efficient-frobenius-tester-informal",
+     "value": "The authors state (informal efficient-testing theorem) that, promised trace zero and operator norm at most one, an ancilla-free, incoherent, non-adaptive quantum algorithm solves Hamiltonian k-locality testing in the normalized Frobenius norm using O(ε−4) queries, a total evolution time of O(ε−3), and a classical post-processing time of O(nk+3 / ε4), using only stabilizer states as inputs and stabilizer basis measurements at the output.",
+     "anchor": "Theorem 1.3, Section 1.2, p.4",
+     "quotes": [
+      "using O ε−4 many queries to the unknown Hamiltonian, a total evolution time of O ε−3 , and a classical post-processing time of O nk+3 ε4 .",
+      "Moreover, the testing algorithm uses only stabilizer states as inputs and stabilizer basis measurements at the output."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Informal statement; the formal version with conditions is Corollary 4.3, entered separately.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The informal bound prints nk+3 for the classical time and Corollary 4.3 prints (3n)k+3; the two differ by a constant factor in the base."
+    },
+    {
+     "id_suggestion": "alg-1-randomized-stabilizer-tester-description",
+     "value": "The authors describe the tester: choose a mutually unbiased basis and a state in it uniformly at random, prepare that stabilizer state, evolve it under the unknown Hamiltonian for a short time of order ε, measure in the same basis, repeat a number of times polynomial in the inverse of ε, and declare the Hamiltonian ε-far from local if at least one round detects a non-locality, otherwise declare it k-local.",
+     "anchor": "Section 1.4, p.8-9; Algorithm 1, p.33",
+     "quotes": [
+      "We let it evolve under the unknown Hamiltonian for time t = O(ε).",
+      "At the end of this evolution, we perform a measurement in the basis Bi.",
+      "then we conclude that the Hamiltonian is ε-far from being local. Otherwise, we claim that H is k-local."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its algorithm; Algorithm 1 on p.33 gives t = ε/6 as printed.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "def-4-1-equivalence-under-property",
+     "value": "The authors define two unit vectors as equivalent under a property S, a set of Pauli strings, if they are equal or one can be obtained from the other by applying a Pauli operator in S; a pair that is not equivalent is called a detected violation of the property.",
+     "anchor": "Definition 4.1, Section 4.2, p.33",
+     "quotes": [
+      "We say that |ϕ⟩ and |ψ⟩ are equivalent under the property S if they are equal or |ψ⟩ can be obtained from |ϕ⟩ by applying a Pauli operator in S.",
+      "If |ϕ⟩ ≁S |ψ⟩, we say that a violation of the property S is detected by the pair of unit vectors (|ϕ⟩ , |ψ⟩)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Definition 4.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "prop-2-3-mub-stabilizer-2-design",
+     "value": "The paper states and proves (Proposition 2.3) that the bases of stabilizer states built from the Pauli group form mutually unbiased bases and a 2-design.",
+     "anchor": "Proposition 2.3, Section 2.2, p.13",
+     "quotes": [
+      "Proposition 2.3 (Pauli group, MUB and 2-design). The bases",
+      "form an MUB and a 2-design."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The identity itself is printed in a garbled layout; the quotes hold only the statement that the bases form an MUB and a 2-design. The proof cites a known theorem on mutually unbiased bases.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pauli-overlap-zero-or-one-in-mub",
+     "value": "The paper shows (the displayed equation in the proof of the main testing theorem) that for stabilizer basis states of the same group and a Pauli string Q, the overlap of one basis state with Q applied to another is either zero or of modulus one, which is why a short-time evolution under a Hamiltonian inside S cannot produce a detected violation to first order.",
+     "anchor": "Proof of Theorem 4.2, Equation (16), p.36",
+     "quotes": [
+      "Thus either ⟨ϕi,ℓ| Q |ϕi,j⟩ = 0 or | ⟨ϕi,ℓ| Q |ϕi,j⟩ | = 1 ⇔ Q |ϕi,j⟩ = eiθ |ϕi,ℓ⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A derived fact with the derivation on p.36 using Lemma 2.4.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thm-4-2-property-testing-frobenius",
+     "value": "The paper proves (Theorem 4.2) that for a set S of Pauli strings with |S ∪ {I}| at most (2n+1)ε4 / 144 (as printed) and ε in (0, 1), if the Hamiltonian has Tr(H) = 0 and operator norm at most 1, Algorithm 1 decides with probability at least 2/3 whether H is in the property or is more than ε away in normalized Frobenius norm from every Hamiltonian in it, using a total evolution time O(1/ε3), a total number of independent experiments N = O(1/ε4), and a total classical processing time O(n2|S ∪ {I}| / ε4), with efficiently implementable states and measurements.",
+     "anchor": "Theorem 4.2, Section 4.2, p.33",
+     "quotes": [
+      "Theorem 4.2. Let S ⊂ Pn such that |S ∪ {I}| ≤ (2n+1)ε4 144 , and let ε ∈ (0, 1).",
+      "Suppose that the Hamiltonian H satisfies Tr(H) = 0 and ∥H∥∞ ≤ 1. Algorithm 1 tests whether H ∈ ΠS",
+      "using a total evolution time O 1 ε3 , a total number of independent experiments N = O 1 ε4 , and a total classical processing time O n2|S∪{I}| ε4"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from Theorem 4.2; the proof follows on p.35-38.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cor-4-3-locality-testing",
+     "value": "The paper proves (Corollary 4.3) that for n at least 2 and ε > 0 with (3n)k+1 at most (2n+1)ε4 / 144 (as printed), if Tr(H) = 0 and the operator norm of H is at most 1, Algorithm 1 with S the set of Pauli strings of weight at most k decides with probability at least 2/3 whether H is k-local or farther than ε in normalized Frobenius norm from every k-local Hamiltonian, using a total evolution time O(1/ε3), N = O(1/ε4) experiments, and a classical processing time O((3n)k+3 / ε4).",
+     "anchor": "Corollary 4.3, Section 4.2, p.34",
+     "quotes": [
+      "Corollary 4.3 (Testing locality – Restatement of Theorem 1.3). Let n ≥ 2 and ε > 0 be such that (3n)k+1 ≤ (2n+1)ε4 144 .",
+      "Algorithm 1, when given the property S = Sk−loc, tests whether H is k-local or",
+      "with probability at least 2/3 using a total evolution time O 1 ε3 , a total number of independent experiments N = O 1 ε4 , and a total classical processing time O (3n)k+3 ε4 ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from Corollary 4.3.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The size condition on k and epsilon ties the tester to polynomial (3n)k+1 against the exponential 2n+1; it holds for k at most a constant or a small multiple of log n at fixed epsilon, not for k growing with n."
+    },
+    {
+     "id_suggestion": "alg-1-efficiency-quantum-classical",
+     "value": "The authors state that Algorithm 1 is efficient in the number of experiments, the total evolution time, and the classical and quantum processing time, since the input states are stabilizer states prepared with Clifford circuits and the measurements are stabilizer bases implemented by Clifford circuits followed by a computational-basis measurement.",
+     "anchor": "Section 4.2, p.33 and Proof of Theorem 4.2, p.38",
+     "quotes": [
+      "Thus, Algorithm 1 is efficient in terms of the number of experiments, the total evolution time, and the classical and quantum processing time.",
+      "The input states used in our protocol are (randomly chosen) stabilizer states"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Resource accounting in the proof of Theorem 4.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "remark-4-4-testing-many-properties",
+     "value": "The authors state that changing the data processing so that it compares the empirical number of detected violations with a threshold achieves an error probability δ with a complexity that scales as log(1/δ), which allows many properties to be tested on the same data with only a logarithmic overhead in the number of properties.",
+     "anchor": "Remark 4.4, Section 4.2, p.34; Appendix B.1, p.59-61",
+     "quotes": [
+      "we are able to achieve an error probability δ with a complexity that scales as log(1/δ).",
+      "this allows us to test many properties at once with only an overhead that is logarithmic in M , number of properties."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A remark; the formal statement is Theorem B.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thm-b-1-testing-many-properties",
+     "value": "The paper proves (Theorem B.1) that for properties Si each with |Si ∪ {I}| at most (2n+1)ε4 / 144, trace zero and operator norm at most one, Algorithm 2 tests every property at once with success probability at least 1 − δ using a total evolution time of O(log(M/δ) / ε3) and N = O(log(M/δ) / ε4) experiments.",
+     "anchor": "Theorem B.1, Appendix B.1, p.60",
+     "quotes": [
+      "Theorem B.1. Let Si ⊂ Pn such that |Si ∪{I}| ≤ (2n+1)ε4 144 for al l i ∈ {1, . . . , M }.",
+      "The algorithm succeeds with probability at least 1 − δ and uses a total evo- lution time O log(M/δ) ε3 , a number of independent experiments N = O log(M/δ) ε4"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from Theorem B.1; the paper gives only a proof sketch based on the Chernoff-Hoeffding inequality.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The paper calls the argument a 'Proof Sketch', so the grade rests on a sketched proof."
+    },
+    {
+     "id_suggestion": "remark-b-2-sparsity-and-low-intersection-testing",
+     "value": "The authors state two applications of Theorem B.1: testing whether a Hamiltonian has an at most k-sparse Pauli expansion (for k = O(1)) by testing M = O(4nk) properties at once, and testing whether it is a low-intersection Hamiltonian, both with a number of queries and total evolution time that scale logarithmically in the number of properties.",
+     "anchor": "Remark B.2, Appendix B.1, p.61",
+     "quotes": [
+      "testing M = 4n−1 k = O(4nk) many properties of size k simultaneously",
+      "As our bounds in Theorem B.1 scale logarithmically with the number of properties"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Applications stated in a remark; the sparsity and intersection arguments are brief.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "remark-4-5-and-thm-b-3-ancilla-extension",
+     "value": "The authors state that the size condition on S can be lifted by adding ancilla qubits, and Theorem B.3 states that the resulting tester works for any S, with each experiment using efficiently implementable states and measurements on O(n + log(1/ε)) many qubits.",
+     "anchor": "Remark 4.5, p.34; Theorem B.3, Appendix B.2, p.62",
+     "quotes": [
+      "Nonetheless, we are able to extend the result of Theorem 4.2 to any set S using an additional number naux of ancilla qubits",
+      "Each experiment uses efficiently im- plementable states and measurements on O(n + log(1/ε)) many qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The full statement of Theorem B.3 is partly printed in garbled fractions in the text layer, so only parts could be quoted.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thm-b-5-tolerant-testing",
+     "value": "The paper states (Theorem B.5) that for 0 ≤ ε1 < ε2 < 1, trace zero and operator norm at most one, a tolerant tester (Algorithm 4) decides whether the Hamiltonian is within ε1 of a Hamiltonian with the property or more than ε2 away from all of them in normalized Frobenius norm, with a number of experiments polynomial in the inverse of the gap and of ε2; the paper gives only a proof sketch.",
+     "anchor": "Theorem B.5, Appendix B.3, p.63-64",
+     "quotes": [
+      "ε1 < ε2 < 1, and let S ⊂ Pn such that",
+      "Suppose that the Hamiltonian H satisfies Tr(H) = 0 and ∥H∥∞ ≤ 1. Algorithm 4 tests",
+      "Proof Sketch. First, note that the error probability under the alternate hypothesis"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The resource bounds are printed in garbled fractions in the text layer and the proof is a sketch.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The experiment bound is read from the garbled statement and the closing derivation (N = O(log(1/δ) / ((ε2 − ε1)3 ε2))) on p.66; it is not in the quotes."
+    },
+    {
+     "id_suggestion": "remark-4-7-iid-independence-crucial",
+     "value": "The authors state that their tester assumes N independent evolutions, that the proof works even if the Hamiltonians differ between rounds as long as they stay in the same hypothesis class, that independence is crucial for the proof, and that a naive de Finetti argument would add an overhead exponential in the number of qubits.",
+     "anchor": "Remark 4.7, Section 4.2, p.34",
+     "quotes": [
+      "However, the assumption of independence is crucial for the proof.",
+      "would require an overhead in the copy complexity that is exponential in the number of qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit of their proof in Remark 4.7.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "remark-4-8-other-norms-and-rescaling",
+     "value": "The authors state that because the normalized Frobenius norm equals the Pauli two-norm and the Pauli p-norms are monotone, the results of Theorem 4.2 also apply to testing with the Pauli p-norm for any p at least 2, and that, for a Hamiltonian with operator norm at most B, rescaling gives polynomial dependence on B.",
+     "anchor": "Remark 4.8, p.34; Section 1.2, p.5",
+     "quotes": [
+      "we immediately see that the results of Theorem 4.2 also apply to Hamiltonian property testing with ∥·∥Pauli,p for any p ≥ 2 as distance measure.",
+      "As all relevant complexities scale inverse-polynomially in the accuracy, this results in polynomial dependencies on B."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Immediate consequences of Theorem 4.2 via norm monotonicity, stated in Remark 4.8.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "measure-first-ask-later-feature",
+     "value": "The authors state that the data in their testing algorithm can be collected without knowing the Hamiltonian property to be tested, as long as an a priori bound on its size and the desired accuracy are known, and that once collected the data can be used to test multiple properties simultaneously.",
+     "anchor": "Section 1.2, p.4-5",
+     "quotes": [
+      "That is, the data in our testing algorithm can be collected even without knowing the Hamiltonian property that is to be tested as long as",
+      "and once collected the data can be used to test multiple properties simultaneously."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A property of the algorithm stated in prose, made formal by Theorem B.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thm-5-1-learning-lower-bound-formal",
+     "value": "The paper proves (Theorem 5.1) that for n at least 11, Tr(H) = 0 and operator norm at most 1, any coherent algorithm that outputs a Hamiltonian within ε in normalized Frobenius norm with probability at least 2/3 needs N = Ω(22n / n) independent experiments (two to the power two n over n), and any non-adaptive ancilla-free incoherent algorithm achieving the same needs a total evolution time of Ω(22n / ε).",
+     "anchor": "Theorem 5.1, Section 5, p.37-38",
+     "quotes": [
+      "Theorem 5.1 (Formal version of Theorem 1.4). Let n ≥ 11. Suppose that the Hamiltonian H satisfies Tr(H) = 0 and ∥H∥∞ ≤ 1.",
+      "with probability at least 2/3 has to use a number of independent experiments N = Ω 22n n .",
+      "with probability at least 2/3 has to use a total evolution time Ω 22n ε ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from Theorem 5.1; the proof is on p.38-44.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "exponential-separation-testing-vs-learning",
+     "value": "The authors state that learning a general Hamiltonian remains exponentially hard with the average-case distance, thereby establishing an exponential separation between Hamiltonian testing and learning.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "thereby establishing an exponential separation between Hamiltonian testing and learning."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from Theorem 4.2 and Theorem 5.1 under the stated promise on the Hamiltonian.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The separation compares a polynomial-in-1/epsilon tester with an exponential learner, both under the trace-zero, bounded-operator-norm promise and the normalized Frobenius distance."
+    },
+    {
+     "id_suggestion": "learning-lower-bound-proof-method-fano-holevo",
+     "value": "The authors state that the learning lower bound uses a family of Hamiltonians εUOU† with Haar-random U and O a diagonal matrix with half of its entries plus one and half minus one, constructs M = exp(d2 / 38400) of them that are ε-separated in normalized Frobenius norm, and bounds the information per query with the Holevo information for coherent learners.",
+     "anchor": "Section 1.4, p.9-10; Section 5, p.38-42",
+     "quotes": [
+      "we can construct a family F = {Hx = εUxOUx†}x∈[M] where M = exp d2 38400 that is ε-separated with high",
+      "The mutual information can be upper bounded by the Holevo information χ [Hol73]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proof construction and outline.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "k-local-learning-lower-bound-claimed",
+     "value": "The authors state that the reasoning behind Theorem 1.4 also gives a query complexity lower bound of Ω(22k / k) for any coherent quantum algorithm that learns an unknown k-local Hamiltonian to accuracy ε in normalized Frobenius norm, and that this yields a superexponential-in-k separation between learning under a k-locality promise and testing for the same promise; the paper gives no separate proof of this claim.",
+     "anchor": "Section 1.2, p.5",
+     "quotes": [
+      "Finally, we note that the reasoning behind Theorem 1.4 also gives rise to an Ω 22k k query complexity lower bound for any coherent quantum algorithm that learns an unknown k-local Hamiltonian to accuracy ε in normalized Frobenius norm."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated in prose as following from the reasoning behind Theorem 1.4 without a theorem or proof.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "appendix-a-short-time-distance-equivalence",
+     "value": "The authors state that for short times the worst-case distances between unitary evolutions (worst-case fidelity, one-to-one norm, diamond norm and phase-optimized operator norm) are understood through the operator norm distance of the underlying Hamiltonians, and that the average-case distance measures are connected to the normalized Frobenius distance of the Hamiltonians.",
+     "anchor": "Appendix A.1, p.57; Appendix A.2, p.58",
+     "quotes": [
+      "This derivation tells us that, for short times, we can understand the worst-case distances (a)-(d) via the operator norm distance between the two Hamiltonians underlying the unitary evolutions.",
+      "This tells us that for short times, the different average-case distance measures (a)-(e) are connected to the normalized Frobenius distance between the underlying Hamiltonians."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Short-time first-order derivations in Appendix A, with the regime (short times) quoted.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "applications-preprocessing-for-learning",
+     "value": "The authors state that their testing protocol can be used to check whether a given unknown Hamiltonian satisfies the structural assumptions that learning algorithms need, so as a preprocessing step for learning, and, by iterating over locality parameters, to estimate the locality parameter and the resources needed for learning.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "The testing protocol we propose in this work can hence be used to check whether a given unknown Hamiltonian satisfies this assumption and thus serve as a preprocessing step for learning.",
+      "by iteratively applying our protocol for different locality parameters, we can estimate the locality parameter and thereby quantify the amount of resources needed for Hamiltonian learning."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Intended use stated in prose without a demonstration.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "future-work-and-open-problems",
+     "value": "The authors state as open directions that coherent quantum algorithms may be able to achieve Heisenberg-limited scaling for testing, that generalizing the lower bounds of Theorems 1.2 and 1.4 to ancilla-assisted incoherent algorithms would be interesting, and that quantitative improvements in their bounds seem important.",
+     "anchor": "Section 1.5, p.10-11",
+     "quotes": [
+      "Also, exploring the possibility for quantitative improvements in our bounds seems important.",
+      "coherent quantum algorithms may be able to achieve Heisenberg-limited scaling for testing",
+      "it would be interesting to generalize Theorems 1.2 and 1.4 to ancilla-assisted incoherent quantum algorithms."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state these open problems in Section 1.5.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
