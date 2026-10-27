@@ -1,0 +1,350 @@
+{
+ "papers": [
+  {
+   "record_id": "akter-2023-software-supply-chain-vulnerabilities-detection",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Akter-et-al._2023_Software-Supply-Chain-Vulnerabilities-Detection-in-Source-Code-Performance__2306.08060.pdf",
+   "title_in_file": "Software Supply Chain Vulnerabilities Detection in Source Code: Performance Comparison between Traditional and Quantum Machine Learning Algorithms",
+   "version_note": "",
+   "pages": 8,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A comparison of a quantum neural network run on a simulator with a classical neural network on 5 to 100 percent portions of the ClaMP malware dataset.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qnn-nn-accuracy-random",
+     "verdict": "confirmed",
+     "note": "Table 2 holds NN precision at a constant 1.00 for every proportion, so 'random' fits accuracy, recall and f1 better than precision.",
+     "value": "",
+     "anchor": "Section V, p6",
+     "quotes": [
+      "The accuracy, f1 score, precision, and recall results show that the quantum machine learning neural network model and the classical machine learning model does not have an impact on various portions of the dataset.",
+      "The results show a random pattern throughout the entire dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Each proportion is one run with no repeats reported, so 'random' cannot be told apart from run-to-run noise."
+    },
+    {
+     "id": "qnn-simulator-qubit-limit",
+     "verdict": "confirmed",
+     "note": "The paper also says it built the QNN in TensorFlow Quantum (Section IV.C) while naming Pennylane as the simulator (Abstract, Section VI); the two statements are not reconciled.",
+     "value": "",
+     "anchor": "Section VI, p6",
+     "quotes": [
+      "Due to the limited availability of the quantum computer, the QML model was applied on an open-source Penny lane simulator.",
+      "the current version of quantum simulators comes with a limited number of qubits, which is not appropriate for software supply chain attacks"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section VI states the setup and the limit in the authors' own words.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qnn-slower-than-nn",
+     "verdict": "widened",
+     "note": "The Conclusion also says the QNN time is quite higher than the NN time; the Abstract limits it to higher dataset percentages.",
+     "value": "The authors report that execution time for the QNN is slower than for the NN at higher percentages of the dataset, and that the QNN model's execution time is quite higher than the NN model's.",
+     "anchor": "Abstract, p1; Section VI, p6",
+     "quotes": [
+      "The demonstration result indicates that execution time for QNN is slower than NN with a higher percentage of datasets.",
+      "The experimental results indicate that QNN and NN differ in execution time where the QNN model provides quite higher than the NN model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 1 lists QNN times near nine to twelve minutes and Table 2 lists NN times from seconds to under one and a half minutes, so the QNN is slower at every proportion. The QNN ran on a simulator, so the gap is simulation cost, not hardware speed."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "clamp-dataset-size-split",
+     "value": "The authors state that they split the entire dataset of 5,210 rows into 20 smaller datasets, starting at 5 percent of the rows and increasing by 5 percent up to 100 percent.",
+     "anchor": "Section III, p3-4",
+     "quotes": [
+      "we split the entire dataset comprising 5,210 rows into different smaller portions.",
+      "We separated the dataset into 20 smaller datasets; the number of rows started from 5 percent of the total dataset and gradually increased by 5 percent up to 100 percent."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III states the data split in the authors' own words.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "clamp-dataset-features",
+     "value": "The authors state that the ClaMP dataset has two versions, ClaMP_raw and ClaMP_Integrated, and that the features they selected from ClaMP_Integrated total 68.",
+     "anchor": "Section IV.A, p4",
+     "quotes": [
+      "ClaMP dataset has two versions such as ClaMP_raw and ClaMP_Integrated.",
+      "which contains a total of 68 features"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV.A states the dataset used.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "clamp-column-count",
+     "value": "The authors state that the dataset contains a total of 108 columns, including one target variable.",
+     "anchor": "Section IV.B, p4",
+     "quotes": [
+      "The dataset contains a total of 108 columns, including one target variable."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV.B states the dataset's size.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section IV.A says 68 features and Section IV.B says 108 columns; the paper does not reconcile them."
+    },
+    {
+     "id_suggestion": "pca-16-components-qubit-limit",
+     "value": "The authors state that the simulator does not accept large dimensions, that the dataset contains 108 dimensions, and that they selected the first 16 principal components because of the qubit limit of the existing simulator.",
+     "anchor": "Section IV.C, p4",
+     "quotes": [
+      "The present quantum simulator does not accept large dimensions as input while our dataset contains 108 dimensions, which we cannot feed into the simulator.",
+      "We selected the first 16 principal components, due to the limitation of qubit numbers in the existing simulator."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section IV.C states the setup and the constraint behind it.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-training-setup",
+     "value": "The authors state that the QNN was a two-layer model trained with hinge loss on labels converted to the -1 to 1 range for 100 epochs, and that the classical NN was applied directly to the reduced dataset.",
+     "anchor": "Section IV.C, p4-5",
+     "quotes": [
+      "a model circuit layer was developed for the QNN comprising of a two-layer model with the matched size of the data circuit",
+      "We adopt an optimization function known as hinge loss during the training phase.",
+      "converted to the -1 to 1 label. Finally, we trained the QNN for 100 epochs.",
+      "First, the classical NN was directly applied to the reduced dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV.C states the training setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper gives no NN architecture, optimizer or hyperparameters, and no repeats or random seeds."
+    },
+    {
+     "id_suggestion": "preprocessing-standardization",
+     "value": "The authors state that they standardized all features to a mean of zero and a standard deviation of one, and converted the categorical 'packer type' feature to numbers.",
+     "anchor": "Section IV.B, p4",
+     "quotes": [
+      "We used a standardization technique to transform all the features to a mean of zero and a standard deviation of one.",
+      "We converted the categorical values from the feature called 'packer type' of ClaMP data since this type of data cannot be directly entered into the model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV.B states the preprocessing.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-results-5-and-20-percent",
+     "value": "The authors report QNN results of 57 percent accuracy, 73 percent f1, 100 percent precision and 57 percent recall at 5 percent of the dataset, and 28 percent accuracy, 28 percent f1, 28 percent recall and 30 percent precision at 20 percent of the dataset.",
+     "anchor": "Section IV.D, p5; Table 1",
+     "quotes": [
+      "for 5 percent of the dataset, the accuracy is 57 percent, the f1 score is 73 percent, precision is 100 percent, and recall is 57 percent",
+      "for 20 percent of the dataset, the accuracy is 28 percent, f1 score is 28 percent, recall is 28 percent, and precision is 30 percent"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-accuracy-not-monotone",
+     "value": "The authors report that QNN accuracy jumps from 30, 35 and 40 percent of the data to 45 percent and drops off at 50 percent, and that the number of instances does not affect accuracy.",
+     "anchor": "Section IV.D, p5",
+     "quotes": [
+      "The accuracy suddenly jumps from 30, 35, and 40, to 45 percent and drops off 50 percent of the dataset.",
+      "The number of instances does not affect the accuracy, while it does affect the total execution time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text says 70 percent accuracy at 45 percent of the data while Table 1 lists 0.73; the paper's text and table differ in places."
+    },
+    {
+     "id_suggestion": "qnn-execution-time-pattern",
+     "value": "The authors report that QNN execution time was 12min 24s at 5 percent and 11min 42s at 10 percent of the dataset, stayed at 9 min 19s to 9min 48s from 15 to 80 percent except at 35 and 55 percent, and rose from 10 min to 11 min from 85 to 100 percent.",
+     "anchor": "Section IV.D, p5; Table 1",
+     "quotes": [
+      "Table 1 shows that for 5 percent and 10 percent of the total dataset, the execution times are 12min 24s and 11min 42s respectively.",
+      "From 15 percent to 80 percent dataset, except from 35 percent and 55 percent, the execution time remains 9 min 19s to 9min 48s.",
+      "From 85 to 100 percent data, the execution time increases from 10 min to 11 min."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The QNN times are simulator wall-clock times from single runs; no variance is reported."
+    },
+    {
+     "id_suggestion": "nn-results-5-percent",
+     "value": "The authors report NN results of 50 percent accuracy, 67 percent f1, 100 percent precision and 50 percent recall at 5 percent of the dataset, and state that NN performance has no impact from dataset proportion in terms of accuracy.",
+     "anchor": "Section IV.E, p5; Table 2",
+     "quotes": [
+      "Considering 5 percent of the dataset, the accuracy is 50 percent, the f1 score is 67 percent, the precision is 100 percent, and the recall is 50 percent",
+      "Therefore, the model's performance does not have any impact on different proportions of the dataset in terms of the accuracy metrics."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 2 lists NN accuracy between 0.46 and 0.58 for a two-class task, near chance level."
+    },
+    {
+     "id_suggestion": "nn-execution-time-pattern",
+     "value": "The authors report NN execution times of 22.1s, 15.2s, 19.8s, 44s, 26.8s, 41.9s, 36.4s, 42.3s and 46.3s for the smaller portions of the dataset, and state that different portions of the dataset significantly affect NN execution time.",
+     "anchor": "Section IV.E, p6; Table 2",
+     "quotes": [
+      "the execution times required are 22.1s, 15.2s, 19.8s, 44s, 26.8s, 41.9s, 36.4s, 42.3s, and 46.3s respectively.",
+      "in terms of the total number of execution times, different portions of the dataset significantly affect the neural network model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-nn-time-opposite-trends",
+     "value": "The authors state that the QNN execution time decreases with dataset proportion until a threshold, that the NN execution time increases with dataset proportion, and that the two are totally opposite.",
+     "anchor": "Section V, p6",
+     "quotes": [
+      "For the QNN, the execution time decreases with the increment portion of the dataset until a certain threshold of data proportion, for a large number of instances.",
+      "For the second model, the execution time increases with the increment proportion of the dataset.",
+      "Therefore, the required execution time is totally opposite of the quantum machine learning model and the classical neural network model using the software vulnerability datasets."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 1 shows QNN time falling only from the 5 and 10 percent runs to about nine minutes, then flat; the Conclusion also says QNN time slows down with a higher proportion, which differs from this statement."
+    },
+    {
+     "id_suggestion": "masum-cited-qml-faster",
+     "value": "The paper attributes to prior research the finding that quantum machine learning surpasses classical machine learning in processing speed and computational time.",
+     "anchor": "Section II, p2-3",
+     "quotes": [
+      "According to the research findings, quantum machine learning surpasses classical machine learning in terms of processing speed and computational time."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "This paper's own execution times (QNN slower than NN) do not support that cited finding; the paper does not comment on the difference."
+    },
+    {
+     "id_suggestion": "future-work-more-experiments",
+     "value": "The authors state that a large level of experiments shall be carried out in future research to understand both models accurately.",
+     "anchor": "Abstract, p1",
+     "quotes": [
+      "Due to recent advancements in QNN, a large level of experiments shall be carried out to understand both models accurately in our future research."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The Abstract states the authors' own limit on the study.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "more-qubits-may-help",
+     "value": "The authors state that a large number of qubits that converges with quantum machine learning models may play a big role in improving classification performance and reducing computation time.",
+     "anchor": "Section VI, p6",
+     "quotes": [
+      "A large number of qubits that converges with quantum machine learning models may play a big role in terms of improving classification performance and reducing computation time."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper runs no experiment with more qubits."
+    }
+   ]
+  }
+ ]
+}
