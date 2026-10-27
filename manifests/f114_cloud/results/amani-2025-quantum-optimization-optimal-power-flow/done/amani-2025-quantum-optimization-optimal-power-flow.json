@@ -1,0 +1,770 @@
+{
+ "papers": [
+  {
+   "record_id": "amani-2025-quantum-optimization-optimal-power-flow",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Amani-Kargarian_2024_Quantum-Optimization-for-Energy-Management-A-Coherent-Variational__2412.14095.pdf",
+   "title_in_file": "Quantum Optimization for Optimal Power Flow: CVQLS-Augmented Interior Point Method",
+   "version_note": "The text is an IEEE-format manuscript draft whose page headers still read 'REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER'. The title in the text is 'Quantum Optimization for Optimal Power Flow: CVQLS-Augmented Interior Point Method'; the file name carries the arXiv 2412.14095 title 'Quantum Optimization for Energy Management: A Coherent Variational ...'. It is the paper the record names (same authors, same abstract topic and stored quotes), in a later revision of the text.",
+   "pages": 13,
+   "read_extent": "partial",
+   "not_read": "The text layer holds no content for Tables I to VIII (solver comparison, encoding methods, ansatz effects, optimizer comparison, condition numbers, gate counts, matrix sizes, failure percentages), for Algorithms I and II, for the numbered equations, and for the plots in Figs. 1 to 18; only their captions and the surrounding prose were read.",
+   "what_it_is": "An application paper that puts a coherent variational quantum linear solver (CVQLS) inside an interior point method for DC and AC optimal power flow and tests it on a 2-bus IBMQ run, 3- and 5-bus simulations, and 118- and 300-bus noise-model runs.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qopf-cvqls-most-suitable",
+     "verdict": "narrowed",
+     "note": "The abstract and conclusion say the comparative analysis of HHL, VQLS and CVQLS showed CVQLS most suitable. The paper's own performance runs compare only VQLS and CVQLS; HHL is compared on the properties listed in Table I (an image, not in the text layer) and in Section II prose, with no HHL run. The ill-conditioning argument is stated as a property of CVQLS, not shown by a condition-number experiment.",
+     "value": "The authors report that a comparative analysis of HHL, VQLS and CVQLS found CVQLS most suitable for OPF due to its stability with ill-conditioned matrices such as the Hessian in IPM, and state that the performance comparison carried out in the paper's later sections is between VQLS and CVQLS.",
+     "anchor": "Abstract; Section V Conclusion; Section II-D, p.3",
+     "quotes": [
+      "revealed that CVQLS is most suitable for OPF due to its stability with ill-conditioned matrices, such as the Hessian in IPM.",
+      "In the subsequent sections, we have compared the performance of VQLS and CVQLS."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "HHL is not run anywhere in the paper; the three-way comparison is a literature and property comparison (Table I) plus a two-way run. The 'stability with ill-conditioned matrices' of CVQLS is argued in prose (Section II-D) and is not isolated by an experiment."
+    },
+    {
+     "id": "qopf-hardware-limits",
+     "verdict": "widened",
+     "note": "The paper gives specifics behind the limitation: the circuit and iteration counts on the IBMQ device, the queue delay, the accuracy reached, and the cause (no native hybrid support, noise). Section V-D also says 16 iterations at one place and 12 at others.",
+     "value": "The authors state that CVQLS is limited by current quantum hardware, especially for larger systems, and that testing the QOPF on a real quantum computer using a 2-bus system revealed key limitations: 192 quantum circuits were executed on IBMQ hardware for 12 QIPM iterations, each circuit had to be submitted manually because IBMQ devices lack native hybrid support (often taking up to three hours per iteration depending on queue length), hardware noise reduced solution accuracy, and after 12 iterations the generator output reached 105.3 MW with a 5% error.",
+     "anchor": "Abstract; Section V-D, p.10-11; Section V Conclusion, p.12",
+     "quotes": [
+      "While promising, CVQLS is limited by current quantum hardware, especially for larger systems.",
+      "Our results from testing the proposed QOPF on a real quantum computer using a 2-bus system revealed key limitations.",
+      "We executed 192 quantum circuits on real IBMQ hardware",
+      "for 12 QIPM iterations. This made the overall process highly",
+      "often taking up to three hours per iteration depending on queue length",
+      "Additionally, hardware noise reduced solution accuracy.",
+      "After 12 iterations, the generator output reached 105.3 MW, with a 5% error"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Section V-D also says the run was stopped manually after 16 iterations, while the 192-circuit count is stated for 12 iterations; the paper does not reconcile the two numbers."
+    },
+    {
+     "id": "qopf-shallow-ansatz",
+     "verdict": "narrowed",
+     "note": "The paper's own observation (Section IV-B) is that the shallow ansatz converged stably and the deeper one converged very slowly or failed to reduce the cost; overfitting is named for deeper ansatzes in the general discussion (with citations) and in the conclusion, but the paper shows no overfitting measurement. Only two ansatzes are compared (Fig. 3).",
+     "value": "The authors state that, of the two ansatzes compared, the shallow ansatz showed stable and reliable convergence, while the deeper ansatz either converged very slowly or failed to effectively reduce the CVQLS cost function; the conclusion attributes the deeper ansatz's results to overfitting and trainability issues.",
+     "anchor": "Section IV-B, p.7; Section V Conclusion, p.12",
+     "quotes": [
+      "Based on our observations, the shallow ansatz Fig. 3(a) shows stable and reliable convergence in our study.",
+      "However, the deeper ansatz shown in Fig. 3(b) either converges very slowly or fails to effectively reduce the CVQLS cost function.",
+      "We found shallow ansatz performed well, while deeper ones suffered from overfitting and trainability issues"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer carries no measure of overfitting; the overfitting attribution rests on the cited general discussion, and the layer counts of the two ansatzes are in Fig. 3, an image."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "hhl-needs-fault-tolerance-cited",
+     "value": "The authors state, citing their own earlier paper, that HHL provides exponential speedup over classical methods but requires fault-tolerant quantum hardware, making it impractical for current noise-sensitive devices.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "HHL provides exponential speedup over classical methods but requires fault-tolerant quantum hardware, making it impractical for current noise-sensitive devices [15]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited background statement; the paper does not test HHL.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "Reference [15] is the authors' own conference paper, so this is not independent support."
+    },
+    {
+     "id_suggestion": "hhl-tomography-removes-advantage",
+     "value": "The authors state that HHL's circuit depth scales with both the system size and the condition number, that its running time grows with the condition number, and that decoding the solution requires quantum tomography, which introduces a linear dependency on system size and eliminates the logarithmic advantage of HHL.",
+     "anchor": "Section II-A, p.2-3",
+     "quotes": [
+      "However, the depth of the quantum circuit in HHL scales with both the size of the linear system and the condition number of matrix",
+      "As the condition number increases, the algorithm's running time increases, making HHL potentially slower for larger matrices.",
+      "requires quantum tomography, which introduces a linear dependency on system size and, therefore, eliminates the logarithmic advantage of HHL."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Background argument without proof or experiment in this paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Stated for the purpose of selecting a solver; HHL is not run in the paper."
+    },
+    {
+     "id_suggestion": "vqls-limits-stated",
+     "value": "The authors state that VQLS is more resilient to noise than HHL and suited to NISQ computers, but that larger, ill-conditioned systems may require more iterations, the number of cost function evaluations increases with system size, and the algorithm could diverge or get stuck in a barren plateau.",
+     "anchor": "Section II-B, p.3",
+     "quotes": [
+      "VQLS is more resilient to noise and errors, making it suitable for NISQ computers [17].",
+      "The number of cost function evaluations needed to optimize parameters in the variational ansatz also increases with system size.",
+      "Regarding VQLS convergence, larger, ill-conditioned systems may require more iterations to reach a solution.",
+      "Sometimes, the algorithm could diverge or get stuck in a barren plateau, where progress toward the solution significantly slows or stops."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Background statements, partly cited to [17]; the paper's own VQLS runs appear in Section V-C.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvqls-claimed-advantages",
+     "value": "The authors state, citing reference [23], that CVQLS introduces coherence-preserving techniques that make it more resilient to quantum noise, rely less on repeated quantum measurements, have a lower circuit depth, and generally exhibit better convergence with a lower risk of encountering barren plateaus, and that CVQLS trades increased classical computation for reduced quantum-classical interaction.",
+     "anchor": "Section II-C, p.3",
+     "quotes": [
+      "A variant of VQLS, known as CVQLS, addresses some VQLS limitations with a tradeoff of increased classical computation to guide the quantum circuit.",
+      "CVQLS introduces coherence-preserving techniques that make it more resilient to quantum noise, rely less on repeated quantum measurements, have a lower circuit depth, and generally exhibit better convergence with a lower risk of encountering barren plateaus [23]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited advantage list; the paper tests only convergence behavior, not noise resilience or circuit depth against VQLS.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "Reference [14], printed as the source of CVQLS in Section I, is Huang, Kueng and Preskill on information-theoretic bounds in machine learning, not the coherent VQLS paper; reference [23] is Cerezo et al. on cost-function-dependent barren plateaus. The CVQLS construction itself is taken from the PennyLane tutorial [24]. The bibliography does not point at a CVQLS source paper."
+    },
+    {
+     "id_suggestion": "cvqls-ill-conditioning-claim",
+     "value": "The authors state that CVQLS addresses ill-conditioning by leveraging quantum coherence, that this makes it an ideal choice for Q-OPF with improved stability and performance compared to other quantum solvers, and that it generally requires fewer iterations than VQLS.",
+     "anchor": "Section II-D, p.3",
+     "quotes": [
+      "CVQLS addresses this challenge by leveraging quantum coherence to mitigate the effects of illconditioning.",
+      "offering improved stability and performance compared to other quantum solvers.",
+      "CVQLS generally requires fewer iterations"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Argued in prose; no experiment isolating condition number against CVQLS performance is in the text.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Table V reports condition numbers for PF and OPF matrices (the numbers are in an image), but the text does not report CVQLS accuracy as a function of condition number."
+    },
+    {
+     "id_suggestion": "solver-selection-cvqls",
+     "value": "The authors state that, from their analysis of the advantages and disadvantages of the three quantum linear solvers (summarized in Table I), they selected CVQLS for the Q-OPF application.",
+     "anchor": "Section II-D, p.3",
+     "quotes": [
+      "Based on our analysis of the advantages and disadvantages of these three quantum linear solvers, we have selected CVQLS for the Q-OPF application."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own choice in Section II-D.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "opf-formulation-setup",
+     "value": "The authors state that they use the standard ACOPF formulation, a nonlinear and nonconvex problem, and the standard DCOPF, a convex approximation of ACOPF considering only active power and voltage angles, both as in MATPOWER.",
+     "anchor": "Section III-A, p.3",
+     "quotes": [
+      "We have used the standard ACOPF formulation, as in",
+      "which is a nonlinear and nonconvex optimization problem.",
+      "which is a convex approximation of ACOPF considering only active power and voltage angles."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own problem setup in Section III-A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qipm-structure-setup",
+     "value": "The authors state that CVQLS replaces the linear solve for the Newton direction inside the interior point method, that quantum circuits solve the linear systems while classical computation handles parameter tuning and the overall optimization, and that each IPM iteration needs corresponding iterations of CVQLS.",
+     "anchor": "Section III, p.3, p.5-6",
+     "quotes": [
+      "We integrate CVQLS into IPM to solve the linear system of equations encountered at each iteration to determine the Newton direction.",
+      "where quantum circuits solve the linear systems and classical computations handle the parameter tuning and overall optimization process.",
+      "Each IPM iteration needs corresponding iterations of CVQLS to solve the linear equations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own algorithm in Section III.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pauli-decomposition-encoding",
+     "value": "The authors state that they chose Pauli decomposition to encode the classical Hessian matrix, because Pauli matrices form a complete basis for Hermitian matrices, and that the matrix is padded to a Hermitian matrix where needed.",
+     "anchor": "Section III-C, p.4; Section V-C, p.9; Section V-D, p.10",
+     "quotes": [
+      "Among these encoding methods, we chose Pauli decomposition to encode the classical matrix.",
+      "Pauli matrices form a complete basis for Hermitian matrices, making them particularly suitable for quantum algorithms that operate on Hermitian operators, like CVQLS.",
+      "using padding to make the matrix Hermitian and the BFGS"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own encoding choice in Section III-C.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "local-cost-function-cited",
+     "value": "The authors state that the global CVQLS cost function requires swap tests or inner-product estimations, which can be challenging on near-term quantum hardware, and describe a local variant using local Hadamard tests that avoids global state overlaps and, they state, converges to the same solution, citing reference [13].",
+     "anchor": "Section III-C, p.5",
+     "quotes": [
+      "However, it requires swap tests or inner-product estimations, which can be challenging on near-term quantum hardware.",
+      "This formulation avoids global state overlaps and enables more efficient estimation on current quantum devices while converging to the same solution [13]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited property of the local cost function; the equations are not in the text layer.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "Which cost function (global or local) the paper's experiments use is not stated in the text layer."
+    },
+    {
+     "id_suggestion": "opf-harder-than-pf-encoding",
+     "value": "The authors report that the condition numbers of PF matrices are smaller than those of OPF matrices (values in Table V), that encoding the first iteration of DCOPF in a 3-bus system needs a circuit with 364 gates while encoding the 3-bus system PF matrix requires three gates, and that OPF matrices are larger than PF matrices (Table VII).",
+     "anchor": "Section V-B, p.9; Tables V-VII are images",
+     "quotes": [
+      "The condition numbers of PF matrices are smaller than those of OPF matrices.",
+      "For instance, encoding the first iteration of DCOPF in a 3-bus system needs a circuit with 364 gates:",
+      "In contrast, encoding the 3-bus system PF matrix requires three gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Measured gate counts for one system; the table values are in images.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Tables V, VI, VII and VIII carry the numeric values and are not in the text layer, so only the statements in prose are entered."
+    },
+    {
+     "id_suggestion": "ansatz-selection-procedure",
+     "value": "The authors state that they identified the ansatz empirically by evaluating multiple ansatz structures on real linear systems extracted from IPM iterations and selecting the one that consistently produced lower solution errors across representative scenarios, rather than relying on theoretical guarantees; two ansatzes (shallow and deep) are shown in Fig. 3.",
+     "anchor": "Section IV-B, p.7",
+     "quotes": [
+      "we conducted a series of evaluations using real linear systems extracted from IPM iterations while solving the OPF problem.",
+      "We compared multiple ansatz structures and selected the one that consistently produced lower solution errors across various representative scenarios.",
+      "Two used ansatzes are shown in Fig. 3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own selection procedure in Section IV-B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The number of ansatz structures compared and their layer counts are not given in the text; the paper reports no solution-error numbers for the comparison."
+    },
+    {
+     "id_suggestion": "ansatz-design-open-problem",
+     "value": "The authors state that ansatz design remains an open and evolving area of research in variational quantum algorithms, and that their approach is compatible with future improvements.",
+     "anchor": "Section IV-B, p.7",
+     "quotes": [
+      "Ansatz design remains an open and evolving area of research in variational quantum algorithms.",
+      "Our Q-OPF approach is compatible with future improvements"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the open problem in Section IV-B.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "initialization-fixed-vs-sequential",
+     "value": "The authors report that the PennyLane CVQLS default initialization, which sets all parameters to one, gave high errors and unstable convergence and in many cases failed to converge, whereas initializing each CVQLS run with the parameters from the final iteration of the previous run produced significantly better results, and they recommend the second method.",
+     "anchor": "Section IV-C, p.7",
+     "quotes": [
+      "the default parameter initialization in the PennyLane CVQLS package, which sets all parameters to one.",
+      "Fixed initialization caused high errors and unstable convergence",
+      "In many cases, the optimization failed to converge, resulting in CVQLS divergence.",
+      "While fixedvalue initialization was the least effective, sequential initialization based on prior knowledge produced significantly better results."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from this study; no error values or counts are given in the text.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text gives no numbers for the comparison (no error values, iteration counts or number of runs), so the size of the improvement is not available."
+    },
+    {
+     "id_suggestion": "optimizer-adam-recommended",
+     "value": "The authors state that, based on their case study results, they recommend Adam for CVQLS due to its effectiveness in handling large parameter spaces and speeding up convergence, and that they used Adam, BFGS and COBYLA to optimize VQLS and CVQLS circuit parameters.",
+     "anchor": "Section IV-D, p.7; Section V-A, p.9",
+     "quotes": [
+      "Based on our case study results, we recommend Adam for CVQLS due to its effectiveness in handling large parameter spaces and speeding up convergence.",
+      "Adam, BFGS, and COBYLA are used to optimize VQLS and CVQLS quantum circuit parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author recommendation from empirical runs in one study (Section V-C).",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-adam-barren-plateau-3bus",
+     "value": "The authors report that, solving the 16x16 matrix in the 3-bus system during the third iteration of QIPM using VQLS, Adam did not yield satisfactory results and became stuck in a barren plateau situation, although Table IV had led them to expect Adam to perform best.",
+     "anchor": "Section V-C, p.9; Fig. 7(a)",
+     "quotes": [
+      "16x16 matrix in the 3-bus system during the third iteration of QIPM using VQLS.",
+      "Adam is expected to perform the best",
+      "it did not yield satisfactory results and became stuck in a barren plateau situation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single reported run on one matrix.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-cobyla-slow-variable-3bus",
+     "value": "The authors report that COBYLA on the same VQLS problem demonstrated better results than Adam, but converged very slowly, the number of quantum-classical iterations varied when the model was rerun under identical conditions, the solution approached the target with fluctuations, and the solution error was higher in the first run.",
+     "anchor": "Section V-C, p.9; Fig. 5",
+     "quotes": [
+      "COBYLA is applied to the same matrix and demonstrated better results",
+      "However, COBYLA exhibits very slow convergence and the number of quantum-classical iterations varies even when the model is rerun under identical conditions.",
+      "Also, the solution error is higher in the first case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Two runs of one matrix; the paper states the iteration counts vary between runs.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The two runs differ in iteration count; the text gives no counts."
+    },
+    {
+     "id_suggestion": "vqls-5bus-bfgs-cobyla",
+     "value": "The authors report that for the 32x32 matrix in the second iteration of ACOPF for the 5-bus system, acceptable VQLS results were obtained with padding to make the matrix Hermitian and the BFGS optimizer, but the optimization was time-consuming and the cost function oscillated, and that COBYLA on the same problem encountered a barren plateau after a time-consuming process and was unable to find the optimal solution.",
+     "anchor": "Section V-C, p.9-10; Fig. 6; Fig. 7(b)",
+     "quotes": [
+      "example, we have obtained acceptable results for a 32x32",
+      "matrix in the second iteration of ACOPF for the 5-bus system",
+      "using padding to make the matrix Hermitian and the BFGS",
+      "process was time-consuming and exhibited oscillatory behavior",
+      "barren plateau situation after a time-consuming process and is",
+      "unable to find the optimal solution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A reported VQLS run on one matrix; the text layer splits the sentences across lines.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Adam result for this 32x32 VQLS case is not reported."
+    },
+    {
+     "id_suggestion": "vqls-unstable-conclusion",
+     "value": "The authors state that VQLS was unstable across different optimizer choices, that its computational cost increases as the system size grows, and that the observations show limitations of VQLS in solving OPF matrix equations with high accuracy.",
+     "anchor": "Section V-C, p.9-10; Section V Conclusion, p.12",
+     "quotes": [
+      "Among various optimizers, CVQLS showed stable performance with Adam, whereas VQLS was unstable across different choices.",
+      "These observations highlight the limitations of VQLS in solving OPF matrix equations with high accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cvqls-adam-stable-convergence",
+     "value": "The authors report that CVQLS, using only the Adam optimizer, showed convergence behavior shown for 8×8 and 16×16 matrices and for a 32×32 case, with a cost function that consistently decreases with minor errors even across repeated runs, and that they did not encounter the issues seen with VQLS.",
+     "anchor": "Section V-C, p.10; Figs. 8-9",
+     "quotes": [
+      "Fig. 8 shows the convergence behavior for 8×8 and 16×16 matrices. For the 32×32 case, CVQLS performance is demonstrated in Fig. 9.",
+      "The cost function consistently decreases with minor errors, even across repeated runs.",
+      "Notably, we exclusively used the Adam optimizer and did not encounter the issues seen with VQLS."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical runs on small matrices in one study, shown as convergence plots.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "CVQLS is run only with Adam, so the VQLS and CVQLS comparison changes the algorithm and the optimizer set together; a CVQLS run with COBYLA or BFGS is not reported. The matrices are at most 32x32."
+    },
+    {
+     "id_suggestion": "realhw-2bus-setup",
+     "value": "The authors state that the real-hardware test used a 2-bus system with a fixed load of 100 MW at Bus 2, that the IPM formulation of the DCOPF problem gave a 7x7 linear system padded to 8x8 to meet the CVQLS input size requirement, and that the CVQLS circuit uses four qubits, with three for the solution vector and one flag qubit.",
+     "anchor": "Section V-D, p.10",
+     "quotes": [
+      "we used a small 2-bus test system. This system includes a fixed load of 100 MW at Bus 2.",
+      "the IPM formulation of the DCOPF problem resulted in a linear system of size 7x7, which we padded 8x8 to meet the input size requirement of the CVQLS quantum solver.",
+      "The CVQLS circuit uses four qubits: qubits 0–2 represent the solution vector",
+      "and qubit 3 is the flag qubit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own hardware test setup in Section V-D.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The text does not name the IBMQ device or give its error rates; the paper says only that the least busy device was selected by IBMQ's backend selector."
+    },
+    {
+     "id_suggestion": "realhw-2bus-result",
+     "value": "The authors report that on the 2-bus DCOPF case run on IBMQ hardware, the generator output reached 105.3 MW after 12 iterations with a 5% error, which they call reasonable given hardware noise and limitations, that each CVQLS circuit execution took about 0.8–1 second with 8192 measurement shots, and that they stopped the process manually after 16 iterations because further improvements became marginal.",
+     "anchor": "Section V-D, p.10-11; Fig. 11",
+     "quotes": [
+      "Fig. 11a shows QOPF results for the 2-bus DCOPF case.",
+      "After 12 iterations, the generator output reached 105.3 MW, with a 5% error—reasonable given hardware noise and limitations.",
+      "each CVQLS circuit execution took about 0.8–1 second with 8192 measurement shots.",
+      "We stopped the process manually after 16 iterations, as further improvements became marginal and the solution was already satisfactory."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One run on a 2-bus system with one hardware backend.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The reference optimum is not stated in the text layer; the 100 MW load suggests the DC optimum is near 100 MW, but the paper does not say so. The 12-iteration and 16-iteration figures are both given."
+    },
+    {
+     "id_suggestion": "realhw-only-2bus",
+     "value": "The authors state that, because of significant quantum noise and the time-intensive process, real quantum hardware was used only for the 2-bus case, and quantum simulators were used for the remaining test scenarios.",
+     "anchor": "Section V-D, p.10; Section V Conclusion, p.12",
+     "quotes": [
+      "Moreover, due to significant quantum noise, the",
+      "accuracy of the results was limited. As a result, real quantum",
+      "hardware was only used for the 2-bus case, while quantum",
+      "To address these constraints, we used a quantum simulator for larger cases"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its hardware testing.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The first two quotes are separated by blank lines in the text layer; the sentence continues across them."
+    },
+    {
+     "id_suggestion": "pennylane-3-5-bus-results",
+     "value": "The authors report that on the 3- and 5-bus systems simulated with PennyLane and CVQLS with the Adam optimizer, QIPM follows a trajectory similar to classical IPM and performs well on both DCOPF and ACOPF, that the 5-bus system needs more QIPM iterations than the 3-bus system to reach similar objective values, and that a six-qubit circuit was used for the 3-bus DCOPF.",
+     "anchor": "Section V-E, p.11; Figs. 12-14",
+     "quotes": [
+      "Figs. 13 and 14 show that QIPM follows a trajectory similar to classical IPM and performs well on both DCOPF and ACOPF.",
+      "More QIPM iterations are needed for the 5-bus system than for the 3-bus case to reach similar objective values.",
+      "This circuit consists of six qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulated runs on two small systems in one study; objective values are in figures.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Iteration counts and final objective errors are in Figs. 13 and 14 (images), not in the text."
+    },
+    {
+     "id_suggestion": "simulator-capacity-limit",
+     "value": "The authors state that they tested the 3- and 5-bus systems on the PennyLane simulator but could not evaluate larger cases due to its limited capacity, that encoding for the 118-bus and 300-bus systems encountered out-of-memory errors on a PC with 16 GB of RAM, and that additional simulations are needed to assess QIPM's performance on larger and nonlinear ACOPF problems.",
+     "anchor": "Section V-A, p.9; Section V-E, p.11",
+     "quotes": [
+      "We tested the 3- and 5-bus systems on the PennyLane simulator, but could not evaluate larger cases due to its limited capacity.",
+      "encoding for large systems, such as the 118-bus and 300-bus, encountered out-of-memory errors.",
+      "CVQLS simulations are conducted using the PennyLane package with Python on a PC with 16 GB of RAM.",
+      "Additional simulations are needed to assess QIPM's performance on larger and nonlinear ACOPF problems."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own scope limit in Sections V-A and V-E.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "iterations-not-time-per-iteration",
+     "value": "The authors state that Q-OPF may involve more iterations than classical OPF, that their focus is on reducing time per iteration, and that a higher count therefore does not imply slower convergence.",
+     "anchor": "Section V-E, p.11",
+     "quotes": [
+      "Although Q-OPF may involve more iterations than classical OPF, our focus is on reducing time per iteration; thus, a higher count does not imply slower convergence."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim without a timing measurement in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper reports no wall-clock time or per-iteration time comparing QIPM with classical IPM, so a reduction in time per iteration is not shown."
+    },
+    {
+     "id_suggestion": "noise-sim-118-300-results",
+     "value": "The authors report that on the IEEE 118-bus and 300-bus systems, for which a Qiskit noise simulator introduced noise into the linear system's matrix and vector, QIPM achieved a solution that closely approximates the classical IPM reference for both DCOPF and ACOPF, but took more iterations to converge, which they attribute to noise.",
+     "anchor": "Section V-F, p.11; Figs. 15-16",
+     "quotes": [
+      "we simulate quantum execution and test Q-OPF on IEEE 118- and 300-bus systems.",
+      "This simulator introduced noise into our linear system's matrix",
+      "QIPM achieves a solution that closely approximates the reference results obtained by the classical IPM.",
+      "However, QIPM takes more iterations to converge, which can be attributed to the noise affecting the calculations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Noise-model runs in one study; results are in figures.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "For these two systems the CVQLS circuit is not executed (the text says encoding ran out of memory); noise is added to the linear system. The results therefore test the interior point method with a noisy linear solve, not CVQLS. The noise magnitude is not given in the text."
+    },
+    {
+     "id_suggestion": "mu-correction-method",
+     "value": "The authors state that they monitor the IPM objective function by averaging it over consecutive iterations and computing the relative difference to the next iteration's value, and that the barrier parameter is fixed when this relative difference falls below a threshold or the objective deviates by more than ± 20% from the average over the last few iterations, and otherwise updated dynamically according to classical IPM, typically being fixed only once in the early stages.",
+     "anchor": "Section IV-E, p.8; Algorithm II, Fig. 4",
+     "quotes": [
+      "we monitor the IPM objective function value across iterations.",
+      "or if the IPM objective function exhibits a sudden deviation beyond ± 20%",
+      "few iterations, we fix",
+      "is updated dynamically according to classical IPM.",
+      "is only fixed once in the early stages of the OPF iteration to let the solver find the correct central path to the optimal solution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own central-path modification in Section IV-E.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The equations (19) and (20) and the threshold value are not in the text layer."
+    },
+    {
+     "id_suggestion": "mu-reduces-too-fast-claim",
+     "value": "The authors state that their results show classical IPM tends to reduce the barrier parameter too quickly, that more IPM iterations are needed with inexact solvers, and that if the barrier parameter becomes too small early on, the central path tightens prematurely, bringing iterates near the boundary and increasing the risk of convergence to a local or incorrect solution.",
+     "anchor": "Section IV-E, p.8",
+     "quotes": [
+      "Our results show that classical IPM tends to reduce",
+      "More IPM iterations are needed with inexact solvers",
+      "becomes too small early on, the central path tightens prematurely, bringing iterates near the boundary and increasing the risk of convergence to a local or incorrect solution."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement; Section V-G gives the supporting test.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-mu-correction-failures",
+     "value": "The authors report that when solving 1,000 random load cases, each bus demand independently scaled by a uniform factor between 0.8 and 1.2 times its nominal value, without the proposed barrier-parameter correction a large fraction of runs violated optimality or feasibility conditions, and that in every test system more than 60% of the simulations failed to converge.",
+     "anchor": "Section V-G, p.11-12; Table VIII; Figs. 17-18",
+     "quotes": [
+      "we solved 1,000 random load cases in which each bus demand was independently scaled by a uniform factor between 0.8 and 1.2 times its nominal value.",
+      "a large fraction of runs violated either optimality or feasibility conditions",
+      "In every test system, more than 60% of the simulations failed to converge.",
+      "Total Failure Percentage of Q-OPF Scenarios Without μ Correction Out of 1000 Demand Scenarios."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An ablation reported in one study; the per-system percentages are in Table VIII, an image.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The paper does not report the failure rate with the correction on the same 1,000 cases, so the improvement from the correction is not stated as a number in the text."
+    },
+    {
+     "id_suggestion": "no-mu-correction-failure-modes",
+     "value": "The authors report that without the correction the behavior was highly inconsistent: in some instances the objective value appeared to converge to the correct optimum yet the gradient and complementarity conditions were still violated, rendering the solution infeasible, and in other instances the solver settled on a suboptimal point.",
+     "anchor": "Section V-G, p.11-12; Figs. 17-18",
+     "quotes": [
+      "also led to highly inconsistent algorithmic behavior.",
+      "yet the corresponding gradient and complementarity conditions were still violated (Fig. 18), rendering the solution infeasible.",
+      "the solver did not even approach the optimum and instead settled on a suboptimal point (Fig. 17b)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "complexity-assumes-fault-tolerance",
+     "value": "The authors state that the estimated time complexity of CVQLS-augmented IPM assumes a KKT matrix written as a sum of sparse Hermitian unitaries with a reasonable condition number, and fault-tolerant quantum hardware, and that the outcomes of the work should be interpreted as theoretical upper-bound demonstrations rather than immediate, practical performance gains.",
+     "anchor": "Section IV-F, p.8",
+     "quotes": [
+      "Suppose the KKT matrix can be written as a sum of sparse Hermitian unitaries and has a reasonable condition number",
+      "However, this complexity assumes the availability of faulttolerant quantum hardware.",
+      "Therefore, the outcomes presented in this work should be interpreted as theoretical upper-bound demonstrations rather than immediate, practical performance gains."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit on its own complexity estimate in Section IV-F.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The complexity expression itself is an equation not present in the text layer. The paper presents it as an estimate under ideal conditions with cited ingredients [9], [11], [13], not as a proof, and reports no measured speedup."
+    },
+    {
+     "id_suggestion": "cvqls-gate-complexity-claim",
+     "value": "The authors state, citing earlier work, that under those assumptions CVQLS can solve the KKT system with gate complexity that grows polynomially with the condition number, the inverse of the solve accuracy and the logarithm of the matrix dimension, and that only the linear solve step changes relative to classical IPM.",
+     "anchor": "Section IV-F, p.8",
+     "quotes": [
+      "CVQLS can solve it with gate complexity that grows polynomially with",
+      "With CVQLS, only this linear solve step changes, and everything else in IPM stays the same."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited complexity statement; no derivation is given in this paper.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The statement is attributed to the VQLS paper [13], and the paper's own CVQLS runs do not measure gate counts as a function of problem size beyond Table VI (an image)."
+    },
+    {
+     "id_suggestion": "intro-exponential-speedup-claim",
+     "value": "The authors state that emerging quantum computing techniques offer the potential for exponential speedup in OPF, and that a major portion of OPF runtime is spent repeatedly solving large linear systems.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "Emerging quantum computing techniques offer the potential for exponential speedup in OPF by leveraging advanced quantum solvers and optimization algorithms.",
+      "A major portion of OPF runtime is spent repeatedly solving large linear systems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Introductory claims without evidence in this paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The exponential-speedup potential applies to HHL under fault-tolerance assumptions; the paper's variational runs are not shown to deliver it."
+    },
+    {
+     "id_suggestion": "ansatz-depth-tradeoff-cited",
+     "value": "The authors state that a shallow ansatz reduces expressivity, that a deeper ansatz may be needed for accuracy but introduces trainability challenges and a higher likelihood of barren plateaus, and that a deeper ansatz can lead to overfitting while a shallow one might fail to find the solution.",
+     "anchor": "Section IV-B, p.6-7",
+     "quotes": [
+      "A shallow ansatz reduces the expressivity of the quantum circuit, making it less capable of representing complex functions.",
+      "However, increasing the depth of the ansatz can introduce trainability challenges.",
+      "Furthermore, while a deeper ansatz can lead to overfitting, a shallow ansatz might fail to find the solution, resulting in poor convergence [16], [32]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "General background statements cited to [16] and [32].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The paper's own result favors the shallow ansatz, which conflicts with the stated expressivity need for a deeper one only where the problem requires it; the paper does not test that."
+    },
+    {
+     "id_suggestion": "conclusion-scope-and-future",
+     "value": "The authors state in the conclusion that the approach is quantum-inspired and uses a variational quantum circuit with IPM as the core method, that they used a quantum simulator for larger cases and tested the approach on IEEE 3-, 5-, 118- and 300-bus systems, demonstrating satisfactory results, and that future research should focus on enhancing the scalability of CVQLS for larger systems.",
+     "anchor": "Section V Conclusion, p.12",
+     "quotes": [
+      "This paper presented a quantum-inspired approach for solving OPF using a variational quantum circuit, with IPM as the core optimization method.",
+      "we used a quantum simulator for larger cases and tested the approach on IEEE 3-, 5-, 118-, and 300-bus systems, demonstrating satisfactory results.",
+      "Future research should focus on enhancing the scalability of CVQLS for larger systems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper's conclusions.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The abstract calls the work quantum-enhanced and the conclusion calls it quantum-inspired. For the 118- and 300-bus systems the 'quantum simulator' is a noise model applied to the linear system (Section V-F), not a circuit simulation of CVQLS."
+    }
+   ]
+  }
+ ]
+}
