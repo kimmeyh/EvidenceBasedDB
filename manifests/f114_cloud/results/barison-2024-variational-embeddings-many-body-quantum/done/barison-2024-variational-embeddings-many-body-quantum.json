@@ -1,0 +1,741 @@
+{
+ "papers": [
+  {
+   "record_id": "barison-2024-variational-embeddings-many-body-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Barison-Vicentini-Carleo_2023_Embedding-Classical-Variational-Methods-in-Quantum-Circuits__2309.08666.pdf",
+   "title_in_file": "Variational Embeddings for Many Body Quantum Systems",
+   "version_note": "arXiv:2309.08666v2 (19 Jun 2024); the record id says 2024 and the file name says 2023 (the v1 year).",
+   "pages": 15,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A variational scheme that embeds an accurate active-space model, classical or a quantum circuit, in a cheaper bath model, tested on Ising chains and ammonia with simulated quantum circuits.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "varemb-demonstrated",
+     "verdict": "narrowed",
+     "note": "The two quotes are in different places: the first is in the Abstract only and the second in the Discussion only. The quantum parts of every run are on classical simulators without noise, so the tests are not on quantum hardware.",
+     "value": "The authors state they demonstrate the protocol on spin chains and small molecules and have successfully tested the method on spin systems and molecular Hamiltonians; the quantum hardware contribution is evaluated on a classical simulator.",
+     "anchor": "Abstract; Discussion, p.5; Molecular system, p.4",
+     "quotes": [
+      "We demonstrate the effectiveness of the protocol on spin chains and small molecules and provide insights into its accuracy and computational cost.",
+      "We have successfully tested our method on spin systems and molecular Hamiltonians, demonstrating its potential.",
+      "The quantum hardware contribution is evaluated on a classical simulator."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim of effectiveness, and an empirical result from one study.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "varemb-noise-not-studied",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that, from the quantum computation perspective, the effect of hardware noise on the results should be investigated.",
+     "anchor": "Discussion, p.5",
+     "quotes": [
+      "Under the quantum computation perspective, the effect of hardware noise on the results should be investigated."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The Discussion states the limit; the Fig. 2 caption and Appendices C and F confirm the runs are noiseless simulations.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "varemb-ansatz-definition",
+     "value": "The authors define the variational ansatz as the product of an active-space model that depends on the bath configuration and a bath model, with a separate parameter set for each.",
+     "anchor": "Variational mixed ansatz, Eq. (2)",
+     "quotes": [
+      "The variational ansatz Ψθ,δ(σ, η) is therefore obtained as the product of the two different ansatzes αθ(σ|η) βδ(η) depending on a set of parameters {θ, δ}."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own ansatz in the Variational mixed ansatz section (Eq. 2).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-global-variational",
+     "value": "The authors state that the proposed method is completely variational and global, meaning that the parameters of both models are optimized simultaneously.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "The proposed method is completely variational and global, meaning that the parameters of both models are optimized simultaneously."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines what it means by a variational and global method in the Introduction.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-novelty-claim",
+     "value": "The authors state that a fully variational formulation of embedding schemes is still lacking in the literature.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "Even so, a fully variational formulation of embedding schemes is still lacking in the literature."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim of novelty, with no survey in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-bath-only-sampling",
+     "value": "The authors state that, if the active model is normalized for every bath configuration, the energy can be estimated by sampling only bath configurations and evaluating the weighted local energy exactly over the active configurations.",
+     "anchor": "Variational mixed ansatz, Eqs. (5) and (6); Appendix A, Eqs. (A4) to (A6)",
+     "quotes": [
+      "If we now make the extra assumption that",
+      "indicating that the energy can be estimated by sampling η ∼ pβ and evaluating the weighted local energy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived algebraically in the main text and again in Appendix A (Eqs. A4 to A6); the condition is quoted.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The condition (normalization of the active model for each bath configuration) is the only requirement stated."
+    },
+    {
+     "id_suggestion": "varemb-active-sum-exponential",
+     "value": "The authors state that the sum over active configurations scales exponentially in the number of active degrees of freedom, so it can be performed only if the active partition is small enough, and that avoiding sampling of the active partition is preferred where Markov Chain Monte Carlo suffers critical slowing down.",
+     "anchor": "Variational mixed ansatz, after Eq. (6)",
+     "quotes": [
+      "scales exponentially in NA, therefore can be performed only if the active partition is small enough.",
+      "this strategy avoids to sample from the active partition, and has to be preferred in those subsystem in which Markov Chain Monte Carlo can suffer from critical slowing down."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its own estimator in the main text, after Eq. (6).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "This limit is the reason the active partition is kept small (three spins and four spin-orbitals in the reported runs)."
+    },
+    {
+     "id_suggestion": "varemb-polynomial-claim",
+     "value": "The authors state that every step of the procedure can be accomplished efficiently in polynomial time with respect to the system size.",
+     "anchor": "Embedding quantum devices, end of section",
+     "quotes": [
+      "We highlight that every step of this procedure, sketched in Figure 1, can be accomplished efficiently in polynomial time with respect to the system size."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the sum over active configurations scales exponentially in the active size (see varemb-active-sum-exponential), and no complexity proof is given.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The polynomial claim holds only for a fixed active-partition size, given the exponential sum stated earlier."
+    },
+    {
+     "id_suggestion": "varemb-tractable-assumption",
+     "value": "The authors assume that both the active and the bath models are computationally tractable, meaning that un-normalized complex amplitudes may be queried in polynomial time and the Born probability amplitude may be sampled in polynomial time.",
+     "anchor": "Appendix A, opening",
+     "quotes": [
+      "We assume they are both computationally tractable [71], meaning that un-normalized complex amplitudes may be queried in polynomial time, and the Born probability amplitude may be sampled in polynomial time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper states this assumption and its meaning in Appendix A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-hadamard-overlap",
+     "value": "The authors state that when the bath configurations differ, the two circuits differ and the overlap must be measured with more general schemes such as the Hadamard test, and that the gradient with respect to the variational parameters can be estimated as a classical expectation value over the bath distribution.",
+     "anchor": "Embedding quantum devices, p.3; Appendix D",
+     "quotes": [
+      "resort to more general schemes, such as the Hadamard test [50].",
+      "the gradient w.r.t. the variational parameters of an observable Hˆ can be estimated as a classical expectation value over the same distribution pβ."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated in the main text; the derivation is deferred to Appendix B and no proof of the gradient statement is quoted here.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-hadamard-assumption",
+     "value": "The authors assume that different bath configurations imply different circuits for the overlap evaluation, and state that this is not true in general.",
+     "anchor": "Appendix D",
+     "quotes": [
+      "Uθ(η) ≠ Uθ(η′), even if this is not true in general."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states this assumption and its generality limit in Appendix D.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-parameter-shift",
+     "value": "The authors state that they evaluate the quantum term of the gradient with an extension of the parameter shift rule to the Hadamard test, treating the real and imaginary parts of the overlap separately.",
+     "anchor": "Appendix B, section 1, Eq. (B5)",
+     "quotes": [
+      "We evaluate this quantum term using an extension of the parameter shift rule [75–79] to the Hadamard test.",
+      "the derivative with respect to the i-th component of the parameter vector θ of the real and imaginary part of the overlap separately."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states which gradient rule its method uses.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-unbiased-gradient",
+     "value": "The authors cite a result that the gradient estimator can have a systematic bias or exponential sample complexity when the wave function contains zeros, and state that for this reason they also implemented an unbiased estimator for the gradient of the classical models.",
+     "anchor": "Appendix B, section 2",
+     "quotes": [
+      "Recently it has been shown that the estimator of the gradient can affected by a systematic statistical bias or exponential sample complexity when the wave function contains some (possibly approximate) zeros [24].",
+      "For this reason, we also implemented an unbiased estimator for the gradient of the classical models."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The bias result is attributed to other work; the implementation statement is the paper's own setup.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-decomposition-claim",
+     "value": "The authors state that every operator admits a decomposition into separable terms and that, for most physical observables, the number of terms is polynomial in the system size.",
+     "anchor": "Appendix A, section 3",
+     "quotes": [
+      "We remark that every operator admits such a decomposition.",
+      "the number of terms is polynomial in the system size."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author remark without a proof in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-variance-nonzero",
+     "value": "The authors state that, unlike standard Variational Monte Carlo, the variance of the separable observable terms does not vanish even when the variational states get close to eigenstates of the observable.",
+     "anchor": "Appendix A, section 3",
+     "quotes": [
+      "Contrary to what happens in the context of standard Variational Monte Carlo, Var Oˆk ̸= 0 even when the variational"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated without proof in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "This implies a shot-noise floor on the quantum-device estimates."
+    },
+    {
+     "id_suggestion": "varemb-tfim-setup",
+     "value": "The authors use a non-homogeneous Transverse Field Ising Model on a chain with open boundary conditions as the first benchmark, with strong couplings in the active partition and weak couplings in the bath.",
+     "anchor": "Transverse Field Ising, main text",
+     "quotes": [
+      "we consider the problem of finding the ground state of a non-homogeneous Transverse Field Ising Model on a chain with open boundary conditions",
+      "In the bath partition the spins interact only weakly between each others."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own benchmark setup in the Transverse Field Ising section.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-ising-size-claim",
+     "value": "The authors state that they demonstrate the algorithm on spin systems with more than 103 spins and that the method obtains a good accuracy compared to standard variational ansatzes while reducing computational costs (the text layer prints a power of ten flat).",
+     "anchor": "Introduction, p.1; Appendix A, section 2",
+     "quotes": [
+      "We demonstrate the algorithm on spin systems with more than 103 spins, proving that the method is able to obtain a good accuracy compared to standard variational ansatzes, while reducing the computational costs.",
+      "to scale our simulations to > 103 spins."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the accuracy results sit in Fig. 2(a), which the text layer does not carry as numbers.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The text gives no numeric errors for Fig. 2(a); the claim cannot be checked from the text alone."
+    },
+    {
+     "id_suggestion": "varemb-ising-fixed-params",
+     "value": "The authors report that the hybrid model has 40 parameters regardless of system size in the Ising study with three active spins, and that the other models scale as stated in Appendix E: two times N for the Jastrow, one for the mean field.",
+     "anchor": "Transverse Field Ising, p.4; Appendix E",
+     "quotes": [
+      "In this setting the total number of parameters of the hybrid model is 40, regardless of systems size.",
+      "for a total of 40 parameters, not depending on the bath space size."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the parameter count of its own model in the main text and Appendix E.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-ising-reference-energies",
+     "value": "The authors report that the reference ground state energy is obtained exactly for systems up to 30 spins, and from Matrix Product States optimized with the Density Matrix Renormalization Group algorithm for bigger systems.",
+     "anchor": "Transverse Field Ising, p.4",
+     "quotes": [
+      "The ground state energy E0 is obtained exactly for systems up to 30 spins, while we consider Matrix Product States optimized with the Density Matrix Renormalization Group algorithm"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how its own reference values were obtained.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-ising-backflow-range",
+     "value": "The authors report that restricting the input of the feed-forward network to a range of spins around the active partition fixes the model's parameter count independently of the system size.",
+     "anchor": "Appendix A, section 2",
+     "quotes": [
+      "we restricted the input of the FFNN to a range of spins surrounding the active partition, which can be tuned in the model definition.",
+      "This allowed us to fix the embedded model total parameters independently to the system size"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own model design choice and its effect.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-ising-fig4-setup",
+     "value": "The authors report a test on an Ising chain with 3 active spins and 8 bath spins, with an interaction strength of 2, comparing a Jastrow with 22 parameters and an RBM with 143 parameters against mixed ansatzes with 54 parameters (range 1) and 84 parameters (range 2), optimized exactly without Monte Carlo sampling.",
+     "anchor": "Appendix A, section 2, Fig. 4",
+     "quotes": [
+      "we consider a Ising chain with 3 spins and JA = 10 in the active subspace and with 8 spins and JB = 10−2 in the bath one. The interaction strength is Jint = 2.",
+      "We compare the results of a Jastrow (22 parameters) and of an RBM (143 parameters)",
+      "(range = 1, 38 parameters, 54 in total)",
+      "(range = 2, 68 parameters, 84 in total)",
+      "The optimization is performed exactly without Monte Carlo sampling to avoid statistical noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own test setup in Appendix A and the Fig. 4 caption.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The interaction strength of 2 here differs from the main-text description of a bath-active interaction below 1."
+    },
+    {
+     "id_suggestion": "varemb-ising-fig4-result",
+     "value": "The authors report that adding the State-vector in the active subspace improves the accuracy by two orders of magnitude already at range 1, that increasing the range lowers the error by another 2 orders of magnitude, and that this almost matches the RBM, which has almost double the parameters.",
+     "anchor": "Appendix A, section 2, Fig. 4",
+     "quotes": [
+      "We see that the addition of the State-vector in the active subspace improves the accuracy of two order of magnitudes at range = 1 already.",
+      "When the range is increased, the final error is decreased by another 2 orders of magnitude, almost matching the accuracy of the RBM, which has almost the double of parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, one chain and one set of couplings.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "One system (3 active, 8 bath spins), run without Monte Carlo noise; it does not show the same gap at larger bath sizes."
+    },
+    {
+     "id_suggestion": "varemb-ising-2b-setup",
+     "value": "The authors report that the quantum-plus-classical panel uses a chain with 10 bath spins and 3 active spins and an ideal quantum simulator, so its error bars show only the statistical error from classical sampling.",
+     "anchor": "Fig. 2 caption; Appendix E",
+     "quotes": [
+      "The chain has 10 spins in the bath partition and 3 in the active one.",
+      "We consider an ideal quantum simulator, therefore the error bars indicate the statistical error given from the classical sampling."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states in the Fig. 2 caption that the quantum part is an ideal simulator.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The Fig. 2(b) results include no hardware noise and no finite-shot error."
+    },
+    {
+     "id_suggestion": "varemb-ising-2b-couplings",
+     "value": "The authors report that the quantum-plus-classical panel uses different couplings from the classical panel:JA = 1, JB = 0.25 and Jint = 0.5, a choice of JA and Jint that proved the hardest for the quantum device.",
+     "anchor": "Appendix E",
+     "quotes": [
+      "In this case we set JA = 1, JB = 0.25 and Jint = 0.5. This choice of JA and Jint proved to be the hardest for the quantum device."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own couplings in Appendix E.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "JA = 1 here does not satisfy the main-text description of an active partition with couplings above 1."
+    },
+    {
+     "id_suggestion": "varemb-ising-2a-couplings",
+     "value": "The authors report that the classical panel uses 3 active spins, JA = 10, JB = 0.1 and Jint = 0.1, chosen so that the Mean Field and uniform Jastrow ansatzes approximate the bath well while the bath-active interaction is small but not negligible.",
+     "anchor": "Appendix E",
+     "quotes": [
+      "here we considered a chain with NA = 3 spins in the active partition",
+      "In the active partition we set JA = 10 and in the bath JB = 0.1, while the coupling between the two partitions is Jint = 0.1.",
+      "while the interaction between the two partition is small but not negligible."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own couplings in Appendix E.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-ammonia-setup",
+     "value": "The authors study ammonia (NH3) in a minimal Intrinsic Atomic Orbital basis from an aug-cc-pVQZ mean-field calculation, with one N-H bond stretched to 1.5 Å, an active space of the HONO and LUNO (four spin-orbitals), and the lowest orbital (nitrogen 1s) frozen.",
+     "anchor": "Molecular system, p.4; Appendix F",
+     "quotes": [
+      "We consider a configuration in which one of the N−H bonds is stretched at a bond length of 1.5 Å.",
+      "for a total of four spin-orbitals.",
+      "We freeze the lowest energy orbital, corresponding to the 1s of the nitrogen atom."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own molecular setup in the main text and Appendix F.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-ammonia-simulator",
+     "value": "The authors state that the quantum hardware contribution in the ammonia study is evaluated on a classical simulator, and that quantum overlaps are evaluated exactly on a quantum simulator.",
+     "anchor": "Molecular system, p.4; Appendix C",
+     "quotes": [
+      "The quantum hardware contribution is evaluated on a classical simulator.",
+      "The quantum overlaps are evaluated exactly on a quantum simulator"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states in the main text and Appendix C that no quantum hardware was used.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "No result in the paper comes from quantum hardware."
+    },
+    {
+     "id_suggestion": "varemb-ammonia-circuit",
+     "value": "The authors report that the active-space quantum circuit for ammonia includes one double excitation and two single excitation gates, giving 3 parameters to optimize.",
+     "anchor": "Molecular system, p.4",
+     "quotes": [
+      "The quantum circuit includes one double excitation and two single excitation gates, resulting in 3 parameters to optimize."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own circuit in the main text.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-ammonia-result",
+     "value": "The authors report that adding more orbitals to the ansatz improves the energy relative to Hartree-Fock, following the exact diagonalization value in that active space, and that augmenting the ansatz with a Restricted Boltzmann Machine with real parameters converges to the Full Configuration Interaction results.",
+     "anchor": "Molecular system, Fig. 3, p.4",
+     "quotes": [
+      "when more orbitals are considered in the ansatz, the energy improves with respect to Hartree-Fock",
+      "Then, augmenting the ansatz with a RBM having real parameters, we are able to converge to FCI results."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one molecule at one geometry, run on a classical simulator.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text gives no energy values or error figures; the convergence statement rests on Fig. 3, which the text layer does not carry. The FCI reference uses the frozen core approximation."
+    },
+    {
+     "id_suggestion": "varemb-particle-preserving",
+     "value": "The authors state that to conserve the total number of particles they restrict the RBM to sample only physical configurations, extend the sample-to-angle function to output the number of missing electrons, and build the circuit from single and double excitation gates.",
+     "anchor": "Appendix A, section 3",
+     "quotes": [
+      "we first restrict the RBM to sample only physical configurations by fixing a maximum and a minimum amount of electrons that may be present in the partition.",
+      "Then, the sample-to-angle function is extended to output the number of missing electrons in order to correctly initialize the quantum circuit.",
+      "we build the variational quantum circuit using only particle-preserving gates, in particular single and double excitation gates"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own molecular ansatz construction in Appendix A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-extendable-claim",
+     "value": "The authors state that the particle-number modifications reduce the complexity of the problem and are readily extendable to bigger molecular systems.",
+     "anchor": "Appendix A, section 3",
+     "quotes": [
+      "These modifications reduce the complexity of the problem and are readily extendable to bigger molecular systems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no larger molecule is run.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-optimizer-classical",
+     "value": "The authors report that the classical-panel runs use stochastic reconfiguration with a learning rate of 0.001 and a diagonal shift of 0.001, 5000 iterations for systems up to 500 spins and 2500 for bigger ones, and 103 Monte Carlo samples (the text layer prints a power of ten flat).",
+     "anchor": "Appendix C",
+     "quotes": [
+      "The learning rate has been set as ξ = 0.001 and the diagonal shift for the S matrix is 0.001.",
+      "The optimization of every model has been performed for 5000 iterations for systems up to 500 spins, while for the bigger ones the optimization steps performed are 2500.",
+      "Expectation values are evaluated using 103 Monte Carlo samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own optimization settings in Appendix C.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-optimizer-quantum",
+     "value": "The authors report that the quantum-classical runs use stochastic reconfiguration for the classical models with a learning rate between 0.005 and 0.01 and a regularization factor of 0.001, ADAM with a starting learning rate of 0.01 for the sample-to-angle network and the circuit, and 104 Monte Carlo samples for the bath model (the text layer prints a power of ten flat).",
+     "anchor": "Appendix C",
+     "quotes": [
+      "We use a learning rate ξ ∈ [0.005, 0.01] and a regularization factor for the S matrix of 0.001.",
+      "with default values for the hyperparameters and a starting learning rate ξ = 0.01.",
+      "every expectation value is estimated using 104 Monte Carlo samples for the bath model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own optimization settings in Appendix C.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-hartree-fock-breakdown",
+     "value": "The authors report that the Hartree-Fock description of ammonia does not give a potential energy surface in agreement with exact diagonalization, and that its quality deteriorates when the N-H bond is longer than 1.5 Å.",
+     "anchor": "Appendix F, Fig. 6",
+     "quotes": [
+      "the single determinant description of the wave function given by Hartree-Fock is not sufficient to give a potential energy surface in agreement with the exact diagonalization result.",
+      "the quality of the Hartree-Fock approximation deteriorates when the N−H bond is greater than 1.5 Å long."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one molecule along one dissociation path.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-rbm-vs-vqe",
+     "value": "The authors report that an RBM with 224 complex parameters represents the ammonia ground state accurately near equilibrium but becomes less precise at large bond length, and that VQE with the qUCCSD ansatz follows the FCI curve more closely, converging in 100 steps from the Hartree-Fock state.",
+     "anchor": "Appendix F, section 1, Fig. 7",
+     "quotes": [
+      "With this choice of α, the RBM has 224 complex parameters to optimize.",
+      "the RBM architecture is able to represent accurately the ground state nearby the equilibrium, while the variational approximation becomes less precise at large r.",
+      "the VQE with qUCCSD ansatz follows the FCI curve more closely, with optimizations converged in 100 steps starting from Hartree-Fock state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one molecule; the VQE runs are on a classical simulator.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text gives no energy errors; the comparison rests on Fig. 7."
+    },
+    {
+     "id_suggestion": "varemb-vqe-simulator",
+     "value": "The authors state that the VQE calculations in the ammonia comparison are performed on a classical simulator without shots and noise.",
+     "anchor": "Appendix F, section 1, Fig. 7",
+     "quotes": [
+      "The VQE calculations are performed using a classical simulator without shots and noise."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states this scope for its VQE runs in Appendix F.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-qucc-cost",
+     "value": "The authors state that the qUCCSD circuit is far from suitable for near-term application, since 8 electrons in 14 spin-orbitals require 24 singles and 180 double excitations in a 14 qubit circuit.",
+     "anchor": "Appendix F, section 1",
+     "quotes": [
+      "the qUCCSD circuit is far from",
+      "a fermionic system of 8 electrons in 14 spin-orbitals requires 24 singles and 180 double excitations to be included in a 14 qubit circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of circuit size for one molecule, with no count method shown.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The counts are for this ammonia setup only."
+    },
+    {
+     "id_suggestion": "varemb-hw-efficient-vqe",
+     "value": "The authors report that a hardware efficient ansatz with 4 alternating layers, 70 single-qubit gates and 52 CNOT gates gives VQE performance that deteriorates significantly, while the potential-energy surface keeps a qualitative agreement with the FCI prediction.",
+     "anchor": "Appendix F, section 1, Fig. 7",
+     "quotes": [
+      "made of 4 alternating layers of single qubit Ry rotations and CNOT entangling gates (see main text), for a total of 70 single-qubit and 52 CNOT gates on nearest neighbour qubits.",
+      "With this hardware effcient ansatz the performance of the VQE deteriorates significantly, even if the potential-energy surface conserves a qualitative agreement with the FCI prediction."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one molecule on a classical simulator.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The authors present this gap as motivation for the hybrid algorithm; the text gives no hybrid-versus-hardware-efficient numbers."
+    },
+    {
+     "id_suggestion": "varemb-noise-robustness-claim",
+     "value": "The authors state that the addition of a classical model might provide some robustness during the optimization, and that the method might remain advantageous in an age of fault-tolerant quantum computation.",
+     "anchor": "Discussion, p.5",
+     "quotes": [
+      "Indeed, the addition of a classical model might provide some robustness during the optimization.",
+      "the importance of the method might extend even further in an age of fault-tolerant quantum computation"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conjecture, with no noisy or fault-tolerant run in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "varemb-partition-open",
+     "value": "The authors state that strategies to optimally partition the physical system into the active and bath subspaces are worth exploring, and that alternative neural network architectures beyond Restricted Boltzmann Machines can be explored.",
+     "anchor": "Discussion, p.5",
+     "quotes": [
+      "strategies to optimally partition the physical system of interest into the active",
+      "Alternative neural network architectures for representing quantum systems, beyond Restricted Boltzmann Machines"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper lists these as open problems in the Discussion.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
