@@ -1,0 +1,637 @@
+{"papers": [{
+  "record_id": "ai-2024-towards-quantum-graph-neural-networks",
+  "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Ai-et-al._2022_Decompositional-Quantum-Graph-Neural-Network__2201.05158.pdf",
+  "title_in_file": "Towards Quantum Graph Neural Networks: An Ego-Graph Learning Approach",
+  "version_note": "arXiv:2201.05158v3 (19 Jan 2024), the IEEE-style preprint. The file name says 2022 and Decompositional-Quantum-Graph-Neural-Network (an earlier title); the text is the v3 text. Page numbers in anchors are PDF pages (form-feed chunks); they differ by up to two from the page numbers in the brief (the brief puts the OriginQ sentence on p.8; it is on PDF p.10). The reference list has duplicated or mis-numbered entries (for example [9] repeats the R-GCN paper where the text means Cong et al.), and the appendix labels Theorem 1 as 'Theorem 4'.",
+  "pages": 14,
+  "read_extent": "full",
+  "not_read": "",
+  "what_it_is": "A proposal of a hybrid quantum-classical graph neural network (egoQGNN) that processes ego-graphs on a small quantum circuit, with a trainable mapping of node features to qubit states, a graph-isomorphism argument, and simulator experiments on six graph-classification benchmarks.",
+  "bears_on_context": "qml",
+  "why_not": "",
+  "existing": [
+    {
+      "id": "egoqgnn-exponential-speedup-open-goal",
+      "verdict": "confirmed",
+      "note": "",
+      "value": "The authors list achieving exponential speed-up with quantum techniques as a long-term goal.",
+      "anchor": "Section 6 Conclusions and Outlook, p.11",
+      "quotes": ["a long-term goal, quantum techniques need to be utilized to achieve exponential speed-up."],
+      "kind": "claimed",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The authors state it as future work; the paper does not test or show a speed-up.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The sentence is an open problem the authors name. It implies the present egoQGNN, run on a classical simulator, is not claimed to give a speed-up."
+    },
+    {
+      "id": "egoqgnn-fewer-parameters-outperforms",
+      "verdict": "narrowed",
+      "note": "The abstract says 'outperforms ... only 1.68% parameters'. The contributions list (p.1-2) narrows it twice: the 1.68% is relative to one model, the GNN with the fewest parameters (DGCNN), and the performance is 'similar', not better. Section 5.3.1 also says egoQGNN does not win on every benchmark.",
+      "value": "The authors report that egoQGNN achieves a similar performance with only 1.68% of the parameters of DGCNN, the GNN model with the least parameters; the abstract words the same figure as outperforming competitive state-of-the-art models with only 1.68% parameters compared to those models.",
+      "anchor": "Abstract p.1; Contribution 1, Section 1, p.2",
+      "quotes": [
+        "the egoQGNN achieves a similar performance but with only 1.68% of the parameters when compared with the GNN model with the least parameters, DGCNN [31].",
+        "Experimental results show that the proposed method outperforms competitive state-of-the-art models with only 1.68% parameters compared to those models."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study, run on a simulator.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "Table 5 (PDF p.11) lists 2,560 parameters for DGCNN and 43 for egoQGNN; 43 / 2560 is 1.68%, so the percentage is against DGCNN only, and against the other deep models it is smaller. The abstract's 'outperforms' is stronger than the contribution list's 'similar performance'."
+    },
+    {
+      "id": "egoqgnn-simulator-setup",
+      "verdict": "confirmed",
+      "note": "Better quotes added: the paper also says why, and that every reported experiment is a simulation. The sentence is on PDF p.10, not p.8.",
+      "value": "The authors state that the method is implemented using the OriginQ simulator on a classical computer.",
+      "anchor": "Section 5.2 Experimental Setup, p.10",
+      "quotes": [
+        "The proposed method is implemented using the OriginQ [61] simulator on a classical computer.",
+        "For this reason, all of the reported experiments are performed using a simulator running on a classical computer."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper states its own experimental setup in Section 5.2.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    }
+  ],
+  "assertions": [
+    {
+      "id_suggestion": "egoqgnn-motivation-no-concrete-qubit-architectures",
+      "value": "The authors state that, because of the lack of physical qubits and of an effective means to map real-world data from Euclidean space to Hilbert space, most existing quantum machine learning methods focus on quantum analogies or process simulations rather than concrete architectures based on qubits.",
+      "anchor": "Abstract, p.1",
+      "quotes": [
+        "most of these methods focus on quantum analogies or process simulations rather than devising concrete architectures based on qubits."
+      ],
+      "kind": "claimed",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The authors' characterization of other work; no survey evidence is given for the word 'most'.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "egoqgnn-lemma1-tensor-product-injective",
+      "value": "The paper states Lemma 1: the tensor product is injective for non-zero vectors with the same dimension, and so maps them to different representations unless they are linearly dependent vectors. The proof is in the Appendix.",
+      "anchor": "Lemma 1, Section 4.1, p.5; proof in Appendix p.11-12",
+      "quotes": [
+        "Lemma 1. The tensor product is injective, for non-zero vectors with the same dimension.",
+        "the tensor product maps them to different representations unless they are linearly dependent vectors."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The statement is quoted, but it is worded so that it is not injective in the usual sense (it excludes linearly dependent vectors) and the appendix proof is a sketch for real vectors; a grader should not take this as a clean proved result.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "As written, A tensor B equals (cA) tensor (B/c) for any non-zero scalar c, so the map is not injective on pairs of vectors; the lemma's own exception clause covers this. The text then says 'all quantum states are linearly independent', which is false for states in the same space (a state and a phase multiple of it are dependent)."
+    },
+    {
+      "id_suggestion": "egoqgnn-lemma2-linearly-dependent-states-k-pm1",
+      "value": "The paper states Lemma 2: if two quantum states A and B are linearly dependent, and B = k times A, then k = plus or minus 1. The appendix proof takes k to be a real number and uses the unit norm of both states.",
+      "anchor": "Lemma 2, Section 4.1, p.5; proof in Appendix p.12",
+      "quotes": [
+        "Lemma 2. If two quantum states A and B are linearly dependent, and B = k · A, then k = ±1.",
+        "B = k · A, k ∈ R."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "proved result",
+      "certainty_reason": "The statement is quoted and the appendix proof (k squared times 1 equals 1) is complete for real k.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The proof assumes k is real. For complex k the same normalization only gives modulus 1 (a global phase), so the lemma as stated in the main text omits a condition that the appendix adds."
+    },
+    {
+      "id_suggestion": "egoqgnn-lemma3-distinct-nodes-distinct-states",
+      "value": "The paper states Lemma 3: for different nodes v and mu, the outputs of its Eq. 10, the states of v and mu, are not equal. The appendix proof splits into nodes with different numbers of neighbors (different dimensions) and nodes with the same number of neighbors (using the two earlier lemmas).",
+      "anchor": "Lemma 3, Section 4.1, p.5; proof in Appendix p.12",
+      "quotes": [
+        "Lemma 3. For different nodes v and µ, the outputs of Eq. 10: |φv⟩ and |φµ⟩, meet |φv⟩ ≠ |φµ⟩.",
+        "If v and µ have different numbers of neighbors, the dimensions of |φv⟩ and |φµ⟩t−1 are different."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The statement is quoted, but the proof's same-neighbor-count case concludes inequality from Lemmas 1 and 2 without using the node features or neighborhoods, so the argument is incomplete.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "Two different nodes with identical features and identical neighbor multisets would give identical states under any deterministic circuit, so 'different nodes' must mean nodes with different features or neighborhoods; the lemma as stated does not say this, though the text before it does."
+    },
+    {
+      "id_suggestion": "egoqgnn-theorem1-distinguishes-gnn-nonisomorphic",
+      "value": "The paper states Theorem 1: the egoQGNN maps two non-isomorphic graphs G1 and G2, as decided via a GNN by its Eq. 10, to different embeddings. The appendix proof (labelled with a different theorem number there) uses the earlier lemmas to get unequal node states and then unequal summed entropies.",
+      "anchor": "Theorem 1, Section 4.1, p.5; proof in Appendix p.12",
+      "quotes": [
+        "Theorem 1. The egoQGNN maps two non-isomorphic graphs G1 and G2 as decided via a GNN by Eq. 10 to different embeddings.",
+        "So, egoQGNN can distinguish graphs that are decided as non-isomorphic by GNNs."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The statement is quoted, but the proof moves from unequal node states to unequal graph sums with 'Moreover' and no argument, and the graph representation is a sum of entropies of pure states (see the definition assertion).",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "A sum of per-node scalar entropies can coincide for different multisets of node states, so unequal node states do not imply unequal sums. The paper does not show the entropies are injective. Also, the von Neumann entropy of a pure state is zero, so as written (rho = |phi><phi|) every graph would get the same representation; the paper does not say how mixed states arise."
+    },
+    {
+      "id_suggestion": "egoqgnn-theorem2-decomposition-equivalent",
+      "value": "The paper states Theorem 2: for the same inputs, its Eq. 16 (the split-neighbor-set computation) is equivalent to its Eq. 10. The text says the proof is in the Appendix.",
+      "anchor": "Theorem 2, Section 4.4, p.7",
+      "quotes": [
+        "Theorem 2. For the same inputs, Eq. 16 is equivalent to Eq. 10.",
+        "We provide proof of this theorem in the Appendix."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The statement is quoted, but the text layer's appendix holds proofs of Lemma 1, Lemma 2, Lemma 3 and the isomorphism theorem and no proof of Theorem 2.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The appendix in this version has no section headed for Theorem 2, so the claimed proof is missing from the text read. The result is plausible because splitting a tensor product of unitary images into groups and recombining it is associative, but the paper does not show it."
+    },
+    {
+      "id_suggestion": "egoqgnn-parameter-count-formula",
+      "value": "The authors state that egoQGNN has only n times max(log2 d, log2 h) variational parameters if n quantum gates are applied to each qubit, against d times h parameters for a classical GNN layer mapping d dimensions to h dimensions, because a unitary matrix has one variational parameter.",
+      "anchor": "Section 4.1, p.5-6",
+      "quotes": [
+        "Such a layer has d × h parameters that need to be trained.",
+        "The egoQGNN has only n · max(log2 d, log2 h) variational parameters for training if n quantum gates are applied to each qubit.",
+        "This is because a unitary matrix has only one variational parameter (the rotation of the quantum states)."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An argument by the authors, not a proved or measured result.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "Section 4.2 gives three rotation gates per qubit, each with its own parameter (RX, RY, RZ), which conflicts with 'one variational parameter' per unitary; Table 5 reports 43 parameters, not a multiple of three."
+    },
+    {
+      "id_suggestion": "egoqgnn-qubits-reduced-to-max-degree",
+      "value": "The authors state that with the ego-graph decomposition the number of qubits needed to compute a graph's representation falls from N to D, where N is the number of nodes and D is the maximum degree of the graph, and that when fewer qubits n than D are available the neighbor set can be split into disjoint subsets of size at most n.",
+      "anchor": "Section 4.4, p.6-7",
+      "quotes": [
+        "the number of qubits required to compute its representation is accordingly reduced from N to D by introducing the above ego-graph decomposition, where D is the maximum degree of the graph.",
+        "If the number of available qubits n < D, we can divide the neighbour sets"
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A design claim of the method; no experiment on hardware tests it.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The reduction assumes the representation of one node needs qubits only for that node's neighbors; the qubit count for the von Neumann entropy step or for the error-correction ancillas is not added in."
+    },
+    {
+      "id_suggestion": "egoqgnn-ego-graph-definition-and-decomposition",
+      "value": "The paper defines an ego-graph as a central node and all of its connected neighbors, and the decomposition strategy divides a graph with N nodes into N ego-graphs (one per node) on a classical computer, processes them sequentially on the quantum circuit, and merges the representations on the classical computer.",
+      "anchor": "Section 1, p.1; Section 4.4, p.6",
+      "quotes": [
+        "An ego-graph consists of a central node and all of its connected neighbors.",
+        "The number of ego-graph is equal to the number of nodes.",
+        "the quantum circuits process each ego-graph sequentially and return their representations to the classical computer."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper's own definition and procedure in Sections 1 and 4.4.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "egoqgnn-graph-representation-von-neumann-entropy",
+      "value": "The paper defines the graph representation as the von Neumann entropy of each node's quantum state summed over all nodes of the graph, used to characterize the graph for classification.",
+      "anchor": "Section 4.5, Eq. 17-18, p.7",
+      "quotes": [
+        "To classify graphs, their von Neumann entropy is summed over the quantum states of all nodes and used as a characterization of the graph.",
+        "hG = Σv∈GS(ρv), ρv = |φv⟩⟨φv|"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper's own definition (Eq. 17-18).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "With rho_v = |phi_v><phi_v| the state is pure and its von Neumann entropy is 0, so as defined the representation is 0 for every graph. The paper does not explain how it avoids this (for example by tracing out qubits)."
+    },
+    {
+      "id_suggestion": "egoqgnn-classification-rule-two-class-states",
+      "value": "The authors state that classification uses two reference quantum states for the two classes, corresponding to the upper and lower Bloch hemispheres, and that this approach is essentially the same as QSVM; a graph gets the label of the class whose reference entropy is nearer its representation.",
+      "anchor": "Section 4.5, Eq. 19, p.7",
+      "quotes": [
+        "Our approach is essentially the same as QSVM.",
+        "We use two quantum states corresponding to two classes, and these correspond to the upper and lower Bloch hemispheres."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper's own definition of its decision rule.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The rule compares scalar entropies, while QSVM measures a Pauli-Z component; 'essentially the same' is the authors' wording and is looser than the equations."
+    },
+    {
+      "id_suggestion": "egoqgnn-trainable-mapping-loss-definition",
+      "value": "The paper defines a trainable mapping from data to quantum states whose loss is the difference between normalized Euclidean distances between samples and normalized inverse-cosine distances between the corresponding quantum states on the Bloch sphere, and states the aim is to maintain distance relations and reduce information loss.",
+      "anchor": "Section 4.3, Eq. 13, p.6-7",
+      "quotes": [
+        "we present a mapping method in which the loss is related to the difference in the distance relations between the Euclidean space and the Bloch sphere.",
+        "We utilize the inverse cosine of the inner product of the quantum states for distance measure."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "definition",
+      "certainty_reason": "The paper's own definition of its mapping loss (Section 4.3).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "Algorithm 2 (p.7) computes the data distance as the inner product x_i . x_j rather than a Euclidean distance, which differs from the prose."
+    },
+    {
+      "id_suggestion": "egoqgnn-three-bit-error-correction-included",
+      "value": "The authors state that the egoQGNN circuit applies a three-bit error correction code, with copy and recovery modules around the Ulayer, to protect the target node's state from noise.",
+      "anchor": "Section 4.2, Fig. 2, p.6",
+      "quotes": [
+        "Considering the likely effects of noise interference on quantum devices, we apply the three-bit error correction",
+        "Following the three-bit error correction code proposed by [45]"
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's statement of its own circuit design.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "All reported experiments are noiseless simulator runs (see the simulation-only assertion), so the paper reports no test of the error-correction modules."
+    },
+    {
+      "id_suggestion": "egoqgnn-simulation-only-reason",
+      "value": "The authors state that existing quantum coding platforms are unable to provide the fast and effective interaction between a classical computer and a quantum computer that the framework needs, and for this reason all reported experiments run on a simulator on a classical computer.",
+      "anchor": "Section 5.2, p.10",
+      "quotes": [
+        "As yet existing quantum coding platforms [59], [60] are unable to provide the fast and effective interaction between a classical computer and a quantum computer required by the proposed framework.",
+        "all of the reported experiments are performed using a simulator running on a classical computer."
+      ],
+      "kind": "shown",
+      "claim_type": "absence",
+      "fidelity": "exact",
+      "certainty_suggestion": "high",
+      "high_basis": "scope",
+      "certainty_reason": "The paper's own statement of the scope of its experiments (Section 5.2).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "No hardware run, noise model or shot-noise result is reported, so none of the accuracy or run-time results speak to hardware behavior."
+    },
+    {
+      "id_suggestion": "egoqgnn-experiment-setup-ulayers-optimizer",
+      "value": "The authors state they use three Ulayers in egoQGNN with identical structure and no shared parameters, map each node's feature into one qubit because the datasets' node features are scalars, and optimize with UOBYQA, a derivative-free method.",
+      "anchor": "Section 5.2, p.9-10",
+      "quotes": [
+        "For experiments, we use three Ulayers in egoQGNN.",
+        "In experiments, we map the feature of each node into a qubit since the node features of the datasets are simple (a scalar).",
+        "which is based on a derivative-free optimization method, is used to optimize the egoQGNN."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own experimental setup (Section 5.2).",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": ""
+    },
+    {
+      "id_suggestion": "egoqgnn-experiment-hardware-and-datasets",
+      "value": "The authors state that all compared methods run on the same device, an Intel Xeon CPU E3-1270 v5 with 32GB RAM, and that they conduct experiments on six standard graph classification benchmarks (MUTAG, four PTC variants, PROTEINS), reporting the average and standard deviation of 10-fold validation accuracies.",
+      "anchor": "Section 5, 5.1, 5.2, 5.3, p.8-10",
+      "quotes": [
+        "We conduct experiments on six standard graph classification benchmarks.",
+        "all of the methods compared are run on the same computing device, namely an Intel Xeon CPU E3-1270 v5 with 32GB RAM.",
+        "We report the average and standard deviation of the 10-fold validation accuracies."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own experimental setup.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "Table 4 has nine more columns than datasets suggest and the text counts 'the 7 benchmarks' in Section 5.3.1 while saying six elsewhere."
+    },
+    {
+      "id_suggestion": "egoqgnn-baseline-sources-and-reruns",
+      "value": "The authors state that the results for the deep learning methods mostly come from existing studies, and that they ran 10-fold cross-validation themselves with the authors' code for GIN and DGCNN on PTC FM, PTC MM and PTC FR, and for R-GCN and edGNN on PROTEINS.",
+      "anchor": "Section 5.2, p.10",
+      "quotes": [
+        "The results for the deep learning methods mostly come from the existing studies [25] [22].",
+        "we perform 10-fold crossvalidation to compute the accuracies of GIN and DGCNN on the PTC FM, PTC MM and PTC FR datasets, and both R-GCN and edGNN on the PROTEINS dataset."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own statement of how the baseline numbers were obtained.",
+      "result_type": "setup",
+      "context": "ml",
+      "reader_inference": "Baseline numbers from different studies may use different splits and tuning, so the table is not a controlled comparison across all rows."
+    },
+    {
+      "id_suggestion": "egoqgnn-quantum-baseline-inputs",
+      "value": "The authors state that the quantum baselines QSVM and QCNN cannot take high-dimensional graphs, so each graph is encoded as an 8-dimensional graphlet frequency vector, and for QSVM, which accepts only low-dimensional data, PCA reduces it to a 3-dimensional vector.",
+      "anchor": "Section 5.1-5.2, p.8-10",
+      "quotes": [
+        "We, therefore, use this method to encode a high-dimensional graph as an 8-dimensional vector and then use this vector as the input to both QSVM and QCNN.",
+        "So, we use PCA to transform an 8-dimensional graphlet frequency counts vector into a 3-dimensional vector."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "high",
+      "high_basis": "setup",
+      "certainty_reason": "The paper's own experimental setup for the baselines.",
+      "result_type": "setup",
+      "context": "qml",
+      "reader_inference": "The graphlet-count input discards most structure, so Gra+QSVM and Gra+QCNN are weak baselines by construction; the paper's gains over them partly reflect the input encoding."
+    },
+    {
+      "id_suggestion": "egoqgnn-accuracy-best-on-5-of-7",
+      "value": "The authors report that, in Table 4, egoQGNN achieves the best results on 5 out of the 7 benchmarks, and say this shows a clear improvement over the GNN models in many cases; elsewhere the paper says it uses six benchmarks.",
+      "anchor": "Section 5.3.1, p.10; Table 4, p.9",
+      "quotes": [
+        "Results in Table 4 indicate that egoQGNN achieves the best results on 5 out of the 7 benchmarks",
+        "We conduct experiments on six standard graph classification benchmarks."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study, on a simulator, with the paper's own count inconsistent.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "Six datasets are listed, so 'the 7' is a count the paper does not define. In the text layer of Table 4 the MUTAG row shows WL at 90.4 and GraphQNTK at 88.4 above egoQGNN's 85.83, and the PTC MM row shows WL at 66.6 above egoQGNN's 65.67, so the same table does not support 'best' on those two."
+    },
+    {
+      "id_suggestion": "egoqgnn-accuracy-ptc-fr-mr-improvements",
+      "value": "The authors report that egoQGNN scores 64.57 plus or minus 4.64 on PTC FM and 65.67 plus or minus 2.54 on PTC MM, which they call roughly equivalent to less powerful methods, and that on PTC FR and PTC MR it improves on the next-best methods by 1.96 and 0.54.",
+      "anchor": "Section 5.3.1, p.10",
+      "quotes": [
+        "The accuracies of the egoQGNN with a trainable mapping method on PTC FM and PTC MM are 64.57±4.64 and 65.67±2.54 respectively, which are roughly equivalent to less powerful methods.",
+        "For PTC FR and PTC MR, egoQGNN achieves 1.96 and 0.54 improvements over the next-best performing methods."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study; 10-fold cross-validation on small datasets with large standard deviations.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The reported standard deviations on PTC MR (5.6) and PTC FR (5.6) are several times larger than the 0.54 and 1.96 margins, so the margins are within one standard deviation."
+    },
+    {
+      "id_suggestion": "egoqgnn-vs-graphqntk-better-except-mutag",
+      "value": "The authors report that, compared to GraphQNTK, egoQGNN performs better on all datasets except MUTAG, and they suggest the reason may be egoQGNN's hierarchical structure, which GraphQNTK does not adopt.",
+      "anchor": "Section 5.3.2, p.10",
+      "quotes": [
+        "Notably, compared to GraphQNTK, our model performs better on all datasets except MUTAG.",
+        "The reason for this may be the hierarchical structure of our model, which is not adopted in GraphQNTK."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study; the cause is a conjecture ('may be').",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The paper runs no ablation on the hierarchy, so the explanation is untested."
+    },
+    {
+      "id_suggestion": "egoqgnn-mapping-ablation-proteins-9-percent",
+      "value": "The authors report that egoQGNN with the trainable mapping slightly and consistently outperforms egoQGNN without it, by about 9% on PROTEINS, where the two are close on MUTAG; they attribute the gap to less information loss and note the PROTEINS dataset has more node labels.",
+      "anchor": "Section 5.3.3, p.10; Table 4, p.9",
+      "quotes": [
+        "Note that the accuracy of egoQGNN is about 9% higher than egoQGNN (w/o M) on the PROTEINS dataset",
+        "the improvement may be attributed to less information loss compared to the egoQGNN without the mapping method."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical ablation from one study; the cause is a hypothesis ('may be').",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The text says 'slightly and consistently' while also reporting a 9% gap on one dataset. It says MUTAG uses 'only seven' node labels, while Table 3 lists 6. In the Table 4 text layer the PROTEINS cell for egoQGNN (w/o M) is missing, so the 9% cannot be checked from the table."
+    },
+    {
+      "id_suggestion": "egoqgnn-mapping-helps-qcnn",
+      "value": "The authors report that, compared to Gra+QCNN, Gra+QCNN with the trainable mapping circuit (w/ M) achieves higher accuracy, and conclude the mapping is also effective with alternative quantum machine learning algorithms.",
+      "anchor": "Section 5.3.2, p.10",
+      "quotes": [
+        "Moreover, compared to Gra+QCNN, Gra+QCNN (w/ M) achieves higher accuracy.",
+        "This demonstrates that our proposed trainable mapping method is also effective when combined with alternative quantum machine learning algorithms."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study on a simulator.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "In the Table 4 text layer the Gra+QCNN and Gra+QCNN (w/ M) differences are small against standard deviations of 8 to 14 points, so 'effective' rests on small margins."
+    },
+    {
+      "id_suggestion": "egoqgnn-parameter-example-32-dimension",
+      "value": "The authors give an example: for a 32-dimension input a GNN layer needs a 32 × 32 weight matrix and so has 1024 parameters, while the entanglement of 5 qubits generates 32-dimensional quantum states and, with three quantum gates per qubit each with a parameter, the quantum model transforms the state using only 15 parameters.",
+      "anchor": "Section 5.3.4, p.10",
+      "quotes": [
+        "a layer of a GNN model requires a 32 × 32 weight matrix to transform the input to a 32-dimension output.",
+        "the entanglement of 5 qubits generates 32dimensional quantum states.",
+        "As a result, this layer has 1024 parameters.",
+        "using only 15 parameters."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The authors' illustrative count, not a measurement; it is the authors' argument for the parameter saving.",
+      "result_type": "theoretical",
+      "context": "qml",
+      "reader_inference": "The count compares a full weight matrix with a layer of single-qubit rotations only; a circuit of single-qubit rotations plus CNOTs reaches a small part of the 32-dimensional unitaries, so the two layers are not equally expressive."
+    },
+    {
+      "id_suggestion": "egoqgnn-table5-parameter-sizes",
+      "value": "The authors report in their parameter-size table the sizes 2,560 (DGCNN), 16,704 (R-GCN), 9,345 (edGNN), 13,000 (GIN), 36 (QSVM), 54 (QCNN), 36 (egoQGNN without the mapping) and 43 (egoQGNN), read in the table's column order; the quantum counts are the rotation angles of the quantum gates.",
+      "anchor": "Table 5, Section 5.3.4, p.11",
+      "quotes": [
+        "Parameter size 2,560",
+        "16,704 9,345 13,000 36 54 36 43",
+        "The parameters of the quantum algorithm are the angles required by all of the quantum gates (unitary matrix)."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A count reported by the authors for their own and others' models; the assignment of numbers to models is read from the table's order in the text layer.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "The text layer places 2,560 on its own line, so the match of the first number to DGCNN rests on order; 43 / 2560 = 1.68% agrees with the paper's 1.68%, which supports that order."
+    },
+    {
+      "id_suggestion": "egoqgnn-runtime-comparison-simulator",
+      "value": "The authors report that the run-time of egoQGNN on MUTAG is comparable to the alternative quantum methods and superior to several deep learning methods, that it is less time-consuming than QCNN and close to QSVM, and that the deep learning methods are no faster than the quantum methods because the comparison runs on a conventional CPU-based machine.",
+      "anchor": "Section 5.3.5, Fig. 5, p.10-11",
+      "quotes": [
+        "The run-time of the proposed method is comparable to the alternative quantum methods and superior to several of the deep learning methods.",
+        "One important observation is that egoQGNN is less time-consuming than QCNN and close in performance to QSVM.",
+        "are no faster than the quantum computing methods since the comparison is executed on a conventional CPU-based machine."
+      ],
+      "kind": "shown",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "An empirical result from one study; the quantum methods are simulated, so times measure simulation cost.",
+      "result_type": "measured",
+      "context": "qml",
+      "reader_inference": "Simulator run-times say nothing about quantum hardware time. Fig. 5 is a bar chart whose values are not in the text layer, and its labels read 'DQGNN' and 'DCGNN', not egoQGNN and DGCNN."
+    },
+    {
+      "id_suggestion": "egoqgnn-graphqntk-only-quantum-method-realistic-size",
+      "value": "The authors state that GraphQNTK is the only known quantum algorithm that can handle realistically sized graph data, and that it is essentially a graph kernel equivalent to an infinite-width GNN.",
+      "anchor": "Section 2.2, p.2-3",
+      "quotes": [
+        "The Graph Quantum Neural Tangent Kernel (GraphQNTK) is the only known quantum algorithm that can handle realistically sized graph data."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "A statement about another group's work, not tested here.",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": "The paper's own Section 5.1 softens this to 'one of the few currently available'."
+    },
+    {
+      "id_suggestion": "egoqgnn-cited-qgan-and-qcnn-claims",
+      "value": "The authors cite that the QCNN has only O(log N) variational parameters for input sizes of N qubits, and that the generator of the QGAN of Hu et al. can generate the corresponding quantum states with 98.9% fidelity after multiple rounds of training.",
+      "anchor": "Section 1, p.1",
+      "quotes": [
+        "For input sizes of N qubits, the QCNN has only O(log N ) variational parameters.",
+        "the generator of QGAN can generate the corresponding quantum states with 98.9% fidelity."
+      ],
+      "kind": "cited",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "Results the paper attributes to other work (Cong et al. and Hu et al.).",
+      "result_type": "cited",
+      "context": "qml",
+      "reader_inference": "The paper cites [9] for the QCNN, but entry [9] in its reference list is the R-GCN paper; the QCNN reference is [4]."
+    },
+    {
+      "id_suggestion": "egoqgnn-claim-graph-isomorphism-capability",
+      "value": "The authors state that, unlike the other quantum graph methods they compare in their comparison table, their model can be applied to graph isomorphism tests because it provides a theoretical analysis and proof of this capability in Section 4.1.",
+      "anchor": "Section 2.2, Table 1, p.3-4",
+      "quotes": [
+        "Moreover, the proposed model is able to apply to graph isomorphism tests since it provides a theoretical analysis and proof of this capability in Sec. 4.1.",
+        "all of the above methods lack solid theoretical guarantees for the graph isomorphism classification problem."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The authors' claim about their own proof; the proof's gaps are in the Theorem 1 assertion.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The result is only that egoQGNN separates graphs a GNN of the Xu et al. form separates; it is a claim of equal power to that GNN, not of a stronger isomorphism test, and the paper runs no isomorphism experiment beyond the classification benchmarks."
+    },
+    {
+      "id_suggestion": "egoqgnn-conclusion-mapping-beneficial",
+      "value": "The authors conclude that their experimental results demonstrate the trainable mapping method is beneficial and improves the performance of quantum machine learning algorithms, and that the decompositional strategy liberates egoQGNN from the limitation of the number of qubits.",
+      "anchor": "Section 6, p.10-11",
+      "quotes": [
+        "Experimental results demonstrate this method is beneficial and leads to improvements in the performance of quantum machine learning algorithms.",
+        "which liberates egoQGNN from the limitation of the number of qubits."
+      ],
+      "kind": "claimed",
+      "claim_type": "positive",
+      "fidelity": "exact",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "The authors' conclusion from simulator experiments on small benchmark graphs.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": "The decomposition removes the dependence on graph size only up to the maximum degree D (see the qubit-count assertion), and nothing was run on a quantum device."
+    },
+    {
+      "id_suggestion": "egoqgnn-future-work-near-term-and-optimization",
+      "value": "The authors state two further directions: in the short term, to develop competitive quantum counterparts of node-level embedding methods that are feasible on near-term quantum devices; and to extend quantum node embedding to quantum solvers for combinatorial optimization such as graph matching, since the existing quantum solvers are not yet learnable.",
+      "anchor": "Section 6, p.11",
+      "quotes": [
+        "it is also imperative to develop competitive quantum counterparts that are feasible on near-term quantum devices.",
+        "since there are a few quantum solvers [67] and these are yet not learnable."
+      ],
+      "kind": "claimed",
+      "claim_type": "absence",
+      "fidelity": "scoped",
+      "certainty_suggestion": "low",
+      "high_basis": "",
+      "certainty_reason": "Open problems and plans stated by the authors; nothing is tested.",
+      "result_type": "claim",
+      "context": "qml",
+      "reader_inference": ""
+    }
+  ]
+}]}
