@@ -1,0 +1,1064 @@
+{
+ "papers": [
+  {
+   "record_id": "agnihotri-2026-support-vector-machine-scalable-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Agnihotri-et-al._2026_Support-Vector-Machine-with-a-Scalable-Quantum-Kernel__2605.31449.pdf",
+   "title_in_file": "Support Vector Machine with a Scalable Quantum Kernel",
+   "version_note": "arXiv:2605.31449v1, 29 May 2026 (dated June 1, 2026). Figure references in the text are shifted by one against the captions (the text cites Fig. 2 for 0/1, Fig. 3 for 0/6, Fig. 4 for odd/even and Fig. 5 for quantum data; the captions are Figs. 3 to 6). Plot values are not in the text layer.",
+   "pages": 12,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation study of a Hamming quantum kernel (a Hamming-weight-weighted post-processing of the fidelity-kernel measurement statistics) for SVM classification of PCA-reduced MNIST and synthetic quantum-circuit data with 2 to 27 qubits.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "hqk-beats-fqk",
+     "verdict": "confirmed",
+     "note": "Value matches the abstract. Thresholds differ inside the paper: the abstract says 15 or more qubits, the introduction and conclusion say greater than 15, the 0/6 text says the FQK drops for n of at least 15, and on odd/even FQK is comparable to HQK up to 13 qubits. On the quantum dataset the text says HQK beats FQK for all qubit counts.",
+     "value": "The authors report that in simulations with 2 to 27 qubits the Hamming quantum kernel outperformed the fidelity quantum kernel whenever 15 or more qubits were used.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "using systems ranging from 2 to 27 qubits",
+      "the Hamming quantum kernel outperforms the fidelity quantum kernel whenever 15 or more qubits are used."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; simulations only.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 15-qubit threshold is stated three different ways in the paper (15 or more; greater than 15; 13 qubits on odd/even), and the text gives no table of accuracies, only figures."
+    },
+    {
+     "id": "hqk-mnist-rbf-best",
+     "verdict": "confirmed",
+     "note": "Matches Section V-A2 (0 versus 6). The text also says that for low n the quantum models achieve similar accuracies, and the conclusion says HQK approaches RBF with only a small gap for 0/6 and 0/1.",
+     "value": "The authors report that on the MNIST 0 versus 6 task the classical RBF kernel had the best test accuracy for all qubit counts.",
+     "anchor": "Section V-A2, p.8",
+     "quotes": [
+      "Fig. 3(b) shows the test accuracies for the different kernels for the 0 vs. 6 classification task.",
+      "The classical RBF kernel exhibits the best classification accuracy for all values of n."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "hqk-quantum-data",
+     "verdict": "confirmed",
+     "note": "Matches the abstract and Section V-B (p.10): the text says HQK beats both FQK and RBF for all qubit counts on the quantum dataset. Note the Fig. 6 caption and the text disagree about RBF versus FQK near 26 qubits; see the new assertion on that.",
+     "value": "The authors report that, for synthetic quantum data, their method consistently outperforms the classical Gaussian kernel.",
+     "anchor": "Abstract p.1; Section V-B p.10",
+     "quotes": [
+      "for synthetic quantum data, our method consistently outperforms the classical Gaussian kernel.",
+      "it consistently beats both the FQK and the RBF kernel for all qubit counts"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; synthetic data from one circuit family.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "hqk-sample-sizes",
+     "verdict": "confirmed",
+     "note": "Right as stored. The MNIST sentence is on p.8 (Section V-A2); the quantum-data sentence is on p.9 (Section V-B) in the text layer. Section IV C also gives 100 training and 99 test images for all three MNIST tasks.",
+     "value": "The authors state that the MNIST 0 and 6 dataset has 100 training and 99 test samples, and the quantum circuit dataset has 100 training and 100 test samples.",
+     "anchor": "Sections V-A2 and V-B, p.8 and p.9",
+     "quotes": [
+      "This dataset also consists of 100 training and 99 test samples, comprising digits 0 and 6.",
+      "The dataset consists of 100 training samples and 100 test samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Sections V-A2 and V-B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "hqk-definition",
+     "value": "The authors define the Hamming quantum kernel as a sum over measured bitstrings b of the probability of obtaining b, weighted by an exponential factor in the Hamming weight h(b) with the hyperparameter λ.",
+     "anchor": "Section III, Eq. (6), p.5",
+     "quotes": [
+      "Specifically, we group measurement outcomes (bitstrings) by their Hamming weight and assign a weight to each group, modulating its influence on the kernel value:",
+      "κHQK (xi, xj ) = |⟨b|U †(xi)U (xj )|0⟩⊗n|2e−λh(b) .",
+      "Here, h(b) is the Hamming weight of the bitstring b, and λ is a hyperparameter."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the kernel in Section III, Eq. (6).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The weight is e raised to minus lambda times the Hamming weight, so the all-zero bitstring has weight 1 and every other bitstring is discounted; the sum over b was printed on its own line in the text layer."
+    },
+    {
+     "id_suggestion": "hqk-limiting-cases",
+     "value": "The authors state that the Hamming quantum kernel matrix has all entries equal to 1 when λ is 0 and converges asymptotically to the fidelity quantum kernel as λ goes to infinity.",
+     "anchor": "Section III, p.5",
+     "quotes": [
+      "The kernel matrix κHQK will have entries all equal to 1 when λ = 0 and asymptotically converges to the fidelitybased quantum kernel KFQK, see Eq. (4), as λ → ∞."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated without a derivation in the paper; it follows from Eq. (6).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Immediate from Eq. (6), so the FQK is the large-λ limit of the HQK; this is why the paper treats the FQK as a special case of HQK in its hyperparameter sweeps."
+    },
+    {
+     "id_suggestion": "hqk-no-decay-claim",
+     "value": "The authors state that the Hamming weighting ensures the similarity measure between different data points does not decrease to zero as the system size increases.",
+     "anchor": "Section III, p.5",
+     "quotes": [
+      "This method ensures that, as the system size increases, the similarity metric between different data points will not decrease to zero."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "No theorem or bound accompanies the statement. Entries of Eq. (6) stay near 1 for small λ by construction, which says nothing yet about whether differences between same-class and different-class entries stay resolvable with a finite number of shots; the paper's evidence for that is test accuracy only."
+    },
+    {
+     "id_suggestion": "hqk-same-measurements-claim",
+     "value": "The authors state that the Hamming quantum kernel is a classical post-processing method based on the same measurement outcomes as the fidelity quantum kernel, and that it avoids the exponential concentration problem by using the full measurement statistics rather than a single fidelity value.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "We introduce the Hamming quantum kernel, a classical post-processing method that is based on the same measurement outcomes as the fidelity quantum kernel.",
+      "However, it avoids the exponential concentration problem by using the full measurement statistics rather than a single fidelity value."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper never measures kernel-entry variance or concentration directly; avoidance is inferred from test accuracy."
+    },
+    {
+     "id_suggestion": "hqk-hamming-heuristic",
+     "value": "The authors state that the Hamming quantum kernel rests on the heuristic that similar datapoints on average lead to bitstrings of low Hamming weight, and report in the method figure that the Hamming distributions for same-class and different-class pairs stay distinctly shifted at larger qubit numbers.",
+     "anchor": "Fig. 1 caption, p.2",
+     "quotes": [
+      "Instead, we use the additional heuristic that similar datapoints on average lead to bitstrings of low Hamming weight.",
+      "However, the Hamming distributions are still distinctly shifted, allowing for an efficient classification."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The shifted distributions are shown only in Fig. 1(c) and (d) for MNIST 0 versus 6 at n equal to 4 and 27; no numbers are in the text layer."
+    },
+    {
+     "id_suggestion": "fqk-exponential-concentration-cited",
+     "value": "The authors state, citing Ref. 8, that fidelity quantum kernel entries exponentially concentrate with increasing system size, driving the kernel matrix toward the identity and yielding near-random performance, and that under a polynomial shot budget this can leave a model insensitive to the input data.",
+     "anchor": "Section II B, p.4",
+     "quotes": [
+      "FQK for QSVM suffers from a major downside: kernel entries exponentially concentrate with increasing system size [8], driving the kernel matrix toward the identity and yielding near-random performance.",
+      "Under a polynomial shot budget, this can result in a model that is largely insensitive to the input data and exhibits poor generalization performance."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. 8 (Thanasilp et al.).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fqk-concentration-definition-cited",
+     "value": "The authors state, citing Ref. 8, that a quantity exhibits exponential concentration in the number of qubits n if the probability that it deviates from its mean by a small amount is exponentially small, and that for kernels this means all non-diagonal entries converge to 0 exponentially fast with high probability as n increases.",
+     "anchor": "Section II B, Eq. (5), p.4",
+     "quotes": [
+      "The quantity X(α) is said to exhibit exponential concentration in the number of qubits n if the probability that it deviates from µ by a small amount δ is exponentially small.",
+      "which in practice means that all non-diagonal entries converge to 0 exponentially fast with high probability as the number of qubits n increases,",
+      "FQK for QSVM suffers from a major downside: kernel entries exponentially concentrate with increasing system size [8], driving the kernel matrix toward the identity"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A definition the paper attributes to Ref. 8.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fqk-overlap-scaling",
+     "value": "The authors state that, assuming the feature vectors are randomly chosen n-qubit quantum states, their overlap scales roughly as 2 to the power of minus n, which would need an exponential number of measurements to distinguish it from 0.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "Assuming that the feature vectors are randomly chosen n-qubit quantum states, their overlap scales like ∼ 2−n, which would require an exponential number of measurements to distinguish them from 0."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "A standard Haar-random argument given without derivation; the ZZ feature map actually used is not Haar random, so the statement is a motivation, not a property shown for the circuits simulated."
+    },
+    {
+     "id_suggestion": "zz-feature-map-setup",
+     "value": "The authors state that all quantum kernels use the ZZ feature map applied three times (m = 3), with each datapoint scaled between 0 and 2π before encoding.",
+     "anchor": "Section II A 2, Eq. (3), p.3 and p.4",
+     "quotes": [
+      "Every datapoint xi is scaled between 0 and 2π before being encoded onto the feature map.",
+      "In this work, the feature map is applied three times(m = 3), re-uploading the data through three successive layers of the circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section II A 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-kernel-alignment",
+     "value": "The authors state that no kernel alignment is performed for any dataset and that the ZZ kernel of Eq. (3) is used as introduced.",
+     "anchor": "Section II A p.4; Section VI p.11",
+     "quotes": [
+      "In this work, we will therefore not apply kernel alignment and use the ZZ-kernel as introduced in Eq. [3].",
+      "No kernel alignment is performed for any dataset, making the HQK extraction process both problem-agnostic and efficient."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope in Section II A and Section VI.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The FQK baseline is therefore a fixed ZZ map with no bandwidth scaling, while the HQK gets one tuned hyperparameter; the paper itself cites bandwidth tuning as important for FQKs (Refs. 6 and 11)."
+    },
+    {
+     "id_suggestion": "psd-handling-setup",
+     "value": "The authors state that they compute only the upper triangular part of each kernel matrix and set the lower triangle by symmetry, which does not guarantee positive semidefiniteness, and that projection onto the nearest positive semidefinite matrix replaces negative eigenvalues by 0.",
+     "anchor": "Section II A 2, p.4",
+     "quotes": [
+      "we construct only the upper triangular part of the kernel matrix and define the lower triangle by symmetry, i.e., K(i, j) = K(j, i).",
+      "Although this enforces symmetry, it does not guarantee positive semidefiniteness.",
+      "The projection is realized by eigendecomposing the matrix and replacing its negative eigenvalues by 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own procedure in Section II A 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "psd-hqk-claim",
+     "value": "The authors state that the projection onto a positive semidefinite matrix is used for system sizes below 10 qubits for both quantum kernels, and that systems exceeding 10 qubits satisfy the positive semidefinite condition without it.",
+     "anchor": "Section II A 2, p.4",
+     "quotes": [
+      "The same procedure to guarantee positive semidefinitness of the quantum kernel for system size less than 10 will also be used later for our Hamming quantum kernel (See Sec. III) as the systems exceeding 10 qubits satisfy the PSD condition without the need of this procedure."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Stated as an observation with no data or proof. The paper gives no argument that the HQK of Eq. (6) is positive semidefinite in general."
+    },
+    {
+     "id_suggestion": "shots-1024-setup",
+     "value": "The authors state that expectation values used for the quantum kernel elements are always calculated over 1024 shots, independently of the number of qubits.",
+     "anchor": "Section IV B, p.6",
+     "quotes": [
+      "Expectation values utilized for determining quantum kernel elements are always calculated over 1024 shots (independently of the number of qubits)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section IV B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "A fixed shot count means the FQK's collapse at larger n is partly a finite-shot effect; the paper does not rerun with more shots."
+    },
+    {
+     "id_suggestion": "simulation-scope",
+     "value": "The authors state that they conduct simulations involving up to 27 qubits to examine the scalability of their method.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "We employ two distinct datasets to thoroughly evaluate our approach and conduct simulations involving up to 27 qubits to examine the scalability of our method."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope in the introduction.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text layer describes no hardware run and no noise model; all results are simulation."
+    },
+    {
+     "id_suggestion": "mnist-tasks-setup",
+     "value": "The authors state that the MNIST data is split into three binary tasks (digits 0 versus 1, 0 versus 6, and odd versus even digits), each run using 100 labeled training images, 50 per class.",
+     "anchor": "Section IV A 1, p.5",
+     "quotes": [
+      "Task 1: Distinguish between the digits 0 and 1.",
+      "Task 2: Distinguish between the digits 0 and 6.",
+      "Task 3: Classify each digit as odd or even.",
+      "In each experimental simulation run, we take 100 labeled images as training dataset, 50 images of 0 and 50 images of 1 for task 1,",
+      "50 images of 0 and 50 images of 6 for task 2, and 50 randomly chosen images of digits chosen from the sets, {0, 2, 4, 6, 8} and {1, 3, 5, 7, 9} labeled as odd or even for task 3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section IV A 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mnist-preprocessing-setup",
+     "value": "The authors state that each 28 by 28 MNIST image is a 784-dimensional point reduced by principal component analysis to between 2 and 27 dimensions, that the number n of qubits equals the dimensionality of each sample, and that 100 images are used for training and 99 for testing.",
+     "anchor": "Sections IV A 1 and IV C, p.5 and p.7",
+     "quotes": [
+      "Each image consists of 28 × 28 pixels, amounting to a 784-dimensional data point.",
+      "We apply principal component analysis (PCA) [22] to reduce the dimensionality n of the data points x to a range between 2 and 27.",
+      "The number n of qubits required to encode the data in the quantum kernels is equal to the dimensionality of each sample.",
+      "we use a subset of 100 images for training and 99 randomly chosen images for testing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Sections IV A 1 and IV C.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evaluation-protocol-setup",
+     "value": "The authors state that test accuracy is the fraction of previously unseen data correctly classified, evaluated over 5 independent runs with a different randomly selected training and test subset in each run, and reported as the mean across runs.",
+     "anchor": "Section IV C, p.7",
+     "quotes": [
+      "Test accuracy is defined as the fraction of previously unseen data correctly classified by the trained model.",
+      "To ensure robustness, test accuracy is evaluated over 5 independent runs, with each run employing a different randomly selected subset of samples for the training and the test set.",
+      "The reported test accuracy represents the mean value across all runs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own evaluation protocol in Section IV C.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "With 99 or 100 test samples one sample is about one percentage point, and five runs give a coarse mean; standard deviations appear only as shaded regions in the figures."
+    },
+    {
+     "id_suggestion": "quantum-dataset-setup",
+     "value": "The authors state that the quantum dataset consists of bitstrings measured from one of two quantum circuits V0 and V1, the task is to tell which circuit produced a bitstring, each run uses a training set of 100 points (50 from each circuit), and the circuit size n is scaled from 4 to 27 qubits.",
+     "anchor": "Section IV A 2, p.5; Section V-B, p.9",
+     "quotes": [
+      "This dataset consists of binary bitstrings x produced as measurement outcomes by one of two quantum circuits Vα, where α = 0 or 1, see Fig. 2.",
+      "For each experimental run, we generate a training dataset with 100 quantum data points (50 bitstrings from circuit V0 and 50 from V1).",
+      "scaling is performed by increasing the number n of qubits in the data generation circuit from 4 to 27."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section IV A 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-dataset-circuits",
+     "value": "The authors state that the data-generating circuits use fixed rotation angles ϕ = 0.8π and θ = 0.64π, contain only a single layer of RZZ gates, and differ from the three-repetition feature map circuit U(x) used by the kernels.",
+     "anchor": "Section IV A 2 p.5 and p.6; Fig. 2 caption, p.6",
+     "quotes": [
+      "ϕ = 0.8π, θ = 0.64π",
+      "Additionally, the quantum data generating circuit contains only a single layer of RZZ gates,",
+      "Importantly, the circuits Vα used to generate the quantum data are different from the circuit U (x) used as feature map."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section IV A 2 and the Fig. 2 caption.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Both circuits use RZZ-type entangling gates, so the data and the feature map are not unrelated; the paper argues the difference avoids bias but does not test other data circuits."
+    },
+    {
+     "id_suggestion": "rbf-baseline-setup",
+     "value": "The authors state that the classical baseline is the standard scikit-learn RBF kernel with the default gamma setting called scale.",
+     "anchor": "Section IV B, p.6",
+     "quotes": [
+      "The RBF kernel is the standard kernel provided by scikit-learn.",
+      "The value of γ (see Eq. [1]) used in the kernel is the default value provided in scikit-learn called scale, defined as"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section IV B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rbf-gamma-search",
+     "value": "The authors report that an independent cross-validation over gamma values from 0.01 to 100, along with scale and auto, found the default value scale to perform best across all feature dimensions and datasets.",
+     "anchor": "Section IV B, p.7",
+     "quotes": [
+      "Additionally, an independent hyperparameter cross validation was also run on other γ values ranging from 0.01 to 100 along with scale and auto.",
+      "Across all feature dimensions and datasets, we found that the default value (scale) given above indeed displays the best performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The RBF baseline is tuned over gamma as a check; the SVM regularization parameter C is not described in the text for any kernel."
+    },
+    {
+     "id_suggestion": "cv-protocol-setup",
+     "value": "The authors state that λ is chosen by five-fold cross-validation on the 100 training samples (80 for training and 20 for validation per fold), over a logarithmic range from ten to the power minus two to ten to the power two, with each fold repeated five times, and that the best average cross-validation accuracy fixes λ for the held-out test set.",
+     "anchor": "Section IV B, p.6 and p.7",
+     "quotes": [
+      "The training dataset, comprising 100 samples, is partitioned into five folds for cross-validation. In each fold, 80 samples are used for training and the remaining 20 samples for cross-validation.",
+      "The hyperparameter λ is tuned over the range 10−2 to 102 on a logarithmic scale, in order to cover",
+      "Each fold is repeated five times to account for variability",
+      "The hyperparameter yielding the highest overall average cross-validation accuracy is selected as optimal and subsequently used for evaluation on the held-out test set."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own procedure in Section IV B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text says the sweep is repeated for n from 2 to 27, yet reports one selected λ per dataset (0.08, 0.1, 0.3, 0.1); whether λ was chosen per qubit count or once per dataset is not clear from the text layer."
+    },
+    {
+     "id_suggestion": "lambda-range-general",
+     "value": "The authors state that choices for λ between 0.05 and 0.3, independently of the number of qubits, seem to reliably lead to good classification performances.",
+     "anchor": "Section IV B, p.7",
+     "quotes": [
+      "According to the results shown in Sec. V, choices for λ between 0.05 and 0.3, independently of the number of qubits, seem to reliably lead to good classification performances."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lambda-universal-claim",
+     "value": "The authors state that the optimal hyperparameter value consistently peaks at approximately λ = 0.1 across all tested datasets, allowing the algorithm to be deployed directly without requiring a cross-validation step.",
+     "anchor": "Section VI, p.11",
+     "quotes": [
+      "Furthermore, the optimal hyperparameter value consistently peaks at approximately λ = 0.1 across all tested datasets, allowing the algorithm to be deployed",
+      "directly without requiring a cross-validation step."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The selected values in the figure captions are 0.08, 0.1, 0.3 and 0.1, and the cited range is wider than 0.1; the claim rests on four datasets built on one feature map with 100 training points."
+    },
+    {
+     "id_suggestion": "lambda-mnist-01",
+     "value": "The authors report that for MNIST 0 versus 1 the cross-validation accuracy at large λ decreases with an increasing number of qubits, that λ = 0.08 was selected for the test evaluation, and that any λ within 0.05 to 0.5 would give similar results.",
+     "anchor": "Section V-A1, p.7 and p.8; Fig. 3 caption",
+     "quotes": [
+      "Indeed, in the regime of large λ, the crossvalidation accuracy (CV score) decreases with an increasing number of qubits.",
+      "The value of λ selected for the test set evaluation is 0.08 but any λ within the range 0.05–0.5 would yield similar results.",
+      "Task 1: Distinguish between the digits 0 and 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lambda-mnist-06",
+     "value": "The authors report that for MNIST 0 versus 6 the cross-validation accuracy reaches its maximum for λ from 0.03 to 0.3 and that 0.1 was chosen.",
+     "anchor": "Section V-A2, p.8; Fig. 4 caption",
+     "quotes": [
+      "The accuracy begins to rise at λ ∼ 10−1.8 and reaches its maximum in the range λ = 0.03 to λ = 0.3. The optimized value of λ chosen for this dataset is 0.1.",
+      "Task 2: Distinguish between the digits 0 and 6."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lambda-mnist-oddeven",
+     "value": "The authors report that for MNIST odd versus even, for qubit numbers larger than 12 the cross-validation accuracy shows a pronounced maximum, that λ values from 0.05 to 0.3 consistently achieve high accuracy, and that λ = 0.30 was selected.",
+     "anchor": "Section V-A3, p.9; Fig. 5 caption",
+     "quotes": [
+      "For numbers of qubits larger than 12, the results indicate a pronounced maximum of the cross-validation accuracy and hence a superior performance of HQK with respect to FQK",
+      "Values of λ within the range [0.05, 0.3] consistently achieve high accuracy.",
+      "The optimal value of the HQK hyperparameter λ selected for this dataset is 0.30 (vertical dashed line)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lambda-quantum-data",
+     "value": "The authors report that on the quantum dataset the highest cross-validation scores lie in the range λ from 0.01 to 0.5, that the accuracy in this range consistently exceeds the fidelity kernel (the large-λ limit) with the gap widening as qubits increase, and that λ = 0.1 was selected.",
+     "anchor": "Section V-B, p.9; Fig. 6 caption",
+     "quotes": [
+      "In Fig. 5(a), we see that the highest CV scores are reached in the range λ ∈ [0.01, 0.5].",
+      "with the performance gap widening as the number of qubits increases.",
+      "Based on these results, the optimal hyperparameter for this dataset is selected as λ = 0.1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-data-small-lambda",
+     "value": "The authors report that on the quantum dataset the cross-validation score stays stable for small λ, unlike the MNIST data, and that this stability persists down to λ of ten to the minus fifteen, where computational precision becomes the limiting factor.",
+     "anchor": "Section V-B, p.9",
+     "quotes": [
+      "Notably, unlike the behaviour observed in the MNIST data, the cross-validation score remains stable in the regime of small λ.",
+      "As we have checked, this stability persists down to λ = 10−15, at which point computational precision becomes the limiting factor."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "To first order in λ Eq. (6) gives one minus λ times the mean Hamming weight of the sampled bitstrings, so at tiny λ the kernel is a near-constant offset by a linear function of the mean Hamming weight; stable accuracy there suggests the SVM is using that mean-weight statistic."
+    },
+    {
+     "id_suggestion": "result-mnist-01",
+     "value": "The authors report that on MNIST 0 versus 1 two principal components suffice for near-perfect classification by all three kernels, that FQK test accuracy decreases for larger n, and that HQK remains stable with accuracy similar to the RBF kernel.",
+     "anchor": "Section V-A1, p.8; Fig. 3(b) caption",
+     "quotes": [
+      "Hence, already two principal components (n = 2) suffice for near-perfect classification of 0 and 1.",
+      "For larger n, a decrease of the FQK test accuracy is observed, as a consequence of exponential concentration as discussed above. In contrast, HQK remains stable and achieves a similar accuracy as the classical RBF kernel."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "No experiment isolates exponential concentration as the cause of the FQK decrease; the text also says added PCA dimensions contribute noise, which would lower accuracy for any kernel."
+    },
+    {
+     "id_suggestion": "result-mnist-06-fqk-collapse",
+     "value": "The authors report that on MNIST 0 versus 6 the FQK test accuracy drops sharply from n of 15 and approaches random guessing, test accuracy 1/2, for n of 25 qubits or more.",
+     "anchor": "Section V-A2, p.8; Fig. 4(b)",
+     "quotes": [
+      "For n ≥ 15, the test accuracy",
+      "of the FQK drops sharply, approaching a random guesser (corresponding to test accuracy 1/2) for n ≥ 25 qubits.",
+      "Fig. 3(b) shows the test accuracies for the different kernels for the 0 vs. 6 classification task."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-mnist-06-shot-limit",
+     "value": "The authors state that 0 versus 6 is more challenging than 0 versus 1 and that 1024 measurement shots are insufficient to reliably estimate the overlaps between quantum states encoded with more than n = 15 qubits.",
+     "anchor": "Section V-A2, p.8",
+     "quotes": [
+      "The classification between digits 0 and 6 is inherently more challenging than between digits 0 and 1, and 1024 measurement shots are insufficient to reliably estimate the overlaps between quantum states encoded with more than n = 15 qubits."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No run with more shots is reported to confirm that the FQK failure is a shot-count effect."
+    },
+    {
+     "id_suggestion": "result-mnist-06-hqk",
+     "value": "The authors report that on MNIST 0 versus 6 the HQK avoids the drastic drop in accuracy, remains relatively stable and almost reaches RBF performance, and that maximum test accuracy is reached at eight principal components with accuracy limited by added noise beyond that.",
+     "anchor": "Section V-A2, p.8; Fig. 4 caption",
+     "quotes": [
+      "The HQK is able to avoid this drastic drop in accuracy.",
+      "FQK accuracy drops for larger n, whereas HQK remains relatively stable and almost reaches RBF performance, demonstrating higher robustness to noisy data than FQK.",
+      "Maximum test accuracy is achieved at eight principal components (n = 8), enabling near-perfect classification of 0 and 6."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "result-mnist-oddeven-fqk",
+     "value": "The authors report that on MNIST odd versus even the FQK keeps accuracy comparable to HQK only up to 13 qubits and then decreases consistently, and that the HQK accuracy is on average 10% higher than the FQK for qubit counts greater than 20.",
+     "anchor": "Section V-A3, p.9",
+     "quotes": [
+      "Moreover, FQK maintains accuracy comparable to HQK only up to 13 qubits, beyond which FQK exhibits a consistent decrease in accuracy with increasing qubit count just like in the 0/6 simulation.",
+      "The accuracy of HQK is, on average, 10% higher than that of FQK for qubit counts greater than 20."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Whether 10% means percentage points or a relative difference is not stated."
+    },
+    {
+     "id_suggestion": "result-mnist-oddeven-rbf",
+     "value": "The authors report that on MNIST odd versus even the RBF kernel test accuracy peaks at approximately 0.85, the overall accuracy is lower than for 0/1 and 0/6 for both quantum and classical kernels, and both RBF and HQK plateau at high n while FQK keeps falling.",
+     "anchor": "Section V-A3, p.9; Fig. 5 caption",
+     "quotes": [
+      "Test accuracy peaks at approximately 0.85 for the RBF kernel.",
+      "The overall accuracy is lower compared to the 0/1 and 0/6 datasets for both quantum and classical kernels.",
+      "Both HQK and RBF plateau at high n, while FQK shows a continued downward trend."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-oddeven-sample-explanation",
+     "value": "The authors attribute the lower odd versus even accuracy to the nature of the dataset: about 50 training samples per class, with an average of only 10 samples per digit within each class.",
+     "anchor": "Section V-A3, p.9; Fig. 5 caption",
+     "quotes": [
+      "This is due to the nature of the dataset: it consists of approximately 50 training samples per class, with an average of only 10 samples per digit within each class.",
+      "This is due to the limited number of training samples, with an average of only 10 samples per digit within each class, making classification more challenging."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No experiment varies the training size to test this explanation."
+    },
+    {
+     "id_suggestion": "claim-mnist-hqk-vs-rbf",
+     "value": "The authors state that on MNIST the HQK approaches the classical RBF kernel with only a small gap for the 0/6 and 0/1 subsets, and that the behavior of HQK across all classical subsets underscores its robustness as a strategy for mitigating exponential concentration.",
+     "anchor": "Section V-A3 p.9; Section VI p.11",
+     "quotes": [
+      "While the HQK achieves competitive accuracy on the MNIST dataset, approaching the performance of the classical RBF kernel with only a small gap for the 0/6 and 0/1 subsets, it demonstrates a decisive advantage on quantum data.",
+      "The behaviour of HQK across all subsets of the classical dataset underscores its robustness as a strategy for mitigating exponential concentration."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "On every MNIST task reported the classical RBF kernel is at least as accurate as the HQK; the quantum kernel gains over the FQK, not over the classical baseline, on classical data."
+    },
+    {
+     "id_suggestion": "quantum-data-train-test-overlap",
+     "value": "The authors report that the fraction of samples shared between the training and test sets of the quantum dataset is 80% at 4 qubits and falls to 0% for systems exceeding 15 qubits.",
+     "anchor": "Section V-B, p.9; Fig. 6(b)",
+     "quotes": [
+      "As shown in Fig. 5(b), the fraction of samples shared between the two sets is 80% at 4 qubits but decreases as the number of qubits increases, reaching 0% for systems exceeding 15 qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "At small qubit counts the quantum-data test accuracies include test bitstrings that also appear in training, so they are not pure generalization results."
+    },
+    {
+     "id_suggestion": "result-quantum-hqk-best",
+     "value": "The authors report that on the quantum dataset the HQK consistently beats both the FQK and the RBF kernel for all qubit counts, with the performance gap growing as the number of qubits increases.",
+     "anchor": "Section V-B, p.10; Fig. 6(c)",
+     "quotes": [
+      "The HQK shows the strongest performance overall: it consistently beats both the FQK and the RBF kernel for all qubit counts, and the performance gap grows as the number of qubits increases.",
+      "In this regime, the HQK strictly outperforms both the RBF and the FQK across all qubit counts, with the advantage growing as the number of qubits increases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This conflicts with the conclusion's 'for qubit counts greater than 15' wording; the figure values are not in the text layer, so strictness at small n cannot be checked."
+    },
+    {
+     "id_suggestion": "result-quantum-rbf-vs-fqk",
+     "value": "The authors report that on the quantum dataset the RBF kernel performs similarly to the FQK and even slightly better for more than 25 qubits, while the figure caption states that the RBF kernel yields the lowest performance for up to 26 qubits.",
+     "anchor": "Section V-B, p.10; Fig. 6 caption, p.9",
+     "quotes": [
+      "The RBF kernel, however, performs similarly to the FQK and even slightly better for more than 25 qubits.",
+      "The RBF kernel yields the lowest performance for up to 26 qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text and caption disagree at 26 qubits (RBF slightly better than FQK versus lowest of the three)."
+    },
+    {
+     "id_suggestion": "distinguishability-definition",
+     "value": "The authors define distinguishability from the bitstring probabilities P0 and P1 of the two data circuits, computed by statevector simulation, as the expected accuracy of an optimal classifier that assigns a bitstring to V0 if P0 is larger than P1 and to V1 otherwise, and relate it to the overlap coefficient by D = 1 − OVL/2.",
+     "anchor": "Section V-B, Eqs. (9) and (10), p.10",
+     "quotes": [
+      "Here, P0 and P1 denote the probabilities of sampling a bitstring b from circuits V0 and V1, respectively, as computed via statevector simulation.",
+      "one that assigns bitstring b to V0 if P0(b) > P1(b), and to",
+      "It can be related to D as follows: D = 1 − OV L/2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines distinguishability in Section V-B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Equation (9) lost its fraction and sum layout in the text layer; the relation D = 1 − OVL/2 is consistent with half the sum of the pointwise maxima."
+    },
+    {
+     "id_suggestion": "result-quantum-near-max",
+     "value": "The authors report that the HQK accuracy on the quantum dataset stays close to the theoretical maximum given by the distinguishability.",
+     "anchor": "Section V-B, p.10; Fig. 6(c) caption",
+     "quotes": [
+      "In addition, the HQK accuracy stays close to the theoretical maximum given by the distinguishability.",
+      "Notably, the HQK not only surpasses both the FQK and RBF kernel in test accuracy, but also achieves performance close to the theoretical maximum."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "claim-conclusion-advantage",
+     "value": "The authors state that the HQK provides a clear advantage in test accuracy over the FQK for qubit counts greater than 15 on both classical and quantum datasets, and that the HQK is a strong candidate to replace the FQK in large-scale settings or when computational resources are limited.",
+     "anchor": "Section VI, p.11",
+     "quotes": [
+      "The Hamming quantum kernel (HQK) provides a clear advantage in test accuracy over the standard fidelity quantum kernel (FQK) for qubit counts greater than 15 on both classical and quantum datasets.",
+      "Our empirical results indicate that the HQK is a strong candidate to replace the FQK in large-scale settings or when computational resources are limited."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Evidence is simulation with 1024 shots, five runs, 100 training points and an FQK without bandwidth tuning; the comparison to a tuned FQK or to projected kernels is not run."
+    },
+    {
+     "id_suggestion": "claim-abstract-expressivity",
+     "value": "The authors state that the results demonstrate that the Hamming quantum kernel improves the expressivity and robustness at larger qubit scales without requiring any additional quantum resources.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "This demonstrates that the Hamming quantum kernel improves the expressivity and robustness at larger qubit scales without requiring any additional quantum ressources."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result or an author claim from one study; not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Expressivity is not measured; only test accuracy is reported."
+    },
+    {
+     "id_suggestion": "open-problems",
+     "value": "The authors state three open directions: a general framework for finding efficient distribution-informed classical post-processing functions, understanding the HQK accuracy difference between the odd versus even task and the 0 versus 6 task, and understanding the factors that govern HQK performance across diverse quantum circuits.",
+     "anchor": "Section VI, p.11",
+     "quotes": [
+      "The first and most fundamental direction is the development of a general framework for finding efficient distribution-informed classical post-processing functions",
+      "A second direction concerns the MNIST dataset: in particular, understanding the difference in accuracy achieved by the HQK between the odd/even task and the 0/6 task",
+      "A third exciting direction stems from the strong performance of the HQK on quantum datasets"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its open problems in Section VI.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-liu-speedup",
+     "value": "The authors state, citing Ref. 7, that early investigations show fidelity quantum kernels can solve problems classical computers cannot efficiently address, but only for highly specialized problems, and that this needs a FASQ quantum computer because it relies on Shor-type data encoding.",
+     "anchor": "Section I, p.1 and p.2",
+     "quotes": [
+      "Early investigations of fidelity quantum kernels demonstrate that they can, in",
+      "principle, solve problems that cannot be efficiently addressed by classical computers [7].",
+      "However, this has only been demonstrated for highly specialized problems with structures that quantum computers can leverage, and it necessitates a FASQ quantum computer because it relies on Shor-type data encoding."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. 7 (Liu, Arunachalam and Temme).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-slattery-no-advantage",
+     "value": "The authors state, citing Ref. 11, that numerical results suggest fidelity quantum kernels show no clear quantum advantage on classical data, and that tuning the kernel bandwidth improves performance but makes the kernels easier to simulate classically.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "Ref. [11] presents numerical results suggesting that fidelity quantum kernels (FQKs) do not show a clear quantum advantage when applied to classical data",
+      "However, this also makes the kernels easier to simulate classically, due to unfavorable geometric difference values [10], which reduces the potential quantum advantage."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. 11 (Slattery et al.).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-projected-kernels",
+     "value": "The authors state, citing Ref. 10, that projected quantum kernels address concentration by computing the inner product between low-dimensional approximations of the state, which limits the ability to capture high-order correlations between data points.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "A solution to this problem was proposed by projected quantum kernels [10], where the inner product is calculated between low-dimensional approximations of the state.",
+      "However, this approach limits the ability to capture high-order correlations between data points, making it potentially unsuitable for certain datasets."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. 10 (Huang et al.).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-saini-breast-cancer",
+     "value": "The authors state, citing Ref. 5, that on a breast cancer dataset of 536 samples a classical SVM achieved a test accuracy of 90%, outperforming a QSVM by 5 percentage points.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "The evaluation was performed on a dataset of 536 samples.",
+      "Classical SVM achieved a test accuracy of 90%, outperforming QSVM by 5 percentage points."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. 5 (Saini et al.).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-schnabel-benchmark",
+     "value": "The authors state, citing Ref. 6, that a systematic comparison of more than 20,000 models found hyperparameters, particularly regularization and bandwidth tuning, critical for effective training of kernels.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "A systematic comparison of more than 20,000 models to investigate the impact of various hyperparameters on kernel accuracy is carried out in [6].",
+      "A key finding of the study emphasizes the critical role of hyperparameters, particularly regularization and bandwidth tuning, in ensuring the effective training of kernels."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. 6 (Schnabel and Roth).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-agliardi-hamming-weight",
+     "value": "The authors state that the use of Hamming weights for error mitigation in quantum kernels was first introduced in Ref. 12, and that their own approach differs in how the Hamming weight information enters the post-processing, using all measured bitstrings with a weight instead of a few bitstrings close to the all-zero bitstring.",
+     "anchor": "Section I p.2; Section III p.5",
+     "quotes": [
+      "the use of Hamming weights for error mitigation in quantum kernels was first introduced in [12].",
+      "By relying on all measured bitstrings, discounted by an appropriate weight, instead of only few, selected bitstrings close to the all-zero bitstring, our approach can seamlessly deal with different problems and system sizes without requiring to adjust the kernel."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A priority claim the paper attributes to Ref. 12 (Agliardi et al.).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "Ref. 12 is not run as a baseline here, so the claimed advantage over it is not tested."
+    },
+    {
+     "id_suggestion": "cited-belis-anomaly",
+     "value": "The authors state, citing Ref. 13, that quantum kernels were shown superior to classical kernels for anomaly detection in high energy physics.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "Ref [13] demonstrates the superiority of quantum kernels over classical kernels for anomaly detection in high energy physics."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. 13 (Belis et al.).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-reuploading-expressivity",
+     "value": "The authors state, citing Ref. 17, that repeated data re-uploading into a quantum model has been shown to enhance its expressivity.",
+     "anchor": "Section II A 2, p.4",
+     "quotes": [
+      "into a quantum model has been shown to enhance its expressivity [17]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. 17 (Aminpour et al.).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
