@@ -364,6 +364,54 @@ this project keeps having to replace with a step.
   text as one follow-up message; the session saves them outside the
   repository with `scripts/f114_unpack.py`. Tests proven red by injection
   (Issue #138)
+- **fix**: F114 launcher fixes found while launching (2026-10-26):
+  `claude --cloud` needs an interactive terminal, so it runs in its own
+  console window, with its stderr logged (08d2f07, b9bfa1f, efd77d7); the
+  launch script reads the console buffer with `GetValue` (cca6628);
+  `fetch` reads results with `git cat-file`, since `git show` refused a
+  long record id on Windows (fa09c8e); each cloud session is named after
+  its paper (6eafb0d) (Issue #138)
+- **docs**: F115 (text from page images) and F116 (read figures) carded;
+  udaru-2025-qml-credit-risk kept unread (2026-10-27, team lead: "mark
+  udaru-2025-qml-credit-risk as unread") (00da300)
+- **fix**: the F114 loop never counts a paper marked unread as in flight
+  (2026-10-27, 0d7597c)
+- **docs**: F114 cloud reads stopped at $0 credit (2026-10-27, team lead:
+  "Can stop sending more papers and backlog the remainder for next
+  sprint"): 302 results fetched, 3 papers kept unread, 1,126 records
+  backlogged (snapshot as of 2026-10-27) (d5fe761). F117 (review the 302
+  results, split by model tier) and F118 (what the store says for the
+  fraud challenge) carded (7aa184c)
+- **chore**: Task G reviews finished through g042 (2026-10-27, cf62cff)
+- **fix**: the sync writes every changed assertion field in one statement
+  (2026-10-27): the trial apply broke the CHECK that an absence names its
+  search scope, because the claim type was written before the scope; test
+  proven red. INTAKE_WORKFLOW.md section 53 records the g001 to g042 apply
+  (eb3941a) (Issue #138)
+- **fix**: Task G's apply rewrote the detail of 114 Task F read rows from
+  the same day (2026-10-28, found by the full suite). Both scripts now
+  match their own read rows by wording; the live store was repaired by
+  re-running Task F's apply, and a diff against the pre-apply backup shows
+  no row missing (5e10948). The read writer is tested on a store that
+  holds Task F's rows (915f9e4). Tests proven red by injection
+- **chore**: Sprint 13 Phase 5.3 Manual Validation resumed after Task G
+  (2026-10-28, ee6f8ad)
+- **docs**: F119 carded at Priority 10 (2026-10-28, team lead: "add the
+  following text and paper to the paper repository and terget read for
+  next sprint - highest priority"): Brighindi's PHI-OMEGA paper, posts,
+  comment thread, images and code, first in Sprint 14 (Manual Validation
+  Q9 = 1, Q10 = 1). F117 and F118 move to Priorities 20 and 22 (91b757b).
+  The card names the author's two PHI-OMEGA repositories (d5a3f94)
+- **fix**: Task G's whole-paper reads stored as `full` (208) and the two
+  with named exceptions as `partial` (2026-10-28, Manual Validation
+  Q7 = 2); the rows first written as `subagent` are moved, not
+  duplicated; test proven red (2bab87b). INTAKE names the 8 full reads
+  the slice counts only through their reader files (d5a3f94)
+- **docs**: Manual Validation Q11 = 1, Q12 = 1, Q13 = 2 (2026-10-28):
+  F119 reads only the parts of the 608-file archive that bear on the
+  paper's claims; the references split in two (PHI-OMEGA / M-OMNIA, and
+  the MB-X.01 structural-coherence code); the 302 cloud results are
+  reviewed in Sprint 14 after F119 (F117), and Sprint 13 closes now
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

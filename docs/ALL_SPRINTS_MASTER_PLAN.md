@@ -862,7 +862,12 @@ and in git. Remaining items below.
   prediction space (context `ml`, the team lead's call) enters the store
   only with what supports it, and what does not.
 - Platform: everything outside version control (ADR-0005 section 3),
-  described in `References\2026-09_Brighindi_PHI-OMEGA_LinkedIn-post-and-comments.md`:
+  described in two references (Sprint 13 Manual Validation Q12 = 1, team
+  lead 2026-10-28): PHI-OMEGA / M-OMNIA in
+  `References\2026-09_Brighindi_PHI-OMEGA_LinkedIn-post-and-comments.md`,
+  and the MB-X.01 structural-coherence code (lon-mirror, OMNIA, the
+  Zenodo archive) in
+  `References\2026-04_Brighindi_MB-X.01-Structural-Coherence_LON-mirror-OMNIA.md`:
   - the paper, `Papers\2026-09_Brighindi_From-Open-Heuristics-to-Native-Runtime-Invariance.pdf`
     (3 pages, 2026-09-25, self-published);
   - the LinkedIn post and its comment thread, as the team lead pasted them;
@@ -888,8 +893,9 @@ and in git. Remaining items below.
   `access`; every claim entered with its quote and certainty; the absence
   of the reproducibility material entered as an absence claim with its
   search scope; the post, comments and image entered as the author's own
-  claims, distinct from the paper; how much of the code archive is read
-  set by Sprint 13 Manual Validation Q11.
+  claims, distinct from the paper; of the 608-file Zenodo archive, only
+  the parts that bear on the paper's claims are read (Sprint 13 Manual
+  Validation Q11 = 1, team lead 2026-10-28).
 - Depends on: none
 
 **F117. Review the 302 cloud results of F114, with each step on the cheapest model its protocol allows, then apply them (~480m [no-history] timebox) Priority 20** (NEW 2026-10-27, team lead: "do the follow-up review of the 302 results (determine which model is needed for this - or can it be split into multiple sections where one or more can be completed by haiku 5.5... sonnet 5.5... opus 5.5")
