@@ -1,0 +1,2040 @@
+{
+ "papers": [
+  {
+   "record_id": "wang-2025-scalable-advantage-multi-photon-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Wang-et-al._2025_A-scalable-advantage-in-multi-photon-quantum-machine-learning__2511.21951.pdf",
+   "title_in_file": "A scalable advantage in multi-photon quantum machine learning",
+   "version_note": "arXiv:2511.21951v1 (26 Nov 2025), 10-page main text with Methods; the Supplementary Notes it cites (including the proof in Supplementary Note 2.2) are not in this file.",
+   "pages": 10,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory and photonic-chip experiment paper showing that the learning capacity (rank of the data quantum Fisher information matrix) of linear optical circuits grows polynomially with photon number, tested on unitary learning and metric learning.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "fock-product-state-scope",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Model setup, Eq. 2, p.2; Discussion, p.6",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its restriction to Fock states with at most one photon per mode at Eq. 2 (p.2) and its product-state input scope in the Discussion (p.6).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "learning-capacity-poly-photon",
+     "verdict": "narrowed",
+     "note": "The paper's Eq. 6 is an upper bound (an inequality) in the regime nL <= m and an equality only for nL > m, and its proof is in Supplementary Note 2.2, which this file does not contain. The value now carries the regime and the bound form.",
+     "value": "The paper states, as Eq. 6, that the maximal learning capacity RL(n, m) of linear optical circuits is bounded above by 2mnL minus n squared L squared minus 1 minus (n − 1)δL,1 when nL ≤ m, and equals m squared minus 1 minus (m − 1)δL,1 when nL > m; it highlights that RL(n) scales polynomially with photon number n, and refers the complete proof to Supplementary Note 2.2.",
+     "anchor": "Results, Eq. 6, p.3 (proof in Supplementary Note 2.2, not in file)",
+     "quotes": [
+      "RL(n, m) ≤ 2mnL − n2L2 − 1 − (n − 1)δL,1",
+      "RL(n, m) = m2 − 1 − (m − 1)δL,1",
+      "(nL > m) . (6)",
+      "We highlight that RL(n) scales polynomially with photon number n.",
+      "A complete proof is provided in Supplementary Note 2.2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theorem-like result whose proof is in a supplementary note not contained in this file; the text layer also scrambles the regime labels of Eq. 6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The regime label (nL ≤ m) for the first line of Eq. 6 is printed in the text layer separately from the inequality; the pairing is read from the equation layout."
+    },
+    {
+     "id": "metric-learning-two-photon-better",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Quantum metric learning, p.5; Fig. 4d, p.6",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one experiment.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "unitary-learning-two-photon-fewer-data",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Learning unitaries, p.4, Fig. 3b",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one experiment, on a 5 by 5 unitary.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "multiphoton-dqfim-learning-capacity-definition",
+     "value": "The paper uses the data quantum Fisher information matrix (DQFIM), based on the Fubini-Study metric, and defines the learning capacity DL as the rank of the DQFIM, i.e. the number of independent directions in the parameter space that can affect the model.",
+     "anchor": "Learning capacity, Eq. 4, p.3",
+     "quotes": [
+      "we use a quantum geometric measure, known as the data quantum Fisher information matrix (DQFIM) [31, 33], which is based on the Fubini-Study metric [34]",
+      "characterizes the learning capacity, i.e., the number of independent directions in the parameter space θ that can affect the model"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the learning capacity at Eq. 4, p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-maximal-capacity-overparameterization",
+     "value": "The authors state that DL increases with the number of circuit parameters K until saturating at a critical number Kc, where the model becomes overparameterized and reaches the maximal learning capacity RL(n) for the given number of training data, and that such overparameterized models have a good optimization landscape (citing prior work).",
+     "anchor": "Learning capacity, Eq. 5, p.3",
+     "quotes": [
+      "until saturating at a critical number K ≥ Kc. At this point, the model becomes overparameterized and achieves the maximal learning capacity for a given number of training data L",
+      "Such overparameterized models have a good optimization landscape with local minima close to the optimal solution and thus can be easily trained [35]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The landscape property is attributed to reference [35].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-rl-scaling-limits",
+     "value": "The authors state that for a constant number of training data L, RL(n = 1) is proportional to m while RL(n ∝ m) is proportional to m squared.",
+     "anchor": "Learning capacity, after Eq. 6, p.3-4",
+     "quotes": [
+      "for L = const, we have RL(n = 1) ∝ m, while RL(n ∝ m) ∝ m2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Follows from Eq. 6, whose proof is in a supplementary note not in this file.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-critical-dataset-size",
+     "value": "The authors find that the critical dataset size at which the learning capacity saturates is Lc(n, m) = ⌈(m − 1)/n⌉ + 1, so that single-photon states (n = 1, which also covers coherent states from lasers) need Lc = m training data to generalize, while Lc = 2 for n = m − 1.",
+     "anchor": "Learning capacity, Eq. 7, p.4",
+     "quotes": [
+      "Lc(n, m) = ⌈(m − 1)/n⌉ + 1 . (7)",
+      "using n = 1 singlephoton states (which also applies to coherent states produced by lasers, see Supplementary Note 2.2 for details)",
+      "one requires Lc = m training data to generalize, while Lc = 2 for n = m − 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived from Eq. 6; the derivation is in a supplementary note not in this file.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-overcomplete-generalization-condition",
+     "value": "The authors state that for L ≥ Lc the dataset is overcomplete, and that in this regime, assuming a noise-free dataset, the model can generalize with low test error (citing prior work).",
+     "anchor": "Learning capacity, p.4",
+     "quotes": [
+      "For L ≥ Lc, the dataset is overcomplete, i.e., one has sufficient data to fully characterize the model.",
+      "assuming a noise-free dataset, the model can generalize with low test"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A condition attributed to reference [31].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-unitary-learning-setup",
+     "value": "The authors learn a 5 × 5 unitary on a programmable integrated photonic circuit with single-photon or two-photon inputs, using pseudo photon-number resolution for bunching events and SPSA optimization from the same random initialization, and judge success by a matrix closeness CM that is zero when the unitaries match up to local phases and mode permutations.",
+     "anchor": "Learning unitaries, p.4; Methods, Eq. 8, p.9",
+     "quotes": [
+      "We report the experiment of learning a 5 × 5 unitary",
+      "Pseudo photon-number resolution is used to detect bunching events in the two-photon case.",
+      "is trained from the same random initialization for all datasets by optimizing the parameters of the photonic chip using simultaneous perturbation stochastic approximation (SPSA) [39]",
+      "CM equals zero when the two unitaries match up to local phases and mode permutations (see Methods)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its experimental setup, p.4 and Methods p.9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-unitary-learning-matches-theory",
+     "value": "The authors report that for n = 1 the unitary learning fails with CM ≈ 0.3 at L = 3, that the experimentally observed values of L required for generalization matched their theoretical prediction exactly, and that the full unitary including local phases and mode permutations was learned with one additional training state.",
+     "anchor": "Fig. 3 caption, p.4; Learning unitaries, p.5",
+     "quotes": [
+      "n = 1 photon requires at least L",
+      "fails with CM ≈ 0.3 for L = 3",
+      "mentally observed values of L required for generalization have matched our theoretical prediction exactly",
+      "the full unitary, including local phases and mode permutations, can be learned with one additional training state (Supplementary Note 4)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one experiment; the full-unitary result is detailed in a supplementary note not in this file.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-metric-learning-simulation",
+     "value": "The authors report numerical simulations of quantum metric learning on a seven-class vowel recognition dataset with m = 6 modes for photon numbers n = 1 to 5, each trained with 100 random seeds until convergence, in which test loss decreased with larger n.",
+     "anchor": "Quantum metric learning, p.5; Fig. 4b, p.6",
+     "quotes": [
+      "ational photonic circuit with m = 6 photon modes",
+      "we conduct numerical simulations for photon numbers n = 1, 2, . . . , 5",
+      "trained with 100 random seeds until convergence",
+      "We observe that test loss values decrease with larger n"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-metric-learning-experiment-loss",
+     "value": "The authors report that in the experimental metric learning on the chip, trained online with SPSA from the same initialization, training and test losses were substantially lower for two-photon states than for single-photon states.",
+     "anchor": "Quantum metric learning, p.5; Fig. 4c, p.6",
+     "quotes": [
+      "the training and test losses are substantially lower for two-photon states compared to the single-photon case"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one experiment.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-metric-pairwise-accuracy",
+     "value": "The paper's metric-learning figure reports pairwise test accuracies above the Gram matrices at epochs 0, 90 and 180: 13.16%, 71.63% and 80.67% for the single-photon row, and 13.16%, 83.73% and 96.58% for the two-photon row.",
+     "anchor": "Fig. 4d and caption, p.6 (numbers are figure labels)",
+     "quotes": [
+      "13.16% 71.63% 80.67%",
+      "13.16% 83.73% 96.58%",
+      "test data at selected epochs (0, 90 and 180)",
+      "The top and bottom rows show the results for single-photon and two-photon experiments, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Figure labels from one experiment; the row and epoch assignment was checked against the rendered page.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The assignment of each percentage to an epoch and a row comes from viewing the rendered figure on p.6."
+    },
+    {
+     "id_suggestion": "multiphoton-pairwise-accuracy-definition",
+     "value": "The paper defines pairwise accuracy as the probability of correctly identifying whether a pair of test data belongs to the same or different classes, and uses the cosine similarity of output distributions as the metric-learning measure.",
+     "anchor": "Fig. 4 caption, p.6; Quantum metric learning, p.5",
+     "quotes": [
+      "the pairwise accuracy, which is defined as the probability of correctly identifying whether a pair of test data belongs to the same or different classes"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition in the Fig. 4 caption, p.6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-vowel-dataset-setup",
+     "value": "The authors state that the vowel dataset has 12-dimensional formant-frequency vectors in 7 classes of 37 samples each, 259 in total, split randomly into training and test data at 70/30 with the same sample number per class.",
+     "anchor": "Methods, Quantum metric learning, p.9",
+     "quotes": [
+      "The dataset consists of 12-dimensional data vectors of formant frequencies extracted from audio recordings, with 7 classes",
+      "Each class contains 37 samples, and the total size of the dataset is 37×7 = 259.",
+      "We randomly split the dataset into training and test data with a ratio of 70/30 and keep the same sample number for all classes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its dataset in Methods, p.9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-apparatus-setup",
+     "value": "The authors state that photon pairs at 1550 nm come from a ppKTP spontaneous parametric down-conversion source pumped at 775 nm, and the laser-written glass chip has 6 input and output ports and 15 Mach-Zehnder interferometers able to perform any SU(6) unitary, read out with superconducting nanowire detectors and a time tagger of 15.63 ps resolution.",
+     "anchor": "Methods, Details of the experimental apparatus, p.9",
+     "quotes": [
+      "We generate photon pairs at 1550 nm via a spontaneous parametric down-conversion source with a periodically poled potassium titanyl phosphate (ppKTP) crystal which is pumped at 775 nm.",
+      "This circuit features 6 input and output ports and 15 Mach-Zehnder interferometers (MZIs), capable of performing any arbitrary SU(6) unitary operation.",
+      "a time tagger is used to record coincidence events with a resolution of 15.63 ps"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its apparatus in Methods, p.9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-training-hyperparameters",
+     "value": "The authors state they use SPSA with c = 0.4, a = 3 for unitary learning and c = 0.4, a = 150 for metric learning on hardware, and Adam with an initial learning rate of 0.1 reduced by a factor of 10 on plateaus in the simulations.",
+     "anchor": "Methods, Online training, p.9; Quantum metric learning, p.10",
+     "quotes": [
+      "We choose c = 0.4, a = 3 for the task of unitary learning, and c = 0.4, a = 150 for quantum metric learning.",
+      "The learning rate is initially set to 0.1, and is decreased by a factor of 10 when the training loss has stopped decreasing for 10 epochs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own training setup in Methods, p.9 and p.10.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-conclusion-data-scaling",
+     "value": "The authors conclude that in unitary learning single-photon states (or coherent states) need O(m) training data while multi-photon states need only a constant number O(1), and that in metric learning multi-photon states generalize significantly better.",
+     "anchor": "Discussion, p.5",
+     "quotes": [
+      "the unitary learning task pointed out that single-photon states (or coherent states) need O(m) training data, while multi-photon states can accomplish the same tasks with only a constant number of data O(1)",
+      "multi-photon states generalize significantly better by achieving lower loss values, higher test accuracies, and clearer class separation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion combining a theoretical scaling with a single experiment on m = 5 and m = 6 modes.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The experiments test n = 1 and n = 2 only; the O(1) scaling for large m rests on Eq. 7, not on measurement."
+    },
+    {
+     "id_suggestion": "multiphoton-future-directions",
+     "value": "The authors list as future directions quantum natural gradient methods to reduce training epochs, extending the protocols beyond linear optical circuits and photon-number states (optical nonlinearity or non-Gaussian continuous-variable states), and extending to non-separable input states.",
+     "anchor": "Discussion, p.6",
+     "quotes": [
+      "quantum natural gradient methods [50] could be investigated to reduce training time by lowering the number of required epochs",
+      "our protocols can be extended beyond linear optical circuits and photonnumber states",
+      "it can be extended to non-separable states, such as those involving entanglement and graph states"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of open directions in the Discussion, p.6.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multiphoton-gap-claim",
+     "value": "The authors state that whether scaling up photonic systems can introduce advantages for practical machine learning or QML applications had not been explored from both theoretical and experimental perspectives.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "whether scaling up photonic systems can introduce advantages for practical machine learning problems or QML applications has not been explored from both theoretical and experimental perspectives"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim about the literature.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "wang-2025-towards-efficient-quantum-algorithms-diffusion",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Wang-et-al._2025_Towards-efficient-quantum-algorithms-for-diffusion-probability-models__2502.14252.pdf",
+   "title_in_file": "Towards efficient quantum algorithms for diffusion probabilistic models",
+   "version_note": "arXiv:2502.14252v2 (4 Nov 2025): 7-page main text plus a supplemental material (supplement pages 1 to 18 on PDF pages 8 to 44). In the supplement every odd PDF page from 9 to 43 is blank apart from a page number (checked on page 9 by viewing it). The supplement states the formal Theorems III.1 and III.2.",
+   "pages": 44,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper proposing quantum Carleman linearization algorithms (solved with quantum linear system solvers or LCHS) for the DPM-solver and UniPC samplers of diffusion probabilistic models, with query-complexity theorems and classical numerics on the dissipativity of a trained latent diffusion model.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "dpm-carleman-truncation-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Sec. II.A.2, p.4",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limitation and the lack of a rigorous bound in Sec. II.A.2, p.4.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "dpm-scope-excludes-state-prep",
+     "verdict": "confirmed",
+     "note": "The first half is the theorems' stated scope; the second sentence ('These statements ensure ...') is the authors' claim. The formal Theorems III.1 and III.2 in the supplement repeat the exclusion: 'The algorithm does not account for the state preparation cost required to initialize the weight vector on the quantum device'.",
+     "value": "",
+     "anchor": "Sec. II.C, p.5-6; Supplement Sec. III, Theorems III.1 and III.2, p.38-40",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The exclusion of state preparation cost is the theorems' own stated scope (p.5-6 and Theorems III.1, III.2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Whether the algorithms are 'efficiently implementable' depends on kappa and on the sparsity assumptions, which the theorems take as given."
+    },
+    {
+     "id": "dpm-solver-query-complexity",
+     "verdict": "widened",
+     "note": "The stored value stops before the complexity. The informal Theorem 1 gives O(Jκ · polylog(N/ε)) query complexity with success probability greater than 1/2, and the formal Theorem III.1 in the supplement adds its conditions: sparsity sM ≤ J + 1, a block encoding with normalization αM ≥ ∥M∥, and a success amplitude that can be estimated to constant multiplicative accuracy. The supplement states the theorem by drawing on cited theorems; no separate proof is given.",
+     "value": "The paper states, as Theorem III.1 (formal version of informal Theorem 1), that for a DPM-solver whose denoising function is expanded to J-th order and truncated at N, the matrix M has sparsity sM ≤ J + 1, and, if M/αM is block encoded with αM ≥ ∥M∥ and the success amplitude can be estimated to a constant multiplicative accuracy, the normalized solution state can be prepared to accuracy ε > 0 with success probability > 1/2 and query complexity O(Jκ · polylog(N/ε)), where κ upper-bounds the condition number; with r-sparse outputs and m := log2(N) the tomographic cost is O(m2r3/ε2) ignoring logarithmic factors.",
+     "anchor": "Sec. II.C, Theorem 1, Eq. (11), p.5; Supplement Sec. III, Theorem III.1, Eqs. (III.1) to (III.4), p.38",
+     "quotes": [
+      "can be prepared with query complexity scaling as O(Jκ · polylog(N/ε)) , (11) where κ > 0 is an upper bound on the condition number of M . The algorithm achieves a success probability psucc greater than 1/2",
+      "M is a sparse matrix with sparsity sM ≤ J + 1. (III.1) M/αM is block encoded by OM with normalization factor αM ≥ ∥M ∥.",
+      "can be estimated to a constant multiplicative accuracy. Then the quantum state vector",
+      "can be prepared to accuracy ε > 0 and success probability > 1/2 with query complexity",
+      "the tomographic cost for transferring quantum states to classical devices is O(m2r3/ε2), ignoring logarithmic factors",
+      "assuming that the output weight vectors are r-sparse and m := log2(N )"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The theorem is stated with its conditions but is assembled from cited QLSS theorems (Refs. [13, 21-23] of the supplement) without a proof in the paper.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "In the formal statement the complexity prints flat as 'O Jκ · polylog N ε'; the informal Eq. (11) gives it as O(Jκ · polylog(N/ε))."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "dpm-unipc-query-complexity-theorem",
+     "value": "The paper states, as Theorem III.2 (formal version of informal Theorem 2), that for the UniPC-p framework with J-th order expansion truncated at N, Mc has sparsity sMc ≤ (p + 1) · J + 2, and under a block encoding of Mc/αMc and a success amplitude estimable to constant multiplicative accuracy, the normalized solution state can be prepared to accuracy ε with success probability > 1/2 and query complexity O(pJκ · polylog(N/ε)); it also excludes the state preparation cost.",
+     "anchor": "Sec. II.C, Theorem 2, Eq. (12), p.6; Supplement Theorem III.2, Eqs. (III.5) to (III.8), p.38-40",
+     "quotes": [
+      "the solution can be prepared with query complexity O(pJκ · polylog(N/ε)) , (12) where κ > 0 bounds the condition number of Mc.",
+      "Mc is a sparse matrix with sparsity sMc ≤ (p + 1) · J + 2. (III.5) Mc/αMc is block encoded by OMc with normalization factor αMc ≥ ∥Mc∥.",
+      "can be prepared to accuracy ε and success probability > 1/2 with query complexity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated with conditions but assembled from cited QLSS theorems, with no proof in the paper.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Eq. (II.71) gives the UniPC sparsity as an equality, sMc = (p + 1) · J + 2, while Theorem III.2 states it as an upper bound."
+    },
+    {
+     "id_suggestion": "dpm-theorems-built-on-cited-results",
+     "value": "The authors state that they establish the gate complexity bounds by drawing from theorems and quantum algorithms in cited references, and that those cited theorems do not explicitly account for the dependence on the sparsity sM and the system size N, which is encapsulated in the cost functions Cost(OM).",
+     "anchor": "Supplement Sec. III, p.38",
+     "quotes": [
+      "Drawing from the theorems and quantum algorithms presented in Refs. [13, 21–23], we establish a gate complexity bound for the quantum Carleman algorithm described in this section.",
+      "do not explicitly account for the dependence on the sparsity sM of the matrix M and the system size N , as these dependencies are implicitly encapsulated in the cost functions Cost(OM )"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of how its theorems are obtained and what the cited theorems leave implicit, Supplement Sec. III, p.38.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpm-carleman-matrix-sparsity",
+     "value": "The paper shows that both the row and column sparsity of the DPM-solver Carleman matrix A are at most J, the order of the polynomial expansion, so that the matrix M of the linear system has sparsity sM ≤ J + 1.",
+     "anchor": "Supplement Sec. II.A.3, Eq. (II.27), p.18",
+     "quotes": [
+      "both the row and column sparsity are less than or equal to J the order of our polynomial expansion",
+      "then have the sparsity sM given by sM ≤ J + 1 . (II.27)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Read off from the explicit Carleman matrix structure the supplement writes out (Eqs. II.23 and II.26), p.16-18.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpm-truncation-practically-negligible-claim",
+     "value": "The authors state that for many physically relevant regimes the effect of higher-order monomials is expected to be suppressed, that empirically low-order truncations reproduce accurate dynamics for smooth drifts and moderate noise, and that a full characterization of the truncation error scaling is left for future work.",
+     "anchor": "Sec. II.A.2, p.4",
+     "quotes": [
+      "for many physically relevant regimes—particularly when N is large and the diffusion dynamics remains near a stable manifold—the effect of higher-order monomials is expected to be suppressed",
+      "although the truncation error is not strictly controllable, it can remain practically negligible within the accuracy relevant for the applications studied here",
+      "A full characterization of this error scaling and its dependence on truncation order N and diffusion strength, and truncation order is left for future work."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An expectation the authors state without a bound or a measurement in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpm-tomography-sparse-recovery",
+     "value": "The authors state that identifying the support of an r-sparse output state requires O(r log r) measurements (a weighted coupon collector problem, restricted to weights above a threshold), and that recovering the amplitudes with a modified classical-shadow scheme over random Clifford circuits costs O(m2r3/ε2) in random measurements, ignoring logarithmic factors.",
+     "anchor": "Supplement Sec. II.C.1, Eqs. (II.72) to (II.78), p.34-36",
+     "quotes": [
+      "this approach still requires O(r log r) measurements for significant weights, ensuring computational efficiency",
+      "The overall effort required for this procedure is O(m2r3/ε2) in the random measurement procedure, with a recovery error bounded by the 1-norm error ε > 0, ignoring logarithmic factors."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The tomography costs follow Ref. [13] of the supplement and are summarized, not derived in full.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpm-sparse-training-condition",
+     "value": "The authors state that for their approach to be feasible the weight sparsity r should remain constant as the model size N increases, which implies a pruning ratio δtr(N ) = 1 − O(1/N), and that this condition ensures a poly-logarithmic dependence on N of the algorithm's cost.",
+     "anchor": "Supplement Sec. II.C.1, Eq. (II.79), p.38",
+     "quotes": [
+      "For this approach to be feasible, we expect that r remains constant as N increases. This implies that δtr(N ) = 1 − O 1 N . (II.79)",
+      "This condition ensures that the cost of our algorithm exhibits poly-logarithmic dependence on N ."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own stated condition for feasibility, Supplement Eq. (II.79), p.38.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The value's 'O(1/N)' renders the flat text-layer 'O 1 N' as a fraction."
+    },
+    {
+     "id_suggestion": "dpm-no-qram-sparse-io",
+     "value": "The authors state that because inputs and outputs on the quantum device are sparse, their framework does not necessarily require QRAM, while dense training scenarios such as high-resolution image generation may need QRAM, whose practical implementation remains highly challenging.",
+     "anchor": "Supplement Sec. II.C, p.34",
+     "quotes": [
+      "A key feature of our framework is that the inputs and outputs on the quantum device are sparse, which means we do not necessarily require access to quantum random access memory (QRAM).",
+      "In such cases, QRAM may be necessary to efficiently encode non-sparse classical data into a quantum computer.",
+      "implementing QRAM in practice remains highly challenging, particularly in large-scale, fault-tolerant regimes"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its data-access scope and its limit for dense data, Supplement Sec. II.C, p.34.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpm-lchs-state-prep-advantage",
+     "value": "The authors state, citing prior work, that LCHS directly implements the time evolution operator without a QLSS, so that for b(t) = 0 it needs a number of state preparation queries without explicit dependence on ∥A∥, T and ε, unlike the QLSA-based Dyson series method.",
+     "anchor": "Supplement Sec. II.A.3, Eqs. (II.37) and (II.38), p.22",
+     "quotes": [
+      "It directly implements the time evolution operator without relying on QLSS, thereby reducing the number of state preparation oracle calls. For instance, when b(t) = 0, the LCHS algorithm requires",
+      "The LCHS method thus eliminates explicit dependence on parameters such as ∥A∥, T , and ε, achieving optimal scaling"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Refs. [28, 29] of the supplement.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpm-unipc-novel-predictor-corrector",
+     "value": "The authors state that their Carleman linearization for UniPC is a novel Carleman predictor-corrector scheme, differing from the DPM-solver construction and from prior work, whose defining feature is a unique quantum Carleman matrix for each interpolation time step.",
+     "anchor": "Sec. II.A.2, p.4; Supplement Sec. II.B, p.24",
+     "quotes": [
+      "It is important to stress that the Carleman linearization approach introduced here represents a novel Carleman predictorcorrector scheme.",
+      "A defining feature of the quantum Carleman algorithm for UniPC is the generation of a unique quantum Carleman matrix (QCM) for each interpolation time step sm"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A novelty claim by the authors.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpm-numerics-setup",
+     "value": "The authors state that their numerical experiments use U-ViT in the latent space of a pre-trained Stable Diffusion AutoEncoder on ImageNet-100, training U-ViT-M for 200 epochs with AdamW and sampling with DPM-Solver-fast using 17 pre-defined time steps, resulting in 50 function evaluations.",
+     "anchor": "Sec. II.D, p.6",
+     "quotes": [
+      "we employ U-ViT [47] operating in the latent space of a pre-trained AutoEncoder from Stable diffusion [48]",
+      "We train the U-ViT-M for 200 epochs using the AdamW optimizer.",
+      "it uses 17 pre-defined saved time steps to reverse the diffusion trajectory",
+      "resulting in 50 number of function evaluations (NFEs)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its numerical setup, Sec. II.D, p.6.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpm-numerics-dissipative-eigenvalues",
+     "value": "The authors report that for latent dimensions d = 1024, 4096 and 16384 the eigenvalues of the symmetrized Jacobian of the reverse diffusion drift start positive and develop a growing spectral gap with some extremely positive values, and that the measure P(t) steadily decreases, which they read as evidence of the dissipative modes their theorems assume.",
+     "anchor": "Sec. II.D, Eqs. (13) and (14), p.6; Fig. 2 caption, p.5",
+     "quotes": [
+      "we show the eigenvalue trajectories of the Jacobian J(t) for dimensions d = 1024, 4096, and 16384",
+      "the eigenvalues start positive and progressively develop a larger spectral gap with extremely positive values",
+      "P (t) steadily decreases as t decreases, implying the emergence of large eigenvalues along the generative process, reinforcing the existence of dissipative modes, as it is required in the assumptions of the theorems"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A classical numerical result from one trained model.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The numerics test only the dissipativity condition on a classical model; no quantum algorithm was run and no condition number κ was reported."
+    },
+    {
+     "id_suggestion": "dpm-not-end-to-end",
+     "value": "The authors state that their result may not yet be a full end-to-end application, and that for variational approaches no rigorous guarantees and separations of quantum over classical approaches are known yet.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "While this result may not yet be a full end-to-end application",
+      "no rigorous guarantees and separations of quantum over classical approaches are known yet"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of the limit of their result, Introduction, p.2.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dpm-advantage-robust-claim",
+     "value": "The authors state that their ansatz suggests the quantum advantage is not only present for highly engineered instances but robust for an entire class of meaningful instances, and that since inference costs might exceed training costs, the approach could pave the way for a practical quantum advantage in machine learning.",
+     "anchor": "Discussion, p.6-7",
+     "quotes": [
+      "the present ansatz suggests that the quantum advantage is not only present for highly engineered instances, but in fact robust for an entire class of meaningful instances [15]",
+      "our proposed approach could pave the way for a practical example of quantum advantage in machine learning industry"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim; the paper proves no separation from classical methods.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper gives query-complexity upper bounds but no classical lower bound, so an advantage is not shown."
+    }
+   ]
+  },
+  {
+   "record_id": "wang-2026-efficient-quantum-algorithm-robust-training",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Wang-et-al._2026_Efficient-Quantum-Algorithm-for-Robust-Training__2603.28332.pdf",
+   "title_in_file": "Efficient Quantum Algorithm for Robust Training",
+   "version_note": "arXiv:2603.28332v1 (30 Mar 2026): 7-page main text with Methods, and Appendices A to D with full proofs (p.8 to 30), references p.31 to 33.",
+   "pages": 33,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper reducing a fixed window of projected-gradient adversarial (robust) training, via a polynomial surrogate and a truncated discrete-time Carleman lift, to one sparse block-bidiagonal linear system solved by a quantum linear-system algorithm, with proofs of the conditioning, truncation, transfer and readout bounds.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "robust-training-assumed-access",
+     "verdict": "confirmed",
+     "note": "Theorem A.9 in the appendix lists the same assumptions in full as hypotheses (H1) to (H6), adding contractivity, a bounded trajectory and an initialization lower bound; those are entered as a separate assertion.",
+     "value": "",
+     "anchor": "Methods, after Theorem 1, p.6; Appendix A.4, Theorem A.9, p.22-23",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The theorem's own stated assumptions, Methods p.6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "robust-training-open-directions",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Discussion, p.4",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of open directions, Discussion p.4.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "robust-training-query-cost",
+     "verdict": "narrowed",
+     "note": "The abstract's scaling is a summary. The formal theorem bounds the query complexity by O(sM κ2(M) polylog(Nh/εLS)) with Nh = (T + 1)∆N; the linear dependence on the window T enters through the worst-case bound κ2(M) ≤ 2(T + 1), and κ2(M) is constant-order only when ρ stays bounded away from 1. The theorem applies to the polynomial surrogate, not to the exact nonsmooth dynamics (transfer in Corollary A.10), and the gate complexity adds the input-preparation and sparse-access costs.",
+     "value": "The paper proves (Theorem 1, Theorem A.9) that, for the polynomial surrogate of a fixed T-step projected-gradient robust-training window with contractive truncated lifted steps (sup ∥B(t)∥2 ≤ ρ < 1), the dominant query complexity is O(sM κ2(M) polylog(Nh/εLS)) with Nh = (T + 1)∆N, where κ2(M) ≤ min{(1 + ρ)/(1 − ρ), 2(T + 1)}, so the condition number is constant-order when ρ stays bounded away from 1 and at worst linear in T; the authors state the theorem applies to the polynomial surrogate, not to the original nonsmooth dynamics.",
+     "anchor": "Results, informal Theorem, p.2; Methods, Theorem 1, p.6; Appendix Theorem A.9 item 3, Eq. (A.89), p.23",
+     "quotes": [
+      "the horizon matrix obeys κ2(M ) ≤ min{(1 + ρ)/(1 − ρ), 2(T + 1)}, so the condition number is constant-order when ρ stays bounded away from 1, and more generally is at worst linear in the training window T",
+      "the truncated lifted step matrices satisfy sup ∥B(t)∥2 ≤ ρ < 1.",
+      "where Nh = (T + 1)∆N",
+      "The main theorem applies to this polynomial surrogate, not to the original nonsmooth dynamics."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem A.9 is stated with hypotheses (H1) to (H6) and proved in Appendix A.4, p.22-25, building on proved Propositions A.4 and Theorem A.7; the QLSA step uses a cited standard result (Theorem A.8).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The query-complexity expression itself prints flat in the text layer ('O sM κ2 (M )polylog Nh εLS'); the value restates it in conventional form."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "robust-training-theorem-a9-hypotheses",
+     "value": "The paper's main finite-step theorem (Theorem A.9) assumes (H1) contractive truncated lifted steps, sup ∥B(t)∥2 ≤ ρ < 1; (H2) a bounded trajectory of the polynomial update model, ∥v(t)∥2 ≤ v̄ < 1, in a local stability regime; (H3) sparse solver access and one-time right-hand-side preparation; (H4) an initialization lower bound ∥y(N)(0)∥2 ≥ β0 > 0; (H5) a terminal parameter-block weight of at least p∗ > 0; and (H6) a sparse-output readout routine assumed efficient, for example poly(sout, log n, 1/εro).",
+     "anchor": "Appendix A.4, Theorem A.9, (H1) to (H6), p.22-23",
+     "quotes": [
+      "(H1) Contractive truncated lifted step. For the chosen cutoff N , the truncated lifted step matrices satisfy sup ∥B(t)∥2 ≤ ρ < 1.",
+      "(H2) Bounded trajectory in the local stability regime. The exact trajectory of the polynomial update model satisfies ∥v(t)∥2 ≤ v ̄ < 1 for all t = 0, 1, . . . , T .",
+      "∥y(N)(0)∥2 ≥ β0 > 0.",
+      "(H5) Terminal degree-1 parameter-block weight.",
+      "In the sparse-output regime of interest, this cost is assumed to be efficient, for example poly(sout, log n, 1/εro)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The theorem's own hypotheses, Theorem A.9, p.22-23.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The condition ∥v(t)∥2 < 1 (H2) and contractivity (H1) restrict the result to a small local neighbourhood of a stable regime; the paper does not show these hold for a realistic network."
+    },
+    {
+     "id_suggestion": "robust-training-theorem-1-guarantee",
+     "value": "The paper proves (Theorem 1, Theorem A.9) that under its assumptions a quantum procedure produces, with success probability at least 2/3, a classical description of the final network-parameter state with total error at most εout, with gate complexity that adds the one-time right-hand-side preparation cost Cprep(Brhs) to sM κ2(M) times the sparse-access cost CSA, up to polylogarithmic factors.",
+     "anchor": "Methods, Theorem 1, p.6; Appendix Theorem A.9 items 3 to 5, Eq. (A.90), p.23-24",
+     "quotes": [
+      "Theorem 1 (Quantum recovery of the final parameter state over a fixed training window)",
+      "success probability at least 2/3, a classical description of the final network-parameter state with total error at most εout",
+      "while the full gate complexity records separate input-preparation and sparse-access overheads"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix A.4 (Theorem A.9 proof, p.24-25) with its hypotheses stated.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robust-training-horizon-conditioning",
+     "value": "The paper proves (Proposition A.4) that the discrete-time Carleman lift of the polynomial update is exact, that the stacked truncated trajectory solves a block-lower-bidiagonal horizon system M Y = Brhs, and that if sup ∥B(t)∥2 ≤ ρ < 1 then M is invertible with ∥M∥2 ≤ 1 + ρ and κ2(M) ≤ min{(1 + ρ)/(1 − ρ), 2(T + 1)}.",
+     "anchor": "Appendix A.2.2, Proposition A.4, Eqs. (A.54) to (A.60), p.16-17",
+     "quotes": [
+      "∥M ∥2 ≤ 1 + ρ",
+      "κ2(M ) ≤ min{(1 + ρ)/(1 − ρ), 2(T + 1)}",
+      "the truncated lifted step matrices satisfy sup ∥B(t)∥2 ≤ ρ < 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition A.4 is stated and proved via a Neumann series, p.16-17.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robust-training-surrogate-degree",
+     "value": "The paper proves (Proposition A.1) that with base gradient-approximation degree q and odd sign and clip polynomials of degrees Ks and Kc, the perturbation map has degree Dδ ≤ qKsKc and the full one-step map has degree D ≤ qDδ ≤ q2KsKc (q squared times Ks times Kc), and D ≤ max{Dδ, q} when the outer update uses the current perturbation.",
+     "anchor": "Appendix A.2, Proposition A.1, Eqs. (A.10) to (A.12), p.10",
+     "quotes": [
+      "has degree at most Dδ ≤ qKsKc, (A.10)",
+      "D ≤ qDδ ≤ q2KsKc. (A.12)",
+      "the same argument gives the smaller bound D ≤ max{Dδ, q}"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition A.1 is stated and proved, p.10.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robust-training-sign-clip-approximation",
+     "value": "The paper states (Proposition A.2) that odd polynomials approximate the gapped sign function and the clip map, with clip degree Kc = O(τc−1 log(1/δc)) when Lc = O(1), and that under dead-zone and clip-safe conditions the one-step perturbation error obeys ∥δex − δpoly∥∞ ≤ ηδ δs + ϵ δc; the sign-approximation degree bound is a standard result that the paper does not reprove.",
+     "anchor": "Appendix A.2.1, Proposition A.2, Eqs. (A.13) to (A.36), p.11-13",
+     "quotes": [
+      "Kc = O τc−1 log(1/δc) .",
+      "∥δex − δpoly∥∞ ≤ ηδ δs + ϵ δc,",
+      "We use a standard odd bounded polynomial approximation result for the gapped sign function and do not reprove it here."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Items 2 to 4 are proved, but item 1 rests on a cited sign-approximation result the paper does not reprove.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robust-training-truncation-error",
+     "value": "The paper proves (Theorem A.7) that if the exact trajectory of the polynomial update model satisfies ∥v(t)∥2 ≤ v̄ < 1 and the lifted steps are contractive, the pointwise truncation error obeys ∥η(t)∥2 ≤ ΓN/(1 − ρ) and the stacked error is at most the square root of T + 1 times ΓN/(1 − ρ); under a weighted coefficient-sum condition sup St(λ) ≤ χ < 1, the tail constant decays as ΓN ≤ λ−(N+1) χ/(1 − χ2) to the one-half, giving an explicit cutoff N.",
+     "anchor": "Appendix A.2.3, Theorem A.7, Eqs. (A.73) to (A.84), p.20-21",
+     "quotes": [
+      "model satisfies ∥v(t)∥2 ≤ v ̄ < 1, t = 0, 1, . . . , T. (A.73)",
+      "∥η(t)∥2 ≤ ΓN , 1−ρ",
+      "∥YNex − Yˆ ∥2 ≤ √ T + ΓN . 1−ρ",
+      "sup St(λ) ≤ χ < 1.",
+      "Then ΓN ≤ λ−(N+1) χ , 1 − χ2 (A.83)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem A.7 is stated with its conditions and proved, p.20-21.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints the stacked bound and the square root in (A.83) flat; the value restates them from the equation layout."
+    },
+    {
+     "id_suggestion": "robust-training-sparsity-bound",
+     "value": "The paper proves (Proposition A.6) that coefficient sparsity bounds the row sparsity of the truncated lifted step matrix, that the horizon matrix has row sparsity srow(M) ≤ sB + 1, and that one row-sparse access query to the rescaled horizon matrix needs O(1) arithmetic and O(1) calls to the access oracle of the active step matrix.",
+     "anchor": "Appendix A.2.2, Proposition A.6, Eqs. (A.68) to (A.72), p.18-20",
+     "quotes": [
+      "has row sparsity srow(M ) ≤ sB + 1. (A.72)",
+      "can be implemented using O(1) arithmetic on the block/time indices together with O(1) calls to the row-sparse access oracle for the active truncated lifted step matrix B(t)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition A.6 is stated and proved, p.18-20.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The lifted step sparsity in (A.70) grows like a power of the coefficient sparsity times a binomial in N, so sM can be large even though the bound is proved."
+    },
+    {
+     "id_suggestion": "robust-training-contractivity-majorant",
+     "value": "The paper proves (Proposition A.5) a sufficient condition for contractivity: ∥B(t)∥2 ≤ ∥R(N)(t)∥2 for a scalar majorant matrix, and in the linear-dominant case, if the linear coefficient has norm at most 1 − γ and the nonlinear remainder majorant has norm at most σ < γ, then ∥B(t)∥2 ≤ 1 − γ + σ < 1.",
+     "anchor": "Appendix A.2.2, Proposition A.5, Eqs. (A.61) to (A.67), p.17-18",
+     "quotes": [
+      "∥B(t)∥2 ≤ ∥R(N)(t)∥2.",
+      "Assume there exist numbers γ ∈ (0, 1) and σ ∈ [0, γ) such that for every t,",
+      "∥B(t)∥2 ≤ 1 − γ + σ < 1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition A.5 is stated and proved, p.17-18.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robust-training-qlsa-cited",
+     "value": "The paper takes as its linear-system routine a standard QLSA in the input-state model (Theorem A.8): for an invertible matrix with ∥A∥2 ≤ 1 supplied in the solver's access model, a state δ-close to the normalized solution is prepared with success probability at least 2/3 using O(sA κ polylog(N/δ)) queries, citing the Childs-Kothari-Somma framework for one realization.",
+     "anchor": "Appendix A.3, Theorem A.8, p.22",
+     "quotes": [
+      "Let A ∈ RN×N be invertible with ∥A∥2 ≤ 1, and let κ = κ2(A).",
+      "with success probability at least 2/3, prepares a state |x ̃⟩ satisfying ∥|x ̃⟩ − |x⟩∥2 ≤ δ",
+      "For Hermitian sparse systems, one concrete realization is the Childs–Kothari–Somma framework 29"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A standard result stated without proof and attributed to prior work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robust-training-transfer-exact-dynamics",
+     "value": "The paper proves (Corollary A.10, with Proposition A.3) that the guarantee transfers to the exact nonsmooth adversarial-training dynamics when the per-step modeling error is bounded, with the combined window error equal to the square root of T + 1 times (ΓN plus the lift Lipschitz constant times the base step error) over 1 − ρ, provided the same contractivity, initialization and terminal-weight bounds hold for the physical trajectory.",
+     "anchor": "Appendix A.4, Corollary A.10, Eqs. (A.99) to (A.110), p.25-26; Proposition A.3, p.13-15",
+     "quotes": [
+      "Corollary A.10 (From the main theorem to the exact adversarial-training dynamics).",
+      "If, in addition, the physical terminal degree-1 parameter block satisfies the same lower bound"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary A.10 is stated with its assumptions and proved, p.25-26.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robust-training-four-error-layers",
+     "value": "The authors state that the analysis separates four approximation layers: the modeling error between the exact nonsmooth update and the polynomial surrogate, the Carleman truncation error, the quantum linear-solver error, and the extraction-and-readout error.",
+     "anchor": "Methods, Approximation layers and oracle model, p.6",
+     "quotes": [
+      "The analysis separates four approximation layers. The first is the modeling error between the exact nonsmooth robust-training outer update and the polynomial surrogate. The second is the Carleman-truncation error"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its error decomposition, Methods p.6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robust-training-classical-baseline-note",
+     "value": "The authors state that once the truncated blocks are explicit a classical baseline can still generate the lifted iterates by forward recursion, and that for classical simulation the main burden is the lifted and horizon dimension, whereas in the QLSA formulation the dependence on Nh is only polylogarithmic.",
+     "anchor": "Methods, p.6; Appendix B, p.27",
+     "quotes": [
+      "a classical baseline can still generate the lifted iterates by forward recursion",
+      "In the QLSA formulation, by contrast, the dependence on Nh is only polylogarithmic, and the solver register uses O(log Nh) qubits up to ancilla overhead."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A comparison the authors state; no classical lower bound or end-to-end speedup is proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper gives no classical lower bound, so it does not prove a quantum speedup; it shows only an upper bound on the quantum cost under its assumptions."
+    },
+    {
+     "id_suggestion": "robust-training-numerics",
+     "value": "The authors report a numerical check on MNIST digits 0 to 4 with images resized to 12 × 12 (144 features), randomly projected to 10 dimensions, and a bias-free 10 → 4 → 5 classifier with 60 trainable parameters, under clean-only, robust-only and mixed (α = 0.50) training, using the MindQuantum HHL QSLP backend; each trajectory showed a short transient followed by stable plateaus over 1.2 × 105 (1.2 times ten to the fifth) steps, and the experiment verifies only the classical implementation of the reduced update model.",
+     "anchor": "Numerical simulation, p.4; Fig. 2, p.5; Appendix B and C, p.27",
+     "quotes": [
+      "Each image is resized to 12 × 12, flattened to 144 features, and mapped by a fixed random projection to 10 dimensions.",
+      "The classifier is a bias-free 10 → 4 → 5 model with 60 trainable parameters.",
+      "mixed training with Lmix = (1 − α)Lclean + αLrob, α = 0.50",
+      "Each trajectory shows a short transient followed by stable plateaus over 1.2 × 105 steps.",
+      "verifies the classical implementation of the reduced update model analyzed in the theorem in one concrete setting"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single small numerical run that checks the reduced classical model, not the quantum speedup.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The figure shows robust accuracy below about 0.32 in all modes; the paper does not compare against standard adversarial training."
+    },
+    {
+     "id_suggestion": "robust-training-numerics-attack-setup",
+     "value": "The authors state that robust evaluation used a PGD attack with ε = 0.025, step size 0.01 and 10 attack steps, with batch size 5.",
+     "anchor": "Appendix C, p.27",
+     "quotes": [
+      "Robust evaluation uses a PGD attack with ε = 0.025, step size 0.01, and 10 attack steps.",
+      "alternating adversarial-training steps with batch size 5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup, Appendix C, p.27.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robust-training-qram-specialization",
+     "value": "The authors state that under a qRAM-style specialization, where the right-hand side preparation costs O(polylog Nh) and one access query costs O(1) or O(polylog Nh) gates, the gate complexity simplifies to the query-complexity expression.",
+     "anchor": "Appendix D, Eqs. (D.4) to (D.6), p.29",
+     "quotes": [
+      "Cprep(Brhs) = O(polylog Nh),",
+      "Then the gate complexity in item (3) of Theorem A.9 simplifies to",
+      "implemented in O(1) or more generally O(polylog Nh)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A specialization that rests on assumed qRAM access.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robust-training-schedule-extension",
+     "value": "The paper proves (Proposition D.1) that deterministic schedules with Kt attack and Lt learner substeps compose to a polynomial outer map of degree at most qKmax+Lmax (KsKc)Kmax, with a one-step error bounded by a geometric sum in the substep Lipschitz constant times the substep error, so Theorem A.9 applies with D replaced by Dsched.",
+     "anchor": "Appendix D, Proposition D.1, Eqs. (D.1) to (D.3), p.27-29",
+     "quotes": [
+      "Dt ≤ DAKt qLt ≤ qKmax+Lmax (KsKc)Kmax =: Dsched.",
+      "then that theorem applies unchanged with D replaced by Dsched"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition D.1 is stated and proved, p.27-29.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The degree grows exponentially in Kmax + Lmax, which raises the Carleman dimension."
+    },
+    {
+     "id_suggestion": "robust-training-segmented-limit",
+     "value": "The authors state a segmented local-contractivity bound for the truncated trajectory and note that this result controls only the dynamical approximation, while restart and readout costs require separate analysis.",
+     "anchor": "Appendix D, Eqs. (D.7) to (D.10), p.29-30",
+     "quotes": [
+      "This result controls only the dynamical approximation; restart and readout costs require separate analysis."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own stated limit of the segmented result, p.30.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robust-training-qml-barren-plateau-context",
+     "value": "The authors state that prior quantum machine learning work asks whether a learned quantum model can be robust, not whether the classical attacker loop can be executed through a quantum reduction, and that barren-plateau phenomena can make optimization gradients exponentially small for variational quantum models.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "barren-plateau phenomena can make optimization gradients exponentially small even before robustness enters the picture 26;27",
+      "Quantum machine learning is therefore a natural comparison point, but not yet a solution to the particular workload bottleneck considered here."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about prior work, attributed to references.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "wang-2026-fourier-symmetrization-geometric-quantum-machine",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2026-10_Wang_Fourier-Symmetrization-for-Geometric-Quantum-Machine-Learning_2610.01874.pdf",
+   "title_in_file": "Fourier Symmetrization for Geometric Quantum Machine Learning",
+   "version_note": "arXiv:2610.01874v1 (1 Oct 2026): 20-page main text and Appendices A to F with proofs (p.20 to 45), references p.46 to 47. Rendered pages 8 and 9 were viewed to read the exponents in Lemma 10, Theorem 11 and Eq. (42), which the text layer prints flat.",
+   "pages": 47,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory and simulation paper showing how averaging a quantum Fourier model over a symmetry group regroups its Fourier coefficients into orbits, bounding the symmetrized coefficient variance under exact and approximate 2-designs, deriving a Chebyshev basis from sign-flip averaging, proposing randomized encoding, and testing it in quantum physics-informed neural networks on two 2D PDEs.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "approx-design-bound-tighter",
+     "verdict": "widened",
+     "note": "The stored value omits the bound's conditions and form. The paper restricts the result to single-layer (L = 1) models with two independent ε-approximate 2-design trainable layers and orbits excluding the zero frequency, gives the order O(ε∥O∥F squared (√R/4 to the n + ε)), and states that the exponential separation from the prior bound is a worst-case statement, not a uniform improvement over all frequencies; the L > 1 case remains open.",
+     "value": "The paper proves that for the n-qubit single-layer (single-uploading) QFM whose two trainable layers form independent ε-approximate 2-designs in spectral norm, for any frequency orbit excluding the zero frequency with total redundancy R, the deviation of the symmetrized coefficient variance from its exact 2-design value is of order ε times ∥O∥F squared times (√R over 4 to the n, plus ε); specialized to single coefficients, the bound scales as ε∥O∥F squared (2 to the minus n plus ε) against the earlier ε∥O∥F squared (2 to the minus n plus ε times 4 to the n), which the authors call a worst-case statement rather than a uniform improvement over all frequencies, and they describe it as a worst case sufficient bound in spectral norm.",
+     "anchor": "Section III B 2, Theorem 11, Eq. (37), p.8; Corollary 12 and Eq. (42), p.9; p.10; proof Appendix D 4, Eq. (D115), p.38-40",
+     "quotes": [
+      "Suppose the two trainable layers form independent ε-approximate 2designs in the sense of Eq. (33). For any frequency orbit [ν] excluding the zero frequency, let R = |R[ν]| be its total redundancy as in Definition 5.",
+      "|Varθ(aν ) − Var2-design(aν )| ∈ O ε∥Oˆ∥F2 R 4n + ε . (37)",
+      "Existing bound [13]: O ε∥Oˆ∥F2 2−n + ε4n , (42) This work: O ε∥Oˆ∥F2 2−n + ε .",
+      "exponential separation in Eq. (42) is a worst-case statement rather than a uniform improvement over all frequencies",
+      "It is a worst case sufficient bound in spectral norm"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 11 is stated with its conditions on p.8 and proved in Appendix D (Lemmas 17 to 26), p.29-40.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The exponents (ε squared, 4 to the n, √R) print flat in the text layer; they were read from the rendered pages 8 and 9."
+    },
+    {
+     "id": "qpinn-lowest-error",
+     "verdict": "narrowed",
+     "note": "The lowest mean errors hold only under hard boundary constraints and over ten runs each: exact B2-QFM for screened Poisson and randomized B2-QCM for Hamilton-Jacobi. Under soft constraints the fully connected classical PINN gave the lowest mean error in both benchmarks.",
+     "value": "The authors report that under the hard boundary constraint a quantum model gives the lowest mean relative L2 error over ten runs in each benchmark (exact B2-QFM, (2.59 ± 2.37) × 10−3, for screened Poisson; randomized B2-QCM, (3.68 ± 1.01) × 10−2, for Hamilton-Jacobi), whereas under the soft constraint the fully connected PINN performs best.",
+     "anchor": "Section V C and Table III, p.19",
+     "quotes": [
+      "Under the hard constraint, a quantum model gives the lowest mean error in each benchmark, whereas under the soft constraint, the fully connected PINN performs best.",
+      "(2.59 ± 2.37) × 10−3",
+      "(3.68 ± 1.01) × 10−2",
+      "For each benchmark, every model and constraint setting is evaluated over ten independent runs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation result from one study with ten runs per setting on small two-qubit models.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The exponent 10−3 prints flat (ten to the minus three); the quantum and classical models have 36 or 54 versus 37 or 55 parameters, so the comparison is at a very small scale."
+    },
+    {
+     "id": "symmetrized-coefficient-variance-sum",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section III B 1, Theorem 8, Eq. (27), p.6; proof Appendix C 2, p.28-29",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 8 is stated with its assumption (independent exact 2-designs) on p.6 and proved in Appendix C via Lemma 7.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "variance-not-gradient-guarantee",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section III B 1, after Theorem 8, p.7",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own stated limit, p.7.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "fourier-sym-invariance-from-equivariance",
+     "value": "The paper proves (Lemma 2) that a re-uploading quantum model induces a hypothesis function invariant under the group S if its encoding and trainable layers are equivariant and its initial state and observable are invariant.",
+     "anchor": "Section II, Lemma 2, p.3; proof Appendix A, p.20-21",
+     "quotes": [
+      "Lemma 2 (Invariance from equivariance). A reuploading quantum model defined in Eq. (2) induces a hypothesis function invariant under S if it satisfies the conditions of equivariant encoding and trainable layers"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated on p.3 and proved in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-orbit-decomposition",
+     "value": "The paper proves that for a finite group S with an orthogonal representation V : S → O(m), averaging a quantum Fourier model over S gives an S-invariant function that is a sum over orbit frequencies of symmetrized coefficients (the sum of the Fourier coefficients in each orbit) times a normalized orbit basis, and that any S-invariant QFM admits this decomposition.",
+     "anchor": "Section III A, Proposition 3 and Corollary 4, p.4-5; proof Appendix B 3, p.25-27",
+     "quotes": [
+      "Proposition 3 (Fourier orbit decomposition). Let S be a finite group, V : S → O(m) an orthogonal representation, Ω a finite frequency spectrum",
+      "Then the averaged function Af defined by Eq. (10) is S-invariant and satisfies",
+      "any S-invariant f (x, θ) defined by Eq. (3) and satisfying Definition 1 admits the Fourier orbit decomposition in Eq. (14)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 3 is stated with its conditions and proved in Appendix B 3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-redundancy-preservation",
+     "value": "The paper proves (Proposition 6) that if, for every layer, the representation element maps each encoding eigenvalue vector to another eigenvalue vector of the same layer by a bijection, then all frequencies in the same orbit have the same redundancy, |R(Vs[ω])| = |R(ω)|.",
+     "anchor": "Section III B, Proposition 6, Eq. (21), p.5; proof Appendix B 2, p.23-24",
+     "quotes": [
+      "Proposition 6 (Redundancy Preservation).",
+      "|R(Vs[ω])| = |R(ω)| , ω ∈ Ω. (21)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated on p.5 and proved in Appendix B 2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-exact-design-decoupling",
+     "value": "The paper proves that if each trainable layer forms an independent exact 2-design, distinct Fourier coefficients have zero cross moment and zero covariance.",
+     "anchor": "Section III B 1, Lemma 7, Eqs. (25) and (26), p.6; proof Appendix C 1, p.27-28",
+     "quotes": [
+      "If each trainable layer W (l) forms an independent exact 2-design, then for any distinct frequencies ω ≠ ω′, Eθ[cωcω∗ ′ ] = 0, (25) Covθ(cω, cω′ ) = 0. (26)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix C 1 by Weingarten calculus.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-gain-not-full-function",
+     "value": "The authors state that the variance gain concerns the symmetrized coefficients in the normalized orbit basis and does not increase the variance of the full hypothesis function.",
+     "anchor": "Section III B 1, p.7",
+     "quotes": [
+      "This variance gain concerns aν in the normalized orbit basis and does not increase the variance of the full hypothesis function."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own stated limit of their variance result, p.7.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-mitigating-vanishing-expressivity",
+     "value": "The paper states (Corollary 9) that under the assumptions of Theorem 8, if coefficients on an orbit have variance Θ(1/b to the n) for some b > 1 and the orbit size is in Ω(b to the n over c(n)), then the symmetrized coefficient variance is in Ω(1/c(n)).",
+     "anchor": "Section III B 1, Corollary 9, Eq. (31), p.7",
+     "quotes": [
+      "Corollary 9 (Mitigating Vanishing Expressivity). Un- der the assumptions of Theorem 8",
+      "with some b > 1",
+      "satisfies Varθ[aν ] ∈ Ω(1/c(n))"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A direct corollary of the proved Theorem 8, with its conditions stated on p.7.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints b to the n flat as 'bn'."
+    },
+    {
+     "id_suggestion": "fourier-sym-hyperoctahedral-orbit-size",
+     "value": "The authors show by the orbit-stabilizer theorem that under the hyperoctahedral group the orbit of a frequency vector with k nonzero coordinates, all of distinct absolute value, has size 2 to the k times m! over (m − k)!, so the orbit grows exponentially when k scales linearly with m.",
+     "anchor": "Section III B 1, Eq. (32), p.8",
+     "quotes": [
+      "When the nonzero absolute values are all distinct, every qj = 1, and Eq. (32) reduces to 2km!/(m − k)!. When k scales linearly with m, the factor 2k already gives exponential orbit growth in m or n under the hyperoctahedral group."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived from the orbit-stabilizer theorem with the stabilizer size stated, p.8.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "'2km!' in the text layer is 2 to the k times m factorial."
+    },
+    {
+     "id_suggestion": "fourier-sym-approx-design-moments",
+     "value": "The paper proves (Lemma 10) that for a single-uploading QFM (L = 1) with ε-approximate 2-design trainable layers, for distinct nonzero frequencies the mean coefficient is at most ε squared ∥O∥F in magnitude, the cross moment at most ε squared ∥O∥F squared, and the covariance at most ∥O∥F squared (ε squared + ε to the fourth).",
+     "anchor": "Section III B 2, Lemma 10, Eqs. (34) to (36), p.8; proofs Appendix D 2, p.32-37",
+     "quotes": [
+      "Lemma 10. Consider the single-uploading QFM hypoth- esis function f (x, θ) in Eq. (3) with L = 1",
+      "two distinct nonzero frequencies ω ≠ ω′, we have |Eθ [cω]| ≤ ε2∥Oˆ∥F , (34) |Eθ [cωcω∗ ′ ]| ≤ ε2∥Oˆ∥F2 , (35) |Covθ (cω, cω′ )| ≤ ∥Oˆ∥2F ε2 + ε4 , (36)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated on p.8 and proved in Appendix D 2; exponents confirmed on the rendered page.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-l-greater-1-open",
+     "value": "The authors state that a formal analysis of the ε-approximate 2-design setting for more than one layer remains open, although their simulations for two layers showed variance ratios close to the orbit size.",
+     "anchor": "Section III B 2, p.9-10",
+     "quotes": [
+      "A formal analysis of the ε-approximate 2-design setting for L > 1 remains open.",
+      "For L = 2, the ratios in both settings also remain close to the selected orbit size."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own stated open problem, p.9.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-variance-simulation",
+     "value": "The authors report simulations of n-qubit, n-variable exponential-encoding QFMs under the hyperoctahedral group with L = 1 or L = 2, using five repetitions of the Strongly Entangling Ansatz as the exact 2-design reference and one repetition as the approximate setting, in which the variance ratio nearly coincided with the selected orbit size and the exact and approximate curves stayed close as n increased.",
+     "anchor": "Section III B 2, Fig. 3 and caption, p.9",
+     "quotes": [
+      "Each trainable layer uses five repetitions of the Strongly Entangling Ansatz for the exact 2-design reference and one repetition for the ε-approximate 2-design setting.",
+      "For L = 1, the ratio in the exact 2-design setting nearly coincides with the selected orbit size",
+      "the corresponding exact and approximate curves remain close as n increases"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical result from one study, for up to five qubits.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-chebyshev-proposition",
+     "value": "The paper shows (Proposition 13) that averaging a QFM with integer frequency spectrum over the sign-flip group of the angle variables u = arccos x yields a truncated multivariate Chebyshev series, removing the non-polynomial sine terms of the Chebyshev feature map, whose input derivatives diverge as the input approaches the domain boundaries.",
+     "anchor": "Section III C, Eqs. (43) to (50) and Proposition 13, p.10-11",
+     "quotes": [
+      "Proposition 13 (Symmetrized Quantum Chebyshev Model).",
+      "assume that its frequency spectrum satisfies Ω ⊂ Zm",
+      "yields a truncated multivariate Chebyshev series",
+      "the denominator approaches zero, causing the derivative to diverge"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived explicitly in Eqs. (46) to (49), p.11.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-randomized-encoding-resources",
+     "value": "The authors state that randomized encoding, which samples a group element and applies the original encoding to the transformed input, keeps the baseline qubit count and circuit depth, whereas stochastic twirling adds the depth of the induced representation and deterministic twirling adds an ancilla register of size ⌈log2 |S|⌉ and depth of order |S| times that depth.",
+     "anchor": "Section IV A, Table I and Fig. 5, p.11-12",
+     "quotes": [
+      "Compared with stochastic twirling, our randomized encoding avoids the additional circuit depth DR, thereby reducing the required quantum resources.",
+      "Deterministic twirling realizes the group average using an ancilla register of size ⌈log2 |S|⌉ and controlled implementations of the induced representation R(s)",
+      "randomized encoding keeps the circuit depth at D and leaves the trainable ansatz and observable unchanged"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its construction and resource count, Section IV A, p.11-12.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-sampling-shot-complexity",
+     "value": "The paper proves that the symmetry sampling estimator is unbiased for the averaged predictor with single-shot variance equal to the squared one-norm of the Pauli coefficients minus the squared averaged prediction, and that N at least twice the squared one-norm over ε squared, times log(2/δ), shots give error at most ε with probability at least 1 − δ, a Hoeffding bound that does not depend on the group size |S|.",
+     "anchor": "Section IV B, Proposition 14, Eqs. (56) to (58), p.13; proof Appendix E 1, p.40-41",
+     "quotes": [
+      "The estimator in Eq. (55) is unbiased for (Af )(x, θ).",
+      "(Af )(x, θ) ≤ ε ≥ 1 − δ (57)",
+      "whenever N ≥ 2∥h∥21 ε2 log 2 δ . (58)",
+      "does not depend on |S|"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix E 1 via Hoeffding's inequality.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints ∥h∥1 squared and ε squared flat."
+    },
+    {
+     "id_suggestion": "fourier-sym-no-shot-advantage",
+     "value": "The paper proves that the symmetry sampling estimator's variance exceeds the baseline's by f squared minus the averaged prediction squared, so it is lower only where the averaged prediction has larger magnitude, and that for uniformly distributed inputs under uniformity-preserving transformations its mean variance is no smaller than the baseline's; the authors conclude neither randomized encoding nor stochastic twirling is guaranteed to need fewer shots than the baseline.",
+     "anchor": "Section IV B, Proposition 15, Eqs. (62) to (65), p.13-14; proof Appendix E 2, p.41-42",
+     "quotes": [
+      "Var(Yx) − Var(Kx) = f (x, θ)2 − ((Af )(x, θ))2 . (62)",
+      "Ex [Var(Yx)] ≥ Ex [Var(Kx)] . (64)",
+      "neither implementation is guaranteed to require fewer shots than the baseline estimator"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 15 is stated and proved in Appendix E 2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-hardware-requirement",
+     "value": "The authors state that randomized encoding requires fast classical reconfiguration of the encoding controls at about the shot rate rather than a specific hardware platform, and that slow updates can reduce the runtime advantage over twirling.",
+     "anchor": "Section IV C, p.14",
+     "quotes": [
+      "randomized encoding requires fast classical reconfiguration rather than a specific hardware platform",
+      "If this update is slow, randomized encoding can still be implemented in batches, but the runtime advantage over conventional twirling methods may be reduced."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own stated implementation requirement and limit, p.14.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-qpinn-setup",
+     "value": "The authors state that their QPINN experiments use a two-qubit, two-layer QFM with encoding coefficients 1 and 3, averaged over B2 (order 8), trained with Adam for 300 steps from learning rate 10−1 with decay 0.99, 50 interior and 50 boundary collocation points per step, 6 of 8 group elements sampled per forward pass for randomized models, ten independent runs per setting, with 36 (screened Poisson) or 54 (Hamilton-Jacobi) circuit parameters against classical PINNs of 37 or 55 parameters.",
+     "anchor": "Section V, p.14-19",
+     "quotes": [
+      "The experimental choice (β1, β2) = (1, 3)",
+      "with |B2| = 8",
+      "We use Adam for 300 steps with an initial learning rate of 10−1 and a multiplicative decay factor of 0.99 at each step.",
+      "each training step samples 50 interior collocation points",
+      "The randomized B2 models use Ns = 6 group elements",
+      "For each benchmark, every model and constraint setting is evaluated over ten independent runs.",
+      "Each quantum model has 36 trainable circuit parameters.",
+      "37 trainable parameters",
+      "Each quantum model has 54 trainable circuit parameters.",
+      "55 trainable parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup, Section V, p.14-19.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-qpinn-soft-pinn-best",
+     "value": "The authors report that under the soft boundary constraint the fully connected classical PINN reached the lowest final loss and lowest error in both benchmarks, and that the quantum models' mean errors were generally close to one order of magnitude smaller under the hard than under the soft constraint.",
+     "anchor": "Section V A to C, Table III, p.17-19",
+     "quotes": [
+      "Under the soft constraint, the fully connected PINN reaches the lowest final loss and the lowest relative L2 error",
+      "The mean errors of the quantum models are also generally close to one order of magnitude smaller under the hard constraint."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-hj-outlier-and-source",
+     "value": "The authors report that the large standard deviation of the exact B2-QCM in the hard-constrained Hamilton-Jacobi benchmark is due to one of ten runs with relative L2 error 5.0 × 10−1, the median being 3.8 × 10−2, and that the B2-QCM advantage there mainly comes from orbit completion and the Chebyshev inductive bias rather than physical sign-flip symmetry.",
+     "anchor": "Section V B and C, p.19",
+     "quotes": [
+      "whose relative L2 error is 5.0 × 10−1; the median over the ten runs is 3.8 × 10−2",
+      "The observed advantage of the B2-QCM instead mainly comes from the additional frequencies supplied by orbit completion under symmetry averaging and the Chebyshev inductive bias."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation result and an authors' interpretation from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-stochastic-gradient-bias",
+     "value": "The authors state that when both factors of the hard-constraint loss gradient are evaluated with sampled group elements, the expected stochastic gradient can differ from the gradient of the exact averaged model, that they used automatic differentiation only to simplify the simulations, and that a fully stochastic implementation is left for future work.",
+     "anchor": "Section V C, p.19-20",
+     "quotes": [
+      "the expected stochastic gradient can differ from the gradient of the exact B2-averaged model",
+      "In this work, we use automatic differentiation only to simplify the numerical simulations.",
+      "We leave this fully stochastic implementation for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own stated limit of their numerical method, p.19-20.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-sym-dequantization-claim",
+     "value": "The authors state that because symmetry groups frequencies into orbits, the orbit frequency spectrum can be substantially smaller than the original spectrum, which can facilitate dequantization through a classical surrogate.",
+     "anchor": "Section III A, after Corollary 4, p.5",
+     "quotes": [
+      "the orbit frequency spectrum Ω ̃ can be substantially smaller than the original frequency spectrum Ω, which can facilitate dequantization through the construction of a classical surrogate [21]"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A remark without analysis in the paper, citing prior work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "This cuts against any claim of quantum advantage for the symmetrized models."
+    },
+    {
+     "id_suggestion": "fourier-sym-ai-assistance-disclosure",
+     "value": "The authors disclose that GPT-5.5 Pro assisted in implementing the code for the numerical experiments and was used in discussions of parts of the proofs, and that all AI-assisted output was reviewed and verified by the authors.",
+     "anchor": "Section V, p.15; Acknowledgments, p.20",
+     "quotes": [
+      "GPT-5.5 Pro was used to assist in implementing the code for the numerical experiments.",
+      "This work used GPT-5.5 Pro in discussions of parts of the proofs",
+      "All AI-assisted output was reviewed and verified by the authors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' own statement of their method, p.15 and p.20.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "wei-2021-quantum-convolutional-neural-network-nisq",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2021\\Wei-et-al._2021_A-Quantum-Convolutional-Neural-Network-on-NISQ-Devices__2104.06918.pdf",
+   "title_in_file": "A Quantum Convolutional Neural Network on NISQ Devices",
+   "version_note": "arXiv:2104.06918v3: 8-page main text (Sections I to V), Appendix A (proof that the adjusted filter operator gives the interior pixels) and Appendix B (gate decomposition of Qk) on p.9 to 10, references p.10 to 11.",
+   "pages": 11,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A proposal and numerical simulation of a quantum convolutional neural network: amplitude-encoded images, a convolution layer built as a linear combination of nine unitaries with four ancilla qubits and postselection, pooling by discarding qubits, and a fully connected layer as the expectation of a parametrized Pauli-Z Hamiltonian, tested on image filtering and MNIST with a simple Pauli noise model.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qcnn-exp-speedup",
+     "verdict": "narrowed",
+     "note": "The paper does say this (Sec. IV, p.8). The comparison counts only the gates of the convolution step. State preparation is polynomial in the log of the size only if the amplitudes can be efficiently computed classically, or with an already-built qRAM (p.7-8). The cost of repeating the run after a failed postselection on the ancilla (success probability Ps, eq. 16, p.4) is not bounded, and reading pixel values out of the quantum state is not counted.",
+     "value": "The authors state that a classical convolutional layer costs of order M squared and that their algorithm thus achieves an exponential speedup in gate complexity; the comparison counts only the convolution gates and assumes efficient state preparation, either amplitudes that can be efficiently calculated classically or an already established qRAM.",
+     "anchor": "Sec. IV, p.7-8",
+     "quotes": [
+      "For CNN, the complexity of implementing a classical convolutional layer is O(M2). Thus, this algorithm achieves an exponential speedup over classical algorithms in gate complexity.",
+      "It was shown that if the amplitude ck and Pk = k |ck|2 can be efficiently calculated by a classical algorithm, constructing the log2(M2)-qubit X state takes O(poly(log2(M2)) steps.",
+      "whose complexity is O(log2(M2)) after the quantum memory cell established."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The postselection success probability is not bounded anywhere in the paper, so the end-to-end cost including repetitions and readout is not established."
+    },
+    {
+     "id": "qcnn-gate-count",
+     "verdict": "confirmed",
+     "note": "Appendix B (p.9-10) derives it: E1 is built from O(n3) CNOT and Pauli X gates, and each controlled Qk from no more than O(n6) = O((log2 M)6) basic gates, constant factors ignored.",
+     "value": "",
+     "anchor": "Abstract, p.1; Appendix B, p.9-10",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qcnn-mnist-similar",
+     "verdict": "narrowed",
+     "note": "Table I (p.7) shows the CNN with higher accuracy than both QCNN variants in every column, and the gap is larger for the 10-class task (CNN test 0.804 against 0.740 noisy and 0.743 noise-free). 'Similar' holds best for the 2-class task. The parameter counts do favor QCNN (46 and 379 against 265 and 2569).",
+     "value": "The authors report that QCNN and CNN gave similar MNIST performance with fewer QCNN parameters; their own Table I shows the CNN ahead in every accuracy column, most clearly on the ten-class task (test accuracy 0.804 for the CNN against 0.740 for noisy QCNN and 0.743 for noise-free QCNN).",
+     "anchor": "Sec. III.B and Table I, p.7",
+     "quotes": [
+      "We can conclude that from the numerical simulation result, QCNN and CNN provide similar performance. QCNN involves fewer parameters and has a smaller fluctuation range.",
+      "0.948 0.960 0.742 0.740 0.954 0.963 0.756 0.743",
+      "265 2569 0.962 0.972 0.802 0.804"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table I gives averages over 100 runs but no spread values; the fluctuation claim rests on Fig. 4 only."
+    },
+    {
+     "id": "qcnn-noise-model",
+     "verdict": "confirmed",
+     "note": "Exact. The noise-free and noisy cases are both simulated; the noise is applied only to the gate Qk.",
+     "value": "",
+     "anchor": "Sec. III.B, p.7",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own simulation setup, Sec. III.B, p.7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qcnn-amplitude-encoding-image",
+     "value": "The paper maps an image of size M by L onto a pure quantum state by amplitude encoding over n = log2(ML) qubits.",
+     "anchor": "Sec. II.A, eq. 1-2, p.2",
+     "quotes": [
+      "the image data f can be mapped onto a pure quantum state",
+      "with n = log2(ML)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own encoding definition, Sec. II.A, p.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-filter-operator-non-unitary",
+     "value": "The authors state that the linear filtering operator U is non-unitary and cannot be performed directly, and that the earlier four-unitary decomposition needs basic gates that scale exponentially in the system dimension, which motivates their new construction.",
+     "anchor": "Sec. II.B, p.3",
+     "quotes": [
+      "Generally speaking, the linear filtering operator U is non-unitary that can not be performed directly.",
+      "However, the basic gates consumed to perform Ui scale exponentially in the dimensions of quantum systems, making the quantum advantage diminishing."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-lcu-nine-unitaries",
+     "value": "The paper decomposes the adjusted filter operator into a linear combination of nine unitary operators Q1 to Q9, each a tensor product of two of three fixed shift-type operators, implemented by the linear-combination-of-unitaries method.",
+     "anchor": "Sec. II.B, eq. 7-15, p.3-4; Appendix B, p.9",
+     "quotes": [
+      "In conclusion, the filter operator U can be decomposed into a linear combination of nine unitary",
+      "nine operators Q1, Q2,· · · , Q9 consist of",
+      "Qk is the tensor product of two of the following three operators"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own construction, Sec. II.B and Appendix B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-four-ancilla-qubits",
+     "value": "The authors state that only four ancilla qubits (or a nine-level ancillary system) are needed to realize the general filter operator, independent of the image size.",
+     "anchor": "Sec. II.B, p.4-5",
+     "quotes": [
+      "Only four qubits or a nine energy level ancillary system is consumed to realize the general filter operator U , which is independent on the dimensions of image size."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "This holds for the three-by-three filter mask used throughout; a larger mask would need more ancilla qubits, consistent with the paper's general O(log2(m2)) ancilla count."
+    },
+    {
+     "id_suggestion": "qcnn-postselection-success-probability",
+     "value": "The paper obtains the filtered image state only by measuring the ancilla register and conditioning on the all-zero outcome, with a success probability Ps given as the squared norm of the weighted sum of Qk acting on the input divided by Nc squared.",
+     "anchor": "Sec. II.B, eq. 16, p.4",
+     "quotes": [
+      "If we only need one filter mask W, measuring the ancillary register and conditioned on seeing |0000",
+      "The probability of detecting the ancillary state |0000 is Ps"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own circuit construction, Sec. II.B, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper gives no lower bound on Ps, so the expected number of repetitions is not part of its complexity count."
+    },
+    {
+     "id_suggestion": "qcnn-sixteen-filter-masks",
+     "value": "The authors state that the circuit realizes 16 filter masks at once, one per ancilla basis state, and that the wanted mask is selected by the ancilla outcome.",
+     "anchor": "Sec. II.B, eq. 15, p.4",
+     "quotes": [
+      "Totally, 16",
+      "filter masks are realized, corresponding to ancilla qubits in"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-adjusted-operator-interior-pixels",
+     "value": "The paper proves (Appendix A) that the adjusted filter operator differs from the true filter operator only on the image edges, so the output pixels with both indices from 2 to M − 1 are the same and can be obtained from the adjusted operator.",
+     "anchor": "Sec. II.B, p.5; Appendix A, p.9",
+     "quotes": [
+      "So, we can obtain the informations of G = (Gi, j)M×M (2 ≤ i, j ≤ M − 1) by evaluating the | f under operator U instead of U",
+      "The different elements of image matrix after implementing operator U compared with U are in the edges of image matrix."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A proof given in the paper's Appendix A, p.9.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The edge pixels of the output are not correct under the adjusted operator; the method gives the true filtered image only in the interior."
+    },
+    {
+     "id_suggestion": "qcnn-pooling-by-discarding-qubits",
+     "value": "The paper realizes a 2 by 2 average-pooling step with a stride of 2 pixels by ignoring the last qubit and the m-th qubit of the image register.",
+     "anchor": "Sec. II.C, eq. 17, p.5",
+     "quotes": [
+      "Consider a 2 ∗ 2 pixels pooling operation applied with a stride of 2 pixels. It can be directly realized by ignoring the last qubit and the m-th qubit in quantum context."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own construction of the pooling layer, Sec. II.C, p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-fully-connected-hamiltonian",
+     "value": "The paper realizes the fully connected layer by measuring the expectation value of a parametrized Hamiltonian of Pauli Z terms followed by a nonlinear activation; the Hamiltonian parameters are trained by gradient descent with derivatives equal to Pauli Z expectation values, and the S matrix parameters by classical backpropagation.",
+     "anchor": "Abstract and Introduction, p.1-2; Sec. II.D, eq. 18, p.6",
+     "quotes": [
+      "the fully connected layer is realized by measuring the expectation value of a parametrized Hamiltonian and then a nonlinear (activation) function to post-process the expectation value",
+      "The parameters in Hamiltonian matrix H are updated by gradient descent method",
+      "The parameters in S matrix can be trained through classical backpropagation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the fully connected layer, Sec. II.D, p.6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-image-filtering-matches-classical",
+     "value": "The authors report that in numerical simulation of edge detection, smoothing and sharpening, the images output by the quantum convolutional layer are exactly the same as those from a classical convolutional layer.",
+     "anchor": "Sec. III.A and Fig. 3, p.6",
+     "quotes": [
+      "The numerical simulation proves that the output images transformed by a classical and quantum convolutional layer are exactly the same",
+      "image smoothing, sharpening, and edge detection are performed"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This is a noise-free state-vector simulation; given Appendix A, the agreement can only hold for interior pixels or for images with zero borders."
+    },
+    {
+     "id_suggestion": "qcnn-mnist-encoding-setup",
+     "value": "For MNIST the paper pads the 28 by 28 images with zeros to 32 by 32 pixels, giving a work register of 10 qubits and an ancilla register of 4 qubits, and the convolutional layer has 9 learnable parameters, the same for QCNN and CNN.",
+     "anchor": "Sec. III.B, p.7",
+     "quotes": [
+      "MNIST has 28 × 28 pixels. For convenience, we expand 0 at the edge of the initial image until 32 × 32 pixels.",
+      "the work register of QCNN consists of 10 qubits and the ancillary register needs 4 qubits.",
+      "The convolutional layer is characterized by 9 learnable parameters in matrix W, that is the same for QCNN and CNN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup, Sec. III.B, p.7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-mnist-parameter-counts",
+     "value": "In the two-class task (handwritten one or eight) the QCNN Hamiltonian has 37 learnable parameters against 256 in the CNN fully connected layer; in the ten-class task the Hamiltonian has 10 × 37 parameters.",
+     "anchor": "Sec. III.B, p.7",
+     "quotes": [
+      "NN's parametrized Hamiltonian has 37 learnable parameters and the CNN's fully-connected layer has 256 learnable parameters.",
+      "In the ten-classification problem, the parametrized Hamiltonian has 10 × 37"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own model setup, Sec. III.B, p.7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-mnist-training-protocol",
+     "value": "The two-class task uses 5000 training and 2100 test images, the ten-class task 60000 and 10000; training picks 100 images at random per epoch for 50 epochs, and each model is run 100 times to obtain average accuracy.",
+     "anchor": "Sec. III.B, p.7",
+     "quotes": [
+      "the training set and test set have a total of 5000 images and 2100 images, respectively.",
+      "the training set and test set have a total of 60000 images and 10000 images, respectively.",
+      "100 images are randomly chosen in one epoch, and 50 epochs in total",
+      "we repeatedly execute noisy QCNN, noise-free, and CNN 100 times, under the same construction."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own training protocol, Sec. III.B, p.7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Fifty epochs of 100 images each means each model sees at most 5000 training images, a small fraction of the 60000 in the ten-class set."
+    },
+    {
+     "id_suggestion": "qcnn-mnist-table-accuracies",
+     "value": "The authors report average accuracies (Table I): noisy QCNN 0.948 training and 0.960 test on the two-class task, 0.742 and 0.740 on ten classes; noise-free QCNN 0.954 and 0.963, 0.756 and 0.743; CNN 0.962 and 0.972, 0.802 and 0.804; learnable parameters 46 and 379 for QCNN against 265 and 2569 for CNN.",
+     "anchor": "Table I, p.7",
+     "quotes": [
+      "0.948 0.960 0.742 0.740 0.954 0.963 0.756 0.743",
+      "265 2569 0.962 0.972 0.802 0.804",
+      "training set 46 Noise-free QCNN",
+      "379 0.954 0.963"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer of Table I is scrambled; the column assignment was read from the page layout. The CNN leads in every accuracy column."
+    },
+    {
+     "id_suggestion": "qcnn-measurement-and-qubit-cost",
+     "value": "The authors state that the measurement complexity of the fully connected layer is O(e), with e the number of Hamiltonian parameters, and that the algorithm uses O(log2(m2)) ancilla qubits for an m by m filter mask plus O(log2(M2)) work qubits.",
+     "anchor": "Sec. IV, p.8",
+     "quotes": [
+      "The measurement complexity in fully connected layers is O(e), where e is the number of parameters in the Hamiltonian.",
+      "The ancillary qubits in the whole algorithm are O(log2(m2)), where m is the dimension of the filter mask",
+      "the total qubits resource needed is O(log2(m2) + O(log2(M2)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "O(e) counts expectation values, not shots; the number of repetitions needed to estimate each to a given precision is not stated."
+    },
+    {
+     "id_suggestion": "qcnn-gate-derivation-appendix-b",
+     "value": "Appendix B states that one of the three building-block operators can be expressed with O(n3) CNOT and Pauli X gates, its inverse gives another, and that Qk and the controlled Qk then need no more than O(n6) = O((log2 M)6) basic gates, ignoring constants.",
+     "anchor": "Appendix B, Fig. 5, p.9-10",
+     "quotes": [
+      "It can be expressed by the combination of O(n3) CNOT gates and Pauli X gates as shown in Fig.5.",
+      "Thus, Qk can be implemented by no more than O(n6) basic gates. Totally, the controlled Qk operation can be implemented by no more than O(n6) = O((log2 M)6)(ignoring constant number)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The step from two tensor factors of O(n3) gates each to O(n6) is not explained; a tensor product of two circuits normally adds their gate counts. The appendix also gives n = log2(M2) for an M by M operator, which is inconsistent with its dimension."
+    },
+    {
+     "id_suggestion": "qcnn-noise-robust-input-size-claim",
+     "value": "The abstract claims the model is robust to certain noise for image recognition tasks and that its parameters are independent of the input size, making it friendly to near-term quantum devices.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Our model is robust to certain noise for image recognition tasks and the parameters are independent on the input sizes, making it friendly to near-term quantum devices."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Robustness is tested only against one simulated single-qubit Pauli noise model at probability 0.01 applied to Qk; no hardware run is reported."
+    },
+    {
+     "id_suggestion": "qcnn-conclusion-large-data-advantage",
+     "value": "The conclusion claims the algorithm has significant advantages over classical algorithms for large data and great potential to outperform its classical counterpart.",
+     "anchor": "Sec. V, p.8",
+     "quotes": [
+      "this algorithm has significant advantages over the classical algorithms for large data.",
+      "this algorithm has great potential to outperform its classical counterpart, and works as an efficient solution."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper's own simulations show the CNN with higher accuracy, and the gate-count comparison omits state preparation conditions, postselection repetitions and readout."
+    }
+   ]
+  }
+ ]
+}
