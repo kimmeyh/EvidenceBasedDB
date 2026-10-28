@@ -87,17 +87,43 @@ def test_a_graded_confirmed_row_the_apply_does_not_write_must_already_hold_its_g
     assert g.grades_not_written(conn) == []
 
 
+def _task_f():
+    """Task G's script, Task F's, and a subagent read detail in Task F's own wording."""
+    spec = importlib.util.spec_from_file_location("sprint13_reading", ROOT / "scripts" / "sprint13_reading.py")
+    f = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(f)
+    return _script(), f, f.read_detail("b07", {"partial_detail": "Abstract, introduction and Section 2", "record_id": "x"})
+
+
 def test_a_read_row_another_script_wrote_on_the_same_day_is_not_taken_for_this_one():
     """Full suite after the g001 to g042 apply, 2026-10-27: Task F (F112) read 57 of these papers on 2026-10-25,
     a Task G review day, under the same reader names, and the apply rewrote Task F's 114 rows as its own. Task F's
     wording is taken from its script, so a change there turns this red. Proven to fail, 2026-10-28: with is_mine
     answering True for every row, as the key match did, the Task F rows were taken."""
-    g = _script()
-    spec = importlib.util.spec_from_file_location("sprint13_reading", ROOT / "scripts" / "sprint13_reading.py")
-    f = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(f)
-    task_f = f.read_detail("b07", {"partial_detail": "Abstract, introduction and Section 2", "record_id": "x"})
+    g, f, task_f = _task_f()
     assert not g.is_mine("subagent", task_f)
     assert not g.is_mine("partial", f.COORDINATOR_DETAIL)
     assert g.is_mine("subagent", g.read_detail("g001", {"record_id": "x", "read_extent": "full"}))
     assert g.is_mine("partial", g.COORDINATOR_DETAIL)
+
+
+def test_the_apply_adds_its_reads_beside_another_scripts_and_leaves_them_alone(synthetic_store):
+    """Fresh-eyes review of 5e10948: the test above checks is_mine alone, so the apply could stop calling it and
+    stay green. This one drives the apply's read writer. Proven to fail, 2026-10-28: with write_reads building its
+    rows without is_mine, the first call logged 'update' twice, rewriting Task F's rows."""
+    from store import connect
+    g, f, task_f = _task_f()
+    day, rid = "2026-10-25", "alpha-2024-first-paper"
+    conn = connect(synthetic_store)
+    try:
+        for extent, det in (("subagent", task_f), ("partial", f.COORDINATOR_DETAIL)):
+            conn.execute("INSERT INTO paper_reads (record_id, reader, read_on, extent, detail) VALUES (?, ?, ?, ?, ?)",
+                         (rid, g.SUBAGENT_READER if extent == "subagent" else "Claude", day, extent, det))
+        detail = g.read_detail("g001", {"record_id": rid, "read_extent": "full"})
+        assert [x.split()[0] for x in g.write_reads(conn, rid, day, detail)] == ["read", "read"]
+        rows = {r[0] for r in conn.execute("SELECT detail FROM paper_reads WHERE record_id = ? AND read_on = ?",
+                                           (rid, day))}
+        assert rows == {task_f, f.COORDINATOR_DETAIL, detail, g.COORDINATOR_DETAIL}
+        assert g.write_reads(conn, rid, day, detail) == []
+    finally:
+        conn.close()
