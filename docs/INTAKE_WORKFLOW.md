@@ -2410,10 +2410,20 @@ assertions... than some budget". Written before any read is applied
     read row. Diffed against the pre-apply backup
     (`evidence-20261027T233851286095-...`), no `paper_reads` row is
     missing.
-  - **How a read is recorded.** As in Sprints 11 and 12, a subagent's
-    read is a `paper_reads` row with extent `subagent`, its detail
-    "first pass, the whole paper, every page and appendix (Sonnet 5.5
-    reader, Sprint 13 Task G, F113, group gNNN)", or "first pass, the
+  - **How a read is recorded.** At the apply, as in Sprints 11 and 12, a
+    subagent's read was a `paper_reads` row with extent `subagent`, its
+    detail "first pass, the whole paper, every page and appendix (Sonnet
+    5.5 reader, Sprint 13 Task G, F113, group gNNN)", or "first pass, the
     whole paper except: ..." for the 2 exceptions, beside the
-    coordinator's `partial` row. F113's acceptance says `full`, and that
-    wording is a question for Manual Validation.
+    coordinator's `partial` row. F113's acceptance says `full`.
+  - **Extent changed to `full`, 2026-10-28 (written before the apply).**
+    Team lead, Manual Validation Q7 = 2: Task G's whole-paper reads are
+    stored as `full`, the 2 reads with a named exception as `partial`;
+    the reader's name ("Claude Sonnet 5.5 (first-pass subagent)") still
+    says who read. Sprints 11 and 12 keep `subagent`. The apply moves the
+    210 rows in place (`read_extent` and `write_reads` in
+    `scripts/sprint13_g_reading.py`; a test proven red with the old
+    extent), so no `subagent` row of Task G's is left beside its
+    replacement. A `full` row with no exception in its detail is what
+    `scripts/sprint13_g_slice.py` counts as a read in full, so these 208
+    records leave any later slice.

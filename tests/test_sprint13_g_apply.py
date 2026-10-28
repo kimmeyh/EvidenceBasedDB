@@ -101,10 +101,10 @@ def test_a_read_row_another_script_wrote_on_the_same_day_is_not_taken_for_this_o
     wording is taken from its script, so a change there turns this red. Proven to fail, 2026-10-28: with is_mine
     answering True for every row, as the key match did, the Task F rows were taken."""
     g, f, task_f = _task_f()
-    assert not g.is_mine("subagent", task_f)
-    assert not g.is_mine("partial", f.COORDINATOR_DETAIL)
-    assert g.is_mine("subagent", g.read_detail("g001", {"record_id": "x", "read_extent": "full"}))
-    assert g.is_mine("partial", g.COORDINATOR_DETAIL)
+    assert not g.is_mine(g.SUBAGENT_READER, task_f)
+    assert not g.is_mine("Claude", f.COORDINATOR_DETAIL)
+    assert g.is_mine(g.SUBAGENT_READER, g.read_detail("g001", {"record_id": "x", "read_extent": "full"}))
+    assert g.is_mine("Claude", g.COORDINATOR_DETAIL)
 
 
 def test_the_apply_adds_its_reads_beside_another_scripts_and_leaves_them_alone(synthetic_store):
@@ -120,10 +120,34 @@ def test_the_apply_adds_its_reads_beside_another_scripts_and_leaves_them_alone(s
             conn.execute("INSERT INTO paper_reads (record_id, reader, read_on, extent, detail) VALUES (?, ?, ?, ?, ?)",
                          (rid, g.SUBAGENT_READER if extent == "subagent" else "Claude", day, extent, det))
         detail = g.read_detail("g001", {"record_id": rid, "read_extent": "full"})
-        assert [x.split()[0] for x in g.write_reads(conn, rid, day, detail)] == ["read", "read"]
-        rows = {r[0] for r in conn.execute("SELECT detail FROM paper_reads WHERE record_id = ? AND read_on = ?",
-                                           (rid, day))}
-        assert rows == {task_f, f.COORDINATOR_DETAIL, detail, g.COORDINATOR_DETAIL}
-        assert g.write_reads(conn, rid, day, detail) == []
+        assert [x.split()[0] for x in g.write_reads(conn, rid, day, detail, "full")] == ["read", "read"]
+        rows = {tuple(r) for r in conn.execute("SELECT extent, detail FROM paper_reads WHERE record_id = ? AND read_on = ?",
+                                               (rid, day))}
+        assert rows == {("subagent", task_f), ("partial", f.COORDINATOR_DETAIL), ("full", detail),
+                        ("partial", g.COORDINATOR_DETAIL)}
+        assert g.write_reads(conn, rid, day, detail, "full") == []
+    finally:
+        conn.close()
+
+
+def test_a_whole_read_is_stored_full_and_an_earlier_subagent_row_is_moved(synthetic_store):
+    """Team lead, Sprint 13 Manual Validation Q7 = 2 (2026-10-28): Task G's whole-paper reads are `full`, as F113's
+    acceptance says; a read with a named exception is `partial`; the g001 to g042 rows first written as `subagent`
+    are moved, not left beside the new ones. Proven to fail, 2026-10-28: with read_extent answering 'subagent', as
+    before, the stored extent was 'subagent'."""
+    from store import connect
+    g = _script()
+    day, rid = "2026-10-25", "alpha-2024-first-paper"
+    assert g.read_extent({"record_id": rid, "read_extent": "full"}) == "full"
+    assert g.read_extent({"record_id": rid, "read_extent": "partial"}) == "partial"
+    detail = g.read_detail("g001", {"record_id": rid, "read_extent": "full"})
+    conn = connect(synthetic_store)
+    try:
+        conn.execute("INSERT INTO paper_reads (record_id, reader, read_on, extent, detail) VALUES (?, ?, ?, ?, ?)",
+                     (rid, g.SUBAGENT_READER, day, "subagent", detail))
+        log = g.write_reads(conn, rid, day, detail, g.read_extent({"record_id": rid, "read_extent": "full"}))
+        assert [x.split()[0] for x in log] == ["update", "read"]
+        assert {tuple(r) for r in conn.execute("SELECT extent FROM paper_reads WHERE record_id = ? AND reader = ? "
+                                               "AND read_on = ?", (rid, g.SUBAGENT_READER, day))} == {("full",)}
     finally:
         conn.close()
