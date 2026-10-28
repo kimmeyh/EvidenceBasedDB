@@ -855,7 +855,37 @@ and in git. Remaining items below.
   cloud sessions got no text, and none pushed a result. It has no
   `paper_reads` row and keeps none until F115 gives it a text layer.
 
-**F117. Review the 302 cloud results of F114, with each step on the cheapest model its protocol allows, then apply them (~480m [no-history] timebox) Priority 10** (NEW 2026-10-27, team lead: "do the follow-up review of the 302 results (determine which model is needed for this - or can it be split into multiple sections where one or more can be completed by haiku 5.5... sonnet 5.5... opus 5.5")
+**F119. Read Brighindi's PHI-OMEGA paper with its post, comment thread, image and code, first in Sprint 14 (~60m [no-history] timebox) Priority 10** (NEW 2026-10-28, team lead: "add the following text and paper to the paper repository and terget read for next sprint - highest priority"; "the paper is ML-related as it is rlated to predictions/solvers"; Sprint 13 Manual Validation Q9 = 1, first, before F117; Q10 = 1, files and card added during Manual Validation)
+- Phase: Sourcing / extraction
+- Value: the paper claims that energy drift is "mathematically impossible"
+  under its "algebraic metric closure"; a claim in the solver and
+  prediction space (context `ml`, the team lead's call) enters the store
+  only with what supports it, and what does not.
+- Platform: everything outside version control (ADR-0005 section 3),
+  described in `References\2026-09_Brighindi_PHI-OMEGA_LinkedIn-post-and-comments.md`:
+  - the paper, `Papers\2026-09_Brighindi_From-Open-Heuristics-to-Native-Runtime-Invariance.pdf`
+    (3 pages, 2026-09-25, self-published);
+  - the LinkedIn post and its comment thread, as the team lead pasted them;
+  - the image, `ImagesAndVideo\Phi-Omega Invariant Substrate vs. Legacy Solvers.jpeg`
+    (read by eye until F116 exists);
+  - the code: DOI:10.5281/zenodo.19857066 saved in `GitHubRepos\` (the
+    Tuttotorna GitHub account returned 404 on 2026-10-28), and
+    `GitHubRepos\m-domain-independent-core` at 69a65eb.
+- What a first look found, 2026-10-28, before any read: no proof, no
+  theorem and no results data in the paper, which says its "logs,
+  cycle-by-cycle metrics, and comparative visual plots ensure full
+  reproducibility"; none of the three code sources holds PHI-OMEGA,
+  "dS = 0", arc-length, energy or the seed 20260925; the comment by
+  Valerie Calveyrac asks for the theorem the paper does not give.
+- Acceptance: the paper read in full (no budget); a paper record with its
+  `access`; every claim entered with its quote and certainty; the absence
+  of the reproducibility material entered as an absence claim with its
+  search scope; the post, comments and image entered as the author's own
+  claims, distinct from the paper; how much of the code archive is read
+  set by Sprint 13 Manual Validation Q11.
+- Depends on: none
+
+**F117. Review the 302 cloud results of F114, with each step on the cheapest model its protocol allows, then apply them (~480m [no-history] timebox) Priority 20** (NEW 2026-10-27, team lead: "do the follow-up review of the 302 results (determine which model is needed for this - or can it be split into multiple sections where one or more can be completed by haiku 5.5... sonnet 5.5... opus 5.5")
 - Phase: Sourcing / extraction
 - Value: 302 full reads (snapshot as of 2026-10-27) wait outside the
   store; until reviewed and applied, none of their verdicts or assertions
@@ -894,7 +924,7 @@ and in git. Remaining items below.
   tier's outcome logged in the heuristics' `learning_log`.
 - Depends on: F113's groups g001 to g042 applied (Sprint 13)
 
-**F118. Learn what the store says about QC, ML, QML, tensor networks and related physics, for the QML and ML credit card fraud challenge (~240m [no-history] timebox) Priority 12** (NEW 2026-10-27, team lead: "suggest an approach to look at the EvidenceBasedDB and determine what we have been able to learn about QC, ML, QML, Tensors and other quantum physics-related items that apply to QC and that could be related to QML/ML Credit Card Fraud challenge")
+**F118. Learn what the store says about QC, ML, QML, tensor networks and related physics, for the QML and ML credit card fraud challenge (~240m [no-history] timebox) Priority 22** (NEW 2026-10-27, team lead: "suggest an approach to look at the EvidenceBasedDB and determine what we have been able to learn about QC, ML, QML, Tensors and other quantum physics-related items that apply to QC and that could be related to QML/ML Credit Card Fraud challenge")
 - Phase: Use of the evidence
 - Value: the store exists to serve the fraud submission
   (`hsbc-qfraud-phase2`); this turns its assertions into answers to the
