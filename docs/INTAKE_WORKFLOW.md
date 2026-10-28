@@ -2370,3 +2370,29 @@ assertions... than some budget". Written before any read is applied
     `not_read`, and a text layer that holds the paper twice is read from
     its first copy. The coordinator grades the earlier groups'
     figure-only gaps as `full` where every page of text was read.
+- **Applied 2026-10-27: groups g001 to g042** (written before the apply;
+  counts are a snapshot as of 2026-10-27). Team lead, 2026-10-26: "pause
+  after the 5 current agents complete and backlog the remaining"; groups
+  g043 to g329 are F114.
+  - **What enters.** 210 records, each read whole by a first-pass
+    subagent and reviewed group by group by the coordinator
+    (`manifests/sprint13_g_reviews/g001.json` to `g042.json`): 5,489
+    assertions entered or changed, 1,987 HIGH and 3,502 LOW. Every quote
+    is verbatim in its source, every edit rests on named passages, and
+    every figure is in its quotes.
+  - **Tried first on a copy of the store.** Records 8,017 to 13,070,
+    assertions 5,682 to 10,735, HIGH assertions 2,125 to 4,059; 153 new
+    `paper_reads` rows. A second apply wrote nothing.
+  - **A store defect the trial found, fixed before the apply.**
+    `store.ingest.sync_assertion` wrote a changed assertion one column
+    at a time. The table's CHECK requires a search scope on every
+    absence claim, so a stored claim moving to `absence` failed on the
+    `claim_type` step before its `search_scope` was written. The sync now
+    writes every changed column in one statement; a test in
+    `tests/test_quotes_and_sync.py` was proven red by putting the old
+    loop back.
+  - **How a read is recorded.** As in Sprints 11 and 12, a subagent's
+    read is a `paper_reads` row with extent `subagent`, its detail "the
+    whole paper, every page and appendix", beside the coordinator's
+    `partial` row; F113's acceptance says `full`, and that wording is a
+    question for Manual Validation.

@@ -110,6 +110,21 @@ def test_sync_brings_every_field_to_the_script(synthetic_store, column):
         conn.close()
 
 
+def test_sync_moves_a_claim_to_absence_with_its_search_scope(synthetic_store):
+    """Sprint 13 Task G's trial apply, 2026-10-27: the sync wrote one column at a time, so a claim moving to
+    'absence' broke the table's CHECK (an absence needs a search scope) on the claim_type step, before
+    search_scope was written. Proven to fail by injection, 2026-10-27: with the one-statement UPDATE put back to
+    one UPDATE per column, this test went red with "CHECK constraint failed"."""
+    conn = connect(synthetic_store)
+    try:
+        wanted = replace(_stored(conn), claim_type="absence", search_scope="the paper's own text, as read")
+        assert sorted(sync_assertion(conn, wanted, "note", "2026-10-27")) == ["claim_type", "search_scope"]
+        assert tuple(conn.execute("SELECT claim_type, search_scope FROM assertion_fields WHERE record_id = 'claim-one'"
+                                  ).fetchone()) == ("absence", "the paper's own text, as read")
+    finally:
+        conn.close()
+
+
 def test_sync_adds_relations_and_documents_and_never_removes_them(synthetic_store):
     """claim-one's `supports` link to learning-fixture was written by
     another step (conftest, as F46's merges are in the store); a reading

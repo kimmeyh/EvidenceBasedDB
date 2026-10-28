@@ -721,10 +721,14 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
                        (rid,)).fetchone()
     if row is None:
         raise ValueError(f"{rid}: no assertion_fields row to sync")
-    for column, have in zip(_SYNC_FIELD_COLUMNS, row):
-        if have != getattr(wanted, column):
-            conn.execute(f"UPDATE assertion_fields SET {column} = ? WHERE record_id = ?", (getattr(wanted, column), rid))
-            changed.append(column)
+    # One UPDATE for every changed column: the table's CHECK ties claim_type to search_scope, so a row moving to
+    # 'absence' column by column failed on the claim_type step before its search_scope was set (Sprint 13 trial
+    # apply of Task G, 2026-10-27).
+    fields = [column for column, have in zip(_SYNC_FIELD_COLUMNS, row) if have != getattr(wanted, column)]
+    if fields:
+        conn.execute(f"UPDATE assertion_fields SET {', '.join(f'{c} = ?' for c in fields)} WHERE record_id = ?",
+                     (*(getattr(wanted, c) for c in fields), rid))
+        changed += fields
     documents = {r[0] for r in conn.execute("SELECT document FROM assertion_documents WHERE record_id = ?", (rid,))}
     new_documents = [d for d in wanted.documents if d not in documents]
     for document in new_documents:
