@@ -311,6 +311,13 @@ def read_detail(g: str, p: dict) -> str:
     return detail
 
 
+def is_mine(extent: str, detail: str) -> bool:
+    """A paper_reads row this script wrote. Task F (F112) read 57 of these papers on 2026-10-25, a review day of
+    Task G's, under the same reader names, and the first apply took Task F's rows for its own and rewrote their
+    detail (full suite, 2026-10-27); a row is matched by its wording, never by reader, day and extent alone."""
+    return TAG in detail if extent == "subagent" else detail.startswith(COORDINATOR_DETAIL[:40])
+
+
 def apply_changes(conn) -> list[str]:
     checked = verify()
     log = []
@@ -318,7 +325,7 @@ def apply_changes(conn) -> list[str]:
     for g, p in load_groups():
         rid, detail, day = p["record_id"], read_detail(g, p), REVIEWED_ON[g]
         have = {(r[0], r[1], r[2]): r[3] for r in conn.execute(
-            "SELECT reader, read_on, extent, detail FROM paper_reads WHERE record_id = ?", (rid,))}
+            "SELECT reader, read_on, extent, detail FROM paper_reads WHERE record_id = ?", (rid,)) if is_mine(r[2], r[3])}
         access, evidence, tier = conn.execute("SELECT access, evidence, tier FROM paper_fields WHERE record_id = ?",
                                               (rid,)).fetchone()
         path = p["file"].replace("/", "\\")
@@ -344,7 +351,7 @@ def apply_changes(conn) -> list[str]:
                 log.append(f"read   {rid} [{reader}, {extent}]")
             elif have[(reader, day, extent)] != det:
                 conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND reader = ? AND read_on = ? "
-                             "AND extent = ?", (det, rid, reader, day, extent))
+                             "AND extent = ? AND detail = ?", (det, rid, reader, day, extent, have[(reader, day, extent)]))
                 log.append(f"update read {rid} [{reader}]")
         if not entered:
             why = p.get("why_not") or "; ".join(DROP.get(a["id_suggestion"], "") for a in p.get("assertions", []))

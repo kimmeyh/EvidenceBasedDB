@@ -85,3 +85,19 @@ def test_a_graded_confirmed_row_the_apply_does_not_write_must_already_hold_its_g
     assert [p.split(":")[0] for p in g.grades_not_written(conn)] == ["kept-high", "kept-low"]
     monkeypatch.setattr(g, "REQUOTE", {"kept-high": "rebuilt", "kept-low": "rebuilt"})
     assert g.grades_not_written(conn) == []
+
+
+def test_a_read_row_another_script_wrote_on_the_same_day_is_not_taken_for_this_one():
+    """Full suite after the g001 to g042 apply, 2026-10-27: Task F (F112) read 57 of these papers on 2026-10-25,
+    a Task G review day, under the same reader names, and the apply rewrote Task F's 114 rows as its own. Task F's
+    wording is taken from its script, so a change there turns this red. Proven to fail, 2026-10-28: with is_mine
+    answering True for every row, as the key match did, the Task F rows were taken."""
+    g = _script()
+    spec = importlib.util.spec_from_file_location("sprint13_reading", ROOT / "scripts" / "sprint13_reading.py")
+    f = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(f)
+    task_f = f.read_detail("b07", {"partial_detail": "Abstract, introduction and Section 2", "record_id": "x"})
+    assert not g.is_mine("subagent", task_f)
+    assert not g.is_mine("partial", f.COORDINATOR_DETAIL)
+    assert g.is_mine("subagent", g.read_detail("g001", {"record_id": "x", "read_extent": "full"}))
+    assert g.is_mine("partial", g.COORDINATOR_DETAIL)

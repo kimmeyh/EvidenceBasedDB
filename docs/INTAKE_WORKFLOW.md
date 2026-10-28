@@ -2374,15 +2374,20 @@ assertions... than some budget". Written before any read is applied
   counts are a snapshot as of 2026-10-27). Team lead, 2026-10-26: "pause
   after the 5 current agents complete and backlog the remaining"; groups
   g043 to g329 are F114.
-  - **What enters.** 210 records, each read whole by a first-pass
-    subagent and reviewed group by group by the coordinator
+  - **What enters.** 210 records, read by a first-pass subagent (208
+    whole, 2 with named exceptions: chatterjee-2024, table numbers lost
+    in the text layer; perrier-2024, three scanned pages) and reviewed
+    group by group by the coordinator
     (`manifests/sprint13_g_reviews/g001.json` to `g042.json`): 5,489
     assertions entered or changed, 1,987 HIGH and 3,502 LOW. Every quote
     is verbatim in its source, every edit rests on named passages, and
     every figure is in its quotes.
   - **Tried first on a copy of the store.** Records 8,017 to 13,070,
-    assertions 5,682 to 10,735, HIGH assertions 2,125 to 4,059; 153 new
-    `paper_reads` rows. A second apply wrote nothing.
+    assertions 5,682 to 10,735, HIGH assertions 2,125 to 4,059; 306 new
+    `paper_reads` rows (a subagent row and a coordinator row for each of
+    153 records) and 114 `update read` lines. A second apply wrote
+    nothing. The 114 updates were not questioned before the real apply,
+    and they were a defect (below).
   - **A store defect the trial found, fixed before the apply.**
     `store.ingest.sync_assertion` wrote a changed assertion one column
     at a time. The table's CHECK requires a search scope on every
@@ -2391,8 +2396,24 @@ assertions... than some budget". Written before any read is applied
     writes every changed column in one statement; a test in
     `tests/test_quotes_and_sync.py` was proven red by putting the old
     loop back.
+  - **A second defect, found by the full suite after the apply and
+    repaired 2026-10-28.** Task F (F112) read 57 of these papers on
+    2026-10-25, which is also a Task G review day, under the same reader
+    names. Task G's apply matched read rows by reader, day and extent
+    only, took Task F's 114 rows (57 subagent, 57 coordinator) for its own
+    and rewrote their detail. Both scripts now match a read row by their
+    own wording (`is_mine` in `scripts/sprint13_g_reading.py`; the group
+    marker in `scripts/sprint13_reading.py`), and a test in
+    `tests/test_sprint13_g_apply.py` was proven red by making every row
+    count as Task G's. The repair re-ran Task F's apply, which put its 114
+    rows back with their original detail, then Task G's, which wrote no
+    read row. Diffed against the pre-apply backup
+    (`evidence-20261027T233851286095-...`), no `paper_reads` row is
+    missing.
   - **How a read is recorded.** As in Sprints 11 and 12, a subagent's
-    read is a `paper_reads` row with extent `subagent`, its detail "the
-    whole paper, every page and appendix", beside the coordinator's
-    `partial` row; F113's acceptance says `full`, and that wording is a
-    question for Manual Validation.
+    read is a `paper_reads` row with extent `subagent`, its detail
+    "first pass, the whole paper, every page and appendix (Sonnet 5.5
+    reader, Sprint 13 Task G, F113, group gNNN)", or "first pass, the
+    whole paper except: ..." for the 2 exceptions, beside the
+    coordinator's `partial` row. F113's acceptance says `full`, and that
+    wording is a question for Manual Validation.

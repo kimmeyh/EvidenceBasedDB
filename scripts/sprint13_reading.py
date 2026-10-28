@@ -3023,8 +3023,12 @@ def apply_changes(conn, half: str) -> list[str]:
             log.append(f"no copy {rid}")
     for g, p in load_groups(half):
         rid, detail = p["record_id"], read_detail(g, p)
+        # this script's own rows only: Task G (F113) read 57 of these papers again on 2026-10-25 under the same
+        # reader names, so a row is matched by its wording, never by reader, day and extent alone
+        mine = f"(Sonnet 5.5 reader, group {g.upper()})"
         have = {(r[0], r[1], r[2]): r[3] for r in conn.execute(
-            "SELECT reader, read_on, extent, detail FROM paper_reads WHERE record_id = ?", (rid,))}
+            "SELECT reader, read_on, extent, detail FROM paper_reads WHERE record_id = ?", (rid,))
+                if (mine in r[3] if r[2] == "subagent" else r[3].startswith(COORDINATOR_DETAIL[:40]))}
         access, evidence, tier = conn.execute("SELECT access, evidence, tier FROM paper_fields WHERE record_id = ?",
                                               (rid,)).fetchone()
         path = p["file"].replace("/", "\\")
@@ -3056,7 +3060,7 @@ def apply_changes(conn, half: str) -> list[str]:
                 log.append(f"read   {rid} [{reader}, {extent}]")
             elif have[(reader, TODAY, extent)] != det:
                 conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND reader = ? AND read_on = ? "
-                             "AND extent = ?", (det, rid, reader, TODAY, extent))
+                             "AND extent = ? AND detail = ?", (det, rid, reader, TODAY, extent, have[(reader, TODAY, extent)]))
                 log.append(f"update read {rid} [{reader}]")
         if tier != "read":
             set_tier(conn, rid, "read", checked_against_source=(
