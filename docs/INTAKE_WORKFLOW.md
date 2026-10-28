@@ -2424,6 +2424,10 @@ assertions... than some budget". Written before any read is applied
     210 rows in place (`read_extent` and `write_reads` in
     `scripts/sprint13_g_reading.py`; a test proven red with the old
     extent), so no `subagent` row of Task G's is left beside its
-    replacement. A `full` row with no exception in its detail is what
-    `scripts/sprint13_g_slice.py` counts as a read in full, so these 208
-    records leave any later slice.
+    replacement. `scripts/sprint13_g_slice.py` counts a `full` row as a
+    read in full only when its detail names no exception. 200 of the 208
+    pass on the store alone. The other 8 (aaronson-2023, abbas-2023,
+    ahmed-2025, akande-2025, albino-2023, boulebnane-2024, boy-2025,
+    chan-2024) carry the reader's version note, which says the
+    bibliography was "skimmed" or "skipped", so they leave a later slice
+    only through their reader files (fresh-eyes review of 2bab87b).

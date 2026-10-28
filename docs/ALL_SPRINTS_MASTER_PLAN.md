@@ -869,14 +869,21 @@ and in git. Remaining items below.
   - the image, `ImagesAndVideo\Phi-Omega Invariant Substrate vs. Legacy Solvers.jpeg`
     (read by eye until F116 exists);
   - the code: DOI:10.5281/zenodo.19857066 saved in `GitHubRepos\` (the
-    Tuttotorna GitHub account returned 404 on 2026-10-28), and
-    `GitHubRepos\m-domain-independent-core` at 69a65eb.
+    Tuttotorna GitHub account returned 404 on 2026-10-28), and, cloned
+    to `GitHubRepos\` from the `phiomegaruntime-rgb` account,
+    `m-domain-independent-core` (69a65eb), `m-omnia-validation`
+    (d3e45f3) and `phi-infinity-runtime` (4ee4ea3);
+  - two more images and an earlier post (2026-09-23), added the same day.
 - What a first look found, 2026-10-28, before any read: no proof, no
   theorem and no results data in the paper, which says its "logs,
   cycle-by-cycle metrics, and comparative visual plots ensure full
-  reproducibility"; none of the three code sources holds PHI-OMEGA,
-  "dS = 0", arc-length, energy or the seed 20260925; the comment by
-  Valerie Calveyrac asks for the theorem the paper does not give.
+  reproducibility"; the author's own `phi-infinity-runtime` holds the
+  paper's stress test (seed 20260925) and says, in Italian, that the
+  raw files and `simulation.py` are not published, that the counts are
+  not reproducible from the repository, and that no "absolute immunity"
+  follows from one seed; `m-omnia-validation` says "no empirically
+  verified result is claimed"; the comment by Valerie Calveyrac asks for
+  the theorem the paper does not give.
 - Acceptance: the paper read in full (no budget); a paper record with its
   `access`; every claim entered with its quote and certainty; the absence
   of the reproducibility material entered as an absence claim with its
