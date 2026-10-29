@@ -431,7 +431,11 @@ this project keeps having to replace with a step.
   is fixed at 7, the scan reads joined statements. Its Important finding
   is recorded, not fixed: the older scripts still compare whichever row
   shares the key, so they must not re-run on a day another script wrote
-  (none does today)
+  (none does today) (8a06bf5)
+- **fix**: Copilot's review of PR #131 (2026-10-28): `low_grade("vendor
+  claim", why)` was refused as "not one of" the LOW reasons; it now says
+  a vendor claim takes no why (latent: no caller passes one). Test proven
+  red by injection
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

@@ -102,7 +102,9 @@ def low_grade(basis: str, why: str = "") -> tuple[str, str]:
     """("low", certainty_reasons) for a LOW with its named reason; refuses
     a reason outside LOW_BASES (or "vendor claim"), and a theoretical
     result with no why."""
-    if basis == "vendor claim" and not why.strip():
+    if basis == "vendor claim":
+        if why.strip():  # Copilot, PR #131: this fell through to "not one of LOW_BASES", which named the wrong fault
+            raise ValueError("a LOW vendor claim takes no why: its stored reason is fixed (VENDOR_LOW)")
         return "low", VENDOR_LOW
     if basis not in LOW_BASES:
         raise ValueError(f"LOW reason {basis!r} is not one of {', '.join(LOW_BASES)}")

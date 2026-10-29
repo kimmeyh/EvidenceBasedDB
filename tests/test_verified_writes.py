@@ -273,6 +273,10 @@ def test_the_grading_helper_names_every_low_reason():
     with pytest.raises(ValueError, match="is not one of"):
         low_grade("probably fine")
     assert low_grade("vendor claim")[1].startswith("Started MODERATE: vendor primary documentation")
+    # Copilot, PR #131 (2026-10-28): a vendor claim with a why was refused as "not one of" the reasons. Proven to
+    # fail, 2026-10-28: without the vendor-claim branch's own refusal, the message was "is not one of".
+    with pytest.raises(ValueError, match="vendor claim takes no why"):
+        low_grade("vendor claim", "the vendor's own page")
 
 
 def test_theory_words_skip_a_proof_of_principle_run():
