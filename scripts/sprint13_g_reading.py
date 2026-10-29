@@ -49,6 +49,11 @@ claim.
     python scripts/sprint13_g_reading.py                     # dry run of every reviewed group
     python scripts/sprint13_g_reading.py --groups g001,g002  # dry run of named groups
     python scripts/sprint13_g_reading.py --apply             # verified backup first
+    python scripts/sprint13_g_reading.py --apply --update-reads  # also rewrite read rows, when intended
+
+An apply that would rewrite a read row this script wrote earlier is rolled
+back unless --update-reads names the rewrite as intended (Sprint 13
+retrospective I1).
 """
 from __future__ import annotations
 
@@ -402,6 +407,24 @@ def apply_changes(conn) -> list[str]:
     return log
 
 
+class ReadRowsRewritten(Exception):
+    pass
+
+
+def commit_apply(conn, update_reads: bool) -> list[str]:
+    """Sprint 13 retrospective I1 (team lead, 2026-10-28): the g001 to g042 trial log showed 114 'update read' lines
+    where only new reads were expected, nobody asked why, and the real apply rewrote Task F's rows. A rewritten read
+    row is now a stop: the apply is rolled back unless the run names the rewrite as intended."""
+    log = apply_changes(conn)
+    rewrites = [x for x in log if x.startswith("update read")]
+    if rewrites and not update_reads:
+        conn.rollback()
+        raise ReadRowsRewritten(f"{len(rewrites)} read rows would be rewritten; nothing written. Each must be intended; "
+                         "if so, re-run with --update-reads:\n" + "\n".join(rewrites))
+    conn.commit()
+    return log
+
+
 def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
     if "--groups" in args:
@@ -435,8 +458,10 @@ def main(argv: list[str] | None = None) -> int:
     conn = connect(DB_PATH)
     conn.execute("PRAGMA busy_timeout = 120000")
     try:
-        log = apply_changes(conn)
-        conn.commit()
+        log = commit_apply(conn, "--update-reads" in args)
+    except ReadRowsRewritten as e:
+        print(e)
+        return 1
     finally:
         conn.close()
     print("\n".join(log))

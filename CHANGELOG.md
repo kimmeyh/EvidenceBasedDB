@@ -412,6 +412,19 @@ this project keeps having to replace with a step.
   paper's claims; the references split in two (PHI-OMEGA / M-OMNIA, and
   the MB-X.01 structural-coherence code); the 302 cloud results are
   reviewed in Sprint 14 after F119 (F117), and Sprint 13 closes now
+- **docs**: Sprint 13 retrospective (2026-10-28): Claude's Development
+  Team draft (db8aeb7); the team lead's feedback recorded verbatim and
+  four improvements proposed (af2c2ca). Team lead: "q1 1, q2 1, q3 3
+  q4 1" (I1, I2, I4 now; I3 skipped)
+- **process**: Sprint 13 retrospective I1, I2 and I4 (2026-10-28). I1:
+  Task G's apply is rolled back when it would rewrite a read row, unless
+  `--update-reads` names the rewrite as intended (F117 applies through
+  this script). I2: every `UPDATE paper_reads` names the row's stored
+  detail; the seven older scripts that matched by reader, day and extent
+  alone are fixed, and `tests/test_read_row_updates.py` names any that
+  does not. I4: `test_changelog_currency` names each commit from 71705d8
+  on that neither changes CHANGELOG.md nor is named in it by its short
+  hash. Each test proven red by injection
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 

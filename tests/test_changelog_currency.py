@@ -164,3 +164,66 @@ def test_every_section_heading_carries_a_parsable_date():
         f"CHANGELOG section headings with no parsable date: {undated}. The currency "
         "and ordering guards read dates from these headings; a heading they cannot "
         "parse is a section they silently do not check.")
+
+
+# Sprint 13 retrospective I4 (team lead, 2026-10-28). The staleness test above
+# reads only the newest entry, so 19 commits from 2026-10-26 to 2026-10-28 had
+# no entry while those days had others; nothing failed. From 71705d8 (the
+# commit that caught them up) on, each commit that is not a merge either
+# changes CHANGELOG.md, as the policy says, or is named by its short hash in an
+# entry written later. Proven to fail, 2026-10-28: with the entry naming
+# db8aeb7 and af2c2ca removed, the test named both.
+COVERED_FROM = "71705d818373cb083da50b0c95232c3dcca00910"
+
+
+def commits_without_entry(repo: Path, since: str, changelog_text: str) -> list[str] | None:
+    """Short hash and subject of each commit after `since` that neither changes
+    CHANGELOG.md nor is named in it; None when git cannot read the range."""
+    try:
+        out = subprocess.run(
+            ["git", "log", "--no-merges", "--name-only", "--format=@@%h %s", f"{since}..HEAD"],
+            cwd=repo, capture_output=True, text=True, encoding="utf-8", timeout=60)
+    except Exception:                                    # noqa: BLE001
+        return None
+    if out.returncode != 0:
+        return None
+    missing = []
+    for block in out.stdout.split("@@")[1:]:
+        head, *files = [line for line in block.splitlines() if line.strip()]
+        if "CHANGELOG.md" not in files and head.split()[0] not in changelog_text:
+            missing.append(head)
+    return missing
+
+
+@pytest.mark.skipif(not CHANGELOG.exists(), reason="no CHANGELOG.md")
+def test_every_commit_has_its_changelog_entry():
+    missing = commits_without_entry(ROOT, COVERED_FROM, CHANGELOG.read_text(encoding="utf-8"))
+    if missing is None:
+        pytest.skip("git history before HEAD unavailable (shallow clone or no git)")
+    assert not missing, (
+        f"commits with no CHANGELOG entry: {missing}. Write the entry in the same "
+        "commit; a later entry names the commit by its short hash.")
+
+
+def test_the_entry_check_names_an_uncovered_commit(tmp_path):
+    """The check itself, on a scratch repository."""
+    def git(*args):
+        return subprocess.run(["git", *args], cwd=tmp_path, capture_output=True, text=True,
+                              check=True).stdout.strip()
+    git("init", "-q")
+    git("config", "user.email", "t@example.invalid")
+    git("config", "user.name", "t")
+    (tmp_path / "CHANGELOG.md").write_text("start\n", encoding="utf-8")
+    git("add", "-A")
+    git("commit", "-q", "-m", "base")
+    base = git("rev-parse", "HEAD")
+    (tmp_path / "CHANGELOG.md").write_text("start\nan entry\n", encoding="utf-8")
+    git("add", "-A")
+    git("commit", "-q", "-m", "with its entry")
+    (tmp_path / "code.py").write_text("x = 1\n", encoding="utf-8")
+    git("add", "-A")
+    git("commit", "-q", "-m", "no entry")
+    short = git("rev-parse", "--short", "HEAD")
+    assert commits_without_entry(tmp_path, base, "start\nan entry\n") == [f"{short} no entry"]
+    assert commits_without_entry(tmp_path, base, f"start\nan entry\nlater: {short}\n") == []
+    assert commits_without_entry(tmp_path, "0" * 40, "") is None

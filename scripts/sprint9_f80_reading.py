@@ -385,7 +385,8 @@ def apply_changes(conn) -> list[str]:
                 log.append(f"read   {rid} [{reader}, {extent}]")
             elif rows[(reader, TODAY, extent)] != detail:
                 conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND reader = ? AND read_on = ? "
-                             "AND extent = ?", (detail, rid, reader, TODAY, extent))
+                             "AND extent = ? AND detail = ?", (detail, rid, reader, TODAY, extent,
+                                                               rows[(reader, TODAY, extent)]))
                 append_updated_reason(conn, rid, f"{TODAY} ({TAG}): read detail corrected", TODAY)
                 log.append(f"update read {rid} [{reader}]")
         if tier != "read":

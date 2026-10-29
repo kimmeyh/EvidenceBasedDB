@@ -1513,7 +1513,8 @@ def apply_changes(conn, task: str) -> list[str]:
                 log.append(f"read   {rid} [{reader}, {extent}]")
             elif have[(reader, TODAY, extent)] != det:
                 conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND reader = ? AND read_on = ? "
-                             "AND extent = ?", (det, rid, reader, TODAY, extent))
+                             "AND extent = ? AND detail = ?", (det, rid, reader, TODAY, extent,
+                                                               have[(reader, TODAY, extent)]))
                 log.append(f"update read {rid} [{reader}]")
         if tier != "read":
             set_tier(conn, rid, "read", checked_against_source=(

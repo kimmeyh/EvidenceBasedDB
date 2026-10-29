@@ -151,3 +151,31 @@ def test_a_whole_read_is_stored_full_and_an_earlier_subagent_row_is_moved(synthe
                                                "AND read_on = ?", (rid, g.SUBAGENT_READER, day))} == {("full",)}
     finally:
         conn.close()
+
+
+def test_an_apply_that_rewrites_a_read_row_is_rolled_back_unless_named(synthetic_store, monkeypatch):
+    """Sprint 13 retrospective I1 (team lead, 2026-10-28): the trial log's 114 'update read' lines went unquestioned
+    and the real apply rewrote Task F's rows. Proven to fail, 2026-10-28: with commit_apply committing whatever
+    apply_changes logged, the moved row stayed 'full' and nothing was raised."""
+    import pytest
+    from store import connect
+    g = _script()
+    day, rid = "2026-10-25", "alpha-2024-first-paper"
+    detail = g.read_detail("g001", {"record_id": rid, "read_extent": "full"})
+    monkeypatch.setattr(g, "apply_changes", lambda conn: g.write_reads(conn, rid, day, detail, "full"))
+    conn = connect(synthetic_store)
+    try:
+        conn.execute("INSERT INTO paper_reads (record_id, reader, read_on, extent, detail) VALUES (?, ?, ?, ?, ?)",
+                     (rid, g.SUBAGENT_READER, day, "subagent", detail))
+        conn.commit()
+        extents = "SELECT extent FROM paper_reads WHERE record_id = ? AND reader = ? AND read_on = ?"
+        with pytest.raises(g.ReadRowsRewritten, match="1 read rows would be rewritten"):
+            g.commit_apply(conn, update_reads=False)
+        assert {tuple(r) for r in conn.execute(extents, (rid, g.SUBAGENT_READER, day))} == {("subagent",)}
+        assert not conn.execute("SELECT 1 FROM paper_reads WHERE record_id = ? AND reader = 'Claude' AND read_on = ?",
+                                (rid, day)).fetchone()
+        assert [x.split()[0] for x in g.commit_apply(conn, update_reads=True)] == ["update", "read"]
+        assert {tuple(r) for r in conn.execute(extents, (rid, g.SUBAGENT_READER, day))} == {("full",)}
+        assert g.commit_apply(conn, update_reads=False) == []  # a second apply writes nothing
+    finally:
+        conn.close()
